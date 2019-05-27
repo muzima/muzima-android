@@ -79,6 +79,7 @@ import com.muzima.messaging.exceptions.RecipientFormattingException;
 import com.muzima.messaging.fragments.ConversationFragment;
 import com.muzima.messaging.group.GroupShareProfileView;
 import com.muzima.messaging.jobs.MultiDeviceBlockedUpdateJob;
+import com.muzima.messaging.jobs.RetrieveProfileJob;
 import com.muzima.messaging.jobs.ServiceOutageDetectionJob;
 import com.muzima.messaging.location.SignalPlace;
 import com.muzima.messaging.mms.AttachmentManager;
@@ -1453,9 +1454,9 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
             return;
         }
 
-//        MuzimaApplication.getInstance(this)
-//                .getJobManager()
-//                .add(new RetrieveProfileJob(this, recipient));
+        MuzimaApplication.getInstance(this)
+                .getJobManager()
+                .add(new RetrieveProfileJob(this, recipient));
     }
 
     @Override

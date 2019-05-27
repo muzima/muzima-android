@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.messaging.crypto.storage.TextSecureIdentityKeyStore;
+import com.muzima.messaging.jobs.PushDecryptJob;
 import com.muzima.messaging.sms.MessageSender;
 import com.muzima.messaging.sqlite.database.DatabaseFactory;
 import com.muzima.messaging.sqlite.database.MmsDatabase;
@@ -174,10 +175,9 @@ public class ConfirmIdentityDialog extends AlertDialog {
                                 0, null);
 
                         long pushId = pushDatabase.insert(envelope);
-//ToDO ++++++++ reenable pushDecryptJob
-//                        MuzimaApplication.getInstance(getContext())
-//                                .getJobManager()
-//                                .add(new PushDecryptJob(getContext(), pushId, messageRecord.getId()));
+                        MuzimaApplication.getInstance(getContext())
+                                .getJobManager()
+                                .add(new PushDecryptJob(getContext(), pushId, messageRecord.getId()));
                     } catch (IOException e) {
                         throw new AssertionError(e);
                     }

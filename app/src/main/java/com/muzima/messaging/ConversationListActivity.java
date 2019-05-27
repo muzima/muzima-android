@@ -200,7 +200,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
         intent.putExtra(ConversationActivity.STARTING_POSITION_EXTRA, startingPosition);
 
         startActivity(intent);
-        //overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
     }
 
     @Override
@@ -257,7 +257,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://muzima.org")));
         } catch (ActivityNotFoundException e) {
-            //Toast.makeText(this, R.string.ConversationListActivity_there_is_no_browser_installed_on_your_device, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.ConversationListActivity_there_is_no_browser_installed_on_your_device, Toast.LENGTH_LONG).show();
         }
     }
 }

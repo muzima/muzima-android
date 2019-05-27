@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.messaging.MediaPreviewActivity;
 import com.muzima.messaging.RecipientModifiedListener;
 import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.adapters.BindableConversationItem;
@@ -36,6 +37,8 @@ import com.muzima.messaging.components.QuoteView;
 import com.muzima.messaging.contactshare.Contact;
 import com.muzima.messaging.dialogs.ConfirmIdentityDialog;
 import com.muzima.messaging.imaging.LongClickCopySpan;
+import com.muzima.messaging.jobs.AttachmentDownloadJob;
+import com.muzima.messaging.jobs.MmsDownloadJob;
 import com.muzima.messaging.jobs.MmsSendJob;
 import com.muzima.messaging.jobs.SmsSendJob;
 import com.muzima.messaging.mms.GlideRequests;
@@ -814,20 +817,18 @@ public class ConversationItem extends LinearLayout
             Log.i(TAG, "onClick() for attachment download");
             if (messageRecord.isMmsNotification()) {
                 Log.i(TAG, "Scheduling MMS attachment download");
-//                TODO ++++++work On MmsDownloadJob
-//                MuzimaApplication.getInstance(context)
-//                        .getJobManager()
-//                        .add(new MmsDownloadJob(context, messageRecord.getId(),
-//                                messageRecord.getThreadId(), false));
+                MuzimaApplication.getInstance(context)
+                        .getJobManager()
+                        .add(new MmsDownloadJob(context, messageRecord.getId(),
+                                messageRecord.getThreadId(), false));
             } else {
                 Log.i(TAG, "Scheduling push attachment downloads for " + slides.size() + " items");
 
                 for (Slide slide : slides) {
-//                    TODO ++++++work On AttachmentDownloadJob
-//                    MuzimaApplication.getInstance(context)
-//                            .getJobManager()
-//                            .add(new AttachmentDownloadJob(context, messageRecord.getId(),
-//                                    ((DatabaseAttachment) slide.asAttachment()).getAttachmentId(), true));
+                    MuzimaApplication.getInstance(context)
+                            .getJobManager()
+                            .add(new AttachmentDownloadJob(context, messageRecord.getId(),
+                                    ((DatabaseAttachment) slide.asAttachment()).getAttachmentId(), true));
                 }
             }
         }
@@ -852,20 +853,19 @@ public class ConversationItem extends LinearLayout
             if (shouldInterceptClicks(messageRecord) || !batchSelected.isEmpty()) {
                 performClick();
             }
-//            TODO ++++++ MediaPreviewActivity
-            //else if (MediaPreviewActivity.isContentTypeSupported(slide.getContentType()) && slide.getUri() != null) {
-//                Intent intent = new Intent(context, MediaPreviewActivity.class);
-//                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//                intent.setDataAndType(slide.getUri(), slide.getContentType());
-//                intent.putExtra(MediaPreviewActivity.ADDRESS_EXTRA, conversationRecipient.getAddress());
-//                intent.putExtra(MediaPreviewActivity.OUTGOING_EXTRA, messageRecord.isOutgoing());
-//                intent.putExtra(MediaPreviewActivity.DATE_EXTRA, messageRecord.getTimestamp());
-//                intent.putExtra(MediaPreviewActivity.SIZE_EXTRA, slide.asAttachment().getSize());
-//                intent.putExtra(MediaPreviewActivity.CAPTION_EXTRA, slide.getCaption().orNull());
-//                intent.putExtra(MediaPreviewActivity.LEFT_IS_RECENT_EXTRA, false);
-//
-//                context.startActivity(intent);
-//            }
+            else if (MediaPreviewActivity.isContentTypeSupported(slide.getContentType()) && slide.getUri() != null) {
+                Intent intent = new Intent(context, MediaPreviewActivity.class);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setDataAndType(slide.getUri(), slide.getContentType());
+                intent.putExtra(MediaPreviewActivity.ADDRESS_EXTRA, conversationRecipient.getAddress());
+                intent.putExtra(MediaPreviewActivity.OUTGOING_EXTRA, messageRecord.isOutgoing());
+                intent.putExtra(MediaPreviewActivity.DATE_EXTRA, messageRecord.getTimestamp());
+                intent.putExtra(MediaPreviewActivity.SIZE_EXTRA, slide.asAttachment().getSize());
+                intent.putExtra(MediaPreviewActivity.CAPTION_EXTRA, slide.getCaption().orNull());
+                intent.putExtra(MediaPreviewActivity.LEFT_IS_RECENT_EXTRA, false);
+
+                context.startActivity(intent);
+            }
             else if (slide.getUri() != null) {
                 Log.i(TAG, "Clicked: " + slide.getUri() + " , " + slide.getContentType());
                 Uri publicUri = PartAuthority.getAttachmentPublicUri(slide.getUri());

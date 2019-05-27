@@ -8,9 +8,9 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.muzima.messaging.ConversationActivity;
 import com.muzima.messaging.mms.SlideDeck;
 import com.muzima.model.SignalRecipient;
-import com.muzima.view.notifications.ConversationActivity;
 
 public class NotificationItem {
     private final long id;
@@ -77,7 +77,7 @@ public class NotificationItem {
         Intent intent = new Intent(context, ConversationActivity.class);
         SignalRecipient notifyRecipients = threadRecipient != null ? threadRecipient : conversationRecipient;
         if (notifyRecipients != null)
-//            intent.putExtra(ConversationActivity.ADDRESS_EXTRA, notifyRecipients.getAddress());
+            intent.putExtra(ConversationActivity.ADDRESS_EXTRA, notifyRecipients.getAddress());
 
         intent.putExtra("thread_id", threadId);
         intent.setData((Uri.parse("custom://" + System.currentTimeMillis())));
