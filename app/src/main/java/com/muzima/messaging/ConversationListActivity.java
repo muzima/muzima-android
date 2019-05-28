@@ -54,19 +54,20 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     private SearchToolbar searchToolbar;
     private ImageView searchAction;
     private ViewGroup fragmentContainer;
+    private Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle icicle, boolean ready) {
         setContentView(R.layout.conversation_list_activity);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         searchToolbar            = findViewById(R.id.search_toolbar);
         searchAction             = findViewById(R.id.search_action);
         fragmentContainer        = findViewById(R.id.fragment_container);
-        conversationListFragment = initFragment(R.id.fragment_container, new ConversationListFragment());
+        conversationListFragment = initFragment(R.id.fragment_container, new ConversationListFragment(), getResources().getConfiguration().locale);
 
         initializeSearchListener();
 
@@ -120,7 +121,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
 
                 if (trimmed.length() > 0) {
                     if (searchFragment == null) {
-                        searchFragment = SearchFragment.newInstance();
+                        searchFragment = SearchFragment.newInstance(getResources().getConfiguration().locale);
                         getSupportFragmentManager().beginTransaction()
                                 .add(R.id.fragment_container, searchFragment, null)
                                 .commit();
@@ -177,7 +178,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
 //            case R.id.menu_clear_passphrase:  handleClearPassphrase(); return true;
 //            case R.id.menu_mark_all_read:     handleMarkAllRead();     return true;
 //            case R.id.menu_invite:            handleInvite();          return true;
-//            case R.id.menu_help:              handleHelp();            return true;
+            case R.id.menu_help:              handleHelp();            return true;
         }
 
         return false;
@@ -205,8 +206,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
 
     @Override
     public void onSwitchToArchive() {
-//        Intent intent = new Intent(this, ConversationListArchiveActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, ConversationListArchiveActivity.class);
+        startActivity(intent);
     }
 
     @Override

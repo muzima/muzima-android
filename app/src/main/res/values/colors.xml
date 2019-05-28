@@ -167,4 +167,6 @@
     <color name="red_300">#E57373</color>
     <color name="red_500">#F44336</color>
     <color name="red_600">#E53935</color>
+    <color name="amber_500">#FFC107</color>
+
 </resources>

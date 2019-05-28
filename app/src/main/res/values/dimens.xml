@@ -73,4 +73,8 @@
     <dimen name="scribble_stroke_size">2dp</dimen>
     <dimen name="floating_action_button_margin">16dp</dimen>
     <integer name="media_overview_cols">3</integer>
+    <dimen name="unread_count_bubble_diameter">26sp</dimen>
+    <dimen name="unread_count_bubble_radius">13sp</dimen>
+    <dimen name="conversation_list_fragment_archive_padding">16dp</dimen>
+
 </resources>

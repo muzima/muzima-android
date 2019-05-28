@@ -47,6 +47,7 @@ import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 import com.muzima.messaging.TextSecurePreferences;
+import com.muzima.messaging.components.TypingStatusRepository;
 import com.muzima.messaging.dependencies.AxolotlStorageModule;
 import com.muzima.messaging.dependencies.SignalCommunicationModule;
 import com.muzima.messaging.jobmanager.JobManager;
@@ -140,6 +141,7 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
     private ObjectGraph objectGraph;
     private volatile boolean isAppVisible = true;
     private ExpiringMessageManager expiringMessageManager;
+    private TypingStatusRepository typingStatusRepository;
 
     static {
         // see http://rtyley.github.io/spongycastle/
@@ -205,6 +207,7 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
         initializeWebRtc();
         executePendingContactSync();
         initializePendingMessages();
+        initializeTypingStatusRepository();
         NotificationChannels.create(this);
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
     }
@@ -589,6 +592,14 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
         RotateSignedPreKeyListener.schedule(this);
         DirectoryRefreshListener.schedule(this);
         LocalBackupListener.schedule(this);
+    }
+
+    private void initializeTypingStatusRepository() {
+        this.typingStatusRepository = new TypingStatusRepository();
+    }
+
+    public TypingStatusRepository getTypingStatusRepository() {
+        return typingStatusRepository;
     }
 
 }

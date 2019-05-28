@@ -12,9 +12,11 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.muzima.R;
 import com.muzima.messaging.customcomponents.emoji.EmojiTextView;
+import com.muzima.messaging.customcomponents.emoji.parsing.ResUtil;
 import com.muzima.model.SignalRecipient;
 
 public class FromTextView extends EmojiTextView {
@@ -49,12 +51,11 @@ public class FromTextView extends EmojiTextView {
         SpannableString fromSpan = new SpannableString(fromString);
         fromSpan.setSpan(new StyleSpan(typeface), 0, builder.length(),
                 Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-
         if (recipient.getName() == null && !TextUtils.isEmpty(recipient.getProfileName())) {
             SpannableString profileName = new SpannableString(" (~" + recipient.getProfileName() + ") ");
             profileName.setSpan(new CenterAlignedRelativeSizeSpan(0.75f), 0, profileName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             profileName.setSpan(new TypefaceSpan("sans-serif-light"), 0, profileName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            profileName.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.gray70)), 0, profileName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            profileName.setSpan(new ForegroundColorSpan(ResUtil.getColor(getContext(), R.attr.conversation_list_item_subject_color)), 0, profileName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
                 builder.append(profileName);
@@ -66,7 +67,6 @@ public class FromTextView extends EmojiTextView {
         } else {
             builder.append(fromSpan);
         }
-
         setText(builder);
 
         if (recipient.isBlocked())

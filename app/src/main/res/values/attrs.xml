@@ -204,4 +204,9 @@
     </declare-styleable>
     <attr name="pref_divider" format="reference" />
     <attr name="conversation_number_picker_text_color_selected" format="reference|color"/>
+    <attr name="conversation_list_item_unread_background" format="reference"/>
+    <attr name="conversation_list_item_subject_color" format="reference|color"/>
+    <attr name="conversation_list_item_unread_color" format="reference|color"/>
+    <attr name="conversation_list_item_date_color" format="reference|color"/>
+    <attr name="search_background" format="color"/>
 </resources>

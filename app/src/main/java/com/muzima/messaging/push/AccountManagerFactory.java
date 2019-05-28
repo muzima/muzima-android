@@ -24,7 +24,6 @@ public class AccountManagerFactory {
 
     public static SignalServiceAccountManager createManager(final Context context, String number, String password) {
         if (new SignalServiceNetworkAccess(context).isCensored(number)) {
-            Log.w("TRACE [","TRACE[ gets into new SignalServiceNetworkAccess(context).isCensored(number)");
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... params) {
