@@ -201,7 +201,6 @@ public class WebRtcCallService extends Service implements InjectableType,
     public int onStartCommand(final Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand...");
         if (intent == null || intent.getAction() == null) return START_NOT_STICKY;
-        Log.i(TAG, "TRACE[ onStartCommand... intent != null || intent.getAction() != null "+ intent.getAction()+" isBusy() "+isBusy());
 
         serviceExecutor.execute(() -> {
             if (intent.getAction().equals(ACTION_INCOMING_CALL) && isBusy()) handleBusyCall(intent);

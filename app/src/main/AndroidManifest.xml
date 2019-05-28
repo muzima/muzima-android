@@ -532,13 +532,14 @@
         </activity>
         <activity
             android:name="com.muzima.messaging.ConversationListActivity"
+            android:theme="@style/AppThemeNoActionBar.Dark"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask" />
 
         <activity android:name="com.muzima.messaging.NewConversationActivity"
-            android:theme="@style/AppThemeNoActionBar.Light"
+            android:theme="@style/AppThemeNoActionBar.Dark"
             android:windowSoftInputMode="stateAlwaysVisible"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 

@@ -1694,7 +1694,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         CharacterCalculator.CharacterState characterState = transportOption.calculateCharacters(messageBody);
 
         if (characterState.charactersRemaining <= 15 || characterState.messagesSpent > 1) {
-            charactersLeft.setText(String.format("%d/%d (%d)",
+            charactersLeft.setText(String.format(getResources().getConfiguration().locale,
+                    "%d/%d (%d)",
                     characterState.charactersRemaining,
                     characterState.maxMessageSize,
                     characterState.messagesSpent));

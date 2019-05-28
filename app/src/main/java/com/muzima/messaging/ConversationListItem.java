@@ -28,6 +28,7 @@ import com.muzima.messaging.customcomponents.TypingIndicatorView;
 import com.muzima.messaging.mms.GlideRequests;
 import com.muzima.messaging.sqlite.database.models.ThreadRecord;
 import com.muzima.messaging.utils.Util;
+import com.muzima.model.MessageResult;
 import com.muzima.model.SignalRecipient;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.ThemeUtil;
@@ -123,33 +124,33 @@ public class ConversationListItem extends RelativeLayout
 
         this.recipient.addListener(this);
         if (highlightSubstring != null) {
-           // this.fromView.setText(getHighlightedSpan(locale, recipient.getName(), highlightSubstring));
+            this.fromView.setText(getHighlightedSpan(locale, recipient.getName(), highlightSubstring));
         } else {
-           // this.fromView.setText(recipient, unreadCount == 0);
+            this.fromView.setText(recipient, unreadCount == 0);
         }
 
         if (typingThreads.contains(threadId)) {
             this.subjectView.setVisibility(INVISIBLE);
-//
-//            this.typingView.setVisibility(VISIBLE);
-//            this.typingView.startAnimation();
+
+            this.typingView.setVisibility(VISIBLE);
+            this.typingView.startAnimation();
         } else {
-//            this.typingView.setVisibility(GONE);
-//            this.typingView.stopAnimation();
+            this.typingView.setVisibility(GONE);
+            this.typingView.stopAnimation();
 
             this.subjectView.setVisibility(VISIBLE);
             this.subjectView.setText(thread.getDisplayBody());
             this.subjectView.setTypeface(unreadCount == 0 ? LIGHT_TYPEFACE : BOLD_TYPEFACE);
-//            this.subjectView.setTextColor(unreadCount == 0 ? ThemeUtil.getThemedColor(getContext(), R.attr.conversation_list_item_subject_color)
-//                    : ThemeUtil.getThemedColor(getContext(), R.attr.conversation_list_item_unread_color));
+            this.subjectView.setTextColor(unreadCount == 0 ? ThemeUtil.getThemedColor(getContext(), R.attr.conversation_list_item_subject_color)
+                    : ThemeUtil.getThemedColor(getContext(), R.attr.conversation_list_item_unread_color));
         }
 
         if (thread.getDate() > 0) {
             CharSequence date = DateUtils.getBriefRelativeTimeSpanString(getContext(), locale, thread.getDate());
             dateView.setText(date);
             dateView.setTypeface(unreadCount == 0 ? LIGHT_TYPEFACE : BOLD_TYPEFACE);
-//            dateView.setTextColor(unreadCount == 0 ? ThemeUtil.getThemedColor(getContext(), R.attr.conversation_list_item_date_color)
-//                    : ThemeUtil.getThemedColor(getContext(), R.attr.conversation_list_item_unread_color));
+            dateView.setTextColor(unreadCount == 0 ? ThemeUtil.getThemedColor(getContext(), R.attr.conversation_list_item_date_color)
+                    : ThemeUtil.getThemedColor(getContext(), R.attr.conversation_list_item_unread_color));
         }
 
         if (thread.isArchived()) {
@@ -158,10 +159,10 @@ public class ConversationListItem extends RelativeLayout
             this.archivedView.setVisibility(View.GONE);
         }
 
-        //setStatusIcons(thread);
-        //setThumbnailSnippet(thread);
+        setStatusIcons(thread);
+        setThumbnailSnippet(thread);
         setBatchState(batchMode);
-       // setRippleColor(recipient);
+//        setRippleColor(recipient);
         setUnreadIndicator(thread);
         this.contactPhotoImage.setAvatar(glideRequests, recipient, true);
     }
@@ -176,43 +177,43 @@ public class ConversationListItem extends RelativeLayout
 
         this.recipient.addListener(this);
 
-//        fromView.setText(getHighlightedSpan(locale, recipient.getName(), highlightSubstring));
-//        subjectView.setText(getHighlightedSpan(locale, contact.getAddress().toPhoneString(), highlightSubstring));
-//        dateView.setText("");
-//        archivedView.setVisibility(GONE);
-//        unreadIndicator.setVisibility(GONE);
-//        deliveryStatusIndicator.setNone();
-//        alertView.setNone();
-//        thumbnailView.setVisibility(GONE);
-//
-//        setBatchState(false);
+        fromView.setText(getHighlightedSpan(locale, recipient.getName(), highlightSubstring));
+        subjectView.setText(getHighlightedSpan(locale, contact.getAddress().toPhoneString(), highlightSubstring));
+        dateView.setText("");
+        archivedView.setVisibility(GONE);
+        unreadIndicator.setVisibility(GONE);
+        deliveryStatusIndicator.setNone();
+        alertView.setNone();
+        thumbnailView.setVisibility(GONE);
+
+        setBatchState(false);
 //        setRippleColor(contact);
-//        contactPhotoImage.setAvatar(glideRequests, recipient, true);
+        contactPhotoImage.setAvatar(glideRequests, recipient, true);
     }
 
-//    public void bind(@NonNull MessageResult messageResult,
-//                     @NonNull GlideRequests glideRequests,
-//                     @NonNull Locale locale,
-//                     @Nullable String highlightSubstring) {
-//        this.selectedThreads = Collections.emptySet();
-//        this.recipient = messageResult.recipient;
-//        this.glideRequests = glideRequests;
-//
-//        this.recipient.addListener(this);
-//
-//        fromView.setText(recipient, true);
-//        subjectView.setText(getHighlightedSpan(locale, messageResult.bodySnippet, highlightSubstring));
-//        dateView.setText(DateUtils.getBriefRelativeTimeSpanString(getContext(), locale, messageResult.receivedTimestampMs));
-//        archivedView.setVisibility(GONE);
-//        unreadIndicator.setVisibility(GONE);
-//        deliveryStatusIndicator.setNone();
-//        alertView.setNone();
-//        thumbnailView.setVisibility(GONE);
-//
-//        setBatchState(false);
+    public void bind(@NonNull MessageResult messageResult,
+                     @NonNull GlideRequests glideRequests,
+                     @NonNull Locale locale,
+                     @Nullable String highlightSubstring) {
+        this.selectedThreads = Collections.emptySet();
+        this.recipient = messageResult.recipient;
+        this.glideRequests = glideRequests;
+
+        this.recipient.addListener(this);
+
+        fromView.setText(recipient, true);
+        subjectView.setText(getHighlightedSpan(locale, messageResult.bodySnippet, highlightSubstring));
+        dateView.setText(DateUtils.getBriefRelativeTimeSpanString(getContext(), locale, messageResult.receivedTimestampMs));
+        archivedView.setVisibility(GONE);
+        unreadIndicator.setVisibility(GONE);
+        deliveryStatusIndicator.setNone();
+        alertView.setNone();
+        thumbnailView.setVisibility(GONE);
+
+        setBatchState(false);
 //        setRippleColor(recipient);
-//        contactPhotoImage.setAvatar(glideRequests, recipient, true);
-//    }
+        contactPhotoImage.setAvatar(glideRequests, recipient, true);
+    }
 
     @Override
     public void unbind() {
@@ -243,49 +244,49 @@ public class ConversationListItem extends RelativeLayout
         return lastSeen;
     }
 
-//    private void setThumbnailSnippet(ThreadRecord thread) {
-//        if (thread.getSnippetUri() != null) {
-//            this.thumbnailView.setVisibility(View.VISIBLE);
-//            this.thumbnailView.setImageResource(glideRequests, thread.getSnippetUri());
-//
-//            LayoutParams subjectParams = (RelativeLayout.LayoutParams) this.subjectContainer.getLayoutParams();
-//            subjectParams.addRule(RelativeLayout.LEFT_OF, R.id.thumbnail);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//                subjectParams.addRule(RelativeLayout.START_OF, R.id.thumbnail);
-//            }
-//            this.subjectContainer.setLayoutParams(subjectParams);
-//            this.post(new ThumbnailPositioner(thumbnailView, archivedView, deliveryStatusIndicator, dateView));
-//        } else {
-//            this.thumbnailView.setVisibility(View.GONE);
-//
-//            LayoutParams subjectParams = (RelativeLayout.LayoutParams) this.subjectContainer.getLayoutParams();
-//            subjectParams.addRule(RelativeLayout.LEFT_OF, R.id.status);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//                subjectParams.addRule(RelativeLayout.START_OF, R.id.status);
-//            }
-//            this.subjectContainer.setLayoutParams(subjectParams);
-//        }
-//    }
-//
-//    private void setStatusIcons(ThreadRecord thread) {
-//        if (!thread.isOutgoing() || thread.isOutgoingCall() || thread.isVerificationStatusChange()) {
-//            deliveryStatusIndicator.setNone();
-//            alertView.setNone();
-//        } else if (thread.isFailed()) {
-//            deliveryStatusIndicator.setNone();
-//            alertView.setFailed();
-//        } else if (thread.isPendingInsecureSmsFallback()) {
-//            deliveryStatusIndicator.setNone();
-//            alertView.setPendingApproval();
-//        } else {
-//            alertView.setNone();
-//
-//            if (thread.isPending()) deliveryStatusIndicator.setPending();
-//            else if (thread.isRemoteRead()) deliveryStatusIndicator.setRead();
-//            else if (thread.isDelivered()) deliveryStatusIndicator.setDelivered();
-//            else deliveryStatusIndicator.setSent();
-//        }
-//    }
+    private void setThumbnailSnippet(ThreadRecord thread) {
+        if (thread.getSnippetUri() != null) {
+            this.thumbnailView.setVisibility(View.VISIBLE);
+            this.thumbnailView.setImageResource(glideRequests, thread.getSnippetUri());
+
+            LayoutParams subjectParams = (RelativeLayout.LayoutParams) this.subjectContainer.getLayoutParams();
+            subjectParams.addRule(RelativeLayout.LEFT_OF, R.id.thumbnail);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                subjectParams.addRule(RelativeLayout.START_OF, R.id.thumbnail);
+            }
+            this.subjectContainer.setLayoutParams(subjectParams);
+            this.post(new ThumbnailPositioner(thumbnailView, archivedView, deliveryStatusIndicator, dateView));
+        } else {
+            this.thumbnailView.setVisibility(View.GONE);
+
+            LayoutParams subjectParams = (RelativeLayout.LayoutParams) this.subjectContainer.getLayoutParams();
+            subjectParams.addRule(RelativeLayout.LEFT_OF, R.id.status);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                subjectParams.addRule(RelativeLayout.START_OF, R.id.status);
+            }
+            this.subjectContainer.setLayoutParams(subjectParams);
+        }
+    }
+
+    private void setStatusIcons(ThreadRecord thread) {
+        if (!thread.isOutgoing() || thread.isOutgoingCall() || thread.isVerificationStatusChange()) {
+            deliveryStatusIndicator.setNone();
+            alertView.setNone();
+        } else if (thread.isFailed()) {
+            deliveryStatusIndicator.setNone();
+            alertView.setFailed();
+        } else if (thread.isPendingInsecureSmsFallback()) {
+            deliveryStatusIndicator.setNone();
+            alertView.setPendingApproval();
+        } else {
+            alertView.setNone();
+
+            if (thread.isPending()) deliveryStatusIndicator.setPending();
+            else if (thread.isRemoteRead()) deliveryStatusIndicator.setRead();
+            else if (thread.isDelivered()) deliveryStatusIndicator.setDelivered();
+            else deliveryStatusIndicator.setSent();
+        }
+    }
 
     private void setRippleColor(SignalRecipient recipient) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -345,45 +346,45 @@ public class ConversationListItem extends RelativeLayout
 
     @Override
     public void onModified(final SignalRecipient recipient) {
-//        Util.runOnMain(() -> {
-//            fromView.setText(recipient, unreadCount == 0);
-//            contactPhotoImage.setAvatar(glideRequests, recipient, true);
+        Util.runOnMain(() -> {
+            fromView.setText(recipient, unreadCount == 0);
+            contactPhotoImage.setAvatar(glideRequests, recipient, true);
 //            setRippleColor(recipient);
-//        });
+        });
     }
 
-//    private static class ThumbnailPositioner implements Runnable {
-//
-//        private final View thumbnailView;
-//        private final View archivedView;
-//        private final View deliveryStatusView;
-//        private final View dateView;
-//
-//        ThumbnailPositioner(View thumbnailView, View archivedView, View deliveryStatusView, View dateView) {
-//            this.thumbnailView = thumbnailView;
-//            this.archivedView = archivedView;
-//            this.deliveryStatusView = deliveryStatusView;
-//            this.dateView = dateView;
-//        }
-//
-//        @Override
-//        public void run() {
-//            LayoutParams thumbnailParams = (RelativeLayout.LayoutParams) thumbnailView.getLayoutParams();
-//
-//            if (archivedView.getVisibility() == View.VISIBLE &&
-//                    (archivedView.getWidth() + deliveryStatusView.getWidth()) > dateView.getWidth()) {
-//                thumbnailParams.addRule(RelativeLayout.LEFT_OF, R.id.status);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//                    thumbnailParams.addRule(RelativeLayout.START_OF, R.id.status);
-//                }
-//            } else {
-//                thumbnailParams.addRule(RelativeLayout.LEFT_OF, R.id.date);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//                    thumbnailParams.addRule(RelativeLayout.START_OF, R.id.date);
-//                }
-//            }
-//
-//            thumbnailView.setLayoutParams(thumbnailParams);
-//        }
-//    }
+    private static class ThumbnailPositioner implements Runnable {
+
+        private final View thumbnailView;
+        private final View archivedView;
+        private final View deliveryStatusView;
+        private final View dateView;
+
+        ThumbnailPositioner(View thumbnailView, View archivedView, View deliveryStatusView, View dateView) {
+            this.thumbnailView = thumbnailView;
+            this.archivedView = archivedView;
+            this.deliveryStatusView = deliveryStatusView;
+            this.dateView = dateView;
+        }
+
+        @Override
+        public void run() {
+            LayoutParams thumbnailParams = (RelativeLayout.LayoutParams) thumbnailView.getLayoutParams();
+
+            if (archivedView.getVisibility() == View.VISIBLE &&
+                    (archivedView.getWidth() + deliveryStatusView.getWidth()) > dateView.getWidth()) {
+                thumbnailParams.addRule(RelativeLayout.LEFT_OF, R.id.status);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    thumbnailParams.addRule(RelativeLayout.START_OF, R.id.status);
+                }
+            } else {
+                thumbnailParams.addRule(RelativeLayout.LEFT_OF, R.id.date);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    thumbnailParams.addRule(RelativeLayout.START_OF, R.id.date);
+                }
+            }
+
+            thumbnailView.setLayoutParams(thumbnailParams);
+        }
+    }
 }

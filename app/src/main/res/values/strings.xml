@@ -1368,5 +1368,24 @@
     <string name="PushDecryptJob_new_locked_message">New locked message</string>
     <string name="PushDecryptJob_unlock_to_view_pending_messages">Unlock to view pending messages</string>
     <string name="ConversationListActivity_there_is_no_browser_installed_on_your_device">There is no browser installed on your device.</string>
+    <string name="SearchFragment_header_conversations">Conversations</string>
+    <string name="SearchFragment_header_contacts">Contacts</string>
+    <string name="SearchFragment_header_messages">Messages</string>
+    <string name="SearchFragment_no_results">No results found for \'%s\'</string>
+    <string name="AndroidManifest_archived_conversations">Archived conversations</string>
+    <string name="conversation_list_batch_unarchive__menu_unarchive_selected">Unarchive selected</string>
+    <string name="conversation_list_batch__menu_delete_selected">Delete selected</string>
+    <string name="conversation_list_batch__menu_select_all">Select all</string>
+    <string name="conversation_list_batch_archive__menu_archive_selected">Archive selected</string>
+    <string name="ConversationListFragment_no_results_found_for_s_">No results found for \'%s\'</string>
+    <string name="ConversationListFragment_undo">UNDO</string>
+    <plurals name="ConversationListFragment_conversations_archived">
+        <item quantity="one">Conversation archived</item>
+        <item quantity="other">%d conversations archived</item>
+    </plurals>
+    <plurals name="ConversationListFragment_moved_conversations_to_inbox">
+        <item quantity="one">Moved conversation to inbox</item>
+        <item quantity="other">Moved %d conversations to inbox</item>
+    </plurals>
 
 </resources>
