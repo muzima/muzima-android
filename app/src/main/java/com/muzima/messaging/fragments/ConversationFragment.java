@@ -41,6 +41,7 @@ import com.muzima.messaging.CommunicationActions;
 import com.muzima.messaging.ConversationActivity;
 import com.muzima.messaging.ConversationAdapter;
 import com.muzima.messaging.PassphraseRequiredActionBarActivity;
+import com.muzima.messaging.ShareActivity;
 import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.attachments.Attachment;
 import com.muzima.messaging.contactshare.Contact;
@@ -241,62 +242,61 @@ public class ConversationFragment extends Fragment
         if (!TextSecurePreferences.isTypingIndicatorsEnabled(requireContext())) {
             return;
         }
-//        TODO +++++++ getTypingStatusRepository
 
-//        MuzimaApplication.getInstance(requireContext()).getTypingStatusRepository().getTypists(threadId).observe(this, typingState -> {
-//            List<SignalRecipient> recipients;
-//            boolean replacedByIncomingMessage;
-//
-//            if (typingState != null) {
-//                recipients = typingState.getTypists();
-//                replacedByIncomingMessage = typingState.isReplacedByIncomingMessage();
-//            } else {
-//                recipients = Collections.emptyList();
-//                replacedByIncomingMessage = false;
-//            }
-//
-//            typingView.setTypists(GlideApp.with(ConversationFragment.this), recipients, recipient.isGroupRecipient());
-//
-//            ConversationAdapter adapter = getListAdapter();
-//
-//            if (adapter.getHeaderView() != null && adapter.getHeaderView() != typingView) {
-//                Log.i(TAG, "Skipping typing indicator -- the header slot is occupied.");
-//                return;
-//            }
-//
-//            if (recipients.size() > 0) {
-//                if (adapter.getHeaderView() == null && getListLayoutManager().findFirstCompletelyVisibleItemPosition() == 0) {
-//                    list.setVerticalScrollBarEnabled(false);
-//                    list.post(() -> getListLayoutManager().smoothScrollToPosition(requireContext(), 0, 250));
-//                    list.postDelayed(() -> list.setVerticalScrollBarEnabled(true), 300);
-//                    adapter.setHeaderView(typingView);
-//                    adapter.notifyItemInserted(0);
-//                } else {
-//                    if (adapter.getHeaderView() == null) {
-//                        adapter.setHeaderView(typingView);
-//                        adapter.notifyItemInserted(0);
-//                    } else {
-//                        adapter.setHeaderView(typingView);
-//                        adapter.notifyItemChanged(0);
-//                    }
-//                }
-//            } else {
-//                if (getListLayoutManager().findFirstCompletelyVisibleItemPosition() == 0 && getListLayoutManager().getItemCount() > 1 && !replacedByIncomingMessage) {
-//                    getListLayoutManager().smoothScrollToPosition(requireContext(), 1, 250);
-//                    list.setVerticalScrollBarEnabled(false);
-//                    list.postDelayed(() -> {
-//                        adapter.setHeaderView(null);
-//                        adapter.notifyItemRemoved(0);
-//                        list.post(() -> list.setVerticalScrollBarEnabled(true));
-//                    }, 200);
-//                } else if (!replacedByIncomingMessage) {
-//                    adapter.setHeaderView(null);
-//                    adapter.notifyItemRemoved(0);
-//                } else {
-//                    adapter.setHeaderView(null);
-//                }
-//            }
-//        });
+        MuzimaApplication.getInstance(requireContext()).getTypingStatusRepository().getTypists(threadId).observe(this, typingState -> {
+            List<SignalRecipient> recipients;
+            boolean replacedByIncomingMessage;
+
+            if (typingState != null) {
+                recipients = typingState.getTypists();
+                replacedByIncomingMessage = typingState.isReplacedByIncomingMessage();
+            } else {
+                recipients = Collections.emptyList();
+                replacedByIncomingMessage = false;
+            }
+
+            typingView.setTypists(GlideApp.with(ConversationFragment.this), recipients, recipient.isGroupRecipient());
+
+            ConversationAdapter adapter = getListAdapter();
+
+            if (adapter.getHeaderView() != null && adapter.getHeaderView() != typingView) {
+                Log.i(TAG, "Skipping typing indicator -- the header slot is occupied.");
+                return;
+            }
+
+            if (recipients.size() > 0) {
+                if (adapter.getHeaderView() == null && getListLayoutManager().findFirstCompletelyVisibleItemPosition() == 0) {
+                    list.setVerticalScrollBarEnabled(false);
+                    list.post(() -> getListLayoutManager().smoothScrollToPosition(requireContext(), 0, 250));
+                    list.postDelayed(() -> list.setVerticalScrollBarEnabled(true), 300);
+                    adapter.setHeaderView(typingView);
+                    adapter.notifyItemInserted(0);
+                } else {
+                    if (adapter.getHeaderView() == null) {
+                        adapter.setHeaderView(typingView);
+                        adapter.notifyItemInserted(0);
+                    } else {
+                        adapter.setHeaderView(typingView);
+                        adapter.notifyItemChanged(0);
+                    }
+                }
+            } else {
+                if (getListLayoutManager().findFirstCompletelyVisibleItemPosition() == 0 && getListLayoutManager().getItemCount() > 1 && !replacedByIncomingMessage) {
+                    getListLayoutManager().smoothScrollToPosition(requireContext(), 1, 250);
+                    list.setVerticalScrollBarEnabled(false);
+                    list.postDelayed(() -> {
+                        adapter.setHeaderView(null);
+                        adapter.notifyItemRemoved(0);
+                        list.post(() -> list.setVerticalScrollBarEnabled(true));
+                    }, 200);
+                } else if (!replacedByIncomingMessage) {
+                    adapter.setHeaderView(null);
+                    adapter.notifyItemRemoved(0);
+                } else {
+                    adapter.setHeaderView(null);
+                }
+            }
+        });
     }
 
     private void setCorrectMenuVisibility(Menu menu) {
@@ -478,18 +478,17 @@ public class ConversationFragment extends Fragment
     }
 
     private void handleForwardMessage(MessageRecord message) {
-//        ToDO ++++++++ handle ShareActivity
-//        Intent composeIntent = new Intent(getActivity(), ShareActivity.class);
-//        composeIntent.putExtra(Intent.EXTRA_TEXT, message.getDisplayBody().toString());
-//        if (message.isMms()) {
-//            MmsMessageRecord mediaMessage = (MmsMessageRecord) message;
-//            if (mediaMessage.containsMediaSlide()) {
-//                Slide slide = mediaMessage.getSlideDeck().getSlides().get(0);
-//                composeIntent.putExtra(Intent.EXTRA_STREAM, slide.getUri());
-//                composeIntent.setType(slide.getContentType());
-//            }
-//        }
-//        startActivity(composeIntent);
+        Intent composeIntent = new Intent(getActivity(), ShareActivity.class);
+        composeIntent.putExtra(Intent.EXTRA_TEXT, message.getDisplayBody().toString());
+        if (message.isMms()) {
+            MmsMessageRecord mediaMessage = (MmsMessageRecord) message;
+            if (mediaMessage.containsMediaSlide()) {
+                Slide slide = mediaMessage.getSlideDeck().getSlides().get(0);
+                composeIntent.putExtra(Intent.EXTRA_STREAM, slide.getUri());
+                composeIntent.setType(slide.getContentType());
+            }
+        }
+        startActivity(composeIntent);
     }
 
     private void handleResendMessage(final MessageRecord message) {

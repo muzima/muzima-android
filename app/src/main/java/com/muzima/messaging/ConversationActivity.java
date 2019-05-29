@@ -90,6 +90,7 @@ import com.muzima.messaging.mms.ImageSlide;
 import com.muzima.messaging.mms.LocationSlide;
 import com.muzima.messaging.mms.MediaConstraints;
 import com.muzima.messaging.mms.OutgoingExpirationUpdateMessage;
+import com.muzima.messaging.mms.OutgoingGroupMediaMessage;
 import com.muzima.messaging.mms.OutgoingMediaMessage;
 import com.muzima.messaging.mms.OutgoingSecureMediaMessage;
 import com.muzima.messaging.mms.QuoteId;
@@ -123,6 +124,7 @@ import com.muzima.messaging.utils.Dialogs;
 import com.muzima.messaging.utils.DirectoryHelper;
 import com.muzima.messaging.utils.ExpirationUtil;
 import com.muzima.messaging.sqlite.database.IdentityDatabase.IdentityRecord;
+import com.muzima.messaging.utils.GroupUtil;
 import com.muzima.messaging.utils.IdentityUtil;
 import com.muzima.messaging.utils.SimpleTextWatcher;
 import com.muzima.messaging.utils.Stub;
@@ -130,6 +132,7 @@ import com.muzima.messaging.utils.Util;
 import com.muzima.model.SignalRecipient;
 import com.muzima.notifications.MarkReadReceiver;
 import com.muzima.notifications.MessageNotifier;
+import com.muzima.notifications.NotificationChannels;
 import com.muzima.service.KeyCachingService;
 import com.muzima.utils.MaterialColor;
 import com.muzima.utils.MediaUtil;
@@ -420,12 +423,12 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
                 sendSharedContact(data.getParcelableArrayListExtra(ContactShareEditActivity.KEY_CONTACTS));
                 break;
             case GROUP_EDIT:
-//                recipient = SignalRecipient.from(this, data.getParcelableExtra(GroupCreateActivity.GROUP_ADDRESS_EXTRA), true);
-//                recipient.addListener(this);
-//                titleView.setTitle(glideRequests, recipient);
-//                NotificationChannels.updateContactChannelName(this, recipient);
-//                setBlockedUserState(recipient, isSecureText, isDefaultSms);
-//                supportInvalidateOptionsMenu();
+                recipient = SignalRecipient.from(this, data.getParcelableExtra(GroupCreateActivity.GROUP_ADDRESS_EXTRA), true);
+                recipient.addListener(this);
+                titleView.setTitle(glideRequests, recipient);
+                NotificationChannels.updateContactChannelName(this, recipient);
+                setBlockedUserState(recipient, isSecureText, isDefaultSms);
+                supportInvalidateOptionsMenu();
                 break;
             case TAKE_PHOTO:
                 if (attachmentManager.getCaptureUri() != null) {
@@ -802,44 +805,44 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     private void handleLeavePushGroup() {
-//        if (getRecipient() == null) {
-//            Toast.makeText(this, getString(R.string.ConversationActivity_invalid_recipient),
-//                    Toast.LENGTH_LONG).show();
-//            return;
-//        }
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle(getString(R.string.ConversationActivity_leave_group));
-//        builder.setIconAttribute(R.attr.dialog_info_icon);
-//        builder.setCancelable(true);
-//        builder.setMessage(getString(R.string.ConversationActivity_are_you_sure_you_want_to_leave_this_group));
-//        builder.setPositiveButton(R.string.yes, (dialog, which) -> {
-//            SignalRecipient groupRecipient = getRecipient();
-//            long threadId = DatabaseFactory.getThreadDatabase(this).getThreadIdFor(groupRecipient);
-//            Optional<OutgoingGroupMediaMessage> leaveMessage = GroupUtil.createGroupLeaveMessage(this, groupRecipient);
-//
-//            if (threadId != -1 && leaveMessage.isPresent()) {
-//                MessageSender.send(this, leaveMessage.get(), threadId, false, null);
-//
-//                GroupDatabase groupDatabase = DatabaseFactory.getGroupDatabase(this);
-//                String groupId = groupRecipient.getAddress().toGroupString();
-//                groupDatabase.setActive(groupId, false);
-//                groupDatabase.remove(groupId, SignalAddress.fromSerialized(TextSecurePreferences.getLocalNumber(this)));
-//
-//                initializeEnabledCheck();
-//            } else {
-//                Toast.makeText(this, R.string.ConversationActivity_error_leaving_group, Toast.LENGTH_LONG).show();
-//            }
-//        });
-//
-//        builder.setNegativeButton(R.string.general_no, null);
-//        builder.show();
+        if (getRecipient() == null) {
+            Toast.makeText(this, getString(R.string.ConversationActivity_invalid_recipient),
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.ConversationActivity_leave_group));
+        builder.setIconAttribute(R.attr.dialog_info_icon);
+        builder.setCancelable(true);
+        builder.setMessage(getString(R.string.ConversationActivity_are_you_sure_you_want_to_leave_this_group));
+        builder.setPositiveButton(R.string.general_yes, (dialog, which) -> {
+            SignalRecipient groupRecipient = getRecipient();
+            long threadId = DatabaseFactory.getThreadDatabase(this).getThreadIdFor(groupRecipient);
+            Optional<OutgoingGroupMediaMessage> leaveMessage = GroupUtil.createGroupLeaveMessage(this, groupRecipient);
+
+            if (threadId != -1 && leaveMessage.isPresent()) {
+                MessageSender.send(this, leaveMessage.get(), threadId, false, null);
+
+                GroupDatabase groupDatabase = DatabaseFactory.getGroupDatabase(this);
+                String groupId = groupRecipient.getAddress().toGroupString();
+                groupDatabase.setActive(groupId, false);
+                groupDatabase.remove(groupId, SignalAddress.fromSerialized(TextSecurePreferences.getLocalNumber(this)));
+
+                initializeEnabledCheck();
+            } else {
+                Toast.makeText(this, R.string.ConversationActivity_error_leaving_group, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        builder.setNegativeButton(R.string.general_no, null);
+        builder.show();
     }
 
     private void handleEditPushGroup() {
-//        Intent intent = new Intent(ConversationActivity.this, GroupCreateActivity.class);
-//        intent.putExtra(GroupCreateActivity.GROUP_ADDRESS_EXTRA, recipient.getAddress());
-//        startActivityForResult(intent, GROUP_EDIT);
+        Intent intent = new Intent(ConversationActivity.this, GroupCreateActivity.class);
+        intent.putExtra(GroupCreateActivity.GROUP_ADDRESS_EXTRA, recipient.getAddress());
+        startActivityForResult(intent, GROUP_EDIT);
     }
 
     private void handleDistributionBroadcastEnabled(MenuItem item) {

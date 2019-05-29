@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:title="@string/conversation_context__menu_message_details"
         android:id="@+id/menu_context_details"
-        android:icon="?menu_info_icon"
+        android:icon="@drawable/ic_info_outline_white_24dp"
         app:showAsAction="always" />
 
     <item android:title="@string/conversation_context__menu_delete_message"
