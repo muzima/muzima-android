@@ -35,6 +35,7 @@ import android.os.Build;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -238,7 +239,7 @@ public class MessageNotifier {
                 return;
             }
 
-           // NotificationState notificationState = constructNotificationState(context, telcoCursor);
+            NotificationState notificationState = constructNotificationState(context, telcoCursor);
 
             if (signal && (System.currentTimeMillis() - lastAudibleNotification) < MIN_AUDIBLE_PERIOD_MILLIS) {
                 signal = false;
@@ -246,20 +247,20 @@ public class MessageNotifier {
                 lastAudibleNotification = System.currentTimeMillis();
             }
 
-//            if (notificationState.hasMultipleThreads()) {
-//                if (Build.VERSION.SDK_INT >= 23) {
-//                    for (long threadId : notificationState.getThreads()) {
-//                      //  sendSingleThreadNotification(context, new NotificationState(notificationState.getNotificationsForThread(threadId)), false, true);
-//                    }
-//                }
-//
-//                //sendMultipleThreadNotification(context, notificationState, signal);
-//            } else {
-//                //sendSingleThreadNotification(context, notificationState, signal, false);
-//            }
+            if (notificationState.hasMultipleThreads()) {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    for (long threadId : notificationState.getThreads()) {
+                        sendSingleThreadNotification(context, new NotificationState(notificationState.getNotificationsForThread(threadId)), false, true);
+                    }
+                }
 
-//            cancelOrphanedNotifications(context, notificationState);
-//            updateBadge(context, notificationState.getMessageCount());
+                sendMultipleThreadNotification(context, notificationState, signal);
+            } else {
+                sendSingleThreadNotification(context, notificationState, signal, false);
+            }
+
+            cancelOrphanedNotifications(context, notificationState);
+            updateBadge(context, notificationState.getMessageCount());
 
             if (signal) {
                 scheduleReminder(context, reminderCount);
@@ -269,103 +270,103 @@ public class MessageNotifier {
             if (pushCursor != null) pushCursor.close();
         }
     }
-//Todo work on Thread Notification
-//    private static void sendSingleThreadNotification(@NonNull Context context,
-//                                                     @NonNull NotificationState notificationState,
-//                                                     boolean signal, boolean bundled) {
-//        Log.i(TAG, "sendSingleThreadNotification()  signal: " + signal + "  bundled: " + bundled);
-//
-//        if (notificationState.getNotifications().isEmpty()) {
-//            if (!bundled) cancelActiveNotifications(context);
-//            Log.i(TAG, "Empty notification state. Skipping.");
-//            return;
-//        }
-//
-//        SingleRecipientNotificationBuilder builder = new SingleRecipientNotificationBuilder(context, TextSecurePreferences.getNotificationPrivacy(context));
-//        List<NotificationItem> notifications = notificationState.getNotifications();
-//        SignalRecipient recipient = notifications.get(0).getRecipient();
-//        int notificationId = (int) (SUMMARY_NOTIFICATION_ID + (bundled ? notifications.get(0).getThreadId() : 0));
-//
-//
-//        builder.setThread(notifications.get(0).getRecipient());
-//        builder.setMessageCount(notificationState.getMessageCount());
-//        builder.setPrimaryMessageBody(recipient, notifications.get(0).getIndividualRecipient(),
-//                notifications.get(0).getText(), notifications.get(0).getSlideDeck());
-//        builder.setContentIntent(notifications.get(0).getPendingIntent(context));
-//        builder.setGroup(NOTIFICATION_GROUP);
-//        builder.setDeleteIntent(notificationState.getDeleteIntent(context));
-//        builder.setOnlyAlertOnce(!signal);
-//        builder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
-//
-//        long timestamp = notifications.get(0).getTimestamp();
-//        if (timestamp != 0) builder.setWhen(timestamp);
-//
-//        builder.addActions(notificationState.getMarkAsReadIntent(context, notificationId),
-//                notificationState.getQuickReplyIntent(context, notifications.get(0).getRecipient()),
-//                notificationState.getRemoteReplyIntent(context, notifications.get(0).getRecipient()));
-//
-//        builder.addAndroidAutoAction(notificationState.getAndroidAutoReplyIntent(context, notifications.get(0).getRecipient()),
-//                notificationState.getAndroidAutoHeardIntent(context, notificationId), notifications.get(0).getTimestamp());
-//
-//        ListIterator<NotificationItem> iterator = notifications.listIterator(notifications.size());
-//
-//        while (iterator.hasPrevious()) {
-//            NotificationItem item = iterator.previous();
-//            builder.addMessageBody(item.getRecipient(), item.getIndividualRecipient(), item.getText());
-//        }
-//
-//        if (signal) {
-//            builder.setAlarms(notificationState.getRingtone(context), notificationState.getVibrate());
-//            builder.setTicker(notifications.get(0).getIndividualRecipient(),
-//                    notifications.get(0).getText());
-//        }
-//
-//        if (!bundled) {
-//            builder.setGroupSummary(true);
-//        }
-//
-//        Notification notification = builder.build();
-//        NotificationManagerCompat.from(context).notify(notificationId, notification);
-//        Log.i(TAG, "Posted notification. " + notification.toString());
-//    }
-//
-//    private static void sendMultipleThreadNotification(@NonNull Context context,
-//                                                       @NonNull NotificationState notificationState,
-//                                                       boolean signal) {
-//        Log.i(TAG, "sendSingleThreadNotification()  signal: " + signal);
-//
-//        MultipleRecipientNotificationBuilder builder = new MultipleRecipientNotificationBuilder(context, TextSecurePreferences.getNotificationPrivacy(context));
-//        List<NotificationItem> notifications = notificationState.getNotifications();
-//
-//        builder.setMessageCount(notificationState.getMessageCount(), notificationState.getThreadCount());
-//        builder.setMostRecentSender(notifications.get(0).getIndividualRecipient());
-//        builder.setGroup(NOTIFICATION_GROUP);
-//        builder.setDeleteIntent(notificationState.getDeleteIntent(context));
-//        builder.setOnlyAlertOnce(!signal);
-//        builder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
-//
-//        long timestamp = notifications.get(0).getTimestamp();
-//        if (timestamp != 0) builder.setWhen(timestamp);
-//
-//        builder.addActions(notificationState.getMarkAsReadIntent(context, SUMMARY_NOTIFICATION_ID));
-//
-//        ListIterator<NotificationItem> iterator = notifications.listIterator(notifications.size());
-//
-//        while (iterator.hasPrevious()) {
-//            NotificationItem item = iterator.previous();
-//            builder.addMessageBody(item.getIndividualRecipient(), item.getText());
-//        }
-//
-//        if (signal) {
-//            builder.setAlarms(notificationState.getRingtone(context), notificationState.getVibrate());
-//            builder.setTicker(notifications.get(0).getIndividualRecipient(),
-//                    notifications.get(0).getText());
-//        }
-//
-//        Notification notification = builder.build();
-//        NotificationManagerCompat.from(context).notify(SUMMARY_NOTIFICATION_ID, builder.build());
-//        Log.i(TAG, "Posted notification. " + notification.toString());
-//    }
+
+    private static void sendSingleThreadNotification(@NonNull Context context,
+                                                     @NonNull NotificationState notificationState,
+                                                     boolean signal, boolean bundled) {
+        Log.i(TAG, "sendSingleThreadNotification()  signal: " + signal + "  bundled: " + bundled);
+
+        if (notificationState.getNotifications().isEmpty()) {
+            if (!bundled) cancelActiveNotifications(context);
+            Log.i(TAG, "Empty notification state. Skipping.");
+            return;
+        }
+
+        SingleRecipientNotificationBuilder builder = new SingleRecipientNotificationBuilder(context, TextSecurePreferences.getNotificationPrivacy(context));
+        List<NotificationItem> notifications = notificationState.getNotifications();
+        SignalRecipient recipient = notifications.get(0).getRecipient();
+        int notificationId = (int) (SUMMARY_NOTIFICATION_ID + (bundled ? notifications.get(0).getThreadId() : 0));
+
+
+        builder.setThread(notifications.get(0).getRecipient());
+        builder.setMessageCount(notificationState.getMessageCount());
+        builder.setPrimaryMessageBody(recipient, notifications.get(0).getIndividualRecipient(),
+                notifications.get(0).getText(), notifications.get(0).getSlideDeck());
+        builder.setContentIntent(notifications.get(0).getPendingIntent(context));
+        builder.setGroup(NOTIFICATION_GROUP);
+        builder.setDeleteIntent(notificationState.getDeleteIntent(context));
+        builder.setOnlyAlertOnce(!signal);
+        builder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
+
+        long timestamp = notifications.get(0).getTimestamp();
+        if (timestamp != 0) builder.setWhen(timestamp);
+
+        builder.addActions(notificationState.getMarkAsReadIntent(context, notificationId),
+                notificationState.getQuickReplyIntent(context, notifications.get(0).getRecipient()),
+                notificationState.getRemoteReplyIntent(context, notifications.get(0).getRecipient()));
+
+        builder.addAndroidAutoAction(notificationState.getAndroidAutoReplyIntent(context, notifications.get(0).getRecipient()),
+                notificationState.getAndroidAutoHeardIntent(context, notificationId), notifications.get(0).getTimestamp());
+
+        ListIterator<NotificationItem> iterator = notifications.listIterator(notifications.size());
+
+        while (iterator.hasPrevious()) {
+            NotificationItem item = iterator.previous();
+            builder.addMessageBody(item.getRecipient(), item.getIndividualRecipient(), item.getText());
+        }
+
+        if (signal) {
+            builder.setAlarms(notificationState.getRingtone(context), notificationState.getVibrate());
+            builder.setTicker(notifications.get(0).getIndividualRecipient(),
+                    notifications.get(0).getText());
+        }
+
+        if (!bundled) {
+            builder.setGroupSummary(true);
+        }
+
+        Notification notification = builder.build();
+        NotificationManagerCompat.from(context).notify(notificationId, notification);
+        Log.i(TAG, "Posted notification. " + notification.toString());
+    }
+
+    private static void sendMultipleThreadNotification(@NonNull Context context,
+                                                       @NonNull NotificationState notificationState,
+                                                       boolean signal) {
+        Log.i(TAG, "sendSingleThreadNotification()  signal: " + signal);
+
+        MultipleRecipientNotificationBuilder builder = new MultipleRecipientNotificationBuilder(context, TextSecurePreferences.getNotificationPrivacy(context));
+        List<NotificationItem> notifications = notificationState.getNotifications();
+
+        builder.setMessageCount(notificationState.getMessageCount(), notificationState.getThreadCount());
+        builder.setMostRecentSender(notifications.get(0).getIndividualRecipient());
+        builder.setGroup(NOTIFICATION_GROUP);
+        builder.setDeleteIntent(notificationState.getDeleteIntent(context));
+        builder.setOnlyAlertOnce(!signal);
+        builder.setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY);
+
+        long timestamp = notifications.get(0).getTimestamp();
+        if (timestamp != 0) builder.setWhen(timestamp);
+
+        builder.addActions(notificationState.getMarkAsReadIntent(context, SUMMARY_NOTIFICATION_ID));
+
+        ListIterator<NotificationItem> iterator = notifications.listIterator(notifications.size());
+
+        while (iterator.hasPrevious()) {
+            NotificationItem item = iterator.previous();
+            builder.addMessageBody(item.getIndividualRecipient(), item.getText());
+        }
+
+        if (signal) {
+            builder.setAlarms(notificationState.getRingtone(context), notificationState.getVibrate());
+            builder.setTicker(notifications.get(0).getIndividualRecipient(),
+                    notifications.get(0).getText());
+        }
+
+        Notification notification = builder.build();
+        NotificationManagerCompat.from(context).notify(SUMMARY_NOTIFICATION_ID, builder.build());
+        Log.i(TAG, "Posted notification. " + notification.toString());
+    }
 
     private static void sendInThreadNotification(Context context, SignalRecipient recipient) {
         if (!TextSecurePreferences.isInThreadNotifications(context) ||
@@ -405,52 +406,52 @@ public class MessageNotifier {
         ringtone.play();
     }
 
-//    private static NotificationState constructNotificationState(@NonNull Context context,
-//                                                                @NonNull Cursor cursor) {
-//        NotificationState notificationState = new NotificationState();
-//        MmsSmsDatabase.Reader reader = DatabaseFactory.getMmsSmsDatabase(context).readerFor(cursor);
-//
-//        MessageRecord record;
-//
-//        while ((record = reader.getNext()) != null) {
-//            long id = record.getId();
-//            boolean mms = record.isMms() || record.isMmsNotification();
-//            SignalRecipient recipient = record.getIndividualRecipient();
-//            SignalRecipient conversationRecipient = record.getRecipient();
-//            long threadId = record.getThreadId();
-//            CharSequence body = record.getDisplayBody();
-//            SignalRecipient threadRecipients = null;
-//            SlideDeck slideDeck = null;
-//            long timestamp = record.getTimestamp();
-//
-//
-//            if (threadId != -1) {
-//                threadRecipients = DatabaseFactory.getThreadDatabase(context).getRecipientForThreadId(threadId);
-//            }
-//
-//            if (KeyCachingService.isLocked(context)) {
-//                body = SpanUtil.italic(context.getString(R.string.MessageNotifier_locked_message));
-//            } else if (record.isMms() && !((MmsMessageRecord) record).getSharedContacts().isEmpty()) {
-//                Contact contact = ((MmsMessageRecord) record).getSharedContacts().get(0);
-//                body = ContactUtil.getStringSummary(context, contact);
-//            } else if (record.isMms() && TextUtils.isEmpty(body) && !((MmsMessageRecord) record).getSlideDeck().getSlides().isEmpty()) {
-//                body = SpanUtil.italic(context.getString(R.string.MessageNotifier_media_message));
-//                slideDeck = ((MediaMmsMessageRecord) record).getSlideDeck();
-//            } else if (record.isMms() && !record.isMmsNotification() && !((MmsMessageRecord) record).getSlideDeck().getSlides().isEmpty()) {
-//                String message = context.getString(R.string.MessageNotifier_media_message_with_text, body);
-//                int italicLength = message.length() - body.length();
-//                body = SpanUtil.italic(message, italicLength);
-//                slideDeck = ((MediaMmsMessageRecord) record).getSlideDeck();
-//            }
-//
-//            if (threadRecipients == null || !threadRecipients.isMuted()) {
-//                notificationState.addNotification(new NotificationItem(id, mms, recipient, conversationRecipient, threadRecipients, threadId, body, timestamp, slideDeck));
-//            }
-//        }
-//
-//        reader.close();
-//        return notificationState;
-//    }
+    private static NotificationState constructNotificationState(@NonNull Context context,
+                                                                @NonNull Cursor cursor) {
+        NotificationState notificationState = new NotificationState();
+        MmsSmsDatabase.Reader reader = DatabaseFactory.getMmsSmsDatabase(context).readerFor(cursor);
+
+        MessageRecord record;
+
+        while ((record = reader.getNext()) != null) {
+            long id = record.getId();
+            boolean mms = record.isMms() || record.isMmsNotification();
+            SignalRecipient recipient = record.getIndividualRecipient();
+            SignalRecipient conversationRecipient = record.getRecipient();
+            long threadId = record.getThreadId();
+            CharSequence body = record.getDisplayBody();
+            SignalRecipient threadRecipients = null;
+            SlideDeck slideDeck = null;
+            long timestamp = record.getTimestamp();
+
+
+            if (threadId != -1) {
+                threadRecipients = DatabaseFactory.getThreadDatabase(context).getRecipientForThreadId(threadId);
+            }
+
+            if (KeyCachingService.isLocked(context)) {
+                body = SpanUtil.italic(context.getString(R.string.MessageNotifier_locked_message));
+            } else if (record.isMms() && !((MmsMessageRecord) record).getSharedContacts().isEmpty()) {
+                Contact contact = ((MmsMessageRecord) record).getSharedContacts().get(0);
+                body = ContactUtil.getStringSummary(context, contact);
+            } else if (record.isMms() && TextUtils.isEmpty(body) && !((MmsMessageRecord) record).getSlideDeck().getSlides().isEmpty()) {
+                body = SpanUtil.italic(context.getString(R.string.MessageNotifier_media_message));
+                slideDeck = ((MediaMmsMessageRecord) record).getSlideDeck();
+            } else if (record.isMms() && !record.isMmsNotification() && !((MmsMessageRecord) record).getSlideDeck().getSlides().isEmpty()) {
+                String message = context.getString(R.string.MessageNotifier_media_message_with_text, body);
+                int italicLength = message.length() - body.length();
+                body = SpanUtil.italic(message, italicLength);
+                slideDeck = ((MediaMmsMessageRecord) record).getSlideDeck();
+            }
+
+            if (threadRecipients == null || !threadRecipients.isMuted()) {
+                notificationState.addNotification(new NotificationItem(id, mms, recipient, conversationRecipient, threadRecipients, threadId, body, timestamp, slideDeck));
+            }
+        }
+
+        reader.close();
+        return notificationState;
+    }
 
     private static void updateBadge(Context context, int count) {
         try {

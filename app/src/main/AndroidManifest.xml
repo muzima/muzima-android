@@ -655,6 +655,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".messaging.ConversationPopupActivity"
+            android:windowSoftInputMode="stateVisible"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            android:theme="@style/TextSecure.LightTheme.Popup"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize" />
+
 
         <provider android:name="android.support.v4.content.FileProvider"
             android:authorities="com.muzima.fileprovider"

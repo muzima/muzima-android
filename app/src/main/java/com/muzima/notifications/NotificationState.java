@@ -8,9 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.muzima.messaging.ConversationActivity;
+import com.muzima.messaging.ConversationPopupActivity;
 import com.muzima.messaging.sqlite.database.RecipientDatabase.VibrateState;
 import com.muzima.model.SignalRecipient;
-import com.muzima.view.notifications.ConversationActivity;
 
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -164,11 +165,9 @@ public class NotificationState {
 
     public PendingIntent getQuickReplyIntent(Context context, SignalRecipient recipient) {
         if (threads.size() != 1) throw new AssertionError("We only support replies to single thread notifications! " + threads.size());
-        //TODO work on the conversation pop up
-        //Intent     intent           = new Intent(context, ConversationPopupActivity.class);
-        Intent     intent           = new Intent(context, ConversationActivity.class);
-//        intent.putExtra(ConversationActivity.ADDRESS_EXTRA, recipient.getAddress());
-//        intent.putExtra(ConversationActivity.THREAD_ID_EXTRA, (long)threads.toArray()[0]);
+        Intent     intent           = new Intent(context, ConversationPopupActivity.class);
+        intent.putExtra(ConversationActivity.ADDRESS_EXTRA, recipient.getAddress());
+        intent.putExtra(ConversationActivity.THREAD_ID_EXTRA, (long)threads.toArray()[0]);
         intent.setData((Uri.parse("custom://"+System.currentTimeMillis())));
 
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

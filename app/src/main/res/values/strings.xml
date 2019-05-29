@@ -1387,5 +1387,15 @@
         <item quantity="one">Moved conversation to inbox</item>
         <item quantity="other">Moved %d conversations to inbox</item>
     </plurals>
+    <string name="SingleRecipientNotificationBuilder_new_message">New message</string>
+    <string name="MessageNotifier_reply">Reply</string>
+    <string name="MessageNotifier_mark_read">Mark read</string>
+    <string name="MessageNotifier_mark_all_as_read">Mark all as read</string>
+    <string name="MessageNotifier_most_recent_from_s">Most recent from: %1$s</string>
+    <string name="MessageNotifier_d_new_messages_in_d_conversations">%1$d new messages in %2$d conversations</string>
+    <string name="MessageNotifier_media_message_with_text">Media message: %s</string>
+    <string name="MessageNotifier_media_message">Media message</string>
+    <string name="MessageNotifier_locked_message">Locked message</string>
+    <string name="conversation_popup__menu_expand_popup">Expand popup</string>
 
 </resources>
