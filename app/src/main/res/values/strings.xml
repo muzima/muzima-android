@@ -1131,7 +1131,6 @@
     <string name="conversation_group_options__broadcast">Broadcast</string>
     <string name="conversation__menu_view_all_media">All media</string>
     <string name="conversation__menu_conversation_settings">Conversation settings</string>
-    <string name="conversation__menu_add_shortcut">Add to home screen</string>
     <string name="conversation_insecure__invite">Invite</string>
     <string name="conversation_secure_verified__menu_reset_secure_session">Reset secure session</string>
     <string name="conversation_muted__unmute">Unmute</string>

@@ -556,9 +556,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
             case R.id.menu_view_media:
                 handleViewMedia();
                 return true;
-            case R.id.menu_add_shortcut:
-                handleAddShortcut();
-                return true;
             case R.id.menu_add_to_contacts:
                 handleAddToContacts();
                 return true;
@@ -803,55 +800,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         Intent intent = new Intent(this, MediaOverviewActivity.class);
         intent.putExtra(MediaOverviewActivity.ADDRESS_EXTRA, recipient.getAddress());
         startActivity(intent);
-    }
-
-    private void handleAddShortcut() {
-//        Todo: +++++++handle handleAddShortcut
-//        Log.i(TAG, "Creating home screen shortcut for recipient " + recipient.getAddress());
-//
-//        new AsyncTask<Void, Void, IconCompat>() {
-//
-//            @Override
-//            protected IconCompat doInBackground(Void... voids) {
-//                Context context = getMuzimaApplication();
-//                IconCompat icon = null;
-//
-//                if (recipient.getContactPhoto() != null) {
-//                    try {
-//                        Bitmap bitmap = BitmapFactory.decodeStream(recipient.getContactPhoto().openInputStream(context));
-//                        bitmap = BitmapUtil.createScaledBitmap(bitmap, 300, 300);
-//                        icon = IconCompat.createWithAdaptiveBitmap(bitmap);
-//                    } catch (IOException e) {
-//                        Log.w(TAG, "Failed to decode contact photo during shortcut creation. Falling back to generic icon.", e);
-//                    }
-//                }
-//
-//                if (icon == null) {
-//                    icon = IconCompat.createWithResource(context, recipient.isGroupRecipient() ? R.mipmap.ic_group_shortcut
-//                            : R.mipmap.ic_person_shortcut);
-//                }
-//
-//                return icon;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(IconCompat icon) {
-//                Context context = getMuzimaApplication();
-//                String name = Optional.fromNullable(recipient.getName())
-//                        .or(Optional.fromNullable(recipient.getProfileName()))
-//                        .or(recipient.toShortString());
-//
-//                ShortcutInfoCompat shortcutInfo = new ShortcutInfoCompat.Builder(context, recipient.getAddress().serialize() + '-' + System.currentTimeMillis())
-//                        .setShortLabel(name)
-//                        .setIcon(icon)
-//                        .setIntent(ShortcutLauncherActivity.createIntent(context, recipient.getAddress()))
-//                        .build();
-//
-//                if (ShortcutManagerCompat.requestPinShortcut(context, shortcutInfo, null)) {
-//                    Toast.makeText(context, getString(R.string.ConversationActivity_added_to_home_screen), Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        }.execute();
     }
 
     private void handleLeavePushGroup() {
