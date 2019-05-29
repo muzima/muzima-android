@@ -663,6 +663,15 @@
             android:theme="@style/TextSecure.LightTheme.Popup"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize" />
 
+        <activity android:name=".messaging.GroupCreateActivity"
+            android:windowSoftInputMode="stateVisible"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
+        <activity android:name=".messaging.PushContactSelectionActivity"
+            android:label="@string/AndroidManifest__select_contacts"
+            android:theme="@style/AppThemeNoActionBar.Dark"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
         <provider android:name="android.support.v4.content.FileProvider"
             android:authorities="com.muzima.fileprovider"

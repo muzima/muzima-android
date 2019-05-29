@@ -96,6 +96,8 @@
         <item name="conversation_list_item_unread_color">@color/primary_white</item>
         <item name="conversation_list_item_date_color">#ffdddddd</item>
         <item name="search_background">@color/primary_black</item>
+        <item name="lower_right_divet">@drawable/divet_lower_right_light</item>
+        <item name="conversation_editor_text_color">#ffeeeeee</item>
     </style>
 
 
@@ -182,6 +184,8 @@
         <item name="conversation_list_item_unread_color">@color/primary_black</item>
         <item name="conversation_list_item_date_color">@color/core_grey_60</item>
         <item name="search_background">@color/primary_white</item>
+        <item name="lower_right_divet">@drawable/divet_lower_right_dark</item>
+        <item name="conversation_editor_text_color">#ff111111</item>
     </style>
 
 
