@@ -306,4 +306,10 @@
         <item name="android:windowEnterAnimation">@anim/slide_from_top</item>
         <item name="android:windowExitAnimation">@anim/slide_to_top</item>
     </style>
+    <style name="TextSecure.HighlightTheme" parent="@style/AppBaseTheme">
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="android:windowBackground">@color/primary_blue</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorButtonNormal">@color/primary_white</item>
+    </style>
 </resources>

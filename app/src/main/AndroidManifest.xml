@@ -673,6 +673,16 @@
             android:windowSoftInputMode="stateHidden"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
+        <activity android:name=".messaging.InviteActivity"
+            android:theme="@style/TextSecure.HighlightTheme"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".messaging.ConversationListActivity"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".messaging.ConversationListActivity" />
+        </activity>
+
         <provider android:name="android.support.v4.content.FileProvider"
             android:authorities="com.muzima.fileprovider"
             android:exported="false"
