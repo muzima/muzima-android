@@ -1396,5 +1396,23 @@
     <string name="MessageNotifier_media_message">Media message</string>
     <string name="MessageNotifier_locked_message">Locked message</string>
     <string name="conversation_popup__menu_expand_popup">Expand popup</string>
+    <string name="GroupCreateActivity_avatar_content_description">Group avatar</string>
+    <string name="GroupCreateActivity_group_name_hint">Group name</string>
+    <string name="GroupCreateActivity_contacts_dont_support_push">You have selected a contact that doesn\'t support mUzima PHR groups, so this group will be MMS.</string>
+    <string name="recipients_panel__to"><small>Enter a name or number</small></string>
+    <string name="GroupCreateActivity_youre_not_registered_for_signal">You\'re not registered for mUzima PHR messages and calls, so mUzima PHR groups are disabled. Please try registering in Settings &gt; Advanced.</string>
+    <string name="GroupCreateActivity_actionbar_title">New group</string>
+    <string name="GroupCreateActivity_actionbar_edit_title">Edit group</string>
+    <string name="GroupCreateActivity_actionbar_mms_title">New MMS group</string>
+    <string name="recipients_panel__add_members">Add members</string>
+    <string name="GroupCreateActivity_menu_apply_button">Apply</string>
+    <string name="GroupCreateActivity_contacts_no_members">You need at least one person in your group!</string>
+    <string name="GroupCreateActivity_creating_group">Creating %1$s&#8230;</string>
+    <string name="GroupCreateActivity_updating_group">Updating %1$s…</string>
+    <string name="GroupCreateActivity_contacts_invalid_number">One of the members of your group has a number that can\'t be read correctly. Please fix or remove that contact and try again.</string>
+    <string name="GroupCreateActivity_cannot_add_non_push_to_existing_group">Couldn\'t add %1$s because they\'re not a mUzima PHR user.</string>
+    <string name="GroupCreateActivity_youre_already_in_the_group">You\'re already in the group.</string>
+    <string name="GroupCreateActivity_loading_group_details">Loading group details…</string>
+    <string name="AndroidManifest__select_contacts">Select contacts</string>
 
 </resources>

@@ -209,4 +209,7 @@
     <attr name="conversation_list_item_unread_color" format="reference|color"/>
     <attr name="conversation_list_item_date_color" format="reference|color"/>
     <attr name="search_background" format="color"/>
+    <attr name="lower_right_divet" format="reference" />
+    <attr name="conversation_editor_text_color" format="reference|color"/>
+
 </resources>
