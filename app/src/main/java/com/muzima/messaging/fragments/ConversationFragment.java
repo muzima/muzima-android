@@ -170,7 +170,7 @@ public class ConversationFragment extends Fragment
     @Override
     public void onStop() {
         super.onStop();
-        //MuzimaApplication.getInstance(requireContext()).getTypingStatusRepository().getTypists(threadId).removeObservers(this);
+        MuzimaApplication.getInstance(requireContext()).getTypingStatusRepository().getTypists(threadId).removeObservers(this);
     }
 
     public void onNewIntent() {
