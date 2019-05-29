@@ -1414,5 +1414,9 @@
     <string name="GroupCreateActivity_youre_already_in_the_group">You\'re already in the group.</string>
     <string name="GroupCreateActivity_loading_group_details">Loading group details…</string>
     <string name="AndroidManifest__select_contacts">Select contacts</string>
+    <string name="ConversationActivity_invalid_recipient">Invalid recipient!</string>
+    <string name="ConversationActivity_leave_group">Leave group?</string>
+    <string name="ConversationActivity_are_you_sure_you_want_to_leave_this_group">Are you sure you want to leave this group?</string>
+    <string name="ConversationActivity_error_leaving_group">Error leaving group</string>
 
 </resources>
