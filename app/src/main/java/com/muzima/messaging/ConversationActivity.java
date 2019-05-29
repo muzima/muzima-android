@@ -66,6 +66,7 @@ import com.muzima.messaging.crypto.IdentityKeyParcelable;
 import com.muzima.messaging.crypto.SecurityEvent;
 import com.muzima.messaging.customcomponents.AttachmentTypeSelector;
 import com.muzima.messaging.customcomponents.ConversationTitleView;
+import com.muzima.messaging.customcomponents.GroupMembersDialog;
 import com.muzima.messaging.customcomponents.InputAwareLayout;
 import com.muzima.messaging.customcomponents.ReminderView;
 import com.muzima.messaging.customcomponents.UnverifiedBannerView;
@@ -100,6 +101,10 @@ import com.muzima.messaging.mms.SlideDeck;
 import com.muzima.messaging.net.TransportOption;
 import com.muzima.messaging.net.TransportOption.Type;
 import com.muzima.messaging.provider.PersistentBlobProvider;
+import com.muzima.messaging.reminder.ExpiredBuildReminder;
+import com.muzima.messaging.reminder.InviteReminder;
+import com.muzima.messaging.reminder.ServiceOutageReminder;
+import com.muzima.messaging.reminder.UnauthorizedReminder;
 import com.muzima.messaging.scribbles.ScribbleActivity;
 import com.muzima.messaging.sms.MessageSender;
 import com.muzima.messaging.sms.OutgoingEncryptedMessage;
@@ -897,7 +902,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     private void handleDisplayGroupRecipients() {
-//        new GroupMembersDialog(this, getRecipient()).display();
+        new GroupMembersDialog(this, getRecipient()).display();
     }
 
     private void handleAddToContacts() {
@@ -1194,27 +1199,27 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     protected void updateReminders(boolean seenInvite) {
         Log.i(TAG, "updateReminders(" + seenInvite + ")");
 
-//        if (UnauthorizedReminder.isEligible(this)) {
-//            reminderView.get().showReminder(new UnauthorizedReminder(this));
-//        } else if (ExpiredBuildReminder.isEligible()) {
-//            reminderView.get().showReminder(new ExpiredBuildReminder(this));
-//        } else if (ServiceOutageReminder.isEligible(this)) {
-//            MuzimaApplication.getInstance(this).getJobManager().add(new ServiceOutageDetectionJob(this));
-//            reminderView.get().showReminder(new ServiceOutageReminder(this));
-//        } else if (TextSecurePreferences.isPushRegistered(this) &&
-//                TextSecurePreferences.isShowInviteReminders(this) &&
-//                !isSecureText &&
-//                !seenInvite &&
-//                !recipient.isGroupRecipient()) {
-//            InviteReminder reminder = new InviteReminder(this, recipient);
-//            reminder.setOkListener(v -> {
-//                handleInviteLink();
-//                reminderView.get().requestDismiss();
-//            });
-//            reminderView.get().showReminder(reminder);
-//        } else if (reminderView.resolved()) {
-//            reminderView.get().hide();
-//        }
+        if (UnauthorizedReminder.isEligible(this)) {
+            reminderView.get().showReminder(new UnauthorizedReminder(this));
+        } else if (ExpiredBuildReminder.isEligible()) {
+            reminderView.get().showReminder(new ExpiredBuildReminder(this));
+        } else if (ServiceOutageReminder.isEligible(this)) {
+            MuzimaApplication.getInstance(this).getJobManager().add(new ServiceOutageDetectionJob(this));
+            reminderView.get().showReminder(new ServiceOutageReminder(this));
+        } else if (TextSecurePreferences.isPushRegistered(this) &&
+                TextSecurePreferences.isShowInviteReminders(this) &&
+                !isSecureText &&
+                !seenInvite &&
+                !recipient.isGroupRecipient()) {
+            InviteReminder reminder = new InviteReminder(this, recipient);
+            reminder.setOkListener(v -> {
+                handleInviteLink();
+                reminderView.get().requestDismiss();
+            });
+            reminderView.get().showReminder(reminder);
+        } else if (reminderView.resolved()) {
+            reminderView.get().hide();
+        }
     }
 
     private void updateDefaultSubscriptionId(Optional<Integer> defaultSubscriptionId) {

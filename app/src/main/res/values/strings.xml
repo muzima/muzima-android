@@ -1467,5 +1467,9 @@
     </plurals>
     <string name="ConversationListFragment_deleting">Deleting</string>
     <string name="ConversationListFragment_deleting_selected_conversations">Deleting selected conversations...</string>
+    <string name="ConversationActivity_group_members">Group members</string>
+    <string name="GroupMembersDialog_me">Me</string>
+    <string name="reminder_header_invite_title">Invite to mUzima</string>
+    <string name="reminder_header_invite_text">Take your conversation with %1$s to the next level.</string>
 
 </resources>
