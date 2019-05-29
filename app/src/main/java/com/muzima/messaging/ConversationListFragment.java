@@ -1,6 +1,7 @@
 package com.muzima.messaging;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -19,6 +20,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +45,12 @@ import com.muzima.messaging.customcomponents.actionmode.ConversationListItemInbo
 import com.muzima.messaging.events.ReminderUpdateEvent;
 import com.muzima.messaging.jobs.ServiceOutageDetectionJob;
 import com.muzima.messaging.mms.GlideApp;
+import com.muzima.messaging.reminder.DefaultSmsReminder;
+import com.muzima.messaging.reminder.ExpiredBuildReminder;
+import com.muzima.messaging.reminder.OutdatedBuildReminder;
+import com.muzima.messaging.reminder.ServiceOutageReminder;
+import com.muzima.messaging.reminder.SystemSmsImportReminder;
+import com.muzima.messaging.reminder.UnauthorizedReminder;
 import com.muzima.messaging.sqlite.database.DatabaseFactory;
 import com.muzima.messaging.sqlite.database.MessagingDatabase.MarkedMessageInfo;
 import com.muzima.messaging.tasks.ConversationListLoader;
@@ -162,28 +170,28 @@ public class ConversationListFragment extends Fragment
             @Override
             protected Optional<? extends Reminder> doInBackground(Context... params) {
                 final Context context = params[0];
-//                if (UnauthorizedReminder.isEligible(context)) {
-//                    return Optional.of(new UnauthorizedReminder(context));
-//                } else if (ExpiredBuildReminder.isEligible()) {
-//                    return Optional.of(new ExpiredBuildReminder(context));
-//                } else if (ServiceOutageReminder.isEligible(context)) {
-//                    MuzimaApplication.getInstance(context).getJobManager().add(new ServiceOutageDetectionJob(context));
-//                    return Optional.of(new ServiceOutageReminder(context));
-//                } else if (OutdatedBuildReminder.isEligible()) {
-//                    return Optional.of(new OutdatedBuildReminder(context));
-//                } else if (DefaultSmsReminder.isEligible(context)) {
-//                    return Optional.of(new DefaultSmsReminder(context));
-//                } else if (Util.isDefaultSmsProvider(context) && SystemSmsImportReminder.isEligible(context)) {
-//                    return Optional.of((new SystemSmsImportReminder(context)));
-//                } else if (PushRegistrationReminder.isEligible(context)) {
-//                    return Optional.of((new PushRegistrationReminder(context)));
-//                } else if (ShareReminder.isEligible(context)) {
-//                    return Optional.of(new ShareReminder(context));
-//                } else if (DozeReminder.isEligible(context)) {
-//                    return Optional.of(new DozeReminder(context));
-//                } else {
+                if (UnauthorizedReminder.isEligible(context)) {
+                    return Optional.of(new UnauthorizedReminder(context));
+                } else if (ExpiredBuildReminder.isEligible()) {
+                    return Optional.of(new ExpiredBuildReminder(context));
+                } else if (ServiceOutageReminder.isEligible(context)) {
+                    MuzimaApplication.getInstance(context).getJobManager().add(new ServiceOutageDetectionJob(context));
+                    return Optional.of(new ServiceOutageReminder(context));
+                } else if (OutdatedBuildReminder.isEligible()) {
+                    return Optional.of(new OutdatedBuildReminder(context));
+                } else if (DefaultSmsReminder.isEligible(context)) {
+                    return Optional.of(new DefaultSmsReminder(context));
+                } else if (Util.isDefaultSmsProvider(context) && SystemSmsImportReminder.isEligible(context)) {
+                    return Optional.of((new SystemSmsImportReminder(context)));
+                } else if (PushRegistrationReminder.isEligible(context)) {
+                    return Optional.of((new PushRegistrationReminder(context)));
+                } else if (ShareReminder.isEligible(context)) {
+                    return Optional.of(new ShareReminder(context));
+                } else if (DozeReminder.isEligible(context)) {
+                    return Optional.of(new DozeReminder(context));
+                } else {
                     return Optional.absent();
-//                }
+                }
             }
 
             @Override
@@ -211,6 +219,109 @@ public class ConversationListFragment extends Fragment
             getListAdapter().setTypingThreads(threadIds);
         });
     }
+
+    @SuppressLint("StaticFieldLeak")
+    private void handleArchiveAllSelected() {
+        final Set<Long> selectedConversations = new HashSet<>(getListAdapter().getBatchSelections());
+        final boolean archive = this.archive;
+
+        int snackBarTitleId;
+
+        if (archive)
+            snackBarTitleId = R.plurals.ConversationListFragment_moved_conversations_to_inbox;
+        else snackBarTitleId = R.plurals.ConversationListFragment_conversations_archived;
+
+        int count = selectedConversations.size();
+        String snackBarTitle = getResources().getQuantityString(snackBarTitleId, count, count);
+
+        new SnackbarAsyncTask<Void>(getView(), snackBarTitle,
+                getString(R.string.ConversationListFragment_undo),
+                getResources().getColor(R.color.amber_500),
+                Snackbar.LENGTH_LONG, true) {
+
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+
+                if (actionMode != null) {
+                    actionMode.finish();
+                    actionMode = null;
+                }
+            }
+
+            @Override
+            protected void executeAction(@Nullable Void parameter) {
+                for (long threadId : selectedConversations) {
+                    if (!archive)
+                        DatabaseFactory.getThreadDatabase(getActivity()).archiveConversation(threadId);
+                    else
+                        DatabaseFactory.getThreadDatabase(getActivity()).unarchiveConversation(threadId);
+                }
+            }
+
+            @Override
+            protected void reverseAction(@Nullable Void parameter) {
+                for (long threadId : selectedConversations) {
+                    if (!archive)
+                        DatabaseFactory.getThreadDatabase(getActivity()).unarchiveConversation(threadId);
+                    else
+                        DatabaseFactory.getThreadDatabase(getActivity()).archiveConversation(threadId);
+                }
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void handleDeleteAllSelected() {
+        int conversationsCount = getListAdapter().getBatchSelections().size();
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setIconAttribute(R.attr.dialog_alert_icon);
+        alert.setTitle(getActivity().getResources().getQuantityString(R.plurals.ConversationListFragment_delete_selected_conversations,
+                conversationsCount, conversationsCount));
+        alert.setMessage(getActivity().getResources().getQuantityString(R.plurals.ConversationListFragment_this_will_permanently_delete_all_n_selected_conversations,
+                conversationsCount, conversationsCount));
+        alert.setCancelable(true);
+
+        alert.setPositiveButton(R.string.delete, (dialog, which) -> {
+            final Set<Long> selectedConversations = (getListAdapter())
+                    .getBatchSelections();
+
+            if (!selectedConversations.isEmpty()) {
+                new AsyncTask<Void, Void, Void>() {
+                    private ProgressDialog dialog;
+
+                    @Override
+                    protected void onPreExecute() {
+                        dialog = ProgressDialog.show(getActivity(),
+                                getActivity().getString(R.string.ConversationListFragment_deleting),
+                                getActivity().getString(R.string.ConversationListFragment_deleting_selected_conversations),
+                                true, false);
+                    }
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        DatabaseFactory.getThreadDatabase(getActivity()).deleteConversations(selectedConversations);
+                        MessageNotifier.updateNotification(getActivity());
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void result) {
+                        dialog.dismiss();
+                        if (actionMode != null) {
+                            actionMode.finish();
+                            actionMode = null;
+                        }
+                    }
+                }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        });
+
+        alert.setNegativeButton(android.R.string.cancel, null);
+        alert.show();
+    }
+
+
 
     private void handleSelectAllThreads() {
         getListAdapter().selectAllThreads();
@@ -318,7 +429,15 @@ public class ConversationListFragment extends Fragment
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()) {
-
+            case R.id.menu_select_all:
+                handleSelectAllThreads();
+                return true;
+            case R.id.menu_delete_selected:
+                handleDeleteAllSelected();
+                return true;
+            case R.id.menu_archive_selected:
+                handleArchiveAllSelected();
+                return true;
         }
 
         return false;

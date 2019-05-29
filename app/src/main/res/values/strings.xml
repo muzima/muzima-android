@@ -1398,9 +1398,9 @@
     <string name="conversation_popup__menu_expand_popup">Expand popup</string>
     <string name="GroupCreateActivity_avatar_content_description">Group avatar</string>
     <string name="GroupCreateActivity_group_name_hint">Group name</string>
-    <string name="GroupCreateActivity_contacts_dont_support_push">You have selected a contact that doesn\'t support mUzima PHR groups, so this group will be MMS.</string>
+    <string name="GroupCreateActivity_contacts_dont_support_push">You have selected a contact that doesn\'t support mUzima  groups, so this group will be MMS.</string>
     <string name="recipients_panel__to"><small>Enter a name or number</small></string>
-    <string name="GroupCreateActivity_youre_not_registered_for_signal">You\'re not registered for mUzima PHR messages and calls, so mUzima PHR groups are disabled. Please try registering in Settings &gt; Advanced.</string>
+    <string name="GroupCreateActivity_youre_not_registered_for_signal">You\'re not registered for mUzima  messages and calls, so mUzima groups are disabled. Please try registering in Settings &gt; Advanced.</string>
     <string name="GroupCreateActivity_actionbar_title">New group</string>
     <string name="GroupCreateActivity_actionbar_edit_title">Edit group</string>
     <string name="GroupCreateActivity_actionbar_mms_title">New MMS group</string>
@@ -1410,7 +1410,7 @@
     <string name="GroupCreateActivity_creating_group">Creating %1$s&#8230;</string>
     <string name="GroupCreateActivity_updating_group">Updating %1$s…</string>
     <string name="GroupCreateActivity_contacts_invalid_number">One of the members of your group has a number that can\'t be read correctly. Please fix or remove that contact and try again.</string>
-    <string name="GroupCreateActivity_cannot_add_non_push_to_existing_group">Couldn\'t add %1$s because they\'re not a mUzima PHR user.</string>
+    <string name="GroupCreateActivity_cannot_add_non_push_to_existing_group">Couldn\'t add %1$s because they\'re not a mUzima  user.</string>
     <string name="GroupCreateActivity_youre_already_in_the_group">You\'re already in the group.</string>
     <string name="GroupCreateActivity_loading_group_details">Loading group details…</string>
     <string name="AndroidManifest__select_contacts">Select contacts</string>
@@ -1424,7 +1424,7 @@
     <string name="InviteActivity_sending">Sending…</string>
     <string name="InviteActivity_heart_content_description">Heart</string>
     <string name="InviteActivity_invitations_sent">Invitations sent!</string>
-    <string name="InviteActivity_invite_to_signal">Invite to mUzima PHR</string>
+    <string name="InviteActivity_invite_to_signal">Invite to mUzima </string>
     <plurals name="InviteActivity_send_sms_to_friends">
         <item quantity="one">SEND SMS TO %d FRIEND</item>
         <item quantity="other">SEND SMS TO %d FRIENDS</item>
@@ -1435,5 +1435,37 @@
     </plurals>
     <string name="InviteActivity_no_app_to_share_to">It looks like you don\'t have any apps to share to.</string>
     <string name="InviteActivity_friends_dont_let_friends_text_unencrypted">Friends don\'t let friends chat unencrypted.</string>
+    <string name="UnauthorizedReminder_device_no_longer_registered">Device no longer registered</string>
+    <string name="UnauthorizedReminder_this_is_likely_because_you_registered_your_phone_number_with_Signal_on_a_different_device">This is likely because you registered your phone number with mUzima  on a different device. Tap to re-register.</string>
+    <string name="reminder_header_expired_build">Your version of mUzima  has expired!</string>
+    <string name="reminder_header_expired_build_details">Messages will no longer send successfully. Tap to update to the most recent version.</string>
+    <string name="OutdatedBuildReminder_no_web_browser_installed">No web browser installed!</string>
+    <string name="reminder_header_service_outage_text">mUzima is experiencing technical difficulties. We are working hard to restore service as quickly as possible.</string>
+    <string name="reminder_header_outdated_build">Your version of mUzima is outdated</string>
+    <plurals name="reminder_header_outdated_build_details">
+        <item quantity="one">Your version of mUzima will expire in %d day. Tap to update to the most recent version.</item>
+        <item quantity="other">Your version of mUzima will expire in %d days. Tap to update to the most recent version.</item>
+    </plurals>
+    <string name="reminder_header_outdated_build_details_today">Your version of mUzima will expire today. Tap to update to the most recent version.</string>
+    <string name="reminder_header_sms_default_title">Use as default SMS app</string>
+    <string name="reminder_header_sms_default_text">Tap to make mUzima your default SMS app.</string>
+    <string name="reminder_header_sms_import_title">Import system SMS</string>
+    <string name="reminder_header_sms_import_text">Tap to copy your phone\'s SMS messages into mUzima\'s encrypted messageRecipientController.</string>
+    <string name="reminder_header_push_title">Enable mUzima messages and calls</string>
+    <string name="reminder_header_push_text">Upgrade your communication experience.</string>
+    <string name="reminder_header_share_title">Invite your friends!</string>
+    <string name="reminder_header_share_text">The more friends use mUzima, the better it gets.</string>
+    <string name="DozeReminder_optimize_for_missing_play_services">Optimize for missing Play Services</string>
+    <string name="DozeReminder_this_device_does_not_support_play_services_tap_to_disable_system_battery">This device does not support Play Services. Tap to disable system battery optimizations that prevent mUzima from retrieving messages while inactive.</string>
+    <plurals name="ConversationListFragment_delete_selected_conversations">
+        <item quantity="one">Delete selected conversation?</item>
+        <item quantity="other">Delete selected conversations?</item>
+    </plurals>
+    <plurals name="ConversationListFragment_this_will_permanently_delete_all_n_selected_conversations">
+        <item quantity="one">This will permanently delete the selected conversation.</item>
+        <item quantity="other">This will permanently delete all %1$d selected conversations.</item>
+    </plurals>
+    <string name="ConversationListFragment_deleting">Deleting</string>
+    <string name="ConversationListFragment_deleting_selected_conversations">Deleting selected conversations...</string>
 
 </resources>
