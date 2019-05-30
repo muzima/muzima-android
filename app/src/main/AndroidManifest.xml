@@ -693,6 +693,13 @@
                 android:value="com.muzima.messaging.ConversationListActivity" />
         </activity>
 
+        <activity android:name=".messaging.MessageDetailsActivity"
+            android:label="@string/AndroidManifest__message_details"
+            android:windowSoftInputMode="stateHidden"
+            android:launchMode="singleTask"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
+
         <provider android:name="android.support.v4.content.FileProvider"
             android:authorities="com.muzima.fileprovider"
             android:exported="false"

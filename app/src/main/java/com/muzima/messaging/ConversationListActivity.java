@@ -174,7 +174,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
 
         switch (item.getItemId()) {
             case R.id.menu_new_group:         createGroup();           return true;
-//            case R.id.menu_settings:          handleDisplaySettings(); return true;
+            case R.id.menu_settings:          handleDisplaySettings(); return true;
             case R.id.menu_clear_passphrase:  handleClearPassphrase(); return true;
             case R.id.menu_mark_all_read:     handleMarkAllRead();     return true;
             case R.id.menu_invite:            handleInvite();          return true;

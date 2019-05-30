@@ -151,4 +151,16 @@ public class DateUtils extends android.text.format.DateUtils {
         return DateUtils.isToday(when + TimeUnit.DAYS.toMillis(1));
     }
 
+    public static SimpleDateFormat getDetailedDateFormatter(Context context, Locale locale) {
+        String dateFormatPattern;
+
+        if (DateFormat.is24HourFormat(context)) {
+            dateFormatPattern = getLocalizedPattern("MMM d, yyyy HH:mm:ss zzz", locale);
+        } else {
+            dateFormatPattern = getLocalizedPattern("MMM d, yyyy hh:mm:ss a zzz", locale);
+        }
+
+        return new SimpleDateFormat(dateFormatPattern, locale);
+    }
+
 }
