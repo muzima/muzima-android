@@ -136,8 +136,7 @@ public class PassphraseRequiredActionBarActivity extends BaseActionBarActivity i
             case STATE_PROMPT_PASSPHRASE:        return getPromptPassphraseIntent();
             case STATE_UPGRADE_DATABASE:         return getUpgradeDatabaseIntent();
             case STATE_PROMPT_PUSH_REGISTRATION: return getPushRegistrationIntent();
-            //TODO work on getExperienceUpgradeIntent
-           // case STATE_EXPERIENCE_UPGRADE:       return getExperienceUpgradeIntent();
+            case STATE_EXPERIENCE_UPGRADE:       return getExperienceUpgradeIntent();
             default:                             return null;
         }
     }
@@ -147,18 +146,13 @@ public class PassphraseRequiredActionBarActivity extends BaseActionBarActivity i
             return STATE_CREATE_PASSPHRASE;
         } else if (locked) {
             return STATE_PROMPT_PASSPHRASE;
-        }
-        //TODO ++++
-//        else if (DatabaseUpgradeActivity.isUpdate(this)) {
-//            return STATE_UPGRADE_DATABASE;
-//        }
-        else if (!TextSecurePreferences.hasPromptedPushRegistration(this)) {
+        } else if (DatabaseUpgradeActivity.isUpdate(this)) {
+            return STATE_UPGRADE_DATABASE;
+        } else if (!TextSecurePreferences.hasPromptedPushRegistration(this)) {
             return STATE_PROMPT_PUSH_REGISTRATION;
-        }
-//        else if (ExperienceUpgradeActivity.isUpdate(this)) {
-//            return STATE_EXPERIENCE_UPGRADE;
-//        }
-        else {
+        } else if (ExperienceUpgradeActivity.isUpdate(this)) {
+            return STATE_EXPERIENCE_UPGRADE;
+        }  else {
             return STATE_NORMAL;
         }
     }
@@ -177,10 +171,10 @@ public class PassphraseRequiredActionBarActivity extends BaseActionBarActivity i
                         ? getConversationListIntent()
                         : getPushRegistrationIntent());
     }
-//TODO++++++++
-//    private Intent getExperienceUpgradeIntent() {
-//        return getRoutedIntent(ExperienceUpgradeActivity.class, getIntent());
-//    }
+
+    private Intent getExperienceUpgradeIntent() {
+        return getRoutedIntent(ExperienceUpgradeActivity.class, getIntent());
+    }
 
     private Intent getPushRegistrationIntent() {
         return getRoutedIntent(RegistrationActivity.class, getCreateProfileIntent());
