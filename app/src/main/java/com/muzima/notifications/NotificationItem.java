@@ -73,7 +73,6 @@ public class NotificationItem {
     }
 
     public PendingIntent getPendingIntent(Context context) {
-        //TODO work on the conversation
         Intent intent = new Intent(context, ConversationActivity.class);
         SignalRecipient notifyRecipients = threadRecipient != null ? threadRecipient : conversationRecipient;
         if (notifyRecipients != null)

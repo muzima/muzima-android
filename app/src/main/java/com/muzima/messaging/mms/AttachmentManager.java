@@ -396,13 +396,6 @@ public class AttachmentManager {
                 .execute();
     }
 
-    public static void selectGif(Activity activity, int requestCode, boolean isForMms) {
-//        ToDo +++++++ GiphyActivity
-//        Intent intent = new Intent(activity, GiphyActivity.class);
-//        intent.putExtra(GiphyActivity.EXTRA_IS_MMS, isForMms);
-//        activity.startActivityForResult(intent, requestCode);
-    }
-
     private @Nullable
     Uri getSlideUri() {
         return slide.isPresent() ? slide.get().getUri() : null;

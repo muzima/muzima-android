@@ -62,13 +62,11 @@ public class NewConversationActivity extends ContactSelectionActivity {
     }
 
     private void handleCreateGroup() {
-//        TODO: +++++++ handleCreateGroup
-//        startActivity(new Intent(this, GroupCreateActivity.class));
+        startActivity(new Intent(this, GroupCreateActivity.class));
     }
 
     private void handleInvite() {
-//        TODO: ++++++++++ handleInvite
-//        startActivity(new Intent(this, InviteActivity.class));
+        startActivity(new Intent(this, InviteActivity.class));
     }
 
     @Override
