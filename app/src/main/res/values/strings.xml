@@ -1524,5 +1524,218 @@
     <string name="experience_upgrade_preference_fragment__read_receipts_are_here">Read receipts are here</string>
     <string name="experience_upgrade_preference_fragment__optionally_see_and_share_when_messages_have_been_read">Optionally see and share when messages have been read</string>
     <string name="experience_upgrade_preference_fragment__enable_read_receipts">Enable read receipts</string>
+    <string name="preferences__led_color_unknown">Unknown</string>
+    <string name="ApplicationPreferencesActivity_on">On</string>
+    <string name="ApplicationPreferencesActivity_off">Off</string>
+    <string name="preferences__notifications">Notifications</string>
+    <string name="preferences_notifications__messages">Messages</string>
+    <string name="preferences__sound">Sound</string>
+    <string name="preferences_events__contact_joined_signal">Contact joined mUzima</string>
+    <string name="preferences_notifications__events">Events</string>
+    <string name="preferences_notifications__ringtone">Ringtone</string>
+    <string name="preferences_notifications__calls">Calls</string>
+    <string name="preferences_notifications__priority">Priority</string>
+    <string-array name="pref_notification_priority_entries">
+        <item>@string/arrays__default</item>
+        <item>@string/arrays__high</item>
+        <item>@string/arrays__max</item>
+    </string-array>
+
+    <string-array name="pref_notification_priority_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string name="arrays__default">Default</string>
+    <string name="arrays__high">High</string>
+    <string name="arrays__max">Max</string>
+    <string name="preferences_notifications__show">Show</string>
+    <string-array name="pref_notification_privacy_entries">
+        <item>@string/arrays__name_and_message</item>
+        <item>@string/arrays__name_only</item>
+        <item>@string/arrays__no_name_or_message</item>
+    </string-array>
+
+    <string-array name="pref_notification_privacy_values">
+        <item>all</item>
+        <item>contact</item>
+        <item>none</item>
+    </string-array>
+
+    <string name="arrays__name_and_message">Name and message</string>
+    <string name="arrays__name_only">Name only</string>
+    <string name="arrays__no_name_or_message">No name or message</string>
+    <string name="preferences__repeat_alerts">Repeat alerts</string>
+    <string-array name="pref_repeat_alerts_entries">
+        <item>@string/preferences__never</item>
+        <item>@string/preferences__one_time</item>
+        <item>@string/preferences__two_times</item>
+        <item>@string/preferences__three_times</item>
+        <item>@string/preferences__five_times</item>
+        <item>@string/preferences__ten_times</item>
+    </string-array>
+    <string-array name="pref_repeat_alerts_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+        <item>10</item>
+    </string-array>
+    <string name="preferences__never">Never</string>
+    <string name="preferences__one_time">One time</string>
+    <string name="preferences__two_times">Two times</string>
+    <string name="preferences__three_times">Three times</string>
+    <string name="preferences__five_times">Five times</string>
+    <string name="preferences__ten_times">Ten times</string>
+    <string name="preferences_notifications__in_chat_sounds">In-chat sounds</string>
+    <string name="preferences__pref_led_blink_title">LED blink pattern</string>
+    <string-array name="pref_led_blink_pattern_entries">
+        <item>@string/preferences__fast</item>
+        <item>@string/preferences__normal</item>
+        <item>@string/preferences__slow</item>
+    </string-array>
+    <string-array name="pref_led_blink_pattern_values" translatable="false">
+        <item>300,300</item>
+        <item>500,2000</item>
+        <item>3000,3000</item>
+    </string-array>
+    <string name="preferences__fast">Fast</string>
+    <string name="preferences__normal">Normal</string>
+    <string name="preferences__slow">Slow</string>
+    <string-array name="pref_led_color_entries">
+        <item>@string/preferences__green</item>
+        <item>@string/preferences__red</item>
+        <item>@string/preferences__blue</item>
+        <item>@string/preferences__orange</item>
+        <item>@string/preferences__cyan</item>
+        <item>@string/preferences__magenta</item>
+        <item>@string/preferences__white</item>
+        <item>@string/preferences__none</item>
+    </string-array>
+
+    <string-array name="pref_led_color_values" translatable="false">
+        <item>green</item>
+        <item>red</item>
+        <item>blue</item>
+        <item>yellow</item>
+        <item>cyan</item>
+        <item>magenta</item>
+        <item>white</item>
+        <item>none</item>
+    </string-array>
+    <string name="preferences__green">Green</string>
+    <string name="preferences__red">Red</string>
+    <string name="preferences__blue">Blue</string>
+    <string name="preferences__orange">Orange</string>
+    <string name="preferences__cyan">Cyan</string>
+    <string name="preferences__magenta">Magenta</string>
+    <string name="preferences__white">White</string>
+    <string name="preferences__none">None</string>
+    <string name="preferences__sms_mms">SMS and MMS</string>
+    <string name="preferences__privacy">Privacy</string>
+    <string name="preferences__chats">Chats and media</string>
+    <string name="preferences__linked_devices">Linked devices</string>
+    <string name="preferences__advanced">Advanced</string>
+    <string name="preferences__use_signal_for_viewing_and_storing_all_incoming_text_messages">Use mUzima PHR for all incoming text messages</string>
+    <string name="preferences__pref_all_sms_title">Receive all SMS</string>
+    <string name="preferences__use_signal_for_viewing_and_storing_all_incoming_multimedia_messages">Use mUzima PHR for all incoming multimedia messages</string>
+    <string name="preferences__pref_all_mms_title">Receive all MMS</string>
+    <string name="ApplicationPreferencesActivity_sms_disabled">SMS Disabled</string>
+    <string name="ApplicationPreferencesActivity_touch_to_make_signal_your_default_sms_app">Touch to make mUzima PHR your default SMS app</string>
+    <string name="preferences__request_a_delivery_report_for_each_sms_message_you_send">Request a delivery report for each SMS message you send</string>
+    <string name="preferences__sms_delivery_reports">SMS delivery reports</string>
+    <string name="preferences__support_wifi_calling">\'WiFi Calling\' compatibility mode</string>
+    <string name="preferences__enable_if_your_device_supports_sms_mms_delivery_over_wifi">Enable if your device uses SMS/MMS delivery over WiFi (only enable when \'WiFi Calling\' is enabled on your device)</string>
+    <string name="ApplicationPreferencesActivity_sms_enabled">SMS Enabled</string>
+    <string name="ApplicationPreferencesActivity_touch_to_change_your_default_sms_app">Touch to change your default SMS app</string>
+    <string name="ApplicationPreferencesActivity_sms_mms_summary">SMS %1$s, MMS %2$s</string>
+    <string name="ChatsPreferenceFragment_last_backup_s">Last backup: %s</string>
+    <string name="ChatsPreferenceFragment_signal_requires_external_storage_permission_in_order_to_create_backups">mUzima PHR requires external storage permission in order to create backups, but it has been permanently denied. Please continue to app settings, select \\\"Permissions\\\" and enable \\\"Storage\\\".</string>
+    <plurals name="ApplicationPreferencesActivity_messages_per_conversation">
+        <item quantity="one">%d message per conversation</item>
+        <item quantity="other">%d messages per conversation</item>
+    </plurals>
+    <string name="ApplicationPreferencesActivity_delete_all_old_messages_now">Delete all old messages now?</string>
+    <plurals name="ApplicationPreferencesActivity_this_will_immediately_trim_all_conversations_to_the_d_most_recent_messages">
+        <item quantity="one">This will immediately trim all conversations to the most recent message.</item>
+        <item quantity="other">This will immediately trim all conversations to the %d most recent messages.</item>
+    </plurals>
+    <string name="ApplicationPreferencesActivity_delete">Delete</string>
+    <string name="trimmer__old_messages_successfully_deleted">Old messages successfully deleted</string>
+    <string name="trimmer__deleting">Deleting</string>
+    <string name="trimmer__deleting_old_messages">Deleting old messages…</string>
+    <string name="ProgressPreference_d_messages_so_far">%d messages so far</string>
+    <string name="ChatsPreferenceFragment_in_progress">In progress</string>
+    <string name="preferences_chats__media_auto_download">Media auto-download</string>
+    <string name="preferences_chats__when_using_mobile_data">When using mobile data</string>
+    <string name="preferences_chats__when_using_wifi">When using Wi-Fi</string>
+    <string name="preferences_chats__when_roaming">When roaming</string>
+    <string name="preferences_chats__chats">Chats</string>
+    <string name="preferences_chats__create_backup">Create backup</string>
+    <string name="preferences_chats__backup_chats_to_external_storage">Backup chats to external storage</string>
+    <string name="preferences_chats__chat_backups">Chat backups</string>
+    <string name="preferences_chats__backups">Backups</string>
+    <string name="preferences__trim_all_conversations_now">Trim all conversations now</string>
+    <string name="preferences__scan_through_all_conversations_and_enforce_conversation_length_limits">Scan through all conversations and enforce conversation length limits</string>
+    <string name="preferences__conversation_length_limit">Conversation length limit</string>
+    <string name="preferences__automatically_delete_older_messages_once_a_conversation_exceeds_a_specified_length">Automatically delete older messages once a conversation exceeds a specified length</string>
+    <string name="preferences__delete_old_messages">Delete old messages</string>
+    <string name="preferences_chats__message_trimming">Message trimming</string>
+    <string name="preferences__pref_enter_sends_title">Enter key sends</string>
+    <string name="preferences__pressing_the_enter_key_will_send_text_messages">Pressing the Enter key will send text messages</string>
+    <string name="preferences_advanced__use_system_emoji">Use system emoji</string>
+    <string name="preferences_advanced__disable_signal_built_in_emoji_support">Disable mUzima PHR\'s built-in emoji support</string>
+    <string name="preferences_chats__show_invitation_prompts">Show invitation prompts</string>
+    <string name="preferences_chats__display_invitation_prompts_for_contacts_without_signal">Display invitation prompts for contacts without mUzima PHR</string>
+    <string name="preferences_chats__message_text_size">Message font size</string>
+    <string name="arrays__small">Small</string>
+    <string name="arrays__normal">Normal</string>
+    <string name="arrays__large">Large</string>
+    <string name="arrays__extra_large">Extra large</string>
+    <string name="ApplicationPreferencesActivity_currently_s">Currently: %s</string>
+    <string name="ApplicationPreferencesActivity_unregistering">Unregistering</string>
+    <string name="ApplicationPreferencesActivity_unregistering_from_signal_messages_and_calls">Unregistering from mUzima PHR messages and calls...</string>
+    <string name="ApplicationPreferencesActivity_error_connecting_to_server">Error connecting to server!</string>
+    <string name="ApplicationPreferencesActivity_disable_signal_messages_and_calls">Disable mUzima PHR messages and calls?</string>
+    <string name="ApplicationPreferencesActivity_disable_signal_messages_and_calls_by_unregistering">Disable mUzima PHR messages and calls by unregistering from the server. You will need to re-register your phone number to use them again in the future.</string>
+    <string name="preferences__free_private_messages_and_calls">Free private messages and calls to mUzima PHR users</string>
+    <string name="preferences__signal_messages_and_calls">mUzima PHR messages and calls</string>
+    <string name="preferences__choose_identity">Choose identity</string>
+    <string name="preferences__choose_your_contact_entry_from_the_contacts_list">Choose your contact entry from the contacts list.</string>
+    <string name="DeviceProvisioningActivity_content_bullets">
+        • Read all your messages
+        \n• Send messages in your name
+    </string>
+    <string name="DeviceProvisioningActivity_content_intro">It will be able to</string>
+    <string name="DeviceProvisioningActivity_link_this_device">Link this device?</string>
+    <string name="device_link_fragment__link_device">Link device</string>
+    <string name="DeviceActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code">mUzima PHR needs the Camera permission in order to scan a QR code, but it has been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Camera\".</string>
+    <string name="DeviceActivity_unable_to_scan_a_qr_code_without_the_camera_permission">Unable to scan a QR code without the Camera permission</string>
+    <string name="DeviceActivity_sorry_this_is_not_a_valid_device_link_qr_code">Sorry, this is not a valid device link QR code.</string>
+    <string name="DeviceProvisioningActivity_sorry_you_have_too_many_devices_linked_already">Sorry, you have too many devices linked already, try removing some</string>
+    <string name="DeviceProvisioningActivity_content_progress_key_error">Invalid QR code.</string>
+    <string name="DeviceProvisioningActivity_content_progress_network_error">Network error.</string>
+    <string name="DeviceProvisioningActivity_content_progress_no_device">No device found.</string>
+    <string name="DeviceProvisioningActivity_content_progress_success">Device approved!</string>
+    <string name="DeviceProvisioningActivity_content_progress_content">Linking new device…</string>
+    <string name="DeviceProvisioningActivity_content_progress_title">Linking device</string>
+    <string name="device_add_fragment__scan_the_qr_code_displayed_on_the_device_to_link">Scan the QR code displayed on the device to link</string>
+    <string name="DeviceListActivity_network_failed">Network failed!</string>
+    <string name="DeviceListActivity_unlinking_device">Unlinking device...</string>
+    <string name="DeviceListActivity_unlinking_device_no_ellipsis">Unlinking device</string>
+    <string name="DeviceListActivity_unlink_s">Unlink \'%s\'?</string>
+    <string name="DeviceListActivity_by_unlinking_this_device_it_will_no_longer_be_able_to_send_or_receive">By unlinking this device, it will no longer be able to send or receive messages.</string>
+    <string name="DeviceListActivity_network_connection_failed">Network connection failed</string>
+    <string name="DeviceListActivity_try_again">Try again</string>
+    <string name="device_list_fragment__no_devices_linked">No devices linked</string>
+    <string name="device_list_fragment__link_new_device">Link new device</string>
+    <string name="DeviceListItem_today">Today</string>
+    <string name="DeviceListItem_unnamed_device">Unnamed device</string>
+    <string name="DeviceListItem_linked_s">Linked %s</string>
+    <string name="DeviceListItem_last_active_s">Last active %s</string>
+    <string name="AndroidManifest__linked_devices">Linked devices</string>
+    <string name="preferences__vibrate">Vibrate</string>
+    <string name="preferences__led_color">LED color</string>
 
 </resources>

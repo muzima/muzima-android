@@ -718,6 +718,18 @@
             android:launchMode="singleTask"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
+        <activity android:name=".messaging.preference.ApplicationPreferencesActivity"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".messaging.preference.DeviceActivity"
+            android:label="@string/AndroidManifest__linked_devices"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
 
         <provider android:name="android.support.v4.content.FileProvider"
             android:authorities="com.muzima.fileprovider"
