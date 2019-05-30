@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.text.style.ClickableSpan;
 import android.view.View;
 
+import com.muzima.messaging.VerifyIdentityActivity;
+import com.muzima.messaging.crypto.IdentityKeyParcelable;
 import com.muzima.messaging.sqlite.database.SignalAddress;
 import com.muzima.messaging.sqlite.database.documents.IdentityKeyMismatch;
 
@@ -31,11 +33,10 @@ public class VerifySpan extends ClickableSpan {
 
     @Override
     public void onClick(View widget) {
-//        ToDO ++++++++ Finalize in VerifyIdentityActivity
-//        Intent intent = new Intent(context, VerifyIdentityActivity.class);
-//        intent.putExtra(VerifyIdentityActivity.ADDRESS_EXTRA, address);
-//        intent.putExtra(VerifyIdentityActivity.IDENTITY_EXTRA, new IdentityKeyParcelable(identityKey));
-//        intent.putExtra(VerifyIdentityActivity.VERIFIED_EXTRA, false);
-//        context.startActivity(intent);
+        Intent intent = new Intent(context, VerifyIdentityActivity.class);
+        intent.putExtra(VerifyIdentityActivity.ADDRESS_EXTRA, address);
+        intent.putExtra(VerifyIdentityActivity.IDENTITY_EXTRA, new IdentityKeyParcelable(identityKey));
+        intent.putExtra(VerifyIdentityActivity.VERIFIED_EXTRA, false);
+        context.startActivity(intent);
     }
 }

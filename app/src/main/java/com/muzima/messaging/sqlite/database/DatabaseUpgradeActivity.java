@@ -13,13 +13,24 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.messaging.TextSecurePreferences;
+import com.muzima.messaging.attachments.DatabaseAttachment;
+import com.muzima.messaging.contacts.avatars.ContactColorsLegacy;
 import com.muzima.messaging.crypto.IdentityKeyUtil;
 import com.muzima.messaging.crypto.MasterSecret;
 import com.muzima.messaging.jobmanager.Job;
 import com.muzima.messaging.jobmanager.JobManager;
+import com.muzima.messaging.jobmanager.persistence.JavaJobSerializer;
+import com.muzima.messaging.jobmanager.persistence.PersistentStorage;
+import com.muzima.messaging.jobs.AttachmentDownloadJob;
+import com.muzima.messaging.jobs.CreateSignedPreKeyJob;
 import com.muzima.messaging.jobs.DirectoryRefreshJob;
+import com.muzima.messaging.jobs.PushDecryptJob;
+import com.muzima.messaging.jobs.RefreshAttributesJob;
 import com.muzima.messaging.mms.GlideApp;
+import com.muzima.messaging.sqlite.database.models.MessageRecord;
+import com.muzima.messaging.utils.FileUtils;
 import com.muzima.messaging.utils.Util;
 import com.muzima.notifications.MessageNotifier;
 import com.muzima.service.KeyCachingService;
@@ -94,316 +105,316 @@ public class DatabaseUpgradeActivity extends BaseActivity {
 
     private MasterSecret masterSecret;
 
-//    @Override
-//    public void onCreate(Bundle bundle) {
-//        super.onCreate(bundle);
-//        this.masterSecret = KeyCachingService.getMasterSecret(this);
-//
-//        if (needsUpgradeTask()) {
-//            Log.i("DatabaseUpgradeActivity", "Upgrading...");
-//            setContentView(R.layout.database_upgrade_activity);
-//
-//            ProgressBar indeterminateProgress = findViewById(R.id.indeterminate_progress);
-//            ProgressBar determinateProgress   = findViewById(R.id.determinate_progress);
-//
-//            new DatabaseUpgradeTask(indeterminateProgress, determinateProgress)
-//                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, VersionTracker.getLastSeenVersion(this));
-//        } else {
-//            VersionTracker.updateLastSeenVersion(this);
-//            updateNotifications(this);
-//            startActivity((Intent)getIntent().getParcelableExtra("next_intent"));
-//            finish();
-//        }
-//    }
-//
-//    private boolean needsUpgradeTask() {
-//        int currentVersionCode = Util.getCurrentApkReleaseVersion(this);
-//        int lastSeenVersion    = VersionTracker.getLastSeenVersion(this);
-//
-//        Log.i("DatabaseUpgradeActivity", "LastSeenVersion: " + lastSeenVersion);
-//
-//        if (lastSeenVersion >= currentVersionCode)
-//            return false;
-//
-//        for (int version : UPGRADE_VERSIONS) {
-//            Log.i("DatabaseUpgradeActivity", "Comparing: " + version);
-//            if (lastSeenVersion < version)
-//                return true;
-//        }
-//
-//        return false;
-//    }
-//
-//    public static boolean isUpdate(Context context) {
-//        try {
-//            int currentVersionCode  = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
-//            int previousVersionCode = VersionTracker.getLastSeenVersion(context);
-//
-//            return previousVersionCode < currentVersionCode;
-//        } catch (PackageManager.NameNotFoundException e) {
-//            throw new AssertionError(e);
-//        }
-//    }
-//
-//    @SuppressLint("StaticFieldLeak")
-//    private void updateNotifications(final Context context) {
-//        new AsyncTask<Void, Void, Void>() {
-//            @Override
-//            protected Void doInBackground(Void... params) {
-//                MessageNotifier.updateNotification(context);
-//                return null;
-//            }
-//        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-//    }
-//
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        this.masterSecret = KeyCachingService.getMasterSecret(this);
+
+        if (needsUpgradeTask()) {
+            Log.i("DatabaseUpgradeActivity", "Upgrading...");
+            setContentView(R.layout.database_upgrade_activity);
+
+            ProgressBar indeterminateProgress = findViewById(R.id.indeterminate_progress);
+            ProgressBar determinateProgress   = findViewById(R.id.determinate_progress);
+
+            new DatabaseUpgradeTask(indeterminateProgress, determinateProgress)
+                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, VersionTracker.getLastSeenVersion(this));
+        } else {
+            VersionTracker.updateLastSeenVersion(this);
+            updateNotifications(this);
+            startActivity((Intent)getIntent().getParcelableExtra("next_intent"));
+            finish();
+        }
+    }
+
+    private boolean needsUpgradeTask() {
+        int currentVersionCode = Util.getCurrentApkReleaseVersion(this);
+        int lastSeenVersion    = VersionTracker.getLastSeenVersion(this);
+
+        Log.i("DatabaseUpgradeActivity", "LastSeenVersion: " + lastSeenVersion);
+
+        if (lastSeenVersion >= currentVersionCode)
+            return false;
+
+        for (int version : UPGRADE_VERSIONS) {
+            Log.i("DatabaseUpgradeActivity", "Comparing: " + version);
+            if (lastSeenVersion < version)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isUpdate(Context context) {
+        try {
+            int currentVersionCode  = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
+            int previousVersionCode = VersionTracker.getLastSeenVersion(context);
+
+            return previousVersionCode < currentVersionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void updateNotifications(final Context context) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                MessageNotifier.updateNotification(context);
+                return null;
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
     public interface DatabaseUpgradeListener {
         public void setProgress(int progress, int total);
     }
-//
-//    @SuppressLint("StaticFieldLeak")
-//    private class DatabaseUpgradeTask extends AsyncTask<Integer, Double, Void>
-//            implements DatabaseUpgradeListener
-//    {
-//
-//        private final ProgressBar indeterminateProgress;
-//        private final ProgressBar determinateProgress;
-//
-//        DatabaseUpgradeTask(ProgressBar indeterminateProgress, ProgressBar determinateProgress) {
-//            this.indeterminateProgress = indeterminateProgress;
-//            this.determinateProgress   = determinateProgress;
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Integer... params) {
-//            Context context = DatabaseUpgradeActivity.this.getApplicationContext();
-//
-//            Log.i("DatabaseUpgradeActivity", "Running background upgrade..");
-//            DatabaseFactory.getInstance(DatabaseUpgradeActivity.this)
-//                    .onApplicationLevelUpgrade(context, masterSecret, params[0], this);
-//
-//            if (params[0] < CURVE25519_VERSION) {
-//                IdentityKeyUtil.migrateIdentityKeys(context, masterSecret);
-//            }
-//
-//            if (params[0] < NO_V1_VERSION) {
-//                File v1sessions = new File(context.getFilesDir(), "sessions");
-//
-//                if (v1sessions.exists() && v1sessions.isDirectory()) {
-//                    File[] contents = v1sessions.listFiles();
-//
-//                    if (contents != null) {
-//                        for (File session : contents) {
-//                            session.delete();
-//                        }
-//                    }
-//
-//                    v1sessions.delete();
-//                }
-//            }
-//
-//            if (params[0] < SIGNED_PREKEY_VERSION) {
-//                ApplicationContext.getInstance(getApplicationContext())
-//                        .getJobManager()
-//                        .add(new CreateSignedPreKeyJob(context));
-//            }
-//
-//            if (params[0] < NO_DECRYPT_QUEUE_VERSION) {
-//                scheduleMessagesInPushDatabase(context);
-//            }
-//
-//            if (params[0] < PUSH_DECRYPT_SERIAL_ID_VERSION) {
-//                scheduleMessagesInPushDatabase(context);
-//            }
-//
-//            if (params[0] < MIGRATE_SESSION_PLAINTEXT) {
-//
-//                IdentityKeyUtil.migrateIdentityKeys(context, masterSecret);
-//                scheduleMessagesInPushDatabase(context);;
-//            }
-//
-//            if (params[0] < CONTACTS_ACCOUNT_VERSION) {
-//                MuzimaApplication.getInstance(getApplicationContext())
-//                        .getJobManager()
-//                        .add(new DirectoryRefreshJob(getApplicationContext(), false));
-//            }
-//
-//            if (params[0] < MEDIA_DOWNLOAD_CONTROLS_VERSION) {
-//                schedulePendingIncomingParts(context);
-//            }
-//
-//            if (params[0] < REDPHONE_SUPPORT_VERSION) {
-//                ApplicationContext.getInstance(getApplicationContext())
-//                        .getJobManager()
-//                        .add(new RefreshAttributesJob(getApplicationContext()));
-//                MuzimaApplication.getInstance(getApplicationContext())
-//                        .getJobManager()
-//                        .add(new DirectoryRefreshJob(getApplicationContext(), false));
-//            }
-//
-//            if (params[0] < PROFILES) {
-//                MuzimaApplication.getInstance(getApplicationContext())
-//                        .getJobManager()
-//                        .add(new DirectoryRefreshJob(getApplicationContext(), false));
-//            }
-//
-//            if (params[0] < SCREENSHOTS) {
-//                boolean screenSecurity = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(TextSecurePreferences.SCREEN_SECURITY_PREF, true);
-//                TextSecurePreferences.setScreenSecurityEnabled(getApplicationContext(), screenSecurity);
-//            }
-//
-//            if (params[0] < PERSISTENT_BLOBS) {
-//                File externalDir = context.getExternalFilesDir(null);
-//
-//                if (externalDir != null && externalDir.isDirectory() && externalDir.exists()) {
-//                    for (File blob : externalDir.listFiles()) {
-//                        if (blob.exists() && blob.isFile()) blob.delete();
-//                    }
-//                }
-//            }
-//
-//            if (params[0] < INTERNALIZE_CONTACTS) {
-//                if (TextSecurePreferences.isPushRegistered(getApplicationContext())) {
-//                    TextSecurePreferences.setHasSuccessfullyRetrievedDirectory(getApplicationContext(), true);
-//                }
-//            }
-//
-//            if (params[0] < SQLCIPHER) {
-//                scheduleMessagesInPushDatabase(context);
-//            }
-//
-//            if (params[0] < SQLCIPHER_COMPLETE) {
-//                File file = context.getDatabasePath("messages.db");
-//                if (file != null && file.exists()) file.delete();
-//            }
-//
-//            if (params[0] < REMOVE_JOURNAL) {
-//                File file = context.getDatabasePath("messages.db-journal");
-//                if (file != null && file.exists()) file.delete();
-//            }
-//
-//            if (params[0] < REMOVE_CACHE) {
-//                try {
-//                    FileUtils.deleteDirectoryContents(context.getCacheDir());
-//                } catch (IOException e) {
-//                    Log.w(TAG, e);
-//                }
-//            }
-//
-//            if (params[0] < IMAGE_CACHE_CLEANUP) {
-//                try {
-//                    FileUtils.deleteDirectoryContents(context.getExternalCacheDir());
-//                    GlideApp.get(context).clearDiskCache();
-//                } catch (IOException e) {
-//                    Log.w(TAG, e);
-//                }
-//            }
-//
-//            if (params[0] < WORKMANAGER_MIGRATION) {
-//                Log.i(TAG, "Beginning migration of existing jobs to WorkManager");
-//
-//                JobManager jobManager = MuzimaApplication.getInstance(getApplicationContext()).getJobManager();
-//                PersistentStorage storage    = new PersistentStorage(getApplicationContext(), "TextSecureJobs", new JavaJobSerializer());
-//
-//                for (Job job : storage.getAllUnencrypted()) {
-//                    jobManager.add(job);
-//                    Log.i(TAG, "Migrated job with class '" + job.getClass().getSimpleName() + "' to run on new JobManager.");
-//                }
-//            }
-//
-//            if (params[0] < COLOR_MIGRATION) {
-//                long startTime = System.currentTimeMillis();
-//                DatabaseFactory.getRecipientDatabase(context).updateSystemContactColors((name, color) -> {
-//                    if (color != null) {
-//                        try {
-//                            return MaterialColor.fromSerialized(color);
-//                        } catch (MaterialColor.UnknownColorException e) {
-//                            Log.w(TAG, "Encountered an unknown color during legacy color migration.", e);
-//                            return ContactColorsLegacy.generateFor(name);
-//                        }
-//                    }
-//                    return ContactColorsLegacy.generateFor(name);
-//                });
-//                Log.i(TAG, "Color migration took " + (System.currentTimeMillis() - startTime) + " ms");
-//            }
-//
-//            if (params[0] < UNIDENTIFIED_DELIVERY) {
-//                if (TextSecurePreferences.isMultiDevice(context)) {
-//                    Log.i(TAG, "MultiDevice: Disabling UD (will be re-enabled if possible after pending refresh).");
-//                    TextSecurePreferences.setIsUnidentifiedDeliveryEnabled(context, false);
-//                }
-//
-//                Log.i(TAG, "Scheduling UD attributes refresh.");
-//                ApplicationContext.getInstance(context)
-//                        .getJobManager()
-//                        .add(new RefreshAttributesJob(context));
-//            }
-//
-//            return null;
-//        }
-//
-//        private void schedulePendingIncomingParts(Context context) {
-//            final AttachmentDatabase       attachmentDb       = DatabaseFactory.getAttachmentDatabase(context);
-//            final MmsDatabase              mmsDb              = DatabaseFactory.getMmsDatabase(context);
-//            final List<DatabaseAttachment> pendingAttachments = DatabaseFactory.getAttachmentDatabase(context).getPendingAttachments();
-//
-//            Log.i(TAG, pendingAttachments.size() + " pending parts.");
-//            for (DatabaseAttachment attachment : pendingAttachments) {
-//                final MmsDatabase.Reader reader = mmsDb.readerFor(mmsDb.getMessage(attachment.getMmsId()));
-//                final MessageRecord record = reader.getNext();
-//
-//                if (attachment.hasData()) {
-//                    Log.i(TAG, "corrected a pending media part " + attachment.getAttachmentId() + "that already had data.");
-//                    attachmentDb.setTransferState(attachment.getMmsId(), attachment.getAttachmentId(), AttachmentDatabase.TRANSFER_PROGRESS_DONE);
-//                } else if (record != null && !record.isOutgoing() && record.isPush()) {
-//                    Log.i(TAG, "queuing new attachment download job for incoming push part " + attachment.getAttachmentId() + ".");
-//                    ApplicationContext.getInstance(context)
-//                            .getJobManager()
-//                            .add(new AttachmentDownloadJob(context, attachment.getMmsId(), attachment.getAttachmentId(), false));
-//                }
-//                reader.close();
-//            }
-//        }
-//
-//        private void scheduleMessagesInPushDatabase(Context context) {
-//            PushDatabase pushDatabase = DatabaseFactory.getPushDatabase(context);
-//            Cursor pushReader   = null;
-//
-//            try {
-//                pushReader = pushDatabase.getPending();
-//
-//                while (pushReader != null && pushReader.moveToNext()) {
-//                    ApplicationContext.getInstance(getApplicationContext())
-//                            .getJobManager()
-//                            .add(new PushDecryptJob(getApplicationContext(),
-//                                    pushReader.getLong(pushReader.getColumnIndexOrThrow(PushDatabase.ID))));
-//                }
-//            } finally {
-//                if (pushReader != null)
-//                    pushReader.close();
-//            }
-//        }
-//
-//        @Override
-//        protected void onProgressUpdate(Double... update) {
-//            indeterminateProgress.setVisibility(View.GONE);
-//            determinateProgress.setVisibility(View.VISIBLE);
-//
-//            double scaler = update[0];
-//            determinateProgress.setProgress((int)Math.floor(determinateProgress.getMax() * scaler));
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void result) {
-//            VersionTracker.updateLastSeenVersion(DatabaseUpgradeActivity.this);
-//            updateNotifications(DatabaseUpgradeActivity.this);
-//
-//            startActivity((Intent)getIntent().getParcelableExtra("next_intent"));
-//            finish();
-//        }
-//
-//        @Override
-//        public void setProgress(int progress, int total) {
-//            publishProgress(((double)progress / (double)total));
-//        }
-//    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class DatabaseUpgradeTask extends AsyncTask<Integer, Double, Void>
+            implements DatabaseUpgradeListener
+    {
+
+        private final ProgressBar indeterminateProgress;
+        private final ProgressBar determinateProgress;
+
+        DatabaseUpgradeTask(ProgressBar indeterminateProgress, ProgressBar determinateProgress) {
+            this.indeterminateProgress = indeterminateProgress;
+            this.determinateProgress   = determinateProgress;
+        }
+
+        @Override
+        protected Void doInBackground(Integer... params) {
+            Context context = DatabaseUpgradeActivity.this.getApplicationContext();
+
+            Log.i("DatabaseUpgradeActivity", "Running background upgrade..");
+            DatabaseFactory.getInstance(DatabaseUpgradeActivity.this)
+                    .onApplicationLevelUpgrade(context, masterSecret, params[0], this);
+
+            if (params[0] < CURVE25519_VERSION) {
+                IdentityKeyUtil.migrateIdentityKeys(context, masterSecret);
+            }
+
+            if (params[0] < NO_V1_VERSION) {
+                File v1sessions = new File(context.getFilesDir(), "sessions");
+
+                if (v1sessions.exists() && v1sessions.isDirectory()) {
+                    File[] contents = v1sessions.listFiles();
+
+                    if (contents != null) {
+                        for (File session : contents) {
+                            session.delete();
+                        }
+                    }
+
+                    v1sessions.delete();
+                }
+            }
+
+            if (params[0] < SIGNED_PREKEY_VERSION) {
+                MuzimaApplication.getInstance(getApplicationContext())
+                        .getJobManager()
+                        .add(new CreateSignedPreKeyJob(context));
+            }
+
+            if (params[0] < NO_DECRYPT_QUEUE_VERSION) {
+                scheduleMessagesInPushDatabase(context);
+            }
+
+            if (params[0] < PUSH_DECRYPT_SERIAL_ID_VERSION) {
+                scheduleMessagesInPushDatabase(context);
+            }
+
+            if (params[0] < MIGRATE_SESSION_PLAINTEXT) {
+
+                IdentityKeyUtil.migrateIdentityKeys(context, masterSecret);
+                scheduleMessagesInPushDatabase(context);;
+            }
+
+            if (params[0] < CONTACTS_ACCOUNT_VERSION) {
+                MuzimaApplication.getInstance(getApplicationContext())
+                        .getJobManager()
+                        .add(new DirectoryRefreshJob(getApplicationContext(), false));
+            }
+
+            if (params[0] < MEDIA_DOWNLOAD_CONTROLS_VERSION) {
+                schedulePendingIncomingParts(context);
+            }
+
+            if (params[0] < REDPHONE_SUPPORT_VERSION) {
+                MuzimaApplication.getInstance(getApplicationContext())
+                        .getJobManager()
+                        .add(new RefreshAttributesJob(getApplicationContext()));
+                MuzimaApplication.getInstance(getApplicationContext())
+                        .getJobManager()
+                        .add(new DirectoryRefreshJob(getApplicationContext(), false));
+            }
+
+            if (params[0] < PROFILES) {
+                MuzimaApplication.getInstance(getApplicationContext())
+                        .getJobManager()
+                        .add(new DirectoryRefreshJob(getApplicationContext(), false));
+            }
+
+            if (params[0] < SCREENSHOTS) {
+                boolean screenSecurity = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(TextSecurePreferences.SCREEN_SECURITY_PREF, true);
+                TextSecurePreferences.setScreenSecurityEnabled(getApplicationContext(), screenSecurity);
+            }
+
+            if (params[0] < PERSISTENT_BLOBS) {
+                File externalDir = context.getExternalFilesDir(null);
+
+                if (externalDir != null && externalDir.isDirectory() && externalDir.exists()) {
+                    for (File blob : externalDir.listFiles()) {
+                        if (blob.exists() && blob.isFile()) blob.delete();
+                    }
+                }
+            }
+
+            if (params[0] < INTERNALIZE_CONTACTS) {
+                if (TextSecurePreferences.isPushRegistered(getApplicationContext())) {
+                    TextSecurePreferences.setHasSuccessfullyRetrievedDirectory(getApplicationContext(), true);
+                }
+            }
+
+            if (params[0] < SQLCIPHER) {
+                scheduleMessagesInPushDatabase(context);
+            }
+
+            if (params[0] < SQLCIPHER_COMPLETE) {
+                File file = context.getDatabasePath("messages.db");
+                if (file != null && file.exists()) file.delete();
+            }
+
+            if (params[0] < REMOVE_JOURNAL) {
+                File file = context.getDatabasePath("messages.db-journal");
+                if (file != null && file.exists()) file.delete();
+            }
+
+            if (params[0] < REMOVE_CACHE) {
+                try {
+                    FileUtils.deleteDirectoryContents(context.getCacheDir());
+                } catch (IOException e) {
+                    Log.w(TAG, e);
+                }
+            }
+
+            if (params[0] < IMAGE_CACHE_CLEANUP) {
+                try {
+                    FileUtils.deleteDirectoryContents(context.getExternalCacheDir());
+                    GlideApp.get(context).clearDiskCache();
+                } catch (IOException e) {
+                    Log.w(TAG, e);
+                }
+            }
+
+            if (params[0] < WORKMANAGER_MIGRATION) {
+                Log.i(TAG, "Beginning migration of existing jobs to WorkManager");
+
+                JobManager jobManager = MuzimaApplication.getInstance(getApplicationContext()).getJobManager();
+                PersistentStorage storage    = new PersistentStorage(getApplicationContext(), "TextSecureJobs", new JavaJobSerializer());
+
+                for (Job job : storage.getAllUnencrypted()) {
+                    jobManager.add(job);
+                    Log.i(TAG, "Migrated job with class '" + job.getClass().getSimpleName() + "' to run on new JobManager.");
+                }
+            }
+
+            if (params[0] < COLOR_MIGRATION) {
+                long startTime = System.currentTimeMillis();
+                DatabaseFactory.getRecipientDatabase(context).updateSystemContactColors((name, color) -> {
+                    if (color != null) {
+                        try {
+                            return MaterialColor.fromSerialized(color);
+                        } catch (MaterialColor.UnknownColorException e) {
+                            Log.w(TAG, "Encountered an unknown color during legacy color migration.", e);
+                            return ContactColorsLegacy.generateFor(name);
+                        }
+                    }
+                    return ContactColorsLegacy.generateFor(name);
+                });
+                Log.i(TAG, "Color migration took " + (System.currentTimeMillis() - startTime) + " ms");
+            }
+
+            if (params[0] < UNIDENTIFIED_DELIVERY) {
+                if (TextSecurePreferences.isMultiDevice(context)) {
+                    Log.i(TAG, "MultiDevice: Disabling UD (will be re-enabled if possible after pending refresh).");
+                    TextSecurePreferences.setIsUnidentifiedDeliveryEnabled(context, false);
+                }
+
+                Log.i(TAG, "Scheduling UD attributes refresh.");
+                MuzimaApplication.getInstance(context)
+                        .getJobManager()
+                        .add(new RefreshAttributesJob(context));
+            }
+
+            return null;
+        }
+
+        private void schedulePendingIncomingParts(Context context) {
+            final AttachmentDatabase       attachmentDb       = DatabaseFactory.getAttachmentDatabase(context);
+            final MmsDatabase              mmsDb              = DatabaseFactory.getMmsDatabase(context);
+            final List<DatabaseAttachment> pendingAttachments = DatabaseFactory.getAttachmentDatabase(context).getPendingAttachments();
+
+            Log.i(TAG, pendingAttachments.size() + " pending parts.");
+            for (DatabaseAttachment attachment : pendingAttachments) {
+                final MmsDatabase.Reader reader = mmsDb.readerFor(mmsDb.getMessage(attachment.getMmsId()));
+                final MessageRecord record = reader.getNext();
+
+                if (attachment.hasData()) {
+                    Log.i(TAG, "corrected a pending media part " + attachment.getAttachmentId() + "that already had data.");
+                    attachmentDb.setTransferState(attachment.getMmsId(), attachment.getAttachmentId(), AttachmentDatabase.TRANSFER_PROGRESS_DONE);
+                } else if (record != null && !record.isOutgoing() && record.isPush()) {
+                    Log.i(TAG, "queuing new attachment download job for incoming push part " + attachment.getAttachmentId() + ".");
+                    MuzimaApplication.getInstance(context)
+                            .getJobManager()
+                            .add(new AttachmentDownloadJob(context, attachment.getMmsId(), attachment.getAttachmentId(), false));
+                }
+                reader.close();
+            }
+        }
+
+        private void scheduleMessagesInPushDatabase(Context context) {
+            PushDatabase pushDatabase = DatabaseFactory.getPushDatabase(context);
+            Cursor pushReader   = null;
+
+            try {
+                pushReader = pushDatabase.getPending();
+
+                while (pushReader != null && pushReader.moveToNext()) {
+                    MuzimaApplication.getInstance(getApplicationContext())
+                            .getJobManager()
+                            .add(new PushDecryptJob(getApplicationContext(),
+                                    pushReader.getLong(pushReader.getColumnIndexOrThrow(PushDatabase.ID))));
+                }
+            } finally {
+                if (pushReader != null)
+                    pushReader.close();
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(Double... update) {
+            indeterminateProgress.setVisibility(View.GONE);
+            determinateProgress.setVisibility(View.VISIBLE);
+
+            double scaler = update[0];
+            determinateProgress.setProgress((int)Math.floor(determinateProgress.getMax() * scaler));
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            VersionTracker.updateLastSeenVersion(DatabaseUpgradeActivity.this);
+            updateNotifications(DatabaseUpgradeActivity.this);
+
+            startActivity((Intent)getIntent().getParcelableExtra("next_intent"));
+            finish();
+        }
+
+        @Override
+        public void setProgress(int progress, int total) {
+            publishProgress(((double)progress / (double)total));
+        }
+    }
 }

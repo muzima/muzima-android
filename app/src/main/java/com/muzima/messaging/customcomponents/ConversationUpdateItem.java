@@ -16,7 +16,9 @@ import android.widget.TextView;
 
 import com.muzima.R;
 import com.muzima.messaging.RecipientModifiedListener;
+import com.muzima.messaging.VerifyIdentityActivity;
 import com.muzima.messaging.adapters.BindableConversationItem;
+import com.muzima.messaging.crypto.IdentityKeyParcelable;
 import com.muzima.messaging.mms.GlideRequests;
 import com.muzima.messaging.sqlite.database.IdentityDatabase;
 import com.muzima.messaging.sqlite.database.IdentityDatabase.IdentityRecord;
@@ -243,13 +245,12 @@ public class ConversationUpdateItem extends LinearLayout
                 @Override
                 public void onSuccess(Optional<IdentityRecord> result) {
                     if (result.isPresent()) {
-                        //Todo +++++ work on VerifyIdentityActivity
-//                        Intent intent = new Intent(getContext(), VerifyIdentityActivity.class);
-//                        intent.putExtra(VerifyIdentityActivity.ADDRESS_EXTRA, sender.getAddress());
-//                        intent.putExtra(VerifyIdentityActivity.IDENTITY_EXTRA, new IdentityKeyParcelable(result.get().getIdentityKey()));
-//                        intent.putExtra(VerifyIdentityActivity.VERIFIED_EXTRA, result.get().getVerifiedStatus() == IdentityDatabase.VerifiedStatus.VERIFIED);
-//
-//                        getContext().startActivity(intent);
+                        Intent intent = new Intent(getContext(), VerifyIdentityActivity.class);
+                        intent.putExtra(VerifyIdentityActivity.ADDRESS_EXTRA, sender.getAddress());
+                        intent.putExtra(VerifyIdentityActivity.IDENTITY_EXTRA, new IdentityKeyParcelable(result.get().getIdentityKey()));
+                        intent.putExtra(VerifyIdentityActivity.VERIFIED_EXTRA, result.get().getVerifiedStatus() == IdentityDatabase.VerifiedStatus.VERIFIED);
+
+                        getContext().startActivity(intent);
                     }
                 }
 

@@ -168,6 +168,6 @@
     <color name="red_500">#F44336</color>
     <color name="red_600">#E53935</color>
     <color name="amber_500">#FFC107</color>
-    <color name="blue_grey_900">#263238</color>
+    <color name="grey_900">#263238</color>
 
 </resources>

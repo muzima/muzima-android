@@ -1493,5 +1493,6 @@
     <string name="SharedContactDetailsActivity_signal_message">mUzima Message</string>
     <string name="SharedContactDetailsActivity_invite_to_signal">Invite to mUzima</string>
     <string name="SharedContactDetailsActivity_add_to_contacts">Add to Contacts</string>
+    <string name="database_upgrade_activity__updating_database">Updating database...</string>
 
 </resources>
