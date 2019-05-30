@@ -1471,5 +1471,23 @@
     <string name="GroupMembersDialog_me">Me</string>
     <string name="reminder_header_invite_title">Invite to mUzima</string>
     <string name="reminder_header_invite_text">Take your conversation with %1$s to the next level.</string>
+    <string name="AndroidManifest__message_details">Message details</string>
+    <string name="message_details_header__with">With:</string>
+    <string name="message_details_header__to">To:</string>
+    <string name="message_details_header__from">From:</string>
+    <string name="ConversationFragment_pending">Pending…</string>
+    <string name="ConversationFragment_push">Data (mUzima PHR)</string>
+    <string name="ConversationFragment_mms">MMS</string>
+    <string name="ConversationFragment_sms">SMS</string>
+    <string name="MessageDetailsRecipient_failed_to_send">Failed to send</string>
+    <string name="MessageDetailsRecipient_new_safety_number">New safety number</string>
+    <string name="SingleContactSelectionActivity_contact_photo">Contact Photo</string>
+    <string name="message_recipients_list_item__view">VIEW</string>
+    <string name="message_details_header__issues_need_your_attention">Some issues need your attention.</string>
+    <string name="message_recipients_list_item__resend">RESEND</string>
+    <string name="message_details_header__sent">Sent</string>
+    <string name="message_details_header__received">Received</string>
+    <string name="message_details_header__disappears">Disappears</string>
+    <string name="message_details_header__via">Via</string>
 
 </resources>

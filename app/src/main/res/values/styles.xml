@@ -868,4 +868,20 @@
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
+    <style name="ErrorButton" parent="@style/MaterialButton">
+        <item name="android:background">@drawable/error_round</item>
+    </style>
+
+    <style name="MaterialButton" tools:ignore="NewApi">
+        <item name="android:elevation" >1dp</item>
+        <item name="android:translationZ">1dp</item>
+        <item name="android:textColor">@color/primary_white</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="InfoButton" parent="@style/MaterialButton">
+        <item name="android:background">@drawable/info_round</item>
+    </style>
+
+
 </resources>

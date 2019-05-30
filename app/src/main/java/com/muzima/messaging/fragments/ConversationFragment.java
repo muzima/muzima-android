@@ -40,6 +40,7 @@ import com.muzima.R;
 import com.muzima.messaging.CommunicationActions;
 import com.muzima.messaging.ConversationActivity;
 import com.muzima.messaging.ConversationAdapter;
+import com.muzima.messaging.MessageDetailsActivity;
 import com.muzima.messaging.PassphraseRequiredActionBarActivity;
 import com.muzima.messaging.ShareActivity;
 import com.muzima.messaging.TextSecurePreferences;
@@ -56,6 +57,7 @@ import com.muzima.messaging.mms.Slide;
 import com.muzima.messaging.sms.MessageSender;
 import com.muzima.messaging.sms.OutgoingTextMessage;
 import com.muzima.messaging.sqlite.database.DatabaseFactory;
+import com.muzima.messaging.sqlite.database.MmsSmsDatabase;
 import com.muzima.messaging.sqlite.database.RecipientDatabase;
 import com.muzima.messaging.sqlite.database.loaders.ConversationLoader;
 import com.muzima.messaging.sqlite.database.models.MediaMmsMessageRecord;
@@ -467,14 +469,13 @@ public class ConversationFragment extends Fragment
     }
 
     private void handleDisplayDetails(MessageRecord message) {
-//        TODO +++++++++ MessageDetailsActivity
-//        Intent intent = new Intent(getActivity(), MessageDetailsActivity.class);
-//        intent.putExtra(MessageDetailsActivity.MESSAGE_ID_EXTRA, message.getId());
-//        intent.putExtra(MessageDetailsActivity.THREAD_ID_EXTRA, threadId);
-//        intent.putExtra(MessageDetailsActivity.TYPE_EXTRA, message.isMms() ? MmsSmsDatabase.MMS_TRANSPORT : MmsSmsDatabase.SMS_TRANSPORT);
-//        intent.putExtra(MessageDetailsActivity.ADDRESS_EXTRA, recipient.getAddress());
-//        intent.putExtra(MessageDetailsActivity.IS_PUSH_GROUP_EXTRA, recipient.isGroupRecipient() && message.isPush());
-//        startActivity(intent);
+        Intent intent = new Intent(getActivity(), MessageDetailsActivity.class);
+        intent.putExtra(MessageDetailsActivity.MESSAGE_ID_EXTRA, message.getId());
+        intent.putExtra(MessageDetailsActivity.THREAD_ID_EXTRA, threadId);
+        intent.putExtra(MessageDetailsActivity.TYPE_EXTRA, message.isMms() ? MmsSmsDatabase.MMS_TRANSPORT : MmsSmsDatabase.SMS_TRANSPORT);
+        intent.putExtra(MessageDetailsActivity.ADDRESS_EXTRA, recipient.getAddress());
+        intent.putExtra(MessageDetailsActivity.IS_PUSH_GROUP_EXTRA, recipient.isGroupRecipient() && message.isPush());
+        startActivity(intent);
     }
 
     private void handleForwardMessage(MessageRecord message) {

@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.messaging.MediaPreviewActivity;
+import com.muzima.messaging.MessageDetailsActivity;
 import com.muzima.messaging.RecipientModifiedListener;
 import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.adapters.BindableConversationItem;
@@ -911,14 +912,13 @@ public class ConversationItem extends LinearLayout
             if (!shouldInterceptClicks(messageRecord) && parent != null) {
                 parent.onClick(v);
             } else if (messageRecord.isFailed()) {
-//                Todo +++++ MessageDetailsActivity
-//                Intent intent = new Intent(context, MessageDetailsActivity.class);
-//                intent.putExtra(MessageDetailsActivity.MESSAGE_ID_EXTRA, messageRecord.getId());
-//                intent.putExtra(MessageDetailsActivity.THREAD_ID_EXTRA, messageRecord.getThreadId());
-//                intent.putExtra(MessageDetailsActivity.TYPE_EXTRA, messageRecord.isMms() ? MmsSmsDatabase.MMS_TRANSPORT : MmsSmsDatabase.SMS_TRANSPORT);
-//                intent.putExtra(MessageDetailsActivity.IS_PUSH_GROUP_EXTRA, groupThread && messageRecord.isPush());
-//                intent.putExtra(MessageDetailsActivity.ADDRESS_EXTRA, conversationRecipient.getAddress());
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, MessageDetailsActivity.class);
+                intent.putExtra(MessageDetailsActivity.MESSAGE_ID_EXTRA, messageRecord.getId());
+                intent.putExtra(MessageDetailsActivity.THREAD_ID_EXTRA, messageRecord.getThreadId());
+                intent.putExtra(MessageDetailsActivity.TYPE_EXTRA, messageRecord.isMms() ? MmsSmsDatabase.MMS_TRANSPORT : MmsSmsDatabase.SMS_TRANSPORT);
+                intent.putExtra(MessageDetailsActivity.IS_PUSH_GROUP_EXTRA, groupThread && messageRecord.isPush());
+                intent.putExtra(MessageDetailsActivity.ADDRESS_EXTRA, conversationRecipient.getAddress());
+                context.startActivity(intent);
             } else if (!messageRecord.isOutgoing() && messageRecord.isIdentityMismatchFailure()) {
                 handleApproveIdentity();
             } else if (messageRecord.isPendingInsecureSmsFallback()) {
