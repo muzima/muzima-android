@@ -883,5 +883,19 @@
         <item name="android:background">@drawable/info_round</item>
     </style>
 
+    <style name="TextSecure.LightActionBar.DarkText"
+        parent="AppBaseTheme">
+        <item name="android:textColorPrimary">@color/primary_black</item>
+        <item name="android:textColorSecondary">@color/primary_black</item>
+    </style>
+
+    <style name="Button.Borderless" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/primary_blue</item>
+    </style>
+
+    <style name="Button.Primary" parent="Base.Widget.AppCompat.Button.Colored">
+        <item name="colorAccent">@color/primary_blue</item>
+        <item name="android:textColor">@color/primary_white</item>
+    </style>
 
 </resources>

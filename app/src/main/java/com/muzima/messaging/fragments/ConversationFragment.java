@@ -44,9 +44,9 @@ import com.muzima.messaging.MessageDetailsActivity;
 import com.muzima.messaging.PassphraseRequiredActionBarActivity;
 import com.muzima.messaging.ShareActivity;
 import com.muzima.messaging.TextSecurePreferences;
-import com.muzima.messaging.attachments.Attachment;
 import com.muzima.messaging.contactshare.Contact;
 import com.muzima.messaging.contactshare.ContactUtil;
+import com.muzima.messaging.contactshare.SharedContactDetailsActivity;
 import com.muzima.messaging.customcomponents.ConversationTypingView;
 import com.muzima.messaging.customcomponents.SmoothScrollingLinearLayoutManager;
 import com.muzima.messaging.customcomponents.UnknownSenderView;
@@ -64,6 +64,7 @@ import com.muzima.messaging.sqlite.database.models.MediaMmsMessageRecord;
 import com.muzima.messaging.sqlite.database.models.MessageRecord;
 import com.muzima.messaging.sqlite.database.models.MmsMessageRecord;
 import com.muzima.messaging.tasks.ProgressDialogAsyncTask;
+import com.muzima.messaging.utils.SaveAttachmentTask;
 import com.muzima.messaging.utils.StickyHeaderDecoration;
 import com.muzima.model.SignalRecipient;
 import com.muzima.utils.ViewUtil;
@@ -508,23 +509,22 @@ public class ConversationFragment extends Fragment
     }
 
     private void handleSaveAttachment(final MediaMmsMessageRecord message) {
-//        Todo ++++++ handle SaveAttachmentTask
-//        SaveAttachmentTask.showWarningDialog(getActivity(), new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int which) {
-//                for (Slide slide : message.getSlideDeck().getSlides()) {
-//                    if ((slide.hasImage() || slide.hasVideo() || slide.hasAudio() || slide.hasDocument()) && slide.getUri() != null) {
-//                        SaveAttachmentTask saveTask = new SaveAttachmentTask(getActivity());
-//                        saveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new Attachment(slide.getUri(), slide.getContentType(), message.getDateReceived(), slide.getFileName().orNull()));
-//                        return;
-//                    }
-//                }
-//
-//                Log.w(TAG, "No slide with attachable media found, failing nicely.");
-//                Toast.makeText(getActivity(),
-//                        getResources().getQuantityString(R.plurals.ConversationFragment_error_while_saving_attachments_to_sd_card, 1),
-//                        Toast.LENGTH_LONG).show();
-//            }
-//        });
+        SaveAttachmentTask.showWarningDialog(getActivity(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                for (Slide slide : message.getSlideDeck().getSlides()) {
+                    if ((slide.hasImage() || slide.hasVideo() || slide.hasAudio() || slide.hasDocument()) && slide.getUri() != null) {
+                        SaveAttachmentTask saveTask = new SaveAttachmentTask(getActivity());
+                        saveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new SaveAttachmentTask.Attachment(slide.getUri(), slide.getContentType(), message.getDateReceived(), slide.getFileName().orNull()));
+                        return;
+                    }
+                }
+
+                Log.w(TAG, "No slide with attachable media found, failing nicely.");
+                Toast.makeText(getActivity(),
+                        getResources().getQuantityString(R.plurals.ConversationFragment_error_while_saving_attachments_to_sd_card, 1),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -829,8 +829,7 @@ public class ConversationFragment extends Fragment
         public void onSharedContactDetailsClicked(@NonNull Contact contact, @NonNull View avatarTransitionView) {
             if (getContext() != null && getActivity() != null) {
                 Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), avatarTransitionView, "avatar").toBundle();
-//                Todo ++++++ SharedContactDetailsActivity
-//                ActivityCompat.startActivity(getActivity(), SharedContactDetailsActivity.getIntent(getContext(), contact), bundle);
+                ActivityCompat.startActivity(getActivity(), SharedContactDetailsActivity.getIntent(getContext(), contact), bundle);
             }
         }
 

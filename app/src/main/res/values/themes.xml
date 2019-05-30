@@ -99,6 +99,7 @@
         <item name="lower_right_divet">@drawable/divet_lower_right_light</item>
         <item name="conversation_editor_text_color">#ffeeeeee</item>
         <item name="group_members_dialog_icon">@drawable/ic_group_white_24dp</item>
+        <item name="shared_contact_details_titlebar">@color/grey_900</item>
     </style>
 
 
@@ -188,6 +189,7 @@
         <item name="lower_right_divet">@drawable/divet_lower_right_dark</item>
         <item name="conversation_editor_text_color">#ff111111</item>
         <item name="group_members_dialog_icon">@drawable/ic_group_grey600_24dp</item>
+        <item name="shared_contact_details_titlebar">@color/grey_400</item>
     </style>
 
 
