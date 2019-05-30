@@ -403,7 +403,7 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
             @Override
             public void onAnimationEnd(Animator animation) {
                 fab.clearAnimation();
-               // fab.setImageResource(R.drawable.ic_lock_white_24dp);
+//                fab.setImageResource(R.drawable.ic_lock_white_24dp);
                 fab.animate().rotationBy(-360f).setDuration(SCENE_TRANSITION_DURATION).setListener(null).start();
             }
         }).start();

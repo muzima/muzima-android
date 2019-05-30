@@ -213,4 +213,5 @@
     <attr name="conversation_editor_text_color" format="reference|color"/>
     <attr name="group_members_dialog_icon" format="reference"/>
     <attr name="shared_contact_details_titlebar" format="color"/>
+    <attr name="device_link_item_card_background" format="reference|color" />
 </resources>

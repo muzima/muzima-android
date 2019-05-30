@@ -28,6 +28,7 @@ import com.muzima.messaging.contacts.avatars.ProfileContactPhoto;
 import com.muzima.messaging.customcomponents.SearchToolbar;
 import com.muzima.messaging.fragments.SearchFragment;
 import com.muzima.messaging.mms.GlideApp;
+import com.muzima.messaging.preference.ApplicationPreferencesActivity;
 import com.muzima.messaging.sqlite.database.DatabaseFactory;
 import com.muzima.messaging.sqlite.database.MessagingDatabase.MarkedMessageInfo;
 import com.muzima.messaging.sqlite.database.SignalAddress;
@@ -222,8 +223,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     }
 
     private void handleDisplaySettings() {
-//        Intent preferencesIntent = new Intent(this, ApplicationPreferencesActivity.class);
-//        startActivity(preferencesIntent);
+        Intent preferencesIntent = new Intent(this, ApplicationPreferencesActivity.class);
+        startActivity(preferencesIntent);
     }
 
     private void handleClearPassphrase() {
