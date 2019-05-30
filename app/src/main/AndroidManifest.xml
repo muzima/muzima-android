@@ -699,6 +699,15 @@
             android:launchMode="singleTask"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
+        <activity android:name=".messaging.contactshare.SharedContactDetailsActivity"
+            android:theme="@style/AppThemeNoActionBar.Dark"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
+        <activity android:name=".messaging.sqlite.database.DatabaseUpgradeActivity"
+            android:theme="@style/NoAnimation.Theme.AppCompat.Light.DarkActionBar"
+            android:launchMode="singleTask"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+
 
         <provider android:name="android.support.v4.content.FileProvider"
             android:authorities="com.muzima.fileprovider"

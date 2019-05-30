@@ -9,6 +9,8 @@ import com.muzima.messaging.crypto.AttachmentSecretProvider;
 import com.muzima.messaging.crypto.DatabaseSecret;
 import com.muzima.messaging.crypto.DatabaseSecretProvider;
 import com.muzima.messaging.crypto.MasterSecret;
+import com.muzima.messaging.sqlite.database.helpers.ClassicOpenHelper;
+import com.muzima.messaging.sqlite.database.helpers.SQLCipherMigrationHelper;
 import com.muzima.messaging.sqlite.database.helpers.SQLCipherOpenHelper;
 
 import net.sqlcipher.database.SQLiteDatabase;
@@ -149,26 +151,26 @@ public class DatabaseFactory {
         this.searchDatabase = new SearchDatabase(context, databaseHelper);
     }
 
-//    public void onApplicationLevelUpgrade(@NonNull Context context, @NonNull MasterSecret masterSecret,
-//                                          int fromVersion, DatabaseUpgradeActivity.DatabaseUpgradeListener listener) {
-//        databaseHelper.getWritableDatabase();
-//
-//        ClassicOpenHelper legacyOpenHelper = null;
-//
-//        if (fromVersion < DatabaseUpgradeActivity.ASYMMETRIC_MASTER_SECRET_FIX_VERSION) {
-//            legacyOpenHelper = new ClassicOpenHelper(context);
-//            legacyOpenHelper.onApplicationLevelUpgrade(context, masterSecret, fromVersion, listener);
-//        }
-//
-//        if (fromVersion < DatabaseUpgradeActivity.SQLCIPHER && TextSecurePreferences.getNeedsSqlCipherMigration(context)) {
-//            if (legacyOpenHelper == null) {
-//                legacyOpenHelper = new ClassicOpenHelper(context);
-//            }
-//
-//            SQLCipherMigrationHelper.migrateCiphertext(context, masterSecret,
-//                    legacyOpenHelper.getWritableDatabase(),
-//                    databaseHelper.getWritableDatabase(),
-//                    listener);
-//        }
-//    }
+    public void onApplicationLevelUpgrade(@NonNull Context context, @NonNull MasterSecret masterSecret,
+                                          int fromVersion, DatabaseUpgradeActivity.DatabaseUpgradeListener listener) {
+        databaseHelper.getWritableDatabase();
+
+        ClassicOpenHelper legacyOpenHelper = null;
+
+        if (fromVersion < DatabaseUpgradeActivity.ASYMMETRIC_MASTER_SECRET_FIX_VERSION) {
+            legacyOpenHelper = new ClassicOpenHelper(context);
+            legacyOpenHelper.onApplicationLevelUpgrade(context, masterSecret, fromVersion, listener);
+        }
+
+        if (fromVersion < DatabaseUpgradeActivity.SQLCIPHER && TextSecurePreferences.getNeedsSqlCipherMigration(context)) {
+            if (legacyOpenHelper == null) {
+                legacyOpenHelper = new ClassicOpenHelper(context);
+            }
+
+            SQLCipherMigrationHelper.migrateCiphertext(context, masterSecret,
+                    legacyOpenHelper.getWritableDatabase(),
+                    databaseHelper.getWritableDatabase(),
+                    listener);
+        }
+    }
 }
