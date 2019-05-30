@@ -1494,5 +1494,35 @@
     <string name="SharedContactDetailsActivity_invite_to_signal">Invite to mUzima</string>
     <string name="SharedContactDetailsActivity_add_to_contacts">Add to Contacts</string>
     <string name="database_upgrade_activity__updating_database">Updating database...</string>
+    <string name="database_migration_activity__would_you_like_to_import_your_existing_text_messages">Would you like to import your existing text messages into Signal\'s encrypted database?</string>
+    <string name="database_migration_activity__the_default_system_database_will_not_be_modified">The default system database will not be modified or altered in any way.</string>
+    <string name="database_migration_activity__skip">Skip</string>
+    <string name="database_migration_activity__import">Import</string>
+    <string name="database_migration_activity__this_could_take_a_moment_please_be_patient">This could take a moment. Please be patient, we\'ll notify you when the import is complete.</string>
+    <string name="database_migration_activity__importing">IMPORTING</string>
+    <string name="ExperienceUpgradeActivity_unlock_to_complete_update">Unlock to complete update</string>
+    <string name="ExperienceUpgradeActivity_please_unlock_signal_to_complete_update">Please unlock mUzima to complete update</string>
+    <string name="ExperienceUpgradeActivity_introducing_typing_indicators">Introducing typing indicators.</string>
+    <string name="ExperienceUpgradeActivity_now_you_can_optionally_see_and_share_when_messages_are_being_typed">Now you can optionally see and share when messages are being typed.</string>
+    <string name="ExperienceUpgradeActivity_would_you_like_to_enable_them_now">Would you like to enable them now?</string>
+    <string name="ExperienceUpgradeActivity_turn_on_typing_indicators">Turn on typing indicators</string>
+    <string name="ExperienceUpgradeActivity_no_thanks">No thanks</string>
+    <string name="ExperienceUpgradeActivity_now_you_can_share_a_profile_photo_and_name_with_friends_on_signal">Now you can share a profile photo and name with friends on mUzima</string>
+    <string name="ExperienceUpgradeActivity_ready_for_your_closeup">Ready for your closeup?</string>
+    <string name="experience_upgrade_activity__continue">continue</string>
+    <string name="conversation_list_fragment__fab_content_description">New conversation</string>
+    <string name="ExperienceUpgradeActivity_welcome_to_signal_dgaf" tools:ignore="ExtraTranslation">Welcome to mUzima.</string>
+    <string name="ExperienceUpgradeActivity_textsecure_is_now_called_signal" tools:ignore="ExtraTranslation">TextSecure and RedPhone are now one private messenger, for every situation: mUzima.</string>
+    <string name="ExperienceUpgradeActivity_welcome_to_signal_excited">Welcome to mUzima!</string>
+    <string name="ExperienceUpgradeActivity_textsecure_is_now_signal">mUzima.</string>
+    <string name="ExperienceUpgradeActivity_textsecure_is_now_signal_long">TextSecure and RedPhone are now one app: mUzima. Tap to explore.</string>
+    <string name="ExperienceUpgradeActivity_say_hello_to_video_calls">Say hello to secure video calls.</string>
+    <string name="ExperienceUpgradeActivity_signal_now_supports_secure_video_calls">mUzima now supports secure video calling. Just start a mUzima call like normal, tap the video button, and wave hello.</string>
+    <string name="ExperienceUpgradeActivity_signal_now_supports_secure_video_calling">mUzima now supports secure video calling.</string>
+    <string name="ExperienceUpgradeActivity_signal_now_supports_secure_video_calling_long">mUzima now supports secure video calling. Tap to explore.</string>
+    <string name="ExperienceUpgradeActivity_signal_profiles_are_here">mUzima profiles are here</string>
+    <string name="experience_upgrade_preference_fragment__read_receipts_are_here">Read receipts are here</string>
+    <string name="experience_upgrade_preference_fragment__optionally_see_and_share_when_messages_have_been_read">Optionally see and share when messages have been read</string>
+    <string name="experience_upgrade_preference_fragment__enable_read_receipts">Enable read receipts</string>
 
 </resources>
