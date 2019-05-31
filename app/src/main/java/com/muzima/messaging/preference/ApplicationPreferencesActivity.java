@@ -100,8 +100,6 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
                     .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_SMS_MMS));
             this.findPreference(PREFERENCE_CATEGORY_NOTIFICATIONS)
                     .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_NOTIFICATIONS));
-            this.findPreference(PREFERENCE_CATEGORY_APPEARANCE)
-                    .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_APPEARANCE));
             this.findPreference(PREFERENCE_CATEGORY_CHATS)
                     .setOnPreferenceClickListener(new CategoryClickListener(PREFERENCE_CATEGORY_CHATS));
             this.findPreference(PREFERENCE_CATEGORY_DEVICES)
@@ -135,8 +133,6 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
                     .setSummary(SmsMmsPreferenceFragment.getSummary(getActivity()));
             this.findPreference(PREFERENCE_CATEGORY_NOTIFICATIONS)
                     .setSummary(NotificationsPreferenceFragment.getSummary(getActivity()));
-//            this.findPreference(PREFERENCE_CATEGORY_APPEARANCE)
-//                    .setSummary(AppearancePreferenceFragment.getSummary(getActivity()));
             this.findPreference(PREFERENCE_CATEGORY_CHATS)
                     .setSummary(ChatsPreferenceFragment.getSummary(getActivity()));
         }
@@ -152,8 +148,6 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
         private void tintIcons(Context context) {
             Drawable sms = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_textsms_white_24dp));
             Drawable notifications = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_notifications_white_24dp));
-            Drawable privacy = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_security_white_24dp));
-            Drawable appearance = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_brightness_6_white_24dp));
             Drawable chats = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_forum_white_24dp));
             Drawable devices = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_laptop_white_24dp));
             Drawable advanced = DrawableCompat.wrap(ContextCompat.getDrawable(context, R.drawable.ic_advanced_white_24dp));
@@ -165,15 +159,12 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
 
             DrawableCompat.setTint(sms, color);
             DrawableCompat.setTint(notifications, color);
-            DrawableCompat.setTint(privacy, color);
-            DrawableCompat.setTint(appearance, color);
             DrawableCompat.setTint(chats, color);
             DrawableCompat.setTint(devices, color);
             DrawableCompat.setTint(advanced, color);
 
             this.findPreference(PREFERENCE_CATEGORY_SMS_MMS).setIcon(sms);
             this.findPreference(PREFERENCE_CATEGORY_NOTIFICATIONS).setIcon(notifications);
-            this.findPreference(PREFERENCE_CATEGORY_APPEARANCE).setIcon(appearance);
             this.findPreference(PREFERENCE_CATEGORY_CHATS).setIcon(chats);
             this.findPreference(PREFERENCE_CATEGORY_DEVICES).setIcon(devices);
             this.findPreference(PREFERENCE_CATEGORY_ADVANCED).setIcon(advanced);
@@ -197,9 +188,6 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
                     case PREFERENCE_CATEGORY_NOTIFICATIONS:
                         fragment = new NotificationsPreferenceFragment();
                         break;
-//                    case PREFERENCE_CATEGORY_APPEARANCE:
-//                        fragment = new AppearancePreferenceFragment();
-//                        break;
                     case PREFERENCE_CATEGORY_CHATS:
                         fragment = new ChatsPreferenceFragment();
                         break;

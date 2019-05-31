@@ -29,7 +29,7 @@ public class DeviceListLoader extends AsyncLoader<List<DeviceInfo>> {
     @Override
     public List<DeviceInfo> loadInBackground() {
         try {
-            List<DeviceInfo>     devices  = accountManager.getDevices();
+            List<DeviceInfo> devices  = accountManager.getDevices();
             Iterator<DeviceInfo> iterator = devices.iterator();
 
             while (iterator.hasNext()) {

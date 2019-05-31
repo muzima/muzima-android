@@ -302,24 +302,23 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     }
 
     private void updateTabStyles() {
-
         for (int i = 0; i < tabCount; i++) {
+            View v = tabsContainer.getChildAt(i);
 
-            TextView tab = (TextView) tabsContainer.getChildAt(i);
-
-            tab.setLayoutParams(defaultTabLayoutParams);
-            tab.setBackgroundResource(tabBackgroundResId);
-            if (shouldExpand) {
-                tab.setPadding(0, 0, 0, 0);
-            } else {
-                tab.setPadding(tabPadding, 0, tabPadding, 0);
+            v.setLayoutParams(defaultTabLayoutParams);
+            v.setBackgroundResource(tabBackgroundResId);
+            if (v instanceof TextView) {
+                TextView tab = (TextView) v;
+                if (shouldExpand) {
+                    tab.setPadding(0, 0, 0, 0);
+                } else {
+                    tab.setPadding(tabPadding, 0, tabPadding, 0);
+                }
+                tab.setTextSize(TypedValue.COMPLEX_UNIT_PX, tabTextSize);
+                tab.setTypeface(tabTypeface, tabTypefaceStyle);
+                tab.setTextColor(tabTextColor);
             }
-            tab.setTextSize(TypedValue.COMPLEX_UNIT_PX, tabTextSize);
-            tab.setTypeface(tabTypeface, tabTypefaceStyle);
-            tab.setTextColor(tabTextColor);
-
         }
-
     }
 
     @Override
@@ -452,11 +451,16 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
     private void selectTextFor(int position) {
         for (int i = 0; i < tabCount; i++) {
-            TextView tab = (TextView) tabsContainer.getChildAt(i);
-            tab.setTextColor(tabTextColor);
+            View v = tabsContainer.getChildAt(i);
+            if (v instanceof TextView) {
+                TextView tab = (TextView) v;
+                tab.setTextColor(tabTextColor);
+            }
         }
-        TextView tab = (TextView) tabsContainer.getChildAt(position);
-        tab.setTextColor(selectedTextColor);
+        if (tabsContainer.getChildAt(position) instanceof TextView) {
+            TextView tab = (TextView) tabsContainer.getChildAt(position);
+            tab.setTextColor(selectedTextColor);
+        }
     }
 
     public void setIndicatorColor(int indicatorColor) {
