@@ -50,7 +50,7 @@ public class InputPanel extends LinearLayout
     private static final int FADE_TIME = 150;
 
     private QuoteView quoteView;
-//    private EmojiToggle emojiToggle;
+    private EmojiToggle emojiToggle;
     private ComposeText composeText;
     private View quickCameraToggle;
     private View quickAudioToggle;
@@ -84,7 +84,7 @@ public class InputPanel extends LinearLayout
         View quoteDismiss = findViewById(R.id.quote_dismiss);
 
         this.quoteView              = findViewById(R.id.quote_view);
-//        this.emojiToggle            = findViewById(R.id.emoji_toggle);
+        this.emojiToggle            = findViewById(R.id.emoji_toggle);
         this.composeText            = findViewById(R.id.embedded_text_editor);
         this.quickCameraToggle      = findViewById(R.id.quick_camera_toggle);
         this.quickAudioToggle       = findViewById(R.id.quick_audio_toggle);
@@ -101,10 +101,10 @@ public class InputPanel extends LinearLayout
         }
 
         if (TextSecurePreferences.isSystemEmojiPreferred(getContext())) {
-//            emojiToggle.setVisibility(View.GONE);
+            emojiToggle.setVisibility(View.GONE);
             emojiVisible = false;
         } else {
-//            emojiToggle.setVisibility(View.VISIBLE);
+            emojiToggle.setVisibility(View.VISIBLE);
             emojiVisible = true;
         }
 
@@ -114,7 +114,7 @@ public class InputPanel extends LinearLayout
     public void setListener(final @NonNull Listener listener) {
         this.listener = listener;
 
-//        emojiToggle.setOnClickListener(v -> listener.onEmojiToggle());
+        emojiToggle.setOnClickListener(v -> listener.onEmojiToggle());
     }
 
     public void setMediaListener(@NonNull MediaListener listener) {
@@ -139,7 +139,7 @@ public class InputPanel extends LinearLayout
     }
 
     public void setEmojiDrawer(@NonNull EmojiDrawer emojiDrawer) {
-//        emojiToggle.attach(emojiDrawer);
+        emojiToggle.attach(emojiDrawer);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class InputPanel extends LinearLayout
         recordTime.display();
         slideToCancel.display(startPositionX);
 
-//        if (emojiVisible) ViewUtil.fadeOut(emojiToggle, FADE_TIME, View.INVISIBLE);
+        if (emojiVisible) ViewUtil.fadeOut(emojiToggle, FADE_TIME, View.INVISIBLE);
         ViewUtil.fadeOut(composeText, FADE_TIME, View.INVISIBLE);
         ViewUtil.fadeOut(quickCameraToggle, FADE_TIME, View.INVISIBLE);
         ViewUtil.fadeOut(quickAudioToggle, FADE_TIME, View.INVISIBLE);
@@ -200,7 +200,7 @@ public class InputPanel extends LinearLayout
 
     public void setEnabled(boolean enabled) {
         composeText.setEnabled(enabled);
-//        emojiToggle.setEnabled(enabled);
+        emojiToggle.setEnabled(enabled);
         quickAudioToggle.setEnabled(enabled);
         quickCameraToggle.setEnabled(enabled);
     }
@@ -212,7 +212,7 @@ public class InputPanel extends LinearLayout
         future.addListener(new AssertedSuccessListener<Void>() {
             @Override
             public void onSuccess(Void result) {
-//                if (emojiVisible) ViewUtil.fadeIn(emojiToggle, FADE_TIME);
+                if (emojiVisible) ViewUtil.fadeIn(emojiToggle, FADE_TIME);
                 ViewUtil.fadeIn(composeText, FADE_TIME);
                 ViewUtil.fadeIn(quickCameraToggle, FADE_TIME);
                 ViewUtil.fadeIn(quickAudioToggle, FADE_TIME);
@@ -225,7 +225,7 @@ public class InputPanel extends LinearLayout
 
     @Override
     public void onKeyboardShown() {
-//        emojiToggle.setToEmoji();
+        emojiToggle.setToEmoji();
     }
 
     @Override

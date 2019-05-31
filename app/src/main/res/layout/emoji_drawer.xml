@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:background="?emoji_tab_strip_background"
+        style="?emoji_tab_strip_background"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="40dp">
@@ -13,18 +13,18 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="?emoji_tab_strip_background"/>
+            style="?emoji_tab_strip_background"/>
 
         <View
             android:layout_width="1px"
             android:layout_height="match_parent"
-            android:background="?emoji_tab_seperator"
+            style="?emoji_tab_seperator"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp" />
 
         <com.muzima.messaging.customcomponents.emoji.RepeatableImageKey
             android:id="@+id/backspace"
-            android:background="?emoji_tab_strip_background"
+            style="?emoji_tab_strip_background"
             android:src="@drawable/ic_backspace_grey600_24dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
