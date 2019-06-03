@@ -58,15 +58,13 @@
         <com.muzima.messaging.customcomponents.FromTextView
             android:id="@+id/from"
             style="@style/Signal.Text.Body"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="1dp"
             android:layout_marginBottom="2dp"
-            android:layout_toStartOf="@+id/thumbnail"
-            android:layout_toLeftOf="@+id/thumbnail"
             android:drawablePadding="5dp"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
@@ -101,8 +99,9 @@
 
             <com.muzima.messaging.customcomponents.emoji.EmojiTextView
                 android:id="@+id/subject"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/Signal.Text.Preview"
                 android:textColor="@color/primary_white"
                 android:maxLines="1"
                 tools:text="Wheels arrive at 3pm flat. This is a somewhat longer message."
