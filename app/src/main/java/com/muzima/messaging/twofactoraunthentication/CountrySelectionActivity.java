@@ -2,6 +2,7 @@ package com.muzima.messaging.twofactoraunthentication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.muzima.view.BaseActivity;
 import com.muzima.R;

@@ -29,18 +29,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.messaging.crypto.ProfileKeyUtil;
 import com.muzima.messaging.customcomponents.InputAwareLayout;
 import com.muzima.messaging.customcomponents.emoji.EmojiDrawer;
 import com.muzima.messaging.customcomponents.emoji.EmojiToggle;
+import com.muzima.messaging.exceptions.BitmapDecodingException;
 import com.muzima.messaging.mms.GlideApp;
 import com.muzima.messaging.profiles.SystemProfileUtil;
 import com.muzima.messaging.push.AccountManagerFactory;
 import com.muzima.messaging.sqlite.database.SignalAddress;
 import com.muzima.messaging.utils.FileProviderUtil;
 import com.muzima.messaging.utils.Util;
+import com.muzima.utils.BitmapUtil;
 import com.muzima.utils.IntentUtils;
 import com.muzima.utils.Permissions;
 import com.muzima.utils.ViewUtil;
@@ -157,7 +160,37 @@ public class CreateProfileActivity extends BaseActionBarActivity {
                         new Crop(inputFile).output(outputFile).asSquare().start(this);
                     }
                 }
+                break;
+            case Crop.REQUEST_CROP:
+                if (resultCode == Activity.RESULT_OK) {
+                    new AsyncTask<Void, Void, byte[]>() {
+                        @Override
+                        protected byte[] doInBackground(Void... params) {
+                            try {
+                                BitmapUtil.ScaleResult result = BitmapUtil.createScaledBytes(CreateProfileActivity.this, Crop.getOutput(data), new ProfileMediaConstraints());
+                                return result.getBitmap();
+                            } catch (BitmapDecodingException e) {
+                                Log.w(TAG, e);
+                                return null;
+                            }
+                        }
 
+                        @Override
+                        protected void onPostExecute(byte[] result) {
+                            if (result != null) {
+                                avatarBytes = result;
+                                GlideApp.with(CreateProfileActivity.this)
+                                        .load(avatarBytes)
+                                        .skipMemoryCache(true)
+                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                        .circleCrop()
+                                        .into(avatar);
+                            } else {
+                                Toast.makeText(CreateProfileActivity.this, R.string.CreateProfileActivity_error_setting_profile_photo, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }.execute();
+                }
                 break;
         }
     }

@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:fillViewport="true"
-    android:background="@android:color/white"
+    android:background="@android:color/black"
     tools:context=".view.MainActivity">
 
     <RelativeLayout android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:orientation="vertical"
-            android:background="@color/primary_blue"
+            android:background="@color/core_grey_60"
             android:padding="16dp">
 
             <TextView android:id="@+id/verify_header"
@@ -42,12 +42,12 @@
 
         <android.support.design.widget.FloatingActionButton
             app:fabSize="normal"
-            app:backgroundTint="@color/primary_white"
+            app:maxImageSize="46dp"
+            app:backgroundTint="@color/primary_black"
             app:elevation="1dp"
             android:id="@+id/fab"
             android:transitionName="icon"
-            android:tint="@color/primary_blue"
-            android:rotation="15"
+            android:src="@drawable/ic_launcher_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/header"

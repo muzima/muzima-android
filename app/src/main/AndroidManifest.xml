@@ -515,7 +515,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".messaging.twofactoraunthentication.CountrySelectionActivity" />
+        <activity android:name=".messaging.twofactoraunthentication.CountrySelectionActivity"
+                  android:theme="@style/AppThemeNoActionBar.Dark"/>
         <activity android:name="com.muzima.messaging.CreateProfileActivity"
             android:windowSoftInputMode="stateVisible"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
