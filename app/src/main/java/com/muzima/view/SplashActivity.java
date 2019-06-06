@@ -17,6 +17,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.muzima.R;
+import com.muzima.domain.Credentials;
 import com.muzima.messaging.CreateProfileActivity;
 import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.crypto.IdentityKeyUtil;
@@ -66,7 +67,12 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } else {
-                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                Intent intent = new Intent(this, LoginActivity.class);
+                if (new Credentials(this).isEmpty()) {
+                    intent.putExtra(LoginActivity.isFirstLaunch, false);
+                }
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
             }

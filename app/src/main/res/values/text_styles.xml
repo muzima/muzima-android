@@ -5,17 +5,20 @@
         <item name="android:lineSpacingExtra">4sp</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:letterSpacing" tools:targetApi="lollipop">0.01</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
     </style>
     <style name="Signal.Text.Caption" parent="Base.TextAppearance.AppCompat.Caption">
         <item name="android:textSize">12sp</item>
         <item name="android:lineSpacingExtra">2sp</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:letterSpacing" tools:ignore="NewApi">0.03</item>
+        <item name="android:textColor">?attr/conversation_list_item_subject_color</item>
     </style>
     <style name="Signal.Text.Preview" parent="Base.TextAppearance.AppCompat.Body2">
         <item name="android:textSize">14sp</item>
         <item name="android:lineSpacingExtra">3sp</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:letterSpacing" tools:ignore="NewApi">0.01</item>
+        <item name="android:textColor">?attr/conversation_list_item_date_color</item>
     </style>
 </resources>

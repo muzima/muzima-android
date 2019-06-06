@@ -20,7 +20,7 @@ public class ReminderView extends LinearLayout {
     private ViewGroup container;
     private ImageButton closeButton;
     private TextView title;
-    private TextView          text;
+    private TextView text;
     private OnDismissListener dismissListener;
 
     public ReminderView(Context context) {

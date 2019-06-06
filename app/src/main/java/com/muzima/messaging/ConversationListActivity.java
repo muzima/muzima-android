@@ -36,8 +36,10 @@ import com.muzima.model.SignalRecipient;
 import com.muzima.notifications.MarkReadReceiver;
 import com.muzima.notifications.MessageNotifier;
 import com.muzima.service.KeyCachingService;
+import com.muzima.utils.DynamicNoActionBarTheme;
 import com.muzima.utils.MaterialColor;
 import com.muzima.utils.Permissions;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.concurrent.LifecycleBoundTask;
 
 import org.whispersystems.libsignal.util.guava.Optional;
@@ -57,6 +59,12 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     private ViewGroup fragmentContainer;
     private Toolbar toolbar;
 
+    private ThemeUtils themeUtils = new DynamicNoActionBarTheme();
+
+    @Override
+    protected void onPreCreate() {
+        themeUtils.onCreate(this);
+    }
 
     @Override
     protected void onCreate(Bundle icicle, boolean ready) {
@@ -81,6 +89,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     @Override
     public void onResume() {
         super.onResume();
+        themeUtils.onResume(this);
         LifecycleBoundTask.run(getLifecycle(), () -> {
             return SignalRecipient.from(this, SignalAddress.fromSerialized(TextSecurePreferences.getLocalNumber(this)), false);
         }, this::initializeProfileIcon);

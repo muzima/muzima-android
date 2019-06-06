@@ -143,6 +143,7 @@ import com.muzima.utils.MaterialColor;
 import com.muzima.utils.MediaUtil;
 import com.muzima.utils.Permissions;
 import com.muzima.utils.ServiceUtil;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
 import com.muzima.utils.concurrent.AssertedSuccessListener;
 import com.muzima.messaging.QuickAttachmentDrawer.AttachmentDrawerListener;
@@ -239,10 +240,11 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     private boolean isSecurityInitialized = false;
 
     private final IdentityRecordList identityRecords = new IdentityRecordList();
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onPreCreate() {
-
+        themeUtils.onCreate(this);
     }
 
     @Override
@@ -329,6 +331,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onCreate(this);
         quickAttachmentDrawer.onResume();
 
         initializeEnabledCheck();

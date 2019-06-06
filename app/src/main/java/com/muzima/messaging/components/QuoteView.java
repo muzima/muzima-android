@@ -27,7 +27,7 @@ import com.muzima.messaging.mms.Slide;
 import com.muzima.messaging.mms.SlideDeck;
 import com.muzima.messaging.utils.Util;
 import com.muzima.model.SignalRecipient;
-import com.muzima.utils.ThemeUtil;
+import com.muzima.utils.ThemeUtils;
 
 import java.util.List;
 
@@ -260,7 +260,7 @@ public class QuoteView extends FrameLayout implements RecipientModifiedListener 
             dismissView.setBackgroundDrawable(null);
         }
 
-        if (ThemeUtil.isDarkTheme(getContext())) {
+        if (ThemeUtils.isDarkTheme(getContext())) {
             dismissView.setBackgroundResource(R.drawable.circle_alpha);
         }
     }
