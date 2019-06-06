@@ -21,7 +21,7 @@ public class ThemeUtil {
         if (theme.resolveAttribute(attr, typedValue, true)) {
             return typedValue.data;
         }
-        return Color.RED;
+        return Color.WHITE;
     }
 
     private static String getAttribute(Context context, int attribute, String defaultValue) {

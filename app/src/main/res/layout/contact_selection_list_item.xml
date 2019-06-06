@@ -33,7 +33,7 @@
 
         <com.muzima.messaging.customcomponents.emoji.EmojiTextView
             android:id="@+id/name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:singleLine="true"

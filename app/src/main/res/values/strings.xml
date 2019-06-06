@@ -1737,5 +1737,6 @@
     <string name="AndroidManifest__linked_devices">Linked devices</string>
     <string name="preferences__vibrate">Vibrate</string>
     <string name="preferences__led_color">LED color</string>
+    <string name="CreateProfileActivity_error_setting_profile_photo">Error setting profile photo</string>
 
 </resources>

@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.messaging.CreateProfileActivity;
 import com.muzima.messaging.twofactoraunthentication.RegistrationActivity;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.custom.ScrollViewWithDetection;

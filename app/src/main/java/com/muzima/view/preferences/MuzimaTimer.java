@@ -61,9 +61,6 @@ public class MuzimaTimer extends CountDownTimer {
 
     private void logOut()
     {
-
-        MuzimaLogger.log(muzimaApplication.getMuzimaContext(),"SESSION_TIMEOUT",
-                "{\"userId\":\"" +muzimaApplication.getAuthenticatedUser().getUsername()+"\"}");
         boolean isRunningInBackground = muzimaApplication.isRunningInBackground();
         boolean isWizardComplete = new WizardFinishPreferenceService(muzimaApplication).isWizardFinished();
         if (isWizardComplete) {

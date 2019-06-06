@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="#ffffff">
+    android:background="@android:color/black">
 
     <EditText android:id="@+id/country_search"
         android:layout_width="fill_parent"
