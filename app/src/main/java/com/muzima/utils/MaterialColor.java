@@ -11,7 +11,7 @@ import com.muzima.R;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.muzima.utils.ThemeUtil.isDarkTheme;
+import static com.muzima.utils.ThemeUtils.isDarkTheme;
 
 public enum MaterialColor {
 

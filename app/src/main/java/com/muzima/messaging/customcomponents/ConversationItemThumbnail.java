@@ -21,7 +21,7 @@ import com.muzima.messaging.mms.GlideRequests;
 import com.muzima.messaging.mms.Slide;
 import com.muzima.messaging.mms.SlideClickListener;
 import com.muzima.messaging.mms.SlidesClickedListener;
-import com.muzima.utils.ThemeUtil;
+import com.muzima.utils.ThemeUtils;
 
 import java.util.List;
 
@@ -64,7 +64,7 @@ public class ConversationItemThumbnail extends FrameLayout {
     private void init(@Nullable AttributeSet attrs) {
         inflate(getContext(), R.layout.conversation_item_thumbnail, this);
 
-        outlinePaint.setColor(ThemeUtil.getThemedColor(getContext(), R.attr.conversation_item_image_outline_color));
+        outlinePaint.setColor(ThemeUtils.getThemedColor(getContext(), R.attr.conversation_item_image_outline_color));
 
         this.thumbnail  = findViewById(R.id.conversation_thumbnail_image);
         this.album      = findViewById(R.id.conversation_thumbnail_album);

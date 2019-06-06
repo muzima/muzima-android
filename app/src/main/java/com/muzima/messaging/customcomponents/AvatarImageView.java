@@ -20,7 +20,7 @@ import com.muzima.messaging.ResourceContactPhoto;
 import com.muzima.messaging.contacts.avatars.ContactColors;
 import com.muzima.messaging.mms.GlideRequests;
 import com.muzima.model.SignalRecipient;
-import com.muzima.utils.ThemeUtil;
+import com.muzima.utils.ThemeUtils;
 
 public class AvatarImageView extends AppCompatImageView {
 
@@ -64,7 +64,7 @@ public class AvatarImageView extends AppCompatImageView {
             typedArray.recycle();
         }
 
-        outlinePaint = ThemeUtil.isDarkTheme(getContext()) ? DARK_THEME_OUTLINE_PAINT : LIGHT_THEME_OUTLINE_PAINT;
+        outlinePaint = ThemeUtils.isDarkTheme(getContext()) ? DARK_THEME_OUTLINE_PAINT : LIGHT_THEME_OUTLINE_PAINT;
     }
 
     @Override

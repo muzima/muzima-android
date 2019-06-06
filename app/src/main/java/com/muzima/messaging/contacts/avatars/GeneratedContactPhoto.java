@@ -15,7 +15,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.muzima.R;
 import com.muzima.messaging.ResourceContactPhoto;
 import com.muzima.messaging.contacts.FallbackContactPhoto;
-import com.muzima.utils.ThemeUtil;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
 
 import java.util.regex.Pattern;
@@ -54,7 +54,7 @@ public class GeneratedContactPhoto implements FallbackContactPhoto {
                     .endConfig()
                     .buildRound(character, inverted ? Color.WHITE : color);
 
-            Drawable gradient = context.getResources().getDrawable(ThemeUtil.isDarkTheme(context) ? R.drawable.avatar_gradient_dark
+            Drawable gradient = context.getResources().getDrawable(ThemeUtils.isDarkTheme(context) ? R.drawable.avatar_gradient_dark
                     : R.drawable.avatar_gradient_light);
             return new LayerDrawable(new Drawable[] { base, gradient });
         }

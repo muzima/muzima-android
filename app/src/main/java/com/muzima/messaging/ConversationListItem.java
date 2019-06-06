@@ -31,7 +31,7 @@ import com.muzima.messaging.utils.Util;
 import com.muzima.model.MessageResult;
 import com.muzima.model.SignalRecipient;
 import com.muzima.utils.DateUtils;
-import com.muzima.utils.ThemeUtil;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
 
 import java.util.Collections;
@@ -141,16 +141,16 @@ public class ConversationListItem extends RelativeLayout
             this.subjectView.setVisibility(VISIBLE);
             this.subjectView.setText(thread.getDisplayBody());
             this.subjectView.setTypeface(unreadCount == 0 ? LIGHT_TYPEFACE : BOLD_TYPEFACE);
-            this.subjectView.setTextColor(unreadCount == 0 ? ThemeUtil.getThemedColor(getContext(), R.attr.conversation_list_item_subject_color)
-                    : ThemeUtil.getThemedColor(getContext(), R.attr.conversation_list_item_unread_color));
+            this.subjectView.setTextColor(unreadCount == 0 ? ThemeUtils.getThemedColor(getContext(), R.attr.conversation_list_item_subject_color)
+                    : ThemeUtils.getThemedColor(getContext(), R.attr.conversation_list_item_unread_color));
         }
 
         if (thread.getDate() > 0) {
             CharSequence date = DateUtils.getBriefRelativeTimeSpanString(getContext(), locale, thread.getDate());
             dateView.setText(date);
             dateView.setTypeface(unreadCount == 0 ? LIGHT_TYPEFACE : BOLD_TYPEFACE);
-            dateView.setTextColor(unreadCount == 0 ? ThemeUtil.getThemedColor(getContext(), R.attr.conversation_list_item_date_color)
-                    : ThemeUtil.getThemedColor(getContext(), R.attr.conversation_list_item_unread_color));
+            dateView.setTextColor(unreadCount == 0 ? ThemeUtils.getThemedColor(getContext(), R.attr.conversation_list_item_date_color)
+                    : ThemeUtils.getThemedColor(getContext(), R.attr.conversation_list_item_unread_color));
         }
 
         if (thread.isArchived()) {

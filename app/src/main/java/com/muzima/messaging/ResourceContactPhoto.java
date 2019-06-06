@@ -14,7 +14,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.makeramen.roundedimageview.RoundedDrawable;
 import com.muzima.R;
 import com.muzima.messaging.contacts.FallbackContactPhoto;
-import com.muzima.utils.ThemeUtil;
+import com.muzima.utils.ThemeUtils;
 
 public class ResourceContactPhoto implements FallbackContactPhoto {
     private final int resourceId;
@@ -45,7 +45,7 @@ public class ResourceContactPhoto implements FallbackContactPhoto {
             foreground.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         }
 
-        Drawable gradient = context.getResources().getDrawable(ThemeUtil.isDarkTheme(context) ? R.drawable.avatar_gradient_dark
+        Drawable gradient = context.getResources().getDrawable(ThemeUtils.isDarkTheme(context) ? R.drawable.avatar_gradient_dark
                 : R.drawable.avatar_gradient_light);
 
         return new ExpandingLayerDrawable(new Drawable[] {background, foreground, gradient});

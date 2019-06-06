@@ -42,7 +42,7 @@ import com.muzima.messaging.utils.Stub;
 import com.muzima.utils.BitmapUtil;
 import com.muzima.utils.MediaUtil;
 import com.muzima.utils.Permissions;
-import com.muzima.utils.ThemeUtil;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
 import com.muzima.utils.concurrent.AssertedSuccessListener;
 import com.muzima.utils.concurrent.ListenableFuture;
@@ -92,7 +92,7 @@ public class AttachmentManager {
             removableMediaView.setRemoveClickListener(new RemoveButtonListener());
             removableMediaView.setEditClickListener(new EditButtonListener());
             thumbnail.setOnClickListener(new ThumbnailClickListener());
-            documentView.getBackground().setColorFilter(ThemeUtil.getThemedColor(context, R.attr.conversation_item_bubble_background), PorterDuff.Mode.MULTIPLY);
+            documentView.getBackground().setColorFilter(ThemeUtils.getThemedColor(context, R.attr.conversation_item_bubble_background), PorterDuff.Mode.MULTIPLY);
         }
 
     }

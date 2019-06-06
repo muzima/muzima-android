@@ -14,8 +14,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.util.Log;
+import android.util.TypedValue;
+
 import com.muzima.R;
 
 public class ThemeUtils {
@@ -53,7 +60,7 @@ public class ThemeUtils {
         lightMode = getPreferenceLightMode(activity);
     }
 
-    private void setThemeForActivity(Activity activity) {
+    protected void setThemeForActivity(Activity activity) {
         if (lightMode) {
             activity.setTheme(lightThemeId);
         } else {
@@ -85,7 +92,31 @@ public class ThemeUtils {
         return getIcon(context, R.drawable.ic_warning_light, R.drawable.ic_warning);
     }
 
-    public static Drawable getIconRefresh(Context context){
+    public static Drawable getIconRefresh(Context context) {
         return getIcon(context, R.drawable.ic_refresh_light, R.drawable.ic_refresh);
+    }
+
+    public static boolean isDarkTheme(@NonNull Context context) {
+       return getAttribute(context, R.attr.theme_type, "light").equals("dark");
+    }
+
+    private static String getAttribute(Context context, int attribute, String defaultValue) {
+        TypedValue outValue = new TypedValue();
+
+        if (context.getTheme().resolveAttribute(attribute, outValue, true)) {
+            return outValue.coerceToString().toString();
+        } else {
+            return defaultValue;
+        }
+    }
+
+    public static int getThemedColor(@NonNull Context context, @AttrRes int attr) {
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+
+        if (theme.resolveAttribute(attr, typedValue, true)) {
+            return typedValue.data;
+        }
+        return Color.RED;
     }
 }

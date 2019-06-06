@@ -69,7 +69,6 @@
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
             android:maxLines="1"
-            android:textColor="@color/primary_white"
             tools:text="Jules Bonnot" />
 
         <com.muzima.messaging.customcomponents.AlertView
@@ -102,7 +101,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Signal.Text.Preview"
-                android:textColor="@color/primary_white"
                 android:maxLines="1"
                 tools:text="Wheels arrive at 3pm flat. This is a somewhat longer message."
                 android:ellipsize="end" />
@@ -142,7 +140,6 @@
             android:layout_alignBaseline="@+id/from"
             android:layout_above="@id/subject"
             style="@style/Signal.Text.Caption"
-            android:textColor="@color/primary_white"
             android:textAllCaps="true"
             tools:text="30 mins"
             android:singleLine="true"

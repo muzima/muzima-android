@@ -507,7 +507,8 @@
             android:windowSoftInputMode="stateUnchanged"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
-        <activity android:name=".messaging.twofactoraunthentication.SmsCodeVerificationActivity"/>
+        <activity android:name=".messaging.twofactoraunthentication.SmsCodeVerificationActivity"
+            android:theme="@style/AppThemeNoActionBar.Dark"/>
         <activity
             android:name=".view.SplashActivity">
             <intent-filter>
@@ -533,7 +534,6 @@
         </activity>
         <activity
             android:name="com.muzima.messaging.ConversationListActivity"
-            android:theme="@style/AppThemeNoActionBar.Dark"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
             android:exported="true"
             android:label="@string/app_name"
@@ -639,6 +639,7 @@
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
         <activity android:name="com.muzima.messaging.webrtc.view.WebRtcCallActivity"
+            android:theme="@style/AppThemeNoActionBar.Dark"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|fontScale"
