@@ -12,17 +12,32 @@ import com.muzima.messaging.sqlite.database.DatabaseFactory;
 import com.muzima.messaging.sqlite.database.SignalAddress;
 import com.muzima.messaging.sqlite.database.ThreadDatabase;
 import com.muzima.model.SignalRecipient;
+import com.muzima.utils.DynamicNoActionBarTheme;
+import com.muzima.utils.ThemeUtils;
 
 public class NewConversationActivity extends ContactSelectionActivity {
 
     @SuppressWarnings("unused")
     private static final String TAG = NewConversationActivity.class.getSimpleName();
 
+    private ThemeUtils themeUtils = new DynamicNoActionBarTheme();
+
+    @Override
+    protected void onPreCreate() {
+        themeUtils.onCreate(this);
+    }
+
     @Override
     public void onCreate(Bundle bundle, boolean ready) {
         super.onCreate(bundle, ready);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void onResume() {
+        themeUtils.onCreate(this);
+        super.onResume();
     }
 
     @Override

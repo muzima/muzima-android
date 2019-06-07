@@ -12,12 +12,14 @@ import com.muzima.R;
 import com.muzima.messaging.PassphraseRequiredActionBarActivity;
 import com.muzima.messaging.contactshare.Contact.Name;
 import com.muzima.messaging.utils.SimpleTextWatcher;
+import com.muzima.utils.DynamicNoActionBarTheme;
+import com.muzima.utils.ThemeUtils;
 
 public class ContactNameEditActivity extends PassphraseRequiredActionBarActivity {
 
         public static final String KEY_NAME          = "name";
         public static final String KEY_CONTACT_INDEX = "contact_index";
-
+        private ThemeUtils themeUtils = new DynamicNoActionBarTheme();
 
         private TextView displayNameView;
         private ContactNameEditViewModel viewModel;
@@ -31,7 +33,7 @@ public class ContactNameEditActivity extends PassphraseRequiredActionBarActivity
 
         @Override
         protected void onPreCreate() {
-
+            themeUtils.onCreate(this);
         }
 
         @Override
@@ -60,6 +62,7 @@ public class ContactNameEditActivity extends PassphraseRequiredActionBarActivity
         @Override
         protected void onResume() {
             super.onResume();
+            themeUtils.onCreate(this);
         }
 
         private void initializeToolbar() {

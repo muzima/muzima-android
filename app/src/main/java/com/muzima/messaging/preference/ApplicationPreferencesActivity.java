@@ -23,6 +23,7 @@ import com.muzima.messaging.PassphraseRequiredActionBarActivity;
 import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.fragments.CorrectedPreferenceFragment;
 import com.muzima.service.KeyCachingService;
+import com.muzima.utils.ThemeUtils;
 
 public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -36,6 +37,13 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
     private static final String PREFERENCE_CATEGORY_CHATS = "preference_category_chats";
     private static final String PREFERENCE_CATEGORY_DEVICES = "preference_category_devices";
     private static final String PREFERENCE_CATEGORY_ADVANCED = "preference_category_advanced";
+    private ThemeUtils themeUtils = new ThemeUtils();
+
+    @Override
+    protected void onPreCreate() {
+        themeUtils.onCreate(this);
+    }
+
 
     @Override
     protected void onCreate(Bundle icicle, boolean ready) {
@@ -52,6 +60,7 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
     @Override
     public void onResume() {
         super.onResume();
+        themeUtils.onCreate(this);
     }
 
     @Override

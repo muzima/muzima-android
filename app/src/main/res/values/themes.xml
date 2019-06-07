@@ -102,6 +102,7 @@
         <item name="group_members_dialog_icon">@drawable/ic_group_white_24dp</item>
         <item name="shared_contact_details_titlebar">@color/grey_900</item>
         <item name="device_link_item_card_background">@color/primary_black</item>
+        <item name="menu_accept_icon">@drawable/ic_check_white_24dp</item>
     </style>
 
 
@@ -157,7 +158,7 @@
         <item name="conversation_icon_attach_video">@drawable/ic_video_light</item>
         <item name="attachment_document_icon_small">@drawable/ic_document_small_light</item>
         <item name="conversation_input_background">@drawable/compose_background_light</item>
-        <item name="conversation_item_sent_text_primary_color">@color/grey_300</item>
+        <item name="conversation_item_sent_text_primary_color">@color/core_grey_90</item>
         <item name="quick_camera_icon">@drawable/quick_camera_light</item>
         <item name="conversation_input_inline_attach_icon_tint">@color/grey_300</item>
         <item name="quick_mic_icon">@drawable/ic_mic_grey600_24dp</item>
@@ -194,6 +195,7 @@
         <item name="group_members_dialog_icon">@drawable/ic_group_grey600_24dp</item>
         <item name="shared_contact_details_titlebar">@color/grey_400</item>
         <item name="device_link_item_card_background">@color/primary_white</item>
+        <item name="menu_accept_icon">@drawable/check_dark</item>
     </style>
 
 

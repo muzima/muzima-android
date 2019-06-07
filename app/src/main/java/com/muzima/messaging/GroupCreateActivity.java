@@ -42,6 +42,7 @@ import com.muzima.messaging.contacts.ContactsCursorLoader.DisplayMode;
 import com.muzima.messaging.tasks.ProgressDialogAsyncTask;
 import com.muzima.model.SignalRecipient;
 import com.muzima.utils.BitmapUtil;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
 import com.soundcloud.android.crop.Crop;
 
@@ -73,8 +74,13 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
     private TextView creatingText;
     private Bitmap avatarBmp;
 
-    @NonNull
-    private Optional<GroupData> groupToUpdate = Optional.absent();
+    @NonNull private Optional<GroupData> groupToUpdate = Optional.absent();
+    private final ThemeUtils themeUtils = new ThemeUtils();
+
+    @Override
+    protected void onPreCreate() {
+        themeUtils.onCreate(this);
+    }
 
     @Override
     protected void onCreate(Bundle state, boolean ready) {
@@ -88,6 +94,7 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
     @Override
     public void onResume() {
         super.onResume();
+        themeUtils.onCreate(this);
         updateViewState();
     }
 

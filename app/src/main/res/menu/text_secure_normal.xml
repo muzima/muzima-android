@@ -13,6 +13,9 @@
     <item android:title="@string/text_secure_normal__invite_friends"
           android:id="@+id/menu_invite" />
 
+    <item android:title="@string/general_app_settings"
+        android:id="@+id/menu_app_settings" />
+
     <item android:title="@string/text_secure_normal__menu_settings"
           android:id="@+id/menu_settings" />
 

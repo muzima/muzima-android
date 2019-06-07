@@ -37,7 +37,6 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
     private static final String TAG = AdvancedPreferenceFragment.class.getSimpleName();
 
     private static final String PUSH_MESSAGING_PREF = "pref_toggle_push_messaging";
-    private static final String SUBMIT_DEBUG_LOG_PREF = "pref_submit_debug_logs";
 
     private static final int PICK_IDENTITY_CONTACT = 1;
 
@@ -46,10 +45,6 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
         super.onCreate(paramBundle);
 
         initializeIdentitySelection();
-
-        Preference submitDebugLog = this.findPreference(SUBMIT_DEBUG_LOG_PREF);
-        submitDebugLog.setOnPreferenceClickListener(new SubmitDebugLogListener());
-        submitDebugLog.setSummary(getVersion(getActivity()));
     }
 
     @Override
@@ -140,15 +135,6 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
         if (contactUri != null) {
             TextSecurePreferences.setIdentityContactUri(getActivity(), contactUri.toString());
             initializeIdentitySelection();
-        }
-    }
-
-    private class SubmitDebugLogListener implements Preference.OnPreferenceClickListener {
-        @Override
-        public boolean onPreferenceClick(Preference preference) {
-//            final Intent intent = new Intent(getActivity(), LogSubmitActivity.class);
-//            startActivity(intent);
-            return true;
         }
     }
 

@@ -31,6 +31,8 @@ import com.muzima.messaging.mms.GlideRequests;
 import com.muzima.messaging.sqlite.database.RecipientDatabase;
 import com.muzima.messaging.utils.Util;
 import com.muzima.model.SignalRecipient;
+import com.muzima.utils.DynamicNoActionBarTheme;
+import com.muzima.utils.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +59,13 @@ public class SharedContactDetailsActivity extends PassphraseRequiredActionBarAct
     private Contact             contact;
 
     private final Map<String, SignalRecipient> activeRecipients = new HashMap<>();
+
+    private ThemeUtils themeUtils = new DynamicNoActionBarTheme();
+
+    @Override
+    protected void onPreCreate() {
+        themeUtils.onCreate(this);
+    }
 
     public static Intent getIntent(@NonNull Context context, @NonNull Contact contact) {
         Intent intent = new Intent(context, SharedContactDetailsActivity.class);
@@ -88,6 +97,7 @@ public class SharedContactDetailsActivity extends PassphraseRequiredActionBarAct
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onCreate(this);
     }
 
     private void initToolbar() {
