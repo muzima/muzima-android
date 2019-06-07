@@ -67,9 +67,11 @@ import com.muzima.messaging.utils.IdentityUtil;
 import com.muzima.messaging.utils.Util;
 import com.muzima.model.SignalRecipient;
 import com.muzima.notifications.NotificationChannels;
+import com.muzima.utils.DynamicNoActionBarTheme;
 import com.muzima.utils.MaterialColor;
 import com.muzima.utils.MaterialColors;
 import com.muzima.utils.Permissions;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
 import com.muzima.utils.concurrent.ListenableFuture;
 
@@ -102,6 +104,12 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
     private ThreadPhotoRailView threadPhotoRailView;
     private CollapsingToolbarLayout toolbarLayout;
 
+    private ThemeUtils themeUtils = new DynamicNoActionBarTheme();
+
+    @Override
+    protected void onPreCreate() {
+        themeUtils.onCreate(this);
+    }
 
     @Override
     public void onCreate(Bundle instanceState, boolean ready) {
@@ -121,6 +129,7 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
     @Override
     public void onResume() {
         super.onResume();
+        themeUtils.onCreate(this);
     }
 
     @Override

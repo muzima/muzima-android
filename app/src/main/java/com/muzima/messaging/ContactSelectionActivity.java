@@ -11,6 +11,8 @@ import com.muzima.messaging.contacts.ContactsCursorLoader.DisplayMode;
 import com.muzima.messaging.customcomponents.ContactFilterToolbar;
 import com.muzima.messaging.fragments.ContactSelectionListFragment;
 import com.muzima.messaging.utils.DirectoryHelper;
+import com.muzima.utils.DynamicNoActionBarTheme;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
 
 import java.io.IOException;
@@ -24,10 +26,11 @@ public class ContactSelectionActivity extends PassphraseRequiredActionBarActivit
     protected ContactSelectionListFragment contactsFragment;
 
     private ContactFilterToolbar toolbar;
+    private final ThemeUtils themeUtils = new DynamicNoActionBarTheme();
 
     @Override
     protected void onPreCreate() {
-
+        themeUtils.onCreate(this);
     }
 
     @Override
@@ -48,6 +51,7 @@ public class ContactSelectionActivity extends PassphraseRequiredActionBarActivit
     @Override
     public void onResume() {
         super.onResume();
+        themeUtils.onCreate(this);
     }
 
     protected ContactFilterToolbar getToolbar() {

@@ -4,7 +4,7 @@
 
     <item android:title="@string/GroupCreateActivity_menu_apply_button"
           android:id="@+id/menu_create_group"
-          android:icon="@drawable/ic_check_white_24dp"
+          android:icon="?menu_accept_icon"
           app:showAsAction="always|withText"/>
 
 </menu>

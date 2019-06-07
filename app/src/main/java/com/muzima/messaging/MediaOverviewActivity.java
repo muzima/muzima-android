@@ -50,6 +50,7 @@ import com.muzima.messaging.utils.SaveAttachmentTask;
 import com.muzima.messaging.utils.StickyHeaderDecoration;
 import com.muzima.messaging.utils.Util;
 import com.muzima.model.SignalRecipient;
+import com.muzima.utils.DynamicNoActionBarTheme;
 import com.muzima.utils.Permissions;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
@@ -71,12 +72,16 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private SignalRecipient recipient;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new DynamicNoActionBarTheme();
+
+    @Override
+    protected void onPreCreate() {
+        themeUtils.onCreate(this);
+    }
 
     @Override
     protected void onCreate(Bundle bundle, boolean ready) {
         hideActionBar();
-        themeUtils.onCreate(this);
 
         setContentView(R.layout.media_overview_activity);
 

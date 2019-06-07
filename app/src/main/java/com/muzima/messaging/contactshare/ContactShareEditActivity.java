@@ -19,6 +19,7 @@ import com.muzima.R;
 import com.muzima.messaging.PassphraseRequiredActionBarActivity;
 import com.muzima.messaging.mms.GlideApp;
 import com.muzima.messaging.sqlite.database.DatabaseFactory;
+import com.muzima.utils.ThemeUtils;
 
 import static com.muzima.messaging.contactshare.Contact.*;
 import static com.muzima.messaging.contactshare.ContactShareEditViewModel.*;
@@ -33,9 +34,9 @@ public class ContactShareEditActivity extends PassphraseRequiredActionBarActivit
     private static final int CODE_NAME_EDIT   = 55;
 
     private ContactShareEditViewModel viewModel;
+    private ThemeUtils themeUtils = new ThemeUtils();
 
     public static Intent getIntent(@NonNull Context context, @NonNull List<Uri> contactUris) {
-        Log.w("ContactShareEditActivity ","TRACE [ ++++++++++++++++++++++++++++++++++++++++++TTTTTTTTTTTTTTTTTTTTTTT");
         ArrayList<Uri> contactUriList = new ArrayList<>(contactUris);
 
         Intent intent = new Intent(context, ContactShareEditActivity.class);
@@ -46,12 +47,11 @@ public class ContactShareEditActivity extends PassphraseRequiredActionBarActivit
     @Override
     protected void onPreCreate() {
         super.onPreCreate();
+        themeUtils.onCreate(this);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState, boolean ready) {
-        Log.w(getClass().getSimpleName(),"TRACE [ ++++++++++++++++++++++++++++++++++++++++++");
-
         setContentView(R.layout.activity_contact_share_edit);
 
         if (getIntent() == null) {
@@ -88,6 +88,7 @@ public class ContactShareEditActivity extends PassphraseRequiredActionBarActivit
     @Override
     protected void onResume() {
         super.onResume();
+        themeUtils.onCreate(this);
     }
 
     private void presentEvent(@Nullable Event event) {

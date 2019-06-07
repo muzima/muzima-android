@@ -8,6 +8,7 @@ import com.muzima.messaging.CreateProfileActivity;
 import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.crypto.storage.SignalProtocolStoreImpl;
 import com.muzima.messaging.events.ReminderUpdateEvent;
+import com.muzima.messaging.fragments.DeviceListFragment;
 import com.muzima.messaging.gcm.GcmBroadcastReceiver;
 import com.muzima.messaging.jobs.AttachmentDownloadJob;
 import com.muzima.messaging.jobs.AvatarDownloadJob;
@@ -91,6 +92,7 @@ import dagger.Provides;
         MultiDeviceProfileKeyUpdateJob.class,
         MultiDeviceReadReceiptUpdateJob.class,
         MultiDeviceConfigurationUpdateJob.class,
+        DeviceListFragment.class,
         TypingSendJob.class})
 public class SignalCommunicationModule {
     private static final String TAG = SignalCommunicationModule.class.getSimpleName();

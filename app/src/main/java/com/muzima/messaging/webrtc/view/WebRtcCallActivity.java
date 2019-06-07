@@ -24,8 +24,10 @@ import com.muzima.messaging.crypto.storage.TextSecureIdentityKeyStore;
 import com.muzima.messaging.events.WebRtcViewModel;
 import com.muzima.model.SignalRecipient;
 import com.muzima.service.WebRtcCallService;
+import com.muzima.utils.DynamicNoActionBarTheme;
 import com.muzima.utils.Permissions;
 import com.muzima.utils.ServiceUtil;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,11 +50,14 @@ public class WebRtcCallActivity extends AppCompatActivity {
     public static final String END_CALL_ACTION = WebRtcCallActivity.class.getCanonicalName() + ".END_CALL_ACTION";
     private WebRtcCallScreen callScreen;
 
+    private ThemeUtils themeUtils = new DynamicNoActionBarTheme();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "onCreate()");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -67,6 +72,7 @@ public class WebRtcCallActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         Log.i(TAG, "onResume()");
+        themeUtils.onCreate(this);
         super.onResume();
         initializeScreenshotSecurity();
         EventBus.getDefault().register(this);

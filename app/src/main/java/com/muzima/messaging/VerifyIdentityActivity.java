@@ -57,8 +57,10 @@ import com.muzima.messaging.sqlite.database.SignalAddress;
 import com.muzima.messaging.utils.IdentityUtil;
 import com.muzima.messaging.utils.Util;
 import com.muzima.model.SignalRecipient;
+import com.muzima.utils.DynamicNoActionBarTheme;
 import com.muzima.utils.MaterialColor;
 import com.muzima.utils.Permissions;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
 
 import org.whispersystems.libsignal.IdentityKey;
@@ -83,6 +85,13 @@ public class VerifyIdentityActivity extends PassphraseRequiredActionBarActivity 
 
     private VerifyDisplayFragment displayFragment = new VerifyDisplayFragment();
     private VerifyScanFragment scanFragment = new VerifyScanFragment();
+
+    private ThemeUtils themeUtils = new ThemeUtils();
+
+    @Override
+    protected void onPreCreate() {
+        themeUtils.onCreate(this);
+    }
 
     @Override
     protected void onCreate(Bundle state, boolean ready) {

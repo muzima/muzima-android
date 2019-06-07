@@ -41,6 +41,8 @@ import com.muzima.utils.MaterialColor;
 import com.muzima.utils.Permissions;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.concurrent.LifecycleBoundTask;
+import com.muzima.view.preferences.SettingsActivity;
+import com.muzima.view.preferences.settings.SettingsPreferenceFragment;
 
 import org.whispersystems.libsignal.util.guava.Optional;
 
@@ -184,6 +186,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
 
         switch (item.getItemId()) {
             case R.id.menu_new_group:         createGroup();           return true;
+            case R.id.menu_app_settings:      handleApplicationSettings(); return true;
             case R.id.menu_settings:          handleDisplaySettings(); return true;
             case R.id.menu_clear_passphrase:  handleClearPassphrase(); return true;
             case R.id.menu_mark_all_read:     handleMarkAllRead();     return true;
@@ -234,6 +237,11 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     private void handleDisplaySettings() {
         Intent preferencesIntent = new Intent(this, ApplicationPreferencesActivity.class);
         startActivity(preferencesIntent);
+    }
+
+    private void handleApplicationSettings(){
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
     }
 
     private void handleClearPassphrase() {
