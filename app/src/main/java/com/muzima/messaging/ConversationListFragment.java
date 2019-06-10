@@ -454,7 +454,6 @@ public class ConversationListFragment extends Fragment
             color.recycle();
         }
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-        
         actionMode = null;
     }
 

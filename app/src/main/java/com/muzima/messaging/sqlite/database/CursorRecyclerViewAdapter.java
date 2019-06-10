@@ -14,17 +14,15 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
     private final Context context;
     private final DataSetObserver observer = new AdapterDataSetObserver();
 
-    @VisibleForTesting
-    static final int  HEADER_TYPE = Integer.MIN_VALUE;
+    @VisibleForTesting static final int  HEADER_TYPE = Integer.MIN_VALUE;
     @VisibleForTesting static final int  FOOTER_TYPE = Integer.MIN_VALUE + 1;
     @VisibleForTesting static final long HEADER_ID   = Long.MIN_VALUE;
     @VisibleForTesting static final long FOOTER_ID   = Long.MIN_VALUE + 1;
 
     private Cursor cursor;
-    private           boolean valid;
-    private @Nullable
-    View header;
-    private @Nullable View    footer;
+    private boolean valid;
+    private @Nullable View header;
+    private @Nullable View footer;
 
     private static class HeaderFooterViewHolder extends RecyclerView.ViewHolder {
         public HeaderFooterViewHolder(View itemView) {
