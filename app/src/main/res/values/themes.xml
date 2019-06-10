@@ -103,6 +103,7 @@
         <item name="shared_contact_details_titlebar">@color/grey_900</item>
         <item name="device_link_item_card_background">@color/primary_black</item>
         <item name="menu_accept_icon">@drawable/ic_check_white_24dp</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
     </style>
 
 
@@ -247,6 +248,7 @@
         <item name="conversation_list_item_subject_color">#ffdddddd</item>
         <item name="conversation_list_item_unread_color">@color/primary_white</item>
         <item name="conversation_list_item_date_color">#ffdddddd</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
     </style>
 
     <!-- Application theme. -->

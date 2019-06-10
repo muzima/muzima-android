@@ -32,18 +32,12 @@ public class ConversationListAdapter extends CursorRecyclerViewAdapter<Conversat
     private static final int MESSAGE_TYPE_THREAD = 2;
     private static final int MESSAGE_TYPE_INBOX_ZERO = 3;
 
-    private final @NonNull
-    ThreadDatabase threadDatabase;
-    private final @NonNull
-    GlideRequests glideRequests;
-    private final @NonNull
-    Locale locale;
-    private final @NonNull
-    LayoutInflater inflater;
-    private final @Nullable
-    ItemClickListener clickListener;
-    private final @NonNull
-    MessageDigest digest;
+    private final @NonNull ThreadDatabase threadDatabase;
+    private final @NonNull GlideRequests glideRequests;
+    private final @NonNull Locale locale;
+    private final @NonNull LayoutInflater inflater;
+    private final @Nullable ItemClickListener clickListener;
+    private final @NonNull MessageDigest digest;
 
     private final Set<Long> batchSet = Collections.synchronizedSet(new HashSet<Long>());
     private boolean batchMode = false;
@@ -185,9 +179,7 @@ public class ConversationListAdapter extends CursorRecyclerViewAdapter<Conversat
 
     public interface ItemClickListener {
         void onItemClick(ConversationListItem item);
-
         void onItemLongClick(ConversationListItem item);
-
         void onSwitchToArchive();
     }
 }
