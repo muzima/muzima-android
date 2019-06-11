@@ -16,10 +16,10 @@ import com.muzima.R;
 
 public class AnimatingToggle extends FrameLayout {
 
-        private View current;
+    private View current;
 
-        private final Animation inAnimation;
-        private final Animation outAnimation;
+    private final Animation inAnimation;
+    private final Animation outAnimation;
 
     public AnimatingToggle(Context context) {
         this(context, null);
@@ -37,8 +37,8 @@ public class AnimatingToggle extends FrameLayout {
         this.inAnimation.setInterpolator(new FastOutSlowInInterpolator());
     }
 
-        @Override
-        public void addView(@NonNull View child, int index, ViewGroup.LayoutParams params) {
+    @Override
+    public void addView(@NonNull View child, int index, ViewGroup.LayoutParams params) {
         super.addView(child, index, params);
 
         if (getChildCount() == 1) {
@@ -50,7 +50,7 @@ public class AnimatingToggle extends FrameLayout {
         child.setClickable(false);
     }
 
-        public void display(@Nullable View view) {
+    public void display(@Nullable View view) {
         if (view == current) return;
         if (current != null) ViewUtil.animateOut(current, outAnimation, View.GONE);
         if (view    != null) ViewUtil.animateIn(view, inAnimation);
@@ -58,7 +58,7 @@ public class AnimatingToggle extends FrameLayout {
         current = view;
     }
 
-        public void displayQuick(@Nullable View view) {
+    public void displayQuick(@Nullable View view) {
         if (view == current) return;
         if (current != null) current.setVisibility(View.GONE);
         if (view != null)    view.setVisibility(View.VISIBLE);
