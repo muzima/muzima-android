@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.klinker.android.logger.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.messaging.animations.DeleteItemAnimator;
@@ -416,7 +417,7 @@ public class ConversationListFragment extends Fragment
         mode.setTitle("1");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.action_mode_status_bar));
+            getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.core_grey_45));
         }
 
         return true;

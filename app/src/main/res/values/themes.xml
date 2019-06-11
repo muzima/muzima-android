@@ -104,6 +104,12 @@
         <item name="device_link_item_card_background">@color/primary_black</item>
         <item name="menu_accept_icon">@drawable/ic_check_white_24dp</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="unarchive">@drawable/ic_unarchive_white_24dp</item>
+        <item name="archive">@drawable/ic_archive_white_24dp</item>
+        <item name="delete">@drawable/ic_delete_white_24dp</item>
+        <item name="select_all">@drawable/ic_select_all_white_24dp</item>
+        <item name="conversation_list_toolbar_background">@color/primary_black</item>
+        <item name="search_icon">@drawable/ic_search_white_24dp</item>
     </style>
 
 
@@ -197,6 +203,12 @@
         <item name="shared_contact_details_titlebar">@color/grey_400</item>
         <item name="device_link_item_card_background">@color/primary_white</item>
         <item name="menu_accept_icon">@drawable/check_dark</item>
+        <item name="unarchive">@drawable/unarchive_dark</item>
+        <item name="archive">@drawable/archive_dark</item>
+        <item name="delete">@drawable/delete_dark</item>
+        <item name="select_all">@drawable/select_all_dark</item>
+        <item name="conversation_list_toolbar_background">@color/primary_white</item>
+        <item name="search_icon">@drawable/search_dark</item>
     </style>
 
 
@@ -249,6 +261,7 @@
         <item name="conversation_list_item_unread_color">@color/primary_white</item>
         <item name="conversation_list_item_date_color">#ffdddddd</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="search_icon">@drawable/ic_search_white_24dp</item>
     </style>
 
     <!-- Application theme. -->
@@ -299,6 +312,12 @@
         <item name="conversation_list_item_subject_color">@color/core_grey_60</item>
         <item name="conversation_list_item_unread_color">@color/primary_black</item>
         <item name="conversation_list_item_date_color">@color/core_grey_60</item>
+        <item name="unarchive">@drawable/unarchive_dark</item>
+        <item name="archive">@drawable/archive_dark</item>
+        <item name="delete">@drawable/delete_dark</item>
+        <item name="select_all">@drawable/select_all_dark</item>
+        <item name="conversation_list_toolbar_background">@color/primary_white</item>
+        <item name="search_icon">@drawable/search_dark</item>
     </style>
     <style name="TextSecure.ScribbleTheme" parent="TextSecure.DarkNoActionBar">
     </style>
