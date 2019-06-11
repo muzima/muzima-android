@@ -119,4 +119,14 @@ public class ThemeUtils {
         }
         return Color.RED;
     }
+
+    public static int getPrimaryThemeColor(@NonNull Context context){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String lightModeKey = context.getResources().getString(R.string.preference_light_mode);
+        if(preferences.getBoolean(lightModeKey, false)){
+            return context.getResources().getColor(R.color.primary_white);
+        }else{
+            return context.getResources().getColor(R.color.primary_black);
+        }
+    }
 }

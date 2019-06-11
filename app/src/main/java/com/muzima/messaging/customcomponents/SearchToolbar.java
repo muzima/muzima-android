@@ -2,9 +2,12 @@ package com.muzima.messaging.customcomponents;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SearchView;
@@ -18,6 +21,7 @@ import android.widget.LinearLayout;
 
 import com.muzima.R;
 import com.muzima.messaging.animations.AnimationCompleteListener;
+import com.muzima.utils.ThemeUtils;
 
 public class SearchToolbar extends LinearLayout {
 
@@ -50,6 +54,8 @@ public class SearchToolbar extends LinearLayout {
         drawable.mutate();
         drawable.setColorFilter(getContext().getResources().getColor(R.color.grey_300), PorterDuff.Mode.SRC_IN);
 
+        int backgroundColor = ThemeUtils.getPrimaryThemeColor(getContext());
+        toolbar.setBackgroundColor(backgroundColor);
         toolbar.setNavigationIcon(drawable);
         toolbar.inflateMenu(R.menu.conversation_list_search);
 

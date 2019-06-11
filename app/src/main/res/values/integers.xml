@@ -11,4 +11,5 @@
 
 <resources>
     <integer name="search_line_weight">1</integer>
+    <integer name="play_button_animation_duration">300</integer>
 </resources>

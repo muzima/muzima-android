@@ -32,6 +32,7 @@ import com.muzima.model.MessageResult;
 import com.muzima.model.SearchResult;
 import com.muzima.model.SearchViewModel;
 import com.muzima.model.SignalRecipient;
+import com.muzima.utils.ThemeUtils;
 
 import java.util.Locale;
 import java.util.concurrent.Executors;
@@ -106,6 +107,8 @@ public class SearchFragment extends Fragment implements SearchListAdapter.EventL
             result = result != null ? result : SearchResult.EMPTY;
 
             listAdapter.updateResults(result);
+            int backgroundColor = ThemeUtils.getPrimaryThemeColor(getContext());
+            noResultsView.setBackgroundColor(backgroundColor);
 
             if (result.isEmpty()) {
                 if (TextUtils.isEmpty(viewModel.getLastQuery().trim())) {

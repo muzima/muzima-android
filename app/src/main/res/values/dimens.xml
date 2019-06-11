@@ -79,5 +79,6 @@
     <dimen name="message_details_table_row_pad">10dp</dimen>
     <dimen name="onboarding_title_size">34sp</dimen>
     <dimen name="onboarding_subtitle_size">20sp</dimen>
+    <dimen name="conversation_item_date_text_size">12sp</dimen>
 
 </resources>
