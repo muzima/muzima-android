@@ -47,7 +47,7 @@ public class ConversationListItemAction extends LinearLayout implements Bindable
                      @NonNull Set<Long> typingThreads,
                      @NonNull Set<Long> selectedThreads,
                      boolean batchMode) {
-        this.description.setText(getContext().getString(R.string.ConversationListItemAction_archived_conversations_d, thread.getCount()));
+        this.description.setText(getContext().getString(R.string.general_archived_conversations, thread.getCount()));
     }
 
     @Override

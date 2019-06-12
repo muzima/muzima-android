@@ -152,14 +152,14 @@ public class ContactSelectionListFragment extends Fragment
 
         showContactsLayout.setVisibility(View.VISIBLE);
         showContactsProgress.setVisibility(View.INVISIBLE);
-        showContactsDescription.setText(R.string.contact_selection_list_fragment__signal_needs_access_to_your_contacts_in_order_to_display_them);
+        showContactsDescription.setText(R.string.general_contacts_permission);
         showContactsButton.setVisibility(View.VISIBLE);
 
         showContactsButton.setOnClickListener(v -> {
             Permissions.with(this)
                     .request(Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS)
                     .ifNecessary()
-                    .withPermanentDenialDialog(getString(R.string.ContactSelectionListFragment_signal_requires_the_contacts_permission_in_order_to_display_your_contacts))
+                    .withPermanentDenialDialog(getString(R.string.general_muzima_requires_the_contacts_permission_in_order_to_display_your_contacts))
                     .onSomeGranted(permissions -> {
                         if (permissions.contains(Manifest.permission.WRITE_CONTACTS)) {
                             handleContactPermissionGranted();
@@ -204,7 +204,7 @@ public class ContactSelectionListFragment extends Fragment
         showContactsLayout.setVisibility(View.GONE);
 
         ((CursorRecyclerViewAdapter) recyclerView.getAdapter()).changeCursor(data);
-        emptyText.setText(R.string.contact_selection_group_activity__no_contacts);
+        emptyText.setText(R.string.hint_no_contacts);
         boolean useFastScroller = (recyclerView.getAdapter().getItemCount() > 20);
         recyclerView.setVerticalScrollBarEnabled(!useFastScroller);
         if (useFastScroller) {
@@ -227,7 +227,7 @@ public class ContactSelectionListFragment extends Fragment
                 swipeRefresh.setVisibility(View.GONE);
                 showContactsLayout.setVisibility(View.VISIBLE);
                 showContactsButton.setVisibility(View.INVISIBLE);
-                showContactsDescription.setText(R.string.ConversationListFragment_loading);
+                showContactsDescription.setText(R.string.hint_loading_progress);
                 showContactsProgress.setVisibility(View.VISIBLE);
                 showContactsProgress.spin();
             }
@@ -250,7 +250,7 @@ public class ContactSelectionListFragment extends Fragment
                     swipeRefresh.setVisibility(View.VISIBLE);
                     reset();
                 } else {
-                    Toast.makeText(getContext(), R.string.ContactSelectionListFragment_error_retrieving_contacts_check_your_network_connection, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), R.string.error_retrieving_contacts_check_your_network_connection, Toast.LENGTH_LONG).show();
                     initializeNoContactsPermission();
                 }
             }

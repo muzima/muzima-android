@@ -88,11 +88,11 @@ public class NotificationMmsMessageRecord extends MmsMessageRecord {
     @Override
     public SpannableString getDisplayBody() {
         if (status == MmsDatabase.Status.DOWNLOAD_INITIALIZED) {
-            return emphasisAdded(context.getString(R.string.notification_mms_message_ecord_multimedia_message));
+            return emphasisAdded(context.getString(R.string.general_multimedia_message));
         } else if (status == MmsDatabase.Status.DOWNLOAD_CONNECTING) {
-            return emphasisAdded(context.getString(R.string.notification_mms_message_ecord_downloading_mms_message));
+            return emphasisAdded(context.getString(R.string.general_downloading_mms_message));
         } else {
-            return emphasisAdded(context.getString(R.string.notification_mms_message_ecord_error_downloading_mms_message));
+            return emphasisAdded(context.getString(R.string.error_downloading_mms_message));
         }
     }
 }

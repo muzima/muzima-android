@@ -44,7 +44,7 @@ public class ExperienceUpgradeActivity extends BaseActionBarActivity implements 
                                 R.string.ExperienceUpgradeActivity_welcome_to_signal_dgaf,
                                 R.string.ExperienceUpgradeActivity_textsecure_is_now_called_signal)),
                 R.string.ExperienceUpgradeActivity_welcome_to_signal_excited,
-                R.string.ExperienceUpgradeActivity_textsecure_is_now_signal,
+                R.string.app_name,
                 R.string.ExperienceUpgradeActivity_textsecure_is_now_signal_long,
                 null,
                 false),

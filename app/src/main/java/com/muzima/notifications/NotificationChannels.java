@@ -116,7 +116,7 @@ public class NotificationChannels {
         } else if (!TextUtils.isEmpty(address.serialize())) {
             return address.serialize();
         } else {
-            return context.getString(R.string.notification_channel_missing_display_name);
+            return context.getString(R.string.general_unknown);
         }
     }
 
@@ -372,15 +372,15 @@ public class NotificationChannels {
 
     @TargetApi(26)
     private static void onCreate(@NonNull Context context, @NonNull NotificationManager notificationManager) {
-        NotificationChannelGroup messagesGroup = new NotificationChannelGroup(CATEGORY_MESSAGES, context.getResources().getString(R.string.notification_channel_group_messages));
+        NotificationChannelGroup messagesGroup = new NotificationChannelGroup(CATEGORY_MESSAGES, context.getResources().getString(R.string.general_messages));
         notificationManager.createNotificationChannelGroup(messagesGroup);
 
-        NotificationChannel messages     = new NotificationChannel(getMessagesChannel(context), context.getString(R.string.notification_channel_messages), NotificationManager.IMPORTANCE_HIGH);
-        NotificationChannel calls        = new NotificationChannel(CALLS, context.getString(R.string.notification_channel_calls), NotificationManager.IMPORTANCE_LOW);
-        NotificationChannel failures     = new NotificationChannel(FAILURES, context.getString(R.string.notification_channel_failures), NotificationManager.IMPORTANCE_HIGH);
-        NotificationChannel backups      = new NotificationChannel(BACKUPS, context.getString(R.string.notification_channel_backups), NotificationManager.IMPORTANCE_LOW);
-        NotificationChannel lockedStatus = new NotificationChannel(LOCKED_STATUS, context.getString(R.string.notification_channel_locked_status), NotificationManager.IMPORTANCE_LOW);
-        NotificationChannel other        = new NotificationChannel(OTHER, context.getString(R.string.notification_channel_other), NotificationManager.IMPORTANCE_LOW);
+        NotificationChannel messages     = new NotificationChannel(getMessagesChannel(context), context.getString(R.string.general_default), NotificationManager.IMPORTANCE_HIGH);
+        NotificationChannel calls        = new NotificationChannel(CALLS, context.getString(R.string.general_calls), NotificationManager.IMPORTANCE_LOW);
+        NotificationChannel failures     = new NotificationChannel(FAILURES, context.getString(R.string.general_failures), NotificationManager.IMPORTANCE_HIGH);
+        NotificationChannel backups      = new NotificationChannel(BACKUPS, context.getString(R.string.general_backups), NotificationManager.IMPORTANCE_LOW);
+        NotificationChannel lockedStatus = new NotificationChannel(LOCKED_STATUS, context.getString(R.string.general_locked_status), NotificationManager.IMPORTANCE_LOW);
+        NotificationChannel other        = new NotificationChannel(OTHER, context.getString(R.string.general_other), NotificationManager.IMPORTANCE_LOW);
 
         messages.setGroup(CATEGORY_MESSAGES);
         messages.enableVibration(TextSecurePreferences.isNotificationVibrateEnabled(context));
@@ -395,7 +395,7 @@ public class NotificationChannels {
         notificationManager.createNotificationChannels(Arrays.asList(messages, calls, failures, backups, lockedStatus, other));
 
         if (BuildConfig.PLAY_STORE_DISABLED) {
-            NotificationChannel appUpdates = new NotificationChannel(APP_UPDATES, context.getString(R.string.notification_channel_app_updates), NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel appUpdates = new NotificationChannel(APP_UPDATES, context.getString(R.string.general_app_updates), NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(appUpdates);
         } else {
             notificationManager.deleteNotificationChannel(APP_UPDATES);

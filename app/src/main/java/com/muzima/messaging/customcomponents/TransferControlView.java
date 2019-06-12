@@ -200,7 +200,7 @@ public class TransferControlView extends FrameLayout {
             return slides.get(0).getContentDescription();
         } else {
             int downloadCount = Stream.of(slides).reduce(0, (count, slide) -> slide.getTransferState() != AttachmentDatabase.TRANSFER_PROGRESS_DONE ? count + 1 : count);
-            return getContext().getResources().getQuantityString(R.plurals.TransferControlView_n_items, downloadCount, downloadCount);
+            return getContext().getResources().getQuantityString(R.plurals.plurals_items, downloadCount, downloadCount);
         }
     }
 

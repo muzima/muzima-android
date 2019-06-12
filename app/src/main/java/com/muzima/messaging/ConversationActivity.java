@@ -492,7 +492,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
             super.startActivity(intent);
         } catch (ActivityNotFoundException e) {
             Log.w(TAG, e);
-            Toast.makeText(this, R.string.ConversationActivity_there_is_no_app_available_to_handle_this_link_on_your_device, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.general_there_is_no_app_available_to_handle_this_link_on_your_device, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -722,7 +722,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
                 .setTitle(titleRes)
                 .setMessage(bodyRes)
                 .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(R.string.ConversationActivity_unblock, (dialog, which) -> {
+                .setPositiveButton(R.string.general_unblock, (dialog, which) -> {
                     new AsyncTask<Void, Void, Void>() {
                         @Override
                         protected Void doInBackground(Void... params) {
@@ -1528,7 +1528,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIconAttribute(R.attr.conversation_attach_contact_info);
-        builder.setTitle(R.string.ConversationActivity_select_contact_info);
+        builder.setTitle(R.string.general_select_contact_info);
 
         builder.setItems(numberItems, (dialog, which) -> composeText.append(numbers[which]));
         builder.show();
@@ -1706,7 +1706,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         String rawText = composeText.getTextTrimmed();
 
         if (rawText.length() < 1 && !attachmentManager.isAttachmentPresent())
-            throw new InvalidMessageException(getString(R.string.ConversationActivity_message_is_empty_exclamation));
+            throw new InvalidMessageException(getString(R.string.warning_empty_message));
 
         return rawText;
     }
@@ -1791,11 +1791,11 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
             }
         } catch (RecipientFormattingException ex) {
             Toast.makeText(ConversationActivity.this,
-                    R.string.ConversationActivity_recipient_is_not_a_valid_sms_or_email_address_exclamation,
+                    R.string.warning_not_valid_sms_or_email_address,
                     Toast.LENGTH_LONG).show();
             Log.w(TAG, ex);
         } catch (InvalidMessageException ex) {
-            Toast.makeText(ConversationActivity.this, R.string.ConversationActivity_message_is_empty_exclamation,
+            Toast.makeText(ConversationActivity.this, R.string.warning_empty_message,
                     Toast.LENGTH_SHORT).show();
             Log.w(TAG, ex);
         }
@@ -1825,7 +1825,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         Permissions.with(this)
                 .request(Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS)
                 .ifNecessary(!isSecureText || forceSms)
-                .withPermanentDenialDialog(getString(R.string.ConversationActivity_signal_needs_sms_permission_in_order_to_send_an_sms))
+                .withPermanentDenialDialog(getString(R.string.hint_permission_needed_in_order_to_send_an_sms))
                 .onAllGranted(() -> {
                     inputPanel.clearQuote();
                     attachmentManager.clear(glideRequests, false);
@@ -1872,7 +1872,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         Permissions.with(this)
                 .request(Manifest.permission.SEND_SMS)
                 .ifNecessary(forceSms || !isSecureText)
-                .withPermanentDenialDialog(getString(R.string.ConversationActivity_signal_needs_sms_permission_in_order_to_send_an_sms))
+                .withPermanentDenialDialog(getString(R.string.hint_permission_needed_in_order_to_send_an_sms))
                 .onAllGranted(() -> {
                     silentlySetComposeText("");
                     final long id = fragment.stageOutgoingMessage(message);
@@ -1951,7 +1951,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
     @Override
     public void onCameraFail() {
-        Toast.makeText(this, R.string.ConversationActivity_quick_camera_unavailable, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.warning_camera_unavailable, Toast.LENGTH_SHORT).show();
         quickAttachmentDrawer.hide(false);
         quickAttachmentToggle.disable();
     }
@@ -1969,8 +1969,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         Permissions.with(this)
                 .request(Manifest.permission.RECORD_AUDIO)
                 .ifNecessary()
-                .withRationaleDialog(getString(R.string.ConversationActivity_to_send_audio_messages_allow_signal_access_to_your_microphone), R.drawable.ic_mic_white_48dp)
-                .withPermanentDenialDialog(getString(R.string.ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages))
+                .withRationaleDialog(getString(R.string.hint_allow_muzima_access_to_your_microphone), R.drawable.ic_mic_white_48dp)
+                .withPermanentDenialDialog(getString(R.string.text_microphone_permission_required_in_order_to_send_audio_messages))
                 .execute();
     }
 
@@ -2019,7 +2019,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
             @Override
             public void onFailure(ExecutionException e) {
-                Toast.makeText(ConversationActivity.this, R.string.ConversationActivity_unable_to_record_audio, Toast.LENGTH_LONG).show();
+                Toast.makeText(ConversationActivity.this, R.string.warning_unable_to_record_audio, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -2106,14 +2106,14 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
             Permissions.with(ConversationActivity.this)
                     .request(Manifest.permission.CAMERA)
                     .ifNecessary()
-                    .withRationaleDialog(getString(R.string.ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera), R.drawable.ic_photo_camera_white_48dp)
-                    .withPermanentDenialDialog(getString(R.string.ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video))
+                    .withRationaleDialog(getString(R.string.warning_to_capture_photos_and_video_allow_signal_access_to_the_camera), R.drawable.ic_photo_camera_white_48dp)
+                    .withPermanentDenialDialog(getString(R.string.text_camera_permission_required_to_take_photos_or_video))
                     .onAllGranted(() -> {
                         composeText.clearFocus();
                         startActivityForResult(CameraActivity.getIntent(ConversationActivity.this, sendButton.getSelectedTransport()), PICK_CAMERA);
                         overridePendingTransition(R.anim.camera_slide_from_bottom, R.anim.stationary);
                     })
-                    .onAnyDenied(() -> Toast.makeText(ConversationActivity.this, R.string.ConversationActivity_signal_needs_camera_permissions_to_take_photos_or_video, Toast.LENGTH_LONG).show())
+                    .onAnyDenied(() -> Toast.makeText(ConversationActivity.this, R.string.warning_camera_permissions_required_to_take_photos_or_video, Toast.LENGTH_LONG).show())
                     .execute();
         }
     }
@@ -2228,7 +2228,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         if (messageRecord.isMms() && !((MmsMessageRecord) messageRecord).getSharedContacts().isEmpty()) {
             Contact contact = ((MmsMessageRecord) messageRecord).getSharedContacts().get(0);
             String displayName = ContactUtil.getDisplayName(contact);
-            String body = getString(R.string.ConversationActivity_quoted_contact_message, EmojiStrings.BUST_IN_SILHOUETTE, displayName);
+            String body = getString(R.string.general_quoted_contact_message, EmojiStrings.BUST_IN_SILHOUETTE, displayName);
             SlideDeck slideDeck = new SlideDeck();
 
             if (contact.getAvatarAttachment() != null) {

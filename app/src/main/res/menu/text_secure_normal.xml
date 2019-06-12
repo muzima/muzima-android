@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="@string/text_secure_normal__menu_new_group"
+    <item android:title="@string/general_new_group"
           android:id="@+id/menu_new_group" />
 
-    <item android:title="@string/text_secure_normal__menu_clear_passphrase"
+    <item android:title="@string/menu_clear_passphrase"
           android:id="@+id/menu_clear_passphrase" />
 
-    <item android:title="@string/text_secure_normal__mark_all_as_read"
+    <item android:title="@string/general_mark_all_as_read"
           android:id="@+id/menu_mark_all_read" />
 
-    <item android:title="@string/text_secure_normal__invite_friends"
+    <item android:title="@string/general_invite_friends"
           android:id="@+id/menu_invite" />
 
     <item android:title="@string/general_app_settings"
         android:id="@+id/menu_app_settings" />
 
-    <item android:title="@string/text_secure_normal__menu_settings"
+    <item android:title="@string/general_chat_settings"
           android:id="@+id/menu_settings" />
 
-    <item android:title="@string/text_secure_normal__help"
+    <item android:title="@string/general_help"
           android:id="@+id/menu_help"/>
 
 </menu>

@@ -49,7 +49,7 @@ public class PushNotificationReceiveJob extends PushReceivedJob {
 
     @Override
     protected String getDescription() {
-        return context.getString(R.string.push_notification_receive_job_retrieving_a_message);
+        return context.getString(R.string.general_retrieving_a_message);
     }
 
     @Override

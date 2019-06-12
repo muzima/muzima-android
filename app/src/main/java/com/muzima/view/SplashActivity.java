@@ -55,7 +55,7 @@ public class SplashActivity extends AppCompatActivity {
 
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
         isDisclaimerAccepted = settings.getBoolean(disclaimerKey, false);
-        isSignalUserAccountVerified = settings.getBoolean(getString(R.string.signal_user_verified_preference),false);
+        isSignalUserAccountVerified = settings.getBoolean(getString(R.string.preference_user_verified),false);
         Log.i("Disclaimer", "Disclaimer is accepted: " + isDisclaimerAccepted);
         if (!isDisclaimerAccepted) {
             Intent intent = new Intent(SplashActivity.this, DisclaimerActivity.class);

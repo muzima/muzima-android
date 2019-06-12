@@ -40,7 +40,7 @@ public abstract class SendJob extends ContextJob {
 
     @Override
     protected String getDescription() {
-        return context.getString(R.string.send_job_sending_a_message);
+        return context.getString(R.string.general_sending_a_message);
     }
 
     @Override

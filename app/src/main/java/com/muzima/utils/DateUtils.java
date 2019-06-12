@@ -78,7 +78,7 @@ public class DateUtils extends android.text.format.DateUtils {
             return c.getResources().getString(R.string.date_utils_minutes_ago, mins);
         } else if (isWithin(timestamp, 1, TimeUnit.DAYS)) {
             int hours = convertDelta(timestamp, TimeUnit.HOURS);
-            return c.getResources().getQuantityString(R.plurals.hours_ago, hours, hours);
+            return c.getResources().getQuantityString(R.plurals.plurals_hours_ago, hours, hours);
         } else if (isWithin(timestamp, 6, TimeUnit.DAYS)) {
             return getFormattedDateTime(timestamp, "EEE", locale);
         } else if (isWithin(timestamp, 365, TimeUnit.DAYS)) {
@@ -139,9 +139,9 @@ public class DateUtils extends android.text.format.DateUtils {
     public static String getRelativeDate(@NonNull Context context, @NonNull Locale locale, long timestamp)
     {
         if (isToday(timestamp)) {
-            return context.getString(R.string.DateUtils_today);
+            return context.getString(R.string.general_today);
         } else if (isYesterday(timestamp)) {
-            return context.getString(R.string.DateUtils_yesterday);
+            return context.getString(R.string.general_yesterday);
         } else {
             return getFormattedDateTime(timestamp, "EEE, MMM d, yyyy", locale);
         }

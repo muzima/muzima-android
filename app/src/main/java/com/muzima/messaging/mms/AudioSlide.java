@@ -51,7 +51,7 @@ public class AudioSlide extends Slide {
     @NonNull
     @Override
     public String getContentDescription() {
-        return context.getString(R.string.slide_audio);
+        return context.getString(R.string.general_audio);
     }
 
     @Override

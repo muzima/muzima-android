@@ -26,10 +26,10 @@ public class CommunicationActions {
         Permissions.with(activity)
                 .request(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
                 .ifNecessary()
-                .withRationaleDialog(activity.getString(R.string.ConversationActivity_to_call_s_signal_needs_access_to_your_microphone_and_camera, recipient.toShortString()),
+                .withRationaleDialog(activity.getString(R.string.general_to_call_s_signal_needs_access_to_your_microphone_and_camera, recipient.toShortString()),
                         R.drawable.ic_mic_white_48dp,
                         R.drawable.ic_videocam_white_48dp)
-                .withPermanentDenialDialog(activity.getString(R.string.ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s, recipient.toShortString()))
+                .withPermanentDenialDialog(activity.getString(R.string.general_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s, recipient.toShortString()))
                 .onAllGranted(() -> {
                     Intent intent = new Intent(activity, WebRtcCallService.class);
                     intent.setAction(WebRtcCallService.ACTION_OUTGOING_CALL);
@@ -92,7 +92,7 @@ public class CommunicationActions {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(context, R.string.CommunicationActions_no_browser_found, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.general_no_browser_found, Toast.LENGTH_SHORT).show();
         }
     }
 }

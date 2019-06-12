@@ -197,7 +197,7 @@ public class NotificationsPreferenceFragment extends ListSummaryPreferenceFragme
 
     public static CharSequence getSummary(Context context) {
         final int onCapsResId   = R.string.ApplicationPreferencesActivity_on;
-        final int offCapsResId  = R.string.ApplicationPreferencesActivity_off;
+        final int offCapsResId  = R.string.general_off;
 
         return context.getString(TextSecurePreferences.isNotificationsEnabled(context) ? onCapsResId : offCapsResId);
     }

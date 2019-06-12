@@ -53,13 +53,13 @@ public class MediaMmsMessageRecord extends MmsMessageRecord {
     @Override
     public SpannableString getDisplayBody() {
         if (MmsDatabase.Types.isFailedDecryptType(type)) {
-            return emphasisAdded(context.getString(R.string.mms_message_record_bad_encrypted_mms_message));
+            return emphasisAdded(context.getString(R.string.warning_bad_encrypted_mms_message));
         } else if (MmsDatabase.Types.isDuplicateMessageType(type)) {
-            return emphasisAdded(context.getString(R.string.sms_message_record_duplicate_message));
+            return emphasisAdded(context.getString(R.string.warning_duplicate_message));
         } else if (MmsDatabase.Types.isNoRemoteSessionType(type)) {
-            return emphasisAdded(context.getString(R.string.mms_message_record_mms_message_encrypted_for_non_existing_session));
+            return emphasisAdded(context.getString(R.string.warning_mms_message_encrypted_for_non_existing_session));
         } else if (isLegacyMessage()) {
-            return emphasisAdded(context.getString(R.string.message_record_message_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported));
+            return emphasisAdded(context.getString(R.string.emphasis_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported));
         }
 
         return super.getDisplayBody();

@@ -106,8 +106,8 @@ public class SmsMmsPreferenceFragment extends CorrectedPreferenceFragment {
     public static CharSequence getSummary(Context context) {
         final String on = context.getString(R.string.ApplicationPreferencesActivity_on);
         final String onCaps = context.getString(R.string.ApplicationPreferencesActivity_on);
-        final String off = context.getString(R.string.ApplicationPreferencesActivity_off);
-        final String offCaps = context.getString(R.string.ApplicationPreferencesActivity_off);
+        final String off = context.getString(R.string.general_off);
+        final String offCaps = context.getString(R.string.general_off);
         final int smsMmsSummaryResId = R.string.ApplicationPreferencesActivity_sms_mms_summary;
 
         boolean postKitkatSMS = Util.isDefaultSmsProvider(context);

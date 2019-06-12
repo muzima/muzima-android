@@ -158,7 +158,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private class SmsVerificationRequestBackgroundTask extends AsyncTask<Void, Void, Void> {
 
         private boolean isVerificationSmsSent = false;
-        private String reasonForFailure = getString(R.string.unknown_error);
+        private String reasonForFailure = getString(R.string.general_unknown_error);
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -197,7 +197,7 @@ public class RegistrationActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     private void initializeSpinner() {
         this.countrySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        setCountryDisplay(getString(R.string.registrationActivity_select_your_country));
+        setCountryDisplay(getString(R.string.general_select_your_country));
 
         this.countrySelectSpinner.setAdapter(this.countrySpinnerAdapter);
         this.countrySelectSpinner.setOnTouchListener((v, event) -> {
@@ -253,7 +253,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         Manifest.permission.READ_CALL_LOG,
                         Manifest.permission.PROCESS_OUTGOING_CALLS)
                 .ifNecessary()
-                .withRationaleDialog(getString(R.string.registrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends),
+                .withRationaleDialog(getString(R.string.general_contact_access),
                         R.drawable.ic_contacts_white_48dp, R.drawable.ic_folder_white_48dp)
                 .onSomeGranted(permissions -> {
                     if (permissions.contains(Manifest.permission.READ_PHONE_STATE)) {

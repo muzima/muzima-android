@@ -51,49 +51,49 @@ public class ThreadRecord extends DisplayRecord {
     @Override
     public SpannableString getDisplayBody() {
         if (isGroupUpdate()) {
-            return emphasisAdded(context.getString(R.string.thread_record_group_updated));
+            return emphasisAdded(context.getString(R.string.general_group_updated));
         } else if (isGroupQuit()) {
-            return emphasisAdded(context.getString(R.string.thread_record_left_the_group));
+            return emphasisAdded(context.getString(R.string.general_left_the_group));
         } else if (isKeyExchange()) {
-            return emphasisAdded(context.getString(R.string.conversation_list_item_key_exchange_message));
+            return emphasisAdded(context.getString(R.string.general_key_exchange_message));
         } else if (SmsDatabase.Types.isFailedDecryptType(type)) {
-            return emphasisAdded(context.getString(R.string.message_display_helper_bad_encrypted_message));
+            return emphasisAdded(context.getString(R.string.warning_bad_encrypted_message));
         } else if (SmsDatabase.Types.isNoRemoteSessionType(type)) {
-            return emphasisAdded(context.getString(R.string.message_display_helper_message_encrypted_for_non_existing_session));
+            return emphasisAdded(context.getString(R.string.warning_message_encrypted_for_non_existing_session));
         } else if (SmsDatabase.Types.isEndSessionType(type)) {
-            return emphasisAdded(context.getString(R.string.thread_record_secure_session_reset));
+            return emphasisAdded(context.getString(R.string.general_secure_session_reset));
         } else if (MmsSmsColumns.Types.isLegacyType(type)) {
-            return emphasisAdded(context.getString(R.string.message_record_message_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported));
+            return emphasisAdded(context.getString(R.string.emphasis_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported));
         } else if (MmsSmsColumns.Types.isDraftMessageType(type)) {
-            String draftText = context.getString(R.string.thread_record_draft);
+            String draftText = context.getString(R.string.general_draft);
             return emphasisAdded(draftText + " " + getBody(), 0, draftText.length());
         } else if (SmsDatabase.Types.isOutgoingCall(type)) {
-            return emphasisAdded(context.getString(R.string.thread_record_called));
+            return emphasisAdded(context.getString(R.string.general_you_called));
         } else if (SmsDatabase.Types.isIncomingCall(type)) {
-            return emphasisAdded(context.getString(R.string.thread_record_called_you));
+            return emphasisAdded(context.getString(R.string.general_called_you));
         } else if (SmsDatabase.Types.isMissedCall(type)) {
-            return emphasisAdded(context.getString(R.string.thread_record_missed_call));
+            return emphasisAdded(context.getString(R.string.general_missed_call));
         } else if (SmsDatabase.Types.isJoinedType(type)) {
-            return emphasisAdded(context.getString(R.string.thread_record_s_is_on_signal, getRecipient().toShortString()));
+            return emphasisAdded(context.getString(R.string.general_is_on_muzima, getRecipient().toShortString()));
         } else if (SmsDatabase.Types.isExpirationTimerUpdate(type)) {
             int seconds = (int) (getExpiresIn() / 1000);
             if (seconds <= 0) {
-                return emphasisAdded(context.getString(R.string.thread_record_disappearing_messages_disabled));
+                return emphasisAdded(context.getString(R.string.general_disappearing_messages_disabled));
             }
             String time = ExpirationUtil.getExpirationDisplayValue(context, seconds);
-            return emphasisAdded(context.getString(R.string.thread_record_disappearing_message_time_updated_to_s, time));
+            return emphasisAdded(context.getString(R.string.general_disappearing_message_time_updated, time));
         } else if (SmsDatabase.Types.isIdentityUpdate(type)) {
             if (getRecipient().isGroupRecipient())
-                return emphasisAdded(context.getString(R.string.thread_record_safety_number_changed));
+                return emphasisAdded(context.getString(R.string.general_safety_number_changed));
             else
-                return emphasisAdded(context.getString(R.string.thread_record_your_safety_number_with_s_has_changed, getRecipient().toShortString()));
+                return emphasisAdded(context.getString(R.string.general_safety_number_with_s_has_changed, getRecipient().toShortString()));
         } else if (SmsDatabase.Types.isIdentityVerified(type)) {
-            return emphasisAdded(context.getString(R.string.thread_record_you_marked_verified));
+            return emphasisAdded(context.getString(R.string.general_marked_verified));
         } else if (SmsDatabase.Types.isIdentityDefault(type)) {
-            return emphasisAdded(context.getString(R.string.thread_record_you_marked_unverified));
+            return emphasisAdded(context.getString(R.string.general_marked_unverified));
         } else {
             if (TextUtils.isEmpty(getBody())) {
-                return new SpannableString(emphasisAdded(context.getString(R.string.thread_record_media_message)));
+                return new SpannableString(emphasisAdded(context.getString(R.string.general_media_message)));
             } else {
                 return new SpannableString(getBody());
             }

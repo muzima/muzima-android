@@ -76,9 +76,9 @@ public class AbstractNotificationBuilder extends NotificationCompat.Builder {
         if (privacy.isDisplayMessage()) {
             setTicker(getStyledMessage(recipient, message));
         } else if (privacy.isDisplayContact()) {
-            setTicker(getStyledMessage(recipient, context.getString(R.string.abstract_notification_builder_new_message)));
+            setTicker(getStyledMessage(recipient, context.getString(R.string.general_new_message)));
         } else {
-            setTicker(context.getString(R.string.abstract_notification_builder_new_message));
+            setTicker(context.getString(R.string.general_new_message));
         }
     }
 

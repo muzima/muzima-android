@@ -15,7 +15,7 @@
             android:singleLine="true"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
-            android:text="@string/KeyCachingService_passphrase_cached"
+            android:text="@string/hint_muzima_is_unlocked"
             />
 
         <TextView android:id="@+id/text2"
@@ -26,7 +26,7 @@
             android:singleLine="true"
             android:fadingEdge="horizontal"
             android:ellipsize="marquee"
-            android:text="@string/KeyCachingService_signal_passphrase_cached_with_lock"
+            android:text="@string/hint_touch_to_open_or_lock"
             />
     </LinearLayout>
 

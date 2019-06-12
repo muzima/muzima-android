@@ -118,7 +118,7 @@ public class PassphrasePromptActivity extends PassphraseActivity {
         } catch (InvalidPassphraseException ipe) {
             passphraseText.setText("");
             passphraseText.setError(
-                    getString(R.string.passphrase_prompt_activity_invalid_passphrase_exclamation));
+                    getString(R.string.warning_invalid_passphrase));
         }
     }
 
@@ -164,7 +164,7 @@ public class PassphrasePromptActivity extends PassphraseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
 
-        SpannableString hint = new SpannableString("  " + getString(R.string.passphrase_prompt_activity_enter_passphrase));
+        SpannableString hint = new SpannableString("  " + getString(R.string.text_enter_passphrase));
         hint.setSpan(new RelativeSizeSpan(0.9f), 0, hint.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         hint.setSpan(new TypefaceSpan("sans-serif"), 0, hint.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
 
@@ -173,7 +173,7 @@ public class PassphrasePromptActivity extends PassphraseActivity {
         showButton.setOnClickListener(new ShowButtonOnClickListener());
         hideButton.setOnClickListener(new HideButtonOnClickListener());
         passphraseText.setOnEditorActionListener(new PassphraseActionListener());
-        passphraseText.setImeActionLabel(getString(R.string.prompt_passphrase_activity_unlock),
+        passphraseText.setImeActionLabel(getString(R.string.general_unlock),
                 EditorInfo.IME_ACTION_DONE);
 
         fingerprintPrompt.setImageResource(R.drawable.ic_fingerprint_white_48dp);

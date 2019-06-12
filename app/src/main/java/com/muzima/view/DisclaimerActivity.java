@@ -100,7 +100,7 @@ public class DisclaimerActivity extends Activity {
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
         settings.edit().putBoolean(disclaimerKey, true).commit();
         // transition to the login activity
-        boolean isSignalUserAccountVerified = settings.getBoolean(getString(R.string.signal_user_verified_preference),false);
+        boolean isSignalUserAccountVerified = settings.getBoolean(getString(R.string.preference_user_verified),false);
         if (isSignalUserAccountVerified){
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra(LoginActivity.isFirstLaunch, true);

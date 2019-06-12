@@ -127,8 +127,8 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
         } else {
             enableSignalGroupViews();
             getSupportActionBar().setTitle(groupToUpdate.isPresent()
-                    ? R.string.GroupCreateActivity_actionbar_edit_title
-                    : R.string.GroupCreateActivity_actionbar_title);
+                    ? R.string.menu_edit_group
+                    : R.string.general_new_group);
         }
     }
 

@@ -395,7 +395,7 @@ public class ConversationAdapter<V extends View & BindableConversationItem>
     }
 
     public void onBindLastSeenViewHolder(HeaderViewHolder viewHolder, int position) {
-        viewHolder.setText(getContext().getResources().getQuantityString(R.plurals.ConversationAdapter_n_unread_messages, (position + 1), (position + 1)));
+        viewHolder.setText(getContext().getResources().getQuantityString(R.plurals.plurals_unread_messages, (position + 1), (position + 1)));
     }
 
     public static class LastSeenHeader extends StickyHeaderDecoration {

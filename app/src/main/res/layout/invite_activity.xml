@@ -110,7 +110,7 @@
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/InviteActivity_cancel" />
+                    android:text="@string/general_cancel" />
 
             <Button android:id="@+id/send_sms_button"
                     style="@style/Widget.AppCompat.Button.Borderless"

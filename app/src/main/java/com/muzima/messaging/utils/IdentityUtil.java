@@ -199,27 +199,27 @@ public class IdentityUtil {
     String getUnverifiedBannerDescription(@NonNull Context context,
                                           @NonNull List<SignalRecipient> unverified) {
         return getPluralizedIdentityDescription(context, unverified,
-                R.string.identity_util_unverified_banner_one,
-                R.string.identity_util_unverified_banner_two,
-                R.string.identity_util_unverified_banner_many);
+                R.string.general_unverified_banner_one,
+                R.string.general_unverified_banner_two,
+                R.string.general_unverified_banner_many);
     }
 
     public static @Nullable
     String getUnverifiedSendDialogDescription(@NonNull Context context,
                                               @NonNull List<SignalRecipient> unverified) {
         return getPluralizedIdentityDescription(context, unverified,
-                R.string.identity_util_unverified_dialog_one,
-                R.string.identity_util_unverified_dialog_two,
-                R.string.identity_util_unverified_dialog_many);
+                R.string.general_unverified_dialog_one,
+                R.string.general_unverified_dialog_two,
+                R.string.general_unverified_dialog_many);
     }
 
     public static @Nullable
     String getUntrustedSendDialogDescription(@NonNull Context context,
                                              @NonNull List<SignalRecipient> untrusted) {
         return getPluralizedIdentityDescription(context, untrusted,
-                R.string.identity_util_untrusted_dialog_one,
-                R.string.identity_util_untrusted_dialog_two,
-                R.string.identity_util_untrusted_dialog_many);
+                R.string.general_untrusted_dialog_one,
+                R.string.general_untrusted_dialog_two,
+                R.string.general_untrusted_dialog_many);
     }
 
     private static @Nullable
@@ -243,9 +243,9 @@ public class IdentityUtil {
                 String nMore;
 
                 if (recipients.size() == 3) {
-                    nMore = context.getResources().getQuantityString(R.plurals.identity_others, 1);
+                    nMore = context.getResources().getQuantityString(R.plurals.plurals_identity_others, 1);
                 } else {
-                    nMore = context.getResources().getQuantityString(R.plurals.identity_others, recipients.size() - 2);
+                    nMore = context.getResources().getQuantityString(R.plurals.plurals_identity_others, recipients.size() - 2);
                 }
 
                 return context.getString(resourceMany, firstName, secondName, nMore);

@@ -878,7 +878,7 @@ public class ConversationItem extends LinearLayout
                     context.startActivity(intent);
                 } catch (ActivityNotFoundException anfe) {
                     Log.w(TAG, "No activity existed to view the media.");
-                    Toast.makeText(context, R.string.ConversationItem_unable_to_open_media, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.warning_unable_to_open_media, Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -932,10 +932,10 @@ public class ConversationItem extends LinearLayout
         final int message;
 
         if (messageRecord.isMms())
-            title = R.string.ConversationItem_click_to_approve_unencrypted_mms_dialog_title;
-        else title = R.string.ConversationItem_click_to_approve_unencrypted_sms_dialog_title;
+            title = R.string.title_approve_unencrypted_mms;
+        else title = R.string.title_approve_unencrypted_sms;
 
-        message = R.string.ConversationItem_click_to_approve_unencrypted_dialog_message;
+        message = R.string.text_approve_unencrypted;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);

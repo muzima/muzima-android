@@ -68,16 +68,16 @@ public class CustomDefaultPreference extends DialogPreference {
     @Override
     public String getSummary() {
         if (isCustom()) {
-            return getContext().getString(R.string.CustomDefaultPreference_using_custom,
+            return getContext().getString(R.string.general_using_custom,
                     getPrettyPrintValue(getCustomValue()));
         } else {
-            return getContext().getString(R.string.CustomDefaultPreference_using_default,
+            return getContext().getString(R.string.general_using_default,
                     getPrettyPrintValue(getDefaultValue()));
         }
     }
 
     private String getPrettyPrintValue(String value) {
-        if (TextUtils.isEmpty(value)) return getContext().getString(R.string.CustomDefaultPreference_none);
+        if (TextUtils.isEmpty(value)) return getContext().getString(R.string.general_none);
         else                          return value;
     }
 

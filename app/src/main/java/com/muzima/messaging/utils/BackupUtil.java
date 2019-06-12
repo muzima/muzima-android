@@ -30,7 +30,7 @@ public class BackupUtil {
             else                return DateUtils.getExtendedRelativeTimeSpanString(context, locale, backup.getTimestamp());
         } catch (NoExternalStorageException e) {
             Log.w(TAG, e);
-            return context.getString(R.string.BackupUtil_unknown);
+            return context.getString(R.string.general_unknown);
         }
     }
 

@@ -22,9 +22,9 @@ public class PendingMessageNotificationBuilder extends AbstractNotificationBuild
         setColor(context.getResources().getColor(R.color.primary_blue));
         setCategory(NotificationCompat.CATEGORY_MESSAGE);
 
-        setContentTitle(context.getString(R.string.message_notifier_pending_messages));
-        setContentText(context.getString(R.string.message_notifier_you_have_pending_messages));
-        setTicker(context.getString(R.string.message_notifier_you_have_pending_messages));
+        setContentTitle(context.getString(R.string.general_pending_messages));
+        setContentText(context.getString(R.string.general_you_have_pending_messages));
+        setTicker(context.getString(R.string.general_you_have_pending_messages));
 
         setContentIntent(PendingIntent.getActivity(context, 0, intent, 0));
         setAutoCancel(true);

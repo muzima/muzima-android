@@ -96,9 +96,9 @@ public class ConversationItemFooter extends LinearLayout {
         dateView.forceLayout();
 
         if (messageRecord.isFailed()) {
-            dateView.setText(R.string.ConversationItem_error_not_delivered);
+            dateView.setText(R.string.error_not_delivered);
         } else if (messageRecord.isPendingInsecureSmsFallback()) {
-            dateView.setText(R.string.ConversationItem_click_to_approve_unencrypted);
+            dateView.setText(R.string.general_approve_unencrypted);
         } else {
             dateView.setText(DateUtils.getExtendedRelativeTimeSpanString(getContext(), locale, messageRecord.getTimestamp()));
         }
@@ -113,10 +113,10 @@ public class ConversationItemFooter extends LinearLayout {
             Optional<SubscriptionInfoCompat> subscriptionInfo = subscriptionManager.getActiveSubscriptionInfo(messageRecord.getSubscriptionId());
 
             if (subscriptionInfo.isPresent() && messageRecord.isOutgoing()) {
-                simView.setText(getContext().getString(R.string.ConversationItem_from_s, subscriptionInfo.get().getDisplayName()));
+                simView.setText(getContext().getString(R.string.hint_from_s, subscriptionInfo.get().getDisplayName()));
                 simView.setVisibility(View.VISIBLE);
             } else if (subscriptionInfo.isPresent()) {
-                simView.setText(getContext().getString(R.string.ConversationItem_to_s, subscriptionInfo.get().getDisplayName()));
+                simView.setText(getContext().getString(R.string.hint_to_s, subscriptionInfo.get().getDisplayName()));
                 simView.setVisibility(View.VISIBLE);
             } else {
                 simView.setVisibility(View.GONE);

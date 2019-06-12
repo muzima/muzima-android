@@ -205,10 +205,10 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Se
                     titleView.setText(R.string.SearchFragment_header_conversations);
                     break;
                 case TYPE_CONTACTS:
-                    titleView.setText(R.string.SearchFragment_header_contacts);
+                    titleView.setText(R.string.general_contacts);
                     break;
                 case TYPE_MESSAGES:
-                    titleView.setText(R.string.SearchFragment_header_messages);
+                    titleView.setText(R.string.general_messages);
                     break;
             }
         }

@@ -184,8 +184,8 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                SpannableString subtitleDescription = new SpannableString(getString(R.string.RegistrationActivity_please_enter_the_verification_code_sent_to_s, e164number));
-                SpannableString wrongNumber = new SpannableString(getString(R.string.registrationActivity_wrong_number));
+                SpannableString subtitleDescription = new SpannableString(getString(R.string.general_contact_access, e164number));
+                SpannableString wrongNumber = new SpannableString(getString(R.string.question_wrong_number));
 
                 ClickableSpan clickableSpan = new ClickableSpan() {
                     @Override
@@ -214,7 +214,7 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
         title.animate().translationX(-1 * title.getWidth()).setDuration(SCENE_TRANSITION_DURATION).setListener(new AnimationCompleteListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                title.setText(getString(R.string.registrationActivity_verify_s, e164number));
+                title.setText(getString(R.string.title_verify, e164number));
                 title.clearAnimation();
                 title.setTranslationX(title.getWidth());
                 title.animate().translationX(0).setListener(null).setInterpolator(new OvershootInterpolator()).setDuration(SCENE_TRANSITION_DURATION).start();
@@ -278,7 +278,7 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
          */
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        String signalRegistrationKey = getResources().getString(R.string.signal_user_verified_preference);
+        String signalRegistrationKey = getResources().getString(R.string.preference_user_verified);
         settings.edit().putBoolean(signalRegistrationKey, true).commit();
 
         Intent nextIntent = getIntent().getParcelableExtra("next_intent");
@@ -369,7 +369,7 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
         title.animate().translationX(-1 * title.getWidth()).setDuration(SCENE_TRANSITION_DURATION).setListener(new AnimationCompleteListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                title.setText(R.string.RegistrationActivity_registration_lock_pin);
+                title.setText(R.string.title_registration_lock_pin);
                 title.clearAnimation();
                 title.setTranslationX(title.getWidth());
                 title.animate().translationX(0).setListener(null).setInterpolator(new OvershootInterpolator()).setDuration(SCENE_TRANSITION_DURATION).start();
@@ -379,7 +379,7 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
         subtitle.animate().translationX(-1 * subtitle.getWidth()).setDuration(SCENE_TRANSITION_DURATION).setListener(new AnimationCompleteListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                subtitle.setText(R.string.RegistrationActivity_this_phone_number_has_registration_lock_enabled_please_enter_the_registration_lock_pin);
+                subtitle.setText(R.string.title_enter_registration_lock_pin);
                 subtitle.clearAnimation();
                 subtitle.setTranslationX(subtitle.getWidth());
                 subtitle.animate().translationX(0).setListener(null).setInterpolator(new OvershootInterpolator()).setDuration(SCENE_TRANSITION_DURATION).start();
@@ -432,7 +432,7 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
     @SuppressLint("StaticFieldLeak")
     private void handleVerifyWithPinClicked(@NonNull String code, @Nullable String pin) {
         if (TextUtils.isEmpty(pin) || TextUtils.isEmpty(pin.replace(" ", ""))) {
-            Toast.makeText(this, R.string.RegistrationActivity_you_must_enter_your_registration_lock_PIN, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.text_enter_your_registration_lock_pin, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -472,15 +472,15 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
                     handleSuccessfulRegistration();
                 } else if (result == 2) {
                     SmsCodeVerificationActivity.this.pin.setText("");
-                    Toast.makeText(SmsCodeVerificationActivity.this, R.string.RegistrationActivity_incorrect_registration_lock_pin, Toast.LENGTH_LONG).show();
+                    Toast.makeText(SmsCodeVerificationActivity.this, R.string.text_incorrect_registration_lock_pin, Toast.LENGTH_LONG).show();
                 } else if (result == 3) {
                     new AlertDialog.Builder(SmsCodeVerificationActivity.this)
-                            .setTitle(R.string.RegistrationActivity_too_many_attempts)
-                            .setMessage(R.string.RegistrationActivity_you_have_made_too_many_incorrect_registration_lock_pin_attempts_please_try_again_in_a_day)
+                            .setTitle(R.string.title_too_many_attempts)
+                            .setMessage(R.string.message_too_many_attempts)
                             .setPositiveButton(android.R.string.ok, null)
                             .show();
                 } else if (result == 4) {
-                    Toast.makeText(SmsCodeVerificationActivity.this, R.string.RegistrationActivity_error_connecting_to_service, Toast.LENGTH_LONG).show();
+                    Toast.makeText(SmsCodeVerificationActivity.this, R.string.text_error_connecting_to_service, Toast.LENGTH_LONG).show();
                 }
             }
         }.execute();
@@ -488,8 +488,8 @@ public class SmsCodeVerificationActivity extends AppCompatActivity implements Ve
 
     private void handleForgottenPin(long timeRemaining) {
         new AlertDialog.Builder(SmsCodeVerificationActivity.this)
-                .setTitle(R.string.registration_activity_oh_no)
-                .setMessage(getString(R.string.RegistrationActivity_registration_of_this_phone_number_will_be_possible_without_your_registration_lock_pin_after_seven_days_have_passed, (TimeUnit.MILLISECONDS.toDays(timeRemaining) + 1)))
+                .setTitle(R.string.title_oh_no)
+                .setMessage(getString(R.string.message_possibility_without_lock_pin, (TimeUnit.MILLISECONDS.toDays(timeRemaining) + 1)))
                 .setPositiveButton(android.R.string.ok, null)
                 .show();
     }

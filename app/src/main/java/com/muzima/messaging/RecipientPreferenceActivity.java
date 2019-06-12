@@ -429,7 +429,7 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
         private @NonNull
         String getRingtoneSummary(@NonNull Context context, @Nullable Uri ringtone) {
             if (ringtone == null) {
-                return context.getString(R.string.preferences__default);
+                return context.getString(R.string.general_default);
             } else if (ringtone.toString().isEmpty()) {
                 return context.getString(R.string.preferences__silent);
             } else {
@@ -440,13 +440,13 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
                 }
             }
 
-            return context.getString(R.string.preferences__default);
+            return context.getString(R.string.general_default);
         }
 
         private @NonNull
         Pair<String, Integer> getVibrateSummary(@NonNull Context context, @NonNull VibrateState vibrateState) {
             if (vibrateState == VibrateState.DEFAULT) {
-                return new Pair<>(context.getString(R.string.preferences__default), 0);
+                return new Pair<>(context.getString(R.string.general_default), 0);
             } else if (vibrateState == VibrateState.ENABLED) {
                 return new Pair<>(context.getString(R.string.RecipientPreferenceActivity_enabled), 1);
             } else {

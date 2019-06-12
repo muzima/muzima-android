@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="@string/conversation_expiring_off__disappearing_messages"
+    <item android:title="@string/general_disappearing_messages"
           android:id="@+id/menu_expiring_messages_off"
           android:icon="@drawable/ic_timer_off_white_24dp"/>
 

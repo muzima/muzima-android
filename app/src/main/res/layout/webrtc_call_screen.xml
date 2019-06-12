@@ -67,7 +67,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:text="@string/WebRtcCallScreen_accept" />
+                        android:text="@string/general_accept" />
 
                     <Button
                         android:id="@+id/cancel_safety_numbers"
@@ -137,7 +137,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:singleLine="true"
-                        android:text="@string/redphone_call_card__signal_call"
+                        android:text="@string/general_call"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="#FFFFFF" />
 

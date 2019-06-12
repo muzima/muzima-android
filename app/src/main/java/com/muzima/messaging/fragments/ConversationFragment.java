@@ -432,16 +432,16 @@ public class ConversationFragment extends Fragment
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setIconAttribute(R.attr.dialog_alert_icon);
-        builder.setTitle(getActivity().getResources().getQuantityString(R.plurals.ConversationFragment_delete_selected_messages, messagesCount, messagesCount));
-        builder.setMessage(getActivity().getResources().getQuantityString(R.plurals.ConversationFragment_this_will_permanently_delete_all_n_selected_messages, messagesCount, messagesCount));
+        builder.setTitle(getActivity().getResources().getQuantityString(R.plurals.plurals_delete_selected_messages, messagesCount, messagesCount));
+        builder.setMessage(getActivity().getResources().getQuantityString(R.plurals.plurals_this_will_permanently_delete_all_n_selected_messages, messagesCount, messagesCount));
         builder.setCancelable(true);
 
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 new ProgressDialogAsyncTask<MessageRecord, Void, Void>(getActivity(),
-                        R.string.ConversationFragment_deleting,
-                        R.string.ConversationFragment_deleting_messages) {
+                        R.string.general_deleting,
+                        R.string.general_deleting_messages) {
                     @Override
                     protected Void doInBackground(MessageRecord... messageRecords) {
                         for (MessageRecord messageRecord : messageRecords) {
@@ -784,7 +784,7 @@ public class ConversationFragment extends Fragment
 
             if (messageRecord.getQuote().isOriginalMissing()) {
                 Log.i(TAG, "Clicked on a quote whose original message we never had.");
-                Toast.makeText(getContext(), R.string.ConversationFragment_quoted_message_not_found, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.general_message_not_found, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -813,7 +813,7 @@ public class ConversationFragment extends Fragment
                         getListAdapter().pulseHighlightItem(position);
                     } else if (position < 0) {
                         Log.w(TAG, "Tried to navigate to quoted message, but it was deleted.");
-                        Toast.makeText(getContext(), R.string.ConversationFragment_quoted_message_no_longer_available, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.general_message_no_longer_available, Toast.LENGTH_SHORT).show();
                     } else {
                         Log.i(TAG, "Quoted message was outside of the loaded range. Need to restart the loader.");
 
@@ -864,7 +864,7 @@ public class ConversationFragment extends Fragment
             if (getContext() == null) return;
 
             ContactUtil.selectRecipientThroughDialog(getContext(), choices, locale, recipient -> {
-                CommunicationActions.composeSmsThroughDefaultApp(getContext(), recipient.getAddress(), getString(R.string.InviteActivity_lets_switch_to_signal, "https://sgnl.link/1KpeYmF"));
+                CommunicationActions.composeSmsThroughDefaultApp(getContext(), recipient.getAddress(), getString(R.string.general_lets_switch_to_muzima, "https://sgnl.link/1KpeYmF"));
             });
         }
     }

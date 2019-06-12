@@ -129,7 +129,7 @@
                 android:paddingRight="6dp"
                 android:paddingEnd="6dp"
                 android:background="?selectableItemBackgroundBorderless"
-                android:contentDescription="@string/conversation_activity__emoji_toggle_description" />
+                android:contentDescription="@string/general_emoji_toggle" />
 
             <Space
                 android:layout_width="0dp"
@@ -168,7 +168,7 @@
                 android:paddingBottom="6dp"
                 android:paddingLeft="11dp"
                 android:scaleType="fitCenter"
-                android:contentDescription="@string/conversation_activity__send"
+                android:contentDescription="@string/send_general_text"
                 android:src="@drawable/ic_send_sms_insecure"
                 android:background="@drawable/circle_touch_highlight_background" />
 

@@ -250,13 +250,13 @@ public class KeyCachingService extends Service {
         Log.i(TAG, "foregrounding KCS");
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationChannels.LOCKED_STATUS);
 
-        builder.setContentTitle(getString(R.string.KeyCachingService_passphrase_cached));
-        builder.setContentText(getString(R.string.KeyCachingService_signal_passphrase_cached));
+        builder.setContentTitle(getString(R.string.hint_muzima_is_unlocked));
+        builder.setContentText(getString(R.string.hint_touch_to_open));
         builder.setSmallIcon(R.drawable.icon_cached);
         builder.setWhen(0);
         builder.setPriority(Notification.PRIORITY_MIN);
 
-        builder.addAction(R.drawable.ic_menu_lock_dark, getString(R.string.KeyCachingService_lock), buildLockIntent());
+        builder.addAction(R.drawable.ic_menu_lock_dark, getString(R.string.hint_lock_muzima), buildLockIntent());
         builder.setContentIntent(buildLaunchIntent());
 
         stopForeground(true);
@@ -282,8 +282,8 @@ public class KeyCachingService extends Service {
         builder.setSmallIcon(R.drawable.icon_cached);
         builder.setWhen(System.currentTimeMillis());
 
-        builder.setContentTitle(getString(R.string.KeyCachingService_passphrase_cached));
-        builder.setContentText(getString(R.string.KeyCachingService_signal_passphrase_cached));
+        builder.setContentTitle(getString(R.string.hint_muzima_is_unlocked));
+        builder.setContentText(getString(R.string.hint_touch_to_open));
         builder.setContentIntent(buildLaunchIntent());
 
         stopForeground(true);
