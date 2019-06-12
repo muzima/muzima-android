@@ -121,11 +121,11 @@ public class DraftDatabase extends Database {
         String getSnippet(Context context) {
             switch (type) {
                 case TEXT:     return value;
-                case IMAGE:    return context.getString(R.string.draft_database_Draft_image_snippet);
-                case VIDEO:    return context.getString(R.string.draft_database_Draft_video_snippet);
-                case AUDIO:    return context.getString(R.string.draft_database_Draft_audio_snippet);
-                case LOCATION: return context.getString(R.string.draft_database_Draft_location_snippet);
-                case QUOTE:    return context.getString(R.string.draft_database_Draft_quote_snippet);
+                case IMAGE:    return context.getString(R.string.general_image_snippet);
+                case VIDEO:    return context.getString(R.string.general_video_snippet);
+                case AUDIO:    return context.getString(R.string.general_audio_snippet);
+                case LOCATION: return context.getString(R.string.general_location_snippet);
+                case QUOTE:    return context.getString(R.string.general_quote_snippet);
                 default:       return null;
             }
         }

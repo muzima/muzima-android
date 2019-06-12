@@ -126,7 +126,7 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
         public void onResume() {
             super.onResume();
             //noinspection ConstantConditions
-            ((ApplicationPreferencesActivity) getActivity()).getSupportActionBar().setTitle(R.string.text_secure_normal__menu_settings);
+            ((ApplicationPreferencesActivity) getActivity()).getSupportActionBar().setTitle(R.string.general_chat_settings);
             setCategorySummaries();
         }
 

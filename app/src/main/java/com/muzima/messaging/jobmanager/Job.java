@@ -141,7 +141,7 @@ public abstract class Job extends Worker implements Serializable {
      *         if necessary.
      */
     protected String getDescription() {
-        return getApplicationContext().getString(R.string.Job_working_in_the_background);
+        return getApplicationContext().getString(R.string.text_working_in_the_background);
     }
 
     /**

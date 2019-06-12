@@ -66,42 +66,42 @@ public abstract class MessageRecord extends DisplayRecord {
     @Override
     public SpannableString getDisplayBody() {
         if (isGroupUpdate() && isOutgoing()) {
-            return new SpannableString(context.getString(R.string.message_record_you_updated_group));
+            return new SpannableString(context.getString(R.string.general_updated_group));
         } else if (isGroupUpdate()) {
             return new SpannableString(GroupUtil.getDescription(context, getBody()).toString(getIndividualRecipient()));
         } else if (isGroupQuit() && isOutgoing()) {
-            return new SpannableString(context.getString(R.string.message_record_left_group));
+            return new SpannableString(context.getString(R.string.general_left_group));
         } else if (isGroupQuit()) {
-            return new SpannableString(context.getString(R.string.conversation_item_group_action_left, getIndividualRecipient().toShortString()));
+            return new SpannableString(context.getString(R.string.general_group_action_left_s, getIndividualRecipient().toShortString()));
         } else if (isIncomingCall()) {
-            return new SpannableString(context.getString(R.string.message_record_s_called_you, getIndividualRecipient().toShortString()));
+            return new SpannableString(context.getString(R.string.general_s_called_you, getIndividualRecipient().toShortString()));
         } else if (isOutgoingCall()) {
-            return new SpannableString(context.getString(R.string.message_record_you_called));
+            return new SpannableString(context.getString(R.string.general_you_called));
         } else if (isMissedCall()) {
-            return new SpannableString(context.getString(R.string.message_record_missed_call));
+            return new SpannableString(context.getString(R.string.general_missed_call));
         } else if (isJoined()) {
-            return new SpannableString(context.getString(R.string.message_record_s_joined_signal, getIndividualRecipient().toShortString()));
+            return new SpannableString(context.getString(R.string.general_is_on_muzima, getIndividualRecipient().toShortString()));
         } else if (isExpirationTimerUpdate()) {
             int seconds = (int) (getExpiresIn() / 1000);
             if (seconds <= 0) {
-                return isOutgoing() ? new SpannableString(context.getString(R.string.message_record_you_disabled_disappearing_messages))
-                        : new SpannableString(context.getString(R.string.message_record_s_disabled_disappearing_messages, getIndividualRecipient().toShortString()));
+                return isOutgoing() ? new SpannableString(context.getString(R.string.general_you_disabled_disappearing_messages))
+                        : new SpannableString(context.getString(R.string.general_s_disabled_disappearing_messages, getIndividualRecipient().toShortString()));
             }
             String time = ExpirationUtil.getExpirationDisplayValue(context, seconds);
-            return isOutgoing() ? new SpannableString(context.getString(R.string.message_record_you_set_disappearing_message_time_to_s, time))
-                    : new SpannableString(context.getString(R.string.message_record_s_set_disappearing_message_time_to_s, getIndividualRecipient().toShortString(), time));
+            return isOutgoing() ? new SpannableString(context.getString(R.string.general_disappearing_message_time_set_to, time))
+                    : new SpannableString(context.getString(R.string.general_s_set_disappearing_message_time_to, getIndividualRecipient().toShortString(), time));
         } else if (isIdentityUpdate()) {
-            return new SpannableString(context.getString(R.string.message_record_your_safety_number_with_s_has_changed, getIndividualRecipient().toShortString()));
+            return new SpannableString(context.getString(R.string.general_your_safety_number_with_s_has_changed, getIndividualRecipient().toShortString()));
         } else if (isIdentityVerified()) {
             if (isOutgoing())
-                return new SpannableString(context.getString(R.string.message_record_you_marked_your_safety_number_with_s_verified, getIndividualRecipient().toShortString()));
+                return new SpannableString(context.getString(R.string.general_you_marked_your_safety_number_with_s_verified, getIndividualRecipient().toShortString()));
             else
-                return new SpannableString(context.getString(R.string.message_record_you_marked_your_safety_number_with_s_verified_from_another_device, getIndividualRecipient().toShortString()));
+                return new SpannableString(context.getString(R.string.general_safety_number_with_s_verified_from_another_device, getIndividualRecipient().toShortString()));
         } else if (isIdentityDefault()) {
             if (isOutgoing())
-                return new SpannableString(context.getString(R.string.message_record_you_marked_your_safety_number_with_s_unverified, getIndividualRecipient().toShortString()));
+                return new SpannableString(context.getString(R.string.general_you_marked_your_safety_number_with_s_unverified, getIndividualRecipient().toShortString()));
             else
-                return new SpannableString(context.getString(R.string.message_record_you_marked_your_safety_number_with_s_unverified_from_another_device, getIndividualRecipient().toShortString()));
+                return new SpannableString(context.getString(R.string.you_marked_your_safety_number_with_s_unverified_from_another_device, getIndividualRecipient().toShortString()));
         } else if (getBody().length() > MAX_DISPLAY_LENGTH) {
             return new SpannableString(getBody().substring(0, MAX_DISPLAY_LENGTH));
         }

@@ -125,7 +125,7 @@
             android:layout_toStartOf="@+id/date"
             android:layout_alignParentTop="true"
             android:layout_marginTop="5dp"
-            android:contentDescription="@string/conversation_activity__attachment_thumbnail"
+            android:contentDescription="@string/general_attachment_thumbnail"
             android:visibility="gone"
             tools:src="@drawable/ic_video_light"
             tools:visibility="visible" />

@@ -294,7 +294,7 @@ public class ConversationListFragment extends Fragment
                     @Override
                     protected void onPreExecute() {
                         dialog = ProgressDialog.show(getActivity(),
-                                getActivity().getString(R.string.ConversationListFragment_deleting),
+                                getActivity().getString(R.string.general_deleting),
                                 getActivity().getString(R.string.ConversationListFragment_deleting_selected_conversations),
                                 true, false);
                     }

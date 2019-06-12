@@ -17,7 +17,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textColor="?conversation_item_sent_text_primary_color"
-        android:text="@string/load_more_header__see_full_conversation" />
+        android:text="@string/general_see_full_conversation" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textColor="?conversation_item_sent_text_primary_color"
-            android:text="@string/load_more_header__loading" />
+            android:text="@string/general_loading" />
 
         <com.pnikosis.materialishprogress.ProgressWheel
             android:id="@+id/load_more_progress"

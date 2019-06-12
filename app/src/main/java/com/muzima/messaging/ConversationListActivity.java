@@ -85,7 +85,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
         // RatingManager.showRatingDialogIfNecessary(this);
        // RegistrationLockDialog.showReminderIfNecessary(this);
 
-        TooltipCompat.setTooltipText(searchAction, getText(R.string.search_for_conversations_contacts_and_messages));
+        TooltipCompat.setTooltipText(searchAction, getText(R.string.general_conversations_contacts_and_messages));
     }
 
     @Override
@@ -122,7 +122,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
                     .ifNecessary()
                     .onAllGranted(() -> searchToolbar.display(searchAction.getX() + (searchAction.getWidth() / 2),
                             searchAction.getY() + (searchAction.getHeight() / 2)))
-                    .withPermanentDenialDialog(getString(R.string.app_needs_contacts_permission_in_order_to_search_your_contacts_but_it_has_been_permanently_denied))
+                    .withPermanentDenialDialog(getString(R.string.text_contacts_permission))
                     .execute();
         });
 

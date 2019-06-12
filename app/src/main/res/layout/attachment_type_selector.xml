@@ -41,14 +41,14 @@
                     android:layout_height="53dp"
                     android:src="@drawable/ic_image_white_24dp"
                     android:scaleType="center"
-                    android:contentDescription="@string/attachment_type_selector__gallery_description"
+                    android:contentDescription="@string/general_image_or_video"
                     app:circleColor="@color/purple_400"/>
 
                 <TextView android:layout_marginTop="10dp"
                     style="@style/AttachmentTypeLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/attachment_type_selector__gallery"/>
+                    android:text="@string/general_gallery"/>
 
             </LinearLayout>
 
@@ -64,14 +64,14 @@
                     android:layout_height="53dp"
                     android:src="@drawable/ic_headset_white_24dp"
                     android:scaleType="center"
-                    android:contentDescription="@string/attachment_type_selector__audio_description"
+                    android:contentDescription="@string/general_audio"
                     app:circleColor="@color/orange_400"/>
 
                 <TextView android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/AttachmentTypeLabel"
-                    android:text="@string/attachment_type_selector__audio"/>
+                    android:text="@string/general_audio"/>
 
             </LinearLayout>
 
@@ -87,14 +87,14 @@
                     android:layout_height="53dp"
                     android:src="@drawable/ic_insert_drive_file_white_24dp"
                     android:scaleType="center"
-                    android:contentDescription="@string/attachment_type_selector__file_description"
+                    android:contentDescription="@string/general_file"
                     app:circleColor="@color/red_400"/>
 
                 <TextView android:layout_marginTop="10dp"
                     style="@style/AttachmentTypeLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/attachment_type_selector__file"/>
+                    android:text="@string/general_file"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -120,14 +120,14 @@
                     android:layout_height="53dp"
                     android:src="@drawable/ic_person_white_24dp"
                     android:scaleType="center"
-                    android:contentDescription="@string/attachment_type_selector__contact_description"
+                    android:contentDescription="@string/general_contact"
                     app:circleColor="@color/blue_400"/>
 
                 <TextView android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/AttachmentTypeLabel"
-                    android:text="@string/attachment_type_selector__contact"/>
+                    android:text="@string/general_contact"/>
 
             </LinearLayout>
 
@@ -143,7 +143,7 @@
                     android:layout_height="53dp"
                     android:src="@drawable/ic_camera_white_24dp"
                     android:scaleType="center"
-                    android:contentDescription="@string/attachment_type_selector__camera_description"
+                    android:contentDescription="@string/general_camera"
                     app:circleColor="@color/green_400"/>
 
                 <TextView android:layout_marginTop="10dp"
@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     style="@style/AttachmentTypeLabel"
-                    android:text="@string/attachment_type_selector__camera"/>
+                    android:text="@string/general_camera"/>
 
             </LinearLayout>
 
@@ -168,14 +168,14 @@
                     android:layout_height="53dp"
                     android:src="@drawable/ic_location_on_white_24dp"
                     android:scaleType="center"
-                    android:contentDescription="@string/attachment_type_selector__location_description"
+                    android:contentDescription="@string/general_location"
                     app:circleColor="@color/blue_grey_400"/>
 
                 <TextView android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/AttachmentTypeLabel"
-                    android:text="@string/attachment_type_selector__location"/>
+                    android:text="@string/general_location"/>
 
             </LinearLayout>
         </LinearLayout>

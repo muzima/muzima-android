@@ -128,7 +128,7 @@ public class RecipientProvider {
             }
 
             if (!groupId.isMmsGroup() && title == null) {
-                title = context.getString(R.string.recipient_provider_unnamed_group);
+                title = context.getString(R.string.general_unnamed_group);
             }
 
             if (groupRecord.get().getAvatar() != null && groupRecord.get().getAvatar().length > 0) {
@@ -138,7 +138,7 @@ public class RecipientProvider {
             return new RecipientDetails(title, avatarId, false, settings.orNull(), members);
         }
 
-        return new RecipientDetails(context.getString(R.string.recipient_provider_unnamed_group), null, false, settings.orNull(), null);
+        return new RecipientDetails(context.getString(R.string.general_unnamed_group), null, false, settings.orNull(), null);
     }
 
     public static class RecipientDetails {

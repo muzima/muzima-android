@@ -26,7 +26,7 @@ public class MmsPreferencesFragment extends CorrectedPreferenceFragment {
         super.onCreate(paramBundle);
 
         ((PassphraseRequiredActionBarActivity) getActivity()).getSupportActionBar()
-                .setTitle(R.string.preferences__advanced_mms_access_point_names);
+                .setTitle(R.string.preferences_mms_access_point_names);
     }
 
     @Override

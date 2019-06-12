@@ -28,7 +28,7 @@ public class Trimmer {
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setCancelable(false);
             progressDialog.setIndeterminate(false);
-            progressDialog.setTitle(R.string.trimmer__deleting);
+            progressDialog.setTitle(R.string.general_deleting);
             progressDialog.setMessage(context.getString(R.string.trimmer__deleting_old_messages));
             progressDialog.setMax(100);
             progressDialog.show();

@@ -197,7 +197,7 @@ public class QuoteView extends FrameLayout implements RecipientModifiedListener 
         boolean outgoing = messageType != MESSAGE_TYPE_INCOMING;
         boolean isOwnNumber = Util.isOwnNumber(getContext(), author.getAddress());
 
-        authorView.setText(isOwnNumber ? getContext().getString(R.string.quote_view_you)
+        authorView.setText(isOwnNumber ? getContext().getString(R.string.general_you)
                 : author.toShortString());
 
         // We use the raw color resource because Android 4.x was struggling with tints here
@@ -223,13 +223,13 @@ public class QuoteView extends FrameLayout implements RecipientModifiedListener 
 
         // Given that most types have images, we specifically check images last
         if (!audioSlides.isEmpty()) {
-            mediaDescriptionText.setText(R.string.quote_view_audio);
+            mediaDescriptionText.setText(R.string.general_audio);
         } else if (!documentSlides.isEmpty()) {
             mediaDescriptionText.setVisibility(GONE);
         } else if (!videoSlides.isEmpty()) {
-            mediaDescriptionText.setText(R.string.quote_view_video);
+            mediaDescriptionText.setText(R.string.general_video);
         } else if (!imageSlides.isEmpty()) {
-            mediaDescriptionText.setText(R.string.quote_view_photo);
+            mediaDescriptionText.setText(R.string.general_photo);
         }
     }
 

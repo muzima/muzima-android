@@ -96,7 +96,7 @@ public class MessageDetailsActivity extends PassphraseRequiredActionBarActivity 
         super.onResume();
 
         assert getSupportActionBar() != null;
-        getSupportActionBar().setTitle(R.string.AndroidManifest__message_details);
+        getSupportActionBar().setTitle(R.string.menu_message_details);
 
         MessageNotifier.setVisibleThread(threadId);
     }

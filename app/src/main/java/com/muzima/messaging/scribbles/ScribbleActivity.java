@@ -58,7 +58,7 @@ public class ScribbleActivity extends PassphraseRequiredActionBarActivity implem
 
     @Override
     public void onImageEditFailure() {
-        Toast.makeText(ScribbleActivity.this, R.string.ScribbleActivity_save_failure, Toast.LENGTH_SHORT).show();
+        Toast.makeText(ScribbleActivity.this, R.string.warning_image_save_failure, Toast.LENGTH_SHORT).show();
         finish();
     }
 }

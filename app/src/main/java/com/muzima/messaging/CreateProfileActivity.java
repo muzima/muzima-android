@@ -96,7 +96,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
         setContentView(R.layout.profile_create_activity);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        getSupportActionBar().setTitle(R.string.createProfileActivity_your_profile_info);
+        getSupportActionBar().setTitle(R.string.title_your_profile_info);
 
         initializeResources();
         initializeEmojiInput();
@@ -223,7 +223,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().getBytes().length > ProfileCipher.NAME_PADDED_LENGTH) {
-                    name.setError(getString(R.string.createProfileActivity_too_long));
+                    name.setError(getString(R.string.text_too_long));
                     finishButton.setEnabled(false);
                 } else if (name.getError() != null || !finishButton.isEnabled()) {
                     name.setError(null);
@@ -367,7 +367,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
             extraIntents.add(new Intent("com.muzima.action.CLEAR_PROFILE_PHOTO"));
         }
 
-        Intent chooserIntent = Intent.createChooser(galleryIntent, getString(R.string.createProfileActivity_profile_photo));
+        Intent chooserIntent = Intent.createChooser(galleryIntent, getString(R.string.general_profile_photo));
 
         if (!extraIntents.isEmpty()) {
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents.toArray(new Intent[0]));
@@ -440,7 +440,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) handleFinishedLollipop();
                     else                                                       handleFinishedLegacy();
                 } else        {
-                    Toast.makeText(CreateProfileActivity.this, R.string.createProfileActivity_problem_setting_profile, Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateProfileActivity.this, R.string.text_problem_setting_profile, Toast.LENGTH_LONG).show();
                 }
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

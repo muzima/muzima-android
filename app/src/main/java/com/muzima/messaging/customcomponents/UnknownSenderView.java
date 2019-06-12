@@ -44,9 +44,9 @@ public class UnknownSenderView extends FrameLayout {
 
         new AlertDialog.Builder(getContext())
                 .setIconAttribute(R.attr.dialog_alert_icon)
-                .setTitle(getContext().getString(R.string.UnknownSenderView_block_s, recipient.toShortString()))
-                .setMessage(R.string.UnknownSenderView_blocked_contacts_will_no_longer_be_able_to_send_you_messages_or_call_you)
-                .setPositiveButton(R.string.UnknownSenderView_block, (dialog, which) -> {
+                .setTitle(getContext().getString(R.string.title_block_someone, recipient.toShortString()))
+                .setMessage(R.string.message_block_someone)
+                .setPositiveButton(R.string.general_block, (dialog, which) -> {
                     new AsyncTask<Void, Void, Void>() {
                         @Override
                         protected Void doInBackground(Void... params) {
@@ -87,9 +87,9 @@ public class UnknownSenderView extends FrameLayout {
 
         new AlertDialog.Builder(getContext())
                 .setIconAttribute(R.attr.dialog_info_icon)
-                .setTitle(getContext().getString(R.string.UnknownSenderView_share_profile_with_s, recipient.toShortString()))
-                .setMessage(R.string.UnknownSenderView_the_easiest_way_to_share_your_profile_information_is_to_add_the_sender_to_your_contacts)
-                .setPositiveButton(R.string.UnknownSenderView_share_profile, (dialog, which) -> {
+                .setTitle(getContext().getString(R.string.title_share_profile, recipient.toShortString()))
+                .setMessage(R.string.text_the_easiest_way_to_share_your_profile_information_is_to_add_the_sender_to_your_contacts)
+                .setPositiveButton(R.string.general_share_profile, (dialog, which) -> {
                     new AsyncTask<Void, Void, Void>() {
                         @Override
                         protected Void doInBackground(Void... params) {

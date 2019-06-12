@@ -47,10 +47,10 @@ public class ContactUtil {
         String  contactName = ContactUtil.getDisplayName(contact);
 
         if (!TextUtils.isEmpty(contactName)) {
-            return context.getString(R.string.message_notifier_contact_message, EmojiStrings.BUST_IN_SILHOUETTE, contactName);
+            return context.getString(R.string.general_contact_message, EmojiStrings.BUST_IN_SILHOUETTE, contactName);
         }
 
-        return SpanUtil.italic(context.getString(R.string.message_notifier_unknown_contact_message));
+        return SpanUtil.italic(context.getString(R.string.general_contact));
     }
 
     public static @NonNull String getDisplayName(@Nullable Contact contact) {

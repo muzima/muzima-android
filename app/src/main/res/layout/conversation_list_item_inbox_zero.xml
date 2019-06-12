@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:padding="16dp"
-        android:text="@string/conversation_list_item_inbox_zero__inbox_zeeerrro"
+        android:text="@string/general_inbox_zero"
         android:textSize="25sp" />
 
     <ImageView
@@ -27,7 +27,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:padding="16dp"
-        android:text="@string/conversation_list_item_inbox_zero__zip_zilch_zero_nada_nyou_re_all_caught_up"
+        android:text="@string/general_zip_zilch"
         android:textSize="20sp" />
 
 </com.muzima.messaging.customcomponents.actionmode.ConversationListItemInboxZero>

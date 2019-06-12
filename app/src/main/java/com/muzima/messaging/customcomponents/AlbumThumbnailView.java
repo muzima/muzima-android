@@ -141,7 +141,7 @@ public class AlbumThumbnailView extends FrameLayout {
 
         if (slides.size() > 5) {
             TextView text = findViewById(R.id.album_cell_overflow_text);
-            text.setText(getContext().getString(R.string.AlbumThumbnailView_plus, slides.size() - 5));
+            text.setText(getContext().getString(R.string.general_plus, slides.size() - 5));
         }
     }
 

@@ -114,7 +114,7 @@ public class GroupUtil {
 
         public String toString(SignalRecipient sender) {
             StringBuilder description = new StringBuilder();
-            description.append(context.getString(R.string.message_record_s_updated_group, sender.toShortString()));
+            description.append(context.getString(R.string.general_s_updated_group, sender.toShortString()));
 
             if (groupContext == null) {
                 return description.toString();
@@ -124,14 +124,14 @@ public class GroupUtil {
 
             if (members != null) {
                 description.append("\n");
-                description.append(context.getResources().getQuantityString(R.plurals.group_util_joined_the_group,
+                description.append(context.getResources().getQuantityString(R.plurals.plurals_joined_the_group,
                         members.size(), toString(members)));
             }
 
             if (title != null && !title.trim().isEmpty()) {
                 if (members != null) description.append(" ");
                 else                 description.append("\n");
-                description.append(context.getString(R.string.group_util_group_name_is_now, title));
+                description.append(context.getString(R.string.general_group_name, title));
             }
 
             return description.toString();

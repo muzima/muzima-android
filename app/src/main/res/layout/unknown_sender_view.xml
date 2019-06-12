@@ -14,7 +14,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="25dp"
         android:textColor="?android:textColorSecondary"
-        android:text="@string/unknown_sender_view__the_sender_is_not_in_your_contact_list"/>
+        android:text="@string/text_sender_not_in_your_contact_list"/>
 
 
     <LinearLayout android:id="@+id/block"
@@ -34,7 +34,7 @@
             android:layout_marginStart="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/unknown_sender_view__block"
+            android:text="@string/general_block"
             android:textAllCaps="true"
             android:textStyle="bold"
             android:textColor="@color/primary_blue"
@@ -59,7 +59,7 @@
             android:layout_marginStart="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/unknown_sender_view__add_to_contacts"
+            android:text="@string/general_add_to_contacts"
             android:textAllCaps="true"
             android:textStyle="bold"
             android:textColor="@color/primary_blue"
@@ -84,7 +84,7 @@
             android:layout_marginStart="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/unknown_sender_view__don_t_add_but_make_my_profile_visible"
+            android:text="@string/text_dont_add_but_make_my_profile_visible"
             android:textAllCaps="true"
             android:textStyle="bold"
             android:textColor="@color/primary_blue"

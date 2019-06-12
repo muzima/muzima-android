@@ -112,7 +112,7 @@ public class ContactsCursorLoader extends CursorLoader {
 
     private Cursor getRecentsHeaderCursor() {
         MatrixCursor recentsHeader = new MatrixCursor(CONTACT_PROJECTION);
-        recentsHeader.addRow(new Object[]{ getContext().getString(R.string.ContactsCursorLoader_recent_chats),
+        recentsHeader.addRow(new Object[]{ getContext().getString(R.string.general_recent_chats),
                 "",
                 ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
                 "",
@@ -122,7 +122,7 @@ public class ContactsCursorLoader extends CursorLoader {
 
     private Cursor getContactsHeaderCursor() {
         MatrixCursor contactsHeader = new MatrixCursor(CONTACT_PROJECTION, 1);
-        contactsHeader.addRow(new Object[] { getContext().getString(R.string.ContactsCursorLoader_contacts),
+        contactsHeader.addRow(new Object[] { getContext().getString(R.string.general_contacts),
                 "",
                 ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
                 "",
@@ -132,7 +132,7 @@ public class ContactsCursorLoader extends CursorLoader {
 
     private Cursor getGroupsHeaderCursor() {
         MatrixCursor groupHeader = new MatrixCursor(CONTACT_PROJECTION, 1);
-        groupHeader.addRow(new Object[]{ getContext().getString(R.string.ContactsCursorLoader_groups),
+        groupHeader.addRow(new Object[]{ getContext().getString(R.string.general_groups),
                 "",
                 ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
                 "",
@@ -196,7 +196,7 @@ public class ContactsCursorLoader extends CursorLoader {
 
     private Cursor getNewNumberCursor() {
         MatrixCursor newNumberCursor = new MatrixCursor(CONTACT_PROJECTION, 1);
-        newNumberCursor.addRow(new Object[] { getContext().getString(R.string.contact_selection_list__unknown_contact),
+        newNumberCursor.addRow(new Object[] { getContext().getString(R.string.general_unknown_contact),
                 filter,
                 ContactsContract.CommonDataKinds.Phone.TYPE_CUSTOM,
                 "\u21e2",

@@ -31,7 +31,7 @@ public class UntrustedSendDialog extends AlertDialog.Builder implements DialogIn
         setTitle(R.string.UntrustedSendDialog_send_message);
         setIconAttribute(R.attr.dialog_alert_icon);
         setMessage(message);
-        setPositiveButton(R.string.UntrustedSendDialog_send, this);
+        setPositiveButton(R.string.send_general_text, this);
         setNegativeButton(android.R.string.cancel, null);
     }
 

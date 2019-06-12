@@ -38,7 +38,7 @@ public class SQLCipherMigrationHelper {
                                  @NonNull net.sqlcipher.database.SQLiteDatabase modernDb) {
         modernDb.beginTransaction();
         try {
-            GenericForegroundService.startForegroundTask(context, context.getString(R.string.SQL_cipher_migration_helper_migrating_signal_database));
+            GenericForegroundService.startForegroundTask(context, context.getString(R.string.general_migrating_muzima_database));
             copyTable("identities", legacyDb, modernDb, null);
             copyTable("push", legacyDb, modernDb, null);
             copyTable("groups", legacyDb, modernDb, null);
@@ -62,7 +62,7 @@ public class SQLCipherMigrationHelper {
         modernDb.beginTransaction();
 
         try {
-            GenericForegroundService.startForegroundTask(context, context.getString(R.string.SQL_cipher_migration_helper_migrating_signal_database));
+            GenericForegroundService.startForegroundTask(context, context.getString(R.string.general_migrating_muzima_database));
             int total = 5000;
 
             copyTable("sms", legacyDb, modernDb, (row, progress) -> {

@@ -50,9 +50,9 @@ public class ConfirmIdentityDialog extends AlertDialog {
 
         SignalRecipient recipient = SignalRecipient.from(context, mismatch.getAddress(), false);
         String name = recipient.toShortString();
-        String introduction = String.format(context.getString(R.string.ConfirmIdentityDialog_your_safety_number_with_s_has_changed), name, name);
+        String introduction = String.format(context.getString(R.string.text_your_safety_number_with_s_has_changed), name, name);
         SpannableString spannableString = new SpannableString(introduction + " " +
-                context.getString(R.string.ConfirmIdentityDialog_you_may_wish_to_verify_your_safety_number_with_this_contact));
+                context.getString(R.string.text_verify_your_safety_number));
 
         spannableString.setSpan(new VerifySpan(context, mismatch),
                 introduction.length() + 1, spannableString.length(),
@@ -61,7 +61,7 @@ public class ConfirmIdentityDialog extends AlertDialog {
         setTitle(name);
         setMessage(spannableString);
 
-        setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.ConfirmIdentityDialog_accept), new AcceptListener(messageRecord, mismatch, recipient.getAddress()));
+        setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.general_accept), new AcceptListener(messageRecord, mismatch, recipient.getAddress()));
         setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(android.R.string.cancel), new CancelListener());
     }
 

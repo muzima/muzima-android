@@ -746,427 +746,353 @@
     <string name="sms_limit_exceeded">You have exceeded the sms limit, kindly consult server admin.</string>
     <string name="server_unreachable">Unable to reach server, kindly check your internet connection.</string>
     <string name="general_unable_to_send_sms_verification_error_message">Unable to send verification sms consult server admin</string>
-    <string name="registrationActivity_select_your_country">Select your country</string>
-    <string name="registrationActivity_you_must_specify_your_country_code">You must specify your country code</string>
-    <string name="registrationActivity_you_must_specify_your_phone_number">You must specify your phone number</string>
-    <string name="registrationActivity_invalid_number">Invalid number</string>
-    <string name="registrationActivity_the_number_you_specified_s_is_invalid">The number you specified (%s) is invalid.</string>
-    <string name="registrationActivity_no_browser">Unable to open this link. No web browser found.</string>
-    <string name="unknown_error">Unknown error</string>
-    <string name="registrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends">mUzima needs access to your contacts and media in order to connect with friends, exchange messages, and make secure calls</string>
-    <string name="registrationActivity_please_enter_the_verification_code_sent_to_s">Please enter the verification code sent to %s.</string>
-    <string name="registrationActivity_wrong_number">Wrong number?</string>
-    <string name="registrationActivity_verify_s">Verify %s</string>
-    <string name="signal_user_verified_preference">mUzima user verified preference</string>
-    <string name="registration_activity_oh_no">Oh no!</string>
-    <string name="RegistrationActivity_registration_of_this_phone_number_will_be_possible_without_your_registration_lock_pin_after_seven_days_have_passed">Registration of this phone number will be possible without your Registration Lock PIN after 7 days have passed since this phone number was last active on mUzima. You have %d days remaining.</string>
-    <string name="RegistrationActivity_too_many_attempts">Too many attempts</string>
-    <string name="RegistrationActivity_you_have_made_too_many_incorrect_registration_lock_pin_attempts_please_try_again_in_a_day">You\'ve made too many incorrect Registration Lock PIN attempts. Please try again in a day.</string>
-    <string name="RegistrationActivity_error_connecting_to_service">Error connecting to service</string>
-    <string name="RegistrationActivity_incorrect_registration_lock_pin">Incorrect Registration Lock PIN</string>
-    <string name="RegistrationActivity_you_must_enter_your_registration_lock_PIN">You must enter your Registration Lock PIN</string>
-    <string name="RegistrationActivity_this_phone_number_has_registration_lock_enabled_please_enter_the_registration_lock_pin">This phone number has Registration Lock enabled. Please enter the Registration Lock PIN.</string>
-    <string name="RegistrationActivity_registration_lock_pin">Registration lock PIN</string>
-    <string name="RegistrationActivity_please_enter_the_verification_code_sent_to_s">Please enter the verification code sent to %s.</string>
-    <string name="Job_working_in_the_background">Working in the background…</string>
-    <string name="conversation_activity_emoji_toggle_description">Toggle emoji keyboard</string>
-    <string name="profile_create_activity_finish">FINISH</string>
-    <string name="profile_create_activity_set_later">Set later</string>
-    <string name="profile_create_activity_your_name">Your name</string>
-    <string name="createProfileActivity_your_profile_info">Your profile info</string>
-    <string name="createProfileActivity_too_long">Too long</string>
-    <string name="createProfileActivity_profile_photo">Profile photo</string>
-    <string name="createProfileActivity_problem_setting_profile">Problem setting profile</string>
-    <string name="slide_image">Image</string>
-    <string name="slide_audio">Audio</string>
-    <string name="slide_video">Video</string>
-
-    <!-- ThreadRecord -->
-    <string name="thread_record_group_updated">Group updated</string>
-    <string name="thread_record_left_the_group">Left the group</string>
-    <string name="thread_record_secure_session_reset">Secure session reset.</string>
-    <string name="thread_record_draft">Draft:</string>
-    <string name="thread_record_called">You called</string>
-    <string name="thread_record_called_you">Called you</string>
-    <string name="thread_record_missed_call">Missed call</string>
-    <string name="thread_record_media_message">Media message</string>
-    <string name="thread_record_s_is_on_signal">%s is on mUzima!</string>
-    <string name="thread_record_disappearing_messages_disabled">Disappearing messages disabled</string>
-    <string name="thread_record_disappearing_message_time_updated_to_s">Disappearing message time set to %s</string>
-    <string name="thread_record_safety_number_changed">Safety number changed</string>
-    <string name="thread_record_your_safety_number_with_s_has_changed">Your safety number with %s has changed.</string>
-    <string name="thread_record_you_marked_verified">You marked verified</string>
-    <string name="thread_record_you_marked_unverified">You marked unverified</string>
-
-    <!-- ConversationListItem -->
-    <string name="conversation_list_item_key_exchange_message">Key exchange message</string>
-
-    <!-- MessageDisplayHelper -->
-    <string name="message_display_helper_bad_encrypted_message">Bad encrypted message</string>
-    <string name="message_display_helper_message_encrypted_for_non_existing_session">Message encrypted for non-existing session</string>
-    <string name="expiration_off">Off</string>
-
-    <plurals name="expiration_seconds">
+    <string name="general_select_your_country">Select your country</string>
+    <string name="general_unknown_error">Unknown error</string>
+    <string name="general_contact_access">mUzima needs access to your contacts and media in order to connect with friends, exchange messages, and make secure calls</string>
+    <string name="general_enter_verification_code">Please enter the verification code sent to %s.</string>
+    <string name="question_wrong_number">Wrong number?</string>
+    <string name="title_verify">Verify %s</string>
+    <string name="preference_user_verified">mUzima user verified preference</string>
+    <string name="title_oh_no">Oh no!</string>
+    <string name="message_possibility_without_lock_pin">Registration of this phone number will be possible without your Registration Lock PIN after 7 days have passed since this phone number was last active on mUzima. You have %d days remaining.</string>
+    <string name="title_too_many_attempts">Too many attempts</string>
+    <string name="message_too_many_attempts">You\'ve made too many incorrect Registration Lock PIN attempts. Please try again in a day.</string>
+    <string name="text_error_connecting_to_service">Error connecting to service</string>
+    <string name="text_incorrect_registration_lock_pin">Incorrect Registration Lock PIN</string>
+    <string name="text_enter_your_registration_lock_pin">You must enter your Registration Lock PIN</string>
+    <string name="title_enter_registration_lock_pin">This phone number has Registration Lock enabled. Please enter the Registration Lock PIN.</string>
+    <string name="title_registration_lock_pin">Registration lock PIN</string>
+    <string name="text_working_in_the_background">Working in the background…</string>
+    <string name="text_emoji_toggle_description">Toggle emoji keyboard</string>
+    <string name="general_set_later">Set later</string>
+    <string name="hint_your_name">Your name</string>
+    <string name="title_your_profile_info">Your profile info</string>
+    <string name="text_too_long">Too long</string>
+    <string name="general_profile_photo">Profile photo</string>
+    <string name="text_problem_setting_profile">Problem setting profile</string>
+    <string name="general_image">Image</string>
+    <string name="general_audio">Audio</string>
+    <string name="general_video">Video</string>
+    <string name="general_group_updated">Group updated</string>
+    <string name="general_left_the_group">Left the group</string>
+    <string name="general_secure_session_reset">Secure session reset.</string>
+    <string name="general_you_called">You called</string>
+    <string name="general_called_you">Called you</string>
+    <string name="general_missed_call">Missed call</string>
+    <string name="general_media_message">Media message</string>
+    <string name="general_is_on_muzima">%s is on mUzima!</string>
+    <string name="general_disappearing_messages_disabled">Disappearing messages disabled</string>
+    <string name="general_disappearing_message_time_updated">Disappearing message time set to %s</string>
+    <string name="general_safety_number_changed">Safety number changed</string>
+    <string name="general_safety_number_with_s_has_changed">Your safety number with %s has changed.</string>
+    <string name="general_marked_verified">You marked verified</string>
+    <string name="general_marked_unverified">You marked unverified</string>
+    <string name="general_key_exchange_message">Key exchange message</string>
+    <string name="warning_bad_encrypted_message">Bad encrypted message</string>
+    <string name="warning_message_encrypted_for_non_existing_session">Message encrypted for non-existing session</string>
+    <string name="general_off">Off</string>
+    <plurals name="plurals_seconds">
         <item quantity="one">%d second</item>
         <item quantity="other">%d seconds</item>
     </plurals>
-
-    <string name="expiration_seconds_abbreviated">%ds</string>
-
-    <plurals name="expiration_minutes">
+    <string name="general_seconds_abbreviated">%ds</string>
+    <plurals name="plurals_minutes">
         <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>
     </plurals>
-
-    <string name="expiration_minutes_abbreviated">%dm</string>
-
-    <plurals name="expiration_hours">
+    <string name="general_minutes_abbreviated">%dm</string>
+    <plurals name="plurals_hours">
         <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
-
-    <string name="expiration_hours_abbreviated">%dh</string>
-
-    <plurals name="expiration_days">
+    <string name="general_hours_abbreviated">%dh</string>
+    <plurals name="plurals_days">
         <item quantity="one">%d day</item>
         <item quantity="other">%d days</item>
     </plurals>
-
-    <string name="expiration_days_abbreviated">%dd</string>
-
-    <plurals name="expiration_weeks">
+    <string name="general_days_abbreviated">%dd</string>
+    <plurals name="plurals_weeks">
         <item quantity="one">%d week</item>
         <item quantity="other">%d weeks</item>
     </plurals>
-
-    <string name="expiration_weeks_abbreviated">%dw</string>
-
-    <!-- MessageRecord -->
-    <string name="message_record_message_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported">Received a message encrypted using an old version of mUzima that is no longer supported. Please ask the sender to update to the most recent version and resend the message.</string>
-    <string name="message_record_left_group">You have left the group.</string>
-    <string name="message_record_you_updated_group">You updated the group.</string>
-    <string name="message_record_you_called">You called</string>
-    <string name="message_record_called_you">Contact called</string>
-    <string name="message_record_missed_call">Missed call</string>
-    <string name="message_record_s_updated_group">%s updated the group.</string>
-    <string name="message_record_s_called_you">%s called you</string>
-    <string name="message_record_called_s">Called %s</string>
-    <string name="message_record_missed_call_from">Missed call from %s</string>
-    <string name="message_record_s_joined_signal">%s is on mUzima!</string>
-    <string name="message_record_you_disabled_disappearing_messages">You disabled disappearing messages.</string>
-    <string name="message_record_s_disabled_disappearing_messages">%1$s disabled disappearing messages.</string>
-    <string name="message_record_you_set_disappearing_message_time_to_s">You set the disappearing message timer to %1$s.</string>
-    <string name="message_record_s_set_disappearing_message_time_to_s">%1$s set the disappearing message timer to %2$s.</string>
-    <string name="message_record_your_safety_number_with_s_has_changed">Your safety number with %s has changed.</string>
-    <string name="message_record_you_marked_your_safety_number_with_s_verified">You marked your safety number with %s verified</string>
-    <string name="message_record_you_marked_your_safety_number_with_s_verified_from_another_device">You marked your safety number with %s verified from another device</string>
-    <string name="message_record_you_marked_your_safety_number_with_s_unverified">You marked your safety number with %s unverified</string>
-    <string name="message_record_you_marked_your_safety_number_with_s_unverified_from_another_device">You marked your safety number with %s unverified from another device</string>
-
-    <string name="conversation_item_group_action_left">%1$s has left the group.</string>
-
-
-    <string name="sms_message_record_received_corrupted_key_exchange_message">Received corrupted key
+    <string name="general_weeks_abbreviated">%dw</string>
+    <string name="emphasis_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported">Received a message encrypted using an old version of mUzima that is no longer supported. Please ask the sender to update to the most recent version and resend the message.</string>
+    <string name="general_left_group">You have left the group.</string>
+    <string name="general_updated_group">You updated the group.</string>
+    <string name="general_s_updated_group">%s updated the group.</string>
+    <string name="general_s_called_you">%s called you</string>
+    <string name="general_you_disabled_disappearing_messages">You disabled disappearing messages.</string>
+    <string name="general_s_disabled_disappearing_messages">%1$s disabled disappearing messages.</string>
+    <string name="general_disappearing_message_time_set_to">You set the disappearing message timer to %1$s.</string>
+    <string name="general_s_set_disappearing_message_time_to">%1$s set the disappearing message timer to %2$s.</string>
+    <string name="general_your_safety_number_with_s_has_changed">Your safety number with %s has changed.</string>
+    <string name="general_you_marked_your_safety_number_with_s_verified">You marked your safety number with %s verified</string>
+    <string name="general_safety_number_with_s_verified_from_another_device">You marked your safety number with %s verified from another device</string>
+    <string name="general_you_marked_your_safety_number_with_s_unverified">You marked your safety number with %s unverified</string>
+    <string name="you_marked_your_safety_number_with_s_unverified_from_another_device">You marked your safety number with %s unverified from another device</string>
+    <string name="general_group_action_left">%1$s has left the group.</string>
+    <string name="warning_received_corrupted_key_exchange_message">Received corrupted key
         exchange message!
     </string>
-    <string name="sms_message_record_received_key_exchange_message_for_invalid_protocol_version">
+    <string name="warning_received_key_exchange_message_for_invalid_protocol_version">
         Received key exchange message for invalid protocol version.
     </string>
-    <string name="sms_message_record_received_message_with_new_safety_number_tap_to_process">Received message with new safety number. Tap to process and display.</string>
-    <string name="sms_message_record_secure_session_reset">You reset the secure session.</string>
-    <string name="sms_message_record_secure_session_reset_s">%s reset the secure session.</string>
-    <string name="conversation_item_received_key_exchange_message_tap_to_process">Received key exchange message, tap to process.</string>
-
-    <string name="mms_message_record_bad_encrypted_mms_message">Bad encrypted MMS message</string>
-    <string name="mms_message_record_mms_message_encrypted_for_non_existing_session">MMS message encrypted for non-existing session</string>
-    <string name="notification_mms_message_ecord_multimedia_message">Multimedia message</string>
-    <string name="notification_mms_message_ecord_downloading_mms_message">Downloading MMS message</string>
-    <string name="notification_mms_message_ecord_error_downloading_mms_message">Error downloading MMS message, tap to retry</string>
-    <string name="sms_message_record_duplicate_message">Duplicate message.</string>
-    <plurals name="group_util_joined_the_group">
+    <string name="emphasis_received_message_with_new_safety_number_tap_to_process">Received message with new safety number. Tap to process and display.</string>
+    <string name="emphasis_secure_session_reset">You reset the secure session.</string>
+    <string name="emphasis_secure_session_reset_by_s">%s reset the secure session.</string>
+    <string name="emphasis_received_key_exchange_message_tap_to_process">Received key exchange message, tap to process.</string>
+    <string name="warning_bad_encrypted_mms_message">Bad encrypted MMS message</string>
+    <string name="warning_mms_message_encrypted_for_non_existing_session">MMS message encrypted for non-existing session</string>
+    <string name="general_multimedia_message">Multimedia message</string>
+    <string name="general_downloading_mms_message">Downloading MMS message</string>
+    <string name="error_downloading_mms_message">Error downloading MMS message, tap to retry</string>
+    <string name="warning_duplicate_message">Duplicate message.</string>
+    <plurals name="plurals_joined_the_group">
         <item quantity="one">%1$s joined the group.</item>
         <item quantity="other">%1$s joined the group.</item>
     </plurals>
-    <string name="group_util_group_name_is_now">Group name is now \'%1$s\'.</string>
-    <string name="recipient_provider_unnamed_group">Unnamed group</string>
-    <string name="message_notifier_contact_message">%1$s %2$s</string>
-    <string name="message_notifier_unknown_contact_message">Contact</string>
-    <string name="notification_channel_messages">Default</string>
-    <string name="notification_channel_calls">Calls</string>
-    <string name="notification_channel_failures">Failures</string>
-    <string name="notification_channel_backups">Backups</string>
-    <string name="notification_channel_locked_status">Lock status</string>
-    <string name="notification_channel_app_updates">App updates</string>
-    <string name="notification_channel_other">Other</string>
-    <string name="notification_channel_group_messages">Messages</string>
-    <string name="notification_channel_missing_display_name">Unknown</string>
-    <string name="draft_database_Draft_image_snippet">(image)</string>
-    <string name="draft_database_Draft_audio_snippet">(audio)</string>
-    <string name="draft_database_Draft_video_snippet">(video)</string>
-    <string name="draft_database_Draft_location_snippet">(location)</string>
-    <string name="draft_database_Draft_quote_snippet">(reply)</string>
-    <string name="contacts_database_message_s">Message %s</string>
-    <string name="contacts_database_signal_call_s">mUzima Call %s</string>
-    <string name="abstract_notification_builder_new_message">New message</string>
-    <string name="message_notifier_message_delivery_failed">Message delivery failed.</string>
-    <string name="message_notifier_failed_to_deliver_message">Failed to deliver message.</string>
-    <string name="message_notifier_error_delivering_message">Error delivering message.</string>
-    <string name="message_notifier_pending_messages">Pending mUzima messages</string>
-    <string name="message_notifier_you_have_pending_messages">You have pending mUzima messages, tap to open and retrieve</string>
-    <string name="send_job_sending_a_message">Sending a message...</string>
-    <string name="identity_util_unverified_banner_one">Your safety number with %s has changed and is no longer verified</string>
-    <string name="identity_util_unverified_banner_two">Your safety numbers with %1$s and %2$s are no longer verified</string>
-    <string name="identity_util_unverified_banner_many">Your safety numbers with %1$s, %2$s, and %3$s are no longer verified</string>
-
-    <string name="identity_util_unverified_dialog_one">Your safety number with %1$s has changed and is no longer verified. This could either mean that someone is trying to intercept your communication, or that %1$s simply reinstalled mUzima.</string>
-    <string name="identity_util_unverified_dialog_two">Your safety numbers with %1$s and %2$s are no longer verified. This could either mean that someone is trying to intercept your communication, or that they simply reinstalled mUzima.</string>
-    <string name="identity_util_unverified_dialog_many">Your safety numbers with %1$s, %2$s, and %3$s are no longer verified. This could either mean that someone is trying to intercept your communication, or that they simply reinstalled mUzima.</string>
-
-    <string name="identity_util_untrusted_dialog_one">Your safety number with %s just changed.</string>
-    <string name="identity_util_untrusted_dialog_two">Your safety numbers with %1$s and %2$s just changed.</string>
-    <string name="identity_util_untrusted_dialog_many">Your safety numbers with %1$s, %2$s, and %3$s just changed.</string>
-
-    <plurals name="identity_others">
+    <string name="general_group_name">Group name is now \'%1$s\'.</string>
+    <string name="general_unnamed_group">Unnamed group</string>
+    <string name="general_contact_message">%1$s %2$s</string>
+    <string name="general_contact">Contact</string>
+    <string name="general_default">Default</string>
+    <string name="general_calls">Calls</string>
+    <string name="general_failures">Failures</string>
+    <string name="general_backups">Backups</string>
+    <string name="general_locked_status">Lock status</string>
+    <string name="general_app_updates">App updates</string>
+    <string name="general_other">Other</string>
+    <string name="general_messages">Messages</string>
+    <string name="general_unknown">Unknown</string>
+    <string name="general_image_snippet">(image)</string>
+    <string name="general_audio_snippet">(audio)</string>
+    <string name="general_video_snippet">(video)</string>
+    <string name="general_location_snippet">(location)</string>
+    <string name="general_quote_snippet">(reply)</string>
+    <string name="general_message_s">Message %s</string>
+    <string name="general_muzima_call_s">mUzima Call %s</string>
+    <string name="general_new_message">New message</string>
+    <string name="general_message_delivery_failed">Message delivery failed.</string>
+    <string name="general_failed_to_deliver_message">Failed to deliver message.</string>
+    <string name="error_delivering_message">Error delivering message.</string>
+    <string name="general_pending_messages">Pending mUzima messages</string>
+    <string name="general_you_have_pending_messages">You have pending mUzima messages, tap to open and retrieve</string>
+    <string name="general_sending_a_message">Sending a message...</string>
+    <string name="general_unverified_banner_one">Your safety number with %s has changed and is no longer verified</string>
+    <string name="general_unverified_banner_two">Your safety numbers with %1$s and %2$s are no longer verified</string>
+    <string name="general_unverified_banner_many">Your safety numbers with %1$s, %2$s, and %3$s are no longer verified</string>
+    <string name="general_unverified_dialog_one">Your safety number with %1$s has changed and is no longer verified. This could either mean that someone is trying to intercept your communication, or that %1$s simply reinstalled mUzima.</string>
+    <string name="general_unverified_dialog_two">Your safety numbers with %1$s and %2$s are no longer verified. This could either mean that someone is trying to intercept your communication, or that they simply reinstalled mUzima.</string>
+    <string name="general_unverified_dialog_many">Your safety numbers with %1$s, %2$s, and %3$s are no longer verified. This could either mean that someone is trying to intercept your communication, or that they simply reinstalled mUzima.</string>
+    <string name="general_untrusted_dialog_one">Your safety number with %s just changed.</string>
+    <string name="general_untrusted_dialog_two">Your safety numbers with %1$s and %2$s just changed.</string>
+    <string name="general_untrusted_dialog_many">Your safety numbers with %1$s, %2$s, and %3$s just changed.</string>
+    <plurals name="plurals_identity_others">
         <item quantity="one">%d other</item>
         <item quantity="other">%d others</item>
     </plurals>
-
-    <string name="message_retrieval_service_signal">mUzima</string>
-    <string name="message_retrieval_service_background_connection_enabled">Background connection enabled</string>
-
-    <string name="SQL_cipher_migration_helper_migrating_signal_database">Migrating mUzima messageRecipientController</string>
-    <string name="conversation_activity_from_sim_name">From %1$s</string>
-    <string name="conversation_activity_transport_insecure_sms">Insecure SMS</string>
-    <string name="conversation_activity_transport_insecure_mms">Insecure MMS</string>
-    <string name="conversation_activity_transport_signal">mUzima</string>
-    <string name="conversation_activity_type_message_push">mUzima message</string>
-    <string name="conversation_activity_type_message_sms_insecure">Unsecured SMS</string>
-    <string name="conversation_activity_type_message_mms_insecure">Unsecured MMS</string>
-    <string name="transport_selection_list_item_transport_icon">Transport icon</string>
-    <string name="conversation_activity_add_attachment">Add attachment</string>
-    <string name="conversation_activity_quick_attachment_drawer_toggle_camera_description">Toggle quick camera attachment drawer</string>
-    <string name="conversation_activity_quick_attachment_drawer_record_and_send_audio_description">Record and send audio attachment</string>
+    <string name="general_background_connection_enabled">Background connection enabled</string>
+    <string name="general_migrating_muzima_database">Migrating mUzima database</string>
+    <string name="general_from_sim_name">From %1$s</string>
+    <string name="general_insecure_sms">Insecure SMS</string>
+    <string name="general_insecure_mms">Insecure MMS</string>
+    <string name="general_muzima_message">muzima message</string>
+    <string name="general_unsecure_sms">Unsecured SMS</string>
+    <string name="general_unsecure_mms">Unsecured MMS</string>
+    <string name="general_transport_icon">Transport icon</string>
+    <string name="general_add_attachment">Add attachment</string>
+    <string name="general_toggle_camera">Toggle quick camera attachment drawer</string>
+    <string name="general_record_and_send_audio">Record and send audio attachment</string>
     <string name="conversation_input_panel_slide_to_cancel">SLIDE TO CANCEL</string>
-    <string name="conversation_activity_send">Send</string>
-    <string name="quote_view_audio">Audio</string>
-    <string name="quote_view_video">Video</string>
-    <string name="quote_view_photo">Photo</string>
-    <string name="quote_view_you">You</string>
-    <string name="push_notification_receive_job_retrieving_a_message">Retrieving a message...</string>
-    <string name="passphrase_prompt_activity_watermark_content_description">mUzima icon</string>
-    <string name="prompt_passphrase_activity_signal_is_locked">mUzima Messaging is locked</string>
-    <string name="passphrase_prompt_activity_invalid_passphrase_exclamation">Invalid passphrase!</string>
-    <string name="passphrase_prompt_activity_enter_passphrase">Enter passphrase</string>
-    <string name="prompt_passphrase_activity_unlock">Unlock</string>
-    <string name="prompt_passphrase_activity_tap_to_unlock">TAP TO UNLOCK</string>
-    <string name="passphrase_prompt_activity_ok_button_content_description">Submit passphrase</string>
+    <string name="general_photo">Photo</string>
+    <string name="general_you">You</string>
+    <string name="general_retrieving_a_message">Retrieving a message...</string>
+    <string name="general_watermark_content">mUzima icon</string>
+    <string name="prompt_muzima_is_locked">mUzima Messaging is locked</string>
+    <string name="warning_invalid_passphrase">Invalid passphrase!</string>
+    <string name="text_enter_passphrase">Enter passphrase</string>
+    <string name="general_unlock">Unlock</string>
+    <string name="hint_tap_to_unlock">TAP TO UNLOCK</string>
+    <string name="btn_submit_passphrase">Submit passphrase</string>
     <string name="date_utils_just_now">Now</string>
     <string name="date_utils_minutes_ago">%d min</string>
-    <plurals name="hours_ago">
+    <plurals name="plurals_hours_ago">
         <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
-    <string name="conversation_list_fragment_empty">Give your inbox something to write home about. Get started by messaging a friend.</string>
-    <string name="conversation_item_sent_send_failed_indicator_description">Send Failed</string>
-    <string name="conversation_item_sent_pending_approval_description">Pending Approval</string>
-    <string name="conversation_list_item_view_archived">Archived</string>
-    <string name="search_for_conversations_contacts_and_messages">Search for conversations, contacts, and messages</string>
-    <string name="app_needs_contacts_permission_in_order_to_search_your_contacts_but_it_has_been_permanently_denied">mUzima needs Contacts permission in order to search your contacts, but it has been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Contacts\".</string>
-    <string name="text_secure_normal__menu_new_group">New group</string>
-    <string name="text_secure_normal__menu_settings">Chat Settings</string>
+    <string name="general_conversation_list_empty">Give your inbox something to write home about. Get started by messaging a friend.</string>
+    <string name="general_send_failed">Send Failed</string>
+    <string name="general_pending_approval">Pending Approval</string>
+    <string name="general_conversations_contacts_and_messages">Search for conversations, contacts, and messages</string>
+    <string name="text_contacts_permission">mUzima needs Contacts permission in order to search your contacts, but it has been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Contacts\".</string>
+    <string name="general_new_group">New group</string>
+    <string name="general_chat_settings">Chat Settings</string>
     <string name="general_app_settings">App Settings</string>
-    <string name="text_secure_normal__menu_clear_passphrase">Lock</string>
-    <string name="text_secure_normal__mark_all_as_read">Mark all read</string>
-    <string name="text_secure_normal__invite_friends">Invite friends</string>
-    <string name="text_secure_normal__help">Help</string>
-    <string name="audio_view_download_accessibility_description">Download</string>
-    <string name="conversation_item_sent__delivered_description">Delivered</string>
-    <string name="conversation_item_sent__message_read">Message read</string>
-    <string name="ConversationItem_error_not_delivered">Send failed, tap for details</string>
-    <string name="ConversationItem_received_key_exchange_message_tap_to_process">Received key exchange message, tap to process.</string>
-    <string name="ConversationItem_group_action_left">%1$s has left the group.</string>
-    <string name="ConversationItem_click_to_approve_unencrypted">Send failed, tap for unsecured fallback</string>
-    <string name="ConversationItem_click_to_approve_unencrypted_sms_dialog_title">Fallback to unencrypted SMS?</string>
-    <string name="ConversationItem_click_to_approve_unencrypted_mms_dialog_title">Fallback to unencrypted MMS?</string>
-    <string name="ConversationItem_click_to_approve_unencrypted_dialog_message">This message will <b>not</b> be encrypted because the recipient is no longer a mUzima user.\n\nSend unsecured message?</string>
-    <string name="ConversationItem_unable_to_open_media">Can\'t find an app able to open this media.</string>
-    <string name="ConversationItem_copied_text">Copied %s</string>
-    <string name="ConversationItem_from_s">from %s</string>
-    <string name="ConversationItem_to_s">to %s</string>
-    <string name="conversation_item__mms_image_description">Media message</string>
-    <plurals name="TransferControlView_n_items">
+    <string name="menu_clear_passphrase">Lock</string>
+    <string name="general_mark_all_as_read">Mark all read</string>
+    <string name="general_invite_friends">Invite friends</string>
+    <string name="general_download">Download</string>
+    <string name="general_delivered">Delivered</string>
+    <string name="general_message_read">Message read</string>
+    <string name="error_not_delivered">Send failed, tap for details</string>
+    <string name="text_received_key_exchange_message_tap_to_process">Received key exchange message, tap to process.</string>
+    <string name="general_group_action_left_s">%1$s has left the group.</string>
+    <string name="general_approve_unencrypted">Send failed, tap for unsecured fallback</string>
+    <string name="title_approve_unencrypted_sms">Fallback to unencrypted SMS?</string>
+    <string name="title_approve_unencrypted_mms">Fallback to unencrypted MMS?</string>
+    <string name="text_approve_unencrypted">This message will <b>not</b> be encrypted because the recipient is no longer a mUzima user.\n\nSend unsecured message?</string>
+    <string name="warning_unable_to_open_media">Can\'t find an app able to open this media.</string>
+    <string name="hint_copied">Copied %s</string>
+    <string name="hint_from_s">from %s</string>
+    <string name="hint_to_s">to %s</string>
+    <plurals name="plurals_items">
         <item quantity="one">%d Item</item>
         <item quantity="other">%d Items</item>
     </plurals>
-    <string name="AudioSlidePlayer_error_playing_audio">Error playing audio!</string>
-    <string name="ConfirmIdentityDialog_your_safety_number_with_s_has_changed">Your safety number with %1$s has changed. This could either mean that someone is trying to intercept your communication, or that %2$s simply reinstalled mUzima.</string>
-    <string name="ConfirmIdentityDialog_you_may_wish_to_verify_your_safety_number_with_this_contact">You may wish to verify your safety number with this contact.</string>
-    <string name="ConfirmIdentityDialog_accept">Accept</string>
-    <string name="DateUtils_today">Today</string>
-    <string name="DateUtils_yesterday">Yesterday</string>
-    <plurals name="ConversationAdapter_n_unread_messages">
+    <string name="error_playing_audio">Error playing audio!</string>
+    <string name="text_your_safety_number_with_s_has_changed">Your safety number with %1$s has changed. This could either mean that someone is trying to intercept your communication, or that %2$s simply reinstalled mUzima.</string>
+    <string name="text_verify_your_safety_number">You may wish to verify your safety number with this contact.</string>
+    <string name="general_today">Today</string>
+    <string name="general_yesterday">Yesterday</string>
+    <plurals name="plurals_unread_messages">
         <item quantity="one">%d unread message</item>
         <item quantity="other">%d unread messages</item>
     </plurals>
-    <string name="InviteActivity_cancel">Cancel</string>
-    <string name="GroupShareProfileView_share_your_profile_name_and_photo_with_this_group">Share your profile name and photo with this group?</string>
-    <string name="GroupShareProfileView_do_you_want_to_make_your_profile_name_and_photo_visible_to_all_current_and_future_members_of_this_group">Do you want to make your profile name and photo visible to all current and future members of this group?</string>
-    <string name="GroupShareProfileView_make_visible">Make visible</string>
-    <string name="profile_group_share_view__make_your_profile_name_and_photo_visible_to_this_group">Make your profile name and photo visible to this group?</string>
-    <string name="conversation_activity__enable_signal_messages">ENABLE mUzima MESSAGES</string>
-    <string name="ConversationActivity_unblock">Unblock</string>
-    <string name="conversation_activity__enable_signal_for_sms">Enable app for SMS</string>
-    <string name="conversation_activity__attachment_thumbnail">Attachment Thumbnail</string>
-    <string name="conversation_item_received__contact_photo_description">Contact photo</string>
-    <string name="UnknownSenderView_block_s">Block %s?</string>
-    <string name="UnknownSenderView_blocked_contacts_will_no_longer_be_able_to_send_you_messages_or_call_you">Blocked contacts will no longer be able to send you messages or call you.</string>
-    <string name="UnknownSenderView_block">Block</string>
-    <string name="UnknownSenderView_share_profile_with_s">Share profile with %s?</string>
-    <string name="UnknownSenderView_the_easiest_way_to_share_your_profile_information_is_to_add_the_sender_to_your_contacts">The easiest way to share your profile information is to add the sender to your contacts. If you do not wish to, you can still share your profile information this way.</string>
-    <string name="UnknownSenderView_share_profile">Share profile</string>
-    <string name="unknown_sender_view__don_t_add_but_make_my_profile_visible">DON\'T ADD, BUT MAKE MY PROFILE VISIBLE</string>
-    <string name="unknown_sender_view__the_sender_is_not_in_your_contact_list">The sender is not in your contact list</string>
-    <string name="unknown_sender_view__block">BLOCK</string>
-    <string name="unknown_sender_view__add_to_contacts">ADD TO CONTACTS</string>
-    <string name="load_more_header__see_full_conversation">See full conversation</string>
-    <string name="load_more_header__loading">Loading</string>
-    <string name="conversation_context__menu_message_details">Message details</string>
-    <string name="conversation_context__menu_copy_text">Copy text</string>
-    <string name="conversation_context__menu_delete_message">Delete message</string>
-    <string name="conversation_context__menu_forward_message">Forward message</string>
-    <string name="conversation_context__menu_resend_message">Resend message</string>
-    <string name="conversation_context__menu_reply_to_message">Reply to message</string>
-    <string name="conversation_context_image__save_attachment">Save attachment</string>
-    <plurals name="ConversationFragment_delete_selected_messages">
+    <string name="general_share_profile">Share your profile name and photo with this group?</string>
+    <string name="general_make_profile_visible">Do you want to make your profile name and photo visible to all current and future members of this group?</string>
+    <string name="general_make_visible">Make visible</string>
+    <string name="make_your_profile_name_and_photo_visible_to_this_group">Make your profile name and photo visible to this group?</string>
+    <string name="general_enable_muzima_messages">ENABLE mUzima MESSAGES</string>
+    <string name="general_unblock">Unblock</string>
+    <string name="general_enable_muzima_for_sms">Enable app for SMS</string>
+    <string name="general_attachment_thumbnail">Attachment Thumbnail</string>
+    <string name="general_contact_photo">Contact photo</string>
+    <string name="title_block_someone">Block %s?</string>
+    <string name="message_block_someone">Blocked contacts will no longer be able to send you messages or call you.</string>
+    <string name="general_block">Block</string>
+    <string name="title_share_profile">Share profile with %s?</string>
+    <string name="text_the_easiest_way_to_share_your_profile_information_is_to_add_the_sender_to_your_contacts">The easiest way to share your profile information is to add the sender to your contacts. If you do not wish to, you can still share your profile information this way.</string>
+    <string name="general_share_profile">Share profile</string>
+    <string name="text_dont_add_but_make_my_profile_visible">DON\'T ADD, BUT MAKE MY PROFILE VISIBLE</string>
+    <string name="text_sender_not_in_your_contact_list">The sender is not in your contact list</string>
+    <string name="general_add_to_contacts">Add to contacts</string>
+    <string name="general_see_full_conversation">See full conversation</string>
+    <string name="general_loading">Loading</string>
+    <string name="menu_message_details">Message details</string>
+    <string name="menu_copy_text">Copy text</string>
+    <string name="menu_delete_message">Delete message</string>
+    <string name="menu_forward_message">Forward message</string>
+    <string name="menu_resend_message">Resend message</string>
+    <string name="menu_reply_to_message">Reply to message</string>
+    <string name="general_save_attachment">Save attachment</string>
+    <plurals name="plurals_delete_selected_messages">
         <item quantity="one">Delete selected message?</item>
         <item quantity="other">Delete selected messages?</item>
     </plurals>
-    <plurals name="ConversationFragment_this_will_permanently_delete_all_n_selected_messages">
+    <plurals name="plurals_this_will_permanently_delete_all_n_selected_messages">
         <item quantity="one">This will permanently delete the selected message.</item>
         <item quantity="other">This will permanently delete all %1$d selected messages.</item>
     </plurals>
     <string name="delete">Delete</string>
-    <string name="ConversationFragment_deleting">Deleting</string>
-    <string name="ConversationFragment_deleting_messages"><![CDATA[>Deleting messages...]]></string>
-    <string name="ConversationFragment_quoted_message_not_found">Original message not found</string>
-    <string name="ConversationFragment_quoted_message_no_longer_available">Original message no longer available</string>
-    <string name="InviteActivity_lets_switch_to_signal">Let\\\'s switch to mUzima: %1$s</string>
-    <string name="ConversationActivity_to_call_s_signal_needs_access_to_your_microphone_and_camera">To call %s, mUzima needs access to your microphone and camera.</string>
-    <string name="ConversationActivity_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">mUzima needs the Microphone and Camera permissions in order to call %s, but they have been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Microphone\" and \"Camera\".</string>
-    <string name="CommunicationActions_no_browser_found">No web browser found.</string>
-    <string name="ConversationActivity_there_is_no_app_available_to_handle_this_link_on_your_device">There is no app available to handle this link on your device.</string>
-    <string name="ConversationActivity_quoted_contact_message">%1$s %2$s</string>
-    <string name="DocumentView_unknown_file">Unknown file</string>
-    <string name="SharedContactView_message">mUzima Message</string>
-    <string name="SharedContactView_invite_to_signal">Invite to mUzima</string>
-    <string name="SharedContactView_add_to_contacts">Add to Contacts</string>
-    <string name="AlbumThumbnailView_plus">\\+%d</string>
-    <string name="ConversationActivity_compose_message">Compose message</string>
-    <string name="contact_selection_activity__enter_name_or_number">Enter name or number</string>
-    <string name="new_conversation_activity__refresh">Refresh</string>
-    <string name="contact_selection_list_fragment__signal_needs_access_to_your_contacts_in_order_to_display_them">mUzima needs access to your contacts in order to display them.</string>
-    <string name="contact_selection_list_fragment__show_contacts">Show Contacts</string>
-    <string name="contact_selection_group_activity__finding_contacts" tools:ignore="ExtraTranslation"><![CDATA[Loading contacts&#8230;]]></string>
-    <string name="ContactsCursorLoader_recent_chats">Recent chats</string>
-    <string name="ContactsCursorLoader_contacts">Contacts</string>
-    <string name="ContactsCursorLoader_groups">Groups</string>
-    <string name="contact_selection_list__unknown_contact">New message to…</string>
-    <string name="ContactSelectionListFragment_signal_requires_the_contacts_permission_in_order_to_display_your_contacts">mUzima requires the Contacts permission in order to display your contacts, but it has been permanently denied. Please continue to the app settings menu, select \"Permissions\", and enable \"Contacts\".</string>
-    <string name="ContactSelectionListFragment_error_retrieving_contacts_check_your_network_connection">Error retrieving contacts, check your network connection</string>
-    <string name="ConversationListFragment_loading">Loading…</string>
-    <string name="contact_selection_group_activity__no_contacts">No contacts.</string>
-    <string name="KeyCachingService_signal_passphrase_cached">Touch to open.</string>
-    <string name="KeyCachingService_signal_passphrase_cached_with_lock">Touch to open, or touch the lock to close.</string>
-    <string name="KeyCachingService_passphrase_cached">mUzima is unlocked</string>
-    <string name="KeyCachingService_lock">Lock mUzima</string>
-    <string name="PlayServicesProblemFragment_the_version_of_google_play_services_you_have_installed_is_not_functioning">The version of Google Play Services you have installed is not functioning correctly.  Please reinstall Google Play Services and try again.</string>
-    <string name="GcmRefreshJob_Permanent_Signal_communication_failure">Permanent mUzima communication failure!</string>
-    <string name="GcmRefreshJob_Signal_was_unable_to_register_with_Google_Play_Services">mUzima was unable to register with Google Play Services. mUzima messages and calls have been disabled, please try re-registering in Settings &gt; Advanced.</string>
-    <string name="conversation_list_item_inbox_zero__inbox_zeeerrro">Inbox zeeerrro</string>
-    <string name="conversation_list_item_inbox_zero__zip_zilch_zero_nada_nyou_re_all_caught_up">Zip. Zilch. Zero. Nada.\\nYou\\\'re all caught up!</string>
-    <string name="ConversationListItemAction_archived_conversations_d">Archived conversations (%d)</string>
-    <string name="attachment_type_selector__audio">Audio</string>
-    <string name="attachment_type_selector__audio_description">Audio</string>
-    <string name="attachment_type_selector__contact">Contact</string>
-    <string name="attachment_type_selector__contact_description">Contact</string>
-    <string name="attachment_type_selector__camera">Camera</string>
-    <string name="attachment_type_selector__camera_description">Camera</string>
-    <string name="attachment_type_selector__location">Location</string>
-    <string name="attachment_type_selector__location_description">Location</string>
-    <string name="attachment_type_selector__gif">GIF</string>
-    <string name="attachment_type_selector__gif_description">Gif</string>
-    <string name="attachment_type_selector__gallery_description">Image or video</string>
-    <string name="attachment_type_selector__file_description">File</string>
-    <string name="attachment_type_selector__gallery">Gallery</string>
-    <string name="attachment_type_selector__file">File</string>
-    <string name="ConversationActivity_recipient_is_not_a_valid_sms_or_email_address_exclamation">Recipient is not a valid SMS or email address!</string>
-    <string name="ConversationActivity_message_is_empty_exclamation">Message is empty!</string>
-    <string name="ConversationActivity_signal_needs_sms_permission_in_order_to_send_an_sms">mUzima needs SMS permission in order to send an SMS, but it has been permanently denied. Please continue to app settings, select \\\"Permissions\\\" and enable \\\"SMS\\\".</string>
-    <string name="ConversationActivity_to_send_audio_messages_allow_signal_access_to_your_microphone">To send audio messages, allow mUzima access to your microphone.</string>
-    <string name="ConversationActivity_signal_requires_the_microphone_permission_in_order_to_send_audio_messages">mUzima requires the Microphone permission in order to send audio messages, but it has been permanently denied. Please continue to app settings, select \\\"Permissions\\\", and enable \\\"Microphone\\\".</string>
-    <string name="ConversationActivity_unable_to_record_audio">Unable to record audio!</string>
-    <string name="ConversationActivity_to_capture_photos_and_video_allow_signal_access_to_the_camera">To capture photos and video, allow mUzima access to the camera.</string>
-    <string name="ConversationActivity_signal_needs_camera_permissions_to_take_photos_or_video">mUzima needs Camera permissions to take photos or video</string>
-    <string name="ConversationActivity_signal_needs_the_camera_permission_to_take_photos_or_video">mUzima needs the Camera permission to take photos or video, but it has been permanently denied. Please continue to app settings, select \\\"Permissions\\\", and enable \\\"Camera\\\".</string>
-    <string name="ConversationActivity_quick_camera_unavailable">Camera unavailable</string>
-    <string name="CameraActivity_image_save_failure">Failed to save image.</string>
-    <string name="conversation_activity__compose_description">Message composition</string>
-    <string name="conversation_activity__emoji_toggle_description">Toggle emoji keyboard</string>
-    <string name="conversation_activity__send">Send</string>
-    <string name="ScribbleActivity_save_failure">Failed to save image changes</string>
-    <string name="CameraActivity_camera_unavailable">Camera unavailable.</string>
-    <string name="menu_conversation_expiring_on__messages_expiring">Messages expiring</string>
-    <string name="conversation_expiring_off__disappearing_messages">Disappearing messages</string>
-    <string name="conversation_callable_secure__menu_call">mUzima call</string>
-    <string name="conversation_callable_insecure__menu_call">Call</string>
-    <string name="convesation_group_options__recipients_list">Recipients list</string>
-    <string name="conversation__menu_edit_group">Edit Group</string>
-    <string name="conversation__menu_leave_group">Leave Group</string>
-    <string name="conversation_group_options__delivery">Delivery</string>
-    <string name="conversation_group_options__conversation">Conversation</string>
-    <string name="conversation_group_options__broadcast">Broadcast</string>
-    <string name="conversation__menu_view_all_media">All media</string>
-    <string name="conversation__menu_conversation_settings">Conversation settings</string>
-    <string name="conversation_insecure__invite">Invite</string>
-    <string name="conversation_secure_verified__menu_reset_secure_session">Reset secure session</string>
-    <string name="conversation_muted__unmute">Unmute</string>
-    <string name="conversation_unmuted__mute_notifications" tools:ignore="ExtraTranslation">Mute notifications</string>
-    <string name="conversation_add_to_contacts__menu_add_to_contacts">Add to contacts</string>
-    <string name="AttachmentManager_signal_requires_the_external_storage_permission_in_order_to_attach_photos_videos_or_audio">mUzima requires the Storage permission in order to attach photos, videos, or audio, but it has been permanently denied. Please continue to the app settings menu, select \\\"Permissions\\\", and enable \\\"Storage\\\".</string>
-    <string name="AttachmentManager_signal_requires_contacts_permission_in_order_to_attach_contact_information">mUzima requires Contacts permission in order to attach contact information, but it has been permanently denied. Please continue to the app settings menu, select \\\"Permissions\\\", and enable \\\"Contacts\\\".</string>
-    <string name="AttachmentManager_signal_requires_location_information_in_order_to_attach_a_location">mUzima requires Location permission in order to attach a location, but it has been permanently denied. Please continue to the app settings menu, select \\\"Permissions\\\", and enable \\\"Location\\\".</string>
-    <string name="AttachmentManager_signal_requires_the_camera_permission_in_order_to_take_photos_but_it_has_been_permanently_denied">mUzima requires the Camera permission in order to take photos, but it has been permanently denied. Please continue to the app settings menu, select \\\"Permissions\\\", and enable \\\"Camera\\\".</string>
-    <string name="ConversationActivity_sorry_there_was_an_error_setting_your_attachment">Sorry, there was an error setting your attachment.</string>
-    <string name="ConversationActivity_attachment_exceeds_size_limits">Attachment exceeds size limits for the type of message you\\\'re sending.</string>
-    <string name="AttachmentManager_cant_open_media_selection">Can\\\'t find an app to select media.</string>
-    <string name="ConversationActivity_select_contact_info">Select contact info</string>
-    <string name="CustomDefaultPreference_using_custom">Using custom: %s</string>
-    <string name="CustomDefaultPreference_using_default">Using default: %s</string>
-    <string name="CustomDefaultPreference_none">None</string>
-    <string-array name="default_or_custom_entries">
-        <item>@string/arrays__use_default</item>
-        <item>@string/arrays__use_custom</item>
-    </string-array>
-    <string name="arrays__use_default">Use default</string>
-    <string name="arrays__use_custom">Use custom</string>
-    <string-array name="default_or_custom_values" translatable="false">
-        <item>default</item>
-        <item>custom</item>
-    </string-array>
-    <string name="preferences__advanced_mms_access_point_names">Manual MMS settings</string>
-    <string name="preferences__mms_user_agent">MMS User Agent</string>
-    <string name="preferences__mmsc_password">MMSC Password</string>
-    <string name="preferences__mmsc_username">MMSC Username</string>
-    <string name="preferences__mms_proxy_host">MMS Proxy Host</string>
-    <string name="preferences__mms_proxy_port">MMS Proxy Port</string>
-    <string name="preferences__mmsc_url">MMSC URL</string>
+    <string name="general_deleting">Deleting</string>
+    <string name="general_deleting_messages"><![CDATA[>Deleting messages...]]></string>
+    <string name="general_message_not_found">Original message not found</string>
+    <string name="general_message_no_longer_available">Original message no longer available</string>
+    <string name="general_lets_switch_to_muzima">Let\\\'s switch to mUzima: %1$s</string>
+    <string name="general_to_call_s_signal_needs_access_to_your_microphone_and_camera">To call %s, mUzima needs access to your microphone and camera.</string>
+    <string name="general_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">mUzima needs the Microphone and Camera permissions in order to call %s, but they have been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Microphone\" and \"Camera\".</string>
+    <string name="general_no_browser_found">No web browser found.</string>
+    <string name="general_there_is_no_app_available_to_handle_this_link_on_your_device">There is no app available to handle this link on your device.</string>
+    <string name="general_quoted_contact_message">%1$s %2$s</string>
+    <string name="general_unknown_file">Unknown file</string>
+    <string name="general_invite_to_muzima">Invite to mUzima</string>
+    <string name="general_plus">\\+%d</string>
+    <string name="general_compose_message">Compose message</string>
+    <string name="general_enter_name_or_number">Enter name or number</string>
+    <string name="general_refresh">Refresh</string>
+    <string name="general_contacts_permission">mUzima needs access to your contacts in order to display them.</string>
+    <string name="general_show_contacts">Show Contacts</string>
+    <string name="general_finding_contacts" tools:ignore="ExtraTranslation"><![CDATA[Loading contacts&#8230;]]></string>
+    <string name="general_recent_chats">Recent chats</string>
+    <string name="general_contacts">Contacts</string>
+    <string name="general_groups">Groups</string>
+    <string name="general_unknown_contact">New message to…</string>
+    <string name="general_muzima_requires_the_contacts_permission_in_order_to_display_your_contacts">mUzima requires the Contacts permission in order to display your contacts, but it has been permanently denied. Please continue to the app settings menu, select \"Permissions\", and enable \"Contacts\".</string>
+    <string name="error_retrieving_contacts_check_your_network_connection">Error retrieving contacts, check your network connection</string>
+    <string name="hint_no_contacts">No contacts.</string>
+    <string name="hint_touch_to_open">Touch to open.</string>
+    <string name="hint_touch_to_open_or_lock">Touch to open, or touch the lock to close.</string>
+    <string name="hint_muzima_is_unlocked">mUzima is unlocked</string>
+    <string name="hint_lock_muzima">Lock mUzima</string>
+    <string name="warning_google_play_problem">The version of Google Play Services you have installed is not functioning correctly.  Please reinstall Google Play Services and try again.</string>
+    <string name="warning_signal_communication_failure">Permanent mUzima communication failure!</string>
+    <string name="warning_unable_to_register_with_Google_Play_Services">mUzima was unable to register with Google Play Services. mUzima messages and calls have been disabled, please try re-registering in Settings &gt; Advanced.</string>
+    <string name="general_inbox_zero">Inbox zero</string>
+    <string name="general_zip_zilch">Zip. Zilch. Zero. Nada.\\nYou\\\'re all caught up!</string>
+    <string name="general_archived_conversations">Archived conversations (%d)</string>
+    <string name="general_camera">Camera</string>
+    <string name="general_location">Location</string>
+    <string name="general_image_or_video">Image or video</string>
+    <string name="general_file">File</string>
+    <string name="general_gallery">Gallery</string>
+    <string name="warning_not_valid_sms_or_email_address">Recipient is not a valid SMS or email address!</string>
+    <string name="warning_empty_message">Message is empty!</string>
+    <string name="hint_permission_needed_in_order_to_send_an_sms">mUzima needs SMS permission in order to send an SMS, but it has been permanently denied. Please continue to app settings, select \\\"Permissions\\\" and enable \\\"SMS\\\".</string>
+    <string name="hint_allow_muzima_access_to_your_microphone">To send audio messages, allow mUzima access to your microphone.</string>
+    <string name="text_microphone_permission_required_in_order_to_send_audio_messages">mUzima requires the Microphone permission in order to send audio messages, but it has been permanently denied. Please continue to app settings, select \\\"Permissions\\\", and enable \\\"Microphone\\\".</string>
+    <string name="warning_unable_to_record_audio">Unable to record audio!</string>
+    <string name="warning_to_capture_photos_and_video_allow_signal_access_to_the_camera">To capture photos and video, allow mUzima access to the camera.</string>
+    <string name="warning_camera_permissions_required_to_take_photos_or_video">mUzima needs Camera permissions to take photos or video</string>
+    <string name="text_camera_permission_required_to_take_photos_or_video">mUzima needs the Camera permission to take photos or video, but it has been permanently denied. Please continue to app settings, select \\\"Permissions\\\", and enable \\\"Camera\\\".</string>
+    <string name="warning_camera_unavailable">Camera unavailable</string>
+    <string name="warning_image_save_failure">Failed to save image.</string>
+    <string name="general_message_composition">Message composition</string>
+    <string name="general_emoji_toggle">Toggle emoji keyboard</string>
+    <string name="menu_messages_expiring">Messages expiring</string>
+    <string name="general_disappearing_messages">Disappearing messages</string>
+    <string name="general_call">mUzima call</string>
+    <string name="menu_call">Call</string>
+    <string name="general_recipients_list">Recipients list</string>
+    <string name="menu_edit_group">Edit Group</string>
+    <string name="menu_leave_group">Leave Group</string>
+    <string name="general_delivery">Delivery</string>
+    <string name="general_conversation">Conversation</string>
+    <string name="general_broadcast">Broadcast</string>
+    <string name="general_all_media">All media</string>
+    <string name="general_conversation_settings">Conversation settings</string>
+    <string name="general_invite">Invite</string>
+    <string name="general_reset_secure_session">Reset secure session</string>
+    <string name="general_unmute">Unmute</string>
+    <string name="general_mute_notifications" tools:ignore="ExtraTranslation">Mute notifications</string>
+    <string name="warning_external_storage_permission_required_in_order_to_attach_photos_videos_or_audio">mUzima requires the Storage permission in order to attach photos, videos, or audio, but it has been permanently denied. Please continue to the app settings menu, select \\\"Permissions\\\", and enable \\\"Storage\\\".</string>
+    <string name="warning_requires_contacts_permission_in_order_to_attach_contact_information">mUzima requires Contacts permission in order to attach contact information, but it has been permanently denied. Please continue to the app settings menu, select \\\"Permissions\\\", and enable \\\"Contacts\\\".</string>
+    <string name="warning_requires_location_information_in_order_to_attach_a_location">mUzima requires Location permission in order to attach a location, but it has been permanently denied. Please continue to the app settings menu, select \\\"Permissions\\\", and enable \\\"Location\\\".</string>
+    <string name="warning_requires_the_camera_permission_in_order_to_take_photos_but_it_has_been_permanently_denied">mUzima requires the Camera permission in order to take photos, but it has been permanently denied. Please continue to the app settings menu, select \\\"Permissions\\\", and enable \\\"Camera\\\".</string>
+    <string name="error_setting_attachment">Sorry, there was an error setting your attachment.</string>
+    <string name="warning_attachment_size_limit_exceeded">Attachment exceeds size limits for the type of message you\\\'re sending.</string>
+    <string name="warning_cant_open_media_selection">Can\\\'t find an app to select media.</string>
+    <string name="general_select_contact_info">Select contact info</string>
+    <string name="general_using_custom">Using custom: %s</string>
+    <string name="general_using_default">Using default: %s</string>
+    <string name="general_none">None</string>
+    <string name="general_use_default">Use default</string>
+    <string name="general_use_custom">Use custom</string>
+    <string name="preferences_mms_access_point_names">Manual MMS settings</string>
+    <string name="preferences_mms_user_agent">MMS User Agent</string>
+    <string name="preferences_mmsc_password">MMSC Password</string>
+    <string name="preferences_mmsc_username">MMSC Username</string>
+    <string name="preferences_mms_proxy_host">MMS Proxy Host</string>
+    <string name="preferences_mms_proxy_port">MMS Proxy Port</string>
+    <string name="preferences_mmsc_url">MMSC URL</string>
+
+
+
     <string name="prompt_mms_activity__signal_requires_mms_settings_to_deliver_media_and_group_messages">mUzima requires MMS settings to deliver media and group messages through your wireless carrier. Your device does not make this information available, which is occasionally true for locked devices and other restrictive configurations.</string>
     <string name="prompt_mms_activity__to_send_media_and_group_messages_tap_ok">To send media and group messages, tap \'OK\' and complete the requested settings. The MMS settings for your carrier can generally be located by searching for \'your carrier APN\'. You will only need to do this once.</string>
     <string name="MmsDownloader_error_reading_mms_settings">Error reading wireless provider MMS settings</string>
     <string name="ContactShareEditActivity_type_home" tools:ignore="ExtraTranslation">Home</string>
     <string name="ContactShareEditActivity_type_mobile">Mobile</string>
     <string name="ContactShareEditActivity_type_work">Work</string>
-    <string name="ContactShareEditActivity_type_missing">Other</string>
     <string name="ContactShareEditActivity_invalid_contact">Selected contact was invalid</string>
     <string name="ContactNameEditActivity_given_name">Given name</string>
     <string name="ContactNameEditActivity_family_name">Family name</string>
@@ -1202,8 +1128,6 @@
         <item quantity="other">Saving %1$d attachments to storage...</item>
     </plurals>
     <string name="VideoPlayer_error_playing_video">Error playing video</string>
-    <string name="MediaPreviewActivity_you">You</string>
-    <string name="MediaPreviewActivity_draft">Draft</string>
     <string name="MediaPreviewActivity_unssuported_media_type">Unsupported media type</string>
     <string name="MediaPreviewActivity_signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied">mUzima needs the Storage permission in order to save to external storage, but it has been permanently denied. Please continue to app settings, select \"Permissions\", and enable \"Storage\".</string>
     <string name="MediaPreviewActivity_unable_to_write_to_external_storage_without_permission">Unable to save to external storage without permissions</string>
@@ -1213,7 +1137,6 @@
     <string name="media_preview__forward_title">Forward</string>
     <string name="media_preview__all_media_title">All media</string>
     <string name="hint_share_with">Share with...</string>
-    <string name="text_secure_normal__menu_new_message">New message.</string>
     <string name="MediaOverviewActivity_collecting_attachments">Collecting attachments…</string>
     <string name="please_wait">Please wait…</string>
     <plurals name="MediaOverviewActivity_Media_delete_confirm_title">
@@ -1224,20 +1147,16 @@
         <item quantity="one">This will permanently delete the selected message.</item>
         <item quantity="other">This will permanently delete all %1$d selected messages.</item>
     </plurals>
-    <string name="MediaOverviewActivity_Media_delete_progress_title">Deleting</string>
     <string name="MediaOverviewActivity_Media_delete_progress_message">Deleting messages…</string>
     <string name="media_overview_documents_fragment__no_documents_found">No documents</string>
     <string name="MediaOverviewActivity_Select_all">Select all</string>
     <string name="ConversationActivity_calls_not_supported">Calls not supported</string>
     <string name="ConversationActivity_this_device_does_not_appear_to_support_dial_actions">This device does not appear to support dial actions.</string>
     <string name="UnverifiedSendDialog_send_message">Send message?</string>
-    <string name="UnverifiedSendDialog_send">Send</string>
     <string name="UntrustedSendDialog_send_message">Send message?</string>
-    <string name="UntrustedSendDialog_send">Send</string>
     <string name="VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied">mUzima needs the Camera permission in order to scan a QR code, but it has been permanently denied. Please continue to app settings, select \\\"Permissions\\\", and enable \\\"Camera\\\".</string>
     <string name="VerifyIdentityActivity_unable_to_scan_qr_code_without_camera_permission">Unable to scan QR code without Camera permission</string>
     <string name="AndroidManifest__verify_Addresssafety_number">Verify Address Number</string>
-    <string name="verify_display_fragment__loading">Loading…</string>
     <string name="verify_display_fragment__tap_to_scan">Tap to scan</string>
     <string name="verify_display_fragment__verified">Verified</string>
     <string name="verify_display_fragment__if_you_wish_to_verify_the_security_of_your_end_to_end_encryption_with_s"><![CDATA[<![CDATA[If you wish to verify the security of your encryption with %s, compare the number above with the number on their device. Alternatively, you can scan the code on their phone, or ask them to scan your code. <a href=\"https://muzima.org/redirect/safety-numbers\">Learn more.</a>]]></string>
@@ -1279,32 +1198,14 @@
     <string name="recipient_preferences__privacy">Privacy</string>
     <string name="recipient_preferences__view_safety_number">View safety number</string>
     <string name="recipient_preferences__block">Block</string>
-    <string-array name="recipient_vibrate_entries">
-        <item>@string/arrays__settings_default</item>
-        <item>@string/arrays__enabled</item>
-        <item>@string/arrays__disabled</item>
-    </string-array>
-    <string-array name="recipient_vibrate_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
     <string name="arrays__settings_default">Settings default</string>
     <string name="arrays__enabled">Enabled</string>
     <string name="arrays__disabled">Disabled</string>
     <string name="RecipientPreferenceActivity_available_once_a_message_has_been_sent_or_received">Available once a message has been sent or received.</string>
     <string name="RecipientPreferenceActivity_enabled">Enabled</string>
     <string name="RecipientPreferenceActivity_disabled">Disabled</string>
-    <string name="preferences__default">Default</string>
     <string name="preferences__silent">Silent</string>
     <string name="MuteDialog_mute_notifications">Mute notifications</string>
-    <string-array name="mute_durations">
-        <item>@string/arrays__mute_for_one_hour</item>
-        <item>@string/arrays__mute_for_two_hours</item>
-        <item>@string/arrays__mute_for_one_day</item>
-        <item>@string/arrays__mute_for_seven_days</item>
-        <item>@string/arrays__mute_for_one_year</item>
-    </string-array>
     <string name="arrays__mute_for_one_hour">Mute for 1 hour</string>
     <string name="arrays__mute_for_two_hours">Mute for 2 hours</string>
     <string name="arrays__mute_for_one_day">Mute for 1 day</string>
@@ -1323,7 +1224,6 @@
     <string name="GcmBroadcastReceiver_retrieving_a_message">Retrieving a message…</string>
     <string name="LocalBackupJob_creating_backup">Creating backup…</string>
     <string name="BackupUtil_never">Never</string>
-    <string name="BackupUtil_unknown">Unknown</string>
     <string name="ExpirationDialog_disappearing_messages">Disappearing messages</string>
     <string name="ExpirationDialog_your_messages_will_not_expire">Your messages will not expire.</string>
     <string name="ExpirationDialog_your_messages_will_disappear_s_after_they_have_been_seen">Messages sent and received in this conversation will disappear %s after they have been seen.</string>
@@ -1357,15 +1257,11 @@
     <string name="WebRtcCallScreen_new_safety_numbers">The safety number for your conversation with %1$s has changed. This could either mean that someone is trying to intercept your communication, or that %2$s simply re-installed mUzima.</string>
     <string name="WebRtcCallScreen_you_may_wish_to_verify_this_contact">You may wish to verify your safety number with this contact.</string>
     <string name="WebRtcCallScreen_new_safety_number_title">New safety number</string>
-    <string name="WebRtcCallScreen_accept">Accept</string>
     <string name="WebRtcCallScreen_end_call">End call</string>
-    <string name="redphone_call_card__signal_call">mUzima Call</string>
     <string name="PushDecryptJob_new_locked_message">New locked message</string>
     <string name="PushDecryptJob_unlock_to_view_pending_messages">Unlock to view pending messages</string>
     <string name="ConversationListActivity_there_is_no_browser_installed_on_your_device">There is no browser installed on your device.</string>
     <string name="SearchFragment_header_conversations">Conversations</string>
-    <string name="SearchFragment_header_contacts">Contacts</string>
-    <string name="SearchFragment_header_messages">Messages</string>
     <string name="SearchFragment_no_results">No results found for \'%s\'</string>
     <string name="AndroidManifest_archived_conversations">Archived conversations</string>
     <string name="conversation_list_batch_unarchive__menu_unarchive_selected">Unarchive selected</string>
@@ -1389,7 +1285,6 @@
     <string name="MessageNotifier_most_recent_from_s">Most recent from: %1$s</string>
     <string name="MessageNotifier_d_new_messages_in_d_conversations">%1$d new messages in %2$d conversations</string>
     <string name="MessageNotifier_media_message_with_text">Media message: %s</string>
-    <string name="MessageNotifier_media_message">Media message</string>
     <string name="MessageNotifier_locked_message">Locked message</string>
     <string name="conversation_popup__menu_expand_popup">Expand popup</string>
     <string name="GroupCreateActivity_avatar_content_description">Group avatar</string>
@@ -1397,8 +1292,6 @@
     <string name="GroupCreateActivity_contacts_dont_support_push">You have selected a contact that doesn\'t support mUzima  groups, so this group will be MMS.</string>
     <string name="recipients_panel__to"><small>Enter a name or number</small></string>
     <string name="GroupCreateActivity_youre_not_registered_for_signal">You\'re not registered for mUzima  messages and calls, so mUzima groups are disabled. Please try registering in Settings &gt; Advanced.</string>
-    <string name="GroupCreateActivity_actionbar_title">New group</string>
-    <string name="GroupCreateActivity_actionbar_edit_title">Edit group</string>
     <string name="GroupCreateActivity_actionbar_mms_title">New MMS group</string>
     <string name="recipients_panel__add_members">Add members</string>
     <string name="GroupCreateActivity_menu_apply_button">Apply</string>
@@ -1461,13 +1354,10 @@
         <item quantity="one">This will permanently delete the selected conversation.</item>
         <item quantity="other">This will permanently delete all %1$d selected conversations.</item>
     </plurals>
-    <string name="ConversationListFragment_deleting">Deleting</string>
     <string name="ConversationListFragment_deleting_selected_conversations">Deleting selected conversations...</string>
     <string name="ConversationActivity_group_members">Group members</string>
     <string name="GroupMembersDialog_me">Me</string>
-    <string name="reminder_header_invite_title">Invite to mUzima</string>
     <string name="reminder_header_invite_text">Take your conversation with %1$s to the next level.</string>
-    <string name="AndroidManifest__message_details">Message details</string>
     <string name="message_details_header__with">With:</string>
     <string name="message_details_header__to">To:</string>
     <string name="message_details_header__from">From:</string>
@@ -1485,7 +1375,6 @@
     <string name="message_details_header__received">Received</string>
     <string name="message_details_header__disappears">Disappears</string>
     <string name="message_details_header__via">Via</string>
-    <string name="SharedContactDetailsActivity_signal_call">mUzima Call</string>
     <string name="SharedContactDetailsActivity_signal_message">mUzima Message</string>
     <string name="SharedContactDetailsActivity_invite_to_signal">Invite to mUzima</string>
     <string name="SharedContactDetailsActivity_add_to_contacts">Add to Contacts</string>
@@ -1509,7 +1398,6 @@
     <string name="ExperienceUpgradeActivity_welcome_to_signal_dgaf" tools:ignore="ExtraTranslation">Welcome to mUzima.</string>
     <string name="ExperienceUpgradeActivity_textsecure_is_now_called_signal" tools:ignore="ExtraTranslation">TextSecure and RedPhone are now one private messenger, for every situation: mUzima.</string>
     <string name="ExperienceUpgradeActivity_welcome_to_signal_excited">Welcome to mUzima!</string>
-    <string name="ExperienceUpgradeActivity_textsecure_is_now_signal">mUzima.</string>
     <string name="ExperienceUpgradeActivity_textsecure_is_now_signal_long">TextSecure and RedPhone are now one app: mUzima. Tap to explore.</string>
     <string name="ExperienceUpgradeActivity_say_hello_to_video_calls">Say hello to secure video calls.</string>
     <string name="ExperienceUpgradeActivity_signal_now_supports_secure_video_calls">mUzima now supports secure video calling. Just start a mUzima call like normal, tap the video button, and wave hello.</string>
@@ -1519,64 +1407,20 @@
     <string name="experience_upgrade_preference_fragment__read_receipts_are_here">Read receipts are here</string>
     <string name="experience_upgrade_preference_fragment__optionally_see_and_share_when_messages_have_been_read">Optionally see and share when messages have been read</string>
     <string name="experience_upgrade_preference_fragment__enable_read_receipts">Enable read receipts</string>
-    <string name="preferences__led_color_unknown">Unknown</string>
     <string name="ApplicationPreferencesActivity_on">On</string>
-    <string name="ApplicationPreferencesActivity_off">Off</string>
     <string name="preferences__notifications">Notifications</string>
-    <string name="preferences_notifications__messages">Messages</string>
     <string name="preferences__sound">Sound</string>
     <string name="preferences_events__contact_joined_signal">Contact joined mUzima</string>
     <string name="preferences_notifications__events">Events</string>
     <string name="preferences_notifications__ringtone">Ringtone</string>
-    <string name="preferences_notifications__calls">Calls</string>
     <string name="preferences_notifications__priority">Priority</string>
-    <string-array name="pref_notification_priority_entries">
-        <item>@string/arrays__default</item>
-        <item>@string/arrays__high</item>
-        <item>@string/arrays__max</item>
-    </string-array>
-
-    <string-array name="pref_notification_priority_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-    <string name="arrays__default">Default</string>
     <string name="arrays__high">High</string>
     <string name="arrays__max">Max</string>
     <string name="preferences_notifications__show">Show</string>
-    <string-array name="pref_notification_privacy_entries">
-        <item>@string/arrays__name_and_message</item>
-        <item>@string/arrays__name_only</item>
-        <item>@string/arrays__no_name_or_message</item>
-    </string-array>
-
-    <string-array name="pref_notification_privacy_values">
-        <item>all</item>
-        <item>contact</item>
-        <item>none</item>
-    </string-array>
-
     <string name="arrays__name_and_message">Name and message</string>
     <string name="arrays__name_only">Name only</string>
     <string name="arrays__no_name_or_message">No name or message</string>
     <string name="preferences__repeat_alerts">Repeat alerts</string>
-    <string-array name="pref_repeat_alerts_entries">
-        <item>@string/preferences__never</item>
-        <item>@string/preferences__one_time</item>
-        <item>@string/preferences__two_times</item>
-        <item>@string/preferences__three_times</item>
-        <item>@string/preferences__five_times</item>
-        <item>@string/preferences__ten_times</item>
-    </string-array>
-    <string-array name="pref_repeat_alerts_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>5</item>
-        <item>10</item>
-    </string-array>
     <string name="preferences__never">Never</string>
     <string name="preferences__one_time">One time</string>
     <string name="preferences__two_times">Two times</string>
@@ -1585,40 +1429,9 @@
     <string name="preferences__ten_times">Ten times</string>
     <string name="preferences_notifications__in_chat_sounds">In-chat sounds</string>
     <string name="preferences__pref_led_blink_title">LED blink pattern</string>
-    <string-array name="pref_led_blink_pattern_entries">
-        <item>@string/preferences__fast</item>
-        <item>@string/preferences__normal</item>
-        <item>@string/preferences__slow</item>
-    </string-array>
-    <string-array name="pref_led_blink_pattern_values" translatable="false">
-        <item>300,300</item>
-        <item>500,2000</item>
-        <item>3000,3000</item>
-    </string-array>
     <string name="preferences__fast">Fast</string>
     <string name="preferences__normal">Normal</string>
     <string name="preferences__slow">Slow</string>
-    <string-array name="pref_led_color_entries">
-        <item>@string/preferences__green</item>
-        <item>@string/preferences__red</item>
-        <item>@string/preferences__blue</item>
-        <item>@string/preferences__orange</item>
-        <item>@string/preferences__cyan</item>
-        <item>@string/preferences__magenta</item>
-        <item>@string/preferences__white</item>
-        <item>@string/preferences__none</item>
-    </string-array>
-
-    <string-array name="pref_led_color_values" translatable="false">
-        <item>green</item>
-        <item>red</item>
-        <item>blue</item>
-        <item>yellow</item>
-        <item>cyan</item>
-        <item>magenta</item>
-        <item>white</item>
-        <item>none</item>
-    </string-array>
     <string name="preferences__green">Green</string>
     <string name="preferences__red">Red</string>
     <string name="preferences__blue">Blue</string>
@@ -1657,7 +1470,6 @@
     </plurals>
     <string name="ApplicationPreferencesActivity_delete">Delete</string>
     <string name="trimmer__old_messages_successfully_deleted">Old messages successfully deleted</string>
-    <string name="trimmer__deleting">Deleting</string>
     <string name="trimmer__deleting_old_messages">Deleting old messages…</string>
     <string name="ProgressPreference_d_messages_so_far">%d messages so far</string>
     <string name="ChatsPreferenceFragment_in_progress">In progress</string>
@@ -1669,7 +1481,6 @@
     <string name="preferences_chats__create_backup">Create backup</string>
     <string name="preferences_chats__backup_chats_to_external_storage">Backup chats to external storage</string>
     <string name="preferences_chats__chat_backups">Chat backups</string>
-    <string name="preferences_chats__backups">Backups</string>
     <string name="preferences__trim_all_conversations_now">Trim all conversations now</string>
     <string name="preferences__scan_through_all_conversations_and_enforce_conversation_length_limits">Scan through all conversations and enforce conversation length limits</string>
     <string name="preferences__conversation_length_limit">Conversation length limit</string>

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:padding="7dp"
         android:background="@drawable/circle_tintable"
-        android:contentDescription="@string/transport_selection_list_item_transport_icon"
+        android:contentDescription="@string/general_transport_icon"
         tools:src="@drawable/ic_send_push_white_24dp"
         tools:backgroundTint="@color/primary_blue" />
 

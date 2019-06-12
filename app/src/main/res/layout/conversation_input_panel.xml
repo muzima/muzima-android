@@ -63,7 +63,7 @@
                         android:layout_height="@dimen/conversation_compose_height"
                         android:layout_gravity="bottom"
                         android:background="?selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/conversation_activity_emoji_toggle_description"
+                        android:contentDescription="@string/text_emoji_toggle_description"
                         android:paddingStart="4dp"
                         android:paddingLeft="4dp"
                         android:paddingEnd="6dp"
@@ -107,7 +107,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
                                 android:background="?selectableItemBackgroundBorderless"
-                                android:contentDescription="@string/conversation_activity_quick_attachment_drawer_toggle_camera_description"
+                                android:contentDescription="@string/general_toggle_camera"
                                 android:paddingLeft="6dp"
                                 android:paddingRight="6dp"
                                 android:src="?quick_camera_icon" />
@@ -128,7 +128,7 @@
                                     android:layout_marginEnd="2dp"
                                     android:layout_marginRight="2dp"
                                     android:background="@null"
-                                    android:contentDescription="@string/conversation_activity_quick_attachment_drawer_record_and_send_audio_description"
+                                    android:contentDescription="@string/general_record_and_send_audio"
                                     android:padding="6dp"
                                     android:src="?quick_mic_icon" />
 
@@ -237,7 +237,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@drawable/circle_touch_highlight_background"
-            android:contentDescription="@string/conversation_activity_add_attachment"
+            android:contentDescription="@string/general_add_attachment"
             android:nextFocusLeft="@+id/embedded_text_editor"
             android:src="@drawable/ic_add_white_24dp" />
 
@@ -246,7 +246,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/circle_touch_highlight_background"
-            android:contentDescription="@string/conversation_activity_send"
+            android:contentDescription="@string/send_general_text"
             android:nextFocusLeft="@+id/embedded_text_editor"
             android:paddingLeft="11dp"
             android:paddingTop="6dp"

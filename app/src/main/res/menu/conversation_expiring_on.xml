@@ -5,6 +5,6 @@
     <item android:id="@+id/menu_expiring_messages"
           app:actionLayout="@layout/expiration_timer_menu"
           app:showAsAction="always"
-          android:title="@string/menu_conversation_expiring_on__messages_expiring"/>
+          android:title="@string/menu_messages_expiring"/>
 
 </menu>

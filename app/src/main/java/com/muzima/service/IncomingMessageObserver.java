@@ -201,8 +201,8 @@ public class IncomingMessageObserver implements InjectableType, RequirementListe
             super.onStartCommand(intent, flags, startId);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NotificationChannels.OTHER);
-            builder.setContentTitle(getApplicationContext().getString(R.string.message_retrieval_service_signal));
-            builder.setContentText(getApplicationContext().getString(R.string.message_retrieval_service_background_connection_enabled));
+            builder.setContentTitle(getApplicationContext().getString(R.string.plurals_identity_others));
+            builder.setContentText(getApplicationContext().getString(R.string.general_background_connection_enabled));
             builder.setPriority(NotificationCompat.PRIORITY_MIN);
             builder.setWhen(0);
             builder.setSmallIcon(R.drawable.ic_signal_background_connection);

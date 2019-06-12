@@ -29,6 +29,6 @@
         android:summary="@string/preferences__enable_if_your_device_supports_sms_mms_delivery_over_wifi"/>
 
     <Preference android:key="pref_mms_preferences"
-        android:title="@string/preferences__advanced_mms_access_point_names"/>
+        android:title="@string/preferences_mms_access_point_names"/>
 
 </PreferenceScreen>

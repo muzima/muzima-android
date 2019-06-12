@@ -22,7 +22,7 @@ public class PlayServicesProblemFragment extends DialogFragment {
         if (dialog == null) {
             return new AlertDialog.Builder(getActivity())
                     .setNegativeButton(android.R.string.ok, null)
-                    .setMessage(R.string.PlayServicesProblemFragment_the_version_of_google_play_services_you_have_installed_is_not_functioning)
+                    .setMessage(R.string.warning_google_play_problem)
                     .create();
         } else {
             return dialog;

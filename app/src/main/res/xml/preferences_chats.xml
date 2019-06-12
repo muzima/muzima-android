@@ -81,7 +81,7 @@
 
     <PreferenceCategory android:layout="@layout/preference_divider"/>
     <!--Todo Activate if team thinks it is important-->
-    <!--<PreferenceCategory android:key="backup_category" android:title="@string/preferences_chats__backups">-->
+    <!--<PreferenceCategory android:key="backup_category" android:title="@string/general_backups">-->
         <!--<com.muzima.messaging.preference.SwitchPreferenceCompat-->
             <!--android:defaultValue="false"-->
             <!--android:key="pref_backup_enabled"-->

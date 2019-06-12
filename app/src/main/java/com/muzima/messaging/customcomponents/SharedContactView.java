@@ -214,21 +214,21 @@ public class SharedContactView extends LinearLayout implements RecipientModified
         }
 
         if (!pushUsers.isEmpty()) {
-            actionButtonView.setText(R.string.SharedContactView_message);
+            actionButtonView.setText(R.string.general_muzima_message);
             actionButtonView.setOnClickListener(v -> {
                 if (eventListener != null) {
                     eventListener.onMessageClicked(pushUsers);
                 }
             });
         } else if (!systemUsers.isEmpty()) {
-            actionButtonView.setText(R.string.SharedContactView_invite_to_signal);
+            actionButtonView.setText(R.string.general_invite_to_muzima);
             actionButtonView.setOnClickListener(v -> {
                 if (eventListener != null) {
                     eventListener.onInviteClicked(systemUsers);
                 }
             });
         } else {
-            actionButtonView.setText(R.string.SharedContactView_add_to_contacts);
+            actionButtonView.setText(R.string.general_add_to_contacts);
             actionButtonView.setOnClickListener(v -> {
                 if (eventListener != null && contact != null) {
                     eventListener.onAddToContactsClicked(contact);

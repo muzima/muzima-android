@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"/>
 
 
-        <TextView android:text="@string/conversation_list_fragment_empty"
+        <TextView android:text="@string/general_conversation_list_empty"
             android:textSize="20sp"
             android:padding="16dp"
             android:gravity="center"

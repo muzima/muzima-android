@@ -107,7 +107,7 @@ public class CameraActivity extends PassphraseRequiredActionBarActivity implemen
 
     @Override
     public void onCameraError() {
-        Toast.makeText(this, R.string.CameraActivity_camera_unavailable, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.warning_camera_unavailable, Toast.LENGTH_SHORT).show();
         setResult(RESULT_CANCELED, new Intent());
         finish();
     }
@@ -159,7 +159,7 @@ public class CameraActivity extends PassphraseRequiredActionBarActivity implemen
     @Override
     public void onImageEditFailure() {
         Log.w(TAG, "Failed to save edited image.");
-        Toast.makeText(this, R.string.CameraActivity_image_save_failure, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.warning_image_save_failure, Toast.LENGTH_SHORT).show();
         finish();
     }
 }

@@ -323,7 +323,7 @@ public class ContactsDatabase {
                 .withValue(ContactsContract.Data.MIMETYPE, CALL_MIMETYPE)
                 .withValue(ContactsContract.Data.DATA1, address.toPhoneString())
                 .withValue(ContactsContract.Data.DATA2, context.getString(R.string.app_name))
-                .withValue(ContactsContract.Data.DATA3, context.getString(R.string.contacts_database_signal_call_s, address.toPhoneString()))
+                .withValue(ContactsContract.Data.DATA3, context.getString(R.string.general_muzima_call_s, address.toPhoneString()))
                 .withYieldAllowed(true)
                 .build());
     }
@@ -387,7 +387,7 @@ public class ContactsDatabase {
                 .withValue(ContactsContract.Data.MIMETYPE, CONTACT_MIMETYPE)
                 .withValue(ContactsContract.Data.DATA1, e164number)
                 .withValue(ContactsContract.Data.DATA2, context.getString(R.string.app_name))
-                .withValue(ContactsContract.Data.DATA3, context.getString(R.string.contacts_database_message_s, e164number))
+                .withValue(ContactsContract.Data.DATA3, context.getString(R.string.general_message_s, e164number))
                 .withYieldAllowed(true)
                 .build());
 
@@ -396,7 +396,7 @@ public class ContactsDatabase {
                 .withValue(ContactsContract.Data.MIMETYPE, CALL_MIMETYPE)
                 .withValue(ContactsContract.Data.DATA1, e164number)
                 .withValue(ContactsContract.Data.DATA2, context.getString(R.string.app_name))
-                .withValue(ContactsContract.Data.DATA3, context.getString(R.string.contacts_database_signal_call_s, e164number))
+                .withValue(ContactsContract.Data.DATA3, context.getString(R.string.general_muzima_call_s, e164number))
                 .withYieldAllowed(true)
                 .build());
 

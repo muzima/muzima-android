@@ -689,7 +689,7 @@
         </activity>
 
         <activity android:name=".messaging.MessageDetailsActivity"
-            android:label="@string/AndroidManifest__message_details"
+            android:label="@string/menu_message_details"
             android:windowSoftInputMode="stateHidden"
             android:launchMode="singleTask"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>

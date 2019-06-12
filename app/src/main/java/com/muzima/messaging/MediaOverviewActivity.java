@@ -381,7 +381,7 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
 
             builder.setPositiveButton(R.string.delete, (dialogInterface, i) -> {
                 new ProgressDialogAsyncTask<MediaDatabase.MediaRecord, Void, Void>(getContext(),
-                        R.string.MediaOverviewActivity_Media_delete_progress_title,
+                        R.string.general_deleting,
                         R.string.MediaOverviewActivity_Media_delete_progress_message)
                 {
                     @Override
