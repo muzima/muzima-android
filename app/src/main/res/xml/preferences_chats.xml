@@ -80,21 +80,21 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:layout="@layout/preference_divider"/>
+    <!--Todo Activate if team thinks it is important-->
+    <!--<PreferenceCategory android:key="backup_category" android:title="@string/preferences_chats__backups">-->
+        <!--<com.muzima.messaging.preference.SwitchPreferenceCompat-->
+            <!--android:defaultValue="false"-->
+            <!--android:key="pref_backup_enabled"-->
+            <!--android:title="@string/preferences_chats__chat_backups"-->
+            <!--android:summary="@string/preferences_chats__backup_chats_to_external_storage" />-->
 
-    <PreferenceCategory android:key="backup_category" android:title="@string/preferences_chats__backups">
-        <com.muzima.messaging.preference.SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:key="pref_backup_enabled"
-            android:title="@string/preferences_chats__chat_backups"
-            android:summary="@string/preferences_chats__backup_chats_to_external_storage" />
+        <!--<com.muzima.messaging.preference.ProgressPreference-->
+            <!--android:key="pref_backup_create"-->
+            <!--android:title="@string/preferences_chats__create_backup"-->
+            <!--android:persistent="false"-->
+            <!--android:dependency="pref_backup_enabled"-->
+            <!--tools:summary="Last backup: 3 days ago"/>-->
 
-        <com.muzima.messaging.preference.ProgressPreference
-            android:key="pref_backup_create"
-            android:title="@string/preferences_chats__create_backup"
-            android:persistent="false"
-            android:dependency="pref_backup_enabled"
-            tools:summary="Last backup: 3 days ago"/>
-
-    </PreferenceCategory>
+    <!--</PreferenceCategory>-->
 
 </PreferenceScreen>

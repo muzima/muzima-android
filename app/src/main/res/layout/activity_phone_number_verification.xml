@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp"
-                android:text="@string/registration_activity_verify_your_number"
+                android:text="@string/general_verify_your_number"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/primary_white"
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="25dp"
                 android:textColor="@color/primary_white"
-                android:text="@string/registration_activity_enter_your_mobile_number"
+                android:text="@string/enter_your_mobile_number_message"
                 android:gravity="center"/>
 
         </LinearLayout>
@@ -93,7 +93,7 @@
                 android:paddingRight="30dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="@string/registration_activity_skip"/>
+                android:text="@string/general_skip"/>
 
         </LinearLayout>
 
@@ -144,7 +144,7 @@
                     android:layout_weight="1"
                     android:inputType="phone"
                     android:textColor="@color/primary_blue"
-                    android:hint="@string/registration_activity_phone_number"
+                    android:hint="@string/hint_phone_number"
                     android:gravity="center"
                     android:singleLine="true"/>
 
@@ -152,7 +152,7 @@
 
             <Button
                 android:id="@+id/registerButton"
-                android:text="@string/registration_activity_register"
+                android:text="@string/general_register"
                 android:background="@color/primary_blue"
                 android:textColor="@color/primary_white"
                 android:layout_width="match_parent"
@@ -231,7 +231,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="numberPassword"
                     android:imeOptions="actionDone"
-                    android:hint="@string/registration_activity_registration_lock_pin"/>
+                    android:hint="@string/hint_registration_lock_pin"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -242,7 +242,7 @@
                 android:layout_marginTop="20dp"
                 android:padding="15dp"
                 android:textColor="@color/primary_blue"
-                android:text="@string/registration_activity_forgot_pin"/>
+                android:text="@string/general_forgot_pin"/>
         </LinearLayout>
 
     </RelativeLayout>

@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/primary_blue"
-        android:hint="@string/country_selection_fragment__search" />
+        android:hint="@string/general_search" />
 
     <ListView android:id="@android:id/list"
         android:layout_width="fill_parent"
@@ -23,6 +23,6 @@
         android:layout_height="fill_parent"
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/country_selection_fragment__loading_countries" />
+        android:text="@string/text_loading_countries" />
 </LinearLayout>
 

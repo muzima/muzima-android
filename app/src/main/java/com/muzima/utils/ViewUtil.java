@@ -183,7 +183,8 @@ public class ViewUtil {
     }
 
     public static void mirrorIfRtl(View view, Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 &&
+                context.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
             view.setScaleX(-1.0f);
         }
     }

@@ -65,8 +65,8 @@ public class SearchToolbar extends LinearLayout {
 
         searchView.setSubmitButtonEnabled(false);
 
-        if (searchText != null) searchText.setHint(R.string.search_toolbar_search);
-        else                    searchView.setQueryHint(getResources().getString(R.string.search_toolbar_search));
+        if (searchText != null) searchText.setHint(R.string.general_search);
+        else                    searchView.setQueryHint(getResources().getString(R.string.general_search));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

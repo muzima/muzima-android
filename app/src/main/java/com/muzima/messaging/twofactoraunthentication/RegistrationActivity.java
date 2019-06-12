@@ -72,9 +72,9 @@ public class RegistrationActivity extends AppCompatActivity {
         countrySelectSpinner = findViewById(R.id.country_spinner);
 
         //check if user already passed 2factor auth from preferences
-        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.sms_verification_status_shared_preference_file_name), Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_sms_verification_file), Context.MODE_PRIVATE);
         if (sharedPreferences != null) {
-            isUserSmsVerified = sharedPreferences.getBoolean(getString(R.string.verify_sms_preference), false);
+            isUserSmsVerified = sharedPreferences.getBoolean(getString(R.string.preference_verify_sms_key), false);
             if (isUserSmsVerified){
                 startActivity( new Intent(RegistrationActivity.this,LoginActivity.class));
             }
@@ -99,7 +99,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 e164number = getConfiguredE164Number();
 
                 if ((e164number != null && !e164number.isEmpty())) {
-                    Toast.makeText(RegistrationActivity.this, getString(R.string.requesting_verification), Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegistrationActivity.this, getString(R.string.general_requesting_verification), Toast.LENGTH_LONG).show();
                     requestVerificationCode(password, e164number);
                 } else
                     Toast.makeText(RegistrationActivity.this, getString(R.string.invalid_phone_number), Toast.LENGTH_LONG).show();

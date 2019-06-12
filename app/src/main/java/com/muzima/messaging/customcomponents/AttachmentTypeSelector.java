@@ -52,7 +52,6 @@ public class AttachmentTypeSelector extends PopupWindow {
     private final @NonNull ImageView contactButton;
     private final @NonNull ImageView cameraButton;
     private final @NonNull ImageView locationButton;
-    private final @NonNull ImageView closeButton;
 
     private @Nullable
     View currentAnchor;
@@ -73,7 +72,6 @@ public class AttachmentTypeSelector extends PopupWindow {
         this.contactButton  = ViewUtil.findById(layout, R.id.contact_button);
         this.cameraButton   = ViewUtil.findById(layout, R.id.camera_button);
         this.locationButton = ViewUtil.findById(layout, R.id.location_button);
-        this.closeButton    = ViewUtil.findById(layout, R.id.close_button);
 
         this.imageButton.setOnClickListener(new PropagatingClickListener(ADD_GALLERY));
         this.audioButton.setOnClickListener(new PropagatingClickListener(ADD_SOUND));
@@ -81,7 +79,6 @@ public class AttachmentTypeSelector extends PopupWindow {
         this.contactButton.setOnClickListener(new PropagatingClickListener(ADD_CONTACT_INFO));
         this.cameraButton.setOnClickListener(new PropagatingClickListener(TAKE_PHOTO));
         this.locationButton.setOnClickListener(new PropagatingClickListener(ADD_LOCATION));
-        this.closeButton.setOnClickListener(new CloseClickListener());
         this.recentRail.setListener(new RecentPhotoSelectedListener());
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
@@ -133,7 +130,6 @@ public class AttachmentTypeSelector extends PopupWindow {
             animateButtonIn(locationButton, ANIMATION_DURATION / 3);
             animateButtonIn(documentButton, ANIMATION_DURATION / 4);
             animateButtonIn(contactButton, 0);
-            animateButtonIn(closeButton, 0);
         }
     }
 
