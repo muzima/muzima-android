@@ -43,7 +43,7 @@
                 android:layout_marginTop="20dip">
 
                 <Button android:id="@+id/skip_button"
-                    android:text="@string/database_migration_activity__skip"
+                    android:text="@string/general_skip"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <Button android:id="@+id/import_button"
-                    android:text="@string/database_migration_activity__import"
+                    android:text="@string/general_import"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

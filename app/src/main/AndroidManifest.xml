@@ -721,11 +721,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".messaging.preference.DeviceActivity"
-            android:label="@string/AndroidManifest__linked_devices"
-            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
-
-
         <provider android:name="android.support.v4.content.FileProvider"
             android:authorities="com.muzima.fileprovider"
             android:exported="false"
