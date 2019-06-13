@@ -664,7 +664,7 @@
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
         <activity android:name=".messaging.PushContactSelectionActivity"
-            android:label="@string/AndroidManifest__select_contacts"
+            android:label="@string/hint_select_contacts"
             android:windowSoftInputMode="stateHidden"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
@@ -679,7 +679,7 @@
         </activity>
 
         <activity android:name=".messaging.ConversationListArchiveActivity"
-            android:label="@string/AndroidManifest_archived_conversations"
+            android:label="@string/hint_archived_conversations"
             android:launchMode="singleTask"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
             android:parentActivityName=".messaging.ConversationListActivity">

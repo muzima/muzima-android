@@ -144,13 +144,13 @@ public class ContactFieldAdapter extends RecyclerView.Adapter<ContactFieldAdapte
 
             switch (phoneNumber.getType()) {
                 case HOME:
-                    label = context.getString(R.string.ContactShareEditActivity_type_home);
+                    label = context.getString(R.string.general_type_home);
                     break;
                 case MOBILE:
-                    label = context.getString(R.string.ContactShareEditActivity_type_mobile);
+                    label = context.getString(R.string.general_type_mobile);
                     break;
                 case WORK:
-                    label = context.getString(R.string.ContactShareEditActivity_type_work);
+                    label = context.getString(R.string.general_type_work);
                     break;
                 case CUSTOM:
                     label = phoneNumber.getLabel() != null ? phoneNumber.getLabel() : "";
@@ -169,13 +169,13 @@ public class ContactFieldAdapter extends RecyclerView.Adapter<ContactFieldAdapte
 
             switch (email.getType()) {
                 case HOME:
-                    label = context.getString(R.string.ContactShareEditActivity_type_home);
+                    label = context.getString(R.string.general_type_home);
                     break;
                 case MOBILE:
-                    label = context.getString(R.string.ContactShareEditActivity_type_mobile);
+                    label = context.getString(R.string.general_type_mobile);
                     break;
                 case WORK:
-                    label = context.getString(R.string.ContactShareEditActivity_type_work);
+                    label = context.getString(R.string.general_type_work);
                     break;
                 case CUSTOM:
                     label = email.getLabel() != null ? email.getLabel() : "";
@@ -194,10 +194,10 @@ public class ContactFieldAdapter extends RecyclerView.Adapter<ContactFieldAdapte
 
             switch (postalAddress.getType()) {
                 case HOME:
-                    label = context.getString(R.string.ContactShareEditActivity_type_home);
+                    label = context.getString(R.string.general_type_home);
                     break;
                 case WORK:
-                    label = context.getString(R.string.ContactShareEditActivity_type_work);
+                    label = context.getString(R.string.general_type_work);
                     break;
                 case CUSTOM:
                     label = postalAddress.getLabel() != null ? postalAddress.getLabel() : context.getString(R.string.general_other);

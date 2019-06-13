@@ -137,7 +137,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver implements In
 
     private void showForegroundNotification(@NonNull Context context) {
         GenericForegroundService.startForegroundTask(context,
-                context.getString(R.string.GcmBroadcastReceiver_retrieving_a_message),
+                context.getString(R.string.general_retrieving_a_message),
                 NotificationChannels.OTHER,
                 R.drawable.ic_signal_downloading);
     }

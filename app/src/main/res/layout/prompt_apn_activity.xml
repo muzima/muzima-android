@@ -22,13 +22,13 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dip"
-                android:text="@string/prompt_mms_activity__signal_requires_mms_settings_to_deliver_media_and_group_messages"/>
+                android:text="@string/warning_requires_mms_settings_to_deliver_media"/>
 
             <TextView style="@style/Registration.Description"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dip"
-                android:text="@string/prompt_mms_activity__to_send_media_and_group_messages_tap_ok"/>
+                android:text="@string/hint_tap_to_send_media"/>
 
             <LinearLayout android:orientation="horizontal"
                 android:gravity="center"

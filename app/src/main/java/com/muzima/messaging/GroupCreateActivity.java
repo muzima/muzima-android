@@ -119,11 +119,11 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
     @SuppressWarnings("ConstantConditions")
     private void updateViewState() {
         if (!TextSecurePreferences.isPushRegistered(this)) {
-            disableSignalGroupViews(R.string.GroupCreateActivity_youre_not_registered_for_signal);
-            getSupportActionBar().setTitle(R.string.GroupCreateActivity_actionbar_mms_title);
+            disableSignalGroupViews(R.string.hint_not_registered_to_muzima);
+            getSupportActionBar().setTitle(R.string.title_new_mms);
         } else if (getAdapter().hasNonPushMembers()) {
-            disableSignalGroupViews(R.string.GroupCreateActivity_contacts_dont_support_push);
-            getSupportActionBar().setTitle(R.string.GroupCreateActivity_actionbar_mms_title);
+            disableSignalGroupViews(R.string.hint_contacts_dont_support_push);
+            getSupportActionBar().setTitle(R.string.title_new_mms);
         } else {
             enableSignalGroupViews();
             getSupportActionBar().setTitle(groupToUpdate.isPresent()
@@ -154,7 +154,7 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
         SelectedRecipientsAdapter adapter = new SelectedRecipientsAdapter(this);
         adapter.setOnRecipientDeletedListener(this);
         lv.setAdapter(adapter);
-        recipientsEditor.setHint(R.string.recipients_panel__add_members);
+        recipientsEditor.setHint(R.string.hint_add_members);
         recipientsPanel.setPanelChangeListener(this);
         findViewById(R.id.contacts_button).setOnClickListener(new AddRecipientButtonListener());
         avatar.setImageDrawable(new ResourceContactPhoto(R.drawable.ic_group_white_24dp).asDrawable(this, ContactColors.UNKNOWN_COLOR.toConversationColor(this)));
@@ -208,8 +208,8 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
 
     private void handleGroupCreate() {
         if (getAdapter().getCount() < 1) {
-            Log.i(TAG, getString(R.string.GroupCreateActivity_contacts_no_members));
-            Toast.makeText(getApplicationContext(), R.string.GroupCreateActivity_contacts_no_members, Toast.LENGTH_SHORT).show();
+            Log.i(TAG, getString(R.string.warning_no_members));
+            Toast.makeText(getApplicationContext(), R.string.warning_no_members, Toast.LENGTH_SHORT).show();
             return;
         }
         if (isSignalGroup()) {
@@ -352,8 +352,8 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
             activity.findViewById(R.id.creating_group_layout).setVisibility(View.VISIBLE);
             activity.findViewById(R.id.menu_create_group).setVisibility(View.GONE);
             final int titleResId = activity.groupToUpdate.isPresent()
-                    ? R.string.GroupCreateActivity_updating_group
-                    : R.string.GroupCreateActivity_creating_group;
+                    ? R.string.hint_updating_group
+                    : R.string.hint_creating_group;
             activity.creatingText.setText(activity.getString(titleResId, activity.getGroupName()));
         }
 
@@ -385,7 +385,7 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
             } else {
                 super.onPostExecute(result);
                 Toast.makeText(activity.getApplicationContext(),
-                        R.string.GroupCreateActivity_contacts_invalid_number, Toast.LENGTH_LONG).show();
+                        R.string.warning_invalid_group_member_number, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -421,7 +421,7 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
             } else {
                 super.onPostExecute(result);
                 Toast.makeText(activity.getApplicationContext(),
-                        R.string.GroupCreateActivity_contacts_invalid_number, Toast.LENGTH_LONG).show();
+                        R.string.warning_invalid_group_member_number, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -455,10 +455,10 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
                 boolean isPush = isActiveInDirectory(recipient);
 
                 if (failIfNotPush && !isPush) {
-                    results.add(new Result(null, false, activity.getString(R.string.GroupCreateActivity_cannot_add_non_push_to_existing_group,
+                    results.add(new Result(null, false, activity.getString(R.string.warning_cannot_add_non_push_to_existing_group,
                             recipient.toShortString())));
                 } else if (TextUtils.equals(TextSecurePreferences.getLocalNumber(activity), recipient.getAddress().serialize())) {
-                    results.add(new Result(null, false, activity.getString(R.string.GroupCreateActivity_youre_already_in_the_group)));
+                    results.add(new Result(null, false, activity.getString(R.string.warning_already_in_the_group)));
                 } else {
                     results.add(new Result(recipient, isPush, null));
                 }
@@ -486,7 +486,7 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
 
         public FillExistingGroupInfoAsyncTask(GroupCreateActivity activity) {
             super(activity,
-                    R.string.GroupCreateActivity_loading_group_details,
+                    R.string.hint_loading_group_details,
                     R.string.please_wait);
             this.activity = activity;
         }

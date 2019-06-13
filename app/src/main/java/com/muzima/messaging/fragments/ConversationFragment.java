@@ -436,7 +436,7 @@ public class ConversationFragment extends Fragment
         builder.setMessage(getActivity().getResources().getQuantityString(R.plurals.plurals_this_will_permanently_delete_all_n_selected_messages, messagesCount, messagesCount));
         builder.setCancelable(true);
 
-        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.general_delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 new ProgressDialogAsyncTask<MessageRecord, Void, Void>(getActivity(),
@@ -521,7 +521,7 @@ public class ConversationFragment extends Fragment
 
                 Log.w(TAG, "No slide with attachable media found, failing nicely.");
                 Toast.makeText(getActivity(),
-                        getResources().getQuantityString(R.plurals.ConversationFragment_error_while_saving_attachments_to_sd_card, 1),
+                        getResources().getQuantityString(R.plurals.plurals_error_saving_attachment_to_storage, 1),
                         Toast.LENGTH_LONG).show();
             }
         });

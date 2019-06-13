@@ -25,7 +25,7 @@ public class MuteDialog extends AlertDialog {
 
     public static void show(final Context context, final @NonNull MuteSelectionListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.MuteDialog_mute_notifications);
+        builder.setTitle(R.string.general_mute_notifications);
         builder.setItems(R.array.mute_durations, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, final int which) {

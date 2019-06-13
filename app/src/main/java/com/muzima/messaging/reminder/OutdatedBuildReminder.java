@@ -16,7 +16,7 @@ public class OutdatedBuildReminder extends Reminder {
     private static final String TAG = OutdatedBuildReminder.class.getSimpleName();
 
     public OutdatedBuildReminder(final Context context) {
-        super(context.getString(R.string.reminder_header_outdated_build),
+        super(context.getString(R.string.warning_outdated_build),
                 getPluralsText(context));
         setOkListener(v -> {
             try {
@@ -26,7 +26,7 @@ public class OutdatedBuildReminder extends Reminder {
                     context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + context.getPackageName())));
                 } catch (ActivityNotFoundException anfe2) {
                     Log.w(TAG, anfe2);
-                    Toast.makeText(context, R.string.OutdatedBuildReminder_no_web_browser_installed, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.warning_no_web_browser_installed, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -35,9 +35,9 @@ public class OutdatedBuildReminder extends Reminder {
     private static CharSequence getPluralsText(final Context context) {
         int days = Util.getDaysTillBuildExpiry() - 1;
         if (days == 0) {
-            return context.getString(R.string.reminder_header_outdated_build_details_today);
+            return context.getString(R.string.warning_outdated_build_details_today);
         }
-        return context.getResources().getQuantityString(R.plurals.reminder_header_outdated_build_details, days, days);
+        return context.getResources().getQuantityString(R.plurals.plurals_outdated_build_details, days, days);
     }
 
     @Override

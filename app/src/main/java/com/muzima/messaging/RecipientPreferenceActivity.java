@@ -390,8 +390,8 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
                 aboutPreference.setSecure(recipient.getRegistered() == RecipientDatabase.RegisteredState.REGISTERED);
 
                 if (recipient.isBlocked())
-                    blockPreference.setTitle(R.string.RecipientPreferenceActivity_unblock);
-                else blockPreference.setTitle(R.string.RecipientPreferenceActivity_block);
+                    blockPreference.setTitle(R.string.title_unblock_this_contact);
+                else blockPreference.setTitle(R.string.general_block);
 
                 IdentityUtil.getRemoteIdentityKey(getActivity(), recipient).addListener(new ListenableFuture.Listener<Optional<IdentityRecord>>() {
                     @Override
@@ -402,7 +402,7 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
                             if (identityPreference != null) identityPreference.setEnabled(true);
                         } else if (canHaveSafetyNumber) {
                             if (identityPreference != null)
-                                identityPreference.setSummary(R.string.RecipientPreferenceActivity_available_once_a_message_has_been_sent_or_received);
+                                identityPreference.setSummary(R.string.hint_available_once_a_message_has_been_sent_or_received);
                             if (identityPreference != null) identityPreference.setEnabled(false);
                         } else {
                             if (identityPreference != null)
@@ -431,7 +431,7 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
             if (ringtone == null) {
                 return context.getString(R.string.general_default);
             } else if (ringtone.toString().isEmpty()) {
-                return context.getString(R.string.preferences__silent);
+                return context.getString(R.string.general_silent);
             } else {
                 Ringtone tone = RingtoneManager.getRingtone(getActivity(), ringtone);
 
@@ -448,9 +448,9 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
             if (vibrateState == VibrateState.DEFAULT) {
                 return new Pair<>(context.getString(R.string.general_default), 0);
             } else if (vibrateState == VibrateState.ENABLED) {
-                return new Pair<>(context.getString(R.string.RecipientPreferenceActivity_enabled), 1);
+                return new Pair<>(context.getString(R.string.general_enabled), 1);
             } else {
-                return new Pair<>(context.getString(R.string.RecipientPreferenceActivity_disabled), 2);
+                return new Pair<>(context.getString(R.string.general_disabled), 2);
             }
         }
 
@@ -673,16 +673,16 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
 
                     @Override
                     protected Pair<Integer, Integer> doInBackground(Void... voids) {
-                        int titleRes = R.string.RecipientPreferenceActivity_block_this_contact_question;
-                        int bodyRes = R.string.RecipientPreferenceActivity_you_will_no_longer_receive_messages_and_calls_from_this_contact;
+                        int titleRes = R.string.title_block_this_contact;
+                        int bodyRes = R.string.hint_you_will_no_longer_receive_messages_and_calls_from_this_contact;
 
                         if (recipient.isGroupRecipient()) {
-                            bodyRes = R.string.RecipientPreferenceActivity_block_and_leave_group_description;
+                            bodyRes = R.string.hint_block_and_leave_group;
 
                             if (recipient.isGroupRecipient() && DatabaseFactory.getGroupDatabase(context).isActive(recipient.getAddress().toGroupString())) {
-                                titleRes = R.string.RecipientPreferenceActivity_block_and_leave_group;
+                                titleRes = R.string.title_block_and_leave_group;
                             } else {
-                                titleRes = R.string.RecipientPreferenceActivity_block_group;
+                                titleRes = R.string.title_block_group;
                             }
                         }
 
@@ -696,7 +696,7 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
                                 .setMessage(titleAndBody.second)
                                 .setCancelable(true)
                                 .setNegativeButton(android.R.string.cancel, null)
-                                .setPositiveButton(R.string.RecipientPreferenceActivity_block, (dialog, which) -> {
+                                .setPositiveButton(R.string.general_block, (dialog, which) -> {
                                     setBlocked(context, recipient, true);
                                 }).show();
                     }
@@ -704,12 +704,12 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
             }
 
             private void handleUnblock(@NonNull Context context) {
-                int titleRes = R.string.RecipientPreferenceActivity_unblock_this_contact_question;
-                int bodyRes = R.string.RecipientPreferenceActivity_you_will_once_again_be_able_to_receive_messages_and_calls_from_this_contact;
+                int titleRes = R.string.title_unblock_this_contact;
+                int bodyRes = R.string.hint_you_will_once_again_be_able_to_receive_messages_and_calls_from_this_contact;
 
                 if (recipient.isGroupRecipient()) {
-                    titleRes = R.string.RecipientPreferenceActivity_unblock_this_group_question;
-                    bodyRes = R.string.RecipientPreferenceActivity_unblock_this_group_description;
+                    titleRes = R.string.title_unblock_this_group;
+                    bodyRes = R.string.hint_unblock_this_group;
                 }
 
                 new AlertDialog.Builder(context)
@@ -717,7 +717,7 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
                         .setMessage(bodyRes)
                         .setCancelable(true)
                         .setNegativeButton(android.R.string.cancel, null)
-                        .setPositiveButton(R.string.RecipientPreferenceActivity_unblock, (dialog, which) -> setBlocked(context, recipient, false)).show();
+                        .setPositiveButton(R.string.title_unblock_this_contact, (dialog, which) -> setBlocked(context, recipient, false)).show();
             }
 
             private void setBlocked(@NonNull final Context context, final SignalRecipient recipient, final boolean blocked) {
@@ -740,7 +740,7 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
                                 groupDatabase.remove(groupId, SignalAddress.fromSerialized(TextSecurePreferences.getLocalNumber(context)));
                             } else {
                                 Log.w(TAG, "Failed to leave group. Can't block.");
-                                Toast.makeText(context, R.string.RecipientPreferenceActivity_error_leaving_group, Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, R.string.error_leaving_group, Toast.LENGTH_LONG).show();
                             }
                         }
 
@@ -780,8 +780,8 @@ public class RecipientPreferenceActivity extends PassphraseRequiredActionBarActi
                 } catch (ActivityNotFoundException anfe) {
                     Log.w(TAG, anfe);
                     Dialogs.showAlertDialog(getContext(),
-                            getString(R.string.ConversationActivity_calls_not_supported),
-                            getString(R.string.ConversationActivity_this_device_does_not_appear_to_support_dial_actions));
+                            getString(R.string.warning_calls_not_supported),
+                            getString(R.string.hint_device_does_not_appear_to_support_dial_actions));
                 }
             }
         }

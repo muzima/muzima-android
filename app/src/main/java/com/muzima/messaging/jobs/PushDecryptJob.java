@@ -205,8 +205,8 @@ public class PushDecryptJob extends ContextJob {
                         .setSmallIcon(R.drawable.ic_launcher_logo_light)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                        .setContentTitle(context.getString(R.string.PushDecryptJob_new_locked_message))
-                        .setContentText(context.getString(R.string.PushDecryptJob_unlock_to_view_pending_messages))
+                        .setContentTitle(context.getString(R.string.title_new_locked_message))
+                        .setContentText(context.getString(R.string.hint_unlock_to_view_pending_messages))
                         .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, ConversationListActivity.class), 0))
                         .setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_VIBRATE)
                         .build());

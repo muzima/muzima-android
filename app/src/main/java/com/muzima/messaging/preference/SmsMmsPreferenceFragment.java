@@ -41,7 +41,7 @@ public class SmsMmsPreferenceFragment extends CorrectedPreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((ApplicationPreferencesActivity) getActivity()).getSupportActionBar().setTitle(R.string.preferences__sms_mms);
+        ((ApplicationPreferencesActivity) getActivity()).getSupportActionBar().setTitle(R.string.general_sms_mms);
 
         initializeDefaultPreference();
     }
@@ -77,14 +77,14 @@ public class SmsMmsPreferenceFragment extends CorrectedPreferenceFragment {
             else
                 defaultPreference.setIntent(new Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS));
 
-            defaultPreference.setTitle(getString(R.string.ApplicationPreferencesActivity_sms_enabled));
-            defaultPreference.setSummary(getString(R.string.ApplicationPreferencesActivity_touch_to_change_your_default_sms_app));
+            defaultPreference.setTitle(getString(R.string.preferences_sms_enabled));
+            defaultPreference.setSummary(getString(R.string.hint_touch_to_change_your_default_sms_app));
         } else {
             Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
             intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, getActivity().getPackageName());
             defaultPreference.setIntent(intent);
-            defaultPreference.setTitle(getString(R.string.ApplicationPreferencesActivity_sms_disabled));
-            defaultPreference.setSummary(getString(R.string.ApplicationPreferencesActivity_touch_to_make_signal_your_default_sms_app));
+            defaultPreference.setTitle(getString(R.string.preferences_sms_disabled));
+            defaultPreference.setSummary(getString(R.string.hint_touch_to_make_signal_your_default_sms_app));
         }
     }
 
@@ -104,11 +104,11 @@ public class SmsMmsPreferenceFragment extends CorrectedPreferenceFragment {
     }
 
     public static CharSequence getSummary(Context context) {
-        final String on = context.getString(R.string.ApplicationPreferencesActivity_on);
-        final String onCaps = context.getString(R.string.ApplicationPreferencesActivity_on);
+        final String on = context.getString(R.string.general_on);
+        final String onCaps = context.getString(R.string.general_on);
         final String off = context.getString(R.string.general_off);
         final String offCaps = context.getString(R.string.general_off);
-        final int smsMmsSummaryResId = R.string.ApplicationPreferencesActivity_sms_mms_summary;
+        final int smsMmsSummaryResId = R.string.hint_sms_mms_summary;
 
         boolean postKitkatSMS = Util.isDefaultSmsProvider(context);
         boolean preKitkatSMS = TextSecurePreferences.isInterceptAllSmsEnabled(context);

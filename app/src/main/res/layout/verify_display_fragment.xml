@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginBottom="35dp"
-                android:text="@string/verify_display_fragment__tap_to_scan"
+                android:text="@string/hint_tap_to_scan"
                 android:textColor="@color/gray50"
                 android:textSize="11sp"
                 android:visibility="invisible" />
@@ -191,7 +191,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:text="@string/verify_display_fragment__verified"
+                android:text="@string/general_verified"
                 android:textSize="17dp" />
 
         </LinearLayout>
@@ -202,7 +202,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:lineSpacingExtra="3sp"
-            android:text="@string/verify_display_fragment__if_you_wish_to_verify_the_security_of_your_end_to_end_encryption_with_s"
+            android:text="@string/hint_verify_the_security_of_your_end_to_end_encryption_with_s"
             android:textSize="17sp" />
 
 

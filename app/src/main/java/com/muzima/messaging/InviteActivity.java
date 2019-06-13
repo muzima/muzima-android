@@ -55,7 +55,7 @@ public class InviteActivity extends PassphraseRequiredActionBarActivity implemen
 
         setContentView(R.layout.invite_activity);
         assert getSupportActionBar() != null;
-        getSupportActionBar().setTitle(R.string.AndroidManifest__invite_friends);
+        getSupportActionBar().setTitle(R.string.general_invite_friends);
 
         initializeResources();
     }
@@ -114,7 +114,7 @@ public class InviteActivity extends PassphraseRequiredActionBarActivity implemen
     }
 
     private void updateSmsButtonText() {
-        smsSendButton.setText(getResources().getQuantityString(R.plurals.InviteActivity_send_sms_to_friends,
+        smsSendButton.setText(getResources().getQuantityString(R.plurals.plurals_send_sms_to_friends,
                 contactsFragment.getSelectedContacts().size(),
                 contactsFragment.getSelectedContacts().size()));
         smsSendButton.setEnabled(!contactsFragment.getSelectedContacts().isEmpty());
@@ -142,9 +142,9 @@ public class InviteActivity extends PassphraseRequiredActionBarActivity implemen
             sendIntent.putExtra(Intent.EXTRA_TEXT, inviteText.getText().toString());
             sendIntent.setType("text/plain");
             if (sendIntent.resolveActivity(getPackageManager()) != null) {
-                startActivity(Intent.createChooser(sendIntent, getString(R.string.InviteActivity_invite_to_signal)));
+                startActivity(Intent.createChooser(sendIntent, getString(R.string.hint_invite_to_muzima)));
             } else {
-                Toast.makeText(InviteActivity.this, R.string.InviteActivity_no_app_to_share_to, Toast.LENGTH_LONG).show();
+                Toast.makeText(InviteActivity.this, R.string.hint_no_app_to_share_to, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -167,7 +167,7 @@ public class InviteActivity extends PassphraseRequiredActionBarActivity implemen
         @Override
         public void onClick(View v) {
             new AlertDialog.Builder(InviteActivity.this)
-                    .setTitle(getResources().getQuantityString(R.plurals.InviteActivity_send_sms_invites,
+                    .setTitle(getResources().getQuantityString(R.plurals.plurals_send_sms_invites,
                             contactsFragment.getSelectedContacts().size(),
                             contactsFragment.getSelectedContacts().size()))
                     .setMessage(inviteText.getText().toString())
@@ -206,7 +206,7 @@ public class InviteActivity extends PassphraseRequiredActionBarActivity implemen
         private final String message;
 
         SendSmsInvitesAsyncTask(Context context, String message) {
-            super(context, R.string.InviteActivity_sending, R.string.InviteActivity_sending);
+            super(context, R.string.general_sending, R.string.general_sending);
             this.message = message;
         }
 
@@ -244,7 +244,7 @@ public class InviteActivity extends PassphraseRequiredActionBarActivity implemen
                 @Override
                 public void onFailure(ExecutionException e) {}
             });
-            Toast.makeText(context, R.string.InviteActivity_invitations_sent, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, R.string.hint_invitations_sent, Toast.LENGTH_LONG).show();
         }
     }
 }

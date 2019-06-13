@@ -127,8 +127,8 @@ public class ApplicationMigrationService extends Service
 
         builder.setSmallIcon(R.drawable.ic_launcher_logo_light);
         builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_logo_light));
-        builder.setContentTitle(getString(R.string.ApplicationMigrationService_importing_text_messages));
-        builder.setContentText(getString(R.string.ApplicationMigrationService_import_in_progress));
+        builder.setContentTitle(getString(R.string.general_importing_text_messages));
+        builder.setContentText(getString(R.string.general_import_in_progress));
         builder.setOngoing(true);
         builder.setProgress(100, 0, false);
         builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, ConversationListActivity.class), 0));
@@ -182,8 +182,8 @@ public class ApplicationMigrationService extends Service
         public void onReceive(Context context, Intent intent) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.OTHER);
             builder.setSmallIcon(R.drawable.ic_launcher_logo_light);
-            builder.setContentTitle(context.getString(R.string.ApplicationMigrationService_import_complete));
-            builder.setContentText(context.getString(R.string.ApplicationMigrationService_system_database_import_is_complete));
+            builder.setContentTitle(context.getString(R.string.general_import_complete));
+            builder.setContentText(context.getString(R.string.general_system_database_import_is_complete));
             builder.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, ConversationListActivity.class), 0));
             builder.setWhen(System.currentTimeMillis());
             builder.setDefaults(Notification.DEFAULT_VIBRATE);

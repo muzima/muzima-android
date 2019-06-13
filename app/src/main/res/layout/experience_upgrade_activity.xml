@@ -14,7 +14,7 @@
     <Button android:id="@+id/continue_button"
         android:layout_width="140sp"
         android:layout_height="wrap_content"
-        android:text="@string/experience_upgrade_activity__continue"
+        android:text="@string/general_continue"
         android:visibility="invisible"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
@@ -27,7 +27,7 @@
         android:layout_margin="25dp"
         android:src="@drawable/ic_arrow_forward_white_24dp"
         android:focusable="true"
-        android:contentDescription="@string/conversation_list_fragment__fab_content_description"
+        android:contentDescription="@string/general_new_conversation"
         fab:fab_shadow="false"
         fab:fab_colorNormal="#33000000"
         fab:fab_colorPressed="#66000000"

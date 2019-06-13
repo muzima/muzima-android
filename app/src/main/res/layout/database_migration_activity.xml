@@ -23,7 +23,7 @@
             <TextView style="@style/Registration.Description"
                 android:layout_width="fill_parent"
                 android:layout_marginBottom="16dip"
-                android:text="@string/database_migration_activity__would_you_like_to_import_your_existing_text_messages"/>
+                android:text="@string/hint_would_you_like_to_import_your_existing_text_messages"/>
 
             <ImageView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                 android:layout_width="fill_parent"
                 android:layout_marginBottom="16dip"
                 android:layout_marginTop="16dip"
-                android:text="@string/database_migration_activity__the_default_system_database_will_not_be_modified"/>
+                android:text="@string/hint_default_system_database_will_not_be_modified"/>
 
             <LinearLayout android:orientation="horizontal"
                 android:gravity="center"
@@ -79,7 +79,7 @@
                 android:layout_width="fill_parent"
                 android:layout_marginTop="34dip"
                 android:layout_marginBottom="16dip"
-                android:text="@string/database_migration_activity__this_could_take_a_moment_please_be_patient"/>
+                android:text="@string/hint_could_take_a_moment_please_be_patient"/>
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="@string/database_migration_activity__importing"
+                    android:text="@string/general_importing"
                     android:textAllCaps="true"
                     android:textSize="12.0sp"
                     android:textStyle="normal" />

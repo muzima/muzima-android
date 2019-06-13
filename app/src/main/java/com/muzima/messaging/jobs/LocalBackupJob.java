@@ -62,7 +62,7 @@ public class LocalBackupJob extends ContextJob {
         }
 
         GenericForegroundService.startForegroundTask(context,
-                context.getString(R.string.LocalBackupJob_creating_backup),
+                context.getString(R.string.general_creating_backup),
                 NotificationChannels.BACKUPS,
                 R.drawable.ic_launcher_logo_light);
 

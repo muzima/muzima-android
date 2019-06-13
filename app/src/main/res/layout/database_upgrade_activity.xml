@@ -24,7 +24,7 @@
                 android:layout_marginBottom="16dip"
                 android:layout_marginTop="16dip"
                 android:gravity="center"
-                android:text="@string/database_upgrade_activity__updating_database"/>
+                android:text="@string/general_updating_database"/>
 
             <ProgressBar android:id="@+id/indeterminate_progress"
                 android:layout_width="wrap_content"

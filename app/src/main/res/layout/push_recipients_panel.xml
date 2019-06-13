@@ -12,7 +12,7 @@
             android:capitalize="sentences"
             android:autoText="true"
             android:singleLine="true"
-            android:hint="@string/recipients_panel__to"
+            android:hint="@string/hint_enter_name_number"
             android:paddingRight="45dip"
             style="?conversation_editor_text_color"
             android:layout_width="fill_parent"/>

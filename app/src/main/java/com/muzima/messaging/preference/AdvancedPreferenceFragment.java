@@ -55,7 +55,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((ApplicationPreferencesActivity) getActivity()).getSupportActionBar().setTitle(R.string.preferences__advanced);
+        ((ApplicationPreferencesActivity) getActivity()).getSupportActionBar().setTitle(R.string.general_advanced);
 
         initializePushMessagingToggle();
     }
@@ -78,7 +78,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
             preference.setSummary(TextSecurePreferences.getLocalNumber(getActivity()));
         } else {
             preference.setChecked(false);
-            preference.setSummary(R.string.preferences__free_private_messages_and_calls);
+            preference.setSummary(R.string.general_free_private_messages_and_calls);
         }
 
         preference.setOnPreferenceChangeListener(new PushMessagingClickListener());
@@ -96,7 +96,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
 
             if (contactUri != null) {
                 String contactName = ContactAccessor.getInstance().getNameFromContact(getActivity(), contactUri);
-                preference.setSummary(String.format(getString(R.string.ApplicationPreferencesActivity_currently_s),
+                preference.setSummary(String.format(getString(R.string.general_currently_s),
                         contactName));
             }
 
@@ -146,7 +146,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
             private final CheckBoxPreference checkBoxPreference;
 
             public DisablePushMessagesTask(final CheckBoxPreference checkBoxPreference) {
-                super(getActivity(), R.string.ApplicationPreferencesActivity_unregistering, R.string.ApplicationPreferencesActivity_unregistering_from_signal_messages_and_calls);
+                super(getActivity(), R.string.general_unregistering, R.string.general_unregistering_from_muzima_messages_and_calls);
                 this.checkBoxPreference = checkBoxPreference;
             }
 
@@ -156,7 +156,7 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
                 switch (result) {
                     case NETWORK_ERROR:
                         Toast.makeText(getActivity(),
-                                R.string.ApplicationPreferencesActivity_error_connecting_to_server,
+                                R.string.error_connecting_to_server,
                                 Toast.LENGTH_LONG).show();
                         break;
                     case SUCCESS:
@@ -195,8 +195,8 @@ public class AdvancedPreferenceFragment extends CorrectedPreferenceFragment {
             if (((CheckBoxPreference) preference).isChecked()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setIconAttribute(R.attr.dialog_info_icon);
-                builder.setTitle(R.string.ApplicationPreferencesActivity_disable_signal_messages_and_calls);
-                builder.setMessage(R.string.ApplicationPreferencesActivity_disable_signal_messages_and_calls_by_unregistering);
+                builder.setTitle(R.string.prompt_disable_muzima_messages_and_calls);
+                builder.setMessage(R.string.prompt_disable_muzima_messages_and_calls_by_unregistering);
                 builder.setNegativeButton(android.R.string.cancel, null);
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override

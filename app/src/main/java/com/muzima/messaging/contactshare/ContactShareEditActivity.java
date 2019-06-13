@@ -97,7 +97,7 @@ public class ContactShareEditActivity extends PassphraseRequiredActionBarActivit
         }
 
         if (event == Event.BAD_CONTACT) {
-            Toast.makeText(this, R.string.ContactShareEditActivity_invalid_contact, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.warning_invalid_contact, Toast.LENGTH_SHORT).show();
             finish();
         }
     }

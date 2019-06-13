@@ -95,7 +95,7 @@ public class WebRtcCallScreen extends FrameLayout implements RecipientModifiedLi
 
     @SuppressLint("RestrictedApi")
     public void setIncomingCall(SignalRecipient personInfo) {
-        setCard(personInfo, getContext().getString(R.string.CallScreen_Incoming_call));
+        setCard(personInfo, getContext().getString(R.string.general_incoming_call));
         endCallButton.setVisibility(View.INVISIBLE);
         incomingCallButton.setVisibility(View.VISIBLE);
         incomingCallButton.startRingingAnimation();
@@ -104,8 +104,8 @@ public class WebRtcCallScreen extends FrameLayout implements RecipientModifiedLi
     @SuppressLint("RestrictedApi")
     public void setUntrustedIdentity(SignalRecipient personInfo, IdentityKey untrustedIdentity) {
         String          name            = recipient.toShortString();
-        String          introduction    = String.format(getContext().getString(R.string.WebRtcCallScreen_new_safety_numbers), name, name);
-        SpannableString spannableString = new SpannableString(introduction + " " + getContext().getString(R.string.WebRtcCallScreen_you_may_wish_to_verify_this_contact));
+        String          introduction    = String.format(getContext().getString(R.string.general_new_safety_numbers), name, name);
+        SpannableString spannableString = new SpannableString(introduction + " " + getContext().getString(R.string.general_verify_this_contact));
 
         spannableString.setSpan(new VerifySpan(getContext(), personInfo.getAddress(), untrustedIdentity),
                 introduction.length()+1, spannableString.length(),
@@ -115,7 +115,7 @@ public class WebRtcCallScreen extends FrameLayout implements RecipientModifiedLi
 
         incomingCallButton.stopRingingAnimation();
         incomingCallButton.setVisibility(View.GONE);
-        this.status.setText(R.string.WebRtcCallScreen_new_safety_number_title);
+        this.status.setText(R.string.title_new_safety_number);
         this.untrustedIdentityContainer.setVisibility(View.VISIBLE);
         this.untrustedIdentityExplanation.setText(spannableString);
         this.untrustedIdentityExplanation.setMovementMethod(LinkMovementMethod.getInstance());

@@ -26,7 +26,7 @@
                 android:layout_height="70dp"
                 position="bottom_right"
                 android:layout_marginRight="10dp"
-                android:contentDescription="@string/GroupCreateActivity_avatar_content_description" />
+                android:contentDescription="@string/hint_group_avatar" />
 
             <com.muzima.messaging.customcomponents.emoji.EmojiEditText
                 android:id="@+id/group_name"
@@ -37,7 +37,7 @@
                 android:lines="1"
                 android:maxLength="255"
                 android:inputType="textAutoCorrect"
-                android:hint="@string/GroupCreateActivity_group_name_hint" />
+                android:hint="@string/hint_group_name" />
         </LinearLayout>
 
         <LinearLayout android:id="@+id/creating_group_layout"
@@ -84,7 +84,7 @@
                 android:textColor="#ffeeeeee"
                 android:fontFamily="sans-serif-light"
                 android:textSize="16sp"
-                android:text="@string/GroupCreateActivity_contacts_dont_support_push" />
+                android:text="@string/hint_contacts_dont_support_push" />
 
         </RelativeLayout>
     </RelativeLayout>

@@ -213,7 +213,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="40dp"
-        android:contentDescription="@string/WebRtcCallScreen_end_call"
+        android:contentDescription="@string/hint_end_call"
         android:focusable="true"
         android:src="@drawable/ic_call_end_white_48dp"
         android:visibility="visible"

@@ -709,12 +709,12 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     private void handleUnblock() {
-        int titleRes = R.string.ConversationActivity_unblock_this_contact_question;
-        int bodyRes = R.string.ConversationActivity_you_will_once_again_be_able_to_receive_messages_and_calls_from_this_contact;
+        int titleRes = R.string.title_unblock_this_contact;
+        int bodyRes = R.string.hint_you_will_once_again_be_able_to_receive_messages_and_calls_from_this_contact;
 
         if (recipient.isGroupRecipient()) {
-            titleRes = R.string.ConversationActivity_unblock_this_group_question;
-            bodyRes = R.string.ConversationActivity_unblock_this_group_description;
+            titleRes = R.string.title_unblock_this_group;
+            bodyRes = R.string.hint_unblock_this_group;
         }
 
         //noinspection CodeBlock2Expr
@@ -758,9 +758,9 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
             boolean a = SecureRandom.getInstance("SHA1PRNG").nextBoolean();
             if (a)
-                inviteText = getString(R.string.ConversationActivity_lets_switch_to_muzima, "https://play.google.com/store/apps/details?id=com.muzima");
+                inviteText = getString(R.string.hint_lets_switch_to_muzima, "https://play.google.com/store/apps/details?id=com.muzima");
             else
-                inviteText = getString(R.string.ConversationActivity_lets_use_this_to_chat, "https://play.google.com/store/apps/details?id=com.muzima");
+                inviteText = getString(R.string.hint_lets_use_this_to_chat, "https://play.google.com/store/apps/details?id=com.muzima");
 
             if (isDefaultSms) {
                 composeText.appendInvite(inviteText);
@@ -778,11 +778,11 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
     private void handleResetSecureSession() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.ConversationActivity_reset_secure_session_question);
+        builder.setTitle(R.string.prompt_reset_secure_session);
         builder.setIconAttribute(R.attr.dialog_alert_icon);
         builder.setCancelable(true);
-        builder.setMessage(R.string.ConversationActivity_this_may_help_if_youre_having_encryption_problems);
-        builder.setPositiveButton(R.string.ConversationActivity_reset, (dialog, which) -> {
+        builder.setMessage(R.string.hint_this_may_help_if_youre_having_encryption_problems);
+        builder.setPositiveButton(R.string.general_reset, (dialog, which) -> {
             if (isSingleConversation()) {
                 final Context context = getApplicationContext();
 
@@ -814,16 +814,16 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
     private void handleLeavePushGroup() {
         if (getRecipient() == null) {
-            Toast.makeText(this, getString(R.string.ConversationActivity_invalid_recipient),
+            Toast.makeText(this, getString(R.string.warning_invalid_recipient),
                     Toast.LENGTH_LONG).show();
             return;
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.ConversationActivity_leave_group));
+        builder.setTitle(getString(R.string.title_leave_group));
         builder.setIconAttribute(R.attr.dialog_info_icon);
         builder.setCancelable(true);
-        builder.setMessage(getString(R.string.ConversationActivity_are_you_sure_you_want_to_leave_this_group));
+        builder.setMessage(getString(R.string.hint_are_you_sure_you_want_to_leave_this_group));
         builder.setPositiveButton(R.string.general_yes, (dialog, which) -> {
             SignalRecipient groupRecipient = getRecipient();
             long threadId = DatabaseFactory.getThreadDatabase(this).getThreadIdFor(groupRecipient);
@@ -839,7 +839,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
                 initializeEnabledCheck();
             } else {
-                Toast.makeText(this, R.string.ConversationActivity_error_leaving_group, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.error_leaving_group, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -898,8 +898,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
             } catch (ActivityNotFoundException anfe) {
                 Log.w(TAG, anfe);
                 Dialogs.showAlertDialog(this,
-                        getString(R.string.ConversationActivity_calls_not_supported),
-                        getString(R.string.ConversationActivity_this_device_does_not_appear_to_support_dial_actions));
+                        getString(R.string.warning_calls_not_supported),
+                        getString(R.string.hint_device_does_not_appear_to_support_dial_actions));
             }
         }
     }
@@ -949,7 +949,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     private void handleManualMmsRequired() {
-        Toast.makeText(this, R.string.MmsDownloader_error_reading_mms_settings, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.error_reading_mms_settings, Toast.LENGTH_LONG).show();
 
         Bundle extras = getIntent().getExtras();
         Intent intent = new Intent(this, PromptMmsActivity.class);
