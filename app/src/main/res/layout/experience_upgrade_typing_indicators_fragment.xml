@@ -21,7 +21,7 @@
             android:gravity="center_horizontal"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="@string/ExperienceUpgradeActivity_introducing_typing_indicators"
+            android:text="@string/hint_introducing_typing_indicators"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white"
             android:textIsSelectable="false"
@@ -65,7 +65,7 @@
             android:gravity="center_horizontal"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="@string/ExperienceUpgradeActivity_now_you_can_optionally_see_and_share_when_messages_are_being_typed"
+            android:text="@string/hint_you_can_optionally_see_and_share_when_messages_are_being_typed"
             android:textColor="@color/core_white"
             android:textIsSelectable="false"
             android:textSize="@dimen/onboarding_subtitle_size" />
@@ -78,7 +78,7 @@
             android:gravity="center_horizontal"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="@string/ExperienceUpgradeActivity_would_you_like_to_enable_them_now"
+            android:text="@string/hint_would_you_like_to_enable_them_now"
             android:textColor="@color/core_white"
             android:textIsSelectable="false"
             android:textSize="@dimen/onboarding_subtitle_size" />
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:text="@string/ExperienceUpgradeActivity_turn_on_typing_indicators"
+            android:text="@string/hint_turn_on_typing_indicators"
             android:textColor="@color/core_blue"
             app:backgroundTint="@color/core_white" />
 
@@ -98,7 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/ExperienceUpgradeActivity_no_thanks"
+            android:text="@string/general_no_thanks"
             android:textColor="@color/core_white"
             app:backgroundTint="@color/conversation_blue" />
 

@@ -38,7 +38,7 @@ public class MultipleRecipientNotificationBuilder extends AbstractNotificationBu
     }
 
     public void setMessageCount(int messageCount, int threadCount) {
-        setSubText(context.getString(R.string.MessageNotifier_d_new_messages_in_d_conversations,
+        setSubText(context.getString(R.string.hint_d_new_messages_in_d_conversations,
                 messageCount, threadCount));
         setContentInfo(String.valueOf(messageCount));
         setNumber(messageCount);
@@ -46,7 +46,7 @@ public class MultipleRecipientNotificationBuilder extends AbstractNotificationBu
 
     public void setMostRecentSender(SignalRecipient recipient) {
         if (privacy.isDisplayContact()) {
-            setContentText(context.getString(R.string.MessageNotifier_most_recent_from_s,
+            setContentText(context.getString(R.string.general_most_recent_from_s,
                     recipient.toShortString()));
         }
 
@@ -57,7 +57,7 @@ public class MultipleRecipientNotificationBuilder extends AbstractNotificationBu
 
     public void addActions(PendingIntent markAsReadIntent) {
         NotificationCompat.Action markAllAsReadAction = new NotificationCompat.Action(R.drawable.check,
-                context.getString(R.string.MessageNotifier_mark_all_as_read),
+                context.getString(R.string.general_mark_all_as_read),
                 markAsReadIntent);
         addAction(markAllAsReadAction);
         extend(new NotificationCompat.WearableExtender().addAction(markAllAsReadAction));

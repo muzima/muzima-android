@@ -11,8 +11,8 @@ import com.muzima.model.Reminder;
 public class UnauthorizedReminder extends Reminder {
 
     public UnauthorizedReminder(final Context context) {
-        super(context.getString(R.string.UnauthorizedReminder_device_no_longer_registered),
-                context.getString(R.string.UnauthorizedReminder_this_is_likely_because_you_registered_your_phone_number_with_Signal_on_a_different_device));
+        super(context.getString(R.string.warning_device_no_longer_registered),
+                context.getString(R.string.warning_number_may_have_been_registered_on_another_device));
 
         setOkListener(v -> {
             Intent intent = new Intent(context, RegistrationActivity.class);

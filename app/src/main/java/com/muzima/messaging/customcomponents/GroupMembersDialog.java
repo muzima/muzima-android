@@ -41,7 +41,7 @@ public class GroupMembersDialog extends AsyncTask<Void, Void, List<SignalRecipie
     public void onPostExecute(List<SignalRecipient> members) {
         GroupMembers groupMembers = new GroupMembers(members);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.ConversationActivity_group_members);
+        builder.setTitle(R.string.general_group_members);
         builder.setIconAttribute(R.attr.group_members_dialog_icon);
         builder.setCancelable(true);
         builder.setItems(groupMembers.getRecipientStrings(), new GroupMembersOnClickListener(context, groupMembers));
@@ -112,7 +112,7 @@ public class GroupMembersDialog extends AsyncTask<Void, Void, List<SignalRecipie
 
             for (SignalRecipient recipient : members) {
                 if (isLocalNumber(recipient)) {
-                    recipientStrings.add(context.getString(R.string.GroupMembersDialog_me));
+                    recipientStrings.add(context.getString(R.string.general_me));
                 } else {
                     String name = recipient.toShortString();
 

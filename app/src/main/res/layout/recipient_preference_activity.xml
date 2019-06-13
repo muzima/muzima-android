@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:text="@string/recipient_preference_activity__shared_media"
+                android:text="@string/hint_shared_media"
                 android:visibility="gone"
                 android:focusableInTouchMode="true"
                 style="?android:attr/preferenceCategoryStyle"

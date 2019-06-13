@@ -165,13 +165,13 @@ public class MessageDetailsActivity extends PassphraseRequiredActionBarActivity 
         if (messageRecord.isOutgoing() && messageRecord.isFailed()) {
             transportText = "-";
         } else if (messageRecord.isPending()) {
-            transportText = getString(R.string.ConversationFragment_pending);
+            transportText = getString(R.string.general_pending);
         } else if (messageRecord.isPush()) {
-            transportText = getString(R.string.ConversationFragment_push);
+            transportText = getString(R.string.general_push_data);
         } else if (messageRecord.isMms()) {
-            transportText = getString(R.string.ConversationFragment_mms);
+            transportText = getString(R.string.general_mms);
         } else {
-            transportText = getString(R.string.ConversationFragment_sms);
+            transportText = getString(R.string.general_sms);
         }
 
         transport.setText(transportText);
@@ -232,11 +232,11 @@ public class MessageDetailsActivity extends PassphraseRequiredActionBarActivity 
     private void updateRecipients(MessageRecord messageRecord, SignalRecipient recipient, List<RecipientDeliveryStatus> recipients) {
         final int toFromRes;
         if (messageRecord.isMms() && !messageRecord.isPush() && !messageRecord.isOutgoing()) {
-            toFromRes = R.string.message_details_header__with;
+            toFromRes = R.string.general_with;
         } else if (messageRecord.isOutgoing()) {
-            toFromRes = R.string.message_details_header__to;
+            toFromRes = R.string.general_to;
         } else {
-            toFromRes = R.string.message_details_header__from;
+            toFromRes = R.string.general_from;
         }
         toFrom.setText(toFromRes);
         conversationItem.bind(messageRecord, Optional.absent(), Optional.absent(), glideRequests, getResources().getConfiguration().locale, new HashSet<>(), recipient, false);

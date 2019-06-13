@@ -81,11 +81,11 @@ public class MessageRecipientListItem extends RelativeLayout
         if (keyMismatch != null) {
             conflictButton.setVisibility(View.VISIBLE);
 
-            errorText = getContext().getString(R.string.MessageDetailsRecipient_new_safety_number);
+            errorText = getContext().getString(R.string.title_new_safety_number);
             conflictButton.setOnClickListener(v -> new ConfirmIdentityDialog(getContext(), record, keyMismatch).show());
         } else if ((networkFailure != null && !record.isPending()) || (!isPushGroup && record.isFailed())) {
             conflictButton.setVisibility(View.GONE);
-            errorText = getContext().getString(R.string.MessageDetailsRecipient_failed_to_send);
+            errorText = getContext().getString(R.string.warning_failed_to_send);
         } else {
             if (record.isOutgoing()) {
                 if (member.getDeliveryStatus() == RecipientDeliveryStatus.Status.PENDING || member.getDeliveryStatus() == RecipientDeliveryStatus.Status.UNKNOWN) {

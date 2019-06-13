@@ -26,7 +26,7 @@
         android:id="@+id/muteButton"
         style="@style/WebRtcCallCompoundButton"
         android:background="@drawable/webrtc_mute_button"
-        android:contentDescription="@string/redphone_call_controls__mute"
+        android:contentDescription="@string/general_mute"
         android:layout_marginRight="15dp"
         tools:checked="false"
         />
@@ -40,7 +40,7 @@
     <com.muzima.messaging.components.AccessibleToggleButton
         android:id="@+id/camera_flip_button"
         style="@style/WebRtcCallCompoundButton"
-        android:contentDescription="@string/redphone_call_controls__flip_camera_rear"
+        android:contentDescription="@string/general_flip_camera_rear"
         android:background="@drawable/webrtc_camera_rear_button"
         android:visibility="gone"/>
 

@@ -57,7 +57,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_gravity="center"
                     style="@style/Button.Primary"
-                    android:text="@string/SharedContactDetailsActivity_add_to_contacts" />
+                    android:text="@string/general_add_to_contacts" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_gravity="center"
                         style="@style/Button.Borderless"
-                        android:text="@string/SharedContactDetailsActivity_invite_to_signal"
+                        android:text="@string/hint_invite_to_muzima"
                         android:visibility="gone"
                         tools:visibility="gone"/>
 
@@ -103,7 +103,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/SharedContactDetailsActivity_signal_message"
+                                android:text="@string/general_muzima_message"
                                 android:textColor="@color/primary_blue"/>
 
                         </LinearLayout>

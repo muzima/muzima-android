@@ -115,7 +115,7 @@ public class SearchFragment extends Fragment implements SearchListAdapter.EventL
                     noResultsView.setVisibility(View.GONE);
                 } else {
                     noResultsView.setVisibility(View.VISIBLE);
-                    noResultsView.setText(getString(R.string.SearchFragment_no_results, viewModel.getLastQuery()));
+                    noResultsView.setText(getString(R.string.hint_no_results, viewModel.getLastQuery()));
                 }
             } else {
                 noResultsView.setVisibility(View.VISIBLE);

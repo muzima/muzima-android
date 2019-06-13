@@ -46,8 +46,8 @@ public class SaveAttachmentTask extends ProgressDialogAsyncTask<SaveAttachmentTa
 
     public SaveAttachmentTask(Context context, int count) {
         super(context,
-                context.getResources().getQuantityString(R.plurals.ConversationFragment_saving_n_attachments, count, count),
-                context.getResources().getQuantityString(R.plurals.ConversationFragment_saving_n_attachments_to_sd_card, count, count));
+                context.getResources().getQuantityString(R.plurals.plurals_saving_attachments, count, count),
+                context.getResources().getQuantityString(R.plurals.plurals_saving_attachments_to, count, count));
         this.contextReference = new WeakReference<>(context);
         this.attachmentCount = count;
     }
@@ -186,17 +186,17 @@ public class SaveAttachmentTask extends ProgressDialogAsyncTask<SaveAttachmentTa
         switch (result.first()) {
             case FAILURE:
                 Toast.makeText(context,
-                        context.getResources().getQuantityText(R.plurals.ConversationFragment_error_while_saving_attachments_to_sd_card,
+                        context.getResources().getQuantityText(R.plurals.plurals_error_saving_attachment_to_storage,
                                 attachmentCount),
                         Toast.LENGTH_LONG).show();
                 break;
             case SUCCESS:
-                String message = !TextUtils.isEmpty(result.second()) ? context.getResources().getString(R.string.SaveAttachmentTask_saved_to, result.second())
-                        : context.getResources().getString(R.string.SaveAttachmentTask_saved);
+                String message = !TextUtils.isEmpty(result.second()) ? context.getResources().getString(R.string.general_saved_to, result.second())
+                        : context.getResources().getString(R.string.general_saved);
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show();
                 break;
             case WRITE_ACCESS_FAILURE:
-                Toast.makeText(context, R.string.ConversationFragment_unable_to_write_to_sd_card_exclamation,
+                Toast.makeText(context, R.string.warning_unable_to_write_to_external_storage,
                         Toast.LENGTH_LONG).show();
                 break;
         }
@@ -226,10 +226,10 @@ public class SaveAttachmentTask extends ProgressDialogAsyncTask<SaveAttachmentTa
 
     public static void showWarningDialog(Context context, DialogInterface.OnClickListener onAcceptListener, int count) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.ConversationFragment_save_to_sd_card);
+        builder.setTitle(R.string.general_save_to_storage);
         builder.setIconAttribute(R.attr.dialog_alert_icon);
         builder.setCancelable(true);
-        builder.setMessage(context.getResources().getQuantityString(R.plurals.ConversationFragment_saving_n_media_to_storage_warning,
+        builder.setMessage(context.getResources().getQuantityString(R.plurals.plurals_saving_to_storage,
                 count, count));
         builder.setPositiveButton(R.string.general_yes, onAcceptListener);
         builder.setNegativeButton(R.string.general_no, null);

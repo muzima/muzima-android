@@ -229,14 +229,14 @@ public class ConversationListFragment extends Fragment
         int snackBarTitleId;
 
         if (archive)
-            snackBarTitleId = R.plurals.ConversationListFragment_moved_conversations_to_inbox;
-        else snackBarTitleId = R.plurals.ConversationListFragment_conversations_archived;
+            snackBarTitleId = R.plurals.plurals_moved_conversations_to_inbox;
+        else snackBarTitleId = R.plurals.plurals_conversations_archived;
 
         int count = selectedConversations.size();
         String snackBarTitle = getResources().getQuantityString(snackBarTitleId, count, count);
 
         new SnackbarAsyncTask<Void>(getView(), snackBarTitle,
-                getString(R.string.ConversationListFragment_undo),
+                getString(R.string.general_undo),
                 getResources().getColor(R.color.amber_500),
                 Snackbar.LENGTH_LONG, true) {
 
@@ -277,13 +277,13 @@ public class ConversationListFragment extends Fragment
         int conversationsCount = getListAdapter().getBatchSelections().size();
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setIconAttribute(R.attr.dialog_alert_icon);
-        alert.setTitle(getActivity().getResources().getQuantityString(R.plurals.ConversationListFragment_delete_selected_conversations,
+        alert.setTitle(getActivity().getResources().getQuantityString(R.plurals.plurals_delete_selected_conversations,
                 conversationsCount, conversationsCount));
-        alert.setMessage(getActivity().getResources().getQuantityString(R.plurals.ConversationListFragment_this_will_permanently_delete_all_n_selected_conversations,
+        alert.setMessage(getActivity().getResources().getQuantityString(R.plurals.plurals_this_will_permanently_delete_all_n_selected_conversations,
                 conversationsCount, conversationsCount));
         alert.setCancelable(true);
 
-        alert.setPositiveButton(R.string.delete, (dialog, which) -> {
+        alert.setPositiveButton(R.string.general_delete, (dialog, which) -> {
             final Set<Long> selectedConversations = (getListAdapter())
                     .getBatchSelections();
 
@@ -295,7 +295,7 @@ public class ConversationListFragment extends Fragment
                     protected void onPreExecute() {
                         dialog = ProgressDialog.show(getActivity(),
                                 getActivity().getString(R.string.general_deleting),
-                                getActivity().getString(R.string.ConversationListFragment_deleting_selected_conversations),
+                                getActivity().getString(R.string.hint_deleting_selected_conversations),
                                 true, false);
                     }
 
@@ -349,7 +349,7 @@ public class ConversationListFragment extends Fragment
             list.setVisibility(View.INVISIBLE);
             emptyState.setVisibility(View.GONE);
             emptySearch.setVisibility(View.VISIBLE);
-            emptySearch.setText(getString(R.string.ConversationListFragment_no_results_found_for_s_, queryFilter));
+            emptySearch.setText(getString(R.string.hint_no_results, queryFilter));
         } else {
             list.setVisibility(View.VISIBLE);
             emptyState.setVisibility(View.GONE);
@@ -498,8 +498,8 @@ public class ConversationListFragment extends Fragment
 
             if (archive) {
                 new SnackbarAsyncTask<Long>(getView(),
-                        getResources().getQuantityString(R.plurals.ConversationListFragment_moved_conversations_to_inbox, 1, 1),
-                        getString(R.string.ConversationListFragment_undo),
+                        getResources().getQuantityString(R.plurals.plurals_moved_conversations_to_inbox, 1, 1),
+                        getString(R.string.general_undo),
                         getResources().getColor(R.color.amber_500),
                         Snackbar.LENGTH_LONG, false) {
                     @Override
@@ -514,8 +514,8 @@ public class ConversationListFragment extends Fragment
                 }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, threadId);
             } else {
                 new SnackbarAsyncTask<Long>(getView(),
-                        getResources().getQuantityString(R.plurals.ConversationListFragment_conversations_archived, 1, 1),
-                        getString(R.string.ConversationListFragment_undo),
+                        getResources().getQuantityString(R.plurals.plurals_conversations_archived, 1, 1),
+                        getString(R.string.general_undo),
                         getResources().getColor(R.color.amber_500),
                         Snackbar.LENGTH_LONG, false) {
                     @Override

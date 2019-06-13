@@ -11,8 +11,8 @@ import com.muzima.model.Reminder;
 public class PushRegistrationReminder extends Reminder {
 
     public PushRegistrationReminder(final Context context) {
-        super(context.getString(R.string.reminder_header_push_title),
-                context.getString(R.string.reminder_header_push_text));
+        super(context.getString(R.string.title_push),
+                context.getString(R.string.hint_push));
 
         final View.OnClickListener okListener = v -> {
             Intent intent = new Intent(context, RegistrationActivity.class);

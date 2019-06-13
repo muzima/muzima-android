@@ -13,8 +13,8 @@ import com.muzima.model.Reminder;
 public class ShareReminder extends Reminder {
 
     public ShareReminder(final @NonNull Context context) {
-        super(context.getString(R.string.reminder_header_share_title),
-                context.getString(R.string.reminder_header_share_text));
+        super(context.getString(R.string.title_invite_friends),
+                context.getString(R.string.hint_share_text));
 
         setDismissListener(new View.OnClickListener() {
             @Override public void onClick(View v) {

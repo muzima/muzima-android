@@ -155,11 +155,11 @@ public class WebRtcCallActivity extends AppCompatActivity {
             Permissions.with(this)
                     .request(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
                     .ifNecessary()
-                    .withRationaleDialog(getString(R.string.WebRtcCallActivity_to_answer_the_call_from_s_give_signal_access_to_your_microphone, event.getRecipient().toShortString()),
+                    .withRationaleDialog(getString(R.string.hint_grant_muzima_access_to_your_microphone, event.getRecipient().toShortString()),
                             R.drawable.ic_mic_white_48dp, R.drawable.ic_videocam_white_48dp)
-                    .withPermanentDenialDialog(getString(R.string.WebRtcCallActivity_signal_requires_microphone_and_camera_permissions_in_order_to_make_or_receive_calls))
+                    .withPermanentDenialDialog(getString(R.string.hint_grant_muzima_access_to_your_microphone_and_camera))
                     .onAllGranted(() -> {
-                        callScreen.setActiveCall(event.getRecipient(), getString(R.string.RedPhone_answering));
+                        callScreen.setActiveCall(event.getRecipient(), getString(R.string.general_answering));
 
                         Intent intent = new Intent(this, WebRtcCallService.class);
                         intent.setAction(WebRtcCallService.ACTION_ANSWER_CALL);
@@ -178,7 +178,7 @@ public class WebRtcCallActivity extends AppCompatActivity {
             intent.setAction(WebRtcCallService.ACTION_DENY_CALL);
             startService(intent);
 
-            callScreen.setActiveCall(event.getRecipient(), getString(R.string.RedPhone_ending_call));
+            callScreen.setActiveCall(event.getRecipient(), getString(R.string.general_ending_call));
             delayedFinish();
         }
     }
@@ -195,51 +195,51 @@ public class WebRtcCallActivity extends AppCompatActivity {
     }
 
     private void handleOutgoingCall(@NonNull WebRtcViewModel event) {
-        callScreen.setActiveCall(event.getRecipient(), getString(R.string.RedPhone_dialing));
+        callScreen.setActiveCall(event.getRecipient(), getString(R.string.general_dialing));
     }
 
     private void handleTerminate(@NonNull SignalRecipient recipient /*, int terminationType */) {
         Log.i(TAG, "handleTerminate called");
 
-        callScreen.setActiveCall(recipient, getString(R.string.RedPhone_ending_call));
+        callScreen.setActiveCall(recipient, getString(R.string.general_ending_call));
         EventBus.getDefault().removeStickyEvent(WebRtcViewModel.class);
 
         delayedFinish();
     }
 
     private void handleCallRinging(@NonNull WebRtcViewModel event) {
-        callScreen.setActiveCall(event.getRecipient(), getString(R.string.RedPhone_ringing));
+        callScreen.setActiveCall(event.getRecipient(), getString(R.string.general_ringing));
     }
 
     private void handleCallBusy(@NonNull WebRtcViewModel event) {
-        callScreen.setActiveCall(event.getRecipient(), getString(R.string.RedPhone_busy));
+        callScreen.setActiveCall(event.getRecipient(), getString(R.string.general_busy));
 
         delayedFinish(BUSY_SIGNAL_DELAY_FINISH);
     }
 
     private void handleCallConnected(@NonNull WebRtcViewModel event) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_IGNORE_CHEEK_PRESSES);
-        callScreen.setActiveCall(event.getRecipient(), getString(R.string.RedPhone_connected), "");
+        callScreen.setActiveCall(event.getRecipient(), getString(R.string.general_connected), "");
     }
 
     private void handleRecipientUnavailable(@NonNull WebRtcViewModel event) {
-        callScreen.setActiveCall(event.getRecipient(), getString(R.string.RedPhone_recipient_unavailable));
+        callScreen.setActiveCall(event.getRecipient(), getString(R.string.general_recipient_unavailable));
         delayedFinish();
     }
 
     private void handleServerFailure(@NonNull WebRtcViewModel event) {
-        callScreen.setActiveCall(event.getRecipient(), getString(R.string.RedPhone_network_failed));
+        callScreen.setActiveCall(event.getRecipient(), getString(R.string.general_network_failed));
         delayedFinish();
     }
 
     private void handleNoSuchUser(final @NonNull WebRtcViewModel event) {
         if (isFinishing()) return; // XXX Stuart added this check above, not sure why, so I'm repeating in ignorance. - moxie
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(R.string.RedPhone_number_not_registered);
+        dialog.setTitle(R.string.general_number_not_registered);
         dialog.setIconAttribute(R.attr.dialog_alert_icon);
-        dialog.setMessage(R.string.RedPhone_the_number_you_dialed_does_not_support_secure_voice);
+        dialog.setMessage(R.string.general_number_dialed_does_not_support_secure_voice);
         dialog.setCancelable(true);
-        dialog.setPositiveButton(R.string.RedPhone_got_it, new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton(R.string.general_got_it, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 WebRtcCallActivity.this.handleTerminate(event.getRecipient());

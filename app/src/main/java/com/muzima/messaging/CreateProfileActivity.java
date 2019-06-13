@@ -186,7 +186,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
                                         .circleCrop()
                                         .into(avatar);
                             } else {
-                                Toast.makeText(CreateProfileActivity.this, R.string.CreateProfileActivity_error_setting_profile_photo, Toast.LENGTH_LONG).show();
+                                Toast.makeText(CreateProfileActivity.this, R.string.error_setting_profile_photo, Toast.LENGTH_LONG).show();
                             }
                         }
                     }.execute();

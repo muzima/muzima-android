@@ -264,7 +264,7 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
     private void initializeMedia() {
         if (!isContentTypeSupported(initialMediaType)) {
             Log.w(TAG, "Unsupported media type sent to MediaPreviewActivity, finishing.");
-            Toast.makeText(getApplicationContext(), R.string.MediaPreviewActivity_unssuported_media_type, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.warning_unssuported_media_type, Toast.LENGTH_LONG).show();
             finish();
         }
 
@@ -319,8 +319,8 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
                 Permissions.with(this)
                         .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
                         .ifNecessary()
-                        .withPermanentDenialDialog(getString(R.string.MediaPreviewActivity_signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied))
-                        .onAnyDenied(() -> Toast.makeText(this, R.string.MediaPreviewActivity_unable_to_write_to_external_storage_without_permission, Toast.LENGTH_LONG).show())
+                        .withPermanentDenialDialog(getString(R.string.warning_permission_to_write_to_external_denied))
+                        .onAnyDenied(() -> Toast.makeText(this, R.string.warning_requires_permission_to_write_to_external_storage, Toast.LENGTH_LONG).show())
                         .onAllGranted(() -> {
                             SaveAttachmentTask saveTask = new SaveAttachmentTask(MediaPreviewActivity.this);
                             long saveDate = (mediaItem.date > 0) ? mediaItem.date : System.currentTimeMillis();
@@ -340,11 +340,11 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIconAttribute(R.attr.dialog_alert_icon);
-        builder.setTitle(R.string.MediaPreviewActivity_media_delete_confirmation_title);
-        builder.setMessage(R.string.MediaPreviewActivity_media_delete_confirmation_message);
+        builder.setTitle(R.string.prompt_delete_message);
+        builder.setMessage(R.string.prompt_confirm_media_deletion);
         builder.setCancelable(true);
 
-        builder.setPositiveButton(R.string.delete, (dialogInterface, which) -> {
+        builder.setPositiveButton(R.string.general_delete, (dialogInterface, which) -> {
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {

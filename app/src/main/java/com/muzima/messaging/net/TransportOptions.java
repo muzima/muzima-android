@@ -137,7 +137,7 @@ public class TransportOptions {
 
         results.add(new TransportOption(Type.TEXTSECURE, R.drawable.ic_send_push_white_24dp,
                 context.getResources().getColor(R.color.primary_blue),
-                context.getString(R.string.plurals_identity_others),
+                context.getString(R.string.app_name),
                 context.getString(R.string.general_muzima_message),
                 new PushCharacterCalculator()));
 

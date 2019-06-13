@@ -72,7 +72,7 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((ApplicationPreferencesActivity) getActivity()).getSupportActionBar().setTitle(R.string.preferences__chats);
+        ((ApplicationPreferencesActivity) getActivity()).getSupportActionBar().setTitle(R.string.preferences_chats);
         setMediaDownloadSummaries();
         setBackupSummary();
     }
@@ -94,7 +94,7 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
 
         if (event.getType() == FullBackupBase.BackupEvent.Type.PROGRESS) {
             preference.setEnabled(false);
-            preference.setSummary(getString(R.string.ChatsPreferenceFragment_in_progress));
+            preference.setSummary(getString(R.string.general_in_progress));
             preference.setProgress(event.getCount());
         } else if (event.getType() == BackupEvent.Type.FINISHED) {
             preference.setEnabled(true);
@@ -105,7 +105,7 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
 
     private void setBackupSummary() {
         findPreference(TextSecurePreferences.BACKUP_NOW)
-                .setSummary(String.format(getString(R.string.ChatsPreferenceFragment_last_backup_s), BackupUtil.getLastBackupTime(getContext(), Locale.US)));
+                .setSummary(String.format(getString(R.string.hint_last_backup_s), BackupUtil.getLastBackupTime(getContext(), Locale.US)));
     }
 
     private void setMediaDownloadSummaries() {
@@ -126,7 +126,7 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
             if (allowedNetworks.contains(keys[i])) outValues.add(values[i]);
         }
 
-        return outValues.isEmpty() ? getResources().getString(R.string.preferences__none)
+        return outValues.isEmpty() ? getResources().getString(R.string.general_none)
                 : TextUtils.join(", ", outValues);
     }
 
@@ -143,7 +143,7 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
                             // BackupDialog.showDisableBackupDialog(getActivity(), (SwitchPreferenceCompat)preference);
                         }
                     })
-                    .withPermanentDenialDialog(getString(R.string.ChatsPreferenceFragment_signal_requires_external_storage_permission_in_order_to_create_backups))
+                    .withPermanentDenialDialog(getString(R.string.warning_requires_external_storage_permission_in_order_to_create_backups))
                     .execute();
 
             return true;
@@ -163,7 +163,7 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
                                 .getJobManager()
                                 .add(new LocalBackupJob(getContext()));
                     })
-                    .withPermanentDenialDialog(getString(R.string.ChatsPreferenceFragment_signal_requires_external_storage_permission_in_order_to_create_backups))
+                    .withPermanentDenialDialog(getString(R.string.warning_requires_external_storage_permission_in_order_to_create_backups))
                     .execute();
 
             return true;
@@ -175,10 +175,10 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
         public boolean onPreferenceClick(Preference preference) {
             final int threadLengthLimit = TextSecurePreferences.getThreadTrimLength(getActivity());
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(R.string.ApplicationPreferencesActivity_delete_all_old_messages_now);
-            builder.setMessage(getResources().getQuantityString(R.plurals.ApplicationPreferencesActivity_this_will_immediately_trim_all_conversations_to_the_d_most_recent_messages,
+            builder.setTitle(R.string.prompt_delete_all_old_messages_now);
+            builder.setMessage(getResources().getQuantityString(R.plurals.plurals_this_will_immediately_trim_all_conversations_to_the_d_most_recent_messages,
                     threadLengthLimit, threadLengthLimit));
-            builder.setPositiveButton(R.string.ApplicationPreferencesActivity_delete,
+            builder.setPositiveButton(R.string.general_delete,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -228,7 +228,7 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
                 return false;
             }
 
-            preference.setSummary(getResources().getQuantityString(R.plurals.ApplicationPreferencesActivity_messages_per_conversation, value, value));
+            preference.setSummary(getResources().getQuantityString(R.plurals.plurals_messages_per_conversation, value, value));
             return true;
         }
     }

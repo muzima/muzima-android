@@ -58,7 +58,7 @@
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="4"
-        android:text="@string/webrtc_answer_decline_button__swipe_up_to_answer"/>
+        android:text="@string/general_swipe_up_to_answer"/>
 
     <ImageView android:id="@+id/answer"
         android:layout_width="56dp"
@@ -81,7 +81,7 @@
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="4"
-        android:text="@string/webrtc_answer_decline_button__swipe_down_to_reject"/>
+        android:text="@string/general_swipe_down_to_reject"/>
 
 
 </merge>

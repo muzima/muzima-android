@@ -50,7 +50,7 @@ public class ProgressPreference extends Preference {
 
     public void setProgress(int count) {
         container.setVisibility(View.VISIBLE);
-        progressText.setText(getContext().getString(R.string.ProgressPreference_d_messages_so_far, count));
+        progressText.setText(getContext().getString(R.string.general_d_messages_so_far, count));
     }
 
     public void setProgressVisible(boolean visible) {

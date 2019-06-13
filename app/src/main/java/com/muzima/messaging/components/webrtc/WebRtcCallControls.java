@@ -187,7 +187,7 @@ public class WebRtcCallControls extends LinearLayout {
             final ToolTipsManager toolTipsManager = new ToolTipsManager();
 
             ToolTip toolTip = new ToolTip.Builder(getContext(), videoMuteButton, viewGroup,
-                    getContext().getString(R.string.WebRtcCallControls_tap_to_enable_your_video),
+                    getContext().getString(R.string.general_tap_to_enable_your_video),
                     ToolTip.POSITION_BELOW).build();
             toolTipsManager.show(toolTip);
 

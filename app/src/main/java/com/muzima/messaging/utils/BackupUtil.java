@@ -26,7 +26,7 @@ public class BackupUtil {
         try {
             BackupInfo backup = getLatestBackup();
 
-            if (backup == null) return context.getString(R.string.BackupUtil_never);
+            if (backup == null) return context.getString(R.string.general_never);
             else                return DateUtils.getExtendedRelativeTimeSpanString(context, locale, backup.getTimestamp());
         } catch (NoExternalStorageException e) {
             Log.w(TAG, e);

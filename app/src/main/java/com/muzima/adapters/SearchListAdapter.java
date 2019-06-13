@@ -202,7 +202,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Se
         public void bind(int headerType) {
             switch (headerType) {
                 case TYPE_CONVERSATIONS:
-                    titleView.setText(R.string.SearchFragment_header_conversations);
+                    titleView.setText(R.string.title_conversations);
                     break;
                 case TYPE_CONTACTS:
                     titleView.setText(R.string.general_contacts);

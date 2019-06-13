@@ -13,8 +13,8 @@ import com.muzima.service.ApplicationMigrationService;
 public class SystemSmsImportReminder extends Reminder {
 
     public SystemSmsImportReminder(final Context context) {
-        super(context.getString(R.string.reminder_header_sms_import_title),
-                context.getString(R.string.reminder_header_sms_import_text));
+        super(context.getString(R.string.title_import_system_sms),
+                context.getString(R.string.hint_import_system_sms));
 
         final View.OnClickListener okListener = v -> {
             Intent intent = new Intent(context, ApplicationMigrationService.class);

@@ -430,15 +430,15 @@ public class MessageNotifier {
             }
 
             if (KeyCachingService.isLocked(context)) {
-                body = SpanUtil.italic(context.getString(R.string.MessageNotifier_locked_message));
+                body = SpanUtil.italic(context.getString(R.string.hint_locked_message));
             } else if (record.isMms() && !((MmsMessageRecord) record).getSharedContacts().isEmpty()) {
                 Contact contact = ((MmsMessageRecord) record).getSharedContacts().get(0);
                 body = ContactUtil.getStringSummary(context, contact);
             } else if (record.isMms() && TextUtils.isEmpty(body) && !((MmsMessageRecord) record).getSlideDeck().getSlides().isEmpty()) {
-                body = SpanUtil.italic(context.getString(R.string.MessageNotifier_media_message));
+                body = SpanUtil.italic(context.getString(R.string.general_media_message));
                 slideDeck = ((MediaMmsMessageRecord) record).getSlideDeck();
             } else if (record.isMms() && !record.isMmsNotification() && !((MmsMessageRecord) record).getSlideDeck().getSlides().isEmpty()) {
-                String message = context.getString(R.string.MessageNotifier_media_message_with_text, body);
+                String message = context.getString(R.string.hint_media_message_with, body);
                 int italicLength = message.length() - body.length();
                 body = SpanUtil.italic(message, italicLength);
                 slideDeck = ((MediaMmsMessageRecord) record).getSlideDeck();

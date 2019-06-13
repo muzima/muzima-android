@@ -96,7 +96,7 @@ public class VerifyIdentityActivity extends PassphraseRequiredActionBarActivity 
     @Override
     protected void onCreate(Bundle state, boolean ready) {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.AndroidManifest__verify_Addresssafety_number);
+        getSupportActionBar().setTitle(R.string.title_verify_address_safety_number);
 
         SignalRecipient recipient = SignalRecipient.from(this, (SignalAddress) getIntent().getParcelableExtra(ADDRESS_EXTRA), true);
         recipient.addListener(this);
@@ -148,7 +148,7 @@ public class VerifyIdentityActivity extends PassphraseRequiredActionBarActivity 
         Permissions.with(this)
                 .request(Manifest.permission.CAMERA)
                 .ifNecessary()
-                .withPermanentDenialDialog(getString(R.string.VerifyIdentityActivity_signal_needs_the_camera_permission_in_order_to_scan_a_qr_code_but_it_has_been_permanently_denied))
+                .withPermanentDenialDialog(getString(R.string.warning_needs_camera_permission_in_order_to_scan_a_qr_code))
                 .onAllGranted(() -> {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.setCustomAnimations(R.anim.slide_from_top, R.anim.slide_to_bottom,
@@ -158,7 +158,7 @@ public class VerifyIdentityActivity extends PassphraseRequiredActionBarActivity 
                             .addToBackStack(null)
                             .commitAllowingStateLoss();
                 })
-                .onAnyDenied(() -> Toast.makeText(this, R.string.VerifyIdentityActivity_unable_to_scan_qr_code_without_camera_permission, Toast.LENGTH_LONG).show())
+                .onAnyDenied(() -> Toast.makeText(this, R.string.warning_unable_to_scan_qr_code_without_camera_permission, Toast.LENGTH_LONG).show())
                 .execute();
     }
 
@@ -364,13 +364,13 @@ public class VerifyIdentityActivity extends PassphraseRequiredActionBarActivity 
             } catch (FingerprintVersionMismatchException e) {
                 Log.w(TAG, e);
                 if (e.getOurVersion() < e.getTheirVersion()) {
-                    Toast.makeText(getActivity(), R.string.VerifyIdentityActivity_your_contact_is_running_a_newer_version_of_Signal, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), R.string.hint_your_contact_is_running_a_newer_version_of_muzima, Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getActivity(), R.string.VerifyIdentityActivity_your_contact_is_running_an_old_version_of_signal, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), R.string.hint_your_contact_is_running_older_version_of_muzima, Toast.LENGTH_LONG).show();
                 }
             } catch (FingerprintParsingException e) {
                 Log.w(TAG, e);
-                Toast.makeText(getActivity(), R.string.VerifyIdentityActivity_the_scanned_qr_code_is_not_a_correctly_formatted_safety_number, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), R.string.warning_scanned_qr_code_is_not_a_correctly_formatted_safety_number, Toast.LENGTH_LONG).show();
             } catch (UnsupportedEncodingException e) {
                 throw new AssertionError(e);
             }
@@ -405,14 +405,14 @@ public class VerifyIdentityActivity extends PassphraseRequiredActionBarActivity 
             String clipboardData = Util.readTextFromClipboard(getActivity());
 
             if (clipboardData == null) {
-                Toast.makeText(getActivity(), R.string.VerifyIdentityActivity_no_safety_number_to_compare_was_found_in_the_clipboard, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), R.string.warning_no_safety_number_to_compare_was_found_in_the_clipboard, Toast.LENGTH_LONG).show();
                 return;
             }
 
             String numericClipboardData = clipboardData.replaceAll("\\D", "");
 
             if (TextUtils.isEmpty(numericClipboardData) || numericClipboardData.length() != 60) {
-                Toast.makeText(getActivity(), R.string.VerifyIdentityActivity_no_safety_number_to_compare_was_found_in_the_clipboard, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), R.string.warning_no_safety_number_to_compare_was_found_in_the_clipboard, Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -425,7 +425,7 @@ public class VerifyIdentityActivity extends PassphraseRequiredActionBarActivity 
 
         private void handleShare(@NonNull Fingerprint fingerprint, int segmentCount) {
             String shareString =
-                    getString(R.string.VerifyIdentityActivity_our_signal_safety_number) + "\n" +
+                    getString(R.string.hint_our_signal_safety_number) + "\n" +
                             getFormattedSafetyNumbers(fingerprint, segmentCount) + "\n";
 
             Intent intent = new Intent();
@@ -434,14 +434,14 @@ public class VerifyIdentityActivity extends PassphraseRequiredActionBarActivity 
             intent.setType("text/plain");
 
             try {
-                startActivity(Intent.createChooser(intent, getString(R.string.VerifyIdentityActivity_share_safety_number_via)));
+                startActivity(Intent.createChooser(intent, getString(R.string.hint_share_safety_number_via)));
             } catch (ActivityNotFoundException e) {
-                Toast.makeText(getActivity(), R.string.VerifyIdentityActivity_no_app_to_share_to, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), R.string.warning_no_app_to_share_to, Toast.LENGTH_LONG).show();
             }
         }
 
         private void setRecipientText(SignalRecipient recipient) {
-            description.setText(Html.fromHtml(String.format(getActivity().getString(R.string.verify_display_fragment__if_you_wish_to_verify_the_security_of_your_end_to_end_encryption_with_s), recipient.toShortString())));
+            description.setText(Html.fromHtml(String.format(getActivity().getString(R.string.hint_verify_the_security_of_your_end_to_end_encryption_with_s), recipient.toShortString())));
             description.setMovementMethod(LinkMovementMethod.getInstance());
         }
 

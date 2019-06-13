@@ -11,7 +11,7 @@ public class ServiceOutageReminder extends Reminder {
 
     public ServiceOutageReminder(@NonNull Context context) {
         super(null,
-                context.getString(R.string.reminder_header_service_outage_text));
+                context.getString(R.string.warning_service_outage));
     }
 
     public static boolean isEligible(@NonNull Context context) {

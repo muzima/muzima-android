@@ -176,8 +176,8 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if      (position == 0) return getString(R.string.MediaOverviewActivity_Media);
-            else if (position == 1) return getString(R.string.MediaOverviewActivity_Documents);
+            if      (position == 0) return getString(R.string.general_media);
+            else if (position == 1) return getString(R.string.general_documents);
             else                    throw new AssertionError();
         }
     }
@@ -325,11 +325,11 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
                 Permissions.with(this)
                         .request(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
                         .ifNecessary()
-                        .withPermanentDenialDialog(getString(R.string.MediaPreviewActivity_signal_needs_the_storage_permission_in_order_to_write_to_external_storage_but_it_has_been_permanently_denied))
-                        .onAnyDenied(() -> Toast.makeText(getContext(), R.string.MediaPreviewActivity_unable_to_write_to_external_storage_without_permission, Toast.LENGTH_LONG).show())
+                        .withPermanentDenialDialog(getString(R.string.warning_permission_to_write_to_external_denied))
+                        .onAnyDenied(() -> Toast.makeText(getContext(), R.string.warning_requires_permission_to_write_to_external_storage, Toast.LENGTH_LONG).show())
                         .onAllGranted(() -> {
                             new ProgressDialogAsyncTask<Void, Void, List<SaveAttachmentTask.Attachment>>(context,
-                                    R.string.MediaOverviewActivity_collecting_attachments,
+                                    R.string.general_collecting_attachments,
                                     R.string.please_wait) {
                                 @Override
                                 protected List<SaveAttachmentTask.Attachment> doInBackground(Void... params) {
@@ -366,10 +366,10 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
         private void handleDeleteMedia(@NonNull Collection<MediaDatabase.MediaRecord> mediaRecords) {
             int recordCount       = mediaRecords.size();
             Resources res         = getContext().getResources();
-            String confirmTitle   = res.getQuantityString(R.plurals.MediaOverviewActivity_Media_delete_confirm_title,
+            String confirmTitle   = res.getQuantityString(R.plurals.plurals_media_deletion_title,
                     recordCount,
                     recordCount);
-            String confirmMessage = res.getQuantityString(R.plurals.MediaOverviewActivity_Media_delete_confirm_message,
+            String confirmMessage = res.getQuantityString(R.plurals.plurals_media_deletion_message,
                     recordCount,
                     recordCount);
 
@@ -379,10 +379,10 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
             builder.setMessage(confirmMessage);
             builder.setCancelable(true);
 
-            builder.setPositiveButton(R.string.delete, (dialogInterface, i) -> {
+            builder.setPositiveButton(R.string.general_delete, (dialogInterface, i) -> {
                 new ProgressDialogAsyncTask<MediaDatabase.MediaRecord, Void, Void>(getContext(),
                         R.string.general_deleting,
-                        R.string.MediaOverviewActivity_Media_delete_progress_message)
+                        R.string.general_deleting_messages)
                 {
                     @Override
                     protected Void doInBackground(MediaDatabase.MediaRecord... records) {

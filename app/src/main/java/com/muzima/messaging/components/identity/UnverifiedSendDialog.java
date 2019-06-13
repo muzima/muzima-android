@@ -28,7 +28,7 @@ public class UnverifiedSendDialog extends AlertDialog.Builder implements DialogI
         this.untrustedRecords = untrustedRecords;
         this.resendListener = resendListener;
 
-        setTitle(R.string.UnverifiedSendDialog_send_message);
+        setTitle(R.string.prompt_send_message);
         setIconAttribute(R.attr.dialog_alert_icon);
         setMessage(message);
         setPositiveButton(R.string.send_general_text, this);

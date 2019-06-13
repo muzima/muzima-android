@@ -56,10 +56,10 @@
 		<item>604800</item>
 	</integer-array>
 	<string-array name="pref_message_font_size_entries">
-		<item>@string/arrays__small</item>
-		<item>@string/arrays__normal</item>
-		<item>@string/arrays__large</item>
-		<item>@string/arrays__extra_large</item>
+		<item>@string/general_small</item>
+		<item>@string/general_normal</item>
+		<item>@string/general_large</item>
+		<item>@string/general_extra_large</item>
 	</string-array>
 
 	<string-array name="pref_message_font_size_values">
@@ -91,9 +91,9 @@
 		<item>custom</item>
 	</string-array>
 	<string-array name="recipient_vibrate_entries">
-		<item>@string/arrays__settings_default</item>
-		<item>@string/arrays__enabled</item>
-		<item>@string/arrays__disabled</item>
+		<item>@string/general_settings_default</item>
+		<item>@string/general_enabled</item>
+		<item>@string/general_disabled</item>
 	</string-array>
 	<string-array name="recipient_vibrate_values">
 		<item>0</item>
@@ -101,16 +101,16 @@
 		<item>2</item>
 	</string-array>
 	<string-array name="mute_durations">
-		<item>@string/arrays__mute_for_one_hour</item>
-		<item>@string/arrays__mute_for_two_hours</item>
-		<item>@string/arrays__mute_for_one_day</item>
-		<item>@string/arrays__mute_for_seven_days</item>
-		<item>@string/arrays__mute_for_one_year</item>
+		<item>@string/general_mute_for_one_hour</item>
+		<item>@string/general_mute_for_two_hours</item>
+		<item>@string/general_mute_for_one_day</item>
+		<item>@string/general_mute_for_seven_days</item>
+		<item>@string/general_mute_for_one_year</item>
 	</string-array>
 	<string-array name="pref_notification_priority_entries">
 		<item>@string/general_default</item>
-		<item>@string/arrays__high</item>
-		<item>@string/arrays__max</item>
+		<item>@string/general_high</item>
+		<item>@string/general_max</item>
 	</string-array>
 	<string-array name="pref_notification_priority_values">
 		<item>0</item>
@@ -118,9 +118,9 @@
 		<item>2</item>
 	</string-array>
 	<string-array name="pref_notification_privacy_entries">
-		<item>@string/arrays__name_and_message</item>
-		<item>@string/arrays__name_only</item>
-		<item>@string/arrays__no_name_or_message</item>
+		<item>@string/hint_name_and_message</item>
+		<item>@string/hint_name_only</item>
+		<item>@string/hint_no_name_or_message</item>
 	</string-array>
 	<string-array name="pref_notification_privacy_values">
 		<item>all</item>
@@ -128,12 +128,12 @@
 		<item>none</item>
 	</string-array>
 	<string-array name="pref_repeat_alerts_entries">
-		<item>@string/preferences__never</item>
-		<item>@string/preferences__one_time</item>
-		<item>@string/preferences__two_times</item>
-		<item>@string/preferences__three_times</item>
-		<item>@string/preferences__five_times</item>
-		<item>@string/preferences__ten_times</item>
+		<item>@string/general_never</item>
+		<item>@string/hint_one_time</item>
+		<item>@string/hint_two_times</item>
+		<item>@string/hint_three_times</item>
+		<item>@string/hint_five_times</item>
+		<item>@string/hint_ten_times</item>
 	</string-array>
 	<string-array name="pref_repeat_alerts_values" translatable="false">
 		<item>0</item>
@@ -144,9 +144,9 @@
 		<item>10</item>
 	</string-array>
 	<string-array name="pref_led_blink_pattern_entries">
-		<item>@string/preferences__fast</item>
-		<item>@string/preferences__normal</item>
-		<item>@string/preferences__slow</item>
+		<item>@string/general_fast</item>
+		<item>@string/general_normal</item>
+		<item>@string/general_slow</item>
 	</string-array>
 	<string-array name="pref_led_blink_pattern_values" translatable="false">
 		<item>300,300</item>
@@ -154,14 +154,14 @@
 		<item>3000,3000</item>
 	</string-array>
 	<string-array name="pref_led_color_entries">
-		<item>@string/preferences__green</item>
-		<item>@string/preferences__red</item>
-		<item>@string/preferences__blue</item>
-		<item>@string/preferences__orange</item>
-		<item>@string/preferences__cyan</item>
-		<item>@string/preferences__magenta</item>
-		<item>@string/preferences__white</item>
-		<item>@string/preferences__none</item>
+		<item>@string/general_green</item>
+		<item>@string/general_red</item>
+		<item>@string/general_blue</item>
+		<item>@string/general_orange</item>
+		<item>@string/general_cyan</item>
+		<item>@string/general_magenta</item>
+		<item>@string/general_white</item>
+		<item>@string/general_none</item>
 	</string-array>
 	<string-array name="pref_led_color_values" translatable="false">
 		<item>green</item>
