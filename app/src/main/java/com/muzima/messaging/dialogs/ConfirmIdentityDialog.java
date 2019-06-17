@@ -50,9 +50,9 @@ public class ConfirmIdentityDialog extends AlertDialog {
 
         SignalRecipient recipient = SignalRecipient.from(context, mismatch.getAddress(), false);
         String name = recipient.toShortString();
-        String introduction = String.format(context.getString(R.string.text_your_safety_number_with_s_has_changed), name, name);
+        String introduction = String.format(context.getString(R.string.general_unverified_dialog_one), name, name);
         SpannableString spannableString = new SpannableString(introduction + " " +
-                context.getString(R.string.text_verify_your_safety_number));
+                context.getString(R.string.general_verify_this_contact));
 
         spannableString.setSpan(new VerifySpan(context, mismatch),
                 introduction.length() + 1, spannableString.length(),
