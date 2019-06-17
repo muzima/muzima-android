@@ -7,7 +7,8 @@
   ~ with additional health care disclaimer.
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
---><resources>
+-->
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="SHR_card_text">Carta SHR</string>
     <string name="SHR_data_title_text">Dados SHR</string>
     <string name="SHR_extracted_data_text">Dados extraídos de SHR</string>
@@ -758,7 +759,7 @@
     <string name="title_verify">Verificar %s</string>
     <string name="preference_user_verified">mUzima preferência verificada pelo usuário</string>
     <string name="title_oh_no">Oh não!</string>
-    <string name="message_possibility_without_lock_pin">Registo deste número de telefone será possível sem PIN de bloqueio de registo 7 dias após o número estar ativo pela última vez no Signal. Tem %d restantes.</string>
+    <string name="message_possibility_without_lock_pin">Registo deste número de telefone será possível sem PIN de bloqueio de registo 7 dias após o número estar ativo pela última vez no mUzima. Tem %d restantes.</string>
     <string name="title_too_many_attempts">Demasiadas tentativas</string>
     <string name="message_too_many_attempts">Introduziu demasiadas vezes o PIN de bloqueio de registo incorretamente. Por favor tente novamente em um dia.</string>
     <string name="text_error_connecting_to_service">Erro a estabelecer ligação com o serviço</string>
@@ -777,4 +778,483 @@
     <string name="general_image">Imagem</string>
     <string name="general_audio">Áudio</string>
     <string name="general_video">Vídeo</string>
+    <string name="general_group_updated">Grupo atualizado</string>
+    <string name="general_left_the_group">Abandonou o grupo</string>
+    <string name="general_secure_session_reset">Sessão segura reiniciada.</string>
+    <string name="general_you_called">Você ligou</string>
+    <string name="general_called_you">Ligou-lhe</string>
+    <string name="general_missed_call">Chamada perdida</string>
+    <string name="general_media_message">Mensagem multimédia</string>
+    <string name="general_is_on_muzima">%s está no mUzima!</string>
+    <string name="general_disappearing_messages_disabled">Mensagens efémeras desactivadas</string>
+    <string name="general_disappearing_message_time_updated">Tempo das mensagens que desaparecem definido como %s</string>
+    <string name="general_safety_number_changed">Número de segurança alterado</string>
+    <string name="general_safety_number_with_s_has_changed">O seu número de segurança com %s mudou.</string>
+    <string name="general_marked_verified">Marcou como verificado</string>
+    <string name="general_marked_unverified">Marcou como não verificado</string>
+    <string name="general_key_exchange_message">Mensagem de intercâmbio de chaves</string>
+    <string name="warning_bad_encrypted_message">Mensagem encriptada corrompida</string>
+    <string name="warning_message_encrypted_for_non_existing_session">Mensagem encriptada para sessão inexistente</string>
+    <string name="general_off">Fora</string>
+    <plurals name="plurals_seconds">
+        <item quantity="one">%d segundo</item>
+        <item quantity="other">%d segundos</item>
+    </plurals>
+    <string name="general_seconds_abbreviated">%ds</string>
+    <plurals name="plurals_minutes">
+        <item quantity="one">%d minuto</item>
+        <item quantity="other">%d minutos</item>
+    </plurals>
+    <string name="general_minutes_abbreviated">%dm</string>
+    <plurals name="plurals_hours">
+        <item quantity="one">%d hora</item>
+        <item quantity="other">%d horas</item>
+    </plurals>
+    <string name="general_hours_abbreviated">%dh</string>
+    <plurals name="plurals_days">
+        <item quantity="one">%d dia</item>
+        <item quantity="other">%d dias</item>
+    </plurals>
+    <string name="general_days_abbreviated">%dd</string>
+    <plurals name="plurals_weeks">
+        <item quantity="one">%d semana</item>
+        <item quantity="other">%d semanas</item>
+    </plurals>
+    <string name="general_weeks_abbreviated">%dw</string>
+    <string name="emphasis_encrypted_with_a_legacy_protocol_version_that_is_no_longer_supported">Recebeu uma mensagem encriptada com uma versão anterior do mUzima, que já não é suportada. Por favor peça ao remetente para actualizar para a versão mais recente e reenviar a mensagem.</string>
+    <string name="general_left_group">Abandonou o grupo.</string>
+    <string name="general_updated_group">Tu atualizaste o grupo.</string>
+    <string name="general_s_updated_group">%s atualizou o grupo.</string>
+    <string name="general_s_called_you">%s ligou-lhe</string>
+    <string name="general_you_disabled_disappearing_messages">Desactivou as mensagens efémeras.</string>
+    <string name="general_s_disabled_disappearing_messages">%1$s desactivou mensagens efémeras.</string>
+    <string name="general_disappearing_message_time_set_to">Definiu o tempo de mensagens efémeras para %1$s.</string>
+    <string name="general_s_set_disappearing_message_time_to">%1$s definiu o tempo de mensagem efémeras para %2$s.</string>
+    <string name="general_your_safety_number_with_s_has_changed">O seu número de segurança com %s mudou.</string>
+    <string name="general_you_marked_your_safety_number_with_s_verified">Marcou como verificado o seu número de segurança com %s</string>
+    <string name="general_safety_number_with_s_verified_from_another_device">Marcou como verificado o seu número de segurança com %s a partir de outro dispositivo</string>
+    <string name="general_you_marked_your_safety_number_with_s_unverified">Marcou como não verificado o seu número de segurança com %s</string>
+    <string name="you_marked_your_safety_number_with_s_unverified_from_another_device">Marcou como não verificado o seu número de segurança com %s a partir de outro dispositivo</string>
+    <string name="general_group_action_left">%1$s deixou o grupo.</string>
+    <string name="warning_received_corrupted_key_exchange_message">A mensagem de intercâmbio de chaves que foi recebida está corrompida!</string>
+    <string name="warning_received_key_exchange_message_for_invalid_protocol_version">Mensagem de troca de chaves inválida para esta versão do protocolo.</string>
+    <string name="emphasis_received_message_with_new_safety_number_tap_to_process">Recibida mensagem com número de segurança novo. Pressione para processar e exibir.</string>
+    <string name="emphasis_secure_session_reset">Reiniciou a sessão segura.</string>
+    <string name="emphasis_secure_session_reset_by_s">%s reiniciou a sessão segura.</string>
+    <string name="emphasis_received_key_exchange_message_tap_to_process">Foi recebida uma mensagem para intercâmbio de chaves, toque para processar.</string>
+    <string name="warning_bad_encrypted_mms_message">Mensagem MMS encriptada corrompida</string>
+    <string name="warning_mms_message_encrypted_for_non_existing_session">MMS encriptada para sessão inexistente</string>
+    <string name="general_multimedia_message">Mensagem multimédia</string>
+    <string name="general_downloading_mms_message">A descarregar MMS</string>
+    <string name="error_downloading_mms_message">Erro a descarregar MMS, toque para repetir</string>
+    <string name="warning_duplicate_message">Mensagem duplicada.</string>
+    <plurals name="plurals_joined_the_group">
+        <item quantity="one">%1$s juntou-se ao grupo.</item>
+        <item quantity="other">%1$s juntaram-se ao grupo.</item>
+    </plurals>
+    <string name="general_group_name">O nome do grupo é agora \'%1$s\'.</string>
+    <string name="general_unnamed_group">Grupo sem nome</string>
+    <string name="general_contact_message">%1$s %2$s</string>
+    <string name="general_contact">Contacto</string>
+    <string name="general_default">Predefinição</string>
+    <string name="general_calls">Chamadas</string>
+    <string name="general_failures">Falhas</string>
+    <string name="general_backups">Cópias de segurança</string>
+    <string name="general_locked_status">Estado do bloqueio</string>
+    <string name="general_app_updates">Atualizações da app</string>
+    <string name="general_other">Outro</string>
+    <string name="general_messages">Mensagens</string>
+    <string name="general_unknown">Desconhecido</string>
+    <string name="general_image_snippet">(imagem)</string>
+    <string name="general_audio_snippet">(áudio)</string>
+    <string name="general_video_snippet">(vídeo)</string>
+    <string name="general_location_snippet">(localização)</string>
+    <string name="general_quote_snippet">(responder)</string>
+    <string name="general_message_s">Mensagem %s</string>
+    <string name="general_muzima_call_s">Chamada do mUzima %s</string>
+    <string name="general_new_message">Mensagem nova</string>
+    <string name="general_message_delivery_failed">A entrega de mensagem falhou.</string>
+    <string name="general_failed_to_deliver_message">Não foi possível entregar a mensagem.</string>
+    <string name="error_delivering_message">Erro ao entregar a mensagem.</string>
+    <string name="general_pending_messages">Mensagens do mUzima pendentes</string>
+    <string name="general_you_have_pending_messages">Tem mensagens do mUzima pendentes, toque para abrir e obter</string>
+    <string name="general_sending_a_message">A enviar uma mensagem...</string>
+    <string name="general_unverified_banner_one">O seu número de segurança com %s foi alterado e já não se encontra verificado</string>
+    <string name="general_unverified_banner_two">Os seus números de segurança com %1$s e %2$s ¨foram alterados e já não se encontram verificados</string>
+    <string name="general_unverified_banner_many">Os seus números de segurança com %1$s, %2$s e %3$s já não se encontram verificados</string>
+    <string name="general_unverified_dialog_one">O seu número de segurança com %1$s foi alterado. Isto pode significar que alguém está a tentar interceptar esta comunicação ou simplesmente que %1$s reinstalou o mUzima.</string>
+    <string name="general_unverified_dialog_two">Os seus números de segurança com %1$s e %2$s foram alterados. Isto pode significar que alguém está a tentar interceptar esta comunicação ou simplesmente que alguém reinstalou o mUzima.</string>
+    <string name="general_unverified_dialog_many">Os seus números de segurança com %1$s, %2$s e %3$s foram alterados. Isto pode significar que alguém está a tentar interceptar esta comunicação ou simplesmente que alguém reinstalou o mUzima.</string>
+    <string name="general_untrusted_dialog_one">O seu número de segurança com %s foi alterado</string>
+    <string name="general_untrusted_dialog_two">Os seus números de segurança com %1$s e %2$s foram alterados</string>
+    <string name="general_untrusted_dialog_many">Os seus números de segurança com %1$s, %2$s e %3$s foram alterados</string>
+    <plurals name="plurals_identity_others">
+        <item quantity="one">%d outro</item>
+        <item quantity="other">%d outros</item>
+    </plurals>
+    <string name="general_background_connection_enabled">Conexão em segundo-plano activada</string>
+    <string name="general_migrating_muzima_database">A migrar a base de dados mUzima</string>
+    <string name="general_from_sim_name">De %1$s</string>
+    <string name="general_insecure_sms">SMS não segura</string>
+    <string name="general_insecure_mms">MMS não segura</string>
+    <string name="general_muzima_message">Mensagem mUzima</string>
+    <string name="general_unsecure_sms">SMS não segura</string>
+    <string name="general_unsecure_mms">MMS não segura</string>
+    <string name="general_transport_icon">Icon de transporte</string>
+    <string name="general_add_attachment">Adicionar anexo</string>
+    <string name="general_toggle_camera">Comutar a câmara rápida da gaveta de anexos</string>
+    <string name="general_record_and_send_audio">Gravar e enviar anexo audio</string>
+    <string name="conversation_input_panel_slide_to_cancel">DESLIZE PARA CANCELAR</string>
+    <string name="general_photo">Foto</string>
+    <string name="general_you">Você</string>
+    <string name="general_retrieving_a_message">A obter uma mensagem...</string>
+    <string name="general_watermark_content">Ícone mUzima</string>
+    <string name="prompt_muzima_is_locked">O mUzima está bloqueado</string>
+    <string name="warning_invalid_passphrase">Palavra-chave inválida!</string>
+    <string name="text_enter_passphrase">Introduza palavra-chave</string>
+    <string name="general_unlock">Desbloquear</string>
+    <string name="hint_tap_to_unlock">TOQUE PARA DESBLOQUEAR</string>
+    <string name="btn_submit_passphrase">Enviar frase-chave</string>
+    <string name="date_utils_just_now">Agora</string>
+    <string name="date_utils_minutes_ago">%d min</string>
+    <plurals name="plurals_hours_ago">
+        <item quantity="one">%d hora</item>
+        <item quantity="other">%d horas</item>
+    </plurals>
+    <string name="general_conversation_list_empty">Dê à sua caixa de entrada also sobre o qual escrever. Comece por enviar uma mensagem para um amigo.</string>
+    <string name="general_send_failed">O envio falhou</string>
+    <string name="general_pending_approval">Aprovação Pendente</string>
+    <string name="general_conversations_contacts_and_messages">Procurar por conversas, contactos e mensagens</string>
+    <string name="text_contacts_permission">O mUzima requer permissão de acesso aos Contactos para pesquisar os seus contactos, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Contactos\".</string>
+    <string name="general_new_group">Grupo novo</string>
+    <string name="general_chat_settings">Definições da conversa</string>
+    <string name="general_app_settings">Configurações do aplicativo</string>
+    <string name="menu_clear_passphrase">Desbloquear</string>
+    <string name="general_mark_all_as_read">Marcar todas como lidas</string>
+    <string name="general_invite_friends">Convidar amigos</string>
+    <string name="general_delivered">Entregue</string>
+    <string name="general_message_read">Mensagem lida</string>
+    <string name="error_not_delivered">Envio falhado, pressione para mais detalhes</string>
+    <string name="text_received_key_exchange_message_tap_to_process">Foi recebida uma mensagem para intercâmbio de chaves, toque para processar.</string>
+    <string name="general_group_action_left_s">%1$s deixou o grupo.</string>
+    <string name="general_approve_unencrypted">Envio falhado, pressione para enviar no modo inseguro</string>
+    <string name="title_approve_unencrypted_sms">Recorrer a SMS não encriptado?</string>
+    <string name="title_approve_unencrypted_mms">Recorrer a MMS não encriptado?</string>
+    <string name="text_approve_unencrypted">Esta mensagem <b>não</b> será encriptada porque o destinatário já não é um utilizador do mUzima.\n\nEnviar mensagem de modo não seguro?</string>
+    <string name="warning_unable_to_open_media">Não foi possível encontrar uma aplicação capaz de abrir este ficheiro.</string>
+    <string name="hint_copied">Copiado %s</string>
+    <string name="hint_from_s">de %s</string>
+    <string name="hint_to_s">para %s</string>
+    <plurals name="plurals_items">
+        <item quantity="one">%d Item</item>
+        <item quantity="other">%d Unid</item>
+    </plurals>
+    <string name="error_playing_audio">Erro ao reproduzir áudio!</string>
+    <string name="general_today">Hoje</string>
+    <string name="general_yesterday">Ontem</string>
+    <plurals name="plurals_unread_messages">
+        <item quantity="one">%d mensagem não lida</item>
+        <item quantity="other">%d mensagens não lidas</item>
+    </plurals>
+    <string name="general_make_profile_visible">Quer tornar o seu nome e foto de perfil visíveis para todos os membros presentes e futuros deste grupo?</string>
+    <string name="general_make_visible">Tornar visível</string>
+    <string name="make_your_profile_name_and_photo_visible_to_this_group">Torne o seu nome e foto de perfil visíveis para este grupo?</string>
+    <string name="general_enable_muzima_messages">ACTIVAR MENSAGENS mUzima</string>
+    <string name="general_unblock">Desbloquear</string>
+    <string name="general_enable_muzima_for_sms">Ativar SMS via mUzima</string>
+    <string name="general_attachment_thumbnail">Imagette de pièces jointes</string>
+    <string name="general_contact_photo">Foto de Contacto</string>
+    <string name="title_block_someone">Bloquer %s?</string>
+    <string name="message_block_someone">Contactos bloqueados deixarão de poder enviar-lhe mensagens ou efectuar chamadas.</string>
+    <string name="general_block">Bloquer</string>
+    <string name="title_share_profile">Partilhar perfil com  %s?</string>
+    <string name="text_the_easiest_way_to_share_your_profile_information_is_to_add_the_sender_to_your_contacts">A maneira mais simples de partilhar o seu perfil é enviar os seus contactos para o remetente. Se não o desejar fazer, pode partilhar essa informação desta forma.</string>
+    <string name="general_share_profile">Partilhar perfil</string>
+    <string name="text_dont_add_but_make_my_profile_visible">NÃO ADICIONAR, MAS TORNAR O MEU PERFIL VISÍVEL</string>
+    <string name="text_sender_not_in_your_contact_list">O remetente não está na sua lista de contactos</string>
+    <string name="general_add_to_contacts">Adicionar aos contactos</string>
+    <string name="general_see_full_conversation">Ver conversa integral</string>
+    <string name="general_loading">A Carregar</string>
+    <string name="menu_message_details">Detalhes da mensagem</string>
+    <string name="menu_copy_text">Copiar texto</string>
+    <string name="menu_delete_message">Apagar mensagem</string>
+    <string name="menu_forward_message">Reencaminhar mensagem</string>
+    <string name="menu_resend_message">Reenviar mensagem</string>
+    <string name="menu_reply_to_message">Responder à mensagem</string>
+    <string name="general_save_attachment">Guardar anexo</string>
+    <plurals name="plurals_delete_selected_messages">
+        <item quantity="one">%d Apagar mensagem seleccionada?</item>
+        <item quantity="other">Apagar mensagens seleccionadas?</item>
+    </plurals>
+    <plurals name="plurals_this_will_permanently_delete_all_n_selected_messages">
+        <item quantity="one">%d Isto irá eliminar permanentemente a mensagem seleccionada.</item>
+        <item quantity="other">Isto irá eliminar permanentemente todas as %1$d mensagens seleccionadas.</item>
+    </plurals>
+    <string name="general_deleting">A apagar</string>
+    <string name="general_deleting_messages">A apagar mensagens...</string>
+    <string name="general_message_not_found">A mensagem original não foi encontrada</string>
+    <string name="general_message_no_longer_available">A mensagem original já não está disponível</string>
+    <string name="general_lets_switch_to_muzima">Vamos mudar para o mUzima: %1$s</string>
+    <string name="general_to_call_s_signal_needs_access_to_your_microphone_and_camera">Para ligar para %s, o mUzima precisa de acesso ao microfone e câmara.</string>
+    <string name="general_signal_needs_the_microphone_and_camera_permissions_in_order_to_call_s">O mUzima requer permissões de acesso ao Microfone e Câmara, para efectuar uma chamada para %s, mas estas foram negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Microfone\" e \"Câmara\".</string>
+    <string name="general_no_browser_found">Não foi encontrado nenhum navegador de Internet.</string>
+    <string name="general_there_is_no_app_available_to_handle_this_link_on_your_device">Não existe uma aplicação capaz de lidar com este tipo de ligação no seu dispositivo.</string>
+    <string name="general_quoted_contact_message">%1$s %2$s</string>
+    <string name="general_unknown_file">Ficheiro desconhecido</string>
+    <string name="general_invite_to_muzima">Convidar para o mUzima</string>
+    <string name="general_plus">\\+%d</string>
+    <string name="general_compose_message">Compor mensagem</string>
+    <string name="general_enter_name_or_number">Introduza nome ou número</string>
+    <string name="general_refresh">Recarregar</string>
+    <string name="general_contacts_permission">mUzima precisa de acesso aos contactos para os poder mostrar.</string>
+    <string name="general_show_contacts">Mostrar contactos</string>
+    <string name="general_finding_contacts" tools:ignore="ExtraTranslation">A carregar contactos</string>
+    <string name="general_recent_chats">Conversas recentes</string>
+    <string name="general_contacts">Contactos</string>
+    <string name="general_groups">Grupos</string>
+    <string name="general_unknown_contact">Nova mensagem para…</string>
+    <string name="general_muzima_requires_the_contacts_permission_in_order_to_display_your_contacts">O muzima requer permissão de acesso aos Contactos para visualizar os seus contactos, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Contactos\".</string>
+    <string name="error_retrieving_contacts_check_your_network_connection">Problema a obter contactos, verifique a sua ligação à rede</string>
+    <string name="hint_no_contacts">Sem contactos.</string>
+    <string name="hint_touch_to_open">Toque para abrir.</string>
+    <string name="hint_touch_to_open_or_lock">Toque para abrir, ou toque no cadeado para fechar.</string>
+    <string name="hint_muzima_is_unlocked">O mUzima está desbloqueado</string>
+    <string name="hint_lock_muzima">Bloquear mUzima</string>
+    <string name="warning_google_play_problem">A sua versão de Google Play Services não está a funcionar correctamente. Por favor reinstale Google Play Services e tente novamente.</string>
+    <string name="warning_signal_communication_failure">Falha de comunicação do mUzima permanente!</string>
+    <string name="warning_unable_to_register_with_Google_Play_Services">O mUzima não se conseguiu registar com os Serviços Google Play. As mensagens e chamadas do mUzima estão desativadas, por favor tente registar-se novamente em Definições > Avançadas.</string>
+    <string name="general_inbox_zero">Caixa de entrada zero</string>
+    <string name="general_zip_zilch">Zip. Népia. Zero. Nada.\nEstá completamente a par!</string>
+    <string name="general_archived_conversations">Conversas arquivadas (%d)</string>
+    <string name="general_camera">Câmara</string>
+    <string name="general_location">Localização</string>
+    <string name="general_image_or_video">Imagem ou vídeo</string>
+    <string name="general_file">Ficheiro</string>
+    <string name="general_gallery">Galeria</string>
+    <string name="warning_not_valid_sms_or_email_address">O destinatário não é um número de SMS ou endereço de email válido!</string>
+    <string name="warning_empty_message">A mensagem está vazia!</string>
+
+
+    <string name="hint_permission_needed_in_order_to_send_an_sms">O Signal requer permissão de acesso a SMS para enviar uma mensagem SMS, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"SMS\".</string>
+    <string name="hint_allow_muzima_access_to_your_microphone">Para enviar mensagens áudio, dê permissões ao Signal para acesso ao microfone.</string>
+    <string name="text_microphone_permission_required_in_order_to_send_audio_messages">O Signal requer permissão de acesso ao Microfone para enviar mensagens áudio, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Microfone\".</string>
+    <string name="warning_unable_to_record_audio">Não é possível gravar áudio!</string>
+    <string name="warning_to_capture_photos_and_video_allow_signal_access_to_the_camera">Para enviar mensagens áudio, dê permissões ao Signal para acesso ao microfone.</string>
+    <string name="warning_camera_permissions_required_to_take_photos_or_video">O Signal requer permissão de acesso à Câmara para tirar fotos ou vídeo</string>
+    <string name="text_camera_permission_required_to_take_photos_or_video">O Signal requer permissão de acesso à Câmara para tirar fotos ou vídeo, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Câmara\".</string>
+    <string name="warning_camera_unavailable">Câmara não disponível</string>
+    <string name="warning_image_save_failure">Falha ao guardar alteração de imagem.</string>
+    <string name="general_message_composition">Composição da mensagem</string>
+    <string name="general_emoji_toggle">Teclado de emojis</string>
+    <string name="menu_messages_expiring">Mensagens a expirar</string>
+    <string name="general_disappearing_messages">Mensagens a desaparecer</string>
+    <string name="general_call">Chamada Signal</string>
+    <string name="menu_call">Chamar</string>
+    <string name="general_recipients_list">Lista de destinatários</string>
+    <string name="general_delivery">Entrega</string>
+    <string name="general_broadcast">Emissão</string>
+    <string name="menu_edit_group">Editar o grupo</string>
+    <string name="menu_leave_group">Deixar grupo</string>
+    <string name="general_all_media">Toda a multimédia</string>
+    <string name="general_conversation">Conversa</string>
+    <string name="general_conversation_settings">Configurações de conversa</string>
+    <string name="general_invite">Convidar</string>
+    <string name="general_reset_secure_session">Reiniciar sessão segura</string>
+    <string name="general_unmute">Não silenciar</string>
+    <string name="general_mute_notifications" tools:ignore="ExtraTranslation">Silenciar notificações</string>
+    <string name="warning_external_storage_permission_required_in_order_to_attach_photos_videos_or_audio">O Signal requer permissão de acesso ao Armazenamento para anexar fotos, vídeo e áudio, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Armazenamento\".</string>
+    <string name="warning_requires_contacts_permission_in_order_to_attach_contact_information">O Signal requer permissão de acesso aos Contactos para anexar dados de contacto, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Contactos\".</string>
+    <string name="warning_requires_location_information_in_order_to_attach_a_location">O Signal requer permissão de acesso à Localização para anexar uma localização, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Localização\".</string>
+    <string name="warning_requires_the_camera_permission_in_order_to_take_photos_but_it_has_been_permanently_denied">O Signal requer permissão de acesso à Câmara para tirar fotos, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Câmara\".</string>
+    <string name="error_setting_attachment">Lamento, ocorreu um erro no envio do seu anexo.</string>
+    <string name="warning_attachment_size_limit_exceeded">O anexo tem um tamanho superior ao limite do tipo de mensagem que está a enviar.</string>
+    <string name="warning_cant_open_media_selection">Não foi possível encontrar uma aplicação para seleccionar a multimédia.</string>
+    <string name="general_select_contact_info">Seleccionar informações de contacto</string>
+    <string name="general_using_custom">Usar a opção personalizada: %s</string>
+    <string name="general_using_default">A usar a opção predefinida: %s</string>
+    <string name="general_none">Nenhum</string>
+    <string name="general_use_default">Valeur par défaut</string>
+    <string name="general_use_custom">Personnalisé</string>
+    <string name="preferences_mms_access_point_names">Configuração MMS manual</string>
+    <string name="preferences_mms_user_agent">User Agent MMS</string>
+    <string name="preferences_mmsc_password">Palavra-chave MMSC</string>
+    <string name="preferences_mmsc_username">Nome de utilizador MMSC</string>
+    <string name="preferences_mms_proxy_host">Proxy MMS</string>
+    <string name="preferences_mms_proxy_port">Porta do Proxy MMS</string>
+    <string name="preferences_mmsc_url">URL MMSC</string>
+    <string name="warning_requires_mms_settings_to_deliver_media">O Signal precisa de configurações MMS para transmitir multimédia e mensagens de grupo através da sua operadora. O seu aparelho não disponibiliza essa informação, o que pode ocorrer em aparelhos bloqueados ou com configurações restritivas.</string>
+    <string name="hint_tap_to_send_media">Para enviar ficheiros multimédia e mensagens de grupo toque em \"OK\" e complete as definições solicitadas. As definições de MMS para a sua operadora podem normalmente ser encontradas ao pesquisar na internet por \"[nome do operador] APN\". Apenas é necessário efectuar isto uma vez.</string>
+    <string name="error_reading_mms_settings">Erro ao ler as configurações do operador MMS</string>
+    <string name="general_type_home" tools:ignore="ExtraTranslation">Casa</string>
+    <string name="general_type_mobile">Telemóvel</string>
+    <string name="general_type_work">Trabalho</string>
+    <string name="warning_invalid_contact">O contacto selecionado é inválido</string>
+    <string name="hint_given_name">Nome próprio</string>
+    <string name="hint_family_name">Apelido</string>
+    <string name="hint_prefix">Prefixo</string>
+    <string name="hint_suffix">Sufixo</string>
+    <string name="hint_middle_name">Nome do meio</string>
+    <string name="general_media">Multimédia</string>
+    <string name="general_documents">Documentos</string>
+    <string name="general_this_week">Cette semaine</string>
+    <string name="general_this_month">Ce mois</string>
+    <string name="general_media_preview">Previsualização de multimédia</string>
+    <string name="general_no_media">Sem multimédia</string>
+    <string name="general_save_to_storage">Guardar para o armazenamento local?</string>
+    <plurals name="plurals_saving_to_storage">
+        <item quantity="one" tools:ignore="ImpliedQuantity">Guardar este ficheiro multimédia para o armazenamento local vai permitir que qualquer outra aplicação lhe possa aceder.\n\nContinuar?</item>
+        <item quantity="other">Guardar estes %1$d ficheiros no armazenamento local vai permitir que qualquer outra aplicação os possa aceder.\n\nContinuar?</item>
+    </plurals>
+    <plurals name="plurals_error_saving_attachment_to_storage">
+        <item quantity="one" tools:ignore="ImpliedQuantity">Erro ao guardar anexo para o armazenamento local!</item>
+        <item quantity="other">Erro ao guardar anexos para o armazenamento local!</item>
+    </plurals>
+
+    <string name="general_saved">Guardado</string>
+    <string name="warning_unable_to_write_to_external_storage">Não é possível escrever para o armazenamento local!</string>
+    <string name="general_saved_to">Guardado para %s</string>
+    <plurals name="plurals_saving_attachments">
+        <item quantity="one" tools:ignore="ImpliedQuantity">A guardar anexo</item>
+        <item quantity="other">A guardar %1$d anexos</item>
+    </plurals>
+    <plurals name="plurals_saving_attachments_to">
+        <item quantity="one" tools:ignore="ImpliedQuantity">A guardar anexo para o armazenamento local...</item>
+        <item quantity="other">A guardar %1$d anexos para o armazenamento local...</item>
+    </plurals>
+    <string name="error_playing_video">Erro ao reproduzir o vídeo</string>
+    <string name="warning_unssuported_media_type">Tipo de multimédia não suportado</string>
+    <string name="warning_permission_to_write_to_external_denied">O Signal requer permissão de acesso a Armazenamento para escrever para o suporte de armazenamento externo, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Armazenamento\".</string>
+    <string name="warning_requires_permission_to_write_to_external_storage">Não é possível guardar para armazenamento externo sem permissões.</string>
+    <string name="prompt_delete_message">Apagar mensagem?</string>
+    <string name="prompt_confirm_media_deletion">Isto irá eliminar permanentemente esta mensagem.</string>
+    <string name="title_foward">Reencaminhar</string>
+    <string name="hint_share_with">Compartilhar com...</string>
+    <string name="general_collecting_attachments">A recolher anexos…</string>
+    <string name="please_wait">Por favor aguarde…</string>
+    <plurals name="plurals_media_deletion_title">
+        <item quantity="one" tools:ignore="ImpliedQuantity">Apagar mensagem seleccionada?</item>
+        <item quantity="other">Apagar mensagens seleccionadas?</item>
+    </plurals>
+    <plurals name="plurals_media_deletion_message">
+        <item quantity="one" tools:ignore="ImpliedQuantity">Isto irá eliminar permanentemente a mensagem seleccionada.</item>
+        <item quantity="other">Isto irá eliminar permanentemente todas as %1$d mensagens seleccionadas.</item>
+    </plurals>
+
+
+    <string name="general_no_documents_found">Sem documentos</string>
+    <string name="general_select_all">Seleccionar tudo</string>
+    <string name="warning_calls_not_supported">Chamadas não suportadas</string>
+    <string name="hint_device_does_not_appear_to_support_dial_actions">Este dispositivo parece não suportar acções de marcação</string>
+    <string name="prompt_send_message">Enviar mensagem?</string>
+    <string name="warning_needs_camera_permission_in_order_to_scan_a_qr_code">O Signal requer permissão de acesso à Câmara para ler códigos QR, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Câmara\".</string>
+    <string name="warning_unable_to_scan_qr_code_without_camera_permission">Não é possível ler um código QR sem permissão de acesso à câmara.</string>
+    <string name="title_verify_address_safety_number">Verifique o número do endereço</string>
+    <string name="hint_tap_to_scan">Toque para ler</string>
+    <string name="general_verified">Verificado</string>
+    <string name="hint_verify_the_security_of_your_end_to_end_encryption_with_s"><![CDATA[Se pretende verificar a segurança da sua encriptação ponta-a-ponta com o contacto %s, compare o número acima com o equivalente no dispositivo do seu contacto. Em alternativa, poderá fazer scan do código QR exibido no outro dispositivo ou pedir que façam scan do seu código. <a href="https://signal.org/redirect/safety-numbers">Mais informações</a>]]></string>
+    <string name="title_copy_to_clipboard">Copiar para a área de transferência</string>
+    <string name="title_compare_with_clipboard">Comparar com a área de transferência</string>
+    <string name="title_share_safety_number">Partilhar número de segurança</string>
+    <string name="hint_your_contact_is_running_a_newer_version_of_muzima">O seu contacto está a utilizar uma versão mais recente do Signal, com um formato de código QR incompatível. Por favor actualize para comparar.</string>
+    <string name="hint_your_contact_is_running_older_version_of_muzima">O seu contacto está a utilizar uma versão anterior do Signal. Por favor peça-lhe para actualizar antes de verificar o seu número de segurança.</string>
+    <string name="warning_scanned_qr_code_is_not_a_correctly_formatted_safety_number">O código QR lido não é um número de segurança formatado corretamente. Por favor tente ler novamente.</string>
+
+
+
+    <string name="warning_no_safety_number_to_compare_was_found_in_the_clipboard">Não foi encontrado um número de segurança com o qual comparar na área de transferência</string>
+    <string name="hint_our_signal_safety_number">O nosso número de segurança Signal:</string>
+    <string name="hint_share_safety_number_via">Partilhar número de segurança via…</string>
+    <string name="warning_no_app_to_share_to">Parece que não tem aplicações para as quais partilhar.</string>
+    <string name="general_reset">Reiniciar</string>
+    <string name="hint_this_may_help_if_youre_having_encryption_problems">Isto pode ajudar caso tenha problemas de encriptação nesta conversa. As suas mensagens serão mantidas.</string>
+    <string name="prompt_reset_secure_session">Reiniciar sessão segura?</string>
+    <string name="hint_lets_switch_to_muzima">Vamos mudar para o  mUzima %1$s</string>
+    <string name="hint_lets_use_this_to_chat">Vamos usar isto para conversar: %1$s</string>
+    <string name="hint_you_will_once_again_be_able_to_receive_messages_and_calls_from_this_contact">Irá voltar a receber mensagens e chamadas deste contacto.</string>
+    <string name="title_unblock_this_contact">Desbloquear este contacto?</string>
+    <string name="title_unblock_this_group">Desbloquear este grupo?</string>
+    <string name="error_leaving_group">Erro ao sair do grupo</string>
+    <string name="hint_unblock_this_group">Membros actuais poderão voltar a adicionar o seu contacto ao grupo.</string>
+    <string name="title_block_this_contact">Bloquear este contacto?</string>
+    <string name="hint_you_will_no_longer_receive_messages_and_calls_from_this_contact">Não irá receber mensagens ou chamadas adicionais deste contacto.</string>
+    <string name="hint_block_and_leave_group">Não voltará a receber mensagens ou actualizações deste grupo.</string>
+    <string name="title_block_and_leave_group">Bloquear e deixar este grupo?</string>
+    <string name="title_block_group">Bloquear este grupo?</string>
+    <string name="hint_shared_media">Ficheiros partilhados</string>
+    <string name="general_about">Sobre</string>
+    <string name="general_call_settings">Definições de chamada</string>
+    <string name="general_view_safety_number">Número de verificação de segurança</string>
+    <string name="general_settings_default">Configurações padrão</string>
+    <string name="general_enabled">Ativo/a</string>
+    <string name="general_disabled">Desativado/a</string>
+    <string name="hint_available_once_a_message_has_been_sent_or_received">Disponível assim que uma mensagem seja enviada ou recebida.</string>
+    <string name="general_silent">Silencioso</string>
+    <string name="general_mute_for_one_hour">Silenciar por 1 hora</string>
+    <string name="general_mute_for_two_hours">Silenciar por 2 horas</string>
+    <string name="general_mute_for_one_day">Silenciar por 1 dia</string>
+    <string name="general_mute_for_seven_days">Silenciar por 7 dias</string>
+    <string name="general_mute_for_one_year">Silenciar por 1 ano</string>
+    <string name="preferences_vibrate">Vibrar</string>
+    <string name="general_ringtone">Toque</string>
+    <string name="general_color">Cor</string>
+    <string name="general_notification_sound">Som de notificação</string>
+    <string name="general_custom_notifications">Notificações personalizadas</string>
+    <string name="general_mute_conversation">Silenciar conversa</string>
+    <string name="general_import_in_progress">Importação em progresso</string>
+    <string name="general_importing_text_messages">A importar mensages de texto</string>
+    <string name="general_import_complete">Importação completa</string>
+    <string name="general_system_database_import_is_complete">Importação da base de dados do sistema está completa.</string>
+    <string name="general_creating_backup">A criar cópia de segurança…</string>
+    <string name="general_never">Nunca</string>
+    <string name="hint_your_messages_will_not_expire">As suas mensagens não expirarão.</string>
+    <string name="hint_your_messages_will_disappear_s_after_they_have_been_seen">As mensagens enviadas e recebidas nesta conversa irão desaparecer %s após serem vistas.</string>
+    <string name="general_connecting">A ligar...</string>
+    <string name="general_call_in_progress">Chamada do Signal em curso</string>
+    <string name="hint_establishing_muzima_call">A estabelecer chamada do Signal</string>
+    <string name="hint_incoming_muzima_call">A receber chamada do Signal</string>
+    <string name="hint_deny_call">Negar chamada</string>
+    <string name="hint_answer_call">Atender chamada</string>
+    <string name="hint_end_call">Terminar chamada</string>
+    <string name="hint_cancel_call">Cancelar chamada</string>
+    <string name="hint_grant_muzima_access_to_your_microphone">Para responder à chamada de %s, dê acesso ao microfone para o Signal.</string>
+    <string name="hint_grant_muzima_access_to_your_microphone_and_camera">O Signal requer permissões de acesso ao Microfone e Câmara, para efectuar e receber chamadas, mas estas foram negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Microfone\" e \"Câmara\".</string>
+    <string name="general_answering">A atender</string>
+    <string name="general_ending_call">A terminar chamada</string>
+    <string name="general_dialing">A ligar</string>
+    <string name="general_ringing">A tocar</string>
+    <string name="general_busy">Ocupado</string>
+    <string name="general_connected">Ligado</string>
+    <string name="general_recipient_unavailable">Destinatário indisponível</string>
+    <string name="general_network_failed">A rede falhou!</string>
+    <string name="general_number_not_registered">Número não registado!</string>
+    <string name="general_number_dialed_does_not_support_secure_voice">O número que marcou não suporta chamadas de voz seguras!</string>
+    <string name="general_got_it">Recebido</string>
+    <string name="general_mute">Silenciar</string>
+    <string name="general_flip_camera_rear">Trocar câmeras</string>
+    <string name="general_tap_to_enable_your_video">Toque para ligar o vídeo</string>
+    <string name="general_swipe_up_to_answer">Deslize para cima para atender</string>
+    <string name="general_swipe_down_to_reject">Deslize para baixo para rejeitar</string>
+    <string name="general_incoming_call">A receber chamada</string>
+    <string name="general_new_safety_numbers">O número de segurança para a sua conversa com %1$s mudou. Isto pode significar que alguém está a tentar interceptar a sua comunicação ou que %2$s simplesmente reinstalou o Signal.</string>
+    <string name="general_verify_this_contact">Pode ser desejável verificar o seu número de segurança com este contracto.</string>
+    <string name="title_new_safety_number">Novo número de segurança</string>
+    <string name="title_new_locked_message">Nova mensagem bloqueada</string>
+    <string name="hint_unlock_to_view_pending_messages">Desbloqueie para ver mensagens pendentes</string>
+
+    <string name="warning_no_browser_installed_on_your_device">Não existe um navegador instalado no seu dispositivo.</string>
+    <string name="title_conversations">Conversas</string>
+    <string name="hint_no_results">Sem resultados para \'%s\'</string>
+    <string name="hint_archived_conversations">Conversas arquivadas</string>
+    <string name="menu_unarchive_selected">Desarquivar seleccionado</string>
+    <string name="menu_delete_selected">Apagar seleccionado</string>
+    <string name="menu_archive_selected">Arquivo seleccionado</string>
+    <string name="general_undo">DESFAZER</string>
+    <plurals name="plurals_conversations_archived">
+        <item quantity="one" tools:ignore="ImpliedQuantity">Conversa arquivada</item>
+        <item quantity="other">%d conversas arquivadas</item>
+    </plurals>
+    <plurals name="plurals_moved_conversations_to_inbox">
+        <item quantity="one" tools:ignore="ImpliedQuantity">Conversa movida para a caixa de entrada</item>
+        <item quantity="other">%d conversas movidas para a caixa de entrada</item>
+    </plurals>
 </resources>

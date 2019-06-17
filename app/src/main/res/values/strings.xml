@@ -949,8 +949,6 @@
         <item quantity="other">%d Items</item>
     </plurals>
     <string name="error_playing_audio">Error playing audio!</string>
-    <string name="text_your_safety_number_with_s_has_changed">Your safety number with %1$s has changed. This could either mean that someone is trying to intercept your communication, or that %2$s simply reinstalled mUzima.</string>
-    <string name="text_verify_your_safety_number">You may wish to verify your safety number with this contact.</string>
     <string name="general_today">Today</string>
     <string name="general_yesterday">Yesterday</string>
     <plurals name="plurals_unread_messages">
@@ -984,12 +982,12 @@
     <string name="menu_reply_to_message">Reply to message</string>
     <string name="general_save_attachment">Save attachment</string>
     <plurals name="plurals_delete_selected_messages">
-        <item quantity="one">Delete selected message?</item>
-        <item quantity="other">Delete selected messages?</item>
+        <item quantity="one">%d Delete selected message?</item>
+        <item quantity="other">%d Delete selected messages?</item>
     </plurals>
     <plurals name="plurals_this_will_permanently_delete_all_n_selected_messages">
-        <item quantity="one">This will permanently delete the selected message.</item>
-        <item quantity="other">This will permanently delete all %1$d selected messages.</item>
+        <item quantity="one">%d This will permanently delete the selected message.</item>
+        <item quantity="other">%d This will permanently delete all %1$d selected messages.</item>
     </plurals>
     <string name="general_deleting">Deleting</string>
     <string name="general_deleting_messages"><![CDATA[>Deleting messages...]]></string>
