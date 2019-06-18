@@ -1035,20 +1035,20 @@
     <string name="warning_empty_message">A mensagem está vazia!</string>
 
 
-    <string name="hint_permission_needed_in_order_to_send_an_sms">O Signal requer permissão de acesso a SMS para enviar uma mensagem SMS, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"SMS\".</string>
-    <string name="hint_allow_muzima_access_to_your_microphone">Para enviar mensagens áudio, dê permissões ao Signal para acesso ao microfone.</string>
-    <string name="text_microphone_permission_required_in_order_to_send_audio_messages">O Signal requer permissão de acesso ao Microfone para enviar mensagens áudio, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Microfone\".</string>
+    <string name="hint_permission_needed_in_order_to_send_an_sms">O mUzima requer permissão de acesso a SMS para enviar uma mensagem SMS, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"SMS\".</string>
+    <string name="hint_allow_muzima_access_to_your_microphone">Para enviar mensagens áudio, dê permissões ao mUzima para acesso ao microfone.</string>
+    <string name="text_microphone_permission_required_in_order_to_send_audio_messages">O mUzima requer permissão de acesso ao Microfone para enviar mensagens áudio, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Microfone\".</string>
     <string name="warning_unable_to_record_audio">Não é possível gravar áudio!</string>
-    <string name="warning_to_capture_photos_and_video_allow_signal_access_to_the_camera">Para enviar mensagens áudio, dê permissões ao Signal para acesso ao microfone.</string>
-    <string name="warning_camera_permissions_required_to_take_photos_or_video">O Signal requer permissão de acesso à Câmara para tirar fotos ou vídeo</string>
-    <string name="text_camera_permission_required_to_take_photos_or_video">O Signal requer permissão de acesso à Câmara para tirar fotos ou vídeo, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Câmara\".</string>
+    <string name="warning_to_capture_photos_and_video_allow_signal_access_to_the_camera">Para enviar mensagens áudio, dê permissões ao mUzima para acesso ao microfone.</string>
+    <string name="warning_camera_permissions_required_to_take_photos_or_video">O mUzima requer permissão de acesso à Câmara para tirar fotos ou vídeo</string>
+    <string name="text_camera_permission_required_to_take_photos_or_video">O mUzima requer permissão de acesso à Câmara para tirar fotos ou vídeo, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Câmara\".</string>
     <string name="warning_camera_unavailable">Câmara não disponível</string>
     <string name="warning_image_save_failure">Falha ao guardar alteração de imagem.</string>
     <string name="general_message_composition">Composição da mensagem</string>
     <string name="general_emoji_toggle">Teclado de emojis</string>
     <string name="menu_messages_expiring">Mensagens a expirar</string>
     <string name="general_disappearing_messages">Mensagens a desaparecer</string>
-    <string name="general_call">Chamada Signal</string>
+    <string name="general_call">Chamada mUzima</string>
     <string name="menu_call">Chamar</string>
     <string name="general_recipients_list">Lista de destinatários</string>
     <string name="general_delivery">Entrega</string>
@@ -1062,10 +1062,10 @@
     <string name="general_reset_secure_session">Reiniciar sessão segura</string>
     <string name="general_unmute">Não silenciar</string>
     <string name="general_mute_notifications" tools:ignore="ExtraTranslation">Silenciar notificações</string>
-    <string name="warning_external_storage_permission_required_in_order_to_attach_photos_videos_or_audio">O Signal requer permissão de acesso ao Armazenamento para anexar fotos, vídeo e áudio, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Armazenamento\".</string>
-    <string name="warning_requires_contacts_permission_in_order_to_attach_contact_information">O Signal requer permissão de acesso aos Contactos para anexar dados de contacto, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Contactos\".</string>
-    <string name="warning_requires_location_information_in_order_to_attach_a_location">O Signal requer permissão de acesso à Localização para anexar uma localização, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Localização\".</string>
-    <string name="warning_requires_the_camera_permission_in_order_to_take_photos_but_it_has_been_permanently_denied">O Signal requer permissão de acesso à Câmara para tirar fotos, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Câmara\".</string>
+    <string name="warning_external_storage_permission_required_in_order_to_attach_photos_videos_or_audio">O mUzima requer permissão de acesso ao Armazenamento para anexar fotos, vídeo e áudio, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Armazenamento\".</string>
+    <string name="warning_requires_contacts_permission_in_order_to_attach_contact_information">O mUzima requer permissão de acesso aos Contactos para anexar dados de contacto, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Contactos\".</string>
+    <string name="warning_requires_location_information_in_order_to_attach_a_location">O mUzima requer permissão de acesso à Localização para anexar uma localização, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Localização\".</string>
+    <string name="warning_requires_the_camera_permission_in_order_to_take_photos_but_it_has_been_permanently_denied">O mUzima requer permissão de acesso à Câmara para tirar fotos, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Câmara\".</string>
     <string name="error_setting_attachment">Lamento, ocorreu um erro no envio do seu anexo.</string>
     <string name="warning_attachment_size_limit_exceeded">O anexo tem um tamanho superior ao limite do tipo de mensagem que está a enviar.</string>
     <string name="warning_cant_open_media_selection">Não foi possível encontrar uma aplicação para seleccionar a multimédia.</string>
@@ -1082,7 +1082,7 @@
     <string name="preferences_mms_proxy_host">Proxy MMS</string>
     <string name="preferences_mms_proxy_port">Porta do Proxy MMS</string>
     <string name="preferences_mmsc_url">URL MMSC</string>
-    <string name="warning_requires_mms_settings_to_deliver_media">O Signal precisa de configurações MMS para transmitir multimédia e mensagens de grupo através da sua operadora. O seu aparelho não disponibiliza essa informação, o que pode ocorrer em aparelhos bloqueados ou com configurações restritivas.</string>
+    <string name="warning_requires_mms_settings_to_deliver_media">O mUzima precisa de configurações MMS para transmitir multimédia e mensagens de grupo através da sua operadora. O seu aparelho não disponibiliza essa informação, o que pode ocorrer em aparelhos bloqueados ou com configurações restritivas.</string>
     <string name="hint_tap_to_send_media">Para enviar ficheiros multimédia e mensagens de grupo toque em \"OK\" e complete as definições solicitadas. As definições de MMS para a sua operadora podem normalmente ser encontradas ao pesquisar na internet por \"[nome do operador] APN\". Apenas é necessário efectuar isto uma vez.</string>
     <string name="error_reading_mms_settings">Erro ao ler as configurações do operador MMS</string>
     <string name="general_type_home" tools:ignore="ExtraTranslation">Casa</string>
@@ -1123,7 +1123,7 @@
     </plurals>
     <string name="error_playing_video">Erro ao reproduzir o vídeo</string>
     <string name="warning_unssuported_media_type">Tipo de multimédia não suportado</string>
-    <string name="warning_permission_to_write_to_external_denied">O Signal requer permissão de acesso a Armazenamento para escrever para o suporte de armazenamento externo, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Armazenamento\".</string>
+    <string name="warning_permission_to_write_to_external_denied">O mUzima requer permissão de acesso a Armazenamento para escrever para o suporte de armazenamento externo, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Armazenamento\".</string>
     <string name="warning_requires_permission_to_write_to_external_storage">Não é possível guardar para armazenamento externo sem permissões.</string>
     <string name="prompt_delete_message">Apagar mensagem?</string>
     <string name="prompt_confirm_media_deletion">Isto irá eliminar permanentemente esta mensagem.</string>
@@ -1146,23 +1146,20 @@
     <string name="warning_calls_not_supported">Chamadas não suportadas</string>
     <string name="hint_device_does_not_appear_to_support_dial_actions">Este dispositivo parece não suportar acções de marcação</string>
     <string name="prompt_send_message">Enviar mensagem?</string>
-    <string name="warning_needs_camera_permission_in_order_to_scan_a_qr_code">O Signal requer permissão de acesso à Câmara para ler códigos QR, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Câmara\".</string>
+    <string name="warning_needs_camera_permission_in_order_to_scan_a_qr_code">O mUzima requer permissão de acesso à Câmara para ler códigos QR, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Câmara\".</string>
     <string name="warning_unable_to_scan_qr_code_without_camera_permission">Não é possível ler um código QR sem permissão de acesso à câmara.</string>
     <string name="title_verify_address_safety_number">Verifique o número do endereço</string>
     <string name="hint_tap_to_scan">Toque para ler</string>
     <string name="general_verified">Verificado</string>
-    <string name="hint_verify_the_security_of_your_end_to_end_encryption_with_s"><![CDATA[Se pretende verificar a segurança da sua encriptação ponta-a-ponta com o contacto %s, compare o número acima com o equivalente no dispositivo do seu contacto. Em alternativa, poderá fazer scan do código QR exibido no outro dispositivo ou pedir que façam scan do seu código. <a href="https://signal.org/redirect/safety-numbers">Mais informações</a>]]></string>
+    <string name="hint_verify_the_security_of_your_end_to_end_encryption_with_s"><![CDATA[Se pretende verificar a segurança da sua encriptação ponta-a-ponta com o contacto %s, compare o número acima com o equivalente no dispositivo do seu contacto. Em alternativa, poderá fazer scan do código QR exibido no outro dispositivo ou pedir que façam scan do seu código. <a href="https://mUzima.org/redirect/safety-numbers">Mais informações</a>]]></string>
     <string name="title_copy_to_clipboard">Copiar para a área de transferência</string>
     <string name="title_compare_with_clipboard">Comparar com a área de transferência</string>
     <string name="title_share_safety_number">Partilhar número de segurança</string>
-    <string name="hint_your_contact_is_running_a_newer_version_of_muzima">O seu contacto está a utilizar uma versão mais recente do Signal, com um formato de código QR incompatível. Por favor actualize para comparar.</string>
-    <string name="hint_your_contact_is_running_older_version_of_muzima">O seu contacto está a utilizar uma versão anterior do Signal. Por favor peça-lhe para actualizar antes de verificar o seu número de segurança.</string>
+    <string name="hint_your_contact_is_running_a_newer_version_of_muzima">O seu contacto está a utilizar uma versão mais recente do mUzima, com um formato de código QR incompatível. Por favor actualize para comparar.</string>
+    <string name="hint_your_contact_is_running_older_version_of_muzima">O seu contacto está a utilizar uma versão anterior do mUzima. Por favor peça-lhe para actualizar antes de verificar o seu número de segurança.</string>
     <string name="warning_scanned_qr_code_is_not_a_correctly_formatted_safety_number">O código QR lido não é um número de segurança formatado corretamente. Por favor tente ler novamente.</string>
-
-
-
     <string name="warning_no_safety_number_to_compare_was_found_in_the_clipboard">Não foi encontrado um número de segurança com o qual comparar na área de transferência</string>
-    <string name="hint_our_signal_safety_number">O nosso número de segurança Signal:</string>
+    <string name="hint_our_signal_safety_number">O nosso número de segurança mUzima:</string>
     <string name="hint_share_safety_number_via">Partilhar número de segurança via…</string>
     <string name="warning_no_app_to_share_to">Parece que não tem aplicações para as quais partilhar.</string>
     <string name="general_reset">Reiniciar</string>
@@ -1209,15 +1206,15 @@
     <string name="hint_your_messages_will_not_expire">As suas mensagens não expirarão.</string>
     <string name="hint_your_messages_will_disappear_s_after_they_have_been_seen">As mensagens enviadas e recebidas nesta conversa irão desaparecer %s após serem vistas.</string>
     <string name="general_connecting">A ligar...</string>
-    <string name="general_call_in_progress">Chamada do Signal em curso</string>
-    <string name="hint_establishing_muzima_call">A estabelecer chamada do Signal</string>
-    <string name="hint_incoming_muzima_call">A receber chamada do Signal</string>
+    <string name="general_call_in_progress">Chamada do mUzima em curso</string>
+    <string name="hint_establishing_muzima_call">A estabelecer chamada do mUzima</string>
+    <string name="hint_incoming_muzima_call">A receber chamada do mUzima</string>
     <string name="hint_deny_call">Negar chamada</string>
     <string name="hint_answer_call">Atender chamada</string>
     <string name="hint_end_call">Terminar chamada</string>
     <string name="hint_cancel_call">Cancelar chamada</string>
-    <string name="hint_grant_muzima_access_to_your_microphone">Para responder à chamada de %s, dê acesso ao microfone para o Signal.</string>
-    <string name="hint_grant_muzima_access_to_your_microphone_and_camera">O Signal requer permissões de acesso ao Microfone e Câmara, para efectuar e receber chamadas, mas estas foram negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Microfone\" e \"Câmara\".</string>
+    <string name="hint_grant_muzima_access_to_your_microphone">Para responder à chamada de %s, dê acesso ao microfone para o mUzima.</string>
+    <string name="hint_grant_muzima_access_to_your_microphone_and_camera">O mUzima requer permissões de acesso ao Microfone e Câmara, para efectuar e receber chamadas, mas estas foram negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Microfone\" e \"Câmara\".</string>
     <string name="general_answering">A atender</string>
     <string name="general_ending_call">A terminar chamada</string>
     <string name="general_dialing">A ligar</string>
@@ -1235,7 +1232,7 @@
     <string name="general_swipe_up_to_answer">Deslize para cima para atender</string>
     <string name="general_swipe_down_to_reject">Deslize para baixo para rejeitar</string>
     <string name="general_incoming_call">A receber chamada</string>
-    <string name="general_new_safety_numbers">O número de segurança para a sua conversa com %1$s mudou. Isto pode significar que alguém está a tentar interceptar a sua comunicação ou que %2$s simplesmente reinstalou o Signal.</string>
+    <string name="general_new_safety_numbers">O número de segurança para a sua conversa com %1$s mudou. Isto pode significar que alguém está a tentar interceptar a sua comunicação ou que %2$s simplesmente reinstalou o mUzima.</string>
     <string name="general_verify_this_contact">Pode ser desejável verificar o seu número de segurança com este contracto.</string>
     <string name="title_new_safety_number">Novo número de segurança</string>
     <string name="title_new_locked_message">Nova mensagem bloqueada</string>
@@ -1257,4 +1254,218 @@
         <item quantity="one" tools:ignore="ImpliedQuantity">Conversa movida para a caixa de entrada</item>
         <item quantity="other">%d conversas movidas para a caixa de entrada</item>
     </plurals>
+    <string name="general_reply">Responder</string>
+    <string name="general_mark_read">Marcar como lida</string>
+    <string name="general_most_recent_from_s">Mais recente de: %1$s</string>
+    <string name="hint_d_new_messages_in_d_conversations">%1$d novas mensagens em %2$d conversas</string>
+    <string name="hint_media_message_with">Mensagem multimédia: %s</string>
+    <string name="hint_locked_message">Mensagem bloqueada</string>
+    <string name="menu_expand_popup">Expandir alerta</string>
+    <string name="hint_group_avatar">Avatar do grupo</string>
+    <string name="hint_group_name">Nome do grupo</string>
+    <string name="hint_contacts_dont_support_push">Seleccionou um contacto que não suporta grupos do mUzima, pelo que este grupo será um grupo MMS.</string>
+    <string name="hint_enter_name_number"><small>Introduza um nome ou número</small></string>
+    <string name="hint_not_registered_to_muzima">Não está registado para usar as mensagens e chamadas do mUzima, pelo que os grupos do mUzima estão desativados. Por favor tente registar-se em Definições > Avançadas.</string>
+    <string name="title_new_mms">Novo Grupo MMS</string>
+    <string name="hint_add_members">Adicionar membros</string>
+    <string name="general_apply">Aplicar</string>
+    <string name="warning_no_members">É necessária pelo menos uma pessoa para formar um grupo!</string>
+    <string name="hint_creating_group">Criando %1$s&#8230;</string>
+    <string name="hint_updating_group">A actualizar %1$s…</string>
+    <string name="warning_invalid_group_member_number">Um dos membros do seu grupo tem um número ilegível. Por favor corrija ou remova esse contacto e tente novamente.</string>
+    <string name="warning_cannot_add_non_push_to_existing_group">Não foi possível adicionar %1$s porque não é um utilizador mUzima.</string>
+    <string name="warning_already_in_the_group">Já se encontra no grupo.</string>
+    <string name="hint_loading_group_details">A carregar detalhes do grupo…</string>
+    <string name="hint_select_contacts">Seleccionar contactos</string>
+    <string name="warning_invalid_recipient">Destinatário inválido!</string>
+    <string name="title_leave_group">Deixar o grupo?</string>
+    <string name="hint_are_you_sure_you_want_to_leave_this_group">Tem a certeza que quer deixar este grupo?</string>
+    <string name="general_share">Partilhar</string>
+    <string name="general_choose_contacts">Escolher contactos</string>
+    <string name="general_sending">A enviar…</string>
+    <string name="general_heart">Coração</string>
+    <string name="hint_invitations_sent">Convites enviados!</string>
+    <string name="hint_invite_to_muzima">Convidar para o mUzima</string>
+    <plurals name="plurals_send_sms_to_friends">
+        <item quantity="one">ENVIAR SMS PARA %d AMIGO</item>
+        <item quantity="other">ENVIAR SMS PARA %d AMIGOS</item>
+    </plurals>
+    <plurals name="plurals_send_sms_invites">
+        <item quantity="one">Enviar %d convite por SMS?</item>
+        <item quantity="other">Enviar %d convites por SMS?</item>
+    </plurals>
+    <string name="hint_no_app_to_share_to">Parece que não tem aplicações para as quais partilhar.</string>
+    <string name="hint_friends_dont_let_friends_text_unencrypted">Amigos não deixam amigos falar sem segurança.</string>
+    <string name="warning_device_no_longer_registered">O dispositivo deixou de estar registado.</string>
+    <string name="warning_number_may_have_been_registered_on_another_device">Isto é possivelmente devido a ter registado o seu número de telefone noutro dispositivo. Pressione para re-registar.</string>
+    <string name="warning_expired_build">A sua versão de mUzima expirou!</string>
+    <string name="warning_expired_build_details">As mensagens deixarão de ser enviadas com sucesso. Toque para actualizar para a versão mais recente.</string>
+    <string name="warning_no_web_browser_installed">Não existe um navegador web instalado!</string>
+    <string name="warning_service_outage">O mUzima está a experenciar problemas técncios. Estamos a trabalhar ariduamente para re-establecer o serviço o mais rapidamente possível.</string>
+    <string name="warning_outdated_build">A sua versão do mUzima está desactualizada</string>
+    <plurals name="plurals_outdated_build_details">
+        <item quantity="one">A sua versão do mUzima irá expirar dentro de %d dias. Tocar para atualizar para a versão mais recente.</item>
+        <item quantity="other">A sua versão do mUzima irá expirar dentro de %d dias. Pressione para atualizar para a versão mais recente.</item>
+    </plurals>
+    <string name="warning_outdated_build_details_today">A sua versão de mUzima vai expirar hoje. Toque para actualizar para a versão mais recente.</string>
+    <string name="title_sms_default">Definir como aplicação SMS padrão</string>
+    <string name="hint_sms_default">Toque para tornar o mUzima a sua applicação de SMS padrão.</string>
+    <string name="title_import_system_sms">Importar as SMS do sistema</string>
+    <string name="hint_import_system_sms">Toque para copiar as mensagens SMS do seu telefone para a base de dados encriptada do mUzima.</string>
+    <string name="title_push">Ativar mensagens e chamadas do mUzima</string>
+    <string name="hint_push">Melhore a sua experiência de comunicação.</string>
+    <string name="title_invite_friends">Convide os seus amigos</string>
+    <string name="hint_share_text">Quanto mais amigos usarem o mUzima, melhor este se torna.</string>
+    <string name="hint_optimize_for_missing_play_services">Otimiza para os Play Services em falta</string>
+    <string name="hint_this_device_does_not_support_play_services_tap_to_disable_system_battery">Este dispositivo não suporta os Play Services. Toque para desativar o sistema de otimização de bateria que impede o mUzima de recolher mensagens enquanto inativo.</string>
+    <plurals name="plurals_delete_selected_conversations">
+        <item quantity="one" tools:ignore="ImpliedQuantity">Eliminar a conversa seleccionada?</item>
+        <item quantity="other">Eliminar conversas seleccionadas?</item>
+    </plurals>
+    <plurals name="plurals_this_will_permanently_delete_all_n_selected_conversations">
+        <item quantity="one" tools:ignore="ImpliedQuantity">Isto irá eliminar permanentemente a conversa seleccionada.</item>
+        <item quantity="other">Isto irá eliminar permanentemente todas as %1$d conversas seleccionadas.</item>
+    </plurals>
+    <string name="hint_deleting_selected_conversations">A eliminar conversas seleccionadas...</string>
+    <string name="general_group_members">Membros do grupo</string>
+    <string name="general_me">Eu</string>
+    <string name="general_invite_text">Leve a sua conversa com %1$s para o próximo nível.</string>
+    <string name="general_with">Com:</string>
+    <string name="general_to">Para:</string>
+    <string name="general_from">De:</string>
+    <string name="general_pending">Pendente…</string>
+    <string name="general_push_data">Dados (mUzima)</string>
+    <string name="general_mms">MMS</string>
+    <string name="general_sms">SMS</string>
+    <string name="warning_failed_to_send">O envio falhou</string>
+    <string name="general_warm">VER</string>
+    <string name="warning_issues_need_your_attention">Alguns problemas requerem a sua atenção.</string>
+    <string name="general_resend">REENVIAR</string>
+    <string name="general_sent">Enviado</string>
+    <string name="general_received">Recebido</string>
+    <string name="general_disappears">Desaparece</string>
+    <string name="general_via">Via</string>
+    <string name="general_updating_database">A actualizar a base de dados...</string>
+    <string name="hint_would_you_like_to_import_your_existing_text_messages">Gostaria de importar as suas mensagens de texto existentes para a base de dados encriptada do mUzima?</string>
+    <string name="hint_default_system_database_will_not_be_modified">A base de dados de sistema não será modificada ou alterada de nenhuma forma.</string>
+    <string name="general_import">Importar</string>
+    <string name="hint_could_take_a_moment_please_be_patient">Isto pode demorar um pouco. Por favor, seja paciente. Será notificado quanto a importação estiver completa.</string>
+    <string name="general_importing">A IMPORTAR</string>
+    <string name="hint_unlock_to_complete_update">Desbloqueie para completar a actualização</string>
+    <string name="hint_unlock_to_complete_update_text">Por favor desbloqueie o mUzima para completar a actualização</string>
+    <string name="hint_introducing_typing_indicators">Introdução aos indicadores de escrever.</string>
+    <string name="hint_you_can_optionally_see_and_share_when_messages_are_being_typed">Agora pode opcionalmente ver e partilhar quando as mensagens estão a ser escritas.</string>
+    <string name="hint_would_you_like_to_enable_them_now">Quer ativá-las agora?</string>
+    <string name="hint_turn_on_typing_indicators">Ativar indicadores de escrever</string>
+    <string name="general_no_thanks">Não, obrigado</string>
+    <string name="hint_share_a_profile_photo_and_name_with_friends">Agora pode partilhar a sua foto de perfil e nome com amigos no mUzima</string>
+    <string name="hint_ready_for_your_closeup">Pronto para o seu retrato?</string>
+    <string name="general_new_conversation">Conversa nova</string>
+    <string name="general_welcome_to_muzima" tools:ignore="ExtraTranslation">Bem-vindo ao mUzima.</string>
+    <string name="hint_muzima_is_now_called" tools:ignore="ExtraTranslation">mUzima é agora um mensageiro privado, para todas as situações: mUzima.</string>
+    <string name="hint_welcome_to_muzima_excited">Bem-vindo ao mUzima!</string>
+    <string name="hint_tap_to_explore">Toque para explorar.</string>
+    <string name="hint_say_hello_to_video_calls">Diz \'olá\' às videochamadas seguras.</string>
+    <string name="hint_now_supports_secure_video_calls">O mUzima agora suporta videochamadas seguras. Comece uma chamada do mUzima como de costume, toque no botão do vídeo, e diga olá.</string>
+    <string name="hint_now_supports_secure_video_calling">O mUzima agora suporta videochamadas seguras. </string>
+    <string name="hint_now_supports_secure_video_calling_long">O mUzima agora suporta videochamadas seguras. Toque para explorar.</string>
+    <string name="hint_profiles_are_here">Chegaram os perfis mUzima</string>
+    <string name="hint_read_receipts_are_here">Os recibos de leitura chegaram</string>
+    <string name="hint_optionally_see_and_share_when_messages_have_been_read">Opcionalmente, veja e partilhe quando as mensagens tiverem sido lidas.</string>
+    <string name="hint_enable_read_receipts">Ativar recibos de leitura</string>
+    <string name="general_on">On</string>
+    <string name="general_sound">Sound</string>
+    <string name="preferences_contact_joined_signal">Um contacto juntou-se ao mUzima</string>
+    <string name="general_events">Eventos</string>
+    <string name="general_priority">Prioridade</string>
+    <string name="general_high">Elevada</string>
+    <string name="general_max">Máxima</string>
+    <string name="general_show">Mostrar</string>
+    <string name="hint_name_and_message">Nome e mensagem</string>
+    <string name="hint_name_only">Apenas o nome</string>
+    <string name="hint_no_name_or_message">Sem nome ou mensagem</string>
+    <string name="hint_repeat_alerts">Alertas repetidos</string>
+    <string name="hint_one_time">Uma vez</string>
+    <string name="hint_two_times">Duas vezes</string>
+    <string name="hint_three_times">Três vezes</string>
+    <string name="hint_five_times">Cinco vezes</string>
+    <string name="hint_ten_times">Dez vezes</string>
+    <string name="general_green">Verde</string>
+    <string name="general_red">Vermelho</string>
+    <string name="general_blue">Azul</string>
+    <string name="general_orange">Laranja</string>
+    <string name="general_cyan">Cíano</string>
+    <string name="general_magenta">Magenta</string>
+    <string name="general_white">Branco</string>
+    <string name="general_fast">Rápido</string>
+    <string name="general_normal">Normal</string>
+    <string name="general_slow">Lento</string>
+    <string name="general_advanced">Avançado</string>
+    <string name="general_privacy">Privacidade</string>
+    <string name="preferences_in_chat_sounds">Sons na conversa</string>
+    <string name="preferences_led_blink_title">Padrão de piscar do LED</string>
+    <string name="general_sms_mms">SMS e MMS</string>
+    <string name="preferences_chats">Conversas e multimédia</string>
+    <string name="preferences_use_signal_for_viewing_and_storing_all_incoming_text_messages">Use mUzima for all incoming text messages</string>
+    <string name="title_receive_all_sms">Receber todas as SMS</string>
+    <string name="preferences_use_signal_for_viewing_and_storing_all_incoming_multimedia_messages">Utilizar o mUzima para receber todas as mensagens multimédia</string>
+    <string name="title_receive_all_mms">Receber todas as MMS</string>
+    <string name="preferences_sms_disabled">SMS Desativados</string>
+
+    <string name="hint_touch_to_make_signal_your_default_sms_app">Toque para tornar o mUzima a sua aplicação SMS padrão</string>
+    <string name="hint_request_a_delivery_report_for_each_sms_message_you_send">Pedir um aviso de entrega para cada SMS enviado</string>
+    <string name="title_sms_delivery_reports">Avisos de entrega de SMS</string>
+    <string name="preferences_support_wifi_calling">Modo de compatibilidade \"Chamada WiFi\"</string>
+    <string name="preferences_enable_if_your_device_supports_sms_mms_delivery_over_wifi">Ative se o seu dispositivo utiliza entrega de SMS/MMS por WiFi (ative apenas se o \'WiFi Calling\' está ativo neste dispositivo)</string>
+    <string name="preferences_sms_enabled">SMS Activos</string>
+    <string name="hint_touch_to_change_your_default_sms_app">Toque para mudar a sua aplicação de SMS padrão</string>
+    <string name="hint_sms_mms_summary">SMS %1$s, MMS %2$s</string>
+    <string name="hint_last_backup_s">Última cópia de segurança: %s</string>
+    <string name="warning_requires_external_storage_permission_in_order_to_create_backups">O mUzima requer permissão de acesso a armazenamento externo para criar cópias de segurança, mas esta foi negada permanentemente. Por favor aceda a permissões da aplicação, seleccione \"Permissões\" e active \"Armazenamento\".</string>
+    <plurals name="plurals_messages_per_conversation">
+        <item quantity="one">%d mensagem por conversa</item>
+        <item quantity="other">%d mensagens por conversa</item>
+    </plurals>
+    <string name="prompt_delete_all_old_messages_now">Apagar todas as mensagens antigas?</string>
+    <plurals name="plurals_this_will_immediately_trim_all_conversations_to_the_d_most_recent_messages">
+        <item quantity="one" tools:ignore="ImpliedQuantity">Isto irá reduzir as conversas anteriores à mensagem mais recente.</item>
+        <item quantity="other">Isto irá reduzir as conversas anteriores às %d mensagens mais recentes.</item>
+    </plurals>
+    <string name="text_old_messages_successfully_deleted">Mensagens antigas apagadas com sucesso</string>
+    <string name="general_deleting_old_messages">A apagar mensagens antigas…</string>
+    <string name="general_d_messages_so_far">%d mensagens até à data</string>
+    <string name="general_in_progress">Em progresso</string>
+    <string name="preferences_media_auto_download">Descarregar multimédia automaticamente</string>
+    <string name="preferences_when_using_mobile_data">Quando utilizar dados móveis</string>
+    <string name="preferences_when_using_wifi">Quando utilizar Wi-Fi</string>
+    <string name="preferences_when_roaming">Quando em roaming</string>
+    <string name="preferences_create_backup">Criar cópia de segurança</string>
+    <string name="preferences_backup_chats_to_external_storage">Executar cópia de segurança para armazenamento externo</string>
+    <string name="preferences_chat_backups">Cópias de segurança de conversas</string>
+    <string name="preferences_trim_all_conversations_now">Aparar todas as conversas agora</string>
+    <string name="preferences_scan_through_all_conversations_and_enforce_conversation_length_limits">Verificar todas as conversas e limitá-las ao tamanho máximo das conversas</string>
+    <string name="preferences_conversation_length_limit">Tamanho máximo das conversas</string>
+    <string name="preferences_automatically_delete_older_messages">Apagar automaticamente as mensagens mais antigas quando uma conversa exceder o tamanho especificado</string>
+    <string name="preferences_delete_old_messages">Apagar mensagens antigas</string>
+    <string name="preferences_message_trimming">Abreviação da mensagem</string>
+    <string name="preferences_enter_key_sends">Tecla de enter envia</string>
+    <string name="preferences_enter_key_sends_message">Pressionar a tecla Enter envia mensagem de texto</string>
+    <string name="preferences_use_system_emoji">Utilizar emojis do sistema</string>
+    <string name="preferences_disable_muzima_built_in_emoji_support">Desativar o suporte de emojis próprios do mUzima</string>
+    <string name="preferences_show_invitation_prompts">Mostrar notificações de convite</string>
+    <string name="preferences_display_invitation_prompts_for_contacts_without_signal">Mostrar notificações de convite para contactos sem o mUzima</string>
+    <string name="preferences_message_text_size">Tamanho de letra da mensagem</string>
+    <string name="general_extra_large">Extra grande</string>
+    <string name="general_currently_s">Actualmente: %s</string>
+    <string name="general_unregistering">A eliminar o registo</string>
+    <string name="general_unregistering_from_muzima_messages_and_calls">A eliminar o registo do serviço de mensagens e chamadas do mUzima...</string>
+    <string name="error_connecting_to_server">Erro a establecer a ligação com o servidor!</string>
+    <string name="prompt_disable_muzima_messages_and_calls">Desativar as mensagens e chamadas do mUzima?</string>
+    <string name="prompt_disable_muzima_messages_and_calls_by_unregistering">Desative as mensagens e chamadas do mUzima eliminando o seu registo do servidor. Vai ser necessário registar novamente o seu número de telefone se pretender utilizar o mUzima no futuro.</string>
+    <string name="general_free_private_messages_and_calls">Mensagens e chamadas privadas gratuitas para utilizadores mUzima</string>
+    <string name="general_muzima_messages_and_calls">Mensagens e chamadas do mUzima</string>
+    <string name="general_choose_identity">Escolher identidade</string>
+    <string name="preferences_choose_your_contact_entry_from_the_contacts_list">Escolha o seu próprio contacto da lista de contactos.</string>
+    <string name="preferences_led_color">Cor do LED</string>
+    <string name="error_setting_profile_photo">Erro a definir a foto de perfil</string>
 </resources>

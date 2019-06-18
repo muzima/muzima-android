@@ -1339,7 +1339,7 @@
     <string name="general_disappears">Disappears</string>
     <string name="general_via">Via</string>
     <string name="general_updating_database">Updating database...</string>
-    <string name="hint_would_you_like_to_import_your_existing_text_messages">Would you like to import your existing text messages into Signal\'s encrypted database?</string>
+    <string name="hint_would_you_like_to_import_your_existing_text_messages">Would you like to import your existing text messages into mUzima\'s encrypted database?</string>
     <string name="hint_default_system_database_will_not_be_modified">The default system database will not be modified or altered in any way.</string>
     <string name="general_import">Import</string>
     <string name="hint_could_take_a_moment_please_be_patient">This could take a moment. Please be patient, we\'ll notify you when the import is complete.</string>
