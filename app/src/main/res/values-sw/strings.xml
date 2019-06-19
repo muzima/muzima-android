@@ -1339,4 +1339,5 @@
     <string name="preferences_choose_your_contact_entry_from_the_contacts_list">Chagua kuingia kwako kwenye orodha ya anwani.</string>
     <string name="preferences_led_color">Rangi ya LED</string>
     <string name="error_setting_profile_photo">Hitilafu ya kuweka picha ya wasifu</string>
+    <string name="general_chat">Ongea sasa</string>
 </resources>

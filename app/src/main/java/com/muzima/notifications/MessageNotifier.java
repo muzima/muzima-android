@@ -406,7 +406,7 @@ public class MessageNotifier {
         ringtone.play();
     }
 
-    private static NotificationState constructNotificationState(@NonNull Context context,
+    public static NotificationState constructNotificationState(@NonNull Context context,
                                                                 @NonNull Cursor cursor) {
         NotificationState notificationState = new NotificationState();
         MmsSmsDatabase.Reader reader = DatabaseFactory.getMmsSmsDatabase(context).readerFor(cursor);
