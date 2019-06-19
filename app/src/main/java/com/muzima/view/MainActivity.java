@@ -10,6 +10,7 @@
 
 package com.muzima.view;
 
+import android.database.Cursor;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
@@ -36,6 +37,9 @@ import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.messaging.ConversationActivity;
 import com.muzima.messaging.ConversationListActivity;
+import com.muzima.messaging.sqlite.database.DatabaseFactory;
+import com.muzima.notifications.MessageNotifier;
+import com.muzima.notifications.NotificationState;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.ThemeUtils;
@@ -188,36 +192,24 @@ public class MainActivity extends BroadcastListenerActivity {
             CohortController cohortController = muzimaApplication.getCohortController();
             PatientController patientController = muzimaApplication.getPatientController();
             FormController formController = muzimaApplication.getFormController();
-            NotificationController notificationController = muzimaApplication.getNotificationController();
+            Cursor telcoCursor = null;
             try {
+                telcoCursor = DatabaseFactory.getMmsSmsDatabase(getApplicationContext()).getUnread();
+                NotificationState notificationState = MessageNotifier.constructNotificationState(getApplicationContext(), telcoCursor);
                 homeActivityMetadata.totalCohorts = cohortController.countAllCohorts();
                 homeActivityMetadata.syncedCohorts = cohortController.countSyncedCohorts();
                 homeActivityMetadata.isCohortUpdateAvailable = cohortController.isUpdateAvailable();
                 homeActivityMetadata.syncedPatients = patientController.countAllPatients();
                 homeActivityMetadata.incompleteForms = formController.countAllIncompleteForms();
                 homeActivityMetadata.completeAndUnsyncedForms = formController.countAllCompleteForms();
-
-                // Notifications
-                User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
-                if (authenticatedUser != null) {
-                    homeActivityMetadata.newNotifications = notificationController
-                            .getAllNotificationsByReceiverCount(authenticatedUser.getPerson().getUuid(), NOTIFICATION_UNREAD);
-                    homeActivityMetadata.totalNotifications = notificationController
-                            .getAllNotificationsByReceiverCount(authenticatedUser.getPerson().getUuid(), null);
-                } else {
-                    homeActivityMetadata.newNotifications = 0;
-                    homeActivityMetadata.totalNotifications = 0;
-                }
+                homeActivityMetadata.newMessages = notificationState.getMessageCount();
+                homeActivityMetadata.totalThreads = notificationState.getThreadCount();
             } catch (CohortController.CohortFetchException e) {
                 Log.w(getClass().getSimpleName(), "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (PatientController.PatientLoadException e) {
                 Log.w(getClass().getSimpleName(), "PatientLoadException occurred while fetching metadata in MainActivityBackgroundTask", e);
             } catch (FormController.FormFetchException e) {
                 Log.w(getClass().getSimpleName(), "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
-            } catch (NotificationController.NotificationFetchException e) {
-                Log.w(getClass().getSimpleName(), "NotificationFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
-            } catch (ParseException e) {
-                Log.w(getClass().getSimpleName(), "ParseException occurred while fetching metadata in MainActivityBackgroundTask", e);
             }
             return homeActivityMetadata;
         }
@@ -244,8 +236,8 @@ public class MainActivity extends BroadcastListenerActivity {
                     homeActivityMetadata.incompleteForms, homeActivityMetadata.completeAndUnsyncedForms));
 
             TextView notificationsDescription = mMainView.findViewById(R.id.notificationDescription);
-            notificationsDescription.setText(getString(R.string.hint_dashboard_notifications_description,
-                    homeActivityMetadata.newNotifications, homeActivityMetadata.totalNotifications));
+            notificationsDescription.setText(getString(R.string.hint_d_new_messages_in_d_conversations,
+                    homeActivityMetadata.newMessages, homeActivityMetadata.totalThreads));
 
             TextView currentUser = findViewById(R.id.currentUser);
             currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
@@ -259,8 +251,8 @@ public class MainActivity extends BroadcastListenerActivity {
         int syncedPatients;
         int incompleteForms;
         int completeAndUnsyncedForms;
-        int newNotifications;
-        int totalNotifications;
+        int newMessages;
+        int totalThreads;
         boolean isCohortUpdateAvailable;
     }
 
