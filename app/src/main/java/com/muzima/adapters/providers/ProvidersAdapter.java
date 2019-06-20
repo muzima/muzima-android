@@ -14,7 +14,6 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Provider;
 import com.muzima.controller.NotificationController;
-import com.muzima.controller.ProviderController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
@@ -30,9 +29,7 @@ public abstract class ProvidersAdapter extends ListAdapter<Provider> {
 
     protected ProvidersAdapter(Context context, int textViewResourceId, MuzimaApplication muzimaApplication) {
         super(context, textViewResourceId);
-        ProviderController providerController = muzimaApplication.getProviderController();
         this.notificationController = muzimaApplication.getNotificationController();
-        MuzimaApplication muzimaApplication1 = muzimaApplication;
     }
 
     @NonNull

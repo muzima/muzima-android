@@ -55,21 +55,6 @@
         android:layout_height="wrap_content"
         android:background="?attr/listMultiSelectorBlue"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/reply_notification_image_icon"
-            android:layout_margin="12dp"
-            android:contentDescription="@string/send_general_text"
-            android:layout_alignParentEnd="true"
-            android:src="?attr/icReplyNotification"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </RelativeLayout>
-
     <FrameLayout
         style="@style/LoginButtonLayout">
 
