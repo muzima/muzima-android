@@ -41,13 +41,6 @@ public class GeneralNotificationsListFragment extends NotificationListFragment {
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//        Notification notification = (Notification) listAdapter.getItem(position);
-//        Intent notificationIntent = new Intent(getActivity(), NotificationActivity.class);
-//        notificationIntent.putExtra(NotificationActivity.NOTIFICATION, notification);
-        Provider provider = (Provider) adapterView.getItemAtPosition(position);
-        provider.getName();
-        Intent intent = new Intent(getActivity(),ConversationActivity.class);
-        intent.putExtra("provider",provider);
-        startActivity(intent);
+
     }
 }
