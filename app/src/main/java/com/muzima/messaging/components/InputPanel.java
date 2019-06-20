@@ -18,7 +18,6 @@ import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.muzima.R;
 import com.muzima.messaging.TextSecurePreferences;
@@ -58,8 +57,8 @@ public class InputPanel extends LinearLayout
     private View recordingContainer;
 
     private MicrophoneRecorderView microphoneRecorderView;
-    private SlideToCancel          slideToCancel;
-    private RecordTime             recordTime;
+    private SlideToCancel slideToCancel;
+    private RecordTime recordTime;
 
     private @Nullable Listener listener;
     private boolean emojiVisible;
@@ -83,15 +82,15 @@ public class InputPanel extends LinearLayout
 
         View quoteDismiss = findViewById(R.id.quote_dismiss);
 
-        this.quoteView              = findViewById(R.id.quote_view);
-        this.emojiToggle            = findViewById(R.id.emoji_toggle);
-        this.composeText            = findViewById(R.id.embedded_text_editor);
-        this.quickCameraToggle      = findViewById(R.id.quick_camera_toggle);
-        this.quickAudioToggle       = findViewById(R.id.quick_audio_toggle);
-        this.buttonToggle           = findViewById(R.id.button_toggle);
-        this.recordingContainer     = findViewById(R.id.recording_container);
-        this.recordTime             = new RecordTime(findViewById(R.id.record_time));
-        this.slideToCancel          = new SlideToCancel(findViewById(R.id.slide_to_cancel));
+        this.quoteView = findViewById(R.id.quote_view);
+        this.emojiToggle = findViewById(R.id.emoji_toggle);
+        this.composeText = findViewById(R.id.embedded_text_editor);
+        this.quickCameraToggle = findViewById(R.id.quick_camera_toggle);
+        this.quickAudioToggle = findViewById(R.id.quick_audio_toggle);
+        this.buttonToggle = findViewById(R.id.button_toggle);
+        this.recordingContainer = findViewById(R.id.recording_container);
+        this.recordTime  = new RecordTime(findViewById(R.id.record_time));
+        this.slideToCancel = new SlideToCancel(findViewById(R.id.slide_to_cancel));
         this.microphoneRecorderView = findViewById(R.id.recorder_view);
         this.microphoneRecorderView.setListener(this);
 
@@ -206,8 +205,8 @@ public class InputPanel extends LinearLayout
     }
 
     private long onRecordHideEvent(float x) {
-        ListenableFuture<Void> future      = slideToCancel.hide(x);
-        long                   elapsedTime = recordTime.hide();
+        ListenableFuture<Void> future = slideToCancel.hide(x);
+        long elapsedTime = recordTime.hide();
 
         future.addListener(new AssertedSuccessListener<Void>() {
             @Override
@@ -285,7 +284,7 @@ public class InputPanel extends LinearLayout
         }
 
         public void moveTo(float x) {
-            float     offset    = getOffset(x);
+            float offset = getOffset(x);
             Animation animation = new TranslateAnimation(Animation.ABSOLUTE, offset,
                     Animation.ABSOLUTE, offset,
                     Animation.RELATIVE_TO_SELF, 0,

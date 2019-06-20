@@ -42,7 +42,6 @@ import com.muzima.utils.Permissions;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.concurrent.LifecycleBoundTask;
 import com.muzima.view.preferences.SettingsActivity;
-import com.muzima.view.preferences.settings.SettingsPreferenceFragment;
 
 import org.whispersystems.libsignal.util.guava.Optional;
 
@@ -54,11 +53,9 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     @SuppressWarnings("unused")
     private static final String TAG = ConversationListActivity.class.getSimpleName();
 
-    private ConversationListFragment conversationListFragment;
     private SearchFragment searchFragment;
     private SearchToolbar searchToolbar;
     private ImageView searchAction;
-    private ViewGroup fragmentContainer;
     private Toolbar toolbar;
 
     private ThemeUtils themeUtils = new DynamicNoActionBarTheme();
@@ -77,8 +74,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
 
         searchToolbar            = findViewById(R.id.search_toolbar);
         searchAction             = findViewById(R.id.search_action);
-        fragmentContainer        = findViewById(R.id.fragment_container);
-        conversationListFragment = initFragment(R.id.fragment_container, new ConversationListFragment(), getResources().getConfiguration().locale);
+        ViewGroup fragmentContainer = findViewById(R.id.fragment_container);
+        ConversationListFragment conversationListFragment = initFragment(R.id.fragment_container, new ConversationListFragment(), getResources().getConfiguration().locale);
 
         initializeSearchListener();
 
@@ -160,8 +157,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     }
 
     private void initializeProfileIcon(@NonNull SignalRecipient recipient) {
-        ImageView     icon          = findViewById(R.id.toolbar_icon);
-        String        name          = Optional.fromNullable(recipient.getName()).or(Optional.fromNullable(TextSecurePreferences.getProfileName(this))).or("");
+        ImageView icon = findViewById(R.id.toolbar_icon);
+        String name = Optional.fromNullable(recipient.getName()).or(Optional.fromNullable(TextSecurePreferences.getProfileName(this))).or("");
         MaterialColor fallbackColor = recipient.getColor();
 
         if (fallbackColor == ContactColors.UNKNOWN_COLOR && !TextUtils.isEmpty(name)) {

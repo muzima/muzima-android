@@ -127,7 +127,6 @@ repositories {
 dependencies {
     compile 'com.android.support:multidex:1.0.3'
     compile 'de.hdodenhof:circleimageview:1.2.1'
-    //compile group: 'com.madgag', name: 'scprov-jdk15on', version: '1.47.0.2'
     compile fileTree('lib/stickylistheaders-1.0.0.jar')
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.4.0'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.4.0'
@@ -153,9 +152,7 @@ dependencies {
     }
     compile 'com.google.android.gms:play-services-maps:16.0.0'
     compile 'com.google.android.gms:play-services-places:16.0.0'
-    compile ('org.whispersystems:signal-service-android:2.12.2'){
-       // exclude group: 'com.madgag.spongycastle'
-    }
+    compile 'org.whispersystems:signal-service-android:2.12.2'
 
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.1.3'

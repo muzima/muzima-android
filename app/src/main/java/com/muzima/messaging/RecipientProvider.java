@@ -8,7 +8,6 @@ import android.text.TextUtils;
 
 import com.muzima.R;
 import com.muzima.messaging.sqlite.database.DatabaseFactory;
-import com.muzima.messaging.sqlite.database.GroupDatabase;
 import com.muzima.messaging.sqlite.database.GroupDatabase.GroupRecord;
 import com.muzima.messaging.sqlite.database.RecipientDatabase;
 import com.muzima.messaging.sqlite.database.SignalAddress;
@@ -38,8 +37,7 @@ public class RecipientProvider {
         put("262966", new RecipientDetails("Amazon", null, false, null, null));
     }};
 
-    @NonNull
-    public SignalRecipient getRecipient(@NonNull Context context, @NonNull SignalAddress address, @NonNull Optional<RecipientDatabase.RecipientSettings> settings, @NonNull Optional<GroupRecord> groupRecord, boolean asynchronous) {
+    @NonNull public SignalRecipient getRecipient(@NonNull Context context, @NonNull SignalAddress address, @NonNull Optional<RecipientDatabase.RecipientSettings> settings, @NonNull Optional<GroupRecord> groupRecord, boolean asynchronous) {
         SignalRecipient cachedRecipient = recipientCache.get(address);
 
         if (cachedRecipient != null && (asynchronous || !cachedRecipient.isResolving()) && ((!groupRecord.isPresent() && !settings.isPresent()) || !cachedRecipient.isResolving() || cachedRecipient.getName() != null)) {
@@ -58,13 +56,11 @@ public class RecipientProvider {
         return cachedRecipient;
     }
 
-    @NonNull
-    public Optional<SignalRecipient> getCached(@NonNull SignalAddress address) {
+    @NonNull public Optional<SignalRecipient> getCached(@NonNull SignalAddress address) {
         return Optional.fromNullable(recipientCache.get(address));
     }
 
-    private @NonNull
-    Optional<RecipientDetails> createPrefetchedRecipientDetails(@NonNull Context context, @NonNull SignalAddress address,
+    private @NonNull Optional<RecipientDetails> createPrefetchedRecipientDetails(@NonNull Context context, @NonNull SignalAddress address,
                                                                 @NonNull Optional<RecipientDatabase.RecipientSettings> settings,
                                                                 @NonNull Optional<GroupRecord> groupRecord) {
         if (address.isGroup() && settings.isPresent() && groupRecord.isPresent()) {
@@ -76,8 +72,7 @@ public class RecipientProvider {
         return Optional.absent();
     }
 
-    private @NonNull
-    ListenableFutureTask<RecipientDetails> getRecipientDetailsAsync(final Context context, final @NonNull SignalAddress address, final @NonNull Optional<RecipientDatabase.RecipientSettings> settings, final @NonNull Optional<GroupRecord> groupRecord) {
+    private @NonNull ListenableFutureTask<RecipientDetails> getRecipientDetailsAsync(final Context context, final @NonNull SignalAddress address, final @NonNull Optional<RecipientDatabase.RecipientSettings> settings, final @NonNull Optional<GroupRecord> groupRecord) {
         Callable<RecipientDetails> task = () -> getRecipientDetailsSync(context, address, settings, groupRecord, true);
 
         ListenableFutureTask<RecipientDetails> future = new ListenableFutureTask<>(task);
@@ -85,15 +80,13 @@ public class RecipientProvider {
         return future;
     }
 
-    private @NonNull
-    RecipientDetails getRecipientDetailsSync(Context context, @NonNull SignalAddress address, Optional<RecipientDatabase.RecipientSettings> settings, Optional<GroupRecord> groupRecord, boolean nestedAsynchronous) {
+    private @NonNull RecipientDetails getRecipientDetailsSync(Context context, @NonNull SignalAddress address, Optional<RecipientDatabase.RecipientSettings> settings, Optional<GroupRecord> groupRecord, boolean nestedAsynchronous) {
         if (address.isGroup())
             return getGroupRecipientDetails(context, address, groupRecord, settings, nestedAsynchronous);
         else return getIndividualRecipientDetails(context, address, settings);
     }
 
-    private @NonNull
-    RecipientDetails getIndividualRecipientDetails(Context context, @NonNull SignalAddress address, Optional<RecipientDatabase.RecipientSettings> settings) {
+    private @NonNull RecipientDetails getIndividualRecipientDetails(Context context, @NonNull SignalAddress address, Optional<RecipientDatabase.RecipientSettings> settings) {
         if (!settings.isPresent()) {
             settings = DatabaseFactory.getRecipientDatabase(context).getRecipientSettings(address);
         }
@@ -106,8 +99,7 @@ public class RecipientProvider {
         }
     }
 
-    private @NonNull
-    RecipientDetails getGroupRecipientDetails(Context context, SignalAddress groupId, Optional<GroupRecord> groupRecord, Optional<RecipientDatabase.RecipientSettings> settings, boolean asynchronous) {
+    private @NonNull RecipientDetails getGroupRecipientDetails(Context context, SignalAddress groupId, Optional<GroupRecord> groupRecord, Optional<RecipientDatabase.RecipientSettings> settings, boolean asynchronous) {
 
         if (!groupRecord.isPresent()) {
             groupRecord = DatabaseFactory.getGroupDatabase(context).getGroup(groupId.toGroupString());
@@ -142,47 +134,30 @@ public class RecipientProvider {
     }
 
     public static class RecipientDetails {
-        @Nullable
-        public final String name;
-        @Nullable
-        public final String customLabel;
-        @Nullable
-        public final Uri systemContactPhoto;
-        @Nullable
-        public final Uri contactUri;
-        @Nullable
-        public final Long groupAvatarId;
-        @Nullable
-        public final MaterialColor color;
-        @Nullable
-        public final Uri messageRingtone;
-        @Nullable
-        public final Uri callRingtone;
+        @Nullable public final String name;
+        @Nullable public final String customLabel;
+        @Nullable public final Uri systemContactPhoto;
+        @Nullable public final Uri contactUri;
+        @Nullable public final Long groupAvatarId;
+        @Nullable public final MaterialColor color;
+        @Nullable public final Uri messageRingtone;
+        @Nullable public final Uri callRingtone;
         public final long mutedUntil;
-        @Nullable
-        public final RecipientDatabase.VibrateState messageVibrateState;
-        @Nullable
-        public final RecipientDatabase.VibrateState callVibrateState;
+        @Nullable public final RecipientDatabase.VibrateState messageVibrateState;
+        @Nullable public final RecipientDatabase.VibrateState callVibrateState;
         public final boolean blocked;
         public final int expireMessages;
-        @NonNull
-        public final List<SignalRecipient> participants;
-        @Nullable
-        public final String profileName;
+        @NonNull public final List<SignalRecipient> participants;
+        @Nullable public final String profileName;
         public final boolean seenInviteReminder;
         public final Optional<Integer> defaultSubscriptionId;
-        @NonNull
-        public final RecipientDatabase.RegisteredState registered;
-        @Nullable
-        public final byte[] profileKey;
-        @Nullable
-        public final String profileAvatar;
+        @NonNull public final RecipientDatabase.RegisteredState registered;
+        @Nullable public final byte[] profileKey;
+        @Nullable public final String profileAvatar;
         public final boolean profileSharing;
         public final boolean systemContact;
-        @Nullable
-        public final String notificationChannel;
-        @NonNull
-        public final RecipientDatabase.UnidentifiedAccessMode unidentifiedAccessMode;
+        @Nullable public final String notificationChannel;
+        @NonNull  public final RecipientDatabase.UnidentifiedAccessMode unidentifiedAccessMode;
 
         public RecipientDetails(@Nullable String name, @Nullable Long groupAvatarId,
                                 boolean systemContact, @Nullable RecipientDatabase.RecipientSettings settings,

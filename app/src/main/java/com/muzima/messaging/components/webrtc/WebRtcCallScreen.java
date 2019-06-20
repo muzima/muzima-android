@@ -60,7 +60,7 @@ public class WebRtcCallScreen extends FrameLayout implements RecipientModifiedLi
     private WebRtcAnswerDeclineButton incomingCallButton;
 
     private SignalRecipient recipient;
-    private boolean   minimized;
+    private boolean minimized;
 
 
     public WebRtcCallScreen(Context context) {
@@ -103,13 +103,13 @@ public class WebRtcCallScreen extends FrameLayout implements RecipientModifiedLi
 
     @SuppressLint("RestrictedApi")
     public void setUntrustedIdentity(SignalRecipient personInfo, IdentityKey untrustedIdentity) {
-        String          name            = recipient.toShortString();
-        String          introduction    = String.format(getContext().getString(R.string.general_new_safety_numbers), name, name);
+        String name = recipient.toShortString();
+        String introduction = String.format(getContext().getString(R.string.general_new_safety_numbers), name, name);
         SpannableString spannableString = new SpannableString(introduction + " " + getContext().getString(R.string.general_verify_this_contact));
 
         spannableString.setSpan(new VerifySpan(getContext(), personInfo.getAddress(), untrustedIdentity),
-                introduction.length()+1, spannableString.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+introduction.length()+1, spannableString.length(),
+Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         setPersonInfo(personInfo);
 
@@ -210,23 +210,23 @@ public class WebRtcCallScreen extends FrameLayout implements RecipientModifiedLi
         LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.webrtc_call_screen, this, true);
 
-        this.elapsedTime                  = findViewById(R.id.elapsedTime);
-        this.photo                        = findViewById(R.id.photo);
-        this.localRenderLayout            = findViewById(R.id.local_render_layout);
-        this.remoteRenderLayout           = findViewById(R.id.remote_render_layout);
-        this.phoneNumber                  = findViewById(R.id.phoneNumber);
-        this.name                         = findViewById(R.id.name);
-        this.label                        = findViewById(R.id.label);
-        this.status                       = findViewById(R.id.callStateLabel);
-        this.controls                     = findViewById(R.id.inCallControls);
-        this.endCallButton                = findViewById(R.id.hangup_fab);
-        this.incomingCallButton           = findViewById(R.id.answer_decline_button);
-        this.untrustedIdentityContainer   = findViewById(R.id.untrusted_layout);
+        this.elapsedTime = findViewById(R.id.elapsedTime);
+        this.photo = findViewById(R.id.photo);
+        this.localRenderLayout = findViewById(R.id.local_render_layout);
+        this.remoteRenderLayout = findViewById(R.id.remote_render_layout);
+        this.phoneNumber = findViewById(R.id.phoneNumber);
+        this.name = findViewById(R.id.name);
+        this.label = findViewById(R.id.label);
+        this.status = findViewById(R.id.callStateLabel);
+        this.controls = findViewById(R.id.inCallControls);
+        this.endCallButton= findViewById(R.id.hangup_fab);
+        this.incomingCallButton = findViewById(R.id.answer_decline_button);
+        this.untrustedIdentityContainer = findViewById(R.id.untrusted_layout);
         this.untrustedIdentityExplanation = findViewById(R.id.untrusted_explanation);
-        this.acceptIdentityButton         = findViewById(R.id.accept_safety_numbers);
-        this.cancelIdentityButton         = findViewById(R.id.cancel_safety_numbers);
-        this.expandedInfo                 = findViewById(R.id.expanded_info);
-        this.callHeader                   = findViewById(R.id.call_info_1);
+        this.acceptIdentityButton = findViewById(R.id.accept_safety_numbers);
+        this.cancelIdentityButton = findViewById(R.id.cancel_safety_numbers);
+        this.expandedInfo = findViewById(R.id.expanded_info);
+        this.callHeader = findViewById(R.id.call_info_1);
 
         this.localRenderLayout.setHidden(true);
         this.remoteRenderLayout.setHidden(true);
@@ -236,15 +236,15 @@ public class WebRtcCallScreen extends FrameLayout implements RecipientModifiedLi
     }
 
     private void setConnected(SurfaceViewRenderer localRenderer,
-                              SurfaceViewRenderer remoteRenderer)
+              SurfaceViewRenderer remoteRenderer)
     {
         if (localRenderLayout.getChildCount() == 0 && remoteRenderLayout.getChildCount() == 0) {
             if (localRenderer.getParent() != null) {
-                ((ViewGroup)localRenderer.getParent()).removeView(localRenderer);
+((ViewGroup)localRenderer.getParent()).removeView(localRenderer);
             }
 
             if (remoteRenderer.getParent() != null) {
-                ((ViewGroup)remoteRenderer.getParent()).removeView(remoteRenderer);
+((ViewGroup)remoteRenderer.getParent()).removeView(remoteRenderer);
             }
 
             localRenderLayout.setPosition(7, 70, 25, 25);
@@ -252,10 +252,10 @@ public class WebRtcCallScreen extends FrameLayout implements RecipientModifiedLi
             remoteRenderLayout.setPosition(0, 0, 100, 100);
 
             localRenderer.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT));
+    ViewGroup.LayoutParams.MATCH_PARENT));
 
             remoteRenderer.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT));
+    ViewGroup.LayoutParams.MATCH_PARENT));
 
             localRenderer.setMirror(true);
             localRenderer.setZOrderMediaOverlay(true);
@@ -272,11 +272,11 @@ public class WebRtcCallScreen extends FrameLayout implements RecipientModifiedLi
         this.recipient.addListener(this);
 
         GlideApp.with(getContext().getApplicationContext())
-                .load(recipient.getContactPhoto())
-                .fallback(recipient.getFallbackContactPhoto().asCallCard(getContext()))
-                .error(recipient.getFallbackContactPhoto().asCallCard(getContext()))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(this.photo);
+.load(recipient.getContactPhoto())
+.fallback(recipient.getFallbackContactPhoto().asCallCard(getContext()))
+.error(recipient.getFallbackContactPhoto().asCallCard(getContext()))
+.diskCacheStrategy(DiskCacheStrategy.ALL)
+.into(this.photo);
 
         this.name.setText(recipient.getName());
 
@@ -306,8 +306,8 @@ public class WebRtcCallScreen extends FrameLayout implements RecipientModifiedLi
             ViewCompat.animate(status).alpha(1);
             ViewCompat.animate(endCallButton).translationY(0);
             ViewCompat.animate(endCallButton).alpha(1).withEndAction(() -> {
-                // Note: This is to work around an Android bug, see #6225
-                endCallButton.requestLayout();
+// Note: This is to work around an Android bug, see #6225
+endCallButton.requestLayout();
             });
 
             this.minimized = false;
@@ -318,7 +318,7 @@ public class WebRtcCallScreen extends FrameLayout implements RecipientModifiedLi
     public void onModified(SignalRecipient recipient) {
         Util.runOnMain(() -> {
             if (recipient == WebRtcCallScreen.this.recipient) {
-                setPersonInfo(recipient);
+setPersonInfo(recipient);
             }
         });
     }

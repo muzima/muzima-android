@@ -29,14 +29,14 @@ public class TypingStatusRepository {
     private static final long RECIPIENT_TYPING_TIMEOUT = TimeUnit.SECONDS.toMillis(15);
 
     private final Map<Long, Set<Typist>> typistMap;
-    private final Map<Typist, Runnable>                   timers;
+    private final Map<Typist, Runnable> timers;
     private final Map<Long, MutableLiveData<TypingState>> notifiers;
-    private final MutableLiveData<Set<Long>>              threadsNotifier;
+    private final MutableLiveData<Set<Long>> threadsNotifier;
 
     public TypingStatusRepository() {
-        this.typistMap       = new HashMap<>();
-        this.timers          = new HashMap<>();
-        this.notifiers       = new HashMap<>();
+        this.typistMap = new HashMap<>();
+        this.timers = new HashMap<>();
+        this.notifiers = new HashMap<>();
         this.threadsNotifier = new MutableLiveData<>();
     }
 
@@ -46,7 +46,7 @@ public class TypingStatusRepository {
         }
 
         Set<Typist> typists = Util.getOrDefault(typistMap, threadId, new LinkedHashSet<>());
-        Typist      typist  = new Typist(author, device, threadId);
+        Typist typist  = new Typist(author, device, threadId);
 
         if (!typists.contains(typist)) {
             typists.add(typist);
@@ -70,7 +70,7 @@ public class TypingStatusRepository {
         }
 
         Set<Typist> typists = Util.getOrDefault(typistMap, threadId, new LinkedHashSet<>());
-        Typist      typist  = new Typist(author, device, threadId);
+        Typist typist  = new Typist(author, device, threadId);
 
         if (typists.contains(typist)) {
             typists.remove(typist);
@@ -130,10 +130,10 @@ public class TypingStatusRepository {
 
     public static class TypingState {
         private final List<SignalRecipient> typists;
-        private final boolean         replacedByIncomingMessage;
+        private final boolean replacedByIncomingMessage;
 
         public TypingState(List<SignalRecipient> typists, boolean replacedByIncomingMessage) {
-            this.typists                   = typists;
+            this.typists = typists;
             this.replacedByIncomingMessage = replacedByIncomingMessage;
         }
 
@@ -148,12 +148,12 @@ public class TypingStatusRepository {
 
     private static class Typist {
         private final SignalRecipient author;
-        private final int       device;
-        private final long      threadId;
+        private final int device;
+        private final long threadId;
 
         private Typist(@NonNull SignalRecipient author, int device, long threadId) {
-            this.author   = author;
-            this.device   = device;
+            this.author = author;
+            this.device = device;
             this.threadId = threadId;
         }
 

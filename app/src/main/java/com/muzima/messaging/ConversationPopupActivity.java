@@ -34,17 +34,20 @@ public class ConversationPopupActivity extends ConversationActivity {
                 WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
         WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.alpha     = 1.0f;
+        params.alpha = 1.0f;
         params.dimAmount = 0.1f;
-        params.gravity   = Gravity.TOP;
+        params.gravity = Gravity.TOP;
         getWindow().setAttributes(params);
 
         Display display = getWindowManager().getDefaultDisplay();
-        int     width   = display.getWidth();
-        int     height  = display.getHeight();
+        int width = display.getWidth();
+        int height = display.getHeight();
 
-        if (height > width) getWindow().setLayout((int) (width * .85), (int) (height * .5));
-        else                getWindow().setLayout((int) (width * .7), (int) (height * .75));
+        if (height > width) {
+            getWindow().setLayout((int) (width * .85), (int) (height * .5));
+        } else {
+            getWindow().setLayout((int) (width * .7), (int) (height * .75));
+        }
 
         super.onCreate(bundle, ready);
 

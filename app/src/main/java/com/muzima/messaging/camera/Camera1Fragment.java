@@ -46,13 +46,13 @@ public class Camera1Fragment extends Fragment implements TextureView.SurfaceText
 
     private static final String TAG = Camera1Fragment.class.getSimpleName();
 
-    private TextureView                  cameraPreview;
+    private TextureView cameraPreview;
     private ViewGroup controlsContainer;
     private ImageButton flipButton;
     private Button captureButton;
-    private Camera1Controller            camera;
-    private Controller                   controller;
-    private OrderEnforcer<Stage>         orderEnforcer;
+    private Camera1Controller camera;
+    private Controller controller;
+    private OrderEnforcer<Stage> orderEnforcer;
     private Camera1Controller.Properties properties;
 
     public static Camera1Fragment newInstance() {
@@ -67,13 +67,13 @@ public class Camera1Fragment extends Fragment implements TextureView.SurfaceText
         }
 
         WindowManager windowManager = ServiceUtil.getWindowManager(getActivity());
-        Display display       = windowManager.getDefaultDisplay();
-        Point displaySize   = new Point();
+        Display display = windowManager.getDefaultDisplay();
+        Point displaySize = new Point();
 
         display.getSize(displaySize);
 
-        controller    = (Controller) getActivity();
-        camera        = new Camera1Controller(TextSecurePreferences.getDirectCaptureCameraId(getContext()), displaySize.x, displaySize.y, this);
+        controller = (Controller) getActivity();
+        camera = new Camera1Controller(TextSecurePreferences.getDirectCaptureCameraId(getContext()), displaySize.x, displaySize.y, this);
         orderEnforcer = new OrderEnforcer<>(Stage.SURFACE_AVAILABLE, Stage.CAMERA_PROPERTIES_AVAILABLE);
     }
 
@@ -88,7 +88,7 @@ public class Camera1Fragment extends Fragment implements TextureView.SurfaceText
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        cameraPreview     = view.findViewById(R.id.camera_preview);
+        cameraPreview = view.findViewById(R.id.camera_preview);
         controlsContainer = view.findViewById(R.id.camera_controls_container);
 
         onOrientationChanged(getResources().getConfiguration().orientation);
@@ -157,7 +157,7 @@ public class Camera1Fragment extends Fragment implements TextureView.SurfaceText
 
     @SuppressLint("ClickableViewAccessibility")
     private void initControls() {
-        flipButton    = getView().findViewById(R.id.camera_flip_button);
+        flipButton = getView().findViewById(R.id.camera_flip_button);
         captureButton = getView().findViewById(R.id.camera_capture_button);
 
         captureButton.setOnTouchListener((v, event) -> {
@@ -241,7 +241,7 @@ public class Camera1Fragment extends Fragment implements TextureView.SurfaceText
     }
 
     private PointF getScaleTransform(float viewWidth, float viewHeight, int cameraWidth, int cameraHeight) {
-        float camWidth  = isPortrait() ? Math.min(cameraWidth, cameraHeight) : Math.max(cameraWidth, cameraHeight);
+        float camWidth = isPortrait() ? Math.min(cameraWidth, cameraHeight) : Math.max(cameraWidth, cameraHeight);
         float camHeight = isPortrait() ? Math.max(cameraWidth, cameraHeight) : Math.min(cameraWidth, cameraHeight);
 
         float scaleX = 1;
@@ -268,10 +268,10 @@ public class Camera1Fragment extends Fragment implements TextureView.SurfaceText
     }
 
     private void updatePreviewScale() {
-        PointF scale  = getScaleTransform(cameraPreview.getWidth(), cameraPreview.getHeight(), properties.getPreviewWidth(), properties.getPreviewHeight());
+        PointF scale = getScaleTransform(cameraPreview.getWidth(), cameraPreview.getHeight(), properties.getPreviewWidth(), properties.getPreviewHeight());
         Matrix matrix = new Matrix();
 
-        float camWidth  = isPortrait() ? Math.min(cameraPreview.getWidth(), cameraPreview.getHeight()) : Math.max(cameraPreview.getWidth(), cameraPreview.getHeight());
+        float camWidth = isPortrait() ? Math.min(cameraPreview.getWidth(), cameraPreview.getHeight()) : Math.max(cameraPreview.getWidth(), cameraPreview.getHeight());
         float camHeight = isPortrait() ? Math.max(cameraPreview.getWidth(), cameraPreview.getHeight()) : Math.min(cameraPreview.getWidth(), cameraPreview.getHeight());
 
         matrix.setScale(scale.x, scale.y);

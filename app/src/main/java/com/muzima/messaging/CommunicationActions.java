@@ -47,10 +47,7 @@ public class CommunicationActions {
         startConversation(context, recipient, text, null);
     }
 
-    public static void startConversation(@NonNull  Context          context,
-                                         @NonNull  SignalRecipient        recipient,
-                                         @Nullable String           text,
-                                         @Nullable TaskStackBuilder backStack)
+    public static void startConversation(@NonNull Context context, @NonNull  SignalRecipient recipient, @Nullable String text, @Nullable TaskStackBuilder backStack)
     {
         new AsyncTask<Void, Void, Long>() {
             @Override

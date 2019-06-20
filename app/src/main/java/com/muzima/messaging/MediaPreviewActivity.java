@@ -63,11 +63,11 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
 
     private final static String TAG = MediaPreviewActivity.class.getSimpleName();
 
-    public static final String ADDRESS_EXTRA        = "address";
-    public static final String DATE_EXTRA           = "date";
-    public static final String SIZE_EXTRA           = "size";
-    public static final String CAPTION_EXTRA        = "caption";
-    public static final String OUTGOING_EXTRA       = "outgoing";
+    public static final String ADDRESS_EXTRA = "address";
+    public static final String DATE_EXTRA = "date";
+    public static final String SIZE_EXTRA = "size";
+    public static final String CAPTION_EXTRA = "caption";
+    public static final String OUTGOING_EXTRA = "outgoing";
     public static final String LEFT_IS_RECENT_EXTRA = "left_is_recent";
 
     private ViewPager mediaPager;
@@ -75,14 +75,14 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
     private TextView caption;
     private View captionContainer;
     private RecyclerView albumRail;
-    private AlbumRailAdapter      albumRailAdapter;
+    private AlbumRailAdapter albumRailAdapter;
     private ViewGroup playbackControlsContainer;
     private Uri initialMediaUri;
-    private String                initialMediaType;
-    private long                  initialMediaSize;
-    private String                initialCaption;
-    private SignalRecipient             conversationRecipient;
-    private boolean               leftIsRecent;
+    private String initialMediaType;
+    private long initialMediaSize;
+    private String initialCaption;
+    private SignalRecipient conversationRecipient;
+    private boolean leftIsRecent;
     private GestureDetector clickDetector;
     private MediaPreviewViewModel viewModel;
 
@@ -148,9 +148,9 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
                 relativeTimeSpan = getString(R.string.general_draft);
             }
 
-            if      (mediaItem.outgoing)          getSupportActionBar().setTitle(getString(R.string.general_you));
+            if (mediaItem.outgoing) getSupportActionBar().setTitle(getString(R.string.general_you));
             else if (mediaItem.recipient != null) getSupportActionBar().setTitle(mediaItem.recipient.toShortString());
-            else                                  getSupportActionBar().setTitle("");
+            else getSupportActionBar().setTitle("");
 
             getSupportActionBar().setSubtitle(relativeTimeSpan);
         }
@@ -195,21 +195,21 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
         albumRail.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         albumRail.setAdapter(albumRailAdapter);
 
-        detailsContainer          = findViewById(R.id.media_preview_details_container);
-        caption                   = findViewById(R.id.media_preview_caption);
-        captionContainer          = findViewById(R.id.media_preview_caption_container);
+        detailsContainer = findViewById(R.id.media_preview_details_container);
+        caption = findViewById(R.id.media_preview_caption);
+        captionContainer = findViewById(R.id.media_preview_caption_container);
         playbackControlsContainer = findViewById(R.id.media_preview_playback_controls_container);
     }
 
     private void initializeResources() {
         SignalAddress address = getIntent().getParcelableExtra(ADDRESS_EXTRA);
 
-        initialMediaUri  = getIntent().getData();
+        initialMediaUri = getIntent().getData();
         initialMediaType = getIntent().getType();
         initialMediaSize = getIntent().getLongExtra(SIZE_EXTRA, 0);
-        initialCaption   = getIntent().getStringExtra(CAPTION_EXTRA);
-        leftIsRecent     = getIntent().getBooleanExtra(LEFT_IS_RECENT_EXTRA, false);
-        restartItem      = -1;
+        initialCaption = getIntent().getStringExtra(CAPTION_EXTRA);
+        leftIsRecent = getIntent().getBooleanExtra(LEFT_IS_RECENT_EXTRA, false);
+        restartItem = -1;
 
         if (address != null) {
             conversationRecipient = SignalRecipient.from(this, address, true);
@@ -384,11 +384,21 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
         super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
-            case R.id.media_preview__overview: showOverview(); return true;
-            case R.id.media_preview__forward:  forward();      return true;
-            case R.id.save:                    saveToDisk();   return true;
-            case R.id.delete:                  deleteMedia();  return true;
-            case android.R.id.home:            finish();       return true;
+            case R.id.media_preview__overview:
+                 showOverview();
+                 return true;
+            case R.id.media_preview__forward:
+                 forward();
+                 return true;
+            case R.id.save:
+                 saveToDisk();
+                 return true;
+            case R.id.delete:
+                 deleteMedia();
+                 return true;
+            case android.R.id.home:
+                 finish();
+                 return true;
         }
 
         return false;
@@ -428,7 +438,7 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
             viewModel.setCursor(data.first, leftIsRecent);
 
             if (restartItem < 0) mediaPager.setCurrentItem(data.second);
-            else                 mediaPager.setCurrentItem(restartItem);
+            else mediaPager.setCurrentItem(restartItem);
         }
     }
 
@@ -471,9 +481,9 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
 
         private final GlideRequests glideRequests;
         private final Window window;
-        private final Uri           uri;
-        private final String        mediaType;
-        private final long          size;
+        private final Uri uri;
+        private final String mediaType;
+        private final long size;
 
         private final LayoutInflater inflater;
 
@@ -482,11 +492,11 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
                                long size)
         {
             this.glideRequests = glideRequests;
-            this.window        = window;
-            this.uri           = uri;
-            this.mediaType     = mediaType;
-            this.size          = size;
-            this.inflater      = LayoutInflater.from(context);
+            this.window = window;
+            this.uri = uri;
+            this.mediaType = mediaType;
+            this.size = size;
+            this.inflater = LayoutInflater.from(context);
         }
 
         @Override
@@ -501,7 +511,7 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
 
         @Override
         public @NonNull Object instantiateItem(@NonNull ViewGroup container, int position) {
-            View      itemView  = inflater.inflate(R.layout.media_view_page, container, false);
+            View itemView = inflater.inflate(R.layout.media_view_page, container, false);
             MediaView mediaView = itemView.findViewById(R.id.media_view);
 
             try {
@@ -543,11 +553,11 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
 
         private final WeakHashMap<Integer, MediaView> mediaViews = new WeakHashMap<>();
 
-        private final Context       context;
+        private final Context context;
         private final GlideRequests glideRequests;
-        private final Window        window;
-        private final Cursor        cursor;
-        private final boolean       leftIsRecent;
+        private final Window window;
+        private final Cursor cursor;
+        private final boolean leftIsRecent;
 
         private boolean active;
         private int     autoPlayPosition;
@@ -556,12 +566,12 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
                            @NonNull Window window, @NonNull Cursor cursor, int autoPlayPosition,
                            boolean leftIsRecent)
         {
-            this.context          = context.getApplicationContext();
-            this.glideRequests    = glideRequests;
-            this.window           = window;
-            this.cursor           = cursor;
+            this.context = context.getApplicationContext();
+            this.glideRequests = glideRequests;
+            this.window = window;
+            this.cursor = cursor;
             this.autoPlayPosition = autoPlayPosition;
-            this.leftIsRecent     = leftIsRecent;
+            this.leftIsRecent = leftIsRecent;
         }
 
         public void setActive(boolean active) {
@@ -572,7 +582,7 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
         @Override
         public int getCount() {
             if (!active) return 0;
-            else         return cursor.getCount();
+            else return cursor.getCount();
         }
 
         @Override
@@ -582,10 +592,10 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
 
         @Override
         public @NonNull Object instantiateItem(@NonNull ViewGroup container, int position) {
-            View      itemView       = LayoutInflater.from(context).inflate(R.layout.media_view_page, container, false);
-            MediaView mediaView      = itemView.findViewById(R.id.media_view);
-            boolean   autoplay       = position == autoPlayPosition;
-            int       cursorPosition = getCursorPosition(position);
+            View itemView = LayoutInflater.from(context).inflate(R.layout.media_view_page, container, false);
+            MediaView mediaView = itemView.findViewById(R.id.media_view);
+            boolean autoplay = position == autoPlayPosition;
+            int cursorPosition = getCursorPosition(position);
 
             autoPlayPosition = -1;
 
@@ -619,7 +629,7 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
         public MediaItem getMediaItemFor(int position) {
             cursor.moveToPosition(getCursorPosition(position));
             MediaRecord mediaRecord = MediaRecord.from(context, cursor);
-            SignalAddress     address     = mediaRecord.getAddress();
+            SignalAddress address = mediaRecord.getAddress();
 
             if (mediaRecord.getAttachment().getDataUri() == null) throw new AssertionError();
 
@@ -665,12 +675,12 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
                           long date,
                           boolean outgoing)
         {
-            this.recipient  = recipient;
+            this.recipient = recipient;
             this.attachment = attachment;
-            this.uri        = uri;
-            this.type       = type;
-            this.date       = date;
-            this.outgoing   = outgoing;
+            this.uri = uri;
+            this.type = type;
+            this.date = date;
+            this.outgoing = outgoing;
         }
     }
 

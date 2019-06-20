@@ -18,10 +18,10 @@ public class EncryptedBitmapCacheDecoder extends EncryptedCoder implements Resou
     private static final String TAG = EncryptedBitmapCacheDecoder.class.getSimpleName();
 
     private final StreamBitmapDecoder streamBitmapDecoder;
-    private final byte[]              secret;
+    private final byte[] secret;
 
     public EncryptedBitmapCacheDecoder(@NonNull byte[] secret, @NonNull StreamBitmapDecoder streamBitmapDecoder) {
-        this.secret              = secret;
+        this.secret = secret;
         this.streamBitmapDecoder = streamBitmapDecoder;
     }
 

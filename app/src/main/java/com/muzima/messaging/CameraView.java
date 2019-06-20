@@ -40,12 +40,10 @@ public class CameraView extends ViewGroup {
     private volatile int cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
     private volatile int displayOrientation = -1;
 
-    private @NonNull  State                    state = State.PAUSED;
-    private @Nullable
-    Camera.Size previewSize;
-    private @NonNull
-    List<CameraViewListener> listeners = Collections.synchronizedList(new LinkedList<CameraViewListener>());
-    private           int                      outputOrientation  = -1;
+    private @NonNull State state = State.PAUSED;
+    private @Nullable Camera.Size previewSize;
+    private @NonNull List<CameraViewListener> listeners = Collections.synchronizedList(new LinkedList<CameraViewListener>());
+    private int outputOrientation  = -1;
 
     public CameraView(Context context) {
         this(context, null);
@@ -61,15 +59,15 @@ public class CameraView extends ViewGroup {
 
         if (attrs != null) {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraView);
-            int        camera     = typedArray.getInt(R.styleable.CameraView_camera, -1);
+            int camera = typedArray.getInt(R.styleable.CameraView_camera, -1);
 
-            if      (camera != -1)    cameraId = camera;
+            if (camera != -1)  cameraId = camera;
             else if (isMultiCamera()) cameraId = TextSecurePreferences.getDirectCaptureCameraId(context);
 
             typedArray.recycle();
         }
 
-        surface             = new CameraSurfaceView(getContext());
+        surface = new CameraSurfaceView(getContext());
         onOrientationChange = new OnOrientationChange(context.getApplicationContext());
         addView(surface);
     }
@@ -167,8 +165,8 @@ public class CameraView extends ViewGroup {
     @SuppressWarnings("SuspiciousNameCombination")
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        final int  width         = r - l;
-        final int  height        = b - t;
+        final int  width = r - l;
+        final int  height = b - t;
         final int  previewWidth;
         final int  previewHeight;
 
@@ -181,7 +179,7 @@ public class CameraView extends ViewGroup {
                 previewHeight = previewSize.height;
             }
         } else {
-            previewWidth  = width;
+            previewWidth = width;
             previewHeight = height;
         }
 
@@ -287,7 +285,7 @@ public class CameraView extends ViewGroup {
     private void startPreview(final @NonNull Camera.Parameters parameters) {
         if (this.camera.isPresent()) {
             try {
-                final Camera     camera               = this.camera.get();
+                final Camera camera = this.camera.get();
                 final Camera.Size preferredPreviewSize = getPreferredPreviewSize(parameters);
 
                 if (preferredPreviewSize != null && !parameters.getPreviewSize().equals(preferredPreviewSize)) {
@@ -372,7 +370,7 @@ public class CameraView extends ViewGroup {
 
     public int getCameraPictureRotation(int orientation) {
         final Camera.CameraInfo info = getCameraInfo();
-        final int        rotation;
+        final int rotation;
 
         orientation = (orientation + 45) / 90 * 90;
 
@@ -438,7 +436,7 @@ public class CameraView extends ViewGroup {
     }
 
     private Rect getCroppedRect(Camera.Size cameraPreviewSize, Rect visibleRect, int rotation) {
-        final int previewWidth  = cameraPreviewSize.width;
+        final int previewWidth = cameraPreviewSize.width;
         final int previewHeight = cameraPreviewSize.height;
 
         if (rotation % 180 > 0) rotateRect(visibleRect);
@@ -447,10 +445,10 @@ public class CameraView extends ViewGroup {
         if (visibleRect.height() * scale > previewHeight) {
             scale = (float) previewHeight / visibleRect.height();
         }
-        final float newWidth  = visibleRect.width()  * scale;
+        final float newWidth = visibleRect.width()  * scale;
         final float newHeight = visibleRect.height() * scale;
-        final float centerX   = (Build.VERSION.SDK_INT < 14 || isTroublemaker()) ? previewWidth - newWidth / 2 : previewWidth / 2;
-        final float centerY   = previewHeight / 2;
+        final float centerX = (Build.VERSION.SDK_INT < 14 || isTroublemaker()) ? previewWidth - newWidth / 2 : previewWidth / 2;
+        final float centerY = previewHeight / 2;
 
         visibleRect.set((int) (centerX - newWidth  / 2),
                 (int) (centerY - newHeight / 2),
@@ -511,8 +509,8 @@ public class CameraView extends ViewGroup {
         private final Rect croppingRect;
 
         public CaptureTask(Camera.Size previewSize, int rotation, Rect croppingRect) {
-            this.previewSize  = previewSize;
-            this.rotation     = rotation;
+            this.previewSize = previewSize;
+            this.rotation = rotation;
             this.croppingRect = croppingRect;
         }
 
@@ -557,14 +555,14 @@ public class CameraView extends ViewGroup {
 
     public static class PreviewFrame {
         private final @NonNull byte[] data;
-        private final          int    width;
-        private final          int    height;
-        private final          int    orientation;
+        private final int width;
+        private final int height;
+        private final int orientation;
 
         private PreviewFrame(@NonNull byte[] data, int width, int height, int orientation) {
-            this.data        = data;
-            this.width       = width;
-            this.height      = height;
+            this.data = data;
+            this.width = width;
+            this.height = height;
             this.orientation = orientation;
         }
 

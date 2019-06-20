@@ -97,16 +97,16 @@ public class SelectedRecipientsAdapter extends BaseAdapter {
             v = LayoutInflater.from(context).inflate(R.layout.selected_recipient_list_item, parent, false);
         }
 
-        final RecipientWrapper rw = (RecipientWrapper) getItem(position);
-        final SignalRecipient p = rw.getRecipient();
-        final boolean modifiable = rw.isModifiable();
+        final RecipientWrapper recipientWrapper = (RecipientWrapper) getItem(position);
+        final SignalRecipient signalRecipient = recipientWrapper.getRecipient();
+        final boolean modifiable = recipientWrapper.isModifiable();
 
         TextView name = (TextView) v.findViewById(R.id.name);
         TextView phone = (TextView) v.findViewById(R.id.phone);
         ImageButton delete = (ImageButton) v.findViewById(R.id.delete);
 
-        name.setText(p.getName());
-        phone.setText(p.getAddress().serialize());
+        name.setText(signalRecipient.getName());
+        phone.setText(signalRecipient.getAddress().serialize());
         delete.setVisibility(modifiable ? View.VISIBLE : View.GONE);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override

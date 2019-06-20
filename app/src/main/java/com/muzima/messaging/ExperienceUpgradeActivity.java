@@ -87,14 +87,10 @@ public class ExperienceUpgradeActivity extends BaseActionBarActivity implements 
 
         private int version;
         private List<IntroPage> pages;
-        private @StringRes
-        int notificationTitle;
-        private @StringRes
-        int notificationText;
-        private @StringRes
-        int notificationBigText;
-        private @Nullable
-        Class nextIntent;
+        private @StringRes int notificationTitle;
+        private @StringRes int notificationText;
+        private @StringRes int notificationBigText;
+        private @Nullable Class nextIntent;
         private boolean handlesNavigation;
 
         ExperienceUpgrade(int version,

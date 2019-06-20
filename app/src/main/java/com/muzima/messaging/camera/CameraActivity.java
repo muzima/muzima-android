@@ -43,17 +43,11 @@ public class CameraActivity extends PassphraseRequiredActionBarActivity implemen
     private ImageView snapshot;
     private TransportOption transport;
     private Uri captureUri;
-    private boolean imageSent;
 
     public static Intent getIntent(@NonNull Context context, @NonNull TransportOption transport) {
         Intent intent = new Intent(context, CameraActivity.class);
         intent.putExtra(KEY_TRANSPORT, transport);
         return intent;
-    }
-
-    @Override
-    protected void onPreCreate() {
-
     }
 
     @Override
@@ -141,7 +135,7 @@ public class CameraActivity extends PassphraseRequiredActionBarActivity implemen
 
     @Override
     public void onImageEditComplete(@NonNull Uri uri, int width, int height, long size, @NonNull Optional<String> message, @NonNull Optional<TransportOption> transport) {
-        imageSent = true;
+        boolean imageSent = true;
 
         Intent intent = new Intent();
         intent.setData(uri);

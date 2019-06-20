@@ -20,8 +20,8 @@ public abstract class FullBackupBase {
                 EventBus.getDefault().post(new BackupEvent(BackupEvent.Type.PROGRESS, 0));
 
                 MessageDigest digest = MessageDigest.getInstance("SHA-512");
-                byte[]        input  = passphrase.replace(" ", "").getBytes();
-                byte[]        hash   = input;
+                byte[] input = passphrase.replace(" ", "").getBytes();
+                byte[] hash = input;
 
                 if (salt != null) digest.update(salt);
 

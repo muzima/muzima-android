@@ -122,7 +122,7 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
         SignalAddress address = getIntent().getParcelableExtra(ADDRESS_EXTRA);
 
         this.viewPager = ViewUtil.findById(this, R.id.pager);
-        this.toolbar   = ViewUtil.findById(this, R.id.toolbar);
+        this.toolbar = ViewUtil.findById(this, R.id.toolbar);
         this.tabLayout = ViewUtil.findById(this, R.id.tab_layout);
         this.recipient = SignalRecipient.from(this, address, true);
     }
@@ -156,9 +156,9 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
         public Fragment getItem(int position) {
             Fragment fragment;
 
-            if      (position == 0) fragment = new MediaOverviewGalleryFragment();
+            if (position == 0) fragment = new MediaOverviewGalleryFragment();
             else if (position == 1) fragment = new MediaOverviewDocumentsFragment();
-            else                    throw new AssertionError();
+            else throw new AssertionError();
 
             Bundle args = new Bundle();
             args.putString(MediaOverviewGalleryFragment.ADDRESS_EXTRA, recipient.getAddress().serialize());
@@ -176,9 +176,9 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if      (position == 0) return getString(R.string.general_media);
+            if (position == 0) return getString(R.string.general_media);
             else if (position == 1) return getString(R.string.general_documents);
-            else                    throw new AssertionError();
+            else throw new AssertionError();
         }
     }
 
@@ -188,7 +188,7 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
         public static final String LOCALE_EXTRA  = "locale_extra";
 
         protected TextView noMedia;
-        protected SignalRecipient    recipient;
+        protected SignalRecipient recipient;
         protected RecyclerView recyclerView;
         protected Locale locale;
 
@@ -196,14 +196,14 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
         public void onCreate(Bundle bundle) {
             super.onCreate(bundle);
 
-            String       address      = getArguments().getString(ADDRESS_EXTRA);
-            Locale       locale       = (Locale)getArguments().getSerializable(LOCALE_EXTRA);
+            String address = getArguments().getString(ADDRESS_EXTRA);
+            Locale locale = (Locale)getArguments().getSerializable(LOCALE_EXTRA);
 
-            if (address == null)      throw new AssertionError();
-            if (locale == null)       throw new AssertionError();
+            if (address == null) throw new AssertionError();
+            if (locale == null) throw new AssertionError();
 
-            this.recipient    = SignalRecipient.from(getContext(), SignalAddress.fromSerialized(address), true);
-            this.locale       = locale;
+            this.recipient = SignalRecipient.from(getContext(), SignalAddress.fromSerialized(address), true);
+            this.locale = locale;
 
             getLoaderManager().initLoader(0, null, this);
         }
@@ -216,7 +216,7 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
 
         private StickyHeaderGridLayoutManager gridManager;
         private ActionMode actionMode;
-        private ActionModeCallback            actionModeCallback = new ActionModeCallback();
+        private ActionModeCallback actionModeCallback = new ActionModeCallback();
 
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -224,7 +224,7 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
             View view = inflater.inflate(R.layout.media_overview_gallery_fragment, container, false);
 
             this.recyclerView = ViewUtil.findById(view, R.id.media_grid);
-            this.noMedia      = ViewUtil.findById(view, R.id.no_images);
+            this.noMedia = ViewUtil.findById(view, R.id.no_images);
             this.gridManager  = new StickyHeaderGridLayoutManager(getResources().getInteger(R.integer.media_overview_cols));
 
             this.recyclerView.setAdapter(new MediaGalleryAdapter(getContext(),
@@ -364,9 +364,9 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
 
         @SuppressLint("StaticFieldLeak")
         private void handleDeleteMedia(@NonNull Collection<MediaDatabase.MediaRecord> mediaRecords) {
-            int recordCount       = mediaRecords.size();
-            Resources res         = getContext().getResources();
-            String confirmTitle   = res.getQuantityString(R.plurals.plurals_media_deletion_title,
+            int recordCount = mediaRecords.size();
+            Resources res = getContext().getResources();
+            String confirmTitle = res.getQuantityString(R.plurals.plurals_media_deletion_title,
                     recordCount,
                     recordCount);
             String confirmMessage = res.getQuantityString(R.plurals.plurals_media_deletion_message,
@@ -473,11 +473,11 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
         @SuppressLint("WrongConstant")
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View                  view    = inflater.inflate(R.layout.media_overview_documents_fragment, container, false);
+            View view = inflater.inflate(R.layout.media_overview_documents_fragment, container, false);
             MediaDocumentsAdapter adapter = new MediaDocumentsAdapter(getContext(), null, locale);
 
-            this.recyclerView  = ViewUtil.findById(view, R.id.recycler_view);
-            this.noMedia       = ViewUtil.findById(view, R.id.no_documents);
+            this.recyclerView = ViewUtil.findById(view, R.id.recycler_view);
+            this.noMedia = ViewUtil.findById(view, R.id.no_documents);
 
             this.recyclerView.setAdapter(adapter);
             this.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
