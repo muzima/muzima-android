@@ -134,12 +134,7 @@ public class ConversationAdapter<V extends View & BindableConversationItem>
         }
     }
 
-    public ConversationAdapter(@NonNull Context context,
-                               @NonNull GlideRequests glideRequests,
-                               @NonNull Locale locale,
-                               @Nullable ItemClickListener clickListener,
-                               @Nullable Cursor cursor,
-                               @NonNull SignalRecipient recipient) {
+    public ConversationAdapter(@NonNull Context context, @NonNull GlideRequests glideRequests, @NonNull Locale locale, @Nullable ItemClickListener clickListener, @Nullable Cursor cursor, @NonNull SignalRecipient recipient) {
         super(context, cursor);
 
         try {

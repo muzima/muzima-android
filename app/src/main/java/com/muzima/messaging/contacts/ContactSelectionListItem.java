@@ -27,11 +27,11 @@ public class ContactSelectionListItem extends LinearLayout implements RecipientM
 
     private AvatarImageView contactPhotoImage;
     private TextView numberView;
-    private TextView        nameView;
-    private TextView        labelView;
+    private TextView nameView;
+    private TextView labelView;
     private CheckBox checkBox;
 
-    private String        number;
+    private String number;
     private SignalRecipient recipient;
     private GlideRequests glideRequests;
 
@@ -57,7 +57,7 @@ public class ContactSelectionListItem extends LinearLayout implements RecipientM
 
     public void set(@NonNull GlideRequests glideRequests, int type, String name, String number, String label, int color, boolean multiSelect) {
         this.glideRequests = glideRequests;
-        this.number        = number;
+        this.number = number;
 
         if (type == ContactsDatabase.NEW_TYPE) {
             this.recipient = null;

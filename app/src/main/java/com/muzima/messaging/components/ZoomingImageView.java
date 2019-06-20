@@ -51,7 +51,7 @@ public class ZoomingImageView extends FrameLayout {
 
         inflate(context, R.layout.zooming_image_view, this);
 
-        this.photoView            = findViewById(R.id.image_view);
+        this.photoView = findViewById(R.id.image_view);
         this.subsamplingImageView = findViewById(R.id.subsampling_image_view);
 
         this.subsamplingImageView.setOrientation(SubsamplingScaleImageView.ORIENTATION_USE_EXIF);
@@ -60,8 +60,8 @@ public class ZoomingImageView extends FrameLayout {
     @SuppressLint("StaticFieldLeak")
     public void setImageUri(@NonNull GlideRequests glideRequests, @NonNull Uri uri, @NonNull String contentType)
     {
-        final Context context        = getContext();
-        final int     maxTextureSize = BitmapUtil.getMaxTextureSize();
+        final Context context = getContext();
+        final int maxTextureSize = BitmapUtil.getMaxTextureSize();
 
         Log.i(TAG, "Max texture size: " + maxTextureSize);
 

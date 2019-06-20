@@ -31,7 +31,6 @@ public class MessageRecipientListItem extends RelativeLayout
     private GlideRequests glideRequests;
     private FromTextView fromView;
     private TextView errorDescription;
-    private TextView actionDescription;
     private Button conflictButton;
     private AvatarImageView contactPhotoImage;
     private ImageView unidentifiedDeliveryIcon;
@@ -50,7 +49,7 @@ public class MessageRecipientListItem extends RelativeLayout
         super.onFinishInflate();
         this.fromView = findViewById(R.id.from);
         this.errorDescription = findViewById(R.id.error_description);
-        this.actionDescription = findViewById(R.id.action_description);
+        TextView actionDescription = findViewById(R.id.action_description);
         this.contactPhotoImage = findViewById(R.id.contact_photo_image);
         this.conflictButton = findViewById(R.id.conflict_button);
         this.unidentifiedDeliveryIcon = findViewById(R.id.ud_indicator);

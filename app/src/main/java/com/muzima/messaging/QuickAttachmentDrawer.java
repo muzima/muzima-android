@@ -32,25 +32,25 @@ public class QuickAttachmentDrawer extends ViewGroup implements InputAwareLayout
 
     private final ViewDragHelper dragHelper;
 
-    private CameraView                cameraView;
-    private int                       coverViewPosition;
+    private CameraView cameraView;
+    private int coverViewPosition;
     private KeyboardAwareLinearLayout container;
     private View coverView;
-    private View                      controls;
+    private View controls;
     private ImageButton fullScreenButton;
-    private ImageButton               swapCameraButton;
-    private ImageButton               shutterButton;
-    private int                       slideOffset;
-    private float                     initialMotionX;
-    private float                     initialMotionY;
-    private int                       rotation;
-    private AttachmentDrawerListener  listener;
-    private int                       halfExpandedHeight;
+    private ImageButton swapCameraButton;
+    private ImageButton shutterButton;
+    private int slideOffset;
+    private float initialMotionX;
+    private float initialMotionY;
+    private int rotation;
+    private AttachmentDrawerListener listener;
+    private int halfExpandedHeight;
     private com.nineoldandroids.animation.ObjectAnimator animator;
 
-    private DrawerState drawerState      = DrawerState.COLLAPSED;
+    private DrawerState drawerState = DrawerState.COLLAPSED;
     private Rect drawChildrenRect = new Rect();
-    private boolean     paused           = false;
+    private boolean paused = false;
 
     public QuickAttachmentDrawer(Context context) {
         this(context, null);
@@ -117,7 +117,7 @@ public class QuickAttachmentDrawer extends ViewGroup implements InputAwareLayout
         View controls = LayoutInflater.from(getContext()).inflate(isLandscape() ? R.layout.quick_camera_controls_land
                         : R.layout.quick_camera_controls,
                 this, false);
-        shutterButton    = (ImageButton) controls.findViewById(R.id.shutter_button);
+        shutterButton = (ImageButton) controls.findViewById(R.id.shutter_button);
         swapCameraButton = (ImageButton) controls.findViewById(R.id.swap_camera_button);
         fullScreenButton = (ImageButton) controls.findViewById(R.id.fullscreen_button);
         if (cameraView.isMultiCamera()) {
@@ -159,25 +159,25 @@ public class QuickAttachmentDrawer extends ViewGroup implements InputAwareLayout
         }
 
         final int paddingLeft = getPaddingLeft();
-        final int paddingTop  = getPaddingTop();
+        final int paddingTop = getPaddingTop();
 
         for (int i = 0; i < getChildCount(); i++) {
-            final View child       = getChildAt(i);
+            final View child = getChildAt(i);
             final int  childHeight = child.getMeasuredHeight();
 
-            int childTop  = paddingTop;
+            int childTop = paddingTop;
             int childLeft = paddingLeft;
             int childBottom;
 
             if (child == cameraView) {
-                childTop    = computeCameraTopPosition(slideOffset);
+                childTop = computeCameraTopPosition(slideOffset);
                 childBottom = childTop + childHeight;
                 if (cameraView.getMeasuredWidth() < getMeasuredWidth())
                     childLeft = (getMeasuredWidth() - cameraView.getMeasuredWidth()) / 2 + paddingLeft;
             } else if (child == controls) {
                 childBottom = getMeasuredHeight();
             } else {
-                childTop    = computeCoverTopPosition(slideOffset);
+                childTop = computeCoverTopPosition(slideOffset);
                 childBottom = childTop + childHeight;
             }
             final int childRight = childLeft + child.getMeasuredWidth();
@@ -188,8 +188,8 @@ public class QuickAttachmentDrawer extends ViewGroup implements InputAwareLayout
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        final int widthMode  = MeasureSpec.getMode(widthMeasureSpec);
-        final int widthSize  = MeasureSpec.getSize(widthMeasureSpec);
+        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         final int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
@@ -315,7 +315,7 @@ public class QuickAttachmentDrawer extends ViewGroup implements InputAwareLayout
         switch (drawerState) {
             case FULL_EXPANDED: return getMeasuredHeight();
             case HALF_EXPANDED: return halfExpandedHeight;
-            default:            return 0;
+            default: return 0;
         }
     }
 
@@ -489,9 +489,9 @@ public class QuickAttachmentDrawer extends ViewGroup implements InputAwareLayout
             return getPaddingTop();
         }
 
-        final int   baseCameraTop = (cameraView.getMeasuredHeight() - halfExpandedHeight) / 2;
-        final int   baseOffset    = getMeasuredHeight() - slideOffset - baseCameraTop;
-        final float slop          = Util.clamp((float)(slideOffset - halfExpandedHeight) / (getMeasuredHeight() - halfExpandedHeight),
+        final int baseCameraTop = (cameraView.getMeasuredHeight() - halfExpandedHeight) / 2;
+        final int baseOffset = getMeasuredHeight() - slideOffset - baseCameraTop;
+        final float slop = Util.clamp((float)(slideOffset - halfExpandedHeight) / (getMeasuredHeight() - halfExpandedHeight),
                 0f,
                 1f);
         return baseOffset + (int)(slop * baseCameraTop);
@@ -541,9 +541,9 @@ public class QuickAttachmentDrawer extends ViewGroup implements InputAwareLayout
     private class ShutterClickListener implements OnClickListener {
         @Override
         public void onClick(View v) {
-            boolean crop        = drawerState != DrawerState.FULL_EXPANDED;
-            int     imageHeight = crop ? getContainer().getKeyboardHeight() : cameraView.getMeasuredHeight();
-            Rect    previewRect = new Rect(0, 0, cameraView.getMeasuredWidth(), imageHeight);
+            boolean crop = drawerState != DrawerState.FULL_EXPANDED;
+            int imageHeight = crop ? getContainer().getKeyboardHeight() : cameraView.getMeasuredHeight();
+            Rect previewRect = new Rect(0, 0, cameraView.getMeasuredWidth(), imageHeight);
             cameraView.takePicture(previewRect);
         }
     }

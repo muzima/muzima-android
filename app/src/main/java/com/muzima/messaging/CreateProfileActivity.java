@@ -70,7 +70,6 @@ import static android.provider.MediaStore.EXTRA_OUTPUT;
 public class CreateProfileActivity extends BaseActionBarActivity {
     private static final String TAG = CreateProfileActivity.class.getSimpleName();
 
-    public static final String NEXT_INTENT    = "next_intent";
     public static final String EXCLUDE_SYSTEM = "exclude_system";
 
     private static final int REQUEST_CODE_AVATAR = 1;
@@ -196,16 +195,16 @@ public class CreateProfileActivity extends BaseActionBarActivity {
     }
 
     private void initializeResources() {
-        TextView skipButton       = ViewUtil.findById(this, R.id.skip_button);
+        TextView skipButton  = ViewUtil.findById(this, R.id.skip_button);
 
-        this.avatar       = ViewUtil.findById(this, R.id.avatar);
-        this.name         = ViewUtil.findById(this, R.id.name);
-        this.emojiToggle  = ViewUtil.findById(this, R.id.emoji_toggle);
-        this.emojiDrawer  = ViewUtil.findById(this, R.id.emoji_drawer);
-        this.container    = ViewUtil.findById(this, R.id.container);
+        this.avatar = ViewUtil.findById(this, R.id.avatar);
+        this.name = ViewUtil.findById(this, R.id.name);
+        this.emojiToggle = ViewUtil.findById(this, R.id.emoji_toggle);
+        this.emojiDrawer = ViewUtil.findById(this, R.id.emoji_drawer);
+        this.container = ViewUtil.findById(this, R.id.container);
         this.finishButton = ViewUtil.findById(this, R.id.finish_button);
-        this.reveal       = ViewUtil.findById(this, R.id.reveal);
-        this.nextIntent   = new Intent(CreateProfileActivity.this,LoginActivity.class);
+        this.reveal = ViewUtil.findById(this, R.id.reveal);
+        this.nextIntent = new Intent(CreateProfileActivity.this,LoginActivity.class);
 
         this.avatar.setImageDrawable(new ResourceContactPhoto(R.drawable.ic_camera_alt_white_24dp).asDrawable(this, getResources().getColor(R.color.grey_300)));
 
@@ -333,7 +332,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
             @Override
             public void onEmojiSelected(String emoji) {
                 final int start = name.getSelectionStart();
-                final int end   = name.getSelectionEnd();
+                final int end = name.getSelectionEnd();
 
                 name.getText().replace(Math.min(start, end), Math.max(start, end), emoji);
                 name.setSelection(start + emoji.length());
@@ -394,21 +393,20 @@ public class CreateProfileActivity extends BaseActionBarActivity {
     }
 
     private void handleUpload() {
-        final String        name;
+        final String name;
         final StreamDetails avatar;
 
         if (TextUtils.isEmpty(this.name.getText().toString())) name = null;
-        else                                                   name = this.name.getText().toString();
+        else  name = this.name.getText().toString();
 
         if (avatarBytes == null || avatarBytes.length == 0) avatar = null;
-        else                                                avatar = new StreamDetails(new ByteArrayInputStream(avatarBytes),
-                "image/jpeg", avatarBytes.length);
+        else  avatar = new StreamDetails(new ByteArrayInputStream(avatarBytes),"image/jpeg", avatarBytes.length);
 
         new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Void... params) {
-                Context context    = CreateProfileActivity.this;
-                byte[]  profileKey = ProfileKeyUtil.getProfileKey(CreateProfileActivity.this);
+                Context context = CreateProfileActivity.this;
+                byte[] profileKey = ProfileKeyUtil.getProfileKey(CreateProfileActivity.this);
 
                 try {
                     accountManager.setProfileName(profileKey, name);
@@ -438,7 +436,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
                 if (result) {
                     if (captureFile != null) captureFile.delete();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) handleFinishedLollipop();
-                    else                                                       handleFinishedLegacy();
+                    else  handleFinishedLegacy();
                 } else        {
                     Toast.makeText(CreateProfileActivity.this, R.string.text_problem_setting_profile, Toast.LENGTH_LONG).show();
                 }
@@ -447,7 +445,6 @@ public class CreateProfileActivity extends BaseActionBarActivity {
     }
 
     private void handleFinishedLegacy() {
-        //finishButton.setProgress(0);
         if (nextIntent != null) startActivity(nextIntent);
         finish();
     }
@@ -455,7 +452,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void handleFinishedLollipop() {
         int[] finishButtonLocation = new int[2];
-        int[] revealLocation       = new int[2];
+        int[] revealLocation = new int[2];
 
         finishButton.getLocationInWindow(finishButtonLocation);
         reveal.getLocationInWindow(revealLocation);
@@ -474,7 +471,6 @@ public class CreateProfileActivity extends BaseActionBarActivity {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                //finishButton.setProgress(0);
                 if (nextIntent != null)  startActivity(nextIntent);
                 finish();
             }

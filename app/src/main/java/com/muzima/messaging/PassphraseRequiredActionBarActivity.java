@@ -28,12 +28,12 @@ public class PassphraseRequiredActionBarActivity extends BaseActionBarActivity i
 
     public static final String LOCALE_EXTRA = "locale_extra";
 
-    private static final int STATE_NORMAL                   = 0;
-    private static final int STATE_CREATE_PASSPHRASE        = 1;
-    private static final int STATE_PROMPT_PASSPHRASE        = 2;
-    private static final int STATE_UPGRADE_DATABASE         = 3;
+    private static final int STATE_NORMAL = 0;
+    private static final int STATE_CREATE_PASSPHRASE = 1;
+    private static final int STATE_PROMPT_PASSPHRASE = 2;
+    private static final int STATE_UPGRADE_DATABASE = 3;
     private static final int STATE_PROMPT_PUSH_REGISTRATION = 4;
-    private static final int STATE_EXPERIENCE_UPGRADE       = 5;
+    private static final int STATE_EXPERIENCE_UPGRADE = 5;
 
     private SignalServiceNetworkAccess networkAccess;
     private BroadcastReceiver clearKeyReceiver;
@@ -88,23 +88,17 @@ public class PassphraseRequiredActionBarActivity extends BaseActionBarActivity i
         else                                                     finish();
     }
 
-    protected <T extends Fragment> T initFragment(@IdRes int target,
-                                                  @NonNull T fragment)
+    protected <T extends Fragment> T initFragment(@IdRes int target, @NonNull T fragment)
     {
         return initFragment(target, fragment, null);
     }
 
-    protected <T extends Fragment> T initFragment(@IdRes int target,
-                                                  @NonNull T fragment,
-                                                  @Nullable Locale locale)
+    protected <T extends Fragment> T initFragment(@IdRes int target, @NonNull T fragment, @Nullable Locale locale)
     {
         return initFragment(target, fragment, locale, null);
     }
 
-    protected <T extends Fragment> T initFragment(@IdRes int target,
-                                                  @NonNull T fragment,
-                                                  @Nullable Locale locale,
-                                                  @Nullable Bundle extras)
+    protected <T extends Fragment> T initFragment(@IdRes int target,@NonNull T fragment,@Nullable Locale locale,@Nullable Bundle extras)
     {
         Bundle args = new Bundle();
         args.putSerializable(LOCALE_EXTRA, locale);

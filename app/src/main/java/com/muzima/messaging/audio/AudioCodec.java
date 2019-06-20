@@ -20,22 +20,22 @@ import java.nio.ByteBuffer;
 public class AudioCodec {
     private static final String TAG = AudioCodec.class.getSimpleName();
 
-    private static final int    SAMPLE_RATE       = 44100;
-    private static final int    SAMPLE_RATE_INDEX = 4;
-    private static final int    CHANNELS          = 1;
-    private static final int    BIT_RATE          = 32000;
+    private static final int SAMPLE_RATE = 44100;
+    private static final int SAMPLE_RATE_INDEX = 4;
+    private static final int CHANNELS = 1;
+    private static final int BIT_RATE = 32000;
 
-    private final int         bufferSize;
+    private final int bufferSize;
     private final MediaCodec mediaCodec;
     private final AudioRecord audioRecord;
 
-    private boolean running  = true;
+    private boolean running = true;
     private boolean finished = false;
 
     public AudioCodec() throws IOException {
-        this.bufferSize  = AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
+        this.bufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
         this.audioRecord = createAudioRecord(this.bufferSize);
-        this.mediaCodec  = createMediaCodec(this.bufferSize);
+        this.mediaCodec = createMediaCodec(this.bufferSize);
 
         this.mediaCodec.start();
 
@@ -57,10 +57,10 @@ public class AudioCodec {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                MediaCodec.BufferInfo bufferInfo         = new MediaCodec.BufferInfo();
-                byte[]                audioRecordData    = new byte[bufferSize];
-                ByteBuffer[]          codecInputBuffers  = mediaCodec.getInputBuffers();
-                ByteBuffer[]          codecOutputBuffers = mediaCodec.getOutputBuffers();
+                MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
+                byte[] audioRecordData = new byte[bufferSize];
+                ByteBuffer[] codecInputBuffers = mediaCodec.getInputBuffers();
+                ByteBuffer[] codecOutputBuffers = mediaCodec.getOutputBuffers();
 
                 try {
                     while (true) {
@@ -100,7 +100,7 @@ public class AudioCodec {
                                   MediaCodec mediaCodec, ByteBuffer[] codecInputBuffers,
                                   boolean running)
     {
-        int length                = audioRecord.read(audioRecordData, 0, audioRecordData.length);
+        int length = audioRecord.read(audioRecordData, 0, audioRecordData.length);
         int codecInputBufferIndex = mediaCodec.dequeueInputBuffer(10 * 1000);
 
         if (codecInputBufferIndex >= 0) {

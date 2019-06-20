@@ -26,7 +26,7 @@ public class AvatarHelper {
 
     public static List<File> getAvatarFiles(@NonNull Context context) {
         File   avatarDirectory = new File(context.getFilesDir(), AVATAR_DIRECTORY);
-        File[] results         = avatarDirectory.listFiles();
+        File[] results = avatarDirectory.listFiles();
 
         if (results == null) return new LinkedList<>();
         else                 return Stream.of(results).toList();

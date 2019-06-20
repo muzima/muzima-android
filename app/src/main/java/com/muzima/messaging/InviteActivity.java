@@ -44,7 +44,7 @@ public class InviteActivity extends PassphraseRequiredActionBarActivity implemen
     private ViewGroup smsSendFrame;
     private Button smsSendButton;
     private Animation slideInAnimation;
-    private Animation                    slideOutAnimation;
+    private Animation slideOutAnimation;
     private ImageView heart;
 
     @Override
@@ -64,16 +64,16 @@ public class InviteActivity extends PassphraseRequiredActionBarActivity implemen
         slideInAnimation  = loadAnimation(R.anim.slide_from_bottom);
         slideOutAnimation = loadAnimation(R.anim.slide_to_bottom);
 
-        View shareButton     = ViewUtil.findById(this, R.id.share_button);
-        View                 smsButton       = ViewUtil.findById(this, R.id.sms_button);
-        Button               smsCancelButton = ViewUtil.findById(this, R.id.cancel_sms_button);
+        View shareButton = ViewUtil.findById(this, R.id.share_button);
+        View smsButton = ViewUtil.findById(this, R.id.sms_button);
+        Button smsCancelButton = ViewUtil.findById(this, R.id.cancel_sms_button);
         ContactFilterToolbar contactFilter   = ViewUtil.findById(this, R.id.contact_filter);
 
-        inviteText        = ViewUtil.findById(this, R.id.invite_text);
-        smsSendFrame      = ViewUtil.findById(this, R.id.sms_send_frame);
-        smsSendButton     = ViewUtil.findById(this, R.id.send_sms_button);
-        heart             = ViewUtil.findById(this, R.id.heart);
-        contactsFragment  = (ContactSelectionListFragment)getSupportFragmentManager().findFragmentById(R.id.contact_selection_list_fragment);
+        inviteText = ViewUtil.findById(this, R.id.invite_text);
+        smsSendFrame = ViewUtil.findById(this, R.id.sms_send_frame);
+        smsSendButton = ViewUtil.findById(this, R.id.send_sms_button);
+        heart = ViewUtil.findById(this, R.id.heart);
+        contactsFragment = (ContactSelectionListFragment)getSupportFragmentManager().findFragmentById(R.id.contact_selection_list_fragment);
 
         inviteText.setText(getString(R.string.general_lets_switch_to_muzima, "https://sgnl.link/1KpeYmF"));
         updateSmsButtonText();
@@ -120,7 +120,8 @@ public class InviteActivity extends PassphraseRequiredActionBarActivity implemen
         smsSendButton.setEnabled(!contactsFragment.getSelectedContacts().isEmpty());
     }
 
-    @Override public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
         if (smsSendFrame.getVisibility() == View.VISIBLE) {
             cancelSmsSelection();
         } else {
@@ -216,8 +217,8 @@ public class InviteActivity extends PassphraseRequiredActionBarActivity implemen
             if (context == null) return null;
 
             for (String number : numbers) {
-                SignalRecipient recipient      = SignalRecipient.from(context, SignalAddress.fromExternal(context, number), false);
-                int       subscriptionId = recipient.getDefaultSubscriptionId().or(-1);
+                SignalRecipient recipient = SignalRecipient.from(context, SignalAddress.fromExternal(context, number), false);
+                int subscriptionId = recipient.getDefaultSubscriptionId().or(-1);
 
                 MessageSender.send(context, new OutgoingTextMessage(recipient, message, subscriptionId), -1L, true, null);
 

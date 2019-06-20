@@ -17,18 +17,18 @@ public class Camera1Controller {
     private final int screenHeight;
 
     private Camera camera;
-    private int                  cameraId;
+    private int cameraId;
     private OrderEnforcer<Stage> enforcer;
-    private EventListener        eventListener;
+    private EventListener eventListener;
     private SurfaceTexture previewSurface;
-    private int                  screenRotation;
+    private int screenRotation;
 
     public Camera1Controller(int preferredDirection, int screenWidth, int screenHeight, @NonNull EventListener eventListener) {
         this.eventListener = eventListener;
-        this.enforcer      = new OrderEnforcer<>(Stage.INITIALIZED, Stage.PREVIEW_STARTED);
-        this.cameraId      = Camera.getNumberOfCameras() > 1  ? preferredDirection : Camera.CameraInfo.CAMERA_FACING_BACK;
-        this.screenWidth   = screenWidth;
-        this.screenHeight  = screenHeight;
+        this.enforcer = new OrderEnforcer<>(Stage.INITIALIZED, Stage.PREVIEW_STARTED);
+        this.cameraId = Camera.getNumberOfCameras() > 1  ? preferredDirection : Camera.CameraInfo.CAMERA_FACING_BACK;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
     }
 
     public void initialize() {
@@ -51,10 +51,10 @@ public class Camera1Controller {
             return;
         }
 
-        Camera.Parameters  params      = camera.getParameters();
-        Camera.Size        previewSize = getClosestSize(camera.getParameters().getSupportedPreviewSizes(), screenWidth, screenHeight);
-        Camera.Size        pictureSize = getClosestSize(camera.getParameters().getSupportedPictureSizes(), screenWidth, screenHeight);
-        final List<String> focusModes  = params.getSupportedFocusModes();
+        Camera.Parameters  params = camera.getParameters();
+        Camera.Size previewSize = getClosestSize(camera.getParameters().getSupportedPreviewSizes(), screenWidth, screenHeight);
+        Camera.Size pictureSize = getClosestSize(camera.getParameters().getSupportedPictureSizes(), screenWidth, screenHeight);
+        final List<String> focusModes = params.getSupportedFocusModes();
 
         Log.d(TAG, "Preview size: " + previewSize.width + "x" + previewSize.height + "  Picture size: " + pictureSize.width + "x" + pictureSize.height);
 
@@ -220,8 +220,8 @@ public class Camera1Controller {
         private final int previewHeight;
 
         public Properties(int cameraCount, int previewWidth, int previewHeight) {
-            this.cameraCount   = cameraCount;
-            this.previewWidth  = previewWidth;
+            this.cameraCount = cameraCount;
+            this.previewWidth = previewWidth;
             this.previewHeight = previewHeight;
         }
 

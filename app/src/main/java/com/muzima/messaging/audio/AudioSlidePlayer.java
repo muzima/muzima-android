@@ -58,12 +58,9 @@ public class AudioSlidePlayer implements SensorEventListener {
     private final @NonNull Sensor proximitySensor;
     private final @Nullable PowerManager.WakeLock wakeLock;
 
-    private @NonNull
-    WeakReference<Listener> listener;
-    private @Nullable
-    SimpleExoPlayer mediaPlayer;
-    private @Nullable
-    AttachmentServer audioAttachmentServer;
+    private @NonNull WeakReference<Listener> listener;
+    private @Nullable SimpleExoPlayer mediaPlayer;
+    private @Nullable AttachmentServer audioAttachmentServer;
     private long startTime;
 
     public synchronized static AudioSlidePlayer createFor(@NonNull Context context,
@@ -240,8 +237,7 @@ public class AudioSlidePlayer implements SensorEventListener {
         }
     }
 
-    public @NonNull
-    AudioSlide getAudioSlide() {
+    public @NonNull AudioSlide getAudioSlide() {
         return slide;
     }
 
@@ -282,8 +278,7 @@ public class AudioSlidePlayer implements SensorEventListener {
         });
     }
 
-    private @NonNull
-    Listener getListener() {
+    private @NonNull Listener getListener() {
         Listener listener = this.listener.get();
 
         if (listener != null) return listener;

@@ -17,11 +17,11 @@ import java.io.InputStream;
 public class EncryptedGifCacheDecoder extends EncryptedCoder implements ResourceDecoder<File, GifDrawable> {
     private static final String TAG = EncryptedGifCacheDecoder.class.getSimpleName();
 
-    private final byte[]           secret;
+    private final byte[] secret;
     private final StreamGifDecoder gifDecoder;
 
     public EncryptedGifCacheDecoder(@NonNull byte[] secret, @NonNull StreamGifDecoder gifDecoder) {
-        this.secret     = secret;
+        this.secret = secret;
         this.gifDecoder = gifDecoder;
     }
 

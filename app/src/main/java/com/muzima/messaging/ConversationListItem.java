@@ -162,7 +162,6 @@ public class ConversationListItem extends RelativeLayout
         setStatusIcons(thread);
         setThumbnailSnippet(thread);
         setBatchState(batchMode);
-//        setRippleColor(recipient);
         setUnreadIndicator(thread);
         this.contactPhotoImage.setAvatar(glideRequests, recipient, true);
     }
@@ -187,7 +186,6 @@ public class ConversationListItem extends RelativeLayout
         thumbnailView.setVisibility(GONE);
 
         setBatchState(false);
-//        setRippleColor(contact);
         contactPhotoImage.setAvatar(glideRequests, recipient, true);
     }
 
@@ -211,7 +209,6 @@ public class ConversationListItem extends RelativeLayout
         thumbnailView.setVisibility(GONE);
 
         setBatchState(false);
-//        setRippleColor(recipient);
         contactPhotoImage.setAvatar(glideRequests, recipient, true);
     }
 
@@ -288,15 +285,6 @@ public class ConversationListItem extends RelativeLayout
         }
     }
 
-    private void setRippleColor(SignalRecipient recipient) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if((getBackground()).mutate() instanceof RippleDrawable) {
-                ((RippleDrawable) (getBackground()).mutate())
-                        .setColor(ColorStateList.valueOf(recipient.getColor().toConversationColor(getContext())));
-            }
-        }
-    }
-
     private void setUnreadIndicator(ThreadRecord thread) {
         if (thread.isOutgoing() || thread.getUnreadCount() == 0) {
             unreadIndicator.setVisibility(View.GONE);
@@ -349,7 +337,6 @@ public class ConversationListItem extends RelativeLayout
         Util.runOnMain(() -> {
             fromView.setText(recipient, unreadCount == 0);
             contactPhotoImage.setAvatar(glideRequests, recipient, true);
-//            setRippleColor(recipient);
         });
     }
 

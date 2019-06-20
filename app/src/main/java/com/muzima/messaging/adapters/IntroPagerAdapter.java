@@ -14,7 +14,7 @@ public class IntroPagerAdapter extends FragmentStatePagerAdapter {
 
         public IntroPage(int backgroundColor, Fragment fragment) {
             this.backgroundColor = backgroundColor;
-            this.fragment        = fragment;
+            this.fragment = fragment;
         }
     }
 
