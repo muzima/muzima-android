@@ -33,20 +33,20 @@ public class GroupDatabase extends Database  {
     @SuppressWarnings("unused")
     private static final String TAG = GroupDatabase.class.getSimpleName();
 
-    static final String TABLE_NAME          = "groups";
-    private static final String ID                  = "_id";
-    static final String GROUP_ID            = "group_id";
-    private static final String TITLE               = "title";
-    private static final String MEMBERS             = "members";
-    private static final String AVATAR              = "avatar";
-    private static final String AVATAR_ID           = "avatar_id";
-    private static final String AVATAR_KEY          = "avatar_key";
+    static final String TABLE_NAME = "groups";
+    private static final String ID = "_id";
+    static final String GROUP_ID = "group_id";
+    private static final String TITLE = "title";
+    private static final String MEMBERS = "members";
+    private static final String AVATAR = "avatar";
+    private static final String AVATAR_ID = "avatar_id";
+    private static final String AVATAR_KEY = "avatar_key";
     private static final String AVATAR_CONTENT_TYPE = "avatar_content_type";
-    private static final String AVATAR_RELAY        = "avatar_relay";
-    private static final String AVATAR_DIGEST       = "avatar_digest";
-    private static final String TIMESTAMP           = "timestamp";
-    private static final String ACTIVE              = "active";
-    private static final String MMS                 = "mms";
+    private static final String AVATAR_RELAY = "avatar_relay";
+    private static final String AVATAR_DIGEST = "avatar_digest";
+    private static final String TIMESTAMP = "timestamp";
+    private static final String ACTIVE = "active";
+    private static final String MMS = "mms";
 
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME +
@@ -347,32 +347,32 @@ public class GroupDatabase extends Database  {
 
     public static class GroupRecord {
 
-        private final String        id;
-        private final String        title;
+        private final String id;
+        private final String title;
         private final List<SignalAddress> members;
-        private final byte[]        avatar;
-        private final long          avatarId;
-        private final byte[]        avatarKey;
-        private final byte[]        avatarDigest;
-        private final String        avatarContentType;
-        private final String        relay;
-        private final boolean       active;
-        private final boolean       mms;
+        private final byte[] avatar;
+        private final long avatarId;
+        private final byte[] avatarKey;
+        private final byte[] avatarDigest;
+        private final String avatarContentType;
+        private final String relay;
+        private final boolean active;
+        private final boolean mms;
 
         public GroupRecord(String id, String title, String members, byte[] avatar,
                            long avatarId, byte[] avatarKey, String avatarContentType,
                            String relay, boolean active, byte[] avatarDigest, boolean mms)
         {
-            this.id                = id;
-            this.title             = title;
-            this.avatar            = avatar;
-            this.avatarId          = avatarId;
-            this.avatarKey         = avatarKey;
-            this.avatarDigest      = avatarDigest;
+            this.id = id;
+            this.title = title;
+            this.avatar = avatar;
+            this.avatarId = avatarId;
+            this.avatarKey = avatarKey;
+            this.avatarDigest = avatarDigest;
             this.avatarContentType = avatarContentType;
-            this.relay             = relay;
-            this.active            = active;
-            this.mms               = mms;
+            this.relay = relay;
+            this.active = active;
+            this.mms = mms;
 
             if (!TextUtils.isEmpty(members)) this.members = SignalAddress.fromSerializedList(members, ',');
             else                             this.members = new LinkedList<>();

@@ -20,16 +20,16 @@ public class SignalAudioManager {
     private final OutgoingRinger outgoingRinger;
 
     private final SoundPool soundPool;
-    private final int       connectedSoundId;
-    private final int       disconnectedSoundId;
+    private final int connectedSoundId;
+    private final int disconnectedSoundId;
 
     public SignalAudioManager(@NonNull Context context) {
-        this.context             = context.getApplicationContext();
-        this.incomingRinger      = new IncomingRinger(context);
-        this.outgoingRinger      = new OutgoingRinger(context);
-        this.soundPool           = new SoundPool(1, AudioManager.STREAM_VOICE_CALL, 0);
+        this.context = context.getApplicationContext();
+        this.incomingRinger = new IncomingRinger(context);
+        this.outgoingRinger = new OutgoingRinger(context);
+        this.soundPool = new SoundPool(1, AudioManager.STREAM_VOICE_CALL, 0);
 
-        this.connectedSoundId    = this.soundPool.load(context, R.raw.webrtc_completed, 1);
+        this.connectedSoundId = this.soundPool.load(context, R.raw.webrtc_completed, 1);
         this.disconnectedSoundId = this.soundPool.load(context, R.raw.webrtc_disconnected, 1);
     }
 
@@ -45,7 +45,7 @@ public class SignalAudioManager {
 
     public void startIncomingRinger(@Nullable Uri ringtoneUri, boolean vibrate) {
         AudioManager audioManager = ServiceUtil.getAudioManager(context);
-        boolean      speaker      = !audioManager.isWiredHeadsetOn() && !audioManager.isBluetoothScoOn();
+        boolean speaker = !audioManager.isWiredHeadsetOn() && !audioManager.isBluetoothScoOn();
 
         audioManager.setMode(AudioManager.MODE_RINGTONE);
         audioManager.setMicrophoneMute(false);

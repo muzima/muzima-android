@@ -19,9 +19,9 @@ public class AttachmentDataSourceFactory implements DataSource.Factory {
                                        @NonNull DefaultDataSourceFactory defaultDataSourceFactory,
                                        @Nullable TransferListener listener)
     {
-        this.context                  = context;
+        this.context = context;
         this.defaultDataSourceFactory = defaultDataSourceFactory;
-        this.listener                 = listener;
+        this.listener  = listener;
     }
 
     @Override

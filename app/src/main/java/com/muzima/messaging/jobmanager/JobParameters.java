@@ -26,12 +26,12 @@ public class JobParameters {
     private static final long serialVersionUID = 4880456378402584584L;
 
     private final List<Requirement> requirements;
-    private final boolean           requiresNetwork;
-    private final boolean           requiresSqlCipher;
-    private final int               retryCount;
-    private final long              retryUntil;
-    private final String            groupId;
-    private final boolean           ignoreDuplicates;
+    private final boolean requiresNetwork;
+    private final boolean requiresSqlCipher;
+    private final int retryCount;
+    private final long retryUntil;
+    private final String groupId;
+    private final boolean ignoreDuplicates;
 
     private JobParameters(String groupId,
                           boolean ignoreDuplicates,
@@ -40,13 +40,13 @@ public class JobParameters {
                           int retryCount,
                           long retryUntil)
     {
-        this.groupId           = groupId;
+        this.groupId = groupId;
         this.ignoreDuplicates  = ignoreDuplicates;
-        this.requirements      = Collections.emptyList();
-        this.requiresNetwork   = requiresNetwork;
+        this.requirements = Collections.emptyList();
+        this.requiresNetwork = requiresNetwork;
         this.requiresSqlCipher = requiresSqlCipher;
-        this.retryCount        = retryCount;
-        this.retryUntil        = retryUntil;
+        this.retryCount = retryCount;
+        this.retryUntil = retryUntil;
     }
 
     public boolean shouldIgnoreDuplicates() {
@@ -108,12 +108,12 @@ public class JobParameters {
     }
 
     public static class Builder {
-        private int               retryCount           = 100;
-        private long              retryDuration        = 0;
-        private String            groupId              = null;
-        private boolean           ignoreDuplicates     = false;
-        private boolean           requiresNetwork      = false;
-        private boolean           requiresSqlCipher    = false;
+        private int retryCount = 100;
+        private long retryDuration = 0;
+        private String groupId = null;
+        private boolean ignoreDuplicates = false;
+        private boolean requiresNetwork = false;
+        private boolean requiresSqlCipher = false;
 
         public Builder withNetworkRequirement() {
             requiresNetwork = true;

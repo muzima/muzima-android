@@ -60,13 +60,13 @@ public class WebRtcViewModel {
                            boolean     isBluetoothAvailable,
                            boolean     isMicrophoneEnabled)
     {
-        this.state                = state;
-        this.recipient            = recipient;
-        this.localCameraState     = localCameraState;
-        this.identityKey          = identityKey;
-        this.remoteVideoEnabled   = remoteVideoEnabled;
+        this.state = state;
+        this.recipient = recipient;
+        this.localCameraState = localCameraState;
+        this.identityKey = identityKey;
+        this.remoteVideoEnabled = remoteVideoEnabled;
         this.isBluetoothAvailable = isBluetoothAvailable;
-        this.isMicrophoneEnabled  = isMicrophoneEnabled;
+        this.isMicrophoneEnabled = isMicrophoneEnabled;
     }
 
     public @NonNull State getState() {

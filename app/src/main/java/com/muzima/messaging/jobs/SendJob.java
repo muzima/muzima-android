@@ -71,7 +71,7 @@ public abstract class SendJob extends ContextJob {
             throws UndeliverableMessageException
     {
         AttachmentDatabase attachmentDatabase = DatabaseFactory.getAttachmentDatabase(context);
-        List<Attachment>   results            = new LinkedList<>();
+        List<Attachment> results = new LinkedList<>();
 
         for (Attachment attachment : attachments) {
             try {

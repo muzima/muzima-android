@@ -17,7 +17,7 @@ public class ExpiringMessageManager {
     private static final String TAG = ExpiringMessageManager.class.getSimpleName();
 
     private final TreeSet<ExpiringMessageReference> expiringMessageReferences = new TreeSet<>(new ExpiringMessageComparator());
-    private final Executor executor                  = Executors.newSingleThreadExecutor();
+    private final Executor executor = Executors.newSingleThreadExecutor();
 
     private final SmsDatabase smsDatabase;
     private final MmsDatabase mmsDatabase;

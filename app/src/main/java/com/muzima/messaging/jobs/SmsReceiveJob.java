@@ -32,7 +32,7 @@ public class SmsReceiveJob extends ContextJob {
 
     private static final String TAG = SmsReceiveJob.class.getSimpleName();
 
-    private static final String KEY_PDUS            = "pdus";
+    private static final String KEY_PDUS = "pdus";
     private static final String KEY_SUBSCRIPTION_ID = "subscription_id";
 
     private @Nullable Object[] pdus;
@@ -48,7 +48,7 @@ public class SmsReceiveJob extends ContextJob {
                 .withSqlCipherRequirement()
                 .create());
 
-        this.pdus           = pdus;
+        this.pdus = pdus;
         this.subscriptionId = subscriptionId;
     }
 
@@ -127,7 +127,7 @@ public class SmsReceiveJob extends ContextJob {
         }
 
         if (message.isSecureMessage()) {
-            IncomingTextMessage    placeholder  = new IncomingTextMessage(message, "");
+            IncomingTextMessage placeholder = new IncomingTextMessage(message, "");
             Optional<InsertResult> insertResult = database.insertMessageInbox(placeholder);
             database.markAsLegacyVersion(insertResult.get().getMessageId());
 

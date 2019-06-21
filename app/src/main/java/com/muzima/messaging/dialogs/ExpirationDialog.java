@@ -44,12 +44,12 @@ public class ExpirationDialog extends AlertDialog {
     }
 
     private static View createNumberPickerView(final Context context, final int currentExpiration) {
-        final LayoutInflater inflater                = LayoutInflater.from(context);
-        final View             view                    = inflater.inflate(R.layout.expiration_dialog, null);
-        final NumberPickerView numberPickerView        = view.findViewById(R.id.expiration_number_picker);
-        final TextView textView                = view.findViewById(R.id.expiration_details);
-        final int[]            expirationTimes         = context.getResources().getIntArray(R.array.expiration_times);
-        final String[]         expirationDisplayValues = new String[expirationTimes.length];
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        final View view = inflater.inflate(R.layout.expiration_dialog, null);
+        final NumberPickerView numberPickerView = view.findViewById(R.id.expiration_number_picker);
+        final TextView textView = view.findViewById(R.id.expiration_details);
+        final int[] expirationTimes = context.getResources().getIntArray(R.array.expiration_times);
+        final String[] expirationDisplayValues = new String[expirationTimes.length];
 
         int selectedIndex = expirationTimes.length - 1;
 

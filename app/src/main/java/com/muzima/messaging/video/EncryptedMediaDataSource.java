@@ -24,21 +24,21 @@ public class EncryptedMediaDataSource extends MediaDataSource {
 
     public EncryptedMediaDataSource(@NonNull AttachmentSecret attachmentSecret, @NonNull File mediaFile, @Nullable byte[] random, long length) {
         this.attachmentSecret = attachmentSecret;
-        this.mediaFile        = mediaFile;
-        this.random           = random;
-        this.length           = length;
+        this.mediaFile = mediaFile;
+        this.random = random;
+        this.length = length;
     }
 
     @Override
     public int readAt(long position, byte[] bytes, int offset, int length) throws IOException {
         if (random == null) return readAtClassic(position, bytes, offset, length);
-        else                return readAtModern(position, bytes, offset, length);
+        else return readAtModern(position, bytes, offset, length);
     }
 
     private int readAtClassic(long position, byte[] bytes, int offset, int length) throws IOException {
-        InputStream inputStream     = ClassicDecryptingPartInputStream.createFor(attachmentSecret, mediaFile);
-        byte[]      buffer          = new byte[4096];
-        long        headerRemaining = position;
+        InputStream inputStream = ClassicDecryptingPartInputStream.createFor(attachmentSecret, mediaFile);
+        byte[] buffer = new byte[4096];
+        long headerRemaining = position;
 
         while (headerRemaining > 0) {
             int read = inputStream.read(buffer, 0, Util.toIntExact(Math.min((long)buffer.length, headerRemaining)));
@@ -57,7 +57,7 @@ public class EncryptedMediaDataSource extends MediaDataSource {
         assert(random != null);
 
         InputStream inputStream = ModernDecryptingPartInputStream.createFor(attachmentSecret, random, mediaFile, position);
-        int         returnValue = inputStream.read(bytes, offset, length);
+        int returnValue = inputStream.read(bytes, offset, length);
 
         inputStream.close();
 

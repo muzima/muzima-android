@@ -26,31 +26,31 @@ public class ApnDatabase {
     private final Context context;
 
     private static final String DATABASE_NAME = "apns.db";
-    private static final String ASSET_PATH    = "databases" + File.separator + DATABASE_NAME;
+    private static final String ASSET_PATH = "databases" + File.separator + DATABASE_NAME;
 
-    private static final String TABLE_NAME              = "apns";
-    private static final String ID_COLUMN               = "_id";
-    private static final String MCC_MNC_COLUMN          = "mccmnc";
-    private static final String MCC_COLUMN              = "mcc";
-    private static final String MNC_COLUMN              = "mnc";
-    private static final String CARRIER_COLUMN          = "carrier";
-    private static final String APN_COLUMN              = "apn";
-    private static final String MMSC_COLUMN             = "mmsc";
-    private static final String PORT_COLUMN             = "port";
-    private static final String TYPE_COLUMN             = "type";
-    private static final String PROTOCOL_COLUMN         = "protocol";
-    private static final String BEARER_COLUMN           = "bearer";
+    private static final String TABLE_NAME = "apns";
+    private static final String ID_COLUMN = "_id";
+    private static final String MCC_MNC_COLUMN = "mccmnc";
+    private static final String MCC_COLUMN = "mcc";
+    private static final String MNC_COLUMN = "mnc";
+    private static final String CARRIER_COLUMN = "carrier";
+    private static final String APN_COLUMN = "apn";
+    private static final String MMSC_COLUMN = "mmsc";
+    private static final String PORT_COLUMN = "port";
+    private static final String TYPE_COLUMN = "type";
+    private static final String PROTOCOL_COLUMN = "protocol";
+    private static final String BEARER_COLUMN = "bearer";
     private static final String ROAMING_PROTOCOL_COLUMN = "roaming_protocol";
-    private static final String CARRIER_ENABLED_COLUMN  = "carrier_enabled";
-    private static final String MMS_PROXY_COLUMN        = "mmsproxy";
-    private static final String MMS_PORT_COLUMN         = "mmsport";
-    private static final String PROXY_COLUMN            = "proxy";
-    private static final String MVNO_MATCH_DATA_COLUMN  = "mvno_match_data";
-    private static final String MVNO_TYPE_COLUMN        = "mvno";
-    private static final String AUTH_TYPE_COLUMN        = "authtype";
-    private static final String USER_COLUMN             = "user";
-    private static final String PASSWORD_COLUMN         = "password";
-    private static final String SERVER_COLUMN           = "server";
+    private static final String CARRIER_ENABLED_COLUMN = "carrier_enabled";
+    private static final String MMS_PROXY_COLUMN = "mmsproxy";
+    private static final String MMS_PORT_COLUMN = "mmsport";
+    private static final String PROXY_COLUMN = "proxy";
+    private static final String MVNO_MATCH_DATA_COLUMN = "mvno_match_data";
+    private static final String MVNO_TYPE_COLUMN = "mvno";
+    private static final String AUTH_TYPE_COLUMN = "authtype";
+    private static final String USER_COLUMN = "user";
+    private static final String PASSWORD_COLUMN = "password";
+    private static final String SERVER_COLUMN = "server";
 
     private static final String BASE_SELECTION = MCC_MNC_COLUMN + " = ?";
 
@@ -142,9 +142,9 @@ public class ApnDatabase {
     }
 
     public Optional<Apn> getMmsConnectionParameters(String mccmnc, String apn) {
-        Apn customApn  = getCustomApnParameters();
+        Apn customApn = getCustomApnParameters();
         Apn defaultApn = getDefaultApnParameters(mccmnc, apn);
-        Apn result     = new Apn(customApn, defaultApn,
+        Apn result = new Apn(customApn, defaultApn,
                 TextSecurePreferences.getUseCustomMmsc(context),
                 TextSecurePreferences.getUseCustomMmscProxy(context),
                 TextSecurePreferences.getUseCustomMmscProxyPort(context),

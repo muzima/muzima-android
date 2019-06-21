@@ -43,21 +43,21 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 
 public class ThumbnailView extends FrameLayout {
 
-    private static final String TAG        = ThumbnailView.class.getSimpleName();
-    private static final int    WIDTH      = 0;
-    private static final int    HEIGHT     = 1;
-    private static final int    MIN_WIDTH  = 0;
-    private static final int    MAX_WIDTH  = 1;
-    private static final int    MIN_HEIGHT = 2;
-    private static final int    MAX_HEIGHT = 3;
+    private static final String TAG = ThumbnailView.class.getSimpleName();
+    private static final int WIDTH = 0;
+    private static final int HEIGHT = 1;
+    private static final int MIN_WIDTH = 0;
+    private static final int MAX_WIDTH = 1;
+    private static final int MIN_HEIGHT = 2;
+    private static final int MAX_HEIGHT = 3;
 
     private ImageView image;
     private View playOverlay;
-    private View            captionIcon;
+    private View captionIcon;
     private OnClickListener parentClickListener;
 
-    private final int[] dimens        = new int[2];
-    private final int[] bounds        = new int[4];
+    private final int[] dimens = new int[2];
+    private final int[] bounds = new int[4];
     private final int[] measureDimens = new int[2];
 
     private Optional<TransferControlView> transferControls = Optional.absent();
@@ -80,18 +80,18 @@ public class ThumbnailView extends FrameLayout {
 
         inflate(context, R.layout.thumbnail_view, this);
 
-        this.image       = findViewById(R.id.thumbnail_image);
+        this.image = findViewById(R.id.thumbnail_image);
         this.playOverlay = findViewById(R.id.play_overlay);
         this.captionIcon = findViewById(R.id.thumbnail_caption_icon);
         super.setOnClickListener(new ThumbnailClickDispatcher());
 
         if (attrs != null) {
             TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ThumbnailView, 0, 0);
-            bounds[MIN_WIDTH]  = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_minWidth, 0);
-            bounds[MAX_WIDTH]  = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_maxWidth, 0);
+            bounds[MIN_WIDTH] = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_minWidth, 0);
+            bounds[MAX_WIDTH] = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_maxWidth, 0);
             bounds[MIN_HEIGHT] = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_minHeight, 0);
             bounds[MAX_HEIGHT] = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_maxHeight, 0);
-            radius             = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_thumbnail_radius, getResources().getDimensionPixelSize(R.dimen.message_corner_collapse_radius));
+            radius = typedArray.getDimensionPixelSize(R.styleable.ThumbnailView_thumbnail_radius, getResources().getDimensionPixelSize(R.dimen.message_corner_collapse_radius));
             typedArray.recycle();
         } else {
             radius = getResources().getDimensionPixelSize(R.dimen.message_corner_collapse_radius);
@@ -107,7 +107,7 @@ public class ThumbnailView extends FrameLayout {
             return;
         }
 
-        int finalWidth  = measureDimens[WIDTH] + getPaddingLeft() + getPaddingRight();
+        int finalWidth = measureDimens[WIDTH] + getPaddingLeft() + getPaddingRight();
         int finalHeight = measureDimens[HEIGHT] + getPaddingTop() + getPaddingBottom();
 
         super.onMeasure(MeasureSpec.makeMeasureSpec(finalWidth, MeasureSpec.EXACTLY),
@@ -125,11 +125,11 @@ public class ThumbnailView extends FrameLayout {
             return;
         }
 
-        double naturalWidth  = dimens[WIDTH];
+        double naturalWidth = dimens[WIDTH];
         double naturalHeight = dimens[HEIGHT];
 
-        int minWidth  = bounds[MIN_WIDTH];
-        int maxWidth  = bounds[MAX_WIDTH];
+        int minWidth = bounds[MIN_WIDTH];
+        int maxWidth = bounds[MAX_WIDTH];
         int minHeight = bounds[MIN_HEIGHT];
         int maxHeight = bounds[MAX_HEIGHT];
 
@@ -142,10 +142,10 @@ public class ThumbnailView extends FrameLayout {
                     minWidth, maxWidth, minHeight, maxHeight));
         }
 
-        double measuredWidth  = naturalWidth;
+        double measuredWidth = naturalWidth;
         double measuredHeight = naturalHeight;
 
-        boolean widthInBounds  = measuredWidth >= minWidth && measuredWidth <= maxWidth;
+        boolean widthInBounds = measuredWidth >= minWidth && measuredWidth <= maxWidth;
         boolean heightInBounds = measuredHeight >= minHeight && measuredHeight <= maxHeight;
 
         if (!widthInBounds || !heightInBounds) {
@@ -163,7 +163,7 @@ public class ThumbnailView extends FrameLayout {
                     measuredHeight /= maxHeightRatio;
                 }
 
-                measuredWidth  = Math.max(measuredWidth, minWidth);
+                measuredWidth = Math.max(measuredWidth, minWidth);
                 measuredHeight = Math.max(measuredHeight, minHeight);
 
             } else if (minWidthRatio < 1 || minHeightRatio < 1) {
@@ -175,12 +175,12 @@ public class ThumbnailView extends FrameLayout {
                     measuredHeight /= minHeightRatio;
                 }
 
-                measuredWidth  = Math.min(measuredWidth, maxWidth);
+                measuredWidth = Math.min(measuredWidth, maxWidth);
                 measuredHeight = Math.min(measuredHeight, maxHeight);
             }
         }
 
-        targetDimens[WIDTH]  = (int) measuredWidth;
+        targetDimens[WIDTH] = (int) measuredWidth;
         targetDimens[HEIGHT] = (int) measuredHeight;
     }
 
@@ -219,8 +219,8 @@ public class ThumbnailView extends FrameLayout {
     }
 
     public void setBounds(int minWidth, int maxWidth, int minHeight, int maxHeight) {
-        bounds[MIN_WIDTH]  = minWidth;
-        bounds[MAX_WIDTH]  = maxWidth;
+        bounds[MIN_WIDTH] = minWidth;
+        bounds[MAX_WIDTH] = maxWidth;
         bounds[MIN_HEIGHT] = minHeight;
         bounds[MAX_HEIGHT] = maxHeight;
 
@@ -275,7 +275,7 @@ public class ThumbnailView extends FrameLayout {
 
         this.captionIcon.setVisibility(slide.getCaption().isPresent() ? VISIBLE : GONE);
 
-        dimens[WIDTH]  = naturalWidth;
+        dimens[WIDTH] = naturalWidth;
         dimens[HEIGHT] = naturalHeight;
         invalidate();
 
@@ -349,7 +349,7 @@ public class ThumbnailView extends FrameLayout {
         int[] size = new int[2];
         fillTargetDimensions(size, dimens, bounds);
         if (size[WIDTH] == 0 && size[HEIGHT] == 0) {
-            size[WIDTH]  = getDefaultWidth();
+            size[WIDTH] = getDefaultWidth();
             size[HEIGHT] = getDefaultHeight();
         }
 
@@ -381,10 +381,10 @@ public class ThumbnailView extends FrameLayout {
     private class ThumbnailClickDispatcher implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            if (thumbnailClickListener            != null &&
-                    slide                             != null &&
+            if (thumbnailClickListener != null &&
+                    slide != null &&
                     slide.asAttachment().getDataUri() != null &&
-                    slide.getTransferState()          == AttachmentDatabase.TRANSFER_PROGRESS_DONE)
+                    slide.getTransferState() == AttachmentDatabase.TRANSFER_PROGRESS_DONE)
             {
                 thumbnailClickListener.onClick(view, slide);
             } else if (parentClickListener != null) {

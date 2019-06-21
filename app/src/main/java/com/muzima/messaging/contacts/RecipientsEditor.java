@@ -130,10 +130,10 @@ public class RecipientsEditor extends AppCompatMultiAutoCompleteTextView {
     }
 
     public static CharSequence contactToToken(SignalRecipient c) {
-        String name       = c.getName();
-        String number     = c.getAddress().serialize();
+        String name = c.getName();
+        String number = c.getAddress().serialize();
         SpannableString s = new SpannableString(RecipientsFormatter.formatNameAndNumber(name, number));
-        int len           = s.length();
+        int len = s.length();
 
         if (len == 0) {
             return s;

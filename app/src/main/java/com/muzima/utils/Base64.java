@@ -1,5 +1,7 @@
 package com.muzima.utils;
 
+import android.util.Log;
+
 /**
  * <p>Encodes and decodes to and from Base64 notation.</p>
  * <p>Homepage: <a href="http://iharder.net/base64">http://iharder.net/base64</a>.</p>
@@ -1313,7 +1315,7 @@ public class Base64
 
                 }   // end try
                 catch( java.io.IOException e ) {
-                    e.printStackTrace();
+                    Log.e("Base64","Encountered an IOException "+e);
                     // Just return originally-decoded bytes
                 }   // end catch
                 finally {
@@ -1927,16 +1929,16 @@ public class Base64
          */
         public OutputStream( java.io.OutputStream out, int options ) {
             super( out );
-            this.breakLines   = (options & DO_BREAK_LINES) != 0;
-            this.encode       = (options & ENCODE) != 0;
+            this.breakLines = (options & DO_BREAK_LINES) != 0;
+            this.encode = (options & ENCODE) != 0;
             this.bufferLength = encode ? 3 : 4;
-            this.buffer       = new byte[ bufferLength ];
-            this.position     = 0;
-            this.lineLength   = 0;
+            this.buffer = new byte[ bufferLength ];
+            this.position = 0;
+            this.lineLength = 0;
             this.suspendEncoding = false;
-            this.b4           = new byte[4];
-            this.options      = options;
-            this.decodabet    = getDecodabet(options);
+            this.b4 = new byte[4];
+            this.options = options;
+            this.decodabet = getDecodabet(options);
         }   // end constructor
 
 

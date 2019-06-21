@@ -16,9 +16,9 @@ import java.util.List;
 
 public class AndroidAutoHeardReceiver extends BroadcastReceiver {
 
-        public static final String TAG                   = AndroidAutoHeardReceiver.class.getSimpleName();
-        public static final String HEARD_ACTION          = "com.muzima.notifications.ANDROID_AUTO_HEARD";
-        public static final String THREAD_IDS_EXTRA      = "car_heard_thread_ids";
+        public static final String TAG = AndroidAutoHeardReceiver.class.getSimpleName();
+        public static final String HEARD_ACTION = "com.muzima.notifications.ANDROID_AUTO_HEARD";
+        public static final String THREAD_IDS_EXTRA = "car_heard_thread_ids";
         public static final String NOTIFICATION_ID_EXTRA = "car_notification_id";
 
         @SuppressLint("StaticFieldLeak")

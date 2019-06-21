@@ -23,12 +23,12 @@ public class SessionStoreMigrationHelper {
     private static final String TAG = SessionStoreMigrationHelper.class.getSimpleName();
 
     private static final String SESSIONS_DIRECTORY_V2 = "sessions-v2";
-    private static final Object FILE_LOCK             = new Object();
+    private static final Object FILE_LOCK = new Object();
 
-    private static final int SINGLE_STATE_VERSION   = 1;
+    private static final int SINGLE_STATE_VERSION = 1;
     private static final int ARCHIVE_STATES_VERSION = 2;
-    private static final int PLAINTEXT_VERSION      = 3;
-    private static final int CURRENT_VERSION        = 3;
+    private static final int PLAINTEXT_VERSION = 3;
+    private static final int CURRENT_VERSION = 3;
 
     static void migrateSessions(Context context, SQLiteDatabase database) {
         File directory = new File(context.getFilesDir(), SESSIONS_DIRECTORY_V2);
@@ -39,16 +39,16 @@ public class SessionStoreMigrationHelper {
             if (sessionFiles != null) {
                 for (File sessionFile : sessionFiles) {
                     try {
-                        String[] parts   = sessionFile.getName().split("[.]");
+                        String[] parts = sessionFile.getName().split("[.]");
                         SignalAddress address = SignalAddress.fromSerialized(parts[0]);
 
                         int deviceId;
 
                         if (parts.length > 1) deviceId = Integer.parseInt(parts[1]);
-                        else                  deviceId = SignalServiceAddress.DEFAULT_DEVICE_ID;
+                        else deviceId = SignalServiceAddress.DEFAULT_DEVICE_ID;
 
-                        FileInputStream in            = new FileInputStream(sessionFile);
-                        int             versionMarker = readInteger(in);
+                        FileInputStream in = new FileInputStream(sessionFile);
+                        int versionMarker = readInteger(in);
 
                         if (versionMarker > CURRENT_VERSION) {
                             throw new AssertionError("Unknown version: " + versionMarker + ", " + sessionFile.getAbsolutePath());
@@ -92,7 +92,7 @@ public class SessionStoreMigrationHelper {
     }
 
     private static byte[] readBlob(FileInputStream in) throws IOException {
-        int length       = readInteger(in);
+        int length = readInteger(in);
         byte[] blobBytes = new byte[length];
 
         in.read(blobBytes, 0, blobBytes.length);

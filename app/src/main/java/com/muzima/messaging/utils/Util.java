@@ -174,8 +174,8 @@ public class Util {
     }
 
     public static long getStreamLength(InputStream in) throws IOException {
-        byte[] buffer    = new byte[4096];
-        int    totalSize = 0;
+        byte[] buffer = new byte[4096];
+        int totalSize = 0;
 
         int read;
 
@@ -211,7 +211,7 @@ public class Util {
 
     public static byte[] readFully(InputStream in) throws IOException {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        byte[] buffer              = new byte[4096];
+        byte[] buffer = new byte[4096];
         int read;
 
         while ((read = in.read(buffer)) != -1) {
@@ -251,11 +251,11 @@ public class Util {
     @SuppressLint("MissingPermission")
     public static Optional<Phonenumber.PhoneNumber> getDeviceNumber(Context context) {
         try {
-            final String           localNumber = ((TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
+            final String localNumber = ((TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
             final Optional<String> countryIso  = getSimCountryIso(context);
 
             if (TextUtils.isEmpty(localNumber)) return Optional.absent();
-            if (!countryIso.isPresent())        return Optional.absent();
+            if (!countryIso.isPresent()) return Optional.absent();
 
             return Optional.fromNullable(PhoneNumberUtil.getInstance().parse(localNumber, countryIso.get()));
         } catch (NumberParseException e) {
@@ -361,11 +361,6 @@ public class Util {
         return 90 - age;
     }
 
-//    @TargetApi(VERSION_CODES.LOLLIPOP)
-//    public static boolean isMmsCapable(Context context) {
-//        return (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) || OutgoingLegacyMmsConnection.isConnectionPossible(context);
-//    }
-
     public static boolean isMainThread() {
         return Looper.myLooper() == Looper.getMainLooper();
     }
@@ -431,7 +426,7 @@ public class Util {
 
     public static @Nullable Uri uri(@Nullable String uri) {
         if (uri == null) return null;
-        else             return Uri.parse(uri);
+        else return Uri.parse(uri);
     }
 
     @TargetApi(VERSION_CODES.KITKAT)
@@ -488,8 +483,8 @@ public class Util {
     public static String getPrettyFileSize(long sizeBytes) {
         if (sizeBytes <= 0) return "0";
 
-        String[] units       = new String[]{"B", "kB", "MB", "GB", "TB"};
-        int      digitGroups = (int) (Math.log10(sizeBytes) / Math.log10(1024));
+        String[] units = new String[]{"B", "kB", "MB", "GB", "TB"};
+        int digitGroups = (int) (Math.log10(sizeBytes) / Math.log10(1024));
 
         return new DecimalFormat("#,##0.#").format(sizeBytes/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }

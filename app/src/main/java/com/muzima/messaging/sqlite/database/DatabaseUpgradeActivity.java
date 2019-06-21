@@ -47,34 +47,34 @@ import java.util.TreeSet;
 public class DatabaseUpgradeActivity extends BaseActivity {
     private static final String TAG = DatabaseUpgradeActivity.class.getSimpleName();
 
-    public static final int NO_MORE_KEY_EXCHANGE_PREFIX_VERSION  = 46;
-    public static final int MMS_BODY_VERSION                     = 46;
-    public static final int TOFU_IDENTITIES_VERSION              = 50;
-    public static final int CURVE25519_VERSION                   = 63;
+    public static final int NO_MORE_KEY_EXCHANGE_PREFIX_VERSION = 46;
+    public static final int MMS_BODY_VERSION = 46;
+    public static final int TOFU_IDENTITIES_VERSION = 50;
+    public static final int CURVE25519_VERSION = 63;
     public static final int ASYMMETRIC_MASTER_SECRET_FIX_VERSION = 73;
-    public static final int NO_V1_VERSION                        = 83;
-    public static final int SIGNED_PREKEY_VERSION                = 83;
-    public static final int NO_DECRYPT_QUEUE_VERSION             = 113;
-    public static final int PUSH_DECRYPT_SERIAL_ID_VERSION       = 131;
-    public static final int MIGRATE_SESSION_PLAINTEXT            = 136;
-    public static final int CONTACTS_ACCOUNT_VERSION             = 136;
-    public static final int MEDIA_DOWNLOAD_CONTROLS_VERSION      = 151;
-    public static final int REDPHONE_SUPPORT_VERSION             = 157;
-    public static final int NO_MORE_CANONICAL_DB_VERSION         = 276;
-    public static final int PROFILES                             = 289;
-    public static final int SCREENSHOTS                          = 300;
-    public static final int PERSISTENT_BLOBS                     = 317;
-    public static final int INTERNALIZE_CONTACTS                 = 317;
-    public static final int SQLCIPHER                            = 334;
-    public static final int SQLCIPHER_COMPLETE                   = 352;
-    public static final int REMOVE_JOURNAL                       = 353;
-    public static final int REMOVE_CACHE                         = 354;
-    public static final int FULL_TEXT_SEARCH                     = 358;
-    public static final int BAD_IMPORT_CLEANUP                   = 373;
-    public static final int IMAGE_CACHE_CLEANUP                  = 406;
-    public static final int WORKMANAGER_MIGRATION                = 408;
-    public static final int COLOR_MIGRATION                      = 412;
-    public static final int UNIDENTIFIED_DELIVERY                = 422;
+    public static final int NO_V1_VERSION = 83;
+    public static final int SIGNED_PREKEY_VERSION  = 83;
+    public static final int NO_DECRYPT_QUEUE_VERSION = 113;
+    public static final int PUSH_DECRYPT_SERIAL_ID_VERSION = 131;
+    public static final int MIGRATE_SESSION_PLAINTEXT = 136;
+    public static final int CONTACTS_ACCOUNT_VERSION = 136;
+    public static final int MEDIA_DOWNLOAD_CONTROLS_VERSION = 151;
+    public static final int REDPHONE_SUPPORT_VERSION = 157;
+    public static final int NO_MORE_CANONICAL_DB_VERSION = 276;
+    public static final int PROFILES = 289;
+    public static final int SCREENSHOTS = 300;
+    public static final int PERSISTENT_BLOBS = 317;
+    public static final int INTERNALIZE_CONTACTS = 317;
+    public static final int SQLCIPHER = 334;
+    public static final int SQLCIPHER_COMPLETE = 352;
+    public static final int REMOVE_JOURNAL = 353;
+    public static final int REMOVE_CACHE = 354;
+    public static final int FULL_TEXT_SEARCH = 358;
+    public static final int BAD_IMPORT_CLEANUP = 373;
+    public static final int IMAGE_CACHE_CLEANUP = 406;
+    public static final int WORKMANAGER_MIGRATION = 408;
+    public static final int COLOR_MIGRATION = 412;
+    public static final int UNIDENTIFIED_DELIVERY = 422;
 
     private static final SortedSet<Integer> UPGRADE_VERSIONS = new TreeSet<Integer>() {{
         add(NO_MORE_KEY_EXCHANGE_PREFIX_VERSION);
@@ -115,7 +115,7 @@ public class DatabaseUpgradeActivity extends BaseActivity {
             setContentView(R.layout.database_upgrade_activity);
 
             ProgressBar indeterminateProgress = findViewById(R.id.indeterminate_progress);
-            ProgressBar determinateProgress   = findViewById(R.id.determinate_progress);
+            ProgressBar determinateProgress = findViewById(R.id.determinate_progress);
 
             new DatabaseUpgradeTask(indeterminateProgress, determinateProgress)
                     .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, VersionTracker.getLastSeenVersion(this));
@@ -129,7 +129,7 @@ public class DatabaseUpgradeActivity extends BaseActivity {
 
     private boolean needsUpgradeTask() {
         int currentVersionCode = Util.getCurrentApkReleaseVersion(this);
-        int lastSeenVersion    = VersionTracker.getLastSeenVersion(this);
+        int lastSeenVersion = VersionTracker.getLastSeenVersion(this);
 
         Log.i("DatabaseUpgradeActivity", "LastSeenVersion: " + lastSeenVersion);
 
@@ -147,7 +147,7 @@ public class DatabaseUpgradeActivity extends BaseActivity {
 
     public static boolean isUpdate(Context context) {
         try {
-            int currentVersionCode  = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
+            int currentVersionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
             int previousVersionCode = VersionTracker.getLastSeenVersion(context);
 
             return previousVersionCode < currentVersionCode;
@@ -181,7 +181,7 @@ public class DatabaseUpgradeActivity extends BaseActivity {
 
         DatabaseUpgradeTask(ProgressBar indeterminateProgress, ProgressBar determinateProgress) {
             this.indeterminateProgress = indeterminateProgress;
-            this.determinateProgress   = determinateProgress;
+            this.determinateProgress = determinateProgress;
         }
 
         @Override
@@ -353,8 +353,8 @@ public class DatabaseUpgradeActivity extends BaseActivity {
         }
 
         private void schedulePendingIncomingParts(Context context) {
-            final AttachmentDatabase       attachmentDb       = DatabaseFactory.getAttachmentDatabase(context);
-            final MmsDatabase              mmsDb              = DatabaseFactory.getMmsDatabase(context);
+            final AttachmentDatabase attachmentDb = DatabaseFactory.getAttachmentDatabase(context);
+            final MmsDatabase mmsDb = DatabaseFactory.getMmsDatabase(context);
             final List<DatabaseAttachment> pendingAttachments = DatabaseFactory.getAttachmentDatabase(context).getPendingAttachments();
 
             Log.i(TAG, pendingAttachments.size() + " pending parts.");
@@ -377,7 +377,7 @@ public class DatabaseUpgradeActivity extends BaseActivity {
 
         private void scheduleMessagesInPushDatabase(Context context) {
             PushDatabase pushDatabase = DatabaseFactory.getPushDatabase(context);
-            Cursor pushReader   = null;
+            Cursor pushReader = null;
 
             try {
                 pushReader = pushDatabase.getPending();

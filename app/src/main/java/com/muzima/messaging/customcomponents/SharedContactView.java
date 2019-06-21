@@ -77,22 +77,22 @@ public class SharedContactView extends LinearLayout implements RecipientModified
     private void initialize(@Nullable AttributeSet attrs) {
         inflate(getContext(), R.layout.shared_contact_view, this);
 
-        avatarView       = findViewById(R.id.contact_avatar);
-        nameView         = findViewById(R.id.contact_name);
-        numberView       = findViewById(R.id.contact_number);
+        avatarView = findViewById(R.id.contact_avatar);
+        nameView = findViewById(R.id.contact_name);
+        numberView = findViewById(R.id.contact_number);
         actionButtonView = findViewById(R.id.contact_action_button);
-        footer           = findViewById(R.id.contact_footer);
+        footer = findViewById(R.id.contact_footer);
 
-        cornerMask        = new CornerMask(this);
-        bigCornerRadius   = getResources().getDimensionPixelOffset(R.dimen.message_corner_radius);
+        cornerMask = new CornerMask(this);
+        bigCornerRadius = getResources().getDimensionPixelOffset(R.dimen.message_corner_radius);
         smallCornerRadius = getResources().getDimensionPixelOffset(R.dimen.message_corner_collapse_radius);
 
         if (attrs != null) {
-            TypedArray typedArray   = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.SharedContactView, 0, 0);
-            int        titleColor   = typedArray.getInt(R.styleable.SharedContactView_contact_titleColor, Color.BLACK);
-            int        captionColor = typedArray.getInt(R.styleable.SharedContactView_contact_captionColor, Color.BLACK);
-            int        iconColor    = typedArray.getInt(R.styleable.SharedContactView_contact_footerIconColor, Color.BLACK);
-            float      footerAlpha  = typedArray.getFloat(R.styleable.SharedContactView_contact_footerAlpha, 1);
+            TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.SharedContactView, 0, 0);
+            int titleColor = typedArray.getInt(R.styleable.SharedContactView_contact_titleColor, Color.BLACK);
+            int captionColor = typedArray.getInt(R.styleable.SharedContactView_contact_captionColor, Color.BLACK);
+            int iconColor = typedArray.getInt(R.styleable.SharedContactView_contact_footerIconColor, Color.BLACK);
+            float footerAlpha = typedArray.getFloat(R.styleable.SharedContactView_contact_footerAlpha, 1);
             typedArray.recycle();
 
             nameView.setTextColor(titleColor);
@@ -125,8 +125,8 @@ public class SharedContactView extends LinearLayout implements RecipientModified
 
     public void setContact(@NonNull Contact contact, @NonNull GlideRequests glideRequests, @NonNull Locale locale) {
         this.glideRequests = glideRequests;
-        this.locale        = locale;
-        this.contact       = contact;
+        this.locale = locale;
+        this.contact = contact;
 
         Stream.of(activeRecipients.values()).forEach(recipient ->  recipient.removeListener(this));
         this.activeRecipients.clear();
@@ -200,7 +200,7 @@ public class SharedContactView extends LinearLayout implements RecipientModified
             activeRecipients.put(recipient.getAddress().serialize(), recipient);
         }
 
-        List<SignalRecipient> pushUsers   = new ArrayList<>(recipients.size());
+        List<SignalRecipient> pushUsers = new ArrayList<>(recipients.size());
         List<SignalRecipient> systemUsers = new ArrayList<>(recipients.size());
 
         for (SignalRecipient recipient : activeRecipients.values()) {

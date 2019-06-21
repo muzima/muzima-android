@@ -23,7 +23,7 @@ public class CountryListLoader extends AsyncTaskLoader<ArrayList<Map<String, Str
 
     @Override
     public ArrayList<Map<String, String>> loadInBackground() {
-        Set<String> regions                    = PhoneNumberUtil.getInstance().getSupportedRegions();
+        Set<String> regions = PhoneNumberUtil.getInstance().getSupportedRegions();
         ArrayList<Map<String, String>> results = new ArrayList<Map<String, String>>(regions.size());
 
         for (String region : regions) {

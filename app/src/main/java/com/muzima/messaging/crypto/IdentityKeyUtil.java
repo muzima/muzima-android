@@ -48,11 +48,11 @@ public class IdentityKeyUtil {
     @SuppressWarnings("unused")
     private static final String TAG = IdentityKeyUtil.class.getSimpleName();
 
-    private static final String IDENTITY_PUBLIC_KEY_CIPHERTEXT_LEGACY_PREF  = "pref_identity_public_curve25519";
+    private static final String IDENTITY_PUBLIC_KEY_CIPHERTEXT_LEGACY_PREF = "pref_identity_public_curve25519";
     private static final String IDENTITY_PRIVATE_KEY_CIPHERTEXT_LEGACY_PREF = "pref_identity_private_curve25519";
 
-    private static final String IDENTITY_PUBLIC_KEY_PREF                    = "pref_identity_public_v3";
-    private static final String IDENTITY_PRIVATE_KEY_PREF                   = "pref_identity_private_v3";
+    private static final String IDENTITY_PUBLIC_KEY_PREF = "pref_identity_public_v3";
+    private static final String IDENTITY_PRIVATE_KEY_PREF = "pref_identity_private_v3";
 
     public static boolean hasIdentityKey(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(MasterSecretUtil.PREFERENCES_NAME, 0);

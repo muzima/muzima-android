@@ -94,8 +94,8 @@ public class MmsSmsDatabase extends Database {
     }
 
     public Cursor getIdentityConflictMessagesForThread(long threadId) {
-        String order           = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " ASC";
-        String selection       = MmsSmsColumns.THREAD_ID + " = " + threadId + " AND " + MmsSmsColumns.MISMATCHED_IDENTITIES + " IS NOT NULL";
+        String order = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " ASC";
+        String selection = MmsSmsColumns.THREAD_ID + " = " + threadId + " AND " + MmsSmsColumns.MISMATCHED_IDENTITIES + " IS NOT NULL";
 
         Cursor cursor = queryTables(PROJECTION, selection, order, null);
         setNotifyConverationListeners(cursor, threadId);
@@ -104,22 +104,22 @@ public class MmsSmsDatabase extends Database {
     }
 
     public Cursor getConversationSnippet(long threadId) {
-        String order     = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " DESC";
+        String order = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " DESC";
         String selection = MmsSmsColumns.THREAD_ID + " = " + threadId;
 
         return  queryTables(PROJECTION, selection, order, "1");
     }
 
     public Cursor getUnread() {
-        String order           = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " ASC";
-        String selection       = MmsSmsColumns.READ + " = 0 AND " + MmsSmsColumns.NOTIFIED + " = 0";
+        String order = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " ASC";
+        String selection = MmsSmsColumns.READ + " = 0 AND " + MmsSmsColumns.NOTIFIED + " = 0";
 
         return queryTables(PROJECTION, selection, order, null);
     }
 
     public int getUnreadCount(long threadId) {
         String selection = MmsSmsColumns.READ + " = 0 AND " + MmsSmsColumns.NOTIFIED + " = 0 AND " + MmsSmsColumns.THREAD_ID + " = " + threadId;
-        Cursor cursor    = queryTables(PROJECTION, selection, null, null);
+        Cursor cursor = queryTables(PROJECTION, selection, null, null);
 
         try {
             return cursor != null ? cursor.getCount() : 0;
@@ -130,7 +130,7 @@ public class MmsSmsDatabase extends Database {
 
     public int getConversationCount(long threadId) {
         int count = DatabaseFactory.getSmsDatabase(context).getMessageCountForThread(threadId);
-        count    += DatabaseFactory.getMmsDatabase(context).getMessageCountForThread(threadId);
+        count += DatabaseFactory.getMmsDatabase(context).getMessageCountForThread(threadId);
 
         return count;
     }
@@ -146,12 +146,12 @@ public class MmsSmsDatabase extends Database {
     }
 
     public int getQuotedMessagePosition(long threadId, long quoteId, @NonNull SignalAddress address) {
-        String order     = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " DESC";
+        String order = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " DESC";
         String selection = MmsSmsColumns.THREAD_ID + " = " + threadId;
 
         try (Cursor cursor = queryTables(new String[]{ MmsSmsColumns.NORMALIZED_DATE_SENT, MmsSmsColumns.ADDRESS }, selection, order, null)) {
-            String  serializedAddress = address.serialize();
-            boolean isOwnNumber       = Util.isOwnNumber(context, address);
+            String serializedAddress = address.serialize();
+            boolean isOwnNumber = Util.isOwnNumber(context, address);
 
             while (cursor != null && cursor.moveToNext()) {
                 boolean quoteIdMatches = cursor.getLong(0) == quoteId;
@@ -174,7 +174,7 @@ public class MmsSmsDatabase extends Database {
      * you'll still wind up in about the right spot.
      */
     public int getMessagePositionInConversation(long threadId, long receivedTimestamp) {
-        String order     = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " DESC";
+        String order = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " DESC";
         String selection = MmsSmsColumns.THREAD_ID + " = " + threadId + " AND " + MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " > " + receivedTimestamp;
 
         try (Cursor cursor = queryTables(new String[]{ "COUNT(*)" }, selection, order, null)) {
@@ -366,9 +366,9 @@ public class MmsSmsDatabase extends Database {
 
     public class Reader {
 
-        private final Cursor                 cursor;
-        private       SmsDatabase.Reader     smsReader;
-        private       MmsDatabase.Reader     mmsReader;
+        private final Cursor  cursor;
+        private SmsDatabase.Reader smsReader;
+        private MmsDatabase.Reader mmsReader;
 
         public Reader(Cursor cursor) {
             this.cursor = cursor;
@@ -400,9 +400,9 @@ public class MmsSmsDatabase extends Database {
         public MessageRecord getCurrent() {
             String type = cursor.getString(cursor.getColumnIndexOrThrow(TRANSPORT));
 
-            if      (MmsSmsDatabase.MMS_TRANSPORT.equals(type)) return getMmsReader().getCurrent();
+            if(MmsSmsDatabase.MMS_TRANSPORT.equals(type)) return getMmsReader().getCurrent();
             else if (MmsSmsDatabase.SMS_TRANSPORT.equals(type)) return getSmsReader().getCurrent();
-            else                                                throw new AssertionError("Bad type: " + type);
+            else throw new AssertionError("Bad type: " + type);
         }
 
         public void close() {

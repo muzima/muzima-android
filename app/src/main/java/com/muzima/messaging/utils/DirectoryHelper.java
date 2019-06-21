@@ -276,7 +276,6 @@ public class DirectoryHelper {
                                                                     @NonNull SignalServiceAccountManager accountManager,
                                                                     @NonNull RecipientDatabase recipientDatabase,
                                                                     @NonNull Set<String> eligibleContactNumbers) {
-        Log.w("DirectoryResult ","TRACE [ eligibleContactNumbers.size() is == "+eligibleContactNumbers.size());
         return SignalExecutors.IO.submit(() -> {
             List<ContactTokenDetails> activeTokens = accountManager.getContacts(eligibleContactNumbers);
 

@@ -30,11 +30,11 @@ public class MmsReceiveJob extends ContextJob {
 
     private static final String TAG = MmsReceiveJob.class.getSimpleName();
 
-    private static final String KEY_DATA            = "data";
+    private static final String KEY_DATA = "data";
     private static final String KEY_SUBSCRIPTION_ID = "subscription_id";
 
     private byte[] data;
-    private int    subscriptionId;
+    private int subscriptionId;
 
     public MmsReceiveJob(@NonNull Context context, @NonNull WorkerParameters workerParameters) {
         super(context, workerParameters);
@@ -43,7 +43,7 @@ public class MmsReceiveJob extends ContextJob {
     public MmsReceiveJob(Context context, byte[] data, int subscriptionId) {
         super(context, JobParameters.newBuilder().create());
 
-        this.data           = data;
+        this.data = data;
         this.subscriptionId = subscriptionId;
     }
 
@@ -73,7 +73,7 @@ public class MmsReceiveJob extends ContextJob {
         }
 
         PduParser parser = new PduParser(data);
-        GenericPdu pdu    = null;
+        GenericPdu pdu = null;
 
         try {
             pdu = parser.parse();
@@ -82,7 +82,7 @@ public class MmsReceiveJob extends ContextJob {
         }
 
         if (isNotification(pdu) && !isBlocked(pdu)) {
-            MmsDatabase database                = DatabaseFactory.getMmsDatabase(context);
+            MmsDatabase database = DatabaseFactory.getMmsDatabase(context);
             Pair<Long, Long> messageAndThreadId = database.insertMessageInbox((NotificationInd)pdu, subscriptionId);
 
             Log.i(TAG, "Inserted received MMS notification...");

@@ -34,22 +34,22 @@ public class BluetoothStateManager {
 
     private final Context context;
     private final BluetoothAdapter bluetoothAdapter;
-    private       BluetoothScoReceiver        bluetoothScoReceiver;
-    private       BluetoothConnectionReceiver bluetoothConnectionReceiver;
-    private final BluetoothStateListener      listener;
+    private BluetoothScoReceiver bluetoothScoReceiver;
+    private BluetoothConnectionReceiver bluetoothConnectionReceiver;
+    private final BluetoothStateListener listener;
     private final AtomicBoolean destroyed;
 
     private BluetoothHeadset bluetoothHeadset = null;
-    private ScoConnection    scoConnection    = ScoConnection.DISCONNECTED;
-    private boolean          wantsConnection  = false;
+    private ScoConnection scoConnection = ScoConnection.DISCONNECTED;
+    private boolean wantsConnection = false;
 
     public BluetoothStateManager(@NonNull Context context, @Nullable BluetoothStateListener listener) {
-        this.context                     = context.getApplicationContext();
-        this.bluetoothAdapter            = BluetoothAdapter.getDefaultAdapter();
-        this.bluetoothScoReceiver        = new BluetoothScoReceiver();
+        this.context = context.getApplicationContext();
+        this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        this.bluetoothScoReceiver = new BluetoothScoReceiver();
         this.bluetoothConnectionReceiver = new BluetoothConnectionReceiver();
-        this.listener                    = listener;
-        this.destroyed                   = new AtomicBoolean(false);
+        this.listener = listener;
+        this.destroyed = new AtomicBoolean(false);
 
         if (this.bluetoothAdapter == null)
             return;

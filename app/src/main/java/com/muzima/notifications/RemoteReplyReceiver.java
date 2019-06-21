@@ -25,7 +25,7 @@ import java.util.List;
 
 public class RemoteReplyReceiver extends BroadcastReceiver {
 
-    public static final String TAG           = RemoteReplyReceiver.class.getSimpleName();
+    public static final String TAG = RemoteReplyReceiver.class.getSimpleName();
     public static final String REPLY_ACTION  = "com.muzima.notifications.WEAR_REPLY";
     public static final String ADDRESS_EXTRA = "address";
 
@@ -38,7 +38,7 @@ public class RemoteReplyReceiver extends BroadcastReceiver {
 
         if (remoteInput == null) return;
 
-        final SignalAddress address      = intent.getParcelableExtra(ADDRESS_EXTRA);
+        final SignalAddress address = intent.getParcelableExtra(ADDRESS_EXTRA);
         final CharSequence responseText = remoteInput.getCharSequence(MessageNotifier.EXTRA_REMOTE_REPLY);
 
         if (responseText != null) {
@@ -48,8 +48,8 @@ public class RemoteReplyReceiver extends BroadcastReceiver {
                     long threadId;
 
                     SignalRecipient recipient = SignalRecipient.from(context, address, false);
-                    int  subscriptionId = recipient.getDefaultSubscriptionId().or(-1);
-                    long expiresIn      = recipient.getExpireMessages() * 1000L;
+                    int subscriptionId = recipient.getDefaultSubscriptionId().or(-1);
+                    long expiresIn = recipient.getExpireMessages() * 1000L;
 
                     if (recipient.isGroupRecipient()) {
                         OutgoingMediaMessage reply = new OutgoingMediaMessage(recipient, responseText.toString(), new LinkedList<>(), System.currentTimeMillis(), subscriptionId, expiresIn, 0, null, Collections.emptyList(), Collections.emptyList(), Collections.emptyList());

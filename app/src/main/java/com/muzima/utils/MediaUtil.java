@@ -36,13 +36,13 @@ import java.util.concurrent.ExecutionException;
 public class MediaUtil {
     private static final String TAG = MediaUtil.class.getSimpleName();
 
-    public static final String IMAGE_PNG         = "image/png";
-    public static final String IMAGE_JPEG        = "image/jpeg";
-    public static final String IMAGE_GIF         = "image/gif";
-    public static final String AUDIO_AAC         = "audio/aac";
+    public static final String IMAGE_PNG = "image/png";
+    public static final String IMAGE_JPEG = "image/jpeg";
+    public static final String IMAGE_GIF = "image/gif";
+    public static final String AUDIO_AAC = "audio/aac";
     public static final String AUDIO_UNSPECIFIED = "audio/*";
     public static final String VIDEO_UNSPECIFIED = "video/*";
-    public static final String VCARD             = "text/x-vcard";
+    public static final String VCARD = "text/x-vcard";
 
 
     public static Slide getSlideForAttachment(Context context, Attachment attachment) {
@@ -97,9 +97,9 @@ public class MediaUtil {
         InputStream in = PartAuthority.getAttachmentStream(context, uri);
         if (in == null) throw new IOException("Couldn't obtain input stream.");
 
-        long   size   = 0;
+        long size   = 0;
         byte[] buffer = new byte[4096];
-        int    read;
+        int read;
 
         while ((read = in.read(buffer)) != -1) {
             size += read;

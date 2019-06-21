@@ -7,8 +7,8 @@ import com.muzima.messaging.utils.Util;
 public class PushMediaConstraints extends MediaConstraints {
     private static final int MAX_IMAGE_DIMEN_LOWMEM = 768;
     private static final int MAX_IMAGE_DIMEN        = 4096;
-    private static final int KB                     = 1024;
-    private static final int MB                     = 1024 * KB;
+    private static final int KB = 1024;
+    private static final int MB = 1024 * KB;
 
     @Override
     public int getImageMaxWidth(Context context) {

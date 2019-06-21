@@ -45,6 +45,7 @@ import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.crypto.InvalidPassphraseException;
 import com.muzima.messaging.crypto.MasterSecret;
 import com.muzima.messaging.crypto.MasterSecretUtil;
+import com.muzima.messaging.sqlite.database.DatabaseUpgradeActivity;
 import com.muzima.notifications.MessageNotifier;
 import com.muzima.notifications.NotificationChannels;
 import com.muzima.utils.ServiceUtil;
@@ -61,16 +62,16 @@ public class KeyCachingService extends Service {
 
     public static final int SERVICE_RUNNING_ID = 4141;
 
-    public  static final String KEY_PERMISSION           = "com.muzima.ACCESS_SECRETS";
-    public  static final String NEW_KEY_EVENT            = "com.muzima.service.action.NEW_KEY_EVENT";
-    public  static final String CLEAR_KEY_EVENT          = "com.muzima.service.action.CLEAR_KEY_EVENT";
-    public  static final String LOCK_TOGGLED_EVENT       = "com.muzima.service.action.LOCK_ENABLED_EVENT";
+    public  static final String KEY_PERMISSION = "com.muzima.ACCESS_SECRETS";
+    public  static final String NEW_KEY_EVENT = "com.muzima.service.action.NEW_KEY_EVENT";
+    public  static final String CLEAR_KEY_EVENT = "com.muzima.service.action.CLEAR_KEY_EVENT";
+    public  static final String LOCK_TOGGLED_EVENT = "com.muzima.service.action.LOCK_ENABLED_EVENT";
     private static final String PASSPHRASE_EXPIRED_EVENT = "com.muzima.service.action.PASSPHRASE_EXPIRED_EVENT";
-    public  static final String CLEAR_KEY_ACTION         = "com.muzima.service.action.CLEAR_KEY";
-    public  static final String DISABLE_ACTION           = "com.muzima.service.action.DISABLE";
-    public  static final String LOCALE_CHANGE_EVENT      = "com.muzima.service.action.LOCALE_CHANGE_EVENT";
+    public  static final String CLEAR_KEY_ACTION = "com.muzima.service.action.CLEAR_KEY";
+    public  static final String DISABLE_ACTION = "com.muzima.service.action.DISABLE";
+    public  static final String LOCALE_CHANGE_EVENT = "com.muzima.service.action.LOCALE_CHANGE_EVENT";
 
-    private final IBinder binder  = new KeySetBinder();
+    private final IBinder binder = new KeySetBinder();
 
     private static MasterSecret masterSecret;
 
@@ -113,9 +114,9 @@ public class KeyCachingService extends Service {
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... params) {
-//                    if (!DatabaseUpgradeActivity.isUpdate(KeyCachingService.this)) {
-//                       MessageNotifier.updateNotification(KeyCachingService.this);
-//                    }
+                    if (!DatabaseUpgradeActivity.isUpdate(KeyCachingService.this)) {
+                       MessageNotifier.updateNotification(KeyCachingService.this);
+                    }
                     return null;
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -129,11 +130,21 @@ public class KeyCachingService extends Service {
 
         if (intent.getAction() != null) {
             switch (intent.getAction()) {
-                case CLEAR_KEY_ACTION:         handleClearKey();        break;
-                case PASSPHRASE_EXPIRED_EVENT: handleClearKey();        break;
-                case DISABLE_ACTION:           handleDisableService();  break;
-                case LOCALE_CHANGE_EVENT:      handleLocaleChanged();   break;
-                case LOCK_TOGGLED_EVENT:       handleLockToggled();     break;
+                case CLEAR_KEY_ACTION:
+                     handleClearKey();
+                     break;
+                case PASSPHRASE_EXPIRED_EVENT:
+                     handleClearKey();
+                     break;
+                case DISABLE_ACTION:
+                     handleDisableService();
+                     break;
+                case LOCALE_CHANGE_EVENT:
+                     handleLocaleChanged();
+                     break;
+                case LOCK_TOGGLED_EVENT:
+                     handleLockToggled();
+                     break;
             }
         }
 
@@ -217,13 +228,13 @@ public class KeyCachingService extends Service {
     }
 
     private static void startTimeoutIfAppropriate(@NonNull Context context) {
-        boolean appVisible       = MuzimaApplication.getInstance(context).isAppVisible();
-        boolean secretSet        = KeyCachingService.masterSecret != null;
+        boolean appVisible = MuzimaApplication.getInstance(context).isAppVisible();
+        boolean secretSet = KeyCachingService.masterSecret != null;
 
-        boolean timeoutEnabled   = TextSecurePreferences.isPassphraseTimeoutEnabled(context);
-        boolean passLockActive   = timeoutEnabled && !TextSecurePreferences.isPasswordDisabled(context);
+        boolean timeoutEnabled = TextSecurePreferences.isPassphraseTimeoutEnabled(context);
+        boolean passLockActive = timeoutEnabled && !TextSecurePreferences.isPasswordDisabled(context);
 
-        long    screenTimeout    = TextSecurePreferences.getScreenLockTimeout(context);
+        long    screenTimeout = TextSecurePreferences.getScreenLockTimeout(context);
         boolean screenLockActive = screenTimeout >= 60 && TextSecurePreferences.isScreenLockEnabled(context);
 
         if (!appVisible && secretSet && (passLockActive || screenLockActive)) {
@@ -233,7 +244,7 @@ public class KeyCachingService extends Service {
             long timeoutMillis;
 
             if (!TextSecurePreferences.isPasswordDisabled(context)) timeoutMillis = TimeUnit.MINUTES.toMillis(passphraseTimeoutMinutes);
-            else                                                    timeoutMillis = TimeUnit.SECONDS.toMillis(screenLockTimeoutSeconds);
+            else  timeoutMillis = TimeUnit.SECONDS.toMillis(screenLockTimeoutSeconds);
 
             Log.i(TAG, "Starting timeout: " + timeoutMillis);
 
@@ -265,7 +276,7 @@ public class KeyCachingService extends Service {
 
     private void foregroundServiceICS() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationChannels.LOCKED_STATUS);
-        RemoteViews remoteViews            = new RemoteViews(getPackageName(), R.layout.key_caching_notification);
+        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.key_caching_notification);
 
         remoteViews.setOnClickPendingIntent(R.id.lock_cache_icon, buildLockIntent());
 

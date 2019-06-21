@@ -70,9 +70,9 @@ public class ContactShareEditAdapter extends RecyclerView.Adapter<ContactShareEd
         public ContactEditViewHolder(View itemView, @NonNull Locale locale, @NonNull GlideRequests glideRequests) {
             super(itemView);
 
-            this.name           = itemView.findViewById(R.id.editable_contact_name);
+            this.name = itemView.findViewById(R.id.editable_contact_name);
             this.nameEditButton = itemView.findViewById(R.id.editable_contact_name_edit_button);
-            this.fieldAdapter   = new ContactFieldAdapter(locale, glideRequests, true);
+            this.fieldAdapter = new ContactFieldAdapter(locale, glideRequests, true);
 
             RecyclerView fields = itemView.findViewById(R.id.editable_contact_fields);
             fields.setLayoutManager(new LinearLayoutManager(itemView.getContext()));

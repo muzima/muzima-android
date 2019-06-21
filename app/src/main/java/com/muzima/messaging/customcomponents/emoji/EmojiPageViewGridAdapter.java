@@ -26,10 +26,10 @@ public class EmojiPageViewGridAdapter extends RecyclerView.Adapter<EmojiPageView
                                     @NonNull EmojiPageView.EmojiSelectionListener emojiSelectionListener,
                                     @NonNull VariationSelectorListener variationSelectorListener)
     {
-        this.emojiList                 = new ArrayList<>();
-        this.emojiProvider             = emojiProvider;
-        this.popup                     = popup;
-        this.emojiSelectionListener    = emojiSelectionListener;
+        this.emojiList = new ArrayList<>();
+        this.emojiProvider = emojiProvider;
+        this.popup = popup;
+        this.emojiSelectionListener = emojiSelectionListener;
         this.variationSelectorListener = variationSelectorListener;
 
         popup.setOnDismissListener(this);

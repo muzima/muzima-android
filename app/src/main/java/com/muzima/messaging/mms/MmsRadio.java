@@ -29,22 +29,22 @@ public class MmsRadio {
     }
 
     private static final String FEATURE_ENABLE_MMS = "enableMMS";
-    private static final int APN_ALREADY_ACTIVE    = 0;
-    public  static final int TYPE_MOBILE_MMS       = 2;
+    private static final int APN_ALREADY_ACTIVE = 0;
+    public  static final int TYPE_MOBILE_MMS = 2;
 
     private final Context context;
 
     private ConnectivityManager connectivityManager;
-    private ConnectivityListener  connectivityListener;
+    private ConnectivityListener connectivityListener;
     private PowerManager.WakeLock wakeLock;
     private int connectedCounter = 0;
 
     @SuppressLint("InvalidWakeLockTag")
     private MmsRadio(Context context) {
         PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        this.context             = context;
+        this.context = context;
         this.connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        this.wakeLock            = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MMS Connection");
+        this.wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MMS Connection");
         this.wakeLock.setReferenceCounted(true);
     }
 
@@ -101,7 +101,7 @@ public class MmsRadio {
             connectedCounter++;
 
             if (connectivityListener == null) {
-                IntentFilter filter  = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+                IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
                 connectivityListener = new ConnectivityListener();
                 context.registerReceiver(connectivityListener, filter);
             }

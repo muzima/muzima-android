@@ -42,21 +42,21 @@ import java.util.Map;
 
 public class SharedContactDetailsActivity extends PassphraseRequiredActionBarActivity implements RecipientModifiedListener {
 
-    private static final int    CODE_ADD_EDIT_CONTACT = 2323;
-    private static final String KEY_CONTACT           = "contact";
+    private static final int CODE_ADD_EDIT_CONTACT = 2323;
+    private static final String KEY_CONTACT = "contact";
 
     private ContactFieldAdapter contactFieldAdapter;
     private TextView nameView;
-    private TextView            numberView;
+    private TextView numberView;
     private ImageView avatarView;
     private View addButtonView;
-    private View                inviteButtonView;
+    private View inviteButtonView;
     private ViewGroup engageContainerView;
-    private View                messageButtonView;
-    private View                callButtonView;
+    private View messageButtonView;
+    private View callButtonView;
 
     private GlideRequests glideRequests;
-    private Contact             contact;
+    private Contact contact;
 
     private final Map<String, SignalRecipient> activeRecipients = new HashMap<>();
 
@@ -109,9 +109,9 @@ public class SharedContactDetailsActivity extends PassphraseRequiredActionBarAct
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int[]      attrs = {R.attr.shared_contact_details_titlebar};
+            int[] attrs = {R.attr.shared_contact_details_titlebar};
             TypedArray array = obtainStyledAttributes(attrs);
-            int        color = array.getResourceId(0, android.R.color.black);
+            int color = array.getResourceId(0, android.R.color.black);
 
             array.recycle();
 
@@ -120,14 +120,14 @@ public class SharedContactDetailsActivity extends PassphraseRequiredActionBarAct
     }
 
     private void initViews() {
-        nameView            = findViewById(R.id.contact_details_name);
-        numberView          = findViewById(R.id.contact_details_number);
-        avatarView          = findViewById(R.id.contact_details_avatar);
-        addButtonView       = findViewById(R.id.contact_details_add_button);
-        inviteButtonView    = findViewById(R.id.contact_details_invite_button);
+        nameView = findViewById(R.id.contact_details_name);
+        numberView = findViewById(R.id.contact_details_number);
+        avatarView = findViewById(R.id.contact_details_avatar);
+        addButtonView = findViewById(R.id.contact_details_add_button);
+        inviteButtonView = findViewById(R.id.contact_details_invite_button);
         engageContainerView = findViewById(R.id.contact_details_engage_container);
-        messageButtonView   = findViewById(R.id.contact_details_message_button);
-        callButtonView      = findViewById(R.id.contact_details_call_button);
+        messageButtonView = findViewById(R.id.contact_details_message_button);
+        callButtonView = findViewById(R.id.contact_details_call_button);
 
         contactFieldAdapter = new ContactFieldAdapter(getResources().getConfiguration().locale, glideRequests, false);
 
@@ -192,7 +192,7 @@ public class SharedContactDetailsActivity extends PassphraseRequiredActionBarAct
             activeRecipients.put(recipient.getAddress().serialize(), recipient);
         }
 
-        List<SignalRecipient> pushUsers   = new ArrayList<>(recipients.size());
+        List<SignalRecipient> pushUsers = new ArrayList<>(recipients.size());
         List<SignalRecipient> systemUsers = new ArrayList<>(recipients.size());
 
         for (SignalRecipient recipient : activeRecipients.values()) {
