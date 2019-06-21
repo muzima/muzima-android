@@ -15,17 +15,17 @@ import java.util.List;
 public class GroupReceiptDatabase extends Database {
     public  static final String TABLE_NAME = "group_receipts";
 
-    private static final String ID           = "_id";
-    public  static final String MMS_ID       = "mms_id";
-    private static final String ADDRESS      = "address";
-    private static final String STATUS       = "status";
-    private static final String TIMESTAMP    = "timestamp";
+    private static final String ID = "_id";
+    public  static final String MMS_ID = "mms_id";
+    private static final String ADDRESS = "address";
+    private static final String STATUS = "status";
+    private static final String TIMESTAMP = "timestamp";
     private static final String UNIDENTIFIED = "unidentified";
 
-    public static final int STATUS_UNKNOWN     = -1;
+    public static final int STATUS_UNKNOWN = -1;
     public static final int STATUS_UNDELIVERED = 0;
-    public static final int STATUS_DELIVERED   = 1;
-    public static final int STATUS_READ        = 2;
+    public static final int STATUS_DELIVERED = 1;
+    public static final int STATUS_READ = 2;
 
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" + ID + " INTEGER PRIMARY KEY, "                          +
             MMS_ID + " INTEGER, " + ADDRESS + " TEXT, " + STATUS + " INTEGER, " + TIMESTAMP + " INTEGER, " + UNIDENTIFIED + " INTEGER DEFAULT 0);";
@@ -53,8 +53,8 @@ public class GroupReceiptDatabase extends Database {
     }
 
     public void update(SignalAddress address, long mmsId, int status, long timestamp) {
-        SQLiteDatabase db     = databaseHelper.getWritableDatabase();
-        ContentValues  values = new ContentValues(2);
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues(2);
         values.put(STATUS, status);
         values.put(TIMESTAMP, timestamp);
 
@@ -63,8 +63,8 @@ public class GroupReceiptDatabase extends Database {
     }
 
     public void setUnidentified(SignalAddress address, long mmsId, boolean unidentified) {
-        SQLiteDatabase db     = databaseHelper.getWritableDatabase();
-        ContentValues  values = new ContentValues(1);
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues(1);
         values.put(UNIDENTIFIED, unidentified ? 1 : 0);
 
         db.update(TABLE_NAME, values, MMS_ID + " = ? AND " + ADDRESS + " = ?",
@@ -74,7 +74,7 @@ public class GroupReceiptDatabase extends Database {
 
     public @NonNull
     List<GroupReceiptInfo> getGroupReceiptInfo(long mmsId) {
-        SQLiteDatabase         db      = databaseHelper.getReadableDatabase();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
         List<GroupReceiptInfo> results = new LinkedList<>();
 
         try (Cursor cursor = db.query(TABLE_NAME, null, MMS_ID + " = ?", new String[] {String.valueOf(mmsId)}, null, null, null)) {
@@ -101,14 +101,14 @@ public class GroupReceiptDatabase extends Database {
 
     public static class GroupReceiptInfo {
         private final SignalAddress address;
-        private final int     status;
-        private final long    timestamp;
+        private final int status;
+        private final long timestamp;
         private final boolean unidentified;
 
         GroupReceiptInfo(SignalAddress address, int status, long timestamp, boolean unidentified) {
-            this.address      = address;
-            this.status       = status;
-            this.timestamp    = timestamp;
+            this.address = address;
+            this.status = status;
+            this.timestamp = timestamp;
             this.unidentified = unidentified;
         }
 

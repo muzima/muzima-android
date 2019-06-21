@@ -30,18 +30,18 @@ public class WebRtcAnswerDeclineButton extends LinearLayout implements View.OnTo
     private static final int TOTAL_TIME = 1000;
     private static final int SHAKE_TIME = 200;
 
-    private static final int UP_TIME       = (TOTAL_TIME - SHAKE_TIME) / 2;
-    private static final int DOWN_TIME     = (TOTAL_TIME - SHAKE_TIME) / 2;
+    private static final int UP_TIME = (TOTAL_TIME - SHAKE_TIME) / 2;
+    private static final int DOWN_TIME  = (TOTAL_TIME - SHAKE_TIME) / 2;
     private static final int FADE_OUT_TIME = 300;
     private static final int FADE_IN_TIME  = 100;
     private static final int SHIMMER_TOTAL = UP_TIME + SHAKE_TIME;
 
-    private static final int ANSWER_THRESHOLD  = 112;
+    private static final int ANSWER_THRESHOLD = 112;
     private static final int DECLINE_THRESHOLD = 56;
 
     private TextView swipeUpText;
     private ImageView fab;
-    private TextView  swipeDownText;
+    private TextView swipeDownText;
 
     private ImageView arrowOne;
     private ImageView arrowTwo;
@@ -83,14 +83,14 @@ public class WebRtcAnswerDeclineButton extends LinearLayout implements View.OnTo
 
         inflate(getContext(), R.layout.webrtc_answer_decline_button, this);
 
-        this.swipeUpText   = findViewById(R.id.swipe_up_text);
-        this.fab           = findViewById(R.id.answer);
+        this.swipeUpText = findViewById(R.id.swipe_up_text);
+        this.fab = findViewById(R.id.answer);
         this.swipeDownText = findViewById(R.id.swipe_down_text);
 
-        this.arrowOne   = findViewById(R.id.arrow_one);
-        this.arrowTwo   = findViewById(R.id.arrow_two);
+        this.arrowOne = findViewById(R.id.arrow_one);
+        this.arrowTwo = findViewById(R.id.arrow_two);
         this.arrowThree = findViewById(R.id.arrow_three);
-        this.arrowFour  = findViewById(R.id.arrow_four);
+        this.arrowFour = findViewById(R.id.arrow_four);
 
         this.fab.setOnTouchListener(this);
     }
@@ -144,13 +144,13 @@ public class WebRtcAnswerDeclineButton extends LinearLayout implements View.OnTo
 
                 float differenceThreshold;
                 float percentageToThreshold;
-                int   backgroundColor;
-                int   foregroundColor;
+                int backgroundColor;
+                int foregroundColor;
 
                 if (difference <= 0) {
-                    differenceThreshold   = ViewUtil.dpToPx(getContext(), ANSWER_THRESHOLD);
+                    differenceThreshold = ViewUtil.dpToPx(getContext(), ANSWER_THRESHOLD);
                     percentageToThreshold = Math.min(1, (difference * -1) / differenceThreshold);
-                    backgroundColor       = (int) new ArgbEvaluator().evaluate(percentageToThreshold, getResources().getColor(R.color.green_100), getResources().getColor(R.color.green_600));
+                    backgroundColor = (int) new ArgbEvaluator().evaluate(percentageToThreshold, getResources().getColor(R.color.green_100), getResources().getColor(R.color.green_600));
 
                     if (percentageToThreshold > 0.5) {
                         foregroundColor = Color.WHITE;
@@ -204,8 +204,8 @@ public class WebRtcAnswerDeclineButton extends LinearLayout implements View.OnTo
     }
 
     private void animateElements(int delay) {
-        ObjectAnimator fabUp    = getUpAnimation(fab);
-        ObjectAnimator fabDown  = getDownAnimation(fab);
+        ObjectAnimator fabUp = getUpAnimation(fab);
+        ObjectAnimator fabDown = getDownAnimation(fab);
         ObjectAnimator fabShake = getShakeAnimation(fab);
 
         animatorSet = new AnimatorSet();
@@ -239,9 +239,9 @@ public class WebRtcAnswerDeclineButton extends LinearLayout implements View.OnTo
     }
 
     private Animator getShimmer(View... targets) {
-        AnimatorSet animatorSet  = new AnimatorSet();
-        int         evenDuration = SHIMMER_TOTAL / targets.length;
-        int         interval     = 75;
+        AnimatorSet animatorSet = new AnimatorSet();
+        int evenDuration = SHIMMER_TOTAL / targets.length;
+        int interval = 75;
 
         for (int i=0;i<targets.length;i++) {
             animatorSet.play(getShimmer(targets[i], evenDuration + (evenDuration - interval)))

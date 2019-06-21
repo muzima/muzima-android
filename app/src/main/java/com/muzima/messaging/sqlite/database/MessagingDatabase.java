@@ -82,7 +82,7 @@ public abstract class MessagingDatabase extends Database implements MmsSmsColumn
         database.beginTransaction();
 
         try {
-            D           document = getDocument(database, messageId, column, clazz);
+            D document = getDocument(database, messageId, column, clazz);
             Iterator<I> iterator = document.getList().iterator();
 
             while (iterator.hasNext()) {
@@ -175,10 +175,10 @@ public abstract class MessagingDatabase extends Database implements MmsSmsColumn
     public static class SyncMessageId {
 
         private final SignalAddress address;
-        private final long   timetamp;
+        private final long timetamp;
 
         public SyncMessageId(SignalAddress address, long timetamp) {
-            this.address  = address;
+            this.address = address;
             this.timetamp = timetamp;
         }
 
@@ -193,16 +193,16 @@ public abstract class MessagingDatabase extends Database implements MmsSmsColumn
 
     public static class ExpirationInfo {
 
-        private final long    id;
-        private final long    expiresIn;
-        private final long    expireStarted;
+        private final long id;
+        private final long expiresIn;
+        private final long expireStarted;
         private final boolean mms;
 
         public ExpirationInfo(long id, long expiresIn, long expireStarted, boolean mms) {
-            this.id            = id;
-            this.expiresIn     = expiresIn;
+            this.id = id;
+            this.expiresIn = expiresIn;
             this.expireStarted = expireStarted;
-            this.mms           = mms;
+            this.mms = mms;
         }
 
         public long getId() {
@@ -228,7 +228,7 @@ public abstract class MessagingDatabase extends Database implements MmsSmsColumn
         private final ExpirationInfo expirationInfo;
 
         public MarkedMessageInfo(SyncMessageId syncMessageId, ExpirationInfo expirationInfo) {
-            this.syncMessageId  = syncMessageId;
+            this.syncMessageId = syncMessageId;
             this.expirationInfo = expirationInfo;
         }
 

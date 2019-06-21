@@ -69,7 +69,7 @@ public class MasterCipher {
             this.masterSecret = masterSecret;
             this.encryptingCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             this.decryptingCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            this.hmac             = Mac.getInstance("HmacSHA1");
+            this.hmac = Mac.getInstance("HmacSHA1");
         } catch (NoSuchPaddingException | NoSuchAlgorithmException nspe) {
             throw new AssertionError(nspe);
         }
@@ -99,11 +99,11 @@ public class MasterCipher {
 
     public byte[] decryptBytes(@NonNull byte[] decodedBody) throws InvalidMessageException {
         try {
-            Mac mac              = getMac(masterSecret.getMacKey());
+            Mac mac = getMac(masterSecret.getMacKey());
             byte[] encryptedBody = verifyMacBody(mac, decodedBody);
 
-            Cipher cipher        = getDecryptingCipher(masterSecret.getEncryptionKey(), encryptedBody);
-            byte[] encrypted     = getDecryptedBody(cipher, encryptedBody);
+            Cipher cipher = getDecryptingCipher(masterSecret.getEncryptionKey(), encryptedBody);
+            byte[] encrypted = getDecryptedBody(cipher, encryptedBody);
 
             return encrypted;
         } catch (GeneralSecurityException ge) {
@@ -113,10 +113,10 @@ public class MasterCipher {
 
     public byte[] encryptBytes(byte[] body) {
         try {
-            Cipher cipher              = getEncryptingCipher(masterSecret.getEncryptionKey());
-            Mac    mac                 = getMac(masterSecret.getMacKey());
+            Cipher cipher = getEncryptingCipher(masterSecret.getEncryptionKey());
+            Mac mac = getMac(masterSecret.getMacKey());
 
-            byte[] encryptedBody       = getEncryptedBody(cipher, body);
+            byte[] encryptedBody = getEncryptedBody(cipher, body);
             byte[] encryptedAndMacBody = getMacBody(mac, encryptedBody);
 
             return encryptedAndMacBody;
@@ -183,7 +183,7 @@ public class MasterCipher {
 
     private byte[] getEncryptedBody(Cipher cipher, byte[] body) throws IllegalBlockSizeException, BadPaddingException {
         byte[] encrypted = cipher.doFinal(body);
-        byte[] iv        = cipher.getIV();
+        byte[] iv = cipher.getIV();
 
         byte[] ivAndBody = new byte[iv.length + encrypted.length];
         System.arraycopy(iv, 0, ivAndBody, 0, iv.length);
@@ -200,7 +200,7 @@ public class MasterCipher {
     }
 
     private byte[] getMacBody(Mac hmac, byte[] encryptedBody) {
-        byte[] mac             = hmac.doFinal(encryptedBody);
+        byte[] mac = hmac.doFinal(encryptedBody);
         byte[] encryptedAndMac = new byte[encryptedBody.length + mac.length];
 
         System.arraycopy(encryptedBody, 0, encryptedAndMac, 0, encryptedBody.length);

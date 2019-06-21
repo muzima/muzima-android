@@ -72,8 +72,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        searchToolbar            = findViewById(R.id.search_toolbar);
-        searchAction             = findViewById(R.id.search_action);
+        searchToolbar = findViewById(R.id.search_toolbar);
+        searchAction = findViewById(R.id.search_action);
         ViewGroup fragmentContainer = findViewById(R.id.fragment_container);
         ConversationListFragment conversationListFragment = initFragment(R.id.fragment_container, new ConversationListFragment(), getResources().getConfiguration().locale);
 
@@ -182,13 +182,27 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
         super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
-            case R.id.menu_new_group:         createGroup();           return true;
-            case R.id.menu_app_settings:      handleApplicationSettings(); return true;
-            case R.id.menu_settings:          handleDisplaySettings(); return true;
-            case R.id.menu_clear_passphrase:  handleClearPassphrase(); return true;
-            case R.id.menu_mark_all_read:     handleMarkAllRead();     return true;
-            case R.id.menu_invite:            handleInvite();          return true;
-            case R.id.menu_help:              handleHelp();            return true;
+            case R.id.menu_new_group:
+                 createGroup();
+                 return true;
+            case R.id.menu_app_settings:
+                 handleApplicationSettings();
+                 return true;
+            case R.id.menu_settings:
+                 handleDisplaySettings();
+                 return true;
+            case R.id.menu_clear_passphrase:
+                 handleClearPassphrase();
+                 return true;
+            case R.id.menu_mark_all_read:
+                 handleMarkAllRead();
+                 return true;
+            case R.id.menu_invite:
+                 handleInvite();
+                 return true;
+            case R.id.menu_help:
+                 handleHelp();
+                 return true;
         }
 
         return false;
@@ -223,7 +237,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     @Override
     public void onBackPressed() {
         if (searchToolbar.isVisible()) searchToolbar.collapse();
-        else                           super.onBackPressed();
+        else super.onBackPressed();
     }
 
     private void createGroup() {

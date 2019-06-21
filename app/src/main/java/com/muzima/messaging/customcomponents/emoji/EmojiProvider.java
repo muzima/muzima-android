@@ -31,16 +31,16 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class EmojiProvider {
-    private static final    String        TAG      = EmojiProvider.class.getSimpleName();
+    private static final String TAG = EmojiProvider.class.getSimpleName();
     private static volatile EmojiProvider instance = null;
-    private static final Paint paint    = new Paint(Paint.FILTER_BITMAP_FLAG | Paint.ANTI_ALIAS_FLAG);
+    private static final Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG | Paint.ANTI_ALIAS_FLAG);
 
     private final EmojiTree emojiTree = new EmojiTree();
 
     private static final int EMOJI_RAW_HEIGHT = 64;
-    private static final int EMOJI_RAW_WIDTH  = 64;
-    private static final int EMOJI_VERT_PAD   = 0;
-    private static final int EMOJI_PER_ROW    = 32;
+    private static final int EMOJI_RAW_WIDTH = 64;
+    private static final int EMOJI_VERT_PAD = 0;
+    private static final int EMOJI_PER_ROW = 32;
 
     private final float decodeScale;
     private final float verticalPad;
@@ -129,9 +129,9 @@ public class EmojiProvider {
 
     class EmojiDrawable extends Drawable {
         private final EmojiDrawInfo info;
-        private       Bitmap        bmp;
-        private       float         intrinsicWidth;
-        private       float         intrinsicHeight;
+        private Bitmap bmp;
+        private float intrinsicWidth;
+        private float intrinsicHeight;
 
         @Override
         public int getIntrinsicWidth() {
@@ -144,8 +144,8 @@ public class EmojiProvider {
         }
 
         EmojiDrawable(EmojiDrawInfo info, float decodeScale) {
-            this.info            = info;
-            this.intrinsicWidth  = EMOJI_RAW_WIDTH  * decodeScale;
+            this.info = info;
+            this.intrinsicWidth = EMOJI_RAW_WIDTH  * decodeScale;
             this.intrinsicHeight = EMOJI_RAW_HEIGHT * decodeScale;
         }
 

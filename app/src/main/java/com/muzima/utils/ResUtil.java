@@ -28,7 +28,7 @@ import android.util.TypedValue;
 public class ResUtil {
     public static int getColor(Context context, @AttrRes int attr) {
         final TypedArray styledAttributes = context.obtainStyledAttributes(new int[]{attr});
-        final int        result           = styledAttributes.getColor(0, -1);
+        final int result = styledAttributes.getColor(0, -1);
         styledAttributes.recycle();
         return result;
     }
@@ -49,7 +49,7 @@ public class ResUtil {
 
     public static int[] getResourceIds(Context c, @ArrayRes int array) {
         final TypedArray typedArray  = c.getResources().obtainTypedArray(array);
-        final int[]      resourceIds = new int[typedArray.length()];
+        final int[] resourceIds = new int[typedArray.length()];
         for (int i = 0; i < typedArray.length(); i++) {
             resourceIds[i] = typedArray.getResourceId(i, 0);
         }

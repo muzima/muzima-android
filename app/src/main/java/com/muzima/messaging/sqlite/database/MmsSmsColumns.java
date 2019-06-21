@@ -2,43 +2,43 @@ package com.muzima.messaging.sqlite.database;
 
 @SuppressWarnings("UnnecessaryInterfaceModifier")
 public interface MmsSmsColumns {
-    public static final String ID                       = "_id";
-    public static final String NORMALIZED_DATE_SENT     = "date_sent";
+    public static final String ID = "_id";
+    public static final String NORMALIZED_DATE_SENT = "date_sent";
     public static final String NORMALIZED_DATE_RECEIVED = "date_received";
-    public static final String THREAD_ID                = "thread_id";
-    public static final String READ                     = "read";
-    public static final String BODY                     = "body";
-    public static final String ADDRESS                  = "address";
-    public static final String ADDRESS_DEVICE_ID        = "address_device_id";
-    public static final String DELIVERY_RECEIPT_COUNT   = "delivery_receipt_count";
-    public static final String READ_RECEIPT_COUNT       = "read_receipt_count";
-    public static final String MISMATCHED_IDENTITIES    = "mismatched_identities";
-    public static final String UNIQUE_ROW_ID            = "unique_row_id";
-    public static final String SUBSCRIPTION_ID          = "subscription_id";
-    public static final String EXPIRES_IN               = "expires_in";
-    public static final String EXPIRE_STARTED           = "expire_started";
-    public static final String NOTIFIED                 = "notified";
-    public static final String UNIDENTIFIED             = "unidentified";
+    public static final String THREAD_ID = "thread_id";
+    public static final String READ = "read";
+    public static final String BODY = "body";
+    public static final String ADDRESS = "address";
+    public static final String ADDRESS_DEVICE_ID = "address_device_id";
+    public static final String DELIVERY_RECEIPT_COUNT = "delivery_receipt_count";
+    public static final String READ_RECEIPT_COUNT = "read_receipt_count";
+    public static final String MISMATCHED_IDENTITIES = "mismatched_identities";
+    public static final String UNIQUE_ROW_ID = "unique_row_id";
+    public static final String SUBSCRIPTION_ID = "subscription_id";
+    public static final String EXPIRES_IN = "expires_in";
+    public static final String EXPIRE_STARTED = "expire_started";
+    public static final String NOTIFIED = "notified";
+    public static final String UNIDENTIFIED = "unidentified";
 
     public static class Types {
         protected static final long TOTAL_MASK = 0xFFFFFFFF;
 
         // Base Types
-        protected static final long BASE_TYPE_MASK                     = 0x1F;
+        protected static final long BASE_TYPE_MASK = 0x1F;
 
-        protected static final long INCOMING_CALL_TYPE                 = 1;
-        protected static final long OUTGOING_CALL_TYPE                 = 2;
-        protected static final long MISSED_CALL_TYPE                   = 3;
-        protected static final long JOINED_TYPE                        = 4;
+        protected static final long INCOMING_CALL_TYPE = 1;
+        protected static final long OUTGOING_CALL_TYPE = 2;
+        protected static final long MISSED_CALL_TYPE = 3;
+        protected static final long JOINED_TYPE = 4;
 
-        protected static final long BASE_INBOX_TYPE                    = 20;
-        protected static final long BASE_OUTBOX_TYPE                   = 21;
-        protected static final long BASE_SENDING_TYPE                  = 22;
-        protected static final long BASE_SENT_TYPE                     = 23;
-        protected static final long BASE_SENT_FAILED_TYPE              = 24;
-        protected static final long BASE_PENDING_SECURE_SMS_FALLBACK   = 25;
+        protected static final long BASE_INBOX_TYPE = 20;
+        protected static final long BASE_OUTBOX_TYPE = 21;
+        protected static final long BASE_SENDING_TYPE = 22;
+        protected static final long BASE_SENT_TYPE = 23;
+        protected static final long BASE_SENT_FAILED_TYPE = 24;
+        protected static final long BASE_PENDING_SECURE_SMS_FALLBACK = 25;
         protected static final long BASE_PENDING_INSECURE_SMS_FALLBACK = 26;
-        public    static final long BASE_DRAFT_TYPE                    = 27;
+        public    static final long BASE_DRAFT_TYPE = 27;
 
         protected static final long[] OUTGOING_MESSAGE_TYPES = {BASE_OUTBOX_TYPE, BASE_SENT_TYPE,
                 BASE_SENDING_TYPE, BASE_SENT_FAILED_TYPE,
@@ -47,39 +47,36 @@ public interface MmsSmsColumns {
                 OUTGOING_CALL_TYPE};
 
         // Message attributes
-        protected static final long MESSAGE_ATTRIBUTE_MASK = 0xE0;
-        protected static final long MESSAGE_FORCE_SMS_BIT  = 0x40;
+        protected static final long MESSAGE_FORCE_SMS_BIT = 0x40;
 
         // Key Exchange Information
-        protected static final long KEY_EXCHANGE_MASK                  = 0xFF00;
-        protected static final long KEY_EXCHANGE_BIT                   = 0x8000;
+        protected static final long KEY_EXCHANGE_MASK = 0xFF00;
+        protected static final long KEY_EXCHANGE_BIT = 0x8000;
         protected static final long KEY_EXCHANGE_IDENTITY_VERIFIED_BIT = 0x4000;
-        protected static final long KEY_EXCHANGE_IDENTITY_DEFAULT_BIT  = 0x2000;
-        protected static final long KEY_EXCHANGE_CORRUPTED_BIT         = 0x1000;
-        protected static final long KEY_EXCHANGE_INVALID_VERSION_BIT   = 0x800;
-        protected static final long KEY_EXCHANGE_BUNDLE_BIT            = 0x400;
-        protected static final long KEY_EXCHANGE_IDENTITY_UPDATE_BIT   = 0x200;
-        protected static final long KEY_EXCHANGE_CONTENT_FORMAT        = 0x100;
+        protected static final long KEY_EXCHANGE_IDENTITY_DEFAULT_BIT = 0x2000;
+        protected static final long KEY_EXCHANGE_CORRUPTED_BIT = 0x1000;
+        protected static final long KEY_EXCHANGE_INVALID_VERSION_BIT = 0x800;
+        protected static final long KEY_EXCHANGE_BUNDLE_BIT = 0x400;
+        protected static final long KEY_EXCHANGE_IDENTITY_UPDATE_BIT = 0x200;
+        protected static final long KEY_EXCHANGE_CONTENT_FORMAT = 0x100;
 
         // Secure Message Information
         protected static final long SECURE_MESSAGE_BIT = 0x800000;
-        protected static final long END_SESSION_BIT    = 0x400000;
-        protected static final long PUSH_MESSAGE_BIT   = 0x200000;
+        protected static final long END_SESSION_BIT = 0x400000;
+        protected static final long PUSH_MESSAGE_BIT = 0x200000;
 
         // Group Message Information
-        protected static final long GROUP_UPDATE_BIT            = 0x10000;
-        protected static final long GROUP_QUIT_BIT              = 0x20000;
+        protected static final long GROUP_UPDATE_BIT = 0x10000;
+        protected static final long GROUP_QUIT_BIT = 0x20000;
         protected static final long EXPIRATION_TIMER_UPDATE_BIT = 0x40000;
 
         // Encrypted Storage Information XXX
-        public    static final long ENCRYPTION_MASK                  = 0xFF000000;
-        // public    static final long ENCRYPTION_SYMMETRIC_BIT         = 0x80000000; Deprecated
-        // protected static final long ENCRYPTION_ASYMMETRIC_BIT        = 0x40000000; Deprecated
-        protected static final long ENCRYPTION_REMOTE_BIT            = 0x20000000;
-        protected static final long ENCRYPTION_REMOTE_FAILED_BIT     = 0x10000000;
+        public    static final long ENCRYPTION_MASK = 0xFF000000;
+        protected static final long ENCRYPTION_REMOTE_BIT = 0x20000000;
+        protected static final long ENCRYPTION_REMOTE_FAILED_BIT = 0x10000000;
         protected static final long ENCRYPTION_REMOTE_NO_SESSION_BIT = 0x08000000;
-        protected static final long ENCRYPTION_REMOTE_DUPLICATE_BIT  = 0x04000000;
-        protected static final long ENCRYPTION_REMOTE_LEGACY_BIT     = 0x02000000;
+        protected static final long ENCRYPTION_REMOTE_DUPLICATE_BIT = 0x04000000;
+        protected static final long ENCRYPTION_REMOTE_LEGACY_BIT = 0x02000000;
 
         public static boolean isDraftMessageType(long type) {
             return (type & BASE_TYPE_MASK) == BASE_DRAFT_TYPE;

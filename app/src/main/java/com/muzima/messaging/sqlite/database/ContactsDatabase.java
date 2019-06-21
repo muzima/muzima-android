@@ -31,21 +31,21 @@ import java.util.Map;
 import java.util.Set;
 
 public class ContactsDatabase {
-    private static final String TAG              = ContactsDatabase.class.getSimpleName();
+    private static final String TAG = ContactsDatabase.class.getSimpleName();
     private static final String CONTACT_MIMETYPE = "vnd.android.cursor.item/vnd.com.muzima.contact";
-    private static final String CALL_MIMETYPE    = "vnd.android.cursor.item/vnd.com.muzima.call";
-    private static final String SYNC             = "__TS";
+    private static final String CALL_MIMETYPE = "vnd.android.cursor.item/vnd.com.muzima.call";
+    private static final String SYNC = "__TS";
 
-    public static final String NAME_COLUMN         = "name";
-    public static final String NUMBER_COLUMN       = "number";
-    public static final String NUMBER_TYPE_COLUMN  = "number_type";
-    public static final String LABEL_COLUMN        = "label";
+    public static final String NAME_COLUMN = "name";
+    public static final String NUMBER_COLUMN = "number";
+    public static final String NUMBER_TYPE_COLUMN = "number_type";
+    public static final String LABEL_COLUMN = "label";
     public static final String CONTACT_TYPE_COLUMN = "contact_type";
 
-    public static final int NORMAL_TYPE  = 0;
-    public static final int PUSH_TYPE    = 1;
-    public static final int NEW_TYPE     = 2;
-    public static final int RECENT_TYPE  = 3;
+    public static final int NORMAL_TYPE = 0;
+    public static final int PUSH_TYPE = 1;
+    public static final int NEW_TYPE = 2;
+    public static final int RECENT_TYPE = 3;
     public static final int DIVIDER_TYPE = 4;
 
     private final Context context;
@@ -79,8 +79,8 @@ public class ContactsDatabase {
             throws RemoteException, OperationApplicationException
     {
         Set<SignalAddress> registeredAddressSet = new HashSet<>();
-        ArrayList<ContentProviderOperation> operations           = new ArrayList<>();
-        Map<SignalAddress, SignalContact> currentContacts      = getSignalRawContacts(account);
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+        Map<SignalAddress, SignalContact> currentContacts = getSignalRawContacts(account);
 
         for (SignalAddress registeredAddress : registeredAddressList) {
             registeredAddressSet.add(registeredAddress);
@@ -209,8 +209,8 @@ public class ContactsDatabase {
                 ContactsContract.CommonDataKinds.StructuredName.PREFIX,
                 ContactsContract.CommonDataKinds.StructuredName.SUFFIX,
                 ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME };
-        String   selection  = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
-        String[] args       = new String[] { String.valueOf(contactId), ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE };
+        String selection = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+        String[] args = new String[] { String.valueOf(contactId), ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE };
 
         return context.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
                 projection,
@@ -221,8 +221,8 @@ public class ContactsDatabase {
 
     public @Nullable String getOrganizationName(long contactId) {
         String[] projection = new String[] { ContactsContract.CommonDataKinds.Organization.COMPANY };
-        String   selection  = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
-        String[] args       = new String[] { String.valueOf(contactId), ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE };
+        String selection = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+        String[] args = new String[] { String.valueOf(contactId), ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE };
 
         try (Cursor cursor = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
                 projection,
@@ -242,8 +242,8 @@ public class ContactsDatabase {
         String[] projection = new String[] { ContactsContract.CommonDataKinds.Phone.NUMBER,
                 ContactsContract.CommonDataKinds.Phone.TYPE,
                 ContactsContract.CommonDataKinds.Phone.LABEL };
-        String   selection  = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
-        String[] args       = new String[] { String.valueOf(contactId), ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE };
+        String selection = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+        String[] args = new String[] { String.valueOf(contactId), ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE };
 
         return context.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
                 projection,
@@ -256,8 +256,8 @@ public class ContactsDatabase {
         String[] projection = new String[] { ContactsContract.CommonDataKinds.Email.ADDRESS,
                 ContactsContract.CommonDataKinds.Email.TYPE,
                 ContactsContract.CommonDataKinds.Email.LABEL };
-        String   selection  = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
-        String[] args       = new String[] { String.valueOf(contactId), ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE };
+        String selection = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+        String[] args = new String[] { String.valueOf(contactId), ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE };
 
         return context.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
                 projection,
@@ -276,8 +276,8 @@ public class ContactsDatabase {
                 ContactsContract.CommonDataKinds.StructuredPostal.REGION,
                 ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE,
                 ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY };
-        String   selection  = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
-        String[] args       = new String[] { String.valueOf(contactId), ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE };
+        String selection = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+        String[] args = new String[] { String.valueOf(contactId), ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE };
 
         return context.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
                 projection,
@@ -288,8 +288,8 @@ public class ContactsDatabase {
 
     public @Nullable Uri getAvatarUri(long contactId) {
         String[] projection = new String[] { ContactsContract.CommonDataKinds.Photo.PHOTO_URI };
-        String   selection  = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
-        String[] args       = new String[] { String.valueOf(contactId), ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE };
+        String selection = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+        String[] args = new String[] { String.valueOf(contactId), ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE };
 
         try (Cursor cursor = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
                 projection,
@@ -356,7 +356,7 @@ public class ContactsDatabase {
                                          Account account, String e164number, String displayName,
                                          long aggregateId)
     {
-        int index   = operations.size();
+        int index = operations.size();
         Uri dataUri = ContactsContract.Data.CONTENT_URI.buildUpon()
                 .appendQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER, "true")
                 .build();
@@ -433,13 +433,13 @@ public class ContactsDatabase {
             cursor = context.getContentResolver().query(currentContactsUri, projection, null, null, null);
 
             while (cursor != null && cursor.moveToNext()) {
-                SignalAddress currentAddress              = SignalAddress.fromExternal(context, cursor.getString(1));
-                long    rawContactId                = cursor.getLong(0);
-                long    contactId                   = cursor.getLong(3);
-                String  supportsVoice               = cursor.getString(2);
-                String  rawContactDisplayName       = cursor.getString(4);
-                String  aggregateDisplayName        = getDisplayName(contactId);
-                int     rawContactDisplayNameSource = cursor.getInt(5);
+                SignalAddress currentAddress = SignalAddress.fromExternal(context, cursor.getString(1));
+                long rawContactId = cursor.getLong(0);
+                long contactId = cursor.getLong(3);
+                String supportsVoice = cursor.getString(2);
+                String rawContactDisplayName = cursor.getString(4);
+                String aggregateDisplayName = getDisplayName(contactId);
+                int rawContactDisplayNameSource = cursor.getInt(5);
 
                 signalContacts.put(currentAddress, new SignalContact(rawContactId, supportsVoice, rawContactDisplayName, aggregateDisplayName, rawContactDisplayNameSource));
             }
@@ -455,12 +455,12 @@ public class ContactsDatabase {
     {
         if (!address.isPhone()) return Optional.absent();
 
-        Uri      uri          = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(address.toPhoneString()));
-        String[] projection   = {ContactsContract.PhoneLookup.NUMBER,
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(address.toPhoneString()));
+        String[] projection = {ContactsContract.PhoneLookup.NUMBER,
                 ContactsContract.PhoneLookup._ID,
                 ContactsContract.PhoneLookup.DISPLAY_NAME};
-        Cursor   numberCursor = null;
-        Cursor   idCursor     = null;
+        Cursor numberCursor = null;
+        Cursor idCursor = null;
 
         try {
             numberCursor = context.getContentResolver().query(uri, projection, null, null, null);
@@ -485,7 +485,7 @@ public class ContactsDatabase {
             }
         } finally {
             if (numberCursor != null) numberCursor.close();
-            if (idCursor     != null) idCursor.close();
+            if (idCursor != null) idCursor.close();
         }
 
         return Optional.absent();
@@ -511,7 +511,7 @@ public class ContactsDatabase {
 
     private static class ProjectionMappingCursor extends CursorWrapper {
 
-        private final Map<String, String>    projectionMap;
+        private final Map<String, String> projectionMap;
         private final Pair<String, Object>[] extras;
 
         @SafeVarargs
@@ -521,7 +521,7 @@ public class ContactsDatabase {
         {
             super(cursor);
             this.projectionMap = projectionMap;
-            this.extras        = extras;
+            this.extras = extras;
         }
 
         @Override
@@ -545,7 +545,7 @@ public class ContactsDatabase {
             int index = getColumnIndex(columnName);
 
             if (index == -1) throw new IllegalArgumentException("Bad column name!");
-            else             return index;
+            else return index;
         }
 
         @Override
@@ -562,7 +562,7 @@ public class ContactsDatabase {
 
         @Override
         public String[] getColumnNames() {
-            String[] names    = super.getColumnNames();
+            String[] names = super.getColumnNames();
             String[] allNames = new String[names.length + extras.length];
 
             for (int i=0;i<names.length;i++) {
@@ -611,22 +611,22 @@ public class ContactsDatabase {
     private static class SystemContactInfo {
         private final String name;
         private final String number;
-        private final long   id;
+        private final long id;
 
         private SystemContactInfo(String name, String number, long id) {
-            this.name   = name;
+            this.name = name;
             this.number = number;
-            this.id     = id;
+            this.id = id;
         }
     }
 
     private static class SignalContact {
 
-        private final long   id;
+        private final long id;
         @Nullable private final String supportsVoice;
         @Nullable private final String rawDisplayName;
         @Nullable private final String aggregateDisplayName;
-        private final int    displayNameSource;
+        private final int displayNameSource;
 
         SignalContact(long id,
                       @Nullable String supportsVoice,
@@ -634,11 +634,11 @@ public class ContactsDatabase {
                       @Nullable String aggregateDisplayName,
                       int displayNameSource)
         {
-            this.id                   = id;
-            this.supportsVoice        = supportsVoice;
-            this.rawDisplayName       = rawDisplayName;
+            this.id = id;
+            this.supportsVoice = supportsVoice;
+            this.rawDisplayName = rawDisplayName;
             this.aggregateDisplayName = aggregateDisplayName;
-            this.displayNameSource    = displayNameSource;
+            this.displayNameSource = displayNameSource;
         }
 
         public long getId() {

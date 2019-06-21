@@ -45,8 +45,7 @@ public class VideoPlayer extends FrameLayout {
 
     private static final String TAG = VideoPlayer.class.getSimpleName();
 
-    @Nullable
-    private final VideoView videoView;
+    @Nullable private final VideoView videoView;
     @Nullable private final PlayerView exoView;
 
     @Nullable private SimpleExoPlayer exoPlayer;
@@ -68,13 +67,13 @@ public class VideoPlayer extends FrameLayout {
         inflate(context, R.layout.video_player, this);
 
         if (Build.VERSION.SDK_INT >= 16) {
-            this.exoView   = ViewUtil.findById(this, R.id.video_view);
+            this.exoView = ViewUtil.findById(this, R.id.video_view);
             this.videoView = null;
             this.exoControls = new PlayerControlView(getContext());
             this.exoControls.setShowTimeoutMs(-1);
         } else {
             this.videoView = ViewUtil.findById(this, R.id.video_view);
-            this.exoView   = null;
+            this.exoView = null;
             initializeVideoViewControls(videoView);
         }
     }
@@ -125,10 +124,10 @@ public class VideoPlayer extends FrameLayout {
     private void setExoViewSource(@NonNull VideoSlide videoSource, boolean autoplay)
             throws IOException
     {
-        BandwidthMeter bandwidthMeter             = new DefaultBandwidthMeter();
+        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector              = new DefaultTrackSelector(videoTrackSelectionFactory);
-        LoadControl loadControl                = new DefaultLoadControl();
+        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+        LoadControl loadControl = new DefaultLoadControl();
 
         exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
         exoPlayer.addListener(new ExoPlayerListener(window));
@@ -137,9 +136,9 @@ public class VideoPlayer extends FrameLayout {
         //noinspection ConstantConditions
         exoControls.setPlayer(exoPlayer);
 
-        DefaultDataSourceFactory defaultDataSourceFactory    = new DefaultDataSourceFactory(getContext(), "GenericUserAgent", null);
+        DefaultDataSourceFactory defaultDataSourceFactory = new DefaultDataSourceFactory(getContext(), "GenericUserAgent", null);
         AttachmentDataSourceFactory attachmentDataSourceFactory = new AttachmentDataSourceFactory(getContext(), defaultDataSourceFactory, null);
-        ExtractorsFactory extractorsFactory           = new DefaultExtractorsFactory();
+        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
         MediaSource mediaSource = new ExtractorMediaSource(videoSource.getUri(), attachmentDataSourceFactory, extractorsFactory, null, null);
 

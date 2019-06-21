@@ -26,14 +26,14 @@ public class AsymmetricMasterCipher {
 
     public byte[] encryptBytes(byte[] body) {
         try {
-            ECPublicKey theirPublic        = asymmetricMasterSecret.getDjbPublicKey();
-            ECKeyPair ourKeyPair         = Curve.generateKeyPair();
-            byte[]       secret             = Curve.calculateAgreement(theirPublic, ourKeyPair.getPrivateKey());
-            MasterCipher masterCipher       = getMasterCipherForSecret(secret);
-            byte[]       encryptedBodyBytes = masterCipher.encryptBytes(body);
+            ECPublicKey theirPublic = asymmetricMasterSecret.getDjbPublicKey();
+            ECKeyPair ourKeyPair = Curve.generateKeyPair();
+            byte[] secret = Curve.calculateAgreement(theirPublic, ourKeyPair.getPrivateKey());
+            MasterCipher masterCipher = getMasterCipherForSecret(secret);
+            byte[] encryptedBodyBytes = masterCipher.encryptBytes(body);
 
-            PublicKey ourPublicKey       = new PublicKey(31337, ourKeyPair.getPublicKey());
-            byte[]       publicKeyBytes     = ourPublicKey.serialize();
+            PublicKey ourPublicKey = new PublicKey(31337, ourKeyPair.getPublicKey());
+            byte[] publicKeyBytes = ourPublicKey.serialize();
 
             return Util.combine(publicKeyBytes, encryptedBodyBytes);
         } catch (InvalidKeyException e) {
@@ -43,11 +43,11 @@ public class AsymmetricMasterCipher {
 
     public byte[] decryptBytes(byte[] combined) throws IOException, InvalidMessageException {
         try {
-            byte[][]  parts          = Util.split(combined, PublicKey.KEY_SIZE, combined.length - PublicKey.KEY_SIZE);
+            byte[][] parts = Util.split(combined, PublicKey.KEY_SIZE, combined.length - PublicKey.KEY_SIZE);
             PublicKey theirPublicKey = new PublicKey(parts[0], 0);
 
             ECPrivateKey ourPrivateKey = asymmetricMasterSecret.getPrivateKey();
-            byte[]       secret        = Curve.calculateAgreement(theirPublicKey.getKey(), ourPrivateKey);
+            byte[] secret = Curve.calculateAgreement(theirPublicKey.getKey(), ourPrivateKey);
             MasterCipher masterCipher  = getMasterCipherForSecret(secret);
 
             return masterCipher.decryptBytes(parts[1]);
@@ -66,8 +66,8 @@ public class AsymmetricMasterCipher {
     }
 
     private MasterCipher getMasterCipherForSecret(byte[] secretBytes) {
-        SecretKeySpec cipherKey   = deriveCipherKey(secretBytes);
-        SecretKeySpec macKey      = deriveMacKey(secretBytes);
+        SecretKeySpec cipherKey = deriveCipherKey(secretBytes);
+        SecretKeySpec macKey = deriveMacKey(secretBytes);
         MasterSecret masterSecret = new MasterSecret(cipherKey, macKey);
 
         return new MasterCipher(masterSecret);
@@ -75,14 +75,14 @@ public class AsymmetricMasterCipher {
 
     private SecretKeySpec deriveMacKey(byte[] secretBytes) {
         byte[] digestedBytes = getDigestedBytes(secretBytes, 1);
-        byte[] macKeyBytes   = new byte[20];
+        byte[] macKeyBytes = new byte[20];
 
         System.arraycopy(digestedBytes, 0, macKeyBytes, 0, macKeyBytes.length);
         return new SecretKeySpec(macKeyBytes, "HmacSHA1");
     }
 
     private SecretKeySpec deriveCipherKey(byte[] secretBytes) {
-        byte[] digestedBytes  = getDigestedBytes(secretBytes, 0);
+        byte[] digestedBytes = getDigestedBytes(secretBytes, 0);
         byte[] cipherKeyBytes = new byte[16];
 
         System.arraycopy(digestedBytes, 0, cipherKeyBytes, 0, cipherKeyBytes.length);

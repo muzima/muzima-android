@@ -25,9 +25,9 @@ import java.util.List;
 public class AndroidAutoReplyReceiver
         extends BroadcastReceiver {
 
-    public static final String TAG             = AndroidAutoReplyReceiver.class.getSimpleName();
-    public static final String REPLY_ACTION    = "com.muzima.notifications.ANDROID_AUTO_REPLY";
-    public static final String ADDRESS_EXTRA   = "car_address";
+    public static final String TAG = AndroidAutoReplyReceiver.class.getSimpleName();
+    public static final String REPLY_ACTION = "com.muzima.notifications.ANDROID_AUTO_REPLY";
+    public static final String ADDRESS_EXTRA = "car_address";
     public static final String VOICE_REPLY_KEY = "car_voice_reply_key";
     public static final String THREAD_ID_EXTRA = "car_reply_thread_id";
 
@@ -41,10 +41,10 @@ public class AndroidAutoReplyReceiver
 
         if (remoteInput == null) return;
 
-        final SignalAddress address      = intent.getParcelableExtra(ADDRESS_EXTRA);
-        final long         threadId     = intent.getLongExtra(THREAD_ID_EXTRA, -1);
+        final SignalAddress address = intent.getParcelableExtra(ADDRESS_EXTRA);
+        final long threadId = intent.getLongExtra(THREAD_ID_EXTRA, -1);
         final CharSequence responseText = getMessageText(intent);
-        final SignalRecipient recipient    = SignalRecipient.from(context, address, false);
+        final SignalRecipient recipient = SignalRecipient.from(context, address, false);
 
         if (responseText != null) {
             new AsyncTask<Void, Void, Void>() {
@@ -54,7 +54,7 @@ public class AndroidAutoReplyReceiver
                     long replyThreadId;
 
                     int  subscriptionId = recipient.getDefaultSubscriptionId().or(-1);
-                    long expiresIn      = recipient.getExpireMessages() * 1000L;
+                    long expiresIn = recipient.getExpireMessages() * 1000L;
 
                     if (recipient.isGroupRecipient()) {
                         Log.w("AndroidAutoReplyReceiver", "GroupRecipient, Sending media message");

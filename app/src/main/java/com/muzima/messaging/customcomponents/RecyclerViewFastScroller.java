@@ -23,7 +23,7 @@ import com.muzima.utils.ViewUtil;
 
 public class RecyclerViewFastScroller extends LinearLayout {
     private static final int BUBBLE_ANIMATION_DURATION = 100;
-    private static final int TRACK_SNAP_RANGE          = 5;
+    private static final int TRACK_SNAP_RANGE = 5;
 
     private @NonNull TextView bubble;
     private @NonNull View handle;

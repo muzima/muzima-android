@@ -31,29 +31,29 @@ import java.util.Set;
 public class RecipientDatabase extends Database {
     private static final String TAG = RecipientDatabase.class.getSimpleName();
 
-    static final         String TABLE_NAME       = "recipient_preferences";
-    private static final String ID                       = "_id";
-    static final         String ADDRESS          = "recipient_ids";
-    private static final String BLOCK                    = "block";
-    private static final String NOTIFICATION             = "notification";
-    private static final String VIBRATE                  = "vibrate";
-    private static final String MUTE_UNTIL               = "mute_until";
-    private static final String COLOR                    = "color";
-    private static final String SEEN_INVITE_REMINDER     = "seen_invite_reminder";
-    private static final String DEFAULT_SUBSCRIPTION_ID  = "default_subscription_id";
-    private static final String EXPIRE_MESSAGES          = "expire_messages";
-    private static final String REGISTERED               = "registered";
-    private static final String PROFILE_KEY              = "profile_key";
-    private static final String SYSTEM_DISPLAY_NAME      = "system_display_name";
-    private static final String SYSTEM_PHOTO_URI         = "system_contact_photo";
-    private static final String SYSTEM_PHONE_LABEL       = "system_phone_label";
-    private static final String SYSTEM_CONTACT_URI       = "system_contact_uri";
-    private static final String SIGNAL_PROFILE_NAME      = "signal_profile_name";
-    private static final String SIGNAL_PROFILE_AVATAR    = "signal_profile_avatar";
-    private static final String PROFILE_SHARING          = "profile_sharing_approval";
-    private static final String CALL_RINGTONE            = "call_ringtone";
-    private static final String CALL_VIBRATE             = "call_vibrate";
-    private static final String NOTIFICATION_CHANNEL     = "notification_channel";
+    static final String TABLE_NAME = "recipient_preferences";
+    private static final String ID = "_id";
+    static final String ADDRESS = "recipient_ids";
+    private static final String BLOCK = "block";
+    private static final String NOTIFICATION = "notification";
+    private static final String VIBRATE = "vibrate";
+    private static final String MUTE_UNTIL = "mute_until";
+    private static final String COLOR = "color";
+    private static final String SEEN_INVITE_REMINDER = "seen_invite_reminder";
+    private static final String DEFAULT_SUBSCRIPTION_ID = "default_subscription_id";
+    private static final String EXPIRE_MESSAGES = "expire_messages";
+    private static final String REGISTERED = "registered";
+    private static final String PROFILE_KEY = "profile_key";
+    private static final String SYSTEM_DISPLAY_NAME = "system_display_name";
+    private static final String SYSTEM_PHOTO_URI = "system_contact_photo";
+    private static final String SYSTEM_PHONE_LABEL = "system_phone_label";
+    private static final String SYSTEM_CONTACT_URI = "system_contact_uri";
+    private static final String SIGNAL_PROFILE_NAME = "signal_profile_name";
+    private static final String SIGNAL_PROFILE_AVATAR = "signal_profile_avatar";
+    private static final String PROFILE_SHARING = "profile_sharing_approval";
+    private static final String CALL_RINGTONE = "call_ringtone";
+    private static final String CALL_VIBRATE = "call_vibrate";
+    private static final String NOTIFICATION_CHANNEL = "notification_channel";
     private static final String UNIDENTIFIED_ACCESS_MODE = "unidentified_access_mode";
 
     private static final String[] RECIPIENT_PROJECTION = new String[] {
@@ -188,27 +188,27 @@ public class RecipientDatabase extends Database {
     }
 
     Optional<RecipientSettings> getRecipientSettings(@NonNull Cursor cursor) {
-        boolean blocked                = cursor.getInt(cursor.getColumnIndexOrThrow(BLOCK))                == 1;
-        String  messageRingtone        = cursor.getString(cursor.getColumnIndexOrThrow(NOTIFICATION));
-        String  callRingtone           = cursor.getString(cursor.getColumnIndexOrThrow(CALL_RINGTONE));
-        int     messageVibrateState    = cursor.getInt(cursor.getColumnIndexOrThrow(VIBRATE));
-        int     callVibrateState       = cursor.getInt(cursor.getColumnIndexOrThrow(CALL_VIBRATE));
-        long    muteUntil              = cursor.getLong(cursor.getColumnIndexOrThrow(MUTE_UNTIL));
-        String  serializedColor        = cursor.getString(cursor.getColumnIndexOrThrow(COLOR));
-        boolean seenInviteReminder     = cursor.getInt(cursor.getColumnIndexOrThrow(SEEN_INVITE_REMINDER)) == 1;
-        int     defaultSubscriptionId  = cursor.getInt(cursor.getColumnIndexOrThrow(DEFAULT_SUBSCRIPTION_ID));
-        int     expireMessages         = cursor.getInt(cursor.getColumnIndexOrThrow(EXPIRE_MESSAGES));
-        int     registeredState        = cursor.getInt(cursor.getColumnIndexOrThrow(REGISTERED));
-        String  profileKeyString       = cursor.getString(cursor.getColumnIndexOrThrow(PROFILE_KEY));
-        String  systemDisplayName      = cursor.getString(cursor.getColumnIndexOrThrow(SYSTEM_DISPLAY_NAME));
-        String  systemContactPhoto     = cursor.getString(cursor.getColumnIndexOrThrow(SYSTEM_PHOTO_URI));
-        String  systemPhoneLabel       = cursor.getString(cursor.getColumnIndexOrThrow(SYSTEM_PHONE_LABEL));
-        String  systemContactUri       = cursor.getString(cursor.getColumnIndexOrThrow(SYSTEM_CONTACT_URI));
-        String  signalProfileName      = cursor.getString(cursor.getColumnIndexOrThrow(SIGNAL_PROFILE_NAME));
-        String  signalProfileAvatar    = cursor.getString(cursor.getColumnIndexOrThrow(SIGNAL_PROFILE_AVATAR));
-        boolean profileSharing         = cursor.getInt(cursor.getColumnIndexOrThrow(PROFILE_SHARING))      == 1;
-        String  notificationChannel    = cursor.getString(cursor.getColumnIndexOrThrow(NOTIFICATION_CHANNEL));
-        int     unidentifiedAccessMode = cursor.getInt(cursor.getColumnIndexOrThrow(UNIDENTIFIED_ACCESS_MODE));
+        boolean blocked = cursor.getInt(cursor.getColumnIndexOrThrow(BLOCK)) == 1;
+        String messageRingtone = cursor.getString(cursor.getColumnIndexOrThrow(NOTIFICATION));
+        String callRingtone = cursor.getString(cursor.getColumnIndexOrThrow(CALL_RINGTONE));
+        int messageVibrateState = cursor.getInt(cursor.getColumnIndexOrThrow(VIBRATE));
+        int callVibrateState = cursor.getInt(cursor.getColumnIndexOrThrow(CALL_VIBRATE));
+        long muteUntil = cursor.getLong(cursor.getColumnIndexOrThrow(MUTE_UNTIL));
+        String serializedColor = cursor.getString(cursor.getColumnIndexOrThrow(COLOR));
+        boolean seenInviteReminder = cursor.getInt(cursor.getColumnIndexOrThrow(SEEN_INVITE_REMINDER)) == 1;
+        int defaultSubscriptionId = cursor.getInt(cursor.getColumnIndexOrThrow(DEFAULT_SUBSCRIPTION_ID));
+        int expireMessages = cursor.getInt(cursor.getColumnIndexOrThrow(EXPIRE_MESSAGES));
+        int registeredState = cursor.getInt(cursor.getColumnIndexOrThrow(REGISTERED));
+        String profileKeyString = cursor.getString(cursor.getColumnIndexOrThrow(PROFILE_KEY));
+        String systemDisplayName = cursor.getString(cursor.getColumnIndexOrThrow(SYSTEM_DISPLAY_NAME));
+        String systemContactPhoto = cursor.getString(cursor.getColumnIndexOrThrow(SYSTEM_PHOTO_URI));
+        String systemPhoneLabel = cursor.getString(cursor.getColumnIndexOrThrow(SYSTEM_PHONE_LABEL));
+        String systemContactUri = cursor.getString(cursor.getColumnIndexOrThrow(SYSTEM_CONTACT_URI));
+        String signalProfileName = cursor.getString(cursor.getColumnIndexOrThrow(SIGNAL_PROFILE_NAME));
+        String signalProfileAvatar = cursor.getString(cursor.getColumnIndexOrThrow(SIGNAL_PROFILE_AVATAR));
+        boolean profileSharing = cursor.getInt(cursor.getColumnIndexOrThrow(PROFILE_SHARING))      == 1;
+        String notificationChannel = cursor.getString(cursor.getColumnIndexOrThrow(NOTIFICATION_CHANNEL));
+        int unidentifiedAccessMode = cursor.getInt(cursor.getColumnIndexOrThrow(UNIDENTIFIED_ACCESS_MODE));
 
         MaterialColor color;
         byte[] profileKey = null;
@@ -372,8 +372,8 @@ public class RecipientDatabase extends Database {
     }
 
     public Set<SignalAddress> getAllAddresses() {
-        SQLiteDatabase db      = databaseHelper.getReadableDatabase();
-        Set<SignalAddress>   results = new HashSet<>();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Set<SignalAddress> results = new HashSet<>();
 
         try (Cursor cursor = db.query(TABLE_NAME, new String[] {ADDRESS}, null, null, null, null, null)) {
             while (cursor != null && cursor.moveToNext()) {
@@ -412,7 +412,7 @@ public class RecipientDatabase extends Database {
     }
 
     public List<SignalAddress> getRegistered() {
-        SQLiteDatabase db      = databaseHelper.getReadableDatabase();
+        SQLiteDatabase db  = databaseHelper.getReadableDatabase();
         List<SignalAddress>  results = new LinkedList<>();
 
         try (Cursor cursor = db.query(TABLE_NAME, new String[] {ADDRESS}, REGISTERED + " = ?", new String[] {"1"}, null, null, null)) {
@@ -425,7 +425,7 @@ public class RecipientDatabase extends Database {
     }
 
     public List<SignalAddress> getSystemContacts() {
-        SQLiteDatabase db      = databaseHelper.getReadableDatabase();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
         List<SignalAddress>  results = new LinkedList<>();
 
         try (Cursor cursor = db.query(TABLE_NAME, new String[] {ADDRESS}, SYSTEM_DISPLAY_NAME + " IS NOT NULL AND " + SYSTEM_DISPLAY_NAME + " != \"\"", null, null, null, null)) {
@@ -438,7 +438,7 @@ public class RecipientDatabase extends Database {
     }
 
     public void updateSystemContactColors(@NonNull ColorUpdater updater) {
-        SQLiteDatabase              db      = databaseHelper.getReadableDatabase();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
         Map<SignalAddress, MaterialColor> updates = new HashMap<>();
 
         db.beginTransaction();
@@ -472,7 +472,7 @@ public class RecipientDatabase extends Database {
 
         try (Cursor cursor = db.query(TABLE_NAME, new String[] {REGISTERED}, ADDRESS + " = ?", new String[] {address.serialize()}, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) return RegisteredState.fromId(cursor.getInt(0));
-            else                                        return RegisteredState.UNKNOWN;
+            else  return RegisteredState.UNKNOWN;
         }
     }
 
@@ -533,26 +533,26 @@ public class RecipientDatabase extends Database {
     }
 
     public static class RecipientSettings {
-        private final boolean                blocked;
-        private final long                   muteUntil;
-        private final VibrateState           messageVibrateState;
-        private final VibrateState           callVibrateState;
-        private final Uri                    messageRingtone;
-        private final Uri                    callRingtone;
-        private final MaterialColor          color;
-        private final boolean                seenInviteReminder;
-        private final int                    defaultSubscriptionId;
-        private final int                    expireMessages;
-        private final RegisteredState        registered;
-        private final byte[]                 profileKey;
-        private final String                 systemDisplayName;
-        private final String                 systemContactPhoto;
-        private final String                 systemPhoneLabel;
-        private final String                 systemContactUri;
-        private final String                 signalProfileName;
-        private final String                 signalProfileAvatar;
-        private final boolean                profileSharing;
-        private final String                 notificationChannel;
+        private final boolean blocked;
+        private final long  muteUntil;
+        private final VibrateState messageVibrateState;
+        private final VibrateState callVibrateState;
+        private final Uri messageRingtone;
+        private final Uri callRingtone;
+        private final MaterialColor color;
+        private final boolean seenInviteReminder;
+        private final int defaultSubscriptionId;
+        private final int expireMessages;
+        private final RegisteredState registered;
+        private final byte[] profileKey;
+        private final String systemDisplayName;
+        private final String systemContactPhoto;
+        private final String systemPhoneLabel;
+        private final String systemContactUri;
+        private final String signalProfileName;
+        private final String signalProfileAvatar;
+        private final boolean profileSharing;
+        private final String notificationChannel;
         private final UnidentifiedAccessMode unidentifiedAccessMode;
 
         RecipientSettings(boolean blocked, long muteUntil,
@@ -576,26 +576,26 @@ public class RecipientDatabase extends Database {
                           @Nullable String notificationChannel,
                           @NonNull UnidentifiedAccessMode unidentifiedAccessMode)
         {
-            this.blocked                = blocked;
-            this.muteUntil              = muteUntil;
-            this.messageVibrateState    = messageVibrateState;
-            this.callVibrateState       = callVibrateState;
-            this.messageRingtone        = messageRingtone;
-            this.callRingtone           = callRingtone;
-            this.color                  = color;
-            this.seenInviteReminder     = seenInviteReminder;
-            this.defaultSubscriptionId  = defaultSubscriptionId;
-            this.expireMessages         = expireMessages;
-            this.registered             = registered;
-            this.profileKey             = profileKey;
-            this.systemDisplayName      = systemDisplayName;
-            this.systemContactPhoto     = systemContactPhoto;
-            this.systemPhoneLabel       = systemPhoneLabel;
-            this.systemContactUri       = systemContactUri;
-            this.signalProfileName      = signalProfileName;
-            this.signalProfileAvatar    = signalProfileAvatar;
-            this.profileSharing         = profileSharing;
-            this.notificationChannel    = notificationChannel;
+            this.blocked = blocked;
+            this.muteUntil = muteUntil;
+            this.messageVibrateState = messageVibrateState;
+            this.callVibrateState = callVibrateState;
+            this.messageRingtone = messageRingtone;
+            this.callRingtone = callRingtone;
+            this.color = color;
+            this.seenInviteReminder = seenInviteReminder;
+            this.defaultSubscriptionId = defaultSubscriptionId;
+            this.expireMessages = expireMessages;
+            this.registered = registered;
+            this.profileKey = profileKey;
+            this.systemDisplayName = systemDisplayName;
+            this.systemContactPhoto = systemContactPhoto;
+            this.systemPhoneLabel = systemPhoneLabel;
+            this.systemContactUri = systemContactUri;
+            this.signalProfileName = signalProfileName;
+            this.signalProfileAvatar = signalProfileAvatar;
+            this.profileSharing = profileSharing;
+            this.notificationChannel = notificationChannel;
             this.unidentifiedAccessMode = unidentifiedAccessMode;
         }
 
@@ -689,11 +689,11 @@ public class RecipientDatabase extends Database {
     public static class RecipientReader implements Closeable {
 
         private final Context context;
-        private final Cursor  cursor;
+        private final Cursor cursor;
 
         RecipientReader(Context context, Cursor cursor) {
             this.context = context;
-            this.cursor  = cursor;
+            this.cursor = cursor;
         }
 
         public @NonNull SignalRecipient getCurrent() {
@@ -723,9 +723,9 @@ public class RecipientDatabase extends Database {
 
         private PendingContactInfo(String displayName, String photoUri, String phoneLabel, String contactUri) {
             this.displayName = displayName;
-            this.photoUri    = photoUri;
-            this.phoneLabel  = phoneLabel;
-            this.contactUri  = contactUri;
+            this.photoUri = photoUri;
+            this.phoneLabel = phoneLabel;
+            this.contactUri = contactUri;
         }
     }
 }

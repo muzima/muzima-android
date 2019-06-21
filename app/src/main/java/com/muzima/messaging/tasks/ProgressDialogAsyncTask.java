@@ -11,14 +11,14 @@ public abstract class ProgressDialogAsyncTask<Params, Progress, Result> extends 
 
     private final WeakReference<Context> contextReference;
     private ProgressDialog progress;
-    private final String                 title;
-    private final String                 message;
+    private final String title;
+    private final String message;
 
     public ProgressDialogAsyncTask(Context context, String title, String message) {
         super();
         this.contextReference = new WeakReference<>(context);
-        this.title            = title;
-        this.message          = message;
+        this.title = title;
+        this.message = message;
     }
 
     public ProgressDialogAsyncTask(Context context, int title, int message) {

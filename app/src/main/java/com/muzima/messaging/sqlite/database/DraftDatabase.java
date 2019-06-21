@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.Set;
 
 public class DraftDatabase extends Database {
-    private static final String TABLE_NAME  = "drafts";
-    public  static final String ID          = "_id";
-    public  static final String THREAD_ID   = "thread_id";
-    public  static final String DRAFT_TYPE  = "type";
+    private static final String TABLE_NAME = "drafts";
+    public  static final String ID = "_id";
+    public  static final String THREAD_ID = "thread_id";
+    public  static final String DRAFT_TYPE = "type";
     public  static final String DRAFT_VALUE = "value";
 
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" + ID + " INTEGER PRIMARY KEY, " +
@@ -34,7 +34,7 @@ public class DraftDatabase extends Database {
     }
 
     public void insertDrafts(long threadId, List<Draft> drafts) {
-        SQLiteDatabase db    = databaseHelper.getWritableDatabase();
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         for (Draft draft : drafts) {
             ContentValues values = new ContentValues(3);
@@ -52,9 +52,9 @@ public class DraftDatabase extends Database {
     }
 
     void clearDrafts(Set<Long> threadIds) {
-        SQLiteDatabase db        = databaseHelper.getWritableDatabase();
-        StringBuilder  where     = new StringBuilder();
-        List<String>   arguments = new LinkedList<>();
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        StringBuilder where = new StringBuilder();
+        List<String> arguments = new LinkedList<>();
 
         for (long threadId : threadIds) {
             where.append(" OR ")
@@ -73,9 +73,9 @@ public class DraftDatabase extends Database {
     }
 
     public List<Draft> getDrafts(long threadId) {
-        SQLiteDatabase db   = databaseHelper.getReadableDatabase();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
         List<Draft> results = new LinkedList<>();
-        Cursor cursor       = null;
+        Cursor cursor = null;
 
         try {
             cursor = db.query(TABLE_NAME, null, THREAD_ID + " = ?", new String[] {threadId+""}, null, null, null);
@@ -95,12 +95,12 @@ public class DraftDatabase extends Database {
     }
 
     public static class Draft {
-        public static final String TEXT     = "text";
-        public static final String IMAGE    = "image";
-        public static final String VIDEO    = "video";
-        public static final String AUDIO    = "audio";
+        public static final String TEXT = "text";
+        public static final String IMAGE = "image";
+        public static final String VIDEO = "video";
+        public static final String AUDIO = "audio";
         public static final String LOCATION = "location";
-        public static final String QUOTE    = "quote";
+        public static final String QUOTE = "quote";
 
         private final String type;
         private final String value;

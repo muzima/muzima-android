@@ -131,10 +131,10 @@ public class MultiDeviceContactUpdateJob extends ContextJob {
         File contactDataFile = createTempFile("multidevice-contact-update");
 
         try {
-            DeviceContactsOutputStream out             = new DeviceContactsOutputStream(new FileOutputStream(contactDataFile));
-            SignalRecipient recipient       = SignalRecipient.from(context, address, false);
-            Optional<IdentityDatabase.IdentityRecord> identityRecord  = DatabaseFactory.getIdentityDatabase(context).getIdentity(address);
-            Optional<VerifiedMessage>                 verifiedMessage = getVerifiedMessage(recipient, identityRecord);
+            DeviceContactsOutputStream out = new DeviceContactsOutputStream(new FileOutputStream(contactDataFile));
+            SignalRecipient recipient = SignalRecipient.from(context, address, false);
+            Optional<IdentityDatabase.IdentityRecord> identityRecord = DatabaseFactory.getIdentityDatabase(context).getIdentity(address);
+            Optional<VerifiedMessage> verifiedMessage = getVerifiedMessage(recipient, identityRecord);
 
             out.write(new DeviceContact(address.toPhoneString(),
                     Optional.fromNullable(recipient.getName()),
@@ -165,8 +165,8 @@ public class MultiDeviceContactUpdateJob extends ContextJob {
             return;
         }
 
-        boolean isAppVisible      = MuzimaApplication.getInstance(context).isAppVisible();
-        long    timeSinceLastSync = System.currentTimeMillis() - TextSecurePreferences.getLastFullContactSyncTime(context);
+        boolean isAppVisible = MuzimaApplication.getInstance(context).isAppVisible();
+        long timeSinceLastSync = System.currentTimeMillis() - TextSecurePreferences.getLastFullContactSyncTime(context);
 
         Log.d(TAG, "Requesting a full contact sync. forced = " + forceSync + ", appVisible = " + isAppVisible + ", timeSinceLastSync = " + timeSinceLastSync + " ms");
 
@@ -187,15 +187,15 @@ public class MultiDeviceContactUpdateJob extends ContextJob {
 
             for (ContactAccessor.ContactData contactData : contacts) {
                 Uri contactUri  = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, String.valueOf(contactData.id));
-                SignalAddress                                   address     = SignalAddress.fromExternal(context, contactData.numbers.get(0).number);
-                SignalRecipient                                 recipient   = SignalRecipient.from(context, address, false);
-                Optional<IdentityDatabase.IdentityRecord> identity    = DatabaseFactory.getIdentityDatabase(context).getIdentity(address);
-                Optional<VerifiedMessage>                 verified    = getVerifiedMessage(recipient, identity);
-                Optional<String>                          name        = Optional.fromNullable(contactData.name);
-                Optional<String>                          color       = Optional.of(recipient.getColor().serialize());
-                Optional<byte[]>                          profileKey  = Optional.fromNullable(recipient.getProfileKey());
-                boolean                                   blocked     = recipient.isBlocked();
-                Optional<Integer>                         expireTimer = recipient.getExpireMessages() > 0 ? Optional.of(recipient.getExpireMessages()) : Optional.absent();
+                SignalAddress address = SignalAddress.fromExternal(context, contactData.numbers.get(0).number);
+                SignalRecipient recipient = SignalRecipient.from(context, address, false);
+                Optional<IdentityDatabase.IdentityRecord> identity = DatabaseFactory.getIdentityDatabase(context).getIdentity(address);
+                Optional<VerifiedMessage> verified = getVerifiedMessage(recipient, identity);
+                Optional<String> name = Optional.fromNullable(contactData.name);
+                Optional<String> color = Optional.of(recipient.getColor().serialize());
+                Optional<byte[]> profileKey = Optional.fromNullable(recipient.getProfileKey());
+                boolean blocked = recipient.isBlocked();
+                Optional<Integer> expireTimer = recipient.getExpireMessages() > 0 ? Optional.of(recipient.getExpireMessages()) : Optional.absent();
 
                 out.write(new DeviceContact(address.toPhoneString(), name, getAvatar(contactUri), color, verified, profileKey, blocked, expireTimer));
             }
@@ -309,7 +309,7 @@ public class MultiDeviceContactUpdateJob extends ContextJob {
     private Optional<VerifiedMessage> getVerifiedMessage(SignalRecipient recipient, Optional<IdentityDatabase.IdentityRecord> identity) throws InvalidNumberException {
         if (!identity.isPresent()) return Optional.absent();
 
-        String      destination = recipient.getAddress().toPhoneString();
+        String destination = recipient.getAddress().toPhoneString();
         IdentityKey identityKey = identity.get().getIdentityKey();
 
         VerifiedMessage.VerifiedState state;

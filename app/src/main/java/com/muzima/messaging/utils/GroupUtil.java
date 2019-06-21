@@ -28,7 +28,7 @@ import java.util.List;
 public class GroupUtil {
     private static final String ENCODED_SIGNAL_GROUP_PREFIX = "__textsecure_group__!";
     private static final String ENCODED_MMS_GROUP_PREFIX    = "__signal_mms_group__!";
-    private static final String TAG                         = GroupUtil.class.getSimpleName();
+    private static final String TAG = GroupUtil.class.getSimpleName();
 
     public static String getEncodedId(byte[] groupId, boolean mms) {
         return (mms ? ENCODED_MMS_GROUP_PREFIX  : ENCODED_SIGNAL_GROUP_PREFIX) + Hex.toStringCondensed(groupId);

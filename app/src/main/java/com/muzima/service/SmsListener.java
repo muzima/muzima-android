@@ -47,8 +47,8 @@ public class SmsListener extends BroadcastReceiver {
     }
 
     private SmsMessage getSmsMessageFromIntent(Intent intent) {
-        Bundle bundle             = intent.getExtras();
-        Object[] pdus             = (Object[])bundle.get("pdus");
+        Bundle bundle = intent.getExtras();
+        Object[] pdus = (Object[])bundle.get("pdus");
 
         if (pdus == null || pdus.length == 0)
             return null;
@@ -57,8 +57,8 @@ public class SmsListener extends BroadcastReceiver {
     }
 
     private String getSmsMessageBodyFromIntent(Intent intent) {
-        Bundle bundle             = intent.getExtras();
-        Object[] pdus             = (Object[])bundle.get("pdus");
+        Bundle bundle = intent.getExtras();
+        Object[] pdus = (Object[])bundle.get("pdus");
         StringBuilder bodyBuilder = new StringBuilder();
 
         if (pdus == null)
@@ -142,8 +142,8 @@ public class SmsListener extends BroadcastReceiver {
                 (intent.getAction().equals(SMS_RECEIVED_ACTION)) && isRelevant(context, intent))
         {
             Log.i("SmsListener", "Constructing SmsReceiveJob...");
-            Object[] pdus           = (Object[]) intent.getExtras().get("pdus");
-            int      subscriptionId = intent.getExtras().getInt("subscription", -1);
+            Object[] pdus = (Object[]) intent.getExtras().get("pdus");
+            int subscriptionId = intent.getExtras().getInt("subscription", -1);
 
             MuzimaApplication.getInstance(context).getJobManager().add(new SmsReceiveJob(context, pdus, subscriptionId));
 

@@ -21,7 +21,7 @@ public class NotificationState {
     private static final String TAG = NotificationState.class.getSimpleName();
 
     private final LinkedList<NotificationItem> notifications = new LinkedList<>();
-    private final LinkedHashSet<Long> threads       = new LinkedHashSet<>();
+    private final LinkedHashSet<Long> threads = new LinkedHashSet<>();
 
     private int notificationCount = 0;
 
@@ -102,7 +102,7 @@ public class NotificationState {
 
     public PendingIntent getMarkAsReadIntent(Context context, int notificationId) {
         long[] threadArray = new long[threads.size()];
-        int    index       = 0;
+        int index = 0;
 
         for (long thread : threads) {
             Log.i(TAG, "Added thread: " + thread);
@@ -165,7 +165,7 @@ public class NotificationState {
 
     public PendingIntent getQuickReplyIntent(Context context, SignalRecipient recipient) {
         if (threads.size() != 1) throw new AssertionError("We only support replies to single thread notifications! " + threads.size());
-        Intent     intent           = new Intent(context, ConversationPopupActivity.class);
+        Intent intent = new Intent(context, ConversationPopupActivity.class);
         intent.putExtra(ConversationActivity.ADDRESS_EXTRA, recipient.getAddress());
         intent.putExtra(ConversationActivity.THREAD_ID_EXTRA, (long)threads.toArray()[0]);
         intent.setData((Uri.parse("custom://"+System.currentTimeMillis())));
@@ -174,13 +174,13 @@ public class NotificationState {
     }
 
     public PendingIntent getDeleteIntent(Context context) {
-        int       index = 0;
-        long[]    ids   = new long[notifications.size()];
-        boolean[] mms   = new boolean[ids.length];
+        int index = 0;
+        long[] ids = new long[notifications.size()];
+        boolean[] mms = new boolean[ids.length];
 
         for (NotificationItem notificationItem : notifications) {
             ids[index] = notificationItem.getId();
-            mms[index++]   = notificationItem.isMms();
+            mms[index++] = notificationItem.isMms();
         }
 
         Intent intent = new Intent(context, DeleteNotificationReceiver.class);

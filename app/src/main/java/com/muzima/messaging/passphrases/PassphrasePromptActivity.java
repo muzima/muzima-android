@@ -47,12 +47,12 @@ public class PassphrasePromptActivity extends PassphraseActivity {
 
     private EditText passphraseText;
     private ImageButton showButton;
-    private ImageButton     hideButton;
+    private ImageButton hideButton;
     private AnimatingToggle visibilityToggle;
 
     private FingerprintManagerCompat fingerprintManager;
     private CancellationSignal fingerprintCancellationSignal;
-    private FingerprintListener      fingerprintListener;
+    private FingerprintListener fingerprintListener;
 
     private boolean authenticated;
     private boolean failure;
@@ -110,8 +110,8 @@ public class PassphrasePromptActivity extends PassphraseActivity {
 
     private void handlePassphrase() {
         try {
-            Editable text             = passphraseText.getText();
-            String passphrase         = (text == null ? "" : text.toString());
+            Editable text = passphraseText.getText();
+            String passphrase = (text == null ? "" : text.toString());
             MasterSecret masterSecret = MasterSecretUtil.getMasterSecret(this, passphrase);
 
             setMasterSecret(masterSecret);
@@ -150,16 +150,16 @@ public class PassphrasePromptActivity extends PassphraseActivity {
         ImageButton okButton = findViewById(R.id.ok_button);
         Toolbar toolbar  = findViewById(R.id.toolbar);
 
-        showButton                    = findViewById(R.id.passphrase_visibility);
-        hideButton                    = findViewById(R.id.passphrase_visibility_off);
-        visibilityToggle              = findViewById(R.id.button_toggle);
-        passphraseText                = findViewById(R.id.passphrase_edit);
-        passphraseAuthContainer       = findViewById(R.id.password_auth_container);
-        fingerprintPrompt             = findViewById(R.id.fingerprint_auth_container);
-        lockScreenButton              = findViewById(R.id.lock_screen_auth_container);
-        fingerprintManager            = FingerprintManagerCompat.from(this);
+        showButton = findViewById(R.id.passphrase_visibility);
+        hideButton = findViewById(R.id.passphrase_visibility_off);
+        visibilityToggle = findViewById(R.id.button_toggle);
+        passphraseText = findViewById(R.id.passphrase_edit);
+        passphraseAuthContainer = findViewById(R.id.password_auth_container);
+        fingerprintPrompt = findViewById(R.id.fingerprint_auth_container);
+        lockScreenButton = findViewById(R.id.lock_screen_auth_container);
+        fingerprintManager = FingerprintManagerCompat.from(this);
         fingerprintCancellationSignal = new CancellationSignal();
-        fingerprintListener           = new FingerprintListener();
+        fingerprintListener = new FingerprintListener();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");

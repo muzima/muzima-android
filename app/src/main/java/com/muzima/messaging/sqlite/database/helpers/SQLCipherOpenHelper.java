@@ -43,22 +43,22 @@ public class SQLCipherOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = SQLCipherOpenHelper.class.getSimpleName();
 
     private static final int RECIPIENT_CALL_RINGTONE_VERSION  = 2;
-    private static final int MIGRATE_PREKEYS_VERSION          = 3;
-    private static final int MIGRATE_SESSIONS_VERSION         = 4;
+    private static final int MIGRATE_PREKEYS_VERSION = 3;
+    private static final int MIGRATE_SESSIONS_VERSION = 4;
     private static final int NO_MORE_IMAGE_THUMBNAILS_VERSION = 5;
-    private static final int ATTACHMENT_DIMENSIONS            = 6;
-    private static final int QUOTED_REPLIES                   = 7;
-    private static final int SHARED_CONTACTS                  = 8;
-    private static final int FULL_TEXT_SEARCH                 = 9;
-    private static final int BAD_IMPORT_CLEANUP               = 10;
-    private static final int QUOTE_MISSING                    = 11;
-    private static final int NOTIFICATION_CHANNELS            = 12;
-    private static final int SECRET_SENDER                    = 13;
-    private static final int ATTACHMENT_CAPTIONS              = 14;
-    private static final int ATTACHMENT_CAPTIONS_FIX          = 15;
+    private static final int ATTACHMENT_DIMENSIONS = 6;
+    private static final int QUOTED_REPLIES = 7;
+    private static final int SHARED_CONTACTS = 8;
+    private static final int FULL_TEXT_SEARCH = 9;
+    private static final int BAD_IMPORT_CLEANUP = 10;
+    private static final int QUOTE_MISSING = 11;
+    private static final int NOTIFICATION_CHANNELS = 12;
+    private static final int SECRET_SENDER = 13;
+    private static final int ATTACHMENT_CAPTIONS = 14;
+    private static final int ATTACHMENT_CAPTIONS_FIX = 15;
 
-    private static final int    DATABASE_VERSION = 15;
-    private static final String DATABASE_NAME    = "signal.db";
+    private static final int DATABASE_VERSION = 15;
+    private static final String DATABASE_NAME = "signal.db";
 
     private final Context context;
     private final DatabaseSecret databaseSecret;
@@ -78,7 +78,7 @@ public class SQLCipherOpenHelper extends SQLiteOpenHelper {
             }
         });
 
-        this.context        = context.getApplicationContext();
+        this.context = context.getApplicationContext();
         this.databaseSecret = databaseSecret;
     }
 
@@ -110,22 +110,22 @@ public class SQLCipherOpenHelper extends SQLiteOpenHelper {
         executeStatements(db, GroupReceiptDatabase.CREATE_INDEXES);
 
         if (context.getDatabasePath(ClassicOpenHelper.NAME).exists()) {
-            ClassicOpenHelper                      legacyHelper = new ClassicOpenHelper(context);
-            android.database.sqlite.SQLiteDatabase legacyDb     = legacyHelper.getWritableDatabase();
+            ClassicOpenHelper legacyHelper = new ClassicOpenHelper(context);
+            android.database.sqlite.SQLiteDatabase legacyDb = legacyHelper.getWritableDatabase();
 
             SQLCipherMigrationHelper.migratePlaintext(context, legacyDb, db);
 
             MasterSecret masterSecret = KeyCachingService.getMasterSecret(context);
 
             if (masterSecret != null) SQLCipherMigrationHelper.migrateCiphertext(context, masterSecret, legacyDb, db, null);
-            else                      TextSecurePreferences.setNeedsSqlCipherMigration(context, true);
+            else  TextSecurePreferences.setNeedsSqlCipherMigration(context, true);
 
-//            if (!PreKeyMigrationHelper.migratePreKeys(context, db)) {
-//                MuzimaApplication.getInstance(context).getJobManager().add(new RefreshPreKeysJob(context));
-//            }
-//
-//            SessionStoreMigrationHelper.migrateSessions(context, db);
-//            PreKeyMigrationHelper.cleanUpPreKeys(context);
+            if (!PreKeyMigrationHelper.migratePreKeys(context, db)) {
+                MuzimaApplication.getInstance(context).getJobManager().add(new RefreshPreKeysJob(context));
+            }
+
+            SessionStoreMigrationHelper.migrateSessions(context, db);
+            PreKeyMigrationHelper.cleanUpPreKeys(context);
         }
     }
 
@@ -164,7 +164,7 @@ public class SQLCipherOpenHelper extends SQLiteOpenHelper {
 
                 try (Cursor cursor = db.query("part", new String[] {"_id", "ct", "thumbnail"}, "thumbnail IS NOT NULL", null, null, null, null)) {
                     while (cursor != null && cursor.moveToNext()) {
-                        long   id          = cursor.getLong(cursor.getColumnIndexOrThrow("_id"));
+                        long id = cursor.getLong(cursor.getColumnIndexOrThrow("_id"));
                         String contentType = cursor.getString(cursor.getColumnIndexOrThrow("ct"));
 
                         if (contentType != null && !contentType.startsWith("video")) {
@@ -227,7 +227,7 @@ public class SQLCipherOpenHelper extends SQLiteOpenHelper {
                     while (cursor != null && cursor.moveToNext()) {
                         db.delete("part", "_id = ? AND unique_id = ?", new String[] { String.valueOf(cursor.getLong(0)), String.valueOf(cursor.getLong(1)) });
 
-                        String data      = cursor.getString(2);
+                        String data = cursor.getString(2);
                         String thumbnail = cursor.getString(3);
 
                         if (!TextUtils.isEmpty(data)) {
@@ -253,14 +253,14 @@ public class SQLCipherOpenHelper extends SQLiteOpenHelper {
 
                 try (Cursor cursor = db.rawQuery("SELECT recipient_ids, system_display_name, signal_profile_name, notification, vibrate FROM recipient_preferences WHERE notification NOT NULL OR vibrate != 0", null)) {
                     while (cursor != null && cursor.moveToNext()) {
-                        String  addressString   = cursor.getString(cursor.getColumnIndexOrThrow("recipient_ids"));
-                        SignalAddress address         = SignalAddress.fromExternal(context, addressString);
-                        String  systemName      = cursor.getString(cursor.getColumnIndexOrThrow("system_display_name"));
-                        String  profileName     = cursor.getString(cursor.getColumnIndexOrThrow("signal_profile_name"));
-                        String  messageSound    = cursor.getString(cursor.getColumnIndexOrThrow("notification"));
+                        String addressString = cursor.getString(cursor.getColumnIndexOrThrow("recipient_ids"));
+                        SignalAddress address = SignalAddress.fromExternal(context, addressString);
+                        String systemName = cursor.getString(cursor.getColumnIndexOrThrow("system_display_name"));
+                        String profileName = cursor.getString(cursor.getColumnIndexOrThrow("signal_profile_name"));
+                        String messageSound = cursor.getString(cursor.getColumnIndexOrThrow("notification"));
                         Uri messageSoundUri = messageSound != null ? Uri.parse(messageSound) : null;
-                        int     vibrateState    = cursor.getInt(cursor.getColumnIndexOrThrow("vibrate"));
-                        String  displayName     = NotificationChannels.getChannelDisplayNameFor(context, systemName, profileName, address);
+                        int vibrateState = cursor.getInt(cursor.getColumnIndexOrThrow("vibrate"));
+                        String displayName = NotificationChannels.getChannelDisplayNameFor(context, systemName, profileName, address);
                         boolean vibrateEnabled  = vibrateState == 0 ? TextSecurePreferences.isNotificationVibrateEnabled(context) : vibrateState == 1;
 
                         if (address.isGroup()) {

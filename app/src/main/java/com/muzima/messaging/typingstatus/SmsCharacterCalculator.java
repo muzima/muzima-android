@@ -12,20 +12,20 @@ public class SmsCharacterCalculator extends CharacterCalculator {
     @Override
     public CharacterState calculateCharacters(String messageBody) {
         int[] length;
-        int   messagesSpent;
-        int   charactersSpent;
-        int   charactersRemaining;
+        int messagesSpent;
+        int charactersSpent;
+        int charactersRemaining;
 
         try {
-            length              = SmsMessage.calculateLength(messageBody, false);
-            messagesSpent       = length[0];
-            charactersSpent     = length[1];
+            length = SmsMessage.calculateLength(messageBody, false);
+            messagesSpent = length[0];
+            charactersSpent = length[1];
             charactersRemaining = length[2];
         } catch (NullPointerException e) {
             Log.w(TAG, e);
-            messagesSpent       = 1;
+            messagesSpent = 1;
 
-            charactersSpent     = messageBody.length();
+            charactersSpent = messageBody.length();
             charactersRemaining = 1000;
         }
 

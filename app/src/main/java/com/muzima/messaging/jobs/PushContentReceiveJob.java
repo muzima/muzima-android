@@ -18,8 +18,8 @@ import androidx.work.WorkerParameters;
 
 public class PushContentReceiveJob extends PushReceivedJob {
 
-    private static final long   serialVersionUID = 5685475456901715638L;
-    private static final String TAG              = PushContentReceiveJob.class.getSimpleName();
+    private static final long serialVersionUID = 5685475456901715638L;
+    private static final String TAG = PushContentReceiveJob.class.getSimpleName();
 
     private static final String KEY_DATA = "data";
 
@@ -53,8 +53,8 @@ public class PushContentReceiveJob extends PushReceivedJob {
     @Override
     public void onRun() {
         try {
-            String                sessionKey = TextSecurePreferences.getSignalingKey(context);
-            SignalServiceEnvelope envelope   = new SignalServiceEnvelope(data, sessionKey);
+            String sessionKey = TextSecurePreferences.getSignalingKey(context);
+            SignalServiceEnvelope envelope = new SignalServiceEnvelope(data, sessionKey);
 
             processEnvelope(envelope);
         } catch (IOException | InvalidVersionException e) {

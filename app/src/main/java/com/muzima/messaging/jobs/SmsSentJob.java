@@ -21,18 +21,18 @@ import androidx.work.WorkerParameters;
 
 public class SmsSentJob extends ContextJob {
 
-    private static final long   serialVersionUID = -2624694558755317560L;
-    private static final String TAG              = SmsSentJob.class.getSimpleName();
+    private static final long serialVersionUID = -2624694558755317560L;
+    private static final String TAG = SmsSentJob.class.getSimpleName();
 
-    private static final String KEY_MESSAGE_ID  = "message_id";
-    private static final String KEY_ACTION      = "action";
-    private static final String KEY_RESULT      = "result";
+    private static final String KEY_MESSAGE_ID = "message_id";
+    private static final String KEY_ACTION = "action";
+    private static final String KEY_RESULT = "result";
     private static final String KEY_RUN_ATTEMPT = "run_attempt";
 
-    private long   messageId;
+    private long messageId;
     private String action;
-    private int    result;
-    private int    runAttempt;
+    private int result;
+    private int runAttempt;
 
     public SmsSentJob(@NonNull Context context, @NonNull WorkerParameters workerParameters) {
         super(context, workerParameters);
@@ -42,17 +42,17 @@ public class SmsSentJob extends ContextJob {
         super(context, JobParameters.newBuilder()
                 .create());
 
-        this.messageId  = messageId;
-        this.action     = action;
-        this.result     = result;
+        this.messageId = messageId;
+        this.action = action;
+        this.result = result;
         this.runAttempt = runAttempt;
     }
 
     @Override
     protected void initialize(@NonNull SafeData data) {
-        messageId  = data.getLong(KEY_MESSAGE_ID);
-        action     = data.getString(KEY_ACTION);
-        result     = data.getInt(KEY_RESULT);
+        messageId = data.getLong(KEY_MESSAGE_ID);
+        action = data.getString(KEY_ACTION);
+        result = data.getInt(KEY_RESULT);
         runAttempt = data.getInt(KEY_RUN_ATTEMPT);
     }
 
@@ -97,7 +97,7 @@ public class SmsSentJob extends ContextJob {
     private void handleSentResult(long messageId, int result) {
         try {
             SmsDatabase database = DatabaseFactory.getSmsDatabase(context);
-            SmsMessageRecord record   = database.getMessage(messageId);
+            SmsMessageRecord record = database.getMessage(messageId);
 
             switch (result) {
                 case Activity.RESULT_OK:

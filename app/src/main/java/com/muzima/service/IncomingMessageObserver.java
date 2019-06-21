@@ -37,10 +37,10 @@ public class IncomingMessageObserver implements InjectableType, RequirementListe
 
     private static final String TAG = IncomingMessageObserver.class.getSimpleName();
 
-    public  static final  int FOREGROUND_ID            = 313399;
+    public  static final  int FOREGROUND_ID = 313399;
     private static final long REQUEST_TIMEOUT_MINUTES  = 1;
 
-    private static SignalServiceMessagePipe pipe             = null;
+    private static SignalServiceMessagePipe pipe = null;
     private static SignalServiceMessagePipe unidentifiedPipe = null;
 
     private final Context context;
@@ -56,7 +56,7 @@ public class IncomingMessageObserver implements InjectableType, RequirementListe
     public IncomingMessageObserver(@NonNull Context context) {
         MuzimaApplication.getInstance(context).injectDependencies(this);
 
-        this.context            = context;
+        this.context = context;
         this.networkRequirement = new NetworkRequirement(context);
 
         new NetworkRequirementProvider(context).setListener(this);
@@ -149,10 +149,10 @@ public class IncomingMessageObserver implements InjectableType, RequirementListe
                 waitForConnectionNecessary();
 
                 Log.i(TAG, "Making websocket connection....");
-                pipe             = receiver.createMessagePipe();
+                pipe = receiver.createMessagePipe();
                 unidentifiedPipe = receiver.createUnidentifiedMessagePipe();
 
-                SignalServiceMessagePipe localPipe             = pipe;
+                SignalServiceMessagePipe localPipe = pipe;
                 SignalServiceMessagePipe unidentifiedLocalPipe = unidentifiedPipe;
 
                 try {

@@ -78,25 +78,25 @@ public class MediaDatabase extends Database {
     public static class MediaRecord {
 
         private final DatabaseAttachment attachment;
-        private final SignalAddress            address;
-        private final long               date;
-        private final boolean            outgoing;
+        private final SignalAddress address;
+        private final long  date;
+        private final boolean outgoing;
 
         // TODO: Make private again
         public MediaRecord(DatabaseAttachment attachment, @Nullable SignalAddress address, long date, boolean outgoing) {
 //    private MediaRecord(DatabaseAttachment attachment, @Nullable SignalAddress address, long date, boolean outgoing) {
             this.attachment = attachment;
-            this.address    = address;
-            this.date       = date;
-            this.outgoing   = outgoing;
+            this.address = address;
+            this.date = date;
+            this.outgoing = outgoing;
         }
 
         public static MediaRecord from(@NonNull Context context, @NonNull Cursor cursor) {
-            AttachmentDatabase       attachmentDatabase = DatabaseFactory.getAttachmentDatabase(context);
-            List<DatabaseAttachment> attachments        = attachmentDatabase.getAttachment(cursor);
-            String                   serializedAddress  = cursor.getString(cursor.getColumnIndexOrThrow(MmsDatabase.ADDRESS));
-            boolean                  outgoing           = MessagingDatabase.Types.isOutgoingMessageType(cursor.getLong(cursor.getColumnIndexOrThrow(MmsDatabase.MESSAGE_BOX)));
-            SignalAddress                  address            = null;
+            AttachmentDatabase attachmentDatabase = DatabaseFactory.getAttachmentDatabase(context);
+            List<DatabaseAttachment> attachments = attachmentDatabase.getAttachment(cursor);
+            String serializedAddress = cursor.getString(cursor.getColumnIndexOrThrow(MmsDatabase.ADDRESS));
+            boolean outgoing = MessagingDatabase.Types.isOutgoingMessageType(cursor.getLong(cursor.getColumnIndexOrThrow(MmsDatabase.MESSAGE_BOX)));
+            SignalAddress address = null;
 
             if (serializedAddress != null) {
                 address = SignalAddress.fromSerialized(serializedAddress);

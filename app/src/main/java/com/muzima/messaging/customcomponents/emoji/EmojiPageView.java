@@ -14,13 +14,13 @@ import com.muzima.R;
 public class EmojiPageView extends FrameLayout implements EmojiPageViewGridAdapter.VariationSelectorListener {
     private static final String TAG = EmojiPageView.class.getSimpleName();
 
-    private EmojiPageModel                   model;
-    private EmojiPageViewGridAdapter         adapter;
+    private EmojiPageModel model;
+    private EmojiPageViewGridAdapter adapter;
     private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
     private RecyclerView.OnItemTouchListener scrollDisabler;
     private EmojiPageViewGridAdapter.VariationSelectorListener variationSelectorListener;
-    private EmojiVariationSelectorPopup      popup;
+    private EmojiVariationSelectorPopup popup;
 
     public EmojiPageView(@NonNull Context context,
                          @NonNull EmojiSelectionListener emojiSelectionListener,
@@ -31,11 +31,11 @@ public class EmojiPageView extends FrameLayout implements EmojiPageViewGridAdapt
 
         this.variationSelectorListener = variationSelectorListener;
 
-        recyclerView   = view.findViewById(R.id.emoji);
-        layoutManager  = new GridLayoutManager(context, 8);
+        recyclerView = view.findViewById(R.id.emoji);
+        layoutManager = new GridLayoutManager(context, 8);
         scrollDisabler = new ScrollDisabler();
-        popup          = new EmojiVariationSelectorPopup(context, emojiSelectionListener);
-        adapter        = new EmojiPageViewGridAdapter(EmojiProvider.getInstance(context),
+        popup = new EmojiVariationSelectorPopup(context, emojiSelectionListener);
+        adapter = new EmojiPageViewGridAdapter(EmojiProvider.getInstance(context),
                 popup,
                 emojiSelectionListener,
                 this);

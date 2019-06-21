@@ -50,10 +50,10 @@ public class ContactAccessor {
         }
 
         public boolean isSystemContact(Context context, String number) {
-            Uri uri        = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+            Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
             String[] projection = new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup.LOOKUP_KEY,
                     ContactsContract.PhoneLookup._ID, ContactsContract.PhoneLookup.NUMBER};
-            Cursor   cursor     = context.getContentResolver().query(uri, projection, null, null, null);
+            Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
 
             try {
                 if (cursor != null && cursor.moveToFirst()) {
@@ -68,13 +68,13 @@ public class ContactAccessor {
 
         public Collection<ContactData> getContactsWithPush(Context context) {
             final ContentResolver resolver = context.getContentResolver();
-            final String[] inProjection    = new String[]{ContactsContract.PhoneLookup._ID, ContactsContract.PhoneLookup.DISPLAY_NAME};
+            final String[] inProjection = new String[]{ContactsContract.PhoneLookup._ID, ContactsContract.PhoneLookup.DISPLAY_NAME};
 
             final List<SignalAddress> registeredAddresses = DatabaseFactory.getRecipientDatabase(context).getRegistered();
             final Collection<ContactData> lookupData          = new ArrayList<>(registeredAddresses.size());
 
             for (SignalAddress registeredAddress : registeredAddresses) {
-                Uri    uri          = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(registeredAddress.serialize()));
+                Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(registeredAddress.serialize()));
                 Cursor lookupCursor = resolver.query(uri, inProjection, null, null, null);
 
                 try {
@@ -116,7 +116,7 @@ public class ContactAccessor {
 
         private ContactData getContactData(Context context, String displayName, long id) {
             ContactData contactData = new ContactData(id, displayName);
-            Cursor numberCursor     = null;
+            Cursor numberCursor = null;
 
             try {
                 numberCursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
@@ -124,9 +124,9 @@ public class ContactAccessor {
                         new String[] {contactData.id + ""}, null);
 
                 while (numberCursor != null && numberCursor.moveToNext()) {
-                    int type         = numberCursor.getInt(numberCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.TYPE));
-                    String label     = numberCursor.getString(numberCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.LABEL));
-                    String number    = numberCursor.getString(numberCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    int type = numberCursor.getInt(numberCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.TYPE));
+                    String label = numberCursor.getString(numberCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.LABEL));
+                    String number = numberCursor.getString(numberCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
                     String typeLabel = ContactsContract.CommonDataKinds.Phone.getTypeLabel(context.getResources(), type, label).toString();
 
                     contactData.numbers.add(new NumberData(typeLabel, number));
@@ -141,7 +141,7 @@ public class ContactAccessor {
 
         public List<String> getNumbersForThreadSearchFilter(Context context, String constraint) {
             LinkedList<String> numberList = new LinkedList<>();
-            Cursor cursor                 = null;
+            Cursor cursor = null;
 
             try {
                 cursor = context.getContentResolver().query(Uri.withAppendedPath(ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI,
@@ -200,7 +200,7 @@ public static class NumberData implements Parcelable {
 
     public NumberData(Parcel in) {
         number = in.readString();
-        type   = in.readString();
+        type = in.readString();
     }
 
     public int describeContents() {
@@ -230,14 +230,14 @@ public static class ContactData implements Parcelable {
     public final List<NumberData> numbers;
 
     public ContactData(long id, String name) {
-        this.id      = id;
-        this.name    = name;
+        this.id = id;
+        this.name = name;
         this.numbers = new LinkedList<NumberData>();
     }
 
     public ContactData(Parcel in) {
-        id      = in.readLong();
-        name    = in.readString();
+        id = in.readLong();
+        name = in.readString();
         numbers = new LinkedList<NumberData>();
         in.readTypedList(numbers, NumberData.CREATOR);
     }

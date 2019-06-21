@@ -44,8 +44,8 @@ public class PartDataSource implements DataSource {
         this.uri = dataSpec.uri;
 
         AttachmentDatabase attachmentDatabase = DatabaseFactory.getAttachmentDatabase(context);
-        PartUriParser partUri            = new PartUriParser(uri);
-        Attachment attachment         = attachmentDatabase.getAttachment(partUri.getPartId());
+        PartUriParser partUri = new PartUriParser(uri);
+        Attachment attachment = attachmentDatabase.getAttachment(partUri.getPartId());
 
         if (attachment == null) throw new IOException("Attachment not found");
 

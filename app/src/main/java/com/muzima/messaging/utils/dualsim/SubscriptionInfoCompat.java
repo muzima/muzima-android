@@ -11,9 +11,9 @@ public class SubscriptionInfoCompat {
 
     public SubscriptionInfoCompat(int subscriptionId, @Nullable CharSequence displayName, int mcc, int mnc) {
         this.subscriptionId = subscriptionId;
-        this.displayName    = displayName;
-        this.mcc            = mcc;
-        this.mnc            = mnc;
+        this.displayName = displayName;
+        this.mcc = mcc;
+        this.mnc = mnc;
     }
 
     public @NonNull

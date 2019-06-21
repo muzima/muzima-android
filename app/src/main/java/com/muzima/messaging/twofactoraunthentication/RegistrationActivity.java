@@ -42,13 +42,13 @@ import com.muzima.messaging.utils.Util;
 public class RegistrationActivity extends AppCompatActivity {
 
 
-    private static final int    PICK_COUNTRY              = 1;
-    private static final int    SCENE_TRANSITION_DURATION = 250;
-    private static final int    DEBUG_TAP_TARGET          = 8;
-    private static final int    DEBUG_TAP_ANNOUNCE        = 4;
-    public static final  String CHALLENGE_EVENT           = "com.muzima.CHALLENGE_EVENT";
-    public static final  String CHALLENGE_EXTRA           = "CAAChallenge";
-    public static final  String RE_REGISTRATION_EXTRA     = "re_registration";
+    private static final int PICK_COUNTRY = 1;
+    private static final int SCENE_TRANSITION_DURATION = 250;
+    private static final int DEBUG_TAP_TARGET = 8;
+    private static final int DEBUG_TAP_ANNOUNCE = 4;
+    public static final  String CHALLENGE_EVENT = "com.muzima.CHALLENGE_EVENT";
+    public static final  String CHALLENGE_EXTRA = "CAAChallenge";
+    public static final  String RE_REGISTRATION_EXTRA = "re_registration";
 
     boolean isUserSmsVerified = false;
     SignalServiceAccountManager accountManager;

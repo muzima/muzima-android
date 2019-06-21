@@ -25,17 +25,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class PreKeyMigrationHelper {
-    private static final String PREKEY_DIRECTORY        = "prekeys";
+    private static final String PREKEY_DIRECTORY = "prekeys";
     private static final String SIGNED_PREKEY_DIRECTORY = "signed_prekeys";
 
-    private static final int    PLAINTEXT_VERSION      = 2;
-    private static final int    CURRENT_VERSION_MARKER = 2;
+    private static final int PLAINTEXT_VERSION = 2;
+    private static final int CURRENT_VERSION_MARKER = 2;
 
     private static final String TAG = PreKeyMigrationHelper.class.getSimpleName();
 
     public static boolean migratePreKeys(Context context, SQLiteDatabase database) {
         File[]  preKeyFiles = getPreKeyDirectory(context).listFiles();
-        boolean clean       = true;
+        boolean clean = true;
 
         if (preKeyFiles != null) {
             for (File preKeyFile : preKeyFiles) {
@@ -82,12 +82,12 @@ public class PreKeyMigrationHelper {
         }
 
         File oneTimePreKeyIndex = new File(getPreKeyDirectory(context), PreKeyIndex.FILE_NAME);
-        File signedPreKeyIndex  = new File(getSignedPreKeyDirectory(context), SignedPreKeyIndex.FILE_NAME);
+        File signedPreKeyIndex = new File(getSignedPreKeyDirectory(context), SignedPreKeyIndex.FILE_NAME);
 
         if (oneTimePreKeyIndex.exists()) {
             try {
                 InputStreamReader reader = new InputStreamReader(new FileInputStream(oneTimePreKeyIndex));
-                PreKeyIndex        index = JsonUtils.fromJson(reader, PreKeyIndex.class);
+                PreKeyIndex index = JsonUtils.fromJson(reader, PreKeyIndex.class);
                 reader.close();
 
                 Log.i(TAG, "Setting next prekey id: " + index.nextPreKeyId);
@@ -116,8 +116,8 @@ public class PreKeyMigrationHelper {
     }
 
     static void cleanUpPreKeys(@NonNull Context context) {
-        File   preKeyDirectory = getPreKeyDirectory(context);
-        File[] preKeyFiles     = preKeyDirectory.listFiles();
+        File preKeyDirectory = getPreKeyDirectory(context);
+        File[] preKeyFiles = preKeyDirectory.listFiles();
 
         if (preKeyFiles != null) {
             for (File preKeyFile : preKeyFiles) {
@@ -129,8 +129,8 @@ public class PreKeyMigrationHelper {
             preKeyDirectory.delete();
         }
 
-        File   signedPreKeyDirectory = getSignedPreKeyDirectory(context);
-        File[] signedPreKeyFiles     = signedPreKeyDirectory.listFiles();
+        File signedPreKeyDirectory = getSignedPreKeyDirectory(context);
+        File[] signedPreKeyFiles = signedPreKeyDirectory.listFiles();
 
         if (signedPreKeyFiles != null) {
             for (File signedPreKeyFile : signedPreKeyFiles) {
@@ -146,8 +146,8 @@ public class PreKeyMigrationHelper {
     private static byte[] loadSerializedRecord(File recordFile)
             throws IOException, InvalidMessageException
     {
-        FileInputStream fin           = new FileInputStream(recordFile);
-        int             recordVersion = readInteger(fin);
+        FileInputStream fin = new FileInputStream(recordFile);
+        int recordVersion = readInteger(fin);
 
         if (recordVersion > CURRENT_VERSION_MARKER) {
             throw new IOException("Invalid version: " + recordVersion);
@@ -184,7 +184,7 @@ public class PreKeyMigrationHelper {
     }
 
     private static byte[] readBlob(FileInputStream in) throws IOException {
-        int length       = readInteger(in);
+        int length = readInteger(in);
         byte[] blobBytes = new byte[length];
 
         in.read(blobBytes, 0, blobBytes.length);

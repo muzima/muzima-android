@@ -13,8 +13,7 @@ import com.annimon.stream.function.Consumer;
 public class PermissionRequest {
     private final Map<String, Boolean> PRE_REQUEST_MAPPING = new HashMap<>();
 
-    private final @Nullable
-    Runnable allGrantedListener;
+    private final @Nullable Runnable allGrantedListener;
 
     private final @Nullable Runnable anyDeniedListener;
     private final @Nullable Runnable anyPermanentlyDeniedListener;
@@ -32,20 +31,20 @@ public class PermissionRequest {
                        @Nullable Consumer<List<String>> someDeniedListener,
                        @Nullable Consumer<List<String>> somePermanentlyDeniedListener)
     {
-        this.allGrantedListener            = allGrantedListener;
+        this.allGrantedListener = allGrantedListener;
 
-        this.anyDeniedListener             = anyDeniedListener;
-        this.anyPermanentlyDeniedListener  = anyPermanentlyDeniedListener;
-        this.anyResultListener             = anyResultListener;
+        this.anyDeniedListener = anyDeniedListener;
+        this.anyPermanentlyDeniedListener = anyPermanentlyDeniedListener;
+        this.anyResultListener = anyResultListener;
 
-        this.someGrantedListener           = someGrantedListener;
-        this.someDeniedListener            = someDeniedListener;
+        this.someGrantedListener = someGrantedListener;
+        this.someDeniedListener = someDeniedListener;
         this.somePermanentlyDeniedListener = somePermanentlyDeniedListener;
     }
 
     void onResult(String[] permissions, int[] grantResults, boolean[] shouldShowRationaleDialog) {
-        List<String> granted           = new ArrayList<>(permissions.length);
-        List<String> denied            = new ArrayList<>(permissions.length);
+        List<String> granted = new ArrayList<>(permissions.length);
+        List<String> denied = new ArrayList<>(permissions.length);
         List<String> permanentlyDenied = new ArrayList<>(permissions.length);
 
         for (int i = 0; i < permissions.length; i++) {

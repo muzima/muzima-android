@@ -40,7 +40,7 @@ public class ContactIdentityManagerGingerbread extends ContactIdentityManager {
         if (selfIdentityContactId == -1)
             return null;
 
-        Cursor cursor                 = null;
+        Cursor cursor = null;
         ArrayList<Long> rawContactIds = new ArrayList<Long>();
 
         try {

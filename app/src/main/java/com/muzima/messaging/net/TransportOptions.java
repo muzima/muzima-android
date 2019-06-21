@@ -26,15 +26,15 @@ public class TransportOptions {
 
     private final List<OnTransportChangedListener> listeners = new LinkedList<>();
     private final Context context;
-    private final List<TransportOption>            enabledTransports;
+    private final List<TransportOption> enabledTransports;
 
-    private Type                      defaultTransportType  = Type.SMS;
+    private Type defaultTransportType  = Type.SMS;
     private Optional<Integer> defaultSubscriptionId = Optional.absent();
-    private Optional<TransportOption> selectedOption        = Optional.absent();
+    private Optional<TransportOption> selectedOption = Optional.absent();
 
     public TransportOptions(Context context, boolean media) {
-        this.context               = context;
-        this.enabledTransports     = initializeAvailableTransports(media);
+        this.context = context;
+        this.enabledTransports = initializeAvailableTransports(media);
         this.defaultSubscriptionId = new SubscriptionManagerCompat(context).getPreferredSubscriptionId();
     }
 
@@ -133,7 +133,6 @@ public class TransportOptions {
                     context.getString(R.string.general_unsecure_sms),
                     new SmsCharacterCalculator()));
         }
-        Log.e("TransportOptions ","TRACE [ initializeAvailableTransports");
 
         results.add(new TransportOption(Type.TEXTSECURE, R.drawable.ic_send_push_white_24dp,
                 context.getResources().getColor(R.color.primary_blue),
@@ -148,8 +147,8 @@ public class TransportOptions {
                                                                           @NonNull String composeHint,
                                                                           @NonNull CharacterCalculator characterCalculator)
     {
-        List<TransportOption>        results             = new LinkedList<>();
-        SubscriptionManagerCompat    subscriptionManager = new SubscriptionManagerCompat(context);
+        List<TransportOption> results = new LinkedList<>();
+        SubscriptionManagerCompat subscriptionManager = new SubscriptionManagerCompat(context);
         List<SubscriptionInfoCompat> subscriptions;
 
         if (Permissions.hasAll(context, Manifest.permission.READ_PHONE_STATE)) {
