@@ -39,7 +39,7 @@ public class FileUtils {
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) deleteDirectory(file);
-                else                    file.delete();
+                else file.delete();
             }
         }
     }

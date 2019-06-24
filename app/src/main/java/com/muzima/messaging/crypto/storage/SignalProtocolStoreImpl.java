@@ -25,10 +25,10 @@ public class SignalProtocolStoreImpl implements SignalProtocolStore {
     private final SessionStore sessionStore;
 
     public SignalProtocolStoreImpl(Context context) {
-        this.preKeyStore       = new TextSecurePreKeyStore(context);
+        this.preKeyStore = new TextSecurePreKeyStore(context);
         this.signedPreKeyStore = new TextSecurePreKeyStore(context);
-        this.identityKeyStore  = new TextSecureIdentityKeyStore(context);
-        this.sessionStore      = new TextSecureSessionStore(context);
+        this.identityKeyStore = new TextSecureIdentityKeyStore(context);
+        this.sessionStore = new TextSecureSessionStore(context);
     }
 
     @Override

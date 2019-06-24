@@ -24,7 +24,7 @@ public class ExpiringMessageManager {
     private final Context context;
 
     public ExpiringMessageManager(Context context) {
-        this.context     = context.getApplicationContext();
+        this.context = context.getApplicationContext();
         this.smsDatabase = DatabaseFactory.getSmsDatabase(context);
         this.mmsDatabase = DatabaseFactory.getMmsDatabase(context);
 
@@ -86,7 +86,7 @@ public class ExpiringMessageManager {
                         while (expiringMessageReferences.isEmpty()) expiringMessageReferences.wait();
 
                         ExpiringMessageReference nextReference = expiringMessageReferences.first();
-                        long                     waitTime      = nextReference.expiresAtMillis - System.currentTimeMillis();
+                        long waitTime = nextReference.expiresAtMillis - System.currentTimeMillis();
 
                         if (waitTime > 0) {
                             ExpirationListener.setAlarm(context, waitTime);
@@ -103,16 +103,16 @@ public class ExpiringMessageManager {
 
                 if (expiredMessage != null) {
                     if (expiredMessage.mms) mmsDatabase.delete(expiredMessage.id);
-                    else                    smsDatabase.deleteMessage(expiredMessage.id);
+                    else smsDatabase.deleteMessage(expiredMessage.id);
                 }
             }
         }
     }
 
     private static class ExpiringMessageReference {
-        private final long    id;
+        private final long id;
         private final boolean mms;
-        private final long    expiresAtMillis;
+        private final long expiresAtMillis;
 
         private ExpiringMessageReference(long id, boolean mms, long expiresAtMillis) {
             this.id = id;
@@ -138,13 +138,13 @@ public class ExpiringMessageManager {
     private static class ExpiringMessageComparator implements Comparator<ExpiringMessageReference> {
         @Override
         public int compare(ExpiringMessageReference lhs, ExpiringMessageReference rhs) {
-            if      (lhs.expiresAtMillis < rhs.expiresAtMillis) return -1;
+            if (lhs.expiresAtMillis < rhs.expiresAtMillis) return -1;
             else if (lhs.expiresAtMillis > rhs.expiresAtMillis) return 1;
-            else if (lhs.id < rhs.id)                           return -1;
-            else if (lhs.id > rhs.id)                           return 1;
-            else if (!lhs.mms && rhs.mms)                       return -1;
-            else if (lhs.mms && !rhs.mms)                       return 1;
-            else                                                return 0;
+            else if (lhs.id < rhs.id) return -1;
+            else if (lhs.id > rhs.id) return 1;
+            else if (!lhs.mms && rhs.mms) return -1;
+            else if (lhs.mms && !rhs.mms) return 1;
+            else return 0;
         }
     }
 

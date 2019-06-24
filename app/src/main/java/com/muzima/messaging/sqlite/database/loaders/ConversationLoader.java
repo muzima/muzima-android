@@ -9,19 +9,19 @@ import com.muzima.messaging.tasks.AbstractCursorLoader;
 import org.whispersystems.libsignal.util.Pair;
 
 public class ConversationLoader extends AbstractCursorLoader {
-    private final long    threadId;
-    private       int     offset;
-    private       int     limit;
-    private       long    lastSeen;
-    private       boolean hasSent;
+    private final long threadId;
+    private int offset;
+    private int limit;
+    private long lastSeen;
+    private boolean hasSent;
 
     public ConversationLoader(Context context, long threadId, int offset, int limit, long lastSeen) {
         super(context);
         this.threadId = threadId;
-        this.offset   = offset;
-        this.limit    = limit;
+        this.offset = offset;
+        this.limit = limit;
         this.lastSeen = lastSeen;
-        this.hasSent  = true;
+        this.hasSent = true;
     }
 
     public boolean hasLimit() {

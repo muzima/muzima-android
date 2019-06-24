@@ -22,7 +22,7 @@ public class ContactIdentityManagerGingerbread extends ContactIdentityManager {
     public Uri getSelfIdentityUri() {
         String contactUriString = TextSecurePreferences.getIdentityContactUri(context);
 
-        if      (hasLocalNumber())         return getContactUriForNumber(getLocalNumber());
+        if (hasLocalNumber()) return getContactUriForNumber(getLocalNumber());
         else if (contactUriString != null) return Uri.parse(contactUriString);
 
         return null;
@@ -72,7 +72,7 @@ public class ContactIdentityManagerGingerbread extends ContactIdentityManager {
                 ContactsContract.PhoneLookup._ID,
         };
 
-        Uri uri       = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
         Cursor cursor = null;
 
         try {

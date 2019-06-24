@@ -76,7 +76,7 @@ public class MultiDeviceGroupUpdateJob extends ContextJob implements InjectableT
         }
 
         File contactDataFile = createTempFile("multidevice-contact-update");
-        GroupDatabase.Reader reader          = null;
+        GroupDatabase.Reader reader = null;
 
         GroupDatabase.GroupRecord record;
 
@@ -93,7 +93,7 @@ public class MultiDeviceGroupUpdateJob extends ContextJob implements InjectableT
                         members.add(member.serialize());
                     }
 
-                    SignalRecipient recipient       = SignalRecipient.from(context, SignalAddress.fromSerialized(GroupUtil.getEncodedId(record.getId(), record.isMms())), false);
+                    SignalRecipient recipient = SignalRecipient.from(context, SignalAddress.fromSerialized(GroupUtil.getEncodedId(record.getId(), record.isMms())), false);
                     Optional<Integer> expirationTimer = recipient.getExpireMessages() > 0 ? Optional.of(recipient.getExpireMessages()) : Optional.absent();
 
                     out.write(new DeviceGroup(record.getId(), Optional.fromNullable(record.getTitle()),
@@ -114,7 +114,7 @@ public class MultiDeviceGroupUpdateJob extends ContextJob implements InjectableT
 
         } finally {
             if (contactDataFile != null) contactDataFile.delete();
-            if (reader != null)          reader.close();
+            if (reader != null) reader.close();
         }
 
     }

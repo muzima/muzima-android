@@ -96,7 +96,7 @@ public class MarkReadReceiver extends BroadcastReceiver {
             ExpiringMessageManager expirationManager = MuzimaApplication.getInstance(context).getExpiringMessageManager();
 
             if (expirationInfo.isMms()) DatabaseFactory.getMmsDatabase(context).markExpireStarted(expirationInfo.getId());
-            else                        DatabaseFactory.getSmsDatabase(context).markExpireStarted(expirationInfo.getId());
+            else DatabaseFactory.getSmsDatabase(context).markExpireStarted(expirationInfo.getId());
 
             expirationManager.scheduleDeletion(expirationInfo.getId(), expirationInfo.isMms(), expirationInfo.getExpiresIn());
         }

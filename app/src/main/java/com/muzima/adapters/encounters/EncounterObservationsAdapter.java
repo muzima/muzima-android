@@ -123,7 +123,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
 
              try {
                  observations= new ArrayList<>();
-                 Encounters encounterWithObservations  = observationController.getObservationsByEncounterUuid(encounter.getUuid());
+                 Encounters encounterWithObservations = observationController.getObservationsByEncounterUuid(encounter.getUuid());
 
                  for(EncounterWithObservations encounterWithObs:encounterWithObservations){
                      observations.addAll(encounterWithObs.getObservations());

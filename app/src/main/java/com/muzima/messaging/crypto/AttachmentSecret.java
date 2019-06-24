@@ -36,8 +36,8 @@ public class AttachmentSecret {
     public AttachmentSecret(byte[] classicCipherKey, byte[] classicMacKey, byte[] modernKey)
     {
         this.classicCipherKey = classicCipherKey;
-        this.classicMacKey    = classicMacKey;
-        this.modernKey        = modernKey;
+        this.classicMacKey = classicMacKey;
+        this.modernKey = modernKey;
     }
 
     @SuppressWarnings("unused")

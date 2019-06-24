@@ -1,11 +1,11 @@
 package com.muzima.messaging.mms;
 
 public class MmsSendResult {
-    private final byte[]  messageId;
-    private final int     responseStatus;
+    private final byte[] messageId;
+    private final int responseStatus;
 
     public MmsSendResult(byte[] messageId, int responseStatus) {
-        this.messageId      = messageId;
+        this.messageId = messageId;
         this.responseStatus = responseStatus;
     }
 

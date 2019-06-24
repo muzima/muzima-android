@@ -61,7 +61,7 @@ public class InviteActivity extends PassphraseRequiredActionBarActivity implemen
     }
 
     private void initializeResources() {
-        slideInAnimation  = loadAnimation(R.anim.slide_from_bottom);
+        slideInAnimation = loadAnimation(R.anim.slide_from_bottom);
         slideOutAnimation = loadAnimation(R.anim.slide_to_bottom);
 
         View shareButton = ViewUtil.findById(this, R.id.share_button);

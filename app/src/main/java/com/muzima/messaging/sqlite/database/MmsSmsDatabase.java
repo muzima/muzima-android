@@ -20,7 +20,7 @@ public class MmsSmsDatabase extends Database {
     @SuppressWarnings("unused")
     private static final String TAG = MmsSmsDatabase.class.getSimpleName();
 
-    public static final String TRANSPORT     = "transport_type";
+    public static final String TRANSPORT = "transport_type";
     public static final String MMS_TRANSPORT = "mms";
     public static final String SMS_TRANSPORT = "sms";
 
@@ -79,9 +79,9 @@ public class MmsSmsDatabase extends Database {
     }
 
     public Cursor getConversation(long threadId, long offset, long limit) {
-        String order     = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " DESC";
+        String order = MmsSmsColumns.NORMALIZED_DATE_RECEIVED + " DESC";
         String selection = MmsSmsColumns.THREAD_ID + " = " + threadId;
-        String limitStr  = limit > 0 || offset > 0 ? offset + ", " + limit : null;
+        String limitStr = limit > 0 || offset > 0 ? offset + ", " + limit : null;
 
         Cursor cursor = queryTables(PROJECTION, selection, order, limitStr);
         setNotifyConverationListeners(cursor, threadId);
@@ -354,7 +354,7 @@ public class MmsSmsDatabase extends Database {
         outerQueryBuilder.setTables("(" + unionQuery + ")");
 
         @SuppressWarnings("deprecation")
-        String query      = outerQueryBuilder.buildQuery(projection, null, null, null, null, null, null);
+        String query = outerQueryBuilder.buildQuery(projection, null, null, null, null, null, null);
 
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         return db.rawQuery(query, null);
@@ -366,7 +366,7 @@ public class MmsSmsDatabase extends Database {
 
     public class Reader {
 
-        private final Cursor  cursor;
+        private final Cursor cursor;
         private SmsDatabase.Reader smsReader;
         private MmsDatabase.Reader mmsReader;
 

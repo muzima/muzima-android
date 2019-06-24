@@ -31,9 +31,9 @@ public class WebRtcAnswerDeclineButton extends LinearLayout implements View.OnTo
     private static final int SHAKE_TIME = 200;
 
     private static final int UP_TIME = (TOTAL_TIME - SHAKE_TIME) / 2;
-    private static final int DOWN_TIME  = (TOTAL_TIME - SHAKE_TIME) / 2;
+    private static final int DOWN_TIME = (TOTAL_TIME - SHAKE_TIME) / 2;
     private static final int FADE_OUT_TIME = 300;
-    private static final int FADE_IN_TIME  = 100;
+    private static final int FADE_IN_TIME = 100;
     private static final int SHIMMER_TOTAL = UP_TIME + SHAKE_TIME;
 
     private static final int ANSWER_THRESHOLD = 112;
@@ -51,7 +51,7 @@ public class WebRtcAnswerDeclineButton extends LinearLayout implements View.OnTo
     private float lastY;
 
     private boolean animating = false;
-    private boolean complete  = false;
+    private boolean complete = false;
 
     private AnimatorSet animatorSet;
     private AnswerDeclineListener listener;
@@ -295,7 +295,7 @@ public class WebRtcAnswerDeclineButton extends LinearLayout implements View.OnTo
 
     private void resetElements() {
         animating = false;
-        complete  = false;
+        complete = false;
 
         if (animatorSet != null) animatorSet.cancel();
 

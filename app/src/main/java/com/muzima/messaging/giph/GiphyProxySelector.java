@@ -44,7 +44,7 @@ public class GiphyProxySelector extends ProxySelector {
     @Override
     public List<Proxy> select(URI uri) {
         if (uri.getHost().endsWith("giphy.com")) return getOrCreateGiphyProxy();
-        else                                     return EMPTY;
+        else return EMPTY;
     }
 
     @Override

@@ -31,9 +31,9 @@ public class SignalPlace {
     private double longitude;
 
     public SignalPlace(Place place) {
-        this.name      = place.getName();
-        this.address   = place.getAddress();
-        this.latitude  = place.getLatLng().latitude;
+        this.name = place.getName();
+        this.address = place.getAddress();
+        this.latitude = place.getLatLng().latitude;
         this.longitude = place.getLatLng().longitude;
     }
 

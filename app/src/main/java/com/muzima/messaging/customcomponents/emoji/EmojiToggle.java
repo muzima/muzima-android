@@ -40,8 +40,8 @@ public class EmojiToggle extends AppCompatImageButton implements EmojiDrawer.Emo
                 R.attr.conversation_keyboard_toggle};
 
         TypedArray drawables = getContext().obtainStyledAttributes(attributes);
-        this.emojiToggle     = drawables.getDrawable(0);
-        this.imeToggle       = drawables.getDrawable(1);
+        this.emojiToggle = drawables.getDrawable(0);
+        this.imeToggle = drawables.getDrawable(1);
 
         drawables.recycle();
         setToEmoji();

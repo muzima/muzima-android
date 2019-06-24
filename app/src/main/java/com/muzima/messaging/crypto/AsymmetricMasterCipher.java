@@ -48,7 +48,7 @@ public class AsymmetricMasterCipher {
 
             ECPrivateKey ourPrivateKey = asymmetricMasterSecret.getPrivateKey();
             byte[] secret = Curve.calculateAgreement(theirPublicKey.getKey(), ourPrivateKey);
-            MasterCipher masterCipher  = getMasterCipherForSecret(secret);
+            MasterCipher masterCipher = getMasterCipherForSecret(secret);
 
             return masterCipher.decryptBytes(parts[1]);
         } catch (InvalidKeyException e) {

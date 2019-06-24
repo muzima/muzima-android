@@ -49,7 +49,7 @@ public class AttachmentRegionDecoder implements ImageRegionDecoder {
 
         synchronized(this) {
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize      = sampleSize;
+            options.inSampleSize = sampleSize;
             options.inPreferredConfig = Bitmap.Config.RGB_565;
 
             Bitmap bitmap = bitmapRegionDecoder.decodeRegion(rect, options);

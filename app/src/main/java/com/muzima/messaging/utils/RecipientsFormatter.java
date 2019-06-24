@@ -11,8 +11,8 @@ import java.util.StringTokenizer;
 
 public class RecipientsFormatter {
     private static String parseBracketedNumber(String recipient) throws RecipientFormattingException {
-        int begin    = recipient.indexOf('<');
-        int end      = recipient.indexOf('>');
+        int begin = recipient.indexOf('<');
+        int end = recipient.indexOf('>');
         String value = recipient.substring(begin + 1, end);
 
         if (PhoneNumberUtils.isWellFormedSmsAddress(value))

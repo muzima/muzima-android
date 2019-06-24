@@ -29,11 +29,10 @@ import com.muzima.messaging.net.TransportOption;
 
 public class ComposeText extends EmojiEditText {
 
-    private CharSequence    hint;
+    private CharSequence hint;
     private SpannableString subHint;
 
-    @Nullable
-    private InputPanel.MediaListener mediaListener;
+    @Nullable private InputPanel.MediaListener mediaListener;
 
     public ComposeText(Context context) {
         super(context);
@@ -110,13 +109,13 @@ public class ComposeText extends EmojiEditText {
 
     public void setTransport(TransportOption transport) {
         final boolean useSystemEmoji = TextSecurePreferences.isSystemEmojiPreferred(getContext());
-        final boolean isIncognito    = TextSecurePreferences.isIncognitoKeyboardEnabled(getContext());
+        final boolean isIncognito = TextSecurePreferences.isIncognitoKeyboardEnabled(getContext());
 
         int imeOptions = (getImeOptions() & ~EditorInfo.IME_MASK_ACTION) | EditorInfo.IME_ACTION_SEND;
-        int inputType  = getInputType();
+        int inputType = getInputType();
 
         if (isLandscape()) setImeActionLabel(transport.getComposeHint(), EditorInfo.IME_ACTION_SEND);
-        else               setImeActionLabel(null, 0);
+        else setImeActionLabel(null, 0);
 
         if (useSystemEmoji) {
             inputType = (inputType & ~InputType.TYPE_MASK_VARIATION) | InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE;

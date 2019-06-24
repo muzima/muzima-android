@@ -30,16 +30,16 @@ public class RegistrationState {
     private final Optional<String> gcmToken;
 
     RegistrationState(State state, String e164number, String password, Optional<String> gcmToken) {
-        this.state      = state;
+        this.state = state;
         this.e164number = e164number;
-        this.password   = password;
-        this.gcmToken   = gcmToken;
+        this.password = password;
+        this.gcmToken = gcmToken;
     }
 
     RegistrationState(State state, RegistrationState previous) {
-        this.state      = state;
+        this.state = state;
         this.e164number = previous.e164number;
-        this.password   = previous.password;
-        this.gcmToken   = previous.gcmToken;
+        this.password = previous.password;
+        this.gcmToken = previous.gcmToken;
     }
 }

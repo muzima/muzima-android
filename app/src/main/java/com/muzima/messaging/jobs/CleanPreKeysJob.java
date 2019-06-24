@@ -64,14 +64,14 @@ public class CleanPreKeysJob extends ContextJob {
         try {
             Log.i(TAG, "Cleaning prekeys...");
 
-            int                activeSignedPreKeyId = PreKeyUtil.getActiveSignedPreKeyId(context);
-            SignedPreKeyStore signedPreKeyStore    = signedPreKeyStoreFactory.create();
+            int activeSignedPreKeyId = PreKeyUtil.getActiveSignedPreKeyId(context);
+            SignedPreKeyStore signedPreKeyStore = signedPreKeyStoreFactory.create();
 
             if (activeSignedPreKeyId < 0) return;
 
             SignedPreKeyRecord currentRecord = signedPreKeyStore.loadSignedPreKey(activeSignedPreKeyId);
-            List<SignedPreKeyRecord> allRecords    = signedPreKeyStore.loadSignedPreKeys();
-            LinkedList<SignedPreKeyRecord> oldRecords    = removeRecordFrom(currentRecord, allRecords);
+            List<SignedPreKeyRecord> allRecords = signedPreKeyStore.loadSignedPreKeys();
+            LinkedList<SignedPreKeyRecord> oldRecords = removeRecordFrom(currentRecord, allRecords);
 
             Collections.sort(oldRecords, new SignedPreKeySorter());
 
@@ -100,7 +100,7 @@ public class CleanPreKeysJob extends ContextJob {
     @Override
     public boolean onShouldRetry(Exception throwable) {
         if (throwable instanceof NonSuccessfulResponseCodeException) return false;
-        if (throwable instanceof PushNetworkException)               return true;
+        if (throwable instanceof PushNetworkException) return true;
         return false;
     }
 
@@ -127,9 +127,9 @@ public class CleanPreKeysJob extends ContextJob {
     private static class SignedPreKeySorter implements Comparator<SignedPreKeyRecord> {
         @Override
         public int compare(SignedPreKeyRecord lhs, SignedPreKeyRecord rhs) {
-            if      (lhs.getTimestamp() > rhs.getTimestamp()) return -1;
+            if (lhs.getTimestamp() > rhs.getTimestamp()) return -1;
             else if (lhs.getTimestamp() < rhs.getTimestamp()) return 1;
-            else                                              return 0;
+            else return 0;
         }
     }
 }

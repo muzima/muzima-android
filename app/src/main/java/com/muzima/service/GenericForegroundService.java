@@ -21,18 +21,18 @@ import org.whispersystems.libsignal.util.guava.Preconditions;
 public class GenericForegroundService extends Service {
     private static final String TAG = GenericForegroundService.class.getSimpleName();
 
-    private static final int    NOTIFICATION_ID  = 827353982;
-    private static final String EXTRA_TITLE      = "extra_title";
+    private static final int NOTIFICATION_ID = 827353982;
+    private static final String EXTRA_TITLE = "extra_title";
     private static final String EXTRA_CHANNEL_ID = "extra_channel_id";
-    private static final String EXTRA_ICON_RES   = "extra_icon_res";
+    private static final String EXTRA_ICON_RES = "extra_icon_res";
 
     private static final String ACTION_START = "start";
-    private static final String ACTION_STOP  = "stop";
+    private static final String ACTION_STOP = "stop";
 
-    private int    foregroundCount;
+    private int foregroundCount;
     private String activeTitle;
     private String activeChannelId;
-    private int    activeIconRes;
+    private int activeIconRes;
 
     @Override
     public void onCreate() {
@@ -42,9 +42,9 @@ public class GenericForegroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         synchronized (GenericForegroundService.class) {
-            if      (intent != null && ACTION_START.equals(intent.getAction())) handleStart(intent);
+            if (intent != null && ACTION_START.equals(intent.getAction())) handleStart(intent);
             else if (intent != null && ACTION_STOP.equals(intent.getAction()))  handleStop();
-            else                                                                throw new IllegalStateException("Action needs to be START or STOP.");
+            else throw new IllegalStateException("Action needs to be START or STOP.");
 
             return START_NOT_STICKY;
         }
@@ -52,9 +52,9 @@ public class GenericForegroundService extends Service {
 
 
     private void handleStart(@NonNull Intent intent) {
-        String title     = Preconditions.checkNotNull(intent.getStringExtra(EXTRA_TITLE));
+        String title = Preconditions.checkNotNull(intent.getStringExtra(EXTRA_TITLE));
         String channelId = Preconditions.checkNotNull(intent.getStringExtra(EXTRA_CHANNEL_ID));
-        int    iconRes   = intent.getIntExtra(EXTRA_ICON_RES, R.drawable.ic_launcher_logo);
+        int iconRes = intent.getIntExtra(EXTRA_ICON_RES, R.drawable.ic_launcher_logo);
 
         Log.i(TAG, "handleStart() Title: " + title + "  ChannelId: " + channelId);
 
@@ -62,9 +62,9 @@ public class GenericForegroundService extends Service {
 
         if (foregroundCount == 1) {
             Log.d(TAG, "First request. Title: " + title + "  ChannelId: " + channelId);
-            activeTitle     = title;
+            activeTitle = title;
             activeChannelId = channelId;
-            activeIconRes   = iconRes;
+            activeIconRes = iconRes;
         }
 
         postObligatoryForegroundNotification(activeTitle, activeChannelId, activeIconRes);

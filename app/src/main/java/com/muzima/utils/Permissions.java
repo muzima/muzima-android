@@ -58,7 +58,7 @@ public class Permissions {
         private Consumer<List<String>> someDeniedListener;
         private Consumer<List<String>> somePermanentlyDeniedListener;
 
-        private @DrawableRes int[]  rationalDialogHeader;
+        private @DrawableRes int[] rationalDialogHeader;
         private String rationaleDialogMessage;
 
         private boolean ifNecesary;
@@ -81,12 +81,12 @@ public class Permissions {
 
         public PermissionsBuilder ifNecessary(boolean condition) {
             this.ifNecesary = true;
-            this.condition  = condition;
+            this.condition = condition;
             return this;
         }
 
         public PermissionsBuilder withRationaleDialog(@NonNull String message, @NonNull @DrawableRes int... headers) {
-            this.rationalDialogHeader   = headers;
+            this.rationalDialogHeader = headers;
             this.rationaleDialogMessage = message;
             return this;
         }
@@ -180,9 +180,9 @@ public class Permissions {
                 request.addMapping(permission, true);
             }
 
-            String[] permissions  = filterNotGranted(permissionObject.getContext(), requestedPermissions);
-            int[]    grantResults = Stream.of(permissions).mapToInt(permission -> PackageManager.PERMISSION_DENIED).toArray();
-            boolean[] showDialog   = new boolean[permissions.length];
+            String[] permissions = filterNotGranted(permissionObject.getContext(), requestedPermissions);
+            int[] grantResults = Stream.of(permissions).mapToInt(permission -> PackageManager.PERMISSION_DENIED).toArray();
+            boolean[] showDialog = new boolean[permissions.length];
             Arrays.fill(showDialog, true);
 
             request.onResult(permissions, grantResults, showDialog);
@@ -263,9 +263,9 @@ public class Permissions {
         abstract void requestPermissions(int requestCode, String... permissions);
 
         int getWindowWidth() {
-            WindowManager  windowManager = ServiceUtil.getWindowManager(getContext());
-            Display        display       = windowManager.getDefaultDisplay();
-            DisplayMetrics metrics       = new DisplayMetrics();
+            WindowManager windowManager = ServiceUtil.getWindowManager(getContext());
+            Display display = windowManager.getDefaultDisplay();
+            DisplayMetrics metrics = new DisplayMetrics();
             display.getMetrics(metrics);
 
             return metrics.widthPixels;
@@ -333,7 +333,7 @@ public class Permissions {
     private static class SettingsDialogListener implements Runnable {
 
         private final WeakReference<Context> context;
-        private final String                 message;
+        private final String message;
 
         SettingsDialogListener(Context context, String message) {
             this.message = message;

@@ -29,9 +29,9 @@ import java.util.List;
 
 public class ContactShareEditActivity extends PassphraseRequiredActionBarActivity implements ContactShareEditAdapter.EventListener {
 
-    public  static final String KEY_CONTACTS     = "contacts";
+    public  static final String KEY_CONTACTS = "contacts";
     private static final String KEY_CONTACT_URIS = "contact_uris";
-    private static final int CODE_NAME_EDIT   = 55;
+    private static final int CODE_NAME_EDIT = 55;
 
     private ContactShareEditViewModel viewModel;
     private ThemeUtils themeUtils = new ThemeUtils();
@@ -128,7 +128,7 @@ public class ContactShareEditActivity extends PassphraseRequiredActionBarActivit
         }
 
         int  position = data.getIntExtra(ContactNameEditActivity.KEY_CONTACT_INDEX, -1);
-        Name name     = data.getParcelableExtra(ContactNameEditActivity.KEY_NAME);
+        Name name = data.getParcelableExtra(ContactNameEditActivity.KEY_NAME);
 
         if (name != null) {
             viewModel.updateContactName(position, name);

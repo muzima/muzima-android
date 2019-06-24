@@ -55,8 +55,8 @@ public class RefreshUnidentifiedDeliveryAbilityJob extends ContextJob implements
 
     @Override
     public void onRun() throws Exception {
-        byte[]               profileKey = ProfileKeyUtil.getProfileKey(context);
-        SignalServiceProfile profile    = retrieveProfile(TextSecurePreferences.getLocalNumber(context));
+        byte[] profileKey = ProfileKeyUtil.getProfileKey(context);
+        SignalServiceProfile profile = retrieveProfile(TextSecurePreferences.getLocalNumber(context));
 
         boolean enabled = profile.getUnidentifiedAccess() != null && isValidVerifier(profileKey, profile.getUnidentifiedAccess());
 

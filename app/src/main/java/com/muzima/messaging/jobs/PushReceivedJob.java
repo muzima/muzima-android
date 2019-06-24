@@ -34,7 +34,7 @@ public abstract class PushReceivedJob extends ContextJob {
     public void processEnvelope(@NonNull SignalServiceEnvelope envelope) {
         synchronized (RECEIVE_LOCK) {
             if (envelope.hasSource()) {
-                SignalAddress source    = SignalAddress.fromExternal(context, envelope.getSource());
+                SignalAddress source = SignalAddress.fromExternal(context, envelope.getSource());
                 SignalRecipient recipient = SignalRecipient.from(context, source, false);
 
                 if (!isActiveNumber(recipient)) {

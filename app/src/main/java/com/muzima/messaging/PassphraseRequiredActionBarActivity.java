@@ -85,7 +85,7 @@ public class PassphraseRequiredActionBarActivity extends BaseActionBarActivity i
     public void onMasterSecretCleared() {
         Log.i(TAG, "onMasterSecretCleared()");
         if (MuzimaApplication.getInstance(this).isAppVisible()) routeApplicationState(true);
-        else                                                     finish();
+        else finish();
     }
 
     protected <T extends Fragment> T initFragment(@IdRes int target, @NonNull T fragment)

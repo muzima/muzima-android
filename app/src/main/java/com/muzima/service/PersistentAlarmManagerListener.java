@@ -16,9 +16,9 @@ public abstract class PersistentAlarmManagerListener extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        long          scheduledTime = getNextScheduledExecutionTime(context);
-        AlarmManager alarmManager  = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent        alarmIntent   = new Intent(context, getClass());
+        long scheduledTime = getNextScheduledExecutionTime(context);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent = new Intent(context, getClass());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
 
         if (System.currentTimeMillis() >= scheduledTime) {

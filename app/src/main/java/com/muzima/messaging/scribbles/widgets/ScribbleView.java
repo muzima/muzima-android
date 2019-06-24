@@ -76,20 +76,20 @@ public class ScribbleView extends FrameLayout {
     }
 
     public @NonNull ListenableFuture<Bitmap> getRenderedImage(@NonNull GlideRequests glideRequests) {
-        final SettableFuture<Bitmap> future      = new SettableFuture<>();
-        final Context                context     = getContext();
-        final boolean                isLowMemory = Util.isLowMemory(context);
+        final SettableFuture<Bitmap> future = new SettableFuture<>();
+        final Context context = getContext();
+        final boolean isLowMemory = Util.isLowMemory(context);
 
         if (imageUri == null) {
             future.setException(new IllegalStateException("No image URI."));
             return future;
         }
 
-        int width  = Target.SIZE_ORIGINAL;
+        int width = Target.SIZE_ORIGINAL;
         int height = Target.SIZE_ORIGINAL;
 
         if (isLowMemory) {
-            width  = 768;
+            width = 768;
             height = 768;
         }
 
@@ -119,7 +119,7 @@ public class ScribbleView extends FrameLayout {
     private void initialize(@NonNull Context context) {
         inflate(context, R.layout.scribble_view, this);
 
-        this.imageView  = findViewById(R.id.image_view);
+        this.imageView = findViewById(R.id.image_view);
         this.motionView = findViewById(R.id.motion_view);
         this.canvasView = findViewById(R.id.canvas_view);
     }

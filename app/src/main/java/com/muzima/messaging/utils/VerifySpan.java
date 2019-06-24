@@ -20,14 +20,14 @@ public class VerifySpan extends ClickableSpan {
     private final IdentityKey identityKey;
 
     public VerifySpan(@NonNull Context context, @NonNull IdentityKeyMismatch mismatch) {
-        this.context     = context;
-        this.address     = mismatch.getAddress();
+        this.context = context;
+        this.address = mismatch.getAddress();
         this.identityKey = mismatch.getIdentityKey();
     }
 
     public VerifySpan(@NonNull Context context, @NonNull SignalAddress address, @NonNull IdentityKey identityKey) {
-        this.context     = context;
-        this.address     = address;
+        this.context = context;
+        this.address = address;
         this.identityKey = identityKey;
     }
 

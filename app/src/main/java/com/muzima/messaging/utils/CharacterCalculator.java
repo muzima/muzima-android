@@ -12,10 +12,14 @@ public abstract class CharacterCalculator {
 
     public static CharacterCalculator readFromParcel(@NonNull Parcel in) {
         switch (in.readInt()) {
-            case 1:  return new SmsCharacterCalculator();
-            case 2:  return new MmsCharacterCalculator();
-            case 3:  return new PushCharacterCalculator();
-            default: throw new IllegalArgumentException("Read an unsupported value for a calculator.");
+            case 1:
+                 return new SmsCharacterCalculator();
+            case 2:
+                 return new MmsCharacterCalculator();
+            case 3:
+                 return new PushCharacterCalculator();
+            default:
+                 throw new IllegalArgumentException("Read an unsupported value for a calculator.");
         }
     }
 
@@ -29,9 +33,9 @@ public abstract class CharacterCalculator {
         public int maxMessageSize;
 
         public CharacterState(int messagesSpent, int charactersRemaining, int maxMessageSize) {
-            this.messagesSpent       = messagesSpent;
+            this.messagesSpent = messagesSpent;
             this.charactersRemaining = charactersRemaining;
-            this.maxMessageSize      = maxMessageSize;
+            this.maxMessageSize = maxMessageSize;
         }
     }
 }

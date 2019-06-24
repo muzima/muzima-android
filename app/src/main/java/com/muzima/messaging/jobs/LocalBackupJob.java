@@ -67,11 +67,11 @@ public class LocalBackupJob extends ContextJob {
                 R.drawable.ic_launcher_logo_light);
 
         try {
-            String backupPassword  = TextSecurePreferences.getBackupPassphrase(context);
+            String backupPassword = TextSecurePreferences.getBackupPassphrase(context);
             File backupDirectory = StorageUtil.getBackupDirectory();
-            String timestamp       = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.US).format(new Date());
-            String fileName        = String.format("signal-%s.backup", timestamp);
-            File   backupFile      = new File(backupDirectory, fileName);
+            String timestamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.US).format(new Date());
+            String fileName = String.format("signal-%s.backup", timestamp);
+            File backupFile = new File(backupDirectory, fileName);
 
             if (backupFile.exists()) {
                 throw new IOException("Backup file already exists?");

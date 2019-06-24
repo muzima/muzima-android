@@ -22,7 +22,7 @@ public class ProfilePreference extends Preference {
 
     private ImageView avatarView;
     private TextView profileNameView;
-    private TextView  profileNumberView;
+    private TextView profileNumberView;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public ProfilePreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -52,8 +52,8 @@ public class ProfilePreference extends Preference {
     @Override
     public void onBindViewHolder(PreferenceViewHolder viewHolder) {
         super.onBindViewHolder(viewHolder);
-        avatarView        = (ImageView)viewHolder.findViewById(R.id.avatar);
-        profileNameView   = (TextView)viewHolder.findViewById(R.id.profile_name);
+        avatarView = (ImageView)viewHolder.findViewById(R.id.avatar);
+        profileNameView = (TextView)viewHolder.findViewById(R.id.profile_name);
         profileNumberView = (TextView)viewHolder.findViewById(R.id.number);
 
         refresh();
@@ -63,7 +63,7 @@ public class ProfilePreference extends Preference {
         if (profileNumberView == null) return;
 
         final SignalAddress localAddress = SignalAddress.fromSerialized(TextSecurePreferences.getLocalNumber(getContext()));
-        final String  profileName  = TextSecurePreferences.getProfileName(getContext());
+        final String profileName = TextSecurePreferences.getProfileName(getContext());
 
         GlideApp.with(getContext().getApplicationContext())
                 .load(new ProfileContactPhoto(localAddress, String.valueOf(TextSecurePreferences.getProfileAvatarId(getContext()))))

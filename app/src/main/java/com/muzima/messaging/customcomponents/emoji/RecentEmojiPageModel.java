@@ -23,13 +23,13 @@ import java.util.List;
 public class RecentEmojiPageModel implements EmojiPageModel {
     private static final String TAG = RecentEmojiPageModel.class.getSimpleName();
     private static final String EMOJI_LRU_PREFERENCE = "pref_recent_emoji2";
-    private static final int    EMOJI_LRU_SIZE       = 50;
+    private static final int EMOJI_LRU_SIZE = 50;
 
     private final SharedPreferences prefs;
     private final LinkedHashSet<String> recentlyUsed;
 
     public RecentEmojiPageModel(Context context) {
-        this.prefs        = PreferenceManager.getDefaultSharedPreferences(context);
+        this.prefs = PreferenceManager.getDefaultSharedPreferences(context);
         this.recentlyUsed = getPersistedCache();
     }
 

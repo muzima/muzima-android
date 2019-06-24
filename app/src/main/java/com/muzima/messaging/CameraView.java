@@ -43,7 +43,7 @@ public class CameraView extends ViewGroup {
     private @NonNull State state = State.PAUSED;
     private @Nullable Camera.Size previewSize;
     private @NonNull List<CameraViewListener> listeners = Collections.synchronizedList(new LinkedList<CameraViewListener>());
-    private int outputOrientation  = -1;
+    private int outputOrientation = -1;
 
     public CameraView(Context context) {
         this(context, null);
@@ -165,17 +165,17 @@ public class CameraView extends ViewGroup {
     @SuppressWarnings("SuspiciousNameCombination")
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        final int  width = r - l;
-        final int  height = b - t;
-        final int  previewWidth;
-        final int  previewHeight;
+        final int width = r - l;
+        final int height = b - t;
+        final int previewWidth;
+        final int previewHeight;
 
         if (camera.isPresent() && previewSize != null) {
             if (displayOrientation == 90 || displayOrientation == 270) {
-                previewWidth  = previewSize.height;
+                previewWidth = previewSize.height;
                 previewHeight = previewSize.width;
             } else {
-                previewWidth  = previewSize.width;
+                previewWidth = previewSize.width;
                 previewHeight = previewSize.height;
             }
         } else {
@@ -220,7 +220,7 @@ public class CameraView extends ViewGroup {
                                 return;
                             }
 
-                            final int  rotation    = getCameraPictureOrientation();
+                            final int  rotation = getCameraPictureOrientation();
                             final Camera.Size previewSize = camera.getParameters().getPreviewSize();
                             if (data != null) {
                                 previewCallback.onPreviewFrame(new PreviewFrame(data, previewSize.width, previewSize.height, rotation));
@@ -421,15 +421,10 @@ public class CameraView extends ViewGroup {
         camera.get().setOneShotPreviewCallback(new Camera.PreviewCallback() {
             @Override
             public void onPreviewFrame(byte[] data, final Camera camera) {
-                final int  rotation     = getCameraPictureOrientation();
-                final Camera.Size previewSize  = camera.getParameters().getPreviewSize();
+                final int rotation = getCameraPictureOrientation();
+                final Camera.Size previewSize = camera.getParameters().getPreviewSize();
                 final Rect croppingRect = getCroppedRect(previewSize, previewRect, rotation);
 
-                Log.i(TAG, "previewSize: " + previewSize.width + "x" + previewSize.height);
-                Log.i(TAG, "data bytes: " + data.length);
-                Log.i(TAG, "previewFormat: " + camera.getParameters().getPreviewFormat());
-                Log.i(TAG, "croppingRect: " + croppingRect.toString());
-                Log.i(TAG, "rotation: " + rotation);
                 new CaptureTask(previewSize, rotation, croppingRect).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, data);
             }
         });
@@ -505,7 +500,7 @@ public class CameraView extends ViewGroup {
 
     private class CaptureTask extends AsyncTask<byte[], Void, byte[]> {
         private final Camera.Size previewSize;
-        private final int  rotation;
+        private final int rotation;
         private final Rect croppingRect;
 
         public CaptureTask(Camera.Size previewSize, int rotation, Rect croppingRect) {

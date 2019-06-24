@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class PushRecipientsPanel extends RelativeLayout implements RecipientModifiedListener {
-    private final String                         TAG = PushRecipientsPanel.class.getSimpleName();
-    private       RecipientsPanelChangedListener panelChangeListener;
+    private final String TAG = PushRecipientsPanel.class.getSimpleName();
+    private RecipientsPanelChangedListener panelChangeListener;
 
     private RecipientsEditor recipientsText;
     private View panel;
@@ -98,7 +98,7 @@ public class PushRecipientsPanel extends RelativeLayout implements RecipientModi
     }
 
     private @NonNull List<SignalRecipient> getRecipientsFromString(Context context, @NonNull String rawText, boolean asynchronous) {
-        StringTokenizer tokenizer  = new StringTokenizer(rawText, ",");
+        StringTokenizer tokenizer = new StringTokenizer(rawText, ",");
         List<SignalRecipient> recipients = new LinkedList<>();
 
         while (tokenizer.hasMoreTokens()) {
@@ -106,7 +106,7 @@ public class PushRecipientsPanel extends RelativeLayout implements RecipientModi
 
             if (!TextUtils.isEmpty(token)) {
                 if (hasBracketedNumber(token)) recipients.add(SignalRecipient.from(context, SignalAddress.fromExternal(context, parseBracketedNumber(token)), asynchronous));
-                else                           recipients.add(SignalRecipient.from(context, SignalAddress.fromExternal(context, token), asynchronous));
+                else recipients.add(SignalRecipient.from(context, SignalAddress.fromExternal(context, token), asynchronous));
             }
         }
 
@@ -121,8 +121,8 @@ public class PushRecipientsPanel extends RelativeLayout implements RecipientModi
     }
 
     private  String parseBracketedNumber(String recipient) {
-        int begin    = recipient.indexOf('<');
-        int end      = recipient.indexOf('>', begin);
+        int begin = recipient.indexOf('<');
+        int end = recipient.indexOf('>', begin);
         String value = recipient.substring(begin + 1, end);
 
         return value;

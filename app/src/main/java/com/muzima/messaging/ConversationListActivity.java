@@ -266,7 +266,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                Context context    = ConversationListActivity.this;
+                Context context = ConversationListActivity.this;
                 List<MarkedMessageInfo> messageIds = DatabaseFactory.getThreadDatabase(context).setAllThreadsRead();
 
                 MessageNotifier.updateNotification(context);

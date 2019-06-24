@@ -134,7 +134,7 @@ public class Camera1Controller {
             this.screenRotation = screenRotation;
 
             int previewRotation = getPreviewRotation(screenRotation);
-            int outputRotation  = getOutputRotation(screenRotation);
+            int outputRotation = getOutputRotation(screenRotation);
 
             Log.d(TAG, "Preview rotation: " + previewRotation + "  Output rotation: " + outputRotation);
 

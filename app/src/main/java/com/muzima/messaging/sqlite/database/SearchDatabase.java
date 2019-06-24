@@ -19,9 +19,9 @@ public class SearchDatabase extends Database {
     public static final String SMS_FTS_TABLE_NAME = "sms_fts";
     public static final String MMS_FTS_TABLE_NAME = "mms_fts";
 
-    public static final String ID      = "rowid";
-    public static final String BODY    = MmsSmsColumns.BODY;
-    public static final String RANK    = "rank";
+    public static final String ID = "rowid";
+    public static final String BODY = MmsSmsColumns.BODY;
+    public static final String RANK = "rank";
     public static final String SNIPPET = "snippet";
 
     public static final String[] CREATE_TABLE = {
@@ -83,8 +83,8 @@ public class SearchDatabase extends Database {
     public Cursor queryMessages(@NonNull String query) {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-        List<String> tokens      = Stream.of(query.split(" ")).filter(s -> s.trim().length() > 0).toList();
-        String       prefixQuery = Util.join(tokens, "* ");
+        List<String> tokens = Stream.of(query.split(" ")).filter(s -> s.trim().length() > 0).toList();
+        String prefixQuery = Util.join(tokens, "* ");
 
         prefixQuery += "*";
 

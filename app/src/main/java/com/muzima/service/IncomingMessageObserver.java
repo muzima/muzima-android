@@ -38,7 +38,7 @@ public class IncomingMessageObserver implements InjectableType, RequirementListe
     private static final String TAG = IncomingMessageObserver.class.getSimpleName();
 
     public  static final  int FOREGROUND_ID = 313399;
-    private static final long REQUEST_TIMEOUT_MINUTES  = 1;
+    private static final long REQUEST_TIMEOUT_MINUTES = 1;
 
     private static SignalServiceMessagePipe pipe = null;
     private static SignalServiceMessagePipe unidentifiedPipe = null;

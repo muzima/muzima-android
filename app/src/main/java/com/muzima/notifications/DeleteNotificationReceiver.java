@@ -29,7 +29,7 @@ public class DeleteNotificationReceiver extends BroadcastReceiver {
                 protected Void doInBackground(Void... params) {
                     for (int i=0;i<ids.length;i++) {
                         if (!mms[i]) DatabaseFactory.getSmsDatabase(context).markAsNotified(ids[i]);
-                        else         DatabaseFactory.getMmsDatabase(context).markAsNotified(ids[i]);
+                        else DatabaseFactory.getMmsDatabase(context).markAsNotified(ids[i]);
                     }
 
                     return null;

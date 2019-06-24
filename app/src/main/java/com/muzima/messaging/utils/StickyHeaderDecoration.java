@@ -20,18 +20,18 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
     private static final long NO_HEADER_ID = -1L;
 
     private final Map<Long, ViewHolder> headerCache;
-    private final StickyHeaderAdapter   adapter;
-    private final boolean               renderInline;
-    private       boolean               sticky;
+    private final StickyHeaderAdapter adapter;
+    private final boolean renderInline;
+    private boolean sticky;
 
     /**
      * @param adapter the sticky header adapter to use
      */
     public StickyHeaderDecoration(StickyHeaderAdapter adapter, boolean renderInline, boolean sticky) {
-        this.adapter      = adapter;
-        this.headerCache  = new HashMap<>();
+        this.adapter = adapter;
+        this.headerCache = new HashMap<>();
         this.renderInline = renderInline;
-        this.sticky       = sticky;
+        this.sticky = sticky;
     }
 
     /**
@@ -41,7 +41,7 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
                                RecyclerView.State state)
     {
-        int position     = parent.getChildAdapterPosition(view);
+        int position = parent.getChildAdapterPosition(view);
         int headerHeight = 0;
 
         if (position != RecyclerView.NO_POSITION && hasHeader(parent, adapter, position)) {
@@ -54,7 +54,7 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
 
     protected boolean hasHeader(RecyclerView parent, StickyHeaderAdapter adapter, int adapterPos) {
         boolean isReverse = isReverseLayout(parent);
-        int     itemCount = ((RecyclerView.Adapter)adapter).getItemCount();
+        int itemCount = ((RecyclerView.Adapter)adapter).getItemCount();
 
         if ((isReverse && adapterPos == itemCount - 1 && adapter.getHeaderId(adapterPos) != -1) ||
                 (!isReverse && adapterPos == 0))
@@ -62,8 +62,8 @@ public class StickyHeaderDecoration extends RecyclerView.ItemDecoration {
             return true;
         }
 
-        int  previous         = adapterPos + (isReverse ? 1 : -1);
-        long headerId         = adapter.getHeaderId(adapterPos);
+        int  previous = adapterPos + (isReverse ? 1 : -1);
+        long headerId = adapter.getHeaderId(adapterPos);
         long previousHeaderId = adapter.getHeaderId(previous);
 
         return headerId != NO_HEADER_ID && previousHeaderId != NO_HEADER_ID && headerId != previousHeaderId;

@@ -135,8 +135,7 @@ public class DirectoryHelper {
         }
     }
 
-    public static RegisteredState refreshDirectoryFor(@NonNull Context context,
-                                                                        @NonNull SignalRecipient recipient)
+    public static RegisteredState refreshDirectoryFor(@NonNull Context context, @NonNull SignalRecipient recipient)
             throws IOException {
         RecipientDatabase recipientDatabase = DatabaseFactory.getRecipientDatabase(context);
         SignalServiceAccountManager accountManager = AccountManagerFactory.createManager(context);

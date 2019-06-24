@@ -50,9 +50,8 @@ public class AudioView extends FrameLayout implements AudioSlidePlayer.Listener 
     private final @NonNull SeekBar seekBar;
     private final @NonNull TextView timestamp;
 
-    private @Nullable
-    SlideClickListener downloadListener;
-    private @Nullable AudioSlidePlayer   audioSlidePlayer;
+    private @Nullable SlideClickListener downloadListener;
+    private @Nullable AudioSlidePlayer audioSlidePlayer;
     private int backwardsCounter;
 
     public AudioView(Context context) {
@@ -71,10 +70,10 @@ public class AudioView extends FrameLayout implements AudioSlidePlayer.Listener 
         this.controlToggle = (AnimatingToggle) findViewById(R.id.control_toggle);
         this.playButton = (ImageView) findViewById(R.id.play);
         this.pauseButton = (ImageView) findViewById(R.id.pause);
-        this.downloadButton   = (ImageView) findViewById(R.id.download);
+        this.downloadButton = (ImageView) findViewById(R.id.download);
         this.downloadProgress = (ProgressWheel) findViewById(R.id.download_progress);
         this.seekBar = (SeekBar) findViewById(R.id.seek);
-        this.timestamp        = (TextView) findViewById(R.id.timestamp);
+        this.timestamp = (TextView) findViewById(R.id.timestamp);
 
         this.playButton.setOnClickListener(new PlayClickedListener());
         this.pauseButton.setOnClickListener(new PauseClickedListener());

@@ -61,10 +61,10 @@ public class EncryptedCoder {
             Mac mac = Mac.getInstance("HmacSHA256");
             mac.init(new SecretKeySpec(masterKey, "HmacSHA256"));
 
-            FileInputStream fileInputStream  = new FileInputStream(file);
-            byte[]  theirMagic  = new byte[MAGIC_BYTES.length];
-            byte[]  theirRandom  = new byte[32];
-            byte[]  theirEncryptedMagic = new byte[MAGIC_BYTES.length];
+            FileInputStream fileInputStream = new FileInputStream(file);
+            byte[] theirMagic = new byte[MAGIC_BYTES.length];
+            byte[] theirRandom = new byte[32];
+            byte[] theirEncryptedMagic = new byte[MAGIC_BYTES.length];
 
             Util.readFully(fileInputStream, theirMagic);
             Util.readFully(fileInputStream, theirRandom);
@@ -73,7 +73,7 @@ public class EncryptedCoder {
                 throw new IOException("Not an encrypted cache file!");
             }
 
-            byte[] iv  = new byte[16];
+            byte[] iv = new byte[16];
             byte[] key = mac.doFinal(theirRandom);
 
             Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding");

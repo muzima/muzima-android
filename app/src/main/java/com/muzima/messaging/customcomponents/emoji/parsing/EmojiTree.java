@@ -83,9 +83,9 @@ public class EmojiTree {
             tree = tree.getChild(character);
         }
 
-        if      (tree.getEmoji() != null)                                                  return tree.getEmoji();
+        if (tree.getEmoji() != null) return tree.getEmoji();
         else if (unicode.charAt(endPostiion-1) != TERMINATOR && tree.hasChild(TERMINATOR)) return tree.getChild(TERMINATOR).getEmoji();
-        else    return null;
+        else return null;
     }
 
 

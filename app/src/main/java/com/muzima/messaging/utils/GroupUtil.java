@@ -27,7 +27,7 @@ import java.util.List;
 
 public class GroupUtil {
     private static final String ENCODED_SIGNAL_GROUP_PREFIX = "__textsecure_group__!";
-    private static final String ENCODED_MMS_GROUP_PREFIX    = "__signal_mms_group__!";
+    private static final String ENCODED_MMS_GROUP_PREFIX = "__signal_mms_group__!";
     private static final String TAG = GroupUtil.class.getSimpleName();
 
     public static String getEncodedId(byte[] groupId, boolean mms) {
@@ -52,8 +52,8 @@ public class GroupUtil {
 
     @WorkerThread
     public static Optional<OutgoingGroupMediaMessage> createGroupLeaveMessage(@NonNull Context context, @NonNull SignalRecipient groupRecipient) {
-        String        encodedGroupId = groupRecipient.getAddress().toGroupString();
-        GroupDatabase groupDatabase  = DatabaseFactory.getGroupDatabase(context);
+        String encodedGroupId = groupRecipient.getAddress().toGroupString();
+        GroupDatabase groupDatabase = DatabaseFactory.getGroupDatabase(context);
 
         if (!groupDatabase.isActive(encodedGroupId)) {
             Log.w(TAG, "Group has already been left.");
@@ -93,12 +93,12 @@ public class GroupUtil {
 
     public static class GroupDescription {
 
-        @NonNull  private final Context         context;
+        @NonNull private final Context context;
         @Nullable private final SignalServiceProtos.GroupContext groupContext;
         @Nullable private final List<SignalRecipient> members;
 
         public GroupDescription(@NonNull Context context, @Nullable SignalServiceProtos.GroupContext groupContext) {
-            this.context      = context.getApplicationContext();
+            this.context = context.getApplicationContext();
             this.groupContext = groupContext;
 
             if (groupContext == null || groupContext.getMembersList().isEmpty()) {
@@ -130,7 +130,7 @@ public class GroupUtil {
 
             if (title != null && !title.trim().isEmpty()) {
                 if (members != null) description.append(" ");
-                else                 description.append("\n");
+                else description.append("\n");
                 description.append(context.getString(R.string.general_group_name, title));
             }
 

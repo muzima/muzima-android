@@ -30,15 +30,15 @@ public class AttachmentSecretProvider {
         String unencryptedSecret = TextSecurePreferences.getAttachmentUnencryptedSecret(context);
         String encryptedSecret   = TextSecurePreferences.getAttachmentEncryptedSecret(context);
 
-        if      (unencryptedSecret != null) attachmentSecret = getUnencryptedAttachmentSecret(context, unencryptedSecret);
-        else if (encryptedSecret != null)   attachmentSecret = getEncryptedAttachmentSecret(encryptedSecret);
-        else                                attachmentSecret = createAndStoreAttachmentSecret(context);
+        if (unencryptedSecret != null) attachmentSecret = getUnencryptedAttachmentSecret(context, unencryptedSecret);
+        else if (encryptedSecret != null) attachmentSecret = getEncryptedAttachmentSecret(encryptedSecret);
+        else attachmentSecret = createAndStoreAttachmentSecret(context);
 
         return attachmentSecret;
     }
 
     public synchronized AttachmentSecret setClassicKey(@NonNull Context context, @NonNull byte[] classicCipherKey, @NonNull byte[] classicMacKey) {
-        AttachmentSecret currentSecret    = getOrCreateAttachmentSecret();
+        AttachmentSecret currentSecret = getOrCreateAttachmentSecret();
         currentSecret.setClassicCipherKey(classicCipherKey);
         currentSecret.setClassicMacKey(classicMacKey);
 
@@ -74,7 +74,7 @@ public class AttachmentSecretProvider {
 
     private AttachmentSecret createAndStoreAttachmentSecret(@NonNull Context context) {
         SecureRandom random = new SecureRandom();
-        byte[]       secret = new byte[32];
+        byte[] secret = new byte[32];
         random.nextBytes(secret);
 
         AttachmentSecret attachmentSecret = new AttachmentSecret(null, null, secret);

@@ -15,24 +15,23 @@ public class SmsDeliveryListener extends BroadcastReceiver {
 
     private static final String TAG = SmsDeliveryListener.class.getSimpleName();
 
-    public static final String SENT_SMS_ACTION      = "com.muzima.SendReceiveService.SENT_SMS_ACTION";
+    public static final String SENT_SMS_ACTION = "com.muzima.SendReceiveService.SENT_SMS_ACTION";
     public static final String DELIVERED_SMS_ACTION = "com.muzima.SendReceiveService.DELIVERED_SMS_ACTION";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         JobManager jobManager = MuzimaApplication.getInstance(context).getJobManager();
-        long       messageId  = intent.getLongExtra("message_id", -1);
-        int        runAttempt = intent.getIntExtra("run_attempt", 0);
+        long messageId = intent.getLongExtra("message_id", -1);
+        int runAttempt = intent.getIntExtra("run_attempt", 0);
 
         switch (intent.getAction()) {
             case SENT_SMS_ACTION:
                 int result = getResultCode();
-
                 jobManager.add(new SmsSentJob(context, messageId, SENT_SMS_ACTION, result, runAttempt));
                 break;
+
             case DELIVERED_SMS_ACTION:
                 byte[] pdu = intent.getByteArrayExtra("pdu");
-
                 if (pdu == null) {
                     Log.w(TAG, "No PDU in delivery receipt!");
                     break;
@@ -54,7 +53,7 @@ public class SmsDeliveryListener extends BroadcastReceiver {
                 // Note: https://stackoverflow.com/a/33240109
                 if ("3gpp2".equals(intent.getStringExtra("format"))) {
                     Log.w(TAG, "Correcting for CDMA delivery receipt...");
-                    if      (status >> 24 <= 0) status = SmsDatabase.Status.STATUS_COMPLETE;
+                    if (status >> 24 <= 0) status = SmsDatabase.Status.STATUS_COMPLETE;
                     else if (status >> 24 == 2) status = SmsDatabase.Status.STATUS_PENDING;
                     else if (status >> 24 == 3) status = SmsDatabase.Status.STATUS_FAILED;
                 }

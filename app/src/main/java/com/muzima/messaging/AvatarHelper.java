@@ -29,7 +29,7 @@ public class AvatarHelper {
         File[] results = avatarDirectory.listFiles();
 
         if (results == null) return new LinkedList<>();
-        else                 return Stream.of(results).toList();
+        else return Stream.of(results).toList();
     }
 
     public static void delete(@NonNull Context context, @NonNull SignalAddress address) {

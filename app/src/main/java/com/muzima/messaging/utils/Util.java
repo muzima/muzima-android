@@ -205,7 +205,7 @@ public class Util {
             if (read == -1) throw new EOFException("Stream ended early");
 
             if (read + offset < len) offset += read;
-            else                		 return;
+            else return;
         }
     }
 
@@ -252,7 +252,7 @@ public class Util {
     public static Optional<Phonenumber.PhoneNumber> getDeviceNumber(Context context) {
         try {
             final String localNumber = ((TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
-            final Optional<String> countryIso  = getSimCountryIso(context);
+            final Optional<String> countryIso = getSimCountryIso(context);
 
             if (TextUtils.isEmpty(localNumber)) return Optional.absent();
             if (!countryIso.isPresent()) return Optional.absent();
@@ -377,7 +377,7 @@ public class Util {
 
     public static void runOnMain(final @NonNull Runnable runnable) {
         if (isMainThread()) runnable.run();
-        else                handler.post(runnable);
+        else handler.post(runnable);
     }
 
     public static void runOnMainDelayed(final @NonNull Runnable runnable, long delayMillis) {

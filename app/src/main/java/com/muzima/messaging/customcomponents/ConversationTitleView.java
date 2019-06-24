@@ -28,8 +28,8 @@ public class ConversationTitleView extends RelativeLayout {
     private ImageView back;
     private AvatarImageView avatar;
     private TextView title;
-    private TextView        subtitle;
-    private ImageView       verified;
+    private TextView subtitle;
+    private ImageView verified;
 
     public ConversationTitleView(Context context) {
         this(context, null);
@@ -44,20 +44,20 @@ public class ConversationTitleView extends RelativeLayout {
     public void onFinishInflate() {
         super.onFinishInflate();
 
-        this.back     = ViewUtil.findById(this, R.id.up_button);
-        this.content  = ViewUtil.findById(this, R.id.content);
-        this.title    = ViewUtil.findById(this, R.id.title);
+        this.back = ViewUtil.findById(this, R.id.up_button);
+        this.content = ViewUtil.findById(this, R.id.content);
+        this.title = ViewUtil.findById(this, R.id.title);
         this.subtitle = ViewUtil.findById(this, R.id.subtitle);
         this.verified = ViewUtil.findById(this, R.id.verified_indicator);
-        this.avatar   = ViewUtil.findById(this, R.id.contact_photo_image);
+        this.avatar = ViewUtil.findById(this, R.id.contact_photo_image);
 
         ViewUtil.setTextViewGravityStart(this.title, getContext());
         ViewUtil.setTextViewGravityStart(this.subtitle, getContext());
     }
 
     public void setTitle(@NonNull GlideRequests glideRequests, @Nullable SignalRecipient recipient) {
-        if      (recipient == null) setComposeTitle();
-        else                        setRecipientTitle(recipient);
+        if (recipient == null) setComposeTitle();
+        else setRecipientTitle(recipient);
 
         if (recipient != null && recipient.isBlocked()) {
             title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_block_white_18dp, 0, 0, 0);
@@ -99,9 +99,9 @@ public class ConversationTitleView extends RelativeLayout {
     }
 
     private void setRecipientTitle(SignalRecipient recipient) {
-        if      (recipient.isGroupRecipient())           setGroupRecipientTitle(recipient);
+        if (recipient.isGroupRecipient()) setGroupRecipientTitle(recipient);
         else if (TextUtils.isEmpty(recipient.getName())) setNonContactRecipientTitle(recipient);
-        else                                             setContactRecipientTitle(recipient);
+        else  setContactRecipientTitle(recipient);
     }
 
     private void setGroupRecipientTitle(SignalRecipient recipient) {
@@ -133,7 +133,7 @@ public class ConversationTitleView extends RelativeLayout {
         this.title.setText(recipient.getName());
 
         if (recipient.getCustomLabel() != null) this.subtitle.setText(recipient.getCustomLabel());
-        else                                    this.subtitle.setText(recipient.getAddress().serialize());
+        else this.subtitle.setText(recipient.getAddress().serialize());
 
         this.subtitle.setVisibility(View.VISIBLE);
     }

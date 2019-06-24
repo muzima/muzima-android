@@ -35,10 +35,10 @@ public class MultiDeviceVerifiedUpdateJob extends ContextJob implements Injectab
 
     private static final String TAG = MultiDeviceVerifiedUpdateJob.class.getSimpleName();
 
-    private static final String KEY_DESTINATION     = "destination";
-    private static final String KEY_IDENTITY_KEY    = "identity_key";
+    private static final String KEY_DESTINATION = "destination";
+    private static final String KEY_IDENTITY_KEY = "identity_key";
     private static final String KEY_VERIFIED_STATUS = "verified_status";
-    private static final String KEY_TIMESTAMP       = "timestamp";
+    private static final String KEY_TIMESTAMP = "timestamp";
 
     @Inject
     transient SignalServiceMessageSender messageSender;
@@ -58,17 +58,17 @@ public class MultiDeviceVerifiedUpdateJob extends ContextJob implements Injectab
                 .withGroupId("__MULTI_DEVICE_VERIFIED_UPDATE__")
                 .create());
 
-        this.destination    = destination.serialize();
-        this.identityKey    = identityKey.serialize();
+        this.destination = destination.serialize();
+        this.identityKey = identityKey.serialize();
         this.verifiedStatus = verifiedStatus;
-        this.timestamp      = System.currentTimeMillis();
+        this.timestamp = System.currentTimeMillis();
     }
 
     @Override
     protected void initialize(@NonNull SafeData data) {
-        destination    = data.getString(KEY_DESTINATION);
+        destination = data.getString(KEY_DESTINATION);
         verifiedStatus = VerifiedStatus.forState(data.getInt(KEY_VERIFIED_STATUS));
-        timestamp      = data.getLong(KEY_TIMESTAMP);
+        timestamp = data.getLong(KEY_TIMESTAMP);
 
         try {
             identityKey = Base64.decode(data.getString(KEY_IDENTITY_KEY));
@@ -78,8 +78,7 @@ public class MultiDeviceVerifiedUpdateJob extends ContextJob implements Injectab
     }
 
     @Override
-    protected @NonNull
-    Data serialize(@NonNull Data.Builder dataBuilder) {
+    protected @NonNull Data serialize(@NonNull Data.Builder dataBuilder) {
         return dataBuilder.putString(KEY_DESTINATION, destination)
                 .putString(KEY_IDENTITY_KEY, Base64.encodeBytes(identityKey))
                 .putInt(KEY_VERIFIED_STATUS, verifiedStatus.toInt())
@@ -100,9 +99,9 @@ public class MultiDeviceVerifiedUpdateJob extends ContextJob implements Injectab
                 return;
             }
 
-            SignalAddress                       canonicalDestination = SignalAddress.fromSerialized(destination);
-            VerifiedMessage.VerifiedState verifiedState        = getVerifiedState(verifiedStatus);
-            VerifiedMessage               verifiedMessage      = new VerifiedMessage(canonicalDestination.toPhoneString(), new IdentityKey(identityKey, 0), verifiedState, timestamp);
+            SignalAddress canonicalDestination = SignalAddress.fromSerialized(destination);
+            VerifiedMessage.VerifiedState verifiedState = getVerifiedState(verifiedStatus);
+            VerifiedMessage verifiedMessage = new VerifiedMessage(canonicalDestination.toPhoneString(), new IdentityKey(identityKey, 0), verifiedState, timestamp);
 
             messageSender.sendMessage(SignalServiceSyncMessage.forVerified(verifiedMessage),
                     UnidentifiedAccessUtil.getAccessFor(context, SignalRecipient.from(context, SignalAddress.fromSerialized(destination), false)));
@@ -115,10 +114,17 @@ public class MultiDeviceVerifiedUpdateJob extends ContextJob implements Injectab
         VerifiedMessage.VerifiedState verifiedState;
 
         switch (status) {
-            case DEFAULT:    verifiedState = VerifiedMessage.VerifiedState.DEFAULT;    break;
-            case VERIFIED:   verifiedState = VerifiedMessage.VerifiedState.VERIFIED;   break;
-            case UNVERIFIED: verifiedState = VerifiedMessage.VerifiedState.UNVERIFIED; break;
-            default: throw new AssertionError("Unknown status: " + verifiedStatus);
+            case DEFAULT:
+                 verifiedState = VerifiedMessage.VerifiedState.DEFAULT;
+                 break;
+            case VERIFIED:
+                 verifiedState = VerifiedMessage.VerifiedState.VERIFIED;
+                 break;
+            case UNVERIFIED:
+                 verifiedState = VerifiedMessage.VerifiedState.UNVERIFIED;
+                 break;
+            default:
+                 throw new AssertionError("Unknown status: " + verifiedStatus);
         }
 
         return verifiedState;

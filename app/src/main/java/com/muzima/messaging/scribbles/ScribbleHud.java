@@ -107,22 +107,22 @@ public class ScribbleHud extends InputAwareLayout implements ViewTreeObserver.On
         inflate(getContext(), R.layout.scribble_hud, this);
         setOrientation(VERTICAL);
 
-        drawButton      = findViewById(R.id.scribble_draw_button);
+        drawButton = findViewById(R.id.scribble_draw_button);
         highlightButton = findViewById(R.id.scribble_highlight_button);
-        textButton      = findViewById(R.id.scribble_text_button);
-        stickerButton   = findViewById(R.id.scribble_sticker_button);
-        undoButton      = findViewById(R.id.scribble_undo_button);
-        deleteButton    = findViewById(R.id.scribble_delete_button);
-        saveButton      = findViewById(R.id.scribble_save_button);
-        colorPicker     = findViewById(R.id.scribble_color_picker);
-        colorPalette    = findViewById(R.id.scribble_color_palette);
-        inputContainer  = findViewById(R.id.scribble_compose_container);
-        composeText     = findViewById(R.id.scribble_compose_text);
-        sendButton      = findViewById(R.id.scribble_send_button);
-        sendButtonBkg   = findViewById(R.id.scribble_send_button_bkg);
-        emojiToggle     = findViewById(R.id.scribble_emoji_toggle);
-        emojiDrawer     = new Stub<>(findViewById(R.id.scribble_emoji_drawer_stub));
-        charactersLeft  = findViewById(R.id.scribble_characters_left);
+        textButton = findViewById(R.id.scribble_text_button);
+        stickerButton = findViewById(R.id.scribble_sticker_button);
+        undoButton = findViewById(R.id.scribble_undo_button);
+        deleteButton = findViewById(R.id.scribble_delete_button);
+        saveButton = findViewById(R.id.scribble_save_button);
+        colorPicker = findViewById(R.id.scribble_color_picker);
+        colorPalette = findViewById(R.id.scribble_color_palette);
+        inputContainer = findViewById(R.id.scribble_compose_container);
+        composeText = findViewById(R.id.scribble_compose_text);
+        sendButton = findViewById(R.id.scribble_send_button);
+        sendButtonBkg = findViewById(R.id.scribble_send_button_bkg);
+        emojiToggle = findViewById(R.id.scribble_emoji_toggle);
+        emojiDrawer = new Stub<>(findViewById(R.id.scribble_emoji_drawer_stub));
+        charactersLeft = findViewById(R.id.scribble_characters_left);
 
         initializeViews();
         setMode(Mode.NONE);
@@ -228,11 +228,21 @@ public class ScribbleHud extends InputAwareLayout implements ViewTreeObserver.On
 
     private void setMode(@NonNull Mode mode, boolean notify) {
         switch (mode) {
-            case NONE:      presentModeNone();      break;
-            case DRAW:      presentModeDraw();      break;
-            case HIGHLIGHT: presentModeHighlight(); break;
-            case TEXT:      presentModeText();      break;
-            case STICKER:   presentModeSticker();   break;
+            case NONE:
+                 presentModeNone();
+                 break;
+            case DRAW:
+                 presentModeDraw();
+                 break;
+            case HIGHLIGHT:
+                 presentModeHighlight();
+                 break;
+            case TEXT:
+                 presentModeText();
+                 break;
+            case STICKER:
+                 presentModeSticker();
+                 break;
         }
 
         if (notify && eventListener != null) {
@@ -323,9 +333,9 @@ public class ScribbleHud extends InputAwareLayout implements ViewTreeObserver.On
     }
 
     private void presentCharactersRemaining() {
-        String          messageBody     = composeText.getTextTrimmed();
+        String messageBody = composeText.getTextTrimmed();
         TransportOption transportOption = sendButton.getSelectedTransport();
-        CharacterCalculator.CharacterState characterState  = transportOption.calculateCharacters(messageBody);
+        CharacterCalculator.CharacterState characterState = transportOption.calculateCharacters(messageBody);
 
         if (characterState.charactersRemaining <= 15 || characterState.messagesSpent > 1) {
             charactersLeft.setText(String.format(locale,

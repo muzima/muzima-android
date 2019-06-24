@@ -34,7 +34,7 @@ public class BucketedThreadMediaLoader extends AsyncTaskLoader<BucketedThreadMed
 
     public BucketedThreadMediaLoader(@NonNull Context context, @NonNull SignalAddress address) {
         super(context);
-        this.address  = address;
+        this.address = address;
         this.observer = new ForceLoadContentObserver();
 
         onContentChanged();
@@ -74,21 +74,21 @@ public class BucketedThreadMediaLoader extends AsyncTaskLoader<BucketedThreadMed
 
     public static class BucketedThreadMedia {
 
-        private final TimeBucket   TODAY;
-        private final TimeBucket   YESTERDAY;
-        private final TimeBucket   THIS_WEEK;
-        private final TimeBucket   THIS_MONTH;
+        private final TimeBucket TODAY;
+        private final TimeBucket YESTERDAY;
+        private final TimeBucket THIS_WEEK;
+        private final TimeBucket THIS_MONTH;
         private final MonthBuckets OLDER;
 
         private final TimeBucket[] TIME_SECTIONS;
 
         public BucketedThreadMedia(@NonNull Context context) {
-            this.TODAY         = new TimeBucket(context.getString(R.string.general_today), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -1), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, 1000));
-            this.YESTERDAY     = new TimeBucket(context.getString(R.string.general_yesterday), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -2), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -1));
-            this.THIS_WEEK     = new TimeBucket(context.getString(R.string.general_this_week), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -7), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -2));
-            this.THIS_MONTH    = new TimeBucket(context.getString(R.string.general_this_month), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -30), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -7));
+            this.TODAY = new TimeBucket(context.getString(R.string.general_today), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -1), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, 1000));
+            this.YESTERDAY = new TimeBucket(context.getString(R.string.general_yesterday), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -2), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -1));
+            this.THIS_WEEK = new TimeBucket(context.getString(R.string.general_this_week), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -7), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -2));
+            this.THIS_MONTH = new TimeBucket(context.getString(R.string.general_this_month), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -30), TimeBucket.addToCalendar(Calendar.DAY_OF_YEAR, -7));
             this.TIME_SECTIONS = new TimeBucket[]{TODAY, YESTERDAY, THIS_WEEK, THIS_MONTH};
-            this.OLDER         = new MonthBuckets();
+            this.OLDER = new MonthBuckets();
         }
 
 
@@ -114,35 +114,35 @@ public class BucketedThreadMediaLoader extends AsyncTaskLoader<BucketedThreadMed
             List<TimeBucket> activeTimeBuckets = Stream.of(TIME_SECTIONS).filter(timeBucket -> !timeBucket.isEmpty()).toList();
 
             if (section < activeTimeBuckets.size()) return activeTimeBuckets.get(section).getItemCount();
-            else                                    return OLDER.getSectionItemCount(section - activeTimeBuckets.size());
+            else return OLDER.getSectionItemCount(section - activeTimeBuckets.size());
         }
 
         public MediaDatabase.MediaRecord get(int section, int item) {
             List<TimeBucket> activeTimeBuckets = Stream.of(TIME_SECTIONS).filter(timeBucket -> !timeBucket.isEmpty()).toList();
 
             if (section < activeTimeBuckets.size()) return activeTimeBuckets.get(section).getItem(item);
-            else                                    return OLDER.getItem(section - activeTimeBuckets.size(), item);
+            else return OLDER.getItem(section - activeTimeBuckets.size(), item);
         }
 
         public String getName(int section, Locale locale) {
             List<TimeBucket> activeTimeBuckets = Stream.of(TIME_SECTIONS).filter(timeBucket -> !timeBucket.isEmpty()).toList();
 
             if (section < activeTimeBuckets.size()) return activeTimeBuckets.get(section).getName();
-            else                                    return OLDER.getName(section - activeTimeBuckets.size(), locale);
+            else return OLDER.getName(section - activeTimeBuckets.size(), locale);
         }
 
         private static class TimeBucket {
 
             private final List<MediaDatabase.MediaRecord> records = new LinkedList<>();
 
-            private final long   startTime;
-            private final long   endtime;
+            private final long startTime;
+            private final long endtime;
             private final String name;
 
             TimeBucket(String name, long startTime, long endtime) {
-                this.name      = name;
+                this.name = name;
                 this.startTime = startTime;
-                this.endtime   = endtime;
+                this.endtime = endtime;
             }
 
             void add(MediaDatabase.MediaRecord record) {
@@ -184,9 +184,9 @@ public class BucketedThreadMediaLoader extends AsyncTaskLoader<BucketedThreadMed
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(record.getDate());
 
-                int  year  = calendar.get(Calendar.YEAR) - 1900;
-                int  month = calendar.get(Calendar.MONTH);
-                Date date  = new Date(year, month, 1);
+                int year = calendar.get(Calendar.YEAR) - 1900;
+                int month = calendar.get(Calendar.MONTH);
+                Date date = new Date(year, month, 1);
 
                 if (months.containsKey(date)) {
                     months.get(date).add(record);

@@ -5,26 +5,26 @@ import com.muzima.model.SignalRecipient;
 
 public class OutgoingTextMessage {
     private final SignalRecipient recipient;
-    private final String    message;
-    private final int       subscriptionId;
-    private final long      expiresIn;
+    private final String message;
+    private final int subscriptionId;
+    private final long expiresIn;
 
     public OutgoingTextMessage(SignalRecipient recipient, String message, int subscriptionId) {
         this(recipient, message, 0, subscriptionId);
     }
 
     public OutgoingTextMessage(SignalRecipient recipient, String message, long expiresIn, int subscriptionId) {
-        this.recipient      = recipient;
-        this.message        = message;
-        this.expiresIn      = expiresIn;
+        this.recipient = recipient;
+        this.message = message;
+        this.expiresIn = expiresIn;
         this.subscriptionId = subscriptionId;
     }
 
     protected OutgoingTextMessage(OutgoingTextMessage base, String body) {
-        this.recipient      = base.getRecipient();
+        this.recipient = base.getRecipient();
         this.subscriptionId = base.getSubscriptionId();
-        this.expiresIn      = base.getExpiresIn();
-        this.message        = body;
+        this.expiresIn = base.getExpiresIn();
+        this.message = body;
     }
 
     public long getExpiresIn() {

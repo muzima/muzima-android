@@ -148,7 +148,7 @@ public class PassphrasePromptActivity extends PassphraseActivity {
     private void initializeResources() {
 
         ImageButton okButton = findViewById(R.id.ok_button);
-        Toolbar toolbar  = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         showButton = findViewById(R.id.passphrase_visibility);
         hideButton = findViewById(R.id.passphrase_visibility_off);

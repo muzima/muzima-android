@@ -48,7 +48,7 @@ public abstract class FullBackupBase {
         private final int count;
 
         BackupEvent(Type type, int count) {
-            this.type  = type;
+            this.type = type;
             this.count = count;
         }
 

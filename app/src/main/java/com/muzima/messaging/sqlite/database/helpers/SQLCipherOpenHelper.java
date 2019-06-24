@@ -42,7 +42,7 @@ public class SQLCipherOpenHelper extends SQLiteOpenHelper {
     @SuppressWarnings("unused")
     private static final String TAG = SQLCipherOpenHelper.class.getSimpleName();
 
-    private static final int RECIPIENT_CALL_RINGTONE_VERSION  = 2;
+    private static final int RECIPIENT_CALL_RINGTONE_VERSION = 2;
     private static final int MIGRATE_PREKEYS_VERSION = 3;
     private static final int MIGRATE_SESSIONS_VERSION = 4;
     private static final int NO_MORE_IMAGE_THUMBNAILS_VERSION = 5;
@@ -118,7 +118,7 @@ public class SQLCipherOpenHelper extends SQLiteOpenHelper {
             MasterSecret masterSecret = KeyCachingService.getMasterSecret(context);
 
             if (masterSecret != null) SQLCipherMigrationHelper.migrateCiphertext(context, masterSecret, legacyDb, db, null);
-            else  TextSecurePreferences.setNeedsSqlCipherMigration(context, true);
+            else TextSecurePreferences.setNeedsSqlCipherMigration(context, true);
 
             if (!PreKeyMigrationHelper.migratePreKeys(context, db)) {
                 MuzimaApplication.getInstance(context).getJobManager().add(new RefreshPreKeysJob(context));
@@ -261,7 +261,7 @@ public class SQLCipherOpenHelper extends SQLiteOpenHelper {
                         Uri messageSoundUri = messageSound != null ? Uri.parse(messageSound) : null;
                         int vibrateState = cursor.getInt(cursor.getColumnIndexOrThrow("vibrate"));
                         String displayName = NotificationChannels.getChannelDisplayNameFor(context, systemName, profileName, address);
-                        boolean vibrateEnabled  = vibrateState == 0 ? TextSecurePreferences.isNotificationVibrateEnabled(context) : vibrateState == 1;
+                        boolean vibrateEnabled = vibrateState == 0 ? TextSecurePreferences.isNotificationVibrateEnabled(context) : vibrateState == 1;
 
                         if (address.isGroup()) {
                             try(Cursor groupCursor = db.rawQuery("SELECT title FROM groups WHERE group_id = ?", new String[] { address.toGroupString() })) {

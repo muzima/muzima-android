@@ -17,7 +17,7 @@ public class ProximityLock {
     private final Optional<PowerManager.WakeLock> proximityLock;
 
     private static final int PROXIMITY_SCREEN_OFF_WAKE_LOCK = 32;
-    private static final int WAIT_FOR_PROXIMITY_NEGATIVE    = 1;
+    private static final int WAIT_FOR_PROXIMITY_NEGATIVE = 1;
 
     ProximityLock(PowerManager pm) {
         proximityLock = getProximityLock(pm);

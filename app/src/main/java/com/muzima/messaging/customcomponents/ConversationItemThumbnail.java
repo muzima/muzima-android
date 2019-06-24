@@ -29,12 +29,12 @@ public class ConversationItemThumbnail extends FrameLayout {
 
     private static final String TAG = ConversationItemThumbnail.class.getSimpleName();
 
-    private final float[] radii      = new float[8];
-    private final RectF bounds     = new RectF();
-    private final Path corners    = new Path();
+    private final float[] radii = new float[8];
+    private final RectF bounds = new RectF();
+    private final Path corners = new Path();
 
-    private ThumbnailView          thumbnail;
-    private AlbumThumbnailView     album;
+    private ThumbnailView thumbnail;
+    private AlbumThumbnailView album;
     private ImageView shade;
     private ConversationItemFooter footer;
     private CornerMask cornerMask;
@@ -66,10 +66,10 @@ public class ConversationItemThumbnail extends FrameLayout {
 
         outlinePaint.setColor(ThemeUtils.getThemedColor(getContext(), R.attr.conversation_item_image_outline_color));
 
-        this.thumbnail  = findViewById(R.id.conversation_thumbnail_image);
-        this.album      = findViewById(R.id.conversation_thumbnail_album);
-        this.shade      = findViewById(R.id.conversation_thumbnail_shade);
-        this.footer     = findViewById(R.id.conversation_thumbnail_footer);
+        this.thumbnail = findViewById(R.id.conversation_thumbnail_image);
+        this.album = findViewById(R.id.conversation_thumbnail_album);
+        this.shade = findViewById(R.id.conversation_thumbnail_shade);
+        this.footer = findViewById(R.id.conversation_thumbnail_footer);
         this.cornerMask = new CornerMask(this);
 
         if (attrs != null) {
@@ -98,9 +98,9 @@ public class ConversationItemThumbnail extends FrameLayout {
         if (album.getVisibility() != VISIBLE) {
             final float halfStrokeWidth = outlinePaint.getStrokeWidth() / 2;
 
-            bounds.left   = halfStrokeWidth;
-            bounds.top    = halfStrokeWidth;
-            bounds.right  = canvas.getWidth() - halfStrokeWidth;
+            bounds.left = halfStrokeWidth;
+            bounds.top = halfStrokeWidth;
+            bounds.right = canvas.getWidth() - halfStrokeWidth;
             bounds.bottom = canvas.getHeight() - halfStrokeWidth;
 
             corners.reset();

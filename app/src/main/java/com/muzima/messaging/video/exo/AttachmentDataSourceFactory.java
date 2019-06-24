@@ -21,7 +21,7 @@ public class AttachmentDataSourceFactory implements DataSource.Factory {
     {
         this.context = context;
         this.defaultDataSourceFactory = defaultDataSourceFactory;
-        this.listener  = listener;
+        this.listener = listener;
     }
 
     @Override

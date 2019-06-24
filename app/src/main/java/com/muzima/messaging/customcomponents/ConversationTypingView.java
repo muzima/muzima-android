@@ -28,8 +28,8 @@ public class ConversationTypingView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        avatar    = findViewById(R.id.typing_avatar);
-        bubble    = findViewById(R.id.typing_bubble);
+        avatar = findViewById(R.id.typing_avatar);
+        bubble = findViewById(R.id.typing_bubble);
         indicator = findViewById(R.id.typing_indicator);
     }
 

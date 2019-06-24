@@ -412,8 +412,8 @@ public class RecipientDatabase extends Database {
     }
 
     public List<SignalAddress> getRegistered() {
-        SQLiteDatabase db  = databaseHelper.getReadableDatabase();
-        List<SignalAddress>  results = new LinkedList<>();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        List<SignalAddress> results = new LinkedList<>();
 
         try (Cursor cursor = db.query(TABLE_NAME, new String[] {ADDRESS}, REGISTERED + " = ?", new String[] {"1"}, null, null, null)) {
             while (cursor != null && cursor.moveToNext()) {
@@ -472,7 +472,7 @@ public class RecipientDatabase extends Database {
 
         try (Cursor cursor = db.query(TABLE_NAME, new String[] {REGISTERED}, ADDRESS + " = ?", new String[] {address.serialize()}, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) return RegisteredState.fromId(cursor.getInt(0));
-            else  return RegisteredState.UNKNOWN;
+            else return RegisteredState.UNKNOWN;
         }
     }
 

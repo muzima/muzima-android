@@ -52,7 +52,7 @@ public class ScribbleFragment extends Fragment implements ScribbleHud.EventListe
     private static final String TAG = ScribbleFragment.class.getSimpleName();
 
     private static final String KEY_IMAGE_URI = "image_uri";
-    private static final String KEY_LOCALE    = "locale";
+    private static final String KEY_LOCALE = "locale";
     private static final String KEY_TRANSPORT = "compose_mode";
 
     public static final int SELECT_STICKER_REQUEST_CODE = 123;
@@ -93,8 +93,8 @@ public class ScribbleFragment extends Fragment implements ScribbleHud.EventListe
         super.onViewCreated(view, savedInstanceState);
 
         this.glideRequests = GlideApp.with(this);
-        this.scribbleHud   = view.findViewById(R.id.scribble_hud);
-        this.scribbleView  = view.findViewById(R.id.scribble_view);
+        this.scribbleHud = view.findViewById(R.id.scribble_hud);
+        this.scribbleView = view.findViewById(R.id.scribble_view);
 
         scribbleHud.setEventListener(this);
         scribbleHud.setTransport(Optional.fromNullable(getArguments().getParcelable(KEY_TRANSPORT)));
@@ -116,7 +116,7 @@ public class ScribbleFragment extends Fragment implements ScribbleHud.EventListe
 
     private void addSticker(final Bitmap pica) {
         Util.runOnMain(() -> {
-            Layer layer  = new Layer();
+            Layer layer = new Layer();
             ImageEntity entity = new ImageEntity(layer, pica, scribbleView.getWidth(), scribbleView.getHeight());
 
             scribbleView.addEntityAndPosition(entity);
@@ -153,7 +153,7 @@ public class ScribbleFragment extends Fragment implements ScribbleHud.EventListe
     }
 
     protected void addTextSticker() {
-        TextLayer textLayer  = createTextLayer();
+        TextLayer textLayer = createTextLayer();
         TextEntity textEntity = new TextEntity(textLayer, scribbleView.getWidth(), scribbleView.getHeight());
         scribbleView.addEntityAndPosition(textEntity);
 
@@ -258,7 +258,7 @@ public class ScribbleFragment extends Fragment implements ScribbleHud.EventListe
             @Override
             public void onSuccess(Bitmap result) {
                 PersistentBlobProvider provider = PersistentBlobProvider.getInstance(getContext());
-                ByteArrayOutputStream baos     = new ByteArrayOutputStream();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 result.compress(Bitmap.CompressFormat.JPEG, 80, baos);
 
                 byte[] data = baos.toByteArray();

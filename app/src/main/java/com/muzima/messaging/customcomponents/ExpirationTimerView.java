@@ -64,7 +64,7 @@ public class ExpirationTimerView extends AppCompatImageView {
         synchronized (this) {
             visible = true;
             if (!stopped) return;
-            else          stopped = false;
+            else stopped = false;
         }
 
         Util.runOnMainDelayed(new AnimationUpdateRunnable(this), calculateAnimationDelay(this.startedAt, this.expiresIn));
@@ -77,7 +77,7 @@ public class ExpirationTimerView extends AppCompatImageView {
     }
 
     private float calculateProgress(long startedAt, long expiresIn) {
-        long  progressed      = System.currentTimeMillis() - startedAt;
+        long  progressed = System.currentTimeMillis() - startedAt;
         float percentComplete = (float)progressed / (float)expiresIn;
 
         return Math.max(0, Math.min(percentComplete, 1));
@@ -85,7 +85,7 @@ public class ExpirationTimerView extends AppCompatImageView {
 
     private long calculateAnimationDelay(long startedAt, long expiresIn) {
         long progressed = System.currentTimeMillis() - startedAt;
-        long remaining  = expiresIn - progressed;
+        long remaining = expiresIn - progressed;
 
         if (remaining < TimeUnit.SECONDS.toMillis(30)) {
             return 50;

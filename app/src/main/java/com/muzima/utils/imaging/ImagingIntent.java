@@ -67,7 +67,7 @@ public class ImagingIntent extends BaseActivity {
         setContentView(R.layout.activity_imaging);
         Intent i = getIntent();
         String imagePath = i.getStringExtra(KEY_IMAGE_PATH);
-        mBinaryDescription  = i.getStringExtra(KEY_IMAGE_CAPTION);
+        mBinaryDescription = i.getStringExtra(KEY_IMAGE_CAPTION);
         mSectionName = i.getStringExtra(KEY_SECTION_NAME);
 
         // we are not using formUuid in the media path anymore

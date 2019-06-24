@@ -22,16 +22,14 @@ import java.util.Map;
 
 public class PartDataSource implements DataSource {
 
-    private final @NonNull
-    Context context;
-    private final @Nullable
-    TransferListener listener;
+    private final @NonNull Context context;
+    private final @Nullable TransferListener listener;
 
     private Uri uri;
     private InputStream inputSteam;
 
     PartDataSource(@NonNull Context context, @Nullable TransferListener listener) {
-        this.context  = context.getApplicationContext();
+        this.context = context.getApplicationContext();
         this.listener = listener;
     }
 

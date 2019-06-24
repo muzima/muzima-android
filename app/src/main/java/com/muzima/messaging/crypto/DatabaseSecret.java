@@ -16,7 +16,7 @@ public class DatabaseSecret {
     }
 
     public DatabaseSecret(@NonNull String encoded) throws IOException {
-        this.key     = Hex.fromStringCondensed(encoded);
+        this.key = Hex.fromStringCondensed(encoded);
         this.encoded = encoded;
     }
 

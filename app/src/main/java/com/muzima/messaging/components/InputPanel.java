@@ -89,7 +89,7 @@ public class InputPanel extends LinearLayout
         this.quickAudioToggle = findViewById(R.id.quick_audio_toggle);
         this.buttonToggle = findViewById(R.id.button_toggle);
         this.recordingContainer = findViewById(R.id.recording_container);
-        this.recordTime  = new RecordTime(findViewById(R.id.record_time));
+        this.recordTime = new RecordTime(findViewById(R.id.record_time));
         this.slideToCancel = new SlideToCancel(findViewById(R.id.slide_to_cancel));
         this.microphoneRecorderView = findViewById(R.id.recorder_view);
         this.microphoneRecorderView.setListener(this);
@@ -178,7 +178,7 @@ public class InputPanel extends LinearLayout
         slideToCancel.moveTo(x);
 
         int   direction = ViewCompat.getLayoutDirection(this);
-        float position  = absoluteX / recordingContainer.getWidth();
+        float position = absoluteX / recordingContainer.getWidth();
 
         if (direction == ViewCompat.LAYOUT_DIRECTION_LTR && position <= 0.5 ||
                 direction == ViewCompat.LAYOUT_DIRECTION_RTL && position >= 0.6)

@@ -46,8 +46,8 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver implements In
     public void onReceive(Context context, Intent intent) {
         MuzimaApplication.getInstance(context).injectDependencies(this);
 
-        GoogleCloudMessaging gcm         = GoogleCloudMessaging.getInstance(context);
-        String               messageType = gcm.getMessageType(intent);
+        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
+        String messageType = gcm.getMessageType(intent);
 
         if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
             Log.i(TAG, "GCM message...");
@@ -59,7 +59,7 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver implements In
 
             String receiptData = intent.getStringExtra("receipt");
 
-            if      (!TextUtils.isEmpty(receiptData)) handleReceivedMessage(context, receiptData);
+            if (!TextUtils.isEmpty(receiptData)) handleReceivedMessage(context, receiptData);
             else if (intent.hasExtra("notification")) handleReceivedNotification(context);
         }
     }
@@ -78,15 +78,15 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver implements In
 
         TextSecurePreferences.setNeedsMessagePull(context, true);
 
-        long          startTime    = System.currentTimeMillis();
-        BroadcastReceiver.PendingResult callback     = goAsync();
+        long startTime = System.currentTimeMillis();
+        BroadcastReceiver.PendingResult callback = goAsync();
         PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        boolean       doze         = PowerManagerCompat.isDeviceIdleMode(powerManager);
-        boolean       network      = new NetworkRequirement(context).isPresent();
+        boolean doze = PowerManagerCompat.isDeviceIdleMode(powerManager);
+        boolean network = new NetworkRequirement(context).isPresent();
 
-        final Object         foregroundLock    = new Object();
+        final Object foregroundLock = new Object();
         final AtomicBoolean foregroundRunning = new AtomicBoolean(false);
-        final AtomicBoolean  taskCompleted     = new AtomicBoolean(false);
+        final AtomicBoolean taskCompleted = new AtomicBoolean(false);
 
         if (doze || !network) {
             Log.i(TAG, "Starting a foreground task because we may be operating in a constrained environment. Doze: " + doze + " Network: " + network);

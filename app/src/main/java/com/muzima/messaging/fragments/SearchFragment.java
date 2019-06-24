@@ -39,16 +39,16 @@ import java.util.concurrent.Executors;
 
 public class SearchFragment extends Fragment implements SearchListAdapter.EventListener{
 
-    public static final String TAG          = "SearchFragment";
+    public static final String TAG = "SearchFragment";
     public static final String EXTRA_LOCALE = "locale";
 
-    private TextView noResultsView;
+    private TextView noResultsView          ;
     private RecyclerView listView;
     private StickyHeaderDecoration listDecoration;
 
     private SearchViewModel viewModel;
     private SearchListAdapter listAdapter;
-    private String            pendingQuery;
+    private String pendingQuery;
     private Locale locale;
 
     public static SearchFragment newInstance(@NonNull Locale locale) {
@@ -90,9 +90,9 @@ public class SearchFragment extends Fragment implements SearchListAdapter.EventL
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         noResultsView = view.findViewById(R.id.search_no_results);
-        listView      = view.findViewById(R.id.search_list);
+        listView = view.findViewById(R.id.search_list);
 
-        listAdapter    = new SearchListAdapter(GlideApp.with(this), this, locale);
+        listAdapter = new SearchListAdapter(GlideApp.with(this), this, locale);
         listDecoration = new StickyHeaderDecoration(listAdapter, false, false);
 
         listView.setAdapter(listAdapter);

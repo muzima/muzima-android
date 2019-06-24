@@ -48,8 +48,7 @@ public class CreateSignedPreKeyJob extends ContextJob implements InjectableType 
     }
 
     @Override
-    protected @NonNull
-    Data serialize(@NonNull Data.Builder dataBuilder) {
+    protected @NonNull Data serialize(@NonNull Data.Builder dataBuilder) {
         return dataBuilder.build();
     }
 
@@ -65,7 +64,7 @@ public class CreateSignedPreKeyJob extends ContextJob implements InjectableType 
             return;
         }
 
-        IdentityKeyPair identityKeyPair    = IdentityKeyUtil.getIdentityKeyPair(context);
+        IdentityKeyPair identityKeyPair = IdentityKeyUtil.getIdentityKeyPair(context);
         SignedPreKeyRecord signedPreKeyRecord = PreKeyUtil.generateSignedPreKey(context, identityKeyPair, true);
 
         accountManager.setSignedPreKey(signedPreKeyRecord);

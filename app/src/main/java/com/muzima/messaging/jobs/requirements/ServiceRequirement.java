@@ -13,7 +13,7 @@ public class ServiceRequirement extends SimpleRequirement implements ContextDepe
     private transient Context context;
 
     public ServiceRequirement(Context context) {
-        this.context  = context;
+        this.context = context;
     }
 
     @Override

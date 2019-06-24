@@ -26,7 +26,7 @@ import java.util.List;
 public class RemoteReplyReceiver extends BroadcastReceiver {
 
     public static final String TAG = RemoteReplyReceiver.class.getSimpleName();
-    public static final String REPLY_ACTION  = "com.muzima.notifications.WEAR_REPLY";
+    public static final String REPLY_ACTION = "com.muzima.notifications.WEAR_REPLY";
     public static final String ADDRESS_EXTRA = "address";
 
     @SuppressLint("StaticFieldLeak")

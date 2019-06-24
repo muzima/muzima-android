@@ -103,7 +103,7 @@ public class SignalCommunicationModule {
     private SignalServiceMessageReceiver messageReceiver;
 
     public SignalCommunicationModule(Context context, SignalServiceNetworkAccess networkAccess) {
-        this.context       = context;
+        this.context = context;
         this.networkAccess = networkAccess;
     }
 

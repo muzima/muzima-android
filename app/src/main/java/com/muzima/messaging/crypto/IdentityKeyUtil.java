@@ -77,7 +77,7 @@ public class IdentityKeyUtil {
         if (!hasIdentityKey(context)) throw new AssertionError("There isn't one!");
 
         try {
-            IdentityKey  publicKey  = getIdentityKey(context);
+            IdentityKey publicKey = getIdentityKey(context);
             ECPrivateKey privateKey = Curve.decodePrivatePoint(Base64.decode(retrieve(context, IDENTITY_PRIVATE_KEY_PREF)));
 
             return new IdentityKeyPair(publicKey, privateKey);
@@ -87,9 +87,9 @@ public class IdentityKeyUtil {
     }
 
     public static void generateIdentityKeys(Context context) {
-        ECKeyPair    djbKeyPair     = Curve.generateKeyPair();
-        IdentityKey  djbIdentityKey = new IdentityKey(djbKeyPair.getPublicKey());
-        ECPrivateKey djbPrivateKey  = djbKeyPair.getPrivateKey();
+        ECKeyPair djbKeyPair = Curve.generateKeyPair();
+        IdentityKey djbIdentityKey = new IdentityKey(djbKeyPair.getPublicKey());
+        ECPrivateKey djbPrivateKey = djbKeyPair.getPrivateKey();
 
         save(context, IDENTITY_PUBLIC_KEY_PREF, Base64.encodeBytes(djbIdentityKey.serialize()));
         save(context, IDENTITY_PRIVATE_KEY_PREF, Base64.encodeBytes(djbPrivateKey.serialize()));
@@ -123,10 +123,10 @@ public class IdentityKeyUtil {
                                                             @NonNull MasterSecret masterSecret)
     {
         try {
-            MasterCipher masterCipher   = new MasterCipher(masterSecret);
-            byte[]       publicKeyBytes = Base64.decode(retrieve(context, IDENTITY_PUBLIC_KEY_CIPHERTEXT_LEGACY_PREF));
-            IdentityKey  identityKey    = new IdentityKey(publicKeyBytes, 0);
-            ECPrivateKey privateKey     = masterCipher.decryptKey(Base64.decode(retrieve(context, IDENTITY_PRIVATE_KEY_CIPHERTEXT_LEGACY_PREF)));
+            MasterCipher masterCipher = new MasterCipher(masterSecret);
+            byte[] publicKeyBytes = Base64.decode(retrieve(context, IDENTITY_PUBLIC_KEY_CIPHERTEXT_LEGACY_PREF));
+            IdentityKey identityKey = new IdentityKey(publicKeyBytes, 0);
+            ECPrivateKey privateKey = masterCipher.decryptKey(Base64.decode(retrieve(context, IDENTITY_PRIVATE_KEY_CIPHERTEXT_LEGACY_PREF)));
 
             return new IdentityKeyPair(identityKey, privateKey);
         } catch (IOException | InvalidKeyException e) {
@@ -140,8 +140,8 @@ public class IdentityKeyUtil {
     }
 
     private static void save(Context context, String key, String value) {
-        SharedPreferences preferences   = context.getSharedPreferences(MasterSecretUtil.PREFERENCES_NAME, 0);
-        Editor preferencesEditor        = preferences.edit();
+        SharedPreferences preferences = context.getSharedPreferences(MasterSecretUtil.PREFERENCES_NAME, 0);
+        Editor preferencesEditor = preferences.edit();
 
         preferencesEditor.putString(key, value);
         if (!preferencesEditor.commit()) throw new AssertionError("failed to save identity key/value to shared preferences");

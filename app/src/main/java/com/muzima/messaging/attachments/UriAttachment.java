@@ -5,10 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 public class UriAttachment extends Attachment {
-    private final @NonNull
-    Uri dataUri;
-    private final @Nullable
-    Uri thumbnailUri;
+    private final @NonNull Uri dataUri;
+    private final @Nullable Uri thumbnailUri;
 
     public UriAttachment(@NonNull Uri uri, @NonNull String contentType, int transferState, long size,
                          @Nullable String fileName, boolean voiceNote, boolean quote, @Nullable String caption)
@@ -22,7 +20,7 @@ public class UriAttachment extends Attachment {
                          boolean voiceNote, boolean quote, @Nullable String caption)
     {
         super(contentType, transferState, size, fileName, null, null, null, null, fastPreflightId, voiceNote, width, height, quote, caption);
-        this.dataUri      = dataUri;
+        this.dataUri = dataUri;
         this.thumbnailUri = thumbnailUri;
     }
 

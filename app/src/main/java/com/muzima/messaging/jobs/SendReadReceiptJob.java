@@ -33,16 +33,16 @@ public class SendReadReceiptJob extends ContextJob implements InjectableType {
 
     private static final String TAG = SendReadReceiptJob.class.getSimpleName();
 
-    private static final String KEY_ADDRESS     = "address";
+    private static final String KEY_ADDRESS = "address";
     private static final String KEY_MESSAGE_IDS = "message_ids";
-    private static final String KEY_TIMESTAMP   = "timestamp";
+    private static final String KEY_TIMESTAMP = "timestamp";
 
     @Inject
     transient SignalServiceMessageSender messageSender;
 
-    private String     address;
+    private String address;
     private List<Long> messageIds;
-    private long       timestamp;
+    private long timestamp;
 
     public SendReadReceiptJob(@NonNull Context context, @NonNull WorkerParameters workerParameters) {
         super(context, workerParameters);
@@ -53,14 +53,14 @@ public class SendReadReceiptJob extends ContextJob implements InjectableType {
                 .withNetworkRequirement()
                 .create());
 
-        this.address    = address.serialize();
+        this.address = address.serialize();
         this.messageIds = messageIds;
-        this.timestamp  = System.currentTimeMillis();
+        this.timestamp = System.currentTimeMillis();
     }
 
     @Override
     protected void initialize(@NonNull SafeData data) {
-        address   = data.getString(KEY_ADDRESS);
+        address = data.getString(KEY_ADDRESS);
         timestamp = data.getLong(KEY_TIMESTAMP);
 
         long[] ids = data.getLongArray(KEY_MESSAGE_IDS);
@@ -88,7 +88,7 @@ public class SendReadReceiptJob extends ContextJob implements InjectableType {
     public void onRun() throws IOException, UntrustedIdentityException {
         if (!TextSecurePreferences.isReadReceiptsEnabled(context)) return;
 
-        SignalServiceAddress remoteAddress  = new SignalServiceAddress(address);
+        SignalServiceAddress remoteAddress = new SignalServiceAddress(address);
         SignalServiceReceiptMessage receiptMessage = new SignalServiceReceiptMessage(SignalServiceReceiptMessage.Type.READ, messageIds, timestamp);
 
         messageSender.sendReceipt(remoteAddress,

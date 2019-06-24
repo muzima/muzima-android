@@ -25,7 +25,7 @@ public class TrimThreadJob extends ContextJob{
 
     public TrimThreadJob(Context context, long threadId) {
         super(context, JobParameters.newBuilder().withGroupId(TrimThreadJob.class.getSimpleName()).create());
-        this.context  = context;
+        this.context = context;
         this.threadId = threadId;
     }
 

@@ -22,7 +22,7 @@ public class DecryptableStreamLocalUriFetcher extends StreamLocalUriFetcher {
 
     DecryptableStreamLocalUriFetcher(Context context, Uri uri) {
         super(context.getContentResolver(), uri);
-        this.context      = context;
+        this.context = context;
     }
 
     @Override

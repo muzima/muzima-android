@@ -30,7 +30,7 @@ public class JobManager {
     private final WorkManager workManager;
 
     public JobManager(@NonNull Context context, @NonNull WorkManager workManager) {
-        this.context     = context;
+        this.context = context;
         this.workManager = workManager;
     }
 

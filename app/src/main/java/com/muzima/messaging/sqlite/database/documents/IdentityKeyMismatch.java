@@ -34,7 +34,7 @@ public class IdentityKeyMismatch {
     public IdentityKeyMismatch() {}
 
     public IdentityKeyMismatch(SignalAddress address, IdentityKey identityKey) {
-        this.address     = address.serialize();
+        this.address = address.serialize();
         this.identityKey = identityKey;
     }
 

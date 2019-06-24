@@ -47,10 +47,10 @@ public class ContactSelectionListItem extends LinearLayout implements RecipientM
     protected void onFinishInflate() {
         super.onFinishInflate();
         this.contactPhotoImage = findViewById(R.id.contact_photo_image);
-        this.numberView        = findViewById(R.id.number);
-        this.labelView         = findViewById(R.id.label);
-        this.nameView          = findViewById(R.id.name);
-        this.checkBox          = findViewById(R.id.check_box);
+        this.numberView = findViewById(R.id.number);
+        this.labelView = findViewById(R.id.label);
+        this.nameView = findViewById(R.id.name);
+        this.checkBox = findViewById(R.id.check_box);
 
         ViewUtil.setTextViewGravityStart(this.nameView, getContext());
     }
@@ -79,7 +79,7 @@ public class ContactSelectionListItem extends LinearLayout implements RecipientM
         setText(type, name, number, label);
 
         if (multiSelect) this.checkBox.setVisibility(View.VISIBLE);
-        else             this.checkBox.setVisibility(View.GONE);
+        else this.checkBox.setVisibility(View.GONE);
     }
 
     public void setChecked(boolean selected) {

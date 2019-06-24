@@ -47,8 +47,8 @@ public class UnidentifiedAccessUtil {
         }
 
         try {
-            byte[] theirUnidentifiedAccessKey       = getTargetUnidentifiedAccessKey(recipient);
-            byte[] ourUnidentifiedAccessKey         = getSelfUnidentifiedAccessKey(context);
+            byte[] theirUnidentifiedAccessKey = getTargetUnidentifiedAccessKey(recipient);
+            byte[] ourUnidentifiedAccessKey = getSelfUnidentifiedAccessKey(context);
             byte[] ourUnidentifiedAccessCertificate = TextSecurePreferences.getUnidentifiedAccessCertificate(context);
 
             if (TextSecurePreferences.isUniversalUnidentifiedAccess(context)) {
@@ -83,7 +83,7 @@ public class UnidentifiedAccessUtil {
         }
 
         try {
-            byte[] ourUnidentifiedAccessKey         = getSelfUnidentifiedAccessKey(context);
+            byte[] ourUnidentifiedAccessKey = getSelfUnidentifiedAccessKey(context);
             byte[] ourUnidentifiedAccessCertificate = TextSecurePreferences.getUnidentifiedAccessCertificate(context);
 
             if (TextSecurePreferences.isUniversalUnidentifiedAccess(context)) {
@@ -115,12 +115,12 @@ public class UnidentifiedAccessUtil {
         switch (recipient.resolve().getUnidentifiedAccessMode()) {
             case UNKNOWN:
                 if (theirProfileKey == null) return Util.getSecretBytes(16);
-                else                         return UnidentifiedAccess.deriveAccessKeyFrom(theirProfileKey);
+                else return UnidentifiedAccess.deriveAccessKeyFrom(theirProfileKey);
             case DISABLED:
                 return null;
             case ENABLED:
                 if (theirProfileKey == null) return null;
-                else                         return UnidentifiedAccess.deriveAccessKeyFrom(theirProfileKey);
+                else return UnidentifiedAccess.deriveAccessKeyFrom(theirProfileKey);
             case UNRESTRICTED:
                 return Util.getSecretBytes(16);
             default:

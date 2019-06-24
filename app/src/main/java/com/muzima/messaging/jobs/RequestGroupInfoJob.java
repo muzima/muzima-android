@@ -51,7 +51,7 @@ public class RequestGroupInfoJob extends ContextJob implements InjectableType {
                 .withRetryCount(50)
                 .create());
 
-        this.source  = source;
+        this.source = source;
         this.groupId = groupId;
     }
 

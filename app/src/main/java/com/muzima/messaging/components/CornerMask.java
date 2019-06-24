@@ -12,11 +12,11 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 public class CornerMask {
-    private final float[] radii      = new float[8];
+    private final float[] radii = new float[8];
     private final Paint clearPaint = new Paint();
-    private final Path outline    = new Path();
-    private final Path    corners    = new Path();
-    private final RectF bounds     = new RectF();
+    private final Path outline = new Path();
+    private final Path corners = new Path();
+    private final RectF bounds = new RectF();
 
     public CornerMask(@NonNull View view) {
         if (isLegacy()) {
@@ -32,9 +32,9 @@ public class CornerMask {
     }
 
     public void mask(Canvas canvas) {
-        bounds.left   = 0;
-        bounds.top    = 0;
-        bounds.right  = canvas.getWidth();
+        bounds.left = 0;
+        bounds.top = 0;
+        bounds.right = canvas.getWidth();
         bounds.bottom = canvas.getHeight();
 
         corners.reset();

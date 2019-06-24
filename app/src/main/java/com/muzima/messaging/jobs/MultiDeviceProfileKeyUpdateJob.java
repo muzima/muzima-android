@@ -68,8 +68,8 @@ public class MultiDeviceProfileKeyUpdateJob extends ContextJob implements Inject
         }
 
         Optional<byte[]> profileKey = Optional.of(ProfileKeyUtil.getProfileKey(getContext()));
-        ByteArrayOutputStream baos       = new ByteArrayOutputStream();
-        DeviceContactsOutputStream out        = new DeviceContactsOutputStream(baos);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DeviceContactsOutputStream out = new DeviceContactsOutputStream(baos);
 
         out.write(new DeviceContact(TextSecurePreferences.getLocalNumber(getContext()),
                 Optional.absent(),
@@ -86,7 +86,7 @@ public class MultiDeviceProfileKeyUpdateJob extends ContextJob implements Inject
                 .withLength(baos.toByteArray().length)
                 .build();
 
-        SignalServiceSyncMessage syncMessage      = SignalServiceSyncMessage.forContacts(new ContactsMessage(attachmentStream, false));
+        SignalServiceSyncMessage syncMessage = SignalServiceSyncMessage.forContacts(new ContactsMessage(attachmentStream, false));
 
         messageSender.sendMessage(syncMessage, UnidentifiedAccessUtil.getAccessForSync(context));
     }

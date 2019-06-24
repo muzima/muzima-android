@@ -29,17 +29,17 @@ public class RecyclerViewFastScroller extends LinearLayout {
     private @NonNull View handle;
     private @Nullable RecyclerView recyclerView;
 
-    private int            height;
+    private int height;
     private ObjectAnimator currentAnimator;
 
     private final RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
             if (handle.isSelected()) return;
-            final int   offset      = recyclerView.computeVerticalScrollOffset();
-            final int   range       = recyclerView.computeVerticalScrollRange();
-            final int   extent      = recyclerView.computeVerticalScrollExtent();
-            final int   offsetRange = Math.max(range - extent, 1);
+            final int offset = recyclerView.computeVerticalScrollOffset();
+            final int range = recyclerView.computeVerticalScrollRange();
+            final int extent = recyclerView.computeVerticalScrollExtent();
+            final int offsetRange = Math.max(range - extent, 1);
             setBubbleAndHandlePosition((float) Util.clamp(offset, 0, offsetRange) / offsetRange);
         }
     };

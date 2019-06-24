@@ -18,7 +18,7 @@ public class ContactPhotoFetcher implements DataFetcher<InputStream> {
         private InputStream inputStream;
 
         ContactPhotoFetcher(@NonNull Context context, @NonNull ContactPhoto contactPhoto) {
-            this.context      = context.getApplicationContext();
+            this.context = context.getApplicationContext();
             this.contactPhoto = contactPhoto;
         }
 

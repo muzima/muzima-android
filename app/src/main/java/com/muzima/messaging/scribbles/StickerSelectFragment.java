@@ -23,8 +23,8 @@ import com.muzima.messaging.mms.GlideRequests;
 public class StickerSelectFragment extends Fragment implements LoaderManager.LoaderCallbacks<String[]> {
 
     private RecyclerView recyclerView;
-    private GlideRequests            glideRequests;
-    private String                   assetDirectory;
+    private GlideRequests glideRequests;
+    private String assetDirectory;
     private StickerSelectionListener listener;
 
     public static StickerSelectFragment newInstance(String assetDirectory) {
@@ -50,7 +50,7 @@ public class StickerSelectFragment extends Fragment implements LoaderManager.Loa
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
 
-        this.glideRequests  = GlideApp.with(this);
+        this.glideRequests = GlideApp.with(this);
         this.assetDirectory = getArguments().getString("assetDirectory");
 
         getLoaderManager().initLoader(0, null, this);
@@ -79,12 +79,12 @@ public class StickerSelectFragment extends Fragment implements LoaderManager.Loa
     class StickersAdapter extends RecyclerView.Adapter<StickersAdapter.StickerViewHolder> {
 
         private final GlideRequests glideRequests;
-        private final String[]       stickerFiles;
+        private final String[] stickerFiles;
         private final LayoutInflater layoutInflater;
 
         StickersAdapter(@NonNull Context context, @NonNull GlideRequests glideRequests, @NonNull String[] stickerFiles) {
-            this.glideRequests  = glideRequests;
-            this.stickerFiles   = stickerFiles;
+            this.glideRequests = glideRequests;
+            this.stickerFiles = stickerFiles;
             this.layoutInflater = LayoutInflater.from(context);
         }
 

@@ -48,8 +48,8 @@ public class TextSecureIdentityKeyStore implements IdentityKeyStore {
     public boolean saveIdentity(SignalProtocolAddress address, IdentityKey identityKey, boolean nonBlockingApproval) {
         synchronized (LOCK) {
             IdentityDatabase identityDatabase = DatabaseFactory.getIdentityDatabase(context);
-            SignalAddress signalAddress    = SignalAddress.fromExternal(context, address.getName());
-            Optional<IdentityRecord> identityRecord   = identityDatabase.getIdentity(signalAddress);
+            SignalAddress signalAddress = SignalAddress.fromExternal(context, address.getName());
+            Optional<IdentityRecord> identityRecord = identityDatabase.getIdentity(signalAddress);
 
             if (!identityRecord.isPresent()) {
                 Log.i(TAG, "Saving new identity...");
@@ -94,17 +94,17 @@ public class TextSecureIdentityKeyStore implements IdentityKeyStore {
     public boolean isTrustedIdentity(SignalProtocolAddress address, IdentityKey identityKey, Direction direction) {
         synchronized (LOCK) {
             IdentityDatabase identityDatabase = DatabaseFactory.getIdentityDatabase(context);
-            String           ourNumber        = TextSecurePreferences.getLocalNumber(context);
-            SignalAddress          theirAddress     = SignalAddress.fromExternal(context, address.getName());
+            String ourNumber = TextSecurePreferences.getLocalNumber(context);
+            SignalAddress theirAddress = SignalAddress.fromExternal(context, address.getName());
 
             if (ourNumber.equals(address.getName()) || SignalAddress.fromSerialized(ourNumber).equals(theirAddress)) {
                 return identityKey.equals(IdentityKeyUtil.getIdentityKey(context));
             }
 
             switch (direction) {
-                case SENDING:   return isTrustedForSending(identityKey, identityDatabase.getIdentity(theirAddress));
+                case SENDING: return isTrustedForSending(identityKey, identityDatabase.getIdentity(theirAddress));
                 case RECEIVING: return true;
-                default:        throw new AssertionError("Unknown direction: " + direction);
+                default: throw new AssertionError("Unknown direction: " + direction);
             }
         }
     }

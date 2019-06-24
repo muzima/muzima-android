@@ -51,7 +51,7 @@ public class InputAwareLayout extends KeyboardAwareLinearLayout implements Keybo
 
     public void hideCurrentInput(EditText imeTarget) {
         if (isKeyboardOpen()) hideSoftkey(imeTarget, null);
-        else                  hideAttachedInput(false);
+        else hideAttachedInput(false);
     }
 
     public void hideAttachedInput(boolean instant) {

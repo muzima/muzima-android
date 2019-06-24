@@ -14,11 +14,8 @@ import java.util.concurrent.FutureTask;
 public class ListenableFutureTask<V> extends FutureTask<V> {
     private final List<FutureTaskListener<V>> listeners = new LinkedList<>();
 
-    @Nullable
-    private final Object identifier;
-
-    @Nullable
-    private final Executor callbackExecutor;
+    @Nullable private final Object identifier;
+    @Nullable private final Executor callbackExecutor;
 
     public ListenableFutureTask(Callable<V> callable) {
         this(callable, null);
@@ -30,7 +27,7 @@ public class ListenableFutureTask<V> extends FutureTask<V> {
 
     public ListenableFutureTask(Callable<V> callable, @Nullable Object identifier, @Nullable Executor callbackExecutor) {
         super(callable);
-        this.identifier       = identifier;
+        this.identifier = identifier;
         this.callbackExecutor = callbackExecutor;
     }
 
@@ -46,7 +43,7 @@ public class ListenableFutureTask<V> extends FutureTask<V> {
                 return result;
             }
         });
-        this.identifier       = identifier;
+        this.identifier = identifier;
         this.callbackExecutor = null;
         this.run();
     }
@@ -79,7 +76,7 @@ public class ListenableFutureTask<V> extends FutureTask<V> {
         };
 
         if (callbackExecutor == null) callbackRunnable.run();
-        else                          callbackExecutor.execute(callbackRunnable);
+        else callbackExecutor.execute(callbackRunnable);
     }
 
     private void callback(FutureTaskListener<V> listener) {
@@ -106,6 +103,6 @@ public class ListenableFutureTask<V> extends FutureTask<V> {
     @Override
     public int hashCode() {
         if (identifier != null) return identifier.hashCode();
-        else                    return super.hashCode();
+        else return super.hashCode();
     }
 }

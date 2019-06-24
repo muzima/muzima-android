@@ -17,10 +17,10 @@ import com.muzima.messaging.utils.RecipientsFormatter;
 public class RecipientsAdapter extends ResourceCursorAdapter {
 
     public static final int CONTACT_ID_INDEX = 1;
-    public static final int TYPE_INDEX       = 2;
-    public static final int NUMBER_INDEX     = 3;
-    public static final int LABEL_INDEX      = 4;
-    public static final int NAME_INDEX       = 5;
+    public static final int TYPE_INDEX = 2;
+    public static final int NUMBER_INDEX = 3;
+    public static final int LABEL_INDEX = 4;
+    public static final int NAME_INDEX = 5;
 
     private final Context mContext;
     private final ContentResolver mContentResolver;

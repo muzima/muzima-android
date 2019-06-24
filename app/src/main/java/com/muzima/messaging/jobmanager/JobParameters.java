@@ -41,7 +41,7 @@ public class JobParameters {
                           long retryUntil)
     {
         this.groupId = groupId;
-        this.ignoreDuplicates  = ignoreDuplicates;
+        this.ignoreDuplicates = ignoreDuplicates;
         this.requirements = Collections.emptyList();
         this.requiresNetwork = requiresNetwork;
         this.requiresSqlCipher = requiresSqlCipher;
@@ -134,7 +134,7 @@ public class JobParameters {
          * @return the builder.
          */
         public Builder withRetryCount(int retryCount) {
-            this.retryCount    = retryCount;
+            this.retryCount = retryCount;
             this.retryDuration = 0;
             return this;
         }
@@ -146,7 +146,7 @@ public class JobParameters {
          */
         public Builder withRetryDuration(long duration) {
             this.retryDuration = duration;
-            this.retryCount    = 0;
+            this.retryCount = 0;
             return this;
         }
 

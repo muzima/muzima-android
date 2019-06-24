@@ -42,7 +42,7 @@ public class PushGroupUpdateJob extends ContextJob implements InjectableType {
 
     private static final long serialVersionUID = 0L;
 
-    private static final String KEY_SOURCE   = "source";
+    private static final String KEY_SOURCE = "source";
     private static final String KEY_GROUP_ID = "group_id";
 
     @Inject
@@ -61,7 +61,7 @@ public class PushGroupUpdateJob extends ContextJob implements InjectableType {
                 .withRetryDuration(TimeUnit.DAYS.toMillis(1))
                 .create());
 
-        this.source  = source;
+        this.source = source;
         this.groupId = groupId;
     }
 
@@ -76,8 +76,7 @@ public class PushGroupUpdateJob extends ContextJob implements InjectableType {
     }
 
     @Override
-    protected @NonNull
-    Data serialize(@NonNull Data.Builder dataBuilder) {
+    protected @NonNull Data serialize(@NonNull Data.Builder dataBuilder) {
         return dataBuilder.putString(KEY_SOURCE, source)
                 .putString(KEY_GROUP_ID, GroupUtil.getEncodedId(groupId, false))
                 .build();
@@ -86,8 +85,8 @@ public class PushGroupUpdateJob extends ContextJob implements InjectableType {
     @Override
     public void onRun() throws IOException, UntrustedIdentityException {
         GroupDatabase groupDatabase = DatabaseFactory.getGroupDatabase(context);
-        Optional<GroupRecord> record        = groupDatabase.getGroup(GroupUtil.getEncodedId(groupId, false));
-        SignalServiceAttachment avatar        = null;
+        Optional<GroupRecord> record = groupDatabase.getGroup(GroupUtil.getEncodedId(groupId, false));
+        SignalServiceAttachment avatar = null;
 
         if (record == null) {
             Log.w(TAG, "No information for group record info request: " + new String(groupId));
@@ -115,7 +114,7 @@ public class PushGroupUpdateJob extends ContextJob implements InjectableType {
                 .withName(record.get().getTitle())
                 .build();
 
-        SignalAddress   groupAddress   = SignalAddress.fromSerialized(GroupUtil.getEncodedId(groupId, false));
+        SignalAddress groupAddress = SignalAddress.fromSerialized(GroupUtil.getEncodedId(groupId, false));
         SignalRecipient groupRecipient = SignalRecipient.from(context, groupAddress, false);
 
         SignalServiceDataMessage message = SignalServiceDataMessage.newBuilder()

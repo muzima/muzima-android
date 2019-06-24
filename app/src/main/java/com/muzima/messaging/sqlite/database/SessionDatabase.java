@@ -23,10 +23,10 @@ public class SessionDatabase extends Database {
 
     public static final String TABLE_NAME = "sessions";
 
-    private static final String ID      = "_id";
+    private static final String ID = "_id";
     public static final  String ADDRESS = "address";
-    public static final  String DEVICE  = "device";
-    public static final  String RECORD  = "record";
+    public static final  String DEVICE = "device";
+    public static final  String RECORD = "record";
 
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME +
             "(" + ID + " INTEGER PRIMARY KEY, " + ADDRESS + " TEXT NOT NULL, " +
@@ -71,8 +71,8 @@ public class SessionDatabase extends Database {
 
     public @NonNull
     List<SessionRow> getAllFor(@NonNull SignalAddress address) {
-        SQLiteDatabase   database = databaseHelper.getReadableDatabase();
-        List<SessionRow> results  = new LinkedList<>();
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+        List<SessionRow> results = new LinkedList<>();
 
         try (Cursor cursor = database.query(TABLE_NAME, null,
                 ADDRESS + " = ?",
@@ -94,8 +94,8 @@ public class SessionDatabase extends Database {
     }
 
     public @NonNull List<SessionRow> getAll() {
-        SQLiteDatabase   database = databaseHelper.getReadableDatabase();
-        List<SessionRow> results  = new LinkedList<>();
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+        List<SessionRow> results = new LinkedList<>();
 
         try (Cursor cursor = database.query(TABLE_NAME, null, null, null, null, null, null)) {
             while (cursor != null && cursor.moveToNext()) {
@@ -114,7 +114,7 @@ public class SessionDatabase extends Database {
 
     public @NonNull List<Integer> getSubDevices(@NonNull SignalAddress address) {
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
-        List<Integer>  results  = new LinkedList<>();
+        List<Integer> results = new LinkedList<>();
 
         try (Cursor cursor = database.query(TABLE_NAME, new String[] {DEVICE},
                 ADDRESS + " = ?",
@@ -146,14 +146,14 @@ public class SessionDatabase extends Database {
     }
 
     public static final class SessionRow {
-        private final SignalAddress       address;
-        private final int           deviceId;
+        private final SignalAddress address;
+        private final int deviceId;
         private final SessionRecord record;
 
         public SessionRow(SignalAddress address, int deviceId, SessionRecord record) {
-            this.address  = address;
+            this.address = address;
             this.deviceId = deviceId;
-            this.record   = record;
+            this.record = record;
         }
 
         public SignalAddress getAddress() {

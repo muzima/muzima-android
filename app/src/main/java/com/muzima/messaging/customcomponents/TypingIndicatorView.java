@@ -14,16 +14,16 @@ import com.muzima.R;
 
 public class TypingIndicatorView extends LinearLayout {
 
-    private static final long DURATION   = 300;
-    private static final long PRE_DELAY  = 500;
+    private static final long DURATION = 300;
+    private static final long PRE_DELAY = 500;
     private static final long POST_DELAY = 500;
-    private static final long  CYCLE_DURATION = 1500;
-    private static final long  DOT_DURATION   = 600;
-    private static final float MIN_ALPHA      = 0.4f;
-    private static final float MIN_SCALE      = 0.75f;
+    private static final long CYCLE_DURATION = 1500;
+    private static final long DOT_DURATION = 600;
+    private static final float MIN_ALPHA = 0.4f;
+    private static final float MIN_SCALE = 0.75f;
 
     private boolean isActive;
-    private long    startTime;
+    private long startTime;
 
     private View dot1;
     private View dot2;
@@ -50,7 +50,7 @@ public class TypingIndicatorView extends LinearLayout {
 
         if (attrs != null) {
             TypedArray typedArray = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.TypingIndicatorView, 0, 0);
-            int        tint       = typedArray.getColor(R.styleable.TypingIndicatorView_typingIndicator_tint, Color.WHITE);
+            int tint = typedArray.getColor(R.styleable.TypingIndicatorView_typingIndicator_tint, Color.WHITE);
             typedArray.recycle();
 
             dot1.getBackground().setColorFilter(tint, PorterDuff.Mode.MULTIPLY);
@@ -77,7 +77,7 @@ public class TypingIndicatorView extends LinearLayout {
     }
 
     private void render(View dot, long timeInCycle, long start) {
-        long end  = start + DOT_DURATION;
+        long end = start + DOT_DURATION;
         long peak = start + (DOT_DURATION / 2);
 
         if (timeInCycle < start || timeInCycle > end) {
@@ -110,7 +110,7 @@ public class TypingIndicatorView extends LinearLayout {
     }
 
     public void startAnimation() {
-        isActive  = true;
+        isActive = true;
         startTime = System.currentTimeMillis();
 
         postInvalidate();

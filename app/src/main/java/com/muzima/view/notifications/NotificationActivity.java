@@ -68,7 +68,7 @@ public class NotificationActivity extends BaseActivity {
     }
 
     private void displayNotification()  {
-        TextView subjectView  = findViewById(R.id.subject);
+        TextView subjectView = findViewById(R.id.subject);
         subjectView.setText(notification.getSubject());
 
         TextView notificationDate = findViewById(R.id.dateSent);

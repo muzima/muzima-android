@@ -100,7 +100,7 @@ public class PreKeyMigrationHelper {
         if (signedPreKeyIndex.exists()) {
             try {
                 InputStreamReader reader = new InputStreamReader(new FileInputStream(signedPreKeyIndex));
-                SignedPreKeyIndex index  = JsonUtils.fromJson(reader, SignedPreKeyIndex.class);
+                SignedPreKeyIndex index = JsonUtils.fromJson(reader, SignedPreKeyIndex.class);
                 reader.close();
 
                 Log.i(TAG, "Setting next signed prekey id: " + index.nextSignedPreKeyId);

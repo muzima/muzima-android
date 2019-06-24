@@ -181,7 +181,7 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
     @Override
     public void onCreate() {
         //ACRA.init(this);
-        //Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }

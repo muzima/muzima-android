@@ -66,7 +66,7 @@ public class SessionStoreMigrationHelper {
                         if (versionMarker == SINGLE_STATE_VERSION) {
                             Log.i(TAG, "Migrating single state version: " + sessionFile.getAbsolutePath());
                             StorageProtos.SessionStructure sessionStructure = StorageProtos.SessionStructure.parseFrom(serialized);
-                            SessionState sessionState     = new SessionState(sessionStructure);
+                            SessionState sessionState = new SessionState(sessionStructure);
 
                             sessionRecord = new SessionRecord(sessionState);
                         } else if (versionMarker >= ARCHIVE_STATES_VERSION) {
