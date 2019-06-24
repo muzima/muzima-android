@@ -46,11 +46,11 @@ public class CanvasView extends View {
         QUBIC_BEZIER;
     }
 
-    private int    canvasWidth  = 1;
-    private int    canvasHeight = 1;
-    private Bitmap bitmap       = null;
+    private int canvasWidth = 1;
+    private int canvasHeight = 1;
+    private Bitmap bitmap = null;
 
-    private List<Path> pathLists  = new ArrayList<Path>();
+    private List<Path> pathLists = new ArrayList<Path>();
     private List<Paint> paintLists = new ArrayList<Paint>();
 
     // for Eraser
@@ -61,8 +61,8 @@ public class CanvasView extends View {
     private int historyPointer = 0;
 
     // Flags
-    private Mode mode      = Mode.DRAW;
-    private Drawer drawer  = Drawer.PEN;
+    private Mode mode = Mode.DRAW;
+    private Drawer drawer = Drawer.PEN;
     private boolean isDown = false;
 
     // for Paint
@@ -282,7 +282,7 @@ public class CanvasView extends View {
                         case CIRCLE :
                             double distanceX = Math.abs((double)(this.startX - x));
                             double distanceY = Math.abs((double)(this.startX - y));
-                            double radius    = Math.sqrt(Math.pow(distanceX, 2.0) + Math.pow(distanceY, 2.0));
+                            double radius = Math.sqrt(Math.pow(distanceX, 2.0) + Math.pow(distanceY, 2.0));
 
                             path.reset();
                             path.addCircle(this.startX, this.startY, (float)radius, Path.Direction.CCW);
@@ -353,7 +353,7 @@ public class CanvasView extends View {
         }
 
         for (int i = 0; i < this.historyPointer; i++) {
-            Path path   = this.pathLists.get(i);
+            Path path = this.pathLists.get(i);
             Paint paint = this.paintLists.get(i);
 
             canvas.drawPath(path, paint);
@@ -375,7 +375,7 @@ public class CanvasView extends View {
         matrix.setScale(scaleX, scaleY);
 
         for (int i = 0; i < this.historyPointer; i++) {
-            Path path   = this.pathLists.get(i);
+            Path path = this.pathLists.get(i);
             Paint paint = this.paintLists.get(i);
 
             Path scaledPath = new Path();

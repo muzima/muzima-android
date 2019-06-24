@@ -17,9 +17,9 @@ public class PersistentStorage {
     private static final int DATABASE_VERSION = 1;
 
     private static final String TABLE_NAME = "queue";
-    private static final String ID         = "_id";
-    private static final String ITEM       = "item";
-    private static final String ENCRYPTED  = "encrypted";
+    private static final String ID = "_id";
+    private static final String ITEM = "item";
+    private static final String ENCRYPTED = "encrypted";
 
     private static final String DATABASE_CREATE = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY, %s TEXT NOT NULL, %s INTEGER DEFAULT 0);",
             TABLE_NAME, ID, ITEM, ENCRYPTED);
@@ -28,8 +28,8 @@ public class PersistentStorage {
     private final JobSerializer  jobSerializer;
 
     public PersistentStorage(Context context, String name, JobSerializer serializer) {
-        this.databaseHelper     = new DatabaseHelper(context, "_jobqueue-" + name);
-        this.jobSerializer      = serializer;
+        this.databaseHelper = new DatabaseHelper(context, "_jobqueue-" + name);
+        this.jobSerializer = serializer;
     }
 
     public List<Job> getAllUnencrypted() {
@@ -37,16 +37,16 @@ public class PersistentStorage {
     }
 
     private List<Job> getJobs(EncryptionKeys keys, String where) {
-        List<Job>      results  = new LinkedList<>();
+        List<Job> results = new LinkedList<>();
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
-        Cursor cursor   = null;
+        Cursor cursor = null;
 
         try {
             cursor = database.query(TABLE_NAME, null, where, null, null, null, ID + " ASC", null);
 
             while (cursor.moveToNext()) {
-                long    id        = cursor.getLong(cursor.getColumnIndexOrThrow(ID));
-                String  item      = cursor.getString(cursor.getColumnIndexOrThrow(ITEM));
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(ID));
+                String item = cursor.getString(cursor.getColumnIndexOrThrow(ITEM));
                 boolean encrypted = cursor.getInt(cursor.getColumnIndexOrThrow(ENCRYPTED)) == 1;
 
                 try{

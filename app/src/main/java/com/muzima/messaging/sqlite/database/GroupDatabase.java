@@ -137,8 +137,8 @@ public class GroupDatabase extends Database  {
     }
 
     public @NonNull List<SignalRecipient> getGroupMembers(String groupId, boolean includeSelf) {
-        List<SignalAddress>   members     = getCurrentMembers(groupId);
-        List<SignalRecipient> recipients  = new LinkedList<>();
+        List<SignalAddress> members = getCurrentMembers(groupId);
+        List<SignalRecipient> recipients = new LinkedList<>();
 
         for (SignalAddress member : members) {
             if (!includeSelf && Util.isOwnNumber(context, member))
@@ -224,7 +224,7 @@ public class GroupDatabase extends Database  {
         long avatarId;
 
         if (avatar != null) avatarId = Math.abs(new SecureRandom().nextLong());
-        else                avatarId = 0;
+        else avatarId = 0;
 
 
         ContentValues contentValues = new ContentValues(2);
@@ -375,7 +375,7 @@ public class GroupDatabase extends Database  {
             this.mms = mms;
 
             if (!TextUtils.isEmpty(members)) this.members = SignalAddress.fromSerializedList(members, ',');
-            else                             this.members = new LinkedList<>();
+            else this.members = new LinkedList<>();
         }
 
         public byte[] getId() {

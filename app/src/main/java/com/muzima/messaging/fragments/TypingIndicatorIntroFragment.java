@@ -19,7 +19,7 @@ public class TypingIndicatorIntroFragment  extends Fragment {
 
     public static TypingIndicatorIntroFragment newInstance() {
         TypingIndicatorIntroFragment fragment = new TypingIndicatorIntroFragment();
-        Bundle args     = new Bundle();
+        Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,9 +44,9 @@ public class TypingIndicatorIntroFragment  extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view      = inflater.inflate(R.layout.experience_upgrade_typing_indicators_fragment, container, false);
+        View view = inflater.inflate(R.layout.experience_upgrade_typing_indicators_fragment, container, false);
         View yesButton = view.findViewById(R.id.experience_yes_button);
-        View noButton  = view.findViewById(R.id.experience_no_button);
+        View noButton = view.findViewById(R.id.experience_no_button);
 
         ((TypingIndicatorView) view.findViewById(R.id.typing_indicator)).startAnimation();
 

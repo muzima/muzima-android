@@ -14,12 +14,11 @@ import java.security.MessageDigest;
 
 public class ProfileContactPhoto implements ContactPhoto {
 
-    private final @NonNull
-    SignalAddress address;
-    private final @NonNull String  avatarObject;
+    private final @NonNull SignalAddress address;
+    private final @NonNull String avatarObject;
 
     public ProfileContactPhoto(@NonNull SignalAddress address, @NonNull String avatarObject) {
-        this.address      = address;
+        this.address = address;
         this.avatarObject = avatarObject;
     }
 
@@ -29,8 +28,7 @@ public class ProfileContactPhoto implements ContactPhoto {
     }
 
     @Override
-    public @Nullable
-    Uri getUri(@NonNull Context context) {
+    public @Nullable Uri getUri(@NonNull Context context) {
         return Uri.fromFile(AvatarHelper.getAvatarFile(context, address));
     }
 

@@ -21,12 +21,12 @@ public class GroupMembersDialog extends AsyncTask<Void, Void, List<SignalRecipie
 
     private static final String TAG = GroupMembersDialog.class.getSimpleName();
 
-    private final SignalRecipient  recipient;
+    private final SignalRecipient recipient;
     private final Context context;
 
     public GroupMembersDialog(Context context, SignalRecipient recipient) {
         this.recipient = recipient;
-        this.context   = context;
+        this.context = context;
     }
 
     @Override
@@ -55,10 +55,10 @@ public class GroupMembersDialog extends AsyncTask<Void, Void, List<SignalRecipie
 
     private static class GroupMembersOnClickListener implements DialogInterface.OnClickListener {
         private final GroupMembers groupMembers;
-        private final Context      context;
+        private final Context context;
 
         public GroupMembersOnClickListener(Context context, GroupMembers members) {
-            this.context      = context;
+            this.context = context;
             this.groupMembers = members;
         }
 

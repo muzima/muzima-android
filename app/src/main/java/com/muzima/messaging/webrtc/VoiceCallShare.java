@@ -27,7 +27,7 @@ public class VoiceCallShare extends Activity {
 
                 if (cursor != null && cursor.moveToNext()) {
                     String  destination = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.RawContacts.Data.DATA1));
-                    SignalAddress address     = SignalAddress.fromExternal(this, destination);
+                    SignalAddress address = SignalAddress.fromExternal(this, destination);
 
                     if (!TextUtils.isEmpty(destination)) {
                         Intent serviceIntent = new Intent(this, WebRtcCallService.class);

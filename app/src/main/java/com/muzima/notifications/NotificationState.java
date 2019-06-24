@@ -146,7 +146,7 @@ public class NotificationState {
 
     public PendingIntent getAndroidAutoHeardIntent(Context context, int notificationId) {
         long[] threadArray = new long[threads.size()];
-        int    index       = 0;
+        int index = 0;
         for (long thread : threads) {
             Log.i(TAG, "getAndroidAutoHeardIntent Added thread: " + thread);
             threadArray[index++] = thread;

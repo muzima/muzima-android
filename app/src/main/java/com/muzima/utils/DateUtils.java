@@ -117,12 +117,12 @@ public class DateUtils extends android.text.format.DateUtils {
             return c.getResources().getString(R.string.date_utils_minutes_ago, mins);
         } else {
             StringBuilder format = new StringBuilder();
-            if      (isWithin(timestamp,   6, TimeUnit.DAYS)) format.append("EEE ");
+            if (isWithin(timestamp,   6, TimeUnit.DAYS)) format.append("EEE ");
             else if (isWithin(timestamp, 365, TimeUnit.DAYS)) format.append("MMM d, ");
-            else                                              format.append("MMM d, yyyy, ");
+            else format.append("MMM d, yyyy, ");
 
             if (DateFormat.is24HourFormat(c)) format.append("HH:mm");
-            else                              format.append("hh:mm a");
+            else format.append("hh:mm a");
 
             return getFormattedDateTime(timestamp, format.toString(), locale);
         }

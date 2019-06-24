@@ -40,21 +40,21 @@ import androidx.work.Data;
 import androidx.work.WorkerParameters;
 
 public class AttachmentDownloadJob extends ContextJob implements InjectableType {
-    private static final long   serialVersionUID    = 2L;
-    private static final int    MAX_ATTACHMENT_SIZE = 150 * 1024  * 1024;
+    private static final long serialVersionUID = 2L;
+    private static final int MAX_ATTACHMENT_SIZE = 150 * 1024  * 1024;
     private static final String TAG = AttachmentDownloadJob.class.getSimpleName();
 
-    private static final String KEY_MESSAGE_ID    = "message_id";
-    private static final String KEY_PART_ROW_ID   = "part_row_id";
+    private static final String KEY_MESSAGE_ID = "message_id";
+    private static final String KEY_PART_ROW_ID = "part_row_id";
     private static final String KEY_PAR_UNIQUE_ID = "part_unique_id";
-    private static final String KEY_MANUAL        = "part_manual";
+    private static final String KEY_MANUAL = "part_manual";
 
     @Inject
     transient SignalServiceMessageReceiver messageReceiver;
 
-    private long    messageId;
-    private long    partRowId;
-    private long    partUniqueId;
+    private long messageId;
+    private long partRowId;
+    private long partUniqueId;
     private boolean manual;
 
     public AttachmentDownloadJob(@NonNull Context context, @NonNull WorkerParameters workerParameters) {
@@ -67,23 +67,22 @@ public class AttachmentDownloadJob extends ContextJob implements InjectableType 
                 .withNetworkRequirement()
                 .create());
 
-        this.messageId    = messageId;
-        this.partRowId    = attachmentId.getRowId();
+        this.messageId = messageId;
+        this.partRowId = attachmentId.getRowId();
         this.partUniqueId = attachmentId.getUniqueId();
-        this.manual       = manual;
+        this.manual = manual;
     }
 
     @Override
     protected void initialize(@NonNull SafeData data) {
-        messageId    = data.getLong(KEY_MESSAGE_ID);
-        partRowId    = data.getLong(KEY_PART_ROW_ID);
+        messageId = data.getLong(KEY_MESSAGE_ID);
+        partRowId = data.getLong(KEY_PART_ROW_ID);
         partUniqueId = data.getLong(KEY_PAR_UNIQUE_ID);
-        manual       = data.getBoolean(KEY_MANUAL);
+        manual = data.getBoolean(KEY_MANUAL);
     }
 
     @Override
-    protected @NonNull
-    Data serialize(@NonNull Data.Builder dataBuilder) {
+    protected @NonNull Data serialize(@NonNull Data.Builder dataBuilder) {
         return dataBuilder.putLong(KEY_MESSAGE_ID, messageId)
                 .putLong(KEY_PART_ROW_ID, partRowId)
                 .putLong(KEY_PAR_UNIQUE_ID, partUniqueId)
@@ -95,10 +94,10 @@ public class AttachmentDownloadJob extends ContextJob implements InjectableType 
     public void onAdded() {
         Log.i(TAG, "onAdded() messageId: " + messageId + "  partRowId: " + partRowId + "  partUniqueId: " + partUniqueId + "  manual: " + manual);
 
-        final AttachmentDatabase database     = DatabaseFactory.getAttachmentDatabase(context);
-        final AttachmentId       attachmentId = new AttachmentId(partRowId, partUniqueId);
-        final DatabaseAttachment attachment   = database.getAttachment(attachmentId);
-        final boolean            pending      = attachment != null && attachment.getTransferState() != AttachmentDatabase.TRANSFER_PROGRESS_DONE;
+        final AttachmentDatabase database = DatabaseFactory.getAttachmentDatabase(context);
+        final AttachmentId attachmentId = new AttachmentId(partRowId, partUniqueId);
+        final DatabaseAttachment attachment = database.getAttachment(attachmentId);
+        final boolean pending = attachment != null && attachment.getTransferState() != AttachmentDatabase.TRANSFER_PROGRESS_DONE;
 
         if (pending && (manual || AttachmentUtil.isAutoDownloadPermitted(context, attachment))) {
             Log.i(TAG, "onAdded() Marking attachment progress as 'started'");
@@ -110,9 +109,9 @@ public class AttachmentDownloadJob extends ContextJob implements InjectableType 
     public void onRun() throws IOException {
         Log.i(TAG, "onRun() messageId: " + messageId + "  partRowId: " + partRowId + "  partUniqueId: " + partUniqueId + "  manual: " + manual);
 
-        final AttachmentDatabase database     = DatabaseFactory.getAttachmentDatabase(context);
-        final AttachmentId       attachmentId = new AttachmentId(partRowId, partUniqueId);
-        final DatabaseAttachment attachment   = database.getAttachment(attachmentId);
+        final AttachmentDatabase database = DatabaseFactory.getAttachmentDatabase(context);
+        final AttachmentId attachmentId = new AttachmentId(partRowId, partUniqueId);
+        final DatabaseAttachment attachment = database.getAttachment(attachmentId);
 
         if (attachment == null) {
             Log.w(TAG, "attachment no longer exists.");
@@ -156,14 +155,14 @@ public class AttachmentDownloadJob extends ContextJob implements InjectableType 
             throws IOException
     {
 
-        AttachmentDatabase database       = DatabaseFactory.getAttachmentDatabase(context);
+        AttachmentDatabase database = DatabaseFactory.getAttachmentDatabase(context);
         File attachmentFile = null;
 
         try {
             attachmentFile = createTempFile();
 
             SignalServiceAttachmentPointer pointer = createAttachmentPointer(attachment);
-            InputStream stream  = messageReceiver.retrieveAttachment(pointer, attachmentFile, MAX_ATTACHMENT_SIZE, (total, progress) -> EventBus.getDefault().postSticky(new PartProgressEvent(attachment, total, progress)));
+            InputStream stream = messageReceiver.retrieveAttachment(pointer, attachmentFile, MAX_ATTACHMENT_SIZE, (total, progress) -> EventBus.getDefault().postSticky(new PartProgressEvent(attachment, total, progress)));
 
             database.insertAttachmentsForPlaceholder(messageId, attachmentId, stream);
         } catch (InvalidPartException | NonSuccessfulResponseCodeException | InvalidMessageException | MmsException e) {
@@ -190,8 +189,8 @@ public class AttachmentDownloadJob extends ContextJob implements InjectableType 
         }
 
         try {
-            long   id    = Long.parseLong(attachment.getLocation());
-            byte[] key   = Base64.decode(attachment.getKey());
+            long id = Long.parseLong(attachment.getLocation());
+            byte[] key = Base64.decode(attachment.getKey());
             String relay = null;
 
             if (TextUtils.isEmpty(attachment.getRelay())) {

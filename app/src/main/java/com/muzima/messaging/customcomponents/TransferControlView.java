@@ -40,10 +40,10 @@ public class TransferControlView extends FrameLayout {
     @Nullable private View current;
 
     private final ProgressWheel progressWheel;
-    private final View          downloadDetails;
+    private final View downloadDetails;
     private final TextView downloadDetailsText;
-    private final int           contractedWidth;
-    private final int           expandedWidth;
+    private final int contractedWidth;
+    private final int expandedWidth;
 
     private final Map<Attachment, Float> downloadProgress;
 
@@ -67,12 +67,12 @@ public class TransferControlView extends FrameLayout {
         ViewUtil.setBackground(this, background);
         setVisibility(GONE);
 
-        this.downloadProgress    = new HashMap<>();
-        this.progressWheel       = ViewUtil.findById(this, R.id.progress_wheel);
-        this.downloadDetails     = ViewUtil.findById(this, R.id.download_details);
+        this.downloadProgress = new HashMap<>();
+        this.progressWheel = ViewUtil.findById(this, R.id.progress_wheel);
+        this.downloadDetails = ViewUtil.findById(this, R.id.download_details);
         this.downloadDetailsText = ViewUtil.findById(this, R.id.download_details_text);
-        this.contractedWidth     = getResources().getDimensionPixelSize(R.dimen.transfer_controls_contracted_width);
-        this.expandedWidth       = getResources().getDimensionPixelSize(R.dimen.transfer_controls_expanded_width);
+        this.contractedWidth = getResources().getDimensionPixelSize(R.dimen.transfer_controls_contracted_width);
+        this.expandedWidth = getResources().getDimensionPixelSize(R.dimen.transfer_controls_expanded_width);
     }
 
     @Override

@@ -51,8 +51,8 @@ public class UnverifiedBannerView extends LinearLayout {
 
     private void initialize() {
         LayoutInflater.from(getContext()).inflate(R.layout.unverified_banner_view, this, true);
-        this.container   = ViewUtil.findById(this, R.id.container);
-        this.text        = ViewUtil.findById(this, R.id.unverified_text);
+        this.container = ViewUtil.findById(this, R.id.container);
+        this.text = ViewUtil.findById(this, R.id.unverified_text);
         this.closeButton = ViewUtil.findById(this, R.id.cancel);
     }
 

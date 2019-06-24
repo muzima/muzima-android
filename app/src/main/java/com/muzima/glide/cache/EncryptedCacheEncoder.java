@@ -15,11 +15,11 @@ import java.io.OutputStream;
 public class EncryptedCacheEncoder extends EncryptedCoder implements Encoder<InputStream> {
     private static final String TAG = EncryptedCacheEncoder.class.getSimpleName();
 
-    private final byte[]    secret;
+    private final byte[] secret;
     private final ArrayPool byteArrayPool;
 
     public EncryptedCacheEncoder(@NonNull byte[] secret, @NonNull ArrayPool byteArrayPool) {
-        this.secret        = secret;
+        this.secret = secret;
         this.byteArrayPool = byteArrayPool;
     }
 

@@ -26,7 +26,7 @@ public class JavaJobSerializer implements JobSerializer {
     @Override
     public String serialize(Job job) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos  = new ObjectOutputStream(baos);
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(job);
 
         return Base64.encodeToString(baos.toByteArray(), Base64.NO_WRAP);
@@ -36,7 +36,7 @@ public class JavaJobSerializer implements JobSerializer {
     public Job deserialize(EncryptionKeys keys, boolean encrypted, String serialized) throws IOException {
         try {
             ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decode(serialized, Base64.NO_WRAP));
-            ObjectInputStream ois  = new ObjectInputStream(bais);
+            ObjectInputStream ois = new ObjectInputStream(bais);
 
             return (Job)ois.readObject();
         } catch (ClassNotFoundException e) {

@@ -32,12 +32,12 @@ import com.muzima.utils.ViewUtil;
 
 public class AttachmentTypeSelector extends PopupWindow {
 
-    public static final int ADD_GALLERY       = 1;
-    public static final int ADD_DOCUMENT      = 2;
-    public static final int ADD_SOUND         = 3;
-    public static final int ADD_CONTACT_INFO  = 4;
-    public static final int TAKE_PHOTO        = 5;
-    public static final int ADD_LOCATION      = 6;
+    public static final int ADD_GALLERY = 1;
+    public static final int ADD_DOCUMENT = 2;
+    public static final int ADD_SOUND = 3;
+    public static final int ADD_CONTACT_INFO = 4;
+    public static final int TAKE_PHOTO = 5;
+    public static final int ADD_LOCATION = 6;
 
     private static final int ANIMATION_DURATION = 300;
 
@@ -61,16 +61,16 @@ public class AttachmentTypeSelector extends PopupWindow {
         super(context);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout layout   = (LinearLayout) inflater.inflate(R.layout.attachment_type_selector, null, true);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.attachment_type_selector, null, true);
 
-        this.listener       = listener;
-        this.loaderManager  = loaderManager;
-        this.recentRail     = ViewUtil.findById(layout, R.id.recent_photos);
-        this.imageButton    = ViewUtil.findById(layout, R.id.gallery_button);
-        this.audioButton    = ViewUtil.findById(layout, R.id.audio_button);
+        this.listener = listener;
+        this.loaderManager = loaderManager;
+        this.recentRail = ViewUtil.findById(layout, R.id.recent_photos);
+        this.imageButton = ViewUtil.findById(layout, R.id.gallery_button);
+        this.audioButton = ViewUtil.findById(layout, R.id.audio_button);
         this.documentButton = ViewUtil.findById(layout, R.id.document_button);
-        this.contactButton  = ViewUtil.findById(layout, R.id.contact_button);
-        this.cameraButton   = ViewUtil.findById(layout, R.id.camera_button);
+        this.contactButton = ViewUtil.findById(layout, R.id.contact_button);
+        this.cameraButton = ViewUtil.findById(layout, R.id.camera_button);
         this.locationButton = ViewUtil.findById(layout, R.id.location_button);
 
         this.imageButton.setOnClickListener(new PropagatingClickListener(ADD_GALLERY));
@@ -180,7 +180,7 @@ public class AttachmentTypeSelector extends PopupWindow {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void animateWindowOutCircular(@Nullable View anchor, @NonNull View contentView) {
         Pair<Integer, Integer> coordinates = getClickOrigin(anchor, contentView);
-        Animator               animator    = ViewAnimationUtils.createCircularReveal(getContentView(),
+        Animator animator = ViewAnimationUtils.createCircularReveal(getContentView(),
                 coordinates.first,
                 coordinates.second,
                 Math.max(getContentView().getWidth(), getContentView().getHeight()),

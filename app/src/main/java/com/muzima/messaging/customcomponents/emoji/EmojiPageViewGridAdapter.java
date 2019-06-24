@@ -16,7 +16,7 @@ import java.util.List;
 
 public class EmojiPageViewGridAdapter extends RecyclerView.Adapter<EmojiPageViewGridAdapter.EmojiViewHolder> implements PopupWindow.OnDismissListener {
     private final List<Emoji> emojiList;
-    private final EmojiProvider               emojiProvider;
+    private final EmojiProvider emojiProvider;
     private final EmojiVariationSelectorPopup popup;
     private final VariationSelectorListener   variationSelectorListener;
     private final EmojiPageView.EmojiSelectionListener emojiSelectionListener;
@@ -98,12 +98,12 @@ public class EmojiPageViewGridAdapter extends RecyclerView.Adapter<EmojiPageView
 
         private final ImageView imageView;
         private final AsciiEmojiView textView;
-        private final ImageView      hintCorner;
+        private final ImageView hintCorner;
 
         public EmojiViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.imageView  = itemView.findViewById(R.id.emoji_image);
-            this.textView   = itemView.findViewById(R.id.emoji_text);
+            this.imageView = itemView.findViewById(R.id.emoji_image);
+            this.textView = itemView.findViewById(R.id.emoji_text);
             this.hintCorner = itemView.findViewById(R.id.emoji_variation_hint);
         }
     }

@@ -26,7 +26,7 @@ public class IncomingRinger {
     private MediaPlayer player;
 
     IncomingRinger(Context context) {
-        this.context  = context.getApplicationContext();
+        this.context = context.getApplicationContext();
         this.vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 

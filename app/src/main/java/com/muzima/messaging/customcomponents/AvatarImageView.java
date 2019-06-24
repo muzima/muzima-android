@@ -27,7 +27,7 @@ public class AvatarImageView extends AppCompatImageView {
     private static final String TAG = AvatarImageView.class.getSimpleName();
 
     private static final Paint LIGHT_THEME_OUTLINE_PAINT = new Paint();
-    private static final Paint DARK_THEME_OUTLINE_PAINT  = new Paint();
+    private static final Paint DARK_THEME_OUTLINE_PAINT = new Paint();
 
     static {
         LIGHT_THEME_OUTLINE_PAINT.setColor(Color.argb((int) (255 * 0.2), 0, 0, 0));
@@ -41,8 +41,8 @@ public class AvatarImageView extends AppCompatImageView {
         DARK_THEME_OUTLINE_PAINT.setAntiAlias(true);
     }
 
-    private boolean         inverted;
-    private Paint           outlinePaint;
+    private boolean inverted;
+    private Paint outlinePaint;
     private View.OnClickListener listener;
 
     public AvatarImageView(Context context) {
@@ -71,8 +71,8 @@ public class AvatarImageView extends AppCompatImageView {
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
 
-        float cx     = canvas.getWidth()  / 2;
-        float cy     = canvas.getHeight() / 2;
+        float cx = canvas.getWidth()  / 2;
+        float cy = canvas.getHeight() / 2;
         float radius = (canvas.getWidth() / 2) - (outlinePaint.getStrokeWidth() / 2);
 
         canvas.drawCircle(cx, cy, radius, outlinePaint);

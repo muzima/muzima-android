@@ -29,9 +29,9 @@ public class SendDeliveryReceiptJob extends ContextJob implements InjectableType
 
     private static final long serialVersionUID = 1L;
 
-    private static final String KEY_ADDRESS    = "address";
+    private static final String KEY_ADDRESS = "address";
     private static final String KEY_MESSAGE_ID = "message_id";
-    private static final String KEY_TIMESTAMP  = "timestamp";
+    private static final String KEY_TIMESTAMP = "timestamp";
 
     private static final String TAG = SendReadReceiptJob.class.getSimpleName();
 
@@ -39,8 +39,8 @@ public class SendDeliveryReceiptJob extends ContextJob implements InjectableType
     transient SignalServiceMessageSender messageSender;
 
     private String address;
-    private long   messageId;
-    private long   timestamp;
+    private long messageId;
+    private long timestamp;
 
     public SendDeliveryReceiptJob(@NonNull Context context, @NonNull WorkerParameters workerParameters) {
         super(context, workerParameters);
@@ -70,14 +70,14 @@ public class SendDeliveryReceiptJob extends ContextJob implements InjectableType
 
     @Override
     protected void initialize(@NonNull SafeData data) {
-        this.address   = data.getString(KEY_ADDRESS);
+        this.address = data.getString(KEY_ADDRESS);
         this.messageId = data.getLong(KEY_MESSAGE_ID);
         this.timestamp = data.getLong(KEY_TIMESTAMP);
     }
 
     @Override
     public void onRun() throws IOException, UntrustedIdentityException {
-        SignalServiceAddress remoteAddress  = new SignalServiceAddress(address);
+        SignalServiceAddress remoteAddress = new SignalServiceAddress(address);
         SignalServiceReceiptMessage receiptMessage = new SignalServiceReceiptMessage(SignalServiceReceiptMessage.Type.DELIVERY,
                 Collections.singletonList(messageId),
                 timestamp);

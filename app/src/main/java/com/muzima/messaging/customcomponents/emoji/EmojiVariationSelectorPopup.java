@@ -21,9 +21,9 @@ public class EmojiVariationSelectorPopup extends PopupWindow {
         super(LayoutInflater.from(context).inflate(R.layout.emoji_variation_selector, null),
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        this.context  = context;
+        this.context = context;
         this.listener = listener;
-        this.list     = (ViewGroup) getContentView();
+        this.list = (ViewGroup) getContentView();
 
         setBackgroundDrawable(null);
         setOutsideTouchable(true);

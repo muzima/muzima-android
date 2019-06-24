@@ -30,23 +30,23 @@ public class CustomDefaultPreference extends DialogPreference {
 
     private static final String TAG = CustomDefaultPreference.class.getSimpleName();
 
-    private final int    inputType;
+    private final int inputType;
     private final String customPreference;
     private final String customToggle;
 
     private CustomDefaultPreferenceDialogFragmentCompat.CustomPreferenceValidator validator;
-    private String                    defaultValue;
+    private String defaultValue;
 
     public CustomDefaultPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        int[]      attributeNames = new int[]{android.R.attr.inputType, R.attr.custom_pref_toggle};
-        TypedArray attributes     = context.obtainStyledAttributes(attrs, attributeNames);
+        int[] attributeNames = new int[]{android.R.attr.inputType, R.attr.custom_pref_toggle};
+        TypedArray attributes = context.obtainStyledAttributes(attrs, attributeNames);
 
-        this.inputType        = attributes.getInt(0, 0);
+        this.inputType = attributes.getInt(0, 0);
         this.customPreference = getKey();
-        this.customToggle     = attributes.getString(1);
-        this.validator        = new CustomDefaultPreferenceDialogFragmentCompat.NullValidator();
+        this.customToggle = attributes.getString(1);
+        this.validator = new CustomDefaultPreferenceDialogFragmentCompat.NullValidator();
 
         attributes.recycle();
 
@@ -78,7 +78,7 @@ public class CustomDefaultPreference extends DialogPreference {
 
     private String getPrettyPrintValue(String value) {
         if (TextUtils.isEmpty(value)) return getContext().getString(R.string.general_none);
-        else                          return value;
+        else return value;
     }
 
     private boolean isCustom() {
@@ -125,9 +125,9 @@ public class CustomDefaultPreference extends DialogPreference {
 
             CustomDefaultPreference preference = (CustomDefaultPreference)getPreference();
 
-            this.spinner      = (Spinner) view.findViewById(R.id.default_or_custom);
+            this.spinner = (Spinner) view.findViewById(R.id.default_or_custom);
             this.defaultLabel = (TextView) view.findViewById(R.id.default_label);
-            this.customText   = (EditText) view.findViewById(R.id.custom_edit);
+            this.customText = (EditText) view.findViewById(R.id.custom_edit);
 
             this.customText.setInputType(preference.inputType);
             this.customText.addTextChangedListener(new TextValidator());
@@ -144,7 +144,7 @@ public class CustomDefaultPreference extends DialogPreference {
             CustomDefaultPreference preference = (CustomDefaultPreference)getPreference();
 
             if (preference.isCustom()) spinner.setSelection(1, true);
-            else                       spinner.setSelection(0, true);
+            else spinner.setSelection(0, true);
 
             return dialog;
         }
@@ -154,7 +154,7 @@ public class CustomDefaultPreference extends DialogPreference {
             CustomDefaultPreference preference = (CustomDefaultPreference)getPreference();
 
             if (positiveResult) {
-                if (spinner != null)    preference.setCustom(spinner.getSelectedItemPosition() == 1);
+                if (spinner != null) preference.setCustom(spinner.getSelectedItemPosition() == 1);
                 if (customText != null) preference.setCustomValue(customText.getText().toString());
 
                 preference.setSummary(preference.getSummary());

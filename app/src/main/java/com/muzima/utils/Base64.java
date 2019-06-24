@@ -437,7 +437,7 @@ public class Base64
 
     public static int getEncodedLengthWithoutPadding(int unencodedLength) {
         int remainderBytes = unencodedLength % 3;
-        int paddingBytes   = 0;
+        int paddingBytes = 0;
 
         if (remainderBytes != 0)
             paddingBytes = 3 - remainderBytes;
@@ -514,28 +514,28 @@ public class Base64
         // significant bytes passed in the array.
         // We have to shift left 24 in order to flush out the 1's that appear
         // when Java treats a value as negative that is cast from a byte to an int.
-        int inBuff =   ( numSigBytes > 0 ? ((source[ srcOffset     ] << 24) >>>  8) : 0 )
+        int inBuff = ( numSigBytes > 0 ? ((source[ srcOffset ] << 24) >>>  8) : 0 )
                 | ( numSigBytes > 1 ? ((source[ srcOffset + 1 ] << 24) >>> 16) : 0 )
                 | ( numSigBytes > 2 ? ((source[ srcOffset + 2 ] << 24) >>> 24) : 0 );
 
         switch( numSigBytes )
         {
             case 3:
-                destination[ destOffset     ] = ALPHABET[ (inBuff >>> 18)        ];
+                destination[ destOffset ] = ALPHABET[ (inBuff >>> 18) ];
                 destination[ destOffset + 1 ] = ALPHABET[ (inBuff >>> 12) & 0x3f ];
                 destination[ destOffset + 2 ] = ALPHABET[ (inBuff >>>  6) & 0x3f ];
-                destination[ destOffset + 3 ] = ALPHABET[ (inBuff       ) & 0x3f ];
+                destination[ destOffset + 3 ] = ALPHABET[ (inBuff) & 0x3f ];
                 return destination;
 
             case 2:
-                destination[ destOffset     ] = ALPHABET[ (inBuff >>> 18)        ];
+                destination[ destOffset ] = ALPHABET[ (inBuff >>> 18) ];
                 destination[ destOffset + 1 ] = ALPHABET[ (inBuff >>> 12) & 0x3f ];
                 destination[ destOffset + 2 ] = ALPHABET[ (inBuff >>>  6) & 0x3f ];
                 destination[ destOffset + 3 ] = EQUALS_SIGN;
                 return destination;
 
             case 1:
-                destination[ destOffset     ] = ALPHABET[ (inBuff >>> 18)        ];
+                destination[ destOffset ] = ALPHABET[ (inBuff >>> 18) ];
                 destination[ destOffset + 1 ] = ALPHABET[ (inBuff >>> 12) & 0x3f ];
                 destination[ destOffset + 2 ] = EQUALS_SIGN;
                 destination[ destOffset + 3 ] = EQUALS_SIGN;
@@ -662,15 +662,15 @@ public class Base64
         }   // end if: null
 
         // Streams
-        java.io.ByteArrayOutputStream  baos  = null;
-        java.io.OutputStream           b64os = null;
-        java.util.zip.GZIPOutputStream gzos  = null;
-        java.io.ObjectOutputStream     oos   = null;
+        java.io.ByteArrayOutputStream baos = null;
+        java.io.OutputStream b64os = null;
+        java.util.zip.GZIPOutputStream gzos = null;
+        java.io.ObjectOutputStream oos = null;
 
 
         try {
             // ObjectOutputStream -> (GZIP) -> Base64 -> ByteArrayOutputStream
-            baos  = new java.io.ByteArrayOutputStream();
+            baos = new java.io.ByteArrayOutputStream();
             b64os = new Base64.OutputStream( baos, ENCODE | options );
             if( (options & GZIP) != 0 ){
                 // Gzip
@@ -742,9 +742,9 @@ public class Base64
 
         assert encoded != null;
 
-        if      (encoded.charAt(encoded.length()-2) == '=') return encoded.substring(0, encoded.length()-2);
+        if (encoded.charAt(encoded.length()-2) == '=') return encoded.substring(0, encoded.length()-2);
         else if (encoded.charAt(encoded.length()-1) == '=') return encoded.substring(0, encoded.length()-1);
-        else                                                return encoded;
+        else return encoded;
 
     }
 
@@ -932,15 +932,15 @@ public class Base64
 
         // Compress?
         if( (options & GZIP) != 0 ) {
-            java.io.ByteArrayOutputStream  baos  = null;
-            java.util.zip.GZIPOutputStream gzos  = null;
-            Base64.OutputStream            b64os = null;
+            java.io.ByteArrayOutputStream baos = null;
+            java.util.zip.GZIPOutputStream gzos = null;
+            Base64.OutputStream b64os = null;
 
             try {
                 // GZip -> Base64 -> ByteArray
                 baos = new java.io.ByteArrayOutputStream();
                 b64os = new Base64.OutputStream( baos, ENCODE | options );
-                gzos  = new java.util.zip.GZIPOutputStream( b64os );
+                gzos = new java.util.zip.GZIPOutputStream( b64os );
 
                 gzos.write( source, off, len );
                 gzos.close();
@@ -1094,7 +1094,7 @@ public class Base64
                     | ( ( DECODABET[ source[ srcOffset + 1 ] ] & 0xFF ) << 12 )
                     | ( ( DECODABET[ source[ srcOffset + 2 ] ] & 0xFF ) <<  6 );
 
-            destination[ destOffset     ] = (byte)( outBuff >>> 16 );
+            destination[ destOffset] = (byte)( outBuff >>> 16 );
             destination[ destOffset + 1 ] = (byte)( outBuff >>>  8 );
             return 2;
         }
@@ -1112,7 +1112,7 @@ public class Base64
                     | ( ( DECODABET[ source[ srcOffset + 3 ] ] & 0xFF )      );
 
 
-            destination[ destOffset     ] = (byte)( outBuff >> 16 );
+            destination[ destOffset] = (byte)( outBuff >> 16 );
             destination[ destOffset + 1 ] = (byte)( outBuff >>  8 );
             destination[ destOffset + 2 ] = (byte)( outBuff       );
 
@@ -1186,15 +1186,15 @@ public class Base64
 
         byte[] DECODABET = getDecodabet( options );
 
-        int    len34   = len * 3 / 4;       // Estimate on array size
+        int len34 = len * 3 / 4;       // Estimate on array size
         byte[] outBuff = new byte[ len34 ]; // Upper limit on size of output
-        int    outBuffPosn = 0;             // Keep track of where we're writing
+        int outBuffPosn = 0;             // Keep track of where we're writing
 
-        byte[] b4        = new byte[4];     // Four byte buffer from source, eliminating white space
-        int    b4Posn    = 0;               // Keep track of four byte input buffer
-        int    i         = 0;               // Source array counter
-        byte   sbiCrop   = 0;               // Low seven bits (ASCII) of input
-        byte   sbiDecode = 0;               // Special value from DECODABET
+        byte[] b4 = new byte[4];     // Four byte buffer from source, eliminating white space
+        int b4Posn = 0;               // Keep track of four byte input buffer
+        int i = 0;               // Source array counter
+        byte sbiCrop = 0;               // Low seven bits (ASCII) of input
+        byte sbiDecode = 0;               // Special value from DECODABET
 
         for( i = off; i < off+len; i++ ) {  // Loop through source
 
@@ -1248,9 +1248,9 @@ public class Base64
 
 
     public static byte[] decodeWithoutPadding(String source) throws java.io.IOException {
-        int padding    = source.length() % 4;
+        int padding = source.length() % 4;
 
-        if      (padding == 1) source = source + "=";
+        if (padding == 1) source = source + "=";
         else if (padding == 2) source = source + "==";
         else if (padding == 3) source = source + "=";
 
@@ -1373,8 +1373,8 @@ public class Base64
         // Decode and gunzip if necessary
         byte[] objBytes = decode( encodedObject, options );
 
-        java.io.ByteArrayInputStream  bais = null;
-        java.io.ObjectInputStream     ois  = null;
+        java.io.ByteArrayInputStream bais = null;
+        java.io.ObjectInputStream ois = null;
         Object obj = null;
 
         try {
@@ -1382,7 +1382,7 @@ public class Base64
 
             // If no custom class loader is provided, use Java's builtin OIS.
             if( loader == null ){
-                ois  = new java.io.ObjectInputStream( bais );
+                ois = new java.io.ObjectInputStream( bais );
             }   // end if: no loader provided
 
             // Else make a customized object input stream that uses
@@ -1515,7 +1515,7 @@ public class Base64
             // Set up some useful variables
             java.io.File file = new java.io.File( filename );
             byte[] buffer = null;
-            int length   = 0;
+            int length = 0;
             int numBytes = 0;
 
             // Check for size of file
@@ -1576,7 +1576,7 @@ public class Base64
             // Set up some useful variables
             java.io.File file = new java.io.File( filename );
             byte[] buffer = new byte[ Math.max((int)(file.length() * 1.4),40) ]; // Need max() for math on small files (v2.2.1)
-            int length   = 0;
+            int length = 0;
             int numBytes = 0;
 
             // Open a stream
@@ -1674,14 +1674,14 @@ public class Base64
     public static class InputStream extends java.io.FilterInputStream {
 
         private boolean encode;         // Encoding or decoding
-        private int     position;       // Current position in the buffer
-        private byte[]  buffer;         // Small buffer holding converted data
-        private int     bufferLength;   // Length of buffer (3 or 4)
-        private int     numSigBytes;    // Number of meaningful bytes in the buffer
-        private int     lineLength;
+        private int position;       // Current position in the buffer
+        private byte[] buffer;         // Small buffer holding converted data
+        private int bufferLength;   // Length of buffer (3 or 4)
+        private int numSigBytes;    // Number of meaningful bytes in the buffer
+        private int lineLength;
         private boolean breakLines;     // Break lines at less than 80 characters
-        private int     options;        // Record options used to create the stream.
-        private byte[]  decodabet;      // Local copies to avoid extra method calls
+        private int options;        // Record options used to create the stream.
+        private byte[] decodabet;      // Local copies to avoid extra method calls
 
 
         /**
@@ -1718,14 +1718,14 @@ public class Base64
         public InputStream( java.io.InputStream in, int options ) {
 
             super( in );
-            this.options      = options; // Record for later
-            this.breakLines   = (options & DO_BREAK_LINES) > 0;
-            this.encode       = (options & ENCODE) > 0;
+            this.options = options; // Record for later
+            this.breakLines = (options & DO_BREAK_LINES) > 0;
+            this.encode = (options & ENCODE) > 0;
             this.bufferLength = encode ? 4 : 3;
-            this.buffer       = new byte[ bufferLength ];
-            this.position     = -1;
-            this.lineLength   = 0;
-            this.decodabet    = getDecodabet(options);
+            this.buffer = new byte[ bufferLength ];
+            this.position = -1;
+            this.lineLength = 0;
+            this.decodabet = getDecodabet(options);
         }   // end constructor
 
         /**
@@ -1887,15 +1887,15 @@ public class Base64
     public static class OutputStream extends java.io.FilterOutputStream {
 
         private boolean encode;
-        private int     position;
-        private byte[]  buffer;
-        private int     bufferLength;
-        private int     lineLength;
+        private int position;
+        private byte[] buffer;
+        private int bufferLength;
+        private int lineLength;
         private boolean breakLines;
-        private byte[]  b4;         // Scratch used in a few places
+        private byte[] b4;         // Scratch used in a few places
         private boolean suspendEncoding;
-        private int     options;    // Record for later
-        private byte[]  decodabet;  // Local copies to avoid extra method calls
+        private int options;    // Record for later
+        private byte[] decodabet;  // Local copies to avoid extra method calls
 
         /**
          * Constructs a {@link Base64.OutputStream} in ENCODE mode.
@@ -2060,7 +2060,7 @@ public class Base64
             super.close();
 
             buffer = null;
-            out    = null;
+            out = null;
         }   // end close
 
 

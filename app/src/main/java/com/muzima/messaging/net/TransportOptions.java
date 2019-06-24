@@ -28,7 +28,7 @@ public class TransportOptions {
     private final Context context;
     private final List<TransportOption> enabledTransports;
 
-    private Type defaultTransportType  = Type.SMS;
+    private Type defaultTransportType = Type.SMS;
     private Optional<Integer> defaultSubscriptionId = Optional.absent();
     private Optional<TransportOption> selectedOption = Optional.absent();
 

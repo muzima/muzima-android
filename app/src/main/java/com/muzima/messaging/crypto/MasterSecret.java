@@ -58,7 +58,7 @@ public class MasterSecret implements Parcelable {
 
     public MasterSecret(SecretKeySpec encryptionKey, SecretKeySpec macKey) {
         this.encryptionKey = encryptionKey;
-        this.macKey        = macKey;
+        this.macKey = macKey;
     }
 
     private MasterSecret(Parcel in) {
@@ -69,7 +69,7 @@ public class MasterSecret implements Parcelable {
         in.readByteArray(macKeyBytes);
 
         this.encryptionKey = new SecretKeySpec(encryptionKeyBytes, "AES");
-        this.macKey        = new SecretKeySpec(macKeyBytes, "HmacSHA1");
+        this.macKey = new SecretKeySpec(macKeyBytes, "HmacSHA1");
 
         // SecretKeySpec does an internal copy in its constructor.
         Arrays.fill(encryptionKeyBytes, (byte) 0x00);
@@ -101,7 +101,7 @@ public class MasterSecret implements Parcelable {
     public MasterSecret parcelClone() {
         Parcel thisParcel = Parcel.obtain();
         Parcel thatParcel = Parcel.obtain();
-        byte[] bytes      = null;
+        byte[] bytes = null;
 
         thisParcel.writeValue(this);
         bytes = thisParcel.marshall();

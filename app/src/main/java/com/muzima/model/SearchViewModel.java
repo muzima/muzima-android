@@ -21,9 +21,9 @@ public class SearchViewModel extends ViewModel {
     private String lastQuery;
 
     public SearchViewModel(@NonNull SearchRepository searchRepository) {
-        this.searchResult     = new ObservingLiveData();
+        this.searchResult = new ObservingLiveData();
         this.searchRepository = searchRepository;
-        this.debouncer        = new Debouncer(500);
+        this.debouncer = new Debouncer(500);
 
         searchResult.registerContentObserver(new ContentObserver(new Handler()) {
             @Override

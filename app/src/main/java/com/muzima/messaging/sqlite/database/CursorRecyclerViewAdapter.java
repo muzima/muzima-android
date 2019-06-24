@@ -131,7 +131,7 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
     public final void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         if (!isHeaderPosition(position) && !isFooterPosition(position)) {
             if (isFastAccessPosition(position)) onBindFastAccessItemViewHolder((VH)viewHolder, position);
-            else                                onBindItemViewHolder((VH)viewHolder, getCursorAtPositionOrThrow(position));
+            else onBindItemViewHolder((VH)viewHolder, getCursorAtPositionOrThrow(position));
         }
     }
 

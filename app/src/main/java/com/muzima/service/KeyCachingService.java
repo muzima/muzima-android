@@ -248,7 +248,7 @@ public class KeyCachingService extends Service {
 
             Log.i(TAG, "Starting timeout: " + timeoutMillis);
 
-            AlarmManager  alarmManager     = ServiceUtil.getAlarmManager(context);
+            AlarmManager  alarmManager = ServiceUtil.getAlarmManager(context);
             PendingIntent expirationIntent = buildExpirationPendingIntent(context);
 
             alarmManager.cancel(expirationIntent);

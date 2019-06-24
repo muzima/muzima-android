@@ -185,7 +185,7 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
     public static abstract class MediaOverviewFragment<T> extends Fragment implements LoaderManager.LoaderCallbacks<T> {
 
         public static final String ADDRESS_EXTRA = "address";
-        public static final String LOCALE_EXTRA  = "locale_extra";
+        public static final String LOCALE_EXTRA = "locale_extra";
 
         protected TextView noMedia;
         protected SignalRecipient recipient;
@@ -225,7 +225,7 @@ public class MediaOverviewActivity extends PassphraseRequiredActionBarActivity {
 
             this.recyclerView = ViewUtil.findById(view, R.id.media_grid);
             this.noMedia = ViewUtil.findById(view, R.id.no_images);
-            this.gridManager  = new StickyHeaderGridLayoutManager(getResources().getInteger(R.integer.media_overview_cols));
+            this.gridManager = new StickyHeaderGridLayoutManager(getResources().getInteger(R.integer.media_overview_cols));
 
             this.recyclerView.setAdapter(new MediaGalleryAdapter(getContext(),
                     GlideApp.with(this),

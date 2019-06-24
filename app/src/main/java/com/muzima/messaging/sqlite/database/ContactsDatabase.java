@@ -51,7 +51,7 @@ public class ContactsDatabase {
     private final Context context;
 
     public ContactsDatabase(Context context) {
-        this.context  = context;
+        this.context = context;
     }
 
     public synchronized  void removeDeletedRawContacts(@NonNull Account account) {
@@ -425,7 +425,7 @@ public class ContactsDatabase {
                 .appendQueryParameter(ContactsContract.RawContacts.ACCOUNT_TYPE, account.type).build();
 
         Map<SignalAddress, SignalContact> signalContacts = new HashMap<>();
-        Cursor                      cursor         = null;
+        Cursor cursor = null;
 
         try {
             String[] projection = new String[] {BaseColumns._ID, ContactsContract.RawContacts.SYNC1, ContactsContract.RawContacts.SYNC4, ContactsContract.RawContacts.CONTACT_ID, ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY, ContactsContract.RawContacts.DISPLAY_NAME_SOURCE};
@@ -466,7 +466,7 @@ public class ContactsDatabase {
             numberCursor = context.getContentResolver().query(uri, projection, null, null, null);
 
             while (numberCursor != null && numberCursor.moveToNext()) {
-                String  systemNumber  = numberCursor.getString(0);
+                String  systemNumber = numberCursor.getString(0);
                 SignalAddress systemAddress = SignalAddress.fromExternal(context, systemNumber);
 
                 if (systemAddress.equals(address)) {

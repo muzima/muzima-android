@@ -29,7 +29,7 @@ public class DeviceListLoader extends AsyncLoader<List<DeviceInfo>> {
     @Override
     public List<DeviceInfo> loadInBackground() {
         try {
-            List<DeviceInfo> devices  = accountManager.getDevices();
+            List<DeviceInfo> devices = accountManager.getDevices();
             Iterator<DeviceInfo> iterator = devices.iterator();
 
             while (iterator.hasNext()) {
@@ -51,9 +51,9 @@ public class DeviceListLoader extends AsyncLoader<List<DeviceInfo>> {
 
         @Override
         public int compare(DeviceInfo lhs, DeviceInfo rhs) {
-            if      (lhs.getCreated() < rhs.getCreated())  return -1;
+            if (lhs.getCreated() < rhs.getCreated())  return -1;
             else if (lhs.getCreated() != rhs.getCreated()) return 1;
-            else                                           return 0;
+            else return 0;
         }
     }
 }

@@ -67,8 +67,8 @@ public class SignalAddress implements Parcelable, Comparable<SignalAddress> {
     }
 
     public static @NonNull List<SignalAddress> fromSerializedList(@NonNull String serialized, char delimiter) {
-        String[]      escapedAddresses = DelimiterUtil.split(serialized, delimiter);
-        List<SignalAddress> addresses        = new LinkedList<>();
+        String[] escapedAddresses = DelimiterUtil.split(serialized, delimiter);
+        List<SignalAddress> addresses = new LinkedList<>();
 
         for (String escapedAddress : escapedAddresses) {
             addresses.add(SignalAddress.fromSerialized(DelimiterUtil.unescape(escapedAddress, delimiter)));
@@ -189,14 +189,14 @@ public class SignalAddress implements Parcelable, Comparable<SignalAddress> {
         private final String localCountryCode;
 
         private final PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
-        private final Pattern         ALPHA_PATTERN   = Pattern.compile("[a-zA-Z]");
+        private final Pattern ALPHA_PATTERN = Pattern.compile("[a-zA-Z]");
 
         ExternalAddressFormatter(@NonNull String localNumberString) {
             try {
                 Phonenumber.PhoneNumber localNumber = phoneNumberUtil.parse(localNumberString, null);
 
                 this.localNumberString = localNumberString;
-                this.localCountryCode  = phoneNumberUtil.getRegionCodeForNumber(localNumber);
+                this.localCountryCode = phoneNumberUtil.getRegionCodeForNumber(localNumber);
             } catch (NumberParseException e) {
                 throw new AssertionError(e);
             }
@@ -204,18 +204,18 @@ public class SignalAddress implements Parcelable, Comparable<SignalAddress> {
 
         ExternalAddressFormatter(@NonNull String localCountryCode, boolean countryCode) {
             this.localNumberString = "";
-            this.localCountryCode  = localCountryCode;
+            this.localCountryCode = localCountryCode;
         }
 
         public String format(@Nullable String number) {
-            if (number == null)                       return "Unknown";
+            if (number == null) return "Unknown";
             if (ALPHA_PATTERN.matcher(number).find()) return number.trim();
 
             String bareNumber = number.replaceAll("[^0-9+]", "");
 
             if (bareNumber.length() == 0) {
                 if (number.trim().length() == 0) return "Unknown";
-                else                             return number.trim();
+                else return number.trim();
             }
 
             // libphonenumber doesn't seem to be correct for Germany and Finland

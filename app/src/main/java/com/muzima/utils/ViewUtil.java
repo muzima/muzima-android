@@ -194,7 +194,7 @@ public class ViewUtil {
     }
 
     public static void updateLayoutParams(@NonNull View view, int width, int height) {
-        view.getLayoutParams().width  = width;
+        view.getLayoutParams().width = width;
         view.getLayoutParams().height = height;
         view.requestLayout();
     }

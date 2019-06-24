@@ -42,7 +42,7 @@ public class ProgressPreference extends Preference {
     public void onBindViewHolder(PreferenceViewHolder view) {
         super.onBindViewHolder(view);
 
-        this.container    = view.findViewById(R.id.container);
+        this.container = view.findViewById(R.id.container);
         this.progressText = (TextView) view.findViewById(R.id.progress_text);
 
         this.container.setVisibility(View.GONE);

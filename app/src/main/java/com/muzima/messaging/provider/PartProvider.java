@@ -88,8 +88,8 @@ public class PartProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case SINGLE_ROW:
-                PartUriParser      partUriParser = new PartUriParser(uri);
-                DatabaseAttachment attachment    = DatabaseFactory.getAttachmentDatabase(getContext())
+                PartUriParser partUriParser = new PartUriParser(uri);
+                DatabaseAttachment attachment = DatabaseFactory.getAttachmentDatabase(getContext())
                         .getAttachment(partUriParser.getPartId());
 
                 if (attachment != null) {
@@ -114,13 +114,13 @@ public class PartProvider extends ContentProvider {
 
         switch (uriMatcher.match(url)) {
             case SINGLE_ROW:
-                PartUriParser partUri      = new PartUriParser(url);
-                DatabaseAttachment attachment   = DatabaseFactory.getAttachmentDatabase(getContext()).getAttachment(partUri.getPartId());
+                PartUriParser partUri = new PartUriParser(url);
+                DatabaseAttachment attachment = DatabaseFactory.getAttachmentDatabase(getContext()).getAttachment(partUri.getPartId());
 
                 if (attachment == null) return null;
 
                 MatrixCursor matrixCursor = new MatrixCursor(projection, 1);
-                Object[]           resultRow    = new Object[projection.length];
+                Object[] resultRow = new Object[projection.length];
 
                 for (int i=0;i<projection.length;i++) {
                     if (OpenableColumns.DISPLAY_NAME.equals(projection[i])) {
@@ -142,10 +142,10 @@ public class PartProvider extends ContentProvider {
     }
 
     private ParcelFileDescriptor getParcelStreamForAttachment(AttachmentId attachmentId) throws IOException {
-        long       plaintextLength = Util.getStreamLength(DatabaseFactory.getAttachmentDatabase(getContext()).getAttachmentStream(attachmentId, 0));
-        MemoryFile memoryFile      = new MemoryFile(attachmentId.toString(), Util.toIntExact(plaintextLength));
+        long plaintextLength = Util.getStreamLength(DatabaseFactory.getAttachmentDatabase(getContext()).getAttachmentStream(attachmentId, 0));
+        MemoryFile memoryFile = new MemoryFile(attachmentId.toString(), Util.toIntExact(plaintextLength));
 
-        InputStream in  = DatabaseFactory.getAttachmentDatabase(getContext()).getAttachmentStream(attachmentId, 0);
+        InputStream in = DatabaseFactory.getAttachmentDatabase(getContext()).getAttachmentStream(attachmentId, 0);
         OutputStream out = memoryFile.getOutputStream();
 
         Util.copy(in, out);

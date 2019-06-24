@@ -71,7 +71,7 @@ public class ContactAccessor {
             final String[] inProjection = new String[]{ContactsContract.PhoneLookup._ID, ContactsContract.PhoneLookup.DISPLAY_NAME};
 
             final List<SignalAddress> registeredAddresses = DatabaseFactory.getRecipientDatabase(context).getRegistered();
-            final Collection<ContactData> lookupData          = new ArrayList<>(registeredAddresses.size());
+            final Collection<ContactData> lookupData = new ArrayList<>(registeredAddresses.size());
 
             for (SignalAddress registeredAddress : registeredAddresses) {
                 Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(registeredAddress.serialize()));
@@ -276,7 +276,7 @@ public static class ContactData implements Parcelable {
         };
 
         String phone = "";
-        String cons  = null;
+        String cons = null;
 
         if (constraint != null) {
             cons = constraint.toString();

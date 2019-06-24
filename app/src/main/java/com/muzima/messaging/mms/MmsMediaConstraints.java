@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.android.mms.service_alt.MmsConfig;
 
 public class MmsMediaConstraints extends MediaConstraints {
-    private static final int DEFAULT_MAX_IMAGE_DIMEN  = 1024;
+    private static final int DEFAULT_MAX_IMAGE_DIMEN = 1024;
     private static final int DEFAULT_MAX_MESSAGE_SIZE = 280 * 1024;
 
     private final int subscriptionId;

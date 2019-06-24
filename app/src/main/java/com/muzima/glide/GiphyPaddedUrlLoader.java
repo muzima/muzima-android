@@ -20,7 +20,7 @@ public class GiphyPaddedUrlLoader implements ModelLoader<GiphyPaddedUrl, InputSt
     private final OkHttpClient client;
 
   private GiphyPaddedUrlLoader(OkHttpClient client) {
-        this.client  = client;
+        this.client = client;
     }
 
     @Nullable
@@ -39,7 +39,7 @@ public class GiphyPaddedUrlLoader implements ModelLoader<GiphyPaddedUrl, InputSt
         private final OkHttpClient client;
 
         public Factory() {
-            this.client  = new OkHttpClient.Builder().proxySelector(new GiphyProxySelector()).build();
+            this.client = new OkHttpClient.Builder().proxySelector(new GiphyProxySelector()).build();
         }
 
         @Override

@@ -23,11 +23,11 @@ import java.util.ListIterator;
  */
 public class CursorList<T> implements List<T>, Closeable {
 
-    private final Cursor          cursor;
+    private final Cursor cursor;
     private final ModelBuilder<T> modelBuilder;
 
     public CursorList(@NonNull Cursor cursor, @NonNull ModelBuilder<T> modelBuilder) {
-        this.cursor       = cursor;
+        this.cursor = cursor;
         this.modelBuilder = modelBuilder;
     }
 

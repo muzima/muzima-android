@@ -57,10 +57,10 @@ public class SignedPreKeyDatabase extends Database {
         {
             if (cursor != null && cursor.moveToFirst()) {
                 try {
-                    ECPublicKey publicKey  = Curve.decodePoint(Base64.decode(cursor.getString(cursor.getColumnIndexOrThrow(PUBLIC_KEY))), 0);
+                    ECPublicKey publicKey = Curve.decodePoint(Base64.decode(cursor.getString(cursor.getColumnIndexOrThrow(PUBLIC_KEY))), 0);
                     ECPrivateKey privateKey = Curve.decodePrivatePoint(Base64.decode(cursor.getString(cursor.getColumnIndexOrThrow(PRIVATE_KEY))));
-                    byte[] signature  = Base64.decode(cursor.getString(cursor.getColumnIndexOrThrow(SIGNATURE)));
-                    long timestamp  = cursor.getLong(cursor.getColumnIndexOrThrow(TIMESTAMP));
+                    byte[] signature = Base64.decode(cursor.getString(cursor.getColumnIndexOrThrow(SIGNATURE)));
+                    long timestamp = cursor.getLong(cursor.getColumnIndexOrThrow(TIMESTAMP));
 
                     return new SignedPreKeyRecord(keyId, timestamp, new ECKeyPair(publicKey, privateKey), signature);
                 } catch (InvalidKeyException | IOException e) {
@@ -75,16 +75,16 @@ public class SignedPreKeyDatabase extends Database {
     public @NonNull
     List<SignedPreKeyRecord> getAllSignedPreKeys() {
         SQLiteDatabase database = databaseHelper.getReadableDatabase();
-        List<SignedPreKeyRecord> results  = new LinkedList<>();
+        List<SignedPreKeyRecord> results = new LinkedList<>();
 
         try (Cursor cursor = database.query(TABLE_NAME, null, null, null, null, null, null)) {
             while (cursor != null && cursor.moveToNext()) {
                 try {
                     int keyId = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_ID));
-                    ECPublicKey  publicKey  = Curve.decodePoint(Base64.decode(cursor.getString(cursor.getColumnIndexOrThrow(PUBLIC_KEY))), 0);
+                    ECPublicKey publicKey = Curve.decodePoint(Base64.decode(cursor.getString(cursor.getColumnIndexOrThrow(PUBLIC_KEY))), 0);
                     ECPrivateKey privateKey = Curve.decodePrivatePoint(Base64.decode(cursor.getString(cursor.getColumnIndexOrThrow(PRIVATE_KEY))));
-                    byte[] signature  = Base64.decode(cursor.getString(cursor.getColumnIndexOrThrow(SIGNATURE)));
-                    long timestamp  = cursor.getLong(cursor.getColumnIndexOrThrow(TIMESTAMP));
+                    byte[] signature = Base64.decode(cursor.getString(cursor.getColumnIndexOrThrow(SIGNATURE)));
+                    long timestamp = cursor.getLong(cursor.getColumnIndexOrThrow(TIMESTAMP));
 
                     results.add(new SignedPreKeyRecord(keyId, timestamp, new ECKeyPair(publicKey, privateKey), signature));
                 } catch (InvalidKeyException | IOException e) {

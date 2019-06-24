@@ -37,7 +37,7 @@ public class NetworkRequirement extends SimpleRequirement implements ContextDepe
 
     @Override
     public boolean isPresent() {
-        ConnectivityManager cm      = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
         return netInfo != null && netInfo.isConnected();

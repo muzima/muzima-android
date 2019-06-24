@@ -22,14 +22,14 @@ import java.util.regex.Pattern;
 
 public class GeneratedContactPhoto implements FallbackContactPhoto {
 
-    private static final Pattern PATTERN  = Pattern.compile("[^\\p{L}\\p{Nd}\\p{S}]+");
+    private static final Pattern PATTERN = Pattern.compile("[^\\p{L}\\p{Nd}\\p{S}]+");
     private static final Typeface TYPEFACE = Typeface.create("sans-serif-medium", Typeface.NORMAL);
 
     private final String name;
-    private final int    fallbackResId;
+    private final int fallbackResId;
 
     public GeneratedContactPhoto(@NonNull String name, @DrawableRes int fallbackResId) {
-        this.name          = name;
+        this.name = name;
         this.fallbackResId = fallbackResId;
     }
 
@@ -63,9 +63,9 @@ public class GeneratedContactPhoto implements FallbackContactPhoto {
     }
 
     private @Nullable String getAbbreviation(String name) {
-        String[]      parts   = name.split(" ");
+        String[] parts = name.split(" ");
         StringBuilder builder = new StringBuilder();
-        int           count   = 0;
+        int count = 0;
 
         for (int i = 0; i < parts.length && count < 2; i++) {
             String cleaned = PATTERN.matcher(parts[i]).replaceFirst("");

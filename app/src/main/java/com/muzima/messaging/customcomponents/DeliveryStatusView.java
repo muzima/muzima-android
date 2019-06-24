@@ -43,10 +43,10 @@ public class DeliveryStatusView extends FrameLayout {
 
         inflate(context, R.layout.delivery_status_view, this);
 
-        this.deliveredIndicator   = findViewById(R.id.delivered_indicator);
-        this.sentIndicator        = findViewById(R.id.sent_indicator);
-        this.pendingIndicator     = findViewById(R.id.pending_indicator);
-        this.readIndicator        = findViewById(R.id.read_indicator);
+        this.deliveredIndicator = findViewById(R.id.delivered_indicator);
+        this.sentIndicator = findViewById(R.id.sent_indicator);
+        this.pendingIndicator = findViewById(R.id.pending_indicator);
+        this.readIndicator = findViewById(R.id.read_indicator);
 
         if (attrs != null) {
             TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.DeliveryStatusView, 0, 0);

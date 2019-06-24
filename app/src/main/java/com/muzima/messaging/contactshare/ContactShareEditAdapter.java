@@ -29,9 +29,9 @@ public class ContactShareEditAdapter extends RecyclerView.Adapter<ContactShareEd
 
     public ContactShareEditAdapter(@NonNull GlideRequests glideRequests, @NonNull Locale locale, @NonNull EventListener eventListener) {
         this.glideRequests = glideRequests;
-        this.locale        = locale;
+        this.locale = locale;
         this.eventListener = eventListener;
-        this.contacts      = new ArrayList<>();
+        this.contacts = new ArrayList<>();
     }
 
     @Override

@@ -83,7 +83,7 @@ public class EmojiPages {
             PAGE_FLAGS,
             PAGE_EMOTICONS);
 
-    static final List<EmojiPageModel> DATA_PAGES    = Arrays.asList(PAGE_PEOPLE_0,
+    static final List<EmojiPageModel> DATA_PAGES = Arrays.asList(PAGE_PEOPLE_0,
             PAGE_PEOPLE_1,
             PAGE_PEOPLE_2,
             PAGE_PEOPLE_3,

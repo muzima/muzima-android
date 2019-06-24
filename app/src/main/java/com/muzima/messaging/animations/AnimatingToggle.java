@@ -32,7 +32,7 @@ public class AnimatingToggle extends FrameLayout {
     public AnimatingToggle(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.outAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.animation_toggle_out);
-        this.inAnimation  = AnimationUtils.loadAnimation(getContext(), R.anim.animation_toggle_in);
+        this.inAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.animation_toggle_in);
         this.outAnimation.setInterpolator(new FastOutSlowInInterpolator());
         this.inAnimation.setInterpolator(new FastOutSlowInInterpolator());
     }

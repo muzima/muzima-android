@@ -13,8 +13,8 @@ import com.muzima.R;
 public class BasicIntroFragment extends Fragment {
 
     private static final String ARG_DRAWABLE = "drawable";
-    private static final String ARG_TEXT     = "text";
-    private static final String ARG_SUBTEXT  = "subtext";
+    private static final String ARG_TEXT = "text";
+    private static final String ARG_SUBTEXT = "subtext";
 
     private int drawable;
     private int text;
@@ -37,8 +37,8 @@ public class BasicIntroFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             drawable = getArguments().getInt(ARG_DRAWABLE);
-            text     = getArguments().getInt(ARG_TEXT    );
-            subtext  = getArguments().getInt(ARG_SUBTEXT );
+            text = getArguments().getInt(ARG_TEXT    );
+            subtext = getArguments().getInt(ARG_SUBTEXT );
         }
     }
 

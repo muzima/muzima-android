@@ -24,9 +24,9 @@ public class EmojiTextView extends AppCompatTextView {
 
     private CharSequence previousText;
     private TextView.BufferType previousBufferType;
-    private float        originalFontSize;
-    private boolean      useSystemEmoji;
-    private boolean      sizeChangeInProgress;
+    private float originalFontSize;
+    private boolean useSystemEmoji;
+    private boolean sizeChangeInProgress;
 
     public EmojiTextView(Context context) {
         this(context, null);
@@ -49,12 +49,12 @@ public class EmojiTextView extends AppCompatTextView {
     }
 
     @Override public void setText(@Nullable CharSequence text, TextView.BufferType type) {
-        EmojiProvider             provider   = EmojiProvider.getInstance(getContext());
+        EmojiProvider provider = EmojiProvider.getInstance(getContext());
         EmojiParser.CandidateList candidates = provider.getCandidates(text);
 
         if (scaleEmojis && candidates != null && candidates.allEmojis) {
-            int   emojis = candidates.size();
-            float scale  = 1.0f;
+            int emojis = candidates.size();
+            float scale = 1.0f;
 
             if (emojis <= 8) scale += 0.25f;
             if (emojis <= 6) scale += 0.25f;
@@ -70,9 +70,9 @@ public class EmojiTextView extends AppCompatTextView {
             return;
         }
 
-        previousText       = text;
+        previousText = text;
         previousBufferType = type;
-        useSystemEmoji     = useSystemEmoji();
+        useSystemEmoji = useSystemEmoji();
 
         if (useSystemEmoji || candidates == null || candidates.size() == 0) {
             super.setText(text, TextView.BufferType.NORMAL);
@@ -112,7 +112,7 @@ public class EmojiTextView extends AppCompatTextView {
                         .append(ellipsized.subSequence(0, ellipsized.length()));
 
                 EmojiParser.CandidateList newCandidates = EmojiProvider.getInstance(getContext()).getCandidates(newContent);
-                CharSequence              emojified     = EmojiProvider.getInstance(getContext()).emojify(newCandidates, newContent, this);
+                CharSequence emojified = EmojiProvider.getInstance(getContext()).emojify(newCandidates, newContent, this);
 
                 super.setText(emojified, TextView.BufferType.SPANNABLE);
             }
@@ -120,9 +120,9 @@ public class EmojiTextView extends AppCompatTextView {
     }
 
     private boolean unchanged(CharSequence text, TextView.BufferType bufferType) {
-        return Util.equals(previousText, text)             &&
+        return Util.equals(previousText, text) &&
                 Util.equals(previousBufferType, bufferType) &&
-                useSystemEmoji == useSystemEmoji()          &&
+                useSystemEmoji == useSystemEmoji() &&
                 !sizeChangeInProgress;
     }
 
@@ -144,7 +144,7 @@ public class EmojiTextView extends AppCompatTextView {
     @Override
     public void invalidateDrawable(@NonNull Drawable drawable) {
         if (drawable instanceof EmojiProvider.EmojiDrawable) invalidate();
-        else                                   super.invalidateDrawable(drawable);
+        else super.invalidateDrawable(drawable);
     }
 
     @Override

@@ -16,8 +16,8 @@ public class MemoryBlobProvider {
     @SuppressWarnings("unused")
     private static final String TAG = MemoryBlobProvider.class.getSimpleName();
 
-    public  static final String AUTHORITY   = "com.muzima";
-    public  static final String PATH        = "memory/*/#";
+    public  static final String AUTHORITY = "com.muzima";
+    public  static final String PATH = "memory/*/#";
     private static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/memory");
 
     private final Map<Long, Entry> cache = new HashMap<>();
@@ -42,8 +42,7 @@ public class MemoryBlobProvider {
         cache.remove(ContentUris.parseId(uri));
     }
 
-    public synchronized @NonNull
-    InputStream getStream(long id) throws IOException {
+    public synchronized @NonNull InputStream getStream(long id) throws IOException {
         Entry entry = cache.get(id);
 
         if (entry == null) {
@@ -75,7 +74,7 @@ public class MemoryBlobProvider {
         private final boolean singleUse;
 
         private Entry(@NonNull byte[] blob, boolean singleUse) {
-            this.blob      = blob;
+            this.blob = blob;
             this.singleUse = singleUse;
         }
 

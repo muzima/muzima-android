@@ -24,8 +24,8 @@ public class SignalServiceNetworkAccess {
     private static final String TAG = SignalServiceNetworkAccess.class.getSimpleName();
 
     private static final String COUNTRY_CODE_EGYPT = "+20";
-    private static final String COUNTRY_CODE_UAE   = "+971";
-    private static final String COUNTRY_CODE_OMAN  = "+968";
+    private static final String COUNTRY_CODE_UAE = "+971";
+    private static final String COUNTRY_CODE_OMAN = "+968";
     private static final String COUNTRY_CODE_QATAR = "+974";
 
     private static final String SERVICE_REFLECTOR_HOST = "textsecure-service-reflected.whispersystems.org";
@@ -48,15 +48,15 @@ public class SignalServiceNetworkAccess {
             .build();
 
     private final Map<String, SignalServiceConfiguration> censorshipConfiguration;
-    private final String[]                                censoredCountries;
-    private final SignalServiceConfiguration              uncensoredConfiguration;
+    private final String[] censoredCountries;
+    private final SignalServiceConfiguration uncensoredConfiguration;
 
     public SignalServiceNetworkAccess(Context context) {
-        final TrustStore                 trustStore     = new DomainFrontingTrustStore(context);
-        final SignalServiceUrl           service        = new SignalServiceUrl("https://cms.souqcdn.com", SERVICE_REFLECTOR_HOST, trustStore, SOUQ_CONNECTION_SPEC);
-        final SignalCdnUrl               serviceCdn     = new SignalCdnUrl("https://cms.souqcdn.com", SERVICE_REFLECTOR_HOST, trustStore, SOUQ_CONNECTION_SPEC);
-        final SignalContactDiscoveryUrl  serviceContact = new SignalContactDiscoveryUrl("https://cms.souqcdn.com", SERVICE_REFLECTOR_HOST, trustStore, SOUQ_CONNECTION_SPEC);
-        final SignalServiceConfiguration serviceConfig  = new SignalServiceConfiguration(new SignalServiceUrl[] { service },
+        final TrustStore trustStore = new DomainFrontingTrustStore(context);
+        final SignalServiceUrl service = new SignalServiceUrl("https://cms.souqcdn.com", SERVICE_REFLECTOR_HOST, trustStore, SOUQ_CONNECTION_SPEC);
+        final SignalCdnUrl serviceCdn = new SignalCdnUrl("https://cms.souqcdn.com", SERVICE_REFLECTOR_HOST, trustStore, SOUQ_CONNECTION_SPEC);
+        final SignalContactDiscoveryUrl serviceContact = new SignalContactDiscoveryUrl("https://cms.souqcdn.com", SERVICE_REFLECTOR_HOST, trustStore, SOUQ_CONNECTION_SPEC);
+        final SignalServiceConfiguration serviceConfig = new SignalServiceConfiguration(new SignalServiceUrl[] { service },
                 new SignalCdnUrl[] { serviceCdn },
                 new SignalContactDiscoveryUrl[] { serviceContact });
 

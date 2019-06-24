@@ -24,7 +24,7 @@ public abstract class LollipopMmsConnection extends BroadcastReceiver {
     protected LollipopMmsConnection(Context context, String action) {
         super();
         this.context = context;
-        this.action  = action;
+        this.action = action;
     }
 
     @Override

@@ -32,7 +32,7 @@ public class AudioRecorder {
     private Uri captureUri;
 
     public AudioRecorder(@NonNull Context context) {
-        this.context      = context;
+        this.context = context;
         this.blobProvider = PersistentBlobProvider.getInstance(context.getApplicationContext());
     }
 
@@ -48,9 +48,9 @@ public class AudioRecorder {
 
                 ParcelFileDescriptor fds[] = ParcelFileDescriptor.createPipe();
 
-                captureUri  = blobProvider.create(context, new ParcelFileDescriptor.AutoCloseInputStream(fds[0]),
+                captureUri = blobProvider.create(context, new ParcelFileDescriptor.AutoCloseInputStream(fds[0]),
                         MediaUtil.AUDIO_AAC, null, null);
-                audioCodec  = new AudioCodec();
+                audioCodec = new AudioCodec();
 
                 audioCodec.start(new ParcelFileDescriptor.AutoCloseOutputStream(fds[1]));
             } catch (IOException e) {

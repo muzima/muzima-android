@@ -42,11 +42,11 @@ public class WebRtcCallActivity extends AppCompatActivity {
 
     private static final String TAG = WebRtcCallActivity.class.getSimpleName();
 
-    private static final int STANDARD_DELAY_FINISH    = 1000;
+    private static final int STANDARD_DELAY_FINISH = 1000;
     public  static final int BUSY_SIGNAL_DELAY_FINISH = 5500;
 
-    public static final String ANSWER_ACTION   = WebRtcCallActivity.class.getCanonicalName() + ".ANSWER_ACTION";
-    public static final String DENY_ACTION     = WebRtcCallActivity.class.getCanonicalName() + ".DENY_ACTION";
+    public static final String ANSWER_ACTION = WebRtcCallActivity.class.getCanonicalName() + ".ANSWER_ACTION";
+    public static final String DENY_ACTION = WebRtcCallActivity.class.getCanonicalName() + ".DENY_ACTION";
     public static final String END_CALL_ACTION = WebRtcCallActivity.class.getCanonicalName() + ".END_CALL_ACTION";
     private WebRtcCallScreen callScreen;
 
@@ -256,7 +256,7 @@ public class WebRtcCallActivity extends AppCompatActivity {
 
     private void handleUntrustedIdentity(@NonNull WebRtcViewModel event) {
         final IdentityKey theirIdentity = event.getIdentityKey();
-        final SignalRecipient recipient     = event.getRecipient();
+        final SignalRecipient recipient = event.getRecipient();
 
         callScreen.setUntrustedIdentity(recipient, theirIdentity);
         callScreen.setAcceptIdentityListener(new View.OnClickListener() {
@@ -299,16 +299,36 @@ public class WebRtcCallActivity extends AppCompatActivity {
         Log.i(TAG, "Got message from service: " + event);
 
         switch (event.getState()) {
-            case CALL_CONNECTED:          handleCallConnected(event);            break;
-            case NETWORK_FAILURE:         handleServerFailure(event);            break;
-            case CALL_RINGING:            handleCallRinging(event);              break;
-            case CALL_DISCONNECTED:       handleTerminate(event.getRecipient()); break;
-            case NO_SUCH_USER:            handleNoSuchUser(event);               break;
-            case RECIPIENT_UNAVAILABLE:   handleRecipientUnavailable(event);     break;
-            case CALL_INCOMING:           handleIncomingCall(event);             break;
-            case CALL_OUTGOING:           handleOutgoingCall(event);             break;
-            case CALL_BUSY:               handleCallBusy(event);                 break;
-            case UNTRUSTED_IDENTITY:      handleUntrustedIdentity(event);        break;
+            case CALL_CONNECTED:
+                 handleCallConnected(event);
+                 break;
+            case NETWORK_FAILURE:
+                 handleServerFailure(event);
+                 break;
+            case CALL_RINGING:
+                 handleCallRinging(event);
+                 break;
+            case CALL_DISCONNECTED:
+                 handleTerminate(event.getRecipient());
+                 break;
+            case NO_SUCH_USER:
+                 handleNoSuchUser(event);
+                 break;
+            case RECIPIENT_UNAVAILABLE:
+                 handleRecipientUnavailable(event);
+                 break;
+            case CALL_INCOMING:
+                 handleIncomingCall(event);
+                 break;
+            case CALL_OUTGOING:
+                 handleOutgoingCall(event);
+                 break;
+            case CALL_BUSY:
+                 handleCallBusy(event);
+                 break;
+            case UNTRUSTED_IDENTITY:
+                 handleUntrustedIdentity(event);
+                 break;
         }
 
         callScreen.setRemoteVideoEnabled(event.isRemoteVideoEnabled());

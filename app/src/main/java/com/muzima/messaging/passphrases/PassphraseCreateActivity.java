@@ -38,7 +38,7 @@ public class PassphraseCreateActivity extends PassphraseActivity {
         @Override
         protected Void doInBackground(String... params) {
             String passphrase = params[0];
-            masterSecret      = MasterSecretUtil.generateMasterSecret(PassphraseCreateActivity.this,
+            masterSecret = MasterSecretUtil.generateMasterSecret(PassphraseCreateActivity.this,
                     passphrase);
 
             MasterSecretUtil.generateAsymmetricMasterSecret(PassphraseCreateActivity.this, masterSecret);

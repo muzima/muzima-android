@@ -189,7 +189,7 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
         mediaPager.setOffscreenPageLimit(1);
         mediaPager.addOnPageChangeListener(new ViewPagerListener());
 
-        albumRail        = findViewById(R.id.media_preview_album_rail);
+        albumRail = findViewById(R.id.media_preview_album_rail);
         albumRailAdapter = new AlbumRailAdapter(GlideApp.with(this), this);
 
         albumRail.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -656,7 +656,7 @@ public class MediaPreviewActivity extends PassphraseRequiredActionBarActivity im
 
         private int getCursorPosition(int position) {
             if (leftIsRecent) return position;
-            else              return cursor.getCount() - 1 - position;
+            else return cursor.getCount() - 1 - position;
         }
     }
 

@@ -81,7 +81,7 @@ public class DraftDatabase extends Database {
             cursor = db.query(TABLE_NAME, null, THREAD_ID + " = ?", new String[] {threadId+""}, null, null, null);
 
             while (cursor != null && cursor.moveToNext()) {
-                String type  = cursor.getString(cursor.getColumnIndexOrThrow(DRAFT_TYPE));
+                String type = cursor.getString(cursor.getColumnIndexOrThrow(DRAFT_TYPE));
                 String value = cursor.getString(cursor.getColumnIndexOrThrow(DRAFT_VALUE));
 
                 results.add(new Draft(type, value));
@@ -106,7 +106,7 @@ public class DraftDatabase extends Database {
         private final String value;
 
         public Draft(String type, String value) {
-            this.type  = type;
+            this.type = type;
             this.value = value;
         }
 

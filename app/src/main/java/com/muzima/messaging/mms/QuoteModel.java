@@ -15,10 +15,10 @@ public class QuoteModel {
     private final List<Attachment> attachments;
 
     public QuoteModel(long id, SignalAddress author, String text, boolean missing, @Nullable List<Attachment> attachments) {
-        this.id          = id;
-        this.author      = author;
-        this.text        = text;
-        this.missing     = missing;
+        this.id = id;
+        this.author = author;
+        this.text = text;
+        this.missing = missing;
         this.attachments = attachments;
     }
 

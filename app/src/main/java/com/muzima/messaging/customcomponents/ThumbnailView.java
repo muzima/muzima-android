@@ -62,7 +62,7 @@ public class ThumbnailView extends FrameLayout {
 
     private Optional<TransferControlView> transferControls = Optional.absent();
     private SlideClickListener thumbnailClickListener = null;
-    private SlidesClickedListener downloadClickListener  = null;
+    private SlidesClickedListener downloadClickListener = null;
     private Slide slide = null;
 
     private int radius;
@@ -149,8 +149,8 @@ public class ThumbnailView extends FrameLayout {
         boolean heightInBounds = measuredHeight >= minHeight && measuredHeight <= maxHeight;
 
         if (!widthInBounds || !heightInBounds) {
-            double minWidthRatio  = naturalWidth / minWidth;
-            double maxWidthRatio  = naturalWidth / maxWidth;
+            double minWidthRatio = naturalWidth / minWidth;
+            double maxWidthRatio = naturalWidth / maxWidth;
             double minHeightRatio = naturalHeight / minHeight;
             double maxHeightRatio = naturalHeight / maxHeight;
 

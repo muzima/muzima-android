@@ -89,9 +89,9 @@ public class ApnDatabase {
             mmsc = "http://" + mmsc;
 
         String proxy = TextSecurePreferences.getMmscProxy(context);
-        String port  = TextSecurePreferences.getMmscProxyPort(context);
-        String user  = TextSecurePreferences.getMmscUsername(context);
-        String pass  = TextSecurePreferences.getMmscPassword(context);
+        String port = TextSecurePreferences.getMmscProxyPort(context);
+        String user = TextSecurePreferences.getMmscUsername(context);
+        String pass = TextSecurePreferences.getMmscPassword(context);
 
         return new LegacyMmsConnection.Apn(mmsc, proxy, port, user, pass);
     }
@@ -152,6 +152,6 @@ public class ApnDatabase {
                 TextSecurePreferences.getUseCustomMmscPassword(context));
 
         if (TextUtils.isEmpty(result.getMmsc())) return Optional.absent();
-        else                                     return Optional.of(result);
+        else return Optional.of(result);
     }
 }

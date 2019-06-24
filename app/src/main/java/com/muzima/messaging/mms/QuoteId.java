@@ -12,14 +12,14 @@ import org.json.JSONObject;
 public class QuoteId {
     private static final String TAG = QuoteId.class.getSimpleName();
 
-    private static final String ID      = "id";
-    private static final String AUTHOR  = "author";
+    private static final String ID = "id";
+    private static final String AUTHOR = "author";
 
-    private final long    id;
+    private final long id;
     private final SignalAddress author;
 
     public QuoteId(long id, @NonNull SignalAddress author) {
-        this.id     = id;
+        this.id = id;
         this.author = author;
     }
 

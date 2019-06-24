@@ -53,7 +53,7 @@ public class DatabaseUpgradeActivity extends BaseActivity {
     public static final int CURVE25519_VERSION = 63;
     public static final int ASYMMETRIC_MASTER_SECRET_FIX_VERSION = 73;
     public static final int NO_V1_VERSION = 83;
-    public static final int SIGNED_PREKEY_VERSION  = 83;
+    public static final int SIGNED_PREKEY_VERSION = 83;
     public static final int NO_DECRYPT_QUEUE_VERSION = 113;
     public static final int PUSH_DECRYPT_SERIAL_ID_VERSION = 131;
     public static final int MIGRATE_SESSION_PLAINTEXT = 136;
@@ -313,7 +313,7 @@ public class DatabaseUpgradeActivity extends BaseActivity {
                 Log.i(TAG, "Beginning migration of existing jobs to WorkManager");
 
                 JobManager jobManager = MuzimaApplication.getInstance(getApplicationContext()).getJobManager();
-                PersistentStorage storage    = new PersistentStorage(getApplicationContext(), "TextSecureJobs", new JavaJobSerializer());
+                PersistentStorage storage = new PersistentStorage(getApplicationContext(), "TextSecureJobs", new JavaJobSerializer());
 
                 for (Job job : storage.getAllUnencrypted()) {
                     jobManager.add(job);

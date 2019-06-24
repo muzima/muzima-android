@@ -46,7 +46,7 @@ public class TypingStatusRepository {
         }
 
         Set<Typist> typists = Util.getOrDefault(typistMap, threadId, new LinkedHashSet<>());
-        Typist typist  = new Typist(author, device, threadId);
+        Typist typist = new Typist(author, device, threadId);
 
         if (!typists.contains(typist)) {
             typists.add(typist);
@@ -70,7 +70,7 @@ public class TypingStatusRepository {
         }
 
         Set<Typist> typists = Util.getOrDefault(typistMap, threadId, new LinkedHashSet<>());
-        Typist typist  = new Typist(author, device, threadId);
+        Typist typist = new Typist(author, device, threadId);
 
         if (typists.contains(typist)) {
             typists.remove(typist);

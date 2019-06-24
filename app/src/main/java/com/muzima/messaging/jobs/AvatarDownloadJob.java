@@ -74,19 +74,19 @@ public class AvatarDownloadJob extends ContextJob implements InjectableType {
 
     @Override
     public void onRun() throws IOException {
-        String                encodeId   = GroupUtil.getEncodedId(groupId, false);
-        GroupDatabase database   = DatabaseFactory.getGroupDatabase(context);
-        Optional<GroupRecord> record     = database.getGroup(encodeId);
+        String encodeId = GroupUtil.getEncodedId(groupId, false);
+        GroupDatabase database = DatabaseFactory.getGroupDatabase(context);
+        Optional<GroupRecord> record = database.getGroup(encodeId);
         File attachment = null;
 
         try {
             if (record.isPresent()) {
-                long             avatarId    = record.get().getAvatarId();
-                String           contentType = record.get().getAvatarContentType();
-                byte[]           key         = record.get().getAvatarKey();
-                String           relay       = record.get().getRelay();
-                Optional<byte[]> digest      = Optional.fromNullable(record.get().getAvatarDigest());
-                Optional<String> fileName    = Optional.absent();
+                long avatarId = record.get().getAvatarId();
+                String contentType = record.get().getAvatarContentType();
+                byte[] key = record.get().getAvatarKey();
+                String relay = record.get().getRelay();
+                Optional<byte[]> digest = Optional.fromNullable(record.get().getAvatarDigest());
+                Optional<String> fileName = Optional.absent();
 
                 if (avatarId == -1 || key == null) {
                     return;
@@ -99,9 +99,9 @@ public class AvatarDownloadJob extends ContextJob implements InjectableType {
                 attachment = File.createTempFile("avatar", "tmp", context.getCacheDir());
                 attachment.deleteOnExit();
 
-                SignalServiceAttachmentPointer pointer     = new SignalServiceAttachmentPointer(avatarId, contentType, key, Optional.of(0), Optional.absent(), 0, 0, digest, fileName, false, Optional.absent());
+                SignalServiceAttachmentPointer pointer = new SignalServiceAttachmentPointer(avatarId, contentType, key, Optional.of(0), Optional.absent(), 0, 0, digest, fileName, false, Optional.absent());
                 InputStream inputStream = receiver.retrieveAttachment(pointer, attachment, MAX_AVATAR_SIZE);
-                Bitmap avatar      = BitmapUtil.createScaledBitmap(context, new AttachmentStreamUriLoader.AttachmentModel(attachment, key, 0, digest), 500, 500);
+                Bitmap avatar = BitmapUtil.createScaledBitmap(context, new AttachmentStreamUriLoader.AttachmentModel(attachment, key, 0, digest), 500, 500);
 
                 database.updateAvatar(encodeId, avatar);
                 inputStream.close();

@@ -7,7 +7,7 @@ public class EmojiDrawInfo {
     private final int             index;
 
     public EmojiDrawInfo(final @NonNull EmojiPageBitmap page, final int index) {
-        this.page  = page;
+        this.page = page;
         this.index = index;
     }
 

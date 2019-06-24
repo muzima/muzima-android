@@ -38,7 +38,7 @@ public class TextSecurePreferences {
 
     public  static final String IDENTITY_PREF = "pref_choose_identity";
     public  static final String DISABLE_PASSPHRASE_PREF = "pref_disable_passphrase";
-    public  static final String THEME_PREF  = "pref_theme";
+    public  static final String THEME_PREF = "pref_theme";
     public  static final String LANGUAGE_PREF = "pref_language";
     private static final String MMSC_CUSTOM_HOST_PREF = "pref_apn_mmsc_custom_host";
     public  static final String MMSC_HOST_PREF = "pref_apn_mmsc_host";
@@ -602,7 +602,7 @@ public class TextSecurePreferences {
         boolean useCustom = getBooleanPreference(context, MMS_CUSTOM_USER_AGENT, false);
 
         if (useCustom) return getStringPreference(context, MMS_USER_AGENT, defaultUserAgent);
-        else           return defaultUserAgent;
+        else return defaultUserAgent;
     }
 
     public static String getIdentityContactUri(Context context) {

@@ -175,14 +175,14 @@ public class NotificationsPreferenceFragment extends ListSummaryPreferenceFragme
 
     private void initializeRingtoneSummary(Preference pref) {
         RingtoneSummaryListener listener = (RingtoneSummaryListener) pref.getOnPreferenceChangeListener();
-        Uri                     uri      = TextSecurePreferences.getNotificationRingtone(getContext());
+        Uri uri = TextSecurePreferences.getNotificationRingtone(getContext());
 
         listener.onPreferenceChange(pref, uri);
     }
 
     private void initializeCallRingtoneSummary(Preference pref) {
         RingtoneSummaryListener listener = (RingtoneSummaryListener) pref.getOnPreferenceChangeListener();
-        Uri                     uri      = TextSecurePreferences.getCallNotificationRingtone(getContext());
+        Uri uri = TextSecurePreferences.getCallNotificationRingtone(getContext());
 
         listener.onPreferenceChange(pref, uri);
     }
@@ -196,8 +196,8 @@ public class NotificationsPreferenceFragment extends ListSummaryPreferenceFragme
     }
 
     public static CharSequence getSummary(Context context) {
-        final int onCapsResId   = R.string.general_on;
-        final int offCapsResId  = R.string.general_off;
+        final int onCapsResId = R.string.general_on;
+        final int offCapsResId = R.string.general_off;
 
         return context.getString(TextSecurePreferences.isNotificationsEnabled(context) ? onCapsResId : offCapsResId);
     }

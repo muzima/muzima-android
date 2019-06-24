@@ -28,10 +28,10 @@ public abstract class Job extends Worker implements Serializable {
 
     private static final WorkLockManager WORK_LOCK_MANAGER = new WorkLockManager();
 
-    static final String KEY_RETRY_COUNT        = "Job_retry_count";
-    static final String KEY_RETRY_UNTIL        = "Job_retry_until";
-    static final String KEY_SUBMIT_TIME        = "Job_submit_time";
-    static final String KEY_REQUIRES_NETWORK   = "Job_requires_network";
+    static final String KEY_RETRY_COUNT = "Job_retry_count";
+    static final String KEY_RETRY_UNTIL = "Job_retry_until";
+    static final String KEY_SUBMIT_TIME = "Job_submit_time";
+    static final String KEY_REQUIRES_NETWORK = "Job_requires_network";
     static final String KEY_REQUIRES_SQLCIPHER = "Job_requires_sqlcipher";
 
     private JobParameters parameters;
@@ -231,7 +231,7 @@ public abstract class Job extends Worker implements Serializable {
 
     private boolean needsForegroundService(@NonNull Data data) {
         NetworkRequirement networkRequirement = new NetworkRequirement(getApplicationContext());
-        boolean            requiresNetwork    = data.getBoolean(KEY_REQUIRES_NETWORK, false);
+        boolean requiresNetwork = data.getBoolean(KEY_REQUIRES_NETWORK, false);
 
         return requiresNetwork && !networkRequirement.isPresent();
     }

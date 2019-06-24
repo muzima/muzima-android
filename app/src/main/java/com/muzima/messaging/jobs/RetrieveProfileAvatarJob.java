@@ -35,12 +35,12 @@ public class RetrieveProfileAvatarJob extends ContextJob implements InjectableTy
     private static final int MAX_PROFILE_SIZE_BYTES = 20 * 1024 * 1024;
 
     private static final String KEY_PROFILE_AVATAR = "profile_avatar";
-    private static final String KEY_ADDRESS        = "address";
+    private static final String KEY_ADDRESS = "address";
 
     @Inject
     SignalServiceMessageReceiver receiver;
 
-    private String    profileAvatar;
+    private String profileAvatar;
     private SignalRecipient recipient;
 
     public RetrieveProfileAvatarJob(@NonNull Context context, @NonNull WorkerParameters workerParameters) {
@@ -54,19 +54,18 @@ public class RetrieveProfileAvatarJob extends ContextJob implements InjectableTy
                 .withNetworkRequirement()
                 .create());
 
-        this.recipient     = recipient;
+        this.recipient = recipient;
         this.profileAvatar = profileAvatar;
     }
 
     @Override
     protected void initialize(@NonNull SafeData data) {
         profileAvatar = data.getString(KEY_PROFILE_AVATAR);
-        recipient     = SignalRecipient.from(context, SignalAddress.fromSerialized(data.getString(KEY_ADDRESS)), true);
+        recipient = SignalRecipient.from(context, SignalAddress.fromSerialized(data.getString(KEY_ADDRESS)), true);
     }
 
     @Override
-    protected @NonNull
-    Data serialize(@NonNull Data.Builder dataBuilder) {
+    protected @NonNull Data serialize(@NonNull Data.Builder dataBuilder) {
         return dataBuilder.putString(KEY_PROFILE_AVATAR, profileAvatar)
                 .putString(KEY_ADDRESS, recipient.getAddress().serialize())
                 .build();
@@ -74,8 +73,8 @@ public class RetrieveProfileAvatarJob extends ContextJob implements InjectableTy
 
     @Override
     public void onRun() throws IOException {
-        RecipientDatabase database   = DatabaseFactory.getRecipientDatabase(context);
-        byte[]            profileKey = recipient.resolve().getProfileKey();
+        RecipientDatabase database = DatabaseFactory.getRecipientDatabase(context);
+        byte[] profileKey = recipient.resolve().getProfileKey();
 
         if (profileKey == null) {
             Log.w(TAG, "SignalRecipient profile key is gone!");
@@ -97,8 +96,8 @@ public class RetrieveProfileAvatarJob extends ContextJob implements InjectableTy
         File downloadDestination = File.createTempFile("avatar", "jpg", context.getCacheDir());
 
         try {
-            InputStream avatarStream       = receiver.retrieveProfileAvatar(profileAvatar, downloadDestination, profileKey, MAX_PROFILE_SIZE_BYTES);
-            File        decryptDestination = File.createTempFile("avatar", "jpg", context.getCacheDir());
+            InputStream avatarStream = receiver.retrieveProfileAvatar(profileAvatar, downloadDestination, profileKey, MAX_PROFILE_SIZE_BYTES);
+            File decryptDestination = File.createTempFile("avatar", "jpg", context.getCacheDir());
 
             Util.copy(avatarStream, new FileOutputStream(decryptDestination));
             decryptDestination.renameTo(AvatarHelper.getAvatarFile(context, recipient.getAddress()));

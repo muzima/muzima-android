@@ -41,7 +41,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class ClassicDecryptingPartInputStream {
     private static final String TAG = ClassicDecryptingPartInputStream.class.getSimpleName();
 
-    private static final int IV_LENGTH  = 16;
+    private static final int IV_LENGTH = 16;
     private static final int MAC_LENGTH = 20;
 
     public static InputStream createFor(@NonNull AttachmentSecret attachmentSecret, @NonNull File file)
@@ -55,11 +55,11 @@ public class ClassicDecryptingPartInputStream {
             verifyMac(attachmentSecret, file);
 
             FileInputStream fileStream = new FileInputStream(file);
-            byte[]          ivBytes    = new byte[IV_LENGTH];
+            byte[] ivBytes = new byte[IV_LENGTH];
             readFully(fileStream, ivBytes);
 
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            IvParameterSpec iv     = new IvParameterSpec(ivBytes);
+            IvParameterSpec iv = new IvParameterSpec(ivBytes);
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(attachmentSecret.getClassicCipherKey(), "AES"), iv);
 
             return new CipherInputStreamWrapper(new LimitedInputStream(fileStream, file.length() - MAC_LENGTH - IV_LENGTH), cipher);
@@ -69,10 +69,10 @@ public class ClassicDecryptingPartInputStream {
     }
 
     private static void verifyMac(AttachmentSecret attachmentSecret, File file) throws IOException {
-        Mac mac        = initializeMac(new SecretKeySpec(attachmentSecret.getClassicMacKey(), "HmacSHA1"));
-        FileInputStream macStream  = new FileInputStream(file);
-        InputStream     dataStream = new LimitedInputStream(new FileInputStream(file), file.length() - MAC_LENGTH);
-        byte[]          theirMac   = new byte[MAC_LENGTH];
+        Mac mac = initializeMac(new SecretKeySpec(attachmentSecret.getClassicMacKey(), "HmacSHA1"));
+        FileInputStream macStream = new FileInputStream(file);
+        InputStream dataStream = new LimitedInputStream(new FileInputStream(file), file.length() - MAC_LENGTH);
+        byte[] theirMac = new byte[MAC_LENGTH];
 
         if (macStream.skip(file.length() - MAC_LENGTH) != file.length() - MAC_LENGTH) {
             throw new IOException("Unable to seek");
@@ -81,7 +81,7 @@ public class ClassicDecryptingPartInputStream {
         readFully(macStream, theirMac);
 
         byte[] buffer = new byte[4096];
-        int    read;
+        int read;
 
         while ((read = dataStream.read(buffer)) != -1) {
             mac.update(buffer, 0, read);
@@ -115,7 +115,7 @@ public class ClassicDecryptingPartInputStream {
             int read = in.read(buffer, offset, buffer.length-offset);
 
             if (read + offset < buffer.length) offset += read;
-            else                               return;
+            else return;
         }
     }
 

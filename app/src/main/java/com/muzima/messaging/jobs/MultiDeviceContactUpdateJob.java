@@ -59,15 +59,13 @@ public class MultiDeviceContactUpdateJob extends ContextJob {
 
     private static final long FULL_SYNC_TIME = TimeUnit.HOURS.toMillis(6);
 
-    private static final String KEY_ADDRESS    = "address";
+    private static final String KEY_ADDRESS = "address";
     private static final String KEY_FORCE_SYNC = "force_sync";
 
     @Inject
     transient SignalServiceMessageSender messageSender;
 
-    private @Nullable
-    String address;
-
+    private @Nullable String address;
     private boolean forceSync;
 
     public MultiDeviceContactUpdateJob(@NonNull Context context, @NonNull WorkerParameters workerParameters) {
@@ -95,12 +93,12 @@ public class MultiDeviceContactUpdateJob extends ContextJob {
         this.forceSync = forceSync;
 
         if (address != null) this.address = address.serialize();
-        else                 this.address = null;
+        else this.address = null;
     }
 
     @Override
     protected void initialize(@NonNull SafeData data) {
-        address   = data.getString(KEY_ADDRESS);
+        address = data.getString(KEY_ADDRESS);
         forceSync = data.getBoolean(KEY_FORCE_SYNC);
     }
 
@@ -122,7 +120,7 @@ public class MultiDeviceContactUpdateJob extends ContextJob {
         }
 
         if (address == null) generateFullContactUpdate();
-        else                 generateSingleContactUpdate(SignalAddress.fromSerialized(address));
+        else generateSingleContactUpdate(SignalAddress.fromSerialized(address));
     }
 
     private void generateSingleContactUpdate(@NonNull SignalAddress address)
@@ -182,11 +180,11 @@ public class MultiDeviceContactUpdateJob extends ContextJob {
         File contactDataFile = createTempFile("multidevice-contact-update");
 
         try {
-            DeviceContactsOutputStream out      = new DeviceContactsOutputStream(new FileOutputStream(contactDataFile));
+            DeviceContactsOutputStream out = new DeviceContactsOutputStream(new FileOutputStream(contactDataFile));
             Collection<ContactAccessor.ContactData> contacts = ContactAccessor.getInstance().getContactsWithPush(context);
 
             for (ContactAccessor.ContactData contactData : contacts) {
-                Uri contactUri  = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, String.valueOf(contactData.id));
+                Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, String.valueOf(contactData.id));
                 SignalAddress address = SignalAddress.fromExternal(context, contactData.numbers.get(0).number);
                 SignalRecipient recipient = SignalRecipient.from(context, address, false);
                 Optional<IdentityDatabase.IdentityRecord> identity = DatabaseFactory.getIdentityDatabase(context).getIdentity(address);
@@ -315,10 +313,17 @@ public class MultiDeviceContactUpdateJob extends ContextJob {
         VerifiedMessage.VerifiedState state;
 
         switch (identity.get().getVerifiedStatus()) {
-            case VERIFIED:   state = VerifiedMessage.VerifiedState.VERIFIED;   break;
-            case UNVERIFIED: state = VerifiedMessage.VerifiedState.UNVERIFIED; break;
-            case DEFAULT:    state = VerifiedMessage.VerifiedState.DEFAULT;    break;
-            default: throw new AssertionError("Unknown state: " + identity.get().getVerifiedStatus());
+            case VERIFIED:
+                 state = VerifiedMessage.VerifiedState.VERIFIED;
+                 break;
+            case UNVERIFIED:
+                 state = VerifiedMessage.VerifiedState.UNVERIFIED;
+                 break;
+            case DEFAULT:
+                 state = VerifiedMessage.VerifiedState.DEFAULT;
+                 break;
+            default:
+                 throw new AssertionError("Unknown state: " + identity.get().getVerifiedStatus());
         }
 
         return Optional.of(new VerifiedMessage(destination, identityKey, state, System.currentTimeMillis()));

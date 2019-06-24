@@ -59,10 +59,10 @@ public class VerificationPinKeyboard extends FrameLayout {
         inflate(getContext(), R.layout.verification_pin_keyboard_view, this);
 
         this.keyboardView = findViewById(R.id.keyboard_view);
-        this.progressBar  = findViewById(R.id.progress);
-        this.successView  = findViewById(R.id.success);
-        this.failureView  = findViewById(R.id.failure);
-        this.lockedView   = findViewById(R.id.locked);
+        this.progressBar = findViewById(R.id.progress);
+        this.successView = findViewById(R.id.success);
+        this.failureView = findViewById(R.id.failure);
+        this.lockedView = findViewById(R.id.locked);
 
         keyboardView.setPreviewEnabled(false);
         keyboardView.setKeyboard(new Keyboard(getContext(), R.xml.pin_keyboard));

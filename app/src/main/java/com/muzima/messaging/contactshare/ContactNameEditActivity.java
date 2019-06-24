@@ -17,7 +17,7 @@ import com.muzima.utils.ThemeUtils;
 
 public class ContactNameEditActivity extends PassphraseRequiredActionBarActivity {
 
-        public static final String KEY_NAME          = "name";
+        public static final String KEY_NAME = "name";
         public static final String KEY_CONTACT_INDEX = "contact_index";
         private ThemeUtils themeUtils = new DynamicNoActionBarTheme();
 
@@ -83,11 +83,11 @@ public class ContactNameEditActivity extends PassphraseRequiredActionBarActivity
         private void initializeViews(@NonNull Name name) {
             displayNameView = findViewById(R.id.name_edit_display_name);
 
-            TextView givenName   = findViewById(R.id.name_edit_given_name);
-            TextView familyName  = findViewById(R.id.name_edit_family_name);
-            TextView middleName  = findViewById(R.id.name_edit_middle_name);
-            TextView prefix      = findViewById(R.id.name_edit_prefix);
-            TextView suffix      = findViewById(R.id.name_edit_suffix);
+            TextView givenName = findViewById(R.id.name_edit_given_name);
+            TextView familyName = findViewById(R.id.name_edit_family_name);
+            TextView middleName = findViewById(R.id.name_edit_middle_name);
+            TextView prefix = findViewById(R.id.name_edit_prefix);
+            TextView suffix = findViewById(R.id.name_edit_suffix);
 
             givenName.setText(name.getGivenName());
             familyName.setText(name.getFamilyName());

@@ -38,7 +38,7 @@ import javax.crypto.spec.GCMParameterSpec;
 
 public class KeyStoreHelper {
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
-    private static final String KEY_ALIAS         = "SignalSecret";
+    private static final String KEY_ALIAS = "SignalSecret";
 
     @RequiresApi(Build.VERSION_CODES.M)
     public static SealedData seal(@NonNull byte[] input) {
@@ -48,7 +48,7 @@ public class KeyStoreHelper {
             Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 
-            byte[] iv   = cipher.getIV();
+            byte[] iv = cipher.getIV();
             byte[] data = cipher.doFinal(input);
 
             return new SealedData(iv, data);
@@ -74,7 +74,7 @@ public class KeyStoreHelper {
     @RequiresApi(Build.VERSION_CODES.M)
     private static SecretKey getOrCreateKeyStoreEntry() {
         if (hasKeyStoreEntry()) return getKeyStoreEntry();
-        else                    return createKeyStoreEntry();
+        else return createKeyStoreEntry();
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

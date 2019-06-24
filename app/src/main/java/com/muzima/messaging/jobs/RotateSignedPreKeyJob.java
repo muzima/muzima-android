@@ -45,8 +45,7 @@ public class RotateSignedPreKeyJob extends ContextJob implements InjectableType 
     }
 
     @Override
-    protected @NonNull
-    Data serialize(@NonNull Data.Builder dataBuilder) {
+    protected @NonNull Data serialize(@NonNull Data.Builder dataBuilder) {
         return dataBuilder.build();
     }
 
@@ -54,7 +53,7 @@ public class RotateSignedPreKeyJob extends ContextJob implements InjectableType 
     public void onRun() throws Exception {
         Log.i(TAG, "Rotating signed prekey...");
 
-        IdentityKeyPair identityKey        = IdentityKeyUtil.getIdentityKeyPair(context);
+        IdentityKeyPair identityKey = IdentityKeyUtil.getIdentityKeyPair(context);
         SignedPreKeyRecord signedPreKeyRecord = PreKeyUtil.generateSignedPreKey(context, identityKey, false);
 
         accountManager.setSignedPreKey(signedPreKeyRecord);

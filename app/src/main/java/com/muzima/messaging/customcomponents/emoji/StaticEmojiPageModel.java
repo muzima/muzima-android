@@ -10,9 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class StaticEmojiPageModel implements EmojiPageModel{
-    @AttrRes  private final int         iconAttr;
-    @NonNull  private final List<Emoji> emoji;
-    @Nullable private final String      sprite;
+    @AttrRes private final int iconAttr;
+    @NonNull private final List<Emoji> emoji;
+    @Nullable private final String sprite;
 
     public StaticEmojiPageModel(@AttrRes int iconAttr, @NonNull String[] strings, @Nullable String sprite) {
         List<Emoji> emoji = new ArrayList<>(strings.length);
@@ -21,14 +21,14 @@ public class StaticEmojiPageModel implements EmojiPageModel{
         }
 
         this.iconAttr = iconAttr;
-        this.emoji    = emoji;
-        this.sprite   = sprite;
+        this.emoji = emoji;
+        this.sprite = sprite;
     }
 
     public StaticEmojiPageModel(@AttrRes int iconAttr, @NonNull Emoji[] emoji, @Nullable String sprite) {
-        this.iconAttr     = iconAttr;
-        this.emoji        = Arrays.asList(emoji);
-        this.sprite       = sprite;
+        this.iconAttr = iconAttr;
+        this.emoji = Arrays.asList(emoji);
+        this.sprite = sprite;
     }
 
     public int getIconAttr() {

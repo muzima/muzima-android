@@ -169,7 +169,7 @@ public class MasterCipher {
         byte[] remoteMac = new byte[hmac.getMacLength()];
         System.arraycopy(encryptedAndMac, encryptedAndMac.length - remoteMac.length, remoteMac, 0, remoteMac.length);
 
-        byte[] localMac  = hmac.doFinal(encrypted);
+        byte[] localMac = hmac.doFinal(encrypted);
 
         if (!Arrays.equals(remoteMac, localMac))
             throw new InvalidMessageException("MAC doesen't match.");

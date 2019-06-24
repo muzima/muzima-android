@@ -16,13 +16,13 @@ import java.util.Map;
 public class AttachmentDataSource implements DataSource {
 
     private final DefaultDataSource defaultDataSource;
-    private final PartDataSource    partDataSource;
+    private final PartDataSource partDataSource;
 
     private DataSource dataSource;
 
     public AttachmentDataSource(DefaultDataSource defaultDataSource, PartDataSource partDataSource) {
         this.defaultDataSource = defaultDataSource;
-        this.partDataSource    = partDataSource;
+        this.partDataSource = partDataSource;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class AttachmentDataSource implements DataSource {
     @Override
     public long open(DataSpec dataSpec) throws IOException {
         if (PartAuthority.isLocalUri(dataSpec.uri)) dataSource = partDataSource;
-        else                                        dataSource = defaultDataSource;
+        else dataSource = defaultDataSource;
 
         return dataSource.open(dataSpec);
     }

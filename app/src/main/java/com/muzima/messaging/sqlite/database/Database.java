@@ -16,7 +16,7 @@ public abstract class Database {
     protected final Context context;
 
     public Database(Context context, SQLCipherOpenHelper databaseHelper) {
-        this.context        = context;
+        this.context = context;
         this.databaseHelper = databaseHelper;
     }
 

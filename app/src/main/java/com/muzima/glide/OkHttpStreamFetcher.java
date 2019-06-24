@@ -42,7 +42,7 @@ public class OkHttpStreamFetcher implements DataFetcher<InputStream> {
                 requestBuilder.addHeader(key, headerEntry.getValue());
             }
 
-            Request  request  = requestBuilder.build();
+            Request request = requestBuilder.build();
             Response response = client.newCall(request).execute();
 
             responseBody = response.body();

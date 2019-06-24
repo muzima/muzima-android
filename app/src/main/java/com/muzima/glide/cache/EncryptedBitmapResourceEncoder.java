@@ -33,9 +33,9 @@ public class EncryptedBitmapResourceEncoder extends EncryptedCoder implements Re
     public boolean encode(@NonNull Resource<Bitmap> data, @NonNull File file, @NonNull Options options) {
         Log.i(TAG, "Encrypted resource encoder running: " + file.toString());
 
-        Bitmap                bitmap  = data.get();
-        Bitmap.CompressFormat format  = getFormat(bitmap, options);
-        int                   quality = options.get(BitmapEncoder.COMPRESSION_QUALITY);
+        Bitmap bitmap = data.get();
+        Bitmap.CompressFormat format = getFormat(bitmap, options);
+        int quality = options.get(BitmapEncoder.COMPRESSION_QUALITY);
 
         try (OutputStream os = createEncryptedOutputStream(secret, file)) {
             bitmap.compress(format, quality, os);

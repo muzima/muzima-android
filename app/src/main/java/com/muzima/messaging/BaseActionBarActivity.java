@@ -64,7 +64,7 @@ public class BaseActionBarActivity extends AppCompatActivity {
      */
     private void forceOverflowMenu() {
         try {
-            ViewConfiguration config       = ViewConfiguration.get(this);
+            ViewConfiguration config = ViewConfiguration.get(this);
             Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
             if(menuKeyField != null) {
                 menuKeyField.setAccessible(true);

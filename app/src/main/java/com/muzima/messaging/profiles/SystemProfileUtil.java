@@ -84,7 +84,7 @@ public class SystemProfileUtil {
 
                 if (name == null) {
                     AccountManager accountManager = AccountManager.get(context);
-                    Account[]      accounts       = accountManager.getAccountsByType("com.google");
+                    Account[] accounts = accountManager.getAccountsByType("com.google");
 
                     for (Account account : accounts) {
                         if (!TextUtils.isEmpty(account.name)) {

@@ -266,7 +266,7 @@ public class MediaUtil {
         float aspectRatio;
 
         public ThumbnailData(Bitmap bitmap) {
-            this.bitmap      = bitmap;
+            this.bitmap = bitmap;
             this.aspectRatio = (float) bitmap.getWidth() / (float) bitmap.getHeight();
         }
 

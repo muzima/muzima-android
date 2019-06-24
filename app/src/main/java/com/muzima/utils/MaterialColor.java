@@ -61,8 +61,8 @@ public enum MaterialColor {
 
 
     MaterialColor(@ColorRes int mainColor, @ColorRes int tintColor, @ColorRes int shadeColor, String serialized) {
-        this.mainColor  = mainColor;
-        this.tintColor  = tintColor;
+        this.mainColor = mainColor;
+        this.tintColor = tintColor;
         this.shadeColor = shadeColor;
         this.serialized = serialized;
     }

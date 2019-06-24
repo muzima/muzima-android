@@ -31,10 +31,10 @@ public class ContactsCursorLoader extends CursorLoader {
     private static final String TAG = ContactsCursorLoader.class.getSimpleName();
 
     public static final class DisplayMode {
-        public static final int FLAG_PUSH   = 1;
-        public static final int FLAG_SMS    = 1 << 1;
+        public static final int FLAG_PUSH = 1;
+        public static final int FLAG_SMS = 1 << 1;
         public static final int FLAG_GROUPS = 1 << 2;
-        public static final int FLAG_ALL    = FLAG_PUSH | FLAG_SMS | FLAG_GROUPS;
+        public static final int FLAG_ALL = FLAG_PUSH | FLAG_SMS | FLAG_GROUPS;
     }
 
     private static final String[] CONTACT_PROJECTION = new String[]{ContactsDatabase.NAME_COLUMN,
@@ -45,17 +45,17 @@ public class ContactsCursorLoader extends CursorLoader {
 
     private static final int RECENT_CONVERSATION_MAX = 25;
 
-    private final String  filter;
-    private final int     mode;
+    private final String filter;
+    private final int mode;
     private final boolean recents;
 
     public ContactsCursorLoader(@NonNull Context context, int mode, String filter, boolean recents)
     {
         super(context);
 
-        this.filter       = filter;
-        this.mode         = mode;
-        this.recents      = recents;
+        this.filter = filter;
+        this.mode = mode;
+        this.recents = recents;
     }
 
     @Override
@@ -161,7 +161,7 @@ public class ContactsCursorLoader extends CursorLoader {
 
     private List<Cursor> getContactsCursors() {
         ContactsDatabase contactsDatabase = DatabaseFactory.getContactsDatabase(getContext());
-        List<Cursor>     cursorList       = new ArrayList<>(2);
+        List<Cursor> cursorList = new ArrayList<>(2);
 
         if (!Permissions.hasAny(getContext(), Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)) {
             return cursorList;
@@ -209,7 +209,7 @@ public class ContactsCursorLoader extends CursorLoader {
             final long startMillis = System.currentTimeMillis();
             final MatrixCursor matrix = new MatrixCursor(CONTACT_PROJECTION);
             while (cursor.moveToNext()) {
-                final String    number    = cursor.getString(cursor.getColumnIndexOrThrow(ContactsDatabase.NUMBER_COLUMN));
+                final String number = cursor.getString(cursor.getColumnIndexOrThrow(ContactsDatabase.NUMBER_COLUMN));
                 final SignalRecipient recipient = SignalRecipient.from(getContext(), SignalAddress.fromExternal(getContext(), number), false);
 
                 if (recipient.resolve().getRegistered() != RecipientDatabase.RegisteredState.REGISTERED) {

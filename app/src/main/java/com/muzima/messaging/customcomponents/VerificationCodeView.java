@@ -29,9 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VerificationCodeView extends FrameLayout {
-    private final List<View> spaces     = new ArrayList<>(6);
-    private final List<TextView> codes      = new ArrayList<>(6);
-    private final List<View>     containers = new ArrayList<>(7);
+    private final List<View> spaces = new ArrayList<>(6);
+    private final List<TextView> codes = new ArrayList<>(6);
+    private final List<View> containers = new ArrayList<>(7);
 
     private OnCodeEnteredListener listener;
     private int index = 0;

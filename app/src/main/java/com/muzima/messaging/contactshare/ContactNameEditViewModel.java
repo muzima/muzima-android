@@ -23,11 +23,11 @@ public class ContactNameEditViewModel extends ViewModel {
     }
 
     public void setName(@NonNull Contact.Name name) {
-        givenName  = name.getGivenName();
+        givenName = name.getGivenName();
         familyName = name.getFamilyName();
         middleName = name.getMiddleName();
-        prefix     = name.getPrefix();
-        suffix     = name.getSuffix();
+        prefix = name.getPrefix();
+        suffix = name.getSuffix();
 
         displayName.postValue(buildDisplayName());
     }

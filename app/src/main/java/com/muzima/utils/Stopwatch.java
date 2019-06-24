@@ -7,14 +7,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Stopwatch {
-    private final long        startTime;
-    private final String      title;
+    private final long startTime;
+    private final String title;
     private final List<Split> splits;
 
     public Stopwatch(@NonNull String title) {
         this.startTime = System.currentTimeMillis();
-        this.title     = title;
-        this.splits    = new LinkedList<>();
+        this.title = title;
+        this.splits = new LinkedList<>();
     }
 
     public void split(@NonNull String label) {
@@ -45,11 +45,11 @@ public class Stopwatch {
     }
 
     private static class Split {
-        final long   time;
+        final long time;
         final String label;
 
         Split(long time, String label) {
-            this.time  = time;
+            this.time = time;
             this.label = label;
         }
     }

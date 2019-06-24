@@ -56,8 +56,7 @@ public class GcmRefreshJob extends ContextJob implements InjectableType {
     }
 
     @Override
-    protected @NonNull
-    Data serialize(@NonNull Data.Builder dataBuilder) {
+    protected @NonNull Data serialize(@NonNull Data.Builder dataBuilder) {
         return dataBuilder.build();
     }
 
@@ -92,9 +91,9 @@ public class GcmRefreshJob extends ContextJob implements InjectableType {
     }
 
     private void notifyGcmFailure() {
-        Intent intent        = new Intent(context, PlayServicesProblemActivity.class);
+        Intent intent = new Intent(context, PlayServicesProblemActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1122, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        NotificationCompat.Builder builder       = new NotificationCompat.Builder(context, NotificationChannels.FAILURES);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.FAILURES);
 
         builder.setSmallIcon(R.drawable.ic_launcher_logo_light);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),

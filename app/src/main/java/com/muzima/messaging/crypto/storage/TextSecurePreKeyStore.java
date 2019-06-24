@@ -33,7 +33,7 @@ public class TextSecurePreKeyStore implements PreKeyStore, SignedPreKeyStore {
             PreKeyRecord preKeyRecord = DatabaseFactory.getPreKeyDatabase(context).getPreKey(preKeyId);
 
             if (preKeyRecord == null) throw new InvalidKeyIdException("No such key: " + preKeyId);
-            else                      return preKeyRecord;
+            else return preKeyRecord;
         }
     }
 
@@ -43,7 +43,7 @@ public class TextSecurePreKeyStore implements PreKeyStore, SignedPreKeyStore {
             SignedPreKeyRecord signedPreKeyRecord = DatabaseFactory.getSignedPreKeyDatabase(context).getSignedPreKey(signedPreKeyId);
 
             if (signedPreKeyRecord == null) throw new InvalidKeyIdException("No such signed prekey: " + signedPreKeyId);
-            else                            return signedPreKeyRecord;
+            else return signedPreKeyRecord;
         }
     }
 

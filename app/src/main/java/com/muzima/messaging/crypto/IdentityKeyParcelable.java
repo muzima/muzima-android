@@ -29,8 +29,8 @@ public class IdentityKeyParcelable implements Parcelable {
     }
 
     public IdentityKeyParcelable(Parcel in) throws InvalidKeyException {
-        int    serializedLength = in.readInt();
-        byte[] serialized       = new byte[serializedLength];
+        int serializedLength = in.readInt();
+        byte[] serialized = new byte[serializedLength];
 
         in.readByteArray(serialized);
         this.identityKey = new IdentityKey(serialized, 0);

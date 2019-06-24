@@ -24,10 +24,10 @@ public class EmojiSpan extends AnimatingImageSpan{
     @Override
     public int getSize(Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm) {
         if (fm != null && this.fm != null) {
-            fm.ascent  = this.fm.ascent;
+            fm.ascent = this.fm.ascent;
             fm.descent = this.fm.descent;
             fm.top = this.fm.top;
-            fm.bottom  = this.fm.bottom;
+            fm.bottom = this.fm.bottom;
             fm.leading = this.fm.leading;
             return size;
         } else {
@@ -39,7 +39,7 @@ public class EmojiSpan extends AnimatingImageSpan{
     public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
         int height = bottom - top;
         int centeringMargin = (height - size) / 2;
-        int adjustedMargin  = (int) (centeringMargin * SHIFT_FACTOR);
+        int adjustedMargin = (int) (centeringMargin * SHIFT_FACTOR);
         super.draw(canvas, text, start, end, x, top, y, bottom - adjustedMargin, paint);
     }
 }

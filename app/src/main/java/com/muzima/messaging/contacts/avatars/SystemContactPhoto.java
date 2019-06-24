@@ -14,15 +14,13 @@ import java.security.MessageDigest;
 
 public class SystemContactPhoto implements ContactPhoto {
 
-    private final @NonNull
-    SignalAddress address;
-    private final @NonNull
-    Uri contactPhotoUri;
-    private final          long    lastModifiedTime;
+    private final @NonNull SignalAddress address;
+    private final @NonNull Uri contactPhotoUri;
+    private final long lastModifiedTime;
 
     public SystemContactPhoto(@NonNull SignalAddress address, @NonNull Uri contactPhotoUri, long lastModifiedTime) {
-        this.address          = address;
-        this.contactPhotoUri  = contactPhotoUri;
+        this.address = address;
+        this.contactPhotoUri = contactPhotoUri;
         this.lastModifiedTime = lastModifiedTime;
     }
 

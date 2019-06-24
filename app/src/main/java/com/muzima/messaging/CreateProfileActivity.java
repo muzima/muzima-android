@@ -120,7 +120,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
     @Override
     public void onBackPressed() {
         if (container.isInputOpen()) container.hideCurrentInput(name);
-        else                         super.onBackPressed();
+        else super.onBackPressed();
     }
 
     @Override
@@ -146,7 +146,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
             case REQUEST_CODE_AVATAR:
                 if (resultCode == Activity.RESULT_OK) {
                     Uri outputFile = Uri.fromFile(new File(getCacheDir(), "cropped"));
-                    Uri inputFile  = (data != null ? data.getData() : null);
+                    Uri inputFile = (data != null ? data.getData() : null);
 
                     if (inputFile == null && captureFile != null) {
                         inputFile = Uri.fromFile(captureFile);
@@ -195,7 +195,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
     }
 
     private void initializeResources() {
-        TextView skipButton  = ViewUtil.findById(this, R.id.skip_button);
+        TextView skipButton = ViewUtil.findById(this, R.id.skip_button);
 
         this.avatar = ViewUtil.findById(this, R.id.avatar);
         this.name = ViewUtil.findById(this, R.id.name);
@@ -344,8 +344,8 @@ public class CreateProfileActivity extends BaseActionBarActivity {
     }
 
     private Intent createAvatarSelectionIntent(@Nullable File captureFile, boolean includeClear, boolean includeCamera) {
-        List<Intent> extraIntents  = new LinkedList<>();
-        Intent       galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        List<Intent> extraIntents = new LinkedList<>();
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         galleryIntent.setType("image/*");
 
         if (!IntentUtils.isResolvable(CreateProfileActivity.this, galleryIntent)) {
@@ -437,7 +437,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
                     if (captureFile != null) captureFile.delete();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) handleFinishedLollipop();
                     else  handleFinishedLegacy();
-                } else        {
+                } else {
                     Toast.makeText(CreateProfileActivity.this, R.string.text_problem_setting_profile, Toast.LENGTH_LONG).show();
                 }
             }

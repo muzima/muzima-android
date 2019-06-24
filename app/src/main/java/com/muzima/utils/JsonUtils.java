@@ -54,7 +54,7 @@ public class JsonUtils {
 
         public String getString(String name) throws JSONException {
             if (delegate.isNull(name)) return null;
-            else                       return delegate.getString(name);
+            else return delegate.getString(name);
         }
 
         public long getLong(String name) throws JSONException {

@@ -11,7 +11,7 @@ public class AttachmentId {
     private final long uniqueId;
 
     public AttachmentId(@JsonProperty("rowId") long rowId, @JsonProperty("uniqueId") long uniqueId) {
-        this.rowId    = rowId;
+        this.rowId = rowId;
         this.uniqueId = uniqueId;
     }
 

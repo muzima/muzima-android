@@ -62,7 +62,7 @@ public class VideoIntent extends Activity {
         
         Intent i = getIntent();
         String videoPath = i.getStringExtra(KEY_VIDEO_PATH);
-        mBinaryDescription  = i.getStringExtra(KEY_VIDEO_CAPTION);
+        mBinaryDescription = i.getStringExtra(KEY_VIDEO_CAPTION);
         mSectionName = i.getStringExtra(KEY_SECTION_NAME);
 
         // we are not using formUuid in the media path anymore

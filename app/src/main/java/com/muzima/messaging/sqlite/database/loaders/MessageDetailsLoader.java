@@ -9,11 +9,11 @@ import com.muzima.messaging.tasks.AbstractCursorLoader;
 
 public class MessageDetailsLoader extends AbstractCursorLoader {
     private final String type;
-    private final long   messageId;
+    private final long messageId;
 
     public MessageDetailsLoader(Context context, String type, long messageId) {
         super(context);
-        this.type      = type;
+        this.type = type;
         this.messageId = messageId;
     }
 

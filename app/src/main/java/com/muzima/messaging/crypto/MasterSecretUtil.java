@@ -121,8 +121,7 @@ public class MasterSecretUtil {
         }
     }
 
-    public static AsymmetricMasterSecret getAsymmetricMasterSecret(@NonNull Context context,
-                                                                   @Nullable MasterSecret masterSecret) {
+    public static AsymmetricMasterSecret getAsymmetricMasterSecret(@NonNull Context context, @Nullable MasterSecret masterSecret) {
         try {
             byte[] djbPublicBytes = retrieve(context, ASYMMETRIC_LOCAL_PUBLIC_DJB);
             byte[] djbPrivateBytes = retrieve(context, ASYMMETRIC_LOCAL_PRIVATE_DJB);
@@ -148,8 +147,7 @@ public class MasterSecretUtil {
         }
     }
 
-    public static AsymmetricMasterSecret generateAsymmetricMasterSecret(Context context,
-                                                                        MasterSecret masterSecret) {
+    public static AsymmetricMasterSecret generateAsymmetricMasterSecret(Context context, MasterSecret masterSecret) {
         MasterCipher masterCipher = new MasterCipher(masterSecret);
         ECKeyPair keyPair = Curve.generateKeyPair();
 

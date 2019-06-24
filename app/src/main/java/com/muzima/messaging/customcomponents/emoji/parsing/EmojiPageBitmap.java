@@ -30,8 +30,8 @@ public class EmojiPageBitmap {
     private ListenableFutureTask<Bitmap> task;
 
     public EmojiPageBitmap(@NonNull Context context, @NonNull EmojiPageModel model, float decodeScale) {
-        this.context     = context.getApplicationContext();
-        this.model       = model;
+        this.context = context.getApplicationContext();
+        this.model = model;
         this.decodeScale = decodeScale;
     }
 
@@ -72,10 +72,10 @@ public class EmojiPageBitmap {
         if (bitmapReference != null && bitmapReference.get() != null) return bitmapReference.get();
 
 
-        float                 scale        = decodeScale;
+        float scale = decodeScale;
         AssetManager assetManager = context.getAssets();
-        InputStream assetStream  = assetManager.open(model.getSprite());
-        BitmapFactory.Options options      = new BitmapFactory.Options();
+        InputStream assetStream = assetManager.open(model.getSprite());
+        BitmapFactory.Options options = new BitmapFactory.Options();
 
         if (Util.isLowMemory(context)) {
             Log.i(TAG, "Low memory detected. Changing sample size.");
@@ -84,7 +84,7 @@ public class EmojiPageBitmap {
         }
 
         Stopwatch stopwatch = new Stopwatch(model.getSprite());
-        Bitmap    bitmap    = BitmapFactory.decodeStream(assetStream, null, options);
+        Bitmap bitmap = BitmapFactory.decodeStream(assetStream, null, options);
         stopwatch.split("decode");
 
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth() * scale), (int)(bitmap.getHeight() * scale), true);
