@@ -236,7 +236,8 @@ public class PushDecryptJob extends ContextJob {
                     handleGroupMessage(content, message, smsMessageId);
                 else if (message.isExpirationUpdate())
                     handleExpirationUpdate(content, message, smsMessageId);
-                else if (isMediaMessage) handleMediaMessage(content, message, smsMessageId);
+                else if (isMediaMessage)
+                    handleMediaMessage(content, message, smsMessageId);
                 else if (message.getBody().isPresent())
                     handleTextMessage(content, message, smsMessageId);
 
@@ -747,7 +748,8 @@ public class PushDecryptJob extends ContextJob {
 
             IncomingTextMessage textMessage = new IncomingTextMessage(SignalAddress.fromExternal(context, content.getSender()),
                     content.getSenderDevice(),
-                    message.getTimestamp(), body,
+                    message.getTimestamp(),
+                    body,
                     message.getGroupInfo(),
                     message.getExpiresInSeconds() * 1000L,
                     content.isNeedsReceipt());

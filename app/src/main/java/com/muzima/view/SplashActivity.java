@@ -18,7 +18,6 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
-import com.muzima.messaging.CreateProfileActivity;
 import com.muzima.messaging.TextSecurePreferences;
 import com.muzima.messaging.crypto.IdentityKeyUtil;
 import com.muzima.messaging.crypto.MasterSecret;

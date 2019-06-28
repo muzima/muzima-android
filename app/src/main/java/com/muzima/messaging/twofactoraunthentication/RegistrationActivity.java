@@ -173,6 +173,9 @@ public class RegistrationActivity extends AppCompatActivity {
                     reasonForFailure = getString(R.string.server_unreachable);
                 }
                 Log.e(getClass().getSimpleName(), "Error Message " + e.getMessage());
+            } catch (NullPointerException e) {
+                isVerificationSmsSent = false;
+                Log.e(getClass().getSimpleName(), "Error Message " + e);
             }
             return null;
         }
