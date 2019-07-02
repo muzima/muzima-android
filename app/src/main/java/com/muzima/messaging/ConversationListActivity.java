@@ -57,6 +57,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     private SearchToolbar searchToolbar;
     private ImageView searchAction;
     private Toolbar toolbar;
+    private ImageView backButtonAction;
 
     private ThemeUtils themeUtils = new DynamicNoActionBarTheme();
 
@@ -74,10 +75,12 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
 
         searchToolbar = findViewById(R.id.search_toolbar);
         searchAction = findViewById(R.id.search_action);
+        backButtonAction = findViewById(R.id.back_button);
         ViewGroup fragmentContainer = findViewById(R.id.fragment_container);
         ConversationListFragment conversationListFragment = initFragment(R.id.fragment_container, new ConversationListFragment(), getResources().getConfiguration().locale);
 
         initializeSearchListener();
+        initializeBackButtonClickListener();
 
         // RatingManager.showRatingDialogIfNecessary(this);
        // RegistrationLockDialog.showReminderIfNecessary(this);
@@ -287,5 +290,11 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, R.string.warning_no_browser_installed_on_your_device, Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void initializeBackButtonClickListener(){
+        backButtonAction.setOnClickListener(v -> {
+           onBackPressed();
+        });
     }
 }

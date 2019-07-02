@@ -110,6 +110,10 @@
         <item name="select_all">@drawable/ic_select_all_white_24dp</item>
         <item name="conversation_list_toolbar_background">@color/primary_black</item>
         <item name="search_icon">@drawable/ic_search_white_24dp</item>
+        <item name="copy_icon">@drawable/content_copy_light</item>
+        <item name="forward_icon">@drawable/ic_forward_white_24dp</item>
+        <item name="save_icon">@drawable/content_save_light</item>
+        <item name="reply_icon">@drawable/reply_light</item>
     </style>
 
 
@@ -209,6 +213,10 @@
         <item name="select_all">@drawable/select_all_dark</item>
         <item name="conversation_list_toolbar_background">@color/primary_white</item>
         <item name="search_icon">@drawable/search_dark</item>
+        <item name="copy_icon">@drawable/content_copy_dark</item>
+        <item name="forward_icon">@drawable/forward_dark</item>
+        <item name="save_icon">@drawable/content_save_dark</item>
+        <item name="reply_icon">@drawable/reply_dark</item>
     </style>
 
 
@@ -262,6 +270,7 @@
         <item name="conversation_list_item_date_color">#ffdddddd</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="search_icon">@drawable/ic_search_white_24dp</item>
+        <item name="back_icon">@drawable/arrow_back_white</item>
     </style>
 
     <!-- Application theme. -->
@@ -318,6 +327,7 @@
         <item name="select_all">@drawable/select_all_dark</item>
         <item name="conversation_list_toolbar_background">@color/primary_white</item>
         <item name="search_icon">@drawable/search_dark</item>
+        <item name="back_icon">@drawable/arrow_back_dark</item>
     </style>
     <style name="TextSecure.ScribbleTheme" parent="TextSecure.DarkNoActionBar">
     </style>
