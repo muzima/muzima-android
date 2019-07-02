@@ -54,10 +54,10 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
         findPreference(TextSecurePreferences.THREAD_TRIM_LENGTH)
                 .setOnPreferenceChangeListener(new TrimLengthValidationListener());
 
-        findPreference(TextSecurePreferences.BACKUP_ENABLED)
-                .setOnPreferenceClickListener(new BackupClickListener());
-        findPreference(TextSecurePreferences.BACKUP_NOW)
-                .setOnPreferenceClickListener(new BackupCreateListener());
+//        findPreference(TextSecurePreferences.BACKUP_ENABLED)
+//                .setOnPreferenceClickListener(new BackupClickListener());
+//        findPreference(TextSecurePreferences.BACKUP_NOW)
+//                .setOnPreferenceClickListener(new BackupCreateListener());
 
         initializeListSummary((ListPreference) findPreference(TextSecurePreferences.MESSAGE_BODY_TEXT_SIZE_PREF));
 
@@ -74,7 +74,7 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
         super.onResume();
         ((ApplicationPreferencesActivity) getActivity()).getSupportActionBar().setTitle(R.string.preferences_chats);
         setMediaDownloadSummaries();
-        setBackupSummary();
+//        setBackupSummary();
     }
 
     @Override

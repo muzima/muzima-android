@@ -38,6 +38,7 @@ import com.muzima.messaging.customcomponents.emoji.EmojiDrawer;
 import com.muzima.messaging.customcomponents.emoji.EmojiToggle;
 import com.muzima.messaging.exceptions.BitmapDecodingException;
 import com.muzima.messaging.mms.GlideApp;
+import com.muzima.messaging.preference.ApplicationPreferencesActivity;
 import com.muzima.messaging.profiles.SystemProfileUtil;
 import com.muzima.messaging.push.AccountManagerFactory;
 import com.muzima.messaging.sqlite.database.SignalAddress;
@@ -46,6 +47,7 @@ import com.muzima.messaging.utils.Util;
 import com.muzima.utils.BitmapUtil;
 import com.muzima.utils.IntentUtils;
 import com.muzima.utils.Permissions;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
 import com.muzima.view.login.LoginActivity;
 import com.soundcloud.android.crop.Crop;
@@ -69,10 +71,9 @@ import static android.provider.MediaStore.EXTRA_OUTPUT;
 
 public class CreateProfileActivity extends BaseActionBarActivity {
     private static final String TAG = CreateProfileActivity.class.getSimpleName();
-
     public static final String EXCLUDE_SYSTEM = "exclude_system";
-
     private static final int REQUEST_CODE_AVATAR = 1;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Inject
     SignalServiceAccountManager accountManager;
@@ -92,12 +93,13 @@ public class CreateProfileActivity extends BaseActionBarActivity {
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        themeUtils.onCreate(this);
         setContentView(R.layout.profile_create_activity);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         getSupportActionBar().setTitle(R.string.title_your_profile_info);
 
-        initializeResources();
+        initializeResources(getIntent().getBooleanExtra(EXCLUDE_SYSTEM, false));
         initializeEmojiInput();
         initializeProfileName(getIntent().getBooleanExtra(EXCLUDE_SYSTEM, false));
         initializeProfileAvatar(getIntent().getBooleanExtra(EXCLUDE_SYSTEM, false));
@@ -115,6 +117,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
+        themeUtils.onCreate(this);
     }
 
     @Override
@@ -194,7 +197,7 @@ public class CreateProfileActivity extends BaseActionBarActivity {
         }
     }
 
-    private void initializeResources() {
+    private void initializeResources(boolean excludeSystem) {
         TextView skipButton = ViewUtil.findById(this, R.id.skip_button);
 
         this.avatar = ViewUtil.findById(this, R.id.avatar);
@@ -204,8 +207,11 @@ public class CreateProfileActivity extends BaseActionBarActivity {
         this.container = ViewUtil.findById(this, R.id.container);
         this.finishButton = ViewUtil.findById(this, R.id.finish_button);
         this.reveal = ViewUtil.findById(this, R.id.reveal);
-        this.nextIntent = new Intent(CreateProfileActivity.this,LoginActivity.class);
-
+        if(excludeSystem) {
+            this.nextIntent = new Intent(CreateProfileActivity.this, ApplicationPreferencesActivity.class);
+        } else {
+            this.nextIntent = new Intent(CreateProfileActivity.this, LoginActivity.class);
+        }
         this.avatar.setImageDrawable(new ResourceContactPhoto(R.drawable.ic_camera_alt_white_24dp).asDrawable(this, getResources().getColor(R.color.grey_300)));
 
         this.avatar.setOnClickListener(view -> Permissions.with(this)
