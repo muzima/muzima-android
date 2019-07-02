@@ -46,60 +46,44 @@ public class SignalRecipient implements RecipientModifiedListener {
 
     private final Set<RecipientModifiedListener> listeners = Collections.newSetFromMap(new WeakHashMap<RecipientModifiedListener, Boolean>());
 
-    private final @NonNull
-    SignalAddress address;
-    private final @NonNull
-    List<SignalRecipient> participants = new LinkedList<>();
+    private final @NonNull SignalAddress address;
+    private final @NonNull List<SignalRecipient> participants = new LinkedList<>();
 
-    private @Nullable
-    String name;
-    private @Nullable
-    String customLabel;
+    private @Nullable String name;
+    private @Nullable String customLabel;
     private boolean resolving;
 
-    private @Nullable
-    Uri systemContactPhoto;
-    private @Nullable
-    Long groupAvatarId;
+    private @Nullable Uri systemContactPhoto;
+    private @Nullable Long groupAvatarId;
     private Uri contactUri;
-    private @Nullable
-    Uri messageRingtone = null;
-    private @Nullable
-    Uri callRingtone = null;
+    private @Nullable Uri messageRingtone = null;
+    private @Nullable Uri callRingtone = null;
     private long mutedUntil = 0;
     private boolean blocked = false;
     private RecipientDatabase.VibrateState messageVibrate = RecipientDatabase.VibrateState.DEFAULT;
     private RecipientDatabase.VibrateState callVibrate = RecipientDatabase.VibrateState.DEFAULT;
     private int expireMessages = 0;
     private Optional<Integer> defaultSubscriptionId = Optional.absent();
-    private @NonNull
-    RecipientDatabase.RegisteredState registered = RecipientDatabase.RegisteredState.UNKNOWN;
+    private @NonNull RecipientDatabase.RegisteredState registered = RecipientDatabase.RegisteredState.UNKNOWN;
 
-    private @Nullable
-    MaterialColor color;
+    private @Nullable MaterialColor color;
     private boolean seenInviteReminder;
-    private @Nullable
-    byte[] profileKey;
-    private @Nullable
-    String profileName;
-    private @Nullable
-    String profileAvatar;
+    private @Nullable byte[] profileKey;
+    private @Nullable String profileName;
+    private @Nullable String profileAvatar;
     private boolean profileSharing;
     private String notificationChannel;
 
-    private @NonNull
-    RecipientDatabase.UnidentifiedAccessMode unidentifiedAccessMode = RecipientDatabase.UnidentifiedAccessMode.DISABLED;
+    private @NonNull RecipientDatabase.UnidentifiedAccessMode unidentifiedAccessMode = RecipientDatabase.UnidentifiedAccessMode.DISABLED;
 
     @SuppressWarnings("ConstantConditions")
-    public static @NonNull
-    SignalRecipient from(@NonNull Context context, @NonNull SignalAddress address, boolean asynchronous) {
+    public static @NonNull SignalRecipient from(@NonNull Context context, @NonNull SignalAddress address, boolean asynchronous) {
         if (address == null) throw new AssertionError(address);
         return provider.getRecipient(context, address, Optional.absent(), Optional.absent(), asynchronous);
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static @NonNull
-    SignalRecipient from(@NonNull Context context, @NonNull SignalAddress address, @NonNull Optional<RecipientDatabase.RecipientSettings> settings, @NonNull Optional<GroupDatabase.GroupRecord> groupRecord, boolean asynchronous) {
+    public static @NonNull SignalRecipient from(@NonNull Context context, @NonNull SignalAddress address, @NonNull Optional<RecipientDatabase.RecipientSettings> settings, @NonNull Optional<GroupDatabase.GroupRecord> groupRecord, boolean asynchronous) {
         if (address == null) throw new AssertionError(address);
         return provider.getRecipient(context, address, settings, groupRecord, asynchronous);
     }
@@ -252,8 +236,7 @@ public class SignalRecipient implements RecipientModifiedListener {
         this.resolving = false;
     }
 
-    public synchronized @Nullable
-    Uri getContactUri() {
+    public synchronized @Nullable Uri getContactUri() {
         return this.contactUri;
     }
 
@@ -270,8 +253,7 @@ public class SignalRecipient implements RecipientModifiedListener {
         if (notify) notifyListeners();
     }
 
-    public synchronized @Nullable
-    String getName() {
+    public synchronized @Nullable String getName() {
         if (this.name == null && isMmsGroupRecipient()) {
             List<String> names = new LinkedList<>();
 
@@ -298,8 +280,7 @@ public class SignalRecipient implements RecipientModifiedListener {
         if (notify) notifyListeners();
     }
 
-    public synchronized @NonNull
-    MaterialColor getColor() {
+    public synchronized @NonNull MaterialColor getColor() {
         if (isGroupRecipient()) return MaterialColor.GROUP;
         else if (color != null) return color;
         else if (name != null) return ContactColors.generateFor(name);
@@ -314,13 +295,11 @@ public class SignalRecipient implements RecipientModifiedListener {
         notifyListeners();
     }
 
-    public @NonNull
-    SignalAddress getAddress() {
+    public @NonNull SignalAddress getAddress() {
         return address;
     }
 
-    public synchronized @Nullable
-    String getCustomLabel() {
+    public synchronized @Nullable String getCustomLabel() {
         return customLabel;
     }
 
@@ -349,8 +328,7 @@ public class SignalRecipient implements RecipientModifiedListener {
         notifyListeners();
     }
 
-    public synchronized @Nullable
-    String getProfileName() {
+    public synchronized @Nullable String getProfileName() {
         return profileName;
     }
 
@@ -362,8 +340,7 @@ public class SignalRecipient implements RecipientModifiedListener {
         notifyListeners();
     }
 
-    public synchronized @Nullable
-    String getProfileAvatar() {
+    public synchronized @Nullable String getProfileAvatar() {
         return profileAvatar;
     }
 
@@ -399,8 +376,7 @@ public class SignalRecipient implements RecipientModifiedListener {
         return address.isGroup() && !address.isMmsGroup();
     }
 
-    public @NonNull
-    synchronized List<SignalRecipient> getParticipants() {
+    public @NonNull synchronized List<SignalRecipient> getParticipants() {
         return new LinkedList<>(participants);
     }
 
@@ -432,13 +408,11 @@ public class SignalRecipient implements RecipientModifiedListener {
         return (getName() == null ? address.serialize() : getName());
     }
 
-    public synchronized @NonNull
-    Drawable getFallbackContactPhotoDrawable(Context context, boolean inverted) {
+    public synchronized @NonNull Drawable getFallbackContactPhotoDrawable(Context context, boolean inverted) {
         return getFallbackContactPhoto().asDrawable(context, getColor().toAvatarColor(context), inverted);
     }
 
-    public synchronized @NonNull
-    FallbackContactPhoto getFallbackContactPhoto() {
+    public synchronized @NonNull FallbackContactPhoto getFallbackContactPhoto() {
         if (isResolving()) return new TransparentContactPhoto();
         else if (isGroupRecipient())
             return new ResourceContactPhoto(R.drawable.ic_group_white_24dp, R.drawable.ic_group_large);
@@ -448,8 +422,7 @@ public class SignalRecipient implements RecipientModifiedListener {
             return new ResourceContactPhoto(R.drawable.ic_profile_default, R.drawable.ic_person_large);
     }
 
-    public synchronized @Nullable
-    ContactPhoto getContactPhoto() {
+    public synchronized @Nullable ContactPhoto getContactPhoto() {
         if (isGroupRecipient() && groupAvatarId != null)
             return new GroupRecordContactPhoto(address, groupAvatarId);
         else if (systemContactPhoto != null)
@@ -484,8 +457,7 @@ public class SignalRecipient implements RecipientModifiedListener {
         if (notify) notifyListeners();
     }
 
-    public synchronized @Nullable
-    Uri getMessageRingtone() {
+    public synchronized @Nullable Uri getMessageRingtone() {
         if (messageRingtone != null && messageRingtone.getScheme() != null && messageRingtone.getScheme().startsWith("file")) {
             return null;
         }
@@ -501,8 +473,7 @@ public class SignalRecipient implements RecipientModifiedListener {
         notifyListeners();
     }
 
-    public synchronized @Nullable
-    Uri getCallRingtone() {
+    public synchronized @Nullable Uri getCallRingtone() {
         if (callRingtone != null && callRingtone.getScheme() != null && callRingtone.getScheme().startsWith("file")) {
             return null;
         }
@@ -627,8 +598,7 @@ public class SignalRecipient implements RecipientModifiedListener {
         if (notify) notifyListeners();
     }
 
-    public synchronized @Nullable
-    byte[] getProfileKey() {
+    public synchronized @Nullable byte[] getProfileKey() {
         return profileKey;
     }
 

@@ -226,4 +226,9 @@
     <attr name="select_all" format="reference" />
     <attr name="conversation_list_toolbar_background" format="reference" />
     <attr name="search_icon" format="reference" />
+    <attr name="back_icon" format="reference" />
+    <attr name="copy_icon" format="reference" />
+    <attr name="forward_icon" format="reference" />
+    <attr name="save_icon" format="reference" />
+    <attr name="reply_icon" format="reference" />
 </resources>
