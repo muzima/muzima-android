@@ -728,4 +728,6 @@
     <string name="title_light_mode">Enable Day Mode</string>
     <string name="hint_light_mode">Enable Light Theme</string>
     <string name="warning_cancel_form_download">This will cancel the form download. Are you sure you want to cancel form download?</string>
+    <string name="general_failure">Failure</string>
+    <string name="warning_invalid_url_provided">The URL you have provided is invalid</string>
 </resources>
