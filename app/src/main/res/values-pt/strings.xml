@@ -731,4 +731,6 @@
     <string name="title_light_mode">Ativar o modo de dia</string>
     <string name="hint_light_mode">Ativar tema claro</string>
     <string name="warning_cancel_form_download">Isso cancelará o download do formulário. Tem certeza de que deseja cancelar o download do formulário?</string>
+    <string name="general_failure">Falha</string>
+    <string name="warning_invalid_url_provided">O URL que você forneceu é inválido</string>
 </resources>

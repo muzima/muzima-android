@@ -608,4 +608,6 @@
     <string name="title_light_mode">Wezesha hali ya siku</string>
     <string name="hint_light_mode">Wezesha mwanga mandhari</string>
     <string name="warning_cancel_form_download">Hii itafuta fomu ya kupakua. Una uhakika unataka kufuta fomu ya kupakuliwa?</string>
+    <string name="general_failure">Imeshindwa</string>
+    <string name="warning_invalid_url_provided">URL uliyoweka ni batili</string>
 </resources>
