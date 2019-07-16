@@ -224,7 +224,7 @@ public class SharedContactDetailsActivity extends PassphraseRequiredActionBarAct
 
             inviteButtonView.setOnClickListener(v -> {
                 ContactUtil.selectRecipientThroughDialog(this, systemUsers, getResources().getConfiguration().locale, recipient -> {
-                    CommunicationActions.composeSmsThroughDefaultApp(this, recipient.getAddress(), getString(R.string.general_lets_switch_to_muzima, "https://sgnl.link/1KpeYmF"));
+                    CommunicationActions.composeSmsThroughDefaultApp(this, recipient.getAddress(), getString(R.string.general_lets_switch_to_muzima, "https://play.google.com/store/apps/details?id=com.muzima"));
                 });
             });
         } else {

@@ -864,7 +864,7 @@ public class ConversationFragment extends Fragment
             if (getContext() == null) return;
 
             ContactUtil.selectRecipientThroughDialog(getContext(), choices, locale, recipient -> {
-                CommunicationActions.composeSmsThroughDefaultApp(getContext(), recipient.getAddress(), getString(R.string.general_lets_switch_to_muzima, "https://sgnl.link/1KpeYmF"));
+                CommunicationActions.composeSmsThroughDefaultApp(getContext(), recipient.getAddress(), getString(R.string.general_lets_switch_to_muzima, "https://play.google.com/store/apps/details?id=com.muzima"));
             });
         }
     }
