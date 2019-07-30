@@ -3,10 +3,6 @@
     <com.muzima.messaging.preference.ProfilePreference
         android:key="preference_category_profile"/>
 
-    <Preference android:key="preference_category_sms_mms"
-        android:title="@string/general_sms_mms"
-        android:icon="@drawable/ic_textsms_24dp"/>
-
     <Preference android:key="preference_category_notifications"
         android:title="@string/general_notifications"
         android:icon="@drawable/ic_notifications_24dp"/>

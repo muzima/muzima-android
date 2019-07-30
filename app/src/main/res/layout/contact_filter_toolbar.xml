@@ -40,7 +40,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:background="@drawable/circle_touch_highlight_background"
-                    android:src="@drawable/ic_dialpad_white_24dp" />
+                    android:src="?attr/dialpad_icon" />
 
                 <ImageView android:id="@+id/search_keyboard"
                     android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
                     android:visibility="gone"
                     android:focusable="true"
                     android:background="@drawable/circle_touch_highlight_background"
-                    android:src="@drawable/ic_keyboard_white_24dp" />
+                    android:src="?attr/keyboard_icon" />
 
                 <ImageView android:id="@+id/search_clear"
                     android:layout_width="wrap_content"

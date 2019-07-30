@@ -47,8 +47,6 @@ import com.muzima.messaging.events.ReminderUpdateEvent;
 import com.muzima.messaging.jobs.ServiceOutageDetectionJob;
 import com.muzima.messaging.mms.GlideApp;
 import com.muzima.messaging.reminder.DefaultSmsReminder;
-import com.muzima.messaging.reminder.ExpiredBuildReminder;
-import com.muzima.messaging.reminder.OutdatedBuildReminder;
 import com.muzima.messaging.reminder.ServiceOutageReminder;
 import com.muzima.messaging.reminder.SystemSmsImportReminder;
 import com.muzima.messaging.reminder.UnauthorizedReminder;
@@ -173,13 +171,9 @@ public class ConversationListFragment extends Fragment
                 final Context context = params[0];
                 if (UnauthorizedReminder.isEligible(context)) {
                     return Optional.of(new UnauthorizedReminder(context));
-                } else if (ExpiredBuildReminder.isEligible()) {
-                    return Optional.of(new ExpiredBuildReminder(context));
-                } else if (ServiceOutageReminder.isEligible(context)) {
+                }  else if (ServiceOutageReminder.isEligible(context)) {
                     MuzimaApplication.getInstance(context).getJobManager().add(new ServiceOutageDetectionJob(context));
                     return Optional.of(new ServiceOutageReminder(context));
-                } else if (OutdatedBuildReminder.isEligible()) {
-                    return Optional.of(new OutdatedBuildReminder(context));
                 } else if (DefaultSmsReminder.isEligible(context)) {
                     return Optional.of(new DefaultSmsReminder(context));
                 } else if (Util.isDefaultSmsProvider(context) && SystemSmsImportReminder.isEligible(context)) {

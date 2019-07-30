@@ -101,7 +101,6 @@ import com.muzima.messaging.mms.SlideDeck;
 import com.muzima.messaging.net.TransportOption;
 import com.muzima.messaging.net.TransportOption.Type;
 import com.muzima.messaging.provider.PersistentBlobProvider;
-import com.muzima.messaging.reminder.ExpiredBuildReminder;
 import com.muzima.messaging.reminder.InviteReminder;
 import com.muzima.messaging.reminder.ServiceOutageReminder;
 import com.muzima.messaging.reminder.UnauthorizedReminder;
@@ -211,7 +210,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     private TextView charactersLeft;
     private ConversationFragment fragment;
     private Button unblockButton;
-    private Button makeDefaultSmsButton;
     private Button registerButton;
     private InputAwareLayout container;
     private View composePanel;
@@ -1204,9 +1202,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
         if (UnauthorizedReminder.isEligible(this)) {
             reminderView.get().showReminder(new UnauthorizedReminder(this));
-        } else if (ExpiredBuildReminder.isEligible()) {
-            reminderView.get().showReminder(new ExpiredBuildReminder(this));
-        } else if (ServiceOutageReminder.isEligible(this)) {
+        }  else if (ServiceOutageReminder.isEligible(this)) {
             MuzimaApplication.getInstance(this).getJobManager().add(new ServiceOutageDetectionJob(this));
             reminderView.get().showReminder(new ServiceOutageReminder(this));
         } else if (TextSecurePreferences.isPushRegistered(this) &&
@@ -1313,7 +1309,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         charactersLeft = ViewUtil.findById(this, R.id.space_left);
         emojiDrawerStub = ViewUtil.findStubById(this, R.id.emoji_drawer_stub);
         unblockButton = ViewUtil.findById(this, R.id.unblock_button);
-        makeDefaultSmsButton = ViewUtil.findById(this, R.id.make_default_sms_button);
         registerButton = ViewUtil.findById(this, R.id.register_button);
         composePanel = ViewUtil.findById(this, R.id.bottom_panel);
         container = ViewUtil.findById(this, R.id.layout_container);
@@ -1358,7 +1353,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         titleView.setOnLongClickListener(v -> handleDisplayQuickContact());
         titleView.setOnBackClickedListener(view -> super.onBackPressed());
         unblockButton.setOnClickListener(v -> handleUnblock());
-        makeDefaultSmsButton.setOnClickListener(v -> handleMakeDefaultSms());
         registerButton.setOnClickListener(v -> handleRegisterForSignal());
 
         composeText.setOnKeyListener(composeKeyPressedListener);
@@ -1617,22 +1611,18 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
         if (recipient.isBlocked()) {
             unblockButton.setVisibility(View.VISIBLE);
             composePanel.setVisibility(View.GONE);
-            makeDefaultSmsButton.setVisibility(View.GONE);
             registerButton.setVisibility(View.GONE);
         } else if (!isSecureText && isPushGroupConversation()) {
             unblockButton.setVisibility(View.GONE);
             composePanel.setVisibility(View.GONE);
-            makeDefaultSmsButton.setVisibility(View.GONE);
             registerButton.setVisibility(View.VISIBLE);
         } else if (!isSecureText && !isDefaultSms) {
             unblockButton.setVisibility(View.GONE);
             composePanel.setVisibility(View.GONE);
-            makeDefaultSmsButton.setVisibility(View.VISIBLE);
             registerButton.setVisibility(View.GONE);
         } else {
             composePanel.setVisibility(View.VISIBLE);
             unblockButton.setVisibility(View.GONE);
-            makeDefaultSmsButton.setVisibility(View.GONE);
             registerButton.setVisibility(View.GONE);
         }
     }

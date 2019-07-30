@@ -356,11 +356,6 @@ public class Util {
         return new SecureRandom();
     }
 
-    public static int getDaysTillBuildExpiry() {
-        int age = (int)TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - BuildConfig.BUILD_TIMESTAMP);
-        return 90 - age;
-    }
-
     public static boolean isMainThread() {
         return Looper.myLooper() == Looper.getMainLooper();
     }
