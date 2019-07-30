@@ -62,7 +62,7 @@
                     android:visibility="gone"
                     android:focusable="true"
                     android:background="@drawable/circle_touch_highlight_background"
-                    android:src="@drawable/ic_clear_white_24dp" />
+                    android:src="?attr/icCancel" />
 
             </com.muzima.messaging.animations.AnimatingToggle>
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.muzima.R;
 import com.muzima.messaging.fragments.ContactSelectionListFragment;
+import com.muzima.utils.ResUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class PushContactSelectionActivity extends ContactSelectionActivity {
         getIntent().putExtra(ContactSelectionListFragment.MULTI_SELECT, true);
         super.onCreate(icicle, ready);
 
-        getToolbar().setNavigationIcon(R.drawable.ic_check_white_24dp);
+        getToolbar().setNavigationIcon(ResUtil.getDrawable(this,R.attr.menu_accept_icon));
         getToolbar().setNavigationOnClickListener(v -> {
             Intent resultIntent = getIntent();
             List<String> selectedContacts = contactsFragment.getSelectedContacts();

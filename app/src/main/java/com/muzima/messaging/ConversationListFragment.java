@@ -35,7 +35,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.klinker.android.logger.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.messaging.animations.DeleteItemAnimator;
@@ -46,7 +45,6 @@ import com.muzima.messaging.customcomponents.actionmode.ConversationListItemInbo
 import com.muzima.messaging.events.ReminderUpdateEvent;
 import com.muzima.messaging.jobs.ServiceOutageDetectionJob;
 import com.muzima.messaging.mms.GlideApp;
-import com.muzima.messaging.reminder.DefaultSmsReminder;
 import com.muzima.messaging.reminder.ServiceOutageReminder;
 import com.muzima.messaging.reminder.SystemSmsImportReminder;
 import com.muzima.messaging.reminder.UnauthorizedReminder;
@@ -171,11 +169,9 @@ public class ConversationListFragment extends Fragment
                 final Context context = params[0];
                 if (UnauthorizedReminder.isEligible(context)) {
                     return Optional.of(new UnauthorizedReminder(context));
-                }  else if (ServiceOutageReminder.isEligible(context)) {
+                } else if (ServiceOutageReminder.isEligible(context)) {
                     MuzimaApplication.getInstance(context).getJobManager().add(new ServiceOutageDetectionJob(context));
                     return Optional.of(new ServiceOutageReminder(context));
-                } else if (DefaultSmsReminder.isEligible(context)) {
-                    return Optional.of(new DefaultSmsReminder(context));
                 } else if (Util.isDefaultSmsProvider(context) && SystemSmsImportReminder.isEligible(context)) {
                     return Optional.of((new SystemSmsImportReminder(context)));
                 } else if (PushRegistrationReminder.isEligible(context)) {
