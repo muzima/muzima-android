@@ -231,4 +231,6 @@
     <attr name="forward_icon" format="reference" />
     <attr name="save_icon" format="reference" />
     <attr name="reply_icon" format="reference" />
+    <attr name="dialpad_icon" format="reference" />
+    <attr name="keyboard_icon" format="reference" />
 </resources>

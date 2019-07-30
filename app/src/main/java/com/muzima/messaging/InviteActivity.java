@@ -5,12 +5,15 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AlertDialog;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
@@ -215,18 +218,19 @@ public class InviteActivity extends PassphraseRequiredActionBarActivity implemen
         protected Void doInBackground(String... numbers) {
             final Context context = getContext();
             if (context == null) return null;
-
+            String phoneNumbers = "";
             for (String number : numbers) {
-                SignalRecipient recipient = SignalRecipient.from(context, SignalAddress.fromExternal(context, number), false);
-                int subscriptionId = recipient.getDefaultSubscriptionId().or(-1);
-
-                MessageSender.send(context, new OutgoingTextMessage(recipient, message, subscriptionId), -1L, true, null);
-
-                if (recipient.getContactUri() != null) {
-                    DatabaseFactory.getRecipientDatabase(context).setSeenInviteReminder(recipient, true);
+                if (!phoneNumbers.isEmpty()) {
+                    phoneNumbers = phoneNumbers.concat(";").concat(number);
+                } else {
+                    phoneNumbers = number;
                 }
             }
 
+            Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+            smsIntent.setData(Uri.parse("smsto:" + phoneNumbers));
+            smsIntent.putExtra("sms_body",message);
+            startActivityForResult(smsIntent,100);
             return null;
         }
 
@@ -245,7 +249,17 @@ public class InviteActivity extends PassphraseRequiredActionBarActivity implemen
                 @Override
                 public void onFailure(ExecutionException e) {}
             });
-            Toast.makeText(context, R.string.hint_invitations_sent, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(final int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+        if ((reqCode == 100) || (resultCode == RESULT_OK && reqCode == 100)) {
+            Intent conversationListActivity = new Intent(this, ConversationListActivity.class);
+            conversationListActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(conversationListActivity);
         }
     }
 }

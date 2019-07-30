@@ -114,6 +114,8 @@
         <item name="forward_icon">@drawable/ic_forward_white_24dp</item>
         <item name="save_icon">@drawable/content_save_light</item>
         <item name="reply_icon">@drawable/reply_light</item>
+        <item name="dialpad_icon">@drawable/ic_dialpad_white_24dp</item>
+        <item name="keyboard_icon">@drawable/ic_keyboard_white_24dp</item>
     </style>
 
 
@@ -217,6 +219,9 @@
         <item name="forward_icon">@drawable/forward_dark</item>
         <item name="save_icon">@drawable/content_save_dark</item>
         <item name="reply_icon">@drawable/reply_dark</item>
+        <item name="dialpad_icon">@drawable/dialpad_dark</item>
+        <item name="keyboard_icon">@drawable/keyboard_dark</item>
+        <item name="back_icon">@drawable/arrow_back_dark</item>
     </style>
 
 
@@ -328,6 +333,9 @@
         <item name="conversation_list_toolbar_background">@color/primary_white</item>
         <item name="search_icon">@drawable/search_dark</item>
         <item name="back_icon">@drawable/arrow_back_dark</item>
+        <item name="dialpad_icon">@drawable/dialpad_dark</item>
+        <item name="keyboard_icon">@drawable/keyboard_dark</item>
+        <item name="menu_accept_icon">@drawable/check_dark</item>
     </style>
     <style name="TextSecure.ScribbleTheme" parent="TextSecure.DarkNoActionBar">
     </style>
