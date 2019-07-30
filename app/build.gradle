@@ -54,7 +54,6 @@ android {
         //refer to TODO look at MUZIMA-621
         multiDexEnabled true
 
-        buildConfigField "long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L"
         buildConfigField "String", "SIGNAL_URL", "\"https://textsecure-service.whispersystems.org\""
         buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\""
         buildConfigField "String", "SIGNAL_CONTACT_DISCOVERY_URL", "\"https://api.directory.signal.org\""
@@ -241,17 +240,5 @@ task wrapper(type: Wrapper) {
 configurations {
     all {
         exclude group: 'org.json', module: 'json'
-    }
-}
-
-def getLastCommitTimestamp() {
-    new ByteArrayOutputStream().withStream { os ->
-        def result = exec {
-            executable = 'git'
-            args = ['log', '-1', '--pretty=format:%ct']
-            standardOutput = os
-        }
-
-        return os.toString() + "000"
     }
 }
