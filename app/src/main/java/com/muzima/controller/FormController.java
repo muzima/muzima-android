@@ -21,12 +21,14 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PatientService;
+import com.muzima.api.service.SetupConfigurationService;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.builders.AvailableFormBuilder;
@@ -82,18 +84,19 @@ public class FormController {
     private final SntpService sntpService;
     private final ObservationService observationService;
     private final EncounterService encounterService;
+    private final SetupConfigurationService setupConfigurationService;
     private final Map<String, Integer> tagColors;
     private List<Tag> selectedTags;
     private String jsonPayload;
 
-    public FormController(FormService formService, PatientService patientService, LastSyncTimeService lastSyncTimeService,
-                          SntpService sntpService, ObservationService observationService, EncounterService encounterService) {
-        this.formService = formService;
-        this.patientService = patientService;
-        this.lastSyncTimeService = lastSyncTimeService;
-        this.sntpService = sntpService;
-        this.observationService = observationService;
-        this.encounterService = encounterService;
+    public FormController(MuzimaApplication muzimaApplication) throws IOException {
+        this.formService = muzimaApplication.getMuzimaContext().getFormService();
+        this.patientService = muzimaApplication.getMuzimaContext().getPatientService();
+        this.lastSyncTimeService = muzimaApplication.getMuzimaContext().getLastSyncTimeService();
+        this.sntpService = muzimaApplication.getSntpService();
+        this.observationService = muzimaApplication.getMuzimaContext().getObservationService();
+        this.encounterService = muzimaApplication.getMuzimaContext().getEncounterService();
+        this.setupConfigurationService = muzimaApplication.getMuzimaContext().getSetupConfigurationService();
         tagColors = new HashMap<>();
         selectedTags = new ArrayList<>();
     }
@@ -597,7 +600,7 @@ public class FormController {
 
     public AvailableForms getRecommendedForms() throws FormFetchException {
         AvailableForms result = new AvailableForms();
-        for (AvailableForm form : getAvailableFormByTags(null)) {
+        for (AvailableForm form : getAvailableFormByTagsSortedByConfigOrder(null,false)) {
             if (form.isDownloaded() && !form.isRegistrationForm() && !form.isProviderReport()) {
                 result.add(form);
             }
@@ -946,6 +949,47 @@ public class FormController {
             return remnantData;
         } catch(IOException e){
             throw new FormDeleteException(e);
+        }
+    }
+
+    public AvailableForms getAvailableFormByTagsSortedByConfigOrder(List<String> tagsUuid, boolean alwaysIncludeRegistrationForms) throws FormFetchException {
+        try {
+            List<Form> allForms = formService.getAllForms();
+            List<Form> filteredForms = filterFormsByTags(allForms, tagsUuid, alwaysIncludeRegistrationForms);
+            AvailableForms availableForms = new AvailableForms();
+            ArrayList<String> formUuids = new ArrayList<String>();
+            List<SetupConfigurationTemplate> setupConfigurationTemplates = setupConfigurationService.getSetupConfigurationTemplates();
+            for(SetupConfigurationTemplate setupConfigurationTemplate:setupConfigurationTemplates){
+                org.json.JSONObject object = null;
+                try {
+                    object = new org.json.JSONObject(setupConfigurationTemplate.getConfigJson());
+                    org.json.JSONObject forms = object.getJSONObject("config");
+                    org.json.JSONArray formsArray = forms.getJSONArray("forms");
+                    for(int i = 0; i < formsArray.length(); i++)
+                    {
+                        org.json.JSONObject formObject = formsArray.getJSONObject(i);
+                        Form form = formService.getFormByUuid(formObject.get("uuid").toString());
+                        boolean downloadStatus = formService.isFormTemplateDownloaded(form.getUuid());
+                        AvailableForm availableForm = new AvailableFormBuilder().withAvailableForm(form).withDownloadStatus(downloadStatus).build();
+                        availableForms.add(availableForm);
+                        formUuids.add(formObject.get("uuid").toString());
+                    }
+                } catch (JSONException e) {
+                    Log.e(getClass().getSimpleName(),"Encountered JsonException while sorting forms");
+                }
+            }
+            for (Form filteredForm : filteredForms) {
+                if (!formUuids.contains(filteredForm.getUuid())) {
+                    boolean downloadStatus = formService.isFormTemplateDownloaded(filteredForm.getUuid());
+                    AvailableForm availableForm = new AvailableFormBuilder()
+                            .withAvailableForm(filteredForm)
+                            .withDownloadStatus(downloadStatus).build();
+                    availableForms.add(availableForm);
+                }
+            }
+            return availableForms;
+        } catch (IOException e) {
+            throw new FormFetchException(e);
         }
     }
 }
