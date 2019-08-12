@@ -2,6 +2,6 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">textsecure-service.whispersystems.org</domain>
-        <domain includeSubdomains="true">http://demo2.muzima.org</domain>
+        <domain includeSubdomains="true">muzima.org</domain>
     </domain-config>
 </network-security-config>
