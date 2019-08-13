@@ -227,6 +227,7 @@
 
     <!-- Application theme. -->
     <style name="AppThemeNoActionBar.Dark" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
         <item name="theme_type">dark</item>
         <item name="android:windowBackground">@color/primary_black</item>
         <item name="android:textColorSecondary">@color/primary_white</item>
@@ -280,6 +281,7 @@
 
     <!-- Application theme. -->
     <style name="AppThemeNoActionBar.Light" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
         <item name="theme_type">light</item>
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="android:textColorSecondary">@color/primary_black</item>

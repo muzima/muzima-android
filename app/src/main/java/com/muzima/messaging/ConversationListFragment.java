@@ -376,7 +376,6 @@ public class ConversationListFragment extends Fragment
 
     @Override
     public void onItemLongClick(ConversationListItem item) {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         actionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(ConversationListFragment.this);
 
         getListAdapter().initializeBatchMode(true);
@@ -444,7 +443,6 @@ public class ConversationListFragment extends Fragment
             getActivity().getWindow().setStatusBarColor(color.getColor(0, Color.BLACK));
             color.recycle();
         }
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         actionMode = null;
     }
 
