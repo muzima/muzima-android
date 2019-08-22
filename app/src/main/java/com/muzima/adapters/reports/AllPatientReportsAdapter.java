@@ -18,12 +18,10 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.PatientReport;
 import com.muzima.api.model.PatientReportHeader;
 import com.muzima.controller.PatientReportController;
-import com.muzima.service.MuzimaSyncService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +30,11 @@ import java.util.List;
  * Responsible to populate downloaded patient reports fetched from DB in the AllPatientReportListFragment page.
  */
 public class AllPatientReportsAdapter extends ReportsAdapter {
-    private final MuzimaSyncService muzimaSyncService;
     private final List<String> selectedReportsUuid;
-    private List<PatientReport> patientReports;
 
     public AllPatientReportsAdapter(Context context, int textViewResourceId, PatientReportController patientReportController, String patientUuid) {
         super(context, textViewResourceId, patientReportController, patientUuid);
         selectedReportsUuid = new ArrayList<>();
-        muzimaSyncService = ((MuzimaApplication) (getContext().getApplicationContext())).getMuzimaSyncService();
     }
 
     @Override
@@ -67,11 +62,6 @@ public class AllPatientReportsAdapter extends ReportsAdapter {
         ViewHolder holder = (ViewHolder) view.getTag();
         PatientReport patientReport = getItem(position);
 
-//        if(patientReportController.isDownloaded(patientReport) && patientReport.isUpdateAvailable()){
-//            holder.displayPendingUpdateImage();
-//            holder.hideDownloadImage();
-//            holder.setPendingUpdateTextColor();
-//        } else
         if (patientReportController.isDownloaded(patientReport)) {
             holder.displayDownloadImage();
             holder.hidePendingUpdateImage();
@@ -81,12 +71,12 @@ public class AllPatientReportsAdapter extends ReportsAdapter {
             holder.hidePendingUpdateImage();
             holder.setDefaultTextColor();
         }
-        highlightCohorts(patientReport, view);
+        highlightPatientReport(patientReport, view);
         return view;
     }
 
-    private void highlightCohorts(PatientReport cohort, View view) {
-        if (selectedReportsUuid.contains(cohort.getUuid())) {
+    private void highlightPatientReport(PatientReport report, View view) {
+        if (selectedReportsUuid.contains(report.getUuid())) {
             view.setBackgroundResource(R.color.primary_blue);
         } else {
             TypedValue typedValue = new TypedValue();
@@ -111,7 +101,7 @@ public class AllPatientReportsAdapter extends ReportsAdapter {
     }
 
     /**
-     * Responsible to define contract to CohortBackgroundQueryTasks.
+     * Responsible to define contract to PatientReportsBackgroundQueryTask.
      */
     abstract class PatientReportsBackgroundQueryTask extends AsyncTask<Void, Void, List<PatientReport>> {
         @Override
@@ -122,8 +112,7 @@ public class AllPatientReportsAdapter extends ReportsAdapter {
         }
 
         @Override
-        protected void onPostExecute(List<PatientReport> allCohorts) {
-            patientReports = allCohorts;
+        protected void onPostExecute(List<PatientReport> patientReports) {
             if (patientReports == null) {
                 Toast.makeText(getContext(), getContext().getString(R.string.error_patient_report_fetch), Toast.LENGTH_SHORT).show();
                 return;
@@ -151,7 +140,6 @@ public class AllPatientReportsAdapter extends ReportsAdapter {
             List<PatientReportHeader> patientReportHeaders;
             List<PatientReport> patientReports = new ArrayList<>();
             try {
-                Log.i(getClass().getSimpleName(), "Fetching patient report headers from Database...");
                 patientReportHeaders = patientReportController.getPatientReportHeadersByPatientUuid(patientUuid);
                 for (PatientReportHeader header : patientReportHeaders) {
                     PatientReport report = new PatientReport(header.getUuid(), header.getName(), null);

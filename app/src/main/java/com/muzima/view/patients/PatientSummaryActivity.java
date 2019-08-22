@@ -25,7 +25,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -35,7 +39,12 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.model.User;
 import com.muzima.api.service.SmartCardRecordService;
-import com.muzima.controller.*;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.FormController;
+import com.muzima.controller.NotificationController;
+import com.muzima.controller.ObservationController;
+import com.muzima.controller.PatientReportController;
+import com.muzima.controller.SmartCardController;
 import com.muzima.model.shr.kenyaemr.Addendum.Identifier;
 import com.muzima.model.shr.kenyaemr.Addendum.WriteResponse;
 import com.muzima.model.shr.kenyaemr.InternalPatientId;
@@ -415,7 +424,7 @@ public class PatientSummaryActivity extends BaseActivity {
                 patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patient.getUuid());
                 patientSummaryActivityMetadata.observations = observationController.getObservationsCountByPatient(patient.getUuid());
                 patientSummaryActivityMetadata.encounters = encounterController.getEncountersCountByPatient(patient.getUuid());
-                patientSummaryActivityMetadata.reports = reportController.getPatientReportCountByPatient(patient.getUuid());
+                patientSummaryActivityMetadata.reports = reportController.getPatientReportCountByPatientUuid(patient.getUuid());
                 User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
                 if (authenticatedUser != null) {
                     patientSummaryActivityMetadata.newNotifications =

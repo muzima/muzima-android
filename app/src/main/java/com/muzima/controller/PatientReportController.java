@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -12,13 +12,10 @@ package com.muzima.controller;
 
 import com.muzima.api.model.PatientReport;
 import com.muzima.api.model.PatientReportHeader;
-import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.PatientReportService;
-import com.muzima.service.SntpService;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class PatientReportController {
     
@@ -30,7 +27,7 @@ public class PatientReportController {
         this.patientReportService = patientReportService;
     }
 
-    public int getPatientReportCountByPatient(String patientUuid) throws IOException {
+    public int getPatientReportCountByPatientUuid(String patientUuid) throws IOException {
         return patientReportService.countReportsByPatientUuid(patientUuid);
     }
 

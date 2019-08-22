@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2014 - 2018. The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center.
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
  *
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
@@ -29,7 +29,6 @@ import static java.text.MessageFormat.format;
 public class PatientReportWebActivity extends BroadcastListenerActivity {
     static final String PATIENT_REPORT_UUID = "SelectedPatientReportUUID";
     private PatientReport patientReport;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,7 +86,6 @@ public class PatientReportWebActivity extends BroadcastListenerActivity {
             }
         };
     }
-    
 }
 
 

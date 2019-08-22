@@ -9,19 +9,15 @@
  */
 package com.muzima.adapters.reports;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.api.model.PatientReport;
-import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientReportController;
 
 import java.util.List;
@@ -41,21 +37,9 @@ public class DownloadedPatientReportAdapter extends ReportsAdapter {
         convertView = super.getView(position,convertView,parent);
         ViewHolder holder = (ViewHolder) convertView.getTag();
 
-//        int cohortSize = 0;
         PatientReport patientReport = getItem(position);
-//        try {
-//            cohortSize = patientReportController.countCohortMembers(patientReport);
-//        } catch (PatientReportController.CohortFetchException e) {
-//            Log.e(getClass().getSimpleName(), "Could not count cohort members",e);
-//        }
         holder.setTextToName(patientReport.getName());
-
-//        if(patientReport.isUpdateAvailable()){
-//            holder.setPendingUpdateTextColor();
-//        } else {
-//            holder.setDefaultTextColor();
-//        }
-            holder.setDefaultTextColor();
+        holder.setDefaultTextColor();
         return convertView;
     }
 
