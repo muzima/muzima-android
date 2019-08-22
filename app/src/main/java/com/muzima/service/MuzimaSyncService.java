@@ -16,7 +16,22 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.exception.AuthenticationException;
-import com.muzima.api.model.*;
+import com.muzima.api.model.Cohort;
+import com.muzima.api.model.CohortData;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.Encounter;
+import com.muzima.api.model.Form;
+import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.Location;
+import com.muzima.api.model.Notification;
+import com.muzima.api.model.Observation;
+import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientReport;
+import com.muzima.api.model.PatientReportHeader;
+import com.muzima.api.model.Provider;
+import com.muzima.api.model.MuzimaSetting;
+import com.muzima.api.model.SetupConfiguration;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -953,12 +968,10 @@ public class MuzimaSyncService {
 
         try {
             for (String uuid : reportUuids) {
-                Log.i(getClass().getSimpleName(), "Downloading patient report with UUID: " + uuid);
                 downloadedPatientReports.add(patientReportController.downloadPatientReportByUuid(uuid));
             }
 
             patientReportController.saveOrUpdatePatientReports(downloadedPatientReports);
-            Log.e(getClass().getSimpleName(), "DOWNLOADED PATIENT REPORTS.");
             result[0] = SUCCESS;
             result[1] = downloadedPatientReports.size();
 

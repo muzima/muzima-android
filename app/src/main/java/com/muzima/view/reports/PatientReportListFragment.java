@@ -38,7 +38,6 @@ public abstract class PatientReportListFragment extends MuzimaListFragment imple
 
         setupNoDataView(reportsLayout);
 
-        // Todo no need to do this check after all list adapters are implemented
         if (listAdapter != null) {
             list.setAdapter(listAdapter);
             list.setOnItemClickListener(this);

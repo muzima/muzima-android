@@ -11,8 +11,12 @@
 package com.muzima.view.reports;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.*;
+import android.view.ActionMode;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import com.muzima.R;
@@ -69,7 +73,6 @@ public class AllPatientReportListFragment extends PatientReportListFragment {
         if (numberOfPatientReports == 0 && actionModeActive) {
             actionMode.finish();
         }
-        Log.d(getClass().getSimpleName(), "isnull:" + String.valueOf(actionMode==null));
         actionMode.setTitle(String.valueOf(numberOfPatientReports));
     }
 
@@ -156,5 +159,4 @@ public class AllPatientReportListFragment extends PatientReportListFragment {
     public interface OnPatientReportsDownloadListener {
         void onPatientReportsDownloadComplete();
     }
-
 }
