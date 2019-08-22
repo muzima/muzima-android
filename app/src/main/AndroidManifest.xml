@@ -71,6 +71,15 @@
                     android:value="com.muzima.view.MainActivity"/>
         </activity>
         <activity
+                android:name=".view.reports.ReportActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/general_reports"
+                android:parentActivityName=".view.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.MainActivity"/>
+        </activity>
+        <activity
                 android:name=".view.preferences.SettingsActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_settings"
@@ -266,6 +275,25 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.forms.FormsActivity"/>
         </activity>
+
+        <activity
+                android:name=".view.reports.PatientReportActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_client_reports"
+                android:parentActivityName=".view.patients.PatientSummaryActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
+        <activity
+                android:name=".view.reports.PatientReportWebActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/title_activity_client_reports"
+                android:parentActivityName=".view.reports.PatientReportActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.reports.PatientReportActivity"/>
+        </activity>
         <activity
                 android:name=".utils.audio.AudioIntent"
                 android:configChanges="orientation|screenSize"
@@ -350,15 +378,6 @@
 
         <activity
                 android:name=".view.reports.ProviderReportViewActivity"
-                android:configChanges="orientation|screenSize"
-                android:label="Provider Reports"
-                android:parentActivityName=".view.MainActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.MainActivity" />
-        </activity>
-        <activity
-                android:name=".view.reports.ProviderReportListActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="Provider Reports"
                 android:parentActivityName=".view.MainActivity">

@@ -12,7 +12,6 @@ package com.muzima;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -33,6 +32,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.PatientReportController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
@@ -51,7 +51,6 @@ import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.forms.HTMLFormWebViewActivity;
 import com.muzima.view.preferences.MuzimaTimer;
-import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
@@ -101,6 +100,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController settingsController;
     private SmartCardController smartCardController;
+    private PatientReportController patientReportController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -360,6 +360,17 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return smartCardController;
+    }
+    
+    public PatientReportController getPatientReportController() {
+        if (patientReportController == null) {
+            try {
+                patientReportController = new PatientReportController(muzimaContext.getPatientReportService());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return patientReportController;
     }
 
     public void resetTimer(int timeOutInMin) {
