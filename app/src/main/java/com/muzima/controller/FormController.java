@@ -72,6 +72,7 @@ import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTR
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION;
+import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static com.muzima.utils.Constants.STATUS_UPLOADED;
 
 public class FormController {
@@ -715,6 +716,21 @@ public class FormController {
         return result;
     }
 
+    public void markFormDataAsIncompleteAndDeleteRelatedEncountersAndObs(FormData formData) throws FormDataSaveException, ObservationController.DeleteObservationException {
+        formData.setStatus(STATUS_INCOMPLETE);
+        saveFormData(formData);
+        try {
+            List<Encounter> encounters = encounterService.getEncountersByFormDataUuid(formData.getUuid());
+            for(Encounter encounter:encounters) {
+                List<Observation> observations = observationService.getObservationsByEncounter(encounter.getUuid());
+                observationService.deleteObservations(observations);
+            }
+            encounterService.deleteEncounters(encounters);
+        } catch (IOException e) {
+            throw new ObservationController.DeleteObservationException(e);
+        }
+    }
+
     private static FormData injectUuidToPayload(FormData formData) {
 
         if (StringUtils.equals(formData.getDiscriminator(), FORM_JSON_DISCRIMINATOR_CONSULTATION)) {
@@ -913,8 +929,8 @@ public class FormController {
         try {
             for (FormData formData : formDataList) {
                 if (isCompleteFormData(formData)) {
-                    Encounter encounter = encounterService.getEncounterByFormDataUuid(formData.getUuid());
-                    if (encounter != null) {
+                    List<Encounter> encounters = encounterService.getEncountersByFormDataUuid(formData.getUuid());
+                    for (Encounter encounter:encounters) {
                         List<Observation> observations = observationService.getObservationsByEncounter(encounter.getUuid());
                         observationService.deleteObservations(observations);
                         encounterService.deleteEncounter(encounter);
