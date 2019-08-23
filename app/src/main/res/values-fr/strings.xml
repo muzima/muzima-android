@@ -184,6 +184,7 @@
     <string name="general_view_encounter">Voir la rencontre</string>
     <string name="general_welcome">Bienvenue</string>
     <string name="general_yes">Oui</string>
+    <string name="general_reports">Report</string>
     <string name="header_cohort_category">Paramètres de cohorte</string>
     <string name="header_muzima_category">Paramètres de mUzima</string>
     <string name="header_openmrs_category">Paramètres de OpenMRS</string>
@@ -631,6 +632,7 @@ Aucun fournisseur n\'a encore été ajouté</string>
         Impossible de définir l\'intervalle d\'enregistrement automatique.
         \nVeuillez entrer une valeur comprise entre 1 et 120.
     </string>
+    <string name="title_activity_client_reports">Client Reports</string>
     <string name="warning_cohort_prefix_exists">Le préfixe de cohortes existe</string>
     <string name="warning_empty_cohort_prefix">Vous ne pouvez pas ajouter un préfixe de cohortes vide</string>
     <string name="warning_form_close">Formulaire de clôture: Ceci annulera toutes vos modifications. Etes-vous sûr de vouloir faire ca?</string>
