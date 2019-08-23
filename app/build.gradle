@@ -38,15 +38,13 @@ description = 'Muzima-Android'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion '28.0.3'
-
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 11
-        versionName "2.4.2-SNAPSHOT"
+        versionCode 12
+        versionName "2.5.0-SNAPSHOT"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [versionCode: defaultConfig.versionCode, versionName: defaultConfig.versionName]
 
@@ -141,7 +139,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:16.0.0'
     //compile 'com.google.firebase:firebase-core:16.0.1'
 
-    compile(group: 'com.muzima', name: 'muzima-api', version: '1.3.1') {
+    compile(group: 'com.muzima', name: 'muzima-api', version: '1.3.2-snapshot') {
         exclude(module: 'guice')
     }
     compile group: 'com.google.inject', name: 'guice', version: '3.0', classifier: 'no_aop'
@@ -220,7 +218,7 @@ dependencies {
     testCompile group: 'org.robolectric', name: 'robolectric', version: '3.1.1'
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
     testCompile group: 'xmlpull', name: 'xmlpull', version: '1.1.3.4d_b4_min'
-    testCompile(group: 'com.muzima', name: 'muzima-api', version: '1.3.1') {
+    testCompile(group: 'com.muzima', name: 'muzima-api', version: '1.3.2-snapshot') {
         exclude(module: 'guice')
     }
     compile 'com.android.support:support-v13:28.0.0'

@@ -23,11 +23,13 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Location;
-import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientReport;
+import com.muzima.api.model.PatientReportHeader;
 import com.muzima.api.model.Provider;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.CohortController;
@@ -35,6 +37,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.PatientReportController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
@@ -53,6 +56,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
@@ -60,6 +64,7 @@ import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
 
 public class MuzimaSyncService {
+    private static final String TAG = "MuzimaSyncService";
 
     private final MuzimaApplication muzimaApplication;
     private final FormController formController;
@@ -68,12 +73,14 @@ public class MuzimaSyncService {
     private final PatientController patientController;
     private final ObservationController observationController;
     private final CohortPrefixPreferenceService cohortPrefixPreferenceService;
-    private final EncounterController encounterController;
-    private final NotificationController notificationController;
-    private final LocationController locationController;
-    private final ProviderController providerController;
-    private final SetupConfigurationController setupConfigurationController;
-    private final MuzimaSettingController settingsController;
+    private EncounterController encounterController;
+    private NotificationController notificationController;
+    private LocationController locationController;
+    private ProviderController providerController;
+    private SetupConfigurationController setupConfigurationController;
+    private MuzimaSettingController settingsController;
+    private PatientReportController patientReportController;
+    private Logger logger;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
@@ -89,6 +96,7 @@ public class MuzimaSyncService {
         providerController = muzimaApplication.getProviderController();
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
         settingsController = muzimaApplication.getMuzimaSettingController();
+        patientReportController = muzimaApplication.getPatientReportController();
     }
 
     public int authenticate(String[] credentials){
@@ -901,7 +909,6 @@ public class MuzimaSyncService {
         return patientUuids;
     }
 
-
     public int[] downloadNotifications(String receiverUuid) {
         Log.e(getClass().getSimpleName(),"Downloading messages in MuzimaSyncService");
         int[] result = new int[2];
@@ -928,6 +935,52 @@ public class MuzimaSyncService {
             Log.e(getClass().getSimpleName(), "Exception when trying to save notifications", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
             return result;
+        }
+        return result;
+    }
+
+    public int[] downloadPatientReportHeaders(String patientUuid) {
+        int[] result = new int[2];
+
+        try {
+            List<PatientReportHeader> patientReportHeaders;
+            patientReportHeaders = patientReportController.downloadPatientReportHeadersByPatientUuid(patientUuid);
+            patientReportController.savePatientReportHeaders(patientReportHeaders);
+
+            result[0] = SUCCESS;
+            result[1] = patientReportHeaders.size();
+
+        } catch (PatientReportController.PatientReportDownloadException e) {
+            Log.e(TAG, "Exception when trying to download patient reports headers", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            return result;
+        } catch (PatientReportController.PatientReportSaveException e) {
+            Log.e(TAG, "Exception when trying to save patient reports headers", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+            return result;
+        }
+        return result;
+    }
+
+    public int[] downloadPatientReportsByUuid(String[] reportUuids){
+        int[] result = new int[2];
+        List<PatientReport> downloadedPatientReports = new ArrayList<>();
+
+        try {
+            for (String uuid : reportUuids) {
+                downloadedPatientReports.add(patientReportController.downloadPatientReportByUuid(uuid));
+            }
+
+            patientReportController.saveOrUpdatePatientReports(downloadedPatientReports);
+            result[0] = SUCCESS;
+            result[1] = downloadedPatientReports.size();
+
+        } catch (PatientReportController.PatientReportDownloadException e){
+            Log.e(getClass().getSimpleName(), "Exception when trying to download patient report");
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+        } catch (PatientReportController.PatientReportSaveException e){
+            Log.e(getClass().getSimpleName(), "Exception when trying to save patient reports");
+            result[0] = SyncStatusConstants.SAVE_ERROR;
         }
         return result;
     }

@@ -48,6 +48,7 @@ import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.notifications.NotificationsListActivity;
 import com.muzima.view.patients.PatientsListActivity;
+import com.muzima.view.reports.ReportActivity;
 import org.apache.lucene.queryParser.ParseException;
 
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
@@ -180,6 +181,14 @@ public class MainActivity extends BroadcastListenerActivity {
      */
     public void registerClient(View view) {
         Intent intent = new Intent(this, RegistrationFormsActivity.class);
+        startActivity(intent);
+    }
+    
+    /**
+     * Called when the user clicks the Reports area
+     */
+    public void reportsList(View view) {
+        Intent intent = new Intent(this, ReportActivity.class);
         startActivity(intent);
     }
 

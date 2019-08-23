@@ -196,6 +196,8 @@
     <string name="general_view_encounter">Ver visita</string>
     <string name="general_welcome">Bem-vindo</string>
     <string name="general_yes">Sim</string>
+    <string name="general_reports">Report</string>
+
     <string name="header_cohort_category">Configurações de coorte</string>
     <string name="header_muzima_category">Configurações de mUzima</string>
     <string name="header_openmrs_category">Configurações de OpenMRS</string>
@@ -676,6 +678,8 @@
     <string name="title_video_caption">Legenda do vídeo</string>
     <string name="title_video_choose">Escolha o Vídeo</string>
     <string name="title_video_record">Gravar o Vídeo</string>
+    <string name="title_activity_client_reports">Client Reports</string>
+
     <string name="to_text">Para</string>
     <string name="type_a_message_hint">Digite uma mensagem</string>
     <string name="type_cohort_name_hint">Digite o nome da coorte …</string>

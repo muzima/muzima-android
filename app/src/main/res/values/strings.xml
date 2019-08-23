@@ -32,6 +32,7 @@
     <string name="done_general">DONE</string>
     <string name="downloading_cohorts_text">Downloading Cohorts</string>
     <string name="downloading_forms">Downloading Forms</string>
+    <string name="downloaded_reports">Downloaded Reports</string>
     <string name="encounter_date">Encounter Date:</string>
     <string name="encounter_date_dialog_label">Encounter Date</string>
     <string name="encounter_details">Encounter Details</string>
@@ -99,6 +100,7 @@
     <string name="error_patient_encounter_download">Could not download encounters for clients</string>
     <string name="error_patient_fetch">An error occurred while fetching client</string>
     <string name="error_patient_repo_fetch">Something went wrong while fetching clients from local repo</string>
+    <string name="error_patient_report_fetch">Something went wrong while fetching patient reports from local repo</string>
     <string name="error_patient_search">Something went wrong while searching client(s)</string>
     <string name="error_provider_download">Could not download providers</string>
     <string name="error_provider_fetch">Something went wrong while fetching providers from local repo</string>
@@ -157,6 +159,7 @@
     <string name="general_large">Large</string>
     <string name="general_load">Load</string>
     <string name="general_loading_encounters">Encounters are still loading</string>
+    <string name="general_loading_reports">Reports are still loading</string>
     <string name="general_location_setting">Location Settings</string>
     <string name="general_locations">Locations</string>
     <string name="general_login">Login</string>
@@ -193,6 +196,9 @@
     <string name="general_view_encounter">View encounter</string>
     <string name="general_welcome">Welcome</string>
     <string name="general_yes">Yes</string>
+    <string name="general_reports">Reports</string>
+    <string name="get_more">More from Server</string>
+
     <string name="header_cohort_category">Cohort Settings</string>
     <string name="header_muzima_category">mUzima Settings</string>
     <string name="header_openmrs_category">OpenMRS Settings</string>
@@ -216,15 +222,16 @@
         name and searched on the server
     </string>
     <string name="hint_client_search">Search clients</string>
-    <string name="hint_client_summary_encounters" formatted="false">%d Encounters</string>
-    <string name="hint_client_summary_forms" formatted="false">%d Incomplete, %d Complete, %d Recommended</string>
-    <string name="hint_client_summary_notifications" formatted="false">%d New Notifications, %d Total Notifications
-    </string>
+    <string formatted="false" name="hint_client_summary_encounters">%d Encounters</string>
+    <string formatted="false" name="hint_client_summary_reports">%d Reports</string>
+    <string formatted="false" name="hint_client_summary_forms">%d Incomplete, %d Complete, %d Recommended</string>
+    <string formatted="false" name="hint_client_summary_notifications">%d New Notifications, %d Total Notifications</string>
     <string name="hint_client_summary_observations" formatted="false">%d Observations</string>
     <string name="hint_cohort_download">Select one or more cohorts from the list and click on \'Next\' to download
     </string>
     <string name="hint_cohort_filter">Start typing to filter the cohorts…</string>
     <string name="hint_cohort_list_download">Please press load to fetch available cohorts list from server</string>
+    <string name="hint_patient_report_list_download">Please press load to fetch available reports list from server</string>
     <string name="hint_cohort_prefix_help">A cohort is a predefined group of clients for which you can fill forms and
         download observations. The prefix(es) set here will be used to download cohorts afterwards.
     </string>
@@ -232,6 +239,7 @@
         the specified prefix
     </string>
     <string name="hint_cohort_sync">Please select cohorts from all cohorts list and click sync</string>
+    <string name="hint_patient_reports_sync">Please select reports from the server list and click sync</string>
     <string name="hint_cohort_wizard_help">In this step of the wizard, you download the cohorts you need. Please select
         the
         cohorts and click next.
@@ -496,7 +504,7 @@
     </string>
     <string name="info_new_patient_download">Downloaded %d new clients</string>
     <string name="info_no_cohort_download">No cohorts have been synced</string>
-    <string name="info_notification_download">Downloaded %d notifications</string>
+    <string formatted="false" name="info_notification_download">Downloaded %d notifications</string>
     <string name="info_notification_download_in_progress">Downloading notifications</string>
     <string name="info_notification_unavailable">No notifications available</string>
     <string name="info_observation_download">Downloading Observations</string>
@@ -520,6 +528,10 @@
     </string>
     <string name="info_patient_data_download">Downloading clients data</string>
     <string name="info_patient_download">Downloading Clients</string>
+    <string formatted="false" name="info_patient_reports_downloaded">Downloaded %d reports</string>
+    <string name="info_patient_reports_download_in_progress">Downloading Patient Reports</string>
+    <string name="info_patient_reports_unavailable">No Patient Reports Available</string>
+    <string name="info_patient_reports_fetch_in_progress">Already fetching reports, ignored the request</string>
     <string name="info_provider_delete_success">%d Providers deleted successfully</string>
     <string name="info_provider_download">Downloading Providers</string>
     <string name="info_provider_downloaded">Downloaded 1 provider</string>
@@ -672,6 +684,8 @@
     <string name="title_video_caption">Video Caption</string>
     <string name="title_video_choose">Choose Video</string>
     <string name="title_video_record">Record Video</string>
+    <string name="title_activity_client_reports">Client Reports</string>
+
     <string name="to_text">To</string>
     <string name="type_a_message_hint">Type a message</string>
     <string name="type_cohort_name_hint">Type Cohort name …</string>
