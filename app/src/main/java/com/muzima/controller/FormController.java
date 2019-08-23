@@ -611,7 +611,7 @@ public class FormController {
     public AvailableForms getProviderReports() throws FormFetchException {
         AvailableForms result = new AvailableForms();
         for (AvailableForm form : getAvailableFormByTags(null)) {
-            if (form.isDownloaded() && form.isProviderReport()) {
+            if (form.isDownloaded() && !form.isRegistrationForm() && !form.isProviderReport()) {
                 result.add(form);
             }
         }
