@@ -217,7 +217,7 @@ class HTMLFormDataStore {
 
     HTMLFormObservationCreator getFormParser() {
         MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
-        return new HTMLFormObservationCreator(applicationContext);
+        return new HTMLFormObservationCreator(applicationContext, false);
     }
 
     private boolean isRegistrationComplete(String status) {

@@ -48,11 +48,10 @@ public class FormParser {
     private Patient patient;
     private Encounter encounter;
     private List<Observation> observations;
+    private final boolean createObservationsForConceptsNotAvailableLocally;
 
-    public FormParser(MuzimaApplication muzimaApplication) {
+    public FormParser(MuzimaApplication muzimaApplication, boolean createObservationsForConceptsNotAvailableLocally) {
 
-        LocationController locationController = muzimaApplication.getLocationController();
-        ProviderController providerController = muzimaApplication.getProviderController();
         this.conceptController = muzimaApplication.getConceptController();
         this.encounterController = muzimaApplication.getEncounterController();
         this.observationController = muzimaApplication.getObservationController();
@@ -65,7 +64,8 @@ public class FormParser {
             throw new ParseFormException(e);
         }
         this.parser = parser;
-        this.observationParserUtility = new ObservationParserUtility(muzimaApplication);
+        this.observationParserUtility = new ObservationParserUtility(muzimaApplication, createObservationsForConceptsNotAvailableLocally);
+        this.createObservationsForConceptsNotAvailableLocally = createObservationsForConceptsNotAvailableLocally;
     }
 
     public void parseAndSaveObservations(String xml, String formDataUuid)
@@ -176,7 +176,8 @@ public class FormParser {
                             if (parser.getEventType() == XmlPullParser.START_TAG) {
                                 String codedObservationName = parser.getAttributeValue("", "concept");
                                 if (codedObservationName != null) {
-                                    observationList.add(getObservation(conceptNames, codedObservationName));
+                                    Observation observation = getObservation(conceptNames, codedObservationName);
+                                    if(observation != null) observationList.add(observation);
                                 }
                             }
                         }
@@ -200,7 +201,10 @@ public class FormParser {
             throws ConceptController.ConceptFetchException, ConceptController.ConceptParseException,
             ObservationController.ParseObservationException {
         Concept conceptEntity = observationParserUtility.getConceptEntity(conceptNames.peek(),false);
-        return observationParserUtility.getObservationEntity(conceptEntity, codedObservationName);
+        if(conceptEntity != null) {
+            return observationParserUtility.getObservationEntity(conceptEntity, codedObservationName);
+        }
+        return null;
     }
 
     class ParseFormException extends RuntimeException {

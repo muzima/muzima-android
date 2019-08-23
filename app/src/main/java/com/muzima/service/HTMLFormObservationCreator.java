@@ -50,14 +50,15 @@ public class HTMLFormObservationCreator {
     private Patient patient;
     private Encounter encounter;
     private List<Observation> observations;
+    private boolean createObservationsForConceptsNotAvailableLocally;
 
-    public HTMLFormObservationCreator(MuzimaApplication muzimaApplication) {
+    public HTMLFormObservationCreator(MuzimaApplication muzimaApplication, boolean createObservationsForConceptsNotAvailableLocally) {
         this.patientController = muzimaApplication.getPatientController();
         this.conceptController = muzimaApplication.getConceptController();
         this.encounterController = muzimaApplication.getEncounterController();
-        FormController formController = muzimaApplication.getFormController();
         this.observationController = muzimaApplication.getObservationController();
-        this.observationParserUtility = new ObservationParserUtility(muzimaApplication);
+        this.observationParserUtility = new ObservationParserUtility(muzimaApplication,createObservationsForConceptsNotAvailableLocally);
+        this.createObservationsForConceptsNotAvailableLocally = createObservationsForConceptsNotAvailableLocally;
     }
 
     public void createAndPersistObservations(String jsonResponse,String formDataUuid) {
@@ -119,7 +120,11 @@ public class HTMLFormObservationCreator {
 
         try {
             encounterController.saveEncounters(Collections.singletonList(encounter));
-            conceptController.saveConcepts(observationParserUtility.getNewConceptList());
+
+            if(createObservationsForConceptsNotAvailableLocally) {
+                conceptController.saveConcepts(observationParserUtility.getNewConceptList());
+            }
+
             if (observations != null && !observations.isEmpty()) {
                 observationController.saveObservations(observations);
             }
@@ -169,18 +174,19 @@ public class HTMLFormObservationCreator {
             ConceptController.ConceptFetchException {
         try {
             Concept concept = observationParserUtility.getConceptEntity(conceptName, ObservationParserUtility.isFormattedAsConcept(value));
-            Observation observation = observationParserUtility.getObservationEntity(concept, value);
-            observation.setEncounter(encounter);
-            observation.setPerson(patient);
-            observation.setObservationDatetime(encounter.getEncounterDatetime());
-            return observation;
+            if(concept != null) {
+                Observation observation = observationParserUtility.getObservationEntity(concept, value);
+                observation.setEncounter(encounter);
+                observation.setPerson(patient);
+                observation.setObservationDatetime(encounter.getEncounterDatetime());
+                return observation;
+            }
         } catch (ConceptController.ConceptParseException e) {
             Log.e(getClass().getSimpleName(), "Error while parsing Concept", e);
-            return null;
         } catch (ObservationController.ParseObservationException e) {
             Log.e(getClass().getSimpleName(), "Error while parsing Observation", e);
-            return null;
         }
+        return null;
     }
 
     private Encounter createEncounter(JSONObject encounterJSON, String formDataUuid) throws JSONException, ParseException {

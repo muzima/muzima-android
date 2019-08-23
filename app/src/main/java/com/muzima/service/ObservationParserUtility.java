@@ -52,13 +52,14 @@ class ObservationParserUtility {
     private LocationService locationService;
     private final ProviderController providerController;
     private final List<Concept> newConceptList;
-
-    public ObservationParserUtility(MuzimaApplication muzimaApplication) {
+    private final boolean createObservationsForConceptsNotAvailableLocally;
+    public ObservationParserUtility(MuzimaApplication muzimaApplication, boolean createObservationsForConceptsNotAvailableLocally) {
         this.conceptController = muzimaApplication.getConceptController();
         this.locationController = muzimaApplication.getLocationController();
         this.providerController = muzimaApplication.getProviderController();
         this.formController = muzimaApplication.getFormController();
         this.newConceptList = new ArrayList<>();
+        this.createObservationsForConceptsNotAvailableLocally = createObservationsForConceptsNotAvailableLocally;
     }
 
     public Encounter getEncounterEntity(Date encounterDateTime,String  formUuid,String providerId, int locationId, String userSystemId, Patient patient, String formDataUuid) {
@@ -82,12 +83,13 @@ class ObservationParserUtility {
             throw new ConceptController.ConceptParseException("Could not not get Concept name for concept with raw name '"
             + rawConceptName + "'");
         }
-        Concept conceptFromExistingList = getConceptFromExistingList(conceptName);
-        if (conceptFromExistingList != null) {
-            return conceptFromExistingList;
-        }
         Concept observedConcept = conceptController.getConceptByName(conceptName);
-        if (observedConcept == null) {
+        if (observedConcept == null && createObservationsForConceptsNotAvailableLocally == true) {
+            Concept conceptFromExistingList = getConceptFromExistingList(conceptName);
+            if (conceptFromExistingList != null) {
+                return conceptFromExistingList;
+            }
+
             String conceptId = getConceptId(rawConceptName);
             int intConceptId = Integer.parseInt(conceptId);
             if(intConceptId >0){
@@ -102,6 +104,10 @@ class ObservationParserUtility {
 
     public Observation getObservationEntity(Concept concept, String value) throws ConceptController.ConceptFetchException,
         ConceptController.ConceptParseException, ObservationController.ParseObservationException{
+        if (concept == null) {
+            throw new ObservationController.ParseObservationException("Could not create Observation entity." +
+                    " Reason: No Concept provided.");
+        }
         if (StringUtils.isEmpty(value)) {
             throw new ObservationController.ParseObservationException("Could not create Observation entity for concept '"
                     + concept.getName() + "'. Reason: No Observation value provided.");
