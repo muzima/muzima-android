@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.IntentSender;
 import android.location.LocationManager;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
@@ -490,6 +491,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         getSettings().setDatabaseEnabled(true);
         getSettings().setDomStorageEnabled(true);
         getSettings().setBuiltInZoomControls(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webView.setWebContentsDebuggingEnabled(true);
+        }
 
         FormInstance formInstance = new FormInstance(form, formTemplate);
         webView.addJavascriptInterface(formInstance, FORM_INSTANCE);

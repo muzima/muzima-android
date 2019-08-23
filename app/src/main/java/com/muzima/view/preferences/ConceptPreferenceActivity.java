@@ -136,8 +136,8 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     }
 
     @Override
-    protected void onReceive(Context context, Intent intent) {
-        super.onReceive(context, intent);
+    protected void onReceive(Context context, Intent intent){
+           super.onReceive(context, intent);
 
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
