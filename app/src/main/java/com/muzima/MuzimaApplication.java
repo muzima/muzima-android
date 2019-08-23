@@ -361,7 +361,7 @@ public class MuzimaApplication extends MultiDexApplication {
         }
         return smartCardController;
     }
-    
+
     public PatientReportController getPatientReportController() {
         if (patientReportController == null) {
             try {
