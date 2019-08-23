@@ -413,7 +413,7 @@ public class MuzimaApplication extends MultiDexApplication implements Dependency
         }
         return smartCardController;
     }
-    
+
     public PatientReportController getPatientReportController() {
         if (patientReportController == null) {
             try {

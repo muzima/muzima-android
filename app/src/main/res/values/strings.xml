@@ -198,7 +198,6 @@
     <string name="general_yes">Yes</string>
     <string name="general_reports">Reports</string>
     <string name="get_more">More from Server</string>
-
     <string name="header_cohort_category">Cohort Settings</string>
     <string name="header_muzima_category">mUzima Settings</string>
     <string name="header_openmrs_category">OpenMRS Settings</string>
@@ -685,7 +684,6 @@
     <string name="title_video_choose">Choose Video</string>
     <string name="title_video_record">Record Video</string>
     <string name="title_activity_client_reports">Client Reports</string>
-
     <string name="to_text">To</string>
     <string name="type_a_message_hint">Type a message</string>
     <string name="type_cohort_name_hint">Type Cohort name …</string>
