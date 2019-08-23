@@ -673,4 +673,6 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="title_light_mode">Activer le mode jour</string>
     <string name="hint_light_mode">Activer le thème de la lumière</string>
     <string name="warning_cancel_form_download">Cela annulera le téléchargement du formulaire. Êtes-vous sûr de vouloir annuler le téléchargement du formulaire?</string>
+    <string name="general_failure">Échec</string>
+    <string name="warning_invalid_url_provided">L'URL que vous avez fournie n'est pas valide</string>
 </resources>
