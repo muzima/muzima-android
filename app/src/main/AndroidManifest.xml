@@ -393,7 +393,6 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.MainActivity" />
         </activity>
-
         <receiver android:name=".utils.ConnectivityChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
