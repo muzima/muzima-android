@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import static com.muzima.util.Constants.ServerSettings.CLINICAL_SUMMARY_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
@@ -153,21 +152,6 @@ public class MuzimaSettingController {
             return false;
         }
 
-    }
-
-    public Boolean isClinicalSummaryEnabled() {
-        boolean isClinicalSummaryEnabled = false;
-        try {
-            MuzimaSetting clinicalSummaryStatus = getSettingByProperty(CLINICAL_SUMMARY_FEATURE_ENABLED_SETTING);
-            if (clinicalSummaryStatus == null) {
-                isClinicalSummaryEnabled = false;
-            } else {
-                isClinicalSummaryEnabled = clinicalSummaryStatus.getValueBoolean();
-            }
-        } catch (MuzimaSettingFetchException e) {
-            Log.e(getClass().getSimpleName(), "Could not fetch clinical summary feature setting. ", e);
-        }
-        return isClinicalSummaryEnabled;
     }
 
     public static class MuzimaSettingFetchException extends Throwable {
