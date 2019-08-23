@@ -41,7 +41,6 @@ import com.muzima.api.model.User;
 import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
-import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientReportController;
@@ -107,7 +106,6 @@ public class PatientSummaryActivity extends BaseActivity {
 
         setSHREnabled();
         setSHRLayoutVisibility();
-        setClinicalSummaryVisibility();
 
         Bundle intentExtras = getIntent( ).getExtras( );
         if (intentExtras != null) {
@@ -766,16 +764,6 @@ public class PatientSummaryActivity extends BaseActivity {
             SHRLinearLayout.setVisibility(LinearLayout.VISIBLE);
         } else {
             SHRLinearLayout.setVisibility(LinearLayout.GONE);
-        }
-    }
-
-    private void setClinicalSummaryVisibility(){
-        LinearLayout clinicalSummaryLinearLayout = findViewById(R.id.client_summary_layout);
-        boolean isClinicalSummaryEnabled = muzimaApplication.getMuzimaSettingController().isClinicalSummaryEnabled();
-        if(isClinicalSummaryEnabled){
-            clinicalSummaryLinearLayout.setVisibility(LinearLayout.VISIBLE);
-        }else{
-            clinicalSummaryLinearLayout.setVisibility(LinearLayout.GONE);
         }
     }
 }

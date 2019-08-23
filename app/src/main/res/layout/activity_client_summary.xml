@@ -129,8 +129,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
                     android:baselineAligned="false"
-                    android:orientation="vertical"
-                    android:id="@+id/client_summary_layout">
+                    android:orientation="vertical">
 
 
                 <RelativeLayout
