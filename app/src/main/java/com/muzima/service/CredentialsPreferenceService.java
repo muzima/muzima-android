@@ -14,8 +14,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
 import com.muzima.R;
+import com.muzima.api.service.UserService;
 import com.muzima.domain.Credentials;
+
+import java.io.IOException;
 
 public class CredentialsPreferenceService extends PreferenceService {
 
@@ -38,4 +43,14 @@ public class CredentialsPreferenceService extends PreferenceService {
                 .putString(serverKey, credentials.getServerUrl())
                 .commit();
     }
+
+    public void deleteUserData(com.muzima.api.context.Context muzimaContext){
+        try {
+            UserService userService = muzimaContext.getUserService();
+            userService.deleteAllUsers();
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(),"An exception was encountered while deleting users "+e);
+        }
+    }
+
 }

@@ -1407,4 +1407,6 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="preferences_led_color">Couleur de la DEL</string>
     <string name="error_setting_profile_photo">Erreur de définition de la photo de profil</string>
     <string name="general_chat">Bavarder</string>
+    <string name="general_failure">Échec</string>
+    <string name="warning_invalid_url_provided">L'URL que vous avez fournie n'est pas valide</string>
 </resources>

@@ -1471,4 +1471,6 @@
     <string name="preferences_led_color">Cor do LED</string>
     <string name="error_setting_profile_photo">Erro a definir a foto de perfil</string>
     <string name="general_chat">Converse agora</string>
+    <string name="general_failure">Falha</string>
+    <string name="warning_invalid_url_provided">O URL que você forneceu é inválido</string>
 </resources>

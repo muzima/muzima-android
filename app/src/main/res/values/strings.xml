@@ -1473,4 +1473,6 @@
     <string name="preferences_led_color">LED color</string>
     <string name="error_setting_profile_photo">Error setting profile photo</string>
     <string name="general_chat">Chat Now</string>
+    <string name="general_failure">Failure</string>
+    <string name="warning_invalid_url_provided">The URL you have provided is invalid</string>
 </resources>
