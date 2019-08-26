@@ -4,28 +4,16 @@ import android.annotation.SuppressLint;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
-import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.User;
 import com.muzima.controller.NotificationController;
-import com.muzima.service.DataSyncService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
-
-import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.JOB_INDICATOR_STOP;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.MUZIMA_JOB_SCHEDULE_INTENT;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.WORK_DURATION_KEY;
+import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 
 @SuppressLint("NewApi")
 public class MuzimaJobScheduler extends JobService {
@@ -92,6 +80,7 @@ public class MuzimaJobScheduler extends JobService {
 
     private void handleBackgroundWork(JobParameters parameters) {
 
+        System.out.println(">>>>>>> Running background task");
         if (parameters == null) {
             Log.e(getClass().getSimpleName(), "Parameters for job is null");
         } else {
@@ -119,9 +108,11 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected Void doInBackground(Void... voids) {
             if (new WizardFinishPreferenceService(MuzimaJobScheduler.this).isWizardFinished()) {
-                muzimaSynService.downloadCohorts();
-                muzimaSynService.updateCohortsWithUpdatesAvailable();
-
+//
+//                muzimaSynService.downloadCohorts();//Initiate intent for DataSyncServiceConstants.SYNC_COHORTS_METADATA
+//                muzimaSynService.downloadPatientsForCohortsWithUpdatesAvailable();
+                System.out.println(">>>>>>>>Updating all patient data in background task");
+                new SyncCohortsAndPatientFullDataIntent(getApplicationContext()).start();
             }
             return null;
         }

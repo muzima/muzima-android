@@ -196,7 +196,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
         String[] patientUUIDs = intent.getStringArrayExtra(DataSyncServiceConstants.PATIENT_UUID_FOR_DOWNLOAD);
 
-        if (syncType == DataSyncServiceConstants.DOWNLOAD_PATIENT_ONLY) {
+        if (syncType == DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA) {
 
             if (syncStatus == SyncStatusConstants.SUCCESS && patientUUIDs.length == 1) {
                 try {

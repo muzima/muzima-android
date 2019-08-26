@@ -108,15 +108,15 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                     case DataSyncServiceConstants.SYNC_TEMPLATES:
                         msg = getString(R.string.info_form_template_concept_download, downloadCount, intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0));
                         break;
-                    case DataSyncServiceConstants.SYNC_COHORTS:
+                    case DataSyncServiceConstants.SYNC_COHORTS_METADATA:
                         msg = getString(R.string.info_new_cohort_download, downloadCount);
                         break;
-                    case DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA: {
+                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA: {
                         int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
                         msg = getString(R.string.info_cohort_new_patient_download, downloadCount, downloadCountSec) + getString(R.string.info_patient_data_download);
                         break;
                     }
-                    case DataSyncServiceConstants.SYNC_PATIENTS_ONLY: {
+                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_ONLY: {
                         int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
                         msg = getString(R.string.info_cohorts_patients_download, downloadCount, downloadCountSec);
                         break;

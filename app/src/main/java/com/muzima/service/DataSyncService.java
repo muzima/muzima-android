@@ -72,7 +72,7 @@ public class DataSyncService extends IntentService {
                     int[] result = muzimaSyncService.downloadForms();
                     String msg = getString(R.string.info_form_download_delete,result[1], result[2]);
                     prepareBroadcastMsgForDownloadForms(broadcastIntent, result, msg);
-                    saveSyncTime(result,APIName.DOWNLOAD_FORMS);
+                    //saveSyncTime(result,APIName.DOWNLOAD_FORMS);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_TEMPLATES:
@@ -85,32 +85,38 @@ public class DataSyncService extends IntentService {
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                 }
                 break;
-            case DataSyncServiceConstants.SYNC_COHORTS:
+            case DataSyncServiceConstants.SYNC_COHORTS_METADATA:
                 updateNotificationMsg(getString(R.string.info_cohort_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadCohorts();
                     String msg = getString(R.string.info_new_cohort_download_delete,result[1],result[2]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
-                    saveSyncTime(result, APIName.DOWNLOAD_COHORTS);
+                    //saveSyncTime(result, APIName.DOWNLOAD_COHORTS);
                     consolidateAndSyncIndependentPatients(broadcastIntent);
                 }
                 break;
-            case DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA:
+            case DataSyncServiceConstants.SYNC_COHORTS_AND_ALL_PATIENTS_FULL_DATA:
+                updateNotificationMsg(getString(R.string.info_patient_data_download));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    syncCohortsAndAllPatientsFullData(broadcastIntent);
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA:
                 String[] cohortIds = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
-                updateNotificationMsg(getString(R.string.info_patient_download));
+                updateNotificationMsg(getString(R.string.info_patient_data_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadPatients(broadcastIntent, cohortIds);
                     downloadObservationsAndEncounters(broadcastIntent, cohortIds);
                 }
                 break;
-            case DataSyncServiceConstants.SYNC_PATIENTS_ONLY:
+            case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_ONLY:
                 String[] cohortIdsToDownload = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
                 updateNotificationMsg(getString(R.string.info_patient_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadPatients(broadcastIntent, cohortIdsToDownload);
                 }
                 break;
-            case DataSyncServiceConstants.SYNC_PATIENTS_DATA_ONLY:
+            case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_DATA_ONLY:
                 String[] savedCohortIds = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
                 updateNotificationMsg(getString(R.string.info_patient_data_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
@@ -125,9 +131,10 @@ public class DataSyncService extends IntentService {
                     prepareBroadcastMsgForFormUpload(broadcastIntent, result, getString(R.string.info_form_upload_success));
                 }
                 break;
-            case DataSyncServiceConstants.DOWNLOAD_PATIENT_ONLY:
+            case DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA:
                 String[] patientsToBeDownloaded = intent.getStringArrayExtra(DataSyncServiceConstants.PATIENT_UUID_FOR_DOWNLOAD);
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    System.out.println(">>>>>>>>>> in case DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA");
                     downloadPatientsWithObsAndEncounters(broadcastIntent, patientsToBeDownloaded);
                 }
                 break;
@@ -179,6 +186,8 @@ public class DataSyncService extends IntentService {
     }
 
     private void consolidateAndSyncIndependentPatients(Intent broadcastIntent) {
+
+        System.out.println(">>>>>>>In consolidateAndSyncIndependentPatients ");
         muzimaSyncService.consolidatePatients();
         List<Patient> patients = muzimaSyncService.updatePatientsNotPartOfCohorts();
 
@@ -186,14 +195,38 @@ public class DataSyncService extends IntentService {
         downloadPatientsWithObsAndEncounters(broadcastIntent,patientUuids.toArray(new String[patientUuids.size()]));
     }
 
+    private void syncCohortsAndAllPatientsFullData(Intent broadcastIntent){
+        //sync cohorts
+        int[] result = muzimaSyncService.downloadCohorts();
+        String msg = getString(R.string.info_new_cohort_download_delete,result[1],result[2]);
+        prepareBroadcastMsg(broadcastIntent, result, msg);
+
+        //Sync cohort updates
+        muzimaSyncService.downloadPatientsForCohortsWithUpdatesAvailable();
+
+        //consolodate patients
+        muzimaSyncService.consolidatePatients();
+
+        List<String> patientUUIDList = muzimaSyncService.getUuidsForAllPatientsFromLocalStorage();
+
+        //Sync Obs for all patients
+        int[] resultForObs = muzimaSyncService.downloadObservationsForPatientsByPatientUUIDs(patientUUIDList, true);
+        broadCastMessageForObservationDownload(broadcastIntent, resultForObs);
+
+        //Sync Encounters for all patients
+        int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByPatientUUIDs(patientUUIDList, true);
+        broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
+    }
+
     private void downloadPatientsWithObsAndEncounters(Intent broadcastIntent, String[] patientUUIDs) {
+        System.out.println(">>>>>>>In downloadPatientsWithObsAndEncounters: "+patientUUIDs);
         if(patientUUIDs.length == 0){
             return;
         }
         int[] resultForPatients = muzimaSyncService.downloadPatients(patientUUIDs);
         broadCastMessageForPatients(broadcastIntent, resultForPatients, patientUUIDs);
-        List<String> patientUUIDList = new ArrayList<>(asList(patientUUIDs));
         if (isSuccess(resultForPatients)) {
+            List<String> patientUUIDList = new ArrayList<>(asList(patientUUIDs));
             int[] resultForObs = muzimaSyncService.downloadObservationsForPatientsByPatientUUIDs(patientUUIDList, true);
             broadCastMessageForObservationDownload(broadcastIntent, resultForObs);
 

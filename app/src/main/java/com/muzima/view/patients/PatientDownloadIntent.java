@@ -18,7 +18,8 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants;
 public class PatientDownloadIntent extends SyncIntent {
     public PatientDownloadIntent(Activity activity, String[] patientUUIDs) {
         super(activity);
+        System.out.println(">>>>>> In creating PatientDownloadIntent");
         putExtra(DataSyncServiceConstants.PATIENT_UUID_FOR_DOWNLOAD, patientUUIDs);
-        putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.DOWNLOAD_PATIENT_ONLY);
+        putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA);
     }
 }
