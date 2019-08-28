@@ -212,15 +212,12 @@ public class ObservationController {
 
     public List<Observation> downloadObservationsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> conceptUuids) throws DownloadObservationException {
         try {
-            System.out.println(">>>>>>> Downloading Obs for patientUuis: "+patientUuids + " and Concepts : "+conceptUuids);
             String paramSignature = buildParamSignature(patientUuids, conceptUuids);
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, paramSignature);
             List<Observation> observations = new ArrayList<>();
             if (hasExactCallBeenMadeBefore(lastSyncTime)) {
-                System.out.println(">>>>>>> Has lastStyncTime");
                 observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, lastSyncTime));
             } else {
-                System.out.println(">>>>>>> Has No lastStyncTime");
                 observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, null));
                 //ToDo: Revise this while working on Obs Delta download
                 /*
@@ -248,7 +245,6 @@ public class ObservationController {
             }
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_OBSERVATIONS, sntpService.getLocalTime(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
-            System.out.println(">>>>>>> Downloaded "+observations.size() + " Obs");
             return observations;
         } catch (IOException e) {
             throw new DownloadObservationException(e);

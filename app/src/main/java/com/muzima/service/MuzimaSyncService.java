@@ -487,7 +487,6 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadPatientsForCohorts(String[] cohortUuids) {
-        System.out.println(">>>>>>> In downloadPatientsForCohorts : "+cohortUuids);
         int[] result = new int[4];
 
         int patientCount = 0;
@@ -520,7 +519,6 @@ public class MuzimaSyncService {
             result[1] = patientCount;
             result[2] = cohortDataList.size();
             result[3] = voidedPatients.size();
-            System.out.println(">>>>>>> Downloaded : "+patientCount +" patients");
 
             //update memberships
             downloadRemovedCohortMembershipData(cohortUuids);
@@ -572,7 +570,6 @@ public class MuzimaSyncService {
         return result;
     }
     public int[] downloadObservationsForPatientsByCohortUUIDs(String[] cohortUuids, boolean replaceExistingObservation) {
-        System.out.println(">>>> In downloadObservationsForPatientsByCohortUUIDs : "+ cohortUuids + " replaceExistingObservation : "+replaceExistingObservation);
         int[] result = new int[3];
         List<Patient> patients;
         try {
@@ -629,8 +626,6 @@ public class MuzimaSyncService {
     public int[] downloadObservationsForPatientsByPatientUUIDs(List<String> patientUuids, boolean replaceExistingObservations) {
         int[] result = new int[3];
         try {
-
-            System.out.println(">>>>>>> In downloadObservationsForPatientsByPatientUUIDs: "+patientUuids + " replaceExistingObservations: " + replaceExistingObservations);
             List<String> conceptUuidsFromConcepts = getConceptUuidsFromConcepts(conceptController.getConcepts());
             List<List<String>> slicedPatientUuids = split(patientUuids);
             List<List<String>> slicedConceptUuids = split(conceptUuidsFromConcepts);
@@ -736,7 +731,6 @@ public class MuzimaSyncService {
 
     public int[] downloadEncountersForPatientsByPatientUUIDs(List<String> patientUuids, boolean replaceExistingEncounters) {
         int[] result = new int[3];
-        System.out.println(">>>>>>>>> in downloadEncountersForPatientsByPatientUUIDs");
         try {
             List<List<String>> slicedPatientUuids = split(patientUuids);
             long totalTimeDownloading = 0, totalTimeReplacing = 0,totalTimeSaving = 0;

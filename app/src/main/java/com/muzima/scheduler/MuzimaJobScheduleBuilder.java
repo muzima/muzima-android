@@ -31,7 +31,6 @@ public class MuzimaJobScheduleBuilder {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void schedulePeriodicBackgroundJob(int delay){
-        System.out.println(">>>>>>>> in schedulePeriodicBackgroundJob");
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         if(preferences.getBoolean(context.getResources().getString(R.string.preference_real_time_sync), false)) {
             final Handler handler = new Handler();
@@ -57,18 +56,14 @@ public class MuzimaJobScheduleBuilder {
         for ( JobInfo jobInfo : scheduler.getAllPendingJobs() ) {
             if ( jobInfo.getId() == MESSAGE_SYNC_JOB_ID ) {
                 hasBeenScheduled = true ;
-                System.out.println("jobInfo.getIntervalMillis"+jobInfo.getIntervalMillis());
-                System.out.println("jobInfo.getMinLatencyMillis"+jobInfo.getMinLatencyMillis());
                 break ;
             }
         }
-        System.out.println(">>>>>>> hasBeenScheduled: "+hasBeenScheduled);
 
         return hasBeenScheduled ;
     }
 
     private void handleScheduledPeriodicDataSyncJob() {
-        System.out.println(">>>>>>> In handleScheduledPeriodicDataSyncJob");
         ComponentName componentName = new ComponentName(context, MuzimaJobScheduler.class);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 

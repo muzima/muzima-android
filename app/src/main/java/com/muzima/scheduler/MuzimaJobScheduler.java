@@ -79,8 +79,6 @@ public class MuzimaJobScheduler extends JobService {
     }
 
     private void handleBackgroundWork(JobParameters parameters) {
-
-        System.out.println(">>>>>>> Running background task");
         if (parameters == null) {
             Log.e(getClass().getSimpleName(), "Parameters for job is null");
         } else {
@@ -108,10 +106,6 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected Void doInBackground(Void... voids) {
             if (new WizardFinishPreferenceService(MuzimaJobScheduler.this).isWizardFinished()) {
-//
-//                muzimaSynService.downloadCohorts();//Initiate intent for DataSyncServiceConstants.SYNC_COHORTS_METADATA
-//                muzimaSynService.downloadPatientsForCohortsWithUpdatesAvailable();
-                System.out.println(">>>>>>>>Updating all patient data in background task");
                 new SyncCohortsAndPatientFullDataIntent(getApplicationContext()).start();
             }
             return null;

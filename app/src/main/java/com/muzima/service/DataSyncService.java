@@ -134,7 +134,6 @@ public class DataSyncService extends IntentService {
             case DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA:
                 String[] patientsToBeDownloaded = intent.getStringArrayExtra(DataSyncServiceConstants.PATIENT_UUID_FOR_DOWNLOAD);
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
-                    System.out.println(">>>>>>>>>> in case DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA");
                     downloadPatientsWithObsAndEncounters(broadcastIntent, patientsToBeDownloaded);
                 }
                 break;
@@ -187,7 +186,6 @@ public class DataSyncService extends IntentService {
 
     private void consolidateAndSyncIndependentPatients(Intent broadcastIntent) {
 
-        System.out.println(">>>>>>>In consolidateAndSyncIndependentPatients ");
         muzimaSyncService.consolidatePatients();
         List<Patient> patients = muzimaSyncService.updatePatientsNotPartOfCohorts();
 
@@ -219,7 +217,6 @@ public class DataSyncService extends IntentService {
     }
 
     private void downloadPatientsWithObsAndEncounters(Intent broadcastIntent, String[] patientUUIDs) {
-        System.out.println(">>>>>>>In downloadPatientsWithObsAndEncounters: "+patientUUIDs);
         if(patientUUIDs.length == 0){
             return;
         }
