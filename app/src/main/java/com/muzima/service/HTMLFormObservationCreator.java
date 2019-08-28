@@ -173,7 +173,9 @@ public class HTMLFormObservationCreator {
     private Observation createObservation(String conceptName, String value) throws
             ConceptController.ConceptFetchException {
         try {
-            Concept concept = observationParserUtility.getConceptEntity(conceptName, ObservationParserUtility.isFormattedAsConcept(value));
+            Concept concept = observationParserUtility.getConceptEntity(conceptName,
+                    ObservationParserUtility.isFormattedAsConcept(value),
+                    createObservationsForConceptsNotAvailableLocally);
             if(concept != null) {
                 Observation observation = observationParserUtility.getObservationEntity(concept, value);
                 observation.setEncounter(encounter);

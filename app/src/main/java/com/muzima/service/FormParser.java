@@ -200,7 +200,9 @@ public class FormParser {
     private Observation getObservation(Stack<String> conceptNames, String codedObservationName)
             throws ConceptController.ConceptFetchException, ConceptController.ConceptParseException,
             ObservationController.ParseObservationException {
-        Concept conceptEntity = observationParserUtility.getConceptEntity(conceptNames.peek(),false);
+        Concept conceptEntity = observationParserUtility.getConceptEntity(conceptNames.peek(),
+                false,
+                createObservationsForConceptsNotAvailableLocally);
         if(conceptEntity != null) {
             return observationParserUtility.getObservationEntity(conceptEntity, codedObservationName);
         }

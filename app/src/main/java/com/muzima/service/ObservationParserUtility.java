@@ -76,7 +76,7 @@ class ObservationParserUtility {
         return encounter;
     }
 
-    public Concept getConceptEntity(String rawConceptName, boolean isCoded) throws ConceptController.ConceptFetchException,
+    public Concept getConceptEntity(String rawConceptName, boolean isCoded, boolean createConceptIfNotAvailableLocally) throws ConceptController.ConceptFetchException,
             ConceptController.ConceptParseException{
         String conceptName = getConceptName(rawConceptName);
         if(StringUtils.isEmpty(conceptName)){
@@ -84,7 +84,7 @@ class ObservationParserUtility {
             + rawConceptName + "'");
         }
         Concept observedConcept = conceptController.getConceptByName(conceptName);
-        if (observedConcept == null && createObservationsForConceptsNotAvailableLocally == true) {
+        if (observedConcept == null && createConceptIfNotAvailableLocally == true) {
             Concept conceptFromExistingList = getConceptFromExistingList(conceptName);
             if (conceptFromExistingList != null) {
                 return conceptFromExistingList;
@@ -118,7 +118,7 @@ class ObservationParserUtility {
 
         if (concept.isCoded()) {
             try {
-                Concept valueCoded = getConceptEntity(value,false);
+                Concept valueCoded = getConceptEntity(value,false, true);
                 observation.setValueCoded(valueCoded);
             } catch (ConceptController.ConceptParseException e) {
                 throw new ConceptController.ConceptParseException("Could not get value for coded concept '"
