@@ -137,6 +137,10 @@ public class ConceptController {
         newConcepts.removeAll(savedConcepts);
     }
 
+    public void resetNewConceptsList() {
+        newConcepts.clear();
+    }
+
     public List<Concept> newConcepts() {
         return newConcepts;
     }
