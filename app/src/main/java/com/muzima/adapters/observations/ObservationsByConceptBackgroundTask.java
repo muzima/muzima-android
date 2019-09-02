@@ -54,6 +54,7 @@ class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concepts, Conc
         if (observationsByConceptAdapter.getBackgroundListQueryTaskListener() != null) {
             observationsByConceptAdapter.getBackgroundListQueryTaskListener().onQueryTaskStarted();
         }
+        observationsByConceptAdapter.clear();
     }
 
     @Override
@@ -71,23 +72,16 @@ class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concepts, Conc
 
     @Override
     protected void onPostExecute(Concepts conceptsWithObservations) {
+        if (conceptsWithObservations != null) {
+            for (ConceptWithObservations conceptsWithObservation : conceptsWithObservations) {
+                observationsByConceptAdapter.add(conceptsWithObservation);
+            }
+            observationsByConceptAdapter.notifyDataSetChanged();
+        }
+
         if (observationsByConceptAdapter.getBackgroundListQueryTaskListener() != null) {
             observationsByConceptAdapter.getBackgroundListQueryTaskListener().onQueryTaskFinish();
         }
-    }
-
-    @Override
-    protected void onProgressUpdate(Concepts... conceptsWithObservations) {
-        if (conceptsWithObservations == null) {
-            return;
-        }
-
-        for (Concepts concepts : conceptsWithObservations) {
-            for (ConceptWithObservations conceptsWithObservation : concepts) {
-                observationsByConceptAdapter.add(conceptsWithObservation);
-            }
-        }
-        observationsByConceptAdapter.notifyDataSetChanged();
     }
 
     private void loadComposedSHRConceptId() {
@@ -110,6 +104,7 @@ class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concepts, Conc
             List<Concept> concepts = conceptAction.getConcepts();
             for (Concept concept : concepts) {
                 if (!isCancelled() && !concept.getName().contains("NAME") && !concept.getName().contains("ID") && !concept.getName().contains("TEST FACILITY")) {
+
                     temp = conceptAction.get(concept);
                     if (temp != null) {
                         temp.sortByDate();
@@ -118,10 +113,7 @@ class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concepts, Conc
                         } else {
                             conceptsWithObservations.addAll(temp);
                         }
-                        publishProgress(temp);
                     }
-                } else {
-                    //break;
                 }
             }
         } catch (ObservationController.LoadObservationException e) {
@@ -146,10 +138,7 @@ class ObservationsByConceptBackgroundTask extends AsyncTask<Void, Concepts, Conc
                         } else {
                             conceptsWithObservations.addAll(temp);
                         }
-                        publishProgress(temp);
                     }
-                } else {
-                    // break;
                 }
             }
         } catch (ObservationController.LoadObservationException e) {
