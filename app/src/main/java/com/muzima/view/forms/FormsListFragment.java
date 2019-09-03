@@ -66,7 +66,7 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
     }
 
     public void tagsChanged() {
-        listAdapter.reloadData();
+        reloadData();
     }
 
     @Override
@@ -93,12 +93,15 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
 
     public void setRunningBackgroundQueryTask(AsyncTask<?, ?, ?> backgroundQueryTask){
         FormsAdapter formsAdapter = ((FormsAdapter)listAdapter);
-        formsAdapter.setRunningBackgroundQueryTask(backgroundQueryTask);
+        if(formsAdapter!= null) formsAdapter.setRunningBackgroundQueryTask(backgroundQueryTask);
     }
 
     public boolean isFormDownloadBackgroundTaskRunning() {
         FormsAdapter formsAdapter = ((FormsAdapter)listAdapter);
-        return formsAdapter.isFormDownloadBackgroundTaskRunning();
+        if(formsAdapter != null) {
+            return formsAdapter.isFormDownloadBackgroundTaskRunning();
+        }
+        return false;
     }
 
     final class DeleteFormsActionModeCallback implements ActionMode.Callback {
@@ -132,7 +135,7 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
 
         private void onCompleteOfFormDelete() {
             endActionMode();
-            listAdapter.reloadData();
+            reloadData();
             Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_delete_success), Toast.LENGTH_SHORT).show();
         }
 

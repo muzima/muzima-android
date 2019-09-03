@@ -109,12 +109,12 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
 
         private void onCompleteOfFormDelete() {
             endActionMode();
-            listAdapter.reloadData();
+            reloadData();
             ((SectionedFormsAdapter) listAdapter).clearSelectedFormsUuid();
             Toast.makeText(getActivity(), R.string.info_form_delete_success, Toast.LENGTH_SHORT).show();
         }
         private void onPartialCompleteOfFormDelete(Collection<List<FormData>> remnantFormData){
-            listAdapter.reloadData();
+            reloadData();
             Collection<String> uuids =new ArrayList<>();
             for(List<FormData> formDataList:remnantFormData) {
                 for(FormData formData:formDataList){
@@ -126,7 +126,7 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
             int deletedFormsCount = selectedFormsSize - remnantFormsSize;
             if(deletedFormsCount > 0) {
                 Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_data_delete, deletedFormsCount), Toast.LENGTH_SHORT).show();
-                listAdapter.reloadData();
+                reloadData();
                 ((SectionedFormsAdapter) listAdapter).retainFromSelectedFormsUuid(uuids);
                 actionMode.setTitle(String.valueOf(remnantFormsSize));
             }
