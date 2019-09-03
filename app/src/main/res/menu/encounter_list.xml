@@ -8,14 +8,6 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item
-            android:id="@+id/SHR_client_summary"
-            android:title=""
-            app:showAsAction="always"
-            android:icon="@drawable/ic_action_scan_card"/>
-
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:custom="http://schemas.android.com/apk/res-auto">
 </menu>

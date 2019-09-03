@@ -12,7 +12,7 @@
 	  xmlns:custom="http://schemas.android.com/apk/res-auto">
 	<item
 		android:id="@+id/scan_SHR_card"
-		android:icon="@drawable/ic_action_write_card"
+		android:icon="@drawable/ic_action_scan_card"
 		android:title="@string/scan_card_id_title"/>
 
 	<item
