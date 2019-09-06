@@ -21,6 +21,8 @@ import com.muzima.api.model.CohortData;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
+import com.muzima.api.model.FormData;
+import com.muzima.api.model.FormDataStatus;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Notification;
@@ -59,6 +61,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
@@ -836,6 +841,53 @@ public class MuzimaSyncService {
                 }
             }
         }
+    }
+    public List<FormData> getArchivedFormData() {
+        try{
+            return formController.getArchivedFormData();
+        } catch (FormController.FormDataFetchException e){
+            Log.e(TAG,"Could not fetch archived form data",e);
+        }
+        return new ArrayList<>();
+    }
+
+    public int[] checkAndDeleteTemporaryDataForProcessedFormData(List<FormData> archivedFormData){
+        int result[] = new int[5];
+        try {
+            List<FormData> successfullyProcessedFormData = new ArrayList<>();
+            List<FormData> processedWithErrorFormData = new ArrayList<>();
+            List<FormData> pendingProcessingFormData = new ArrayList<>();
+            List<FormData> unknownStatusFormData = new ArrayList<>();
+
+            for(FormData formData:archivedFormData) {
+                FormDataStatus formDataStatus = formController.downloadFormDataStatus(formData);
+                if(formDataStatus.isFormDataPendingProcessing()){
+                    successfullyProcessedFormData.add(formData);
+                } else if(formDataStatus.isFormDataProcessedWithError()){
+                    processedWithErrorFormData.add(formData);
+                } else if(formDataStatus.isFormDataPendingProcessing()){
+                    pendingProcessingFormData.add(formData);
+                } else {
+                    unknownStatusFormData.add(formData);
+                }
+            }
+            if(successfullyProcessedFormData.size()>0) {
+                formController.deleteFormDataAndRelatedEncountersAndObs(successfullyProcessedFormData);
+            }
+            result[0] = SUCCESS;
+            result[1] = successfullyProcessedFormData.size();
+            result[2] = processedWithErrorFormData.size();
+            result[3] = pendingProcessingFormData.size();
+            result[4] = unknownStatusFormData.size();
+
+        } catch (FormController.FormDataStatusDownloadException e) {
+            Log.e(TAG,"Could not download form data status",e);
+            result[0] = DOWNLOAD_ERROR;
+        } catch (FormController.FormDataDeleteException e) {
+            result[0] = DELETE_ERROR;
+            Log.e(TAG,"Could not delete archived form data",e);
+        }
+        return result;
     }
 
     public List<String> getUuidsForAllPatientsFromLocalStorage(){

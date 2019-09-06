@@ -17,6 +17,7 @@ import com.muzima.api.model.APIName;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
+import com.muzima.api.model.FormDataStatus;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Observation;
@@ -69,7 +70,6 @@ import java.util.Map;
 import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION;
-import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
@@ -625,12 +625,12 @@ public class FormController {
         return REGISTRATION.equalsIgnoreCase(formTag.getName());
     }
 
-    public void deleteCompleteAndIncompleteEncounterFormData(List<String> formDataUuids) throws FormDeleteException{
+    public void deleteCompleteAndIncompleteEncounterFormData(List<String> formDataUuids) throws FormDataDeleteException{
         try {
             List<FormData> formDataList = getFormDataByUuids(formDataUuids);
             deleteEncounterFormDataAndRelatedPatientData(formDataList);
         } catch (FormDataFetchException e) {
-            throw new FormDeleteException(e);
+            throw new FormDataDeleteException(e);
         }
     }
 
@@ -664,13 +664,25 @@ public class FormController {
         }
     }
 
+    public static class FormDataDeleteException extends Throwable {
+        public FormDataDeleteException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
     public static class FormDataSaveException extends Throwable {
         public FormDataSaveException(Throwable throwable) {
             super(throwable);
         }
     }
 
-    public List<FormData> getUnUploadedFormData(String templateUUID) throws FormDataFetchException {
+    public static class FormDataStatusDownloadException extends Throwable {
+        public FormDataStatusDownloadException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public List<FormData> getNonUploadedFormData(String templateUUID) throws FormDataFetchException {
         List<FormData> incompleteFormData = new ArrayList<>();
         try {
             List<FormData> formDataByTemplateUUID = formService.getFormDataByTemplateUUID(templateUUID);
@@ -708,7 +720,6 @@ public class FormController {
                 //DO NOT save base64 string in DB
                 formData.setJsonPayload(rawPayload);
                 formService.saveFormData(formData);
-                observationService.deleteObservationsByFormData(formData.getUuid());
             } else {
                 result = false;
             }
@@ -716,18 +727,34 @@ public class FormController {
         return result;
     }
 
-    public void markFormDataAsIncompleteAndDeleteRelatedEncountersAndObs(FormData formData) throws FormDataSaveException, ObservationController.DeleteObservationException {
+    public void markFormDataAsIncompleteAndDeleteRelatedEncountersAndObs(final FormData formData) throws FormDataSaveException, FormDataDeleteException {
         formData.setStatus(STATUS_INCOMPLETE);
         saveFormData(formData);
+        deleteEncounterFormDataAndRelatedPatientData(new ArrayList<FormData>(){{add(formData);}});
+    }
+
+    public void deleteFormDataAndRelatedEncountersAndObs(List<FormData> formData) throws FormDataDeleteException {
         try {
-            List<Encounter> encounters = encounterService.getEncountersByFormDataUuid(formData.getUuid());
-            for(Encounter encounter:encounters) {
-                List<Observation> observations = observationService.getObservationsByEncounter(encounter.getUuid());
-                observationService.deleteObservations(observations);
-            }
-            encounterService.deleteEncounters(encounters);
+            deleteEncounterFormDataAndRelatedPatientData(formData);
+            formService.deleteFormData(formData);
         } catch (IOException e) {
-            throw new ObservationController.DeleteObservationException(e);
+            throw new FormDataDeleteException(e);
+        }
+    }
+
+    public List<FormData> getArchivedFormData() throws FormDataFetchException {
+        try {
+            return formService.getAllFormData(STATUS_UPLOADED);
+        } catch (IOException e){
+            throw new FormDataFetchException(e);
+        }
+    }
+
+    public FormDataStatus downloadFormDataStatus(FormData formData) throws FormDataStatusDownloadException {
+        try {
+            return formService.downloadFormDataStatus(formData.getUuid());
+        } catch (IOException e) {
+            throw new FormDataStatusDownloadException(e);
         }
     }
 
@@ -886,6 +913,10 @@ public class FormController {
         return StringUtils.equals(formData.getStatus(), Constants.STATUS_COMPLETE);
     }
 
+    private boolean isArchivedFormData(FormData formData){
+        return StringUtils.equals(formData.getStatus(), Constants.STATUS_COMPLETE);
+    }
+
     public Map<String,List<FormData>> getFormDataGroupedByPatient(List<String> uuids) throws FormDataFetchException{
         Map<String,List<FormData>> formDataMap = new HashMap<>();
         List<FormData> formDataList =  getFormDataByUuids(uuids);
@@ -905,7 +936,7 @@ public class FormController {
     }
 
     public Map<String,List<FormData>> deleteFormDataWithNoRelatedCompleteRegistrationFormDataInGroup(
-                                                Map<String,List<FormData>> groupedFormData) throws FormDeleteException{
+                                                Map<String,List<FormData>> groupedFormData) throws FormDataDeleteException{
         Map<String, List<FormData>> remnantData = new HashMap<>();
         for (String patientUuid : groupedFormData.keySet()) {
             List<FormData> formDataList = groupedFormData.get(patientUuid);
@@ -925,21 +956,21 @@ public class FormController {
         return remnantData;
     }
 
-    private void deleteEncounterFormDataAndRelatedPatientData(List<FormData> formDataList) throws FormDeleteException{
+    private void deleteEncounterFormDataAndRelatedPatientData(List<FormData> formDataList) throws FormDataDeleteException{
         try {
             for (FormData formData : formDataList) {
-                if (isCompleteFormData(formData)) {
+                if (isCompleteFormData(formData) || isArchivedFormData(formData)) {
                     List<Encounter> encounters = encounterService.getEncountersByFormDataUuid(formData.getUuid());
                     for (Encounter encounter:encounters) {
                         List<Observation> observations = observationService.getObservationsByEncounter(encounter.getUuid());
                         observationService.deleteObservations(observations);
-                        encounterService.deleteEncounter(encounter);
                     }
+                    encounterService.deleteEncounters(encounters);
                 }
                 formService.deleteFormData(formData);
             }
         }catch(IOException e){
-            throw new FormDeleteException(e);
+            throw new FormDataDeleteException(e);
         }
     }
 

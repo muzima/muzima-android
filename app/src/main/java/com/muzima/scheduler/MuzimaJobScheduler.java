@@ -13,6 +13,7 @@ import com.muzima.api.model.User;
 import com.muzima.controller.NotificationController;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
 import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 
 @SuppressLint("NewApi")
@@ -83,8 +84,9 @@ public class MuzimaJobScheduler extends JobService {
             Log.e(getClass().getSimpleName(), "Parameters for job is null");
         } else {
             new NotificationDownloadBackgroundTask().execute();
-            new CohortUpdateBackgroundTask().execute();
+            new CohortsAndPatientFullDataSyncBackgroundTask().execute();
             new FormDataUploadBackgroundTask().execute();
+            new ProcessedTemporaryFormDataCleanUpBackgroundTask().execute();
         }
     }
 
@@ -102,7 +104,21 @@ public class MuzimaJobScheduler extends JobService {
         }
     }
 
-    private class CohortUpdateBackgroundTask extends AsyncTask<Void,Void,Void> {
+    private class  ProcessedTemporaryFormDataCleanUpBackgroundTask extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+           new ProcessedTemporaryFormDataCleanUpIntent(getApplicationContext()).start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class CohortsAndPatientFullDataSyncBackgroundTask extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... voids) {
             if (new WizardFinishPreferenceService(MuzimaJobScheduler.this).isWizardFinished()) {

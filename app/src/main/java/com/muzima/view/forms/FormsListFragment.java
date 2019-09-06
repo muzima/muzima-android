@@ -126,7 +126,7 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
                         formController.deleteCompleteAndIncompleteEncounterFormData(selectedFormsUUIDs);
                         onCompleteOfFormDelete();
                         ((FormsWithDataAdapter) listAdapter).clearSelectedFormsUuid();
-                    } catch (FormController.FormDeleteException e) {
+                    } catch (FormController.FormDataDeleteException e) {
                         Log.e(getClass().getSimpleName(),""+e.getMessage());
                     }
             }

@@ -21,9 +21,11 @@ import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.APIName;
+import com.muzima.api.model.FormData;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Patient;
 import com.muzima.api.service.LastSyncTimeService;
+import com.muzima.controller.FormController;
 import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;
 
@@ -99,6 +101,11 @@ public class DataSyncService extends IntentService {
                 updateNotificationMsg(getString(R.string.info_patient_data_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     syncCohortsAndAllPatientsFullData(broadcastIntent);
+                }
+                break;
+            case DataSyncServiceConstants.CLEAN_UP_PROCESSED_TEMPORARY_FORM_DATA:
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    checkAndDeleteTemporaryDataForProcessedFormData(broadcastIntent);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA:
@@ -243,6 +250,28 @@ public class DataSyncService extends IntentService {
     private void downloadPatients(Intent broadcastIntent, String[] cohortIds) {
         int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(cohortIds);
         broadCastMessageForPatients(broadcastIntent, resultForPatients);
+    }
+
+    private void checkAndDeleteTemporaryDataForProcessedFormData(Intent broadcastIntent){
+        System.out.println("In  checkAndDeleteTemporaryDataForProcessedFormData");
+        List<FormData> archivedFormData = muzimaSyncService.getArchivedFormData();
+        if(archivedFormData.size() > 0) {
+            updateNotificationMsg(getString(R.string.info_submitted_form_data_status_check));
+            int[] result = muzimaSyncService.checkAndDeleteTemporaryDataForProcessedFormData(archivedFormData);
+            broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE,
+                    DataSyncServiceConstants.CLEAN_UP_PROCESSED_TEMPORARY_FORM_DATA);
+            broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, result[0]);
+            if (isSuccess(result)) {
+                String msg = getString(R.string.info_submitted_form_data_status, result[1], result[2], result[3], result[4]);
+                System.out.println(msg);
+                updateNotificationMsg(msg);
+            } else {
+                updateNotificationMsg(getString(R.string.info_submitted_form_data_status_check_failure));
+                System.out.println(getString(R.string.info_submitted_form_data_status_check_failure));
+            }
+            LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+        }
+
     }
 
     private void broadCastMessageForEncounters(Intent broadcastIntent, int[] resultForEncounters) {

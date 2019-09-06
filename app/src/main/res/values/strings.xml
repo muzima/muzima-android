@@ -529,6 +529,10 @@
     <string formatted="false" name="info_observations_patients_downloaded">Downloaded %d observations for %d clients
     </string>
     <string name="info_patient_data_download">Downloading clients data</string>
+    <string name="info_submitted_form_data_status_check">Checking status of recently submitted forms</string>
+    <string name="info_submitted_form_data_status_check_failure">Could notcheck status of recently submitted forms</string>
+    <string formatted="false" name="info_submitted_form_data_status">Status of recently submitted forms: %d Processed successfully,
+        %d Processed with error, %d Pending processing, %d Unknown status </string>
     <string name="info_patient_download">Downloading Clients</string>
     <string formatted="false" name="info_patient_reports_downloaded">Downloaded %d reports</string>
     <string name="info_patient_reports_download_in_progress">Downloading Patient Reports</string>

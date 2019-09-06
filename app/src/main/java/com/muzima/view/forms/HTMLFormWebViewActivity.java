@@ -320,7 +320,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             case R.id.form_back_to_draft:
                 try {
                     formController.markFormDataAsIncompleteAndDeleteRelatedEncountersAndObs(formData);
-                } catch (FormController.FormDataSaveException | ObservationController.DeleteObservationException e) {
+                } catch (FormController.FormDataSaveException | FormController.FormDataDeleteException e) {
                     Log.e(getClass().getSimpleName(), "Error while saving the form data", e);
                 }
                 restartWebViewActivity();

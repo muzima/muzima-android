@@ -83,7 +83,6 @@ public class MuzimaJobScheduleBuilder {
                         .build();
             }
 
-
             JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
             if (jobScheduler != null) {
                 jobScheduler.schedule(mUzimaJobInfo);

@@ -96,7 +96,7 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
                         } else {
                             onCompleteOfFormDelete();
                         }
-                    } catch (FormController.FormDeleteException e) {
+                    } catch (FormController.FormDataDeleteException e) {
                         Log.e(getClass().getSimpleName(),"Could not delete form data ",e);
                         Toast.makeText(getActivity(),R.string.error_form_data_delete,Toast.LENGTH_LONG).show();
                     } catch (FormController.FormDataFetchException e) {

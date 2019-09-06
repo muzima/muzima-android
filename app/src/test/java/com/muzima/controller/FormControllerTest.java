@@ -31,7 +31,6 @@ import com.muzima.model.collections.DownloadedForms;
 import com.muzima.service.SntpService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
-import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -539,7 +538,7 @@ public class FormControllerTest {
         when(formService.getFormDataByTemplateUUID(templateUUID)).thenReturn(asList(
                 formDataWithStatusAndDiscriminator(Constants.STATUS_COMPLETE, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER),
                 formDataWithStatusAndDiscriminator(Constants.STATUS_UPLOADED, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER)));
-        List<FormData> formDataByTemplateUUID = formController.getUnUploadedFormData(templateUUID);
+        List<FormData> formDataByTemplateUUID = formController.getNonUploadedFormData(templateUUID);
         assertThat(formDataByTemplateUUID.size(),is(1));
         assertThat(formDataByTemplateUUID.get(0).getStatus(), is(Constants.STATUS_COMPLETE));
     }
@@ -570,7 +569,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void deleteCompleteAndIncompleteEncounterFormData_shouldDeleteIncompleteForm() throws Exception, FormController.FormDataFetchException, FormController.FormDeleteException {
+    public void deleteCompleteAndIncompleteEncounterFormData_shouldDeleteIncompleteForm() throws Exception, FormController.FormDataFetchException, FormController.FormDataDeleteException {
         FormData incompleteFormToDelete = new FormData();
         String uuid = "uuid";
         incompleteFormToDelete.setUuid(uuid);
@@ -582,7 +581,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void deleteCompleteAndIncompleteForms_shouldDeleteCompleteForm() throws Exception, FormController.FormDataFetchException, FormController.FormDeleteException {
+    public void deleteCompleteAndIncompleteForms_shouldDeleteCompleteForm() throws Exception, FormController.FormDataFetchException, FormController.FormDataDeleteException {
         FormData completeFormToDelete = new FormData();
         String uuid = "uuid";
         completeFormToDelete.setUuid(uuid);
