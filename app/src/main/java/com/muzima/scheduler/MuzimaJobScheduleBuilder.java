@@ -20,7 +20,6 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSched
 import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.MUZIMA_JOB_PERIODIC;
 
 public class MuzimaJobScheduleBuilder {
-
     private MuzimaApplication muzimaApplication;
     private Context context;
 

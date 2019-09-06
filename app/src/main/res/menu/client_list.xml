@@ -34,6 +34,10 @@
 			custom:showAsAction="always"
 			android:title="@string/hint_client_search"/>
 	<item
+			android:id="@+id/menu_dashboard"
+			custom:showAsAction="never"
+			android:title="@string/general_dashboard"/>
+	<item
 			android:id="@+id/menu_client_add_text"
 			custom:showAsAction="never"
 			android:title="@string/general_client_register"/>
@@ -41,8 +45,4 @@
 			android:id="@+id/menu_complete_form_data"
 			custom:showAsAction="never"
 			android:title="@string/menu_form_data_sync"/>
-	<item
-			android:id="@+id/menu_dashboard"
-			custom:showAsAction="never"
-			android:title="@string/general_dashboard"/>
 </menu>

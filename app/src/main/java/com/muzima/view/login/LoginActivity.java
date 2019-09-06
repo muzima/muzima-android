@@ -300,6 +300,7 @@ public class LoginActivity extends Activity {
                 localePreferenceService.setPreferredLocale(currentLocale);
 
                 //init a background service to download missing settings
+                //ToDo: Move this to the background service -
                 downloadMissingServerSettings();
                 MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
