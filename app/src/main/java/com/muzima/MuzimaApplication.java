@@ -219,9 +219,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public FormController getFormController() {
         if (formController == null) {
             try {
-                formController = new FormController(muzimaContext.getFormService(), muzimaContext.getPatientService(),
-                        muzimaContext.getLastSyncTimeService(), getSntpService(), muzimaContext.getObservationService(),
-                        muzimaContext.getEncounterService());
+                formController = new FormController(this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -361,7 +359,7 @@ public class MuzimaApplication extends MultiDexApplication {
         }
         return smartCardController;
     }
-    
+
     public PatientReportController getPatientReportController() {
         if (patientReportController == null) {
             try {
