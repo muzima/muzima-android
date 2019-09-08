@@ -185,7 +185,6 @@
     <string name="general_welcome">Bienvenue</string>
     <string name="general_yes">Oui</string>
     <string name="general_reports">Report</string>
-
     <string name="header_cohort_category">Paramètres de cohorte</string>
     <string name="header_muzima_category">Paramètres de mUzima</string>
     <string name="header_openmrs_category">Paramètres de OpenMRS</string>
@@ -634,7 +633,6 @@ Aucun fournisseur n\'a encore été ajouté</string>
         \nVeuillez entrer une valeur comprise entre 1 et 120.
     </string>
     <string name="title_activity_client_reports">Client Reports</string>
-
     <string name="warning_cohort_prefix_exists">Le préfixe de cohortes existe</string>
     <string name="warning_empty_cohort_prefix">Vous ne pouvez pas ajouter un préfixe de cohortes vide</string>
     <string name="warning_form_close">Formulaire de clôture: Ceci annulera toutes vos modifications. Etes-vous sûr de vouloir faire ca?</string>
@@ -675,4 +673,6 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="title_light_mode">Activer le mode jour</string>
     <string name="hint_light_mode">Activer le thème de la lumière</string>
     <string name="warning_cancel_form_download">Cela annulera le téléchargement du formulaire. Êtes-vous sûr de vouloir annuler le téléchargement du formulaire?</string>
+    <string name="general_failure">Échec</string>
+    <string name="warning_invalid_url_provided">L'URL que vous avez fournie n'est pas valide</string>
 </resources>

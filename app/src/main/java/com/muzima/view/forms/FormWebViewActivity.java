@@ -270,8 +270,8 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
                     .setIcon(themeUtils.getIconWarning(this))
                     .setTitle(getResources().getString(R.string.general_caution))
                     .setMessage(getResources().getString(R.string.warning_form_close))
-                    .setPositiveButton("Yes", positiveClickListener())
-                    .setNegativeButton("No", null).create().show();
+                    .setPositiveButton(R.string.general_yes, positiveClickListener())
+                    .setNegativeButton(R.string.general_no, null).create().show();
             return false;
         }
         return super.onKeyDown(keyCode, event);
