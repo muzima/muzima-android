@@ -29,9 +29,9 @@ public class MuzimaJobScheduleBuilder {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void schedulePeriodicBackgroundJob(int delay){
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if(preferences.getBoolean(context.getResources().getString(R.string.preference_real_time_sync), false)) {
+    public void schedulePeriodicBackgroundJob(int delay, boolean isManualSync){
+
+        if(isManualSync){
             final Handler handler = new Handler();
             Runnable runnable = new Runnable() {
                 @Override
@@ -39,10 +39,24 @@ public class MuzimaJobScheduleBuilder {
                     if (!isJobAlreadyScheduled(context)) {
                         handleScheduledPeriodicDataSyncJob();
                     }
-                    handler.postDelayed(this, MUZIMA_JOB_PERIODIC);
                 }
             };
             handler.postDelayed(runnable, delay);
+        } else {
+            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            if (preferences.getBoolean(context.getResources().getString(R.string.preference_real_time_sync), false)) {
+                final Handler handler = new Handler();
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!isJobAlreadyScheduled(context)) {
+                            handleScheduledPeriodicDataSyncJob();
+                        }
+                        handler.postDelayed(this, MUZIMA_JOB_PERIODIC);
+                    }
+                };
+                handler.postDelayed(runnable, delay);
+            }
         }
     }
 

@@ -90,7 +90,7 @@ public class DefaultMenuDropDownHelper {
             case R.id.menu_trigger_manual_sync:
                 MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(activity.getApplicationContext());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(0);
+                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(0,true);
                 }
                 return true;
 

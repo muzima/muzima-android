@@ -137,7 +137,7 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected Void doInBackground(Void... voids) {
             if (new WizardFinishPreferenceService(getApplicationContext()).isWizardFinished()) {
-                RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext());
+                RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(),true);
             }
             return null;
         }

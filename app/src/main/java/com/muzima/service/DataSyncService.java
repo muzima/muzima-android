@@ -253,7 +253,6 @@ public class DataSyncService extends IntentService {
     }
 
     private void checkAndDeleteTemporaryDataForProcessedFormData(Intent broadcastIntent){
-        System.out.println("In  checkAndDeleteTemporaryDataForProcessedFormData");
         List<FormData> archivedFormData = muzimaSyncService.getArchivedFormData();
         if(archivedFormData.size() > 0) {
             updateNotificationMsg(getString(R.string.info_submitted_form_data_status_check));
@@ -263,11 +262,9 @@ public class DataSyncService extends IntentService {
             broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, result[0]);
             if (isSuccess(result)) {
                 String msg = getString(R.string.info_submitted_form_data_status, result[1], result[2], result[3], result[4]);
-                System.out.println(msg);
                 updateNotificationMsg(msg);
             } else {
                 updateNotificationMsg(getString(R.string.info_submitted_form_data_status_check_failure));
-                System.out.println(getString(R.string.info_submitted_form_data_status_check_failure));
             }
             LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
         }
