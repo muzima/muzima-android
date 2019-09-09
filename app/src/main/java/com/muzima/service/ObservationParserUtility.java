@@ -78,24 +78,44 @@ class ObservationParserUtility {
 
     public Concept getConceptEntity(String rawConceptName, boolean isCoded, boolean createConceptIfNotAvailableLocally) throws ConceptController.ConceptFetchException,
             ConceptController.ConceptParseException{
-        String conceptName = getConceptName(rawConceptName);
-        if(StringUtils.isEmpty(conceptName)){
-            throw new ConceptController.ConceptParseException("Could not not get Concept name for concept with raw name '"
+        String conceptId = getConceptId(rawConceptName);
+        if(StringUtils.isEmpty(conceptId)){
+            throw new ConceptController.ConceptParseException("Could not not get Concept identifier for concept with raw name '"
             + rawConceptName + "'");
         }
-        Concept observedConcept = conceptController.getConceptByName(conceptName);
+
+        Concept observedConcept;
+        boolean isConceptIdNumeric = org.apache.commons.lang.StringUtils.isNumeric(conceptId);
+
+        if(isConceptIdNumeric) {
+            int intConceptId = Integer.parseInt(conceptId);
+            observedConcept =conceptController.getConceptById(intConceptId);
+        } else {
+            observedConcept = conceptController.getConceptByUuid(conceptId);
+        }
+
         if (observedConcept == null && createConceptIfNotAvailableLocally == true) {
+
+            String conceptName = getConceptId(rawConceptName);
+            if(StringUtils.isEmpty(conceptName)){
+                throw new ConceptController.ConceptParseException("Could not not get Concept identifier for concept with raw name '"
+                        + rawConceptName + "'");
+            }
+
             Concept conceptFromExistingList = getConceptFromExistingList(conceptName);
             if (conceptFromExistingList != null) {
                 return conceptFromExistingList;
             }
 
-            String conceptId = getConceptId(rawConceptName);
-            int intConceptId = Integer.parseInt(conceptId);
-            if(intConceptId >0){
-                observedConcept = buildDummyConcept(intConceptId, conceptName,isCoded);
+            if(!isConceptIdNumeric){
+                observedConcept = buildDummyConcept(0,conceptId, conceptName, isCoded);
             } else {
-                observedConcept = buildDummyConcept(conceptName,isCoded);
+                int intConceptId = Integer.parseInt(conceptId);
+                if (intConceptId > 0) {
+                    observedConcept = buildDummyConcept(intConceptId,null, conceptName, isCoded);
+                } else {
+                    observedConcept = buildDummyConcept(conceptName, isCoded);
+                }
             }
             newConceptList.add(observedConcept);
         }
@@ -232,12 +252,11 @@ class ObservationParserUtility {
     }
 
     private Concept buildDummyConcept(String conceptName,boolean isCoded) {
-        return buildDummyConcept(0, conceptName, isCoded);
+        return buildDummyConcept(0,null, conceptName, isCoded);
     }
 
-    private Concept buildDummyConcept(int conceptId, String conceptName, boolean isCoded) {
+    private Concept buildDummyConcept(int conceptId,String conceptUuid, String conceptName, boolean isCoded) {
         Concept concept = new Concept();
-        concept.setUuid(CONCEPT_CREATED_ON_PHONE + UUID.randomUUID());
         ConceptName dummyConceptName = new ConceptName();
         dummyConceptName.setName(conceptName);
         dummyConceptName.setPreferred(true);
@@ -251,6 +270,11 @@ class ObservationParserUtility {
         concept.setConceptType(conceptType);
         if(conceptId > 0) {
             concept.setId(conceptId);
+        }
+        if(conceptUuid != null){
+            concept.setUuid(conceptUuid);
+        } else {
+            concept.setUuid(CONCEPT_CREATED_ON_PHONE + UUID.randomUUID());
         }
         return concept;
     }

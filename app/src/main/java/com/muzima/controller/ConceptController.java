@@ -96,6 +96,28 @@ public class ConceptController {
         return null;
     }
 
+    public Concept getConceptById(int id) throws ConceptFetchException {
+        try {
+            List<Concept> concepts = conceptService.getConceptsById(id);
+            if(concepts.size() == 1){
+                return concepts.get(0);
+            } else if (concepts.size() > 0){
+                throw new ConceptFetchException("Could not uniquely identify Concept with ID="+id);
+            }
+        } catch (IOException e) {
+            throw new ConceptFetchException(e);
+        }
+        return null;
+    }
+
+    public Concept getConceptByUuid(String uuid) throws ConceptFetchException {
+        try {
+            return conceptService.getConceptByUuid(uuid);
+        } catch (IOException e) {
+            throw new ConceptFetchException(e);
+        }
+    }
+
     public List<Concept> downloadConceptsByNames(List<String> names) throws ConceptDownloadException {
         HashSet<Concept> result = new HashSet<>();
         for (String name : names) {
@@ -188,6 +210,10 @@ public class ConceptController {
     public static class ConceptFetchException extends Throwable {
         ConceptFetchException(Throwable throwable) {
             super(throwable);
+        }
+
+        ConceptFetchException(String message) {
+            super(message);
         }
     }
 
