@@ -468,9 +468,9 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             builder
                     .setCancelable(true)
                     .setIcon(getIconWarning())
-                    .setTitle("Invalid")
-                    .setMessage("The URL you have provided is invalid")
-                    .setPositiveButton("Ok", null);
+                    .setTitle(R.string.general_failure)
+                    .setMessage(R.string.warning_invalid_url_provided)
+                    .setPositiveButton(R.string.general_ok, null);
             builder.create().show();
         }
     }
@@ -483,15 +483,15 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             builder
                     .setCancelable(true)
                     .setIcon(getIconWarning())
-                    .setTitle("Failure")
+                    .setTitle(R.string.general_failure)
                     .setMessage(getString(R.string.info_form_data_upload_fail))
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.general_yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             new ResetDataTask((SettingsActivity)getActivity(), newURL).execute();
                         }
                     })
-                    .setNegativeButton("No", null);
+                    .setNegativeButton(R.string.general_no, null);
             builder.create().show();
         }
     }

@@ -10,6 +10,7 @@
 
 package com.muzima.controller;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
@@ -68,16 +69,18 @@ public class FormControllerTest {
     private LastSyncTimeService lastSyncTimeService;
     private SntpService sntpService;
     private Date mockDate;
+    private MuzimaApplication muzimaApplication;
 
     @Before
-    public void setup() {
+    public void setup() throws IOException {
+        muzimaApplication = mock(MuzimaApplication.class);
         formService = mock(FormService.class);
         patientService = mock(PatientService.class);
         lastSyncTimeService = mock(LastSyncTimeService.class);
         sntpService = mock(SntpService.class);
         ObservationService observationService = mock(ObservationService.class);
         EncounterService encounterService = mock(EncounterService.class);
-        formController = new FormController(formService, patientService, lastSyncTimeService, sntpService, observationService, encounterService);
+        formController = new FormController(muzimaApplication);
         LastSyncTime lastSyncTime = mock(LastSyncTime.class);
         mockDate = mock(Date.class);
     }
