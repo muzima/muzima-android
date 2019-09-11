@@ -90,7 +90,6 @@ public class PatientFormsActivity extends FormsActivityBase {
                 ActivityCompat.requestPermissions(PatientFormsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_ACCESS_PERMISSION_REQUEST_CODE);
             }
         }
-
     }
 
     @Override
