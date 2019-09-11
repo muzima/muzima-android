@@ -77,6 +77,7 @@ public class PatientSummaryActivity extends BaseActivity {
     private static final String TAG = "PatientSummaryActivity";
     public static final String PATIENT = "patient";
     public static final boolean DEFAULT_SHR_STATUS = false;
+    private static final boolean DEFAULT_RELATIONSHIP_STATUS = false;
 
     private AlertDialog writeSHRDataOptionDialog;
 
@@ -96,6 +97,7 @@ public class PatientSummaryActivity extends BaseActivity {
     private Location defaultLocation;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private boolean isSHREnabled;
+    private boolean isRelationshipEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,6 +216,12 @@ public class PatientSummaryActivity extends BaseActivity {
                 SHRCardMenuItem.setVisible(true);
                 SHRCardMenuItem.setIcon(R.drawable.ic_action_shr_card);
             }
+        }
+
+        if (isRelationshipEnabled) {
+            getMenuInflater().inflate(R.menu.client_summary, menu);
+            MenuItem RelationshipsMenuItem = menu.getItem(1);
+            RelationshipsMenuItem.setIcon(R.drawable.ic_relationship);
         }
         super.onCreateOptionsMenu(menu);
         return true;
@@ -765,5 +773,10 @@ public class PatientSummaryActivity extends BaseActivity {
         } else {
             SHRLinearLayout.setVisibility(LinearLayout.GONE);
         }
+    }
+
+    private void setRelationshipEnabled(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+        isRelationshipEnabled= preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_relationship_key),PatientSummaryActivity.DEFAULT_RELATIONSHIP_STATUS);
     }
 }

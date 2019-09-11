@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
+import static com.muzima.util.Constants.ServerSettings.RELATIONSHIP_FEATURE_ENABLED;
 import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
 
 public class MuzimaSettingController {
@@ -151,7 +152,19 @@ public class MuzimaSettingController {
             Log.e(getClass().getSimpleName(), "muzima GPS Feature setting is missing on this server");
             return false;
         }
+    }
 
+    public Boolean isRelationshipEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(RELATIONSHIP_FEATURE_ENABLED);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "muzima Relationship Feature setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "muzima Relationship Feature setting is missing on this server");
+        }
+        return false;
     }
 
     public static class MuzimaSettingFetchException extends Throwable {
