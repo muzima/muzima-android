@@ -1016,10 +1016,15 @@ public class FormController {
                     {
                         org.json.JSONObject formObject = formsArray.getJSONObject(i);
                         Form form = formService.getFormByUuid(formObject.get("uuid").toString());
-                        boolean downloadStatus = formService.isFormTemplateDownloaded(form.getUuid());
-                        AvailableForm availableForm = new AvailableFormBuilder().withAvailableForm(form).withDownloadStatus(downloadStatus).build();
-                        availableForms.add(availableForm);
-                        formUuids.add(formObject.get("uuid").toString());
+                        if(form != null) {
+                            boolean downloadStatus = formService.isFormTemplateDownloaded(form.getUuid());
+                            AvailableForm availableForm = new AvailableFormBuilder().withAvailableForm(form).withDownloadStatus(downloadStatus).build();
+                            availableForms.add(availableForm);
+                            formUuids.add(formObject.get("uuid").toString());
+                        } else {
+                            Log.d(getClass().getSimpleName(),"Could not find form with uuid = "+formObject.get("uuid").toString() +
+                                    " specified in setup config with uuid = "+setupConfigurationTemplate.getUuid());
+                        }
                     }
                 } catch (JSONException e) {
                     Log.e(getClass().getSimpleName(),"Encountered JsonException while sorting forms");
