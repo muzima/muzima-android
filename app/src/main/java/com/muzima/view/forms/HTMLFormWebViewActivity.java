@@ -441,7 +441,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private boolean isFormComplete() {
-        return formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
+        return formData != null && formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
     }
 
     private void setupFormData()

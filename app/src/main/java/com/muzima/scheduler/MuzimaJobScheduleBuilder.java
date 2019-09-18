@@ -109,7 +109,7 @@ public class MuzimaJobScheduleBuilder {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             jobScheduler = (JobScheduler)context.getSystemService(JOB_SCHEDULER_SERVICE);
             jobScheduler.cancel(MESSAGE_SYNC_JOB_ID);
-            Toast.makeText(context, "mUzima data sync was cancelled.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.info_data_sync_cancelled, Toast.LENGTH_SHORT).show();
 
         }
     }

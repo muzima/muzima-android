@@ -98,16 +98,10 @@ public class ConceptController {
 
     public Concept getConceptById(int id) throws ConceptFetchException {
         try {
-            List<Concept> concepts = conceptService.getConceptsById(id);
-            if(concepts.size() == 1){
-                return concepts.get(0);
-            } else if (concepts.size() > 0){
-                throw new ConceptFetchException("Could not uniquely identify Concept with ID="+id);
-            }
+            return conceptService.getConceptById(id);
         } catch (IOException e) {
             throw new ConceptFetchException(e);
         }
-        return null;
     }
 
     public Concept getConceptByUuid(String uuid) throws ConceptFetchException {

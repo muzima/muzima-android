@@ -11,6 +11,7 @@
 package com.muzima.controller;
 
 import com.muzima.MuzimaApplication;
+import com.muzima.api.context.Context;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
@@ -22,6 +23,7 @@ import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PatientService;
 import com.muzima.api.service.EncounterService;
+import com.muzima.api.service.SetupConfigurationService;
 import com.muzima.builder.FormBuilder;
 import com.muzima.builder.FormTemplateBuilder;
 import com.muzima.builder.TagBuilder;
@@ -80,6 +82,18 @@ public class FormControllerTest {
         sntpService = mock(SntpService.class);
         ObservationService observationService = mock(ObservationService.class);
         EncounterService encounterService = mock(EncounterService.class);
+        Context context = mock(Context.class);
+        SetupConfigurationService setupConfigurationService = mock(SetupConfigurationService.class);
+
+        when(muzimaApplication.getMuzimaContext()).thenReturn(context);
+        when(context.getFormService()).thenReturn(formService);
+        when(context.getPatientService()).thenReturn(patientService);
+        when(context.getLastSyncTimeService()).thenReturn(lastSyncTimeService);
+        when(muzimaApplication.getSntpService()).thenReturn(sntpService);
+        when(context.getEncounterService()).thenReturn(encounterService);
+        when(context.getObservationService()).thenReturn(observationService);
+        when(context.getSetupConfigurationService()).thenReturn(setupConfigurationService);
+
         formController = new FormController(muzimaApplication);
         LastSyncTime lastSyncTime = mock(LastSyncTime.class);
         mockDate = mock(Date.class);

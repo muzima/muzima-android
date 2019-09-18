@@ -731,9 +731,9 @@ public class FormController {
     }
 
     public void markFormDataAsIncompleteAndDeleteRelatedEncountersAndObs(final FormData formData) throws FormDataSaveException, FormDataDeleteException {
+        deletePatientDataRelatedToFormData(new ArrayList<FormData>(){{add(formData);}});
         formData.setStatus(STATUS_INCOMPLETE);
         saveFormData(formData);
-        deleteEncounterFormDataAndRelatedPatientData(new ArrayList<FormData>(){{add(formData);}});
     }
 
     public void deleteFormDataAndRelatedEncountersAndObs(List<FormData> formData) throws FormDataDeleteException {
@@ -917,7 +917,7 @@ public class FormController {
     }
 
     private boolean isArchivedFormData(FormData formData){
-        return StringUtils.equals(formData.getStatus(), Constants.STATUS_COMPLETE);
+        return StringUtils.equals(formData.getStatus(), STATUS_UPLOADED);
     }
 
     public Map<String,List<FormData>> getFormDataGroupedByPatient(List<String> uuids) throws FormDataFetchException{
@@ -971,6 +971,23 @@ public class FormController {
                     encounterService.deleteEncounters(encounters);
                 }
                 formService.deleteFormData(formData);
+            }
+        }catch(IOException e){
+            throw new FormDataDeleteException(e);
+        }
+    }
+
+    private void deletePatientDataRelatedToFormData(List<FormData> formDataList) throws FormDataDeleteException{
+        try {
+            for (FormData formData : formDataList) {
+                if (isCompleteFormData(formData) || isArchivedFormData(formData)) {
+                    List<Encounter> encounters = encounterService.getEncountersByFormDataUuid(formData.getUuid());
+                    for (Encounter encounter:encounters) {
+                        List<Observation> observations = observationService.getObservationsByEncounter(encounter.getUuid());
+                        observationService.deleteObservations(observations);
+                    }
+                    encounterService.deleteEncounters(encounters);
+                }
             }
         }catch(IOException e){
             throw new FormDataDeleteException(e);

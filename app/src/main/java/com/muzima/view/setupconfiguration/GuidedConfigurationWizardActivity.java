@@ -437,7 +437,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else if(result[0] == SyncStatusConstants.SUCCESS) {
                     int downloadedEncounters = result[1];
-                    int patients = result[2];
+                    int patients = result[3];
                     if(downloadedEncounters == 1 && patients == 1) {
                         resultDescription = getString(R.string.info_encounter_patient_downloaded);
                     } else if(downloadedEncounters == 1) {
@@ -490,13 +490,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else if(result[0] == SyncStatusConstants.SUCCESS) {
                     int downloadedObs = result[1];
-                    int patients = result[2];
+                    int patients = result[3];
                     if(downloadedObs == 1 && patients == 1) {
                         resultDescription = getString(R.string.info_observation_patient_downloaded);
                     } else if(downloadedObs == 1) {
                         resultDescription = getString(R.string.info_observation_patients_downloaded, patients);
                     } else if(patients == 1) {
-                        resultDescription = getString(R.string.info_observations_patient_downloaded, downloadedObs);
+                        resultDescription = getString(R.string.info_observations_patient_downloaded, patients);
                     } else if(downloadedObs == 0) {
                         resultDescription = getString(R.string.info_observation_patient_not_downloaded);
                     } else {

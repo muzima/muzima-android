@@ -57,7 +57,9 @@ import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -575,26 +577,18 @@ public class MuzimaSyncService {
         return result;
     }
     public int[] downloadObservationsForPatientsByCohortUUIDs(String[] cohortUuids, boolean replaceExistingObservation) {
-        int[] result = new int[3];
+        int[] result = new int[4];
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
-            int patientsTotal = patients.size();
-            int patientsObsDownloaded = 0;
-            int totalObsDownloaded = 0;
 
-            int count = 0;
             List<String> patientlist = new ArrayList();
             for(Patient patient : patients){
-                count++;
-                Log.i(getClass().getSimpleName(), "Downloading Obs for patient " + count + " of "+ patientsTotal);
-                updateProgressDialog(muzimaApplication.getString(R.string.info_observations_download_pogress, count, patientsTotal));
                 patientlist.add(patient.getUuid());
             }
             result = downloadObservationsForPatientsByPatientUUIDs(patientlist,replaceExistingObservation);
             if(result[0] != SUCCESS){
-                Log.e(getClass().getSimpleName(), "Obs for patient " + count + " of "+ patientsTotal + " not downloaded");
-                updateProgressDialog(muzimaApplication.getString(R.string.info_observations_not_downloaded_progress, count, patientsTotal));
+                updateProgressDialog(muzimaApplication.getString(R.string.error_encounter_observation_download));
 
             }
         } catch (PatientController.PatientLoadException e) {
@@ -629,18 +623,28 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadObservationsForPatientsByPatientUUIDs(List<String> patientUuids, boolean replaceExistingObservations) {
-        int[] result = new int[3];
+        int[] result = new int[4];
         try {
             List<String> conceptUuidsFromConcepts = getConceptUuidsFromConcepts(conceptController.getConcepts());
             List<List<String>> slicedPatientUuids = split(patientUuids);
             List<List<String>> slicedConceptUuids = split(conceptUuidsFromConcepts);
+            Set<String> patientUuidsForDownloadedObs = new HashSet<>();
             long totalTimeDownloading = 0, totalTimeReplacing = 0,totalTimeSaving = 0;
             int i=0;
             for (List<String> slicedPatientUuid : slicedPatientUuids) {
                 for (List<String> slicedConceptUuid : slicedConceptUuids) {
                     long startDownloadObservations = System.currentTimeMillis();
+
                     List<Observation> allObservations = new ArrayList<>(observationController.downloadObservationsByPatientUuidsAndConceptUuids(
                             slicedPatientUuid, slicedConceptUuid));
+
+                    for(Observation observation:allObservations){
+                        patientUuidsForDownloadedObs.add(observation.getPerson().getUuid());
+                    }
+
+                    Log.i(getClass().getSimpleName(), "Downloaded Obs for patient " + patientUuidsForDownloadedObs.size() + " of "+ patientUuids.size());
+                    updateProgressDialog(muzimaApplication.getString(R.string.info_observations_download_pogress, patientUuidsForDownloadedObs.size(), patientUuids.size()));
+
                     Log.i(getClass().getSimpleName(), "Downloading observations for " + slicedPatientUuid.size() + " patients and " +slicedConceptUuid.size() +" concepts");
                     long endDownloadObservations = System.currentTimeMillis();
                     Log.i(getClass().getSimpleName(), "Observations download successful with " + allObservations.size() + " observations");
@@ -664,10 +668,11 @@ public class MuzimaSyncService {
                     }
 
                     result[1] += allObservations.size();
-                    result[2] += slicedPatientUuid.size();
+                    result[2] += voidedObservations.size();
 
                 }
             }
+            result[3] = patientUuidsForDownloadedObs.size();
             result[0] = SUCCESS;
             Log.d(getClass().getSimpleName(), "Total Downloading observations : " + totalTimeDownloading/1000 + " sec\n");
             Log.d(getClass().getSimpleName(), "Total Replacing observations : " + totalTimeReplacing/1000 + " sec\n");
@@ -703,28 +708,19 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadEncountersForPatientsByCohortUUIDs(String[] cohortUuids, boolean replaceExistingEncounters) {
-        int[] result = new int[3];
+        int[] result = new int[4];
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
 
-            int patientsTotal = patients.size();
-            int count = 0;
-            int patientsEncountersDownloaded=0;
-            int totalEncountersDownloaded=0;
-
             List<String> patientlist = new ArrayList();
             for(Patient patient : patients){
-                count++;
-                //Log.i(getClass().getSimpleName(), "Downloading Encounters for patient " + count + " of "+ patientsTotal);
-                //updateProgressDialog(muzimaApplication.getString(R.string.info_encounter_download_progress, count, patientsTotal));
-
                 patientlist.add(patient.getUuid());
             }
             result = downloadEncountersForPatientsByPatientUUIDs(patientlist,replaceExistingEncounters);
             if(result[0] != SUCCESS){
-                Log.e(getClass().getSimpleName(), "Encounters for patient " + count + " of "+ patientsTotal + " not downloaded");
-                updateProgressDialog(muzimaApplication.getString(R.string.info_encounter_not_downloaded_progress, count, patientsTotal));
+                Log.e(getClass().getSimpleName(), "Could not download encounters");
+                updateProgressDialog(muzimaApplication.getString(R.string.error_encounter_download));
             }
 
         } catch (PatientController.PatientLoadException e) {
@@ -735,9 +731,10 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadEncountersForPatientsByPatientUUIDs(List<String> patientUuids, boolean replaceExistingEncounters) {
-        int[] result = new int[3];
+        int[] result = new int[4];
         try {
             List<List<String>> slicedPatientUuids = split(patientUuids);
+            Set<String> patientsForDownloadedEncounters = new HashSet();
             long totalTimeDownloading = 0, totalTimeReplacing = 0,totalTimeSaving = 0;
             int i =0;
             for (List<String> slicedPatientUuid : slicedPatientUuids) {
@@ -750,6 +747,12 @@ public class MuzimaSyncService {
                 totalTimeDownloading += endDownloadObservations - startDownloadEncounters;
 
                 Log.i(getClass().getSimpleName(), "Encounters download successful with " + allEncounters.size() + " encounters");
+                for(Encounter encounter:allEncounters){
+                    patientsForDownloadedEncounters.add(encounter.getPatient().getUuid());
+                }
+                Log.i(getClass().getSimpleName(), "Downloaded Encounters for patient " + patientsForDownloadedEncounters.size() + " of "+ patientUuids.size());
+                updateProgressDialog(muzimaApplication.getString(R.string.info_encounter_download_progress, patientsForDownloadedEncounters.size(), patientUuids.size()));
+
                 ArrayList<Encounter> voidedEncounters = getVoidedEncounters(allEncounters);
                 allEncounters.removeAll(voidedEncounters);
                 encounterController.deleteEncounters(voidedEncounters);
@@ -767,12 +770,13 @@ public class MuzimaSyncService {
                     totalTimeSaving += savedEncounters - endDownloadObservations;
                 }
                 result[1] += allEncounters.size();
-                result[2] += slicedPatientUuid.size();
+                result[2] += voidedEncounters.size();
             }
             Log.d(getClass().getSimpleName(), "Total Downloading encounters : " + totalTimeDownloading/1000 + " sec\n");
             Log.d(getClass().getSimpleName(), "Total Replacing encounters : " + totalTimeReplacing/1000 + " sec\n");
             Log.d(getClass().getSimpleName(), "Total Saving encounters : " + totalTimeSaving/1000 + " sec\n");
             result[0] = SUCCESS;
+            result[3] = patientsForDownloadedEncounters.size();
         } catch (EncounterController.DownloadEncounterException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading encounters.", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
