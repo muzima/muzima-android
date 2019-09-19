@@ -27,7 +27,7 @@
     <string name="date_general">Encontro</string>
     <string name="date_temp">8 de junho</string>
     <string name="default_form_register">Formulário de Registos</string>
-    <string name="done_general">Feito</string>
+    <string name="general_done">Feito</string>
     <string name="downloading_cohorts_text">Baixando Coortes</string>
     <string name="downloading_forms">Download de formulários</string>
     <string name="encounter_date">Encontro Data:</string>
@@ -744,4 +744,19 @@
         enviados recentemente.</string>
     <string formatted="false" name="info_submitted_form_data_status">Status dos formulários enviados recentemente:
         %d Processado com sucesso, %d Processado com erro, %d Processamento pendente, %d status desconhecido.</string>
+    <string name="general_saving_forms">Salvando formulários</string>
+    <string name="general_filling_forms">Preenchendo Formulários</string>
+    <string name="general_patient_registration">Registro do Cliente</string>
+    <string name="general_other">De outros</string>
+    <string name="downloaded_reports">Relatórios baixados</string>
+    <string name="error_patient_report_fetch">Ocorreu um erro ao obter relatórios de clientes de um repositório local</string>
+    <string name="general_loading_reports">Os relatórios ainda estão carregando</string>
+    <string name="get_more">Mais do servidor</string>
+    <string formatted="false" name="hint_client_summary_reports">%d Relatórios</string>
+    <string name="hint_patient_report_list_download">Pressione carregar para buscar a lista de relatórios disponíveis no servidor</string>
+    <string name="hint_patient_reports_sync">Selecione relatórios da lista de servidores e clique em sincronizar</string>
+    <string formatted="false" name="info_patient_reports_downloaded">%d Relatórios baixados</string>
+    <string name="info_patient_reports_download_in_progress">Download de relatórios de clientes</string>
+    <string name="info_patient_reports_unavailable">Não há relatórios de clientes disponíveis</string>
+    <string name="info_patient_reports_fetch_in_progress">Já buscando relatórios, ignorou a solicitação</string>
 </resources>
