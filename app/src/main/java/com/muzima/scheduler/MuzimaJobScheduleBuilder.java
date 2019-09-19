@@ -29,7 +29,6 @@ public class MuzimaJobScheduleBuilder {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void schedulePeriodicBackgroundJob(int delay, boolean isManualSync){
-
         if(isManualSync){
             final Handler handler = new Handler();
             Runnable runnable = new Runnable() {
@@ -81,19 +80,11 @@ public class MuzimaJobScheduleBuilder {
 
             JobInfo mUzimaJobInfo;
 
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                mUzimaJobInfo = new JobInfo
-                        .Builder(MESSAGE_SYNC_JOB_ID, componentName)
-                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                        .setMinimumLatency(MUZIMA_JOB_PERIODIC)
-                        .build();
-            }else {
-                mUzimaJobInfo = new JobInfo
-                        .Builder(MESSAGE_SYNC_JOB_ID, componentName)
-                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                        .setOverrideDeadline(MUZIMA_JOB_PERIODIC)
-                        .build();
-            }
+            mUzimaJobInfo = new JobInfo
+                    .Builder(MESSAGE_SYNC_JOB_ID, componentName)
+                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                    .setOverrideDeadline(MUZIMA_JOB_PERIODIC)
+                    .build();
 
             JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
             if (jobScheduler != null) {
