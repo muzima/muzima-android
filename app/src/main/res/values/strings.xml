@@ -437,7 +437,7 @@
     <string name="info_downloaded_reports_unavailable">No reports have been downloaded</string>
     <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
     <string name="info_encounter_download">Downloading Encounters</string>
-    <string formatted="false" name="info_encounter_download_progress">Downloading encounters for client %d of %d.
+    <string formatted="false" name="info_encounter_download_progress">Downloaded encounters for client %d of %d.
     </string>
     <string formatted="false" name="info_encounter_not_downloaded_progress">Encounters for client %d of %d not
         downloaded.
@@ -517,7 +517,7 @@
     </string>
     <string name="info_observation_search">Search observations</string>
     <string name="info_observation_unavailable">No observations available</string>
-    <string formatted="false" name="info_observations_download_pogress">Downloading observations for client %d of %d.
+    <string formatted="false" name="info_observations_download_pogress">Downloaded observations for client %d of %d.
     </string>
     <string name="info_observations_load_in_progress">Observations are still loading</string>
     <string formatted="false" name="info_observations_not_downloaded_progress">Observations for client %d of %d not
@@ -529,7 +529,7 @@
     </string>
     <string name="info_patient_data_download">Downloading clients data</string>
     <string name="info_submitted_form_data_status_check">Checking status of recently submitted forms</string>
-    <string name="info_submitted_form_data_status_check_failure">Could notcheck status of recently submitted forms</string>
+    <string name="info_submitted_form_data_status_check_failure">Could not check status of recently submitted forms</string>
     <string formatted="false" name="info_submitted_form_data_status">Status of recently submitted forms: %d Processed successfully,
         %d Processed with error, %d Pending processing, %d Unknown status </string>
     <string name="info_patient_download">Downloading Clients</string>
@@ -749,4 +749,5 @@
     <string name="general_failure">Failure</string>
     <string name="warning_invalid_url_provided">The URL you have provided is invalid</string>
     <string name="info_data_sync_cancelled">mUzima data sync was cancelled.</string>
+    <string name="info_background_data_sync_started">Syncing data in background</string>
 </resources>

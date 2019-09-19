@@ -438,7 +438,7 @@
     <string name="info_downloaded_reports_unavailable">Nenhum relatório foi baixado</string>
     <string name="info_draft_form_save_success">Racunho do formulário foi guardado com sucesso</string>
     <string name="info_encounter_download">Baixando visitas</string>
-    <string formatted="false" name="info_encounter_download_progress">Baixando visitas para cliente %d de %d</string>
+    <string formatted="false" name="info_encounter_download_progress">Visitas baixadas para clientes %d de %d</string>
     <string formatted="false" name="info_encounter_not_downloaded_progress">Visitas para cliente %d de %d não baixou
     </string>
     <string name="info_encounter_observation_download">Baixando observações e visitas…</string>
@@ -514,7 +514,7 @@
     <string formatted="false" name="info_observation_patients_downloaded">Baixou %d observações para 1 cliente</string>
     <string name="info_observation_search">Pesquisar observações</string>
     <string name="info_observation_unavailable">Nenhuma observação disponível</string>
-    <string formatted="false" name="info_observations_download_pogress">Baixando observações para cliente %d de %d.
+    <string formatted="false" name="info_observations_download_pogress">Observações baixadas para cliente %d de %d.
     </string>
     <string name="info_observations_load_in_progress">Observações ainda estão a carregar</string>
     <string formatted="false" name="info_observations_not_downloaded_progress">Observações para cliente %d para %d não
@@ -732,7 +732,16 @@
     <string name="ask_help">Pedindo ajuda</string>
     <string name="title_light_mode">Ativar o modo de dia</string>
     <string name="hint_light_mode">Ativar tema claro</string>
-    <string name="warning_cancel_form_download">Isso cancelará o download do formulário. Tem certeza de que deseja cancelar o download do formulário?</string>
+    <string name="warning_cancel_form_download">Isso cancelará o download do formulário. Tem certeza de que deseja
+        cancelar o download do formulário?</string>
     <string name="general_failure">Falha</string>
     <string name="warning_invalid_url_provided">O URL que você forneceu é inválido</string>
+    <string name="info_data_sync_cancelled">A sincronização de dados do mUzima foi cancelada.</string>
+    <string name="info_background_data_sync_started">Sincronizando dados em segundo plano</string>
+    <string name="menu_all_data_sync">Sincronizar todos os dados</string>
+    <string name="info_submitted_form_data_status_check">Verificando o status dos formulários enviados recentemente.</string>
+    <string name="info_submitted_form_data_status_check_failure">Não foi possível verificar o status dos formulários
+        enviados recentemente.</string>
+    <string formatted="false" name="info_submitted_form_data_status">Status dos formulários enviados recentemente:
+        %d Processado com sucesso, %d Processado com erro, %d Processamento pendente, %d status desconhecido.</string>
 </resources>

@@ -9,15 +9,14 @@ import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 
 import static android.content.Context.JOB_SCHEDULER_SERVICE;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.MESSAGE_SYNC_JOB_ID;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.MUZIMA_JOB_PERIODIC;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedulerConstants.MESSAGE_SYNC_JOB_ID;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedulerConstants.MUZIMA_JOB_PERIODIC;
 
 public class MuzimaJobScheduleBuilder {
     private MuzimaApplication muzimaApplication;

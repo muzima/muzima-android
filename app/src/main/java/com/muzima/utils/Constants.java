@@ -113,7 +113,7 @@ public class Constants {
             public static final String INVALID_CHARACTER_FOR_USERNAME = ",;.-/@#$%&*+='\"|~`<>";
         }
 
-        public static class MuzimaJobSchedularConstants {
+        public static class MuzimaJobSchedulerConstants {
             public static final String MUZIMA_JOB_SCHEDULE_INTENT = BuildConfig.APPLICATION_ID+" muzima scheduled job";
             public static final String WORK_DURATION_KEY = "work duration";
             public static final int MESSAGE_SYNC_JOB_ID = 22;

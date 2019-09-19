@@ -398,7 +398,7 @@
     <string name="info_downloaded_reports_unavailable">Aucun rapport n\'a été téléchargé</string>
     <string name="info_draft_form_save_success">Le brouillon du formulaire a été enregistré avec succès.</string>
     <string name="info_encounter_download">téléchargement des rencontres en cours</string>
-    <string formatted="false" name="info_encounter_download_progress">Téléchargement en cours des rencontres pour le client%d de %d.</string>
+    <string formatted="false" name="info_encounter_download_progress">Rencontres téléchargées pour client %d de %d.</string>
     <string formatted="false" name="info_encounter_not_downloaded_progress">Rencontres pour le client %d %d n\'ont pas été téléchargés.</string>
     <string name="info_encounter_observation_download">Téléchargement des observations et de rencontres …</string>
     <string name="info_encounter_patient_downloaded">1 (une) rencontre téléchargée pour 1(un) client</string>
@@ -444,15 +444,16 @@
     <string name="info_muzima_sync_service_finish">synchronisation du service mUzima terminée</string>
     <string name="info_muzima_sync_service_in_progress">synchronisation du service MUzima en cours d\'exécution</string>
     <string formatted="false" name="info_new_cohort_download">%d nouvelles cohortes Téléchargée</string>
-    <string formatted="false" name="info_new_cohort_download_delete">%d nouvelles cohortes Téléchargé et  %%d cohortes retirées</string>
-    <string formatted="false" name="info_new_encounter_download">%%d nouvelles observations Téléchargées</string>
-    <string formatted="false" name="info_new_encounter_download_delete">%%d nouvelles rencontres Téléchargées et  %%d rencontres retirées</string>
+    <string formatted="false" name="info_new_cohort_download_delete">%d nouvelles cohortes Téléchargé et  gradle assembleRelease
+        d cohortes retirées</string>
+    <string formatted="false" name="info_new_encounter_download">%d nouvelles observations Téléchargées</string>
+    <string formatted="false" name="info_new_encounter_download_delete">%d nouvelles rencontres Téléchargées et  %d rencontres retirées</string>
     <string name="info_new_notification">Nouvelle notification</string>
-    <string formatted="false" name="info_new_observation_download">%%d nouvelles observations téléchargé</string>
-    <string formatted="false" name="info_new_observation_download_delete">%%d nouvelles observations Téléchargées et  %%d observations retirées</string>
-    <string formatted="false" name="info_new_patient_download">%%d nouveaux patients Téléchargés</string>
+    <string formatted="false" name="info_new_observation_download">%d nouvelles observations téléchargé</string>
+    <string formatted="false" name="info_new_observation_download_delete">%d nouvelles observations Téléchargées et  %d observations retirées</string>
+    <string formatted="false" name="info_new_patient_download">%d nouveaux patients Téléchargés</string>
     <string name="info_no_cohort_download">Aucune cohorte n \'a été synchronisé</string>
-    <string formatted="false" name="info_notification_download">%%d notifications Téléchargées</string>
+    <string formatted="false" name="info_notification_download">%d notifications Téléchargées</string>
     <string name="info_notification_download_in_progress">Notifications en cours de téléchargement  </string>
     <string name="info_notification_unavailable">Aucune notification disponible</string>
     <string name="info_observation_download">observations en cours de Téléchargement</string>
@@ -460,25 +461,23 @@
     <string name="info_observation_load">Les observations sont en cours de chargement</string>
     <string name="info_observation_patient_downloaded">Téléchargé 1 (une)observation pour 1(une) patient.</string>
     <string name="info_observation_patient_not_downloaded">N\'a pas téléchargé aucune observation</string>
-    <string formatted="false" name="info_observation_patients_downloaded">%%d observations Téléchargées pour 1(un) patient</string>
+    <string formatted="false" name="info_observation_patients_downloaded">%d observations Téléchargées pour 1(un) patient</string>
     <string name="info_observation_search">recherche des observations</string>
     <string name="info_observation_unavailable">Aucune observation disponible</string>
-    <string formatted="false" name="info_observations_download_pogress">
-Téléchargement en cours des observations pour le client %%d of %%d.</string>
+    <string formatted="false" name="info_observations_download_pogress">Téléchargement en cours des observations pour le client %d of %d.</string>
     <string name="info_observations_load_in_progress">Les observations sont encore en cours de chargement</string>
-    <string formatted="false" name="info_observations_not_downloaded_progress">Observations pour le client %%d de %%d ne sont pas téléchargés.</string>
-    <string formatted="false" name="info_observations_patient_downloaded">1 (une) observation Téléchargée pour %%d patients</string>
-    <string formatted="false" name="info_observations_patients_downloaded">Téléchargé observations %%d pour %%d patients</string>
+    <string formatted="false" name="info_observations_not_downloaded_progress">Observations pour le client %d de %d ne sont pas téléchargés.</string>
+    <string formatted="false" name="info_observations_patient_downloaded">1 (une) observation Téléchargée pour %d patients</string>
+    <string formatted="false" name="info_observations_patients_downloaded">Téléchargé observations %d pour %d patients</string>
     <string name="info_patient_data_download">Téléchargement en cours les données des patients</string>
     <string name="info_patient_download">Téléchargement en cours des patients</string>
-    <string formatted="false" name="info_provider_delete_success">%%d fournisseurs supprimés avec succés</string>
+    <string formatted="false" name="info_provider_delete_success">%d fournisseurs supprimés avec succés</string>
     <string name="info_provider_download">Téléchargement en cours des fournisseurs</string>
     <string name="info_provider_downloaded">1(une) fournisseur Téléchargé</string>
     <string name="info_provider_load">Chargement des fournisseurs …</string>
     <string name="info_provider_not_downloaded">N\'a pas téléchargé aucun fournisseurs</string>
-    <string name="info_provider_unavailable">
-Aucun fournisseur n\'a encore été ajouté</string>
-    <string formatted="false" name="info_providers_downloaded">%%d fournisseurs téléchargés</string>
+    <string name="info_provider_unavailable">Aucun fournisseur n\'a encore été ajouté</string>
+    <string formatted="false" name="info_providers_downloaded">%d fournisseurs téléchargés</string>
     <string name="info_real_time_upload">Muzima est entrain de télécharger vos données</string>
     <string name="info_real_time_upload_success">MUzima a téléchargé vos données avec succès</string>
     <string name="info_scanner_exists">Le scanner de code à barres est déjà installé.</string>
@@ -496,7 +495,7 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="initial_setup_for_muzima_general">Configuration initiale pour mUzima</string>
     <string name="introduction_to_muzima_general_text">Introduction à mUzima</string>
     <string name="june_8_sample_date">8 juin</string>
-    <string formatted="false" name="menu_SHR_data_sync">Synchroniser les données SHR (%%d)</string>
+    <string formatted="false" name="menu_SHR_data_sync">Synchroniser les données SHR (%d)</string>
     <string name="menu_form_back_to_draft">Retour au brouillon </string>
     <string name="menu_form_data_sync">Synchronisation des données des formulaires </string>
     <string name="message_missing_form_encounter_details_error">doit être fourni</string>
@@ -637,7 +636,7 @@ Aucun fournisseur n\'a encore été ajouté</string>
     <string name="warning_empty_cohort_prefix">Vous ne pouvez pas ajouter un préfixe de cohortes vide</string>
     <string name="warning_form_close">Formulaire de clôture: Ceci annulera toutes vos modifications. Etes-vous sûr de vouloir faire ca?</string>
     <string name="warning_form_data_already_exists">Ce formulaire de données existe déjà pour ce client avec la même date de rencontre.</string>
-    <string formatted="false" name="warning_forms_complete_and_sync">%%s contient des formulaires qui lui sont associés. S\'il vous plaît compléter et synchronisez
+    <string formatted="false" name="warning_forms_complete_and_sync">%s contient des formulaires qui lui sont associés. S\'il vous plaît compléter et synchronisez
 Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_logout_confirm">Etes-vous sûr de vouloir vous déconnectez et quitter Muzima app?</string>
     <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du client sur l\'appareil. Etes-vous sur?</string>
@@ -674,5 +673,12 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="hint_light_mode">Activer le thème de la lumière</string>
     <string name="warning_cancel_form_download">Cela annulera le téléchargement du formulaire. Êtes-vous sûr de vouloir annuler le téléchargement du formulaire?</string>
     <string name="general_failure">Échec</string>
-    <string name="warning_invalid_url_provided">L'URL que vous avez fournie n'est pas valide</string>
+    <string name="warning_invalid_url_provided">L\'URL que vous avez fournie n\'est pas valide</string>
+    <string name="info_data_sync_cancelled">La synchronisation des données mUzima a été annulée.</string>
+    <string name="info_background_data_sync_started">Synchroniser les données en arrière-plan</string>
+    <string name="menu_all_data_sync">Synchroniser toutes les données</string>
+    <string name="info_submitted_form_data_status_check">Vérification du statut des formulaires récemment soumis.</string>
+    <string name="info_submitted_form_data_status_check_failure">Impossible de vérifier l\'état des formulaires récemment soumis.</string>
+    <string formatted="false" name="info_submitted_form_data_status">Statut des formulaires récemment soumis:
+         %d traité avec succès, %d traité avec erreur, %d en attente de traitement, %d état inconnu.</string>
 </resources>

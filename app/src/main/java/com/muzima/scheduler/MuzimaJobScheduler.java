@@ -9,6 +9,7 @@ import android.util.Log;
 
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.User;
 import com.muzima.controller.NotificationController;
@@ -57,7 +58,7 @@ public class MuzimaJobScheduler extends JobService {
             onStopJob(params);
         } else {
             //execute job
-            Toast.makeText(getApplicationContext(),"Syncing data in background",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.info_background_data_sync_started,Toast.LENGTH_LONG).show();
             handleBackgroundWork(params);
         }
         return false;
