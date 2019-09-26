@@ -1108,28 +1108,19 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] downloadMissingMandatorySettings(){
+    public int[] downloadNewSettings(){
 
         int[] result = new int[2];
         try {
-            List<String> properties = settingsController.getNonDownloadedMandatorySettingsProperties();
-            for(String property:properties) {
-                MuzimaSetting setting = settingsController.downloadSettingByProperty(property);
-                result[0] = SUCCESS;
-
-                if (setting != null) {
-                    result[1]++;
-                    settingsController.saveSetting(setting);
-                }
-            }
+            List<MuzimaSetting> settings = settingsController.downloadAllSettings();
+            settingsController.saveOrUpdateSetting(settings);
+            result[0] = SUCCESS;
+            result[1] = settings.size();
         } catch (MuzimaSettingController.MuzimaSettingDownloadException e){
             Log.e(getClass().getSimpleName(), "Exception when trying to download setting",e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (MuzimaSettingController.MuzimaSettingSaveException e){
             Log.e(getClass().getSimpleName(), "Exception when trying to save setting",e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
-        } catch (MuzimaSettingController.MuzimaSettingFetchException e){
-            Log.e(getClass().getSimpleName(), "Exception when trying to read setting",e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
         }
         return result;

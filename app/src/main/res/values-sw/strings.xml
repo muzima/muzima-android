@@ -423,7 +423,7 @@
     <string name="info_real_time_upload_success">mfumo wa mUzima imefanikiwa kupakia data zako</string>
     <string name="info_scanner_exists">Kifaa cha kusomea baakodi kimeunganishwa tayari</string>
     <string name="info_session_time_out">sesheni/kikao chako ndani ya mfumo wa mUzima kimeisha muda. Tafadhali ingia tena upate kuendelea.</string>
-    <string name="info_setting_download_success">Mpangilio uliosasishwa umepakuliwa</string>
+    <string name="info_settings_download_success">Mpangilio uliosasishwa umepakuliwa</string>
     <string name="info_setup_complete_fail">Utaratibu umekamilika kwa dosari.</string>
     <string name="info_setup_complete_success">Utaratibu umefanikiwa kukamilika.</string>
     <string name="info_setup_config_load">Usanidi wa utaratibu unapakiwa.</string>

@@ -18,6 +18,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 import com.muzima.R;
+import com.muzima.utils.StringUtils;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -62,8 +63,7 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS,
                 SyncStatusConstants.UNKNOWN_ERROR);
 
-        String msg = getString(R.string.info_download_complete, syncStatus);
-        Log.i(getClass().getSimpleName(), msg);
+        String msg = intent.getStringExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE);
 
         switch (syncStatus) {
             case SyncStatusConstants.DOWNLOAD_ERROR:
@@ -145,6 +145,11 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 }
                 break;
         }
+
+        if(StringUtils.isEmpty(msg)){
+            msg = getString(R.string.info_download_complete, syncStatus);
+        }
+
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }

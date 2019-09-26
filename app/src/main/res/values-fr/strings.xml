@@ -445,7 +445,7 @@
     <string name="info_muzima_sync_service_in_progress">synchronisation du service MUzima en cours d\'exécution</string>
     <string formatted="false" name="info_new_cohort_download">%d nouvelles cohortes Téléchargée</string>
     <string formatted="false" name="info_new_cohort_download_delete">%d nouvelles cohortes Téléchargé et  gradle assembleRelease
-        d cohortes retirées</string>
+        %d cohortes retirées</string>
     <string formatted="false" name="info_new_encounter_download">%d nouvelles observations Téléchargées</string>
     <string formatted="false" name="info_new_encounter_download_delete">%d nouvelles rencontres Téléchargées et  %d rencontres retirées</string>
     <string name="info_new_notification">Nouvelle notification</string>
@@ -482,7 +482,7 @@
     <string name="info_real_time_upload_success">MUzima a téléchargé vos données avec succès</string>
     <string name="info_scanner_exists">Le scanner de code à barres est déjà installé.</string>
     <string name="info_session_time_out">Votre session a expiré. S\'il vous plaît connecter-vous à nouveau pour continuer.</string>
-    <string name="info_setting_download_success">Telechargement et mise à jour des configuration completées avec succès</string>
+    <string name="info_settings_download_success">Telechargement et mise à jour des configuration completées avec succès</string>
     <string name="info_setup_complete_fail">Configuration terminée avec des erreurs</string>
     <string name="info_setup_complete_success">Configuration terminée avec succès</string>
     <string name="info_setup_config_load">Chargement des configurations d\'installation</string>

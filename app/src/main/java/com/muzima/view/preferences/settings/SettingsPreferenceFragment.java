@@ -288,7 +288,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                                         requireMedicalRecordNumberPreferenceService.saveRequireMedicalRecordNumberPreference();
                                         requireMedicalRecordNumberPreference
                                                 .setChecked(requireMedicalRecordNumberPreferenceService.getRequireMedicalRecordNumberPreferenceValue());
-                                        Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), getString(R.string.info_settings_download_success), Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
                                     }

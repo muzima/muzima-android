@@ -43,6 +43,7 @@ import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
@@ -291,17 +292,12 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(Result result) {
             if (result.status == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
-                MuzimaLogger.log(((MuzimaApplication)getApplicationContext()).getMuzimaContext(),"LOGIN_SUCCESS",
-                        "{\"userId\":\"" +result.credentials.getUserName()+"\"}");
                 new CredentialsPreferenceService(getApplicationContext()).saveCredentials(result.credentials);
                 ((MuzimaApplication) getApplication()).restartTimer();
                 LocalePreferenceService localePreferenceService = ((MuzimaApplication) getApplication()).getLocalePreferenceService();
                 String currentLocale = Locale.getDefault().toString();
                 localePreferenceService.setPreferredLocale(currentLocale);
 
-                //init a background service to download missing settings
-                //ToDo: Move this to the background service -
-                downloadMissingServerSettings();
                 MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     //delay for 10 seconds to allow next UI activity to finish loading
@@ -339,10 +335,10 @@ public class LoginActivity extends Activity {
             }
         }
 
-
         private void startNextActivity() {
             Intent intent;
             if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
+                downloadMissingServerSettings();
                 intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();
             } else {
                 removeRemnantDataFromPreviousRunOfWizard();
@@ -357,7 +353,7 @@ public class LoginActivity extends Activity {
                 boolean isSettingsDownloadNeeded = !((MuzimaApplication) getApplication()).getMuzimaSettingController()
                         .isAllMandatorySettingsDownloaded();
                 if (isSettingsDownloadNeeded) {
-                    new MissingSettingsDownloadBackgroundTask().execute();
+                    new SyncSettingsIntent(getApplicationContext()).start();
                 }
             } catch (MuzimaSettingController.MuzimaSettingFetchException e){
                 Log.e(getClass().getSimpleName(),""+e.getMessage());
@@ -372,23 +368,6 @@ public class LoginActivity extends Activity {
                 this.credentials = credentials;
                 this.status = status;
             }
-        }
-    }
-
-    private class MissingSettingsDownloadBackgroundTask extends AsyncTask<String, Void,int[] > {
-        @Override
-        public int[] doInBackground(String... params){
-            MuzimaSyncService syncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
-            return syncService.downloadMissingMandatorySettings();
-        }
-
-        @Override
-        protected void onPostExecute(int[] result) {
-            new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getApplicationContext())
-                    .saveRequireMedicalRecordNumberPreference();
-
-            new SHRStatusPreferenceService((MuzimaApplication) getApplicationContext()).saveSHRStatusPreference();
-            new GPSFeaturePreferenceService((MuzimaApplication) getApplicationContext()).updateGPSDataPreferenceSettings();
         }
     }
 
