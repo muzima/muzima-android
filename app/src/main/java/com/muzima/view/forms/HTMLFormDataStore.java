@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Encounter;
@@ -34,6 +35,7 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Provider;
+import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
@@ -80,6 +82,7 @@ class HTMLFormDataStore {
     private final EncounterController encounterController;
     private final MuzimaApplication application;
     private final MuzimaSettingController settingController;
+    private final CohortController cohortController;
 
     public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormData formData, MuzimaApplication application) {
         this.formWebViewActivity = formWebViewActivity;
@@ -92,6 +95,7 @@ class HTMLFormDataStore {
         this.conceptController = application.getConceptController();
         this.encounterController = application.getEncounterController();
         this.observationController = application.getObservationController();
+        this.cohortController = application.getCohortController();
         this.application = application;
     }
 
@@ -583,6 +587,30 @@ class HTMLFormDataStore {
         }
 
         return jsonPayload;
+    }
+
+    @JavascriptInterface
+    public String getCohortMembershipByPatientUuid(String patientUuid){
+        List<CohortMember> cohortMembers = new ArrayList<>();
+        JSONArray jsonArray = new JSONArray();
+        HashMap<String, JSONObject> map = new HashMap<>();
+        int i = 0;
+        try {
+            cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
+            for(CohortMember cohortMember:cohortMembers){
+                JSONObject json = new JSONObject();
+                json.put("cohortUuid", cohortMember.getCohort().getUuid());
+                json.put("cohortName", cohortMember.getCohort().getName());
+                map.put("json" + i, json);
+                jsonArray.put(map.get("json" + i));
+                i++;
+            }
+        } catch (CohortController.CohortFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading cohort membership", e);
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "JSONException encountered while process cohort membership", e);
+        }
+        return jsonArray.toString();
     }
 
 }

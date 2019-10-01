@@ -10,6 +10,8 @@
 
 package com.muzima.controller;
 
+import android.util.Log;
+
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.CohortMember;
@@ -300,6 +302,15 @@ public class CohortController {
             return cohortList;
         } catch (IOException e) {
             throw new CohortDownloadException(e);
+        }
+    }
+
+    public List<CohortMember> getCohortMembershipByPatientUuid(String patientUuid) throws CohortFetchException {
+        try {
+            List<CohortMember> cohortMembers = cohortService.getCohortMembershipByPatientUuid(patientUuid);
+            return  cohortMembers;
+        } catch (IOException e) {
+            throw new CohortFetchException(e);
         }
     }
 
