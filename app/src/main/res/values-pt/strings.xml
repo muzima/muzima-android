@@ -11,33 +11,51 @@
     <string name="SHR_card_text">Carta SHR</string>
     <string name="SHR_data_title_text">Dados SHR</string>
     <string name="SHR_extracted_data_text">Dados extraídos de SHR</string>
+
     <string name="add_individual_observation_text">Adicionar observação individual</string>
+
     <string name="app_name">mUzima</string>
     <string name="app_title">mUzima para Provedores de Saúde</string>
+
+    <string name="ask_help">Pedindo ajuda</string>
+
     <string name="captured_date">Data Capturada:</string>
+
     <string name="card_sync_status_content_description">Status de sincronização do cartão</string>
+
     <string name="change_settings">Mudar configurações</string>
+
     <string name="client_registration_question_text">Você gostaria de registrar o cliente no mUzima?</string>
+
     <string name="complex_obs">Complexo Obs</string>
+
     <string name="concept_description">Conceito Descrição</string>
     <string name="concept_details">Detalhes do conceito</string>
     <string name="concept_name">Nome do conceito:</string>
+
     <string name="confirm_duplicate_form_data_save">Guardar Dados do Formulãrio Duplicado</string>
     <string name="confirm_patient_id_exists">O cliente já tem o Identificador?</string>
+
     <string name="date_general">Encontro</string>
     <string name="date_temp">8 de junho</string>
+
     <string name="default_form_register">Formulário de Registos</string>
-    <string name="general_done">Feito</string>
+
+    <string name="downloaded_reports">Relatórios baixados</string>
+
     <string name="downloading_cohorts_text">Baixando Coortes</string>
     <string name="downloading_forms">Download de formulários</string>
+
     <string name="encounter_date">Encontro Data:</string>
     <string name="encounter_date_dialog_label">Encontro Data</string>
     <string name="encounter_details">Detalhes do Encontro</string>
     <string name="encounter_location">Encontro Local:</string>
     <string name="encounter_type">Tipo de Encontro:</string>
+
     <string name="enter_concept_name_text">Digite o nome do conceito …</string>
     <string name="enter_location_name">Insira o nome do local …</string>
     <string name="enter_provider_name_hint">Digite o nome do provedor …</string>
+
     <string name="error_action_allow">Acção não permitida enquanto a sincronização está em progresso</string>
     <string name="error_audio_chose_activity_find">Erro: Actividade para escolha de áudio não encontrado</string>
     <string name="error_audio_play_activity_find">Erro: Actividade para tocar áudio não encontrado</string>
@@ -99,12 +117,14 @@
     <string name="error_patient_encounter_download">Não poderá baixar visitas para os clientes</string>
     <string name="error_patient_fetch">Ocorreu um erro enquanto buscava o cliente</string>
     <string name="error_patient_repo_fetch">Algo deu errado enquanto buscava clientes do repositório local</string>
+    <string name="error_patient_report_fetch">Ocorreu um erro ao obter relatórios de clientes de um repositório local</string>
     <string name="error_patient_search">Algo deu errado enquanto procurava cliente(s)</string>
     <string name="error_provider_download">Não poderá baixar provedores</string>
     <string name="error_provider_fetch">Algo deu errado enquanto buscava provedores do repositório local</string>
     <string name="error_server_connection_unavailable">Servidor está inacessível
     </string>
     <string name="error_server_url_invalid">URL Inválido do Servidor</string>
+    <string name="error_settings_download">Não foi possível baixar as configurações</string>
     <string name="error_setup_configuration_download">Configurações de instalação não puderam ser carregadas</string>
     <string name="error_setup_configuration_template_download">Não poderá baixar o modelo de configuração</string>
     <string name="error_smartcard_client_not_in_server">Cliente de cartão inteligente não no servidor. Registre o cliente no mUzima agora?</string>
@@ -115,6 +135,7 @@
     </string>
     <string name="error_wizard_interrupted">Wizard foi interrompido, por favor de sair e executar o wizard de novo.
     </string>
+
     <string name="failure_obtain_smartcard_record">Não foi possível obter o registro de cartão inteligente para gravação no cartão.</string>
     <string name="failure_obtaining_card_serial_number">Não foi possível obter o número de série do cartão</string>
     <string name="failure_reading_card">Leitura de cartão falhada</string>
@@ -122,11 +143,19 @@
         antes de gravar no cartão
     </string>
     <string name="failure_writing_smartcard">Falha ao gravar dados do cartão inteligente.</string>
+
+    <string name="feedback_header">Por favor envie-nos seus comentários e feedback</string>
+    <string name="feedback_hint">O que você está pensando?</string>
+    <string name="feedback_rating_question">Como é fácil usar o aplicativo mUzima?</string>
+
     <string name="fill_out_forms_for_a_patient_general">Preencha formulários para um paciente</string>
+
     <string name="form_encounter_date">Data de encontro</string>
     <string name="form_encounter_location">Localização do encontro</string>
     <string name="form_encounter_provider">Provedor de encontro</string>
+
     <string name="gender_image_content_description">Imagem de gênero</string>
+
     <string name="general_accept">Aceitar</string>
     <string name="general_add">Adicionar</string>
     <string name="general_agree">Concordo</string>
@@ -147,10 +176,14 @@
     <string name="general_delete">Apagar</string>
     <string name="general_description_unavailable">Sem descrição disponível</string>
     <string name="general_disagree">Discordo</string>
+    <string name="general_done">Feito</string>
     <string name="general_download">Baixar</string>
     <string name="general_draft">Rascunho</string>
     <string name="general_encounters">Visitas</string>
     <string name="general_fail">Falha</string>
+    <string name="general_failure">Falha</string>
+    <string name="general_feedback">Comentários</string>
+    <string name="general_filling_forms">Preenchendo Formulários</string>
     <string name="general_finish">Terminar</string>
     <string name="general_finish_text">Terminar</string>
     <string name="general_form">Formulário</string>
@@ -159,6 +192,7 @@
     <string name="general_large">Ampla</string>
     <string name="general_load">Carregar</string>
     <string name="general_loading_encounters">Encontros ainda estão carregando</string>
+    <string name="general_loading_reports">Os relatórios ainda estão carregando</string>
     <string name="general_location_setting">Configurações de localização</string>
     <string name="general_locations">Locais</string>
     <string name="general_login">Entrar</string>
@@ -173,13 +207,17 @@
     <string name="general_notifications">Notificações</string>
     <string name="general_observations">Observações</string>
     <string name="general_ok">Ok</string>
+    <string name="general_other">De outros</string>
     <string name="general_password">Senha</string>
+    <string name="general_patient_registration">Registro do Cliente</string>
     <string name="general_previous">Anterior</string>
     <string name="general_progress_message">Isso pode demorar um pouco</string>
     <string name="general_providers">Provedores</string>
+    <string name="general_reports">Report</string>
     <string name="general_requirement">Requerimento</string>
     <string name="general_retry">RETRIBUIÇÃO</string>
     <string name="general_save">Gravar</string>
+    <string name="general_saving_forms">Salvando formulários</string>
     <string name="general_search">Pesquisar</string>
     <string name="general_server">Servidor</string>
     <string name="general_settings">Configurações</string>
@@ -195,13 +233,19 @@
     <string name="general_view_encounter">Ver visita</string>
     <string name="general_welcome">Bem-vindo</string>
     <string name="general_yes">Sim</string>
-    <string name="general_reports">Report</string>
+
+    <string name="get_more">Mais do servidor</string>
+
     <string name="header_cohort_category">Configurações de coorte</string>
     <string name="header_muzima_category">Configurações de mUzima</string>
     <string name="header_openmrs_category">Configurações de OpenMRS</string>
     <string name="header_provider_location_category">Provedor/Configurações de Locais</string>
+
     <string name="hello_general">Olá</string>
+
+    <string name="help_center">Centro de Ajuda</string>
     <string name="help_general">Socorro!</string>
+
     <string name="hint_advanced_setup">Use os passos do wizard para escolher o que quer</string>
     <string name="hint_audio_caption">Por favor introduza uma legenda para o áudio</string>
     <string name="hint_audio_record">Gravar ou escolher áudio</string>
@@ -223,6 +267,7 @@
     <string formatted="false" name="hint_client_summary_forms">%d Incompleto, %d Completo, %d Recomendado</string>
     <string formatted="false" name="hint_client_summary_notifications">%d Novas Notificações, %d Todos de notificações</string>
     <string formatted="false" name="hint_client_summary_observations">%d Observações</string>
+    <string formatted="false" name="hint_client_summary_reports">%d Relatórios</string>
     <string name="hint_cohort_download">Seleccione uma ou mais coortes a partir da lista e clique no \'Próximo\' para
         baixar
     </string>
@@ -279,6 +324,7 @@
     <string name="hint_enable_shr">Ativar recurso de cartão inteligente</string>
     <string name="hint_encounter_location_validation_failure">Por favor forneça um local a partir da lista dos possíveis locais</string>
     <string name="hint_encounter_provider_validation_failure">Por favor forneça um provedor a partir da lista dos possíveis provedores</string>
+    <string name="hint_feedback_prompt">Por favor insira a sua mensagem</string>
     <string name="hint_form_auto_save_interval">O valor no qual o formulário será automaticamente gravado</string>
     <string name="hint_form_download">Por favor seleccione formulários a partir da lista de todos os formulários e
         clique em baixar
@@ -290,12 +336,14 @@
     <string name="hint_future_date_validation_failure">Por favor introduza uma data futura</string>
     <string name="hint_gps_location_off">Localização está desligado! Por favor, ative a localização nas configurações.</string>
     <string name="hint_guided_setup">Seleccione a presente configuração e permita mUzima fazer o resto</string>
+    <string name="hint_help_prompt">Por favor insira a sua mensagem</string>
     <string name="hint_image_caption_prompt">Por favor introduza uma legenda para a imagem</string>
     <string name="hint_incomplete_form_unavailable">Formulários incompletos estão disponíveis somente se tiver guardado
         um formulário preenchido parcialmente
     </string>
     <string name="hint_install_psmart">Gostaria de instalar o aplicativo P-Smart?</string>
     <string name="hint_last_synced">Última sincronização em: %s</string>
+    <string name="hint_light_mode">Ativar tema claro</string>
     <string name="hint_loading_progress">Carregando…</string>
     <string name="hint_local_connection_unavailable">Por favor conecte o dispositivo e tente de novo</string>
     <string name="hint_location_pref_add">Adicione o local que quer baixar</string>
@@ -316,6 +364,8 @@
     <string name="hint_option_none_exclusive_selection_validation_failure">Se \'Nenhum\' é seleccionado, nehuma outra opção pode ser seleccionada</string>
     <string name="hint_password_change">Alterou a sua senha recentemente?</string>
     <string name="hint_password_prompt">Por favor Introduza a Senha</string>
+    <string name="hint_patient_report_list_download">Pressione carregar para buscar a lista de relatórios disponíveis no servidor</string>
+    <string name="hint_patient_reports_sync">Selecione relatórios da lista de servidores e clique em sincronizar</string>
     <string name="hint_phone_number_validation_failure">Número de telefone inválido. Por favor verifique e re-introduza</string>
     <string name="hint_provider_not_set">Não tem privilégio de provedor ou o seus dados de provedor não foram baixados,
         por favor use a opção de adicionar provedor
@@ -348,12 +398,18 @@
         para baixar
     </string>
     <string name="hint_write_SHR_to_card">Você quer escrever o Registro de Saúde Compartilhado no cartão?</string>
+
     <string name="how_to_general">Como:</string>
+
     <string name="inbox_outbox_label_text">## Caixa de entrada, ## Caixa de fora</string>
+
     <string name="incomplete_outbox_text">## Incompleto, ## Caixa de fora</string>
+
     <string name="individual_obs">Obs Individual</string>
     <string name="individual_obs_description">Obs Individual</string>
+
     <string name="info_authentication_in_progress">Autenticação em progresso…</string>
+    <string name="info_background_data_sync_started">Sincronizando dados em segundo plano</string>
     <string name="info_client_demographics_download">Baixando demográfico de clientes…</string>
     <string name="info_client_identifier_change">Identificador do cliente mudou no servidor. O novo identificador será
         usado daqui para frente.
@@ -384,6 +440,7 @@
     <string name="info_concept_not_downloaded">Não baixou nenhum conceito</string>
     <string name="info_concept_unavailable">Nenhum conceito adicionado ainda</string>
     <string formatted="false" name="info_concepts_downloaded">Baixou %d conceitos</string>
+    <string name="info_data_sync_cancelled">A sincronização de dados do mUzima foi cancelada.</string>
     <string name="info_disclaimer"><![CDATA[
         <p>
             mUzima é distribuído sob os termos da Licença Pública de Mozilla, v. 2.0 (MPL 2.0).
@@ -525,6 +582,10 @@
     </string>
     <string name="info_patient_data_download">Bainxando dados dos clientes</string>
     <string name="info_patient_download">Baixando Clientes</string>
+    <string name="info_patient_reports_download_in_progress">Download de relatórios de clientes</string>
+    <string formatted="false" name="info_patient_reports_downloaded">%d Relatórios baixados</string>
+    <string name="info_patient_reports_fetch_in_progress">Já buscando relatórios, ignorou a solicitação</string>
+    <string name="info_patient_reports_unavailable">Não há relatórios de clientes disponíveis</string>
     <string formatted="false" name="info_provider_delete_success">%d Provedores apagados com sucesso</string>
     <string name="info_provider_download">Baixando Provedores…</string>
     <string name="info_provider_downloaded">Baixou 1 provedor</string>
@@ -536,62 +597,114 @@
     <string name="info_real_time_upload_success">mUzima carregou os dados com sucesso</string>
     <string name="info_scanner_exists">Código de barra já está instalado.</string>
     <string name="info_session_time_out">A sessão expirou. Por favor entra de novo para proceder.</string>
+    <string name="info_setting_downloaded">1 configuração baixada</string>
+    <string name="info_settings_download_progress">Download de configurações</string>
     <string name="info_settings_download_success">Configuração baixada e atualizada com sucesso</string>
+    <string formatted="false" name="info_settings_downloaded">%d configurações baixadas</string>
+    <string name="info_settings_not_download">Nenhuma configuração baixada</string>
+    <string name="info_settings_update">Atualizando configurações</string>
     <string name="info_setup_complete_fail">Instalação completada com alguma falha</string>
     <string name="info_setup_complete_success">Instalação completada com sucesso</string>
     <string name="info_setup_config_load">Carregando Configurações de Instalação</string>
     <string name="info_setup_configuration_wizard_prepare">Preparando wizard de instalção de configuração</string>
+    <string formatted="false" name="info_submitted_form_data_status">Status dos formulários enviados recentemente:
+        %d Processado com sucesso, %d Processado com erro, %d Processamento pendente, %d status desconhecido.</string>
+    <string name="info_submitted_form_data_status_check">Verificando o status dos formulários enviados recentemente.</string>
+    <string name="info_submitted_form_data_status_check_failure">Não foi possível verificar o status dos formulários
+        enviados recentemente.</string>
     <string name="info_tag_unavailable">Nenhuma etiqueta disponível</string>
     <string name="info_url_validate">Passo 1: Validar URL</string>
     <string name="info_video_chose_activity_unavailable">Erro: Aplicação para escolha de vídeo não encontrado</string>
     <string name="info_video_play_activity_unavailable">Erro: Aplicação para projectar vídeo não encontrado</string>
     <string name="info_video_record_activity_unavailable">Erro: Aplicação para gravar vídeo não encontrado</string>
+
     <string name="initial_setup_for_muzima_general">Configuração inicial para o mUzima</string>
+
+    <string name="interactive_help_choose">Escolha uma opção:</string>
+    <string name="interactive_help_header">Por favor, conte-nos como podemos ajudá-lo</string>
+    <string name="interactive_help_hint">Digite sua mensagem</string>
+
     <string name="introduction_to_muzima_general_text">Introdução ao mUzima</string>
+
     <string name="june_8_sample_date">8 de junho</string>
+
     <string formatted="false" name="menu_SHR_data_sync">Sincronizar dados SHR (%d)</string>
+    <string name="menu_all_data_sync">Sincronizar todos os dados</string>
     <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
     <string name="menu_form_data_sync">Sincronizar dados do formulário</string>
+
+    <string name="message_feedback_halt">Sua mensagem não será enviada.</string>
+    <string name="message_feedback_sent">Obrigado pela sua mensagem. \n Seu feedback é importante para nós.</string>
+    <string name="message_help_halt">Sua mensagem não será enviada.</string>
+    <string name="message_help_sent">Agradecemos seu contato. \n
+        Nossa equipe de suporte investigará sua solicitação. \n
+        Nós vamos voltar para você o mais breve possível.</string>
     <string name="message_missing_form_encounter_details_error">deve ser providenciado</string>
+
     <string name="muzima_training_manual_general">Manual de treinamento do mUzima</string>
+
     <string name="new_messages_number_text"># novas mensagens</string>
+
     <string name="no_default_encounter_location">Nenhum local de encontro padrão</string>
     <string name="no_description_general">Nenhuma descrição</string>
+    <string name="no_email_client">Nenhum cliente de email instalado neste dispositivo. \n
+        Por favor, instale um e depois deixe seu feedback.</string>
+
     <string name="null_encounter_date_error">Hitilafu ilitokea wakati wa kuhifadhi fomu. Tarehe ya kukutana inapaswa kutolewa</string>
     <string name="null_encounter_location_error">Ocorreu um erro ao salvar o formulário. A localização do encontro deve ser fornecida</string>
     <string name="null_encounter_provider_error">Ocorreu um erro ao salvar o formulário. Provedor de encontro deve ser fornecido</string>
+
     <string name="number_hashtag_representation">##</string>
+
     <string name="observation_details">Detalhes de Observação</string>
     <string name="observation_text_dialog">Observação:</string>
     <string name="observation_value">Valor de Observação:</string>
+
     <string name="patient_SHR_search_dialog_title">Pesquisa SHR Paciente</string>
     <string name="patient_SHR_search_title_text">Pesquisa SHR Paciente</string>
+
     <string name="provider_details">Detalhes do provedor</string>
     <string name="provider_identifier">Identificador de Provedor:</string>
     <string name="provider_name">Nome do provedor:</string>
     <string name="provider_name_general">Nome do provedor</string>
     <string name="provider_reports_general">Relatórios de fornecedores</string>
+
     <string name="registering_patient_message_title_text">Registrando cliente em mUzima …</string>
+
     <string name="reply_hint_text">envie sua resposta</string>
+
     <string name="sample_date_rep">21 de março de 2018</string>
     <string name="sample_date_text">21/02/2018</string>
+
     <string name="scan_card_id_title">ID do cartão de digitalização</string>
+
     <string name="search_patient_on_server_option_title_text">Cliente não está disponível localmente, gostaria de
         pesquisar no servidor?</string>
+
     <string name="select_a_registration_form_text">Selecione um formulário de inscrição</string>
+
+    <string name="send_feedback">Enviar comentários</string>
     <string name="send_general_text">Mandar</string>
+
     <string name="server_side_setup_general">Configuração do lado do servidor</string>
+
     <string name="setting_up_muzima_general_text">Configurando o mUzima</string>
+
     <string name="shr_registration">Registro de SHR</string>
     <string name="shr_registration_description">Dados de registro de SHR</string>
+
     <string name="success_writing_smartcard">Os dados do cartão inteligente foram escritos com sucesso.</string>
+
     <string name="synced_label_text">## Sincronizado</string>
     <string name="synced_total_label_text">## Sincronizado, ## Total</string>
+
     <string name="tagging_forms">Formulários de marcação</string>
+
     <string name="title_about_dashboard_help_html">Sobre o Painel de Controle</string>
     <string name="title_activity_audio">Adicionar Audio</string>
     <string name="title_activity_client_encounters">Visitas do Cliente</string>
     <string name="title_activity_client_observations">Observações do Cliente</string>
+    <string name="title_activity_client_reports">Client Reports</string>
     <string name="title_activity_client_summary">Sumário do Cliente</string>
     <string name="title_activity_cohort_prefix">Prefixos de Coorte</string>
     <string name="title_activity_image">Adicionar Imagem</string>
@@ -648,6 +761,7 @@
     <string name="title_install_psmart">Instalar o aplicativo P-Smart</string>
     <string name="title_introduction_video">Vídeo introdutório para mUzima</string>
     <string name="title_landing_page">Página de destino</string>
+    <string name="title_light_mode">Ativar o modo de dia</string>
     <string name="title_local_client_search_help_video">Pesquisa de clientes (local)</string>
     <string name="title_location_download">Passo 3: Adicionar Local(s)</string>
     <string name="title_location_help">Ajuda com Locais</string>
@@ -676,14 +790,19 @@
     <string name="title_video_caption">Legenda do vídeo</string>
     <string name="title_video_choose">Escolha o Vídeo</string>
     <string name="title_video_record">Gravar o Vídeo</string>
-    <string name="title_activity_client_reports">Client Reports</string>
+
     <string name="to_text">Para</string>
+
     <string name="type_a_message_hint">Digite uma mensagem</string>
     <string name="type_cohort_name_hint">Digite o nome da coorte …</string>
+
     <string name="video_links_general_text">Links de vídeo:</string>
+
     <string name="warning_auto_save_interval">Intervalo de gravação automática de formulário:
         Não foi possível definir o intervalo de salvamento automático. \nPor favor, insira um valor entre 1 e 120.
     </string>
+    <string name="warning_cancel_form_download">Isso cancelará o download do formulário. Tem certeza de que deseja
+        cancelar o download do formulário?</string>
     <string name="warning_cohort_prefix_exists">Prefixo de coorte existe</string>
     <string name="warning_empty_cohort_prefix">Não pode adicionar um prefixo para coorte vazia</string>
     <string name="warning_form_close">Formulário de fechamento: Isto irá descartar todas suas alterações. Tem certeza
@@ -696,6 +815,7 @@
         Por favor complete
         e sincroniza estes formulários antes de baixar uma nova versão.
     </string>
+    <string name="warning_invalid_url_provided">O URL que você forneceu é inválido</string>
     <string name="warning_logout_confirm">Tem certeza que quer sair e fechar o aplicativo mUzima?</string>
     <string name="warning_registration_form_data_delete">Está para apagar dados de registo. Isto irá apagar o registo do
         cliente no dispositivo. Tem certeza?
@@ -707,56 +827,9 @@
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo,
         incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?
     </string>
+
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
+
     <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
-    <string name="help_center">Centro de Ajuda</string>
-    <string name="feedback_header">Por favor envie-nos seus comentários e feedback</string>
-    <string name="feedback_rating_question">Como é fácil usar o aplicativo mUzima?</string>
-    <string name="feedback_hint">O que você está pensando?</string>
-    <string name="general_feedback">Comentários</string>
-    <string name="send_feedback">Enviar comentários</string>
-    <string name="hint_feedback_prompt">Por favor insira a sua mensagem</string>
-    <string name="message_feedback_sent">Obrigado pela sua mensagem. \n Seu feedback é importante para nós.</string>
-    <string name="message_feedback_halt">Sua mensagem não será enviada.</string>
-    <string name="no_email_client">Nenhum cliente de email instalado neste dispositivo. \n
-        Por favor, instale um e depois deixe seu feedback.</string>
-    <string name="interactive_help_header">Por favor, conte-nos como podemos ajudá-lo</string>
-    <string name="interactive_help_choose">Escolha uma opção:</string>
-    <string name="interactive_help_hint">Digite sua mensagem</string>
-    <string name="message_help_sent">Agradecemos seu contato. \n
-        Nossa equipe de suporte investigará sua solicitação. \n
-        Nós vamos voltar para você o mais breve possível.</string>
-    <string name="hint_help_prompt">Por favor insira a sua mensagem</string>
-    <string name="message_help_halt">Sua mensagem não será enviada.</string>
-    <string name="ask_help">Pedindo ajuda</string>
-    <string name="title_light_mode">Ativar o modo de dia</string>
-    <string name="hint_light_mode">Ativar tema claro</string>
-    <string name="warning_cancel_form_download">Isso cancelará o download do formulário. Tem certeza de que deseja
-        cancelar o download do formulário?</string>
-    <string name="general_failure">Falha</string>
-    <string name="warning_invalid_url_provided">O URL que você forneceu é inválido</string>
-    <string name="info_data_sync_cancelled">A sincronização de dados do mUzima foi cancelada.</string>
-    <string name="info_background_data_sync_started">Sincronizando dados em segundo plano</string>
-    <string name="menu_all_data_sync">Sincronizar todos os dados</string>
-    <string name="info_submitted_form_data_status_check">Verificando o status dos formulários enviados recentemente.</string>
-    <string name="info_submitted_form_data_status_check_failure">Não foi possível verificar o status dos formulários
-        enviados recentemente.</string>
-    <string formatted="false" name="info_submitted_form_data_status">Status dos formulários enviados recentemente:
-        %d Processado com sucesso, %d Processado com erro, %d Processamento pendente, %d status desconhecido.</string>
-    <string name="general_saving_forms">Salvando formulários</string>
-    <string name="general_filling_forms">Preenchendo Formulários</string>
-    <string name="general_patient_registration">Registro do Cliente</string>
-    <string name="general_other">De outros</string>
-    <string name="downloaded_reports">Relatórios baixados</string>
-    <string name="error_patient_report_fetch">Ocorreu um erro ao obter relatórios de clientes de um repositório local</string>
-    <string name="general_loading_reports">Os relatórios ainda estão carregando</string>
-    <string name="get_more">Mais do servidor</string>
-    <string formatted="false" name="hint_client_summary_reports">%d Relatórios</string>
-    <string name="hint_patient_report_list_download">Pressione carregar para buscar a lista de relatórios disponíveis no servidor</string>
-    <string name="hint_patient_reports_sync">Selecione relatórios da lista de servidores e clique em sincronizar</string>
-    <string formatted="false" name="info_patient_reports_downloaded">%d Relatórios baixados</string>
-    <string name="info_patient_reports_download_in_progress">Download de relatórios de clientes</string>
-    <string name="info_patient_reports_unavailable">Não há relatórios de clientes disponíveis</string>
-    <string name="info_patient_reports_fetch_in_progress">Já buscando relatórios, ignorou a solicitação</string>
 </resources>
