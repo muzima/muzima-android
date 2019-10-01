@@ -46,6 +46,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
+import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.progressdialog.ProgressDialogUpdateIntentService;
@@ -65,7 +66,6 @@ import java.util.logging.Logger;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
@@ -1112,8 +1112,11 @@ public class MuzimaSyncService {
 
         int[] result = new int[2];
         try {
-            List<MuzimaSetting> settings = settingsController.downloadAllSettings();
-            settingsController.saveOrUpdateSetting(settings);
+            List<MuzimaSetting> settings = settingsController.downloadChangedSettingsSinceLastSync();
+            if(settings.size()>0) {
+                settingsController.saveOrUpdateSetting(settings);
+                updateSettingsPreferences(settings);
+            }
             result[0] = SUCCESS;
             result[1] = settings.size();
         } catch (MuzimaSettingController.MuzimaSettingDownloadException e){
@@ -1124,5 +1127,17 @@ public class MuzimaSyncService {
             result[0] = SyncStatusConstants.SAVE_ERROR;
         }
         return result;
+    }
+
+    public void updateSettingsPreferences(List<MuzimaSetting> muzimaSettings) {
+        for (MuzimaSetting muzimaSetting : muzimaSettings) {
+            if(MuzimaSettingUtils.isGpsFeatureEnabledSetting(muzimaSetting)) {
+                new GPSFeaturePreferenceService(muzimaApplication).updateGPSDataPreferenceSettings();
+            } else if(MuzimaSettingUtils.isSHRFeatureEnabledSetting(muzimaSetting)){
+                new SHRStatusPreferenceService(muzimaApplication).updateSHRStatusPreference();
+            } else if(MuzimaSettingUtils.isPatientIdentifierAutogenerationSetting(muzimaSetting)){
+                new RequireMedicalRecordNumberPreferenceService(muzimaApplication).updateRequireMedicalRecordNumberPreference();
+            }
+        }
     }
 }

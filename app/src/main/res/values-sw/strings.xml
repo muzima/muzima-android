@@ -362,7 +362,7 @@
     <string name="info_form_load">Fomu zinapakiwa…</string>
     <string name="info_form_metadata_download">Upakuaji wa metadata za fomu</string>
     <string name="info_form_not_downloaded">Hamna fomu zilizopakuliwa</string>
-    <string formatted="false" name="info_form_template_concept_download">Templeti za fomu % na konsepti %d zimedukuliwa</string>
+    <string formatted="false" name="info_form_template_concept_download">Templeti za fomu %d na konsepti %d zimedukuliwa</string>
     <string name="info_form_template_download">Violezo vya fomu vinapakuliwa</string>
     <string name="info_form_template_downloaded">Kiolezo kimoja cha fomu kimepakuliwa</string>
     <string name="info_form_template_not_downloaded">Hamna kiolezo cha fomu kilichopakuliwa</string>

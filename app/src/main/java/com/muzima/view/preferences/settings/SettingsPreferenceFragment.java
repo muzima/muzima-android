@@ -285,7 +285,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                                         RequireMedicalRecordNumberPreferenceService requireMedicalRecordNumberPreferenceService
                                                 = new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getActivity()
                                                 .getApplication());
-                                        requireMedicalRecordNumberPreferenceService.saveRequireMedicalRecordNumberPreference();
+                                        requireMedicalRecordNumberPreferenceService.updateRequireMedicalRecordNumberPreference();
                                         requireMedicalRecordNumberPreference
                                                 .setChecked(requireMedicalRecordNumberPreferenceService.getRequireMedicalRecordNumberPreferenceValue());
                                         Toast.makeText(getActivity(), getString(R.string.info_settings_download_success), Toast.LENGTH_SHORT).show();

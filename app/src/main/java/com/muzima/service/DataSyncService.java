@@ -189,13 +189,13 @@ public class DataSyncService extends IntentService {
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadNewSettings();
                     broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_SETTINGS);
-                    prepareBroadcastMsg(broadcastIntent, result, getString(R.string.info_settings_downloaded));
+                    prepareBroadcastMsgForSettingsDownload(broadcastIntent, result);
                 }
                 break;
             default:
                 break;
         }
-        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+        //LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
     private void consolidateAndSyncIndependentPatients(Intent broadcastIntent) {
@@ -356,6 +356,19 @@ public class DataSyncService extends IntentService {
         }
     }
 
+    private void prepareBroadcastMsgForSettingsDownload(Intent broadcastIntent, int[] result) {
+        broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, result[0]);
+        if (isSuccess(result)) {
+            String msg = getString(R.string.info_settings_downloaded,result[1]);
+            broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msg);
+            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, result[1]);
+        } else {
+            String msg = getString(R.string.error_settings_download);
+            broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msg);
+        }
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+    }
+
     private void saveSyncTime(int[] result, APIName apiName) {
         if (isSuccess(result)) {
             LastSyncTimeService lastSyncTimeService = null;
@@ -398,7 +411,6 @@ public class DataSyncService extends IntentService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(MUZIMA_NOTIFICATION, mBuilder.getNotification());
     }
-
 
     private void updateNotificationMsg(String msg) {
         notificationMsg = msg;

@@ -18,7 +18,7 @@ public class SHRStatusPreferenceService extends PreferenceService{
         this.application = application;
     }
 
-    public void saveSHRStatusPreference() {
+    public void updateSHRStatusPreference() {
         boolean enableSHR = application.getMuzimaSettingController()
                 .isSHREnabled();
         Resources resources = context.getResources();
