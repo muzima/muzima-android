@@ -28,5 +28,4 @@
     <string translatable="false" name="preference_enable_shr_key">Enable SHR</string>
     <string translatable="false" name="preference_enable_gps_key">Enable GPS</string>
     <string translatable="false" name="preference_light_mode">lightMode</string>
-    <string translatable="false" name="preference_enable_relationship_key">enableRelationship</string>
 </resources>

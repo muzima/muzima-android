@@ -161,6 +161,7 @@
     <string name="general_load">Load</string>
     <string name="general_loading_encounters">Encounters are still loading</string>
     <string name="general_loading_reports">Reports are still loading</string>
+    <string name="general_loading_relationships">Relationships are still loading</string>
     <string name="general_location_setting">Location Settings</string>
     <string name="general_locations">Locations</string>
     <string name="general_login">Login</string>
@@ -179,6 +180,8 @@
     <string name="general_previous">Previous</string>
     <string name="general_progress_message">This might take a while</string>
     <string name="general_providers">Providers</string>
+    <string name="general_relationship">Relationship</string>
+    <string name="general_relationships">Relationships</string>
     <string name="general_requirement">Requirement</string>
     <string name="general_retry">RETRY</string>
     <string name="general_save">Save</string>
@@ -447,6 +450,7 @@
     <string name="info_encounter_patient_not_downloaded">Did not download any encounters</string>
     <string formatted="false" name="info_encounter_patients_downloaded">Downloaded 1 encounter for %d clients</string>
     <string name="info_encounter_unavailable">No encounters available</string>
+    <string name="info_relationships_unavailable">No relationships available</string>
     <string formatted="false" name="info_encounters_patient_downloaded">Downloaded %d encounters for 1 client</string>
     <string formatted="false" name="info_encounters_patients_downloaded">Downloaded %d encounters for %d clients
     </string>

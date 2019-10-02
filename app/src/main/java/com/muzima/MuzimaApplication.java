@@ -27,6 +27,7 @@ import com.muzima.api.service.LocationService;
 import com.muzima.api.service.NotificationService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.ProviderService;
+import com.muzima.api.service.RelationshipService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -38,6 +39,7 @@ import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
+import com.muzima.controller.RelationshipController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
@@ -101,6 +103,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private MuzimaSettingController settingsController;
     private SmartCardController smartCardController;
     private PatientReportController patientReportController;
+    private RelationshipController relationshipController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -369,6 +372,17 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return patientReportController;
+    }
+
+    public RelationshipController getRelationshipController() {
+        if (relationshipController == null) {
+            try {
+                relationshipController = new RelationshipController(muzimaContext.getService(RelationshipService.class));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return relationshipController;
     }
 
     public void resetTimer(int timeOutInMin) {

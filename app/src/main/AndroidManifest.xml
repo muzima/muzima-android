@@ -324,6 +324,16 @@
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
         <activity
+                android:name=".view.relationship.RelationshipsList"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/general_relationships"
+                android:parentActivityName=".view.patients.PatientSummaryActivity"
+                android:windowSoftInputMode="adjustResize">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
+        </activity>
+        <activity
                 android:name=".view.notifications.NotificationsListActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_notifications"
