@@ -147,7 +147,7 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
         }
 
         if(StringUtils.isEmpty(msg)){
-            msg = getString(R.string.info_download_complete, syncStatus);
+            msg = getString(R.string.info_download_complete, syncStatus) + "Sync type= "+intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
         }
 
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
