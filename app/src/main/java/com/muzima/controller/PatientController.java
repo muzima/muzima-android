@@ -14,12 +14,15 @@ import android.util.Log;
 import com.muzima.api.model.*;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.PatientService;
+import com.muzima.utils.CustomColor;
 import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 
@@ -27,10 +30,14 @@ public class PatientController {
 
     private final PatientService patientService;
     private final CohortService cohortService;
+    private final Map<String, Integer> tagColors;
+    private List<Tag> selectedTags;
 
     public PatientController(PatientService patientService, CohortService cohortService) {
         this.patientService = patientService;
         this.cohortService = cohortService;
+        tagColors = new HashMap<>();
+        selectedTags = new ArrayList<>();
     }
 
     public void replacePatients(List<Patient> patients) throws PatientSaveException {
@@ -296,5 +303,64 @@ public class PatientController {
         PatientDeleteException(Throwable e) {
             super(e);
         }
+    }
+
+    public int getTagColor(String uuid) {
+        if (!tagColors.containsKey(uuid)) {
+            tagColors.put(uuid, CustomColor.getRandomColor());
+        }
+        return tagColors.get(uuid);
+    }
+
+    public List<Tag> getSelectedTags() {
+        return selectedTags;
+    }
+
+    public void setSelectedTags(List<Tag> selectedTags) {
+        this.selectedTags = selectedTags;
+    }
+
+    public List<Tag> getAllTags() throws PatientLoadException {
+        List<Tag> allTags = new ArrayList<>();
+        List<Patient> allPatients = null;
+        try {
+            allPatients = patientService.getAllPatients();
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+        for (Patient patient : allPatients) {
+            for (Tag tag : patient.getTags()) {
+                if (!allTags.contains(tag)) {
+                    allTags.add(tag);
+                }
+            }
+        }
+        return allTags;
+    }
+
+    public List<String> getSelectedTagUuids() {
+        List<Tag> selectedTags = getSelectedTags();
+        List<String> tags = new ArrayList<String>();
+        for (Tag selectedTag : selectedTags) {
+            tags.add(selectedTag.getUuid());
+        }
+        return tags;
+    }
+
+    public List<Patient> filterPatientByTags(List<Patient> patients, List<String> tagsUuid) {
+        if (tagsUuid == null || tagsUuid.isEmpty()) {
+            return patients;
+        }
+        List<Patient> filteredPatients = new ArrayList<>();
+        for (Patient patient : patients) {
+            Tag[] patientTags = patient.getTags();
+            for (Tag patientTag : patientTags) {
+                if (tagsUuid.contains(patientTag.getUuid())) {
+                    filteredPatients.add(patient);
+                    break;
+                }
+            }
+        }
+        return filteredPatients;
     }
 }

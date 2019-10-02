@@ -21,6 +21,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,15 +41,18 @@ import android.support.v7.widget.SearchView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.patients.PatientTagsListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.Tag;
 import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.ThemeUtils;
@@ -76,7 +82,9 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_REA
 import com.muzima.api.model.SmartCardRecord;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -125,12 +133,17 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private final ThemeUtils themeUtils = new ThemeUtils();
     private boolean isSHREnabled;
 
+    private DrawerLayout mainLayout;
+    private PatientTagsListAdapter tagsListAdapter;
+    private TagPreferenceService tagPreferenceService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_list);
+        mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_patient_list, null);
+        setContentView(mainLayout);
         Bundle intentExtras = getIntent().getExtras();
 
         muzimaApplication = (MuzimaApplication) getApplicationContext();
@@ -185,6 +198,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         serverSearchProgressDialog.setIndeterminate(true);
 
         smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
+        tagPreferenceService = new TagPreferenceService(this);
+        initDrawer();
     }
 
 
@@ -357,6 +372,14 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             case R.id.scan_SHR_card:
                 readSmartCard();
                 return true;
+
+            case R.id.menu_tags:
+                if (mainLayout.isDrawerOpen(GravityCompat.END)) {
+                    mainLayout.closeDrawer(GravityCompat.END);
+                } else {
+                    mainLayout.openDrawer(GravityCompat.END);
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -370,6 +393,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         handleSHREnabledChanged();
         if (!intentBarcodeResults)
             patientAdapter.reloadData();
+        tagsListAdapter.reloadData();
     }
 
     private void prepareLocalSearchNotifyDialog(Patient patient) {
@@ -902,5 +926,76 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             isSHREnabled = isPreferenceSHREnabled;
             invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
         }
+    }
+
+    private void initDrawer() {
+        initSelectedTags();
+        ListView tagsDrawerList = findViewById(R.id.tags_list);
+        tagsDrawerList.setEmptyView(findViewById(R.id.tags_no_data_msg));
+        tagsListAdapter = new PatientTagsListAdapter(this, R.layout.item_tags_list, patientController);
+        tagsDrawerList.setAdapter(tagsListAdapter);
+        tagsDrawerList.setOnItemClickListener(tagsListAdapter);
+        ActionBarDrawerToggle actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
+                R.drawable.ic_labels, R.string.hint_drawer_open, R.string.hint_drawer_close) {
+
+            /**
+             * Called when a drawer has settled in a completely closed state.
+             */
+            public void onDrawerClosed(View view) {
+                String title = getResources().getString(R.string.general_client_list);
+                getSupportActionBar().setTitle(title);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
+
+            /**
+             * Called when a drawer has settled in a completely open state.
+             */
+            public void onDrawerOpened(View drawerView) {
+                String title = getResources().getString(R.string.general_tags);
+                getSupportActionBar().setTitle(title);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
+        };
+        mainLayout.setDrawerListener(actionbarDrawerToggle);
+        mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+        TextView tagsNoDataMsg = findViewById(R.id.tags_no_data_msg);
+        tagsNoDataMsg.setTypeface(Fonts.roboto_bold_condensed(this));
+    }
+
+    private void initSelectedTags() {
+        List<String> selectedTagsInPref = tagPreferenceService.getPatientSelectedTags();
+        List<Tag> allTags = null;
+        try {
+            allTags = patientController.getAllTags();
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Error occurred while get all tags from local repository", e);
+        }
+        List<Tag> selectedTags = new ArrayList<>();
+
+        if (selectedTagsInPref != null) {
+            for (Tag tag : allTags) {
+                if (selectedTagsInPref.contains(tag.getName())) {
+                    selectedTags.add(tag);
+                }
+            }
+        }
+        patientController.setSelectedTags(selectedTags);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        storeSelectedTags();
+    }
+
+    private void storeSelectedTags() {
+        Set<String> newSelectedTags = new HashSet<>();
+        for (Tag selectedTag : patientController.getSelectedTags()) {
+            newSelectedTags.add(selectedTag.getName());
+        }
+        tagPreferenceService.savePatientSelectedTags(newSelectedTags);
     }
 }

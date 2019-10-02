@@ -35,12 +35,14 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Provider;
+import com.muzima.api.model.Tag;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
@@ -83,6 +85,7 @@ class HTMLFormDataStore {
     private final MuzimaApplication application;
     private final MuzimaSettingController settingController;
     private final CohortController cohortController;
+    private final PatientController patientController;
 
     public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormData formData, MuzimaApplication application) {
         this.formWebViewActivity = formWebViewActivity;
@@ -96,6 +99,7 @@ class HTMLFormDataStore {
         this.encounterController = application.getEncounterController();
         this.observationController = application.getObservationController();
         this.cohortController = application.getCohortController();
+        this.patientController = application.getPatientController();
         this.application = application;
     }
 
@@ -115,6 +119,7 @@ class HTMLFormDataStore {
         jsonPayload = injectTimeZoneToEncounterPayload(jsonPayload);
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
+        String patientUuid = formData.getPatientUuid();
         boolean encounterDetailsValidityStatus = true;
         try {
             if (status.equals("complete")) {
@@ -135,6 +140,26 @@ class HTMLFormDataStore {
                 formData.setEncounterDate(encounterDate);
                 formController.saveFormData(formData);
                 formWebViewActivity.setResult(FormsActivity.RESULT_OK);
+                if (status.equals("complete")) {
+                    JSONObject jsonObject = new JSONObject(jsonPayload);
+                    JSONObject jsonObjectInner = jsonObject.getJSONObject("patient");
+                    Log.e(getClass().getSimpleName(),jsonObjectInner.toString());
+                    if(jsonObjectInner.has("patient.tagName") && jsonObjectInner.has("patient.tagUuid")) {
+                        Log.e(getClass().getSimpleName(),"Form Has both tag fields");
+                        List<Tag> tags = new ArrayList<Tag>();
+                        Patient patient = patientController.getPatientByUuid(patientUuid);
+                        for (Tag tag : patient.getTags()) {
+                            tags.add(tag);
+                        }
+
+                        Tag tag = new Tag();
+                        tag.setName(jsonObjectInner.getString("patient.tagName"));
+                        tag.setUuid(jsonObjectInner.getString("patient.tagUuid"));
+                        tags.add(tag);
+                        patient.setTags(tags.toArray(new Tag[tags.size()]));
+                        patientController.updatePatient(patient);
+                    }
+                }
                 if (!keepFormOpen) {
                     formWebViewActivity.finish();
                     if (status.equals("complete")) {
@@ -155,9 +180,14 @@ class HTMLFormDataStore {
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show();
             Log.e(getClass().getSimpleName(), "Exception occurred while saving form data", e);
-            // } catch (Exception e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show();
-            Log.e(getClass().getSimpleName(), "Exception occurred while saving form data", e);
+        }
+        catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while fetching patient", e);
+        }
+        catch (PatientController.PatientSaveException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
