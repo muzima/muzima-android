@@ -472,6 +472,7 @@ public class MuzimaSyncService {
 
             for (CohortData cohortData : cohortDataList) {
                 cohortController.deleteCohortMembers(cohortData.getCohortMembers());
+                patientController.deletePatientByCohortMembership(cohortData.getCohortMembers());
             }
 
             result[0] = SUCCESS;
@@ -800,6 +801,7 @@ public class MuzimaSyncService {
 
         try {
              result[0] = formController.uploadAllCompletedForms() ? SUCCESS : SyncStatusConstants.UPLOAD_ERROR;
+             patientController.deletePatientsPendingDeletion();
         } catch (FormController.UploadFormDataException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while uploading forms.", e);
             String exceptionError = e.getMessage();

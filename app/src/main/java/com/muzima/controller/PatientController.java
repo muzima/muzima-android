@@ -11,8 +11,15 @@
 package com.muzima.controller;
 
 import android.util.Log;
-import com.muzima.api.model.*;
+
+import com.muzima.api.model.CohortMember;
+import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.PatientIdentifierType;
+import com.muzima.api.model.PersonAttributeType;
+import com.muzima.api.model.Tag;
 import com.muzima.api.service.CohortService;
+import com.muzima.api.service.FormService;
 import com.muzima.api.service.PatientService;
 import com.muzima.utils.CustomColor;
 import com.muzima.utils.StringUtils;
@@ -24,7 +31,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.muzima.util.Constants.PATIENT_DELETION_PENDING_STATUS;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
+import static com.muzima.utils.Constants.STATUS_COMPLETE;
+import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 
 public class PatientController {
 
@@ -32,12 +42,14 @@ public class PatientController {
     private final CohortService cohortService;
     private final Map<String, Integer> tagColors;
     private List<Tag> selectedTags;
+    private FormService formService;
 
-    public PatientController(PatientService patientService, CohortService cohortService) {
+    public PatientController(PatientService patientService, CohortService cohortService, FormService formService) {
         this.patientService = patientService;
         this.cohortService = cohortService;
         tagColors = new HashMap<>();
         selectedTags = new ArrayList<>();
+        this.formService = formService;
     }
 
     public void replacePatients(List<Patient> patients) throws PatientSaveException {
@@ -362,5 +374,46 @@ public class PatientController {
             }
         }
         return filteredPatients;
+    }
+
+    public void deletePatientByCohortMembership(List<CohortMember> cohortMembers){
+        for(CohortMember cohortMember:cohortMembers){
+            Patient patient = cohortMember.getPatient();
+            try {
+                int formCount = getFormDataCount(patient.getUuid());
+                if(formCount == 0 ){
+                    patientService.deletePatient(patient);
+                }else{
+                   Patient pat = patientService.getPatientByUuid(patient.getUuid());
+                   pat.setDeletionStatus(PATIENT_DELETION_PENDING_STATUS);
+                   patientService.updatePatient(pat);
+                }
+            } catch (IOException e) {
+                Log.e(getClass().getSimpleName(), "An IOException was encountered : ", e);
+            }
+        }
+    }
+
+    public void deletePatientsPendingDeletion(){
+        try {
+            List<Patient> patients = patientService.getPatientsPendingDeletion();
+            for(Patient patient:patients){
+                int formCount = getFormDataCount(patient.getUuid());
+                if(formCount == 0){
+                    patientService.deletePatient(patient);
+                }
+            }
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "An IOException was encountered : ", e);
+        } catch (ParseException e) {
+            Log.e(getClass().getSimpleName(), "A ParseException was encountered : ", e);
+        }
+    }
+
+    public int getFormDataCount(String patientUuid) throws IOException {
+        int incompleteFormCount = formService.countFormDataByPatient(patientUuid,STATUS_INCOMPLETE);
+        int completeFormCount = formService.countFormDataByPatient(patientUuid,STATUS_COMPLETE);
+        int formCount = incompleteFormCount + completeFormCount;
+        return formCount;
     }
 }
