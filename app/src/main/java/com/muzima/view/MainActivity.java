@@ -10,8 +10,6 @@
 
 package com.muzima.view;
 
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -20,12 +18,13 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.User;
@@ -39,10 +38,8 @@ import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
-import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.notifications.NotificationsListActivity;
 import com.muzima.view.patients.PatientsListActivity;
-import com.muzima.view.reports.ReportActivity;
 import org.apache.lucene.queryParser.ParseException;
 
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
@@ -167,22 +164,6 @@ public class MainActivity extends BroadcastListenerActivity {
      */
     public void notificationsList(View view) {
         Intent intent = new Intent(this, NotificationsListActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Called when the user clicks the Register Client Button
-     */
-    public void registerClient(View view) {
-        Intent intent = new Intent(this, RegistrationFormsActivity.class);
-        startActivity(intent);
-    }
-    
-    /**
-     * Called when the user clicks the Reports area
-     */
-    public void reportsList(View view) {
-        Intent intent = new Intent(this, ReportActivity.class);
         startActivity(intent);
     }
 
