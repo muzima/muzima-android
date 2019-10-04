@@ -87,14 +87,14 @@ public class CohortActivity extends BroadcastListenerActivity {
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
 
         switch (syncType) {
-            case DataSyncServiceConstants.SYNC_COHORTS:
+            case DataSyncServiceConstants.SYNC_COHORTS_METADATA:
                 hideProgressbar();
                 syncInProgress = false;
                 if (syncStatus == SyncStatusConstants.SUCCESS) {
                     cohortPagerAdapter.onCohortDownloadFinish();
                 }
                 break;
-            case DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA:
+            case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA:
                 if (syncStatus == SyncStatusConstants.SUCCESS) {
                     cohortPagerAdapter.onPatientsDownloadFinish();
                 }

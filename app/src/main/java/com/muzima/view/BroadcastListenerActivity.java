@@ -18,6 +18,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 import com.muzima.R;
+import com.muzima.utils.StringUtils;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -62,8 +63,7 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS,
                 SyncStatusConstants.UNKNOWN_ERROR);
 
-        String msg = getString(R.string.info_download_complete, syncStatus);
-        Log.i(getClass().getSimpleName(), msg);
+        String msg = intent.getStringExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE);
 
         switch (syncStatus) {
             case SyncStatusConstants.DOWNLOAD_ERROR:
@@ -100,7 +100,7 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 switch (syncType) {
                     case DataSyncServiceConstants.SYNC_FORMS:
                         int deletedFormCount = intent.getIntExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY, 0);
-                        msg = getString(R.string.info_form_downloaded, downloadCount);
+                        msg = getString(R.string.info_forms_downloaded, downloadCount);
                         if (deletedFormCount > 0) {
                             msg = getString(R.string.info_form_download_delete, downloadCount, deletedFormCount);
                         }
@@ -108,15 +108,15 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                     case DataSyncServiceConstants.SYNC_TEMPLATES:
                         msg = getString(R.string.info_form_template_concept_download, downloadCount, intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0));
                         break;
-                    case DataSyncServiceConstants.SYNC_COHORTS:
+                    case DataSyncServiceConstants.SYNC_COHORTS_METADATA:
                         msg = getString(R.string.info_new_cohort_download, downloadCount);
                         break;
-                    case DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA: {
+                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA: {
                         int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
                         msg = getString(R.string.info_cohort_new_patient_download, downloadCount, downloadCountSec) + getString(R.string.info_patient_data_download);
                         break;
                     }
-                    case DataSyncServiceConstants.SYNC_PATIENTS_ONLY: {
+                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_ONLY: {
                         int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
                         msg = getString(R.string.info_cohorts_patients_download, downloadCount, downloadCountSec);
                         break;
@@ -145,6 +145,11 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
                 }
                 break;
         }
+
+        if(StringUtils.isEmpty(msg)){
+            msg = getString(R.string.info_download_complete, syncStatus) + "Sync type= "+intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
+        }
+
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }
