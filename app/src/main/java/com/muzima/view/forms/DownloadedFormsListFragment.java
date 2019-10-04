@@ -76,7 +76,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
 
     @Override
     public void onTemplateDownloadComplete() {
-        listAdapter.reloadData();
+        reloadData();
     }
 
     public void setAllAvailableFormsCompleteListener(AllAvailableFormsListFragment
@@ -123,7 +123,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
 
         private void onCompleteOfFormDelete() {
             endActionMode();
-            listAdapter.reloadData();
+            reloadData();
             allAvailableFormsCompleteListener.reloadData();
             Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_delete_success), Toast.LENGTH_SHORT).show();
         }
@@ -162,7 +162,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
         List<String> formsWithAssociatedData = new ArrayList<>();
         for (String selectedFormsUUID : selectedFormsUUIDs) {
             try {
-                if (!formController.getUnUploadedFormData(selectedFormsUUID).isEmpty()) {
+                if (!formController.getNonUploadedFormData(selectedFormsUUID).isEmpty()) {
                     formsWithAssociatedData.add(selectedFormsUUID);
                 }
             } catch (FormController.FormDataFetchException e) {

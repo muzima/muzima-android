@@ -10,11 +10,11 @@
 -->
 <resources>
 <string-array name="spinner_array">
-    <item>Other</item>
-    <item>Patient Registration</item>
-    <item>Cohorts</item>
-    <item>Filling Forms</item>
-    <item>Saving Forms</item>
-    <item>Settings</item>
+    <item>@string/general_other</item>
+    <item>@string/general_patient_registration</item>
+    <item>@string/general_cohorts</item>
+    <item>@string/general_filling_forms</item>
+    <item>@string/general_saving_forms</item>
+    <item>@string/general_settings</item>
 </string-array>
 </resources>

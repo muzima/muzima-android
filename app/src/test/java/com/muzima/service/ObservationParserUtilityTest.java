@@ -38,6 +38,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -69,7 +70,7 @@ public class ObservationParserUtilityTest {
     @Before
     public void setUp() {
         initMocks(this);
-        observationParserUtility = new ObservationParserUtility(muzimaApplication);
+        observationParserUtility = new ObservationParserUtility(muzimaApplication,false);
         formDataUuid = "formDataUuid";
         when(muzimaApplication.getConceptController()).thenReturn(conceptController);
         when(muzimaApplication.getProviderController()).thenReturn(providerController);
@@ -112,9 +113,9 @@ public class ObservationParserUtilityTest {
     @Test
     public void shouldCreateNewConceptEntityAndAddItToListIfNotInDB() throws
             ConceptController.ConceptFetchException, ConceptController.ConceptParseException {
-        observationParserUtility = new ObservationParserUtility(muzimaApplication);
+        observationParserUtility = new ObservationParserUtility(muzimaApplication,true);
         when(conceptController.getConceptByName("ConceptName")).thenReturn(null);
-        Concept concept = observationParserUtility.getConceptEntity("1^ConceptName^mm",false);
+        Concept concept = observationParserUtility.getConceptEntity("1^ConceptName^mm",false,false);
         assertThat(concept.getName(), is("ConceptName"));
         assertThat(concept.getConceptType().getName(), is("ConceptTypeCreatedOnThePhone"));
         assertThat(concept.isCreatedOnDevice(), is(true));
@@ -123,18 +124,18 @@ public class ObservationParserUtilityTest {
 
     @Test
     public void shouldNotCreateNewConceptOrObservationForInvalidConceptName() {
-        observationParserUtility = new ObservationParserUtility(muzimaApplication);
+        observationParserUtility = new ObservationParserUtility(muzimaApplication,false);
         assertThat(observationParserUtility.getNewConceptList().size(), is(0));
     }
 
     @Test
     public void shouldNotCreateConceptIfAlreadyExistsInDB() throws ConceptController.ConceptFetchException,
             ConceptController.ConceptParseException{
-        observationParserUtility = new ObservationParserUtility(muzimaApplication);
+        observationParserUtility = new ObservationParserUtility(muzimaApplication,false);
         Concept mockConcept = mock(Concept.class);
         when(conceptController.getConceptByName("ConceptName")).thenReturn(mockConcept);
 
-        Concept concept = observationParserUtility.getConceptEntity("1^ConceptName^mm", false);
+        Concept concept = observationParserUtility.getConceptEntity("1^ConceptName^mm", false,false);
 
         assertThat(concept, is(mockConcept));
         assertThat(concept.isCreatedOnDevice(), is(false));
@@ -144,11 +145,11 @@ public class ObservationParserUtilityTest {
     @Test
     public void shouldCreateOnlyOneConceptForRepeatedConceptNames() throws ConceptController.ConceptFetchException,
             ConceptController.ConceptParseException{
-        observationParserUtility = new ObservationParserUtility(muzimaApplication);
+        observationParserUtility = new ObservationParserUtility(muzimaApplication,false);
         when(conceptController.getConceptByName("ConceptName")).thenReturn(null);
 
-        Concept concept1 = observationParserUtility.getConceptEntity("1^ConceptName^mm",false);
-        Concept concept2 = observationParserUtility.getConceptEntity("1^ConceptName^mm",false);
+        Concept concept1 = observationParserUtility.getConceptEntity("1^ConceptName^mm",false,false);
+        Concept concept2 = observationParserUtility.getConceptEntity("1^ConceptName^mm",false,false);
 
         assertThat(concept1, is(concept2));
         assertThat(concept1.isCreatedOnDevice(), is(true));
@@ -172,7 +173,7 @@ public class ObservationParserUtilityTest {
     public void shouldCreateValueCodedObsAndShouldAddItToNewConceptList() throws
             ConceptController.ConceptFetchException, ConceptController.ConceptParseException,
             ObservationController.ParseObservationException{
-        observationParserUtility = new ObservationParserUtility(muzimaApplication);
+        observationParserUtility = new ObservationParserUtility(muzimaApplication,false);
         Concept concept = mock(Concept.class);
         when(concept.isNumeric()).thenReturn(false);
         when(concept.isCoded()).thenReturn(true);
@@ -186,7 +187,7 @@ public class ObservationParserUtilityTest {
     public void shouldCreateObsWithStringForNonNumericNonCodedConcept() throws
             ConceptController.ConceptFetchException, ConceptController.ConceptParseException,
             ObservationController.ParseObservationException{
-        observationParserUtility = new ObservationParserUtility(muzimaApplication);
+        observationParserUtility = new ObservationParserUtility(muzimaApplication,false);
         Concept concept = mock(Concept.class);
         when(concept.getName()).thenReturn("SomeConcept");
         when(concept.isNumeric()).thenReturn(false);

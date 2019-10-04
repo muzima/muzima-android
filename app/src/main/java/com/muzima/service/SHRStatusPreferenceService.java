@@ -18,7 +18,7 @@ public class SHRStatusPreferenceService extends PreferenceService{
         this.application = application;
     }
 
-    public void saveSHRStatusPreference() {
+    public void updateSHRStatusPreference() {
         boolean enableSHR = application.getMuzimaSettingController()
                 .isSHREnabled();
         Resources resources = context.getResources();
@@ -27,5 +27,11 @@ public class SHRStatusPreferenceService extends PreferenceService{
         settings.edit()
                 .putBoolean(key, enableSHR)
                 .apply();
+    }
+
+    public Boolean isSHRStatusSettingEnabled(){
+        Resources resources = context.getResources();
+        String key = resources.getString(R.string.preference_enable_shr_key);
+        return settings.getBoolean(key,false);
     }
 }

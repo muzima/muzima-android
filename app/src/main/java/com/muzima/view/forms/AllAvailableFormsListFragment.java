@@ -114,12 +114,12 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         if (templateDownloadCompleteListener != null) {
             templateDownloadCompleteListener.onTemplateDownloadComplete();
         }
-        listAdapter.reloadData();
+        reloadData();
     }
 
     public void onFormMetaDataDownloadFinish() {
         newFormsSyncInProgress = false;
-        listAdapter.reloadData();
+        reloadData();
         updateSyncTime();
     }
 
