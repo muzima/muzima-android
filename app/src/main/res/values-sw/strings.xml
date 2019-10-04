@@ -485,9 +485,10 @@
     <string name="info_real_time_upload_success">mfumo wa mUzima imefanikiwa kupakia data zako</string>
     <string name="info_scanner_exists">Kifaa cha kusomea baakodi kimeunganishwa tayari</string>
     <string name="info_session_time_out">sesheni/kikao chako ndani ya mfumo wa mUzima kimeisha muda. Tafadhali ingia tena upate kuendelea.</string>
+    <string name="info_setting_download_success">Mpangilio uliosasishwa umepakuliwa</string>
     <string name="info_setting_downloaded">Imepakuliwa mpangilio 1</string>
     <string name="info_settings_download_progress">Inapakua mipangilio</string>
-    <string name="info_settings_download_success">Mpangilio uliosasishwa umepakuliwa</string>
+    <string name="info_settings_download_success">Mipangilio iliyosasishwa imepakuliwa</string>
     <string formatted="false" name="info_settings_downloaded">Imepakuliwa mipangilio %d</string>
     <string name="info_settings_not_download">Hakuna mipangilio iliyopakuliwa</string>
     <string name="info_settings_update">Inasasisha mipangilio</string>

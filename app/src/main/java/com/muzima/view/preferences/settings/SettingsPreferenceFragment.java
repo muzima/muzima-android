@@ -33,8 +33,10 @@ import com.muzima.api.model.Location;
 import com.muzima.controller.LocationController;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.RealTimeFormUploader;
+import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
+import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.tasks.ValidateURLTask;
 import com.muzima.util.Constants;
 import com.muzima.utils.NetworkUtils;
@@ -61,10 +63,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private static final Integer AUTO_SAVE_INTERVAL_MAXIMUM = 120;
     private static final Integer AUTO_SAVE_INTERVAL_INVALID_VALUE = -1;
 
-    private EditTextPreference serverPreference;
     private CheckBoxPreference encounterProviderPreference;
     private CheckBoxPreference realTimeSyncPreference;
-    private CheckBoxPreference requireMedicalRecordNumberPreference;
     private Activity mActivity;
 
 
@@ -77,8 +77,26 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference);
 
+        setUpServerPreference();
+        setUpUsernamePreference();
+        setUpPasswordPreference();
+        setUpTimeoutPreference();
+        setUpAutosaveIntervalPreference();
+        setUpRealTimeSyncPreference();
+        setUpDuplicateFormDataWarningPreference();
+        setUpFontSizePreference();
+        setUpLandingPagePreference();
+        setUpLightModePreference();
+        setUpRequireMedicalRecordNumberPreference();
+        setUpDefaultEncounterProviderPreference();
+        setUpDefaultEncounterLocationPreference();
+        setUpGPSLocationFeaturePreference();
+        setUpSHRFeaturePreference();
+    }
+
+    private void setUpServerPreference(){
         String serverPreferenceKey = getResources().getString(R.string.preference_server);
-        serverPreference = (EditTextPreference) getPreferenceScreen().findPreference(serverPreferenceKey);
+        final EditTextPreference serverPreference = (EditTextPreference) getPreferenceScreen().findPreference(serverPreferenceKey);
         serverPreference.setSummary(serverPreference.getText());
         serverPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -97,12 +115,21 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                 return false;
             }
         });
+
+        registerTextPreferenceChangeHandler(serverPreferenceKey, serverPreference);
+    }
+
+    private void setUpUsernamePreference(){
         String usernamePreferenceKey = getResources().getString(R.string.preference_username);
         EditTextPreference usernamePreference = (EditTextPreference) getPreferenceScreen().findPreference(usernamePreferenceKey);
         usernamePreference.setSummary(usernamePreference.getText());
         usernamePreference.setEnabled(false);
         usernamePreference.setSelectable(false);
 
+        registerTextPreferenceChangeHandler(usernamePreferenceKey, usernamePreference);
+    }
+
+    private void setUpTimeoutPreference(){
         String timeoutPreferenceKey = getResources().getString(R.string.preference_timeout);
         EditTextPreference timeoutPreference = (EditTextPreference) getPreferenceScreen().findPreference(timeoutPreferenceKey);
         timeoutPreference.setSummary(timeoutPreference.getText());
@@ -138,6 +165,10 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             }
         });
 
+        registerTextPreferenceChangeHandler(timeoutPreferenceKey, timeoutPreference);
+    }
+
+    private void setUpAutosaveIntervalPreference(){
         String autoSavePreferenceKey = getResources().getString(R.string.preference_auto_save_interval);
         EditTextPreference autoSaveIntervalPreference = (EditTextPreference) getPreferenceScreen().findPreference(autoSavePreferenceKey);
         autoSaveIntervalPreference.setSummary(autoSaveIntervalPreference.getText());
@@ -172,7 +203,10 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             }
         });
 
+        registerTextPreferenceChangeHandler(autoSavePreferenceKey, autoSaveIntervalPreference);
+    }
 
+    private void setUpPasswordPreference(){
         String passwordPreferenceKey = getResources().getString(R.string.preference_password);
         EditTextPreference passwordPreference = (EditTextPreference) getPreferenceScreen().findPreference(passwordPreferenceKey);
         if (passwordPreference.getText() != null) {
@@ -181,7 +215,10 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         passwordPreference.setEnabled(false);
         passwordPreference.setSelectable(false);
 
+        registerTextPreferenceChangeHandler(passwordPreferenceKey, passwordPreference);
+    }
 
+    private void setUpRealTimeSyncPreference(){
         String realTimeSyncPreferenceKey = getResources().getString(R.string.preference_real_time_sync);
         realTimeSyncPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(realTimeSyncPreferenceKey);
         realTimeSyncPreference.setSummary(realTimeSyncPreference.getSummary());
@@ -200,13 +237,10 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             }
         });
 
-        registerTextPreferenceChangeHandler(serverPreferenceKey, serverPreference);
-        registerTextPreferenceChangeHandler(usernamePreferenceKey, usernamePreference);
-        registerTextPreferenceChangeHandler(passwordPreferenceKey, passwordPreference);
-        registerTextPreferenceChangeHandler(autoSavePreferenceKey, autoSaveIntervalPreference);
-        registerTextPreferenceChangeHandler(timeoutPreferenceKey, timeoutPreference);
         registerCheckboxPreferenceChangeHandler(realTimeSyncPreferenceKey, realTimeSyncPreference);
+    }
 
+    private void setUpDefaultEncounterProviderPreference(){
         String encounterProviderPreferenceKey = getResources().getString(R.string.preference_encounter_provider_key);
         encounterProviderPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(encounterProviderPreferenceKey);
         encounterProviderPreference.setSummary(encounterProviderPreference.getSummary());
@@ -233,36 +267,139 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                 return true;
             }
         });
+    }
 
-
+    private void setUpDuplicateFormDataWarningPreference(){
         String duplicateFormDataPreferenceKey = getResources().getString(R.string.preference_duplicate_form_data_key);
         CheckBoxPreference duplicateFormDataPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(duplicateFormDataPreferenceKey);
         duplicateFormDataPreference.setSummary(duplicateFormDataPreference.getSummary());
+    }
 
-
+    private void setUpFontSizePreference(){
         String fontSizePreferenceKey = getResources().getString(R.string.preference_font_size);
         ListPreference fontSizePreference = (ListPreference) getPreferenceScreen().findPreference(fontSizePreferenceKey);
         fontSizePreference.setSummary(fontSizePreference.getValue());
         registerListPreferenceChangeHandler(fontSizePreferenceKey, fontSizePreference);
+    }
 
+    private void setUpLandingPagePreference(){
         String landingPagePreferenceKey = getResources().getString(R.string.preference_landing_page);
         ListPreference landingPagePreference = (ListPreference) getPreferenceScreen().findPreference(landingPagePreferenceKey);
         landingPagePreference.setSummary(landingPagePreference.getValue());
         registerListPreferenceChangeHandler(landingPagePreferenceKey, landingPagePreference);
+    }
 
+    private void setUpLightModePreference(){
         String lightModePreferenceKey = getResources().getString(R.string.preference_light_mode);
         final CheckBoxPreference lightModePreference = (CheckBoxPreference) getPreferenceScreen().findPreference(lightModePreferenceKey);
         lightModePreference.setSummary(lightModePreference.getSummary());
+    }
 
+    private void setUpRequireMedicalRecordNumberPreference(){
         String requireMedicalRecordNumberKey = getResources().getString(R.string.preference_require_medical_record_number);
-        requireMedicalRecordNumberPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(requireMedicalRecordNumberKey);
-        requireMedicalRecordNumberPreference.setSummary(requireMedicalRecordNumberPreference.getSummary());
-        requireMedicalRecordNumberPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        final CheckBoxPreference requireMedicalRecordNumberPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(requireMedicalRecordNumberKey);
+        AsyncTask requireMedicalRecordNumberSettingAsyncTask = new AsyncTask<Void, Void,int[] >() {
             @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+            public int[] doInBackground(Void... params){
+                MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
+                        .getApplication()).getMuzimaSyncService();
+                return syncService.downloadSetting(Constants.ServerSettings
+                        .PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING);
+            }
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder
+            @Override
+            protected void onPostExecute(int[] result) {
+                if(result[0] == SUCCESS) {
+                    RequireMedicalRecordNumberPreferenceService requireMedicalRecordNumberPreferenceService
+                            = new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getActivity()
+                            .getApplication());
+                    requireMedicalRecordNumberPreferenceService.updateRequireMedicalRecordNumberPreference();
+                    requireMedicalRecordNumberPreference
+                            .setChecked(requireMedicalRecordNumberPreferenceService.getRequireMedicalRecordNumberPreferenceValue());
+                    Toast.makeText(getActivity(), getString(R.string.info_settings_download_success), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        requireMedicalRecordNumberPreference.setOnPreferenceChangeListener(
+                new ServerSideSettingPreferenceChangeListener(requireMedicalRecordNumberSettingAsyncTask));
+    }
+
+    private void setUpGPSLocationFeaturePreference(){
+        String enableGPSLocationFeaturePreferenceKey = getResources().getString(R.string.preference_enable_gps_key);
+        final CheckBoxPreference enableGPSLocationFeaturePreference = (CheckBoxPreference) getPreferenceScreen()
+                .findPreference(enableGPSLocationFeaturePreferenceKey);
+        AsyncTask gpsLocationSettingAsyncTask = new AsyncTask<Void, Void,int[] >() {
+            @Override
+            public int[] doInBackground(Void... params){
+                MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
+                        .getApplication()).getMuzimaSyncService();
+                return syncService.downloadSetting(Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING);
+            }
+
+            @Override
+            protected void onPostExecute(int[] result) {
+                if(result[0] == SUCCESS) {
+                    GPSFeaturePreferenceService gpsFeaturePreferenceService
+                            = new GPSFeaturePreferenceService((MuzimaApplication) getActivity()
+                            .getApplication());
+                    gpsFeaturePreferenceService.updateGPSDataPreferenceSettings();
+                    enableGPSLocationFeaturePreference
+                            .setChecked(gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled());
+                    Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        enableGPSLocationFeaturePreference.setOnPreferenceChangeListener(
+                new ServerSideSettingPreferenceChangeListener(gpsLocationSettingAsyncTask));
+    }
+
+    private void setUpSHRFeaturePreference(){
+        String enableSHRFeaturePreferencePreferenceKey = getResources().getString(R.string.preference_enable_shr_key);
+        final CheckBoxPreference enableSHRFeaturePreference = (CheckBoxPreference) getPreferenceScreen()
+                .findPreference(enableSHRFeaturePreferencePreferenceKey);
+        AsyncTask enableSHRSettingAsyncTask = new AsyncTask<Void, Void,int[] >() {
+            @Override
+            public int[] doInBackground(Void... params){
+                MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
+                        .getApplication()).getMuzimaSyncService();
+                return syncService.downloadSetting(Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING);
+            }
+
+            @Override
+            protected void onPostExecute(int[] result) {
+                if(result[0] == SUCCESS) {
+                    SHRStatusPreferenceService shrStatusPreferenceService
+                            = new SHRStatusPreferenceService((MuzimaApplication) getActivity()
+                            .getApplication());
+                    shrStatusPreferenceService.updateSHRStatusPreference();
+                    enableSHRFeaturePreference
+                            .setChecked(shrStatusPreferenceService.isSHRStatusSettingEnabled());
+                    Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        enableSHRFeaturePreference.setOnPreferenceChangeListener(
+                new ServerSideSettingPreferenceChangeListener(enableSHRSettingAsyncTask));
+    }
+
+    class ServerSideSettingPreferenceChangeListener implements Preference.OnPreferenceChangeListener{
+
+        private AsyncTask<Void, Void,int[] > settingDownloadAsyncTask;
+
+        ServerSideSettingPreferenceChangeListener(AsyncTask<Void, Void,int[] > settingDownloadAsyncTask){
+            this.settingDownloadAsyncTask = settingDownloadAsyncTask;
+        }
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder
                     .setCancelable(true)
                     .setIcon(getIconRefresh())
                     .setTitle(getString(R.string.title_setting_refresh))
@@ -270,36 +407,14 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                     .setPositiveButton(getResources().getText(R.string.general_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            new AsyncTask<Void, Void,int[] >() {
-                                @Override
-                                public int[] doInBackground(Void... params){
-                                    MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
-                                            .getApplication()).getMuzimaSyncService();
-                                    return syncService.downloadSetting(Constants.ServerSettings
-                                            .PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING);
-                                }
-
-                                @Override
-                                protected void onPostExecute(int[] result) {
-                                    if(result[0] == SUCCESS) {
-                                        RequireMedicalRecordNumberPreferenceService requireMedicalRecordNumberPreferenceService
-                                                = new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getActivity()
-                                                .getApplication());
-                                        requireMedicalRecordNumberPreferenceService.updateRequireMedicalRecordNumberPreference();
-                                        requireMedicalRecordNumberPreference
-                                                .setChecked(requireMedicalRecordNumberPreferenceService.getRequireMedicalRecordNumberPreferenceValue());
-                                        Toast.makeText(getActivity(), getString(R.string.info_settings_download_success), Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            }.execute();
+                            settingDownloadAsyncTask.execute();
                         }
                     }).create().show();
-                return false;
-            }
-        });
+            return false;
+        }
+    }
 
+    private void setUpDefaultEncounterLocationPreference(){
         ListPreference listPreferenceCategory = (ListPreference) findPreference(getResources().getString(R.string.preference_default_encounter_location));
         if (listPreferenceCategory != null) {
 
@@ -475,8 +590,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         }
     }
 
-    public void syncedFormData(boolean result) {
-        if (result) {
+    public void handleSyncedFormDataResult(boolean isFormDataSyncSuccessful) {
+        if (isFormDataSyncSuccessful) {
             new ResetDataTask((SettingsActivity)getActivity(), newURL).execute();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -497,11 +612,11 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     }
 
     private Drawable getIconWarning(){
-        return ThemeUtils.getIconWarning(getContext());
+        return ThemeUtils.getIconWarning(getActivity());
     }
 
     private Drawable getIconRefresh(){
-        return ThemeUtils.getIconRefresh(getContext());
+        return ThemeUtils.getIconRefresh(getActivity());
 
     }
 }

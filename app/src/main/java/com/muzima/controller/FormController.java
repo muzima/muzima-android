@@ -755,7 +755,7 @@ public class FormController {
 
     public FormDataStatus downloadFormDataStatus(FormData formData) throws FormDataStatusDownloadException {
         try {
-            return formService.downloadFormDataStatus(formData.getUuid());
+            return formService.downloadFormDataStatusByFormDataUuid(formData.getUuid());
         } catch (IOException e) {
             throw new FormDataStatusDownloadException(e);
         }

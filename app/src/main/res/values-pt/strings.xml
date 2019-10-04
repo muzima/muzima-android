@@ -597,6 +597,7 @@
     <string name="info_real_time_upload_success">mUzima carregou os dados com sucesso</string>
     <string name="info_scanner_exists">Código de barra já está instalado.</string>
     <string name="info_session_time_out">A sessão expirou. Por favor entra de novo para proceder.</string>
+    <string name="info_setting_download_success">Configuração baixada e atualizada com sucesso</string>
     <string name="info_setting_downloaded">1 configuração baixada</string>
     <string name="info_settings_download_progress">Download de configurações</string>
     <string name="info_settings_download_success">Configuração baixada e atualizada com sucesso</string>

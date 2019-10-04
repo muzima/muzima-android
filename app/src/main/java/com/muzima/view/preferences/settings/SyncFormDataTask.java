@@ -50,9 +50,10 @@ class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected void onPostExecute(Boolean r) {
-        super.onPostExecute(r);
+    protected void onPostExecute(Boolean isFormDataSyncSuccessful
+    ) {
+        super.onPostExecute(isFormDataSyncSuccessful);
         progressDialog.dismiss();
-        settingsPreferenceFragment.syncedFormData(r);
+        settingsPreferenceFragment.handleSyncedFormDataResult(isFormDataSyncSuccessful);
     }
 }

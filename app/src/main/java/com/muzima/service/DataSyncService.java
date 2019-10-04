@@ -17,17 +17,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.model.APIName;
 import com.muzima.api.model.FormData;
-import com.muzima.api.model.LastSyncTime;
-import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +67,6 @@ public class DataSyncService extends IntentService {
                     int[] result = muzimaSyncService.downloadForms();
                     String msg = getString(R.string.info_form_download_delete,result[1], result[2]);
                     prepareBroadcastMsgForDownloadForms(broadcastIntent, result, msg);
-                    //saveSyncTime(result,APIName.DOWNLOAD_FORMS);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_TEMPLATES:
@@ -353,20 +347,6 @@ public class DataSyncService extends IntentService {
             broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msg);
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
-    }
-
-    private void saveSyncTime(int[] result, APIName apiName) {
-        if (isSuccess(result)) {
-            LastSyncTimeService lastSyncTimeService = null;
-            try {
-                lastSyncTimeService = ((MuzimaApplication) getApplication()).getMuzimaContext().getLastSyncTimeService();
-                SntpService sntpService = ((MuzimaApplication)getApplicationContext()).getSntpService();
-                LastSyncTime lastSyncTime = new LastSyncTime(apiName, sntpService.getLocalTime());
-                lastSyncTimeService.saveLastSyncTime(lastSyncTime);
-            } catch (IOException e) {
-                Log.i(getClass().getSimpleName(), "Error setting last sync time.");
-            }
-        }
     }
 
     private boolean authenticationSuccessful(String[] credentials, Intent broadcastIntent) {

@@ -78,20 +78,20 @@ class ObservationParserUtility {
 
     public Concept getConceptEntity(String rawConceptName, boolean isCoded, boolean createConceptIfNotAvailableLocally) throws ConceptController.ConceptFetchException,
             ConceptController.ConceptParseException{
-        String conceptId = getConceptId(rawConceptName);
-        if(StringUtils.isEmpty(conceptId)){
+        String conceptIdOrUuid = getConceptId(rawConceptName);
+        if(StringUtils.isEmpty(conceptIdOrUuid)){
             throw new ConceptController.ConceptParseException("Could not not get Concept identifier for concept with raw name '"
             + rawConceptName + "'");
         }
 
         Concept observedConcept;
-        boolean isConceptIdNumeric = org.apache.commons.lang.StringUtils.isNumeric(conceptId);
+        boolean isConceptIdNumeric = org.apache.commons.lang.StringUtils.isNumeric(conceptIdOrUuid);
 
         if(isConceptIdNumeric) {
-            int intConceptId = Integer.parseInt(conceptId);
+            int intConceptId = Integer.parseInt(conceptIdOrUuid);
             observedConcept =conceptController.getConceptById(intConceptId);
         } else {
-            observedConcept = conceptController.getConceptByUuid(conceptId);
+            observedConcept = conceptController.getConceptByUuid(conceptIdOrUuid);
         }
 
         if (observedConcept == null && createConceptIfNotAvailableLocally == true) {
@@ -108,9 +108,9 @@ class ObservationParserUtility {
             }
 
             if(!isConceptIdNumeric){
-                observedConcept = buildDummyConcept(0,conceptId, conceptName, isCoded);
+                observedConcept = buildDummyConcept(0,conceptIdOrUuid, conceptName, isCoded);
             } else {
-                int intConceptId = Integer.parseInt(conceptId);
+                int intConceptId = Integer.parseInt(conceptIdOrUuid);
                 if (intConceptId > 0) {
                     observedConcept = buildDummyConcept(intConceptId,null, conceptName, isCoded);
                 } else {

@@ -28,4 +28,10 @@ public class SHRStatusPreferenceService extends PreferenceService{
                 .putBoolean(key, enableSHR)
                 .apply();
     }
+
+    public Boolean isSHRStatusSettingEnabled(){
+        Resources resources = context.getResources();
+        String key = resources.getString(R.string.preference_enable_shr_key);
+        return settings.getBoolean(key,false);
+    }
 }

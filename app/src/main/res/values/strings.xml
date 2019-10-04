@@ -123,6 +123,7 @@
     <string name="error_provider_fetch">Something went wrong while fetching providers from local repo</string>
     <string name="error_server_connection_unavailable">Server unreachable</string>
     <string name="error_server_url_invalid">Invalid Server URL.</string>
+    <string name="error_settings_download">Could not download settings</string>
     <string name="error_setup_configuration_download">Setup configurations could not be loaded</string>
     <string name="error_setup_configuration_template_download">Could not download Setup Configuration template</string>
     <string name="error_smartcard_client_not_in_server">Smartcard client  not in server. Register client in mUzima now ?</string>
@@ -592,7 +593,13 @@
     <string name="info_real_time_upload_success">mUzima has uploaded your data successfully</string>
     <string name="info_scanner_exists">Barcode scanner is already installed.</string>
     <string name="info_session_time_out">Your session had timed out. Please log in again to proceed.</string>
+    <string name="info_setting_download_success">Downloaded and updated setting successfully</string>
+    <string name="info_setting_downloaded">Downloaded 1 setting</string>
+    <string name="info_settings_download_progress">Downloading settings</string>
     <string name="info_settings_download_success">Downloaded and updated settings successfully</string>
+    <string formatted="false" name="info_settings_downloaded">Downloaded %d settings</string>
+    <string name="info_settings_not_download">No settings downloaded</string>
+    <string name="info_settings_update">Updating settings</string>
     <string name="info_setup_complete_fail">Setup completed with some failure</string>
     <string name="info_setup_complete_success">Setup completed successfully</string>
     <string name="info_setup_config_load">Loading Setup Configs</string>
@@ -627,7 +634,7 @@
     <string name="message_help_halt">Maybe next time.</string>
     <string name="message_help_sent">Thanks for reaching out. \n
         Our support team will investigate your request. \n
-        We will back to you as soon as possible.</string>
+        We will get back to you as soon as possible.</string>
     <string name="message_missing_form_encounter_details_error">must be provided</string>
 
     <string name="muzima_training_manual_general">mUzima Training Manual</string>
@@ -820,10 +827,4 @@
     <string name="write_shr_to_card_general">Write SHR to card</string>
 
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
-    <string name="info_settings_update">Updating settings</string>
-    <string name="info_settings_download_progress">Downloading settings</string>
-    <string name="info_settings_not_download">No settings downloaded</string>
-    <string name="error_settings_download">Could not download settings</string>
-    <string name="info_setting_downloaded">Downloaded 1 setting</string>
-    <string formatted="false" name="info_settings_downloaded">Downloaded %d settings</string>
 </resources>

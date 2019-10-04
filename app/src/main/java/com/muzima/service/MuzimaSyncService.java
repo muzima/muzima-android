@@ -642,7 +642,6 @@ public class MuzimaSyncService {
                         patientUuidsForDownloadedObs.add(observation.getPerson().getUuid());
                     }
 
-                    Log.i(getClass().getSimpleName(), "Downloaded Obs for patient " + patientUuidsForDownloadedObs.size() + " of "+ patientUuids.size());
                     updateProgressDialog(muzimaApplication.getString(R.string.info_observations_download_pogress, patientUuidsForDownloadedObs.size(), patientUuids.size()));
 
                     Log.i(getClass().getSimpleName(), "Downloading observations for " + slicedPatientUuid.size() + " patients and " +slicedConceptUuid.size() +" concepts");
