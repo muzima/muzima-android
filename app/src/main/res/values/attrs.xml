@@ -31,6 +31,7 @@
     <attr name="icDownload" format="reference"/>
     <attr name="icReplyNotification" format="reference"/>
     <attr name="icAddClient" format="reference"/>
+    <attr name="icAdd" format="reference"/>
     <attr name="icSearch" format="reference"/>
     <attr name="listSelectorBlue" format="reference"/>
     <attr name="icLauncherLogo" format="reference"/>
