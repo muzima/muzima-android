@@ -237,7 +237,6 @@ public class MainActivity extends BroadcastListenerActivity {
 
             TextView currentUser = findViewById(R.id.currentUser);
             currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
-
         }
     }
 

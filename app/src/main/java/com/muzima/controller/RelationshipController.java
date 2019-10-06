@@ -10,6 +10,8 @@
 
 package com.muzima.controller;
 
+import android.util.Log;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.service.RelationshipService;
 
@@ -24,6 +26,25 @@ public class RelationshipController {
         this.relationshipService = relationshipService;
     }
 
+    public List<Relationship> downloadRelationshipsForPerson(String patientUuid) throws RetrieveRelationshipException {
+        try {
+            return relationshipService.downloadRelationshipsForPerson(patientUuid);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while downloading Patient Relationships for patient with UUID : " + patientUuid + " from server", e);
+            throw new RetrieveRelationshipException(e);
+        }
+    }
+
+
+    public void saveRelationships(List<Relationship> relationships) throws SaveRelationshipException {
+        try {
+            relationshipService.saveRelationships(relationships);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while saving the relationships list", e);
+            throw new SaveRelationshipException(e);
+        }
+    }
+
 //    public int getEncountersCountByPatient(String patientUuid) throws IOException {
 //        return relationshipService.countEncountersByPatientUuid(patientUuid);
 //    }
@@ -36,7 +57,7 @@ public class RelationshipController {
         }
     }
 
-    public class RetrieveRelationshipException extends Throwable {
+    public static class RetrieveRelationshipException extends Throwable {
         RetrieveRelationshipException(IOException e) {
             super(e);
         }
@@ -48,11 +69,11 @@ public class RelationshipController {
 //        }
 //    }
 //
-//    public class SaveEncounterException extends Throwable {
-//        SaveEncounterException(IOException e) {
-//            super(e);
-//        }
-//    }
+    public static class SaveRelationshipException extends Throwable {
+        SaveRelationshipException(IOException e) {
+            super(e);
+        }
+    }
 //
 //    public class DeleteEncounterException extends Throwable {
 //        DeleteEncounterException(IOException e) {

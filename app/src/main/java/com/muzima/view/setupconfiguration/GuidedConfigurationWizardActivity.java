@@ -32,6 +32,7 @@ import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.JsonUtils;
+import com.muzima.utils.Constants;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 
@@ -151,7 +152,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 List<String> uuids = extractCohortsUuids();
                 if (!uuids.isEmpty()){
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                    return muzimaSyncService.downloadPatientsForCohorts(uuids.toArray(new String[uuids.size()]));
+                    int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(uuids.toArray(new String[uuids.size()]));
+
+                    if (resultForPatients[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                        muzimaSyncService.downloadRelationshipsForPatientsByCohortUUIDs(uuids.toArray(new String[uuids.size()]));
+                    }
+
+                    return resultForPatients;
                 }
                 return null;
             }

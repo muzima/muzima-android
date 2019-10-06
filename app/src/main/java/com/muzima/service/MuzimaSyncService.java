@@ -30,6 +30,7 @@ import com.muzima.api.model.PatientReport;
 import com.muzima.api.model.PatientReportHeader;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.MuzimaSetting;
+import com.muzima.api.model.Relationship;
 import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.CohortController;
@@ -43,6 +44,7 @@ import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
+import com.muzima.controller.RelationshipController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
@@ -80,6 +82,7 @@ public class MuzimaSyncService {
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController settingsController;
     private PatientReportController patientReportController;
+    private RelationshipController relationshipController;
     private Logger logger;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
@@ -97,6 +100,7 @@ public class MuzimaSyncService {
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
         settingsController = muzimaApplication.getMuzimaSettingController();
         patientReportController = muzimaApplication.getPatientReportController();
+        relationshipController = muzimaApplication.getRelationshipController();
     }
 
     public int authenticate(String[] credentials){
@@ -1065,6 +1069,73 @@ public class MuzimaSyncService {
         } catch (MuzimaSettingController.MuzimaSettingFetchException e){
             Log.e(getClass().getSimpleName(), "Exception when trying to read setting",e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
+        }
+        return result;
+    }
+
+    public int[] downloadRelationshipsForPatientsByPatientUUIDs(List<String> patientUuids) {
+        int[] result = new int[3];
+        System.out.println(patientUuids);
+        try {
+            Log.i(getClass().getSimpleName(), "Downloading relationships for "+ patientUuids.size() + " patients");
+            for (String patientUuid : patientUuids) {
+                Log.i(getClass().getSimpleName(), "Downloading relationships for " + patientUuid);
+                long startDownloadEncounters = System.currentTimeMillis();
+                List<Relationship> patientRelationships  = new ArrayList<>(relationshipController.downloadRelationshipsForPerson(patientUuid));
+
+                long endDownloadObservations = System.currentTimeMillis();
+                Log.d(getClass().getSimpleName(), "In Downloading relationships : " + (endDownloadObservations - startDownloadEncounters) / 1000 + " sec\n");
+
+                Log.i(getClass().getSimpleName(), "Relationships download successful with " + patientRelationships.size() + " relationships");
+                result[1] += patientRelationships.size();
+
+                relationshipController.saveRelationships(patientRelationships);
+            }
+            result[0] = SUCCESS;
+        } catch (RelationshipController.RetrieveRelationshipException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while downloading relationships.", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+        } catch (RelationshipController.SaveRelationshipException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while saving relationships.", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+        }
+        /** catch (EncounterController.ReplaceEncounterException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while replacing encounters.", e);
+            result[0] = SyncStatusConstants.REPLACE_ERROR;
+        } catch (EncounterController.DeleteEncounterException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while deleting encounters.", e);
+            result[0] = SyncStatusConstants.DELETE_ERROR;
+        } catch (EncounterController.SaveEncounterException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while saving encounters.", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+        }**/
+        return result;
+    }
+
+    public int[] downloadRelationshipsForPatientsByCohortUUIDs(String[] cohortUuids) {
+        int[] result = new int[3];
+        List<Patient> patients;
+        try {
+            patients = patientController.getPatientsForCohorts(cohortUuids);
+            int patientsTotal = patients.size();
+
+            int count = 0;
+            List<String> patientlist = new ArrayList();
+            for(Patient patient : patients){
+                count++;
+                Log.i(getClass().getSimpleName(), "Downloading relationships for patient " + count + " of "+ patientsTotal);
+                updateProgressDialog(muzimaApplication.getString(R.string.info_observations_download_pogress, count, patientsTotal));
+                patientlist.add(patient.getUuid());
+            }
+            result = downloadRelationshipsForPatientsByPatientUUIDs(patientlist);
+            if(result[0] != SUCCESS){
+                Log.e(getClass().getSimpleName(), "Relationships for patient " + count + " of "+ patientsTotal + " not downloaded");
+                updateProgressDialog(muzimaApplication.getString(R.string.info_observations_not_downloaded_progress, count, patientsTotal));
+
+            }
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while loading patients.", e);
+            result[0] = SyncStatusConstants.LOAD_ERROR;
         }
         return result;
     }
