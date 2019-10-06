@@ -7,50 +7,64 @@
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/patient_lists_layout"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/DashboardTableContainer">
-    <RelativeLayout
-            style="@style/PatientDemographicsLayout"
-            android:paddingBottom="5dp">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  style="@style/DashboardTableContainer">
+        <RelativeLayout
+                style="@style/PatientDemographicsLayout"
+                android:paddingBottom="5dp">
 
-        <TextView
-                android:id="@+id/patientName"
-                android:layout_alignParentStart="true"
-                style="@style/DashboardMediumTitleText"/>
+            <TextView
+                    android:id="@+id/patientName"
+                    android:layout_alignParentStart="true"
+                    style="@style/DashboardMediumTitleText"/>
 
-        <ImageView
-                android:id="@+id/genderImg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:paddingTop="10dp"
-                android:contentDescription="@string/gender_image_content_description"/>
-    </RelativeLayout>
+            <ImageView
+                    android:id="@+id/genderImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:paddingTop="10dp"
+                    android:contentDescription="@string/gender_image_content_description"/>
+        </RelativeLayout>
 
-    <View style="@style/DividerLine"
-          android:layout_marginBottom="10dp"/>
-    <LinearLayout
-            android:id="@+id/no_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:paddingEnd="16dp"
-            android:visibility="gone">
-
-        <TextView
-                android:id="@+id/no_data_msg"
+        <View style="@style/DividerLine"
+              android:layout_marginBottom="10dp"/>
+        <LinearLayout
+                android:id="@+id/no_data_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:textSize="20sp">
-        </TextView>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingEnd="16dp"
+                android:visibility="gone">
+
+            <TextView
+                    android:id="@+id/no_data_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textSize="20sp">
+            </TextView>
+
+        </LinearLayout>
+        <ListView
+                android:id="@+id/relationships_list"
+                style="@style/MuzimaSelectableListView">
+        </ListView>
 
     </LinearLayout>
-    <ListView
-            android:id="@+id/relationships_list"
-            style="@style/MuzimaSelectableListView">
-    </ListView>
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_add_relationship"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:scaleType="fitCenter"
+            android:src="?attr/icAdd" />
+</FrameLayout>
 
-</LinearLayout>
