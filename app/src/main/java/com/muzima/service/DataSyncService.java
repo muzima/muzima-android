@@ -24,11 +24,13 @@ import com.muzima.api.model.APIName;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Patient;
 import com.muzima.api.service.LastSyncTimeService;
+import com.muzima.controller.RelationshipController;
 import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
@@ -199,6 +201,9 @@ public class DataSyncService extends IntentService {
 
             int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByPatientUUIDs(patientUUIDList, true);
             broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
+
+            int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByPatientUUIDs(patientUUIDList);
+            broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
         }
     }
 
@@ -213,6 +218,10 @@ public class DataSyncService extends IntentService {
     private void downloadPatients(Intent broadcastIntent, String[] cohortIds) {
         int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(cohortIds);
         broadCastMessageForPatients(broadcastIntent, resultForPatients);
+
+        if (isSuccess(resultForPatients)) {
+            int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByCohortUUIDs(cohortIds);
+        }
     }
 
     private void broadCastMessageForEncounters(Intent broadcastIntent, int[] resultForEncounters) {
@@ -237,6 +246,7 @@ public class DataSyncService extends IntentService {
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
+
     private void broadCastMessageForPatients(Intent broadcastIntent, int[] resultForPatients, String[] patientUUIDs) {
         String msgForPatients = getString(R.string.info_new_patient_download,resultForPatients[1]);
         prepareBroadcastMsg(broadcastIntent, resultForPatients, msgForPatients);

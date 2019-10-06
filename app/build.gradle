@@ -134,5 +134,5 @@ task wrapper(type: Wrapper) {
 configurations {
     all {
         exclude group: 'org.json', module: 'json'
-    }
+    } 
 }
