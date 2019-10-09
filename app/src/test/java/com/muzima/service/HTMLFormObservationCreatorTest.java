@@ -110,7 +110,7 @@ public class HTMLFormObservationCreatorTest {
         when(muzimaApplication.getObservationController()).thenReturn(observationController);
         when(muzimaApplication.getProviderController()).thenReturn(providerController);
         when(muzimaApplication.getLocationController()).thenReturn(locationController);
-        htmlFormObservationCreator = new HTMLFormObservationCreator(muzimaApplication);
+        htmlFormObservationCreator = new HTMLFormObservationCreator(muzimaApplication,true);
 
         when(patientController.getPatientByUuid("9090900-asdsa-asdsannidj-qwnkika")).thenReturn(patient);
 

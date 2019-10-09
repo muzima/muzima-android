@@ -343,7 +343,7 @@ public class KenyaEmrShrMapper {
         for(final String payload:payloads) {
             Log.e("KenyaEmrShrMapper","Saving payload data ");
             final String newFormDataUuid = UUID.randomUUID().toString();
-            HTMLFormObservationCreator htmlFormObservationCreator = new HTMLFormObservationCreator(muzimaApplication);
+            HTMLFormObservationCreator htmlFormObservationCreator = new HTMLFormObservationCreator(muzimaApplication, false);
             htmlFormObservationCreator.createObservationsAndRelatedEntities(payload, newFormDataUuid);
 
             List<Concept> newConcepts = new ArrayList(htmlFormObservationCreator.getNewConceptList());

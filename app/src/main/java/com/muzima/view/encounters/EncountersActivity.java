@@ -129,7 +129,7 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.client_summary, menu);
+        getMenuInflater().inflate(R.menu.encounter_list, menu);
         super.onCreateOptionsMenu(menu);
         return true;
     }

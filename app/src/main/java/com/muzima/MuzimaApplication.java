@@ -89,7 +89,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private Activity currentActivity;
     private FormController formController;
     private CohortController cohortController;
-    private PatientController patientConroller;
+    private PatientController patientController;
     private ConceptController conceptController;
     private ObservationController observationController;
     private EncounterController encounterController;
@@ -250,14 +250,14 @@ public class MuzimaApplication extends MultiDexApplication {
     }
 
     public PatientController getPatientController() {
-        if (patientConroller == null) {
+        if (patientController == null) {
             try {
-                patientConroller = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService());
+                patientController = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        return patientConroller;
+        return patientController;
     }
 
     public ObservationController getObservationController() {
@@ -345,7 +345,8 @@ public class MuzimaApplication extends MultiDexApplication {
     public MuzimaSettingController getMuzimaSettingController() {
         if(settingsController == null){
             try {
-                settingsController = new MuzimaSettingController(muzimaContext.getMuzimaSettingService());
+                settingsController = new MuzimaSettingController(muzimaContext.getMuzimaSettingService(),
+                        muzimaContext.getLastSyncTimeService(), getSntpService());
             } catch (IOException e){
                 throw new RuntimeException(e);
             }

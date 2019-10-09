@@ -101,7 +101,7 @@ public class ConversationActivity extends BaseActivity {
                     MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         //run immediately
-                        muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(0);
+                        muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(0,false);
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.error_empty_message_text, Toast.LENGTH_SHORT).show();

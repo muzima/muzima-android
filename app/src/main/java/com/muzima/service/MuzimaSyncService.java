@@ -21,6 +21,8 @@ import com.muzima.api.model.CohortData;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
+import com.muzima.api.model.FormData;
+import com.muzima.api.model.FormDataStatus;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Notification;
@@ -46,6 +48,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.controller.SetupConfigurationController;
+import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.progressdialog.ProgressDialogUpdateIntentService;
@@ -57,10 +60,14 @@ import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
@@ -435,7 +442,7 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] updateCohortsWithUpdatesAvailable(){
+    public int[] downloadPatientsForCohortsWithUpdatesAvailable(){
         int[] result = new int[3];
         try {
             List<Cohort> cohortList = cohortController.getCohortsWithPendingUpdates();
@@ -574,26 +581,18 @@ public class MuzimaSyncService {
         return result;
     }
     public int[] downloadObservationsForPatientsByCohortUUIDs(String[] cohortUuids, boolean replaceExistingObservation) {
-        int[] result = new int[3];
+        int[] result = new int[4];
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
-            int patientsTotal = patients.size();
-            int patientsObsDownloaded = 0;
-            int totalObsDownloaded = 0;
 
-            int count = 0;
             List<String> patientlist = new ArrayList();
             for(Patient patient : patients){
-                count++;
-                Log.i(getClass().getSimpleName(), "Downloading Obs for patient " + count + " of "+ patientsTotal);
-                updateProgressDialog(muzimaApplication.getString(R.string.info_observations_download_pogress, count, patientsTotal));
                 patientlist.add(patient.getUuid());
             }
             result = downloadObservationsForPatientsByPatientUUIDs(patientlist,replaceExistingObservation);
             if(result[0] != SUCCESS){
-                Log.e(getClass().getSimpleName(), "Obs for patient " + count + " of "+ patientsTotal + " not downloaded");
-                updateProgressDialog(muzimaApplication.getString(R.string.info_observations_not_downloaded_progress, count, patientsTotal));
+                updateProgressDialog(muzimaApplication.getString(R.string.error_encounter_observation_download));
 
             }
         } catch (PatientController.PatientLoadException e) {
@@ -628,19 +627,27 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadObservationsForPatientsByPatientUUIDs(List<String> patientUuids, boolean replaceExistingObservations) {
-        int[] result = new int[3];
+        int[] result = new int[4];
         try {
-
             List<String> conceptUuidsFromConcepts = getConceptUuidsFromConcepts(conceptController.getConcepts());
             List<List<String>> slicedPatientUuids = split(patientUuids);
             List<List<String>> slicedConceptUuids = split(conceptUuidsFromConcepts);
+            Set<String> patientUuidsForDownloadedObs = new HashSet<>();
             long totalTimeDownloading = 0, totalTimeReplacing = 0,totalTimeSaving = 0;
             int i=0;
             for (List<String> slicedPatientUuid : slicedPatientUuids) {
                 for (List<String> slicedConceptUuid : slicedConceptUuids) {
                     long startDownloadObservations = System.currentTimeMillis();
+
                     List<Observation> allObservations = new ArrayList<>(observationController.downloadObservationsByPatientUuidsAndConceptUuids(
                             slicedPatientUuid, slicedConceptUuid));
+
+                    for(Observation observation:allObservations){
+                        patientUuidsForDownloadedObs.add(observation.getPerson().getUuid());
+                    }
+
+                    updateProgressDialog(muzimaApplication.getString(R.string.info_observations_download_pogress, patientUuidsForDownloadedObs.size(), patientUuids.size()));
+
                     Log.i(getClass().getSimpleName(), "Downloading observations for " + slicedPatientUuid.size() + " patients and " +slicedConceptUuid.size() +" concepts");
                     long endDownloadObservations = System.currentTimeMillis();
                     Log.i(getClass().getSimpleName(), "Observations download successful with " + allObservations.size() + " observations");
@@ -664,10 +671,11 @@ public class MuzimaSyncService {
                     }
 
                     result[1] += allObservations.size();
-                    result[2] += slicedPatientUuid.size();
+                    result[2] += voidedObservations.size();
 
                 }
             }
+            result[3] = patientUuidsForDownloadedObs.size();
             result[0] = SUCCESS;
             Log.d(getClass().getSimpleName(), "Total Downloading observations : " + totalTimeDownloading/1000 + " sec\n");
             Log.d(getClass().getSimpleName(), "Total Replacing observations : " + totalTimeReplacing/1000 + " sec\n");
@@ -703,28 +711,19 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadEncountersForPatientsByCohortUUIDs(String[] cohortUuids, boolean replaceExistingEncounters) {
-        int[] result = new int[3];
+        int[] result = new int[4];
         List<Patient> patients;
         try {
             patients = patientController.getPatientsForCohorts(cohortUuids);
 
-            int patientsTotal = patients.size();
-            int count = 0;
-            int patientsEncountersDownloaded=0;
-            int totalEncountersDownloaded=0;
-
             List<String> patientlist = new ArrayList();
             for(Patient patient : patients){
-                count++;
-                //Log.i(getClass().getSimpleName(), "Downloading Encounters for patient " + count + " of "+ patientsTotal);
-                //updateProgressDialog(muzimaApplication.getString(R.string.info_encounter_download_progress, count, patientsTotal));
-
                 patientlist.add(patient.getUuid());
             }
             result = downloadEncountersForPatientsByPatientUUIDs(patientlist,replaceExistingEncounters);
             if(result[0] != SUCCESS){
-                Log.e(getClass().getSimpleName(), "Encounters for patient " + count + " of "+ patientsTotal + " not downloaded");
-                updateProgressDialog(muzimaApplication.getString(R.string.info_encounter_not_downloaded_progress, count, patientsTotal));
+                Log.e(getClass().getSimpleName(), "Could not download encounters");
+                updateProgressDialog(muzimaApplication.getString(R.string.error_encounter_download));
             }
 
         } catch (PatientController.PatientLoadException e) {
@@ -735,9 +734,10 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadEncountersForPatientsByPatientUUIDs(List<String> patientUuids, boolean replaceExistingEncounters) {
-        int[] result = new int[3];
+        int[] result = new int[4];
         try {
             List<List<String>> slicedPatientUuids = split(patientUuids);
+            Set<String> patientsForDownloadedEncounters = new HashSet();
             long totalTimeDownloading = 0, totalTimeReplacing = 0,totalTimeSaving = 0;
             int i =0;
             for (List<String> slicedPatientUuid : slicedPatientUuids) {
@@ -750,6 +750,12 @@ public class MuzimaSyncService {
                 totalTimeDownloading += endDownloadObservations - startDownloadEncounters;
 
                 Log.i(getClass().getSimpleName(), "Encounters download successful with " + allEncounters.size() + " encounters");
+                for(Encounter encounter:allEncounters){
+                    patientsForDownloadedEncounters.add(encounter.getPatient().getUuid());
+                }
+                Log.i(getClass().getSimpleName(), "Downloaded Encounters for patient " + patientsForDownloadedEncounters.size() + " of "+ patientUuids.size());
+                updateProgressDialog(muzimaApplication.getString(R.string.info_encounter_download_progress, patientsForDownloadedEncounters.size(), patientUuids.size()));
+
                 ArrayList<Encounter> voidedEncounters = getVoidedEncounters(allEncounters);
                 allEncounters.removeAll(voidedEncounters);
                 encounterController.deleteEncounters(voidedEncounters);
@@ -767,12 +773,13 @@ public class MuzimaSyncService {
                     totalTimeSaving += savedEncounters - endDownloadObservations;
                 }
                 result[1] += allEncounters.size();
-                result[2] += slicedPatientUuid.size();
+                result[2] += voidedEncounters.size();
             }
             Log.d(getClass().getSimpleName(), "Total Downloading encounters : " + totalTimeDownloading/1000 + " sec\n");
             Log.d(getClass().getSimpleName(), "Total Replacing encounters : " + totalTimeReplacing/1000 + " sec\n");
             Log.d(getClass().getSimpleName(), "Total Saving encounters : " + totalTimeSaving/1000 + " sec\n");
             result[0] = SUCCESS;
+            result[3] = patientsForDownloadedEncounters.size();
         } catch (EncounterController.DownloadEncounterException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading encounters.", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
@@ -841,6 +848,64 @@ public class MuzimaSyncService {
                 }
             }
         }
+    }
+    public List<FormData> getArchivedFormData() {
+        try{
+            return formController.getArchivedFormData();
+        } catch (FormController.FormDataFetchException e){
+            Log.e(TAG,"Could not fetch archived form data",e);
+        }
+        return new ArrayList<>();
+    }
+
+    public int[] checkAndDeleteTemporaryDataForProcessedFormData(List<FormData> archivedFormData){
+        int result[] = new int[5];
+        try {
+            List<FormData> successfullyProcessedFormData = new ArrayList<>();
+            List<FormData> processedWithErrorFormData = new ArrayList<>();
+            List<FormData> pendingProcessingFormData = new ArrayList<>();
+            List<FormData> unknownStatusFormData = new ArrayList<>();
+
+            for(FormData formData:archivedFormData) {
+                FormDataStatus formDataStatus = formController.downloadFormDataStatus(formData);
+                if(formDataStatus.isFormDataPendingProcessing()){
+                    successfullyProcessedFormData.add(formData);
+                } else if(formDataStatus.isFormDataProcessedWithError()){
+                    processedWithErrorFormData.add(formData);
+                } else if(formDataStatus.isFormDataPendingProcessing()){
+                    pendingProcessingFormData.add(formData);
+                } else {
+                    unknownStatusFormData.add(formData);
+                }
+            }
+            if(successfullyProcessedFormData.size()>0) {
+                formController.deleteFormDataAndRelatedEncountersAndObs(successfullyProcessedFormData);
+            }
+            result[0] = SUCCESS;
+            result[1] = successfullyProcessedFormData.size();
+            result[2] = processedWithErrorFormData.size();
+            result[3] = pendingProcessingFormData.size();
+            result[4] = unknownStatusFormData.size();
+
+        } catch (FormController.FormDataStatusDownloadException e) {
+            Log.e(TAG,"Could not download form data status",e);
+            result[0] = DOWNLOAD_ERROR;
+        } catch (FormController.FormDataDeleteException e) {
+            result[0] = DELETE_ERROR;
+            Log.e(TAG,"Could not delete archived form data",e);
+        }
+        return result;
+    }
+
+    public List<String> getUuidsForAllPatientsFromLocalStorage(){
+        List<String> uuids = new ArrayList<>();
+        try {
+            List<Patient> patients = patientController.getAllPatients();
+            uuids = getPatientUuids(patients);
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(TAG,"Cannot retrieve patients from local storage",e);
+        }
+        return uuids;
     }
 
     private void checkChangeInPatientId(Patient localPatient, Patient patientFromServer) {
@@ -1046,31 +1111,37 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] downloadMissingMandatorySettings(){
+    public int[] downloadNewSettings(){
 
         int[] result = new int[2];
         try {
-            List<String> properties = settingsController.getNonDownloadedMandatorySettingsProperties();
-            for(String property:properties) {
-                MuzimaSetting setting = settingsController.downloadSettingByProperty(property);
-                result[0] = SUCCESS;
-
-                if (setting != null) {
-                    result[1]++;
-                    settingsController.saveSetting(setting);
-                }
+            List<MuzimaSetting> settings = settingsController.downloadChangedSettingsSinceLastSync();
+            if(settings.size()>0) {
+                settingsController.saveOrUpdateSetting(settings);
+                updateSettingsPreferences(settings);
             }
+            result[0] = SUCCESS;
+            result[1] = settings.size();
         } catch (MuzimaSettingController.MuzimaSettingDownloadException e){
             Log.e(getClass().getSimpleName(), "Exception when trying to download setting",e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (MuzimaSettingController.MuzimaSettingSaveException e){
             Log.e(getClass().getSimpleName(), "Exception when trying to save setting",e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
-        } catch (MuzimaSettingController.MuzimaSettingFetchException e){
-            Log.e(getClass().getSimpleName(), "Exception when trying to read setting",e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
         }
         return result;
+    }
+
+    public void updateSettingsPreferences(List<MuzimaSetting> muzimaSettings) {
+        for (MuzimaSetting muzimaSetting : muzimaSettings) {
+            if(MuzimaSettingUtils.isGpsFeatureEnabledSetting(muzimaSetting)) {
+                new GPSFeaturePreferenceService(muzimaApplication).updateGPSDataPreferenceSettings();
+            } else if(MuzimaSettingUtils.isSHRFeatureEnabledSetting(muzimaSetting)){
+                new SHRStatusPreferenceService(muzimaApplication).updateSHRStatusPreference();
+            } else if(MuzimaSettingUtils.isPatientIdentifierAutogenerationSetting(muzimaSetting)){
+                new RequireMedicalRecordNumberPreferenceService(muzimaApplication).updateRequireMedicalRecordNumberPreference();
+            }
+        }
     }
 
     public int[] downloadRelationshipsForPatientsByPatientUUIDs(List<String> patientUuids) {
