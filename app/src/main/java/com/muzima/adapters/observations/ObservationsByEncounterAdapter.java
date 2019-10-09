@@ -10,18 +10,24 @@
 
 package com.muzima.adapters.observations;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
+import com.muzima.api.model.Person;
+import com.muzima.api.model.PersonAttribute;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
@@ -30,6 +36,10 @@ import com.muzima.utils.BackgroundTaskHelper;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class ObservationsByEncounterAdapter extends ObservationsAdapter<EncounterWithObservations> {
 
@@ -102,7 +112,7 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
         }
 
         @Override
-        protected void setObservation(LinearLayout layout, Observation observation) {
+        protected void setObservation(LinearLayout layout, final Observation observation) {
             TextView conceptInfo = layout.findViewById(R.id.concept_info);
             conceptInfo.setText(getConceptDisplay(observation.getConcept()));
             conceptInfo.setTypeface(Fonts.roboto_medium(getContext()));
@@ -134,6 +144,14 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
             observationDateView.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
             observationDateView.setTypeface(Fonts.roboto_regular(getContext()));
             observationDateView.setTextColor(conceptColor);
+
+            layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    displayObservationDetailsDialog(observation, v);
+                }
+            });
+
         }
 
         void setEncounter(Encounter encounter) {
@@ -161,5 +179,132 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
             return R.dimen.observation_element_by_encounter_height;
         }
 
+    }
+
+    public void displayObservationDetailsDialog(Observation observation, View view) {
+
+        int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
+        String observationConceptType = observation.getConcept().getConceptType().getName();
+        String encounterDate = DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime());
+
+        TextView encounterDateTextView;
+        TextView encounterLocationTextView;
+        TextView encounterTypeTextView;
+        TextView providerNameTextView;
+        TextView providerIdentifierTextView;
+        TextView providerIdentifyType;
+        TextView conceptNameTextView;
+        TextView conceptDescriptionTextView;
+        TextView obsValueTextView;
+        TextView dateTextView;
+        Button dismissDialogButton;
+
+        TextView encounterDetailsHeader;
+        TextView providerDetailsHeader;
+        TextView conceptDetailsHeader;
+        TextView observationDetailsHeader;
+        RelativeLayout providerDetails;
+        LayoutInflater layoutInflater;
+        View obsDetailsDialog;
+        final AlertDialog obsDetailsViewDialog;
+
+        layoutInflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        AlertDialog.Builder addIndividualObservationsDialogBuilder =
+                new AlertDialog.Builder(
+                        view.getContext()
+                );
+        obsDetailsDialog = layoutInflater.inflate(R.layout.obs_details_dialog_layout, null);
+
+        addIndividualObservationsDialogBuilder.setView(obsDetailsDialog);
+        addIndividualObservationsDialogBuilder
+                .setCancelable(true);
+
+        obsDetailsViewDialog = addIndividualObservationsDialogBuilder.create();
+        obsDetailsViewDialog.show();
+        ;
+
+
+        dismissDialogButton = obsDetailsDialog.findViewById(R.id.dismiss_dialog_button);
+        encounterDateTextView = obsDetailsDialog.findViewById(R.id.encounter_date_value_textview);
+        encounterLocationTextView = obsDetailsDialog.findViewById(R.id.encounter_location_value_textview);
+        encounterTypeTextView = obsDetailsDialog.findViewById(R.id.encounter_type_value_textview);
+        providerNameTextView = obsDetailsDialog.findViewById(R.id.provider_name_value_textview);
+        providerIdentifierTextView = obsDetailsDialog.findViewById(R.id.provider_identify_type_value_textView);
+        providerIdentifyType = obsDetailsDialog.findViewById(R.id.provider_identify_type);
+        conceptNameTextView = obsDetailsDialog.findViewById(R.id.concept_name_value_textview);
+        conceptDescriptionTextView = obsDetailsDialog.findViewById(R.id.concept_description_value_textview);
+        obsValueTextView = obsDetailsDialog.findViewById(R.id.observertion_value_indicator_textview);
+        encounterDetailsHeader = obsDetailsDialog.findViewById(R.id.obs_details_header);
+        providerDetailsHeader = obsDetailsDialog.findViewById(R.id.obs_details_second_header);
+        conceptDetailsHeader = obsDetailsDialog.findViewById(R.id.obs_details_third_header);
+        observationDetailsHeader = obsDetailsDialog.findViewById(R.id.obs_details_fourth_header);
+        dateTextView = obsDetailsDialog.findViewById(R.id.observation_description_value_textview);
+        providerDetails = obsDetailsDialog.findViewById(R.id.provider_details);
+
+        List<TextView> obsDetailsHeaderTextViews = Arrays.asList(encounterDetailsHeader,providerDetailsHeader,conceptDetailsHeader,observationDetailsHeader);
+        dateTextView.setText(observation.getObservationDatetime().toString().substring(0,19));
+
+        for (TextView obsDetailsHeaderTextView : obsDetailsHeaderTextViews) {
+            obsDetailsHeaderTextView.setBackgroundColor(conceptColor);
+        }
+
+        if (StringUtils.equals(observationConceptType, "Complex")) {
+            obsValueTextView.setText("Complex Obs");
+        } else {
+            String observationValue = observation.getValueAsString();
+            obsValueTextView.setText(observationValue);
+        }
+
+        conceptNameTextView.setText(observation.getConcept().getName());
+        String conceptDescription = observation.getConcept().getUnit();
+
+        if (conceptDescription != null || conceptDescription != "") {
+            conceptDescriptionTextView.setText("Unit Name: " + conceptDescription);
+        }
+
+        Encounter encounter = observation.getEncounter();
+        if (encounter != null) {
+            providerIdentifierTextView.setVisibility(View.GONE);
+            providerIdentifyType.setVisibility(View.GONE);
+            if(encounter.getProvider() != null) {
+                providerNameTextView.setText(encounter.getProvider().getDisplayName());
+            }else{
+                providerNameTextView.setVisibility(View.GONE);
+                providerDetails.setVisibility(View.GONE);
+                providerDetailsHeader.setVisibility(View.GONE);
+            }
+
+            if (encounter.getLocation() != null) {
+                String encounterLocation = encounter.getLocation().getName();
+                encounterLocationTextView.setText(encounterLocation);
+            } else {
+                encounterLocationTextView.setText(R.string.general_not_available_text);
+            }
+
+            if (encounter.getEncounterType() != null){
+                String encounterType = encounter.getEncounterType().getName();
+                encounterTypeTextView.setText(encounterType);
+            } else {
+                encounterTypeTextView.setText(R.string.general_not_available_text);
+            }
+
+            encounterDateTextView.setText(encounterDate);
+
+        } else {
+            providerNameTextView.setText(R.string.general_not_available_text);
+            encounterLocationTextView.setText(R.string.general_not_available_text);
+            encounterTypeTextView.setText(R.string.general_not_available_text);
+            encounterDateTextView.setText(R.string.general_not_available_text);
+            providerIdentifierTextView.setText(R.string.general_not_available_text);
+        }
+
+
+        dismissDialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                obsDetailsViewDialog.dismiss();
+                obsDetailsViewDialog.cancel();
+            }
+        });
     }
 }

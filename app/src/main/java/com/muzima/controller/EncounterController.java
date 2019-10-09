@@ -10,8 +10,11 @@
 
 package com.muzima.controller;
 
+import android.util.Log;
+
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.Patient;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.SntpService;
@@ -153,6 +156,10 @@ public class EncounterController {
         }catch(IOException e){
             throw new DownloadEncounterException(e);
         }
+    }
+
+    public Encounter getEncounterByUuid(String encounterUuid) throws IOException {
+        return encounterService.getEncounterByUuid(encounterUuid);
     }
 
     public void deleteEncounters(List<Encounter> encounters) throws DeleteEncounterException {

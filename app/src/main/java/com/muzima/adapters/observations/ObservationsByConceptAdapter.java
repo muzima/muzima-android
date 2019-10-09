@@ -47,6 +47,7 @@ import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
 import com.muzima.view.custom.CustomObsEntryDialog;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -288,7 +289,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         String observationConceptType = observation.getConcept().getConceptType().getName();
         String encounterDate = DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime());
 
-
         /**
          * Prepare add obs dialog
          */
@@ -297,6 +297,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         TextView encounterTypeTextView;
         TextView providerNameTextView;
         TextView providerIdentifierTextView;
+        TextView providerIdentifyType;
         TextView conceptNameTextView;
         TextView conceptDescriptionTextView;
         TextView obsValueTextView;
@@ -307,6 +308,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         TextView providerDetailsHeader;
         TextView conceptDetailsHeader;
         TextView observationDetailsHeader;
+        RelativeLayout providerDetails;
 
 
         layoutInflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -331,6 +333,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         encounterTypeTextView = (TextView) obsDetailsDialog.findViewById(R.id.encounter_type_value_textview);
         providerNameTextView = (TextView) obsDetailsDialog.findViewById(R.id.provider_name_value_textview);
         providerIdentifierTextView = (TextView) obsDetailsDialog.findViewById(R.id.provider_identify_type_value_textView);
+        providerIdentifyType = (TextView) obsDetailsDialog.findViewById(R.id.provider_identify_type);
         conceptNameTextView = (TextView) obsDetailsDialog.findViewById(R.id.concept_name_value_textview);
         conceptDescriptionTextView = (TextView) obsDetailsDialog.findViewById(R.id.concept_description_value_textview);
         obsValueTextView = (TextView)obsDetailsDialog.findViewById(R.id.observertion_value_indicator_textview);
@@ -339,6 +342,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         conceptDetailsHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_third_header);
         observationDetailsHeader = (TextView) obsDetailsDialog.findViewById(R.id.obs_details_fourth_header);
         dateTextView = (TextView)obsDetailsDialog.findViewById(R.id.observation_description_value_textview);
+        providerDetails = (RelativeLayout) obsDetailsDialog.findViewById(R.id.provider_details);
 
         List<TextView> obsDetailsHeaderTextViews = Arrays.asList(encounterDetailsHeader,providerDetailsHeader,conceptDetailsHeader,observationDetailsHeader);
         dateTextView.setText(observation.getObservationDatetime().toString().substring(0,19));
@@ -362,54 +366,49 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         }
 
         Encounter encounter = observation.getEncounter();
+        Encounter enc;
         try {
-            //ToDo: Get Encounter provider instead of first provider from local repo
+            enc = muzimaApplication.getEncounterController().getEncounterByUuid(encounter.getUuid());
             //ToDo: Delink Provider from Person, since Provider is not necessarily a Person OpenMRS
+            providerIdentifierTextView.setVisibility(View.GONE);
+            providerIdentifyType.setVisibility(View.GONE);
 
-            Provider provider = providerController.getAllProviders().get(0);
-            providerNameTextView.setText(provider.getName());
-            providerIdentifierTextView.setText(provider.getIdentifier());
+            if (enc != null) {
+                if(enc.getProvider() != null) {
+                    providerNameTextView.setText(enc.getProvider().getDisplayName());
+                }else{
+                    providerNameTextView.setVisibility(View.GONE);
+                    providerDetails.setVisibility(View.GONE);
+                    providerDetailsHeader.setVisibility(View.GONE);
+                }
 
-        } catch (ProviderController.ProviderLoadException e) {
-            Log.e("LOG",e.getMessage());
-        }
+                if (enc.getLocation() != null) {
+                    String encounterLocation = enc.getLocation().getName();
+                    encounterLocationTextView.setText(encounterLocation);
+                } else {
+                    encounterLocationTextView.setText(R.string.general_not_available_text);
+                }
 
-        if (encounter != null) {
-            Person provider = encounter.getProvider();
+                if (enc.getEncounterType() != null){
+                    String encounterType = enc.getEncounterType().getName();
+                    encounterTypeTextView.setText(encounterType);
+                } else {
+                    encounterTypeTextView.setText(R.string.general_not_available_text);
+                }
 
-            if (provider != null) {
-                String providerName = encounter.getProvider().getDisplayName();
+                encounterDateTextView.setText(encounterDate);
 
-                PersonAttribute providerIdentifier = encounter.getProvider().getAtributes().get(0);
-                String attributeType = providerIdentifier.getAttributeType().getName();
-                String attributeValue = providerIdentifier.getAttribute();
-                providerIdentifierTextView.setText(attributeValue);
-            }
-
-            if (encounter.getLocation() != null) {
-                String encounterLocation = encounter.getLocation().getName();
-                encounterLocationTextView.setText(encounterLocation);
             } else {
+                providerNameTextView.setText(R.string.general_not_available_text);
                 encounterLocationTextView.setText(R.string.general_not_available_text);
-            }
-
-            if (encounter.getEncounterType() != null){
-                String encounterType = encounter.getEncounterType().getName();
-                encounterTypeTextView.setText(encounterType);
-            } else {
                 encounterTypeTextView.setText(R.string.general_not_available_text);
+                encounterDateTextView.setText(R.string.general_not_available_text);
+                providerIdentifierTextView.setText(R.string.general_not_available_text);
             }
 
-            encounterDateTextView.setText(encounterDate);
-
-        } else {
-            providerNameTextView.setText(R.string.general_not_available_text);
-            encounterLocationTextView.setText(R.string.general_not_available_text);
-            encounterTypeTextView.setText(R.string.general_not_available_text);
-            encounterDateTextView.setText(R.string.general_not_available_text);
-            providerIdentifierTextView.setText(R.string.general_not_available_text);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "An IOException was encountered while fetching encounter ",e);
         }
-
 
         dismissDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
