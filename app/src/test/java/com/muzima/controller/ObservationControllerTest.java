@@ -49,7 +49,6 @@ public class ObservationControllerTest {
     private ConceptService conceptService;
     private LastSyncTimeService lastSyncTimeService;
     private SntpService sntpService;
-
     @Before
     public void setUp() {
         observationService = mock(ObservationService.class);
@@ -101,7 +100,7 @@ public class ObservationControllerTest {
     }
 
     //ToDo: Revise Delta sync logic
-    //@Test
+    @Test
     public void shouldProperlyProcessChangeInKnownPatientOrConcept() throws ObservationController.DownloadObservationException, IOException {
         List<String> patientUuids = asList("PatientUuid1", "PatientUuid2");
         List<String> conceptUuids = asList("ConceptUuid1", "ConceptUuid2");

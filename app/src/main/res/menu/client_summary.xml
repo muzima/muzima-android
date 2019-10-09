@@ -20,6 +20,6 @@
             android:id="@+id/SHR_client_summary"
             android:title=""
             app:showAsAction="always"
-            android:icon="@drawable/ic_action_write_card"/>
+            android:icon="@drawable/ic_action_scan_card"/>
 
 </menu>

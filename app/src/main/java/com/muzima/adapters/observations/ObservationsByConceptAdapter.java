@@ -308,7 +308,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         TextView conceptDetailsHeader;
         TextView observationDetailsHeader;
 
-
         layoutInflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         android.support.v7.app.AlertDialog.Builder addIndividualObservationsDialogBuilder =
                 new android.support.v7.app.AlertDialog.Builder(
@@ -322,8 +321,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
         obsDetailsViewDialog = addIndividualObservationsDialogBuilder.create();
         obsDetailsViewDialog.show();
-        ;
-
 
         dismissDialogButton = (Button) obsDetailsDialog.findViewById(R.id.dismiss_dialog_button);
         encounterDateTextView = (TextView) obsDetailsDialog.findViewById(R.id.encounter_date_value_textview);

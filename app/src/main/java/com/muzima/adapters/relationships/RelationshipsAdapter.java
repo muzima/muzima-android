@@ -122,7 +122,6 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             return relationships;
         }
 
-
         @Override
         protected void onPostExecute(List<Relationship> relationships){
             if(relationships==null){

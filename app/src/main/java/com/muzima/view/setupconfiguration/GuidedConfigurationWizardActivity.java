@@ -84,7 +84,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private void initiateSetupConfiguration(){
         String setupConfigTemplateUuid = getIntent().getStringExtra(SETUP_CONFIG_UUID_INTENT_KEY);
         fetchConfigurationTemplate(setupConfigTemplateUuid);
-        downloadCohorts();
+        downloadSettings();
     }
 
     private void fetchConfigurationTemplate(String setupConfigTemplateUuid){
@@ -95,6 +95,49 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         }catch (SetupConfigurationController.SetupConfigurationFetchException e){
             Log.e(getClass().getSimpleName(), "Could not get setup configuration template", e);
         }
+    }
+
+    private void downloadSettings() {
+        final SetupActionLogModel downloadSettingsLog = new SetupActionLogModel();
+        addSetupActionLog(downloadSettingsLog);
+        new AsyncTask<Void, Void, int[]>() {
+            @Override
+            protected void onPreExecute() {
+                downloadSettingsLog.setSetupAction(getString(R.string.info_settings_download_progress));
+                onQueryTaskStarted();
+            }
+            @Override
+            protected int[] doInBackground(Void... voids) {
+                MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                return muzimaSyncService.downloadNewSettings();
+            }
+            @Override
+            protected void onPostExecute(int[] result) {
+                String resultStatus=null;
+                String resultDescription=null;
+                if (result == null){
+                    resultDescription = getString(R.string.info_cohort_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if(result[0] == SyncStatusConstants.SUCCESS) {
+                    if(result[1] == 0) {
+                        resultDescription = getString(R.string.info_settings_not_download);
+                    } else if(result[1] == 1) {
+                        resultDescription = getString(R.string.info_setting_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_settings_downloaded, result[1]);
+                    }
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else {
+                    wizardcompletedSuccessfully=false;
+                    resultDescription = getString(R.string.error_settings_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                }
+                downloadSettingsLog.setSetupActionResult(resultDescription);
+                downloadSettingsLog.setSetupActionResultStatus(resultStatus);
+                onQueryTaskFinish();
+                downloadCohorts();
+            }
+        }.execute();
     }
 
     private void downloadCohorts() {
@@ -444,7 +487,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else if(result[0] == SyncStatusConstants.SUCCESS) {
                     int downloadedEncounters = result[1];
-                    int patients = result[2];
+                    int patients = result[3];
                     if(downloadedEncounters == 1 && patients == 1) {
                         resultDescription = getString(R.string.info_encounter_patient_downloaded);
                     } else if(downloadedEncounters == 1) {
@@ -497,13 +540,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else if(result[0] == SyncStatusConstants.SUCCESS) {
                     int downloadedObs = result[1];
-                    int patients = result[2];
+                    int patients = result[3];
                     if(downloadedObs == 1 && patients == 1) {
                         resultDescription = getString(R.string.info_observation_patient_downloaded);
                     } else if(downloadedObs == 1) {
                         resultDescription = getString(R.string.info_observation_patients_downloaded, patients);
                     } else if(patients == 1) {
-                        resultDescription = getString(R.string.info_observations_patient_downloaded, downloadedObs);
+                        resultDescription = getString(R.string.info_observations_patient_downloaded, patients);
                     } else if(downloadedObs == 0) {
                         resultDescription = getString(R.string.info_observation_patient_not_downloaded);
                     } else {
