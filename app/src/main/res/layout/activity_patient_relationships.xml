@@ -65,6 +65,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:scaleType="fitCenter"
+            android:onClick="createRelationship"
             android:src="?attr/icAdd" />
 </FrameLayout>
 
