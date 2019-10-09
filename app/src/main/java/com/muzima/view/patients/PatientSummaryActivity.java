@@ -248,8 +248,6 @@ public class PatientSummaryActivity extends BaseActivity {
                 }
                 break;
             case R.id.client_relationship:
-                // display list of existing relationships
-                Toast.makeText(getApplicationContext(),"Will show relationships", Toast.LENGTH_LONG).show();
                 showRelationships();
             default:
                 break;

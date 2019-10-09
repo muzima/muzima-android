@@ -23,26 +23,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
-import com.muzima.api.model.Encounter;
-import com.muzima.api.model.Patient;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
-import com.muzima.controller.EncounterController;
 import com.muzima.controller.RelationshipController;
+import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-public class PatientRelationshipsAdapter extends ListAdapter<Relationship> {
+public class RelationshipsAdapter extends ListAdapter<Relationship> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private final String patientUuid;
-    final RelationshipController relationshipController;
+    private final RelationshipController relationshipController;
 
 
-    public PatientRelationshipsAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController, Patient patient) {
+    public RelationshipsAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController, String patientUuid) {
         super(activity, textViewResourceId);
-        patientUuid = patient.getUuid();
+        this.patientUuid = patientUuid;
         this.relationshipController = relationshipController;
     }
 
@@ -71,9 +68,17 @@ public class PatientRelationshipsAdapter extends ListAdapter<Relationship> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.relatedPerson.setText(relationship.getPersonA().getDisplayName());
-        holder.relationshipType.setText(relationship.getRelationshipType().getAIsToB());
-        holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_male));
+        if (StringUtils.equalsIgnoreCase(patientUuid, relationship.getPersonA().getUuid())) {
+            holder.relatedPerson.setText(relationship.getPersonB().getDisplayName());
+            holder.relationshipType.setText(relationship.getRelationshipType().getBIsToA());
+            int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
+            holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+        } else {
+            holder.relatedPerson.setText(relationship.getPersonA().getDisplayName());
+            holder.relationshipType.setText(relationship.getRelationshipType().getAIsToB());
+            int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
+            holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+        }
 
         return convertView;
     }
@@ -121,7 +126,7 @@ public class PatientRelationshipsAdapter extends ListAdapter<Relationship> {
         @Override
         protected void onPostExecute(List<Relationship> relationships){
             if(relationships==null){
-                Toast.makeText(getContext(),getContext().getString(R.string.error_encounter_load),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),getContext().getString(R.string.error_relationship_load),Toast.LENGTH_SHORT).show();
                 return;
             }
             clear();

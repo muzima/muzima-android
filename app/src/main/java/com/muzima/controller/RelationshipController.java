@@ -11,8 +11,8 @@
 package com.muzima.controller;
 
 import android.util.Log;
-import com.muzima.api.model.Patient;
 import com.muzima.api.model.Relationship;
+import com.muzima.api.model.RelationshipType;
 import com.muzima.api.service.RelationshipService;
 
 import java.io.IOException;
@@ -26,6 +26,47 @@ public class RelationshipController {
         this.relationshipService = relationshipService;
     }
 
+    /********************************************************************************************************
+    *                               METHODS FOR RELATIONSHIP TYPES
+    *********************************************************************************************************/
+
+    public List<RelationshipType> downloadAllRelationshipTypes() throws RetrieveRelationshipTypeException {
+        try {
+            return relationshipService.downloadAllRelationshipTypes();
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while downloading Relationship Types from server", e);
+            throw new RetrieveRelationshipTypeException(e);
+        }
+    }
+
+    public void saveRelationshipTypes(List<RelationshipType> relationshipTypes) throws SaveRelationshipTypeException {
+        try {
+            relationshipService.saveRelationshipTypes(relationshipTypes);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while saving the relationship types list", e);
+            throw new SaveRelationshipTypeException(e);
+        }
+    }
+
+    public List<RelationshipType>  getAllRelationshipTypes() throws RetrieveRelationshipTypeException{
+        try {
+            return relationshipService.getAllRelationshipTypes();
+        } catch (IOException e) {
+            throw new RetrieveRelationshipTypeException(e);
+        }
+    }
+
+    public RelationshipType  getRelationshipTypeByUuid(String uuid) throws RetrieveRelationshipTypeException{
+        try {
+            return relationshipService.getRelationshipTypeByUuid(uuid);
+        } catch (IOException e) {
+            throw new RetrieveRelationshipTypeException(e);
+        }
+    }
+
+    /********************************************************************************************************
+     *                               METHODS FOR RELATIONSHIPS
+     *********************************************************************************************************/
     public List<Relationship> downloadRelationshipsForPerson(String patientUuid) throws RetrieveRelationshipException {
         try {
             return relationshipService.downloadRelationshipsForPerson(patientUuid);
@@ -34,7 +75,6 @@ public class RelationshipController {
             throw new RetrieveRelationshipException(e);
         }
     }
-
 
     public void saveRelationships(List<Relationship> relationships) throws SaveRelationshipException {
         try {
@@ -45,10 +85,6 @@ public class RelationshipController {
         }
     }
 
-//    public int getEncountersCountByPatient(String patientUuid) throws IOException {
-//        return relationshipService.countEncountersByPatientUuid(patientUuid);
-//    }
-
     public List<Relationship>  getRelationshipsForPerson(String personUuid) throws RetrieveRelationshipException{
         try {
             return relationshipService.getRelationshipsForPerson(personUuid);
@@ -57,27 +93,31 @@ public class RelationshipController {
         }
     }
 
+    /********************************************************************************************************
+     *                               METHODS FOR EXCEPTION HANDLING
+     *********************************************************************************************************/
+
     public static class RetrieveRelationshipException extends Throwable {
         RetrieveRelationshipException(IOException e) {
             super(e);
         }
     }
 
-//    public class ReplaceEncounterException extends Throwable {
-//        ReplaceEncounterException(IOException e) {
-//            super(e);
-//        }
-//    }
-//
+    public static class RetrieveRelationshipTypeException extends Throwable {
+        RetrieveRelationshipTypeException(IOException e) {
+            super(e);
+        }
+    }
+
     public static class SaveRelationshipException extends Throwable {
         SaveRelationshipException(IOException e) {
             super(e);
         }
     }
-//
-//    public class DeleteEncounterException extends Throwable {
-//        DeleteEncounterException(IOException e) {
-//            super(e);
-//        }
-//    }
+
+    public static class SaveRelationshipTypeException extends Throwable {
+        SaveRelationshipTypeException(IOException e) {
+            super(e);
+        }
+    }
 }

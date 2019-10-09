@@ -1074,8 +1074,10 @@ public class MuzimaSyncService {
     }
 
     public int[] downloadRelationshipsForPatientsByPatientUUIDs(List<String> patientUuids) {
+        if (!settingsController.isRelationshipEnabled())
+            return null;
+
         int[] result = new int[3];
-        System.out.println(patientUuids);
         try {
             Log.i(getClass().getSimpleName(), "Downloading relationships for "+ patientUuids.size() + " patients");
             for (String patientUuid : patientUuids) {
@@ -1099,20 +1101,13 @@ public class MuzimaSyncService {
             Log.e(getClass().getSimpleName(), "Exception thrown while saving relationships.", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
         }
-        /** catch (EncounterController.ReplaceEncounterException e) {
-            Log.e(getClass().getSimpleName(), "Exception thrown while replacing encounters.", e);
-            result[0] = SyncStatusConstants.REPLACE_ERROR;
-        } catch (EncounterController.DeleteEncounterException e) {
-            Log.e(getClass().getSimpleName(), "Exception thrown while deleting encounters.", e);
-            result[0] = SyncStatusConstants.DELETE_ERROR;
-        } catch (EncounterController.SaveEncounterException e) {
-            Log.e(getClass().getSimpleName(), "Exception thrown while saving encounters.", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
-        }**/
         return result;
     }
 
     public int[] downloadRelationshipsForPatientsByCohortUUIDs(String[] cohortUuids) {
+        if (!settingsController.isRelationshipEnabled())
+            return null;
+
         int[] result = new int[3];
         List<Patient> patients;
         try {
