@@ -9,18 +9,18 @@
  */
 package com.muzima.view.relationship;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientAdapterHelper;
-import com.muzima.adapters.relationships.PatientRelationshipsAdapter;
+import com.muzima.adapters.relationships.RelationshipsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Relationship;
 import com.muzima.utils.Fonts;
@@ -30,7 +30,7 @@ import com.muzima.view.patients.PatientSummaryActivity;
 
 public class RelationshipsList extends BroadcastListenerActivity implements AdapterView.OnItemClickListener, ListAdapter.BackgroundListQueryTaskListener {
     private Patient patient;
-    private PatientRelationshipsAdapter patientRelationshipsAdapter;
+    private RelationshipsAdapter patientRelationshipsAdapter;
     private View noDataView;
     private final ThemeUtils themeUtils = new ThemeUtils();
 
@@ -42,7 +42,7 @@ public class RelationshipsList extends BroadcastListenerActivity implements Adap
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         setupPatientMetadata();
         setupStillLoadingView();
-        setupPatientEncounters();
+        setupPatientRelationships();
     }
 
     @Override
@@ -62,21 +62,18 @@ public class RelationshipsList extends BroadcastListenerActivity implements Adap
         genderIcon.setImageDrawable(getResources().getDrawable(genderDrawable));
     }
 
-    private void setupPatientEncounters(){
+    private void setupPatientRelationships(){
         ListView  relationshipsLayout = findViewById(R.id.relationships_list);
-        patientRelationshipsAdapter = new PatientRelationshipsAdapter(this,
-                R.layout.item_relationship,
-                ((MuzimaApplication) getApplicationContext()).getRelationshipController(), patient);
+        patientRelationshipsAdapter = new RelationshipsAdapter(this, R.layout.item_relationship,
+                ((MuzimaApplication) getApplicationContext()).getRelationshipController(), patient.getUuid());
         patientRelationshipsAdapter.setBackgroundListQueryTaskListener(this);
         relationshipsLayout.setEmptyView(noDataView);
         relationshipsLayout.setAdapter(patientRelationshipsAdapter);
         relationshipsLayout.setOnItemClickListener(this);
         patientRelationshipsAdapter.reloadData();
-
     }
 
     private void setupNoDataView() {
-
         noDataView = findViewById(R.id.no_data_layout);
         TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(getResources().getText(R.string.info_relationships_unavailable));
@@ -84,11 +81,15 @@ public class RelationshipsList extends BroadcastListenerActivity implements Adap
     }
 
     private void setupStillLoadingView() {
-
         noDataView = findViewById(R.id.no_data_layout);
         TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(R.string.general_loading_encounters);
+        noDataMsgTextView.setText(R.string.general_loading_relationships);
         noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
+    }
+
+    public void createRelationship(View view) {
+        Toast.makeText(this, "Hello Sam", Toast.LENGTH_LONG).show();
+        // First show relationships to choose
     }
 
     @Override
@@ -115,5 +116,6 @@ public class RelationshipsList extends BroadcastListenerActivity implements Adap
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition){}
+
 
 }

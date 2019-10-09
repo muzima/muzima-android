@@ -105,6 +105,8 @@
     <string name="error_patient_search">Something went wrong while searching client(s)</string>
     <string name="error_provider_download">Could not download providers</string>
     <string name="error_provider_fetch">Something went wrong while fetching providers from local repo</string>
+    <string name="error_relationship_load">Relationships could not be loaded</string>
+    <string name="error_relationship_type_load">Relationship Types could not be loaded</string>
     <string name="error_server_connection_unavailable">Server unreachable</string>
     <string name="error_server_url_invalid">Invalid Server URL.</string>
     <string name="error_setup_configuration_download">Setup configurations could not be loaded</string>
