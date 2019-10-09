@@ -107,7 +107,6 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipType> {
             List<RelationshipType> relationshipTypes = null;
             try {
                relationshipTypes = relationshipController.getAllRelationshipTypes();
-
             }catch(RelationshipController.RetrieveRelationshipTypeException e){
                 Log.e(this.getClass().getSimpleName(),"Could not get relationship types",e);
             }
