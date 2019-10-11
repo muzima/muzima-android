@@ -9,9 +9,14 @@
  */
 package com.muzima.view.relationship;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +25,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientAdapterHelper;
+import com.muzima.adapters.relationships.RelationshipTypesAdapter;
 import com.muzima.adapters.relationships.RelationshipsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Relationship;
@@ -90,6 +96,8 @@ public class RelationshipsList extends BroadcastListenerActivity implements Adap
     public void createRelationship(View view) {
         Toast.makeText(this, "Hello Sam", Toast.LENGTH_LONG).show();
         // First show relationships to choose
+
+        displayChooseRelationshipTypeDialog();
     }
 
     @Override
@@ -117,5 +125,22 @@ public class RelationshipsList extends BroadcastListenerActivity implements Adap
     @Override
     public void onQueryTaskCancelled(Object errorDefinition){}
 
+    private void displayChooseRelationshipTypeDialog() {
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(RelationshipsList.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.relationship_type_layout, null);
+
+        ListView  ll = view.findViewById(R.id.relationship_type_list);
+        RelationshipTypesAdapter relationshipTypesAdapter = new RelationshipTypesAdapter(this, R.layout.item_relationship,
+                ((MuzimaApplication) getApplicationContext()).getRelationshipController());
+
+        ll.setAdapter(relationshipTypesAdapter);
+        relationshipTypesAdapter.reloadData();
+
+        builder.setView(view);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }

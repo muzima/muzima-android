@@ -55,10 +55,8 @@
     <string name="error_concept_download">Could not download concepts</string>
     <string name="error_concept_fetch">Something went wrong while fetching concepts from local repo</string>
     <string name="error_concept_parse">An error occurred while parsing concepts in the form</string>
-    <string name="error_connection_data_download">Connection error occurred while downloading data
-    </string>
-    <string name="error_credential_invalid">Invalid Username, Password, Server combination.
-    </string>
+    <string name="error_connection_data_download">Connection error occurred while downloading data</string>
+    <string name="error_credential_invalid">Invalid Username, Password, Server combination.</string>
     <string name="error_data_download">An error occurred while downloading data form server</string>
     <string name="error_data_save">An error occurred while saving data to local repo</string>
     <string name="error_empty_message_text">Cannot send empty message.</string>
@@ -116,8 +114,7 @@
     <string name="error_sync_not_allowed">Action not allowed while sync is in progress</string>
     <string name="error_tag_fetch">Something went wrong while fetching tags from local repo</string>
     <string name="error_target_application_find">No target applications</string>
-    <string name="error_username_invalid_format">Invalid Character in Username. These are not allowed: %s
-    </string>
+    <string name="error_username_invalid_format">Invalid Character in Username. These are not allowed: %s</string>
     <string name="error_wizard_interrupted">Wizard was interrupted, please logout and run the wizard again.</string>
     <string name="failure_obtain_smartcard_record">Could not obtain smartcard record for writing to card.</string>
     <string name="failure_obtaining_card_serial_number">Could not obtain card serial number</string>
@@ -214,7 +211,6 @@
     <string name="general_view_encounter">View encounter</string>
     <string name="general_welcome">Welcome</string>
     <string name="general_yes">Yes</string>
-    <string name="general_reports">Reports</string>
     <string name="get_more">More from Server</string>
     <string name="header_cohort_category">Cohort Settings</string>
     <string name="header_muzima_category">mUzima Settings</string>
@@ -241,12 +237,10 @@
     <string name="hint_client_search">Search clients</string>
     <string formatted="false" name="hint_client_summary_encounters">%d Encounters</string>
     <string formatted="false" name="hint_client_summary_forms">%d Incomplete, %d Complete, %d Recommended</string>
-    <string formatted="false" name="hint_client_summary_notifications">%d New Notifications, %d Total Notifications
-    </string>
+    <string formatted="false" name="hint_client_summary_notifications">%d New Notifications, %d Total Notifications</string>
     <string formatted="false" name="hint_client_summary_observations">%d Observations</string>
     <string formatted="false" name="hint_client_summary_reports">%d Reports</string>
-    <string name="hint_cohort_download">Select one or more cohorts from the list and click on \'Next\' to download
-    </string>
+    <string name="hint_cohort_download">Select one or more cohorts from the list and click on \'Next\' to download</string>
     <string name="hint_cohort_filter">Start typing to filter the cohorts…</string>
     <string name="hint_cohort_list_download">Please press load to fetch available cohorts list from server</string>
     <string name="hint_cohort_prefix_help">A cohort is a predefined group of clients for which you can fill forms and
@@ -273,11 +267,9 @@
         this by sending us error data, all you have to do is click OK.
     </string>
     <string name="hint_crash_dialog_comment_prompt">Please add your comments about the problem below.</string>
-    <string name="hint_create_new_SHR">Client does not have an SHR. Do you want to create new SHR and write to card?
-    </string>
+    <string name="hint_create_new_SHR">Client does not have an SHR. Do you want to create new SHR and write to card?</string>
     <string name="hint_current_or_past_date_validation_failure">Please enter a date prior or equal to today</string>
-    <string name="hint_custom_concept_help">Here you define concepts whose data will be included in later download.
-    </string>
+    <string name="hint_custom_concept_help">Here you define concepts whose data will be included in later download.</string>
     <string name="hint_custom_location_help">Here you download locations that will show up in the forms.</string>
     <string name="hint_custom_provider_help">Here you download providers that will show up in the forms.</string>
     <string formatted="false" name="hint_dashboard_clients_description">%d Synced</string>
@@ -352,8 +344,7 @@
         least
     </string>
     <string name="hint_reports_unavailable">Please select reports from all forms list and click download</string>
-    <string name="hint_require_medical_record_number">Require client\'s medical record number during registration
-    </string>
+    <string name="hint_require_medical_record_number">Require client\'s medical record number during registration</string>
     <string name="hint_server_connection_unavailable">Please contact your server administrator to check server
         connectivity
     </string>
@@ -382,12 +373,10 @@
     <string name="info_background_data_sync_started">Syncing data in background</string>
     <string name="info_client_demographics_download">Downloading clients demographic…</string>
     <string name="info_client_identifier_change">Client Identifier changed on the server. The new identifier will be
-        used
-        going forward.
+        used going forward.
     </string>
     <string name="info_client_local_search_not_found">No clients matched your search locally. Enter at least 3
-        characters for
-        remote search.
+        characters for remote search.
     </string>
     <string name="info_client_remote_search_not_found">No clients matched your search on the server</string>
     <string name="info_cohort_download">Downloading Cohorts</string>
@@ -458,8 +447,7 @@
     <string name="info_downloaded_reports_unavailable">No reports have been downloaded</string>
     <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
     <string name="info_encounter_download">Downloading Encounters</string>
-    <string formatted="false" name="info_encounter_download_progress">Downloaded encounters for client %d of %d.
-    </string>
+    <string formatted="false" name="info_encounter_download_progress">Downloaded encounters for client %d of %d.</string>
     <string formatted="false" name="info_encounter_not_downloaded_progress">Encounters for client %d of %d not
         downloaded.
     </string>
@@ -470,8 +458,7 @@
     <string name="info_encounter_unavailable">No encounters available</string>
     <string name="info_relationships_unavailable">No relationships available</string>
     <string formatted="false" name="info_encounters_patient_downloaded">Downloaded %d encounters for 1 client</string>
-    <string formatted="false" name="info_encounters_patients_downloaded">Downloaded %d encounters for %d clients
-    </string>
+    <string formatted="false" name="info_encounters_patients_downloaded">Downloaded %d encounters for %d clients</string>
     <string formatted="false" name="info_form_data_delete">Deleted %d forms</string>
     <string name="info_form_data_save_success">Completed form data was saved successfully.</string>
     <string name="info_form_data_upload_fail">Failed to Sync Form data to the current server. Do you still want to
