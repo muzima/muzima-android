@@ -97,6 +97,7 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipType> {
     private class BackgroundQueryTask extends AsyncTask<String, Void, List<RelationshipType>> {
         @Override
         protected void onPreExecute() {
+            System.out.println("Loading");
             if (backgroundListQueryTaskListener != null) {
                 backgroundListQueryTaskListener.onQueryTaskStarted();
             }
@@ -120,10 +121,11 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipType> {
                 Toast.makeText(getContext(),getContext().getString(R.string.error_relationship_type_load),Toast.LENGTH_SHORT).show();
                 return;
             }
+            System.out.println("Retrieved " + relationshipTypes.size());
             clear();
             addAll(relationshipTypes);
             notifyDataSetChanged();
-            backgroundListQueryTaskListener.onQueryTaskFinish();
+//            backgroundListQueryTaskListener.onQueryTaskFinish();
         }
     }
 }
