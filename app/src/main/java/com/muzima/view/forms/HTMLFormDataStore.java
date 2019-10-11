@@ -61,6 +61,8 @@ import com.muzima.controller.EncounterController;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -312,6 +314,7 @@ class HTMLFormDataStore {
         List<Observation> observations = new ArrayList<>();
         try {
             observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+            Collections.sort(observations, observationDateTimeComparator);
         } catch (ObservationController.LoadObservationException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
@@ -323,6 +326,7 @@ class HTMLFormDataStore {
         List<Observation> observations = new ArrayList<>();
         try {
             observations = observationController.getObservationsByEncounterId(encounterid);
+            Collections.sort(observations, observationDateTimeComparator);
         } catch (ObservationController.LoadObservationException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
@@ -340,6 +344,7 @@ class HTMLFormDataStore {
                     observations.addAll(observationController.getObservationsByEncounterId(enc.getId()));
                 }
             }
+            Collections.sort(observations, observationDateTimeComparator);
         } catch (ObservationController.LoadObservationException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         } catch (EncounterController.DownloadEncounterException e) {
@@ -642,5 +647,12 @@ class HTMLFormDataStore {
         }
         return jsonArray.toString();
     }
+
+    private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
+        @Override
+        public int compare(Observation lhs, Observation rhs) {
+            return -lhs.getObservationDatetime().compareTo(rhs.getObservationDatetime());
+        }
+    };
 
 }
