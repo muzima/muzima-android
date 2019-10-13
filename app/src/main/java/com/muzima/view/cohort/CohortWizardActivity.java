@@ -226,6 +226,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         int[] resultForPatients =  muzimaSyncService.downloadPatientsForCohorts(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
 
         if (resultForPatients[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+            muzimaSyncService.downloadRelationshipsTypes();
             muzimaSyncService.downloadRelationshipsForPatientsByCohortUUIDs(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
         }
 

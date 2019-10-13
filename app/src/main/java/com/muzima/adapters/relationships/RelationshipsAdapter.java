@@ -48,6 +48,23 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         new BackgroundQueryTask().execute(patientUuid);
     }
 
+    public boolean relationshipWithPersonExist(Relationship relationship) {
+        String relatedPersonUuid = relationship.getPersonA().getUuid();
+        if (StringUtils.equals(relationship.getPersonA().getUuid(), patientUuid))
+            relatedPersonUuid = relationship.getPersonB().getUuid();
+        try {
+            List<Relationship> relationships = relationshipController.getPersonRelationshipsByType(patientUuid, relationship.getRelationshipType().getUuid());
+            for (Relationship r : relationships) {
+                if (StringUtils.equals(r.getPersonA().getUuid(), relatedPersonUuid) || StringUtils.equals(r.getPersonB().getUuid(), relatedPersonUuid)) {
+                    return true; // we have same relationship here
+                }
+            }
+        } catch (RelationshipController.RetrieveRelationshipException e) {
+            Log.e(getClass().getSimpleName(), "Error while loading relationships", e);
+        }
+        return false;
+    }
+
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {

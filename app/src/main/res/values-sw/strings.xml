@@ -463,7 +463,7 @@
     <string formatted="false" name="info_observation_patients_downloaded">Chunguzi za daktari %d zimepakuliwa za mteja mmoja.</string>
     <string name="info_observation_search">Tafuta chunguzi za daktari.</string>
     <string name="info_observation_unavailable">Hakuna chunguzi za daktari zilizopatikanwa</string>
-    <string formatted="false" name="info_observations_download_pogress">Chunguzi za daktari za mteja %d kati ya %d zimepakuliwa</string>
+    <string formatted="false" name="info_observations_download_progress">Chunguzi za daktari za mteja %d kati ya %d zimepakuliwa</string>
     <string name="info_observations_load_in_progress">Chunguzi za daktari bado zinapakiwa</string>
     <string formatted="false" name="info_observations_not_downloaded_progress">Chunguzi za daktari za mteja %d kati ya %d hazikupakuliwa</string>
     <string name="info_observations_patient_downloaded">Uchunguzi mmoja wa daktari umepakuliwa wa wateja %d</string>

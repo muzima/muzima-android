@@ -14,13 +14,15 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.AutoCompleteTextView;
 import com.muzima.adapters.concept.AutoCompleteBaseAdapter;
-import com.muzima.api.model.Provider;
-import com.muzima.controller.ProviderController;
+import com.muzima.api.model.Patient;
+import com.muzima.api.model.Person;
+import com.muzima.controller.PatientController;
+import com.muzima.controller.PersonController;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Provider> {
+public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Person> {
 
     private boolean searchRemote;
 
@@ -29,19 +31,28 @@ public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Pr
     }
 
     @Override
-    protected List<Provider> getOptions(CharSequence constraint) {
-        ProviderController providerController = getMuzimaApplicationContext().getProviderController();
+    protected List<Person> getOptions(CharSequence constraint) {
+        PatientController patientController = getMuzimaApplicationContext().getPatientController();
+        PersonController personController = getMuzimaApplicationContext().getPersonController();
+        List<Person> personList = new ArrayList<>();
         try {
-            return providerController.downloadProviderFromServerByName(constraint.toString());
-        } catch (ProviderController.ProviderDownloadException e) {
-            Log.e(getClass().getSimpleName(), "Unable to download providers!", e);
+            //personList = personController.searchPersonLocally(constraint.toString());
+
+            List<Patient> patientList = patientController.searchPatientLocally(constraint.toString(), null);
+            for (Patient patient : patientList) {
+//                if (personController.getPersonByUuid(patient.getUuid()) == null)
+                personController.getPersonByUuid(patient.getUuid());
+                    personList.add(patient);
+            }
+        } catch (PersonController.PersonLoadException | PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Unable to search persons!", e);
         }
-        return new ArrayList<>();
+        return personList;
     }
 
     @Override
-    protected String getOptionName(Provider provider) {
-        return provider.getName();
+    protected String getOptionName(Person person) {
+        return person.getDisplayName();
     }
 
     public void setSearchRemote(boolean searchRemote) {

@@ -571,7 +571,7 @@
     <string formatted="false" name="info_observation_patients_downloaded">Baixou %d observações para 1 cliente</string>
     <string name="info_observation_search">Pesquisar observações</string>
     <string name="info_observation_unavailable">Nenhuma observação disponível</string>
-    <string formatted="false" name="info_observations_download_pogress">Observações baixadas para cliente %d de %d.
+    <string formatted="false" name="info_observations_download_progress">Observações baixadas para cliente %d de %d.
     </string>
     <string name="info_observations_load_in_progress">Observações ainda estão a carregar</string>
     <string formatted="false" name="info_observations_not_downloaded_progress">Observações para cliente %d para %d não

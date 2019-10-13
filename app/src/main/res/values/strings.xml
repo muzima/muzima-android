@@ -524,7 +524,7 @@
     <string formatted="false" name="info_observation_patients_downloaded">Downloaded %d observations for 1 client</string>
     <string name="info_observation_search">Search observations</string>
     <string name="info_observation_unavailable">No observations available</string>
-    <string formatted="false" name="info_observations_download_pogress">Downloaded observations for client %d of %d.</string>
+    <string formatted="false" name="info_observations_download_progress">Downloaded observations for client %d of %d.</string>
     <string name="info_observations_load_in_progress">Observations are still loading</string>
     <string formatted="false" name="info_observations_not_downloaded_progress">Observations for client %d of %d not
         downloaded.
@@ -544,6 +544,10 @@
     <string name="info_provider_not_downloaded">Did not download any providers</string>
     <string name="info_provider_unavailable">No providers have been added yet</string>
     <string formatted="false" name="info_providers_downloaded">Downloaded %d providers</string>
+    <string formatted="false" name="info_relationships_download_progress">Downloaded relationships for client %d of %d.</string>
+    <string formatted="false" name="info_relationships_not_downloaded_progress">Relationships for client %d of %d not
+        downloaded.
+    </string>
     <string name="info_real_time_upload">mUzima is uploading your data</string>
     <string name="info_real_time_upload_success">mUzima has uploaded your data successfully</string>
     <string name="info_scanner_exists">Barcode scanner is already installed.</string>
