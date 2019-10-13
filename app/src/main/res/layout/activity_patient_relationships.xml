@@ -14,7 +14,8 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   style="@style/DashboardTableContainer">
-        <RelativeLayout
+
+        <RelativeLayout android:id="@+id/patient_demographics_layout"
                 style="@style/PatientDemographicsLayout"
                 android:paddingBottom="5dp">
 
@@ -37,7 +38,8 @@
 
         <LinearLayout android:id="@+id/add_relationship"
                       style="@style/NotClickableSummaryItem"
-                      android:visibility="visible">
+                      android:visibility="gone">
+
             <TextView android:id="@+id/add_relationship_prompt"
                     android:paddingTop="14dp"
                     android:paddingBottom="4dp"
@@ -77,14 +79,6 @@
                           android:orientation="horizontal">
 
                 <Button
-                        android:id="@+id/save"
-                        android:text="@string/general_save"
-                        android:background="@drawable/rounded_corner_loginbutton"
-                        android:onClick="saveRelationship"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"/>
-
-                <Button
                         android:id="@+id/cancel"
                         android:text="@string/general_cancel"
                         android:background="@drawable/sel_button_round"
@@ -93,6 +87,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"/>
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout android:id="@+id/no_data_layout"

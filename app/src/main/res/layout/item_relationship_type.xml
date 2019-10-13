@@ -31,7 +31,7 @@
                 android:background="@drawable/rounded_corner_loginbutton"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:paddingStart="0dp"
+                android:paddingStart="5dp"
                 android:paddingEnd="5dp"
                 android:layout_marginEnd="3dp"
                 android:gravity="end|center_vertical"/>
@@ -47,7 +47,7 @@
                 android:id="@+id/bIsToA"
                 android:background="@drawable/rounded_corner_loginbutton"
                 android:paddingStart="5dp"
-                android:paddingEnd="0dp"
+                android:paddingEnd="5dp"
                 android:layout_marginStart="3dp"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"

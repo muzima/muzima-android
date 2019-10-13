@@ -13,17 +13,21 @@ package com.muzima.controller;
 import android.util.Log;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
+import com.muzima.api.service.PersonService;
 import com.muzima.api.service.RelationshipService;
+import org.apache.lucene.queryParser.ParseException;
+
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RelationshipController {
 
     private final RelationshipService relationshipService;
+    private final PersonService personService;
 
-    public RelationshipController(RelationshipService relationshipService) {
+    public RelationshipController(RelationshipService relationshipService, PersonService personService) {
         this.relationshipService = relationshipService;
+        this.personService = personService;
     }
 
     /********************************************************************************************************
@@ -97,7 +101,7 @@ public class RelationshipController {
         }
     }
 
-    private void saveRelationshipTypesFromRelationships(List<Relationship> relationships) {
+    private void saveRelationshipTypesAndPersonsFromRelationships(List<Relationship> relationships) {
 
         // if the relationship has a new type we save it to the local repo
         try{
@@ -105,8 +109,14 @@ public class RelationshipController {
                 if (getRelationshipTypeByUuid(relationship.getRelationshipType().getUuid()) == null) {
                     saveRelationshipType(relationship.getRelationshipType());
                 }
+
+                if (personService.getPersonByUuid(relationship.getPersonA().getUuid()) == null)
+                    personService.savePerson(relationship.getPersonA());
+
+                if (personService.getPersonByUuid(relationship.getPersonB().getUuid()) == null)
+                    personService.savePerson(relationship.getPersonB());
             }
-        } catch (SaveRelationshipTypeException | RetrieveRelationshipTypeException e) {
+        } catch (SaveRelationshipTypeException | RetrieveRelationshipTypeException | IOException e) {
             Log.e(getClass().getSimpleName(), "Error in saving the relationship type list while saving relationship", e);
         }
     }
@@ -124,6 +134,20 @@ public class RelationshipController {
     }
 
     /**
+     * Save a single relationship to the local repo
+     * @param relationship list of {@link Relationship}
+     * @throws SaveRelationshipException Relationship Save Exception
+     */
+    public void saveRelationship(Relationship relationship) throws SaveRelationshipException {
+        try {
+            relationshipService.saveRelationship(relationship);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while saving the relationship", e);
+            throw new SaveRelationshipException(e);
+        }
+    }
+
+    /**
      * Save a list of relationships to the local repo
      * @param relationships list of {@link Relationship}
      * @throws SaveRelationshipException Relationship Save Exception
@@ -132,7 +156,7 @@ public class RelationshipController {
         try {
             relationshipService.saveRelationships(relationships);
 
-            saveRelationshipTypesFromRelationships(relationships);
+            saveRelationshipTypesAndPersonsFromRelationships(relationships);
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while saving the relationships list", e);
             throw new SaveRelationshipException(e);
@@ -145,6 +169,17 @@ public class RelationshipController {
         } catch (IOException e) {
             throw new RetrieveRelationshipException(e);
         }
+    }
+
+    public List<Relationship>  getPersonRelationshipsByType(String personUuid, String relationshipTypeUuid) throws RetrieveRelationshipException{
+        try {
+            return relationshipService.getPersonRelationshipsByType(personUuid, relationshipTypeUuid);
+        } catch (IOException e) {
+            throw new RetrieveRelationshipException(e);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /********************************************************************************************************

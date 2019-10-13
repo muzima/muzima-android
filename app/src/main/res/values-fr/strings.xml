@@ -523,7 +523,7 @@
     <string formatted="false" name="info_observation_patients_downloaded">%d observations Téléchargées pour 1(un) client</string>
     <string name="info_observation_search">recherche des observations</string>
     <string name="info_observation_unavailable">Aucune observation disponible</string>
-    <string formatted="false" name="info_observations_download_pogress">Téléchargement en cours des observations pour le client %d of %d.</string>
+    <string formatted="false" name="info_observations_download_progress">Téléchargement en cours des observations pour le client %d of %d.</string>
     <string name="info_observations_load_in_progress">Les observations sont encore en cours de chargement</string>
     <string formatted="false" name="info_observations_not_downloaded_progress">Observations pour le client %d de %d ne sont pas téléchargés.</string>
     <string formatted="false" name="info_observations_patient_downloaded">1 (une) observation Téléchargée pour %d clients</string>

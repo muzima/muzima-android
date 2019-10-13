@@ -102,7 +102,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
             protected List<T> filterOptionsLocally(CharSequence constraint) {
                 List<T> result = new ArrayList<T>();
                 for (T t : previousResult) {
-                    if (getOptionName(t).toLowerCase().startsWith(constraint.toString().toLowerCase())) {
+                    if (getOptionName(t).toLowerCase().contains(constraint.toString().toLowerCase())) {
                         result.add(t);
                     }
                 }
@@ -112,7 +112,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
             private boolean hasResultStored(CharSequence constraint) {
                 return previousConstraint != null &&
                         previousResult != null &&
-                        constraint.toString().toLowerCase().startsWith(previousConstraint.toLowerCase());
+                        constraint.toString().toLowerCase().contains(previousConstraint.toLowerCase());
             }
 
             @Override

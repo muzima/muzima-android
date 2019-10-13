@@ -14,11 +14,13 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -61,6 +63,7 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipType> {
             holder = new ViewHolder();
             holder.btnAIsToB = convertView.findViewById(R.id.aIsToB);
             holder.btnBIsToA = convertView.findViewById(R.id.bIsToA);
+            holder.separator = convertView.findViewById(R.id.separator);
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
@@ -72,8 +75,12 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipType> {
             holder.btnAIsToB.setOnClickListener(new OnTypeSelectedListener(relationshipType, "A"));
 
             if (StringUtils.equalsIgnoreCase(relationshipType.getAIsToB(), relationshipType.getBIsToA())) {
+                holder.btnAIsToB.setGravity(Gravity.CENTER);
                 holder.btnBIsToA.setVisibility(View.GONE);
+                holder.separator.setVisibility(View.GONE);
             } else {
+                holder.btnBIsToA.setVisibility(View.VISIBLE);
+                holder.separator.setVisibility(View.VISIBLE);
                 holder.btnBIsToA.setText(relationshipType.getBIsToA());
                 holder.btnBIsToA.setOnClickListener(new OnTypeSelectedListener(relationshipType, "B"));
             }
@@ -97,6 +104,7 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipType> {
 
         Button btnAIsToB;
         Button btnBIsToA;
+        TextView separator;
     }
 
     private class OnTypeSelectedListener implements View.OnClickListener {
