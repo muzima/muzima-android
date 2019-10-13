@@ -106,8 +106,8 @@ public class RelationshipController {
                     saveRelationshipType(relationship.getRelationshipType());
                 }
             }
-        } catch (RetrieveRelationshipTypeException | SaveRelationshipTypeException e) {
-            Log.e(getClass().getSimpleName(), "Error while saving the relationship type list while saving relationship", e);
+        } catch (SaveRelationshipTypeException | RetrieveRelationshipTypeException e) {
+            Log.e(getClass().getSimpleName(), "Error in saving the relationship type list while saving relationship", e);
         }
     }
 

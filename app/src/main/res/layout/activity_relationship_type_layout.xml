@@ -3,27 +3,28 @@
               android:background="@android:color/white"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
-	
+              android:layout_height="wrap_content">
+
 	<TextView
+			android:id="@+id/add_new_relationship_header"
 			android:padding="14dp"
 			android:textColor="@android:color/white"
-			android:text="Add New relationship"
+			android:text="@string/add_new_relationship"
 			android:textSize="16sp"
 			android:textStyle="bold"
 			android:layout_marginBottom="8dp"
 			android:background="@android:color/holo_blue_dark"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/obs_details_header"/>
-	
+			android:layout_height="wrap_content"/>
+
 	<RelativeLayout
+			android:layout_marginBottom="8dp"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
-		
+
 		<TextView
-				android:id="@+id/encounter_date_textview"
-				android:text="What type of relationship?"
+				android:id="@+id/relationship_type_prompt"
+				android:text="@string/new_relationship_type"
 				android:padding="8dp"
 				android:layout_alignParentTop="true"
 				android:textColor="@android:color/black"
@@ -32,9 +33,9 @@
 
 		<ListView
 				android:id="@+id/relationship_type_list"
-				style="@style/MuzimaSelectableListView">
+				android:layout_below="@id/relationship_type_prompt"
+				style="@style/MuzimaSelectableListView"
+				android:divider="@color/primary_background">
 		</ListView>
-
 	</RelativeLayout>
-
 </LinearLayout>

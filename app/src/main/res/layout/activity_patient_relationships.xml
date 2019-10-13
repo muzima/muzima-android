@@ -34,8 +34,68 @@
 
         <View style="@style/DividerLine"
               android:layout_marginBottom="10dp"/>
-        <LinearLayout
-                android:id="@+id/no_data_layout"
+
+        <LinearLayout android:id="@+id/add_relationship"
+                      style="@style/NotClickableSummaryItem"
+                      android:visibility="visible">
+            <TextView android:id="@+id/add_relationship_prompt"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@android:color/white"
+                    android:text="@string/add_new_relationship"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginBottom="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <TextView android:id="@+id/info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+            <LinearLayout style="@style/AutocompleteTextArea">
+                <AutoCompleteTextView
+                        android:id="@+id/search_related_person"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/primary_blue"
+                        android:textColorHint="@color/hint_text_grey"
+                        android:textCursorDrawable="@null"
+                        android:hint="@string/hint_person_search"
+                        android:background="?attr/primaryBackgroundColor">
+                </AutoCompleteTextView>
+            </LinearLayout>
+
+            <LinearLayout android:gravity="end"
+                          android:layout_marginBottom="5dp"
+                          style="@style/NotClickableSummaryItem"
+                          android:orientation="horizontal">
+
+                <Button
+                        android:id="@+id/save"
+                        android:text="@string/general_save"
+                        android:background="@drawable/rounded_corner_loginbutton"
+                        android:onClick="saveRelationship"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"/>
+
+                <Button
+                        android:id="@+id/cancel"
+                        android:text="@string/general_cancel"
+                        android:background="@drawable/sel_button_round"
+                        android:onClick="cancelRelationshipAdd"
+                        android:layout_marginStart="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/no_data_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -52,12 +112,13 @@
             </TextView>
 
         </LinearLayout>
-        <ListView
-                android:id="@+id/relationships_list"
+
+        <ListView android:id="@+id/relationships_list"
                 style="@style/MuzimaSelectableListView">
         </ListView>
 
     </LinearLayout>
+
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_add_relationship"
             android:layout_width="wrap_content"

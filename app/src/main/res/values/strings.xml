@@ -330,6 +330,7 @@
     <string name="hint_password_prompt">Please Enter Password</string>
     <string name="hint_patient_report_list_download">Please press load to fetch available reports list from server</string>
     <string name="hint_patient_reports_sync">Please select reports from the server list and click sync</string>
+    <string name="hint_person_search">Search person by name or identifier</string>
     <string name="hint_phone_number_validation_failure">Invalid Phone Number. Please check and re-enter</string>
     <string name="hint_provider_not_set">You do not have provider rights or your provider data is not downloaded, please
         use add provider option.
@@ -747,4 +748,6 @@
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
+    <string name="add_new_relationship">Add New relationship</string>
+    <string name="new_relationship_type">What type of relationship?</string>
 </resources>

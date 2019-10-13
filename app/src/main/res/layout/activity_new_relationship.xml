@@ -1,0 +1,52 @@
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:padding="5dp">
+
+    <LinearLayout style="@style/NotClickableSummaryItem">
+
+        <TextView
+                android:id="@+id/info"
+                android:text="Mr. Horatio L Hornblower's Aunt/Uncle is: "
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <LinearLayout style="@style/AutocompleteTextArea">
+
+            <AutoCompleteTextView
+                    android:id="@+id/add_provider"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/primary_blue"
+                    android:textColorHint="@color/hint_text_grey"
+                    android:textCursorDrawable="@null"
+                    android:hint="@string/hint_person_search"
+                    android:background="?attr/primaryBackgroundColor">
+                <requestFocus/>
+            </AutoCompleteTextView>
+
+        </LinearLayout>
+
+        <View style="@style/DividerLine"
+                android:layout_height="2dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
+
