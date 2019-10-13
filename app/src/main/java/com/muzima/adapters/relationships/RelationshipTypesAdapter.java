@@ -25,6 +25,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.RelationshipType;
 import com.muzima.controller.RelationshipController;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.relationship.RelationshipsListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +33,13 @@ import java.util.List;
 public class RelationshipTypesAdapter extends ListAdapter<RelationshipType> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private final RelationshipController relationshipController;
+    private final RelationshipsListActivity relationshipsListActivity;
 
 
-    public RelationshipTypesAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController) {
+    public RelationshipTypesAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController, RelationshipsListActivity relationshipsListActivity) {
         super(activity, textViewResourceId);
         this.relationshipController = relationshipController;
+        this.relationshipsListActivity = relationshipsListActivity;
     }
 
     @Override
@@ -66,11 +69,13 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipType> {
         if (relationshipType != null) {
 
             holder.btnAIsToB.setText(relationshipType.getAIsToB());
+            holder.btnAIsToB.setOnClickListener(new OnTypeSelectedListener(relationshipType, "A"));
 
             if (StringUtils.equalsIgnoreCase(relationshipType.getAIsToB(), relationshipType.getBIsToA())) {
                 holder.btnBIsToA.setVisibility(View.GONE);
             } else {
                 holder.btnBIsToA.setText(relationshipType.getBIsToA());
+                holder.btnBIsToA.setOnClickListener(new OnTypeSelectedListener(relationshipType, "B"));
             }
         }
 
@@ -94,10 +99,24 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipType> {
         Button btnBIsToA;
     }
 
+    private class OnTypeSelectedListener implements View.OnClickListener {
+        private final RelationshipType relationshipType;
+        private final String selectedSide;
+
+        private OnTypeSelectedListener(RelationshipType relationshipType, String selectedSide) {
+            this.relationshipType = relationshipType;
+            this.selectedSide = selectedSide;
+        }
+
+        @Override
+        public void onClick(View view) {
+            relationshipsListActivity.relationshipTypeSelected(relationshipType, selectedSide);
+        }
+    }
+
     private class BackgroundQueryTask extends AsyncTask<String, Void, List<RelationshipType>> {
         @Override
         protected void onPreExecute() {
-            System.out.println("Loading");
             if (backgroundListQueryTaskListener != null) {
                 backgroundListQueryTaskListener.onQueryTaskStarted();
             }
@@ -121,11 +140,9 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipType> {
                 Toast.makeText(getContext(),getContext().getString(R.string.error_relationship_type_load),Toast.LENGTH_SHORT).show();
                 return;
             }
-            System.out.println("Retrieved " + relationshipTypes.size());
             clear();
             addAll(relationshipTypes);
             notifyDataSetChanged();
-//            backgroundListQueryTaskListener.onQueryTaskFinish();
         }
     }
 }

@@ -316,7 +316,7 @@
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
         <activity
-                android:name=".view.relationship.RelationshipsList"
+                android:name=".view.relationship.RelationshipsListActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_relationships"
                 android:parentActivityName=".view.patients.PatientSummaryActivity"
@@ -325,6 +325,19 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
+
+        <activity
+                android:name=".view.relationship.RelationshipActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="@string/add_new_relationship"
+                android:parentActivityName=".view.relationship.RelationshipsListActivity"
+                android:windowSoftInputMode="adjustResize">
+
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.relationship.RelationshipsListActivity"/>
+
+        </activity>
+
         <activity
                 android:name=".view.notifications.NotificationsListActivity"
                 android:configChanges="orientation|screenSize"
