@@ -97,6 +97,7 @@ public class HTMLFormObservationCreatorTest {
 
     private String mockConceptName;
     private String mockConceptUUID;
+    private int mockConceptID;
     private String formDataUuid;
 
 
@@ -117,10 +118,12 @@ public class HTMLFormObservationCreatorTest {
         Concept concept = mock(Concept.class);
         mockConceptName = "HEIGHT (CM)";
         mockConceptUUID = "MyUUID";
+        mockConceptID = 5090;
         when(concept.getName()).thenReturn(mockConceptName);
         when(concept.getUuid()).thenReturn(mockConceptUUID);
 
         when(conceptController.getConceptByName(mockConceptName)).thenReturn(concept);
+        when(conceptController.getConceptById(mockConceptID)).thenReturn(concept);
         formDataUuid = "formDataUuid";
     }
 

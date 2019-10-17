@@ -502,15 +502,16 @@ public class MuzimaSyncServiceTest {
     @Test
     public void downloadObservationsForPatients_shouldDownloadObservationsForGiveCohortIdsAndSavedConcepts() throws PatientController.PatientLoadException, ObservationController.DownloadObservationException, ObservationController.ReplaceObservationException, ConceptController.ConceptFetchException, ObservationController.DeleteObservationException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
+        final Patient patient = new Patient() {{
+            setUuid("patient1");
+        }};
         List<Patient> patients = new ArrayList<Patient>() {{
-            add(new Patient() {{
-                setUuid("patient1");
-            }});
+            add(patient);
         }};
 
         List<Observation> allObservations = new ArrayList<Observation>() {{
-            add(new Observation());
-            add(new Observation());
+            add(new Observation(){{setPerson(patient);}});
+            add(new Observation(){{setPerson(patient);}});
         }};
 
         when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
@@ -536,15 +537,16 @@ public class MuzimaSyncServiceTest {
     @Test
     public void downloadObservationsForPatients_shouldReturnSuccessAndCountWhenDownloadingObservationsForPatient() throws PatientController.PatientLoadException, ObservationController.DownloadObservationException, ConceptController.ConceptFetchException {
         String[] cohortUuids = new String[]{"uuid1"};
+        final Patient patient = new Patient() {{
+            setUuid("patient1");
+        }};
         List<Patient> patients = new ArrayList<Patient>() {{
-            add(new Patient() {{
-                setUuid("patient1");
-            }});
+            add(patient);
         }};
 
         List<Observation> allObservations = new ArrayList<Observation>() {{
-            add(new Observation());
-            add(new Observation());
+            add(new Observation(){{setPerson(patient);}});
+            add(new Observation(){{setPerson(patient);}});
         }};
 
         when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
@@ -625,20 +627,20 @@ public class MuzimaSyncServiceTest {
     @Test
     public void downloadEncountersForPatients_shouldDownloadInBatch() throws PatientController.PatientLoadException, EncounterController.ReplaceEncounterException, EncounterController.DownloadEncounterException {
         String[] cohortUuids = new String[]{"uuid1"};
+        final Patient patient = new Patient() {{
+            setUuid("patient1");
+        }};
         List<Patient> patients = new ArrayList<Patient>() {{
-            add(new Patient() {{
-                setUuid("patient1");
-            }});
+            add(patient);
         }};
 
         List<Encounter> encounters = new ArrayList<Encounter>() {{
-            add(new Encounter());
+            add(new Encounter(){{setPatient(patient);}});
         }};
 
         when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
         List<String> patientUuids = Collections.singletonList("patient1");
         when(encounterController.downloadEncountersByPatientUuids(patientUuids)).thenReturn(encounters);
-
         muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(cohortUuids, true);
 
         verify(encounterController).downloadEncountersByPatientUuids(patientUuids);
@@ -649,11 +651,18 @@ public class MuzimaSyncServiceTest {
     @Test
     public void shouldDeleteVoidedEncountersWhenDownloadingEncounters() throws EncounterController.DeleteEncounterException, EncounterController.DownloadEncounterException {
         String[] patientUuids = new String[]{"patientUuid1", "patientUuid2"};
+        final Patient patient = new Patient() {{
+            setUuid("patient1");
+        }};
+
         List<Encounter> encounters = new ArrayList<>();
-        encounters.add(new Encounter());
+        encounters.add(new Encounter(){{setPatient(patient);}});
+
         Encounter voidedEncounter = mock(Encounter.class);
         when(voidedEncounter.isVoided()).thenReturn(true);
+        when(voidedEncounter.getPatient()).thenReturn(patient);
         encounters.add(voidedEncounter);
+
         when(encounterController.downloadEncountersByPatientUuids(asList(patientUuids))).thenReturn(encounters);
         muzimaSyncService.downloadEncountersForPatientsByPatientUUIDs(asList(patientUuids),true);
         verify(encounterController).deleteEncounters(Collections.singletonList(voidedEncounter));
@@ -729,19 +738,28 @@ public class MuzimaSyncServiceTest {
     @Test
     public void shouldDeleteVoidedObservationsWhenDownloadingObservations() throws ObservationController.DeleteObservationException, ObservationController.DownloadObservationException, ReplaceObservationException, ConceptController.ConceptFetchException {
         List<String> patientUuids = Collections.singletonList("patientUuid");
+        final Patient patient = new Patient() {{
+            setUuid("patientUuid");
+        }};
+
         List<Observation> observations = new ArrayList<>();
         Observation anObservation = mock(Observation.class);
         when(anObservation.isVoided()).thenReturn(false);
+        when(anObservation.getPerson()).thenReturn(patient);
         observations.add(anObservation);
+
         Observation voidedObservation = mock(Observation.class);
         when(voidedObservation.isVoided()).thenReturn(true);
+        when(voidedObservation.getPerson()).thenReturn(patient);
         observations.add(voidedObservation);
+
         List<Concept> conceptList = new ArrayList<Concept>() {{
             add(new Concept() {{
                 setUuid("concept1");
             }});
         }};
         when(conceptController.getConcepts()).thenReturn(conceptList);
+
         when(observationController.downloadObservationsByPatientUuidsAndConceptUuids
                 (eq(patientUuids), eq(Collections.singletonList("concept1")))).thenReturn(observations);
 
