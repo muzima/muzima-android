@@ -43,7 +43,6 @@
             <TextView android:id="@+id/add_relationship_prompt"
                     android:paddingTop="14dp"
                     android:paddingBottom="4dp"
-                    android:textColor="@android:color/white"
                     android:text="@string/add_new_relationship"
                     android:textStyle="bold"
                     android:textAppearance="?android:attr/textAppearanceMedium"
