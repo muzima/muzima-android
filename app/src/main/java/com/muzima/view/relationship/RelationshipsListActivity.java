@@ -33,14 +33,18 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
+import com.muzima.controller.FormController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.RelationshipJsonMapper;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
+import org.json.JSONException;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class RelationshipsListActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     private Patient patient;
@@ -80,16 +84,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-//                Provider selectedProvider = (Provider) parent.getItemAtPosition(position);
-//                if (selectedProviderAdapter.doesProviderAlreadyExist(selectedProvider)) {
-//                    Log.e(getClass().getSimpleName(), "Providers Already exists");
-//                    Toast.makeText(ProviderPreferenceActivity.this, "Provider " + selectedProvider.getName() + " already exists", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    selectedProviderAdapter.addProvider(selectedProvider);
-//                    selectedProviderAdapter.notifyDataSetChanged();
-//                }
-//                autoCompleteProvidersTextView.setText(StringUtils.EMPTY);
-                System.out.println("narudikimbia home");
             }
         };
     }
@@ -109,19 +103,32 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                     else
                         newRelationship = new Relationship(selectedPerson, patient, selectedNewRelationshipType);
 
+                    newRelationship.setUuid(UUID.randomUUID().toString());
+
                     if (patientRelationshipsAdapter.relationshipWithPersonExist(newRelationship)){
                         Log.e(getClass().getSimpleName(), "Relationship already exists");
                         Toast.makeText(RelationshipsListActivity.this, "Patient already has " +
                                 selectedNewRelationshipType.getAIsToB() + ":" + selectedNewRelationshipType.getBIsToA()
                                 + " relationship with " + selectedPerson.getDisplayName(), Toast.LENGTH_LONG).show();
                     } else {
+                        // we will create a formData payload and save the relationship ONLY on success
+
+
                         try {
+                            RelationshipJsonMapper relationshipJsonMapper = new RelationshipJsonMapper(newRelationship,
+                                    patient, ((MuzimaApplication) getApplicationContext()).getPatientController(),
+                                    ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser());
+                            ((MuzimaApplication) getApplicationContext()).getFormController().saveFormData(relationshipJsonMapper.createFormDataFromRelationship());
                             ((MuzimaApplication) getApplicationContext()).getRelationshipController().saveRelationship(newRelationship);
                             patientRelationshipsAdapter.reloadData();
                             closeNewRelationshipWindow();
                             Toast.makeText(RelationshipsListActivity.this, "Relationship created successfully", Toast.LENGTH_LONG).show();
                         } catch (RelationshipController.SaveRelationshipException e) {
                             Log.e(getClass().getSimpleName(), "Error saving new relationship");
+                        } catch (JSONException e) {
+                            Log.e("", "Error While Parsing data" + e);
+                        } catch (FormController.FormDataSaveException e) {
+                            Log.e("", "Error While Saving Form Data" + e);
                         }
                     }
                 }
@@ -197,9 +204,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         } catch (Exception e) {
             Log.e(this.getClass().getSimpleName(), "Closing a closed keyboard");
         }
-    }
-
-    public void saveRelationship(View view) {
     }
 
     @Override

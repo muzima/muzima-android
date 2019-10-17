@@ -337,6 +337,7 @@ public class LoginActivity extends Activity {
 
         private void startNextActivity() {
             Intent intent;
+            downloadMissingServerSettings();
             if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
                 downloadMissingServerSettings();
                 intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();

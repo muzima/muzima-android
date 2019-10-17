@@ -246,10 +246,8 @@ class HTMLFormDataStore {
         List<Encounter> encounters = new ArrayList<>();
         try {
             encounters = encounterController.getEncountersByPatientUuid(patientuuid);
-        } catch (EncounterController.DownloadEncounterException e) {
+        } catch (EncounterController.DownloadEncounterException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading encounters", e);
-        } catch (Exception e) {
-            Log.e(getClass().getSimpleName(), "ExceptioJSONValuen occurred while loading encounters", e);
         }
         return JSONValue.toJSONString(encounters);
     }

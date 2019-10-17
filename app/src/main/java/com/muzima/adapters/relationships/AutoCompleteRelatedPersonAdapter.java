@@ -36,12 +36,11 @@ public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Pe
         PersonController personController = getMuzimaApplicationContext().getPersonController();
         List<Person> personList = new ArrayList<>();
         try {
-            //personList = personController.searchPersonLocally(constraint.toString());
+            personList = personController.searchPersonLocally(constraint.toString());
 
             List<Patient> patientList = patientController.searchPatientLocally(constraint.toString(), null);
             for (Patient patient : patientList) {
-//                if (personController.getPersonByUuid(patient.getUuid()) == null)
-                personController.getPersonByUuid(patient.getUuid());
+                if (personController.getPersonByUuid(patient.getUuid()) == null)
                     personList.add(patient);
             }
         } catch (PersonController.PersonLoadException | PatientController.PatientLoadException e) {

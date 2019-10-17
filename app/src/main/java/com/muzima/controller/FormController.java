@@ -390,6 +390,7 @@ public class FormController {
         try {
             formData.setSaveTime(new Date());
             formService.saveFormData(formData);
+            System.out.println(formData.getJsonPayload());
 
         } catch (IOException e) {
             throw new FormDataSaveException(e);
@@ -475,7 +476,16 @@ public class FormController {
                             completeForms.add(completeForm);
                         }else if(formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION)){
                             CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
-                                    .withShrRegistartionForm(form,context)
+                                    .withSHRRegistrationForm(form, context)
+                                    .withFormDataUuid(formData.getUuid())
+                                    .withPatient(patient)
+                                    .withLastModifiedDate(formData.getSaveTime())
+                                    .withEncounterDate(formData.getEncounterDate())
+                                    .build();
+                            completeForms.add(completeForm);
+                        } else if(formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP)){
+                            CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
+                                    .withRelationshipForm(form, context)
                                     .withFormDataUuid(formData.getUuid())
                                     .withPatient(patient)
                                     .withLastModifiedDate(formData.getSaveTime())
@@ -585,6 +595,7 @@ public class FormController {
 
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION), result);
@@ -713,6 +724,7 @@ public class FormController {
     boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException {
         for (FormData formData : allFormData) {
             String rawPayload = formData.getJsonPayload();
+            System.out.println(rawPayload);
             // inject consultation.sourceUuid
             formData = injectUuidToPayload(formData);
             // replace media paths with base64 string

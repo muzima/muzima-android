@@ -42,12 +42,21 @@ public abstract class FormWithDataBuilder<B extends FormWithDataBuilder, F exten
         return (B) this;
     }
 
-    public B withShrRegistartionForm(Form completeForm,Context context){
+    public B withSHRRegistrationForm(Form completeForm,Context context){
         if(context != null) {
             this.formWithData.setName(context.getString(R.string.shr_registration));
             this.formWithData.setDescription(context.getString(R.string.shr_registration_description));
         }
         this.formWithData.setDiscriminator(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION);
+        this.formWithData.setFormUuid(UUID.randomUUID().toString());
+        return (B) this;
+    }
+
+    public B withRelationshipForm(Form completeForm, Context context){
+        if(context != null) {
+            this.formWithData.setName(context.getString(R.string.general_relationship));
+            this.formWithData.setDescription(context.getString(R.string.general_relationship));
+        }
         this.formWithData.setFormUuid(UUID.randomUUID().toString());
         return (B) this;
     }

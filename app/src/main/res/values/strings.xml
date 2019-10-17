@@ -15,6 +15,7 @@
     <string name="add_individual_observation_text">Add Individual Observation</string>
     <string name="app_name">mUzima</string>
     <string name="app_title">mUzima for Health Providers</string>
+    <string name="add_new_relationship">Add New relationship</string>
     <string name="ask_help">Asking help</string>
     <string name="captured_date">Captured Date:</string>
     <string name="card_sync_status_content_description">card_sync_status</string>
@@ -591,6 +592,7 @@
     <string name="message_missing_form_encounter_details_error">must be provided</string>
     <string name="muzima_training_manual_general">mUzima Training Manual</string>
     <string name="new_messages_number_text"># new messages</string>
+    <string name="new_relationship_type">What type of relationship?</string>
     <string name="no_default_encounter_location">No default encounter location</string>
     <string name="no_description_general">No description</string>
     <string name="no_email_client">No email client installed on this device. \n
@@ -752,6 +754,4 @@
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
-    <string name="add_new_relationship">Add New relationship</string>
-    <string name="new_relationship_type">What type of relationship?</string>
 </resources>
