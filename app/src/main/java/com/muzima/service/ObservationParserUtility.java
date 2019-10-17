@@ -96,9 +96,9 @@ class ObservationParserUtility {
 
         if (observedConcept == null && createConceptIfNotAvailableLocally == true) {
 
-            String conceptName = getConceptId(rawConceptName);
+            String conceptName = getConceptName(rawConceptName);
             if(StringUtils.isEmpty(conceptName)){
-                throw new ConceptController.ConceptParseException("Could not not get Concept identifier for concept with raw name '"
+                throw new ConceptController.ConceptParseException("Could not not get Concept name for concept with raw name '"
                         + rawConceptName + "'");
             }
 
