@@ -162,4 +162,14 @@
         <item name="icUndo">@drawable/ic_action_undo_light</item>
         <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
     </style>
+
+    <style name="DialogNoTitleBar" parent="android:style/Theme.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
 </resources>
