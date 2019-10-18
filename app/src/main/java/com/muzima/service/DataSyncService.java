@@ -312,6 +312,7 @@ public class DataSyncService extends IntentService {
             broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, result[1]);
             updateNotificationMsg(msg);
         }
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
     private void prepareBroadcastMsgForDownloadForms(Intent broadcastIntent, int[] result, String msg) {
