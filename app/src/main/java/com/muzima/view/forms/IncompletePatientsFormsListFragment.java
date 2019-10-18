@@ -65,7 +65,7 @@ public class IncompletePatientsFormsListFragment extends FormsListFragment imple
 
     @Override
     public void onItemClick(int position) {
-        FormViewIntent intent = new FormViewIntent(getActivity(), (IncompleteForm) listAdapter.getItem(position), patient);
+        FormViewIntent intent = new FormViewIntent(getActivity(), (IncompleteForm) listAdapter.getItem(position), patient, false);
         intent.putExtra(FormViewIntent.FORM_COMPLETION_STATUS_INTENT, FormViewIntent.FORM_COMPLETION_STATUS_INCOMPLETE);
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }

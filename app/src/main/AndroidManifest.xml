@@ -196,7 +196,9 @@
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_form"
                 android:parentActivityName=".view.forms.FormsActivity"
-                android:windowSoftInputMode="adjustResize">
+                android:windowSoftInputMode="adjustResize"
+                android:theme="@style/DialogNoTitleBar"
+                >
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.forms.FormsActivity"/>
@@ -443,5 +445,12 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.HelpActivity"/>
         </activity>
+        <activity
+            android:name=".view.relationship.RelationshipFormsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/select_a_relationship_form_text"
+            android:theme="@style/DialogNoTitleBar"
+            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:noHistory="true"/>
     </application>
 </manifest>

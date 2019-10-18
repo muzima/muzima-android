@@ -45,6 +45,7 @@ public class Constants {
 
     public static final String FORM_DISCRIMINATOR_PROVIDER_REPORT = "provider-report";
     public static final String FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS = "json-individual-obs";
+    public static final String FORM_JSON_DISCRIMINATOR_RELATIONSHIP = "json-relationship";
 
     private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
     private static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";

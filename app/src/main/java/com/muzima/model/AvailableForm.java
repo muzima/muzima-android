@@ -44,4 +44,8 @@ public class AvailableForm extends BaseForm {
     public boolean isProviderReport(){
         return Constants.FORM_DISCRIMINATOR_PROVIDER_REPORT.equalsIgnoreCase(getDiscriminator());
     }
+
+    public boolean isRelationshipForm(){
+        return Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP.equalsIgnoreCase(getDiscriminator());
+    }
 }

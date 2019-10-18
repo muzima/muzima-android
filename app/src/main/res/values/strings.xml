@@ -747,4 +747,5 @@
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
+    <string name="select_a_relationship_form_text">Select a form</string>
 </resources>

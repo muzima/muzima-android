@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -97,6 +98,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final boolean IS_ALLOWED_FORM_DATA_DUPLICATION = true;
     private static final String SAVE_AS_INCOMPLETE = "saveDraft";
     private static final String SAVE_AS_COMPLETED = "submit";
+    public static final String POPUP = "popup";
 
     private GoogleApiClient googleApiClient;
     final static int REQUEST_LOCATION = 199;
@@ -140,6 +142,15 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         videoResultMap = new HashMap<>();
 
         setContentView(R.layout.activity_form_webview);
+        if(getIntent().getSerializableExtra(POPUP) != null) {
+            if (getIntent().getSerializableExtra(POPUP).equals(true)) {
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                int height = (int) (displayMetrics.heightPixels * 0.9);
+                int width = (int) (displayMetrics.widthPixels * 0.9);
+                getWindow().setLayout(width, height);
+            }
+        }
 
         progressDialog = new MuzimaProgressDialog(this);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
