@@ -850,6 +850,7 @@ public class MuzimaSyncService {
             }
         }
     }
+
     public List<FormData> getArchivedFormData() {
         try{
             return formController.getArchivedFormData();
