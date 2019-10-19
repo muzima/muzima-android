@@ -218,6 +218,7 @@
     <string name="header_openmrs_category">OpenMRS Settings</string>
     <string name="header_provider_location_category">Provider/Location Settings</string>
     <string name="hello_general">Hello</string>
+    <string name="help_center">Help Center</string>
     <string name="help_general">Help!</string>
     <string name="hint_advanced_setup">Use a step by step wizard to choose what you want</string>
     <string name="hint_audio_caption">Please enter a caption for the audio</string>

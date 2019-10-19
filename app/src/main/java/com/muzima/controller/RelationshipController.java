@@ -106,9 +106,8 @@ public class RelationshipController {
         // if the relationship has a new type we save it to the local repo
         try{
             for (Relationship relationship : relationships) {
-                if (getRelationshipTypeByUuid(relationship.getRelationshipType().getUuid()) == null) {
+                if (getRelationshipTypeByUuid(relationship.getRelationshipType().getUuid()) == null)
                     saveRelationshipType(relationship.getRelationshipType());
-                }
 
                 if (personService.getPersonByUuid(relationship.getPersonA().getUuid()) == null)
                     personService.savePerson(relationship.getPersonA());
