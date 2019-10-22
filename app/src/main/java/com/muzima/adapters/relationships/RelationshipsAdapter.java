@@ -23,8 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
+import com.muzima.controller.PatientController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.utils.StringUtils;
 
@@ -35,34 +37,20 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private final String patientUuid;
     private final RelationshipController relationshipController;
+    private final PatientController patientController;
 
 
-    public RelationshipsAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController, String patientUuid) {
+    public RelationshipsAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController,
+                                String patientUuid, PatientController patientController) {
         super(activity, textViewResourceId);
         this.patientUuid = patientUuid;
         this.relationshipController = relationshipController;
+        this.patientController = patientController;
     }
 
     @Override
     public void reloadData() {
         new BackgroundQueryTask().execute(patientUuid);
-    }
-
-    public boolean relationshipWithPersonExist(Relationship relationship) {
-        String relatedPersonUuid = relationship.getPersonA().getUuid();
-        if (StringUtils.equals(relationship.getPersonA().getUuid(), patientUuid))
-            relatedPersonUuid = relationship.getPersonB().getUuid();
-        try {
-            List<Relationship> relationships = relationshipController.getPersonRelationshipsByType(patientUuid, relationship.getRelationshipType().getUuid());
-            for (Relationship r : relationships) {
-                if (StringUtils.equals(r.getPersonA().getUuid(), relatedPersonUuid) || StringUtils.equals(r.getPersonB().getUuid(), relatedPersonUuid)) {
-                    return true; // we have same relationship here
-                }
-            }
-        } catch (RelationshipController.RetrieveRelationshipException e) {
-            Log.e(getClass().getSimpleName(), "Error while loading relationships", e);
-        }
-        return false;
     }
 
     @NonNull
@@ -79,6 +67,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             holder = new ViewHolder();
             holder.relatedPerson = convertView.findViewById(R.id.relatedPerson);
             holder.relationshipType = convertView.findViewById(R.id.relationshipType);
+            holder.identifier = convertView.findViewById(R.id.identifier);
             holder.genderImg = convertView.findViewById(R.id.genderImg);
             convertView.setTag(holder);
         }else {
@@ -90,11 +79,31 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             holder.relationshipType.setText(relationship.getRelationshipType().getBIsToA());
             int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
             holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+            try {
+                Patient p = patientController.getPatientByUuid(relationship.getPersonB().getUuid());
+                if (p != null){
+                    holder.identifier.setVisibility(View.VISIBLE);
+                    holder.identifier.setText(p.getIdentifier());
+                } else
+                    holder.identifier.setVisibility(View.GONE);
+            } catch (PatientController.PatientLoadException e) {
+                Log.e(this.getClass().getSimpleName(), "Error searching Patient");
+            }
         } else {
             holder.relatedPerson.setText(relationship.getPersonA().getDisplayName());
             holder.relationshipType.setText(relationship.getRelationshipType().getAIsToB());
             int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
             holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+            try {
+                Patient p = patientController.getPatientByUuid(relationship.getPersonA().getUuid());
+                if (p != null){
+                    holder.identifier.setVisibility(View.VISIBLE);
+                    holder.identifier.setText(p.getIdentifier());
+                } else
+                    holder.identifier.setVisibility(View.GONE);
+            } catch (PatientController.PatientLoadException e) {
+                Log.e(this.getClass().getSimpleName(), "Error searching Patient");
+            }
         }
 
         return convertView;
@@ -115,6 +124,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
 
         TextView relatedPerson;
         TextView relationshipType;
+        TextView identifier;
         ImageView genderImg;
     }
 

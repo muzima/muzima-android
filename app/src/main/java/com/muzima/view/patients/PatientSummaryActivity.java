@@ -63,6 +63,7 @@ import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
 import com.muzima.view.observations.ObservationsActivity;
+import com.muzima.view.relationship.RelationshipFormsActivity;
 import com.muzima.view.relationship.RelationshipsListActivity;
 import com.muzima.view.reports.PatientReportActivity;
 
@@ -250,6 +251,11 @@ public class PatientSummaryActivity extends BaseActivity {
                 break;
             case R.id.client_relationship:
                 showRelationships();
+//                Intent intent = null;
+//                intent = new Intent(this, RelationshipFormsActivity.class);
+//                intent.putExtra(RelationshipFormsActivity.PATIENT,patient);
+//                startActivity(intent);
+                return true;
             default:
                 break;
         }
