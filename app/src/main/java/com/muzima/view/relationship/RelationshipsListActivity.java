@@ -9,6 +9,7 @@
  */
 package com.muzima.view.relationship;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -34,6 +35,7 @@ import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
 import com.muzima.controller.FormController;
+import com.muzima.controller.PatientController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.RelationshipJsonMapper;
@@ -84,6 +86,26 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+                Relationship relationship = (Relationship) parent.getItemAtPosition(position);
+                Patient relatedPerson;
+                try {
+                    if (StringUtils.equals(relationship.getPersonA().getUuid(), patient.getUuid()))
+                        relatedPerson = ((MuzimaApplication) getApplicationContext()).getPatientController().getPatientByUuid(relationship.getPersonB().getUuid());
+                    else
+                        relatedPerson = ((MuzimaApplication) getApplicationContext()).getPatientController().getPatientByUuid(relationship.getPersonA().getUuid());
+
+                    if (relatedPerson != null ){
+                        Intent intent = new Intent(RelationshipsListActivity.this, PatientSummaryActivity.class);
+
+                        intent.putExtra(PatientSummaryActivity.PATIENT, relatedPerson);
+                        startActivity(intent);
+                    } else {
+                        System.out.println("Will show create");
+                    }
+
+                } catch (PatientController.PatientLoadException e) {
+                    e.printStackTrace();
+                }
             }
         };
     }
@@ -105,14 +127,13 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
 
                     newRelationship.setUuid(UUID.randomUUID().toString());
 
-                    if (patientRelationshipsAdapter.relationshipWithPersonExist(newRelationship)){
+                    if (((MuzimaApplication) getApplicationContext()).getRelationshipController().relationshipExists(newRelationship)){
                         Log.e(getClass().getSimpleName(), "Relationship already exists");
                         Toast.makeText(RelationshipsListActivity.this, "Patient already has " +
                                 selectedNewRelationshipType.getAIsToB() + ":" + selectedNewRelationshipType.getBIsToA()
                                 + " relationship with " + selectedPerson.getDisplayName(), Toast.LENGTH_LONG).show();
                     } else {
                         // we will create a formData payload and save the relationship ONLY on success
-
 
                         try {
                             RelationshipJsonMapper relationshipJsonMapper = new RelationshipJsonMapper(newRelationship,
@@ -156,7 +177,8 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private void setupPatientRelationships() {
         lvwPatientRelationships = findViewById(R.id.relationships_list);
         patientRelationshipsAdapter = new RelationshipsAdapter(this, R.layout.item_relationship,
-                ((MuzimaApplication) getApplicationContext()).getRelationshipController(), patient.getUuid());
+                ((MuzimaApplication) getApplicationContext()).getRelationshipController(), patient.getUuid(),
+                ((MuzimaApplication) getApplicationContext()).getPatientController());
         patientRelationshipsAdapter.setBackgroundListQueryTaskListener(this);
         lvwPatientRelationships.setEmptyView(noDataView);
         lvwPatientRelationships.setAdapter(patientRelationshipsAdapter);

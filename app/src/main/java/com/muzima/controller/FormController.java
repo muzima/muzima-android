@@ -1073,4 +1073,15 @@ public class FormController {
             throw new FormFetchException(e);
         }
     }
+
+    public AvailableForms getDownloadedRelationshipForms() throws FormFetchException {
+        AvailableForms result = new AvailableForms();
+
+        for (AvailableForm form : getAvailableFormByTags(null)) {
+            if (form.isDownloaded() && form.isRelationshipForm()) {
+                result.add(form);
+            }
+        }
+        return result;
+    }
 }

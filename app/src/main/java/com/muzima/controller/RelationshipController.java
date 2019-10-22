@@ -15,6 +15,7 @@ import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
 import com.muzima.api.service.PersonService;
 import com.muzima.api.service.RelationshipService;
+import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -153,12 +154,18 @@ public class RelationshipController {
      */
     public void saveRelationships(List<Relationship> relationships) throws SaveRelationshipException {
         try {
+            for (Relationship relationship : relationships) {
+                if (relationshipService.getRelationship(relationship) != null)
+                    relationshipService.deleteRelationship(relationship);
+            }
             relationshipService.saveRelationships(relationships);
 
             saveRelationshipTypesAndPersonsFromRelationships(relationships);
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while saving the relationships list", e);
             throw new SaveRelationshipException(e);
+        } catch (ParseException e) {
+            Log.e(getClass().getSimpleName(), "Error while saving the relationships list", e);
         }
     }
 
@@ -170,15 +177,23 @@ public class RelationshipController {
         }
     }
 
-    public List<Relationship>  getPersonRelationshipsByType(String personUuid, String relationshipTypeUuid) throws RetrieveRelationshipException{
+    public List<Relationship>  getPersonRelationshipsByType(String personUuid, String relationshipTypeUuid) throws RetrieveRelationshipException, SearchRelationshipException {
         try {
             return relationshipService.getPersonRelationshipsByType(personUuid, relationshipTypeUuid);
         } catch (IOException e) {
             throw new RetrieveRelationshipException(e);
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new SearchRelationshipException(e);
         }
-        return null;
+    }
+
+    public boolean relationshipExists(Relationship relationship) {
+        try {
+            return relationshipService.getRelationship(relationship) != null;
+        } catch (IOException | ParseException e) {
+            Log.e(getClass().getSimpleName(), "Error while loading relationships", e);
+        }
+        return false;
     }
 
     /********************************************************************************************************
@@ -205,6 +220,12 @@ public class RelationshipController {
 
     public static class SaveRelationshipTypeException extends Throwable {
         SaveRelationshipTypeException(IOException e) {
+            super(e);
+        }
+    }
+
+    public static class SearchRelationshipException extends Throwable {
+        SearchRelationshipException(ParseException e) {
             super(e);
         }
     }

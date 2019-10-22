@@ -772,4 +772,5 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="write_shr_to_card_general">Ecrire des dossiers de santé partagés à la carte</string>
 
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
+    <string name="select_a_relationship_form_text">Sélectionnez un formulaire</string>
 </resources>
