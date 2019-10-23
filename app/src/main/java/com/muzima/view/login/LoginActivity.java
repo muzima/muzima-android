@@ -384,7 +384,7 @@ public class LoginActivity extends Activity {
 
     private void initFlipAnimation(ValueAnimator valueAnimator, final View from, final View to) {
         valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        valueAnimator.setDuration(300);
+        valueAnimator.setDuration(0);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
