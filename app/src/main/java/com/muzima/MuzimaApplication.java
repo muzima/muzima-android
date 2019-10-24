@@ -87,7 +87,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private Activity currentActivity;
     private FormController formController;
     private CohortController cohortController;
-    private PatientController patientConroller;
+    private PatientController patientController;
     private ConceptController conceptController;
     private ObservationController observationController;
     private EncounterController encounterController;
@@ -144,7 +144,7 @@ public class MuzimaApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         //ACRA.init(this);
-//        Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }
@@ -247,14 +247,14 @@ public class MuzimaApplication extends MultiDexApplication {
     }
 
     public PatientController getPatientController() {
-        if (patientConroller == null) {
+        if (patientController == null) {
             try {
                 patientConroller = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService(), muzimaContext.getFormService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        return patientConroller;
+        return patientController;
     }
 
     public ObservationController getObservationController() {
@@ -342,7 +342,8 @@ public class MuzimaApplication extends MultiDexApplication {
     public MuzimaSettingController getMuzimaSettingController() {
         if(settingsController == null){
             try {
-                settingsController = new MuzimaSettingController(muzimaContext.getMuzimaSettingService());
+                settingsController = new MuzimaSettingController(muzimaContext.getMuzimaSettingService(),
+                        muzimaContext.getLastSyncTimeService(), getSntpService());
             } catch (IOException e){
                 throw new RuntimeException(e);
             }

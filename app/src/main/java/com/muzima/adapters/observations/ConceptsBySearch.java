@@ -43,7 +43,7 @@ class ConceptsBySearch extends ConceptAction {
     @Override
     List<Concept> getConcepts() throws ObservationController.LoadObservationException{
         try {
-            return conceptController.getConcepts();
+            return conceptController.searchConceptsLocallyByNamePrefix(term);
         }catch (ConceptController.ConceptFetchException e){
             throw new ObservationController.LoadObservationException(e);
         }

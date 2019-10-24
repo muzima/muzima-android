@@ -37,8 +37,6 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
         return f;
     }
 
-   
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if(listAdapter == null){
@@ -63,9 +61,6 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
-
-
-
 
     @Override
     public void onQueryTaskCancelled(){

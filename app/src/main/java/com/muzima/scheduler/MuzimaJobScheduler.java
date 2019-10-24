@@ -4,28 +4,20 @@ import android.annotation.SuppressLint;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
-import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
+import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.User;
 import com.muzima.controller.NotificationController;
-import com.muzima.service.DataSyncService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
-
-import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.JOB_INDICATOR_STOP;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.MUZIMA_JOB_SCHEDULE_INTENT;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedularConstants.WORK_DURATION_KEY;
+import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
+import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
+import com.muzima.utils.SyncSettingsIntent;
 
 @SuppressLint("NewApi")
 public class MuzimaJobScheduler extends JobService {
@@ -67,6 +59,7 @@ public class MuzimaJobScheduler extends JobService {
             onStopJob(params);
         } else {
             //execute job
+            Toast.makeText(getApplicationContext(), R.string.info_background_data_sync_started,Toast.LENGTH_LONG).show();
             handleBackgroundWork(params);
         }
         return false;
@@ -91,13 +84,14 @@ public class MuzimaJobScheduler extends JobService {
     }
 
     private void handleBackgroundWork(JobParameters parameters) {
-
         if (parameters == null) {
             Log.e(getClass().getSimpleName(), "Parameters for job is null");
         } else {
             new NotificationDownloadBackgroundTask().execute();
-            new CohortUpdateBackgroundTask().execute();
+            new CohortsAndPatientFullDataSyncBackgroundTask().execute();
             new FormDataUploadBackgroundTask().execute();
+            new ProcessedTemporaryFormDataCleanUpBackgroundTask().execute();
+            new SyncSettinsBackgroundTask().execute();
         }
     }
 
@@ -115,13 +109,25 @@ public class MuzimaJobScheduler extends JobService {
         }
     }
 
-    private class CohortUpdateBackgroundTask extends AsyncTask<Void,Void,Void> {
+    private class  ProcessedTemporaryFormDataCleanUpBackgroundTask extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+           new ProcessedTemporaryFormDataCleanUpIntent(getApplicationContext()).start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class CohortsAndPatientFullDataSyncBackgroundTask extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... voids) {
             if (new WizardFinishPreferenceService(MuzimaJobScheduler.this).isWizardFinished()) {
-                muzimaSynService.downloadCohorts();
-                muzimaSynService.updateCohortsWithUpdatesAvailable();
-
+                new SyncCohortsAndPatientFullDataIntent(getApplicationContext()).start();
             }
             return null;
         }
@@ -136,8 +142,21 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected Void doInBackground(Void... voids) {
             if (new WizardFinishPreferenceService(getApplicationContext()).isWizardFinished()) {
-                RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext());
+                RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(),true);
             }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class SyncSettinsBackgroundTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            new SyncSettingsIntent(getApplicationContext()).start();
             return null;
         }
 

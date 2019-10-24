@@ -11,6 +11,7 @@
 package com.muzima.controller;
 
 import com.muzima.MuzimaApplication;
+import com.muzima.api.context.Context;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
@@ -22,6 +23,7 @@ import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PatientService;
 import com.muzima.api.service.EncounterService;
+import com.muzima.api.service.SetupConfigurationService;
 import com.muzima.builder.FormBuilder;
 import com.muzima.builder.FormTemplateBuilder;
 import com.muzima.builder.TagBuilder;
@@ -32,7 +34,6 @@ import com.muzima.model.collections.DownloadedForms;
 import com.muzima.service.SntpService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
-import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -81,6 +82,18 @@ public class FormControllerTest {
         sntpService = mock(SntpService.class);
         ObservationService observationService = mock(ObservationService.class);
         EncounterService encounterService = mock(EncounterService.class);
+        Context context = mock(Context.class);
+        SetupConfigurationService setupConfigurationService = mock(SetupConfigurationService.class);
+
+        when(muzimaApplication.getMuzimaContext()).thenReturn(context);
+        when(context.getFormService()).thenReturn(formService);
+        when(context.getPatientService()).thenReturn(patientService);
+        when(context.getLastSyncTimeService()).thenReturn(lastSyncTimeService);
+        when(muzimaApplication.getSntpService()).thenReturn(sntpService);
+        when(context.getEncounterService()).thenReturn(encounterService);
+        when(context.getObservationService()).thenReturn(observationService);
+        when(context.getSetupConfigurationService()).thenReturn(setupConfigurationService);
+
         formController = new FormController(muzimaApplication);
         LastSyncTime lastSyncTime = mock(LastSyncTime.class);
         mockDate = mock(Date.class);
@@ -542,7 +555,7 @@ public class FormControllerTest {
         when(formService.getFormDataByTemplateUUID(templateUUID)).thenReturn(asList(
                 formDataWithStatusAndDiscriminator(Constants.STATUS_COMPLETE, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER),
                 formDataWithStatusAndDiscriminator(Constants.STATUS_UPLOADED, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER)));
-        List<FormData> formDataByTemplateUUID = formController.getUnUploadedFormData(templateUUID);
+        List<FormData> formDataByTemplateUUID = formController.getNonUploadedFormData(templateUUID);
         assertThat(formDataByTemplateUUID.size(),is(1));
         assertThat(formDataByTemplateUUID.get(0).getStatus(), is(Constants.STATUS_COMPLETE));
     }
@@ -573,7 +586,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void deleteCompleteAndIncompleteEncounterFormData_shouldDeleteIncompleteForm() throws Exception, FormController.FormDataFetchException, FormController.FormDeleteException {
+    public void deleteCompleteAndIncompleteEncounterFormData_shouldDeleteIncompleteForm() throws Exception, FormController.FormDataFetchException, FormController.FormDataDeleteException {
         FormData incompleteFormToDelete = new FormData();
         String uuid = "uuid";
         incompleteFormToDelete.setUuid(uuid);
@@ -585,7 +598,7 @@ public class FormControllerTest {
     }
 
     @Test
-    public void deleteCompleteAndIncompleteForms_shouldDeleteCompleteForm() throws Exception, FormController.FormDataFetchException, FormController.FormDeleteException {
+    public void deleteCompleteAndIncompleteForms_shouldDeleteCompleteForm() throws Exception, FormController.FormDataFetchException, FormController.FormDataDeleteException {
         FormData completeFormToDelete = new FormData();
         String uuid = "uuid";
         completeFormToDelete.setUuid(uuid);

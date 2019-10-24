@@ -82,16 +82,14 @@ public class AllPatientReportListFragment extends PatientReportListFragment {
 
     public void onPatientReportsDownloadFinish() {
         reportsSyncInProgress = false;
-        listAdapter.reloadData();
-        listAdapter.notifyDataSetChanged();
+        reloadData();
         if (patientReportsDownloadListener != null) {
             patientReportsDownloadListener.onPatientReportsDownloadComplete();
         }
     }
 
     public void onSelectedReportDownloadFinish() {
-        listAdapter.reloadData();
-        listAdapter.notifyDataSetChanged();
+        reloadData();
         if (patientReportsDownloadListener != null) {
             patientReportsDownloadListener.onPatientReportsDownloadComplete();
         }

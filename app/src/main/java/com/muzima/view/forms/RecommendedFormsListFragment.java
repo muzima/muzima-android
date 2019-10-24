@@ -55,7 +55,7 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
 
     @Override
     public void onTemplateDownloadComplete() {
-        listAdapter.reloadData();
+        reloadData();
     }
 
     @Override
