@@ -52,13 +52,14 @@ class ObservationParserUtility {
     private LocationService locationService;
     private final ProviderController providerController;
     private final List<Concept> newConceptList;
-
-    public ObservationParserUtility(MuzimaApplication muzimaApplication) {
+    private final boolean createObservationsForConceptsNotAvailableLocally;
+    public ObservationParserUtility(MuzimaApplication muzimaApplication, boolean createObservationsForConceptsNotAvailableLocally) {
         this.conceptController = muzimaApplication.getConceptController();
         this.locationController = muzimaApplication.getLocationController();
         this.providerController = muzimaApplication.getProviderController();
         this.formController = muzimaApplication.getFormController();
         this.newConceptList = new ArrayList<>();
+        this.createObservationsForConceptsNotAvailableLocally = createObservationsForConceptsNotAvailableLocally;
     }
 
     public Encounter getEncounterEntity(Date encounterDateTime,String  formUuid,String providerId, int locationId, String userSystemId, Patient patient, String formDataUuid) {
@@ -75,25 +76,46 @@ class ObservationParserUtility {
         return encounter;
     }
 
-    public Concept getConceptEntity(String rawConceptName, boolean isCoded) throws ConceptController.ConceptFetchException,
+    public Concept getConceptEntity(String rawConceptName, boolean isCoded, boolean createConceptIfNotAvailableLocally) throws ConceptController.ConceptFetchException,
             ConceptController.ConceptParseException{
-        String conceptName = getConceptName(rawConceptName);
-        if(StringUtils.isEmpty(conceptName)){
-            throw new ConceptController.ConceptParseException("Could not not get Concept name for concept with raw name '"
+        String conceptIdOrUuid = getConceptId(rawConceptName);
+        if(StringUtils.isEmpty(conceptIdOrUuid)){
+            throw new ConceptController.ConceptParseException("Could not not get Concept identifier for concept with raw name '"
             + rawConceptName + "'");
         }
-        Concept conceptFromExistingList = getConceptFromExistingList(conceptName);
-        if (conceptFromExistingList != null) {
-            return conceptFromExistingList;
+
+        Concept observedConcept;
+        boolean isConceptIdNumeric = org.apache.commons.lang.StringUtils.isNumeric(conceptIdOrUuid);
+
+        if(isConceptIdNumeric) {
+            int intConceptId = Integer.parseInt(conceptIdOrUuid);
+            observedConcept =conceptController.getConceptById(intConceptId);
+        } else {
+            observedConcept = conceptController.getConceptByUuid(conceptIdOrUuid);
         }
-        Concept observedConcept = conceptController.getConceptByName(conceptName);
-        if (observedConcept == null) {
-            String conceptId = getConceptId(rawConceptName);
-            int intConceptId = Integer.parseInt(conceptId);
-            if(intConceptId >0){
-                observedConcept = buildDummyConcept(intConceptId, conceptName,isCoded);
+
+        if (observedConcept == null && createConceptIfNotAvailableLocally == true) {
+
+            String conceptName = getConceptName(rawConceptName);
+            if(StringUtils.isEmpty(conceptName)){
+                throw new ConceptController.ConceptParseException("Could not not get Concept name for concept with raw name '"
+                        + rawConceptName + "'");
+            }
+
+            Concept conceptFromExistingList = getConceptFromExistingList(conceptName);
+            if (conceptFromExistingList != null) {
+                return conceptFromExistingList;
+            }
+
+            if(!isConceptIdNumeric){
+                observedConcept = buildDummyConcept(0,conceptIdOrUuid, conceptName, isCoded);
             } else {
-                observedConcept = buildDummyConcept(conceptName,isCoded);
+                int intConceptId = Integer.parseInt(conceptIdOrUuid);
+                if (intConceptId > 0) {
+                    observedConcept = buildDummyConcept(intConceptId,null, conceptName, isCoded);
+                } else {
+                    observedConcept = buildDummyConcept(conceptName, isCoded);
+                }
             }
             newConceptList.add(observedConcept);
         }
@@ -102,6 +124,10 @@ class ObservationParserUtility {
 
     public Observation getObservationEntity(Concept concept, String value) throws ConceptController.ConceptFetchException,
         ConceptController.ConceptParseException, ObservationController.ParseObservationException{
+        if (concept == null) {
+            throw new ObservationController.ParseObservationException("Could not create Observation entity." +
+                    " Reason: No Concept provided.");
+        }
         if (StringUtils.isEmpty(value)) {
             throw new ObservationController.ParseObservationException("Could not create Observation entity for concept '"
                     + concept.getName() + "'. Reason: No Observation value provided.");
@@ -112,7 +138,7 @@ class ObservationParserUtility {
 
         if (concept.isCoded()) {
             try {
-                Concept valueCoded = getConceptEntity(value,false);
+                Concept valueCoded = getConceptEntity(value,false, true);
                 observation.setValueCoded(valueCoded);
             } catch (ConceptController.ConceptParseException e) {
                 throw new ConceptController.ConceptParseException("Could not get value for coded concept '"
@@ -226,12 +252,11 @@ class ObservationParserUtility {
     }
 
     private Concept buildDummyConcept(String conceptName,boolean isCoded) {
-        return buildDummyConcept(0, conceptName, isCoded);
+        return buildDummyConcept(0,null, conceptName, isCoded);
     }
 
-    private Concept buildDummyConcept(int conceptId, String conceptName, boolean isCoded) {
+    private Concept buildDummyConcept(int conceptId,String conceptUuid, String conceptName, boolean isCoded) {
         Concept concept = new Concept();
-        concept.setUuid(CONCEPT_CREATED_ON_PHONE + UUID.randomUUID());
         ConceptName dummyConceptName = new ConceptName();
         dummyConceptName.setName(conceptName);
         dummyConceptName.setPreferred(true);
@@ -245,6 +270,11 @@ class ObservationParserUtility {
         concept.setConceptType(conceptType);
         if(conceptId > 0) {
             concept.setId(conceptId);
+        }
+        if(conceptUuid != null){
+            concept.setUuid(conceptUuid);
+        } else {
+            concept.setUuid(CONCEPT_CREATED_ON_PHONE + UUID.randomUUID());
         }
         return concept;
     }

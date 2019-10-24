@@ -81,13 +81,13 @@ public class ReportActivity extends BroadcastListenerActivity {
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
 
-        if (syncType == DataSyncServiceConstants.SYNC_COHORTS) {
+        if (syncType == DataSyncServiceConstants.SYNC_COHORTS_METADATA) {
             hideProgressbar();
             syncInProgress = false;
             if (syncStatus == SyncStatusConstants.SUCCESS) {
                 cohortPagerAdapter.onCohortDownloadFinish();
             }
-        } else if (syncType == DataSyncServiceConstants.SYNC_PATIENTS_FULL_DATA) {
+        } else if (syncType == DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA) {
             if (syncStatus == SyncStatusConstants.SUCCESS) {
                 cohortPagerAdapter.onPatientsDownloadFinish();
             }

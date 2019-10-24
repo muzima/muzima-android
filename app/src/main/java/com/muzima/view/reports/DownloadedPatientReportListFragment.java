@@ -56,6 +56,6 @@ public class DownloadedPatientReportListFragment extends PatientReportListFragme
 
     @Override
     public void onPatientReportsDownloadComplete() {
-        listAdapter.reloadData();
+        reloadData();
     }
 }

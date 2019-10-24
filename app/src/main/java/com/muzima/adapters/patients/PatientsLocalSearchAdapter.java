@@ -103,7 +103,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                     if(patientCount <= pageSize){
                         patients = patientController.getPatients(cohortUuid);
                     } else {
-                        int pages = new Double(Math.ceil(patientCount / pageSize)).intValue();
+                        int pages = new Double(Math.ceil((float)patientCount / pageSize)).intValue();
                         List<Patient> temp = null;
                         for (int page = 1; page <= pages; page++) {
                             if(!isCancelled()) {
@@ -128,7 +128,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                     if(patientCount <= pageSize){
                         patients = patientController.getAllPatients();
                     } else {
-                        int pages = new Double(Math.ceil(patientCount / pageSize)).intValue();
+                        int pages = new Double(Math.ceil((float)patientCount / pageSize)).intValue();
                         List<Patient> temp = null;
                         for (int page = 1; page <= pages; page++) {
                             if(!isCancelled()) {

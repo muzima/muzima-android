@@ -51,6 +51,7 @@ public abstract class MuzimaListFragment extends Fragment implements AdapterView
     public void reloadData() {
         if(listAdapter != null){
             listAdapter.reloadData();
+            listAdapter.notifyDataSetChanged();
         }
     }
 

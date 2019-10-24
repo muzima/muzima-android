@@ -13,11 +13,13 @@ package com.muzima.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
+import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.tasks.EncryptedSharedHealthRecordSyncTask;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.login.LoginActivity;
@@ -82,9 +84,16 @@ public class DefaultMenuDropDownHelper {
                 return true;
             case R.id.action_login:
                 Credentials credentials = new Credentials(activity.getApplicationContext());
-                boolean isFistLaunch = credentials.getUserName().length() == 0;
-                launchLoginActivity(isFistLaunch);
+                boolean isFirstLaunch = credentials.getUserName().length() == 0;
+                launchLoginActivity(isFirstLaunch);
                 return true;
+            case R.id.menu_trigger_manual_sync:
+                MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(activity.getApplicationContext());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(0,true);
+                }
+                return true;
+
             default:
                 return false;
         }

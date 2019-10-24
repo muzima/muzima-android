@@ -16,6 +16,7 @@ import android.os.PowerManager;
 import android.view.View;
 import android.widget.Button;
 import android.view.Menu;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.utils.ThemeUtils;
@@ -68,7 +69,12 @@ public class ProviderListActivity extends ProviderPreferenceActivity{
     private void navigateToNextActivity() {
         Intent intent = new Intent(getApplicationContext(), ConceptListActivity.class);
         startActivity(intent);
+        clearTemporaryProviderList();
         finish();
+    }
+
+    private void clearTemporaryProviderList(){
+        ((MuzimaApplication)getApplication()).getProviderController().resetNewProvidersList();
     }
 
     private void turnOnProgressDialog(String message){

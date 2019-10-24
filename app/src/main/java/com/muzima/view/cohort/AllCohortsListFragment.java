@@ -95,8 +95,7 @@ public class AllCohortsListFragment extends CohortListFragment {
 
     public void onCohortDownloadFinish() {
         cohortsSyncInProgress = false;
-        listAdapter.reloadData();
-        listAdapter.notifyDataSetChanged();
+        reloadData();
         updateSyncText();
         if (cohortDataDownloadListener != null) {
             cohortDataDownloadListener.onCohortDataDownloadComplete();
@@ -108,8 +107,7 @@ public class AllCohortsListFragment extends CohortListFragment {
     }
 
     public void onPatientDownloadFinish() {
-        listAdapter.reloadData();
-        listAdapter.notifyDataSetChanged();
+        reloadData();
         if (cohortDataDownloadListener != null) {
             cohortDataDownloadListener.onCohortDataDownloadComplete();
         }

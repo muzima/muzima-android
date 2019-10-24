@@ -37,7 +37,9 @@ import java.util.List;
 import java.util.Map;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_OBSERVATIONS;
+import static com.muzima.util.Constants.UUID_SEPARATOR;
 import static com.muzima.util.Constants.UUID_TYPE_SEPARATOR;
+import static java.util.Arrays.asList;
 
 public class ObservationController {
 
@@ -218,9 +220,7 @@ public class ObservationController {
             if (hasExactCallBeenMadeBefore(lastSyncTime)) {
                 observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, lastSyncTime));
             } else {
-                observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, null));
-                //ToDo: Revise this while working on Obs Delta download
-                /*
+
                 LastSyncTime fullLastSyncTimeInfo = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS);
                 if (isFirstCallToDownloadObservationsEver(fullLastSyncTimeInfo)) {
                     observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, null));
@@ -230,8 +230,8 @@ public class ObservationController {
                     List<String> newPatientsUuids = getNewUuids(patientUuids, knownPatientsUuid);
                     List<String> knownConceptsUuid = asList(parameterSplit[1].split(UUID_SEPARATOR));
                     List<String> newConceptsUuids = getNewUuids(conceptUuids, knownConceptsUuid);
-                    allConceptsUuids = getAllUuids(knownConceptsUuid, newConceptsUuids);
-                    allPatientsUuids = getAllUuids(knownPatientsUuid, newPatientsUuids);
+                    List<String> allConceptsUuids = getAllUuids(knownConceptsUuid, newConceptsUuids);
+                    List<String> allPatientsUuids = getAllUuids(knownPatientsUuid, newPatientsUuids);
                     paramSignature = buildParamSignature(allPatientsUuids, allConceptsUuids);
                     if(newPatientsUuids.size()!=0) {
                         observations = observationService.downloadObservations(newPatientsUuids, allConceptsUuids, null);
@@ -241,7 +241,7 @@ public class ObservationController {
                     else{
                         observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, null));
                     }
-                }*/
+                }
             }
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_OBSERVATIONS, sntpService.getLocalTime(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);

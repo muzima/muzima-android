@@ -10,7 +10,6 @@
 
 package com.muzima.view.forms;
 
-import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
@@ -35,6 +34,7 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.service.GPSFeaturePreferenceService;
@@ -214,12 +214,11 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
                 return true;
             case R.id.form_back_to_draft:
                 try {
-                    formData.setStatus(STATUS_INCOMPLETE);
-                    formController.saveFormData(formData);
-                } catch (FormController.FormDataSaveException e) {
+                    formController.markFormDataAsIncompleteAndDeleteRelatedEncountersAndObs(formData);
+                } catch (FormController.FormDataSaveException | FormController.FormDataDeleteException e) {
                     Log.e(getClass().getSimpleName(), "Error while saving the form data", e);
                 }
-                startIncompleteFormListActivity();
+                restartWebViewActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -283,12 +282,12 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         startActivity(intent);
     }
 
-    private void startIncompleteFormListActivity() {
+    private void restartWebViewActivity() {
         startActivity(new Intent(this, FormsActivity.class));
     }
 
     private boolean isFormComplete() {
-        return formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
+        return formData != null && formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
     }
 
     private void setupFormData()

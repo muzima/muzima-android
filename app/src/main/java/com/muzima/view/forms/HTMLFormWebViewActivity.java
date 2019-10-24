@@ -10,12 +10,10 @@
 
 package com.muzima.view.forms;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.IntentSender;
 import android.location.LocationManager;
 import android.os.Build;
-import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -35,7 +33,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -322,12 +319,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 return true;
             case R.id.form_back_to_draft:
                 try {
-                    formData.setStatus(STATUS_INCOMPLETE);
-                    formController.saveFormData(formData);
-                } catch (FormController.FormDataSaveException e) {
+                    formController.markFormDataAsIncompleteAndDeleteRelatedEncountersAndObs(formData);
+                } catch (FormController.FormDataSaveException | FormController.FormDataDeleteException e) {
                     Log.e(getClass().getSimpleName(), "Error while saving the form data", e);
                 }
-                startIncompleteFormListActivity();
+                restartWebViewActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -439,12 +435,13 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         startActivity(intent);
     }
 
-    private void startIncompleteFormListActivity() {
-        startActivity(new Intent(this, FormsActivity.class));
+    private void restartWebViewActivity() {
+        startActivity(getIntent());
+        finish();
     }
 
     private boolean isFormComplete() {
-        return formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
+        return formData != null && formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
     }
 
     private void setupFormData()

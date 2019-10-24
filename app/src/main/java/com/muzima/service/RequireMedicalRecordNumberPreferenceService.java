@@ -24,7 +24,7 @@ public class RequireMedicalRecordNumberPreferenceService extends PreferenceServi
         return settings.getBoolean(key,PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING_DEFAULT_VALUE);
     }
 
-    public void saveRequireMedicalRecordNumberPreference() {
+    public void updateRequireMedicalRecordNumberPreference() {
         boolean requireMedicalRecordNumber = application.getMuzimaSettingController()
                 .isMedicalRecordNumberRequiredDuringRegistration();
         Resources resources = context.getResources();
