@@ -213,7 +213,6 @@ class HTMLFormDataStore {
         } catch (ProviderController.ProviderLoadException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_provider_load), Toast.LENGTH_SHORT).show();
             Log.e(getClass().getSimpleName(), "Exception occurred while loading providers", e);
-            e.printStackTrace();
         }
         return JSONValue.toJSONString(providersOnDevice);
     }
@@ -369,14 +368,22 @@ class HTMLFormDataStore {
             }
             final String dateFormat = STANDARD_DATE_FORMAT;
             SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
-            Date d = null;
+            Date obsDateTime = null;
+            Date valueDateTime = null;
             try {
-                d = newDateFormat.parse(newDateFormat.format(obs.getObservationDatetime()));
+                obsDateTime = newDateFormat.parse(newDateFormat.format(obs.getObservationDatetime()));
+                if(obs.getValueDatetime() != null) {
+                    valueDateTime = newDateFormat.parse(newDateFormat.format(obs.getValueDatetime()));
+                }
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(), "Exception occurred while parsing date", e);
             }
             newDateFormat.applyPattern(dateFormat);
-            String convertedEncounterDate = newDateFormat.format(d);
+            String convertedEncounterDate = newDateFormat.format(obsDateTime);
+            String convertedvalueDateTime = "";
+            if(valueDateTime != null){
+                 convertedvalueDateTime = newDateFormat.format(valueDateTime);
+            }
 
             JSONObject json = new JSONObject();
             if (!conceptName.isEmpty()) {
@@ -388,6 +395,7 @@ class HTMLFormDataStore {
             json.put("valueCoded", obs.getValueCoded().getName());
             json.put("valueNumeric", obs.getValueNumeric());
             json.put("valueText", obs.getValueText());
+            json.put("valueDatetime",convertedvalueDateTime);
             map.put("json" + i, json);
             arr.put(map.get("json" + i));
             i++;
