@@ -187,9 +187,9 @@ class HTMLFormDataStore {
             Log.e(getClass().getSimpleName(), "Exception occurred while fetching patient", e);
         }
         catch (PatientController.PatientSaveException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Exception occurred while saving patient", e);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Exception occurred while parsing object", e);
         }
     }
 

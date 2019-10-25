@@ -163,7 +163,6 @@ public class PatientTagsListAdapter extends ListAdapter<Tag> implements AdapterV
             notifyDataSetChanged();
         }
 
-
         private Tag getAllTagsElement() {
             Tag tag = new Tag();
             tag.setName("All");

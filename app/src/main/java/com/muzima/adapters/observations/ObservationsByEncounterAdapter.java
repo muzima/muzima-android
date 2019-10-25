@@ -52,7 +52,6 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
         this.isSHRData = isSHRData;
     }
 
-
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -75,7 +74,6 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
         holder.renderItem(getItem(position));
         return convertView;
     }
-
 
     @Override
     public void reloadData() {
@@ -178,11 +176,9 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
         protected int getObservationElementHeight() {
             return R.dimen.observation_element_by_encounter_height;
         }
-
     }
 
     public void displayObservationDetailsDialog(Observation observation, View view) {
-
         int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
         String observationConceptType = observation.getConcept().getConceptType().getName();
         String encounterDate = DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime());
@@ -216,14 +212,10 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
         obsDetailsDialog = layoutInflater.inflate(R.layout.obs_details_dialog_layout, null);
 
         addIndividualObservationsDialogBuilder.setView(obsDetailsDialog);
-        addIndividualObservationsDialogBuilder
-                .setCancelable(true);
+        addIndividualObservationsDialogBuilder.setCancelable(true);
 
         obsDetailsViewDialog = addIndividualObservationsDialogBuilder.create();
         obsDetailsViewDialog.show();
-        ;
-
-
         dismissDialogButton = obsDetailsDialog.findViewById(R.id.dismiss_dialog_button);
         encounterDateTextView = obsDetailsDialog.findViewById(R.id.encounter_date_value_textview);
         encounterLocationTextView = obsDetailsDialog.findViewById(R.id.encounter_location_value_textview);
@@ -289,7 +281,6 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
             }
 
             encounterDateTextView.setText(encounterDate);
-
         } else {
             providerNameTextView.setText(R.string.general_not_available_text);
             encounterLocationTextView.setText(R.string.general_not_available_text);
@@ -297,7 +288,6 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
             encounterDateTextView.setText(R.string.general_not_available_text);
             providerIdentifierTextView.setText(R.string.general_not_available_text);
         }
-
 
         dismissDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
