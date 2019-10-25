@@ -249,7 +249,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public PatientController getPatientController() {
         if (patientController == null) {
             try {
-                patientConroller = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService(), muzimaContext.getFormService());
+                patientController = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService(), muzimaContext.getFormService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
