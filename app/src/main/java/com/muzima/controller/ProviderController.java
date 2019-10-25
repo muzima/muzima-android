@@ -186,6 +186,9 @@ public class ProviderController {
         }
     }
 
+    public void resetNewProvidersList() {
+        newProviders.clear();
+    }
     public List<Provider> newProviders() {
         return newProviders;
     }

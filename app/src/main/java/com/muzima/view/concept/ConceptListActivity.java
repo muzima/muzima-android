@@ -151,7 +151,12 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
     }
 
     private void navigateToNextActivity() {
+        clearTemporaryConceptList();
         finish();
+    }
+
+    private void clearTemporaryConceptList(){
+        ((MuzimaApplication)getApplication()).getConceptController().resetNewConceptsList();
     }
 
     private void turnOnProgressDialog(String message){
