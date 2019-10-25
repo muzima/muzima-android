@@ -720,7 +720,7 @@
     <string name="title_barcode_scanner_setup">Passo 6: Verificar o scaner de código de barra</string>
     <string name="title_client_notifications">Notificações do Cliente</string>
     <string name="title_client_registration_help_video">Registro de cliente</string>
-    <string name="title_client_scan">Examinar o ID dos Clientes</string>
+    <string name="title_client_scan">Examinar código de barras Clientes de digitalização</string>
     <string name="title_cohort_download">Passo 1: Baixar Coorte(s)</string>
     <string name="title_cohort_download_help_video">Download de Coortes (sob demanda)</string>
     <string name="title_cohort_prefix_help">Definir Prefixo(s) de Ajuda de Coortes</string>
