@@ -19,6 +19,6 @@ public class PatientDownloadIntent extends SyncIntent {
     public PatientDownloadIntent(Activity activity, String[] patientUUIDs) {
         super(activity);
         putExtra(DataSyncServiceConstants.PATIENT_UUID_FOR_DOWNLOAD, patientUUIDs);
-        putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.DOWNLOAD_PATIENT_ONLY);
+        putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA);
     }
 }

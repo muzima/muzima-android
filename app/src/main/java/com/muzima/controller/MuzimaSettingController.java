@@ -2,24 +2,34 @@ package com.muzima.controller;
 
 import android.util.Log;
 
+import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.MuzimaSetting;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.MuzimaSettingService;
 
+import com.muzima.service.SntpService;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import static com.muzima.api.model.APIName.DOWNLOAD_SETTINGS;
+import static com.muzima.util.Constants.ServerSettings.CLINICAL_SUMMARY_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
 
 public class MuzimaSettingController {
     private final MuzimaSettingService settingService;
+    private final LastSyncTimeService lastSyncTimeService;
+    private final SntpService sntpService;
 
-    public MuzimaSettingController(MuzimaSettingService settingService) {
+    public MuzimaSettingController(MuzimaSettingService settingService, LastSyncTimeService lastSyncTimeService,
+                                   SntpService sntpService) {
         this.settingService = settingService;
+        this.lastSyncTimeService = lastSyncTimeService;
+        this.sntpService = sntpService;
     }
 
     private MuzimaSetting getSettingByProperty(String property) throws MuzimaSettingFetchException {
@@ -54,6 +64,12 @@ public class MuzimaSettingController {
         }
     }
 
+    public void saveOrUpdateSetting(List<MuzimaSetting> settings) throws MuzimaSettingSaveException {
+        for(MuzimaSetting setting: settings){
+            saveOrUpdateSetting(setting);
+        }
+    }
+
     public void saveOrUpdateSetting(MuzimaSetting setting) throws MuzimaSettingSaveException {
         try {
             if (settingService.getSettingByProperty(setting.getProperty()) != null) {
@@ -66,9 +82,17 @@ public class MuzimaSettingController {
         }
     }
 
-    public List<MuzimaSetting> downloadAllSettings() throws MuzimaSettingDownloadException {
+    public List<MuzimaSetting> downloadChangedSettingsSinceLastSync() throws MuzimaSettingDownloadException {
         try {
-            return settingService.downloadAllSettings(new Date());
+            LastSyncTime lastSyncTime = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_SETTINGS);
+            Date lastSyncDate = null;
+            if(lastSyncTime != null){
+                lastSyncDate = lastSyncTime.getLastSyncDate();
+            }
+            List<MuzimaSetting> muzimaSettings = settingService.downloadAllSettings(lastSyncDate);
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_SETTINGS, sntpService.getLocalTime());
+            lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
+            return muzimaSettings;
         } catch (IOException e) {
             throw new MuzimaSettingDownloadException(e);
         }
@@ -151,7 +175,21 @@ public class MuzimaSettingController {
             Log.e(getClass().getSimpleName(), "muzima GPS Feature setting is missing on this server");
             return false;
         }
+    }
 
+    public Boolean isClinicalSummaryEnabled() {
+        boolean isClinicalSummaryEnabled = false;
+        try {
+            MuzimaSetting clinicalSummaryStatus = getSettingByProperty(CLINICAL_SUMMARY_FEATURE_ENABLED_SETTING);
+            if (clinicalSummaryStatus == null) {
+                isClinicalSummaryEnabled = false;
+            } else {
+                isClinicalSummaryEnabled = clinicalSummaryStatus.getValueBoolean();
+            }
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Could not fetch clinical summary feature setting. ", e);
+        }
+        return isClinicalSummaryEnabled;
     }
 
     public static class MuzimaSettingFetchException extends Throwable {

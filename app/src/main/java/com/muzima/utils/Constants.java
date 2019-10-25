@@ -68,6 +68,7 @@ public class Constants {
         public static final String SYNC_TYPE = "sync_type";
         public static final String CREDENTIALS = "credentials";
         public static final String SYNC_STATUS = "sync_status";
+        public static final String SYNC_RESULT_MESSAGE = "sync_result_message";
         public static final String DOWNLOAD_COUNT_PRIMARY = "download_count_primary";
         public static final String DOWNLOAD_COUNT_SECONDARY = "download_count_secondary";
         public static final String DELETED_COUNT_PRIMARY = "deleted_count_primary";
@@ -77,19 +78,22 @@ public class Constants {
 
         public static final int SYNC_FORMS = 0;
         public static final int SYNC_TEMPLATES = 1;
-        public static final int SYNC_COHORTS = 2;
-        public static final int SYNC_PATIENTS_FULL_DATA = 3;
+        public static final int SYNC_COHORTS_METADATA = 2;
+        public static final int SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA = 3;
         public static final int SYNC_OBSERVATIONS = 4;
         public static final int SYNC_ENCOUNTERS = 5;
-        public static final int SYNC_PATIENTS_ONLY = 6;
-        public static final int SYNC_PATIENTS_DATA_ONLY = 7;
+        public static final int SYNC_SELECTED_COHORTS_PATIENTS_ONLY = 6;
+        public static final int SYNC_SELECTED_COHORTS_PATIENTS_DATA_ONLY = 7;
         public static final int SYNC_UPLOAD_FORMS = 8;
-        public static final int DOWNLOAD_PATIENT_ONLY = 9;
+        public static final int DOWNLOAD_SELECTED_PATIENTS_FULL_DATA = 9;
         public static final int SYNC_NOTIFICATIONS = 10;
         public static final int SYNC_REAL_TIME_UPLOAD_FORMS =11;
         public static final int SYNC_SHR =12;
         public static final int SYNC_PATIENT_REPORTS_HEADERS = 13;
         public static final int SYNC_PATIENT_REPORTS = 14;
+        public static final int SYNC_COHORTS_AND_ALL_PATIENTS_FULL_DATA = 15;
+        public static final int CLEAN_UP_PROCESSED_TEMPORARY_FORM_DATA = 16;
+        public static final int SYNC_SETTINGS = 17;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;
@@ -112,7 +116,7 @@ public class Constants {
             public static final String INVALID_CHARACTER_FOR_USERNAME = ",;.-/@#$%&*+='\"|~`<>";
         }
 
-        public static class MuzimaJobSchedularConstants {
+        public static class MuzimaJobSchedulerConstants {
             public static final String MUZIMA_JOB_SCHEDULE_INTENT = BuildConfig.APPLICATION_ID+" muzima scheduled job";
             public static final String WORK_DURATION_KEY = "work duration";
             public static final int MESSAGE_SYNC_JOB_ID = 22;
@@ -120,7 +124,7 @@ public class Constants {
             public static final int MSG_INDICATOR_STOP = 19;
             public static final int MSG_COLOR_START = 20;
             public static final int JOB_INDICATOR_STOP = 21;
-            public static final long MUZIMA_JOB_PERIODIC = 5000;
+            public static final long MUZIMA_JOB_PERIODIC = 15*60*1000;
         }
     }
 

@@ -97,6 +97,7 @@ public class HTMLFormObservationCreatorTest {
 
     private String mockConceptName;
     private String mockConceptUUID;
+    private int mockConceptID;
     private String formDataUuid;
 
 
@@ -110,17 +111,19 @@ public class HTMLFormObservationCreatorTest {
         when(muzimaApplication.getObservationController()).thenReturn(observationController);
         when(muzimaApplication.getProviderController()).thenReturn(providerController);
         when(muzimaApplication.getLocationController()).thenReturn(locationController);
-        htmlFormObservationCreator = new HTMLFormObservationCreator(muzimaApplication);
+        htmlFormObservationCreator = new HTMLFormObservationCreator(muzimaApplication,true);
 
         when(patientController.getPatientByUuid("9090900-asdsa-asdsannidj-qwnkika")).thenReturn(patient);
 
         Concept concept = mock(Concept.class);
         mockConceptName = "HEIGHT (CM)";
         mockConceptUUID = "MyUUID";
+        mockConceptID = 5090;
         when(concept.getName()).thenReturn(mockConceptName);
         when(concept.getUuid()).thenReturn(mockConceptUUID);
 
         when(conceptController.getConceptByName(mockConceptName)).thenReturn(concept);
+        when(conceptController.getConceptById(mockConceptID)).thenReturn(concept);
         formDataUuid = "formDataUuid";
     }
 

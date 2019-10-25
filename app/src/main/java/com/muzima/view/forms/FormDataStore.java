@@ -103,7 +103,7 @@ class FormDataStore {
     }
 
     FormParser getFormParser() {
-        return new FormParser(applicationContext);
+        return new FormParser(applicationContext, false);
     }
 
 
