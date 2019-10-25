@@ -11,26 +11,34 @@
 package com.muzima.adapters.patients;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Tag;
+import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
 import com.muzima.utils.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
 public class PatientAdapterHelper extends ListAdapter<Patient> {
+    private PatientController patientController;
 
-    public PatientAdapterHelper(Context context, int textViewResourceId) {
+    public PatientAdapterHelper(Context context, int textViewResourceId, PatientController patientController) {
         super(context, textViewResourceId);
+        this.patientController = patientController;
     }
 
     public View createPatientRow(Patient patient, View convertView, ViewGroup parent, Context context) {
@@ -43,6 +51,9 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
             holder.name = convertView.findViewById(R.id.name);
             holder.dateOfBirth = convertView.findViewById(R.id.dateOfBirth);
             holder.identifier = convertView.findViewById(R.id.identifier);
+            holder.tagsScroller = convertView.findViewById(R.id.tags_scroller);
+            holder.tagsLayout = convertView.findViewById(R.id.menu_tags);
+            holder.tags = new ArrayList<>();
             convertView.setTag(holder);
         }
 
@@ -52,7 +63,52 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         holder.identifier.setText(patient.getIdentifier());
         holder.name.setText(getPatientFullName(patient));
         holder.genderImg.setImageResource(getGenderImage(patient.getGender()));
+        addTags(holder,patient);
         return convertView;
+    }
+
+    private void addTags(ViewHolder holder, Patient patient) {
+        Tag[] tags = patient.getTags();
+        if (tags.length > 0) {
+            holder.tagsScroller.setVisibility(View.VISIBLE);
+            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+
+            //add update tags
+            for (int i = 0; i < tags.length; i++) {
+                TextView textView = null;
+                if (holder.tags.size() <= i) {
+                    textView = newTextView(layoutInflater);
+                    holder.addTag(textView);
+                }
+                textView = holder.tags.get(i);
+                textView.setBackgroundColor(patientController.getTagColor(tags[i].getUuid()));
+                List<Tag> selectedTags = patientController.getSelectedTags();
+                if (selectedTags.isEmpty() || selectedTags.contains(tags[i])) {
+                    textView.setText(tags[i].getName());
+                } else {
+                    textView.setText(StringUtils.EMPTY);
+                }
+            }
+
+            //remove existing extra tags which are present because of recycled list view
+            if (tags.length < holder.tags.size()) {
+                List<TextView> tagsToRemove = new ArrayList<>();
+                for (int i = tags.length; i < holder.tags.size(); i++) {
+                    tagsToRemove.add(holder.tags.get(i));
+                }
+                holder.removeTags(tagsToRemove);
+            }
+        } else {
+            holder.tagsScroller.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private TextView newTextView(LayoutInflater layoutInflater) {
+        TextView textView = (TextView) layoutInflater.inflate(R.layout.tag, null, false);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.setMargins(1, 0, 0, 0);
+        textView.setLayoutParams(layoutParams);
+        return textView;
     }
 
     public void onPreExecute(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
@@ -144,5 +200,20 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         TextView name;
         TextView dateOfBirth;
         TextView identifier;
+        List<TextView> tags;
+        LinearLayout tagsLayout;
+        RelativeLayout tagsScroller;
+
+        public void addTag(TextView tag) {
+            this.tags.add(tag);
+            tagsLayout.addView(tag);
+        }
+
+        void removeTags(List<TextView> tagsToRemove) {
+            for (TextView tag : tagsToRemove) {
+                tagsLayout.removeView(tag);
+            }
+            tags.removeAll(tagsToRemove);
+        }
     }
 }
