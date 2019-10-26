@@ -43,4 +43,7 @@ public class AutoCompleteConceptAdapter extends AutoCompleteBaseAdapter<Concept>
     protected String getOptionName(Concept concept) {
         return concept.getName();
     }
+
+    @Override
+    protected void filterComplete() {}
 }

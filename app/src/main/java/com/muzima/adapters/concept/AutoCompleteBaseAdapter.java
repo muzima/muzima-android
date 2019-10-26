@@ -10,6 +10,7 @@
 package com.muzima.adapters.concept;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
     public AutoCompleteBaseAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteTextView) {
         super(context, textViewResourceId);
         this.autoCompleteTextView = autoCompleteTextView;
-        muzimaApplicationWeakReference = new WeakReference<MuzimaApplication>((MuzimaApplication) context.getApplicationContext());
+        muzimaApplicationWeakReference = new WeakReference<>((MuzimaApplication) context.getApplicationContext());
         muzimaSyncService = getMuzimaApplicationContext().getMuzimaSyncService();
     }
 
@@ -110,8 +111,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
             }
 
             private boolean hasResultStored(CharSequence constraint) {
-                return previousConstraint != null &&
-                        previousResult != null &&
+                return previousConstraint != null && previousResult != null &&
                         constraint.toString().toLowerCase().contains(previousConstraint.toLowerCase());
             }
 
@@ -126,9 +126,19 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
                         }
                         notifyDataSetChanged();
                     }
+                    filterComplete();
                 }else{
                     clear();
                 }
+            }
+
+            @Override
+            public CharSequence convertResultToString(Object result) {
+                if(result != null) {
+                    return getOptionName((T) result);
+                }
+
+                return super.convertResultToString(null);
             }
         };
     }
@@ -139,8 +149,9 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
         TextView name;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -156,4 +167,6 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
     }
 
     protected abstract String getOptionName(T option);
+
+    protected abstract void filterComplete();
 }

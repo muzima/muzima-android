@@ -41,4 +41,7 @@ public class AutoCompleteProviderAdapter extends AutoCompleteBaseAdapter<Provide
     protected String getOptionName(Provider provider) {
         return provider.getName();
     }
+
+    @Override
+    protected void filterComplete() {}
 }
