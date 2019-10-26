@@ -18,6 +18,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
+import com.muzima.view.relationship.RelationshipsListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +26,12 @@ import java.util.List;
 public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Person> {
 
     private boolean searchRemote;
+    private RelationshipsListActivity relationshipsListActivity;
 
-    public AutoCompleteRelatedPersonAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteProviderTextView) {
+    public AutoCompleteRelatedPersonAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteProviderTextView,
+                                            RelationshipsListActivity relationshipsListActivity) {
         super(context, textViewResourceId, autoCompleteProviderTextView);
+        this.relationshipsListActivity = relationshipsListActivity;
     }
 
     @Override
@@ -56,5 +60,10 @@ public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Pe
 
     public void setSearchRemote(boolean searchRemote) {
         this.searchRemote = searchRemote;
+    }
+
+    @Override
+    protected void filterComplete() {
+        relationshipsListActivity.onFilterComplete();
     }
 }

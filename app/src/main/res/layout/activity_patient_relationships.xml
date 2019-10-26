@@ -29,9 +29,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:paddingTop="10dp"
+                    android:paddingTop="20dp"
                     android:contentDescription="@string/gender_image_content_description"/>
         </RelativeLayout>
+        <LinearLayout
+                style="@style/PatientDemographicsLayout"
+                android:paddingTop="4dp"
+                android:paddingBottom="16dp">
+
+            <TextView
+                    android:id="@+id/dob"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/DashboardBaseText"/>
+
+            <TextView
+                    android:id="@+id/patientIdentifier"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="right"
+                    style="@style/DashboardBaseText"/>
+        </LinearLayout>
+
 
         <View style="@style/DividerLine"
               android:layout_marginBottom="10dp"/>
@@ -40,21 +59,29 @@
                       style="@style/NotClickableSummaryItem"
                       android:visibility="gone">
 
-            <TextView android:id="@+id/add_relationship_prompt"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="4dp"
-                    android:text="@string/add_new_relationship"
-                    android:textStyle="bold"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_marginBottom="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
             <TextView android:id="@+id/info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
+
+            <Spinner
+                    android:id="@+id/relationshipType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:layout_marginTop="3pt"
+                    android:layout_marginBottom="3pt"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/spinner_border"/>
+
+            <TextView android:id="@+id/info2"
+                      android:text="@string/to_text"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textSize="16sp"
+                      android:textStyle="bold"/>
 
             <LinearLayout style="@style/AutocompleteTextArea">
                 <AutoCompleteTextView
@@ -64,11 +91,12 @@
                         android:paddingTop="3dp"
                         android:paddingBottom="3dp"
                         android:layout_weight="1"
+                        android:completionThreshold="3"
                         android:textColor="@color/primary_blue"
                         android:textColorHint="@color/hint_text_grey"
                         android:textCursorDrawable="@null"
                         android:hint="@string/hint_person_search"
-                        android:background="?attr/primaryBackgroundColor">
+                        android:background="@drawable/textbox_border">
                 </AutoCompleteTextView>
             </LinearLayout>
 
@@ -76,6 +104,14 @@
                           android:layout_marginBottom="5dp"
                           style="@style/NotClickableSummaryItem"
                           android:orientation="horizontal">
+
+                <Button
+                        android:id="@+id/save"
+                        android:text="@string/general_save"
+                        android:background="@drawable/rounded_corner_loginbutton"
+                        android:onClick="saveRelationship"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"/>
 
                 <Button
                         android:id="@+id/cancel"
@@ -112,15 +148,5 @@
         </ListView>
 
     </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_add_relationship"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:scaleType="fitCenter"
-            android:onClick="createRelationship"
-            android:src="?attr/icAdd" />
 </FrameLayout>
 
