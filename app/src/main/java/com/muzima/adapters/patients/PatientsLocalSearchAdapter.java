@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Tag;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
@@ -38,7 +39,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         Context context1 = context;
         this.patientController = patientController;
         this.cohortId = cohortId;
-        this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId);
+        this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId, patientController);
     }
 
     @NonNull
@@ -84,6 +85,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         @Override
         protected List<Patient> doInBackground(String... params) {
             List<Patient> patients = null;
+            List<Patient> filteredPatients = null;
 
             if (isSearch(params)) {
                 try {
@@ -151,7 +153,9 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
             } catch (PatientController.PatientLoadException e) {
                 Log.w(getClass().getSimpleName(), "Exception occurred while fetching patients", e);
             }
-            return patients;
+            List<String> tags = patientController.getSelectedTagUuids();
+            filteredPatients = patientController.filterPatientByTags(patients,tags);
+            return filteredPatients;
         }
 
         private boolean isSearch(String[] params) {

@@ -670,7 +670,7 @@
     <string name="title_barcode_scanner_setup">Étape 6: Vérification du scanner BarCode</string>
     <string name="title_client_notifications">Notifications de client</string>
     <string name="title_client_registration_help_video">Enregistrement du client</string>
-    <string name="title_client_scan">Numériser ID des clients</string>
+    <string name="title_client_scan">Numériser codes à barres desclients</string>
     <string name="title_cohort_download">Etape 1: Télécharger Cohorte(s)</string>
     <string name="title_cohort_download_help_video">Téléchargement de cohortes (sur demande)</string>
     <string name="title_cohort_prefix_help">Définition de(s) préfixe(s) Cohorts Aide</string>
