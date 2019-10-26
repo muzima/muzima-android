@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Encounter;
@@ -34,11 +35,14 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Provider;
+import com.muzima.api.model.Tag;
+import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
@@ -57,6 +61,8 @@ import com.muzima.controller.EncounterController;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -80,6 +86,8 @@ class HTMLFormDataStore {
     private final EncounterController encounterController;
     private final MuzimaApplication application;
     private final MuzimaSettingController settingController;
+    private final CohortController cohortController;
+    private final PatientController patientController;
 
     public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormData formData, MuzimaApplication application) {
         this.formWebViewActivity = formWebViewActivity;
@@ -92,6 +100,8 @@ class HTMLFormDataStore {
         this.conceptController = application.getConceptController();
         this.encounterController = application.getEncounterController();
         this.observationController = application.getObservationController();
+        this.cohortController = application.getCohortController();
+        this.patientController = application.getPatientController();
         this.application = application;
     }
 
@@ -111,6 +121,7 @@ class HTMLFormDataStore {
         jsonPayload = injectTimeZoneToEncounterPayload(jsonPayload);
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
+        String patientUuid = formData.getPatientUuid();
         boolean encounterDetailsValidityStatus = true;
         try {
             if (status.equals("complete")) {
@@ -131,6 +142,26 @@ class HTMLFormDataStore {
                 formData.setEncounterDate(encounterDate);
                 formController.saveFormData(formData);
                 formWebViewActivity.setResult(FormsActivity.RESULT_OK);
+                if (status.equals("complete")) {
+                    JSONObject jsonObject = new JSONObject(jsonPayload);
+                    JSONObject jsonObjectInner = jsonObject.getJSONObject("patient");
+                    Log.e(getClass().getSimpleName(),jsonObjectInner.toString());
+                    if(jsonObjectInner.has("patient.tagName") && jsonObjectInner.has("patient.tagUuid")) {
+                        Log.e(getClass().getSimpleName(),"Form Has both tag fields");
+                        List<Tag> tags = new ArrayList<Tag>();
+                        Patient patient = patientController.getPatientByUuid(patientUuid);
+                        for (Tag tag : patient.getTags()) {
+                            tags.add(tag);
+                        }
+
+                        Tag tag = new Tag();
+                        tag.setName(jsonObjectInner.getString("patient.tagName"));
+                        tag.setUuid(jsonObjectInner.getString("patient.tagUuid"));
+                        tags.add(tag);
+                        patient.setTags(tags.toArray(new Tag[tags.size()]));
+                        patientController.updatePatient(patient);
+                    }
+                }
                 if (!keepFormOpen) {
                     formWebViewActivity.finish();
                     if (status.equals("complete")) {
@@ -151,9 +182,14 @@ class HTMLFormDataStore {
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show();
             Log.e(getClass().getSimpleName(), "Exception occurred while saving form data", e);
-            // } catch (Exception e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show();
-            Log.e(getClass().getSimpleName(), "Exception occurred while saving form data", e);
+        }
+        catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while fetching patient", e);
+        }
+        catch (PatientController.PatientSaveException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while saving patient", e);
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while parsing object", e);
         }
     }
 
@@ -276,6 +312,7 @@ class HTMLFormDataStore {
         List<Observation> observations = new ArrayList<>();
         try {
             observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+            Collections.sort(observations, observationDateTimeComparator);
         } catch (ObservationController.LoadObservationException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
@@ -287,6 +324,7 @@ class HTMLFormDataStore {
         List<Observation> observations = new ArrayList<>();
         try {
             observations = observationController.getObservationsByEncounterId(encounterid);
+            Collections.sort(observations, observationDateTimeComparator);
         } catch (ObservationController.LoadObservationException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
@@ -304,6 +342,7 @@ class HTMLFormDataStore {
                     observations.addAll(observationController.getObservationsByEncounterId(enc.getId()));
                 }
             }
+            Collections.sort(observations, observationDateTimeComparator);
         } catch (ObservationController.LoadObservationException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         } catch (EncounterController.DownloadEncounterException e) {
@@ -582,5 +621,36 @@ class HTMLFormDataStore {
 
         return jsonPayload;
     }
+
+    @JavascriptInterface
+    public String getCohortMembershipByPatientUuid(String patientUuid){
+        List<CohortMember> cohortMembers = new ArrayList<>();
+        JSONArray jsonArray = new JSONArray();
+        HashMap<String, JSONObject> map = new HashMap<>();
+        int i = 0;
+        try {
+            cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
+            for(CohortMember cohortMember:cohortMembers){
+                JSONObject json = new JSONObject();
+                json.put("cohortUuid", cohortMember.getCohort().getUuid());
+                json.put("cohortName", cohortMember.getCohort().getName());
+                map.put("json" + i, json);
+                jsonArray.put(map.get("json" + i));
+                i++;
+            }
+        } catch (CohortController.CohortFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading cohort membership", e);
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "JSONException encountered while process cohort membership", e);
+        }
+        return jsonArray.toString();
+    }
+
+    private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
+        @Override
+        public int compare(Observation lhs, Observation rhs) {
+            return -lhs.getObservationDatetime().compareTo(rhs.getObservationDatetime());
+        }
+    };
 
 }

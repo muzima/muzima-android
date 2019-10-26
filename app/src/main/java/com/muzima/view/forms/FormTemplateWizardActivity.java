@@ -110,10 +110,6 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!hasRegistrationFormSelected()) {
-                    Toast.makeText(FormTemplateWizardActivity.this, getString(R.string.hint_registration_form_select), Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 turnOnProgressDialog(getString(R.string.info_form_template_with_count_download,getSelectedForms().size()));
 
                  AsyncTask<Void, Void, int[]> lastSycTimeAsynTask = new AsyncTask<Void, Void, int[]>() {
@@ -144,20 +140,6 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                 lastSycTimeAsynTask.execute();
             }
         };
-    }
-
-    private boolean hasRegistrationFormSelected() {
-        SparseBooleanArray checkedItemPositions = listView.getCheckedItemPositions();
-        boolean registrationFormSelected = false;
-        for (int i = 0; i < checkedItemPositions.size(); i++) {
-            if (checkedItemPositions.valueAt(i)) {
-                AvailableForm selectedForm = (AvailableForm) listView.getItemAtPosition(checkedItemPositions.keyAt(i));
-                if (selectedForm.isRegistrationForm()) {
-                    registrationFormSelected = true;
-                }
-            }
-        }
-        return registrationFormSelected;
     }
 
     private void navigateToPreviousActivity() {

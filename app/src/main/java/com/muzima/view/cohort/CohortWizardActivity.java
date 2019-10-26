@@ -63,8 +63,14 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cohort_wizard);
+        progressDialog = new MuzimaProgressDialog(this);
+        downloadMissingServerSettings();
+    }
+
+    private void initializeAdapter(){
         ListView listView = getListView();
         final AllCohortsAdapter cohortsAdapter = createAllCohortsAdapter();
+
 
         final EditText filterCohortText = findViewById(R.id.filter_cohorts_txt);
         filterCohortText.addTextChangedListener(textWatcherForFilterText(cohortsAdapter));
@@ -77,8 +83,6 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
         Button previousButton = findViewById(R.id.previous);
         previousButton.setOnClickListener(previousButtonListener());
-
-        progressDialog = new MuzimaProgressDialog(this);
 
         cohortsAdapter.setBackgroundListQueryTaskListener(this);
         listView.setOnItemClickListener(listViewClickListener(cohortsAdapter));
@@ -98,7 +102,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     protected void onResume() {
         super.onResume();
         if(isProcessDialogOn){
-            turnOnProgressDialog(getString(R.string.info_cohort_load));
+            turnOnProgressDialog(getString(R.string.info_settings_download_progress));
         }
     }
 
@@ -283,6 +287,26 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         if (progressDialog != null){
             progressDialog.dismiss();
             isProcessDialogOn = false;
+        }
+    }
+
+    private void downloadMissingServerSettings(){
+        turnOnProgressDialog(getString(R.string.info_settings_download_progress));
+        new MissingSettingsDownloadBackgroundTask().execute();
+    }
+
+    private class MissingSettingsDownloadBackgroundTask extends AsyncTask<String, Void,int[] > {
+        @Override
+        public int[] doInBackground(String... params){
+                MuzimaSyncService syncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
+                return syncService.downloadNewSettings();
+
+        }
+
+        @Override
+        protected void onPostExecute(int[] result) {
+            dismissProgressDialog();
+            initializeAdapter();
         }
     }
 
