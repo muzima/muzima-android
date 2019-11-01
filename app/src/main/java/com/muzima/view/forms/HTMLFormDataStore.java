@@ -386,13 +386,21 @@ class HTMLFormDataStore {
             }
 
             JSONObject json = new JSONObject();
+            JSONObject codedConcept = new JSONObject();
             if (!conceptName.isEmpty()) {
                 json.put("conceptName", conceptName);
             } else {
                 json.put("conceptName", "Concept Created On Phone");
             }
             json.put("obsDate", convertedEncounterDate);
-            json.put("valueCoded", obs.getValueCoded().getName());
+            if(obs.getValueCoded() != null) {
+                codedConcept.put("uuid",obs.getValueCoded().getUuid());
+                codedConcept.put("id",obs.getValueCoded().getId());
+                codedConcept.put("name",obs.getValueCoded().getName());
+                json.put("valueCoded",codedConcept);
+            }else{
+                json.put("valueCoded", obs.getValueCoded());
+            }
             json.put("valueNumeric", obs.getValueNumeric());
             json.put("valueText", obs.getValueText());
             json.put("valueDatetime",convertedvalueDateTime);
