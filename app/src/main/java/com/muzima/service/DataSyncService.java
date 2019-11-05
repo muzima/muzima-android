@@ -126,6 +126,7 @@ public class DataSyncService extends IntentService {
                     int[] result = muzimaSyncService.uploadAllCompletedForms();
                     broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_UPLOAD_FORMS);
                     prepareBroadcastMsgForFormUpload(broadcastIntent, result, getString(R.string.info_form_upload_success));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
                 }
                 break;
             case DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA:
