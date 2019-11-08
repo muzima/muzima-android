@@ -407,12 +407,6 @@
                 android:name=".view.progressdialog.ProgressDialogUpdateIntentService"
                 android:exported="false"/>
 
-        <activity
-                android:name="org.acra.CrashReportDialog"
-                android:excludeFromRecents="true"
-                android:finishOnTaskLaunch="true"
-                android:launchMode="singleInstance"
-                android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".view.SHRObservationsDataActivity"/>
         <activity android:name=".view.notifications.ConversationActivity" />
 

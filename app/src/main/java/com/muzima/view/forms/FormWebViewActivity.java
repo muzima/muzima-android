@@ -34,11 +34,10 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
-import com.muzima.controller.ObservationController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.service.GPSFeaturePreferenceService;
-import com.muzima.service.MuzimaLocationService;
+import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
@@ -129,9 +128,10 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     }
 
     public void isLocationServicesAvailable(){
-        GPSFeaturePreferenceService gpsFeaturePreferenceService = new GPSFeaturePreferenceService((MuzimaApplication) getApplication());
+        MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
+        GPSFeaturePreferenceService gpsFeaturePreferenceService = new GPSFeaturePreferenceService(muzimaApplication);
         if(gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled()){
-            if (!MuzimaLocationService.isLocationServicesSwitchedOn) {
+            if (!muzimaApplication.getMuzimaGPSLocationService().isLocationServicesSwitchedOn()) {
                 android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(getApplicationContext());
                 alertDialog.setTitle(getResources().getString(R.string.title_gps_location));
                 alertDialog.setMessage(getResources().getString(R.string.hint_gps_location_off));
