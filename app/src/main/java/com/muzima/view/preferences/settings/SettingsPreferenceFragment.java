@@ -65,6 +65,9 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     private CheckBoxPreference encounterProviderPreference;
     private CheckBoxPreference realTimeSyncPreference;
+    private CheckBoxPreference sHRFeatureCheckBoxPreference;
+    private CheckBoxPreference requireMedicalRecordNumberCheckBoxPreference;
+    private CheckBoxPreference gpsLocationFeatureCheckBoxPreference;
     private Activity mActivity;
 
 
@@ -291,127 +294,35 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     private void setUpLightModePreference(){
         String lightModePreferenceKey = getResources().getString(R.string.preference_light_mode);
-        final CheckBoxPreference lightModePreference = (CheckBoxPreference) getPreferenceScreen().findPreference(lightModePreferenceKey);
+        final CheckBoxPreference lightModePreference = (CheckBoxPreference) getPreferenceScreen()
+                .findPreference(lightModePreferenceKey);
         lightModePreference.setSummary(lightModePreference.getSummary());
     }
 
     private void setUpRequireMedicalRecordNumberPreference(){
         String requireMedicalRecordNumberKey = getResources().getString(R.string.preference_require_medical_record_number);
-        final CheckBoxPreference requireMedicalRecordNumberPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(requireMedicalRecordNumberKey);
-        AsyncTask requireMedicalRecordNumberSettingAsyncTask = new AsyncTask<Void, Void,int[] >() {
-            @Override
-            public int[] doInBackground(Void... params){
-                MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
-                        .getApplication()).getMuzimaSyncService();
-                return syncService.downloadSetting(Constants.ServerSettings
-                        .PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING);
-            }
-
-            @Override
-            protected void onPostExecute(int[] result) {
-                if(result[0] == SUCCESS) {
-                    RequireMedicalRecordNumberPreferenceService requireMedicalRecordNumberPreferenceService
-                            = new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getActivity()
-                            .getApplication());
-                    requireMedicalRecordNumberPreferenceService.updateRequireMedicalRecordNumberPreference();
-                    requireMedicalRecordNumberPreference
-                            .setChecked(requireMedicalRecordNumberPreferenceService.getRequireMedicalRecordNumberPreferenceValue());
-                    Toast.makeText(getActivity(), getString(R.string.info_settings_download_success), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-        requireMedicalRecordNumberPreference.setOnPreferenceChangeListener(
-                new ServerSideSettingPreferenceChangeListener(requireMedicalRecordNumberSettingAsyncTask));
+        requireMedicalRecordNumberCheckBoxPreference = (CheckBoxPreference) getPreferenceScreen()
+                .findPreference(requireMedicalRecordNumberKey);
+        requireMedicalRecordNumberCheckBoxPreference.setOnPreferenceChangeListener(
+                new ServerSideSettingPreferenceChangeListener(new DownloadRequireMedicalRecordNumberSettingAsyncTask()
+                )
+        );
     }
 
     private void setUpGPSLocationFeaturePreference(){
         String enableGPSLocationFeaturePreferenceKey = getResources().getString(R.string.preference_enable_gps_key);
-        final CheckBoxPreference enableGPSLocationFeaturePreference = (CheckBoxPreference) getPreferenceScreen()
+        gpsLocationFeatureCheckBoxPreference = (CheckBoxPreference) getPreferenceScreen()
                 .findPreference(enableGPSLocationFeaturePreferenceKey);
-        AsyncTask gpsLocationSettingAsyncTask = new AsyncTask<Void, Void,int[] >() {
-            @Override
-            public int[] doInBackground(Void... params){
-                MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
-                        .getApplication()).getMuzimaSyncService();
-                return syncService.downloadSetting(Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING);
-            }
-
-            @Override
-            protected void onPostExecute(int[] result) {
-                if(result[0] == SUCCESS) {
-                    GPSFeaturePreferenceService gpsFeaturePreferenceService
-                            = new GPSFeaturePreferenceService((MuzimaApplication) getActivity()
-                            .getApplication());
-                    gpsFeaturePreferenceService.updateGPSDataPreferenceSettings();
-                    enableGPSLocationFeaturePreference
-                            .setChecked(gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled());
-                    Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-        enableGPSLocationFeaturePreference.setOnPreferenceChangeListener(
-                new ServerSideSettingPreferenceChangeListener(gpsLocationSettingAsyncTask));
+        gpsLocationFeatureCheckBoxPreference.setOnPreferenceChangeListener(
+                new ServerSideSettingPreferenceChangeListener(new DownloadGPSLocationSettingAsyncTask()));
     }
 
     private void setUpSHRFeaturePreference(){
         String enableSHRFeaturePreferencePreferenceKey = getResources().getString(R.string.preference_enable_shr_key);
-        final CheckBoxPreference enableSHRFeaturePreference = (CheckBoxPreference) getPreferenceScreen()
+        sHRFeatureCheckBoxPreference = (CheckBoxPreference) getPreferenceScreen()
                 .findPreference(enableSHRFeaturePreferencePreferenceKey);
-        AsyncTask enableSHRSettingAsyncTask = new AsyncTask<Void, Void,int[] >() {
-            @Override
-            public int[] doInBackground(Void... params){
-                MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
-                        .getApplication()).getMuzimaSyncService();
-                return syncService.downloadSetting(Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING);
-            }
-
-            @Override
-            protected void onPostExecute(int[] result) {
-                if(result[0] == SUCCESS) {
-                    SHRStatusPreferenceService shrStatusPreferenceService
-                            = new SHRStatusPreferenceService((MuzimaApplication) getActivity()
-                            .getApplication());
-                    shrStatusPreferenceService.updateSHRStatusPreference();
-                    enableSHRFeaturePreference
-                            .setChecked(shrStatusPreferenceService.isSHRStatusSettingEnabled());
-                    Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-        enableSHRFeaturePreference.setOnPreferenceChangeListener(
-                new ServerSideSettingPreferenceChangeListener(enableSHRSettingAsyncTask));
-    }
-
-    class ServerSideSettingPreferenceChangeListener implements Preference.OnPreferenceChangeListener{
-
-        private AsyncTask<Void, Void,int[] > settingDownloadAsyncTask;
-
-        ServerSideSettingPreferenceChangeListener(AsyncTask<Void, Void,int[] > settingDownloadAsyncTask){
-            this.settingDownloadAsyncTask = settingDownloadAsyncTask;
-        }
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder
-                    .setCancelable(true)
-                    .setIcon(getIconRefresh())
-                    .setTitle(getString(R.string.title_setting_refresh))
-                    .setMessage(getString(R.string.hint_setting_refresh))
-                    .setPositiveButton(getResources().getText(R.string.general_ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            settingDownloadAsyncTask.execute();
-                        }
-                    }).create().show();
-            return false;
-        }
+        sHRFeatureCheckBoxPreference.setOnPreferenceChangeListener(
+                new ServerSideSettingPreferenceChangeListener(new DownloadSHRSettingAsyncTask()));
     }
 
     private void setUpDefaultEncounterLocationPreference(){
@@ -618,5 +529,128 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private Drawable getIconRefresh(){
         return ThemeUtils.getIconRefresh(getActivity());
 
+    }
+
+    abstract class SettingDownloadAsyncTask extends AsyncTask<Void, Void,int[] >{
+        abstract  SettingDownloadAsyncTask newInstance();
+    }
+
+    public class DownloadGPSLocationSettingAsyncTask extends SettingDownloadAsyncTask {
+        public DownloadGPSLocationSettingAsyncTask(){ }
+
+        DownloadGPSLocationSettingAsyncTask newInstance(){
+            return new DownloadGPSLocationSettingAsyncTask();
+        }
+
+        @Override
+        public int[] doInBackground(Void... params){
+            MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
+                    .getApplication()).getMuzimaSyncService();
+            return syncService.downloadSetting(Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING);
+        }
+
+        @Override
+        protected void onPostExecute(int[] result) {
+            if(result[0] == SUCCESS) {
+                GPSFeaturePreferenceService gpsFeaturePreferenceService
+                        = new GPSFeaturePreferenceService((MuzimaApplication) getActivity()
+                        .getApplication());
+                gpsFeaturePreferenceService.updateGPSDataPreferenceSettings();
+                if(gpsLocationFeatureCheckBoxPreference != null) {
+                    gpsLocationFeatureCheckBoxPreference
+                            .setChecked(gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled());
+                }
+                Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public class DownloadRequireMedicalRecordNumberSettingAsyncTask extends SettingDownloadAsyncTask {
+        DownloadRequireMedicalRecordNumberSettingAsyncTask newInstance(){
+            return new DownloadRequireMedicalRecordNumberSettingAsyncTask();
+        }
+
+        @Override
+        public int[] doInBackground(Void... params){
+            MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
+                    .getApplication()).getMuzimaSyncService();
+            return syncService.downloadSetting(Constants.ServerSettings
+                    .PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING);
+        }
+
+        @Override
+        protected void onPostExecute(int[] result) {
+            if(result[0] == SUCCESS) {
+                RequireMedicalRecordNumberPreferenceService requireMedicalRecordNumberPreferenceService
+                        = new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getActivity()
+                        .getApplication());
+                requireMedicalRecordNumberPreferenceService.updateRequireMedicalRecordNumberPreference();
+                if(requireMedicalRecordNumberCheckBoxPreference != null) {
+                    requireMedicalRecordNumberCheckBoxPreference.setChecked(requireMedicalRecordNumberPreferenceService
+                            .getRequireMedicalRecordNumberPreferenceValue());
+                }
+                Toast.makeText(getActivity(), getString(R.string.info_settings_download_success), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public class DownloadSHRSettingAsyncTask extends SettingDownloadAsyncTask {
+        DownloadSHRSettingAsyncTask newInstance(){
+            return new DownloadSHRSettingAsyncTask();
+        }
+
+        @Override
+        public int[] doInBackground(Void... params){
+            MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
+                    .getApplication()).getMuzimaSyncService();
+            return syncService.downloadSetting(Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING);
+        }
+
+        @Override
+        protected void onPostExecute(int[] result) {
+            if(result[0] == SUCCESS) {
+                SHRStatusPreferenceService shrStatusPreferenceService
+                        = new SHRStatusPreferenceService((MuzimaApplication) getActivity()
+                        .getApplication());
+                shrStatusPreferenceService.updateSHRStatusPreference();
+                if(sHRFeatureCheckBoxPreference != null) {
+                    sHRFeatureCheckBoxPreference
+                            .setChecked(shrStatusPreferenceService.isSHRStatusSettingEnabled());
+                }
+                Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    class ServerSideSettingPreferenceChangeListener implements Preference.OnPreferenceChangeListener{
+
+        private SettingDownloadAsyncTask settingDownloadAsyncTask;
+
+        ServerSideSettingPreferenceChangeListener(SettingDownloadAsyncTask settingDownloadAsyncTask){
+            this.settingDownloadAsyncTask = settingDownloadAsyncTask;
+        }
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder
+                    .setCancelable(true)
+                    .setIcon(getIconRefresh())
+                    .setTitle(getString(R.string.title_setting_refresh))
+                    .setMessage(getString(R.string.hint_setting_refresh))
+                    .setPositiveButton(getResources().getText(R.string.general_ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            settingDownloadAsyncTask.newInstance().execute();
+                        }
+                    }).create().show();
+            return false;
+        }
     }
 }
