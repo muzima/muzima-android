@@ -71,26 +71,14 @@ public class MuzimaLocationService {
 
     }
 
-    public HashMap<String, String> getLastKnownGPS(String jsonReturnType) throws Exception {
+    public HashMap<String, Object> getLastKnownGPS() {
 
-        HashMap<String, String> locationResultMap = new HashMap<>();
-
-        Log.e(getClass().getSimpleName(), "getLastKnownGPS()");
-        String gpsLocationString = "Location is unavailable - Unknown Error";
+        HashMap<String, Object> locationResultMap = new HashMap<>();
         Location location = null;
         if (isOverallLocationAccessPermissionsGranted) {
 
             location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-
-            Log.e(getClass().getSimpleName(), "getLastKnownGPS() == " + location);
-
-
             if (location == null) {
-                locationResultMap.put("network_provider_status", "switched_off");
-                locationResultMap.put("gps_provider_status", "switched_off");
-                locationResultMap.put("gps_location_string", "User offline");
-
                 location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                 if (location == null) {
@@ -100,50 +88,24 @@ public class MuzimaLocationService {
 
                     isLocationServicesSwitchedOn = false;
                 } else {
-
                     isLocationServicesSwitchedOn = true;
 
                     locationResultMap.put("gps_provider_status", "switched_on");
                     locationResultMap.put("network_provider_status", "switched_on");
-                    locationResultMap.put("gps_location_string", getGpsRepresentationString(location, jsonReturnType));
+                    locationResultMap.put("gps_location", new MuzimaGPSLocation(location));
                 }
-
-                Log.e(getClass().getSimpleName(), "getLastKnownGPS() == " + location);
                 Toast.makeText(context, context.getResources().getString(R.string.hint_switch_location_on), Toast.LENGTH_LONG).show();
             } else {
                 isLocationServicesSwitchedOn = true;
                 locationResultMap.put("network_provider_status", "switched_on");
                 locationResultMap.put("gps_provider_status", "unchecked");
-                locationResultMap.put("gps_location_string", getGpsRepresentationString(location, jsonReturnType));
+                locationResultMap.put("gps_location", new MuzimaGPSLocation(location));
             }
-
-
-            Log.e(getClass().getSimpleName(), "Location " + location);
-
         } else {
             locationResultMap.put("network_provider_status", "unchecked");
             locationResultMap.put("gps_provider_status", "unchecked");
             locationResultMap.put("gps_location_string", "Permission denied by User");
         }
-
-        Log.e(getClass().getSimpleName(), "getLastKnownGPS() == " + gpsLocationString);
-
-
         return locationResultMap;
     }
-
-    public String getGpsRepresentationString(Location location, String jsonReturnType) throws Exception {
-        if (jsonReturnType.contains("json-object")) {
-            MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
-            return muzimaGPSLocation.toJsonObject().toString();
-        } else if (jsonReturnType.contains("json-array")) {
-            MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
-            return muzimaGPSLocation.toJsonArray().toString();
-        } else {
-            MuzimaGPSLocation muzimaGPSLocation = new MuzimaGPSLocation(location);
-            return muzimaGPSLocation.toJsonArray().toString();
-        }
-
-    }
-
 }

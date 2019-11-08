@@ -32,6 +32,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaLogsController;
 import com.muzima.controller.PatientReportController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
@@ -43,6 +44,8 @@ import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.LocalePreferenceService;
+import com.muzima.service.MuzimaLocationService;
+import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
@@ -101,7 +104,9 @@ public class MuzimaApplication extends MultiDexApplication {
     private MuzimaSettingController settingsController;
     private SmartCardController smartCardController;
     private PatientReportController patientReportController;
+    private MuzimaLogsController muzimaLogsController;
     private MuzimaTimer muzimaTimer;
+    private MuzimaLocationService muzimaLocationService;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
     private User authenticatedUser;
@@ -372,6 +377,24 @@ public class MuzimaApplication extends MultiDexApplication {
         return patientReportController;
     }
 
+    public MuzimaLogsController getMuzimaLogsController() {
+        if(muzimaLogsController == null){
+            try {
+                muzimaLogsController = new MuzimaLogsController(muzimaContext.getEncounterStatisticService());
+            } catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        return muzimaLogsController;
+    }
+
+
+    public MuzimaLocationService getMuzimaLocationService() {
+        if (muzimaLocationService == null) {
+            muzimaLocationService = new MuzimaLocationService(this);
+        }
+        return muzimaLocationService;
+    }
     public void resetTimer(int timeOutInMin) {
         muzimaTimer = muzimaTimer.resetTimer(timeOutInMin);
     }
@@ -380,10 +403,18 @@ public class MuzimaApplication extends MultiDexApplication {
         muzimaTimer.restart();
     }
 
+    public String getAuthenticatedUserId(){
+        User authenticatedUser = getAuthenticatedUser();
+        if(authenticatedUser != null)
+            return authenticatedUser.getUsername() != null ? authenticatedUser.getUsername():authenticatedUser.getSystemId();
+        return "null";
+
+    }
+
     public void logOut() {
         if(authenticatedUser != null) {
-            MuzimaLogger.log(getMuzimaContext(), "USER_LOGOUT",
-                    "{\"userId\":\"" + authenticatedUser.getUsername() + "\"}");
+            MuzimaLoggerService.log(getMuzimaContext(), "USER_LOGOUT",
+                    getAuthenticatedUserId(), "{}");
         }
         saveBeforeExit();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
