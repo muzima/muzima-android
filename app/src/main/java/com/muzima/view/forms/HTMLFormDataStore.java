@@ -50,7 +50,7 @@ import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.HTMLFormObservationCreator;
-import com.muzima.service.MuzimaLocationService;
+import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
@@ -217,7 +217,6 @@ class HTMLFormDataStore {
         } catch (ProviderController.ProviderLoadException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_provider_load), Toast.LENGTH_SHORT).show();
             Log.e(getClass().getSimpleName(), "Exception occurred while loading providers", e);
-            e.printStackTrace();
         }
         return JSONValue.toJSONString(providersOnDevice);
     }
@@ -371,25 +370,42 @@ class HTMLFormDataStore {
             }
             final String dateFormat = STANDARD_DATE_FORMAT;
             SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
-            Date d = null;
+            Date obsDateTime = null;
+            Date valueDateTime = null;
             try {
-                d = newDateFormat.parse(newDateFormat.format(obs.getObservationDatetime()));
+                obsDateTime = newDateFormat.parse(newDateFormat.format(obs.getObservationDatetime()));
+                if(obs.getValueDatetime() != null) {
+                    valueDateTime = newDateFormat.parse(newDateFormat.format(obs.getValueDatetime()));
+                }
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(), "Exception occurred while parsing date", e);
             }
             newDateFormat.applyPattern(dateFormat);
-            String convertedEncounterDate = newDateFormat.format(d);
+            String convertedEncounterDate = newDateFormat.format(obsDateTime);
+            String convertedvalueDateTime = "";
+            if(valueDateTime != null){
+                 convertedvalueDateTime = newDateFormat.format(valueDateTime);
+            }
 
             JSONObject json = new JSONObject();
+            JSONObject codedConcept = new JSONObject();
             if (!conceptName.isEmpty()) {
                 json.put("conceptName", conceptName);
             } else {
                 json.put("conceptName", "Concept Created On Phone");
             }
             json.put("obsDate", convertedEncounterDate);
-            json.put("valueCoded", obs.getValueCoded().getName());
+            if(obs.getValueCoded() != null) {
+                codedConcept.put("uuid",obs.getValueCoded().getUuid());
+                codedConcept.put("id",obs.getValueCoded().getId());
+                codedConcept.put("name",obs.getValueCoded().getName());
+                json.put("valueCoded",codedConcept);
+            }else{
+                json.put("valueCoded", obs.getValueCoded());
+            }
             json.put("valueNumeric", obs.getValueNumeric());
             json.put("valueText", obs.getValueText());
+            json.put("valueDatetime",convertedvalueDateTime);
             map.put("json" + i, json);
             arr.put(map.get("json" + i));
             i++;
@@ -540,21 +556,28 @@ class HTMLFormDataStore {
         Boolean isGpsFeatureEnabled = false;
         isGpsFeatureEnabled = new GPSFeaturePreferenceService(application).isGPSDataCollectionSettingEnabled();
         if (isGpsFeatureEnabled) {
+            MuzimaGPSLocationService muzimaLocationService = application.getMuzimaGPSLocationService();
 
-            if (isLocationPermissionsGranted()) {
-
-                if(isLocationServicesEnabled()){
-                    MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application);
-                    HashMap<String, String> locationDataHashMap = new HashMap<>(); //empty hashmap prevent NullPointerException
+            if (muzimaLocationService.isGPSLocationPermissionsGranted()) {
+                if(muzimaLocationService.isLocationServicesSwitchedOn()){
+                    HashMap<String, Object> locationDataHashMap;
                     try {
-                        locationDataHashMap = muzimaLocationService.getLastKnownGPS(jsonReturnType);
-                        gps_location_string = locationDataHashMap.get("gps_location_string");
+                        locationDataHashMap = muzimaLocationService.getLastKnownGPS();
+                        if(locationDataHashMap.containsKey("gps_location")) {
+                            if (jsonReturnType.equals("json-object")){
+                                gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonObject().toString();
+                            } else {
+                                gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonArray().toString();
+                            }
+                        } else {
+                            gps_location_string = (String)locationDataHashMap.get("gps_location_status");
+                        }
                         return gps_location_string;
                     } catch (Exception e) {
-                        Log.e(getClass().getSimpleName(), "Unable to process gps data, unknow Error Occurred" + e.getMessage());
+                        Log.e(getClass().getSimpleName(), "Unable to process gps data, unknow Error Occurred", e);
                         return gps_location_string;
                     }
-                }else {
+                } else {
                     return "Location service disabled by user";
                 }
             } else {
@@ -563,30 +586,6 @@ class HTMLFormDataStore {
         } else {
             return "GPS Feature is Disabled by User";
         }
-    }
-
-    public boolean isLocationPermissionsGranted() {
-        int permissionStatus = ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permissionStatus == PackageManager.PERMISSION_GRANTED)
-            return true;
-        else if (permissionStatus == PackageManager.PERMISSION_DENIED)
-            return false;
-        else
-            return false;
-    }
-
-    public Boolean isLocationServicesEnabled(){
-        LocationManager locationManager = (LocationManager)application.getSystemService(Context.LOCATION_SERVICE);
-
-        boolean isGPSProviderEnabled = false;
-        boolean isNetworkEnabled = false;
-
-        if(locationManager != null){
-            isGPSProviderEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        }
-
-        return (isGPSProviderEnabled || isNetworkEnabled);
     }
 
     public void showLocationDisabledDialog(){
