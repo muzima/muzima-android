@@ -251,10 +251,6 @@ public class PatientSummaryActivity extends BaseActivity {
                 break;
             case R.id.client_relationship:
                 showRelationships();
-//                Intent intent = null;
-//                intent = new Intent(this, RelationshipFormsActivity.class);
-//                intent.putExtra(RelationshipFormsActivity.PATIENT,patient);
-//                startActivity(intent);
                 return true;
             default:
                 break;
@@ -806,7 +802,6 @@ public class PatientSummaryActivity extends BaseActivity {
     }
 
     private void setRelationshipEnabled(){
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
         isRelationshipEnabled = muzimaApplication.getMuzimaSettingController().isRelationshipEnabled(); //preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_relationship_key),PatientSummaryActivity.DEFAULT_RELATIONSHIP_STATUS);
     }
 }

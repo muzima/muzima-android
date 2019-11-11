@@ -15,7 +15,6 @@
     <string name="add_individual_observation_text">Add Individual Observation</string>
     <string name="app_name">mUzima</string>
     <string name="app_title">mUzima for Health Providers</string>
-    <string name="add_new_relationship">Add New relationship</string>
     <string name="ask_help">Asking help</string>
     <string name="captured_date">Captured Date:</string>
     <string name="card_sync_status_content_description">card_sync_status</string>
@@ -25,6 +24,9 @@
     <string name="concept_description">Concept Descrition</string>
     <string name="concept_details">Concept Details</string>
     <string name="concept_name">Concept Name:</string>
+    <string name="confirm_create_patient_from_person">This will register this person as a client. Are you sure you would like to
+        do this?
+    </string>
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
     <string name="confirm_patient_id_exists">Does the client already have existing ID?</string>
     <string name="date_general">Date</string>
@@ -187,6 +189,7 @@
     <string name="general_other">Other</string>
     <string name="general_password">Password</string>
     <string name="general_patient_registration">Client Registration</string>
+    <string name="general_person_create">Create Person</string>
     <string name="general_previous">Previous</string>
     <string name="general_progress_message">This might take a while</string>
     <string name="general_providers">Providers</string>
@@ -546,6 +549,7 @@
     <string name="info_provider_not_downloaded">Did not download any providers</string>
     <string name="info_provider_unavailable">No providers have been added yet</string>
     <string formatted="false" name="info_providers_downloaded">Downloaded %d providers</string>
+    <string name="info_relationships_delete_success">%d Relationships deleted successfully</string>
     <string formatted="false" name="info_relationships_download_progress">Downloaded relationships for client %d of %d.</string>
     <string formatted="false" name="info_relationships_not_downloaded_progress">Relationships for client %d of %d not
         downloaded.
@@ -593,7 +597,6 @@
     <string name="message_missing_form_encounter_details_error">must be provided</string>
     <string name="muzima_training_manual_general">mUzima Training Manual</string>
     <string name="new_messages_number_text"># new messages</string>
-    <string name="new_relationship_type">What type of relationship?</string>
     <string name="no_default_encounter_location">No default encounter location</string>
     <string name="no_description_general">No description</string>
     <string name="no_email_client">No email client installed on this device. \n
@@ -613,14 +616,16 @@
     <string name="provider_name_general">Provider Name</string>
     <string name="provider_reports_general">Provider Reports</string>
     <string name="registering_patient_message_title_text">Registering client in mUzima…</string>
+    <string name="relationship_create_success">Relationship created successfully</string>
+    <string name="relationship_delete_fail">Cannot delete the relationship as it is already saved on the server. Contact the Administrator</string>
+    <string name="relationship_to_self_error">Client cannot relate to him/herself</string>
     <string name="reply_hint_text">send your reply</string>
     <string name="sample_date_rep">21 March 2018</string>
     <string name="sample_date_text">21/02/2018</string>
     <string name="scan_card_id_title">Scan card ID</string>
-    <string name="search_patient_on_server_option_title_text">Client is not avaible locally, would you like to search
-        server?
-    </string>
+    <string name="search_patient_on_server_option_title_text">Client is not available locally, would you like to search server?</string>
     <string name="select_a_registration_form_text">Select a registration form</string>
+    <string name="select_a_relationship_form_text">Select a form</string>
     <string name="send_feedback">Send feedback</string>
     <string name="send_general_text">Send</string>
     <string name="server_side_setup_general">Server side Setup</string>
@@ -745,6 +750,9 @@
     <string name="warning_registration_form_data_delete">You are about to delete registration data. This will also
         delete client record on device. Are you sure?
     </string>
+    <string name="warning_related_person_missing">Please choose a related person</string>
+    <string name="warning_relationship_exists">Client already has %s:%s relationship with %s</string>
+    <string name="warning_relationship_type_missing">Please choose a relationship type</string>
     <string name="warning_session_timeout">Session Timeout: Could not set session timeout.
         Please enter a value between 1 and 500.
     </string>
@@ -755,5 +763,4 @@
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
-    <string name="select_a_relationship_form_text">Select a form</string>
 </resources>

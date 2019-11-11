@@ -15,7 +15,6 @@ import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
 import com.muzima.api.service.PersonService;
 import com.muzima.api.service.RelationshipService;
-import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -196,6 +195,19 @@ public class RelationshipController {
         return false;
     }
 
+    /**
+     * Delete a list of relationship from the local repository
+     * @param relationships list of {@link Relationship} to delete
+     * @throws DeleteRelationshipException Relationship Deletion Exception
+     */
+    public void  deleteRelationships(List<Relationship> relationships) throws DeleteRelationshipException {
+        try {
+            relationshipService.deleteRelationships(relationships);
+        } catch (IOException e) {
+            throw new DeleteRelationshipException(e);
+        }
+    }
+
     /********************************************************************************************************
      *                               METHODS FOR EXCEPTION HANDLING
      *********************************************************************************************************/
@@ -226,6 +238,12 @@ public class RelationshipController {
 
     public static class SearchRelationshipException extends Throwable {
         SearchRelationshipException(ParseException e) {
+            super(e);
+        }
+    }
+
+    public static class DeleteRelationshipException extends Throwable {
+        DeleteRelationshipException(Throwable e) {
             super(e);
         }
     }

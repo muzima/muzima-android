@@ -29,11 +29,12 @@ import com.muzima.model.collections.AvailableForms;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.forms.FormViewIntent;
 
+import java.util.UUID;
+
 public class RelationshipFormsActivity extends AppCompatActivity {
     private RelationshipFormsAdapter relationshipFormsAdapter;
     private final ThemeUtils themeUtils = new ThemeUtils();
     public static final String PATIENT = "patient";
-    private Patient patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +48,6 @@ public class RelationshipFormsActivity extends AppCompatActivity {
         int height = (int) (displayMetrics.heightPixels*0.9);
         int width = (int) (displayMetrics.widthPixels*0.9);
         getWindow().setLayout(width, height);
-
-        Bundle intentExtras = getIntent( ).getExtras( );
-        if (intentExtras != null) {
-            patient = (Patient) intentExtras.getSerializable(PATIENT);
-        }
 
         FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
         AvailableForms availableForms = getRelationshipForms(formController);
@@ -96,6 +92,9 @@ public class RelationshipFormsActivity extends AppCompatActivity {
     }
 
     private void startWebViewActivity(AvailableForm form) {
+        Patient patient = new Patient();
+        String uuid = String.valueOf(UUID.randomUUID());
+        patient.setUuid(uuid);
         startActivity(new FormViewIntent(this, form, patient , true));
         finish();
     }
