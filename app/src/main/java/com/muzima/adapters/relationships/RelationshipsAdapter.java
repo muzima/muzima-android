@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
-import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.RelationshipController;
@@ -111,6 +110,22 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
+    }
+
+    public void removeRelationshipsForPatient(String patientUuid, List<Relationship> relationshipsToDelete) {
+        try {
+            List<Relationship> allRelationshipsForPatient = relationshipController.getRelationshipsForPerson(patientUuid);
+            allRelationshipsForPatient.removeAll(relationshipsToDelete);
+            try {
+                relationshipController.deleteRelationships(relationshipsToDelete);
+            } catch (RelationshipController.DeleteRelationshipException e) {
+                Log.e(getClass().getSimpleName(), "Error while deleting the relationships", e);
+            }
+            clear();
+            addAll(allRelationshipsForPatient);
+        } catch (RelationshipController.RetrieveRelationshipException e) {
+            Log.e(getClass().getSimpleName(), "Error while fetching the relationships", e);
+        }
     }
 
     class ViewHolder {

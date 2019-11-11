@@ -26,7 +26,6 @@ import com.muzima.api.model.RelationshipType;
 import com.muzima.controller.RelationshipController;
 import com.muzima.model.relationship.RelationshipTypeWrap;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.relationship.RelationshipsListActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,13 +34,10 @@ import java.util.List;
 public class RelationshipTypesAdapter extends ListAdapter<RelationshipTypeWrap> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private final RelationshipController relationshipController;
-    private final RelationshipsListActivity relationshipsListActivity;
 
-
-    public RelationshipTypesAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController, RelationshipsListActivity relationshipsListActivity) {
+    public RelationshipTypesAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController) {
         super(activity, textViewResourceId);
         this.relationshipController = relationshipController;
-        this.relationshipsListActivity = relationshipsListActivity;
     }
 
     @Override
@@ -51,18 +47,16 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipTypeWrap> 
 
     @Override
     public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
-        // TODO Auto-generated method stub
         return getCustomView(position, convertView, parent);
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        // TODO Auto-generated method stub
         return getCustomView(position, convertView, parent);
     }
 
-    public View getCustomView(int position, View convertView, ViewGroup parent) {
+    private View getCustomView(int position, View convertView, ViewGroup parent) {
         RelationshipTypeWrap relationshipTypeWrap = getItem(position);
         Context context = getContext();
         ViewHolder holder;
@@ -79,19 +73,7 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipTypeWrap> 
         }
 
         if (relationshipTypeWrap != null) {
-
             holder.tvRelationshipType.setText(relationshipTypeWrap.getName());
-
-//            if (StringUtils.equalsIgnoreCase(relationshipType.getAIsToB(), relationshipType.getBIsToA())) {
-//                holder.btnAIsToB.setGravity(Gravity.CENTER);
-//                holder.btnBIsToA.setVisibility(View.GONE);
-//                holder.separator.setVisibility(View.GONE);
-//            } else {
-//                holder.btnBIsToA.setVisibility(View.VISIBLE);
-//                holder.separator.setVisibility(View.VISIBLE);
-//                holder.btnBIsToA.setText(relationshipType.getBIsToA());
-//                holder.btnBIsToA.setOnClickListener(new OnTypeSelectedListener(relationshipType, "B"));
-//            }
         }
 
         return convertView;
@@ -112,21 +94,6 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipTypeWrap> 
 
         TextView tvRelationshipType;
     }
-
-//    private class OnTypeSelectedListener implements View.OnClickListener {
-//        private final RelationshipType relationshipType;
-//        private final String selectedSide;
-//
-//        private OnTypeSelectedListener(RelationshipType relationshipType, String selectedSide) {
-//            this.relationshipType = relationshipType;
-//            this.selectedSide = selectedSide;
-//        }
-//
-//        @Override
-//        public void onClick(View view) {
-//            relationshipsListActivity.relationshipTypeSelected(relationshipType, selectedSide);
-//        }
-//    }
 
     private class BackgroundQueryTask extends AsyncTask<String, Void, List<RelationshipTypeWrap>> {
         @Override
