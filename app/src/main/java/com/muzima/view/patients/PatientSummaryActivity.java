@@ -50,6 +50,7 @@ import com.muzima.model.shr.kenyaemr.Addendum.WriteResponse;
 import com.muzima.model.shr.kenyaemr.InternalPatientId;
 import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.service.JSONInputOutputToDisk;
+import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LocationUtils;
 import com.muzima.utils.StringUtils;
@@ -111,6 +112,9 @@ public class PatientSummaryActivity extends BaseActivity {
         Bundle intentExtras = getIntent( ).getExtras( );
         if (intentExtras != null) {
             patient = (Patient) intentExtras.getSerializable(PATIENT);
+
+            MuzimaLoggerService.log(this,"VIEW_CLIENT_SUMMARY","{\"patientuuid\":\""+patient.getUuid()+"\"}");
+
             isRegisteredOnSHR = patient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name) == null;
 
             SmartCardController smartCardController = ((MuzimaApplication) getApplicationContext( )).getSmartCardController( );

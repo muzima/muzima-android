@@ -56,6 +56,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.service.GPSFeaturePreferenceService;
+import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
@@ -67,6 +68,7 @@ import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -121,6 +123,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private boolean encounterProviderPreference;
     private final Handler handler = new Handler();
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private boolean isFormReload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -257,6 +260,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             progressDialog.dismiss();
         }
         stopAutoSaveProcess();
+        logFormClosed();
         super.onDestroy();
     }
 
@@ -454,8 +458,10 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
         if (baseForm.hasData()) {
             formData = formController.getFormDataByUuid(((FormWithData) baseForm).getFormDataUuid());
+            isFormReload = true;
         } else {
             createNewFormData();
+            isFormReload = false;
         }
     }
 
@@ -502,7 +508,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);
         webView.addJavascriptInterface(videoComponent, VIDEO);
-        webView.addJavascriptInterface(new HTMLFormDataStore(this, formData,
+        webView.addJavascriptInterface(new HTMLFormDataStore(this, formData, isFormReload,
                 (MuzimaApplication) getApplicationContext()), HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {
@@ -608,6 +614,17 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 .setNegativeButton(getString(R.string.general_ok), null)
                 .create()
                 .show();
+    }
+
+    private void logFormClosed(){
+        try {
+            JSONObject eventDetails = new JSONObject();
+            eventDetails.put("patientuuid", formData.getPatientUuid());
+            eventDetails.put("formDataUuid", formData.getUuid());
+            MuzimaLoggerService.log(this,"FORM_CLOSED",eventDetails.toString());
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(),"Cannot create log",e);
+        }
     }
 }
 

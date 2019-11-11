@@ -44,10 +44,10 @@ import com.muzima.domain.Credentials;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaGPSLocationService;
+import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
-import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.forms.HTMLFormWebViewActivity;
@@ -57,6 +57,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Security;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -125,7 +126,7 @@ public class MuzimaApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {
-        Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Crashlytics());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }
@@ -370,8 +371,13 @@ public class MuzimaApplication extends MultiDexApplication {
 
     public void logOut() {
         if(authenticatedUser != null) {
-            MuzimaLogger.log(getMuzimaContext(), "USER_LOGOUT",
-                    "{\"userId\":\"" + authenticatedUser.getUsername() + "\"}");
+            MuzimaLoggerService.log(getMuzimaContext(), "USER_LOGOUT",
+                    getAuthenticatedUserId(), MuzimaLoggerService.getGpsLocation(getApplicationContext()),"{}");
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+            }
         }
         saveBeforeExit();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
@@ -390,6 +396,13 @@ public class MuzimaApplication extends MultiDexApplication {
 
     private void evictAuthenticatedUser(){
         authenticatedUser = null;
+    }
+
+    public String getAuthenticatedUserId(){
+        User authenticatedUser = getAuthenticatedUser();
+        if(authenticatedUser != null)
+            return authenticatedUser.getUsername() != null ? authenticatedUser.getUsername():authenticatedUser.getSystemId();
+        return "null";
     }
 
     private void saveBeforeExit() {

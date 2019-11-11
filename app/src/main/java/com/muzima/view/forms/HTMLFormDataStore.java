@@ -49,6 +49,7 @@ import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.service.MuzimaGPSLocationService;
+import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
@@ -72,6 +73,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
+import static com.muzima.utils.Constants.STATUS_COMPLETE;
+import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 
 
 class HTMLFormDataStore {
@@ -89,7 +92,7 @@ class HTMLFormDataStore {
     private final CohortController cohortController;
     private final PatientController patientController;
 
-    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormData formData, MuzimaApplication application) {
+    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormData formData, boolean isFormReload, MuzimaApplication application) {
         this.formWebViewActivity = formWebViewActivity;
         this.formData = formData;
 
@@ -103,6 +106,7 @@ class HTMLFormDataStore {
         this.cohortController = application.getCohortController();
         this.patientController = application.getPatientController();
         this.application = application;
+        logFormStartEvent(isFormReload);
     }
 
     @JavascriptInterface
@@ -171,6 +175,7 @@ class HTMLFormDataStore {
                     if (status.equals("incomplete")) {
                         Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_draft_form_save_success), Toast.LENGTH_SHORT).show();
                     }
+                    logFormSaveEvent(status);
                 }
             } else {
                 String missingMandatoryEncounterDetailsMessage = checkMisssingMandatoryEncounterDetails(jsonPayload);
@@ -257,6 +262,14 @@ class HTMLFormDataStore {
 
     private boolean isRegistrationComplete(String status) {
         return formController.isRegistrationFormData(formData) && status.equals(Constants.STATUS_COMPLETE);
+    }
+
+    private boolean isRegistrationForm() {
+        return formController.isRegistrationFormData(formData);
+    }
+
+    private boolean isEncounterForm() {
+        return formController.isEncounterFormData(formData);
     }
 
     @JavascriptInterface
@@ -588,21 +601,9 @@ class HTMLFormDataStore {
 
     }
 
-    public void showLocationDisabledDialog(){
-        Boolean isGPSDataCollectionSettingEnabled = new GPSFeaturePreferenceService(application).isGPSDataCollectionSettingEnabled();
-        if(isGPSDataCollectionSettingEnabled) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(application);
-            alertDialog.setTitle(formWebViewActivity.getString(R.string.title_enable_gps_location));
-            alertDialog.setMessage(formWebViewActivity.getString(R.string.hint_gps_location_off));
-            alertDialog.setPositiveButton(formWebViewActivity.getString(R.string.general_location_setting), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    application.startActivity(intent);
-                }
-            });
-
-            alertDialog.show();
-        }
+    @JavascriptInterface
+    public void logEvent(String tag, String details){
+        MuzimaLoggerService.log(formWebViewActivity,tag,details);
     }
 
     private String injectTimeZoneToEncounterPayload(String jsonPayload) {
@@ -645,6 +646,65 @@ class HTMLFormDataStore {
             Log.e(getClass().getSimpleName(), "JSONException encountered while process cohort membership", e);
         }
         return jsonArray.toString();
+    }
+
+    private void logFormStartEvent(boolean isFormReload){
+        try {
+            JSONObject eventDetails = new JSONObject();
+            eventDetails.put("patientuuid", formData.getPatientUuid());
+            eventDetails.put("formDataUuid", formData.getUuid());
+
+            MuzimaGPSLocationService muzimaLocationService = application.getMuzimaGPSLocationService();
+
+            HashMap<String, Object> locationDataHashMap = muzimaLocationService.getLastKnownGPS();
+            if(locationDataHashMap.containsKey("gps_location")) {
+                MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location"));
+                eventDetails.put("location", muzimaGPSLocation.toJsonObject());
+            }
+
+            if (isEncounterForm()) {
+                if(isFormReload) {
+                    logEvent("RESUME_ENCOUNTER_FORM", eventDetails.toString());
+                } else {
+                    logEvent("OPEN_ENCOUNTER_FORM", eventDetails.toString());
+                }
+            } else {
+                if(isFormReload) {
+                    logEvent("RESUME_REGISTRATION_FORM", eventDetails.toString());
+                } else {
+                    logEvent("OPEN_REGISTRATION_FORM", eventDetails.toString());
+                }
+            }
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(),"Cannot create log",e);
+        }
+    }
+
+    private void logFormSaveEvent(String status){
+        try {
+            JSONObject eventDetails = new JSONObject();
+            eventDetails.put("patientuuid", formData.getPatientUuid());
+            eventDetails.put("formDataUuid", formData.getUuid());
+
+            switch(status) {
+                case STATUS_COMPLETE :
+                    if(isEncounterForm()){
+                        logEvent( "SAVE_COMPLETE_ENCOUNTER_FORM", eventDetails.toString());
+                    } else {
+                        logEvent( "SAVE_COMPLETE_REGISTRATION_FORM", eventDetails.toString());
+                    }
+                    break;
+                case STATUS_INCOMPLETE :
+                    if(isEncounterForm()){
+                        logEvent( "SAVE_DRAFT_ENCOUNTER_FORM", eventDetails.toString());
+                    } else {
+                        logEvent( "SAVE_DRAFT_REGISTRATION_FORM", eventDetails.toString());
+                    }
+                    break;
+            }
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(),"Cannot create log",e);
+        }
     }
 
     private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {

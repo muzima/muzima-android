@@ -5,20 +5,40 @@ import android.os.Build;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
 import com.muzima.api.model.User;
+import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public class MuzimaLoggerService {
     private static String pseudoDeviceId = null;
 
-    public static void log(final Context context, final String tag, final String userId, final String details){
+    public static String getGpsLocation(final android.content.Context context){
+        MuzimaGPSLocationService muzimaLocationService = ((MuzimaApplication)context.getApplicationContext()).getMuzimaGPSLocationService();
+
+        HashMap<String, Object> locationDataHashMap = muzimaLocationService.getLastKnownGPS();
+        if(locationDataHashMap.containsKey("gps_location")) {
+            MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location"));
+            try {
+                return muzimaGPSLocation.toJsonObject().toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return "{}";
+    }
+
+    public static void log(final Context context, final String tag, final String userId, final String gpsLocation, final String details){
         new AsyncTask<Void,Void,Void>(){
             protected Void doInBackground(Void... voids) {
                 String deviceId = getPseudoDeviceId();
-                System.out.println("Saving log: "+"tag="+tag+" ,userId="+userId+" , details="+details+" , deviceId="+deviceId);
-                MuzimaLogger.log(context, tag,userId, details, deviceId);
+                System.out.println("Saving log: "+"tag="+tag+" ,userId="+userId+" , gpsLocation= "+gpsLocation
+                        +"details="+details+" , deviceId="+deviceId);
+                MuzimaLogger.log(context, tag,userId, gpsLocation,details, deviceId);
                 return null;
             }
         }.execute();
@@ -30,7 +50,7 @@ public class MuzimaLoggerService {
         if(authenticatedUser != null) {
             String userId = StringUtils.isEmpty(authenticatedUser.getUsername()) ?
                     authenticatedUser.getSystemId():authenticatedUser.getUsername();
-            log(context, tag,userId, details);
+            log(context, tag,userId, getGpsLocation(applicationContext), details);
         } else {
             System.out.println("Could not save logsA");
         }

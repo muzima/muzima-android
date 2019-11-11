@@ -37,16 +37,16 @@ import com.muzima.service.CredentialsPreferenceService;
 import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.LocalePreferenceService;
+import com.muzima.service.MuzimaGPSLocationService;
+import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
-import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
-import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
+import org.json.JSONObject;
 
 import java.util.Locale;
 
@@ -56,6 +56,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 public class LoginActivity extends Activity {
     public static final String isFirstLaunch = "isFirstLaunch";
     public static final String sessionTimeOut = "SessionTimeOut";
+    MuzimaGPSLocationService gpsLocationService;
     private EditText serverUrlText;
     private EditText usernameText;
     private EditText passwordText;
@@ -151,6 +152,7 @@ public class LoginActivity extends Activity {
         super.onResume();
         themeUtils.onResume(this);
         setupStatusView();
+        initializeGpsDataCollection();
     }
 
     private void setupStatusView() {
@@ -271,6 +273,21 @@ public class LoginActivity extends Activity {
             }
         }
     }
+
+    private void initializeGpsDataCollection(){
+        GPSFeaturePreferenceService gpsFeaturePreferenceService = new GPSFeaturePreferenceService((MuzimaApplication) getApplication());
+        if(gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled()) {
+            gpsLocationService = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService();
+            if(!gpsLocationService.isGPSLocationPermissionsGranted()){
+                gpsLocationService.requestGPSLocationPermissions(this);
+            }
+
+            if(!gpsLocationService.isLocationServicesSwitchedOn()){
+                gpsLocationService.requestSwitchOnLocation(this);
+            }
+        }
+
+    }
     
     private class BackgroundAuthenticationTask extends AsyncTask<Credentials, Void, BackgroundAuthenticationTask.Result> {
 
@@ -292,6 +309,8 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(Result result) {
             if (result.status == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
+                MuzimaLoggerService.log(((MuzimaApplication)getApplicationContext()).getMuzimaContext(),"LOGIN_SUCCESS",
+                        result.credentials.getUserName(),MuzimaLoggerService.getGpsLocation(getApplicationContext()), "{}");
                 new CredentialsPreferenceService(getApplicationContext()).saveCredentials(result.credentials);
                 ((MuzimaApplication) getApplication()).restartTimer();
                 LocalePreferenceService localePreferenceService = ((MuzimaApplication) getApplication()).getLocalePreferenceService();
@@ -306,8 +325,8 @@ public class LoginActivity extends Activity {
 
                 startNextActivity();
             } else {
-                MuzimaLogger.log(((MuzimaApplication)getApplicationContext()).getMuzimaContext(),"LOGIN_FAILURE",
-                        "{\"userId\":\"" +result.credentials.getUserName()+"\"}");
+                MuzimaLoggerService.log(((MuzimaApplication)getApplicationContext()).getMuzimaContext(),"LOGIN_FAILURE",
+                        result.credentials.getUserName(),MuzimaLoggerService.getGpsLocation(getApplicationContext()),"{}");
                 Toast.makeText(getApplicationContext(), getErrorText(result), Toast.LENGTH_SHORT).show();
                 if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
                     flipFromLoginToAuthAnimator.cancel();

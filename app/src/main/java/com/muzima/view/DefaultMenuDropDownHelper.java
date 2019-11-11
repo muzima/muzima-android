@@ -17,14 +17,18 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
+import com.muzima.service.MuzimaLoggerService;
 import com.muzima.tasks.EncryptedSharedHealthRecordSyncTask;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.SettingsActivity;
 import com.muzima.view.reports.ProviderReportListActivity;
+
+import java.util.concurrent.TimeUnit;
 
 public class DefaultMenuDropDownHelper {
     public static final int DEFAULT_MENU = R.menu.dashboard;
@@ -70,6 +74,15 @@ public class DefaultMenuDropDownHelper {
                 activity.startActivity(intent);
                 return true;
             case R.id.action_logout:
+                MuzimaApplication muzimaApplication = ((MuzimaApplication)activity.getApplicationContext());
+                MuzimaLoggerService.log(muzimaApplication.getMuzimaContext(),
+                        "USER_LOGOUT",muzimaApplication.getAuthenticatedUserId(), MuzimaLoggerService.getGpsLocation(muzimaApplication), "{}");
+                try {
+                    TimeUnit.MILLISECONDS.sleep(100);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                }
+
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
                 String passwordKey = activity.getResources().getString(R.string.preference_password);
                 settings.edit()
