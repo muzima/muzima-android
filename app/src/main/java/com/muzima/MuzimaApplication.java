@@ -43,6 +43,7 @@ import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.LocalePreferenceService;
+import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
@@ -51,9 +52,6 @@ import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.forms.HTMLFormWebViewActivity;
 import com.muzima.view.preferences.MuzimaTimer;
-import org.acra.ReportingInteractionMode;
-import org.acra.annotation.ReportsCrashes;
-import org.acra.sender.HttpSender;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,23 +61,6 @@ import java.util.List;
 import io.fabric.sdk.android.Fabric;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
-
-@ReportsCrashes(
-
-        formKey = "",
-        reportType = HttpSender.Type.JSON,
-        httpMethod = HttpSender.Method.POST,
-        formUri = "http://acra.muzima.org/report",
-        formUriBasicAuthLogin = "muzima-reporter",
-        formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
-        mode = ReportingInteractionMode.DIALOG,
-        resDialogText = R.string.hint_crash_dialog,
-        resDialogIcon = android.R.drawable.ic_dialog_info,
-        resDialogTitle = R.string.title_crash_dialog,
-        resDialogCommentPrompt = R.string.hint_crash_dialog_comment_prompt,
-        resDialogOkToast = R.string.general_thank_you
-)
-
 
 public class MuzimaApplication extends MultiDexApplication {
 
@@ -95,6 +76,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private LocationController locationController;
     private ProviderController providerController;
     private MuzimaSyncService muzimaSyncService;
+    private MuzimaGPSLocationService muzimaGPSLocationService;
     private CohortPrefixPreferenceService prefixesPreferenceService;
     private LocalePreferenceService localePreferenceService;
     private SetupConfigurationController setupConfigurationController;
@@ -143,7 +125,6 @@ public class MuzimaApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {
-        //ACRA.init(this);
         Fabric.with(this, new Crashlytics());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
@@ -370,6 +351,13 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return patientReportController;
+    }
+
+    public MuzimaGPSLocationService getMuzimaGPSLocationService() {
+        if (muzimaGPSLocationService == null) {
+            muzimaGPSLocationService = new MuzimaGPSLocationService(this);
+        }
+        return muzimaGPSLocationService;
     }
 
     public void resetTimer(int timeOutInMin) {
