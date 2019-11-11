@@ -32,8 +32,8 @@ import java.util.List;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 /**
- * Responsible to display auto-complete menu for Concept and Cohort.
- * @param <T> T can be of Type Concept or Cohort. Objects displayed in the auto-complete menu.
+ * Responsible to display auto-complete menu for Models.
+ * @param <T> T can be of Type Concept, Cohort, Provider, Person e.t.c. Objects displayed in the auto-complete menu.
  */
 public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
 
@@ -126,7 +126,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
                         }
                         notifyDataSetChanged();
                     }
-                    filterComplete();
+                    filterComplete(optionList != null ? optionList.size() : 0);
                 }else{
                     clear();
                 }
@@ -168,5 +168,9 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
 
     protected abstract String getOptionName(T option);
 
-    protected abstract void filterComplete();
+    protected abstract void filterComplete(int count);
+
+    protected void clearPreviousResult(){
+        previousConstraint = null;
+    }
 }

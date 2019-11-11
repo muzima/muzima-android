@@ -45,5 +45,5 @@ public class AutoCompleteCohortPrefixAdapter extends AutoCompleteBaseAdapter<Coh
     }
 
     @Override
-    protected void filterComplete() {}
+    protected void filterComplete(int count) {}
 }

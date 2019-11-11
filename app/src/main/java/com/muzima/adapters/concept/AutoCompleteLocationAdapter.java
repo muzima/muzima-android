@@ -47,5 +47,5 @@ public class AutoCompleteLocationAdapter extends AutoCompleteBaseAdapter<Locatio
     }
 
     @Override
-    protected void filterComplete() {}
+    protected void filterComplete(int count) {}
 }

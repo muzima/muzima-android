@@ -28,10 +28,9 @@ public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Pe
     private boolean searchRemote;
     private RelationshipsListActivity relationshipsListActivity;
 
-    public AutoCompleteRelatedPersonAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteProviderTextView,
-                                            RelationshipsListActivity relationshipsListActivity) {
+    public AutoCompleteRelatedPersonAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteProviderTextView) {
         super(context, textViewResourceId, autoCompleteProviderTextView);
-        this.relationshipsListActivity = relationshipsListActivity;
+        this.relationshipsListActivity = (RelationshipsListActivity) context;
     }
 
     @Override
@@ -40,9 +39,15 @@ public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Pe
         PersonController personController = getMuzimaApplicationContext().getPersonController();
         List<Person> personList = new ArrayList<>();
         try {
-            personList = personController.searchPersonLocally(constraint.toString());
 
-            List<Patient> patientList = patientController.searchPatientLocally(constraint.toString(), null);
+            List<Patient> patientList = new ArrayList<>();
+            if (searchRemote) {
+                patientList = patientController.searchPatientOnServer(constraint.toString());
+            } else {
+                personList = personController.searchPersonLocally(constraint.toString());
+                patientList = patientController.searchPatientLocally(constraint.toString(), null);
+            }
+
             for (Patient patient : patientList) {
                 if (personController.getPersonByUuid(patient.getUuid()) == null)
                     personList.add(patient);
@@ -60,10 +65,20 @@ public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Pe
 
     public void setSearchRemote(boolean searchRemote) {
         this.searchRemote = searchRemote;
+        clearPreviousResult();
+    }
+
+    public boolean getSearchRemote() {
+        return this.searchRemote;
     }
 
     @Override
-    protected void filterComplete() {
-        relationshipsListActivity.onFilterComplete();
+    protected void filterComplete(int count) {
+        relationshipsListActivity.onFilterComplete(count);
+    }
+
+    @Override
+    protected void clearPreviousResult() {
+        super.clearPreviousResult();
     }
 }
