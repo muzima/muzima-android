@@ -48,7 +48,7 @@ import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.HTMLFormObservationCreator;
-import com.muzima.service.MuzimaLocationService;
+import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
@@ -554,21 +554,28 @@ class HTMLFormDataStore {
         Boolean isGpsFeatureEnabled = false;
         isGpsFeatureEnabled = new GPSFeaturePreferenceService(application).isGPSDataCollectionSettingEnabled();
         if (isGpsFeatureEnabled) {
+            MuzimaGPSLocationService muzimaLocationService = application.getMuzimaGPSLocationService();
 
-            if (isLocationPermissionsGranted()) {
-
-                if(isLocationServicesEnabled()){
-                    MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application);
-                    HashMap<String, String> locationDataHashMap = new HashMap<>(); //empty hashmap prevent NullPointerException
+            if (muzimaLocationService.isGPSLocationPermissionsGranted()) {
+                if(muzimaLocationService.isLocationServicesSwitchedOn()){
+                    HashMap<String, Object> locationDataHashMap;
                     try {
-                        locationDataHashMap = muzimaLocationService.getLastKnownGPS(jsonReturnType);
-                        gps_location_string = locationDataHashMap.get("gps_location_string");
+                        locationDataHashMap = muzimaLocationService.getLastKnownGPS();
+                        if(locationDataHashMap.containsKey("gps_location")) {
+                            if (jsonReturnType.equals("json-object")){
+                                gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonObject().toString();
+                            } else {
+                                gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonArray().toString();
+                            }
+                        } else {
+                            gps_location_string = (String)locationDataHashMap.get("gps_location_status");
+                        }
                         return gps_location_string;
                     } catch (Exception e) {
-                        Log.e(getClass().getSimpleName(), "Unable to process gps data, unknow Error Occurred" + e.getMessage());
+                        Log.e(getClass().getSimpleName(), "Unable to process gps data, unknow Error Occurred", e);
                         return gps_location_string;
                     }
-                }else {
+                } else {
                     return "Location service disabled by user";
                 }
 
@@ -579,30 +586,6 @@ class HTMLFormDataStore {
             return "GPS Feature is Disabled by User";
         }
 
-    }
-
-    public boolean isLocationPermissionsGranted() {
-        int permissionStatus = ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permissionStatus == PackageManager.PERMISSION_GRANTED)
-            return true;
-        else if (permissionStatus == PackageManager.PERMISSION_DENIED)
-            return false;
-        else
-            return false;
-    }
-
-    public Boolean isLocationServicesEnabled(){
-        LocationManager locationManager = (LocationManager)application.getSystemService(Context.LOCATION_SERVICE);
-
-        boolean isGPSProviderEnabled = false;
-        boolean isNetworkEnabled = false;
-
-        if(locationManager != null){
-            isGPSProviderEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        }
-
-        return (isGPSProviderEnabled || isNetworkEnabled);
     }
 
     public void showLocationDisabledDialog(){

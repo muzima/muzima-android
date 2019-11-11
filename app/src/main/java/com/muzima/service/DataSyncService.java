@@ -341,14 +341,17 @@ public class DataSyncService extends IntentService {
     private void prepareBroadcastMsgForSettingsDownload(Intent broadcastIntent, int[] result) {
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, result[0]);
         if (isSuccess(result)) {
-            String msg = getString(R.string.info_settings_downloaded,result[1]);
-            broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msg);
-            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, result[1]);
+            if(result[1]>0) {
+                String msg = getString(R.string.info_settings_downloaded, result[1]);
+                broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msg);
+                broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, result[1]);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+            }
         } else {
             String msg = getString(R.string.error_settings_download);
             broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msg);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
         }
-        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
     private boolean authenticationSuccessful(String[] credentials, Intent broadcastIntent) {
