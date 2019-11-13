@@ -11,6 +11,7 @@
 package com.muzima.controller;
 
 import android.util.Log;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
 import com.muzima.api.service.PersonService;
@@ -208,6 +209,35 @@ public class RelationshipController {
         }
     }
 
+    /**
+     * Delete a single relationship from the local repository
+     * @param relationship {@link Relationship} to delete
+     * @throws DeleteRelationshipException Relationship Deletion Exception
+     */
+    public void  deleteRelationship(Relationship relationship) throws DeleteRelationshipException {
+        try {
+            relationshipService.deleteRelationship(relationship);
+        } catch (IOException e) {
+            throw new DeleteRelationshipException(e);
+        }
+    }
+
+    /********************************************************************************************************
+     *                               METHODS FOR PERSONS
+     *********************************************************************************************************
+     *
+     * Delete a single person from the local repository
+     * @param person {@link Person} to delete
+     * @throws DeletePersonException Person Deletion Exception
+     */
+    public void  deletePerson(Person person) throws DeletePersonException {
+        try {
+            personService.deletePerson(person);
+        } catch (IOException e) {
+            throw new DeletePersonException(e);
+        }
+    }
+
     /********************************************************************************************************
      *                               METHODS FOR EXCEPTION HANDLING
      *********************************************************************************************************/
@@ -244,6 +274,12 @@ public class RelationshipController {
 
     public static class DeleteRelationshipException extends Throwable {
         DeleteRelationshipException(Throwable e) {
+            super(e);
+        }
+    }
+
+    public static class DeletePersonException extends Throwable {
+        DeletePersonException(Throwable e) {
             super(e);
         }
     }

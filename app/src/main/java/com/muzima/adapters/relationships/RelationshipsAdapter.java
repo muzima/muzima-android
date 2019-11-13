@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.RelationshipController;
@@ -118,6 +119,21 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             allRelationshipsForPatient.removeAll(relationshipsToDelete);
             try {
                 relationshipController.deleteRelationships(relationshipsToDelete);
+
+                //foreach relationship if related person is not synced and has no more relationship then, delete the person
+                for (Relationship relationship : relationshipsToDelete) {
+                    Person relatedPerson;
+                    if (StringUtils.equals(relationship.getPersonA().getUuid(), patientUuid)) {
+                        relatedPerson = relationship.getPersonB();
+                    } else {
+                        relatedPerson = relationship.getPersonA();
+                    }
+
+                    if (!relationship.getSynced() &&
+                            relationshipController.getRelationshipsForPerson(relatedPerson.getUuid()).size() < 1 ){
+                        relationshipController.deletePerson(relatedPerson);
+                    }
+                }
             } catch (RelationshipController.DeleteRelationshipException e) {
                 Log.e(getClass().getSimpleName(), "Error while deleting the relationships", e);
             }
