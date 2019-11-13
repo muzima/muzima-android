@@ -131,7 +131,11 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
 
                     if (!relationship.getSynced() &&
                             relationshipController.getRelationshipsForPerson(relatedPerson.getUuid()).size() < 1 ){
-                        relationshipController.deletePerson(relatedPerson);
+                        try {
+                            relationshipController.deletePerson(relatedPerson);
+                        } catch (RelationshipController.DeletePersonException e) {
+                            Log.e(getClass().getSimpleName(), "Error while deleting last person", e);
+                        }
                     }
                 }
             } catch (RelationshipController.DeleteRelationshipException e) {
