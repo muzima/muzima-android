@@ -40,7 +40,7 @@ public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Pe
         List<Person> personList = new ArrayList<>();
         try {
 
-            List<Patient> patientList = new ArrayList<>();
+            List<Patient> patientList;
             if (searchRemote) {
                 patientList = patientController.searchPatientOnServer(constraint.toString());
             } else {
