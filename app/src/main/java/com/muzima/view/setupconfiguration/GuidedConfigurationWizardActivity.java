@@ -70,6 +70,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         ListView setupLogsListView = findViewById(R.id.setup_logs_list);
         setupLogsListView.setAdapter(setupActionLogAdapter);
 
+        logEvent("VIEW_GUIDED_SETUP_METHOD");
         initiateSetupConfiguration();
     }
 

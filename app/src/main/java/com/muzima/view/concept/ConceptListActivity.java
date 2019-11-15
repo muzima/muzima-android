@@ -77,6 +77,7 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
                 }.execute();
             }
         });
+        logEvent("VIEW_CONCEPT_LIST");
     }
 
     @Override

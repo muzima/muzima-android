@@ -42,6 +42,7 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
         noDataTip = getActivity().getResources().getString(R.string.hint_cohort_sync);
 
         determineAndShowCohortUpdateAvailabilityAction();
+        logEvent("VIEW_SYNCED_COHORTS",null);
         super.onCreate(savedInstanceState);
     }
 

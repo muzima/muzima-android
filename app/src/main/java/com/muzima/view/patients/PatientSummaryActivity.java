@@ -113,7 +113,7 @@ public class PatientSummaryActivity extends BaseActivity {
         if (intentExtras != null) {
             patient = (Patient) intentExtras.getSerializable(PATIENT);
 
-            MuzimaLoggerService.log(this,"VIEW_CLIENT_SUMMARY","{\"patientuuid\":\""+patient.getUuid()+"\"}");
+            logEvent("VIEW_CLIENT_SUMMARY","{\"patientuuid\":\""+patient.getUuid()+"\"}");
 
             isRegisteredOnSHR = patient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name) == null;
 

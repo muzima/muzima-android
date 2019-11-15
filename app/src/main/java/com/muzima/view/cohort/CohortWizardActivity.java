@@ -63,6 +63,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         setContentView(R.layout.activity_cohort_wizard);
         progressDialog = new MuzimaProgressDialog(this);
         downloadMissingServerSettings();
+        logEvent("VIEW_COHORT_DOWNLOAD_WIZARD");
     }
 
     private void initializeAdapter(){

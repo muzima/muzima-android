@@ -308,9 +308,11 @@ public class LoginActivity extends Activity {
 
         @Override
         protected void onPostExecute(Result result) {
+            MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
             if (result.status == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
-                MuzimaLoggerService.log(((MuzimaApplication)getApplicationContext()).getMuzimaContext(),"LOGIN_SUCCESS",
-                        result.credentials.getUserName(),MuzimaLoggerService.getGpsLocation(getApplicationContext()), "{}");
+                MuzimaLoggerService.scheduleLogSync(getApplicationContext());
+                MuzimaLoggerService.log(muzimaApplication,"LOGIN_SUCCESS",
+                        result.credentials.getUserName(),MuzimaLoggerService.getGpsLocation(muzimaApplication), "{}");
                 new CredentialsPreferenceService(getApplicationContext()).saveCredentials(result.credentials);
                 ((MuzimaApplication) getApplication()).restartTimer();
                 LocalePreferenceService localePreferenceService = ((MuzimaApplication) getApplication()).getLocalePreferenceService();
@@ -325,8 +327,8 @@ public class LoginActivity extends Activity {
 
                 startNextActivity();
             } else {
-                MuzimaLoggerService.log(((MuzimaApplication)getApplicationContext()).getMuzimaContext(),"LOGIN_FAILURE",
-                        result.credentials.getUserName(),MuzimaLoggerService.getGpsLocation(getApplicationContext()),"{}");
+                MuzimaLoggerService.log((MuzimaApplication)getApplicationContext(),"LOGIN_FAILURE",
+                        result.credentials.getUserName(),MuzimaLoggerService.getGpsLocation((MuzimaApplication)getApplicationContext()),"{}");
                 Toast.makeText(getApplicationContext(), getErrorText(result), Toast.LENGTH_SHORT).show();
                 if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
                     flipFromLoginToAuthAnimator.cancel();

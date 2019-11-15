@@ -75,6 +75,7 @@ public class CustomProviderWizardActivity extends ProviderPreferenceActivity {
                 navigateToPreviousActivity();
             }
         });
+        logEvent("VIEW_PROVIDER_DOWNLOAD_WIZARD");
     }
 
     @Override

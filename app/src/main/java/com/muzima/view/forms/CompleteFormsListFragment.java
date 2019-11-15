@@ -64,6 +64,7 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionMode.setTitle(String.valueOf(((CompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size()));
         }
+        logEvent("VIEW_COMPLETED_FORMS");
 
         super.onCreate(savedInstanceState);
     }

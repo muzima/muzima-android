@@ -37,6 +37,7 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
 
         setupListView();
         setupNoDataView();
+        logEvent("VIEW_PROVIDER_REPORTS",null);
     }
 
     private void setupListView() {

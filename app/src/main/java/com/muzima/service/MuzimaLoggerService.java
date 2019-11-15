@@ -2,8 +2,11 @@ package com.muzima.service;
 
 import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
+import com.google.inject.Inject;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
+import com.muzima.api.dao.LogEntryDao;
 import com.muzima.api.model.User;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.util.MuzimaLogger;
@@ -11,14 +14,18 @@ import com.muzima.utils.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Timer;
 import java.util.UUID;
 
 public class MuzimaLoggerService {
     private static String pseudoDeviceId = null;
 
-    public static String getGpsLocation(final android.content.Context context){
-        MuzimaGPSLocationService muzimaLocationService = ((MuzimaApplication)context.getApplicationContext()).getMuzimaGPSLocationService();
+    private static Timer timer;
+
+    public static String getGpsLocation(final MuzimaApplication muzimaApplication){
+        MuzimaGPSLocationService muzimaLocationService = muzimaApplication.getMuzimaGPSLocationService();
 
         HashMap<String, Object> locationDataHashMap = muzimaLocationService.getLastKnownGPS();
         if(locationDataHashMap.containsKey("gps_location")) {
@@ -26,37 +33,58 @@ public class MuzimaLoggerService {
             try {
                 return muzimaGPSLocation.toJsonObject().toString();
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e("MuzimaLoggerService","Error while obtaining GPS location",e);
             }
         }
         return "{}";
     }
 
-    public static void log(final Context context, final String tag, final String userId, final String gpsLocation, final String details){
+    public static void log(final MuzimaApplication muzimaApplication, final String tag, final String userId, final String gpsLocation, final String details){
         new AsyncTask<Void,Void,Void>(){
             protected Void doInBackground(Void... voids) {
                 String deviceId = getPseudoDeviceId();
-                System.out.println("Saving log: "+"tag="+tag+" ,userId="+userId+" , gpsLocation= "+gpsLocation
-                        +"details="+details+" , deviceId="+deviceId);
-                MuzimaLogger.log(context, tag,userId, gpsLocation,details, deviceId);
+                MuzimaLogger.log(muzimaApplication.getMuzimaContext(), tag,userId, gpsLocation,details, deviceId);
                 return null;
             }
         }.execute();
     }
 
-    public static void log(final android.content.Context applicationContext, final String tag, final String details){
-        Context context = ((MuzimaApplication)applicationContext.getApplicationContext()).getMuzimaContext();
-        User authenticatedUser = ((MuzimaApplication)applicationContext.getApplicationContext()).getAuthenticatedUser();
+    public static void log(final MuzimaApplication muzimaApplication, final String tag, final String details){
+        User authenticatedUser = muzimaApplication.getAuthenticatedUser();
         if(authenticatedUser != null) {
-            String userId = StringUtils.isEmpty(authenticatedUser.getUsername()) ?
-                    authenticatedUser.getSystemId():authenticatedUser.getUsername();
-            log(context, tag,userId, getGpsLocation(applicationContext), details);
+            String userId = authenticatedUser.getUuid();
+            log(muzimaApplication, tag,userId, getGpsLocation(muzimaApplication), details);
         } else {
-            System.out.println("Could not save logsA");
+            Log.e("MuzimaLoggerService","Could not save logs");
         }
     }
 
+    public static void scheduleLogSync(final android.content.Context applicationContext){
+        if(timer == null) {
+            timer = new java.util.Timer();
+        }
 
+        timer.schedule(
+                new java.util.TimerTask() {
+
+                    @Override
+                    public void run() {
+                        try {
+                            Context context = ((MuzimaApplication)applicationContext.getApplicationContext()).getMuzimaContext();
+                            context.getLogEntryService().syncLogs();
+                        } catch (IOException e) {
+                            Log.e("LoggerService","Error syncing",e);
+                        }
+                    }
+                },10000,120000
+        );
+    }
+
+    public static void stopLogsSync(){
+        if(timer != null){
+            timer.cancel();
+        }
+    }
 
     private static String getPseudoDeviceId() {
         if(pseudoDeviceId == null){

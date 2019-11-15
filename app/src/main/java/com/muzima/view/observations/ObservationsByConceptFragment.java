@@ -44,6 +44,7 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
                     getActivity(), R.layout.item_observation_by_concept_list, conceptController, observationController, isShrData, patient);
         }
         noDataMsg = getActivity().getResources().getString(R.string.info_observation_in_progress);
+        logEvent("VIEW_CLIENT_OBS_BY_CONCEPT","{\"patientuuid\":\""+patient.getUuid()+"\"}");
         super.onCreate(savedInstanceState);
     }
 

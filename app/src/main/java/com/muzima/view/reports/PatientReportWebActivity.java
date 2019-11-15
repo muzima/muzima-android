@@ -45,6 +45,7 @@ public class PatientReportWebActivity extends BroadcastListenerActivity {
         } catch (PatientReportController.PatientReportFetchException e) {
             Log.e(getClass().getSimpleName(), "Unable to load a previously available report", e);
         }
+        logEvent("VIEW_PATIENT_REPORT");
     }
 
     private void showReport() {

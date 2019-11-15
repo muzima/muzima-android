@@ -53,6 +53,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
             actionMode.setTitle(String.valueOf(getSelectedForms().size()));
         }
 
+        logEvent("VIEW_DOWNLOADED_FORMS");
         super.onCreate(savedInstanceState);
     }
 

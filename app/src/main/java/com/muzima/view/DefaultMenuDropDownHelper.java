@@ -75,8 +75,8 @@ public class DefaultMenuDropDownHelper {
                 return true;
             case R.id.action_logout:
                 MuzimaApplication muzimaApplication = ((MuzimaApplication)activity.getApplicationContext());
-                MuzimaLoggerService.log(muzimaApplication.getMuzimaContext(),
-                        "USER_LOGOUT",muzimaApplication.getAuthenticatedUserId(), MuzimaLoggerService.getGpsLocation(muzimaApplication), "{}");
+                MuzimaLoggerService.stopLogsSync();
+                MuzimaLoggerService.log(muzimaApplication, "USER_LOGOUT", "{}");
                 try {
                     TimeUnit.MILLISECONDS.sleep(100);
                 } catch (InterruptedException ie) {

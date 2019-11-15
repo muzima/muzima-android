@@ -15,21 +15,26 @@ import android.view.View;
 import android.widget.AdapterView;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsByEncounterAdapter;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 
 public class ObservationByEncountersFragment extends ObservationsListFragment{
 
     private Boolean isShrEncounter = false;
+    private Patient patient;
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     }
 
-    public static ObservationByEncountersFragment newInstance(EncounterController encounterController, ObservationController observationController,Boolean isShrEncounter) {
+    public static ObservationByEncountersFragment newInstance(EncounterController encounterController,
+                                                              ObservationController observationController,
+                                                              Boolean isShrEncounter, Patient patient) {
         ObservationByEncountersFragment f = new ObservationByEncountersFragment();
         f.observationController = observationController;
         f.encounterController = encounterController;
         f.isShrEncounter = isShrEncounter;
+        f.patient = patient;
 
         return f;
     }
@@ -41,6 +46,7 @@ public class ObservationByEncountersFragment extends ObservationsListFragment{
                     getActivity(), R.layout.item_observation_by_encounter_list,encounterController, conceptController, observationController,isShrEncounter);
         }
         noDataMsg = getActivity().getResources().getString(R.string.info_observation_in_progress);
+        logEvent("VIEW_CLIENT_OBS_BY_DATE","{\"patientuuid\":\""+patient.getUuid()+"\"}");
         super.onCreate(savedInstanceState);
     }
 

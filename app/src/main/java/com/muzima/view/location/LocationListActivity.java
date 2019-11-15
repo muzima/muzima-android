@@ -50,6 +50,8 @@ public class LocationListActivity extends LocationPreferenceActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+
+        logEvent("VIEW_LOCATIONS");
         return true;
     }
 

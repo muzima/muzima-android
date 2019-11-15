@@ -113,6 +113,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         try {
             setupFormData();
             setupWebView();
+            logEvent("OPEN_XML_FORM");
         } catch (FormFetchException | FormController.FormDataSaveException | FormController.FormDataFetchException e) {
             Log.e(getClass().getSimpleName(), e.getMessage(), e);
             finish();

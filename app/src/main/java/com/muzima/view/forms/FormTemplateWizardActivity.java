@@ -95,6 +95,8 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         previousButton.setOnClickListener(previousButtonListener());
 
         initDrawer();
+
+        logEvent("VIEW_FORM_DOWNLOAD_WIZARD");
     }
 
     private View.OnClickListener previousButtonListener() {

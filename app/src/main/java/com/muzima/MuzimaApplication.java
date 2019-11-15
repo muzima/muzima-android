@@ -371,8 +371,8 @@ public class MuzimaApplication extends MultiDexApplication {
 
     public void logOut() {
         if(authenticatedUser != null) {
-            MuzimaLoggerService.log(getMuzimaContext(), "USER_LOGOUT",
-                    getAuthenticatedUserId(), MuzimaLoggerService.getGpsLocation(getApplicationContext()),"{}");
+            MuzimaLoggerService.stopLogsSync();
+            MuzimaLoggerService.log(this, "USER_LOGOUT","{}");
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException ie) {

@@ -36,6 +36,8 @@ public class GeneralNotificationsListFragment extends NotificationListFragment {
         }
         noDataMsg = getActivity().getResources().getString(R.string.info_notification_unavailable);
         noDataTip = getActivity().getResources().getString(R.string.hint_notification_sync);
+
+        logEvent("VIEW_GENERAL_NOTIFICATIONS");
         super.onCreate(savedInstanceState);
     }
 

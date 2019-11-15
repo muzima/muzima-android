@@ -64,6 +64,7 @@ public class MainActivity extends BroadcastListenerActivity {
         setContentView(mMainView);
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(),false);
         setupActionbar();
+        logEvent("VIEW_DASHBOARD", null);
     }
 
     @Override

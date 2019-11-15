@@ -603,7 +603,7 @@ class HTMLFormDataStore {
 
     @JavascriptInterface
     public void logEvent(String tag, String details){
-        MuzimaLoggerService.log(formWebViewActivity,tag,details);
+        MuzimaLoggerService.log((MuzimaApplication) formWebViewActivity.getApplicationContext(),tag,details);
     }
 
     private String injectTimeZoneToEncounterPayload(String jsonPayload) {

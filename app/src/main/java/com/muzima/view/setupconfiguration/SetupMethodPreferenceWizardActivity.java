@@ -105,6 +105,8 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         configsListView = findViewById(R.id.configs_wizard_list);
         configsListView.setOnItemClickListener(configsListViewSelectedListener(setupConfigurationAdapter));
         configsListView.setAdapter(setupConfigurationAdapter);
+
+        logEvent("VIEW_SETUP_METHODS");
     }
 
     @Override

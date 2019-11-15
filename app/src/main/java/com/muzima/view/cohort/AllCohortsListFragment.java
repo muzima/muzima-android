@@ -55,6 +55,7 @@ public class AllCohortsListFragment extends CohortListFragment {
         }
         noDataMsg = getActivity().getResources().getString(R.string.info_cohorts_unavailable);
         noDataTip = getActivity().getResources().getString(R.string.hint_cohort_list_download);
+        logEvent("VIEW_ALL_COHORTS",null);
         super.onCreate(savedInstanceState);
     }
 

@@ -43,6 +43,7 @@ public class IncompletePatientsFormsListFragment extends FormsListFragment imple
             actionMode.setTitle(String.valueOf(((PatientIncompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size()));
         }
 
+        logEvent("VIEW_INCOMPLETE_PATIENT_FORMS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
         super.onCreate(savedInstanceState);
     }
 

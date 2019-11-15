@@ -54,6 +54,7 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
             Log.e(getClass().getSimpleName(),"Could not obtain report template");
         }
         setupWebView();
+        logEvent("VIEW_PROVIDER_REPORT","{\"reporttemplateuuid\":\""+reportTemplate.getUuid()+"\"}");
     }
 
     @Override

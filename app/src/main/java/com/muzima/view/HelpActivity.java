@@ -123,6 +123,7 @@ public class HelpActivity extends BaseHelpActivity {
                 return false;
             }
         });
+        logEvent("VIEW_HELP");
     }
 
     /*

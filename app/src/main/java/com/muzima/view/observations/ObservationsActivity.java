@@ -52,7 +52,6 @@ public class ObservationsActivity extends BroadcastListenerActivity {
         initPager();
         initPagerIndicator();
         encounterDateTextView = (TextView) findViewById(R.id.date_value_textview);
-        MuzimaLoggerService.log(this,"VIEW_CLIENT_OBS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
     }
 
     @Override

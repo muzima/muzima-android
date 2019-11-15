@@ -621,7 +621,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             JSONObject eventDetails = new JSONObject();
             eventDetails.put("patientuuid", formData.getPatientUuid());
             eventDetails.put("formDataUuid", formData.getUuid());
-            MuzimaLoggerService.log(this,"FORM_CLOSED",eventDetails.toString());
+            logEvent("FORM_CLOSED",eventDetails.toString());
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(),"Cannot create log",e);
         }
