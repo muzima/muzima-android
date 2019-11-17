@@ -390,8 +390,6 @@ public class FormController {
         try {
             formData.setSaveTime(new Date());
             formService.saveFormData(formData);
-            System.out.println(formData.getJsonPayload());
-
         } catch (IOException e) {
             throw new FormDataSaveException(e);
         }
@@ -724,7 +722,6 @@ public class FormController {
     boolean uploadFormDataToServer(List<FormData> allFormData, boolean result) throws IOException {
         for (FormData formData : allFormData) {
             String rawPayload = formData.getJsonPayload();
-            System.out.println(rawPayload);
             // inject consultation.sourceUuid
             formData = injectUuidToPayload(formData);
             // replace media paths with base64 string
