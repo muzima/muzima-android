@@ -300,6 +300,8 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                 selectedPerson = (Person) parent.getItemAtPosition(position);
                 createPersonView.setVisibility(View.GONE);
                 saveButton.setVisibility(View.VISIBLE);
+
+                closeSoftKeyboard();
             }
         };
     }
@@ -353,6 +355,10 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         searchServerView.setVisibility(View.GONE);
 
         // and the keyboard too if open
+        closeSoftKeyboard();
+    }
+
+    private void closeSoftKeyboard() {
         try {
             InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
             if (imm != null)
