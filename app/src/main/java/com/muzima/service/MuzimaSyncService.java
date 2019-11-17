@@ -1176,6 +1176,7 @@ public class MuzimaSyncService {
             return null;
 
         int[] result = new int[3];
+        result[2] = patientUuids.size();
         try {
             Log.i(getClass().getSimpleName(), "Downloading relationships for "+ patientUuids.size() + " patients");
             for (String patientUuid : patientUuids) {
