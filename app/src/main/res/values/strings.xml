@@ -551,6 +551,7 @@
     <string name="info_provider_unavailable">No providers have been added yet</string>
     <string formatted="false" name="info_providers_downloaded">Downloaded %d providers</string>
     <string name="info_relationships_delete_success">%d Relationships deleted successfully</string>
+    <string formatted="false" name="info_relationships_download">Downloaded %d relationships for %d client(s).</string>
     <string formatted="false" name="info_relationships_download_progress">Downloaded relationships for client %d of %d.</string>
     <string formatted="false" name="info_relationships_not_downloaded_progress">Relationships for client %d of %d not
         downloaded.
