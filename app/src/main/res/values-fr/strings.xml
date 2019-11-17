@@ -773,4 +773,27 @@ Ces formulaires avant de télécharger une version plus récente. </string>
 
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
     <string name="select_a_relationship_form_text">Sélectionnez un formulaire</string>
+    <string name="confirm_create_patient_from_person">" Cela enregistrera cette personne en tant que client. Êtes-vous
+        sûr de vouloir faire ça?"
+    </string>
+    <string name="error_relationship_load">Les relations n\'ont pas pu être chargées</string>
+    <string name="error_relationship_type_load">Les types de relation n\'ont pas pu être chargés</string>
+    <string name="general_loading_relationships">Les relations continuent de se charger</string>
+    <string name="general_person_create">Créer une personne</string>
+    <string name="general_relationship">Relation</string>
+    <string name="general_relationships">Des relations</string>
+    <string name="hint_person_search">Recherche de personne par nom ou identifiant</string>
+    <string name="info_relationships_unavailable">Aucune relation disponible</string>
+    <string name="info_relationships_delete_success">%d relations supprimées avec succès</string>
+    <string name="info_relationships_download_progress">Relations téléchargées pour le client %d sur %d.</string>
+    <string name="info_relationships_not_downloaded_progress">Relations pour le client %d sur %d non téléchargées.</string>
+    <string name="relationship_create_success">Relation créée avec succès</string>
+    <string name="relationship_delete_fail">Impossible de supprimer la relation car elle est déjà enregistrée sur le
+        serveur. Contacter l\'administrateur
+    </string>
+    <string name="relationship_to_self_error">Le client ne peut pas se rapporter à lui-même</string>
+    <string name="warning_related_person_missing">Veuillez choisir une personne liée</string>
+    <string name="warning_relationship_exists">Le client a déjà une relation %s:%s avec %s</string>
+    <string name="warning_relationship_type_missing">Veuillez choisir un type de relation</string>
+    <string name="info_relationships_download">Téléchargé %d relations pour %d client (s).</string>
 </resources>
