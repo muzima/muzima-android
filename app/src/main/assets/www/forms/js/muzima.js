@@ -225,17 +225,44 @@ $(document).ready(function () {
         return false;
     };
 
-    var save = function (status, keepFormOpen) {
-        if(status=="complete"){
-           /*Start of populating data entry completion timestamp before serializing the form*/
-            if($('.dataEntryCompletionTimeStamp').length){
-                var date = new Date();
-                $('.dataEntryCompletionTimeStamp').val(date.getTime());
+    document.preSaveScheduledTasks = [];
+
+    var runPreSaveScheduledTasks = function(){
+        console.log("Resolving registered tasks");
+        var nextTask = null;
+        $.each(document.preSaveScheduledTasks, function(k,v){
+            if(nextTask != null){
+                new Promise(function(resolve, reject){
+                    nextTask();
+                    resolve();
+                }).then(function(){
+                    nextTask = v;
+                });
+            } else {
+                nextTask = v;
             }
-            /*Start of populating data entry completion timestamp*/
-        }
-        var jsonData = JSON.stringify($('form').serializeEncounterForm());
-        htmlDataStore.saveHTML(jsonData, status, keepFormOpen);
+        });
+        nextTask();
+    }
+
+    var save = function (status, keepFormOpen) {
+        new Promise(function(resolve, reject){
+            if(document.preSaveScheduledTasks.length > 0 && status == "complete"){
+                runPreSaveScheduledTasks();
+            }
+            resolve();
+        }).then(function(){
+            if(status=="complete"){
+                /*Start of populating data entry completion timestamp before serializing the form*/
+                if($('.dataEntryCompletionTimeStamp').length){
+                    var date = new Date();
+                    $('.dataEntryCompletionTimeStamp').val(date.getTime());
+                }
+                /*Start of populating data entry completion timestamp*/
+            }
+            var jsonData = JSON.stringify($('form').serializeEncounterForm());
+            htmlDataStore.saveHTML(jsonData, status, keepFormOpen);
+        });
     };
 
     var addValidationMessage = function () {
