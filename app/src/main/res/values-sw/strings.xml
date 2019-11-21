@@ -663,4 +663,7 @@
     <string name="youTube_player_error">Hitilafu ilitokea wakati wa kupakia video ya YouTube</string>
     <string name="relationship_to_self_error">Mteja hawawezi akahusika naye</string>
     <string name="info_relationships_download">Imepakua mahusiano %d kwa wateja %d.</string>
+    <string name="autocomplete_server_not_found">Seva haipatikani! \\nTafadhali unganisha kifaa chako na ujaribu tena AU
+        sajili mtu mpya
+    </string>
 </resources>

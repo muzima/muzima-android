@@ -14,6 +14,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -44,6 +45,7 @@ import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.PersonController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.model.relationship.RelationshipTypeWrap;
 import com.muzima.utils.Fonts;
@@ -75,6 +77,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private AutoCompleteTextView autoCompletePersonTextView;
     private AutoCompleteRelatedPersonAdapter autoCompleteRelatedPersonAdapterAdapter;
     private TextView textViewInfo;
+    private TextView textViewCreatePersonTip;
     private Spinner relationshipType;
     private Person selectedPerson;
     private Button saveButton;
@@ -96,6 +99,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         addRelationshipView = findViewById(R.id.add_relationship);
         autoCompletePersonTextView = findViewById(R.id.search_related_person);
         textViewInfo = findViewById(R.id.info);
+        textViewCreatePersonTip = findViewById(R.id.create_person_tip);
         relationshipType = findViewById(R.id.relationshipType);
         saveButton = findViewById(R.id.save);
         searchServerView = findViewById(R.id.search_server_layout);
@@ -297,11 +301,10 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+                closeSoftKeyboard();
                 selectedPerson = (Person) parent.getItemAtPosition(position);
                 createPersonView.setVisibility(View.GONE);
                 saveButton.setVisibility(View.VISIBLE);
-
-                closeSoftKeyboard();
             }
         };
     }
@@ -326,12 +329,14 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         };
     }
 
-    public void onFilterComplete(int count) {
+    public void onFilterComplete(int count, boolean connectivityFailed) {
 
         if (autoCompleteRelatedPersonAdapterAdapter.getSearchRemote()) {
             autoCompleteRelatedPersonAdapterAdapter.setSearchRemote(false);
             searchServerView.setVisibility(View.GONE);
             if (count < 1) {
+                if (connectivityFailed)
+                    textViewCreatePersonTip.setText(getString(R.string.autocomplete_server_not_found));
                 createPersonView.setVisibility(View.VISIBLE);
             }
         } else {
@@ -345,6 +350,9 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     }
 
     private void closeNewRelationshipWindow(){
+        // close the keyboard if open
+        closeSoftKeyboard();
+
         // Show the existing relationships
         lvwPatientRelationships.setVisibility(View.VISIBLE);
 
@@ -354,16 +362,20 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         createPersonView.setVisibility(View.GONE);
         searchServerView.setVisibility(View.GONE);
 
-        // and the keyboard too if open
-        closeSoftKeyboard();
     }
 
     private void closeSoftKeyboard() {
         try {
             InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-            if (imm != null)
-                imm.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(), 0);
+            if (imm != null) {
+                View v = getCurrentFocus();
+                if (v == null)
+                    v = new View(this);
+                imm.hideSoftInputFromWindow(Objects.requireNonNull(v).getWindowToken(), 0);
+            }
         } catch (Exception e) {
+            e.printStackTrace();
+
             Log.e(this.getClass().getSimpleName(), "Closing a closed keyboard");
         }
     }
@@ -454,6 +466,35 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            // create person form
+
+            if (resultCode == 0 && data != null) {
+                if (data.hasExtra(PatientSummaryActivity.PATIENT)) {
+                    Patient patient = (Patient) data.getSerializableExtra(PatientSummaryActivity.PATIENT);
+                    PersonController personController = ((MuzimaApplication) getApplicationContext()).getPersonController();
+
+                    try {
+                        closeSoftKeyboard();
+                        Person p = personController.getPersonByUuid(patient.getUuid());
+                        autoCompletePersonTextView.setText(p.getDisplayName(), false);
+                        createPersonView.setVisibility(View.GONE);
+                        selectedPerson = p;
+                        saveButton.setVisibility(View.VISIBLE);
+                    } catch (PersonController.PersonLoadException e) {
+                        e.printStackTrace();
+                        closeNewRelationshipWindow();
+                    }
+                }
+            } else {
+                closeNewRelationshipWindow();
+            }
+        }
+    }
+
     public void cancelRelationshipAdd(View view) {
         closeNewRelationshipWindow();
     }
@@ -466,8 +507,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
 
     public void createPerson(View view) {
         Intent intent = new Intent(this, RelationshipFormsActivity.class);
-        intent.putExtra(RelationshipFormsActivity.PATIENT, patient);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     // Methods to delete relationships
@@ -500,7 +540,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             patientRelationshipsAdapter.reloadData();
             Toasty.info(getApplicationContext(), getString(R.string.info_relationships_delete_success, numberOfDeletedRelationships), Toast.LENGTH_SHORT, true).show();
         }
-        
+
         private void onCompleteOfFormDataDelete(List<Relationship> selectedRelationships) {
             FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
 

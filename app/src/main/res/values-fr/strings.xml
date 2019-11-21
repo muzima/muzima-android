@@ -796,4 +796,7 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_relationship_exists">Le client a déjà une relation %s:%s avec %s</string>
     <string name="warning_relationship_type_missing">Veuillez choisir un type de relation</string>
     <string name="info_relationships_download">Téléchargé %d relations pour %d client (s).</string>
+    <string name="autocomplete_server_not_found">Le serveur est inaccessible! \\nConnectez votre appareil et essayez à
+        nouveau OU créez une nouvelle personne
+    </string>
 </resources>
