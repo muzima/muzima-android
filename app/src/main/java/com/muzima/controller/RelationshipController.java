@@ -19,6 +19,7 @@ import com.muzima.api.service.RelationshipService;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RelationshipController {
@@ -152,10 +153,20 @@ public class RelationshipController {
      * @param relationships list of {@link Relationship}
      * @throws SaveRelationshipException Relationship Save Exception
      */
-    public void saveRelationships(List<Relationship> relationships) throws SaveRelationshipException {
+    public void saveRelationships(List<Relationship> relationships, String personUuid) throws SaveRelationshipException, SearchRelationshipException {
         try {
+            List<Relationship> syncedRelationshipsForPatient = relationshipService.getRelationshipsForPerson(personUuid);
+            if (syncedRelationshipsForPatient.size() > 0) {
+                List<Relationship> syncedRelationshipsForPatientToDelete = new ArrayList<>();
+                for (Relationship relationship : syncedRelationshipsForPatient) {
+                    if (relationship.getSynced())
+                        syncedRelationshipsForPatientToDelete.add(relationship);
+                }
+                relationshipService.deleteRelationships(syncedRelationshipsForPatientToDelete);
+            }
+
             for (Relationship relationship : relationships) {
-                if (relationshipService.getRelationship(relationship) != null)
+                if (relationshipService.getRelationshipByUuid(relationship.getUuid()) != null)
                     relationshipService.deleteRelationship(relationship);
             }
             relationshipService.saveRelationships(relationships);
@@ -164,8 +175,6 @@ public class RelationshipController {
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while saving the relationships list", e);
             throw new SaveRelationshipException(e);
-        } catch (ParseException e) {
-            Log.e(getClass().getSimpleName(), "Error while saving the relationships list", e);
         }
     }
 

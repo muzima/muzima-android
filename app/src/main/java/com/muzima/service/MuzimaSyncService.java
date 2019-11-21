@@ -1190,13 +1190,13 @@ public class MuzimaSyncService {
                 Log.i(getClass().getSimpleName(), "Relationships download successful with " + patientRelationships.size() + " relationships");
                 result[1] += patientRelationships.size();
 
-                relationshipController.saveRelationships(patientRelationships);
+                relationshipController.saveRelationships(patientRelationships, patientUuid);
             }
             result[0] = SUCCESS;
         } catch (RelationshipController.RetrieveRelationshipException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading relationships.", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
-        } catch (RelationshipController.SaveRelationshipException e) {
+        } catch (RelationshipController.SaveRelationshipException | RelationshipController.SearchRelationshipException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while saving relationships.", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
         }
