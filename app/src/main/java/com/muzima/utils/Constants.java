@@ -95,6 +95,7 @@ public class Constants {
         public static final int SYNC_COHORTS_AND_ALL_PATIENTS_FULL_DATA = 15;
         public static final int CLEAN_UP_PROCESSED_TEMPORARY_FORM_DATA = 16;
         public static final int SYNC_SETTINGS = 17;
+        public static final int SYNC_RELATIONSHIPS = 18;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;
