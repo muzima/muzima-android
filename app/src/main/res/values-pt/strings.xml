@@ -858,4 +858,7 @@
     <string name="warning_related_person_missing">Por favor, escolha uma pessoa relacionada</string>
     <string name="warning_relationship_exists">O cliente já possui relacionamento %s:%s com %s</string>
     <string name="info_relationships_download">Foram baixados %d relacionamentos para %d cliente (s).</string>
+    <string name="autocomplete_server_not_found">Servidor inacessível! \\nConecte seu dispositivo e tente novamente OU
+        crie uma nova pessoa
+    </string>
 </resources>

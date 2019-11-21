@@ -9,6 +9,7 @@
  */
 package com.muzima.view.relationship;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -18,7 +19,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.relationships.RelationshipFormsAdapter;
@@ -28,13 +28,13 @@ import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.forms.FormViewIntent;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.UUID;
 
 public class RelationshipFormsActivity extends AppCompatActivity {
     private RelationshipFormsAdapter relationshipFormsAdapter;
     private final ThemeUtils themeUtils = new ThemeUtils();
-    public static final String PATIENT = "patient";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +96,10 @@ public class RelationshipFormsActivity extends AppCompatActivity {
         String uuid = String.valueOf(UUID.randomUUID());
         patient.setUuid(uuid);
         startActivity(new FormViewIntent(this, form, patient , true));
+
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(PatientSummaryActivity.PATIENT, patient);
+        setResult(0, resultIntent);
         finish();
     }
 

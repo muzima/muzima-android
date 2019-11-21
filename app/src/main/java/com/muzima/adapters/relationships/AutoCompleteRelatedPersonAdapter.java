@@ -18,6 +18,9 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
+import com.muzima.domain.Credentials;
+import com.muzima.utils.Constants;
+import com.muzima.utils.NetworkUtils;
 import com.muzima.view.relationship.RelationshipsListActivity;
 
 import java.util.ArrayList;
@@ -26,6 +29,7 @@ import java.util.List;
 public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Person> {
 
     private boolean searchRemote;
+    private boolean connectivityFailed = false;
     private RelationshipsListActivity relationshipsListActivity;
 
     public AutoCompleteRelatedPersonAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteProviderTextView) {
@@ -40,9 +44,18 @@ public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Pe
         List<Person> personList = new ArrayList<>();
         try {
 
-            List<Patient> patientList;
+            List<Patient> patientList = new ArrayList<>();
             if (searchRemote) {
-                patientList = patientController.searchPatientOnServer(constraint.toString());
+                Credentials credentials = new Credentials(getContext());
+                Constants.SERVER_CONNECTIVITY_STATUS serverStatus = NetworkUtils.getServerStatus(getMuzimaApplicationContext(), credentials.getServerUrl());
+
+                if(serverStatus == Constants.SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE)
+                    patientList = patientController.searchPatientOnServer(constraint.toString());
+                else {
+                    System.out.println("Adapter Narudi");
+                    connectivityFailed = true;
+                }
+
             } else {
                 personList = personController.searchPersonLocally(constraint.toString());
                 patientList = patientController.searchPatientLocally(constraint.toString(), null);
@@ -74,7 +87,7 @@ public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Pe
 
     @Override
     protected void filterComplete(int count) {
-        relationshipsListActivity.onFilterComplete(count);
+        relationshipsListActivity.onFilterComplete(count, connectivityFailed);
     }
 
     @Override
