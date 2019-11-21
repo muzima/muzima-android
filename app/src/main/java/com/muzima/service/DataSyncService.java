@@ -19,17 +19,11 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.model.APIName;
-import com.muzima.api.model.LastSyncTime;
-import com.muzima.api.model.Patient;
-import com.muzima.api.service.LastSyncTimeService;
-import com.muzima.controller.RelationshipController;
 import com.muzima.api.model.FormData;
 import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
@@ -326,13 +320,10 @@ public class DataSyncService extends IntentService {
 
     private void broadCastMessageForRelationshipsDownload(Intent broadcastIntent, int[] resultForRelationships) {
         if (resultForRelationships != null) {
-            broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, resultForRelationships[0]);
-            if (isSuccess(resultForRelationships) && resultForRelationships.length > 1) {
-                String msg = getString(R.string.info_relationships_download,resultForRelationships[1] , resultForRelationships[2]);
-                updateNotificationMsg(msg);
-                broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, resultForRelationships[1]);
-                broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForRelationships[2]);
-            }
+            String msgForRelationships = getString(R.string.info_relationships_download,resultForRelationships[1] , resultForRelationships[2]);
+            broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msgForRelationships);
+            prepareBroadcastMsg(broadcastIntent, resultForRelationships, msgForRelationships);
+            broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_RELATIONSHIPS);
             LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
         }
     }
