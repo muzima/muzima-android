@@ -666,4 +666,5 @@
     <string name="autocomplete_server_not_found">Seva haipatikani! \\nTafadhali unganisha kifaa chako na ujaribu tena AU
         sajili mtu mpya
     </string>
+    <string name="general_searching">Tunatafuta…</string>
 </resources>

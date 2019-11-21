@@ -142,6 +142,14 @@ public class RelationshipController {
     public void saveRelationship(Relationship relationship) throws SaveRelationshipException {
         try {
             relationshipService.saveRelationship(relationship);
+
+            // if person is new, save this person
+            if (personService.getPersonByUuid(relationship.getPersonA().getUuid()) == null)
+                personService.savePerson(relationship.getPersonA());
+
+            if (personService.getPersonByUuid(relationship.getPersonB().getUuid()) == null)
+                personService.savePerson(relationship.getPersonB());
+
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while saving the relationship", e);
             throw new SaveRelationshipException(e);

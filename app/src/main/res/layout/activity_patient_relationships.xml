@@ -136,6 +136,29 @@
                 </LinearLayout>
 
                 <LinearLayout
+                        android:id="@+id/progress_bar_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:addStatesFromChildren="true"
+                        android:visibility="gone">
+
+                    <ProgressBar
+                            android:id="@+id/prbProgress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            style="@android:style/Widget.Holo.ProgressBar.Large"/>
+                    <TextView
+                            android:id="@+id/progress_msg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/general_searching"
+                            android:textSize="16sp"/>
+                </LinearLayout>
+
+                <LinearLayout
                         android:id="@+id/create_person_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
