@@ -53,8 +53,7 @@
                 android:id="@+id/tags_scroller"
                 android:layout_width="0dp"
                 android:layout_weight=".3"
-                android:layout_height="@dimen/tag_selected_height"
-                android:layout_below="@+id/form_description">
+                android:layout_height="wrap_content">
                 <LinearLayout
                     android:id="@+id/menu_tags"
                     style="@style/ListDescription"
