@@ -74,6 +74,7 @@ public class RegistrationFormsActivity extends BaseActivity {
         String uuid = String.valueOf(UUID.randomUUID());
         patient.setUuid(uuid);
         startActivity(new FormViewIntent(this, form, patient));
+        finish();
     }
 
     private AvailableForms getRegistrationForms(FormController formController) {
