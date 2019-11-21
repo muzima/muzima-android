@@ -799,4 +799,5 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="autocomplete_server_not_found">Le serveur est inaccessible! \\nConnectez votre appareil et essayez à
         nouveau OU créez une nouvelle personne
     </string>
+    <string name="general_searching">Recherche…</string>
 </resources>

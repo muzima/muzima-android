@@ -72,6 +72,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private View searchServerView;
     private View createPersonView;
     private View addRelationshipView;
+    private View progressBarContainer;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private ListView lvwPatientRelationships;
     private AutoCompleteTextView autoCompletePersonTextView;
@@ -81,14 +82,13 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private Spinner relationshipType;
     private Person selectedPerson;
     private Button saveButton;
-
     private RelationshipController relationshipController;
     private PatientController patientController;
-
     private Person selectedRelatedPerson;
-
     private boolean actionModeActive = false;
     private ActionMode actionMode;
+
+    private boolean isSearching = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +104,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         saveButton = findViewById(R.id.save);
         searchServerView = findViewById(R.id.search_server_layout);
         createPersonView = findViewById(R.id.create_person_layout);
+        progressBarContainer = findViewById(R.id.progress_bar_container);
 
         relationshipController = ((MuzimaApplication) getApplicationContext()).getRelationshipController();
         patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
@@ -330,6 +331,8 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     }
 
     public void onFilterComplete(int count, boolean connectivityFailed) {
+        progressBarContainer.setVisibility(View.GONE);
+        isSearching = false;
 
         if (autoCompleteRelatedPersonAdapterAdapter.getSearchRemote()) {
             autoCompleteRelatedPersonAdapterAdapter.setSearchRemote(false);
@@ -337,6 +340,9 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             if (count < 1) {
                 if (connectivityFailed)
                     textViewCreatePersonTip.setText(getString(R.string.autocomplete_server_not_found));
+                else
+                    textViewCreatePersonTip.setText(getString(R.string.info_client_remote_search_not_found));
+
                 createPersonView.setVisibility(View.VISIBLE);
             }
         } else {
@@ -361,7 +367,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         addRelationshipView.setVisibility(View.GONE);
         createPersonView.setVisibility(View.GONE);
         searchServerView.setVisibility(View.GONE);
-
+        progressBarContainer.setVisibility(View.GONE);
     }
 
     private void closeSoftKeyboard() {
@@ -374,8 +380,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                 imm.hideSoftInputFromWindow(Objects.requireNonNull(v).getWindowToken(), 0);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-
             Log.e(this.getClass().getSimpleName(), "Closing a closed keyboard");
         }
     }
@@ -500,6 +504,13 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     }
 
     public void searchServer(View view) {
+        if (isSearching) return;
+
+        closeSoftKeyboard();
+        searchServerView.setVisibility(View.GONE);
+        progressBarContainer.setVisibility(View.VISIBLE);
+
+        isSearching = true;
         autoCompleteRelatedPersonAdapterAdapter.setSearchRemote(true);
         String tmpText = autoCompletePersonTextView.getText().toString();
         autoCompletePersonTextView.setText(tmpText);

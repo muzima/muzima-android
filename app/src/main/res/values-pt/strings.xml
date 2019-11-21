@@ -861,4 +861,5 @@
     <string name="autocomplete_server_not_found">Servidor inacessível! \\nConecte seu dispositivo e tente novamente OU
         crie uma nova pessoa
     </string>
+    <string name="general_searching">Procurando…</string>
 </resources>

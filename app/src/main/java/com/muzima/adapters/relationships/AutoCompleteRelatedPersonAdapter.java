@@ -51,11 +51,8 @@ public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Pe
 
                 if(serverStatus == Constants.SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE)
                     patientList = patientController.searchPatientOnServer(constraint.toString());
-                else {
-                    System.out.println("Adapter Narudi");
+                else
                     connectivityFailed = true;
-                }
-
             } else {
                 personList = personController.searchPersonLocally(constraint.toString());
                 patientList = patientController.searchPatientLocally(constraint.toString(), null);
