@@ -396,6 +396,7 @@ public class MuzimaSyncServiceTest {
         verify(cohortController).addCohortMembers(cohortDataList.get(1).getCohortMembers());
         verify(cohortController).downloadRemovedCohortData(cohortUuids);
         verify(cohortController).markAsUpToDate(cohortUuids);
+        verify(cohortController).setSyncStatus(cohortUuids);
         verify(patientController).replacePatients(cohortDataList.get(0).getPatients());
         verify(patientController).replacePatients(cohortDataList.get(1).getPatients());
         verifyNoMoreInteractions(cohortController);
