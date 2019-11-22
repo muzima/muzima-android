@@ -30,13 +30,40 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
             android:layout_marginTop="3dp"
+            android:weightSum="100"
             android:orientation="vertical">
 
-        <CheckedTextView
-                android:id="@+id/name"
-                android:background="?attr/listMultiSelectorBlue"
-                style="@style/ListHeader"/>
+        <com.muzima.view.CheckedLinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginEnd="7dp"
+            android:orientation="horizontal">
 
+            <CheckedTextView
+                android:id="@+id/name"
+                style="@style/ListHeader"
+                android:layout_width="0dp"
+                android:layout_weight=".7"
+                android:layout_height="wrap_content"
+                android:background="?attr/listMultiSelectorBlue"/>
+
+            <com.muzima.view.CheckedRelativeLayout
+                android:id="@+id/tags_scroller"
+                android:layout_width="0dp"
+                android:layout_weight=".3"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/menu_tags"
+                    style="@style/ListDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+                </LinearLayout>
+            </com.muzima.view.CheckedRelativeLayout>
+        </com.muzima.view.CheckedLinearLayout>
         <com.muzima.view.CheckedLinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

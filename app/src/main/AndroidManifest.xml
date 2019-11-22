@@ -32,7 +32,8 @@
             android:icon="@drawable/ic_launcher_logo"
             android:label="@string/app_name"
             android:largeHeap="true"
-            android:theme="@style/AppTheme.Dark">
+            android:theme="@style/AppTheme.Dark"
+            tools:ignore="GoogleAppIndexingWarning">
         <meta-data
                 android:name="android.app.default_searchable"
                 android:value="com.muzima.view.SearchResultsActivity"/>
@@ -196,7 +197,8 @@
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_form"
                 android:parentActivityName=".view.forms.FormsActivity"
-                android:windowSoftInputMode="adjustResize">
+                android:windowSoftInputMode="adjustResize"
+                android:theme="@style/DialogNoTitleBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.forms.FormsActivity"/>
@@ -316,7 +318,7 @@
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
         <activity
-                android:name=".view.relationship.RelationshipsList"
+                android:name=".view.relationship.RelationshipsListActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_relationships"
                 android:parentActivityName=".view.patients.PatientSummaryActivity"
@@ -325,6 +327,7 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
+
         <activity
                 android:name=".view.notifications.NotificationsListActivity"
                 android:configChanges="orientation|screenSize"
@@ -408,12 +411,6 @@
                 android:name=".view.progressdialog.ProgressDialogUpdateIntentService"
                 android:exported="false"/>
 
-        <activity
-                android:name="org.acra.CrashReportDialog"
-                android:excludeFromRecents="true"
-                android:finishOnTaskLaunch="true"
-                android:launchMode="singleInstance"
-                android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".view.SHRObservationsDataActivity"/>
         <activity android:name=".view.notifications.ConversationActivity" />
 
@@ -443,5 +440,12 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.HelpActivity"/>
         </activity>
+        <activity
+            android:name=".view.relationship.RelationshipFormsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/select_a_relationship_form_text"
+            android:theme="@style/DialogNoTitleBar"
+            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:noHistory="true"/>
     </application>
 </manifest>

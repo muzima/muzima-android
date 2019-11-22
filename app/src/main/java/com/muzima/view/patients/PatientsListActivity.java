@@ -21,6 +21,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,15 +41,18 @@ import android.support.v7.widget.SearchView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.patients.PatientTagsListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.Tag;
 import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.ThemeUtils;
@@ -76,9 +82,10 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_REA
 import com.muzima.api.model.SmartCardRecord;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
-
 
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
         ListAdapter.BackgroundListQueryTaskListener {
@@ -124,12 +131,16 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private final ThemeUtils themeUtils = new ThemeUtils();
     private boolean isSHREnabled;
 
+    private DrawerLayout mainLayout;
+    private PatientTagsListAdapter tagsListAdapter;
+    private TagPreferenceService tagPreferenceService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_list);
+        mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_patient_list, null);
+        setContentView(mainLayout);
         Bundle intentExtras = getIntent().getExtras();
 
         muzimaApplication = (MuzimaApplication) getApplicationContext();
@@ -138,9 +149,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             quickSearch = intentExtras.getBoolean(QUICK_SEARCH);
             cohortId = intentExtras.getString(COHORT_ID);
             String title = intentExtras.getString(COHORT_NAME);
-            if (title != null) {
+            if (title != null)
                 setTitle(title);
-            }
         }
 
         progressBarContainer = findViewById(R.id.progressbarContainer);
@@ -176,15 +186,15 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         muzimaSyncService = muzimaApplication.getMuzimaSyncService();
         patientController = muzimaApplication.getPatientController();
-        CohortController cohortController = muzimaApplication.getCohortController();
         serverSearchProgressDialog = new ProgressDialog(this);
 
         serverSearchProgressDialog.setCancelable(false);
         serverSearchProgressDialog.setIndeterminate(true);
 
         smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
+        tagPreferenceService = new TagPreferenceService(this);
+        initDrawer();
     }
-
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -219,7 +229,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         MenuItem shrCardItem = menu.findItem(R.id.scan_SHR_card);
         if(isSHRSettingEnabled()) {
             shrCardItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS);
-        }else{
+        } else {
             shrCardItem.setVisible(false);
         }
         searchMenuItem = menu.findItem(R.id.search);
@@ -239,7 +249,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 patientAdapter.search(s.trim());
                 return true;
             }
-
         });
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -272,7 +281,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     }, 500);
                     searchMenuItem.setVisible(false);
                 }
-
             }
         });
 
@@ -285,19 +293,17 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void activateRemoteAfterThreeCharacterEntered(String searchString) {
-        if (searchString.trim().length() < 3) {
+        if (searchString.trim().length() < 3)
             searchServerLayout.setVisibility(View.INVISIBLE);
-        } else {
+        else
             searchServerLayout.setVisibility(View.VISIBLE);
-        }
     }
 
     // Confirmation dialog for confirming if the patient have an existing ID
     private void callConfirmationDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(PatientsListActivity.this);
-        builder
-                .setCancelable(true)
+        builder.setCancelable(true)
                 .setIcon(ThemeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
                 .setMessage(getResources().getString(R.string.confirm_patient_id_exists))
@@ -355,6 +361,14 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             case R.id.scan_SHR_card:
                 readSmartCard();
                 return true;
+
+            case R.id.menu_tags:
+                if (mainLayout.isDrawerOpen(GravityCompat.END)) {
+                    mainLayout.closeDrawer(GravityCompat.END);
+                } else {
+                    mainLayout.openDrawer(GravityCompat.END);
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -370,6 +384,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         }
         if (!intentBarcodeResults)
             patientAdapter.reloadData();
+        tagsListAdapter.reloadData();
     }
 
     private void prepareLocalSearchNotifyDialog(Patient patient) {
@@ -398,7 +413,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 //todo integrate progress dialog.
                 serverSearchProgressDialog.setMessage("Searching server...");
                 serverSearchProgressDialog.show();
-
             }
         });
 
@@ -408,7 +422,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 localSearchResultNotifyAlertDialog.cancel();
                 localSearchResultNotifyAlertDialog.dismiss();
                 registerSHRPatientLocallyDialog.show();
-
             }
         });
     }
@@ -456,8 +469,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private void setupListView(String cohortId) {
         listView = findViewById(R.id.list);
-        patientAdapter = new PatientsLocalSearchAdapter(this,
-                R.layout.layout_list,
+        patientAdapter = new PatientsLocalSearchAdapter(this, R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), cohortId);
         patientAdapter.setBackgroundListQueryTaskListener(this);
         listView.setAdapter(patientAdapter);
@@ -511,7 +523,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
         Log.e(getClass().getSimpleName(), "Cancelled...");
-
     }
 
     private void invokeBarcodeScan() {
@@ -545,14 +556,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                                 public void onClick(View v) {
                                     readSmartCard();
                                 }
-                            })
-                            .show();
+                            }).show();
                 }
                 break;
             default:
                 break;
         }
-
     }
 
     private void processSmartCardReadResult(int requestCode, int resultCode, Intent dataIntent) {
@@ -571,7 +580,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         if (cardReadIntentResult.isSuccessResult()) {
             smartCardRecord = cardReadIntentResult.getSmartCardRecord();
             if (smartCardRecord != null) {
-                boolean intentSHRResults = false;
                 String SHRPayload = smartCardRecord.getPlainPayload();
                 if(!SHRPayload.equals("") && !SHRPayload.isEmpty()) {
                     try {
@@ -584,16 +592,14 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                             if (cardNumberIdentifier == null) {
                                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
                                 alertBuilder.setMessage("Could not find Card Serial number in shared health record")
-                                        .setCancelable(true)
-                                        .show();
+                                        .setCancelable(true).show();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
                                 prepareRegisterLocallyDialog();
                                 prepareLocalSearchNotifyDialog(SHRPatient);
                                 executeLocalPatientSearchInBackgroundTask();
                             }
-                        }
-                        else {
+                        } else {
                             Toast.makeText(getApplicationContext(), "This card seems to be blank", Toast.LENGTH_LONG).show();
                         }
                     } catch (KenyaEmrShrMapper.ShrParseException e) {
@@ -608,8 +614,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                         public void onClick(View v) {
                             readSmartCard();
                         }
-                    })
-                    .show();
+                    }).show();
         }
     }
 
@@ -641,8 +646,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     class BackgroundPatientDownloadTask extends AsyncTask<Void, Void, Void> {
 
-        Patient downloadedPatient = null;
-
         @Override
         protected Void doInBackground(Void... voids) {
             String[] uuids = {SHRToMuzimaMatchingPatient.getUuid()};
@@ -659,8 +662,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     class BackgroundPatientServerSearchQueryTask extends AsyncTask<Void, Void, Patient> {
-
-        Patient foundPatient = null;
 
         @Override
         protected void onPreExecute() {
@@ -702,7 +703,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         }
     }
 
-
     private class BackgroundPatientLocalSearchQueryTask extends AsyncTask<Void, Void, Patient> {
 
         Patient foundPatient = null;
@@ -740,12 +740,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             SHRToMuzimaMatchingPatient = foundPatient;
             if (SHRToMuzimaMatchingPatient == null) {
                 localSearchResultNotifyAlertDialog.show();
-
-                // executePatientServerSearchInBackgroundQueryTask();
             }
 
-            if (SHRToMuzimaMatchingPatient == null) {
-            } else {
+            if (SHRToMuzimaMatchingPatient != null) {
                 Toast.makeText(getApplicationContext(), "Found Patient SHR Record " + SHRPatient.getGivenName(), Toast.LENGTH_LONG);
                 try {
                     try {
@@ -772,7 +769,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 startActivity(intent);
             }
         }
-
     }
 
     private class RegisterPatientBackgroundTask extends AsyncTask<Void, Void, Boolean> {
@@ -807,19 +803,15 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     e.printStackTrace();
                 }
                 Log.e(getClass().getSimpleName(), "Patient registered");
-
             }
             return true;
         }
-
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             if (patientRegistrationProgressDialog != null){
                 patientRegistrationProgressDialog.dismiss();
                 patientRegistrationProgressDialog.cancel();
-            }else {
-
             }
 
             Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);
@@ -893,5 +885,76 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private boolean isSHRSettingEnabled(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
         return preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
+    }
+
+    private void initDrawer() {
+        initSelectedTags();
+        ListView tagsDrawerList = findViewById(R.id.tags_list);
+        tagsDrawerList.setEmptyView(findViewById(R.id.tags_no_data_msg));
+        tagsListAdapter = new PatientTagsListAdapter(this, R.layout.item_tags_list, patientController);
+        tagsDrawerList.setAdapter(tagsListAdapter);
+        tagsDrawerList.setOnItemClickListener(tagsListAdapter);
+        ActionBarDrawerToggle actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
+                R.drawable.ic_labels, R.string.hint_drawer_open, R.string.hint_drawer_close) {
+
+            /**
+             * Called when a drawer has settled in a completely closed state.
+             */
+            public void onDrawerClosed(View view) {
+                String title = getResources().getString(R.string.general_client_list);
+                getSupportActionBar().setTitle(title);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
+
+            /**
+             * Called when a drawer has settled in a completely open state.
+             */
+            public void onDrawerOpened(View drawerView) {
+                String title = getResources().getString(R.string.general_tags);
+                getSupportActionBar().setTitle(title);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
+        };
+        mainLayout.setDrawerListener(actionbarDrawerToggle);
+        mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+        TextView tagsNoDataMsg = findViewById(R.id.tags_no_data_msg);
+        tagsNoDataMsg.setTypeface(Fonts.roboto_bold_condensed(this));
+    }
+
+    private void initSelectedTags() {
+        List<String> selectedTagsInPref = tagPreferenceService.getPatientSelectedTags();
+        List<Tag> allTags = null;
+        try {
+            allTags = patientController.getAllTags();
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Error occurred while get all tags from local repository", e);
+        }
+        List<Tag> selectedTags = new ArrayList<>();
+
+        if (selectedTagsInPref != null) {
+            for (Tag tag : allTags) {
+                if (selectedTagsInPref.contains(tag.getName())) {
+                    selectedTags.add(tag);
+                }
+            }
+        }
+        patientController.setSelectedTags(selectedTags);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        storeSelectedTags();
+    }
+
+    private void storeSelectedTags() {
+        Set<String> newSelectedTags = new HashSet<>();
+        for (Tag selectedTag : patientController.getSelectedTags()) {
+            newSelectedTags.add(selectedTag.getName());
+        }
+        tagPreferenceService.savePatientSelectedTags(newSelectedTags);
     }
 }

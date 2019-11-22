@@ -27,24 +27,30 @@ import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.Provider;
+import com.muzima.api.model.Tag;
+import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.PatientController;
+import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.HTMLFormObservationCreator;
-import com.muzima.service.MuzimaLocationService;
+import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
@@ -57,6 +63,8 @@ import com.muzima.controller.EncounterController;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -80,6 +88,9 @@ class HTMLFormDataStore {
     private final EncounterController encounterController;
     private final MuzimaApplication application;
     private final MuzimaSettingController settingController;
+    private final CohortController cohortController;
+    private final PatientController patientController;
+    private final PersonController personController;
 
     public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormData formData, MuzimaApplication application) {
         this.formWebViewActivity = formWebViewActivity;
@@ -92,6 +103,9 @@ class HTMLFormDataStore {
         this.conceptController = application.getConceptController();
         this.encounterController = application.getEncounterController();
         this.observationController = application.getObservationController();
+        this.cohortController = application.getCohortController();
+        this.patientController = application.getPatientController();
+        this.personController = application.getPersonController();
         this.application = application;
     }
 
@@ -111,6 +125,7 @@ class HTMLFormDataStore {
         jsonPayload = injectTimeZoneToEncounterPayload(jsonPayload);
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
+        String patientUuid = formData.getPatientUuid();
         boolean encounterDetailsValidityStatus = true;
         try {
             if (status.equals("complete")) {
@@ -131,6 +146,26 @@ class HTMLFormDataStore {
                 formData.setEncounterDate(encounterDate);
                 formController.saveFormData(formData);
                 formWebViewActivity.setResult(FormsActivity.RESULT_OK);
+                if (status.equals("complete")) {
+                    JSONObject jsonObject = new JSONObject(jsonPayload);
+                    JSONObject jsonObjectInner = jsonObject.getJSONObject("patient");
+                    Log.e(getClass().getSimpleName(),jsonObjectInner.toString());
+                    if(jsonObjectInner.has("patient.tagName") && jsonObjectInner.has("patient.tagUuid")) {
+                        Log.e(getClass().getSimpleName(),"Form Has both tag fields");
+                        List<Tag> tags = new ArrayList<Tag>();
+                        Patient patient = patientController.getPatientByUuid(patientUuid);
+                        for (Tag tag : patient.getTags()) {
+                            tags.add(tag);
+                        }
+
+                        Tag tag = new Tag();
+                        tag.setName(jsonObjectInner.getString("patient.tagName"));
+                        tag.setUuid(jsonObjectInner.getString("patient.tagUuid"));
+                        tags.add(tag);
+                        patient.setTags(tags.toArray(new Tag[tags.size()]));
+                        patientController.updatePatient(patient);
+                    }
+                }
                 if (!keepFormOpen) {
                     formWebViewActivity.finish();
                     if (status.equals("complete")) {
@@ -142,7 +177,7 @@ class HTMLFormDataStore {
                     }
                 }
             } else {
-                String missingMandatoryEncounterDetailsMessage = checkMisssingMandatoryEncounterDetails(jsonPayload);
+                String missingMandatoryEncounterDetailsMessage = checkMissingMandatoryEncounterDetails(jsonPayload);
                 String message = missingMandatoryEncounterDetailsMessage.concat(" ");
                 message = message.concat(formWebViewActivity.getString(R.string.message_missing_form_encounter_details_error));
 
@@ -151,9 +186,14 @@ class HTMLFormDataStore {
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show();
             Log.e(getClass().getSimpleName(), "Exception occurred while saving form data", e);
-            // } catch (Exception e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show();
-            Log.e(getClass().getSimpleName(), "Exception occurred while saving form data", e);
+        }
+        catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while fetching patient", e);
+        }
+        catch (PatientController.PatientSaveException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while saving patient", e);
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while parsing object", e);
         }
     }
 
@@ -177,7 +217,6 @@ class HTMLFormDataStore {
         } catch (ProviderController.ProviderLoadException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_provider_load), Toast.LENGTH_SHORT).show();
             Log.e(getClass().getSimpleName(), "Exception occurred while loading providers", e);
-            e.printStackTrace();
         }
         return JSONValue.toJSONString(providersOnDevice);
     }
@@ -246,10 +285,8 @@ class HTMLFormDataStore {
         List<Encounter> encounters = new ArrayList<>();
         try {
             encounters = encounterController.getEncountersByPatientUuid(patientuuid);
-        } catch (EncounterController.DownloadEncounterException e) {
+        } catch (EncounterController.DownloadEncounterException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading encounters", e);
-        } catch (Exception e) {
-            Log.e(getClass().getSimpleName(), "ExceptioJSONValuen occurred while loading encounters", e);
         }
         return JSONValue.toJSONString(encounters);
     }
@@ -278,6 +315,7 @@ class HTMLFormDataStore {
         List<Observation> observations = new ArrayList<>();
         try {
             observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+            Collections.sort(observations, observationDateTimeComparator);
         } catch (ObservationController.LoadObservationException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
@@ -289,6 +327,7 @@ class HTMLFormDataStore {
         List<Observation> observations = new ArrayList<>();
         try {
             observations = observationController.getObservationsByEncounterId(encounterid);
+            Collections.sort(observations, observationDateTimeComparator);
         } catch (ObservationController.LoadObservationException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
@@ -306,6 +345,7 @@ class HTMLFormDataStore {
                     observations.addAll(observationController.getObservationsByEncounterId(enc.getId()));
                 }
             }
+            Collections.sort(observations, observationDateTimeComparator);
         } catch (ObservationController.LoadObservationException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         } catch (EncounterController.DownloadEncounterException e) {
@@ -330,25 +370,42 @@ class HTMLFormDataStore {
             }
             final String dateFormat = STANDARD_DATE_FORMAT;
             SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
-            Date d = null;
+            Date obsDateTime = null;
+            Date valueDateTime = null;
             try {
-                d = newDateFormat.parse(newDateFormat.format(obs.getObservationDatetime()));
+                obsDateTime = newDateFormat.parse(newDateFormat.format(obs.getObservationDatetime()));
+                if(obs.getValueDatetime() != null) {
+                    valueDateTime = newDateFormat.parse(newDateFormat.format(obs.getValueDatetime()));
+                }
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(), "Exception occurred while parsing date", e);
             }
             newDateFormat.applyPattern(dateFormat);
-            String convertedEncounterDate = newDateFormat.format(d);
+            String convertedEncounterDate = newDateFormat.format(obsDateTime);
+            String convertedvalueDateTime = "";
+            if(valueDateTime != null){
+                 convertedvalueDateTime = newDateFormat.format(valueDateTime);
+            }
 
             JSONObject json = new JSONObject();
+            JSONObject codedConcept = new JSONObject();
             if (!conceptName.isEmpty()) {
                 json.put("conceptName", conceptName);
             } else {
                 json.put("conceptName", "Concept Created On Phone");
             }
             json.put("obsDate", convertedEncounterDate);
-            json.put("valueCoded", obs.getValueCoded().getName());
+            if(obs.getValueCoded() != null) {
+                codedConcept.put("uuid",obs.getValueCoded().getUuid());
+                codedConcept.put("id",obs.getValueCoded().getId());
+                codedConcept.put("name",obs.getValueCoded().getName());
+                json.put("valueCoded",codedConcept);
+            }else{
+                json.put("valueCoded", obs.getValueCoded());
+            }
             json.put("valueNumeric", obs.getValueNumeric());
             json.put("valueText", obs.getValueText());
+            json.put("valueDatetime",convertedvalueDateTime);
             map.put("json" + i, json);
             arr.put(map.get("json" + i));
             i++;
@@ -457,7 +514,7 @@ class HTMLFormDataStore {
         return jsonPayload;
     }
 
-    private String checkMisssingMandatoryEncounterDetails(String jsonPayLoad) {
+    private String checkMissingMandatoryEncounterDetails(String jsonPayLoad) {
         String message = "";
         try {
             JSONObject jsonObject = new JSONObject(jsonPayLoad);
@@ -499,55 +556,36 @@ class HTMLFormDataStore {
         Boolean isGpsFeatureEnabled = false;
         isGpsFeatureEnabled = new GPSFeaturePreferenceService(application).isGPSDataCollectionSettingEnabled();
         if (isGpsFeatureEnabled) {
+            MuzimaGPSLocationService muzimaLocationService = application.getMuzimaGPSLocationService();
 
-            if (isLocationPermissionsGranted()) {
-
-                if(isLocationServicesEnabled()){
-                    MuzimaLocationService muzimaLocationService = new MuzimaLocationService(application);
-                    HashMap<String, String> locationDataHashMap = new HashMap<>(); //empty hashmap prevent NullPointerException
+            if (muzimaLocationService.isGPSLocationPermissionsGranted()) {
+                if(muzimaLocationService.isLocationServicesSwitchedOn()){
+                    HashMap<String, Object> locationDataHashMap;
                     try {
-                        locationDataHashMap = muzimaLocationService.getLastKnownGPS(jsonReturnType);
-                        gps_location_string = locationDataHashMap.get("gps_location_string");
+                        locationDataHashMap = muzimaLocationService.getLastKnownGPS();
+                        if(locationDataHashMap.containsKey("gps_location")) {
+                            if (jsonReturnType.equals("json-object")){
+                                gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonObject().toString();
+                            } else {
+                                gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonArray().toString();
+                            }
+                        } else {
+                            gps_location_string = (String)locationDataHashMap.get("gps_location_status");
+                        }
                         return gps_location_string;
                     } catch (Exception e) {
-                        Log.e(getClass().getSimpleName(), "Unable to process gps data, unknow Error Occurred" + e.getMessage());
+                        Log.e(getClass().getSimpleName(), "Unable to process gps data, unknow Error Occurred", e);
                         return gps_location_string;
                     }
-                }else {
+                } else {
                     return "Location service disabled by user";
                 }
-
             } else {
                 return "Location Permissions Denied By User.";
             }
         } else {
             return "GPS Feature is Disabled by User";
         }
-
-    }
-
-    public boolean isLocationPermissionsGranted() {
-        int permissionStatus = ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permissionStatus == PackageManager.PERMISSION_GRANTED)
-            return true;
-        else if (permissionStatus == PackageManager.PERMISSION_DENIED)
-            return false;
-        else
-            return false;
-    }
-
-    public Boolean isLocationServicesEnabled(){
-        LocationManager locationManager = (LocationManager)application.getSystemService(Context.LOCATION_SERVICE);
-
-        boolean isGPSProviderEnabled = false;
-        boolean isNetworkEnabled = false;
-
-        if(locationManager != null){
-            isGPSProviderEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        }
-
-        return (isGPSProviderEnabled || isNetworkEnabled);
     }
 
     public void showLocationDisabledDialog(){
@@ -585,4 +623,45 @@ class HTMLFormDataStore {
         return jsonPayload;
     }
 
+    @JavascriptInterface
+    public String getCohortMembershipByPatientUuid(String patientUuid){
+        List<CohortMember> cohortMembers = new ArrayList<>();
+        JSONArray jsonArray = new JSONArray();
+        HashMap<String, JSONObject> map = new HashMap<>();
+        int i = 0;
+        try {
+            cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
+            for(CohortMember cohortMember:cohortMembers){
+                JSONObject json = new JSONObject();
+                json.put("cohortUuid", cohortMember.getCohort().getUuid());
+                json.put("cohortName", cohortMember.getCohort().getName());
+                map.put("json" + i, json);
+                jsonArray.put(map.get("json" + i));
+                i++;
+            }
+        } catch (CohortController.CohortFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading cohort membership", e);
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "JSONException encountered while process cohort membership", e);
+        }
+        return jsonArray.toString();
+    }
+
+    private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
+        @Override
+        public int compare(Observation lhs, Observation rhs) {
+            return -lhs.getObservationDatetime().compareTo(rhs.getObservationDatetime());
+        }
+    };
+
+    @JavascriptInterface
+    public void createPersonAndDiscardHTML(String jsonPayload) {
+        try {
+            personController.createNewPerson(application, jsonPayload, formData.getPatientUuid());
+            formWebViewActivity.finish();
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while parsing object", e);
+        }
+
+    }
 }

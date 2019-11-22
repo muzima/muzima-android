@@ -40,7 +40,7 @@ public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
         super(context, textViewResourceId);
         this.patientController = patientController;
         this.searchString = searchString;
-        this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId);
+        this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId, patientController);
     }
 
     @NonNull

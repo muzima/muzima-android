@@ -96,6 +96,7 @@
 	
 	<RelativeLayout
 			android:layout_width="match_parent"
+		    android:id="@+id/provider_details"
 			android:layout_height="wrap_content">
 		
 		<TextView
