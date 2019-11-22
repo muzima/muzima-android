@@ -52,6 +52,7 @@ public class ObservationsActivity extends BroadcastListenerActivity {
         initPager();
         initPagerIndicator();
         encounterDateTextView = (TextView) findViewById(R.id.date_value_textview);
+        logEvent("VIEW_CLIENT_OBS_BY_CONCEPT","{\"patientuuid\":\""+patient.getUuid()+"\"}");
     }
 
     @Override

@@ -41,9 +41,15 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
             actionMode.setTitle(String.valueOf(((IncompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size()));
         }
 
-        logEvent("VIEW_INCOMPLETE_FORMS",null);
-
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_INCOMPLETE_FORMS");
+        }
     }
 
     @Override

@@ -47,8 +47,15 @@ public class CompletePatientsFormsListFragment extends FormsListFragment impleme
             actionMode.setTitle(String.valueOf(((PatientIncompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size()));
         }
 
-        logEvent("VIEW_COMPLETED_PATIENT_FORMS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_COMPLETED_PATIENT_FORMS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
+        }
     }
 
     @Override

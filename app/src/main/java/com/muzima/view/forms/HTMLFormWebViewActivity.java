@@ -10,9 +10,6 @@
 
 package com.muzima.view.forms;
 
-import android.content.Context;
-import android.content.IntentSender;
-import android.location.LocationManager;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.app.AlertDialog;
@@ -34,16 +31,7 @@ import android.webkit.WebView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Form;
@@ -55,8 +43,7 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
-import com.muzima.service.GPSFeaturePreferenceService;
-import com.muzima.service.MuzimaLoggerService;
+import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
@@ -166,67 +153,20 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        LocationManager locationManager = (LocationManager)getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        GPSFeaturePreferenceService gpsFeaturePreferenceService = new GPSFeaturePreferenceService((MuzimaApplication) getApplication());
-        if(gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled()) {
-            if (!(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                    || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
-                enableLocation();
-            }
-        }
+        checkAndEnableGPSLocation();
     }
 
-    private void enableLocation() {
+    private void checkAndEnableGPSLocation() {
+        MuzimaGPSLocationService gpsLocationService = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService();
 
-        if (googleApiClient == null) {
-            googleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                    @Override
-                    public void onConnected(Bundle bundle) {
+        if(gpsLocationService.isGPSLocationFeatureEnabled()) {
+            if (!gpsLocationService.isGPSLocationPermissionsGranted()) {
+                gpsLocationService.requestGPSLocationPermissions(this);
+            }
 
-                    }
-
-                    @Override
-                    public void onConnectionSuspended(int i) {
-                        googleApiClient.connect();
-                    }
-                })
-                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-                        Log.d(getClass().getSimpleName(),"Location error " + connectionResult.getErrorCode());
-                    }
-                }).build();
-            googleApiClient.connect();
-
-            LocationRequest locationRequest = LocationRequest.create();
-            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            locationRequest.setInterval(30 * 1000);
-            locationRequest.setFastestInterval(5 * 1000);
-            LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                    .addLocationRequest(locationRequest);
-
-            builder.setAlwaysShow(true);
-
-            PendingResult<LocationSettingsResult> result =
-                    LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
-            result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-                @Override
-                public void onResult(LocationSettingsResult result) {
-                    final Status status = result.getStatus();
-                    switch (status.getStatusCode()) {
-                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                            try {
-                                status.startResolutionForResult(HTMLFormWebViewActivity.this, REQUEST_LOCATION);
-                            } catch (IntentSender.SendIntentException e) {
-                                Log.e(getClass().getSimpleName(),"Cannot load activity",e);
-                            }
-                            break;
-                    }
-                }
-            });
+            if (!gpsLocationService.isLocationServicesSwitchedOn()) {
+                gpsLocationService.requestSwitchOnLocation(this);
+            }
         }
     }
 
@@ -619,8 +559,10 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private void logFormClosed(){
         try {
             JSONObject eventDetails = new JSONObject();
-            eventDetails.put("patientuuid", formData.getPatientUuid());
-            eventDetails.put("formDataUuid", formData.getUuid());
+            if(formData != null) {
+                eventDetails.put("patientuuid", formData.getPatientUuid());
+                eventDetails.put("formDataUuid", formData.getUuid());
+            }
             logEvent("FORM_CLOSED",eventDetails.toString());
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(),"Cannot create log",e);

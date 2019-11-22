@@ -49,6 +49,7 @@ public class PatientFormsActivity extends FormsActivityBase {
         initPagerIndicator();
         getSupportActionBar().setTitle(patient.getSummary());
         requestGPSLocationPermissions();
+        logEvent("VIEW_RECOMMENDED_FORMS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
     }
 
     @Override

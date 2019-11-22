@@ -48,6 +48,7 @@ public class PatientReportActivity extends BroadcastListenerActivity {
         initPager();
         initPagerIndicator();
         getSupportActionBar().setTitle(patient.getSummary());
+        logEvent("VIEW_CLIENT_DOWNLOADED_REPORTS", "{\"patientuuid\":\""+patient.getUuid()+"\"}");
     }
 
     @Override

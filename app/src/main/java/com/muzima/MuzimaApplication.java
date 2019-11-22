@@ -42,6 +42,7 @@ import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CohortPrefixPreferenceService;
+import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
@@ -78,6 +79,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private ProviderController providerController;
     private MuzimaSyncService muzimaSyncService;
     private MuzimaGPSLocationService muzimaGPSLocationService;
+    private GPSFeaturePreferenceService gpsFeaturePreferenceService;
     private CohortPrefixPreferenceService prefixesPreferenceService;
     private LocalePreferenceService localePreferenceService;
     private SetupConfigurationController setupConfigurationController;
@@ -126,7 +128,7 @@ public class MuzimaApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {
-        //Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }
@@ -140,7 +142,6 @@ public class MuzimaApplication extends MultiDexApplication {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public Context getMuzimaContext() {
@@ -359,6 +360,13 @@ public class MuzimaApplication extends MultiDexApplication {
             muzimaGPSLocationService = new MuzimaGPSLocationService(this);
         }
         return muzimaGPSLocationService;
+    }
+
+    public GPSFeaturePreferenceService getGPSFeaturePreferenceService() {
+        if (gpsFeaturePreferenceService == null) {
+            gpsFeaturePreferenceService = new GPSFeaturePreferenceService(this);
+        }
+        return gpsFeaturePreferenceService;
     }
 
     public void resetTimer(int timeOutInMin) {

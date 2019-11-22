@@ -48,7 +48,7 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
         setupPatientMetadata();
         setupStillLoadingView();
         setupPatientEncounters();
-        logEvent("VIEW_CLIENT_ENCOUNTERS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
+            logEvent("VIEW_CLIENT_ENCOUNTERS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
     }
 
     @Override

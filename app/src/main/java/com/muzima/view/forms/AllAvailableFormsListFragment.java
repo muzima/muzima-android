@@ -77,8 +77,15 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
             actionMode = mActivity.startActionMode(new NewFormsActionModeCallback());
             actionMode.setTitle(String.valueOf(getSelectedForms().size()));
         }
-        logEvent("VIEW_ALL_FORMS");
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_ALL_FORMS");
+        }
     }
 
     @Override

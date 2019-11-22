@@ -3,87 +3,146 @@ package com.muzima.service;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
-import com.google.inject.Inject;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.context.Context;
-import com.muzima.api.dao.LogEntryDao;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.User;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.util.MuzimaLogger;
-import com.muzima.utils.StringUtils;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.UUID;
 
+import static com.muzima.util.Constants.ServerSettings.LOGGING_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.LOGGING_SERVER_CONNECTION_KEY_SETTING;
+import static com.muzima.util.Constants.ServerSettings.LOGGING_SERVER_URL_SETTING;
+
 public class MuzimaLoggerService {
     private static String pseudoDeviceId = null;
 
     private static Timer timer;
 
-    public static String getGpsLocation(final MuzimaApplication muzimaApplication){
-        MuzimaGPSLocationService muzimaLocationService = muzimaApplication.getMuzimaGPSLocationService();
+    public static String getAndParseGpsLocationForLogging(final MuzimaApplication muzimaApplication){
+        if(isLoggingFeatureEnabled(muzimaApplication)) {
+            MuzimaGPSLocationService muzimaLocationService = muzimaApplication.getMuzimaGPSLocationService();
 
-        HashMap<String, Object> locationDataHashMap = muzimaLocationService.getLastKnownGPS();
-        if(locationDataHashMap.containsKey("gps_location")) {
-            MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location"));
-            try {
-                return muzimaGPSLocation.toJsonObject().toString();
-            } catch (JSONException e) {
-                Log.e("MuzimaLoggerService","Error while obtaining GPS location",e);
+            HashMap<String, Object> locationDataHashMap = muzimaLocationService.getLastKnownGPS();
+            if (locationDataHashMap.containsKey("gps_location")) {
+                MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation) locationDataHashMap.get("gps_location"));
+                try {
+                    return muzimaGPSLocation.toJsonObject().toString();
+                } catch (JSONException e) {
+                    Log.e("MuzimaLoggerService", "Error while obtaining GPS location", e);
+                }
+            } else if (locationDataHashMap.containsKey("gps_location_status")) {
+                return "{\"gps_location_status\":\"" + locationDataHashMap.get("gps_location_status") + "\"}";
             }
         }
         return "{}";
     }
 
     public static void log(final MuzimaApplication muzimaApplication, final String tag, final String userId, final String gpsLocation, final String details){
-        new AsyncTask<Void,Void,Void>(){
-            protected Void doInBackground(Void... voids) {
-                String deviceId = getPseudoDeviceId();
-                MuzimaLogger.log(muzimaApplication.getMuzimaContext(), tag,userId, gpsLocation,details, deviceId);
-                return null;
-            }
-        }.execute();
+        if(isLoggingFeatureEnabled(muzimaApplication)) {
+            new AsyncTask<Void, Void, Void>() {
+                protected Void doInBackground(Void... voids) {
+                    String deviceId = getPseudoDeviceId();
+                    long timestamp = muzimaApplication.getSntpService().getLocalTime(2000).getTime();
+                    String timestampProvider;
+
+                    if(timestamp != 0){
+                        timestampProvider = "sntpClient";
+                    } else {
+                        timestamp = System.currentTimeMillis();
+                        timestampProvider = "SystemCurrentTimeMillis";
+                    }
+
+                    MuzimaLogger.log(muzimaApplication.getMuzimaContext(), tag, userId, gpsLocation, details, deviceId,timestamp,timestampProvider);
+                    return null;
+                }
+            }.execute();
+        }
     }
 
     public static void log(final MuzimaApplication muzimaApplication, final String tag, final String details){
-        User authenticatedUser = muzimaApplication.getAuthenticatedUser();
-        if(authenticatedUser != null) {
-            String userId = authenticatedUser.getUuid();
-            log(muzimaApplication, tag,userId, getGpsLocation(muzimaApplication), details);
-        } else {
-            Log.e("MuzimaLoggerService","Could not save logs");
+        if(isLoggingFeatureEnabled(muzimaApplication)) {
+            User authenticatedUser = muzimaApplication.getAuthenticatedUser();
+            if (authenticatedUser != null) {
+                String userId = authenticatedUser.getUuid();
+                log(muzimaApplication, tag, userId, getAndParseGpsLocationForLogging(muzimaApplication), details);
+            } else {
+                Log.e("MuzimaLoggerService", "Could not save logs");
+            }
         }
     }
 
-    public static void scheduleLogSync(final android.content.Context applicationContext){
-        if(timer == null) {
-            timer = new java.util.Timer();
-        }
+    public static void scheduleLogSync(final MuzimaApplication muzimaApplication) {
+        if (isLoggingFeatureEnabled(muzimaApplication)) {
+            if (timer == null) {
+                timer = new java.util.Timer();
+            }
 
-        timer.schedule(
+            timer.schedule(
                 new java.util.TimerTask() {
 
                     @Override
                     public void run() {
-                        try {
-                            Context context = ((MuzimaApplication)applicationContext.getApplicationContext()).getMuzimaContext();
-                            context.getLogEntryService().syncLogs();
-                        } catch (IOException e) {
-                            Log.e("LoggerService","Error syncing",e);
-                        }
+                        new AsyncTask<Void, Void, Void>() {
+                            protected Void doInBackground(Void... voids) {
+                                try {
+                                    Context context = muzimaApplication.getMuzimaContext();
+                                    context.getLogEntryService().syncLogs();
+                                } catch (IOException e) {
+                                    Log.e("LoggerService", "Error syncing", e);
+                                }
+                                return null;
+                            }
+                        }.execute();
                     }
-                },10000,120000
-        );
+                }, 10000, 120000
+            );
+        }
     }
 
     public static void stopLogsSync(){
         if(timer != null){
             timer.cancel();
         }
+    }
+
+    private static boolean isLoggingFeatureEnabled(final MuzimaApplication muzimaApplication){
+        MuzimaSettingController muzimaSettingController = muzimaApplication.getMuzimaSettingController();
+        try {
+            MuzimaSetting loggingFeatureSetting = muzimaSettingController.getSettingByProperty(LOGGING_FEATURE_ENABLED_SETTING);
+
+            if (loggingFeatureSetting != null) {
+                return loggingFeatureSetting.getValueBoolean();
+            } else {
+                loggingFeatureSetting = new MuzimaSetting();
+                loggingFeatureSetting.setProperty(LOGGING_FEATURE_ENABLED_SETTING);
+                loggingFeatureSetting.setValueBoolean(true);
+                muzimaSettingController.saveOrUpdateSetting(loggingFeatureSetting);
+
+                MuzimaSetting serverSetting = new MuzimaSetting();
+                serverSetting.setProperty(LOGGING_SERVER_URL_SETTING);
+                serverSetting.setValueString("https://logs.pls.info.ke/mUzima-log-server");
+                muzimaSettingController.saveOrUpdateSetting(serverSetting);
+
+                MuzimaSetting connectionKeySetting = new MuzimaSetting();
+                connectionKeySetting.setProperty(LOGGING_SERVER_CONNECTION_KEY_SETTING);
+                connectionKeySetting.setValueString("test@test.com:test");
+                muzimaSettingController.saveOrUpdateSetting(connectionKeySetting);
+                return true;
+            }
+        } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+            Log.e("MuzimaLoggerService", "Could not fetch setting", e);
+        } catch (MuzimaSettingController.MuzimaSettingSaveException e) {
+            Log.e("MuzimaLoggerService", "Could not save setting", e);
+        }
+        return false;
     }
 
     private static String getPseudoDeviceId() {

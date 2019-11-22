@@ -70,6 +70,7 @@ public class FormsActivity extends FormsActivityBase {
         initDrawer();
         initPager();
         initPagerIndicator();
+        logEvent("VIEW_ALL_FORMS");
     }
 
     @Override

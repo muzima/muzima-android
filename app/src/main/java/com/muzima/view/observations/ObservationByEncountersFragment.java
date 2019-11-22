@@ -46,8 +46,15 @@ public class ObservationByEncountersFragment extends ObservationsListFragment{
                     getActivity(), R.layout.item_observation_by_encounter_list,encounterController, conceptController, observationController,isShrEncounter);
         }
         noDataMsg = getActivity().getResources().getString(R.string.info_observation_in_progress);
-        logEvent("VIEW_CLIENT_OBS_BY_DATE","{\"patientuuid\":\""+patient.getUuid()+"\"}");
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_CLIENT_OBS_BY_DATE","{\"patientuuid\":\""+patient.getUuid()+"\"}");
+        }
     }
 
     @Override

@@ -10,17 +10,9 @@
 
 package com.muzima.view.forms;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
@@ -46,7 +38,6 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
-import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
@@ -564,11 +555,9 @@ class HTMLFormDataStore {
     @JavascriptInterface
     public String getLastKnowGPSLocation(String jsonReturnType) {
         String gps_location_string = "Unknown Error Occured!";
-        Boolean isGpsFeatureEnabled = false;
-        isGpsFeatureEnabled = new GPSFeaturePreferenceService(application).isGPSDataCollectionSettingEnabled();
-        if (isGpsFeatureEnabled) {
-            MuzimaGPSLocationService muzimaLocationService = application.getMuzimaGPSLocationService();
 
+        MuzimaGPSLocationService muzimaLocationService = application.getMuzimaGPSLocationService();
+        if (muzimaLocationService.isGPSLocationFeatureEnabled()) {
             if (muzimaLocationService.isGPSLocationPermissionsGranted()) {
                 if(muzimaLocationService.isLocationServicesSwitchedOn()){
                     HashMap<String, Object> locationDataHashMap;
@@ -580,7 +569,7 @@ class HTMLFormDataStore {
                             } else {
                                 gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonArray().toString();
                             }
-                        } else {
+                        } else if(locationDataHashMap.containsKey("gps_location_status")){
                             gps_location_string = (String)locationDataHashMap.get("gps_location_status");
                         }
                         return gps_location_string;
@@ -653,14 +642,6 @@ class HTMLFormDataStore {
             JSONObject eventDetails = new JSONObject();
             eventDetails.put("patientuuid", formData.getPatientUuid());
             eventDetails.put("formDataUuid", formData.getUuid());
-
-            MuzimaGPSLocationService muzimaLocationService = application.getMuzimaGPSLocationService();
-
-            HashMap<String, Object> locationDataHashMap = muzimaLocationService.getLastKnownGPS();
-            if(locationDataHashMap.containsKey("gps_location")) {
-                MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location"));
-                eventDetails.put("location", muzimaGPSLocation.toJsonObject());
-            }
 
             if (isEncounterForm()) {
                 if(isFormReload) {

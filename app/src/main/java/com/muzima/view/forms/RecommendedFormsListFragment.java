@@ -43,8 +43,15 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
         listAdapter = new RecommendedFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
         noDataMsg = getActivity().getResources().getString(R.string.info_downloaded_forms_unavailable);
         noDataTip = getActivity().getResources().getString(R.string.hint_recommended_forms_unavailable);
-        logEvent("VIEW_RECOMMENDED_FORMS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_RECOMMENDED_FORMS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
+        }
     }
 
     @Override

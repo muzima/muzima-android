@@ -36,8 +36,15 @@ public class PatientNotificationsListFragment extends NotificationListFragment {
             listAdapter = new PatientNotificationsAdapter(getActivity(), R.layout.item_notifications_list, notificationController, patient);
         }
         noDataMsg = getActivity().getResources().getString(R.string.info_notification_unavailable);
-        logEvent("VIEW_PATIENT_NOTIFICATIONS");
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_PATIENT_NOTIFICATIONS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
+        }
     }
 
     @Override
