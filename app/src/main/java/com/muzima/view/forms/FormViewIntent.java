@@ -27,13 +27,18 @@ public class FormViewIntent extends Intent {
     public static final String FORM_COMPLETION_STATUS_COMPLETE = "complete form";
 
     public FormViewIntent(Activity activity, FormWithData form) {
-        this(activity, form, form.getPatient());
+        this(activity, form, form.getPatient(), false);
     }
 
-    public FormViewIntent(Activity activity, BaseForm form, Patient patient) {
+    public FormViewIntent(Activity activity, BaseForm form, Patient patient, boolean popup) {
         super(activity, getClassBasedOnFormType(activity, form));
         putExtra(HTMLFormWebViewActivity.FORM, form);
         putExtra(HTMLFormWebViewActivity.PATIENT, patient);
+        if(popup) {
+            putExtra(HTMLFormWebViewActivity.POPUP, true);
+        }else{
+            putExtra(HTMLFormWebViewActivity.POPUP, false);
+        }
     }
 
     private static Class getClassBasedOnFormType(Activity activity, BaseForm form) {

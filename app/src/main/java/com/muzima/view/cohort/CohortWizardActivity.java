@@ -35,11 +35,13 @@ import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
+import com.muzima.utils.Constants;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.FormTemplateWizardActivity;
+import com.muzima.view.patients.SyncPatientDataIntent;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
@@ -157,6 +159,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                         Log.i(getClass().getSimpleName(), "Canceling timer") ;
                         ((MuzimaApplication) getApplication()).cancelTimer();
                         keepPhoneAwake(true) ;
+
                     }
 
                     @Override
@@ -224,8 +227,20 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
 
         List<String> selectedCohortsArray = cohortsAdapter.getSelectedCohorts();
-        return muzimaSyncService.downloadPatientsForCohorts(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
+        int[] resultForPatients =  muzimaSyncService.downloadPatientsForCohorts(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
+
+        if (resultForPatients[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+            muzimaSyncService.downloadRelationshipsTypes();
+            muzimaSyncService.downloadRelationshipsForPatientsByCohortUUIDs(selectedCohortsArray.toArray(new String[selectedCohortsArray.size()]));
+        }
+
+        return resultForPatients;
     }
+
+//    private void downloadAndSavePatientsInBackgroundService(AllCohortsAdapter cohortsAdapter) {
+//        List<String> selectedCohortsArray = cohortsAdapter.getSelectedCohorts();
+//        new SyncPatientDataIntent(this, selectedCohortsArray.toArray(new String[selectedCohortsArray.size()])).start();
+//    }
 
     private void navigateToNextActivity() {
         Intent intent = new Intent(getApplicationContext(), FormTemplateWizardActivity.class);
@@ -256,6 +271,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     public void onQueryTaskFinish() {
         dismissProgressDialog();
     }
+
     @Override
     public void onQueryTaskCancelled(){}
 

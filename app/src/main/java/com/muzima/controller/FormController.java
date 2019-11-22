@@ -390,7 +390,6 @@ public class FormController {
         try {
             formData.setSaveTime(new Date());
             formService.saveFormData(formData);
-
         } catch (IOException e) {
             throw new FormDataSaveException(e);
         }
@@ -475,7 +474,16 @@ public class FormController {
                             completeForms.add(completeForm);
                         }else if(formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION)){
                             CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
-                                    .withShrRegistartionForm(form,context)
+                                    .withSHRRegistrationForm(form, context)
+                                    .withFormDataUuid(formData.getUuid())
+                                    .withPatient(patient)
+                                    .withLastModifiedDate(formData.getSaveTime())
+                                    .withEncounterDate(formData.getEncounterDate())
+                                    .build();
+                            completeForms.add(completeForm);
+                        } else if(formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP)){
+                            CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
+                                    .withRelationshipForm(form, context)
                                     .withFormDataUuid(formData.getUuid())
                                     .withPatient(patient)
                                     .withLastModifiedDate(formData.getSaveTime())
@@ -585,6 +593,7 @@ public class FormController {
 
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION), result);
@@ -1060,5 +1069,16 @@ public class FormController {
         } catch (IOException e) {
             throw new FormFetchException(e);
         }
+    }
+
+    public AvailableForms getDownloadedRelationshipForms() throws FormFetchException {
+        AvailableForms result = new AvailableForms();
+
+        for (AvailableForm form : getAvailableFormByTags(null)) {
+            if (form.isDownloaded() && form.isRelationshipForm()) {
+                result.add(form);
+            }
+        }
+        return result;
     }
 }

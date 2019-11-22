@@ -46,6 +46,7 @@ public class Constants {
 
     public static final String FORM_DISCRIMINATOR_PROVIDER_REPORT = "provider-report";
     public static final String FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS = "json-individual-obs";
+    public static final String FORM_JSON_DISCRIMINATOR_RELATIONSHIP = "json-relationship";
 
     private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
     private static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
@@ -94,6 +95,7 @@ public class Constants {
         public static final int SYNC_COHORTS_AND_ALL_PATIENTS_FULL_DATA = 15;
         public static final int CLEAN_UP_PROCESSED_TEMPORARY_FORM_DATA = 16;
         public static final int SYNC_SETTINGS = 17;
+        public static final int SYNC_RELATIONSHIPS = 18;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;

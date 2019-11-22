@@ -1,0 +1,244 @@
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/patient_lists_layout"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  style="@style/DashboardTableContainer">
+
+        <RelativeLayout android:id="@+id/patient_demographics_layout"
+                        style="@style/PatientDemographicsLayout"
+                        android:paddingBottom="5dp">
+
+            <TextView
+                    android:id="@+id/patientName"
+                    android:layout_alignParentStart="true"
+                    style="@style/DashboardMediumTitleText"/>
+
+            <ImageView
+                    android:id="@+id/genderImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:paddingTop="20dp"
+                    android:contentDescription="@string/gender_image_content_description"/>
+        </RelativeLayout>
+        <LinearLayout
+                style="@style/PatientDemographicsLayout"
+                android:paddingTop="4dp"
+                android:paddingBottom="16dp">
+
+            <TextView
+                    android:id="@+id/dob"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/DashboardBaseText"/>
+
+            <TextView
+                    android:id="@+id/patientIdentifier"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="right"
+                    style="@style/DashboardBaseText"/>
+        </LinearLayout>
+
+
+        <View style="@style/DividerLine"
+              android:layout_marginBottom="10dp"/>
+
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/add_relationship"
+                android:visibility="gone">
+
+            <LinearLayout style="@style/NotClickableSummaryItem"
+                          android:fitsSystemWindows="true">
+
+                <TextView android:id="@+id/info"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:textSize="16sp"
+                          android:textStyle="bold"/>
+
+                <Spinner
+                        android:id="@+id/relationshipType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginTop="3pt"
+                        android:layout_marginBottom="3pt"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/spinner_border"/>
+
+                <TextView android:id="@+id/info2"
+                          android:text="@string/to_text"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:textSize="16sp"
+                          android:textStyle="bold"/>
+
+                <LinearLayout style="@style/AutocompleteTextArea">
+                    <AutoCompleteTextView
+                            android:id="@+id/search_related_person"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="3dp"
+                            android:paddingBottom="3dp"
+                            android:layout_weight="1"
+                            android:completionThreshold="3"
+                            android:textColor="@color/primary_blue"
+                            android:textColorHint="@color/hint_text_grey"
+                            android:textCursorDrawable="@null"
+                            android:hint="@string/hint_person_search"
+                            android:background="@drawable/textbox_border">
+                    </AutoCompleteTextView>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/search_server_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="5dp"
+                        android:visibility="gone">
+
+                    <TextView
+                            android:id="@+id/no_data_tip"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/info_client_local_search_not_found"
+                            android:textSize="16sp"/>
+
+                    <Button android:id="@+id/search_server_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginTop="10dp"
+                            style="@style/Button.Next"
+                            android:drawableStart="?attr/icSearch"
+                            android:text="@string/title_search_server"
+                            android:onClick="searchServer"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/progress_bar_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:addStatesFromChildren="true"
+                        android:visibility="gone">
+
+                    <ProgressBar
+                            android:id="@+id/prbProgress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            style="@android:style/Widget.Holo.ProgressBar.Large"/>
+                    <TextView
+                            android:id="@+id/progress_msg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/general_searching"
+                            android:textSize="16sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/create_person_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="5dp"
+                        android:visibility="gone">
+
+                    <TextView
+                            android:id="@+id/create_person_tip"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/info_client_remote_search_not_found"
+                            android:textSize="16sp"/>
+
+                    <Button android:id="@+id/create_person_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginTop="10dp"
+                            style="@style/Button.Next"
+                            android:paddingStart="5dp"
+                            android:onClick="createPerson"
+                            android:paddingEnd="5dp"
+                            android:text="@string/general_person_create"/>
+                </LinearLayout>
+
+                <LinearLayout android:gravity="end"
+                              android:layout_marginTop="5dp"
+                              android:layout_marginBottom="5dp"
+                              style="@style/NotClickableSummaryItem"
+                              android:orientation="horizontal">
+
+                    <Button
+                            android:id="@+id/save"
+                            android:text="@string/general_save"
+                            android:background="@drawable/rounded_corner_loginbutton"
+                            android:onClick="saveRelationship"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:visibility="gone"/>
+
+                    <Button
+                            android:id="@+id/cancel"
+                            android:text="@string/general_cancel"
+                            android:background="@drawable/sel_button_round"
+                            android:onClick="cancelRelationshipAdd"
+                            android:layout_marginStart="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout android:id="@+id/no_data_layout"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical"
+                      android:gravity="center"
+                      android:paddingEnd="16dp"
+                      android:visibility="gone">
+
+            <TextView
+                    android:id="@+id/no_data_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textSize="20sp">
+            </TextView>
+
+        </LinearLayout>
+
+        <ListView android:id="@+id/relationships_list"
+                style="@style/MuzimaSelectableListView">
+        </ListView>
+
+    </LinearLayout>
+</FrameLayout>
+

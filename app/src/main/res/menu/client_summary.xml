@@ -12,10 +12,14 @@
       xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+            android:id="@+id/client_relationship"
+            android:title=""
+            app:showAsAction="always"
+            android:icon="@drawable/ic_relationship"/>
+    <item
             android:id="@+id/SHR_client_summary"
             android:title=""
             app:showAsAction="always"
             android:icon="@drawable/ic_action_scan_card"/>
-
 
 </menu>

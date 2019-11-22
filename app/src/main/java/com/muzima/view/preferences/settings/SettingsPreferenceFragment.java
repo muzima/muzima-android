@@ -101,6 +101,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         String serverPreferenceKey = getResources().getString(R.string.preference_server);
         final EditTextPreference serverPreference = (EditTextPreference) getPreferenceScreen().findPreference(serverPreferenceKey);
         serverPreference.setSummary(serverPreference.getText());
+        serverPreference.getEditText().setSingleLine();
         serverPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {

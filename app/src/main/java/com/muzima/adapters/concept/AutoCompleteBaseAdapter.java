@@ -10,6 +10,7 @@
 package com.muzima.adapters.concept;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +32,8 @@ import java.util.List;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 /**
- * Responsible to display auto-complete menu for Concept and Cohort.
- * @param <T> T can be of Type Concept or Cohort. Objects displayed in the auto-complete menu.
+ * Responsible to display auto-complete menu for Models.
+ * @param <T> T can be of Type Concept, Cohort, Provider, Person e.t.c. Objects displayed in the auto-complete menu.
  */
 public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
 
@@ -45,7 +46,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
     public AutoCompleteBaseAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteTextView) {
         super(context, textViewResourceId);
         this.autoCompleteTextView = autoCompleteTextView;
-        muzimaApplicationWeakReference = new WeakReference<MuzimaApplication>((MuzimaApplication) context.getApplicationContext());
+        muzimaApplicationWeakReference = new WeakReference<>((MuzimaApplication) context.getApplicationContext());
         muzimaSyncService = getMuzimaApplicationContext().getMuzimaSyncService();
     }
 
@@ -102,7 +103,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
             protected List<T> filterOptionsLocally(CharSequence constraint) {
                 List<T> result = new ArrayList<T>();
                 for (T t : previousResult) {
-                    if (getOptionName(t).toLowerCase().startsWith(constraint.toString().toLowerCase())) {
+                    if (getOptionName(t).toLowerCase().contains(constraint.toString().toLowerCase())) {
                         result.add(t);
                     }
                 }
@@ -110,9 +111,8 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
             }
 
             private boolean hasResultStored(CharSequence constraint) {
-                return previousConstraint != null &&
-                        previousResult != null &&
-                        constraint.toString().toLowerCase().startsWith(previousConstraint.toLowerCase());
+                return previousConstraint != null && previousResult != null &&
+                        constraint.toString().toLowerCase().contains(previousConstraint.toLowerCase());
             }
 
             @Override
@@ -126,9 +126,19 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
                         }
                         notifyDataSetChanged();
                     }
+                    filterComplete(optionList != null ? optionList.size() : 0);
                 }else{
                     clear();
                 }
+            }
+
+            @Override
+            public CharSequence convertResultToString(Object result) {
+                if(result != null) {
+                    return getOptionName((T) result);
+                }
+
+                return super.convertResultToString(null);
             }
         };
     }
@@ -139,8 +149,9 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
         TextView name;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -156,4 +167,10 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
     }
 
     protected abstract String getOptionName(T option);
+
+    protected abstract void filterComplete(int count);
+
+    protected void clearPreviousResult(){
+        previousConstraint = null;
+    }
 }
