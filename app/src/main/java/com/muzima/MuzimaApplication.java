@@ -26,6 +26,7 @@ import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LocationService;
 import com.muzima.api.service.NotificationService;
 import com.muzima.api.service.ObservationService;
+import com.muzima.api.service.PersonService;
 import com.muzima.api.service.ProviderService;
 import com.muzima.api.service.RelationshipService;
 import com.muzima.controller.CohortController;
@@ -38,6 +39,7 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.controller.SetupConfigurationController;
@@ -45,6 +47,7 @@ import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.LocalePreferenceService;
+import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
@@ -53,9 +56,6 @@ import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.forms.HTMLFormWebViewActivity;
 import com.muzima.view.preferences.MuzimaTimer;
-import org.acra.ReportingInteractionMode;
-import org.acra.annotation.ReportsCrashes;
-import org.acra.sender.HttpSender;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,23 +65,6 @@ import java.util.List;
 import io.fabric.sdk.android.Fabric;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
-
-@ReportsCrashes(
-
-        formKey = "",
-        reportType = HttpSender.Type.JSON,
-        httpMethod = HttpSender.Method.POST,
-        formUri = "http://acra.muzima.org/report",
-        formUriBasicAuthLogin = "muzima-reporter",
-        formUriBasicAuthPassword = "OMHKOHV8LVfv3c553n6Oqkof",
-        mode = ReportingInteractionMode.DIALOG,
-        resDialogText = R.string.hint_crash_dialog,
-        resDialogIcon = android.R.drawable.ic_dialog_info,
-        resDialogTitle = R.string.title_crash_dialog,
-        resDialogCommentPrompt = R.string.hint_crash_dialog_comment_prompt,
-        resDialogOkToast = R.string.general_thank_you
-)
-
 
 public class MuzimaApplication extends MultiDexApplication {
 
@@ -97,6 +80,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private LocationController locationController;
     private ProviderController providerController;
     private MuzimaSyncService muzimaSyncService;
+    private MuzimaGPSLocationService muzimaGPSLocationService;
     private CohortPrefixPreferenceService prefixesPreferenceService;
     private LocalePreferenceService localePreferenceService;
     private SetupConfigurationController setupConfigurationController;
@@ -104,6 +88,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private SmartCardController smartCardController;
     private PatientReportController patientReportController;
     private RelationshipController relationshipController;
+    private PersonController personController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -146,7 +131,6 @@ public class MuzimaApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {
-        //ACRA.init(this);
         Fabric.with(this, new Crashlytics());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
@@ -252,7 +236,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public PatientController getPatientController() {
         if (patientController == null) {
             try {
-                patientController = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService());
+                patientController = new PatientController(muzimaContext.getPatientService(), muzimaContext.getCohortService(), muzimaContext.getFormService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -375,15 +359,34 @@ public class MuzimaApplication extends MultiDexApplication {
         return patientReportController;
     }
 
+    public MuzimaGPSLocationService getMuzimaGPSLocationService() {
+        if (muzimaGPSLocationService == null) {
+            muzimaGPSLocationService = new MuzimaGPSLocationService(this);
+        }
+        return muzimaGPSLocationService;
+    }
+
     public RelationshipController getRelationshipController() {
         if (relationshipController == null) {
             try {
-                relationshipController = new RelationshipController(muzimaContext.getService(RelationshipService.class));
+                relationshipController = new RelationshipController(muzimaContext.getService(RelationshipService.class),
+                        muzimaContext.getService(PersonService.class));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
         return relationshipController;
+    }
+
+    public PersonController getPersonController() {
+        if (personController == null) {
+            try {
+                personController = new PersonController(muzimaContext.getService(PersonService.class));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return personController;
     }
 
     public void resetTimer(int timeOutInMin) {

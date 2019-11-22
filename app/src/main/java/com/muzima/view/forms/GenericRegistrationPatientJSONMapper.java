@@ -518,8 +518,11 @@ public class GenericRegistrationPatientJSONMapper {
 
             if(attributeType == null){
                 attributeType = new PersonAttributeType();
-                attributeType.setUuid(jsonObject.getString("attribute_type_uuid"));
-                attributeType.setName(jsonObject.getString("attribute_type_name"));
+                if(jsonObject.has("attribute_type_uuid")) {
+                    attributeType.setUuid(jsonObject.getString("attribute_type_uuid"));
+                }else if(jsonObject.has("attribute_type_name")) {
+                    attributeType.setName(jsonObject.getString("attribute_type_name"));
+                }
             }
             attribute.setAttributeType(attributeType);
             return attribute;

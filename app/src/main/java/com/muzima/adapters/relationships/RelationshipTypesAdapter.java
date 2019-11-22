@@ -17,22 +17,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.RelationshipType;
 import com.muzima.controller.RelationshipController;
+import com.muzima.model.relationship.RelationshipTypeWrap;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class RelationshipTypesAdapter extends ListAdapter<RelationshipType> {
+public class RelationshipTypesAdapter extends ListAdapter<RelationshipTypeWrap> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private final RelationshipController relationshipController;
-
 
     public RelationshipTypesAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController) {
         super(activity, textViewResourceId);
@@ -44,34 +45,35 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipType> {
         new BackgroundQueryTask().execute();
     }
 
+    @Override
+    public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+        return getCustomView(position, convertView, parent);
+    }
+
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        RelationshipType relationshipType = getItem(position);
+        return getCustomView(position, convertView, parent);
+    }
+
+    private View getCustomView(int position, View convertView, ViewGroup parent) {
+        RelationshipTypeWrap relationshipTypeWrap = getItem(position);
         Context context = getContext();
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
-            convertView = layoutInflater.inflate(R.layout.item_relationship_type, parent, false);
+            convertView = layoutInflater.inflate(R.layout.item_simple_spinner, parent, false);
             convertView.setClickable(false);
             convertView.setFocusable(false);
             holder = new ViewHolder();
-            holder.btnAIsToB = convertView.findViewById(R.id.aIsToB);
-            holder.btnBIsToA = convertView.findViewById(R.id.bIsToA);
+            holder.tvRelationshipType = convertView.findViewById(R.id.item1);
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if (relationshipType != null) {
-
-            holder.btnAIsToB.setText(relationshipType.getAIsToB());
-
-            if (StringUtils.equalsIgnoreCase(relationshipType.getAIsToB(), relationshipType.getBIsToA())) {
-                holder.btnBIsToA.setVisibility(View.GONE);
-            } else {
-                holder.btnBIsToA.setText(relationshipType.getBIsToA());
-            }
+        if (relationshipTypeWrap != null) {
+            holder.tvRelationshipType.setText(relationshipTypeWrap.getName());
         }
 
         return convertView;
@@ -90,42 +92,56 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipType> {
             inflater = LayoutInflater.from(getContext());
         }
 
-        Button btnAIsToB;
-        Button btnBIsToA;
+        TextView tvRelationshipType;
     }
 
-    private class BackgroundQueryTask extends AsyncTask<String, Void, List<RelationshipType>> {
+    private class BackgroundQueryTask extends AsyncTask<String, Void, List<RelationshipTypeWrap>> {
         @Override
         protected void onPreExecute() {
-            System.out.println("Loading");
             if (backgroundListQueryTaskListener != null) {
                 backgroundListQueryTaskListener.onQueryTaskStarted();
             }
         }
 
         @Override
-        protected List<RelationshipType> doInBackground(String... params) {
-            List<RelationshipType> relationshipTypes = null;
+        protected List<RelationshipTypeWrap> doInBackground(String... params) {
+            List<RelationshipTypeWrap> relationshipTypeWraps = new ArrayList<>();
+            List<RelationshipType> relationshipTypes;
             try {
-               relationshipTypes = relationshipController.getAllRelationshipTypes();
+                relationshipTypes = relationshipController.getAllRelationshipTypes();
+
+                for (RelationshipType relationshipType : relationshipTypes) {
+                    RelationshipTypeWrap typeWrap = new RelationshipTypeWrap(relationshipType.getUuid(), relationshipType.getAIsToB(), "A", relationshipType);
+                    relationshipTypeWraps.add(typeWrap);
+
+                    if (!StringUtils.equalsIgnoreCase(relationshipType.getAIsToB(), relationshipType.getBIsToA())) {
+                        typeWrap = new RelationshipTypeWrap(relationshipType.getUuid(), relationshipType.getBIsToA(), "B", relationshipType);
+                        relationshipTypeWraps.add(typeWrap);
+                    }
+                }
             }catch(RelationshipController.RetrieveRelationshipTypeException e){
                 Log.e(this.getClass().getSimpleName(),"Could not get relationship types",e);
             }
 
-            return relationshipTypes;
+            return relationshipTypeWraps;
         }
 
         @Override
-        protected void onPostExecute(List<RelationshipType> relationshipTypes){
-            if(relationshipTypes==null){
+        protected void onPostExecute(List<RelationshipTypeWrap> relationshipTypeWraps){
+            if(relationshipTypeWraps==null){
                 Toast.makeText(getContext(),getContext().getString(R.string.error_relationship_type_load),Toast.LENGTH_SHORT).show();
                 return;
             }
-            System.out.println("Retrieved " + relationshipTypes.size());
             clear();
-            addAll(relationshipTypes);
+            addAll(sortNameAscending(relationshipTypeWraps));
             notifyDataSetChanged();
-//            backgroundListQueryTaskListener.onQueryTaskFinish();
+
+        }
+
+        private List<RelationshipTypeWrap> sortNameAscending(List<RelationshipTypeWrap> relationshipTypeWraps) {
+            Collections.sort(relationshipTypeWraps);
+            relationshipTypeWraps.add(0, new RelationshipTypeWrap(null, "Choose . . .", null, null));
+            return relationshipTypeWraps;
         }
     }
 }

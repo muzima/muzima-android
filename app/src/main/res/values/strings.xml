@@ -24,13 +24,17 @@
     <string name="concept_description">Concept Descrition</string>
     <string name="concept_details">Concept Details</string>
     <string name="concept_name">Concept Name:</string>
+    <string name="confirm_create_patient_from_person">This will register this person as a client. Are you sure you would like to
+        do this?
+    </string>
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
     <string name="confirm_patient_id_exists">Does the client already have existing ID?</string>
     <string name="date_general">Date</string>
     <string name="date_temp">June 8</string>
     <string name="default_auto_save_interval" translatable="false">2</string>
     <string name="default_form_register">Registration Forms</string>
-    <string name="default_server" translatable="false">http://demo2.muzima.org</string>
+    <string name="default_server" translatable="false">https://demo2.muzima.org</string>
+
     <string name="downloaded_reports">Downloaded Reports</string>
     <string name="downloading_cohorts_text">Downloading Cohorts</string>
     <string name="downloading_forms">Downloading Forms</string>
@@ -186,6 +190,7 @@
     <string name="general_other">Other</string>
     <string name="general_password">Password</string>
     <string name="general_patient_registration">Client Registration</string>
+    <string name="general_person_create">Create Person</string>
     <string name="general_previous">Previous</string>
     <string name="general_progress_message">This might take a while</string>
     <string name="general_providers">Providers</string>
@@ -197,6 +202,7 @@
     <string name="general_save">Save</string>
     <string name="general_saving_forms">Saving Forms</string>
     <string name="general_search">Search</string>
+    <string name="general_searching">Searching…</string>
     <string name="general_server">Server</string>
     <string name="general_settings">Settings</string>
     <string name="general_skip">Skip</string>
@@ -217,6 +223,7 @@
     <string name="header_openmrs_category">OpenMRS Settings</string>
     <string name="header_provider_location_category">Provider/Location Settings</string>
     <string name="hello_general">Hello</string>
+    <string name="help_center">Help Center</string>
     <string name="help_general">Help!</string>
     <string name="hint_advanced_setup">Use a step by step wizard to choose what you want</string>
     <string name="hint_audio_caption">Please enter a caption for the audio</string>
@@ -330,6 +337,7 @@
     <string name="hint_password_prompt">Please Enter Password</string>
     <string name="hint_patient_report_list_download">Please press load to fetch available reports list from server</string>
     <string name="hint_patient_reports_sync">Please select reports from the server list and click sync</string>
+    <string name="hint_person_search">Search person by name or identifier</string>
     <string name="hint_phone_number_validation_failure">Invalid Phone Number. Please check and re-enter</string>
     <string name="hint_provider_not_set">You do not have provider rights or your provider data is not downloaded, please
         use add provider option.
@@ -523,7 +531,7 @@
     <string formatted="false" name="info_observation_patients_downloaded">Downloaded %d observations for 1 client</string>
     <string name="info_observation_search">Search observations</string>
     <string name="info_observation_unavailable">No observations available</string>
-    <string formatted="false" name="info_observations_download_pogress">Downloaded observations for client %d of %d.</string>
+    <string formatted="false" name="info_observations_download_progress">Downloaded observations for client %d of %d.</string>
     <string name="info_observations_load_in_progress">Observations are still loading</string>
     <string formatted="false" name="info_observations_not_downloaded_progress">Observations for client %d of %d not
         downloaded.
@@ -543,6 +551,12 @@
     <string name="info_provider_not_downloaded">Did not download any providers</string>
     <string name="info_provider_unavailable">No providers have been added yet</string>
     <string formatted="false" name="info_providers_downloaded">Downloaded %d providers</string>
+    <string name="info_relationships_delete_success">%d Relationships deleted successfully</string>
+    <string formatted="false" name="info_relationships_download">Downloaded %d relationships for %d client(s).</string>
+    <string formatted="false" name="info_relationships_download_progress">Downloaded relationships for client %d of %d.</string>
+    <string formatted="false" name="info_relationships_not_downloaded_progress">Relationships for client %d of %d not
+        downloaded.
+    </string>
     <string name="info_real_time_upload">mUzima is uploading your data</string>
     <string name="info_real_time_upload_success">mUzima has uploaded your data successfully</string>
     <string name="info_scanner_exists">Barcode scanner is already installed.</string>
@@ -605,14 +619,16 @@
     <string name="provider_name_general">Provider Name</string>
     <string name="provider_reports_general">Provider Reports</string>
     <string name="registering_patient_message_title_text">Registering client in mUzima…</string>
+    <string name="relationship_create_success">Relationship created successfully</string>
+    <string name="relationship_delete_fail">Cannot delete the relationship as it is already saved on the server. Contact the Administrator</string>
+    <string name="relationship_to_self_error">Client cannot relate to him/herself</string>
     <string name="reply_hint_text">send your reply</string>
     <string name="sample_date_rep">21 March 2018</string>
     <string name="sample_date_text">21/02/2018</string>
     <string name="scan_card_id_title">Scan card ID</string>
-    <string name="search_patient_on_server_option_title_text">Client is not avaible locally, would you like to search
-        server?
-    </string>
+    <string name="search_patient_on_server_option_title_text">Client is not available locally, would you like to search server?</string>
     <string name="select_a_registration_form_text">Select a registration form</string>
+    <string name="select_a_relationship_form_text">Select a form</string>
     <string name="send_feedback">Send feedback</string>
     <string name="send_general_text">Send</string>
     <string name="server_side_setup_general">Server side Setup</string>
@@ -642,7 +658,7 @@
     <string name="title_barcode_scanner_setup">Step 6: Check for BarCode Scanner</string>
     <string name="title_client_notifications">Client Notifications</string>
     <string name="title_client_registration_help_video">Client registration</string>
-    <string name="title_client_scan">Scan Clients ID</string>
+    <string name="title_client_scan">Scan Clients BarCode</string>
     <string name="title_cohort_download">Step 1: Download Cohort(s)</string>
     <string name="title_cohort_download_help_video">Cohorts download (on demand)</string>
     <string name="title_cohort_prefix_help">Define Cohorts Prefix(es) Help</string>
@@ -737,6 +753,9 @@
     <string name="warning_registration_form_data_delete">You are about to delete registration data. This will also
         delete client record on device. Are you sure?
     </string>
+    <string name="warning_related_person_missing">Please choose a related person</string>
+    <string name="warning_relationship_exists">Client already has %s:%s relationship with %s</string>
+    <string name="warning_relationship_type_missing">Please choose a relationship type</string>
     <string name="warning_session_timeout">Session Timeout: Could not set session timeout.
         Please enter a value between 1 and 500.
     </string>
@@ -747,4 +766,5 @@
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
+    <string name="autocomplete_server_not_found">Server is unreachable! \nPlease connect your device and try again OR create a new person</string>
 </resources>

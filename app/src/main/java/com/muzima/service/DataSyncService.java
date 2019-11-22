@@ -19,17 +19,11 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.model.APIName;
-import com.muzima.api.model.LastSyncTime;
-import com.muzima.api.model.Patient;
-import com.muzima.api.service.LastSyncTimeService;
-import com.muzima.controller.RelationshipController;
 import com.muzima.api.model.FormData;
 import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
@@ -132,6 +126,7 @@ public class DataSyncService extends IntentService {
                     int[] result = muzimaSyncService.uploadAllCompletedForms();
                     broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_UPLOAD_FORMS);
                     prepareBroadcastMsgForFormUpload(broadcastIntent, result, getString(R.string.info_form_upload_success));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
                 }
                 break;
             case DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA:
@@ -221,6 +216,10 @@ public class DataSyncService extends IntentService {
         //Sync Encounters for all patients
         int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByPatientUUIDs(patientUUIDList, true);
         broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
+
+        //Sync Relationships for all clients
+        int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByPatientUUIDs(patientUUIDList);
+        broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
     }
 
     private void downloadPatientsWithObsAndEncounters(Intent broadcastIntent, String[] patientUUIDs) {
@@ -238,7 +237,7 @@ public class DataSyncService extends IntentService {
             broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
 
             int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByPatientUUIDs(patientUUIDList);
-            broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
+            broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
         }
     }
 
@@ -256,6 +255,7 @@ public class DataSyncService extends IntentService {
 
         if (isSuccess(resultForPatients)) {
             int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByCohortUUIDs(cohortIds);
+            broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
         }
     }
 
@@ -278,7 +278,6 @@ public class DataSyncService extends IntentService {
             broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msg);
             LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
         }
-
     }
 
     private void broadCastMessageForEncounters(Intent broadcastIntent, int[] resultForEncounters) {
@@ -307,6 +306,7 @@ public class DataSyncService extends IntentService {
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
+
     private void broadCastMessageForPatients(Intent broadcastIntent, int[] resultForPatients, String[] patientUUIDs) {
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, resultForPatients[0]);
         if (isSuccess(resultForPatients) && resultForPatients.length > 1) {
@@ -318,6 +318,16 @@ public class DataSyncService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
+    private void broadCastMessageForRelationshipsDownload(Intent broadcastIntent, int[] resultForRelationships) {
+        if (resultForRelationships != null) {
+            String msgForRelationships = getString(R.string.info_relationships_download,resultForRelationships[1] , resultForRelationships[2]);
+            broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msgForRelationships);
+            prepareBroadcastMsg(broadcastIntent, resultForRelationships, msgForRelationships);
+            broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_RELATIONSHIPS);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+        }
+    }
+
     private void prepareBroadcastMsg(Intent broadcastIntent, int[] result, String msg) {
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, result[0]);
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msg);
@@ -325,6 +335,7 @@ public class DataSyncService extends IntentService {
             broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, result[1]);
             updateNotificationMsg(msg);
         }
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
     private void prepareBroadcastMsgForDownloadForms(Intent broadcastIntent, int[] result, String msg) {
@@ -352,14 +363,17 @@ public class DataSyncService extends IntentService {
     private void prepareBroadcastMsgForSettingsDownload(Intent broadcastIntent, int[] result) {
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, result[0]);
         if (isSuccess(result)) {
-            String msg = getString(R.string.info_settings_downloaded,result[1]);
-            broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msg);
-            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, result[1]);
+            if(result[1]>0) {
+                String msg = getString(R.string.info_settings_downloaded, result[1]);
+                broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msg);
+                broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, result[1]);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+            }
         } else {
             String msg = getString(R.string.error_settings_download);
             broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msg);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
         }
-        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
     private boolean authenticationSuccessful(String[] credentials, Intent broadcastIntent) {

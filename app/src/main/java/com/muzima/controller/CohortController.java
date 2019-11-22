@@ -10,6 +10,8 @@
 
 package com.muzima.controller;
 
+import android.util.Log;
+
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.CohortMember;
@@ -168,6 +170,10 @@ public class CohortController {
                 if(StringUtils.isEmpty(cohort.getUuid())){
                     cohortService.saveCohort(cohort);
                 } else {
+                    Cohort localCohort = cohortService.getCohortByUuid(cohort.getUuid());
+                    if(localCohort!=null){
+                        cohort.setSyncStatus(localCohort.getSyncStatus());
+                    }
                     cohortService.updateCohort(cohort);
                 }
             }
@@ -198,7 +204,6 @@ public class CohortController {
             List<Cohort> cohorts = cohortService.getAllCohorts();
             List<Cohort> syncedCohorts = new ArrayList<>();
             for (Cohort cohort : cohorts) {
-                //TODO: Have a has members method to make this more explicit
                 if (isDownloaded(cohort)) {
                     syncedCohorts.add(cohort);
                 }
@@ -211,7 +216,12 @@ public class CohortController {
 
     public boolean isDownloaded(Cohort cohort) {
         try {
-            return cohortService.countCohortMembers(cohort.getUuid()) > 0;
+            Cohort localCohort = cohortService.getCohortByUuid(cohort.getUuid());
+            if(localCohort!=null) {
+                return localCohort.getSyncStatus() == 1;
+            }else{
+                return false;
+            }
         } catch (IOException e) {
             return false;
         }
@@ -245,6 +255,20 @@ public class CohortController {
                 Cohort cohort = cohortService.getCohortByUuid(cohortUuid);
                 if (cohort != null) {
                     cohort.setUpdateAvailable(false);
+                    cohortService.updateCohort(cohort);
+                }
+            }
+        } catch (IOException e){
+            throw new CohortUpdateException(e);
+        }
+    }
+
+    public void setSyncStatus(String[] cohortUuids) throws CohortUpdateException {
+        try {
+            for (String cohortUuid : cohortUuids) {
+                Cohort cohort = cohortService.getCohortByUuid(cohortUuid);
+                if (cohort != null) {
+                    cohort.setSyncStatus(1);
                     cohortService.updateCohort(cohort);
                 }
             }
@@ -300,6 +324,15 @@ public class CohortController {
             return cohortList;
         } catch (IOException e) {
             throw new CohortDownloadException(e);
+        }
+    }
+
+    public List<CohortMember> getCohortMembershipByPatientUuid(String patientUuid) throws CohortFetchException {
+        try {
+            List<CohortMember> cohortMembers = cohortService.getCohortMembershipByPatientUuid(patientUuid);
+            return  cohortMembers;
+        } catch (IOException e) {
+            throw new CohortFetchException(e);
         }
     }
 

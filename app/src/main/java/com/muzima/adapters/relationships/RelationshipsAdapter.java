@@ -23,8 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
+import com.muzima.controller.PatientController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.utils.StringUtils;
 
@@ -35,12 +37,15 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private final String patientUuid;
     private final RelationshipController relationshipController;
+    private final PatientController patientController;
 
 
-    public RelationshipsAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController, String patientUuid) {
+    public RelationshipsAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController,
+                                String patientUuid, PatientController patientController) {
         super(activity, textViewResourceId);
         this.patientUuid = patientUuid;
         this.relationshipController = relationshipController;
+        this.patientController = patientController;
     }
 
     @Override
@@ -62,6 +67,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             holder = new ViewHolder();
             holder.relatedPerson = convertView.findViewById(R.id.relatedPerson);
             holder.relationshipType = convertView.findViewById(R.id.relationshipType);
+            holder.identifier = convertView.findViewById(R.id.identifier);
             holder.genderImg = convertView.findViewById(R.id.genderImg);
             convertView.setTag(holder);
         }else {
@@ -73,11 +79,31 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             holder.relationshipType.setText(relationship.getRelationshipType().getBIsToA());
             int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
             holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+            try {
+                Patient p = patientController.getPatientByUuid(relationship.getPersonB().getUuid());
+                if (p != null){
+                    holder.identifier.setVisibility(View.VISIBLE);
+                    holder.identifier.setText(p.getIdentifier());
+                } else
+                    holder.identifier.setVisibility(View.GONE);
+            } catch (PatientController.PatientLoadException e) {
+                Log.e(this.getClass().getSimpleName(), "Error searching Patient");
+            }
         } else {
             holder.relatedPerson.setText(relationship.getPersonA().getDisplayName());
             holder.relationshipType.setText(relationship.getRelationshipType().getAIsToB());
             int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
             holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+            try {
+                Patient p = patientController.getPatientByUuid(relationship.getPersonA().getUuid());
+                if (p != null){
+                    holder.identifier.setVisibility(View.VISIBLE);
+                    holder.identifier.setText(p.getIdentifier());
+                } else
+                    holder.identifier.setVisibility(View.GONE);
+            } catch (PatientController.PatientLoadException e) {
+                Log.e(this.getClass().getSimpleName(), "Error searching Patient");
+            }
         }
 
         return convertView;
@@ -85,6 +111,41 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
+    }
+
+    public void removeRelationshipsForPatient(String patientUuid, List<Relationship> relationshipsToDelete) {
+        try {
+            List<Relationship> allRelationshipsForPatient = relationshipController.getRelationshipsForPerson(patientUuid);
+            allRelationshipsForPatient.removeAll(relationshipsToDelete);
+            try {
+                relationshipController.deleteRelationships(relationshipsToDelete);
+
+                //foreach relationship if related person is not synced and has no more relationship then, delete the person
+                for (Relationship relationship : relationshipsToDelete) {
+                    Person relatedPerson;
+                    if (StringUtils.equals(relationship.getPersonA().getUuid(), patientUuid)) {
+                        relatedPerson = relationship.getPersonB();
+                    } else {
+                        relatedPerson = relationship.getPersonA();
+                    }
+
+                    if (!relationship.getSynced() &&
+                            relationshipController.getRelationshipsForPerson(relatedPerson.getUuid()).size() < 1 ){
+                        try {
+                            relationshipController.deletePerson(relatedPerson);
+                        } catch (RelationshipController.DeletePersonException e) {
+                            Log.e(getClass().getSimpleName(), "Error while deleting last person", e);
+                        }
+                    }
+                }
+            } catch (RelationshipController.DeleteRelationshipException e) {
+                Log.e(getClass().getSimpleName(), "Error while deleting the relationships", e);
+            }
+            clear();
+            addAll(allRelationshipsForPatient);
+        } catch (RelationshipController.RetrieveRelationshipException e) {
+            Log.e(getClass().getSimpleName(), "Error while fetching the relationships", e);
+        }
     }
 
     class ViewHolder {
@@ -98,6 +159,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
 
         TextView relatedPerson;
         TextView relationshipType;
+        TextView identifier;
         ImageView genderImg;
     }
 
