@@ -26,6 +26,7 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.CohortController;
@@ -35,6 +36,7 @@ import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
@@ -82,6 +84,7 @@ class HTMLFormDataStore {
     private final MuzimaSettingController settingController;
     private final CohortController cohortController;
     private final PatientController patientController;
+    private final PersonController personController;
 
     public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormData formData, boolean isFormReload, MuzimaApplication application) {
         this.formWebViewActivity = formWebViewActivity;
@@ -96,6 +99,7 @@ class HTMLFormDataStore {
         this.observationController = application.getObservationController();
         this.cohortController = application.getCohortController();
         this.patientController = application.getPatientController();
+        this.personController = application.getPersonController();
         this.application = application;
         logFormStartEvent(isFormReload);
     }
@@ -169,7 +173,7 @@ class HTMLFormDataStore {
                     logFormSaveEvent(status);
                 }
             } else {
-                String missingMandatoryEncounterDetailsMessage = checkMisssingMandatoryEncounterDetails(jsonPayload);
+                String missingMandatoryEncounterDetailsMessage = checkMissingMandatoryEncounterDetails(jsonPayload);
                 String message = missingMandatoryEncounterDetailsMessage.concat(" ");
                 message = message.concat(formWebViewActivity.getString(R.string.message_missing_form_encounter_details_error));
 
@@ -285,10 +289,8 @@ class HTMLFormDataStore {
         List<Encounter> encounters = new ArrayList<>();
         try {
             encounters = encounterController.getEncountersByPatientUuid(patientuuid);
-        } catch (EncounterController.DownloadEncounterException e) {
+        } catch (EncounterController.DownloadEncounterException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading encounters", e);
-        } catch (Exception e) {
-            Log.e(getClass().getSimpleName(), "ExceptioJSONValuen occurred while loading encounters", e);
         }
         return JSONValue.toJSONString(encounters);
     }
@@ -516,7 +518,7 @@ class HTMLFormDataStore {
         return jsonPayload;
     }
 
-    private String checkMisssingMandatoryEncounterDetails(String jsonPayLoad) {
+    private String checkMissingMandatoryEncounterDetails(String jsonPayLoad) {
         String message = "";
         try {
             JSONObject jsonObject = new JSONObject(jsonPayLoad);
@@ -555,7 +557,6 @@ class HTMLFormDataStore {
     @JavascriptInterface
     public String getLastKnowGPSLocation(String jsonReturnType) {
         String gps_location_string = "Unknown Error Occured!";
-
         MuzimaGPSLocationService muzimaLocationService = application.getMuzimaGPSLocationService();
         if (muzimaLocationService.isGPSLocationFeatureEnabled()) {
             if (muzimaLocationService.isGPSLocationPermissionsGranted()) {
@@ -580,14 +581,12 @@ class HTMLFormDataStore {
                 } else {
                     return "Location service disabled by user";
                 }
-
             } else {
                 return "Location Permissions Denied By User.";
             }
         } else {
             return "GPS Feature is Disabled by User";
         }
-
     }
 
     @JavascriptInterface
@@ -695,4 +694,14 @@ class HTMLFormDataStore {
         }
     };
 
+    @JavascriptInterface
+    public void createPersonAndDiscardHTML(String jsonPayload) {
+        try {
+            personController.createNewPerson(application, jsonPayload, formData.getPatientUuid());
+            formWebViewActivity.finish();
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while parsing object", e);
+        }
+
+    }
 }

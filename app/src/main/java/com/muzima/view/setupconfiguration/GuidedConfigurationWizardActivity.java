@@ -32,6 +32,7 @@ import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.JsonUtils;
+import com.muzima.utils.Constants;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 
@@ -195,7 +196,14 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 List<String> uuids = extractCohortsUuids();
                 if (!uuids.isEmpty()){
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                    return muzimaSyncService.downloadPatientsForCohorts(uuids.toArray(new String[uuids.size()]));
+                    int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(uuids.toArray(new String[uuids.size()]));
+
+                    if (resultForPatients[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                        muzimaSyncService.downloadRelationshipsTypes();
+                        muzimaSyncService.downloadRelationshipsForPatientsByCohortUUIDs(uuids.toArray(new String[uuids.size()]));
+                    }
+
+                    return resultForPatients;
                 }
                 return null;
             }
@@ -207,11 +215,11 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     resultDescription = getString(R.string.info_cohort_patient_not_download);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else if (result[0] == SyncStatusConstants.SUCCESS) {
-                    if(result[1] == 1 && result[2] == 1){
+                    if(result[1] == 1 && result[2] == 1) {
                         resultDescription = getString(R.string.info_cohort_patient_download);
-                    } else if(result[1] == 1){
+                    } else if(result[1] == 1) {
                         resultDescription = getString(R.string.info_cohorts_patient_download, result[2]);
-                    } else if(result[2] == 1){
+                    } else if(result[2] == 1) {
                         resultDescription = getString(R.string.info_cohort_patients_download, result[1]);
                     } else {
                         resultDescription = getString(R.string.info_cohorts_patients_download, result[1],result[2]);
@@ -259,7 +267,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                         resultDescription = getString(R.string.info_forms_downloaded, result[1]);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else{
+                } else {
                     wizardcompletedSuccessfully=false;
                     resultDescription = getString(R.string.error_form_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;

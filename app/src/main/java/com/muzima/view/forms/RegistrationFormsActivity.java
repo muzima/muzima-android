@@ -24,18 +24,22 @@ import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.UUID;
 
 public class RegistrationFormsActivity extends BaseActivity {
     private RegistrationFormsAdapter registrationFormsAdapter;
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private Patient patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_form_list);
+
+        patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
 
         FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
         AvailableForms availableForms = getRegistrationForms(formController);
@@ -71,10 +75,12 @@ public class RegistrationFormsActivity extends BaseActivity {
     }
 
     private void startWebViewActivity(AvailableForm form) {
-        Patient patient = new Patient();
-        String uuid = String.valueOf(UUID.randomUUID());
-        patient.setUuid(uuid);
-        startActivity(new FormViewIntent(this, form, patient));
+        if (patient == null) {
+            patient = new Patient();
+            patient.setUuid(String.valueOf(UUID.randomUUID()));
+        }
+        startActivity(new FormViewIntent(this, form, patient, false));
+        finish();
     }
 
     private AvailableForms getRegistrationForms(FormController formController) {

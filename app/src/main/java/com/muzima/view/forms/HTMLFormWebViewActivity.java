@@ -20,17 +20,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.view.Menu;
-import android.view.MenuItem;
-
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -40,10 +40,11 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
 import com.muzima.controller.FormController;
-import com.muzima.controller.ObservationController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.service.MuzimaGPSLocationService;
+import com.muzima.utils.Constants;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
@@ -53,7 +54,6 @@ import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
-
 import org.apache.commons.lang.time.DateUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,9 +86,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final boolean IS_ALLOWED_FORM_DATA_DUPLICATION = true;
     private static final String SAVE_AS_INCOMPLETE = "saveDraft";
     private static final String SAVE_AS_COMPLETED = "submit";
-
-    private GoogleApiClient googleApiClient;
-    final static int REQUEST_LOCATION = 199;
+    public static final String POPUP = "popup";
 
     private WebView webView;
     private Form form;
@@ -118,7 +116,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         super.onCreate(savedInstanceState);
 
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
-       ObservationController observationController = ((MuzimaApplication) this.getApplicationContext()).getObservationController();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
@@ -130,6 +127,15 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         videoResultMap = new HashMap<>();
 
         setContentView(R.layout.activity_form_webview);
+        if(getIntent().getSerializableExtra(POPUP) != null) {
+            if (getIntent().getSerializableExtra(POPUP).equals(true)) {
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                int height = (int) (displayMetrics.heightPixels * 0.9);
+                int width = (int) (displayMetrics.widthPixels * 0.9);
+                getWindow().setLayout(width, height);
+            }
+        }
 
         progressDialog = new MuzimaProgressDialog(this);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
@@ -147,7 +153,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             Log.e(getClass().getSimpleName(), t.getMessage(), t);
         }
         super.onStart();
-
     }
 
     @Override
@@ -212,6 +217,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             getMenuInflater().inflate(R.menu.menu_completed_registration_form, menu);
         } else {
             getMenuInflater().inflate(R.menu.menu_save_form, menu);
+            if (StringUtils.equals(form.getDiscriminator(), Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP)) {
+                menu.findItem(R.id.form_save_as_draft).setVisible(false);
+            }
         }
         return true;
     }
@@ -253,7 +261,11 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 saveDraft();
                 return true;
             case R.id.form_submit:
-                saveCompleted();
+                if (StringUtils.equals(form.getDiscriminator(), Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP)) {
+                    saveMiniForm();
+                } else {
+                    saveCompleted();
+                }
                 return true;
             case R.id.form_close:
                 processBackButtonPressed();
@@ -333,6 +345,10 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     private void saveCompleted() {
         webView.loadUrl("javascript:document.submit()");
+    }
+
+    private void saveMiniForm() {
+        webView.loadUrl("javascript:document.saveMiniForm()");
     }
 
     @Override
@@ -423,7 +439,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData, user, encounterProviderPreference));
         }
     }
-
 
     private void setupWebView() {
         webView = findViewById(R.id.webView);

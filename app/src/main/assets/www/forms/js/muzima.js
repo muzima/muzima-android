@@ -216,6 +216,24 @@ $(document).ready(function () {
         }
     };
 
+    document.saveMiniForm = function () {
+        var repeatingSections = $('.repeat');
+        var showErrorMessageIfInvalid = true;
+        var validForm = $("form").valid() && document.multipleSectionRepeatsValidationCheck(repeatingSections,showErrorMessageIfInvalid);
+        if (typeof $.fn.customValidationCheck !== 'undefined' && typeof $.fn.customValidationCheck === 'function') {
+            validForm = validForm && $.fn.customValidationCheck();
+        }
+        if (validForm) {
+            $(this).find('input:text').each(function(){
+                $(this).val($.trim($(this).val()));
+            });
+            var jsonData = JSON.stringify($('form').serializeEncounterForm());
+            htmlDataStore.createPersonAndDiscardHTML(jsonData);
+        } else {
+            addValidationMessage();
+        }
+    };
+
     document.autoSaveForm = function () {
         save("incomplete", true);
     };

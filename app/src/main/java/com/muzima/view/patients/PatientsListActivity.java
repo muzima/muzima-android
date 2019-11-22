@@ -87,7 +87,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
         ListAdapter.BackgroundListQueryTaskListener {
 
@@ -136,7 +135,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private PatientTagsListAdapter tagsListAdapter;
     private TagPreferenceService tagPreferenceService;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
@@ -151,9 +149,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             quickSearch = intentExtras.getBoolean(QUICK_SEARCH);
             cohortId = intentExtras.getString(COHORT_ID);
             String title = intentExtras.getString(COHORT_NAME);
-            if (title != null) {
+            if (title != null)
                 setTitle(title);
-            }
         }
 
         progressBarContainer = findViewById(R.id.progressbarContainer);
@@ -189,7 +186,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         muzimaSyncService = muzimaApplication.getMuzimaSyncService();
         patientController = muzimaApplication.getPatientController();
-        CohortController cohortController = muzimaApplication.getCohortController();
         serverSearchProgressDialog = new ProgressDialog(this);
 
         serverSearchProgressDialog.setCancelable(false);
@@ -200,7 +196,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         initDrawer();
         logEvent("VIEW_CLIENT_LIST","{\"cohortId\":\""+cohortId+"\"}");
     }
-
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -235,7 +230,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         MenuItem shrCardItem = menu.findItem(R.id.scan_SHR_card);
         if(isSHRSettingEnabled()) {
             shrCardItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS);
-        }else{
+        } else {
             shrCardItem.setVisible(false);
         }
         searchMenuItem = menu.findItem(R.id.search);
@@ -255,7 +250,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 patientAdapter.search(s.trim());
                 return true;
             }
-
         });
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -288,7 +282,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     }, 500);
                     searchMenuItem.setVisible(false);
                 }
-
             }
         });
 
@@ -301,19 +294,17 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void activateRemoteAfterThreeCharacterEntered(String searchString) {
-        if (searchString.trim().length() < 3) {
+        if (searchString.trim().length() < 3)
             searchServerLayout.setVisibility(View.INVISIBLE);
-        } else {
+        else
             searchServerLayout.setVisibility(View.VISIBLE);
-        }
     }
 
     // Confirmation dialog for confirming if the patient have an existing ID
     private void callConfirmationDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(PatientsListActivity.this);
-        builder
-                .setCancelable(true)
+        builder.setCancelable(true)
                 .setIcon(ThemeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
                 .setMessage(getResources().getString(R.string.confirm_patient_id_exists))
@@ -423,7 +414,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 //todo integrate progress dialog.
                 serverSearchProgressDialog.setMessage("Searching server...");
                 serverSearchProgressDialog.show();
-
             }
         });
 
@@ -433,7 +423,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 localSearchResultNotifyAlertDialog.cancel();
                 localSearchResultNotifyAlertDialog.dismiss();
                 registerSHRPatientLocallyDialog.show();
-
             }
         });
     }
@@ -481,8 +470,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private void setupListView(String cohortId) {
         listView = findViewById(R.id.list);
-        patientAdapter = new PatientsLocalSearchAdapter(this,
-                R.layout.layout_list,
+        patientAdapter = new PatientsLocalSearchAdapter(this, R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), cohortId);
         patientAdapter.setBackgroundListQueryTaskListener(this);
         listView.setAdapter(patientAdapter);
@@ -536,7 +524,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
         Log.e(getClass().getSimpleName(), "Cancelled...");
-
     }
 
     private void invokeBarcodeScan() {
@@ -570,14 +557,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                                 public void onClick(View v) {
                                     readSmartCard();
                                 }
-                            })
-                            .show();
+                            }).show();
                 }
                 break;
             default:
                 break;
         }
-
     }
 
     private void processSmartCardReadResult(int requestCode, int resultCode, Intent dataIntent) {
@@ -596,7 +581,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         if (cardReadIntentResult.isSuccessResult()) {
             smartCardRecord = cardReadIntentResult.getSmartCardRecord();
             if (smartCardRecord != null) {
-                boolean intentSHRResults = false;
                 String SHRPayload = smartCardRecord.getPlainPayload();
                 if(!SHRPayload.equals("") && !SHRPayload.isEmpty()) {
                     try {
@@ -609,16 +593,14 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                             if (cardNumberIdentifier == null) {
                                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
                                 alertBuilder.setMessage("Could not find Card Serial number in shared health record")
-                                        .setCancelable(true)
-                                        .show();
+                                        .setCancelable(true).show();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
                                 prepareRegisterLocallyDialog();
                                 prepareLocalSearchNotifyDialog(SHRPatient);
                                 executeLocalPatientSearchInBackgroundTask();
                             }
-                        }
-                        else {
+                        } else {
                             Toast.makeText(getApplicationContext(), "This card seems to be blank", Toast.LENGTH_LONG).show();
                         }
                     } catch (KenyaEmrShrMapper.ShrParseException e) {
@@ -633,8 +615,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                         public void onClick(View v) {
                             readSmartCard();
                         }
-                    })
-                    .show();
+                    }).show();
         }
     }
 
@@ -666,8 +647,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     class BackgroundPatientDownloadTask extends AsyncTask<Void, Void, Void> {
 
-        Patient downloadedPatient = null;
-
         @Override
         protected Void doInBackground(Void... voids) {
             String[] uuids = {SHRToMuzimaMatchingPatient.getUuid()};
@@ -684,8 +663,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     class BackgroundPatientServerSearchQueryTask extends AsyncTask<Void, Void, Patient> {
-
-        Patient foundPatient = null;
 
         @Override
         protected void onPreExecute() {
@@ -727,7 +704,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         }
     }
 
-
     private class BackgroundPatientLocalSearchQueryTask extends AsyncTask<Void, Void, Patient> {
 
         Patient foundPatient = null;
@@ -765,12 +741,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             SHRToMuzimaMatchingPatient = foundPatient;
             if (SHRToMuzimaMatchingPatient == null) {
                 localSearchResultNotifyAlertDialog.show();
-
-                // executePatientServerSearchInBackgroundQueryTask();
             }
 
-            if (SHRToMuzimaMatchingPatient == null) {
-            } else {
+            if (SHRToMuzimaMatchingPatient != null) {
                 Toast.makeText(getApplicationContext(), "Found Patient SHR Record " + SHRPatient.getGivenName(), Toast.LENGTH_LONG);
                 try {
                     try {
@@ -797,7 +770,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 startActivity(intent);
             }
         }
-
     }
 
     private class RegisterPatientBackgroundTask extends AsyncTask<Void, Void, Boolean> {
@@ -832,19 +804,15 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     e.printStackTrace();
                 }
                 Log.e(getClass().getSimpleName(), "Patient registered");
-
             }
             return true;
         }
-
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             if (patientRegistrationProgressDialog != null){
                 patientRegistrationProgressDialog.dismiss();
                 patientRegistrationProgressDialog.cancel();
-            }else {
-
             }
 
             Intent intent = new Intent(PatientsListActivity.this, PatientSummaryActivity.class);

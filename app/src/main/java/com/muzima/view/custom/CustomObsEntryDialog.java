@@ -172,7 +172,7 @@ public class CustomObsEntryDialog extends Dialog {
                                 Log.e("", "Error While Saving Form Data" + e);
                             }
 
-                            Toast.makeText(getContext( ), concept.getName( ) + " observation saved succesfully.", Toast.LENGTH_SHORT).show( );
+                            Toast.makeText(getContext( ), concept.getName( ) + " observation saved successfully.", Toast.LENGTH_SHORT).show( );
                             Intent intent = new Intent(context,ObservationsActivity.class);
                             intent.putExtra(PatientSummaryActivity.PATIENT,patient);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

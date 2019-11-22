@@ -26,7 +26,9 @@ import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LocationService;
 import com.muzima.api.service.NotificationService;
 import com.muzima.api.service.ObservationService;
+import com.muzima.api.service.PersonService;
 import com.muzima.api.service.ProviderService;
+import com.muzima.api.service.RelationshipService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -37,7 +39,9 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
+import com.muzima.controller.RelationshipController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
@@ -86,6 +90,8 @@ public class MuzimaApplication extends MultiDexApplication {
     private MuzimaSettingController settingsController;
     private SmartCardController smartCardController;
     private PatientReportController patientReportController;
+    private RelationshipController relationshipController;
+    private PersonController personController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -367,6 +373,29 @@ public class MuzimaApplication extends MultiDexApplication {
             gpsFeaturePreferenceService = new GPSFeaturePreferenceService(this);
         }
         return gpsFeaturePreferenceService;
+    }
+
+    public RelationshipController getRelationshipController() {
+        if (relationshipController == null) {
+            try {
+                relationshipController = new RelationshipController(muzimaContext.getService(RelationshipService.class),
+                        muzimaContext.getService(PersonService.class));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return relationshipController;
+    }
+
+    public PersonController getPersonController() {
+        if (personController == null) {
+            try {
+                personController = new PersonController(muzimaContext.getService(PersonService.class));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return personController;
     }
 
     public void resetTimer(int timeOutInMin) {

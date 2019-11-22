@@ -32,6 +32,8 @@ import com.muzima.api.model.PatientReport;
 import com.muzima.api.model.PatientReportHeader;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.MuzimaSetting;
+import com.muzima.api.model.Relationship;
+import com.muzima.api.model.RelationshipType;
 import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.CohortController;
@@ -45,6 +47,7 @@ import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
+import com.muzima.controller.RelationshipController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
@@ -87,6 +90,7 @@ public class MuzimaSyncService {
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController settingsController;
     private PatientReportController patientReportController;
+    private RelationshipController relationshipController;
     private Logger logger;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
@@ -104,6 +108,7 @@ public class MuzimaSyncService {
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
         settingsController = muzimaApplication.getMuzimaSettingController();
         patientReportController = muzimaApplication.getPatientReportController();
+        relationshipController = muzimaApplication.getRelationshipController();
     }
 
     public int authenticate(String[] credentials){
@@ -532,6 +537,7 @@ public class MuzimaSyncService {
             downloadRemovedCohortMembershipData(cohortUuids);
 
             cohortController.markAsUpToDate(cohortUuids);
+            cohortController.setSyncStatus(cohortUuids);
         } catch (CohortController.CohortDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading cohort data.", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
@@ -643,7 +649,7 @@ public class MuzimaSyncService {
                         patientUuidsForDownloadedObs.add(observation.getPerson().getUuid());
                     }
 
-                    updateProgressDialog(muzimaApplication.getString(R.string.info_observations_download_pogress, patientUuidsForDownloadedObs.size(), patientUuids.size()));
+                    updateProgressDialog(muzimaApplication.getString(R.string.info_observations_download_progress, patientUuidsForDownloadedObs.size(), patientUuids.size()));
 
                     Log.i(getClass().getSimpleName(), "Downloading observations for " + slicedPatientUuid.size() + " patients and " +slicedConceptUuid.size() +" concepts");
                     long endDownloadObservations = System.currentTimeMillis();
@@ -847,6 +853,7 @@ public class MuzimaSyncService {
             }
         }
     }
+
     public List<FormData> getArchivedFormData() {
         try{
             return formController.getArchivedFormData();
@@ -1142,5 +1149,91 @@ public class MuzimaSyncService {
                 new RequireMedicalRecordNumberPreferenceService(muzimaApplication).updateRequireMedicalRecordNumberPreference();
             }
         }
+    }
+
+    public int[] downloadRelationshipsTypes() {
+        if (!settingsController.isRelationshipEnabled())
+            return null;
+
+        int[] result = new int[3];
+        try {
+            Log.i(getClass().getSimpleName(), "Downloading relationships Types");
+            List<RelationshipType> relationshipTypes  = new ArrayList<>(relationshipController.downloadAllRelationshipTypes());
+            Log.i(getClass().getSimpleName(), "Relationship Types download successful with " + relationshipTypes.size() + " types");
+            result[1] += relationshipTypes.size();
+
+            relationshipController.saveRelationshipTypes(relationshipTypes);
+            result[0] = SUCCESS;
+        } catch (RelationshipController.RetrieveRelationshipTypeException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while downloading relationship types.", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+        } catch (RelationshipController.SaveRelationshipTypeException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while saving relationship types.", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+        }
+        return result;
+    }
+
+    public int[] downloadRelationshipsForPatientsByPatientUUIDs(List<String> patientUuids) {
+        if (!settingsController.isRelationshipEnabled())
+            return null;
+
+        int[] result = new int[3];
+        result[2] = patientUuids.size();
+        try {
+            Log.i(getClass().getSimpleName(), "Downloading relationships for "+ patientUuids.size() + " patients");
+            for (String patientUuid : patientUuids) {
+                Log.i(getClass().getSimpleName(), "Downloading relationships for " + patientUuid);
+                long startDownloadRelationships = System.currentTimeMillis();
+                List<Relationship> patientRelationships  = new ArrayList<>(relationshipController.downloadRelationshipsForPerson(patientUuid));
+
+                long endDownloadRelationships = System.currentTimeMillis();
+                Log.d(getClass().getSimpleName(), "In Downloading relationships : " + (endDownloadRelationships - startDownloadRelationships) / 1000 + " sec\n");
+
+                Log.i(getClass().getSimpleName(), "Relationships download successful with " + patientRelationships.size() + " relationships");
+                result[1] += patientRelationships.size();
+
+                relationshipController.saveRelationships(patientRelationships, patientUuid);
+            }
+            result[0] = SUCCESS;
+        } catch (RelationshipController.RetrieveRelationshipException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while downloading relationships.", e);
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+        } catch (RelationshipController.SaveRelationshipException | RelationshipController.SearchRelationshipException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while saving relationships.", e);
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+        }
+        return result;
+    }
+
+    public int[] downloadRelationshipsForPatientsByCohortUUIDs(String[] cohortUuids) {
+        if (!settingsController.isRelationshipEnabled())
+            return null;
+
+        int[] result = new int[3];
+        List<Patient> patients;
+        try {
+            patients = patientController.getPatientsForCohorts(cohortUuids);
+            int patientsTotal = patients.size();
+
+            int count = 0;
+            List<String> patientList = new ArrayList();
+            for(Patient patient : patients){
+                count++;
+                Log.i(getClass().getSimpleName(), "Downloading relationships for patient " + count + " of "+ patientsTotal);
+                updateProgressDialog(muzimaApplication.getString(R.string.info_relationships_download_progress, count, patientsTotal));
+                patientList.add(patient.getUuid());
+            }
+            result = downloadRelationshipsForPatientsByPatientUUIDs(patientList);
+            if(result[0] != SUCCESS){
+                Log.e(getClass().getSimpleName(), "Relationships for patient " + count + " of "+ patientsTotal + " not downloaded");
+                updateProgressDialog(muzimaApplication.getString(R.string.info_relationships_not_downloaded_progress, count, patientsTotal));
+
+            }
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while downloading relationships for patients.", e);
+            result[0] = SyncStatusConstants.LOAD_ERROR;
+        }
+        return result;
     }
 }

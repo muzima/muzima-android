@@ -45,4 +45,7 @@ public class AutoCompleteLocationAdapter extends AutoCompleteBaseAdapter<Locatio
     protected String getOptionName(Location location) {
         return location.getName();
     }
+
+    @Override
+    protected void filterComplete(int count) {}
 }

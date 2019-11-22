@@ -24,7 +24,6 @@ import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -33,10 +32,11 @@ import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS_DATA;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.hasItem;
-import static org.mockito.Matchers.anyString;
+
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -59,7 +59,6 @@ public class CohortControllerTest {
         lastSyncTimeService = mock(LastSyncTimeService.class);
         sntpService = mock(SntpService.class);
         controller = new CohortController(cohortService, lastSyncTimeService, sntpService);
-        LastSyncTime lastSyncTime = mock(LastSyncTime.class);
         anotherMockDate = mock(Date.class);
         mockDate = mock(Date.class);
     }
@@ -190,7 +189,7 @@ public class CohortControllerTest {
     }
 
     @Test
-    public void downloadFormTemplates_shouldDownloadAllFormTemplates() throws IOException, CohortController.CohortDownloadException {
+    public void downloadCohortDataAndSyncDate_shouldDownloadDeltaCohortDataBySyncDate() throws IOException, CohortController.CohortDownloadException {
         String[] uuids = new String[]{"uuid1", "uuid2"};
         CohortData cohortData1 = new CohortData();
         CohortData cohortData2 = new CohortData();
@@ -325,11 +324,30 @@ public class CohortControllerTest {
     @Test
     public void getSyncedCohortsCount_shouldReturnTotalNumberOfSyncedCohorts() throws IOException, CohortController.CohortFetchException {
         List<Cohort> cohorts = new ArrayList<>();
-        cohorts.add(new Cohort());
+        Cohort cohort1 = new Cohort() {{
+            setUuid("uuid1");
+            setSyncStatus(1);
+        }};
+
+        Cohort cohort2 = new Cohort() {{
+            setUuid("uuid2");
+            setSyncStatus(1);
+        }};
+
+        Cohort cohort3 = new Cohort() {{
+            setUuid("uuid3");
+            setSyncStatus(0);
+        }};
+
+        cohorts.add(cohort1);
+        cohorts.add(cohort2);
+        cohorts.add(cohort3);
 
         when(cohortService.getAllCohorts()).thenReturn(cohorts);
-        when(cohortService.countCohortMembers(anyString())).thenReturn(2);
-        assertThat(controller.countSyncedCohorts(), is(1));
+        when(cohortService.getCohortByUuid("uuid1")).thenReturn(cohort1);
+        when(cohortService.getCohortByUuid("uuid2")).thenReturn(cohort2);
+        when(cohortService.getCohortByUuid("uuid3")).thenReturn(cohort3);
+        assertThat(controller.countSyncedCohorts(), is(2));
     }
 
     @Test
@@ -342,18 +360,56 @@ public class CohortControllerTest {
     }
 
     @Test
-    public void getSyncedCohorts_shouldReturnTheCohortsWhichHaveMoreThanOneMember() throws IOException, CohortController.CohortFetchException {
-        Cohort cohort = new Cohort();
-        when(cohortService.getAllCohorts()).thenReturn(Collections.singletonList(cohort));
-        when(cohortService.countCohortMembers(anyString())).thenReturn(1);
-        assertThat(controller.getSyncedCohorts(), hasItem(cohort));
+    public void getSyncedCohorts_shouldReturnTheCohortsWhichHaveSyncStatusOne() throws IOException, CohortController.CohortFetchException {
+        List<Cohort> cohorts = new ArrayList<>();
+        Cohort cohort1 = new Cohort() {{
+            setUuid("uuid1");
+            setSyncStatus(1);
+        }};
+
+        Cohort cohort2 = new Cohort() {{
+            setUuid("uuid2");
+            setSyncStatus(1);
+        }};
+
+        Cohort cohort3 = new Cohort() {{
+            setUuid("uuid3");
+            setSyncStatus(0);
+        }};
+
+        cohorts.add(cohort1);
+        cohorts.add(cohort2);
+        cohorts.add(cohort3);
+
+        when(cohortService.getAllCohorts()).thenReturn(cohorts);
+        when(cohortService.getCohortByUuid("uuid1")).thenReturn(cohort1);
+        when(cohortService.getCohortByUuid("uuid2")).thenReturn(cohort2);
+        when(cohortService.getCohortByUuid("uuid3")).thenReturn(cohort3);
+        assertThat(controller.getSyncedCohorts(), hasItem(cohort1));
+        assertThat(controller.getSyncedCohorts(), hasItem(cohort2));
+        assertThat(controller.getSyncedCohorts(), not(hasItem(cohort3)));
     }
 
     @Test
-    public void getSyncedCohorts_shouldNotReturnCohortsIfTheyHaveNoMembers() throws IOException, CohortController.CohortFetchException {
-        Cohort cohort = new Cohort();
-        when(cohortService.getAllCohorts()).thenReturn(Collections.singletonList(cohort));
-        when(cohortService.countCohortMembers(anyString())).thenReturn(0);
+    public void getSyncedCohorts_shouldNotReturnCohortsIfTheyHaveSyncStatusZero() throws IOException, CohortController.CohortFetchException {
+        List<Cohort> cohorts = new ArrayList<>();
+        Cohort cohort1 = new Cohort() {{
+            setUuid("uuid1");
+            setSyncStatus(0);
+        }};
+
+        Cohort cohort2 = new Cohort() {{
+            setUuid("uuid2");
+            setSyncStatus(0);
+        }};
+
+        cohorts.add(cohort1);
+        cohorts.add(cohort2);
+
+        when(cohortService.getAllCohorts()).thenReturn(cohorts);
+        when(cohortService.getCohortByUuid("uuid1")).thenReturn(cohort1);
+        when(cohortService.getCohortByUuid("uuid2")).thenReturn(cohort2);
+
         assertThat(controller.getSyncedCohorts().size(), is(0));
     }
 }

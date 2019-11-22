@@ -97,7 +97,7 @@ public class CompletePatientsFormsListFragment extends FormsListFragment impleme
 
     @Override
     public void onItemClick(int position) {
-        FormViewIntent intent = new FormViewIntent(getActivity(), (CompleteForm) listAdapter.getItem(position), patient);
+        FormViewIntent intent = new FormViewIntent(getActivity(), (CompleteForm) listAdapter.getItem(position), patient ,false);
         intent.putExtra(FormViewIntent.FORM_COMPLETION_STATUS_INTENT, FormViewIntent.FORM_COMPLETION_STATUS_COMPLETE);
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }

@@ -56,7 +56,7 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        FormViewIntent intent = new FormViewIntent(getActivity(), (AvailableForm) listAdapter.getItem(position), patient);
+        FormViewIntent intent = new FormViewIntent(getActivity(), (AvailableForm) listAdapter.getItem(position), patient, false);
         intent.putExtra(FormViewIntent.FORM_COMPLETION_STATUS_INTENT,FormViewIntent.FORM_COMPLETION_STATUS_RECOMMENDED);
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
