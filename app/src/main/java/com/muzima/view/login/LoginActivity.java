@@ -150,6 +150,7 @@ public class LoginActivity extends Activity {
         super.onResume();
         themeUtils.onResume(this);
         setupStatusView();
+        initializeGpsDataCollection();
     }
 
     private void setupStatusView() {
@@ -306,7 +307,6 @@ public class LoginActivity extends Activity {
         protected void onPostExecute(Result result) {
             MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
             if (result.status == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
-                initializeGpsDataCollection();
                 MuzimaLoggerService.scheduleLogSync(muzimaApplication);
                 MuzimaLoggerService.log(muzimaApplication,"LOGIN_SUCCESS",
                         result.credentials.getUserName(),MuzimaLoggerService.getAndParseGpsLocationForLogging(muzimaApplication), "{}");

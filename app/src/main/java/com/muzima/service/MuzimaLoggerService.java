@@ -10,6 +10,7 @@ import com.muzima.api.model.User;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.util.MuzimaLogger;
+import net.minidev.json.JSONObject;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -18,8 +19,6 @@ import java.util.Timer;
 import java.util.UUID;
 
 import static com.muzima.util.Constants.ServerSettings.LOGGING_FEATURE_ENABLED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.LOGGING_SERVER_CONNECTION_KEY_SETTING;
-import static com.muzima.util.Constants.ServerSettings.LOGGING_SERVER_URL_SETTING;
 
 public class MuzimaLoggerService {
     private static String pseudoDeviceId = null;
@@ -47,21 +46,16 @@ public class MuzimaLoggerService {
 
     public static void log(final MuzimaApplication muzimaApplication, final String tag, final String userId, final String gpsLocation, final String details){
         if(isLoggingFeatureEnabled(muzimaApplication)) {
+
             new AsyncTask<Void, Void, Void>() {
                 protected Void doInBackground(Void... voids) {
                     String deviceId = getPseudoDeviceId();
-                    long timestamp = muzimaApplication.getSntpService().getLocalTime(2000).getTime();
-                    String timestampProvider;
+                    JSONObject timestamp = new JSONObject(){{
+                        put("sntpTimestamp",muzimaApplication.getSntpService().getLocalTime(1000).getTime());
+                        put("systemTimestamp",System.currentTimeMillis());
+                    }};
 
-                    if(timestamp != 0){
-                        timestampProvider = "sntpClient";
-                    } else {
-                        timestamp = System.currentTimeMillis();
-                        timestampProvider = "SystemCurrentTimeMillis";
-                    }
-
-                    MuzimaLogger.log(muzimaApplication.getMuzimaContext(), tag, userId, gpsLocation, details, deviceId,timestamp,timestampProvider);
-                    return null;
+                    MuzimaLogger.log(muzimaApplication.getMuzimaContext(), tag, userId, gpsLocation, details, deviceId,timestamp.toJSONString());                    return null;
                 }
             }.execute();
         }
@@ -81,10 +75,7 @@ public class MuzimaLoggerService {
 
     public static void scheduleLogSync(final MuzimaApplication muzimaApplication) {
         if (isLoggingFeatureEnabled(muzimaApplication)) {
-            if (timer == null) {
-                timer = new java.util.Timer();
-            }
-
+            timer = new java.util.Timer();
             timer.schedule(
                 new java.util.TimerTask() {
 
@@ -102,7 +93,7 @@ public class MuzimaLoggerService {
                             }
                         }.execute();
                     }
-                }, 10000, 120000
+                }, 30000, 120000
             );
         }
     }
@@ -114,33 +105,17 @@ public class MuzimaLoggerService {
     }
 
     private static boolean isLoggingFeatureEnabled(final MuzimaApplication muzimaApplication){
-        MuzimaSettingController muzimaSettingController = muzimaApplication.getMuzimaSettingController();
-        try {
-            MuzimaSetting loggingFeatureSetting = muzimaSettingController.getSettingByProperty(LOGGING_FEATURE_ENABLED_SETTING);
+        if(muzimaApplication != null) {
+            MuzimaSettingController muzimaSettingController = muzimaApplication.getMuzimaSettingController();
+            try {
+                MuzimaSetting loggingFeatureSetting = muzimaSettingController.getSettingByProperty(LOGGING_FEATURE_ENABLED_SETTING);
 
-            if (loggingFeatureSetting != null) {
-                return loggingFeatureSetting.getValueBoolean();
-            } else {
-                loggingFeatureSetting = new MuzimaSetting();
-                loggingFeatureSetting.setProperty(LOGGING_FEATURE_ENABLED_SETTING);
-                loggingFeatureSetting.setValueBoolean(true);
-                muzimaSettingController.saveOrUpdateSetting(loggingFeatureSetting);
-
-                MuzimaSetting serverSetting = new MuzimaSetting();
-                serverSetting.setProperty(LOGGING_SERVER_URL_SETTING);
-                serverSetting.setValueString("https://logs.pls.info.ke/mUzima-log-server");
-                muzimaSettingController.saveOrUpdateSetting(serverSetting);
-
-                MuzimaSetting connectionKeySetting = new MuzimaSetting();
-                connectionKeySetting.setProperty(LOGGING_SERVER_CONNECTION_KEY_SETTING);
-                connectionKeySetting.setValueString("test@test.com:test");
-                muzimaSettingController.saveOrUpdateSetting(connectionKeySetting);
-                return true;
+                if (loggingFeatureSetting != null) {
+                    return loggingFeatureSetting.getValueBoolean();
+                }
+            } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+                Log.e("MuzimaLoggerService", "Could not fetch setting", e);
             }
-        } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
-            Log.e("MuzimaLoggerService", "Could not fetch setting", e);
-        } catch (MuzimaSettingController.MuzimaSettingSaveException e) {
-            Log.e("MuzimaLoggerService", "Could not save setting", e);
         }
         return false;
     }
@@ -162,14 +137,13 @@ public class MuzimaLoggerService {
         // returns 'null', then simply the ID returned will be solely based
         // off their Android device information. This is where the collisions
         // can happen.
-        // Thanks http://www.pocketmagic.net/?p=1662!
+        // http://www.pocketmagic.net/?p=1662
         // Try not to use DISPLAY, HOST or ID - these items could change.
         // If there are collisions, there will be overlapping data
         String m_szDevIDShort = "35" + (Build.BOARD.length() % 10) + (Build.BRAND.length() % 10)
                 + (Build.CPU_ABI.length() % 10) + (Build.DEVICE.length() % 10) + (Build.MANUFACTURER.length() % 10)
                 + (Build.MODEL.length() % 10) + (Build.PRODUCT.length() % 10);
 
-        // Thanks to @Roman SL!
         // https://stackoverflow.com/a/4789483/950427
         // Only devices with API >= 9 have android.os.Build.SERIAL
         // http://developer.android.com/reference/android/os/Build.html#SERIAL
@@ -185,7 +159,6 @@ public class MuzimaLoggerService {
             serial = "serial"; // some value
         }
 
-        // Thanks @Joe!
         // https://stackoverflow.com/a/2853253/950427
         // Finally, combine the values we have found by using the UUID class to create a unique identifier
         return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();

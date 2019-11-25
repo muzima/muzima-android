@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -49,32 +48,7 @@ public class MuzimaGPSLocationService {
         locationManager = (LocationManager) this.context.getSystemService(Context.LOCATION_SERVICE);
 
         if(isGPSLocationPermissionsGranted()) {
-            locationListener = new LocationListener() {
-                @Override
-                public void onLocationChanged(android.location.Location location) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    Log.e(getClass().getSimpleName(), "New Latitude: " + latitude + "New Longitude: " + longitude);
-                }
-
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-                    Log.e(getClass().getSimpleName(), "GPS location enabled");
-                }
-
-                @Override
-                public void onProviderEnabled(String provider) {
-                    Log.e(getClass().getSimpleName(), "GPS location enabled");
-                }
-
-                @Override
-                public void onProviderDisabled(String provider) {
-                    Log.e(getClass().getSimpleName(), "GPS location disabled");
-                }
-            };
-
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            requestLocationUpdates();
         }
     }
 
@@ -143,14 +117,13 @@ public class MuzimaGPSLocationService {
     }
 
     public void requestSwitchOnLocation(final Activity activity) {
-
         if (googleApiClient == null) {
             googleApiClient = new GoogleApiClient.Builder(activity)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
                     public void onConnected(Bundle bundle) {
-
+                        requestLocationUpdates();
                     }
 
                     @Override
@@ -193,5 +166,36 @@ public class MuzimaGPSLocationService {
                 }
             });
         }
+    }
+
+    private void requestLocationUpdates(){
+        if(locationListener == null) {
+            locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(android.location.Location location) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    Log.e(getClass().getSimpleName(), "New Latitude: " + latitude + "New Longitude: " + longitude);
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+                    Log.e(getClass().getSimpleName(), "GPS location enabled");
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+                    Log.e(getClass().getSimpleName(), "GPS location enabled");
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+                    Log.e(getClass().getSimpleName(), "GPS location disabled");
+                }
+            };
+        }
+
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
 }
