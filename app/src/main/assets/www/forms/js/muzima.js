@@ -1377,7 +1377,7 @@ $(document).ready(function () {
     /*End of Checking For Possibility Of Duplicate Form on encounter date change*/
 
     /*Start of Checking For Possibility Of Duplicate Form on Form Load*/
-    $(window).load(function() {
+    $(window).on('load',function() {
         var formUuid=$('#encounter\\.form_uuid').val();
         var encounterDateTime=$('#encounter\\.encounter_datetime').val();
         var patientUuid=$('#patient\\.uuid').val();
