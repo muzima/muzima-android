@@ -26,7 +26,6 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
-import com.muzima.api.model.Person;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.CohortController;

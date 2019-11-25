@@ -31,7 +31,6 @@ import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Form;

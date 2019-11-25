@@ -35,7 +35,6 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
-import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.ThemeUtils;
