@@ -101,7 +101,8 @@
                             android:textColorHint="@color/hint_text_grey"
                             android:textCursorDrawable="@null"
                             android:hint="@string/hint_person_search"
-                            android:background="@drawable/textbox_border">
+                            android:background="@drawable/textbox_border"
+                            android:singleLine="true">
                     </AutoCompleteTextView>
                 </LinearLayout>
 
