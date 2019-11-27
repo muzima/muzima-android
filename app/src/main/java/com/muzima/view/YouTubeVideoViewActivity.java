@@ -36,6 +36,7 @@ public class YouTubeVideoViewActivity extends BaseHelpActivity implements YouTub
         setContentView(R.layout.activity_help_video_display);
         setMuzimaTimout();
         setVideoContent();
+        logEvent("VIEW_VIDEOS");
     }
 
     private void setVideoContent() {

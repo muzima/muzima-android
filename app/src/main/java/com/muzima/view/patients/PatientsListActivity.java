@@ -194,6 +194,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
         tagPreferenceService = new TagPreferenceService(this);
         initDrawer();
+        logEvent("VIEW_CLIENT_LIST","{\"cohortId\":\""+cohortId+"\"}");
     }
 
     @Override

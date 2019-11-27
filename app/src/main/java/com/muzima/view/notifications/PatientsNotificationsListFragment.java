@@ -40,6 +40,14 @@ public class PatientsNotificationsListFragment extends NotificationListFragment 
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_PATIENTS_NOTIFICATIONS");
+        }
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         Notification notification = (Notification) listAdapter.getItem(position);
         Patient patient = notification.getPatient();

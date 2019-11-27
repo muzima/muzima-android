@@ -44,6 +44,7 @@ import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.model.collections.DownloadedForms;
 import com.muzima.model.collections.IncompleteForms;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
+import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.SntpService;
 import com.muzima.util.JsonUtils;
 import com.muzima.utils.Constants;
@@ -89,6 +90,7 @@ public class FormController {
     private final Map<String, Integer> tagColors;
     private List<Tag> selectedTags;
     private String jsonPayload;
+    private MuzimaApplication muzimaApplication;
 
     public FormController(MuzimaApplication muzimaApplication) throws IOException {
         this.formService = muzimaApplication.getMuzimaContext().getFormService();
@@ -100,6 +102,7 @@ public class FormController {
         this.setupConfigurationService = muzimaApplication.getMuzimaContext().getSetupConfigurationService();
         tagColors = new HashMap<>();
         selectedTags = new ArrayList<>();
+        this.muzimaApplication = muzimaApplication;
     }
 
     public int getTotalFormCount() throws FormFetchException {
@@ -732,6 +735,8 @@ public class FormController {
                 //DO NOT save base64 string in DB
                 formData.setJsonPayload(rawPayload);
                 formService.saveFormData(formData);
+                MuzimaLoggerService.log(muzimaApplication,"SYNCED_FORM_DATA",  "{\"formDataUuid\":\""+formData.getUuid()+"\"}");
+
             } else {
                 result = false;
             }

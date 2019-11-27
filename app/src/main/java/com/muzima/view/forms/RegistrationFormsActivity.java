@@ -48,6 +48,7 @@ public class RegistrationFormsActivity extends BaseActivity {
         } else {
             prepareRegistrationAdapter(formController, availableForms);
         }
+        logEvent("VIEW_REGISTRATION_FORMS");
     }
 
     private void prepareRegistrationAdapter(FormController formController, AvailableForms availableForms) {

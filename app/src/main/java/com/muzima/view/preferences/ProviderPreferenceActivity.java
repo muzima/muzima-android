@@ -72,6 +72,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
             actionMode = startActionMode(new DeleteProvidersActionModeCallback());
             actionMode.setTitle(String.valueOf(getSelectedProviders().size()));
         }
+        logEvent("VIEW_PROVIDER_PREFERENCE");
     }
 
     private AdapterView.OnItemClickListener selectedProviderOnClickListener() {

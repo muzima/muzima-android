@@ -45,6 +45,7 @@ public class ProviderListActivity extends ProviderPreferenceActivity{
                 navigateToNextActivity();
             }
         });
+        logEvent("VIEW_PROVIDER_LIST");
     }
 
     @Override

@@ -75,6 +75,7 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
             actionMode = startActionMode(new DeleteConceptsActionModeCallback());
             actionMode.setTitle(String.valueOf(getSelectedConcepts().size()));
         }
+        logEvent("VIEW_CONCEPT_PREFERENCE");
     }
 
     private AdapterView.OnItemClickListener selectedConceptOnClickListener() {

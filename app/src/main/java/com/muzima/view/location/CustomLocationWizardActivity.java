@@ -75,6 +75,8 @@ public class CustomLocationWizardActivity extends LocationPreferenceActivity {
                 navigateToPreviousActivity();
             }
         });
+
+        logEvent("VIEW_LOCATION_DOWNLOAD_WIZARD");
     }
 
     @Override

@@ -873,8 +873,10 @@ public class MuzimaSyncService {
 
             for(FormData formData:archivedFormData) {
                 FormDataStatus formDataStatus = formController.downloadFormDataStatus(formData);
-                if(formDataStatus.isFormDataPendingProcessing()){
+                if(formDataStatus.isFormDataProcessedSuccessfully()){
                     successfullyProcessedFormData.add(formData);
+                    MuzimaLoggerService.log(muzimaApplication,"FORM_DATA_PROCESSED_SUCCESSFULLY",
+                            "{\"formDataUuid\":\""+formData.getUuid()+"\"}");
                 } else if(formDataStatus.isFormDataProcessedWithError()){
                     processedWithErrorFormData.add(formData);
                 } else if(formDataStatus.isFormDataPendingProcessing()){
@@ -1140,7 +1142,7 @@ public class MuzimaSyncService {
     public void updateSettingsPreferences(List<MuzimaSetting> muzimaSettings) {
         for (MuzimaSetting muzimaSetting : muzimaSettings) {
             if(MuzimaSettingUtils.isGpsFeatureEnabledSetting(muzimaSetting)) {
-                new GPSFeaturePreferenceService(muzimaApplication).updateGPSDataPreferenceSettings();
+                muzimaApplication.getGPSFeaturePreferenceService().updateGPSDataPreferenceSettings();
             } else if(MuzimaSettingUtils.isSHRFeatureEnabledSetting(muzimaSetting)){
                 new SHRStatusPreferenceService(muzimaApplication).updateSHRStatusPreference();
             } else if(MuzimaSettingUtils.isPatientIdentifierAutogenerationSetting(muzimaSetting)){

@@ -46,6 +46,7 @@ public class NotificationsListActivity extends NotificationActivityBase {
         initPagerIndicator();
         setTitle(NOTIFICATIONS);
         FrameLayout progressBarContainer = findViewById(R.id.progressbarContainer);
+        logEvent("VIEW_GENERAL_NOTIFICATIONS");
     }
 
     @Override

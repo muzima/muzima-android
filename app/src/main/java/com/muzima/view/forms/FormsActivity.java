@@ -70,6 +70,7 @@ public class FormsActivity extends FormsActivityBase {
         initDrawer();
         initPager();
         initPagerIndicator();
+        logEvent("VIEW_ALL_FORMS");
     }
 
     @Override
@@ -241,6 +242,8 @@ public class FormsActivity extends FormsActivityBase {
     private void uploadAllFormsInBackgroundService() {
         syncInProgress = true;
         menuUpload.setActionView(R.layout.refresh_menuitem);
+
+        logEvent("UPLOAD_FORM_DATA");
         new UploadFormIntent(this).start();
     }
 

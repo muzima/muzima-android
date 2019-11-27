@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.controller.SmartCardController;
+import com.muzima.service.MuzimaLoggerService;
+import com.muzima.utils.StringUtils;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -85,5 +87,16 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+    protected void logEvent(String tag, String details){
+        if(StringUtils.isEmpty(details)){
+            details = "{}";
+        }
+        MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
+        MuzimaLoggerService.log(muzimaApplication,tag,  details);
+    }
+
+    protected void logEvent(String tag){
+        logEvent(tag,null);
     }
 }

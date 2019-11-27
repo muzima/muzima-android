@@ -73,6 +73,8 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
 
         setUpListView(searchString);
         setupNoDataView();
+
+        logEvent("VIEW_PATIENT_REMOTE_SEARCH");
         patientAdapter.reloadData();
     }
 

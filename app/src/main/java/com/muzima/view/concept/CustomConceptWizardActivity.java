@@ -100,6 +100,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
                 navigateToPreviousActivity();
             }
         });
+        logEvent("VIEW_CONCEPT_DOWNLOAD_WIZARD");
     }
 
     @Override

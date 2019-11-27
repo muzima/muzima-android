@@ -78,6 +78,7 @@ public class NotificationActivity extends BaseActivity {
                 new CustomNotificationReplyDialog(NotificationActivity.this,notificationPatient,((MuzimaApplication)getApplicationContext()).getAuthenticatedUser().getPerson(),notification.getSubject(),((MuzimaApplication)getApplicationContext()).getNotificationController()).show();
             }
         });
+        logEvent("VIEW_NOTIFICATION");
     }
 
     @Override

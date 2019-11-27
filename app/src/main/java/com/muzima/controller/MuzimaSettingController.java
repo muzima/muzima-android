@@ -33,7 +33,7 @@ public class MuzimaSettingController {
         this.sntpService = sntpService;
     }
 
-    private MuzimaSetting getSettingByProperty(String property) throws MuzimaSettingFetchException {
+    public MuzimaSetting getSettingByProperty(String property) throws MuzimaSettingFetchException {
         try {
             return settingService.getSettingByProperty(property);
         } catch (IOException | ParseException e) {

@@ -52,8 +52,15 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionMode.setTitle(String.valueOf(getSelectedForms().size()));
         }
-
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_DOWNLOADED_FORMS");
+        }
     }
 
     @Override

@@ -58,6 +58,7 @@ public class CohortPreferenceActivity extends BaseFragmentActivity {
                 cohortPrefix.setText(selectedCohort.getName());
             }
         });
+        logEvent("VIEW_COHORT_PREFERENCE");
     }
 
     private int getContentView() {

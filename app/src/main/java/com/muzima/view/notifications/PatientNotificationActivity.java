@@ -33,6 +33,7 @@ public class PatientNotificationActivity extends NotificationActivityBase {
         initPager();
         initPagerIndicator();
         getSupportActionBar().setTitle(patient.getSummary());
+        logEvent("VIEW_PATIENT_NOTIFICATIONS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
     }
 
     @Override

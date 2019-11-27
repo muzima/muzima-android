@@ -43,6 +43,7 @@ public class FeedbackActivity extends BaseActivity {
         setContentView(R.layout.activity_interactive_feedback);
         initViews();
         setupListeners();
+        logEvent("VIEW_FEEDBACK_PAGE");
     }
 
     @Override

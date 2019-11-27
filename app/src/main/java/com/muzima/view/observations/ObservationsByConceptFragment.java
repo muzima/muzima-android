@@ -48,6 +48,14 @@ public class ObservationsByConceptFragment extends ObservationsListFragment {
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_CLIENT_OBS_BY_CONCEPT","{\"patientuuid\":\""+patient.getUuid()+"\"}");
+        }
+    }
+
+    @Override
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.layout_synced_list, container, false);
     }

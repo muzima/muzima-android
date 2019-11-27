@@ -73,7 +73,7 @@ public class HTMLFormDataStoreTest {
         when(muzimaApplication.getObservationController()).thenReturn(observationController);
         when(muzimaApplication.getEncounterController()).thenReturn(encounterController);
         when(muzimaApplication.getMuzimaSettingController()).thenReturn(settingController);
-        htmlFormDataStore = new HTMLFormDataStore(formWebViewActivity, formData, muzimaApplication){
+        htmlFormDataStore = new HTMLFormDataStore(formWebViewActivity, formData, false, muzimaApplication){
             @Override
             public HTMLFormObservationCreator getFormParser(){
                 return htmlFormObservationCreator;

@@ -21,8 +21,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.User;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
+import com.muzima.service.MuzimaLoggerService;
+import com.muzima.utils.StringUtils;
 
 public class BaseFragmentActivity extends AppCompatActivity {
 
@@ -103,5 +106,17 @@ public class BaseFragmentActivity extends AppCompatActivity {
 
     protected void removeSettingsMenu(Menu menu) {
         dropDownHelper.removeSettingsMenu(menu);
+    }
+
+    public void logEvent(String tag, String details){
+        if(StringUtils.isEmpty(details)){
+            details = "{}";
+        }
+        MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
+        MuzimaLoggerService.log(muzimaApplication,tag,  details);
+    }
+
+    protected void logEvent(String tag){
+        logEvent(tag,null);
     }
 }

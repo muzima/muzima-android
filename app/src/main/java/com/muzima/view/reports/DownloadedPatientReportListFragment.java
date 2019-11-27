@@ -41,6 +41,14 @@ public class DownloadedPatientReportListFragment extends PatientReportListFragme
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_CLIENT_DOWNLOADED_REPORTS", "{\"patientuuid\":\""+patientUuid+"\"}");
+        }
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         String patientReportUuid = ((DownloadedPatientReportAdapter) listAdapter).getItem(position).getUuid();
         Intent intent = new Intent(getActivity(), PatientReportWebActivity.class);

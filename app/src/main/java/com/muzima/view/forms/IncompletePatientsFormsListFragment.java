@@ -47,6 +47,14 @@ public class IncompletePatientsFormsListFragment extends FormsListFragment imple
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_INCOMPLETE_PATIENT_FORMS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
+        }
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
     }
 

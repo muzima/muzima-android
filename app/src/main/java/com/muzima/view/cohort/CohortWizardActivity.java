@@ -65,6 +65,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         setContentView(R.layout.activity_cohort_wizard);
         progressDialog = new MuzimaProgressDialog(this);
         downloadMissingServerSettings();
+        logEvent("VIEW_COHORT_DOWNLOAD_WIZARD");
     }
 
     private void initializeAdapter(){
@@ -236,11 +237,6 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
         return resultForPatients;
     }
-
-//    private void downloadAndSavePatientsInBackgroundService(AllCohortsAdapter cohortsAdapter) {
-//        List<String> selectedCohortsArray = cohortsAdapter.getSelectedCohorts();
-//        new SyncPatientDataIntent(this, selectedCohortsArray.toArray(new String[selectedCohortsArray.size()])).start();
-//    }
 
     private void navigateToNextActivity() {
         Intent intent = new Intent(getApplicationContext(), FormTemplateWizardActivity.class);

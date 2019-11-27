@@ -59,6 +59,14 @@ public class AllCohortsListFragment extends CohortListFragment {
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_ALL_COHORTS");
+        }
+    }
+
+    @Override
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.layout_synced_list, container, false);
         syncText = view.findViewById(R.id.sync_text);

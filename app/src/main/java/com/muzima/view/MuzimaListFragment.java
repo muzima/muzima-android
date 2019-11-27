@@ -16,9 +16,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.StringUtils;
 
 public abstract class MuzimaListFragment extends Fragment implements AdapterView.OnItemClickListener {
     private static final String TAG = "MuzimaListFragment";
@@ -71,5 +74,17 @@ public abstract class MuzimaListFragment extends Fragment implements AdapterView
     protected void updateDataLoadStatus(View layout, String noDataMsg){
         TextView noDataMsgTextView = layout.findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(noDataMsg);
+    }
+
+    protected void logEvent(String tag, String details){
+        if(StringUtils.isEmpty(details)){
+            details = "{}";
+        }
+        MuzimaApplication muzimaApplication = (MuzimaApplication) getActivity().getApplication();
+        MuzimaLoggerService.log(muzimaApplication,tag,  details);
+    }
+
+    protected void logEvent(String tag){
+        logEvent(tag,null);
     }
 }
