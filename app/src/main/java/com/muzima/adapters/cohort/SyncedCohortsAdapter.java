@@ -47,7 +47,7 @@ public class SyncedCohortsAdapter extends CohortsAdapter{
         }
         holder.setTextToName(cohort.getName() + "("+cohortSize+ ")");
 
-        if(cohort.isUpdateAvailable()){
+        if(cohortController.isDownloaded(cohort) && cohort.isUpdateAvailable()){
             holder.setPendingUpdateTextColor();
         } else {
             holder.setDefaultTextColor();
