@@ -316,6 +316,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 selectedPerson = null;
+                createPersonView.setVisibility(View.GONE);
                 saveButton.setVisibility(View.GONE);
 
                 if (s.length() < 3)
