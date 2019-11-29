@@ -228,7 +228,7 @@ public class CohortController {
     }
 
     public boolean isUpdateAvailable() throws CohortFetchException {
-        for(Cohort cohort: getAllCohorts()){
+        for(Cohort cohort: getSyncedCohorts()){
             if(cohort.isUpdateAvailable()){
                 return true;
             }
@@ -238,7 +238,7 @@ public class CohortController {
 
     public List<Cohort> getCohortsWithPendingUpdates() throws CohortFetchException {
         List<Cohort> cohortList = new ArrayList<>();
-        for(Cohort cohort: getAllCohorts()){
+        for(Cohort cohort: getSyncedCohorts()){
             if(cohort.isUpdateAvailable()){
                 cohortList.add(cohort);
             }
