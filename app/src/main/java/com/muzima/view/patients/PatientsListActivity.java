@@ -193,7 +193,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
         tagPreferenceService = new TagPreferenceService(this);
-        initDrawer();
+        //TODO: dissable patient tags drawer to avoid loading lag until a fix is done
+        //initDrawer();
     }
 
     @Override
@@ -384,7 +385,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         }
         if (!intentBarcodeResults)
             patientAdapter.reloadData();
-        tagsListAdapter.reloadData();
+        //tagsListAdapter.reloadData();
     }
 
     private void prepareLocalSearchNotifyDialog(Patient patient) {
