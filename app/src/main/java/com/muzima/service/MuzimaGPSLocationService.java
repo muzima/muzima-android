@@ -172,26 +172,16 @@ public class MuzimaGPSLocationService {
         if(locationListener == null) {
             locationListener = new LocationListener() {
                 @Override
-                public void onLocationChanged(android.location.Location location) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    Log.e(getClass().getSimpleName(), "New Latitude: " + latitude + "New Longitude: " + longitude);
-                }
+                public void onLocationChanged(android.location.Location location) {}
 
                 @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-                    Log.e(getClass().getSimpleName(), "GPS location enabled");
-                }
+                public void onStatusChanged(String provider, int status, Bundle extras) {}
 
                 @Override
-                public void onProviderEnabled(String provider) {
-                    Log.e(getClass().getSimpleName(), "GPS location enabled");
-                }
+                public void onProviderEnabled(String provider) {}
 
                 @Override
-                public void onProviderDisabled(String provider) {
-                    Log.e(getClass().getSimpleName(), "GPS location disabled");
-                }
+                public void onProviderDisabled(String provider) {}
             };
         }
 

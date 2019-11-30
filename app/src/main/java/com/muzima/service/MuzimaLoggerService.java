@@ -25,7 +25,7 @@ public class MuzimaLoggerService {
 
     private static Timer timer;
 
-    public static String getAndParseGpsLocationForLogging(final MuzimaApplication muzimaApplication){
+    public static String getAndParseGPSLocationForLogging(final MuzimaApplication muzimaApplication){
         if(isLoggingFeatureEnabled(muzimaApplication)) {
             MuzimaGPSLocationService muzimaLocationService = muzimaApplication.getMuzimaGPSLocationService();
 
@@ -65,7 +65,7 @@ public class MuzimaLoggerService {
             User authenticatedUser = muzimaApplication.getAuthenticatedUser();
             if (authenticatedUser != null) {
                 String userId = authenticatedUser.getUuid();
-                log(muzimaApplication, tag, userId, getAndParseGpsLocationForLogging(muzimaApplication), details);
+                log(muzimaApplication, tag, userId, getAndParseGPSLocationForLogging(muzimaApplication), details);
             } else {
                 Log.e("MuzimaLoggerService", "Could not save logs");
             }

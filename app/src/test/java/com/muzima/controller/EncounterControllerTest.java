@@ -78,7 +78,7 @@ public class EncounterControllerTest {
     public void shouldSaveTheUpdatedLastSyncTime() throws Exception, EncounterController.DownloadEncounterException {
         List<String> patientUuids = asList("patientUuid1", "patientUuid2");
         Date updatedDate = mock(Date.class);
-        when(sntpService.getLocalTime()).thenReturn(updatedDate);
+        when(sntpService.getTimePerDeviceTimeZone()).thenReturn(updatedDate);
         Date lastSyncDate = mock(Date.class);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(lastSyncDate);
         encounterController.downloadEncountersByPatientUuids(patientUuids);
@@ -112,7 +112,7 @@ public class EncounterControllerTest {
         when(encounterService.downloadEncountersByPatientUuidsAndSyncDate(previouslySynchedPatient, lastSyncTime)).thenReturn(someEncounters);
         when(encounterService.downloadEncountersByPatientUuidsAndSyncDate(newPatients, null)).thenReturn(someOtherEncounters);
         Date updatedDate = mock(Date.class);
-        when(sntpService.getLocalTime()).thenReturn(updatedDate);
+        when(sntpService.getTimePerDeviceTimeZone()).thenReturn(updatedDate);
 
         encounterController.downloadEncountersByPatientUuids(patientUuids);
 

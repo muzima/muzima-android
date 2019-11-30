@@ -91,7 +91,7 @@ public class MuzimaSettingController {
                 lastSyncDate = lastSyncTime.getLastSyncDate();
             }
             List<MuzimaSetting> muzimaSettings = settingService.downloadAllSettings(lastSyncDate);
-            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_SETTINGS, sntpService.getLocalTime());
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_SETTINGS, sntpService.getTimePerDeviceTimeZone());
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return muzimaSettings;
         } catch (IOException e) {

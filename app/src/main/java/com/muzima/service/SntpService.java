@@ -14,7 +14,7 @@ import java.util.Date;
 
 public class SntpService {
 
-    public Date getLocalTime() {
+    public Date getTimePerDeviceTimeZone() {
         long nowAsPerDeviceTimeZone = 0;
         SntpClient sntpClient = new SntpClient();
 
@@ -24,7 +24,7 @@ public class SntpService {
         return new Date(nowAsPerDeviceTimeZone);
     }
 
-    public Date getLocalTime(int timeout) {
+    public Date getTimePerDeviceTimeZone(int timeout) {
         long nowAsPerDeviceTimeZone = 0;
         SntpClient sntpClient = new SntpClient();
 

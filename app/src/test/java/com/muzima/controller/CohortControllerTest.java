@@ -102,7 +102,7 @@ public class CohortControllerTest {
     public void shouldSaveLastSyncTimeAfterDownloadingAllCohorts() throws Exception, CohortController.CohortDownloadException {
         ArgumentCaptor<LastSyncTime> lastSyncCaptor = ArgumentCaptor.forClass(LastSyncTime.class);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS)).thenReturn(anotherMockDate);
-        when(sntpService.getLocalTime()).thenReturn(mockDate);
+        when(sntpService.getTimePerDeviceTimeZone()).thenReturn(mockDate);
 
         controller.downloadAllCohorts();
         verify(lastSyncTimeService).saveLastSyncTime(lastSyncCaptor.capture());
@@ -122,7 +122,7 @@ public class CohortControllerTest {
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS, "prefix2")).thenReturn(anotherMockDate);
 
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS)).thenReturn(anotherMockDate);
-        when(sntpService.getLocalTime()).thenReturn(mockDate);
+        when(sntpService.getTimePerDeviceTimeZone()).thenReturn(mockDate);
 
         controller.downloadCohortsByPrefix(asList("prefix1", "prefix2"));
         verify(lastSyncTimeService, times(2)).saveLastSyncTime(lastSyncCaptor.capture());
@@ -167,7 +167,7 @@ public class CohortControllerTest {
     public void shouldSaveLastSyncTimeOfCohortData() throws Exception, CohortController.CohortDownloadException {
         String uuid = "uuid";
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS_DATA, uuid)).thenReturn(mockDate);
-        when(sntpService.getLocalTime()).thenReturn(anotherMockDate);
+        when(sntpService.getTimePerDeviceTimeZone()).thenReturn(anotherMockDate);
 
         controller.downloadCohortDataByUuid(uuid);
 
@@ -254,7 +254,7 @@ public class CohortControllerTest {
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS, cohortPrefixes.get(1))).thenReturn(anotherMockDate);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS, cohortPrefixes.get(2))).thenReturn(anotherMockDate);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS)).thenReturn(anotherMockDate);
-        when(sntpService.getLocalTime()).thenReturn(mockDate);
+        when(sntpService.getTimePerDeviceTimeZone()).thenReturn(mockDate);
 
         List<Cohort> downloadedCohorts = controller.downloadCohortsByPrefix(cohortPrefixes);
         assertThat(downloadedCohorts.size(), is(3));
