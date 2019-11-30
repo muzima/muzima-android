@@ -51,7 +51,6 @@ public class MuzimaLoggerService {
                 protected Void doInBackground(Void... voids) {
                     String deviceId = getPseudoDeviceId();
                     JSONObject timestamp = new JSONObject(){{
-                        put("sntpTimestamp",muzimaApplication.getSntpService().getLocalTime(1000).getTime());
                         put("systemTimestamp",System.currentTimeMillis());
                     }};
 
