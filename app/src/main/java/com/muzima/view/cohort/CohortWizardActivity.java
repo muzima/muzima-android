@@ -41,7 +41,6 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.CheckedLinearLayout;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.forms.FormTemplateWizardActivity;
-import com.muzima.view.patients.SyncPatientDataIntent;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
@@ -65,6 +64,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         setContentView(R.layout.activity_cohort_wizard);
         progressDialog = new MuzimaProgressDialog(this);
         downloadMissingServerSettings();
+        logEvent("VIEW_COHORT_DOWNLOAD_WIZARD");
     }
 
     private void initializeAdapter(){
@@ -178,7 +178,7 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
                         try {
                             LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
                             SntpService sntpService = ((MuzimaApplication)getApplicationContext()).getSntpService();
-                            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getLocalTime());
+                            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getTimePerDeviceTimeZone());
                             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
                         } catch (IOException e) {
                             Log.i(getClass().getSimpleName(),"Error setting cohort sync time.");
@@ -236,11 +236,6 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
 
         return resultForPatients;
     }
-
-//    private void downloadAndSavePatientsInBackgroundService(AllCohortsAdapter cohortsAdapter) {
-//        List<String> selectedCohortsArray = cohortsAdapter.getSelectedCohorts();
-//        new SyncPatientDataIntent(this, selectedCohortsArray.toArray(new String[selectedCohortsArray.size()])).start();
-//    }
 
     private void navigateToNextActivity() {
         Intent intent = new Intent(getApplicationContext(), FormTemplateWizardActivity.class);

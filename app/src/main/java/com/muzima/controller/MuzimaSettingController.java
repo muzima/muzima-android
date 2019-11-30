@@ -33,7 +33,7 @@ public class MuzimaSettingController {
         this.sntpService = sntpService;
     }
 
-    private MuzimaSetting getSettingByProperty(String property) throws MuzimaSettingFetchException {
+    public MuzimaSetting getSettingByProperty(String property) throws MuzimaSettingFetchException {
         try {
             return settingService.getSettingByProperty(property);
         } catch (IOException | ParseException e) {
@@ -91,7 +91,7 @@ public class MuzimaSettingController {
                 lastSyncDate = lastSyncTime.getLastSyncDate();
             }
             List<MuzimaSetting> muzimaSettings = settingService.downloadAllSettings(lastSyncDate);
-            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_SETTINGS, sntpService.getLocalTime());
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_SETTINGS, sntpService.getTimePerDeviceTimeZone());
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return muzimaSettings;
         } catch (IOException e) {

@@ -45,6 +45,14 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_SYNCED_COHORTS");
+        }
+    }
+
     private void determineAndShowCohortUpdateAvailabilityAction(){
         try {
             if(cohortController.isUpdateAvailable()) {

@@ -10,17 +10,9 @@
 
 package com.muzima.view.forms;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
@@ -34,7 +26,6 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
-import com.muzima.api.model.Person;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.CohortController;
@@ -48,9 +39,9 @@ import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
-import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.service.MuzimaGPSLocationService;
+import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
@@ -74,6 +65,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
+import static com.muzima.utils.Constants.STATUS_COMPLETE;
+import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 
 
 class HTMLFormDataStore {
@@ -92,7 +85,7 @@ class HTMLFormDataStore {
     private final PatientController patientController;
     private final PersonController personController;
 
-    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormData formData, MuzimaApplication application) {
+    public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormData formData, boolean isFormReload, MuzimaApplication application) {
         this.formWebViewActivity = formWebViewActivity;
         this.formData = formData;
 
@@ -107,6 +100,7 @@ class HTMLFormDataStore {
         this.patientController = application.getPatientController();
         this.personController = application.getPersonController();
         this.application = application;
+        logFormStartEvent(isFormReload);
     }
 
     @JavascriptInterface
@@ -175,6 +169,7 @@ class HTMLFormDataStore {
                     if (status.equals("incomplete")) {
                         Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.info_draft_form_save_success), Toast.LENGTH_SHORT).show();
                     }
+                    logFormSaveEvent(status);
                 }
             } else {
                 String missingMandatoryEncounterDetailsMessage = checkMissingMandatoryEncounterDetails(jsonPayload);
@@ -261,6 +256,14 @@ class HTMLFormDataStore {
 
     private boolean isRegistrationComplete(String status) {
         return formController.isRegistrationFormData(formData) && status.equals(Constants.STATUS_COMPLETE);
+    }
+
+    private boolean isRegistrationForm() {
+        return formController.isRegistrationFormData(formData);
+    }
+
+    private boolean isEncounterForm() {
+        return formController.isEncounterFormData(formData);
     }
 
     @JavascriptInterface
@@ -553,11 +556,8 @@ class HTMLFormDataStore {
     @JavascriptInterface
     public String getLastKnowGPSLocation(String jsonReturnType) {
         String gps_location_string = "Unknown Error Occured!";
-        Boolean isGpsFeatureEnabled = false;
-        isGpsFeatureEnabled = new GPSFeaturePreferenceService(application).isGPSDataCollectionSettingEnabled();
-        if (isGpsFeatureEnabled) {
-            MuzimaGPSLocationService muzimaLocationService = application.getMuzimaGPSLocationService();
-
+        MuzimaGPSLocationService muzimaLocationService = application.getMuzimaGPSLocationService();
+        if (muzimaLocationService.isGPSLocationFeatureEnabled()) {
             if (muzimaLocationService.isGPSLocationPermissionsGranted()) {
                 if(muzimaLocationService.isLocationServicesSwitchedOn()){
                     HashMap<String, Object> locationDataHashMap;
@@ -569,7 +569,7 @@ class HTMLFormDataStore {
                             } else {
                                 gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonArray().toString();
                             }
-                        } else {
+                        } else if(locationDataHashMap.containsKey("gps_location_status")){
                             gps_location_string = (String)locationDataHashMap.get("gps_location_status");
                         }
                         return gps_location_string;
@@ -588,21 +588,9 @@ class HTMLFormDataStore {
         }
     }
 
-    public void showLocationDisabledDialog(){
-        Boolean isGPSDataCollectionSettingEnabled = new GPSFeaturePreferenceService(application).isGPSDataCollectionSettingEnabled();
-        if(isGPSDataCollectionSettingEnabled) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(application);
-            alertDialog.setTitle(formWebViewActivity.getString(R.string.title_enable_gps_location));
-            alertDialog.setMessage(formWebViewActivity.getString(R.string.hint_gps_location_off));
-            alertDialog.setPositiveButton(formWebViewActivity.getString(R.string.general_location_setting), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    application.startActivity(intent);
-                }
-            });
-
-            alertDialog.show();
-        }
+    @JavascriptInterface
+    public void logEvent(String tag, String details){
+        MuzimaLoggerService.log((MuzimaApplication) formWebViewActivity.getApplicationContext(),tag,details);
     }
 
     private String injectTimeZoneToEncounterPayload(String jsonPayload) {
@@ -645,6 +633,42 @@ class HTMLFormDataStore {
             Log.e(getClass().getSimpleName(), "JSONException encountered while process cohort membership", e);
         }
         return jsonArray.toString();
+    }
+
+    private void logFormStartEvent(boolean isFormReload){
+        try {
+            JSONObject eventDetails = new JSONObject();
+            eventDetails.put("patientuuid", formData.getPatientUuid());
+            eventDetails.put("formDataUuid", formData.getUuid());
+            eventDetails.put("formDiscriminator", formData.getDiscriminator());
+
+            if(isFormReload) {
+                logEvent("RESUME_FORM", eventDetails.toString());
+            } else {
+                logEvent("OPEN_FORM", eventDetails.toString());
+            }
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(),"Cannot create event log",e);
+        }
+    }
+
+    private void logFormSaveEvent(String status){
+        try {
+            JSONObject eventDetails = new JSONObject();
+            eventDetails.put("patientuuid", formData.getPatientUuid());
+            eventDetails.put("formDataUuid", formData.getUuid());
+            eventDetails.put("formDiscriminator", formData.getDiscriminator());
+
+            switch(status) {
+                case STATUS_COMPLETE :logEvent( "SAVE_COMPLETE_FORM", eventDetails.toString());
+                    break;
+                case STATUS_INCOMPLETE :
+                    logEvent( "SAVE_DRAFT_FORM", eventDetails.toString());
+                    break;
+            }
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(),"Cannot create log",e);
+        }
     }
 
     private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {

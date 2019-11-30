@@ -105,6 +105,8 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         configsListView = findViewById(R.id.configs_wizard_list);
         configsListView.setOnItemClickListener(configsListViewSelectedListener(setupConfigurationAdapter));
         configsListView.setAdapter(setupConfigurationAdapter);
+
+        logEvent("VIEW_SETUP_METHODS");
     }
 
     @Override
@@ -220,7 +222,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                         LastSyncTimeService lastSyncTimeService =
                                 ((MuzimaApplication) getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
                         SntpService sntpService = ((MuzimaApplication) getApplicationContext()).getSntpService();
-                        LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_SETUP_CONFIGURATIONS, sntpService.getLocalTime());
+                        LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_SETUP_CONFIGURATIONS, sntpService.getTimePerDeviceTimeZone());
                         lastSyncTimeService.saveLastSyncTime(lastSyncTime);
                     } catch (IOException e) {
                         Log.i(getClass().getSimpleName(), "Error setting Setup Configuration sync time.");

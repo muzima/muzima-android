@@ -45,6 +45,14 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_INCOMPLETE_FORMS");
+        }
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         FormViewIntent intent = new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position));
         getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);

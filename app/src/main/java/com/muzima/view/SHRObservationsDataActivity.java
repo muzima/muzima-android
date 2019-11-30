@@ -57,6 +57,8 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
         setupActionBar();
         initPager();
         initPagerIndicator();
+        logEvent("VIEW_SHR","{\"patientuuid\":\""+patient.getUuid()+"\"}");
+
     }
 
     @Override

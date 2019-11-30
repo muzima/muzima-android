@@ -20,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.service.MuzimaLoggerService;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.DefaultMenuDropDownHelper;
 import com.muzima.view.login.LoginActivity;
@@ -45,6 +47,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsPreferenceFragment()).commit();
         setupActionBar();
+        logEvent("VIEW_SETTINGS");
     }
 
     @Override
@@ -73,7 +76,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         }
         return delegate;
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,5 +112,17 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         intent.putExtra(LoginActivity.isFirstLaunch, isFirstLaunch);
         startActivity(intent);
         finish();
+    }
+
+    public void logEvent(String tag, String details){
+        if(StringUtils.isEmpty(details)){
+            details = "{}";
+        }
+        MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
+        MuzimaLoggerService.log(muzimaApplication,tag,  details);
+    }
+
+    protected void logEvent(String tag){
+        logEvent(tag,null);
     }
 }

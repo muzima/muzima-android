@@ -95,6 +95,8 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         previousButton.setOnClickListener(previousButtonListener());
 
         initDrawer();
+
+        logEvent("VIEW_FORM_DOWNLOAD_WIZARD");
     }
 
     private View.OnClickListener previousButtonListener() {
@@ -128,7 +130,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
                         try {
                             LastSyncTimeService lastSyncTimeService = ((MuzimaApplication) getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
                             SntpService sntpService = ((MuzimaApplication) getApplicationContext()).getSntpService();
-                            LastSyncTime lastSyncTime = new LastSyncTime(APIName.DOWNLOAD_FORMS, sntpService.getLocalTime());
+                            LastSyncTime lastSyncTime = new LastSyncTime(APIName.DOWNLOAD_FORMS, sntpService.getTimePerDeviceTimeZone());
                             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
                         } catch (IOException e) {
                             Log.i(getClass().getSimpleName(), "Error getting forms last sync time");

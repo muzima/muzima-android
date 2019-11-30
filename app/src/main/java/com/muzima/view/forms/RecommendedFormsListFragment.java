@@ -47,6 +47,14 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_RECOMMENDED_FORMS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
+        }
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         FormViewIntent intent = new FormViewIntent(getActivity(), (AvailableForm) listAdapter.getItem(position), patient, false);
         intent.putExtra(FormViewIntent.FORM_COMPLETION_STATUS_INTENT,FormViewIntent.FORM_COMPLETION_STATUS_RECOMMENDED);

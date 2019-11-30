@@ -71,6 +71,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         ListView setupLogsListView = findViewById(R.id.setup_logs_list);
         setupLogsListView.setAdapter(setupActionLogAdapter);
 
+        logEvent("VIEW_GUIDED_SETUP_METHOD");
         initiateSetupConfiguration();
     }
 
@@ -635,7 +636,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private synchronized void evaluateFinishStatus(){
-        int TOTAL_WIZARD_STEPS = 9;
+        int TOTAL_WIZARD_STEPS = 10;
         if(wizardLevel == (TOTAL_WIZARD_STEPS)) {
             TextView finalResult = findViewById(R.id.setup_actions_final_result);
             if(wizardcompletedSuccessfully){

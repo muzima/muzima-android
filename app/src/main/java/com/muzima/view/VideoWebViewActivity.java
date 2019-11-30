@@ -32,6 +32,7 @@ public class VideoWebViewActivity extends BaseHelpActivity {
         setContentView(R.layout.activity_help_video_web_view);
         setMuzimaTimout();
         setVideoHelpContent();
+        logEvent("VIEW_VIDEOS");
     }
 
     @Override

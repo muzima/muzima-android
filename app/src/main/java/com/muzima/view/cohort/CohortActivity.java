@@ -42,6 +42,7 @@ public class CohortActivity extends BroadcastListenerActivity {
         setContentView(R.layout.activity_with_pager);
         initPager();
         initPagerIndicator();
+        logEvent("VIEW_SYNCED_COHORTS");
     }
 
     @Override

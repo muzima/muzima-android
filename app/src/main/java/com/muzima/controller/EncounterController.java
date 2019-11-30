@@ -10,11 +10,8 @@
 
 package com.muzima.controller;
 
-import android.util.Log;
-
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.LastSyncTime;
-import com.muzima.api.model.Patient;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.SntpService;
@@ -77,7 +74,7 @@ public class EncounterController {
                 //previousPatientsUuid = updateEncountersAndReturnPrevPatientUUIDs(patientUuids, encounters, previousPatientsUuid);
                 encounters.addAll(downloadEncounters(patientUuids, null));
             }
-            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_ENCOUNTERS, sntpService.getLocalTime(), paramSignature);
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_ENCOUNTERS, sntpService.getTimePerDeviceTimeZone(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return encounters;
         } catch (IOException e) {

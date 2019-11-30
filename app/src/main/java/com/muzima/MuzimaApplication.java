@@ -46,12 +46,13 @@ import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.CohortPrefixPreferenceService;
+import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaGPSLocationService;
+import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
-import com.muzima.util.MuzimaLogger;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.forms.HTMLFormWebViewActivity;
@@ -61,6 +62,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Security;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -81,6 +83,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private ProviderController providerController;
     private MuzimaSyncService muzimaSyncService;
     private MuzimaGPSLocationService muzimaGPSLocationService;
+    private GPSFeaturePreferenceService gpsFeaturePreferenceService;
     private CohortPrefixPreferenceService prefixesPreferenceService;
     private LocalePreferenceService localePreferenceService;
     private SetupConfigurationController setupConfigurationController;
@@ -145,7 +148,6 @@ public class MuzimaApplication extends MultiDexApplication {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public Context getMuzimaContext() {
@@ -366,6 +368,13 @@ public class MuzimaApplication extends MultiDexApplication {
         return muzimaGPSLocationService;
     }
 
+    public GPSFeaturePreferenceService getGPSFeaturePreferenceService() {
+        if (gpsFeaturePreferenceService == null) {
+            gpsFeaturePreferenceService = new GPSFeaturePreferenceService(this);
+        }
+        return gpsFeaturePreferenceService;
+    }
+
     public RelationshipController getRelationshipController() {
         if (relationshipController == null) {
             try {
@@ -399,8 +408,13 @@ public class MuzimaApplication extends MultiDexApplication {
 
     public void logOut() {
         if(authenticatedUser != null) {
-            MuzimaLogger.log(getMuzimaContext(), "USER_LOGOUT",
-                    "{\"userId\":\"" + authenticatedUser.getUsername() + "\"}");
+            MuzimaLoggerService.stopLogsSync();
+            MuzimaLoggerService.log(this, "USER_LOGOUT","{}");
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+            }
         }
         saveBeforeExit();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
@@ -419,6 +433,13 @@ public class MuzimaApplication extends MultiDexApplication {
 
     private void evictAuthenticatedUser(){
         authenticatedUser = null;
+    }
+
+    public String getAuthenticatedUserId(){
+        User authenticatedUser = getAuthenticatedUser();
+        if(authenticatedUser != null)
+            return authenticatedUser.getUsername() != null ? authenticatedUser.getUsername():authenticatedUser.getSystemId();
+        return "null";
     }
 
     private void saveBeforeExit() {

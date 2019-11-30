@@ -59,7 +59,9 @@ public class ConversationActivity extends BaseActivity {
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
         notificationController = muzimaApplication.getNotificationController();
 
-        loggedInUser = muzimaApplication.getAuthenticatedUser().getPerson();
+        if(muzimaApplication.getAuthenticatedUser() != null) {
+            loggedInUser = muzimaApplication.getAuthenticatedUser().getPerson();
+        }
 
         final FloatingActionButton floatingActionButton = findViewById(R.id.send_message_fab);
         composeEditText = findViewById(R.id.type_message_editText);
@@ -67,7 +69,6 @@ public class ConversationActivity extends BaseActivity {
 
         floatingActionButton.setBackgroundColor(getResources().getColor(R.color.hint_text_grey));
 
-//        getIncomingMessages();
         try {
             getOutgoingMessages();
         } catch (NotificationController.NotificationSaveException e) {
@@ -75,7 +76,6 @@ public class ConversationActivity extends BaseActivity {
         }
 
         setUpMessage();
-        Log.e(getClass().getSimpleName(), "Click Logged");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             floatingActionButton.setBackground(getDrawable(R.drawable.ic_action_need_attention));
@@ -83,7 +83,6 @@ public class ConversationActivity extends BaseActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(getClass().getSimpleName(), "Click Logged");
                 if (!composeEditText.getText().toString().isEmpty()) {
                     List<Notification> messageItems = null;
                     Notification notification = createNotificationFromMessage(composeEditText.getText().toString());

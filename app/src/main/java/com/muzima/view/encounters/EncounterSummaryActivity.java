@@ -47,6 +47,11 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
         setupEncounterMetadata();
         setupStillLoadingView();
         setUpEncounterObservations();
+        if (encounter != null) {
+            logEvent("VIEW_ENCOUNTER_SUMMARY", "{\"patientuuid\":\"" + encounter.getPatient().getUuid() + "\"}");
+        } else {
+            logEvent("VIEW_ENCOUNTER_SUMMARY");
+        }
     }
 
     @Override
@@ -72,8 +77,6 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
 
         TextView encounterLocation = findViewById(R.id.encounterLocation);
         encounterLocation.setText(encounter.getLocation().getName());
-
-
     }
 
     private void setupNoDataView() {

@@ -19,6 +19,7 @@ public class MuzimaGPSLocation {
     private String speed;
     private String bearing;
     private String accuracy;
+    private String provider;
 
     private Location location;
 
@@ -28,6 +29,18 @@ public class MuzimaGPSLocation {
         if (location != null){
             intialiseLocationData();
         }
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    private void setProvider() {
+        this.provider = String.valueOf(location.getProvider());
     }
 
     private void setAccuracy() {
@@ -73,6 +86,7 @@ public class MuzimaGPSLocation {
         setSpeed();
         setAccuracy();
         setTimeStamp();
+        setProvider();
     }
 
     @Override
@@ -84,13 +98,16 @@ public class MuzimaGPSLocation {
                 "] [ Timestamp : " + timeStamp +
                 "] [ Speed : " + speed +
                 "] [ Bearing : " + bearing +
+                "] [ Provider : " + provider +
                 "] }";
     }
 
     @Override
     public boolean equals(Object obj) {
-        obj = (Location)obj;
-        return latitude.equals(((Location) obj).getLatitude()) && longitude.equals(((Location) obj).getLongitude()) && altitude.equals(((Location) obj).getAltitude());
+        Location location = (Location)obj;
+        return latitude.equals(location.getLatitude())
+                && longitude.equals(location.getLongitude())
+                && altitude.equals(location.getAltitude());
     }
 
     public JSONObject toJsonObject() throws JSONException{
@@ -102,6 +119,7 @@ public class MuzimaGPSLocation {
         jsonObject.put("speed", speed);
         jsonObject.put("bearing",bearing);
         jsonObject.put("accuracy",accuracy);
+        jsonObject.put("provider",provider);
 
         return jsonObject;
     }
@@ -117,6 +135,7 @@ public class MuzimaGPSLocation {
         jsonObject.put("speed", speed);
         jsonObject.put("bearing",bearing);
         jsonObject.put("accuracy",accuracy);
+        jsonObject.put("provider",provider);
 
         jsonArray.put(jsonObject);
 

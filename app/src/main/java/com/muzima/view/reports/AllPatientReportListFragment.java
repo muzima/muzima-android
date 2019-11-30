@@ -50,6 +50,14 @@ public class AllPatientReportListFragment extends PatientReportListFragment {
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_CLIENT_ALL_REPORTS", "{\"patientuuid\":\""+patientUuid+"\"}");
+        }
+    }
+
+    @Override
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.layout_synced_list, container, false);
         return view;

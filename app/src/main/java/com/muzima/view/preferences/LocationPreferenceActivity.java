@@ -73,6 +73,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
             actionMode = startActionMode(new DeleteLocationsActionModeCallback());
             actionMode.setTitle(String.valueOf(getSelectedLocations().size()));
         }
+        logEvent("VIEW_LOCATION_PREFERENCE");
     }
 
     private AdapterView.OnItemClickListener selectedLocationOnClickListener() {

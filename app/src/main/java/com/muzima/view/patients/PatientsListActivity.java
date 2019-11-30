@@ -195,6 +195,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         tagPreferenceService = new TagPreferenceService(this);
         //TODO: dissable patient tags drawer to avoid loading lag until a fix is done
         //initDrawer();
+        logEvent("VIEW_CLIENT_LIST","{\"cohortId\":\""+cohortId+"\"}");
     }
 
     @Override

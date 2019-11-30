@@ -554,8 +554,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         protected void onPostExecute(int[] result) {
             if(result[0] == SUCCESS) {
                 GPSFeaturePreferenceService gpsFeaturePreferenceService
-                        = new GPSFeaturePreferenceService((MuzimaApplication) getActivity()
-                        .getApplication());
+                        = ((MuzimaApplication) getActivity().getApplication()).getGPSFeaturePreferenceService();
                 gpsFeaturePreferenceService.updateGPSDataPreferenceSettings();
                 if(gpsLocationFeatureCheckBoxPreference != null) {
                     gpsLocationFeatureCheckBoxPreference

@@ -32,6 +32,13 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
         f.formController = formController;
         return f;
     }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_COMPLETED_FORMS");
+        }
+    }
 
     @Override
     public void onResume() {
@@ -64,7 +71,6 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionMode.setTitle(String.valueOf(((CompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size()));
         }
-
         super.onCreate(savedInstanceState);
     }
 

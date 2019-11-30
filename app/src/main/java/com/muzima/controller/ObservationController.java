@@ -243,7 +243,7 @@ public class ObservationController {
                     }
                 }
             }
-            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_OBSERVATIONS, sntpService.getLocalTime(), paramSignature);
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_OBSERVATIONS, sntpService.getTimePerDeviceTimeZone(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return observations;
         } catch (IOException e) {

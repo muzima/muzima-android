@@ -51,6 +51,14 @@ public class CompletePatientsFormsListFragment extends FormsListFragment impleme
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && isResumed()){
+            logEvent("VIEW_COMPLETED_PATIENT_FORMS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         // Store our shared preference
