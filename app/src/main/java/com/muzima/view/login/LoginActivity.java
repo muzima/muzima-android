@@ -150,7 +150,7 @@ public class LoginActivity extends Activity {
         super.onResume();
         themeUtils.onResume(this);
         setupStatusView();
-        initializeGpsDataCollection();
+        initializeGPSDataCollection();
     }
 
     private void setupStatusView() {
@@ -272,7 +272,7 @@ public class LoginActivity extends Activity {
         }
     }
 
-    private void initializeGpsDataCollection(){
+    private void initializeGPSDataCollection(){
         gpsLocationService = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService();
 
         if(gpsLocationService.isGPSLocationFeatureEnabled()) {
@@ -309,7 +309,7 @@ public class LoginActivity extends Activity {
             if (result.status == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
                 MuzimaLoggerService.scheduleLogSync(muzimaApplication);
                 MuzimaLoggerService.log(muzimaApplication,"LOGIN_SUCCESS",
-                        result.credentials.getUserName(),MuzimaLoggerService.getAndParseGpsLocationForLogging(muzimaApplication), "{}");
+                        result.credentials.getUserName(),MuzimaLoggerService.getAndParseGPSLocationForLogging(muzimaApplication), "{}");
                 new CredentialsPreferenceService(getApplicationContext()).saveCredentials(result.credentials);
                 ((MuzimaApplication) getApplication()).restartTimer();
                 LocalePreferenceService localePreferenceService = ((MuzimaApplication) getApplication()).getLocalePreferenceService();
@@ -325,7 +325,7 @@ public class LoginActivity extends Activity {
                 startNextActivity();
             } else {
                 MuzimaLoggerService.log((MuzimaApplication)getApplicationContext(),"LOGIN_FAILURE",
-                        result.credentials.getUserName(),MuzimaLoggerService.getAndParseGpsLocationForLogging((MuzimaApplication)getApplicationContext()),"{}");
+                        result.credentials.getUserName(),MuzimaLoggerService.getAndParseGPSLocationForLogging((MuzimaApplication)getApplicationContext()),"{}");
                 Toast.makeText(getApplicationContext(), getErrorText(result), Toast.LENGTH_SHORT).show();
                 if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
                     flipFromLoginToAuthAnimator.cancel();

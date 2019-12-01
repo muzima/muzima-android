@@ -640,22 +640,15 @@ class HTMLFormDataStore {
             JSONObject eventDetails = new JSONObject();
             eventDetails.put("patientuuid", formData.getPatientUuid());
             eventDetails.put("formDataUuid", formData.getUuid());
+            eventDetails.put("formDiscriminator", formData.getDiscriminator());
 
-            if (isEncounterForm()) {
-                if(isFormReload) {
-                    logEvent("RESUME_ENCOUNTER_FORM", eventDetails.toString());
-                } else {
-                    logEvent("OPEN_ENCOUNTER_FORM", eventDetails.toString());
-                }
+            if(isFormReload) {
+                logEvent("RESUME_FORM", eventDetails.toString());
             } else {
-                if(isFormReload) {
-                    logEvent("RESUME_REGISTRATION_FORM", eventDetails.toString());
-                } else {
-                    logEvent("OPEN_REGISTRATION_FORM", eventDetails.toString());
-                }
+                logEvent("OPEN_FORM", eventDetails.toString());
             }
         } catch (JSONException e) {
-            Log.e(getClass().getSimpleName(),"Cannot create log",e);
+            Log.e(getClass().getSimpleName(),"Cannot create event log",e);
         }
     }
 
@@ -664,21 +657,13 @@ class HTMLFormDataStore {
             JSONObject eventDetails = new JSONObject();
             eventDetails.put("patientuuid", formData.getPatientUuid());
             eventDetails.put("formDataUuid", formData.getUuid());
+            eventDetails.put("formDiscriminator", formData.getDiscriminator());
 
             switch(status) {
-                case STATUS_COMPLETE :
-                    if(isEncounterForm()){
-                        logEvent( "SAVE_COMPLETE_ENCOUNTER_FORM", eventDetails.toString());
-                    } else {
-                        logEvent( "SAVE_COMPLETE_REGISTRATION_FORM", eventDetails.toString());
-                    }
+                case STATUS_COMPLETE :logEvent( "SAVE_COMPLETE_FORM", eventDetails.toString());
                     break;
                 case STATUS_INCOMPLETE :
-                    if(isEncounterForm()){
-                        logEvent( "SAVE_DRAFT_ENCOUNTER_FORM", eventDetails.toString());
-                    } else {
-                        logEvent( "SAVE_DRAFT_REGISTRATION_FORM", eventDetails.toString());
-                    }
+                    logEvent( "SAVE_DRAFT_FORM", eventDetails.toString());
                     break;
             }
         } catch (JSONException e) {

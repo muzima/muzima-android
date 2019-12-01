@@ -3,6 +3,7 @@ project.properties
 .idea
 .settings
 .gradle
+gradlew*
 gen/
 gradle/
 build/

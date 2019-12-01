@@ -10,8 +10,6 @@
 
 package com.muzima.controller;
 
-import android.util.Log;
-
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.CohortMember;
@@ -62,7 +60,7 @@ public class CohortController {
             Date lastSyncTimeForCohorts = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS);
             List<Cohort> allCohorts = cohortService.downloadCohortsByNameAndSyncDate(StringUtils.EMPTY, lastSyncTimeForCohorts);
 
-            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getLocalTime());
+            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getTimePerDeviceTimeZone());
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return allCohorts;
         } catch (IOException e) {
@@ -90,7 +88,7 @@ public class CohortController {
         try {
             Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS_DATA, uuid);
             CohortData cohortData = cohortService.downloadCohortDataAndSyncDate(uuid, false, lastSyncDate);
-            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS_DATA, sntpService.getLocalTime(), uuid);
+            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS_DATA, sntpService.getTimePerDeviceTimeZone(), uuid);
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return cohortData;
         } catch (IOException e) {
@@ -102,7 +100,7 @@ public class CohortController {
         try {
             Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_REMOVED_COHORTS_DATA, uuid);
             CohortData cohortData = cohortService.downloadRemovedStaticCohortMemberByCohortUuidAndSyncDate(uuid, lastSyncDate);
-            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_REMOVED_COHORTS_DATA, sntpService.getLocalTime(), uuid);
+            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_REMOVED_COHORTS_DATA, sntpService.getTimePerDeviceTimeZone(), uuid);
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return cohortData;
         } catch (IOException e) {
@@ -120,7 +118,7 @@ public class CohortController {
                 List<Cohort> cohorts = cohortService.downloadCohortsByNameAndSyncDate(cohortPrefix, lastSyncDateOfCohort);
                 List<Cohort> filteredCohortsForPrefix = filterCohortsByPrefix(cohorts, cohortPrefix);
                 addUniqueCohorts(filteredCohorts, filteredCohortsForPrefix);
-                lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getLocalTime(), cohortPrefix);
+                lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getTimePerDeviceTimeZone(), cohortPrefix);
                 lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             }
         } catch (IOException e) {
@@ -228,7 +226,7 @@ public class CohortController {
     }
 
     public boolean isUpdateAvailable() throws CohortFetchException {
-        for(Cohort cohort: getAllCohorts()){
+        for(Cohort cohort: getSyncedCohorts()){
             if(cohort.isUpdateAvailable()){
                 return true;
             }
@@ -238,7 +236,7 @@ public class CohortController {
 
     public List<Cohort> getCohortsWithPendingUpdates() throws CohortFetchException {
         List<Cohort> cohortList = new ArrayList<>();
-        for(Cohort cohort: getAllCohorts()){
+        for(Cohort cohort: getSyncedCohorts()){
             if(cohort.isUpdateAvailable()){
                 cohortList.add(cohort);
             }

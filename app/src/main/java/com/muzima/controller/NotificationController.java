@@ -123,7 +123,7 @@ public class NotificationController {
             LastSyncTimeService lastSyncTimeService = muzimaApplication.getMuzimaContext().getLastSyncTimeService();
             Date lastSyncTimeForNotifications = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_NOTIFICATIONS_BY_RECEIVER);
             List<Notification> notification =  notificationService.downloadNotificationByReceiver(receiverUuid,lastSyncTimeForNotifications);
-            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_NOTIFICATIONS_BY_RECEIVER, sntpService.getLocalTime());
+            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_NOTIFICATIONS_BY_RECEIVER, sntpService.getTimePerDeviceTimeZone());
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             Log.e("Receiver Notification Size:"," = "+notification.size()+" = "+lastSyncTimeForNotifications+" and "+lastSyncTime.getLastSyncDate());
             return notification;
@@ -137,7 +137,7 @@ public class NotificationController {
             LastSyncTimeService lastSyncTimeService = muzimaApplication.getMuzimaContext().getLastSyncTimeService();
             Date lastSyncTimeForNotifications = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_NOTIFICATIONS_BY_SENDER);
             List<Notification> senderNotifications = notificationService.downloadNotificationBySender(senderUuid,lastSyncTimeForNotifications);
-            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_NOTIFICATIONS_BY_SENDER, sntpService.getLocalTime());
+            LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_NOTIFICATIONS_BY_SENDER, sntpService.getTimePerDeviceTimeZone());
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             Log.e("Sender Notification Size:"," = "+senderNotifications.size()+" = "+lastSyncTimeForNotifications+" and "+lastSyncTime.getLastSyncDate());
             return senderNotifications;
