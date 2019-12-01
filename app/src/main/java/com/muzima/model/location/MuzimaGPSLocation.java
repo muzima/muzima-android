@@ -47,6 +47,14 @@ public class MuzimaGPSLocation {
         this.accuracy = String.valueOf(location.getAccuracy());
     }
 
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
     private void setLongitude() {
         this.longitude = Double.toString(location.getLongitude());
     }

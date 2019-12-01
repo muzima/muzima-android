@@ -50,7 +50,9 @@ import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
+import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
+import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Constants;
@@ -80,8 +82,10 @@ import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.BARCODE_SC
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 import com.muzima.api.model.SmartCardRecord;
+import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -227,12 +231,33 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.client_list, menu);
+
+        setUpGeoMappingFeatureMenuItems(menu);
+        setUpSHRFeatureMenuItems(menu);
+        setUpSearchFeatureMenuItems(menu);
+        super.onCreateOptionsMenu(menu);
+        return true;
+    }
+
+    private void setUpGeoMappingFeatureMenuItems(Menu menu){
+        MenuItem geoMappingFeatureMenuItem = menu.findItem(R.id.clients_geomapping);
+        if(isGeoMappingFeatureEnabled()){
+            geoMappingFeatureMenuItem.setVisible(true);
+        } else {
+            geoMappingFeatureMenuItem.setVisible(false);
+        }
+    }
+
+    private void setUpSHRFeatureMenuItems(Menu menu){
         MenuItem shrCardItem = menu.findItem(R.id.scan_SHR_card);
         if(isSHRSettingEnabled()) {
             shrCardItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS);
         } else {
             shrCardItem.setVisible(false);
         }
+    }
+
+    private void setUpSearchFeatureMenuItems(Menu menu){
         searchMenuItem = menu.findItem(R.id.search);
         searchView = (SearchView) searchMenuItem.getActionView();
 
@@ -289,8 +314,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             searchMenuItem.setVisible(true);
             searchView.requestFocus();
         }
-        super.onCreateOptionsMenu(menu);
-        return true;
     }
 
     private void activateRemoteAfterThreeCharacterEntered(String searchString) {
@@ -370,6 +393,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                     mainLayout.openDrawer(GravityCompat.END);
                 }
                 return true;
+
+            case R.id.clients_geomapping:
+                navigateToClientsLocationMap();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -386,6 +414,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         if (!intentBarcodeResults)
             patientAdapter.reloadData();
         tagsListAdapter.reloadData();
+    }
+
+    private void navigateToClientsLocationMap() {
+        System.out.println("navigateToClientsLocationMap");
+        Intent intent = new Intent(this, PatientsLocationMapActivity.class);
+        startActivity(intent);
     }
 
     private void prepareLocalSearchNotifyDialog(Patient patient) {
@@ -471,10 +505,22 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private void setupListView(String cohortId) {
         listView = findViewById(R.id.list);
         patientAdapter = new PatientsLocalSearchAdapter(this, R.layout.layout_list,
-                ((MuzimaApplication) getApplicationContext()).getPatientController(), cohortId);
+                ((MuzimaApplication) getApplicationContext()).getPatientController(), cohortId, getCurrentGPSLocation());
+
         patientAdapter.setBackgroundListQueryTaskListener(this);
         listView.setAdapter(patientAdapter);
         listView.setOnItemClickListener(this);
+    }
+
+    private MuzimaGPSLocation getCurrentGPSLocation(){
+        MuzimaGPSLocationService muzimaLocationService = muzimaApplication.getMuzimaGPSLocationService();
+
+        HashMap<String, Object> locationDataHashMap = muzimaLocationService.getLastKnownGPS();
+        if (locationDataHashMap.containsKey("gps_location")) {
+            MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation) locationDataHashMap.get("gps_location"));
+            return muzimaGPSLocation;
+        }
+        return null;
     }
 
     private void setupNoDataView() {
@@ -886,6 +932,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private boolean isSHRSettingEnabled(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
         return preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
+    }
+
+    private boolean isGeoMappingFeatureEnabled(){
+        return muzimaApplication.getMuzimaSettingController().isRelationshipEnabled();
     }
 
     private void initDrawer() {

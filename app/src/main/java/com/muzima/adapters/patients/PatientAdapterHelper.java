@@ -11,6 +11,7 @@
 package com.muzima.adapters.patients;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +24,10 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.PatientController;
+import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
 import com.muzima.utils.StringUtils;
 
@@ -35,10 +38,15 @@ import static com.muzima.utils.DateUtils.getFormattedDate;
 
 public class PatientAdapterHelper extends ListAdapter<Patient> {
     private PatientController patientController;
+    private MuzimaGPSLocation currentLocation;
 
     public PatientAdapterHelper(Context context, int textViewResourceId, PatientController patientController) {
         super(context, textViewResourceId);
         this.patientController = patientController;
+    }
+
+    public void setCurrentLocation(MuzimaGPSLocation currentLocation) {
+        this.currentLocation = currentLocation;
     }
 
     public View createPatientRow(Patient patient, View convertView, ViewGroup parent, Context context) {
@@ -50,6 +58,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
             holder.genderImg = convertView.findViewById(R.id.genderImg);
             holder.name = convertView.findViewById(R.id.name);
             holder.dateOfBirth = convertView.findViewById(R.id.dateOfBirth);
+            holder.distanceToHome = convertView.findViewById(R.id.distanceToHome);
             holder.identifier = convertView.findViewById(R.id.identifier);
             holder.tagsScroller = convertView.findViewById(R.id.tags_scroller);
             holder.tagsLayout = convertView.findViewById(R.id.menu_tags);
@@ -61,10 +70,26 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
 
         holder.dateOfBirth.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
         holder.identifier.setText(patient.getIdentifier());
+        holder.distanceToHome.setText(getDistanceToHome(patient));
         holder.name.setText(getPatientFullName(patient));
         holder.genderImg.setImageResource(getGenderImage(patient.getGender()));
         addTags(holder,patient);
         return convertView;
+    }
+
+    private String getDistanceToHome(Patient patient){
+        PersonAddress personAddress = patient.getPreferredAddress();
+        if (currentLocation != null && personAddress != null && !StringUtils.isEmpty(personAddress.getLatitude()) && !StringUtils.isEmpty(personAddress.getLongitude())) {
+            double startLatitude = Double.parseDouble(currentLocation.getLatitude());
+            double startLongitude = Double.parseDouble(currentLocation.getLongitude());
+            double endLatitude = Double.parseDouble(personAddress.getLatitude());
+            double endLongitude= Double.parseDouble(personAddress.getLongitude());
+
+            float[] results = new float[1];
+            Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
+            return String.format("%.02f",results[0]/1000) + " km";
+        }
+        return "";
     }
 
     private void addTags(ViewHolder holder, Patient patient) {
@@ -200,6 +225,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         TextView name;
         TextView dateOfBirth;
         TextView identifier;
+        TextView distanceToHome;
         List<TextView> tags;
         LinearLayout tagsLayout;
         RelativeLayout tagsScroller;

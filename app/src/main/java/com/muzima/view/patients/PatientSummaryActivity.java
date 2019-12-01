@@ -50,7 +50,6 @@ import com.muzima.model.shr.kenyaemr.Addendum.WriteResponse;
 import com.muzima.model.shr.kenyaemr.InternalPatientId;
 import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.service.JSONInputOutputToDisk;
-import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LocationUtils;
 import com.muzima.utils.StringUtils;
@@ -64,7 +63,6 @@ import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
 import com.muzima.view.observations.ObservationsActivity;
-import com.muzima.view.relationship.RelationshipFormsActivity;
 import com.muzima.view.relationship.RelationshipsListActivity;
 import com.muzima.view.reports.PatientReportActivity;
 
@@ -218,6 +216,7 @@ public class PatientSummaryActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.client_summary, menu);
         MenuItem SHRCardMenuItem = menu.findItem(R.id.SHR_client_summary);
         MenuItem relationshipsMenuItem = menu.findItem(R.id.client_relationship);
+        MenuItem geoMappingMenuItem = menu.findItem(R.id.client_geomapping);
 
         if(isSHREnabled) {
             if (isRegisteredOnSHR) {
@@ -232,6 +231,10 @@ public class PatientSummaryActivity extends BaseActivity {
 
         if (!isRelationshipEnabled) {
             relationshipsMenuItem.setVisible(false);
+        }
+
+        if(isGeoMappingFeatureEnabled()) {
+            geoMappingMenuItem.setVisible(true);
         }
 
         super.onCreateOptionsMenu(menu);
@@ -255,6 +258,10 @@ public class PatientSummaryActivity extends BaseActivity {
                 break;
             case R.id.client_relationship:
                 showRelationships();
+                return true;
+
+            case R.id.client_geomapping:
+                navigateToClientLocationMap();
                 return true;
             default:
                 break;
@@ -415,6 +422,12 @@ public class PatientSummaryActivity extends BaseActivity {
 
     private void showRelationships() {
         Intent intent = new Intent(this, RelationshipsListActivity.class);
+        intent.putExtra(PATIENT, patient);
+        startActivity(intent);
+    }
+
+    private void navigateToClientLocationMap() {
+        Intent intent = new Intent(this, PatientLocationMapActivity.class);
         intent.putExtra(PATIENT, patient);
         startActivity(intent);
     }
@@ -806,6 +819,10 @@ public class PatientSummaryActivity extends BaseActivity {
     }
 
     private void setRelationshipEnabled(){
-        isRelationshipEnabled = muzimaApplication.getMuzimaSettingController().isRelationshipEnabled(); //preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_relationship_key),PatientSummaryActivity.DEFAULT_RELATIONSHIP_STATUS);
+        isRelationshipEnabled = muzimaApplication.getMuzimaSettingController().isRelationshipEnabled();
+    }
+
+    private boolean isGeoMappingFeatureEnabled(){
+        return muzimaApplication.getMuzimaSettingController().isRelationshipEnabled();
     }
 }

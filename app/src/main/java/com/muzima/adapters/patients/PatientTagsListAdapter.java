@@ -35,7 +35,7 @@ public class PatientTagsListAdapter extends ListAdapter<Tag> implements AdapterV
         super(context, textViewResourceId);
         this.patientController = patientController;
         patientsLocalSearchAdapter = new PatientsLocalSearchAdapter(context,
-                R.layout.layout_list, patientController, "");
+                R.layout.layout_list, patientController, "", null);
     }
 
     public void onTagsChanged() {
