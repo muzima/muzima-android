@@ -34,6 +34,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaCoreModuleVersionController;
 import com.muzima.controller.PatientReportController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
@@ -88,6 +89,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private LocalePreferenceService localePreferenceService;
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController settingsController;
+    private MuzimaCoreModuleVersionController muzimaCoreModuleVersionController;
     private SmartCardController smartCardController;
     private PatientReportController patientReportController;
     private RelationshipController relationshipController;
@@ -456,5 +458,16 @@ public class MuzimaApplication extends MultiDexApplication {
         assert manager != null;
         List<ActivityManager.RunningTaskInfo> tasks = manager.getRunningTasks(1);
         return tasks.get(0).topActivity.getClassName().contains("Launcher");
+    }
+
+    public MuzimaCoreModuleVersionController getMuzimaCoreModuleVersionController() {
+        if(muzimaCoreModuleVersionController == null){
+            try {
+                muzimaCoreModuleVersionController = new MuzimaCoreModuleVersionController(muzimaContext.getMuzimaCoreModuleVersionService());
+            } catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        return muzimaCoreModuleVersionController;
     }
 }

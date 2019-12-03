@@ -862,4 +862,5 @@
         crie uma nova pessoa
     </string>
     <string name="general_searching">Procurando…</string>
+    <string name="warning_incompatible_module">Seu aplicativo atual do mUzima não é compatível com o servidor. Entre em contato com seu administrador.</string>
 </resources>
