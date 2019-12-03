@@ -800,4 +800,5 @@ Ces formulaires avant de télécharger une version plus récente. </string>
         nouveau OU créez une nouvelle personne
     </string>
     <string name="general_searching">Recherche…</string>
+    <string name="warning_incompatible_module">Votre application mUzima actuelle n’est pas compatible avec le serveur. Veuillez contacter votre administrateur.</string>
 </resources>
