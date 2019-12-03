@@ -57,7 +57,7 @@ public class Constants {
 
     public static final int PATIENT_LOAD_PAGE_SIZE = 10;
 
-    public static final String COMPATIBLE_SERVER_SIDE_MODULE = "1.5.0";
+    public static final String MINIMUM_SERVER_SIDE_MODULE_VERSION = "1.5.0";
 
     public static final String STANDARD_DATE_FORMAT = "dd-MM-yyyy";
     public static final String STANDARD_DATE_LOCALE_FORMAT = "dd-MM-yyyy hh:mm";

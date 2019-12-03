@@ -426,11 +426,11 @@ public class LoginActivity extends Activity {
                     }
                 }
             } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionDownloadException e) {
-                Log.e(getClass().getSimpleName(),"Encountere an exception while downloading module version ",e);
+                Log.e(getClass().getSimpleName(),"Encountered an exception while downloading module version ",e);
             } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionFetchException e) {
-                Log.e(getClass().getSimpleName(),"Encountere an exception while fetching/retrieving module version ",e);
+                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving module version ",e);
             } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionSaveException e) {
-                Log.e(getClass().getSimpleName(),"Encountere an exception while saving module version ",e);
+                Log.e(getClass().getSimpleName(),"Encountered an exception while saving module version ",e);
             }
             return serverUrl;
         }
@@ -444,14 +444,14 @@ public class LoginActivity extends Activity {
                 if(currentmuzimaCoreModuleVersion == null){
                     showAlertDialog();
                 }else {
-                    if (!StringUtils.equals(com.muzima.utils.Constants.COMPATIBLE_SERVER_SIDE_MODULE, currentmuzimaCoreModuleVersion.getVersion())) {
+                    if (!StringUtils.equals(com.muzima.utils.Constants.MINIMUM_SERVER_SIDE_MODULE_VERSION, currentmuzimaCoreModuleVersion.getVersion())) {
                         showAlertDialog();
                     } else {
                         startNextActivity();
                     }
                 }
             } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionFetchException e) {
-                 Log.e(getClass().getSimpleName(),"Encountere an exception while fetching/retrieving module version ",e);
+                 Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving module version ",e);
             }
         }
 
