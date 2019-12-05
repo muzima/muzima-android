@@ -614,7 +614,7 @@ public class FormController {
     public AvailableForms getRecommendedForms() throws FormFetchException {
         AvailableForms result = new AvailableForms();
         for (AvailableForm form : getAvailableFormByTagsSortedByConfigOrder(null,false)) {
-            if (form.isDownloaded() && !form.isRegistrationForm() && !form.isProviderReport()) {
+            if (form.isDownloaded() && !form.isRegistrationForm() && !form.isProviderReport() && !form.isRelationshipForm()) {
                 result.add(form);
             }
         }

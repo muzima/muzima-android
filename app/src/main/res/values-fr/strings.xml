@@ -792,6 +792,7 @@
     <string name="warning_form_data_already_exists">Ce formulaire de données existe déjà pour ce client avec la même date de rencontre.</string>
     <string formatted="false" name="warning_forms_complete_and_sync">%s contient des formulaires qui lui sont associés. S\'il vous plaît compléter et synchronisez
 Ces formulaires avant de télécharger une version plus récente. </string>
+    <string name="warning_incompatible_module">Votre application mUzima actuelle n’est pas compatible avec le serveur. Veuillez contacter votre administrateur.</string>
     <string name="warning_invalid_url_provided">L\'URL que vous avez fournie n\'est pas valide</string>
     <string name="warning_logout_confirm">Etes-vous sûr de vouloir vous déconnectez et quitter Muzima app?</string>
     <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du client sur l\'appareil. Etes-vous sur?</string>

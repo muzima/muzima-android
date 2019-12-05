@@ -820,6 +820,7 @@
     <string name="warning_forms_complete_and_sync">%s contains some associated forms with it. Please complete and sync
         those forms before downloading a newer version.
     </string>
+    <string name="warning_incompatible_module">Your current mUzima application is not compatible with the server. Please contact your administrator.</string>
     <string name="warning_invalid_url_provided">The URL you have provided is invalid</string>
     <string name="warning_logout_confirm">Are you sure you want to log out and exit mUzima app?</string>
     <string name="warning_registration_form_data_delete">You are about to delete registration data. This will also

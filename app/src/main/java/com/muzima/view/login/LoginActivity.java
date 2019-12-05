@@ -12,6 +12,8 @@ package com.muzima.view.login;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -30,6 +32,8 @@ import android.animation.ValueAnimator;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
+import com.muzima.api.model.MuzimaCoreModuleVersion;
+import com.muzima.controller.MuzimaCoreModuleVersionController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
@@ -40,6 +44,8 @@ import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.util.Constants;
+import com.muzima.util.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.utils.ThemeUtils;
@@ -321,13 +327,11 @@ public class LoginActivity extends Activity {
                     //delay for 10 seconds to allow next UI activity to finish loading
                     muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(10000,false);
                 }
-
-                startNextActivity();
+                checkMuzimaCoreModuleVersion(result);
             } else {
                 MuzimaLoggerService.log((MuzimaApplication)getApplicationContext(),"LOGIN_FAILURE",
                         result.credentials.getUserName(),MuzimaLoggerService.getAndParseGPSLocationForLogging((MuzimaApplication)getApplicationContext()),"{}");
-                Toast.makeText(getApplicationContext(), getErrorText(result), Toast.LENGTH_SHORT).show();
-                if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
+                 if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
                     flipFromLoginToAuthAnimator.cancel();
                     flipFromAuthToLoginAnimator.start();
                 }
@@ -353,30 +357,10 @@ public class LoginActivity extends Activity {
             }
         }
 
-        private void startNextActivity() {
-            Intent intent;
-            if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
-                downloadMissingServerSettings();
-                intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();
-            } else {
-                removeRemnantDataFromPreviousRunOfWizard();
-                intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
-            }
-            startActivity(intent);
-            finish();
+        private void checkMuzimaCoreModuleVersion(Result result){
+            new DownloadMuzimaCoreModuleVersionBackGroundTask().execute(result.credentials.getServerUrl());
         }
 
-        private void downloadMissingServerSettings(){
-            try {
-                boolean isSettingsDownloadNeeded = !((MuzimaApplication) getApplication()).getMuzimaSettingController()
-                        .isAllMandatorySettingsDownloaded();
-                if (isSettingsDownloadNeeded) {
-                    new SyncSettingsIntent(getApplicationContext()).start();
-                }
-            } catch (MuzimaSettingController.MuzimaSettingFetchException e){
-                Log.e(getClass().getSimpleName(),""+e.getMessage());
-            }
-        }
 
         protected class Result {
             final Credentials credentials;
@@ -422,5 +406,102 @@ public class LoginActivity extends Activity {
                 }
             }
         });
+    }
+
+    private class DownloadMuzimaCoreModuleVersionBackGroundTask extends AsyncTask<String, Void,String > {
+        @Override
+        public String doInBackground(String... params){
+            String serverUrl = params[0];
+            MuzimaCoreModuleVersionController muzimaCoreModuleVersionController = ((MuzimaApplication) getApplication()).getMuzimaCoreModuleVersionController();
+            try {
+                if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
+                    MuzimaCoreModuleVersion localmuzimaCoreModuleVersion = muzimaCoreModuleVersionController.getMuzimaCoreModuleVersion();
+                    MuzimaCoreModuleVersion serverMuzimaCoreModuleVersion = muzimaCoreModuleVersionController.downloadMuzimaCoreModuleVersion();
+                    if(serverMuzimaCoreModuleVersion != null) {
+                        if (localmuzimaCoreModuleVersion.getVersion() != null) {
+                            muzimaCoreModuleVersionController.updateMuzimaCoreModuleVersion(serverMuzimaCoreModuleVersion);
+                        } else {
+                            muzimaCoreModuleVersionController.saveMuzimaCoreModuleVersion(serverMuzimaCoreModuleVersion);
+                        }
+                    }
+                }
+            } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionDownloadException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while downloading module version ",e);
+            } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionFetchException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving module version ",e);
+            } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionSaveException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while saving module version ",e);
+            }
+            return serverUrl;
+        }
+
+        @Override
+        protected void onPostExecute(String serverUrl) {
+            MuzimaCoreModuleVersion currentmuzimaCoreModuleVersion;
+            MuzimaCoreModuleVersionController muzimaCoreModuleVersionController = ((MuzimaApplication) getApplication()).getMuzimaCoreModuleVersionController();
+            try {
+                currentmuzimaCoreModuleVersion = muzimaCoreModuleVersionController.getMuzimaCoreModuleVersion();
+                if(currentmuzimaCoreModuleVersion == null){
+                    showAlertDialog();
+                }else {
+                    if (!StringUtils.equals(com.muzima.utils.Constants.MINIMUM_SERVER_SIDE_MODULE_VERSION, currentmuzimaCoreModuleVersion.getVersion())) {
+                        showAlertDialog();
+                    } else {
+                        startNextActivity();
+                    }
+                }
+            } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionFetchException e) {
+                 Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving module version ",e);
+            }
+        }
+
+        private void startNextActivity(){
+            Intent intent;
+            if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
+                downloadMissingServerSettings();
+                intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();
+            } else {
+                removeRemnantDataFromPreviousRunOfWizard();
+                intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
+            }
+            startActivity(intent);
+            finish();
+        }
+
+        private void downloadMissingServerSettings(){
+            try {
+                boolean isSettingsDownloadNeeded = !((MuzimaApplication) getApplication()).getMuzimaSettingController()
+                        .isAllMandatorySettingsDownloaded();
+                if (isSettingsDownloadNeeded) {
+                    new SyncSettingsIntent(getApplicationContext()).start();
+                }
+            } catch (MuzimaSettingController.MuzimaSettingFetchException e){
+                Log.e(getClass().getSimpleName(),""+e.getMessage());
+            }
+        }
+
+        private void showAlertDialog() {
+            new AlertDialog.Builder(LoginActivity.this)
+                    .setCancelable(true)
+                    .setIcon(ThemeUtils.getIconWarning(LoginActivity.this))
+                    .setTitle(getResources().getString(R.string.general_caution))
+                    .setMessage(getResources().getString(R.string.warning_incompatible_module))
+                    .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
+                    .create()
+                    .show();
+        }
+
+        private Dialog.OnClickListener positiveClickListener() {
+            return new Dialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
+                        flipFromLoginToAuthAnimator.cancel();
+                        flipFromAuthToLoginAnimator.start();
+                    }
+                }
+            };
+        }
+
     }
 }

@@ -850,6 +850,7 @@
         Por favor complete
         e sincroniza estes formulários antes de baixar uma nova versão.
     </string>
+    <string name="warning_incompatible_module">Seu aplicativo atual do mUzima não é compatível com o servidor. Entre em contato com seu administrador.</string>
     <string name="warning_invalid_url_provided">O URL que você forneceu é inválido</string>
     <string name="warning_logout_confirm">Tem certeza que quer sair e fechar o aplicativo mUzima?</string>
     <string name="warning_registration_form_data_delete">Está para apagar dados de registo. Isto irá apagar o registo do
