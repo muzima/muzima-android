@@ -823,6 +823,6 @@ public class PatientSummaryActivity extends BaseActivity {
     }
 
     private boolean isGeoMappingFeatureEnabled(){
-        return muzimaApplication.getMuzimaSettingController().isRelationshipEnabled();
+        return muzimaApplication.getMuzimaSettingController().isGeoMappingpEnabled();
     }
 }

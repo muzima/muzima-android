@@ -3,147 +3,277 @@ package com.muzima.view.patients;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import android.view.MenuItem;
+import android.view.View;
+import android.webkit.ConsoleMessage;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.Toast;
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.TextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.patients.PatientAdapterHelper;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
+import com.muzima.controller.FormController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
-import com.muzima.model.location.MuzimaGPSLocation;
-import com.muzima.service.MuzimaGPSLocationService;
+import com.muzima.util.Constants;
+import com.muzima.utils.GeolocationJsonMapper;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.maps.MapLocationPickerActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.util.HashMap;
+import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
+import static com.muzima.view.maps.MapLocationPickerActivity.LATITUDE;
+import static com.muzima.view.maps.MapLocationPickerActivity.LONGITUDE;
+import static java.lang.String.format;
 
-import static com.muzima.utils.DateUtils.getFormattedDate;
-
-public class PatientLocationMapActivity extends BroadcastListenerActivity implements OnMapReadyCallback{
+public class PatientLocationMapActivity extends BroadcastListenerActivity{
+    private static int PICK_LOCATION_REQUEST_CODE = 201;
     private Patient patient;
+    Button getDirectionsButton;
+    WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_location_map);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
+        getSupportActionBar().setTitle(patient.getSummary());
+        initializeHomeLocationMapView();
+        initializeMapActionButtons();
 
-        setupPatientMetadata();
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        getLatestPatientRecord();
+        if(!patientHomeLocationExists()){
+            promptSetLocation();
+        }
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        PersonAddress personAddress = patient.getPreferredAddress();
-        if(personAddress != null && !StringUtils.isEmpty(personAddress.getLatitude()) && !StringUtils.isEmpty(personAddress.getLongitude())) {
-            LatLng latLng = new LatLng(Double.parseDouble(personAddress.getLatitude()), Double.parseDouble(personAddress.getLongitude()));
-            googleMap.addMarker(new MarkerOptions().position(latLng)
-                    .title(patient.getDisplayName()));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory
-                    .defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-            googleMap.animateCamera( CameraUpdateFactory.zoomTo( 13.0f ) );
-        } else {
-            MuzimaGPSLocationService gpsLocationService = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService();
-            if(!gpsLocationService.isGPSLocationPermissionsGranted()){
-                gpsLocationService.requestGPSLocationPermissions(this);
-            }
+    private void getLatestPatientRecord(){
+        try {
+            patient = ((MuzimaApplication) getApplicationContext()).getPatientController().getPatientByUuid(patient.getUuid());
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Could not refresh patient record",e);
+        }
+    }
 
-            if(!gpsLocationService.isLocationServicesSwitchedOn()){
-                gpsLocationService.requestSwitchOnLocation(this);
-            }
+    private void initializeMapActionButtons(){
 
-            if(gpsLocationService.isGPSLocationPermissionsGranted() && gpsLocationService.isLocationServicesSwitchedOn()) {
-                HashMap locationDataHashMap = gpsLocationService.getLastKnownGPS();
-                if (locationDataHashMap.containsKey("gps_location")) {
-                    MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation) locationDataHashMap.get("gps_location"));
-                    if(!StringUtils.isEmpty(muzimaGPSLocation.getLatitude()) && !StringUtils.isEmpty(muzimaGPSLocation.getLongitude())) {
-                        LatLng latLng = new LatLng(Double.parseDouble(muzimaGPSLocation.getLatitude()),
-                                Double.parseDouble(muzimaGPSLocation.getLongitude()));
+        getDirectionsButton = findViewById(R.id.getDirections);
+        getDirectionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(patient.getPreferredAddress() != null) {
+                    StringBuilder latLngString = new StringBuilder();
+                    latLngString.append(patient.getPreferredAddress().getLatitude());
+                    latLngString.append("%2C");
+                    latLngString.append(patient.getPreferredAddress().getLongitude());
 
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-//                        googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory
-//                                .defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-                        googleMap.animateCamera( CameraUpdateFactory.zoomTo( 12.0f ) );
-
-
-                        promptSetLocation();
-                    }
+                    Uri mapIntentUri = Uri.parse("https://www.google.com/maps/dir/?api=1&destination=" + latLngString.toString());
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
                 }
             }
+        });
+    }
 
+    @JavascriptInterface
+    public void showGetDirectionsButton(){
+        webView.post(new Runnable() {
+            @Override
+            public void run() {
+                getDirectionsButton.setVisibility(View.VISIBLE);
+            }
+        });
+    }
 
+    @JavascriptInterface
+    public void hideGetDirectionsButton(){
+        webView.post(new Runnable() {
+            @Override
+            public void run() {
+                getDirectionsButton.setVisibility(View.GONE);
+            }
+        });
+    }
+    @JavascriptInterface
+    public String getPatientHomeDetailsForMapping(){
+        JSONObject personAddressObject = new JSONObject();
+        PersonAddress personAddress = patient.getPreferredAddress();
+        if(personAddress != null) {
+            try {
+                personAddressObject.put("longitude", personAddress.getLongitude());
+                personAddressObject.put("latitude", personAddress.getLatitude());
+                personAddressObject.put("patientSummary", patient.getDisplayName());
+            } catch (JSONException e) {
+                Log.e(getClass().getSimpleName(), "Could not get home location", e);
+            }
         }
+        return personAddressObject.toString();
+    }
+
+    @JavascriptInterface
+    public String getMapsAPIKey(){
+        try {
+            MuzimaSetting muzimaSetting = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController()
+                    .getSettingByProperty(Constants.ServerSettings.MAPS_API_KEY);
+            if(muzimaSetting != null){
+                return muzimaSetting.getValueString();
+            }
+        } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Could not obtain API key",e);
+        }
+        return null;
+    }
+
+    private void initializeHomeLocationMapView(){
+
+        webView = findViewById(R.id.webview);
+
+        webView.setWebChromeClient(createWebChromeClient());
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDatabaseEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setBuiltInZoomControls(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webView.setWebContentsDebuggingEnabled(true);
+        }
+        webView.addJavascriptInterface(this,"patientLocationMapInterface");
+        webView.loadUrl("file:///android_asset/www/maps/patientHomeLocationMap.html");
+    }
+
+
+    private WebChromeClient createWebChromeClient() {
+        return new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int progress) {
+            }
+
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                String message = format("Javascript Log. Message: {0}, lineNumber: {1}, sourceId, {2}", consoleMessage.message( ),
+                        consoleMessage.lineNumber( ), consoleMessage.sourceId( ));
+                if (consoleMessage.messageLevel( ) == ERROR) {
+                    Log.e(getClass().getSimpleName(), message);
+                }
+                return true;
+            }
+        };
+    }
+
+    private boolean patientHomeLocationExists(){
+        PersonAddress personAddress = patient.getPreferredAddress();
+        return personAddress != null && !StringUtils.isEmpty(personAddress.getLatitude()) &&
+                !StringUtils.isEmpty(personAddress.getLongitude());
     }
 
     private void promptSetLocation(){
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("Client location");
-        alertDialog.setMessage("No client location has been set. Do you want to set it now?");
+        alertDialog.setTitle(getString(R.string.title_set_client_location));
+        alertDialog.setMessage(getString(R.string.hint_set_client_location));
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.general_ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                        try {
-                            startActivityForResult(builder.build(PatientLocationMapActivity.this), 201);
-                        } catch (GooglePlayServicesRepairableException e) {
-                            e.printStackTrace();
-                        } catch (GooglePlayServicesNotAvailableException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(PatientLocationMapActivity.this, MapLocationPickerActivity.class);
+                    startActivityForResult(intent, PICK_LOCATION_REQUEST_CODE);
+                }
+            });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.general_cancel),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+        alertDialog.show();
+    }
+
+    private void promptUpdateLocation(){
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(getString(R.string.title_client_location_update));
+        alertDialog.setMessage(getString(R.string.hint_client_location_update));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.general_ok),
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(PatientLocationMapActivity.this, MapLocationPickerActivity.class);
+                    if(patientHomeLocationExists()){
+                        intent.putExtra(LATITUDE, patient.getPreferredAddress().getLatitude());
+                        intent.putExtra(LONGITUDE, patient.getPreferredAddress().getLongitude());
                     }
-                });
+                    startActivityForResult(intent, PICK_LOCATION_REQUEST_CODE);
+                }
+            });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.general_cancel),
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
         alertDialog.show();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode ==201) {
+        if (requestCode ==PICK_LOCATION_REQUEST_CODE) {
             if(resultCode == RESULT_OK) {
-                try {
-                    Place place = PlacePicker.getPlace(this,data);
-                    String latitude = String.valueOf(place.getLatLng().latitude);
-                    patient.getPreferredAddress().setLatitude(latitude);
+                if(data.hasExtra(MapLocationPickerActivity.LATITUDE) && data.hasExtra(LONGITUDE)) {
 
-                    String longitude = String.valueOf(place.getLatLng().longitude);
-                    patient.getPreferredAddress().setLongitude(longitude);
                     try {
-                        System.out.println("Updating patint location: lat:"+latitude+", lng:"+longitude);
-                        ((MuzimaApplication)getApplicationContext()).getPatientController().updatePatient(patient);
+                        String latitude = data.getStringExtra(LATITUDE);
+                        String longitude = data.getStringExtra(LONGITUDE);
+
+                        PersonAddress preferredAddress = patient.getPreferredAddress();
+
+                        if (preferredAddress == null) {
+                            preferredAddress = new PersonAddress();
+                            preferredAddress.setPreferred(true);
+                            patient.getAddresses().add(preferredAddress);
+                        }
+
+                        preferredAddress.setLatitude(latitude);
+                        preferredAddress.setLongitude(longitude);
+                        ((MuzimaApplication) getApplicationContext()).getPatientController().updatePatient(patient);
+                        createLocationUpdateFormData();
+                        initializeHomeLocationMapView();
                     } catch (PatientController.PatientSaveException e) {
-                        Log.e("Test","Testing",e);
+                        Log.e(getClass().getSimpleName(), "Could not update patient locaction", e);
                     }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } else {
+                    finish();
                 }
+            } else {
+                finish();
             }
         }
     }
+
+    private void createLocationUpdateFormData(){
+        try {
+            new GeolocationJsonMapper(patient, (MuzimaApplication) getApplicationContext()).createAndSaveLocationUpdateFormData();
+        } catch (FormController.FormDataSaveException e) {
+            Log.e(getClass().getSimpleName(), "Could not create location Update formData",e);
+            Toast.makeText(this, R.string.error_geolocation_update_failure,Toast.LENGTH_LONG).show();
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Could not create location Update formData",e);
+            Toast.makeText(this, R.string.error_geolocation_update_failure,Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -153,18 +283,13 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity implem
         return true;
     }
 
-    private void setupPatientMetadata() {
-        TextView patientName = findViewById(R.id.patientName);
-        patientName.setText(PatientAdapterHelper.getPatientFormattedName(patient));
-
-        ImageView genderIcon = findViewById(R.id.genderImg);
-        int genderDrawable = patient.getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
-        genderIcon.setImageDrawable(getResources().getDrawable(genderDrawable));
-
-        TextView dob = findViewById(R.id.dob);
-        dob.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
-
-        TextView patientIdentifier = findViewById(R.id.patientIdentifier);
-        patientIdentifier.setText(patient.getIdentifier());
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.update_client_location) {
+            promptUpdateLocation();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }

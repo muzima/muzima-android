@@ -19,6 +19,10 @@
 
     <string name="ask_help">Demander de l\'aide</string>
 
+    <string name="autocomplete_server_not_found">Le serveur est inaccessible! \\nConnectez votre appareil et essayez à
+        nouveau OU créez une nouvelle personne
+    </string>
+
     <string name="captured_date">Date de capture:</string>
 
     <string name="card_sync_status_content_description">État de la synchronisation des cartes</string>
@@ -33,6 +37,9 @@
     <string name="concept_details">Détails du concept</string>
     <string name="concept_name">Nom du concept:</string>
 
+    <string name="confirm_create_patient_from_person">" Cela enregistrera cette personne en tant que client. Êtes-vous
+        sûr de vouloir faire ça?"
+    </string>
     <string name="confirm_duplicate_form_data_save">Enregistrer les données dupliquées du formulaire </string>
     <string name="confirm_patient_id_exists">Le client a-t-il un Identifiant (ID)?</string>
 
@@ -90,6 +97,7 @@
     <string name="error_form_provider_load">Une erreur est survenue lors du chargement de fournisseur pour le formulaire</string>
     <string name="error_form_save">Une erreur s\'est produite lors de l\'enregistrement du formulaire</string>
     <string name="error_form_templates_download">Impossible de télécharger les modèles de formulaire</string>
+    <string name="error_geolocation_update_failure">Une erreur s\'est produite lors de la mise à jour des informations d'emplacement.</string>
     <string name="error_image_capture_activity_unavailable">Erreur: Application pour la capture l\'image non trouvée</string>
     <string name="error_image_chose_activity_unavailable">Erreur: Application pour choisir l\'image non trouvée</string>
     <string name="error_image_view_activity_unavailable">Erreur: Application de visionner l\'images non trouvée</string>
@@ -115,6 +123,8 @@
     <string name="error_patient_search">Quelque chose a mal tourné lors de la recherche des données du (des) client (s)</string>
     <string name="error_provider_download">Impossible de télécharger les données des fournisseurs</string>
     <string name="error_provider_fetch">Quelque chose a mal tourné lors de l\'extraction des données des fournisseurs du repositoire local</string>
+    <string name="error_relationship_load">Les relations n\'ont pas pu être chargées</string>
+    <string name="error_relationship_type_load">Les types de relation n\'ont pas pu être chargés</string>
     <string name="error_server_connection_unavailable">Serveur inaccessible</string>
     <string name="error_server_url_invalid">adresse URL du serveur non valide.</string>
     <string name="error_settings_download">Impossible de télécharger les paramètres</string>
@@ -181,6 +191,7 @@
     <string name="general_large">Large</string>
     <string name="general_load">charger</string>
     <string name="general_loading_encounters">Les rencontres se chargent toujours</string>
+    <string name="general_loading_relationships">Les relations continuent de se charger</string>
     <string name="general_loading_reports">Les rapports sont en cours de chargement</string>
     <string name="general_location_setting">Les paramètres de localisation</string>
     <string name="general_locations">Emplacements</string>
@@ -199,15 +210,19 @@
     <string name="general_other">Autre</string>
     <string name="general_password">Mot de passe</string>
     <string name="general_patient_registration">Enregistrement du client</string>
+    <string name="general_person_create">Créer une personne</string>
     <string name="general_previous">Précedent</string>
     <string name="general_progress_message">Ceci pourra prendre du temps</string>
     <string name="general_providers">Fournisseurs</string>
+    <string name="general_relationship">Relation</string>
+    <string name="general_relationships">Des relations</string>
     <string name="general_reports">Report</string>
     <string name="general_requirement">Exigence</string>
     <string name="general_retry">RECOMMENCEZ</string>
     <string name="general_save">sauvegarder</string>
     <string name="general_saving_forms">Enregistrement de formulaires</string>
     <string name="general_search">Rechercher</string>
+    <string name="general_searching">Recherche…</string>
     <string name="general_server">Serveur</string>
     <string name="general_settings">Paramètres</string>
     <string name="general_skip">Sauter</string>
@@ -245,6 +260,7 @@
     <string name="hint_check_digit_validation_failure">S\'il vous plait entrez les numéros qui correspondent a l\'algorithme CheckDigit </string>
     <string name="hint_client_local_search">Votre recherche comprend le numéro identificateur du client, prenom et le nom de famille
                  Nom et recherche uniquement dans l\'appareil</string>
+    <string name="hint_client_location_update">Voulez-vous mettre à jour l\'emplacement de la maison pour ce client?</string>
     <string name="hint_client_remote_search">Votre recherche comprend le numéro identificateur du client, prenom et le nom de famille. prénom et recherche sur le serveur</string>
     <string name="hint_client_search">Rechercher les données des clients</string>
     <string formatted="false" name="hint_client_summary_encounters">%d Rencontres</string>
@@ -318,6 +334,7 @@
         disponibles sur le serveur.</string>
     <string name="hint_patient_reports_sync">Sélectionnez des rapports dans la liste des serveurs, puis cliquez sur
         Synchroniser.</string>
+    <string name="hint_person_search">Recherche de personne par nom ou identifiant</string>
     <string name="hint_phone_number_validation_failure">Numéro de telephone non valide. S\'il vous plait verifier et entrez de nouveau</string>
     <string name="hint_provider_not_set">Vous n\'avez pas les droits de fournisseur ou les données de votre fournisseur ne sont pas téléchargées, s\'il vous plaît utiliser l\'option ajouter un fournisseur.</string>
     <string name="hint_provider_pref_add">Ajoutez le(s) fournisseur(s) que vous souhaitez télécharger.</string>
@@ -333,6 +350,7 @@
     <string name="hint_server_url">URL du serveur</string>
     <string name="hint_server_url_prompt">Entrez l\'URL du serveur</string>
     <string name="hint_session_timeout">Si inactif pendant ce temps, mUzima se déconnectera automatiquement</string>
+    <string name="hint_set_client_location">Le domicile de ce client n\'a pas été défini. Voulez-vous le définir maintenant?</string>
     <string name="hint_set_default_encounter_location_for_SHR">Veuillez définir l\'emplacement de rencontre par défaut afin
         d\'activer l\'écriture d\'une nouvelle carte.
     </string>
@@ -543,6 +561,11 @@
     <string formatted="false" name="info_providers_downloaded">%d fournisseurs téléchargés</string>
     <string name="info_real_time_upload">Muzima est entrain de télécharger vos données</string>
     <string name="info_real_time_upload_success">MUzima a téléchargé vos données avec succès</string>
+    <string name="info_relationships_delete_success">%d relations supprimées avec succès</string>
+    <string name="info_relationships_download">Téléchargé %d relations pour %d client (s).</string>
+    <string name="info_relationships_download_progress">Relations téléchargées pour le client %d sur %d.</string>
+    <string name="info_relationships_not_downloaded_progress">Relations pour le client %d sur %d non téléchargées.</string>
+    <string name="info_relationships_unavailable">Aucune relation disponible</string>
     <string name="info_scanner_exists">Le scanner de code à barres est déjà installé.</string>
     <string name="info_session_time_out">Votre session a expiré. S\'il vous plaît connecter-vous à nouveau pour continuer.</string>
     <string name="info_setting_download_success">Paramètre téléchargé et mis à jour avec succès</string>
@@ -621,6 +644,12 @@
 
     <string name="registering_patient_message_title_text">Enregistrement du client dans mUzima …</string>
 
+    <string name="relationship_create_success">Relation créée avec succès</string>
+    <string name="relationship_delete_fail">Impossible de supprimer la relation car elle est déjà enregistrée sur le
+        serveur. Contacter l\'administrateur
+    </string>
+    <string name="relationship_to_self_error">Le client ne peut pas se rapporter à lui-même</string>
+
     <string name="reply_hint_text">envoyer votre réponse</string>
 
     <string name="sample_date_rep">21 mars 2018</string>
@@ -633,6 +662,7 @@
     </string>
 
     <string name="select_a_registration_form_text">Sélectionnez un formulaire d\'inscription</string>
+    <string name="select_a_relationship_form_text">Sélectionnez un formulaire</string>
 
     <string name="send_feedback">Envoyer des commentaires</string>
     <string name="send_general_text">Envoyer</string>
@@ -668,6 +698,7 @@
     <string name="title_audio_record">enregistrer Audio</string>
     <string name="title_barcode_scanner_check">Vérifiez le Scanner de Barcode </string>
     <string name="title_barcode_scanner_setup">Étape 6: Vérification du scanner BarCode</string>
+    <string name="title_client_location_update">Mettre à jour l\'emplacement du client</string>
     <string name="title_client_notifications">Notifications de client</string>
     <string name="title_client_registration_help_video">Enregistrement du client</string>
     <string name="title_client_scan">Numériser codes à barres desclients</string>
@@ -736,6 +767,7 @@
     <string name="title_server_client_search_help_video">Recherche de client (contre le serveur)</string>
     <string name="title_server_side_setup">Configuration côté serveur</string>
     <string name="title_session_timeout">Expiration de la session (minutes)</string>
+    <string name="title_set_client_location">Définir l\'emplacement du client</string>
     <string name="title_setting_refresh">Actualiser les configurations</string>
     <string name="title_settings_help_html">Paramètres mUzima</string>
     <string name="title_video_caption">Légende vidéo</string>
@@ -763,6 +795,9 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="warning_invalid_url_provided">L\'URL que vous avez fournie n\'est pas valide</string>
     <string name="warning_logout_confirm">Etes-vous sûr de vouloir vous déconnectez et quitter Muzima app?</string>
     <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du client sur l\'appareil. Etes-vous sur?</string>
+    <string name="warning_related_person_missing">Veuillez choisir une personne liée</string>
+    <string name="warning_relationship_exists">Le client a déjà une relation %s:%s avec %s</string>
+    <string name="warning_relationship_type_missing">Veuillez choisir un type de relation</string>
     <string name="warning_session_timeout">Expiration de la session: Impossible de définir le délai d\'expiration de la session.
        Veuillez entrer une valeur entre 1 et 500. </string>
     <string name="warning_setting_download_failure">Echec du téléchargement ou de la mise à jour des configurations</string>
@@ -772,32 +807,4 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="write_shr_to_card_general">Ecrire des dossiers de santé partagés à la carte</string>
 
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
-    <string name="select_a_relationship_form_text">Sélectionnez un formulaire</string>
-    <string name="confirm_create_patient_from_person">" Cela enregistrera cette personne en tant que client. Êtes-vous
-        sûr de vouloir faire ça?"
-    </string>
-    <string name="error_relationship_load">Les relations n\'ont pas pu être chargées</string>
-    <string name="error_relationship_type_load">Les types de relation n\'ont pas pu être chargés</string>
-    <string name="general_loading_relationships">Les relations continuent de se charger</string>
-    <string name="general_person_create">Créer une personne</string>
-    <string name="general_relationship">Relation</string>
-    <string name="general_relationships">Des relations</string>
-    <string name="hint_person_search">Recherche de personne par nom ou identifiant</string>
-    <string name="info_relationships_unavailable">Aucune relation disponible</string>
-    <string name="info_relationships_delete_success">%d relations supprimées avec succès</string>
-    <string name="info_relationships_download_progress">Relations téléchargées pour le client %d sur %d.</string>
-    <string name="info_relationships_not_downloaded_progress">Relations pour le client %d sur %d non téléchargées.</string>
-    <string name="relationship_create_success">Relation créée avec succès</string>
-    <string name="relationship_delete_fail">Impossible de supprimer la relation car elle est déjà enregistrée sur le
-        serveur. Contacter l\'administrateur
-    </string>
-    <string name="relationship_to_self_error">Le client ne peut pas se rapporter à lui-même</string>
-    <string name="warning_related_person_missing">Veuillez choisir une personne liée</string>
-    <string name="warning_relationship_exists">Le client a déjà une relation %s:%s avec %s</string>
-    <string name="warning_relationship_type_missing">Veuillez choisir un type de relation</string>
-    <string name="info_relationships_download">Téléchargé %d relations pour %d client (s).</string>
-    <string name="autocomplete_server_not_found">Le serveur est inaccessible! \\nConnectez votre appareil et essayez à
-        nouveau OU créez une nouvelle personne
-    </string>
-    <string name="general_searching">Recherche…</string>
 </resources>

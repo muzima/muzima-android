@@ -16,6 +16,7 @@ import java.util.List;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_SETTINGS;
 import static com.muzima.util.Constants.ServerSettings.CLINICAL_SUMMARY_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.GEOMAPPING_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.RELATIONSHIP_FEATURE_ENABLED;
@@ -202,6 +203,18 @@ public class MuzimaSettingController {
                 Log.e(getClass().getSimpleName(), "muzima Relationship Feature setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "muzima Relationship Feature setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isGeoMappingpEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(GEOMAPPING_FEATURE_ENABLED_SETTING);
+            if (muzimaSetting != null) {
+                return muzimaSetting.getValueBoolean();
+            }
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Could not fetch muzima Geomapping Feature setting",e);
         }
         return false;
     }

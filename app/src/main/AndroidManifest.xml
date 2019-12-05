@@ -349,6 +349,16 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.patients.PatientsListActivity"/>
         </activity>
+        <activity
+                android:name=".view.maps.MapLocationPickerActivity"
+                android:configChanges="orientation|screenSize"
+                android:label="Pick location"
+                android:parentActivityName=".view.patients.PatientsListActivity"
+                android:windowSoftInputMode="adjustResize">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.muzima.view.patients.PatientsListActivity"/>
+        </activity>
 
         <activity
                 android:name=".view.notifications.NotificationsListActivity"

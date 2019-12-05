@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Set the size of the div element that contains the map */
+        #map {
+            width:100% !important;
+            height:100% !important;
+            top:0px !important;
+            left:0px !important;
+            position: fixed !important;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    function initMap() {
+        var homeDetails = patientLocationMapInterface.getPatientHomeDetailsForMapping();
+        if(homeDetails != null){
+            homeDetails = JSON.parse(homeDetails);
+        }
+
+        if(homeDetails.latitude != undefined && homeDetails.longitude != undefined) {
+            var homeLocation = {lat: parseFloat(homeDetails.latitude) , lng: parseFloat(homeDetails.longitude)};
+            var infowindow = new google.maps.InfoWindow({
+                content: "<div><h3>" +homeDetails.patientSummary+ "</h3></div>"
+            });
+
+            var map = new google.maps.Map(
+                document.getElementById('map'), {zoom: 9, center: homeLocation});
+
+            var marker = new google.maps.Marker({position: homeLocation, map: map});
+
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+                patientLocationMapInterface.showGetDirectionsButton();
+            });
+            infowindow.open(map, marker);
+            infowindow.addListener( 'closeclick', function() {
+                patientLocationMapInterface.hideGetDirectionsButton();
+                infowindow.close();
+            });
+        }
+    }
+</script>
+<script>
+    function injectApiKeyIntoMapsScriptElement() {
+        var apiKey = patientLocationMapInterface.getMapsAPIKey();
+        var mapsScript = document.createElement('script');
+        mapsScript.setAttribute('async', true);
+        mapsScript.setAttribute('defer', true);
+        mapsScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&callback=initMap');
+        document.body.appendChild(mapsScript);
+    }
+    injectApiKeyIntoMapsScriptElement();
+</script>
+</body>
+</html>

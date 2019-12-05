@@ -19,6 +19,10 @@
 
     <string name="ask_help">Pedindo ajuda</string>
 
+    <string name="autocomplete_server_not_found">Servidor inacessível! \\nConecte seu dispositivo e tente novamente OU
+        crie uma nova pessoa
+    </string>
+
     <string name="captured_date">Data Capturada:</string>
 
     <string name="card_sync_status_content_description">Status de sincronização do cartão</string>
@@ -33,6 +37,9 @@
     <string name="concept_details">Detalhes do conceito</string>
     <string name="concept_name">Nome do conceito:</string>
 
+    <string name="confirm_create_patient_from_person">Isso registrará essa pessoa como cliente. Tem certeza de que
+        gostaria de fazer isso?
+    </string>
     <string name="confirm_duplicate_form_data_save">Guardar Dados do Formulãrio Duplicado</string>
     <string name="confirm_patient_id_exists">O cliente já tem o Identificador?</string>
 
@@ -92,6 +99,7 @@
     <string name="error_form_provider_load">Um erro ocorreu enquanto carregava o provedor para o formulário</string>
     <string name="error_form_save">Ocorreu um erro enquanto guardava o formulário</string>
     <string name="error_form_templates_download">Não poderá baixar os modelos do formulário</string>
+    <string name="error_geolocation_update_failure">Ocorreu um erro ao atualizar as informações de localização.</string>
     <string name="error_image_capture_activity_unavailable">Erro: Aplicação para capturar uma imagem não encontrado
     </string>
     <string name="error_image_chose_activity_unavailable">Erro: Aplicação para escolher uma imagem não encontrado
@@ -121,6 +129,8 @@
     <string name="error_patient_search">Algo deu errado enquanto procurava cliente(s)</string>
     <string name="error_provider_download">Não poderá baixar provedores</string>
     <string name="error_provider_fetch">Algo deu errado enquanto buscava provedores do repositório local</string>
+    <string name="error_relationship_load">Não foi possível carregar os relacionamentos</string>
+    <string name="error_relationship_type_load">Não foi possível carregar os tipos de relacionamento</string>
     <string name="error_server_connection_unavailable">Servidor está inacessível
     </string>
     <string name="error_server_url_invalid">URL Inválido do Servidor</string>
@@ -192,6 +202,7 @@
     <string name="general_large">Ampla</string>
     <string name="general_load">Carregar</string>
     <string name="general_loading_encounters">Encontros ainda estão carregando</string>
+    <string name="general_loading_relationships">Os relacionamentos ainda estão carregando</string>
     <string name="general_loading_reports">Os relatórios ainda estão carregando</string>
     <string name="general_location_setting">Configurações de localização</string>
     <string name="general_locations">Locais</string>
@@ -210,15 +221,19 @@
     <string name="general_other">De outros</string>
     <string name="general_password">Senha</string>
     <string name="general_patient_registration">Registro do Cliente</string>
+    <string name="general_person_create">Criar Pessoa</string>
     <string name="general_previous">Anterior</string>
     <string name="general_progress_message">Isso pode demorar um pouco</string>
     <string name="general_providers">Provedores</string>
+    <string name="general_relationship">Relação</string>
+    <string name="general_relationships">Relacionamentos</string>
     <string name="general_reports">Report</string>
     <string name="general_requirement">Requerimento</string>
     <string name="general_retry">RETRIBUIÇÃO</string>
     <string name="general_save">Gravar</string>
     <string name="general_saving_forms">Salvando formulários</string>
     <string name="general_search">Pesquisar</string>
+    <string name="general_searching">Procurando…</string>
     <string name="general_server">Servidor</string>
     <string name="general_settings">Configurações</string>
     <string name="general_skip">Pular</string>
@@ -259,6 +274,7 @@
     <string name="hint_client_local_search">Sua pesquisa inclui ID do cliente, primeiro nome, nome do meio e apélido e
         pesquisado somente no dispositivo
     </string>
+    <string name="hint_client_location_update">Deseja atualizar a localização da residência deste cliente?</string>
     <string name="hint_client_remote_search">Sua pesquisa inclui ID do cliente, primeiro nome, nome do meio e apelido e
         pesquisado no servidor
     </string>
@@ -366,6 +382,7 @@
     <string name="hint_password_prompt">Por favor Introduza a Senha</string>
     <string name="hint_patient_report_list_download">Pressione carregar para buscar a lista de relatórios disponíveis no servidor</string>
     <string name="hint_patient_reports_sync">Selecione relatórios da lista de servidores e clique em sincronizar</string>
+    <string name="hint_person_search">Pesquisar pessoa por nome ou identificador</string>
     <string name="hint_phone_number_validation_failure">Número de telefone inválido. Por favor verifique e re-introduza</string>
     <string name="hint_provider_not_set">Não tem privilégio de provedor ou o seus dados de provedor não foram baixados,
         por favor use a opção de adicionar provedor
@@ -387,6 +404,8 @@
     <string name="hint_server_url">URL do Servidor</string>
     <string name="hint_server_url_prompt">Por favor introduza a URL do servidor</string>
     <string name="hint_session_timeout">Se inactivo para este tempo, mUzima irá automaticamente sair</string>
+    <string name="hint_set_client_location">O local de residência deste cliente não foi definido. Deseja configurá-lo agora?
+    </string>
     <string name="hint_set_default_encounter_location_for_SHR">Por favor, defina localização encontro padrão, de modo a permitir a escrita de novo cartão
     </string>
     <string name="hint_setting_refresh">Deseja voltar a baixar essa configuração do servidor?</string>
@@ -595,6 +614,12 @@
     <string formatted="false" name="info_providers_downloaded">Baixou %d provedores</string>
     <string name="info_real_time_upload">mUzima está carregando os dados</string>
     <string name="info_real_time_upload_success">mUzima carregou os dados com sucesso</string>
+    <string name="info_relationships_delete_success">%d Relacionamentos excluídos com sucesso</string>
+    <string name="info_relationships_download">Foram baixados %d relacionamentos para %d cliente (s).</string>
+    <string name="info_relationships_download_progress">Relacionamentos baixados para o cliente %d de %d.</string>
+    <string name="info_relationships_not_downloaded_progress">Relacionamentos para o cliente %d de %d não baixados.
+    </string>
+    <string name="info_relationships_unavailable">Nenhum relacionamento disponível</string>
     <string name="info_scanner_exists">Código de barra já está instalado.</string>
     <string name="info_session_time_out">A sessão expirou. Por favor entra de novo para proceder.</string>
     <string name="info_setting_download_success">Configuração baixada e atualizada com sucesso</string>
@@ -672,6 +697,12 @@
 
     <string name="registering_patient_message_title_text">Registrando cliente em mUzima …</string>
 
+    <string name="relationship_create_success">Relacionamento criado com sucesso</string>
+    <string name="relationship_delete_fail">Não é possível excluir o relacionamento, pois ele já está salvo no servidor.
+        Entre em contato com o administrador
+    </string>
+    <string name="relationship_to_self_error">O cliente não pode se relacionar consigo mesmo</string>
+
     <string name="reply_hint_text">envie sua resposta</string>
 
     <string name="sample_date_rep">21 de março de 2018</string>
@@ -683,6 +714,7 @@
         pesquisar no servidor?</string>
 
     <string name="select_a_registration_form_text">Selecione um formulário de inscrição</string>
+    <string name="select_a_relationship_form_text">Selecione um formulário</string>
 
     <string name="send_feedback">Enviar comentários</string>
     <string name="send_general_text">Mandar</string>
@@ -718,6 +750,7 @@
     <string name="title_audio_record">Gravar Áudio</string>
     <string name="title_barcode_scanner_check">Verificar o Código de Barra</string>
     <string name="title_barcode_scanner_setup">Passo 6: Verificar o scaner de código de barra</string>
+    <string name="title_client_location_update">Atualizar localização do cliente</string>
     <string name="title_client_notifications">Notificações do Cliente</string>
     <string name="title_client_registration_help_video">Registro de cliente</string>
     <string name="title_client_scan">Examinar código de barras Clientes de digitalização</string>
@@ -786,6 +819,7 @@
     <string name="title_server_client_search_help_video">Pesquisa de clientes (contra servidor)</string>
     <string name="title_server_side_setup">Instalação do lado do servidor</string>
     <string name="title_session_timeout">Sessão expirou (mins)</string>
+    <string name="title_set_client_location">Definir local do cliente</string>
     <string name="title_setting_refresh">Configuração de Atualização</string>
     <string name="title_settings_help_html">Configurações do mUzima</string>
     <string name="title_video_caption">Legenda do vídeo</string>
@@ -821,6 +855,9 @@
     <string name="warning_registration_form_data_delete">Está para apagar dados de registo. Isto irá apagar o registo do
         cliente no dispositivo. Tem certeza?
     </string>
+    <string name="warning_related_person_missing">Por favor, escolha uma pessoa relacionada</string>
+    <string name="warning_relationship_exists">O cliente já possui relacionamento %s:%s com %s</string>
+    <string name="warning_relationship_type_missing">Por favor, escolha um tipo de relacionamento</string>
     <string name="warning_session_timeout">Sessão expirou: não foi possível definir o tempo limite da sessão.
        Por favor insira um valor entre 1 e 500.
     </string>
@@ -833,33 +870,4 @@
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
 
     <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
-    <string name="select_a_relationship_form_text">Selecione um formulário</string>
-    <string name="warning_relationship_type_missing">Por favor, escolha um tipo de relacionamento</string>
-    <string name="confirm_create_patient_from_person">Isso registrará essa pessoa como cliente. Tem certeza de que
-        gostaria de fazer isso?
-    </string>
-    <string name="error_relationship_load">Não foi possível carregar os relacionamentos</string>
-    <string name="error_relationship_type_load">Não foi possível carregar os tipos de relacionamento</string>
-    <string name="general_loading_relationships">Os relacionamentos ainda estão carregando</string>
-    <string name="general_person_create">Criar Pessoa</string>
-    <string name="general_relationship">Relação</string>
-    <string name="general_relationships">Relacionamentos</string>
-    <string name="hint_person_search">Pesquisar pessoa por nome ou identificador</string>
-    <string name="info_relationships_unavailable">Nenhum relacionamento disponível</string>
-    <string name="info_relationships_delete_success">%d Relacionamentos excluídos com sucesso</string>
-    <string name="info_relationships_download_progress">Relacionamentos baixados para o cliente %d de %d.</string>
-    <string name="info_relationships_not_downloaded_progress">Relacionamentos para o cliente %d de %d não baixados.
-    </string>
-    <string name="relationship_create_success">Relacionamento criado com sucesso</string>
-    <string name="relationship_delete_fail">Não é possível excluir o relacionamento, pois ele já está salvo no servidor.
-        Entre em contato com o administrador
-    </string>
-    <string name="relationship_to_self_error">O cliente não pode se relacionar consigo mesmo</string>
-    <string name="warning_related_person_missing">Por favor, escolha uma pessoa relacionada</string>
-    <string name="warning_relationship_exists">O cliente já possui relacionamento %s:%s com %s</string>
-    <string name="info_relationships_download">Foram baixados %d relacionamentos para %d cliente (s).</string>
-    <string name="autocomplete_server_not_found">Servidor inacessível! \\nConecte seu dispositivo e tente novamente OU
-        crie uma nova pessoa
-    </string>
-    <string name="general_searching">Procurando…</string>
 </resources>

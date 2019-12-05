@@ -418,7 +418,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void navigateToClientsLocationMap() {
-        System.out.println("navigateToClientsLocationMap");
         Intent intent = new Intent(this, PatientsLocationMapActivity.class);
         startActivity(intent);
     }
@@ -758,7 +757,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         @Override
         protected Patient doInBackground(Void... voids) {
             String searchTerm = SHRPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier();
-            Log.e("SEARCHING", "Search TERM: " + Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name + " : " + searchTerm);
             MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
             Patient patient = null;
             PatientController patientController = muzimaApplication.getPatientController();
@@ -936,7 +934,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private boolean isGeoMappingFeatureEnabled(){
-        return muzimaApplication.getMuzimaSettingController().isRelationshipEnabled();
+        return muzimaApplication.getMuzimaSettingController().isGeoMappingpEnabled();
     }
 
     private void initDrawer() {
