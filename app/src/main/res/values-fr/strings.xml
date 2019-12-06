@@ -808,4 +808,16 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="write_shr_to_card_general">Ecrire des dossiers de santé partagés à la carte</string>
 
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
+    <string name="title_clients_locations">Emplacements des clients</string>
+    <string name="title_client_location">Emplacement des clients</string>
+    <string name="title_pick_location">Choisir l\'emplacement</string>
+    <string name="title_define_custom_concept">Définir un concept personnalisé</string>
+    <string name="title_install_barcode_scanner">Installer le scanner de codes à barres</string>
+    <string name="title_setup_method">Méthode de configuration</string>
+    <string name="title_guided_setup_wizard">Assistant de configuration guidée</string>
+    <string name="title_provider_reports">Rapports des fournisseurs</string>
+    <string name="hint_location_addresses_not_set">L\'adresse de localisation n\'a pas été définie pour tous les clients
+        disponibles
+    </string>
+    <string name="general_get_directions">Obtenir des directions</string>
 </resources>

@@ -207,7 +207,7 @@ public class MuzimaSettingController {
         return false;
     }
 
-    public Boolean isGeoMappingpEnabled() {
+    public Boolean isGeoMappingEnabled() {
         try {
             MuzimaSetting muzimaSetting = getSettingByProperty(GEOMAPPING_FEATURE_ENABLED_SETTING);
             if (muzimaSetting != null) {

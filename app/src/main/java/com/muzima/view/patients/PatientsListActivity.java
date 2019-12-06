@@ -82,7 +82,6 @@ import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.BARCODE_SC
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 import com.muzima.api.model.SmartCardRecord;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -934,7 +933,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private boolean isGeoMappingFeatureEnabled(){
-        return muzimaApplication.getMuzimaSettingController().isGeoMappingpEnabled();
+        return muzimaApplication.getMuzimaSettingController().isGeoMappingEnabled();
     }
 
     private void initDrawer() {

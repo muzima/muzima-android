@@ -841,4 +841,14 @@
     <string name="write_shr_to_card_general">Write SHR to card</string>
 
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
+    <string name="title_client_location">Client Location</string>
+    <string name="title_clients_locations">Clients Locations</string>
+    <string name="title_pick_location">Pick Location</string>
+    <string name="title_define_custom_concept">Define Custom Concept</string>
+    <string name="title_install_barcode_scanner">Install Barcode Scanner</string>
+    <string name="title_setup_method">Setup Method</string>
+    <string name="title_guided_setup_wizard">Guided Setup Wizard</string>
+    <string name="title_provider_reports">Provider Reports</string>
+    <string name="hint_location_addresses_not_set">Location address has not been set for all available clients</string>
+    <string name="general_get_directions">Get directions</string>
 </resources>

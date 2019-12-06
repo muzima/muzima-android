@@ -12,7 +12,6 @@ package com.muzima.adapters.patients;
 
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +57,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
             holder.genderImg = convertView.findViewById(R.id.genderImg);
             holder.name = convertView.findViewById(R.id.name);
             holder.dateOfBirth = convertView.findViewById(R.id.dateOfBirth);
-            holder.distanceToHome = convertView.findViewById(R.id.distanceToHome);
+            holder.distanceToClientAddress = convertView.findViewById(R.id.distanceToClientAddress);
             holder.identifier = convertView.findViewById(R.id.identifier);
             holder.tagsScroller = convertView.findViewById(R.id.tags_scroller);
             holder.tagsLayout = convertView.findViewById(R.id.menu_tags);
@@ -70,14 +69,14 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
 
         holder.dateOfBirth.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
         holder.identifier.setText(patient.getIdentifier());
-        holder.distanceToHome.setText(getDistanceToHome(patient));
+        holder.distanceToClientAddress.setText(getDistanceToClientAddress(patient));
         holder.name.setText(getPatientFullName(patient));
         holder.genderImg.setImageResource(getGenderImage(patient.getGender()));
         addTags(holder,patient);
         return convertView;
     }
 
-    private String getDistanceToHome(Patient patient){
+    private String getDistanceToClientAddress(Patient patient){
         PersonAddress personAddress = patient.getPreferredAddress();
         if (currentLocation != null && personAddress != null && !StringUtils.isEmpty(personAddress.getLatitude()) && !StringUtils.isEmpty(personAddress.getLongitude())) {
             double startLatitude = Double.parseDouble(currentLocation.getLatitude());
@@ -225,7 +224,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         TextView name;
         TextView dateOfBirth;
         TextView identifier;
-        TextView distanceToHome;
+        TextView distanceToClientAddress;
         List<TextView> tags;
         LinearLayout tagsLayout;
         RelativeLayout tagsScroller;

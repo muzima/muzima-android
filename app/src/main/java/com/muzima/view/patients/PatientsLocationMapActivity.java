@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.JavascriptInterface;
@@ -15,7 +15,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.MuzimaSetting;
@@ -65,8 +64,6 @@ public class PatientsLocationMapActivity extends BroadcastListenerActivity {
         }
 
         webView.addJavascriptInterface(this,"patientsLocationMapInterface");
-
-
         webView.loadUrl("file:///android_asset/www/maps/patientsHomeLocationMap.html");
     }
 
@@ -149,9 +146,18 @@ public class PatientsLocationMapActivity extends BroadcastListenerActivity {
         }catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(),"Could not plot client locations",e);
         }
+
+        if(jsonArray.length() == 0) {
+            webView.post(new Runnable() {
+                @Override
+                public void run() {
+                    Snackbar.make(findViewById(R.id.patients_location_map),
+                            R.string.hint_location_addresses_not_set, Snackbar.LENGTH_LONG).show();
+                }
+            });
+        }
         return jsonArray.toString();
     }
-
 
     @JavascriptInterface
     public void setSelectedPatientUuid(String uuid){
@@ -220,18 +226,5 @@ public class PatientsLocationMapActivity extends BroadcastListenerActivity {
             }
         }
         return null;
-    }
-
-    private void promptSetLocation(){
-        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("Client location");
-        alertDialog.setMessage("No client location has been set.");
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.general_ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
     }
 }

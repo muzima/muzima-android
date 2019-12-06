@@ -739,4 +739,14 @@
 
     <string name="youTube_player_error">Hitilafu ilitokea wakati wa kupakia video ya YouTube</string>
     <string name="warning_incompatible_module">Programu yako ya sasa ya mUzima haiendani na seva. Tafadhali wasiliana na msimamizi wako.</string>
+    <string name="title_clients_locations">Sehemu za Nyumbani za wateja</string>
+    <string name="title_client_location">Mahali pa mteja</string>
+    <string name="title_pick_location">Chagua Mahali</string>
+    <string name="title_define_custom_concept">Fafanua Dhana iliyodhamiriwa</string>
+    <string name="title_install_barcode_scanner">Weka Scanner ya Barcode</string>
+    <string name="title_setup_method">Njia ya Usanidi</string>
+    <string name="title_guided_setup_wizard">Mchawi wa Usanidi ulioongozwa</string>
+    <string name="title_provider_reports">Ripoti za Mtoaji</string>
+    <string name="hint_location_addresses_not_set">Anwani ya eneo haijawekwa kwa wateja wote wanaopatikana</string>
+    <string name="general_get_directions">Pata maelekezo</string>
 </resources>

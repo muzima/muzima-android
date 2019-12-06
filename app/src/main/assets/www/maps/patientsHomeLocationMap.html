@@ -17,13 +17,13 @@
 <script>
     //inject script
 
-    var Windows = [];
+    var windows = [];
     function bindInfoWindow(marker, map, infowindow, patientUuid) {
         marker.addListener('click', function() {
             closeOtherWindows();
             infowindow.content; // 'content' is an element of infowindow
             infowindow.open(map, this);
-            Windows[0] = infowindow;
+            windows[0] = infowindow;
             patientsLocationMapInterface.setSelectedPatientUuid(patientUuid);
             patientsLocationMapInterface.showGetDirectionsButton();
         });
@@ -36,9 +36,9 @@
     }
 
     function closeOtherWindows() {
-        if (Windows.length > 0) {
-            Windows[0].close();
-            Windows.length = 0;
+        if (windows.length > 0) {
+            windows[0].close();
+            windows.length = 0;
         }
     }
 

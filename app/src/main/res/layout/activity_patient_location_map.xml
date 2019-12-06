@@ -16,7 +16,7 @@
 
         <Button
             android:id="@+id/getDirections"
-            android:text="Get directions"
+            android:text="@string/general_get_directions"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:background="@drawable/next_button_selector"

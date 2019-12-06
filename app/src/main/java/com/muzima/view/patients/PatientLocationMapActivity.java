@@ -274,7 +274,6 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.geomapping, menu);

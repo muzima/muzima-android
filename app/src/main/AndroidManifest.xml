@@ -331,7 +331,7 @@
         <activity
                 android:name=".view.patients.PatientLocationMapActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="Client Location"
+                android:label="@string/title_client_location"
                 android:parentActivityName=".view.patients.PatientSummaryActivity"
                 android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -341,7 +341,7 @@
         <activity
                 android:name=".view.patients.PatientsLocationMapActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="Clients Locations"
+                android:label="@string/title_clients_locations"
                 android:parentActivityName=".view.patients.PatientsListActivity"
                 android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -351,7 +351,7 @@
         <activity
                 android:name=".view.maps.MapLocationPickerActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="Pick location"
+                android:label="@string/title_pick_location"
                 android:parentActivityName=".view.patients.PatientsListActivity"
                 android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -385,36 +385,36 @@
         <activity
                 android:name=".view.provider.CustomProviderWizardActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="Define Custom Concept"
+                android:label="@string/title_define_custom_concept"
                 android:theme="@style/WizardTheme.Dark"/>
         <activity
                 android:name=".view.concept.CustomConceptWizardActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="Define Custom Concept"
+                android:label="@string/title_define_custom_concept"
                 android:theme="@style/WizardTheme.Dark"/>
         <activity
                 android:name=".view.InstallBarCodeWizardActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="Install Barcode Scanner"
+                android:label="@string/title_install_barcode_scanner"
                 android:theme="@style/WizardTheme.Dark"/>
         <activity
                 android:name=".view.setupconfiguration.SetupMethodPreferenceWizardActivity"
                 android:configChanges="orientation|screenSize|keyboardHidden"
-                android:label="Setup Method"
+                android:label="@string/title_setup_method"
                 android:screenOrientation="portrait"
                 android:theme="@style/WizardTheme.Dark"
                 android:windowSoftInputMode="adjustNothing"/>
         <activity
                 android:name=".view.setupconfiguration.GuidedConfigurationWizardActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="Guided Setup Wizard"
+                android:label="@string/title_guided_setup_wizard"
                 android:theme="@style/WizardTheme.Dark"/>
         <!-- Wizard Activities End -->
 
         <activity
                 android:name=".view.reports.ProviderReportViewActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="Provider Reports"
+                android:label="@string/title_provider_reports"
                 android:parentActivityName=".view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -423,7 +423,7 @@
         <activity
                 android:name=".view.reports.ProviderReportListActivity"
                 android:configChanges="orientation|screenSize"
-                android:label="Provider Reports"
+                android:label="@string/title_provider_reports"
                 android:parentActivityName=".view.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"

@@ -80,7 +80,7 @@
                     android:background="?attr/listMultiSelectorBlue"/>
 
             <CheckedTextView
-                    android:id="@+id/distanceToHome"
+                    android:id="@+id/distanceToClientAddress"
                     style="@style/ListDescription"
                     android:gravity="right"
                     android:layout_width="0dp"

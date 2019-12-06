@@ -871,4 +871,16 @@
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
 
     <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
+    <string name="title_clients_locations">Localizações dos Clientes</string>
+    <string name="title_client_location">Localização dos Clientes</string>
+    <string name="title_pick_location">Escolha o local</string>
+    <string name="title_define_custom_concept">Definir conceito personalizado</string>
+    <string name="title_install_barcode_scanner">Instalar o scanner de código de barras</string>
+    <string name="title_setup_method">Método de instalação</string>
+    <string name="title_guided_setup_wizard">Assistente de configuração guiada</string>
+    <string name="title_provider_reports">Relatórios de Fornecedores</string>
+    <string name="hint_location_addresses_not_set">O endereço do local não foi definido para todos os clientes
+        disponíveis
+    </string>
+    <string name="general_get_directions">Obter direções</string>
 </resources>
