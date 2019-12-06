@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Set the size of the div element that contains the map */
+        #map {
+            width:100% !important;
+            height:100% !important;
+            top:0px !important;
+            left:0px !important;
+            position: fixed !important;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    //inject script
+
+    var windows = [];
+    function bindInfoWindow(marker, map, infowindow, patientUuid) {
+        marker.addListener('click', function() {
+            closeOtherWindows();
+            infowindow.content; // 'content' is an element of infowindow
+            infowindow.open(map, this);
+            windows[0] = infowindow;
+            patientsLocationMapInterface.setSelectedPatientUuid(patientUuid);
+            patientsLocationMapInterface.showGetDirectionsButton();
+        });
+
+        infowindow.addListener('closeclick', function () {
+            patientsLocationMapInterface.clearSelectedPatientUuid();
+            patientsLocationMapInterface.hideGetDirectionsButton();
+            infowindow.close();
+        });
+    }
+
+    function closeOtherWindows() {
+        if (windows.length > 0) {
+            windows[0].close();
+            windows.length = 0;
+        }
+    }
+
+    function navigateToPatientSummary(){
+        patientsLocationMapInterface.navigateToPatientSummary();
+    }
+
+    function initMap() {
+        var homeDetails = patientsLocationMapInterface.getPatientsHomeDetailsForMapping();
+        if(homeDetails != null){
+            homeDetails = JSON.parse(homeDetails);
+        }
+
+        var currentLocation = patientsLocationMapInterface.getCurrentGPSLocation();
+        if(currentLocation != null){
+            currentLocation = JSON.parse(currentLocation);
+        }
+
+        var mapCenterLocation;
+
+        if(currentLocation != undefined && currentLocation.latitude != undefined && currentLocation.longitude != undefined){
+            mapCenterLocation = {lat: parseFloat(currentLocation.latitude) , lng: parseFloat(currentLocation.longitude)};
+        } else {
+
+            var latitudeTotals = 0;
+            var longitudeTotals = 0;
+            var count = 0;
+
+            for (var k in homeDetails) {
+                if (homeDetails[k].latitude != undefined && homeDetails[k].longitude != undefined) {
+                    latitudeTotals += parseFloat(homeDetails[k].latitude);
+                    longitudeTotals += parseFloat(homeDetails[k].longitude);
+                    count++;
+                }
+            }
+            if (count > 0) {
+                mapCenterLocation = {lat: latitudeTotals / count, lng: longitudeTotals / count};
+            } else {
+                mapCenterLocation = {lat: 0.5117, lng: 35.282614};
+            }
+
+        }
+        var map = new google.maps.Map(
+            document.getElementById('map'), {zoom: 9, center: mapCenterLocation});
+
+        for (var k in homeDetails) {
+            if (homeDetails[k].latitude != undefined && homeDetails[k].longitude != undefined) {
+                var homeLocation = {lat: parseFloat(homeDetails[k].latitude), lng: parseFloat(homeDetails[k].longitude)};
+                var marker = new google.maps.Marker({position: homeLocation, map: map});
+
+                var infoWindowContent = "<div><h3 onclick='navigateToPatientSummary()'>" +
+                    homeDetails[k].patientSummary + "</h3></div>";
+                var infowindow = new google.maps.InfoWindow({
+                    content: infoWindowContent
+                });
+
+                bindInfoWindow(marker, map, infowindow,homeDetails[k].patientUuid );
+            }
+        }
+    }
+</script>
+<script>
+    function injectApiKeyIntoMapsScriptElement() {
+        var apiKey = patientsLocationMapInterface.getMapsAPIKey();
+        var mapsScript = document.createElement('script');
+        mapsScript.setAttribute('async', true);
+        mapsScript.setAttribute('defer', true);
+        mapsScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&callback=initMap');
+        document.body.appendChild(mapsScript);
+    }
+    injectApiKeyIntoMapsScriptElement();
+</script>
+</body>
+</html>

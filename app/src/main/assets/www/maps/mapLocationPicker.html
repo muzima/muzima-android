@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="file:///android_asset/www/maps/location-picker.min.js"></script>
+    <style type="text/css">
+        #map {
+            width:100% !important;
+            height:100% !important;
+            top:0px !important;
+            left:0px !important;
+            position: fixed !important;
+        }
+    </style>
+</head>
+
+<body>
+<div id="map"></div>
+<script>
+
+    function initMap() {
+        var lp;
+        var currentLocation = locationPickerInterface.getCurrentGPSLocation();
+        if (currentLocation != null) {
+            currentLocation = JSON.parse(currentLocation);
+        }
+
+        if (currentLocation.latitude != undefined && currentLocation.longitude != undefined) {
+            lp = new locationPicker('map', {
+                lat: currentLocation.latitude, lng: currentLocation.longitude
+            }, {
+                zoom: 9
+            });
+        } else {
+            lp = new locationPicker('map', {
+                setCurrentPosition: true
+            }, {
+                zoom: 9
+            });
+        }
+
+        google.maps.event.addListener(lp.map, 'idle', function (event) {
+            if (locationPickerInterface != null) {
+                var location = lp.getMarkerPosition();
+                locationPickerInterface.updateSelectedLocation(location.lat, location.lng);
+            }
+        });
+    };
+
+
+    function injectApiKeyIntoMapsScriptElement() {
+        var apiKey = locationPickerInterface.getMapsAPIKey();
+        var mapsScript = document.createElement('script');
+        mapsScript.setAttribute('async', true);
+        mapsScript.setAttribute('defer', true);
+        mapsScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&callback=initMap');
+        document.head.prepend(mapsScript);
+    }
+    injectApiKeyIntoMapsScriptElement();
+</script>
+
+</body>
+</html>

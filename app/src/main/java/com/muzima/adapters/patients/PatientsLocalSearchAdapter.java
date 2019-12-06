@@ -20,6 +20,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.PatientController;
+import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
@@ -34,12 +35,13 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
     public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
-                                      PatientController patientController, String cohortId) {
+                                      PatientController patientController, String cohortId, MuzimaGPSLocation currentLocation) {
         super(context, textViewResourceId);
         Context context1 = context;
         this.patientController = patientController;
         this.cohortId = cohortId;
         this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId, patientController);
+        patientAdapterHelper.setCurrentLocation(currentLocation);
     }
 
     @NonNull

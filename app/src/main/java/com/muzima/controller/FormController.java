@@ -399,9 +399,9 @@ public class FormController {
     }
 
     public List<FormData> getAllFormData(String status) throws FormDataFetchException {
-        try {
-            return formService.getAllFormData(status);
-        } catch (Exception e) {
+            try {
+                return formService.getAllFormData(status);
+            } catch (Exception e) {
             throw new FormDataFetchException(e);
         }
     }

@@ -51,4 +51,9 @@
 			android:id="@+id/menu_complete_form_data"
 			custom:showAsAction="never"
 			android:title="@string/menu_form_data_sync"/>
+	<item
+			android:id="@+id/clients_geomapping"
+			android:title=""
+			custom:showAsAction="always"
+			android:icon="@drawable/navigation"/>
 </menu>

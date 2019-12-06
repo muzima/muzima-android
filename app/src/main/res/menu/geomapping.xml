@@ -10,21 +10,10 @@
 
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
-            android:id="@+id/client_relationship"
+            android:id="@+id/update_client_location"
             android:title=""
             app:showAsAction="always"
-            android:icon="@drawable/ic_relationship"/>
-    <item
-            android:id="@+id/SHR_client_summary"
-            android:title=""
-            app:showAsAction="always"
-            android:icon="@drawable/ic_action_scan_card"/>
-    <item
-            android:id="@+id/client_geomapping"
-            android:title=""
-            app:showAsAction="always"
-            android:icon="@drawable/navigation"/>
+            android:icon="@drawable/edit"/>
 
 </menu>
