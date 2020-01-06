@@ -104,6 +104,7 @@ public class LoginActivity extends Activity {
         passwordText.setTypeface(Typeface.DEFAULT);
         versionText.setText(getApplicationVersion());
         usernameText.requestFocus();
+        initializeGPSDataCollection();
     }
 
     private void showSessionTimeOutPopUpIfNeeded() {
@@ -156,7 +157,6 @@ public class LoginActivity extends Activity {
         super.onResume();
         themeUtils.onResume(this);
         setupStatusView();
-        initializeGPSDataCollection();
     }
 
     private void setupStatusView() {
