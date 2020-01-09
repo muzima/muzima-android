@@ -442,7 +442,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private void setupWebView() {
         webView = findViewById(R.id.webView);
         webView.setWebChromeClient(createWebChromeClient());
-
         getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         getSettings().setJavaScriptEnabled(true);
         getSettings().setDatabaseEnabled(true);

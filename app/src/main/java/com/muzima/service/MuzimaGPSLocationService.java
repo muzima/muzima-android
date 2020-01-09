@@ -117,7 +117,7 @@ public class MuzimaGPSLocationService {
     }
 
     public void requestSwitchOnLocation(final Activity activity) {
-        if (googleApiClient == null) {
+        if (googleApiClient == null && isGPSLocationPermissionsGranted()) {
             googleApiClient = new GoogleApiClient.Builder(activity)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {

@@ -1,7 +1,5 @@
 package com.muzima.view.patients;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -33,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
-import static java.lang.String.format;
+import static java.text.MessageFormat.format;
 
 public class PatientsLocationMapActivity extends BroadcastListenerActivity {
 
