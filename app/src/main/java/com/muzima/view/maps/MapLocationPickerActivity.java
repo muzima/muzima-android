@@ -25,7 +25,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
-import static java.lang.String.format;
+import static java.text.MessageFormat.format;
 
 public class MapLocationPickerActivity extends BroadcastListenerActivity {
     public static String LATITUDE = "Latitude";

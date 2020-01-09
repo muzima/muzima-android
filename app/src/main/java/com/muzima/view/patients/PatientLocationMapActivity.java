@@ -37,7 +37,7 @@ import org.json.JSONObject;
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.view.maps.MapLocationPickerActivity.LATITUDE;
 import static com.muzima.view.maps.MapLocationPickerActivity.LONGITUDE;
-import static java.lang.String.format;
+import static java.text.MessageFormat.format;
 
 public class PatientLocationMapActivity extends BroadcastListenerActivity{
     private static int PICK_LOCATION_REQUEST_CODE = 201;

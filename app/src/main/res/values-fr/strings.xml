@@ -97,7 +97,7 @@
     <string name="error_form_provider_load">Une erreur est survenue lors du chargement de fournisseur pour le formulaire</string>
     <string name="error_form_save">Une erreur s\'est produite lors de l\'enregistrement du formulaire</string>
     <string name="error_form_templates_download">Impossible de télécharger les modèles de formulaire</string>
-    <string name="error_geolocation_update_failure">Une erreur s\'est produite lors de la mise à jour des informations d'emplacement.</string>
+    <string name="error_geolocation_update_failure">Une erreur s\'est produite lors de la mise à jour des informations d\'emplacement.</string>
     <string name="error_image_capture_activity_unavailable">Erreur: Application pour la capture l\'image non trouvée</string>
     <string name="error_image_chose_activity_unavailable">Erreur: Application pour choisir l\'image non trouvée</string>
     <string name="error_image_view_activity_unavailable">Erreur: Application de visionner l\'images non trouvée</string>

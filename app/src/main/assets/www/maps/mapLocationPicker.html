@@ -25,18 +25,14 @@
             currentLocation = JSON.parse(currentLocation);
         }
 
-        if (currentLocation.latitude != undefined && currentLocation.longitude != undefined) {
+        if (currentLocation != null && currentLocation.latitude != undefined && currentLocation.longitude != undefined) {
             lp = new locationPicker('map', {
                 lat: currentLocation.latitude, lng: currentLocation.longitude
             }, {
                 zoom: 9
             });
         } else {
-            lp = new locationPicker('map', {
-                setCurrentPosition: true
-            }, {
-                zoom: 9
-            });
+            lp = new locationPicker('map',{lat: 0.5117, lng: 35.282614}, {zoom: 9});
         }
 
         google.maps.event.addListener(lp.map, 'idle', function (event) {
