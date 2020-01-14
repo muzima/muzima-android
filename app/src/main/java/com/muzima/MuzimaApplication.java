@@ -99,13 +99,6 @@ public class MuzimaApplication extends MultiDexApplication {
     private SntpService sntpService;
     private User authenticatedUser;
 
-    static {
-        // see http://rtyley.github.io/spongycastle/
-        //TODO There is need to start using Google provided security provider (AndroidOpenSSL)
-        //TODO Shipping with both spongycastler  and the default AndroidOpenSSL significantly increases the apk size.
-        Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
-    }
-
     public void clearApplicationData() {
         try {
             File dir = new File(APP_DIR);
@@ -136,6 +129,7 @@ public class MuzimaApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {
+        Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
         Fabric.with(this, new Crashlytics());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");

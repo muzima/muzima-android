@@ -331,7 +331,8 @@ public class LoginActivity extends Activity {
             } else {
                 MuzimaLoggerService.log((MuzimaApplication)getApplicationContext(),"LOGIN_FAILURE",
                         result.credentials.getUserName(),MuzimaLoggerService.getAndParseGPSLocationForLogging((MuzimaApplication)getApplicationContext()),"{}");
-                 if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
+                Toast.makeText(getApplicationContext(), getErrorText(result), Toast.LENGTH_SHORT).show();
+                if (authenticatingText.getVisibility() == View.VISIBLE || flipFromLoginToAuthAnimator.isRunning()) {
                     flipFromLoginToAuthAnimator.cancel();
                     flipFromAuthToLoginAnimator.start();
                 }
@@ -486,7 +487,7 @@ public class LoginActivity extends Activity {
                     .setIcon(ThemeUtils.getIconWarning(LoginActivity.this))
                     .setTitle(getResources().getString(R.string.general_caution))
                     .setMessage(getResources().getString(R.string.warning_incompatible_module))
-                    .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
+                    .setPositiveButton(getString(R.string.general_ok), positiveClickListener())
                     .create()
                     .show();
         }
