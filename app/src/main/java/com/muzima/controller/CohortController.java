@@ -216,7 +216,10 @@ public class CohortController {
         try {
             Cohort localCohort = cohortService.getCohortByUuid(cohort.getUuid());
             if(localCohort!=null) {
-                return localCohort.getSyncStatus() == 1;
+                //Returning the checking of downloaded cohorts by both sync status and cohort member count.
+                //This is to enable successful upgrades from lower versions to 2.5.0(Lower version did not have sync status)
+                //TODO: should remove the check by cohort member count once implementation have upgraded to version 2.5.0
+                return localCohort.getSyncStatus() == 1 || cohortService.countCohortMembers(cohort.getUuid()) > 0;
             }else{
                 return false;
             }
