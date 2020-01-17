@@ -73,7 +73,7 @@ android {
 repositories {
     mavenLocal()
     jcenter()
-    maven { url "http://repo.maven.apache.org/maven2" }
+    maven { url "https://repo.maven.apache.org/maven2" }
     maven { url "https://raw.github.com/muzima/muzima-maven/master/releases" }
     maven { url "https://raw.github.com/muzima/muzima-maven/search-api" }
     maven { url "https://raw.github.com/muzima/muzima-maven/muzima-api" }
