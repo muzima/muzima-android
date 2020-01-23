@@ -48,6 +48,8 @@
         <item name="icSend">@drawable/ic_action_send</item>
         <item name="icUndo">@drawable/ic_action_undo</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
+        <item name="icNavigation">@drawable/navigation_light</item>
+        <item name="icEdit">@drawable/edit_light</item>
     </style>
 
 
@@ -86,6 +88,8 @@
         <item name="icSend">@drawable/ic_action_send_light</item>
         <item name="icUndo">@drawable/ic_action_undo_light</item>
         <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
+        <item name="icNavigation">@drawable/navigation_dark</item>
+        <item name="icEdit">@drawable/edit_dark</item>
     </style>
 
 
@@ -124,6 +128,8 @@
         <item name="icSend">@drawable/ic_action_send</item>
         <item name="icUndo">@drawable/ic_action_undo</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
+        <item name="icNavigation">@drawable/navigation_light</item>
+        <item name="icEdit">@drawable/edit_light</item>
     </style>
 
     <!-- Application theme. -->
@@ -161,6 +167,8 @@
         <item name="icSend">@drawable/ic_action_send_light</item>
         <item name="icUndo">@drawable/ic_action_undo_light</item>
         <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
+        <item name="icNavigation">@drawable/navigation_dark</item>
+        <item name="icEdit">@drawable/edit_dark</item>
     </style>
 
     <style name="DialogNoTitleBar" parent="android:style/Theme.Dialog">

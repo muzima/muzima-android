@@ -545,7 +545,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
         @Override
         public int[] doInBackground(Void... params){
-            MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
+            MuzimaSyncService syncService = ((MuzimaApplication) mActivity
                     .getApplication()).getMuzimaSyncService();
             return syncService.downloadSetting(Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING);
         }
@@ -554,15 +554,19 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         protected void onPostExecute(int[] result) {
             if(result[0] == SUCCESS) {
                 GPSFeaturePreferenceService gpsFeaturePreferenceService
-                        = ((MuzimaApplication) getActivity().getApplication()).getGPSFeaturePreferenceService();
+                        = ((MuzimaApplication) mActivity.getApplication()).getGPSFeaturePreferenceService();
                 gpsFeaturePreferenceService.updateGPSDataPreferenceSettings();
                 if(gpsLocationFeatureCheckBoxPreference != null) {
                     gpsLocationFeatureCheckBoxPreference
                             .setChecked(gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled());
                 }
-                Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
+                if(getActivity() != null) {
+                    Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+                if(getActivity() != null) {
+                    Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
@@ -584,16 +588,20 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         protected void onPostExecute(int[] result) {
             if(result[0] == SUCCESS) {
                 RequireMedicalRecordNumberPreferenceService requireMedicalRecordNumberPreferenceService
-                        = new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) getActivity()
+                        = new RequireMedicalRecordNumberPreferenceService((MuzimaApplication) mActivity
                         .getApplication());
                 requireMedicalRecordNumberPreferenceService.updateRequireMedicalRecordNumberPreference();
                 if(requireMedicalRecordNumberCheckBoxPreference != null) {
                     requireMedicalRecordNumberCheckBoxPreference.setChecked(requireMedicalRecordNumberPreferenceService
                             .getRequireMedicalRecordNumberPreferenceValue());
                 }
-                Toast.makeText(getActivity(), getString(R.string.info_settings_download_success), Toast.LENGTH_SHORT).show();
+                if(getActivity() != null) {
+                    Toast.makeText(getActivity(), getString(R.string.info_settings_download_success), Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+                if(getActivity() != null) {
+                    Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
@@ -614,16 +622,19 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         protected void onPostExecute(int[] result) {
             if(result[0] == SUCCESS) {
                 SHRStatusPreferenceService shrStatusPreferenceService
-                        = new SHRStatusPreferenceService((MuzimaApplication) getActivity()
-                        .getApplication());
+                        = new SHRStatusPreferenceService((MuzimaApplication) mActivity.getApplication());
                 shrStatusPreferenceService.updateSHRStatusPreference();
                 if(sHRFeatureCheckBoxPreference != null) {
                     sHRFeatureCheckBoxPreference
                             .setChecked(shrStatusPreferenceService.isSHRStatusSettingEnabled());
                 }
-                Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
+                if(getActivity() != null) {
+                    Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+                if(getActivity() != null) {
+                    Toast.makeText(mActivity, getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

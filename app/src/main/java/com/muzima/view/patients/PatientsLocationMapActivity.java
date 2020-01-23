@@ -22,6 +22,7 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.util.Constants;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,8 +40,11 @@ public class PatientsLocationMapActivity extends BroadcastListenerActivity {
     private WebView webView;
 
     private String selectedPatientUuid;
+    private final ThemeUtils themeUtils = new ThemeUtils();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patients_location_map);
         initializeHomeLocationMapView();
@@ -224,5 +228,11 @@ public class PatientsLocationMapActivity extends BroadcastListenerActivity {
             }
         }
         return null;
+    }
+
+    @Override
+    protected void onResume(){
+        themeUtils.onCreate(this);
+        super.onResume();
     }
 }

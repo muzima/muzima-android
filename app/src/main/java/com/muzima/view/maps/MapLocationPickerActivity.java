@@ -18,6 +18,7 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.util.Constants;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,9 +33,11 @@ public class MapLocationPickerActivity extends BroadcastListenerActivity {
     public static String LONGITUDE = "Longitude";
     private String latitude;
     private String longitude;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_location_picker);
         if(getIntent().hasExtra(LATITUDE)){
@@ -164,6 +167,12 @@ public class MapLocationPickerActivity extends BroadcastListenerActivity {
                 finish();
             }
         };
+    }
+
+    @Override
+    protected void onResume(){
+        themeUtils.onCreate(this);
+        super.onResume();
     }
 
 

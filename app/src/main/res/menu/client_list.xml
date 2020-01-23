@@ -55,5 +55,5 @@
 			android:id="@+id/clients_geomapping"
 			android:title=""
 			custom:showAsAction="always"
-			android:icon="@drawable/navigation"/>
+			android:icon="?attr/icNavigation"/>
 </menu>
