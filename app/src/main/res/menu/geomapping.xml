@@ -14,6 +14,6 @@
             android:id="@+id/update_client_location"
             android:title=""
             app:showAsAction="always"
-            android:icon="@drawable/edit"/>
+            android:icon="?attr/icEdit"/>
 
 </menu>

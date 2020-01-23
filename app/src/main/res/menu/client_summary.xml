@@ -25,6 +25,6 @@
             android:id="@+id/client_geomapping"
             android:title=""
             app:showAsAction="always"
-            android:icon="@drawable/navigation"/>
+            android:icon="?attr/icNavigation"/>
 
 </menu>

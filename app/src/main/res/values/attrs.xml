@@ -51,5 +51,6 @@
         <attr name="tabCustomBackground" format="reference"/>
         <attr name="shouldExpand" format="boolean"/>
     </declare-styleable>
-
+    <attr name="icNavigation" format="reference"/>
+    <attr name="icEdit" format="reference"/>
 </resources>

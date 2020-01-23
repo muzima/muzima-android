@@ -29,6 +29,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.util.Constants;
 import com.muzima.utils.GeolocationJsonMapper;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.maps.MapLocationPickerActivity;
 import org.json.JSONException;
@@ -44,9 +45,11 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
     private Patient patient;
     Button getDirectionsButton;
     WebView webView;
+    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_location_map);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
@@ -290,5 +293,11 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onResume(){
+        themeUtils.onCreate(this);
+        super.onResume();
     }
 }
