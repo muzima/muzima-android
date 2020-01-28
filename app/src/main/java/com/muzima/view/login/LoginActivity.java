@@ -52,6 +52,7 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
+import java.lang.reflect.Array;
 import java.util.Locale;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -445,10 +446,25 @@ public class LoginActivity extends Activity {
                 if(currentmuzimaCoreModuleVersion == null){
                     showAlertDialog();
                 }else {
-                    if (!StringUtils.equals(com.muzima.utils.Constants.MINIMUM_SERVER_SIDE_MODULE_VERSION, currentmuzimaCoreModuleVersion.getVersion())) {
+                    String version = currentmuzimaCoreModuleVersion.getVersion();
+                    String[] versionNumbers = version.replace(".",":").split(":");
+                    if(versionNumbers.length<3){
                         showAlertDialog();
-                    } else {
-                        startNextActivity();
+                    }else {
+                        String[] minimumVersionNumbers = com.muzima.utils.Constants.MINIMUM_SERVER_SIDE_MODULE_VERSION.replace(".", ":").split(":");
+                        String[] thirdVersionNumber = versionNumbers[2].split("-");
+                        try{
+                            if (Integer.valueOf(minimumVersionNumbers[0]) > Integer.valueOf(versionNumbers[0]) ||
+                                    Integer.valueOf(minimumVersionNumbers[1]) > Integer.valueOf(versionNumbers[1]) ||
+                                    Integer.valueOf(minimumVersionNumbers[2]) > Integer.valueOf(thirdVersionNumber[0])) {
+                                showAlertDialog();
+                            } else {
+                                startNextActivity();
+                            }
+                        }catch (NumberFormatException e){
+                            Log.e(getClass().getSimpleName(),"Encountered an exception while parsing string to integer ",e);
+                            showAlertDialog();
+                        }
                     }
                 }
             } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionFetchException e) {
