@@ -110,7 +110,7 @@ public class SmartCardIntentIntegrator {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String packageName = "org.kenyahmis.psmart";
-                Uri uri = Uri.parse("market://details?id=" + packageName);
+                Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + packageName);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 try {
                     activity.startActivity(intent);
