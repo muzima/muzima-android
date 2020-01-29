@@ -443,7 +443,7 @@ public class LoginActivity extends Activity {
             MuzimaCoreModuleVersionController muzimaCoreModuleVersionController = ((MuzimaApplication) getApplication()).getMuzimaCoreModuleVersionController();
             try {
                 currentmuzimaCoreModuleVersion = muzimaCoreModuleVersionController.getMuzimaCoreModuleVersion();
-                if(currentmuzimaCoreModuleVersion == null){
+                if(currentmuzimaCoreModuleVersion == null || currentmuzimaCoreModuleVersion.getVersion() == null){
                     showAlertDialog();
                 }else {
                     String version = currentmuzimaCoreModuleVersion.getVersion();
