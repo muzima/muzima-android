@@ -18,6 +18,7 @@ import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
 import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.SyncSettingsIntent;
+import com.muzima.view.reports.SyncAllPatientReports;
 
 @SuppressLint("NewApi")
 public class MuzimaJobScheduler extends JobService {
@@ -92,6 +93,7 @@ public class MuzimaJobScheduler extends JobService {
             new FormDataUploadBackgroundTask().execute();
             new ProcessedTemporaryFormDataCleanUpBackgroundTask().execute();
             new SyncSettinsBackgroundTask().execute();
+            new SyncAllPatientReportsBackgroundTask().execute();
         }
     }
 
@@ -157,6 +159,19 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected Void doInBackground(Void... voids) {
             new SyncSettingsIntent(getApplicationContext()).start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class SyncAllPatientReportsBackgroundTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            new SyncAllPatientReports(getApplicationContext()).start();
             return null;
         }
 

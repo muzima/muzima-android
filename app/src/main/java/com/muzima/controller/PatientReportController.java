@@ -10,11 +10,19 @@
 
 package com.muzima.controller;
 
+import android.util.Log;
+
+import com.muzima.api.model.APIName;
+import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientReport;
 import com.muzima.api.model.PatientReportHeader;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.PatientReportService;
+import com.muzima.service.SntpService;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class PatientReportController {
@@ -22,9 +30,14 @@ public class PatientReportController {
     private static final String TAG = "PatientReportController";
     
     private PatientReportService patientReportService;
-    
-    public PatientReportController(PatientReportService patientReportService) {
+    private final LastSyncTimeService lastSyncTimeService;
+    private final SntpService sntpService;
+
+
+    public PatientReportController(PatientReportService patientReportService, LastSyncTimeService lastSyncTimeService,SntpService sntpService) {
         this.patientReportService = patientReportService;
+        this.lastSyncTimeService = lastSyncTimeService;
+        this.sntpService = sntpService;
     }
 
     public int getPatientReportCountByPatientUuid(String patientUuid) throws IOException {
@@ -68,12 +81,39 @@ public class PatientReportController {
         }
     }
 
+    public List<PatientReportHeader> downloadPatientReportHeadersByPatientUuid(List<Patient> patients)
+            throws PatientReportDownloadException {
+        try {
+            Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_PATIENT_REPORTS);
+            List<PatientReportHeader> patientReportHeaders= patientReportService.downloadPatientReportHeadersByPatientUuid(patients,lastSyncDate);
+            LastSyncTime lastSyncTime = new LastSyncTime(APIName.DOWNLOAD_PATIENT_REPORTS, sntpService.getTimePerDeviceTimeZone());
+            lastSyncTimeService.saveLastSyncTime(lastSyncTime);
+            return patientReportHeaders;
+        }
+        catch (IOException e) {
+            Log.e(TAG,"Encountered an IOException while downloading report headers",e);
+            throw new PatientReportDownloadException(e);
+        }
+    }
+
     public PatientReport downloadPatientReportByUuid(String uuid)
             throws PatientReportDownloadException {
         try {
             return patientReportService.downloadPatientReportByUuid(uuid);
         }
         catch (IOException e) {
+            throw new PatientReportDownloadException(e);
+        }
+    }
+
+    public List<PatientReport> downloadPatientReportByUuid(List<PatientReportHeader> patientReportHeaders)
+            throws PatientReportDownloadException {
+        try {
+            Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_PATIENT_REPORTS);
+            return patientReportService.downloadPatientReportByUuid(patientReportHeaders,lastSyncDate);
+        }
+        catch (IOException e) {
+            Log.e(TAG,"Encountered an IOException while downloading reports",e);
             throw new PatientReportDownloadException(e);
         }
     }

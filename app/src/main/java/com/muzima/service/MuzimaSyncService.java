@@ -16,6 +16,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.exception.AuthenticationException;
+import com.muzima.api.model.APIName;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.Concept;
@@ -24,6 +25,7 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormDataStatus;
 import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
@@ -52,6 +54,7 @@ import com.muzima.controller.SetupConfigurationController;
 import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.progressdialog.ProgressDialogUpdateIntentService;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -61,6 +64,7 @@ import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -1034,6 +1038,31 @@ public class MuzimaSyncService {
             Log.e(TAG, "Exception when trying to save patient reports headers", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
             return result;
+        }
+        return result;
+    }
+
+    public int[] downloadAllPatientReportHeadersAndReports(){
+        int[] result = new int[2];
+        try{
+            List<PatientReportHeader> patientReportHeaders;
+            List<Patient> patients = patientController.getAllPatients();
+            List<PatientReport> downloadedPatientReports = new ArrayList<>();
+            patientReportHeaders = patientReportController.downloadPatientReportHeadersByPatientUuid(patients);
+            patientReportController.savePatientReportHeaders(patientReportHeaders);
+            if(patientReportHeaders.size()>0){
+                downloadedPatientReports = patientReportController.downloadPatientReportByUuid(patientReportHeaders);
+                patientReportController.saveOrUpdatePatientReports(downloadedPatientReports);
+            }
+            result[0] = SUCCESS;
+            result[1] = downloadedPatientReports.size();
+
+        }catch (PatientController.PatientLoadException e) {
+            Log.e(TAG,"Encountered Patient Load Exception while getting patients",e);
+        } catch (PatientReportController.PatientReportDownloadException e) {
+            Log.e(TAG,"Encountered PatientReportDownloadException while downloading patient reports",e);
+        } catch (PatientReportController.PatientReportSaveException e) {
+            Log.e(TAG,"Encountered PatientReportSaveException while saving patient reports",e);
         }
         return result;
     }

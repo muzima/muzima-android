@@ -130,7 +130,7 @@ public class MuzimaApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
-        Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Crashlytics());
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }
@@ -349,7 +349,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public PatientReportController getPatientReportController() {
         if (patientReportController == null) {
             try {
-                patientReportController = new PatientReportController(muzimaContext.getPatientReportService());
+                patientReportController = new PatientReportController(muzimaContext.getPatientReportService(),muzimaContext.getLastSyncTimeService(),getSntpService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

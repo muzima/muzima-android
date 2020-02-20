@@ -184,6 +184,15 @@ public class DataSyncService extends IntentService {
                     prepareBroadcastMsgForSettingsDownload(broadcastIntent, result);
                 }
                 break;
+            case DataSyncServiceConstants.SYNC_ALL_PATIENT_REPORT_HEADERS_AND_REPORTS:
+                updateNotificationMsg(getString(R.string.info_patient_reports_download_in_progress));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.downloadAllPatientReportHeadersAndReports();
+                    String msg = getString(R.string.info_patient_reports_downloaded,result[1]);
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+                }
+                break;
             default:
                 break;
         }
