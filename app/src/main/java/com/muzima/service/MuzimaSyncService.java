@@ -1045,17 +1045,26 @@ public class MuzimaSyncService {
     public int[] downloadAllPatientReportHeadersAndReports(){
         int[] result = new int[2];
         try{
-            List<PatientReportHeader> patientReportHeaders;
+            List<PatientReportHeader> patientReportHeaders = new ArrayList<>();
             List<Patient> patients = patientController.getAllPatients();
+            List<String> patientlist = new ArrayList();
             List<PatientReport> downloadedPatientReports = new ArrayList<>();
-            patientReportHeaders = patientReportController.downloadPatientReportHeadersByPatientUuid(patients);
-            patientReportController.savePatientReportHeaders(patientReportHeaders);
-            if(patientReportHeaders.size()>0){
-                downloadedPatientReports = patientReportController.downloadPatientReportByUuid(patientReportHeaders);
-                patientReportController.saveOrUpdatePatientReports(downloadedPatientReports);
+            List<PatientReport> totalDownloadedPatientReports = new ArrayList<>();
+            for(Patient patient : patients){
+                patientlist.add(patient.getUuid());
+            }
+            List<List<String>> slicedPatientUuids = split(patientlist);
+            for (List<String> slicedPatientUuid : slicedPatientUuids) {
+                patientReportHeaders = patientReportController.downloadPatientReportHeadersByPatientUuid(slicedPatientUuid);
+                if(patientReportHeaders.size()>0){
+                    patientReportController.savePatientReportHeaders(patientReportHeaders);
+                    downloadedPatientReports = patientReportController.downloadPatientReportByUuid(patientReportHeaders);
+                    totalDownloadedPatientReports.addAll(downloadedPatientReports);
+                    patientReportController.saveOrUpdatePatientReports(downloadedPatientReports);
+                }
             }
             result[0] = SUCCESS;
-            result[1] = downloadedPatientReports.size();
+            result[1] = totalDownloadedPatientReports.size();
 
         }catch (PatientController.PatientLoadException e) {
             Log.e(TAG,"Encountered Patient Load Exception while getting patients",e);
