@@ -26,8 +26,8 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.Provider;
-import com.muzima.api.model.Tag;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
@@ -51,6 +51,7 @@ import org.json.JSONException;
 
 import com.muzima.controller.EncounterController;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -146,18 +147,19 @@ class HTMLFormDataStore {
                     Log.e(getClass().getSimpleName(),jsonObjectInner.toString());
                     if(jsonObjectInner.has("patient.tagName") && jsonObjectInner.has("patient.tagUuid")) {
                         Log.e(getClass().getSimpleName(),"Form Has both tag fields");
-                        List<Tag> tags = new ArrayList<Tag>();
+                        List<PatientTag> tags = new ArrayList<PatientTag>();
                         Patient patient = patientController.getPatientByUuid(patientUuid);
-                        for (Tag tag : patient.getTags()) {
+                        for (PatientTag tag : patient.getTags()) {
                             tags.add(tag);
                         }
 
-                        Tag tag = new Tag();
+                        PatientTag tag = new PatientTag();
                         tag.setName(jsonObjectInner.getString("patient.tagName"));
                         tag.setUuid(jsonObjectInner.getString("patient.tagUuid"));
                         tags.add(tag);
-                        patient.setTags(tags.toArray(new Tag[tags.size()]));
+                        patient.setTags(tags.toArray(new PatientTag[tags.size()]));
                         patientController.updatePatient(patient);
+                        patientController.savePatientTags(tag);
                     }
                 }
                 if (!keepFormOpen) {
@@ -189,6 +191,8 @@ class HTMLFormDataStore {
             Log.e(getClass().getSimpleName(), "Exception occurred while saving patient", e);
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while parsing object", e);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while saving tags", e);
         }
     }
 

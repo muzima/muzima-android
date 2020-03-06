@@ -45,7 +45,7 @@ import com.muzima.adapters.patients.PatientTagsListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
-import com.muzima.api.model.Tag;
+import com.muzima.api.model.PatientTag;
 import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
@@ -196,8 +196,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
         tagPreferenceService = new TagPreferenceService(this);
-        //TODO: dissable patient tags drawer to avoid loading lag until a fix is done
-        //initDrawer();
+        initDrawer();
         logEvent("VIEW_CLIENT_LIST","{\"cohortId\":\""+cohortId+"\"}");
     }
 
@@ -413,7 +412,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         }
         if (!intentBarcodeResults)
             patientAdapter.reloadData();
-        //tagsListAdapter.reloadData();
+        tagsListAdapter.reloadData();
     }
 
     private void navigateToClientsLocationMap() {
@@ -975,16 +974,16 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private void initSelectedTags() {
         List<String> selectedTagsInPref = tagPreferenceService.getPatientSelectedTags();
-        List<Tag> allTags = null;
+        List<PatientTag> allTags = null;
         try {
             allTags = patientController.getAllTags();
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Error occurred while get all tags from local repository", e);
         }
-        List<Tag> selectedTags = new ArrayList<>();
+        List<PatientTag> selectedTags = new ArrayList<>();
 
         if (selectedTagsInPref != null) {
-            for (Tag tag : allTags) {
+            for (PatientTag tag : allTags) {
                 if (selectedTagsInPref.contains(tag.getName())) {
                     selectedTags.add(tag);
                 }
@@ -1001,7 +1000,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private void storeSelectedTags() {
         Set<String> newSelectedTags = new HashSet<>();
-        for (Tag selectedTag : patientController.getSelectedTags()) {
+        for (PatientTag selectedTag : patientController.getSelectedTags()) {
             newSelectedTags.add(selectedTag.getName());
         }
         tagPreferenceService.savePatientSelectedTags(newSelectedTags);

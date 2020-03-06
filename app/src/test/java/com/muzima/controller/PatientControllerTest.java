@@ -17,6 +17,7 @@ import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.PatientService;
+import com.muzima.api.service.PatientTagService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
@@ -43,6 +44,7 @@ public class PatientControllerTest {
     private PatientService patientService;
     private CohortService cohortService;
     private FormService formService;
+    private PatientTagService patientTagService;
 
 
     @Before
@@ -50,7 +52,8 @@ public class PatientControllerTest {
         patientService = mock(PatientService.class);
         cohortService = mock(CohortService.class);
         formService = mock(FormService.class);
-        patientController = new PatientController(patientService, cohortService, formService);
+        patientTagService = mock(PatientTagService.class);
+        patientController = new PatientController(patientService, cohortService, formService, patientTagService);
     }
 
     @Test
