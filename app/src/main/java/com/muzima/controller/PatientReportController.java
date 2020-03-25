@@ -10,21 +10,42 @@
 
 package com.muzima.controller;
 
+import android.util.Log;
+
+import com.muzima.api.model.APIName;
+import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientReport;
 import com.muzima.api.model.PatientReportHeader;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.PatientReportService;
+import com.muzima.service.SntpService;
+import com.muzima.utils.StringUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+
+import static com.muzima.api.model.APIName.DOWNLOAD_PATIENT_REPORTS;
+import static com.muzima.util.Constants.UUID_SEPARATOR;
+import static java.util.Arrays.asList;
 
 public class PatientReportController {
     
     private static final String TAG = "PatientReportController";
     
     private PatientReportService patientReportService;
-    
-    public PatientReportController(PatientReportService patientReportService) {
+    private final LastSyncTimeService lastSyncTimeService;
+    private final SntpService sntpService;
+
+
+    public PatientReportController(PatientReportService patientReportService, LastSyncTimeService lastSyncTimeService,SntpService sntpService) {
         this.patientReportService = patientReportService;
+        this.lastSyncTimeService = lastSyncTimeService;
+        this.sntpService = sntpService;
     }
 
     public int getPatientReportCountByPatientUuid(String patientUuid) throws IOException {
@@ -68,12 +89,62 @@ public class PatientReportController {
         }
     }
 
+    public List<PatientReportHeader> downloadPatientReportHeadersByPatientUuid(List<String> patientUuids)
+            throws PatientReportDownloadException {
+        try {
+            String paramSignature = StringUtils.getCommaSeparatedStringFromList(patientUuids);
+            Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_PATIENT_REPORTS, paramSignature);
+            List<PatientReportHeader> patientReportHeaders = new ArrayList<>();
+            if(hasThisCallHappenedBefore(lastSyncTime)) {
+                patientReportHeaders.addAll(patientReportService.downloadPatientReportHeadersByPatientUuid(patientUuids, lastSyncTime));
+            }else{
+                LastSyncTime fullLastSyncTimeInfo = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_PATIENT_REPORTS);
+                if (isFirstCallToDownloadReportsEver(fullLastSyncTimeInfo)) {
+                    patientReportHeaders.addAll(patientReportService.downloadPatientReportHeadersByPatientUuid(patientUuids, null));
+                } else {
+                    String parameterSplit = fullLastSyncTimeInfo.getParamSignature();
+                    List<String> knownPatientsUuid = asList(parameterSplit.split(UUID_SEPARATOR));
+                    List<String> newPatientsUuids = getNewUuids(patientUuids, knownPatientsUuid);
+                    List<String> allPatientsUuids = getAllUuids(knownPatientsUuid, newPatientsUuids);
+                    paramSignature =  StringUtils.getCommaSeparatedStringFromList(allPatientsUuids);
+                    if(newPatientsUuids.size() != 0) {
+                        patientReportHeaders.addAll(patientReportService.downloadPatientReportHeadersByPatientUuid(newPatientsUuids, null));
+                        patientReportHeaders.addAll(patientReportService.downloadPatientReportHeadersByPatientUuid(knownPatientsUuid,fullLastSyncTimeInfo.getLastSyncDate()));
+                    }else{
+                        patientReportHeaders.addAll(patientReportService.downloadPatientReportHeadersByPatientUuid(patientUuids,fullLastSyncTimeInfo.getLastSyncDate()));
+                    }
+                }
+            }
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_PATIENT_REPORTS, sntpService.getTimePerDeviceTimeZone(), paramSignature);
+            lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
+            LastSyncTime fullLastSyncTimeInfos = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_PATIENT_REPORTS);
+            String parameterSplits = fullLastSyncTimeInfos.getParamSignature();
+            return patientReportHeaders;
+        }
+        catch (IOException e) {
+            Log.e(TAG,"Encountered an IOException while downloading report headers",e);
+            throw new PatientReportDownloadException(e);
+        }
+    }
+
     public PatientReport downloadPatientReportByUuid(String uuid)
             throws PatientReportDownloadException {
         try {
             return patientReportService.downloadPatientReportByUuid(uuid);
         }
         catch (IOException e) {
+            throw new PatientReportDownloadException(e);
+        }
+    }
+
+    public List<PatientReport> downloadPatientReportByUuid(List<PatientReportHeader> patientReportHeaders)
+            throws PatientReportDownloadException {
+        try {
+            Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_PATIENT_REPORTS);
+            return patientReportService.downloadPatientReportByUuid(patientReportHeaders,lastSyncDate);
+        }
+        catch (IOException e) {
+            Log.e(TAG,"Encountered an IOException while downloading reports",e);
             throw new PatientReportDownloadException(e);
         }
     }
@@ -132,7 +203,29 @@ public class PatientReportController {
             return false;
         }
     }
-    
+
+    private boolean hasThisCallHappenedBefore(Date lastSyncTime) {
+        return lastSyncTime != null;
+    }
+
+    private boolean isFirstCallToDownloadReportsEver(LastSyncTime fullLastSyncTimeInfo) {
+        return fullLastSyncTimeInfo == null;
+    }
+
+    private List<String> getNewUuids(List<String> patientUuids, List<String> knownPatientsUuid) {
+        List<String> newPatientsUuids = new ArrayList<>(patientUuids);
+        newPatientsUuids.removeAll(knownPatientsUuid);
+        return newPatientsUuids;
+    }
+
+    private ArrayList<String> getAllUuids(List<String> knownUuids, List<String> newUuids) {
+        HashSet<String> allUuids = new HashSet<>(knownUuids);
+        allUuids.addAll(newUuids);
+        ArrayList<String> sortedUuids = new ArrayList<>(allUuids);
+        Collections.sort(sortedUuids);
+        return sortedUuids;
+    }
+
     public static class PatientReportFetchException extends Throwable {
         public PatientReportFetchException(Throwable throwable) {
             super(throwable);

@@ -239,7 +239,7 @@ public class ObservationController {
                         observations.addAll(observationService.downloadObservations(knownPatientsUuid, knownConceptsUuid, fullLastSyncTimeInfo.getLastSyncDate()));
                     }
                     else{
-                        observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, null));
+                        observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, fullLastSyncTimeInfo.getLastSyncDate()));
                     }
                 }
             }

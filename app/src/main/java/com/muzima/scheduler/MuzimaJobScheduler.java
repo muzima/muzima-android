@@ -12,28 +12,29 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.User;
-import com.muzima.controller.NotificationController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
 import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.SyncSettingsIntent;
+import com.muzima.view.reports.SyncAllPatientReports;
 
 @SuppressLint("NewApi")
 public class MuzimaJobScheduler extends JobService {
 
-    private NotificationController notificationController;
     private MuzimaSyncService muzimaSynService;
     private String authenticatedUserUuid;
     private User authenticatedUser;
     private Person person;
     private boolean isAuthPerson = false;
+    private MuzimaSettingController muzimaSettingController;
 
     @Override
     public void onCreate() {
         super.onCreate();
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
-        notificationController = muzimaApplication.getNotificationController();
+        muzimaSettingController = muzimaApplication.getMuzimaSettingController();
         muzimaSynService = muzimaApplication.getMuzimaSyncService();
         authenticatedUser = muzimaApplication.getAuthenticatedUser();
         if (authenticatedUser != null){
@@ -87,25 +88,13 @@ public class MuzimaJobScheduler extends JobService {
         if (parameters == null) {
             Log.e(getClass().getSimpleName(), "Parameters for job is null");
         } else {
-            new NotificationDownloadBackgroundTask().execute();
             new CohortsAndPatientFullDataSyncBackgroundTask().execute();
             new FormDataUploadBackgroundTask().execute();
             new ProcessedTemporaryFormDataCleanUpBackgroundTask().execute();
             new SyncSettinsBackgroundTask().execute();
-        }
-    }
-
-    private class  NotificationDownloadBackgroundTask extends AsyncTask<Void,Void,Void>{
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            muzimaSynService.downloadNotifications(authenticatedUserUuid);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+            if(muzimaSettingController.isClinicalSummaryEnabled()) {
+                new SyncAllPatientReportsBackgroundTask().execute();
+            }
         }
     }
 
@@ -157,6 +146,19 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected Void doInBackground(Void... voids) {
             new SyncSettingsIntent(getApplicationContext()).start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class SyncAllPatientReportsBackgroundTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            new SyncAllPatientReports(getApplicationContext()).start();
             return null;
         }
 
