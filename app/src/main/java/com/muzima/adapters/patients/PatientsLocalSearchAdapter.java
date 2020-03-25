@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
-import com.muzima.api.model.Tag;
 import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.utils.Constants;

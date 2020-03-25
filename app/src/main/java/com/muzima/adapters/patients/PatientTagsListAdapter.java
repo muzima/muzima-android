@@ -15,10 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
-import com.muzima.api.model.Tag;
+import com.muzima.api.model.PatientTag;
 import com.muzima.controller.PatientController;
 
 import java.util.List;
@@ -26,7 +25,7 @@ import java.util.List;
 /**
  * Responsible to list down the tags in the TagDrawer.
  */
-public class PatientTagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnItemClickListener {
+public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements AdapterView.OnItemClickListener {
 
     private final PatientController patientController;
     PatientsLocalSearchAdapter patientsLocalSearchAdapter;
@@ -68,7 +67,7 @@ public class PatientTagsListAdapter extends ListAdapter<Tag> implements AdapterV
         }
 
         Resources resources = getContext().getResources();
-        List<Tag> selectedTags = patientController.getSelectedTags();
+        List<PatientTag> selectedTags = patientController.getSelectedTags();
         if (selectedTags.isEmpty()) {
             if (position == 0) {
                 markItemSelected(holder, tagColor, resources);
@@ -105,9 +104,9 @@ public class PatientTagsListAdapter extends ListAdapter<Tag> implements AdapterV
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Tag tag = getItem(position);
+        PatientTag tag = getItem(position);
 
-        List<Tag> selectedTags = patientController.getSelectedTags();
+        List<PatientTag> selectedTags = patientController.getSelectedTags();
         if (position == 0) {
             selectedTags.clear();
         } else {
@@ -132,10 +131,10 @@ public class PatientTagsListAdapter extends ListAdapter<Tag> implements AdapterV
     /**
      * Responsible to fetch all the tags that are available in the DB.
      */
-    private class BackgroundQueryTask extends AsyncTask<Void, Void, List<Tag>> {
+    private class BackgroundQueryTask extends AsyncTask<Void, Void, List<PatientTag>> {
         @Override
-        protected List<Tag> doInBackground(Void... voids) {
-            List<Tag> allTags = null;
+        protected List<PatientTag> doInBackground(Void... voids) {
+            List<PatientTag> allTags = null;
             try {
                 allTags = patientController.getAllTags();
                 Log.i(getClass().getSimpleName(), "#Tags: " + allTags.size());
@@ -146,7 +145,7 @@ public class PatientTagsListAdapter extends ListAdapter<Tag> implements AdapterV
         }
 
         @Override
-        protected void onPostExecute(List<Tag> tags) {
+        protected void onPostExecute(List<PatientTag> tags) {
             if(tags == null){
                 Toast.makeText(getContext(), getContext().getString(R.string.error_tag_fetch), Toast.LENGTH_SHORT).show();
                 return;
@@ -157,14 +156,14 @@ public class PatientTagsListAdapter extends ListAdapter<Tag> implements AdapterV
                 add(getAllTagsElement());
             }
 
-            for (Tag tag : tags) {
+            for (PatientTag tag : tags) {
                 add(tag);
             }
             notifyDataSetChanged();
         }
 
-        private Tag getAllTagsElement() {
-            Tag tag = new Tag();
+        private PatientTag getAllTagsElement() {
+            PatientTag tag = new PatientTag();
             tag.setName("All");
             return tag;
         }

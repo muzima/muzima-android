@@ -24,7 +24,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
-import com.muzima.api.model.Tag;
+import com.muzima.api.model.PatientTag;
 import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
@@ -92,7 +92,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
     }
 
     private void addTags(ViewHolder holder, Patient patient) {
-        Tag[] tags = patient.getTags();
+        PatientTag[] tags = patient.getTags();
         if (tags.length > 0) {
             holder.tagsScroller.setVisibility(View.VISIBLE);
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -106,7 +106,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
                 }
                 textView = holder.tags.get(i);
                 textView.setBackgroundColor(patientController.getTagColor(tags[i].getUuid()));
-                List<Tag> selectedTags = patientController.getSelectedTags();
+                List<PatientTag> selectedTags = patientController.getSelectedTags();
                 if (selectedTags.isEmpty() || selectedTags.contains(tags[i])) {
                     textView.setText(tags[i].getName());
                 } else {

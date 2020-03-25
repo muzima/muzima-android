@@ -16,11 +16,12 @@ import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
+import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.PersonAttributeType;
-import com.muzima.api.model.Tag;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.PatientService;
+import com.muzima.api.service.PatientTagService;
 import com.muzima.utils.CustomColor;
 import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
@@ -41,15 +42,17 @@ public class PatientController {
     private final PatientService patientService;
     private final CohortService cohortService;
     private final Map<String, Integer> tagColors;
-    private List<Tag> selectedTags;
+    private List<PatientTag> selectedTags;
     private FormService formService;
+    private PatientTagService patientTagService;
 
-    public PatientController(PatientService patientService, CohortService cohortService, FormService formService) {
+    public PatientController(PatientService patientService, CohortService cohortService, FormService formService,PatientTagService patientTagService) {
         this.patientService = patientService;
         this.cohortService = cohortService;
         tagColors = new HashMap<>();
         selectedTags = new ArrayList<>();
         this.formService = formService;
+        this.patientTagService= patientTagService;
     }
 
     public void replacePatients(List<Patient> patients) throws PatientSaveException {
@@ -204,6 +207,10 @@ public class PatientController {
         }
     }
 
+    public  void savePatientTags(PatientTag tag) throws IOException {
+        patientTagService.savePatientTag(tag);
+    }
+
     public void savePatients(List<Patient> patients) throws PatientSaveException {
         try {
             patientService.savePatients(patients);
@@ -324,36 +331,28 @@ public class PatientController {
         return tagColors.get(uuid);
     }
 
-    public List<Tag> getSelectedTags() {
+    public List<PatientTag> getSelectedTags() {
         return selectedTags;
     }
 
-    public void setSelectedTags(List<Tag> selectedTags) {
+    public void setSelectedTags(List<PatientTag> selectedTags) {
         this.selectedTags = selectedTags;
     }
 
-    public List<Tag> getAllTags() throws PatientLoadException {
-        List<Tag> allTags = new ArrayList<>();
-        List<Patient> allPatients = null;
+    public List<PatientTag> getAllTags() throws PatientLoadException {
+        List<PatientTag> allTags = new ArrayList<>();
         try {
-            allPatients = patientService.getAllPatients();
+            allTags = patientTagService.getAllPatientTags();
         } catch (IOException e) {
             throw new PatientLoadException(e);
-        }
-        for (Patient patient : allPatients) {
-            for (Tag tag : patient.getTags()) {
-                if (!allTags.contains(tag)) {
-                    allTags.add(tag);
-                }
-            }
         }
         return allTags;
     }
 
     public List<String> getSelectedTagUuids() {
-        List<Tag> selectedTags = getSelectedTags();
+        List<PatientTag> selectedTags = getSelectedTags();
         List<String> tags = new ArrayList<String>();
-        for (Tag selectedTag : selectedTags) {
+        for (PatientTag selectedTag : selectedTags) {
             tags.add(selectedTag.getUuid());
         }
         return tags;
@@ -365,8 +364,8 @@ public class PatientController {
         }
         List<Patient> filteredPatients = new ArrayList<>();
         for (Patient patient : patients) {
-            Tag[] patientTags = patient.getTags();
-            for (Tag patientTag : patientTags) {
+            PatientTag[] patientTags = patient.getTags();
+            for (PatientTag patientTag : patientTags) {
                 if (tagsUuid.contains(patientTag.getUuid())) {
                     filteredPatients.add(patient);
                     break;
