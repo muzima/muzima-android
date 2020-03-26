@@ -10,6 +10,7 @@
 
 package com.muzima.controller;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.LastSyncTime;
@@ -51,6 +52,7 @@ public class CohortControllerTest {
     private LastSyncTimeService lastSyncTimeService;
     private Date anotherMockDate;
     private SntpService sntpService;
+    private MuzimaApplication muzimaApplication;
     private Date mockDate;
 
     @Before
@@ -58,7 +60,8 @@ public class CohortControllerTest {
         cohortService = mock(CohortService.class);
         lastSyncTimeService = mock(LastSyncTimeService.class);
         sntpService = mock(SntpService.class);
-        controller = new CohortController(cohortService, lastSyncTimeService, sntpService);
+        muzimaApplication = mock(MuzimaApplication.class);
+        controller = new CohortController(cohortService, lastSyncTimeService, sntpService, muzimaApplication);
         anotherMockDate = mock(Date.class);
         mockDate = mock(Date.class);
     }
@@ -143,7 +146,7 @@ public class CohortControllerTest {
     public void downloadCohortDataByUuid_shouldDownloadCohortByUuid() throws IOException, CohortController.CohortDownloadException {
         CohortData cohortData = new CohortData();
         String uuid = "uuid";
-        when(cohortService.downloadCohortDataAndSyncDate(uuid, false, null)).thenReturn(cohortData);
+        when(cohortService.downloadCohortDataAndSyncDate(uuid, false, null, null, null)).thenReturn(cohortData);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS_DATA, uuid)).thenReturn(null);
 
         assertThat(controller.downloadCohortDataByUuid(uuid), is(cohortData));
@@ -155,7 +158,7 @@ public class CohortControllerTest {
         String uuid = "uuid";
         when(cohortService.downloadCohortData(uuid, false)).thenReturn(cohortData);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS_DATA, uuid)).thenReturn(mockDate);
-        when(cohortService.downloadCohortDataAndSyncDate(uuid, false, mockDate)).thenReturn(cohortData);
+        when(cohortService.downloadCohortDataAndSyncDate(uuid, false, mockDate, null, null)).thenReturn(cohortData);
 
         controller.downloadCohortDataByUuid(uuid);
 
@@ -182,19 +185,19 @@ public class CohortControllerTest {
     @Test(expected = CohortController.CohortDownloadException.class)
     public void downloadCohortDataByUuid_shouldThrowCohortDownloadExceptionIfExceptionThrownByCohortService() throws IOException, CohortController.CohortDownloadException {
         String uuid = "uuid";
-        doThrow(new IOException()).when(cohortService).downloadCohortDataAndSyncDate(uuid, false, null);
+        doThrow(new IOException()).when(cohortService).downloadCohortDataAndSyncDate(uuid, false, null, null, null);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS_DATA, uuid)).thenReturn(null);
 
         controller.downloadCohortDataByUuid(uuid);
     }
 
     @Test
-    public void downloadCohortDataAndSyncDate_shouldDownloadDeltaCohortDataBySyncDate() throws IOException, CohortController.CohortDownloadException {
+    public void downloadCohortDataAndSyncDate_shouldDownloadDeltaCohortDataBySyncDate() throws IOException, CohortController.CohortDownloadException, ProviderController.ProviderLoadException {
         String[] uuids = new String[]{"uuid1", "uuid2"};
         CohortData cohortData1 = new CohortData();
         CohortData cohortData2 = new CohortData();
-        when(cohortService.downloadCohortDataAndSyncDate(uuids[0], false, null)).thenReturn(cohortData1);
-        when(cohortService.downloadCohortDataAndSyncDate(uuids[1], false, null)).thenReturn(cohortData2);
+        when(cohortService.downloadCohortDataAndSyncDate(uuids[0], false, null, null, null)).thenReturn(cohortData1);
+        when(cohortService.downloadCohortDataAndSyncDate(uuids[1], false, null, null ,null)).thenReturn(cohortData2);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS_DATA, "uuid1")).thenReturn(null);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS_DATA, "uuid2")).thenReturn(null);
 

@@ -553,6 +553,8 @@ public class MuzimaSyncService {
         } catch (CohortController.CohortUpdateException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while marking cohorts as updated.", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
+        } catch (ProviderController.ProviderLoadException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while getting logged in user.", e);
         }
         return result;
     }
