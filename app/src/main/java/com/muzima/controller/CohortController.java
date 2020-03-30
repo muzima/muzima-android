@@ -52,16 +52,16 @@ public class CohortController {
     public String getDefaultLocation(){
         Context context = muzimaApplication.getApplicationContext();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String setDefaultLocation = preferences.getString("defaultEncounterLocation", context.getString(context.getResources().getIdentifier("no_default_encounter_location", "string", context.getPackageName())));
-        String defaultValue = context.getString(context.getResources().getIdentifier("no_default_encounter_location", "string", context.getPackageName()));
-        if(setDefaultLocation.equals(defaultValue))
+        String setDefaultLocation = preferences.getString("defaultEncounterLocation", null);
+        Log.e(getClass().getSimpleName(),"Default Location is  "+setDefaultLocation);
+        if(setDefaultLocation==null)
         {
             setDefaultLocation = null;
         }
         return setDefaultLocation;
     }
 
-    private Provider getLoggedInProvider(){
+    public Provider getLoggedInProvider(){
         Provider loggedInProvider = new Provider();
         try {
             User authenticatedUser = muzimaApplication.getAuthenticatedUser();
@@ -96,13 +96,11 @@ public class CohortController {
         }
     }
 
-    public List<Cohort> downloadAllCohorts() throws CohortDownloadException {
+    public List<Cohort> downloadAllCohorts(String defaultLocation) throws CohortDownloadException {
         try {
             Date lastSyncTimeForCohorts = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS);
-            String defaultLocation = getDefaultLocation();
             Provider loggedInProvider = getLoggedInProvider();
             List<Cohort> allCohorts = cohortService.downloadCohortsByNameAndSyncDate(StringUtils.EMPTY, lastSyncTimeForCohorts, defaultLocation, loggedInProvider);
-
             LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getTimePerDeviceTimeZone());
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return allCohorts;
@@ -111,10 +109,10 @@ public class CohortController {
         }
     }
 
-    public List<CohortData> downloadCohortData(String[] cohortUuids) throws CohortDownloadException, ProviderController.ProviderLoadException {
+    public List<CohortData> downloadCohortData(String[] cohortUuids, String defaulLocation) throws CohortDownloadException {
         ArrayList<CohortData> allCohortData = new ArrayList<>();
          for (String cohortUuid : cohortUuids) {
-            allCohortData.add(downloadCohortDataByUuid(cohortUuid));
+            allCohortData.add(downloadCohortDataByUuid(cohortUuid, defaulLocation));
         }
         return allCohortData;
     }
@@ -127,10 +125,9 @@ public class CohortController {
         return allCohortData;
     }
 
-    public CohortData downloadCohortDataByUuid(String uuid) throws CohortDownloadException {
+    public CohortData downloadCohortDataByUuid(String uuid,String defaultLocation) throws CohortDownloadException {
         try {
             Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS_DATA, uuid);
-            String defaultLocation = getDefaultLocation();
             Provider loggedInProvider = getLoggedInProvider();
             CohortData cohortData = cohortService.downloadCohortDataAndSyncDate(uuid, false, lastSyncDate, defaultLocation, loggedInProvider);
             LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS_DATA, sntpService.getTimePerDeviceTimeZone(), uuid);
@@ -155,8 +152,7 @@ public class CohortController {
         }
     }
 
-    public List<Cohort> downloadCohortsByPrefix(List<String> cohortPrefixes) throws CohortDownloadException {
-        String defaultLocation = getDefaultLocation();
+    public List<Cohort> downloadCohortsByPrefix(List<String> cohortPrefixes,String defaultLocation) throws CohortDownloadException {
         Provider loggedInProvider = getLoggedInProvider();
         List<Cohort> filteredCohorts = new ArrayList<>();
         try {
