@@ -1041,8 +1041,8 @@ public class FormController {
                 org.json.JSONObject object = null;
                 try {
                     object = new org.json.JSONObject(setupConfigurationTemplate.getConfigJson());
-                    org.json.JSONObject forms = object.getJSONObject("config");
-                    org.json.JSONArray formsArray = forms.getJSONArray("forms");
+                    org.json.JSONObject configJsonObject = object.getJSONObject("config");
+                    org.json.JSONArray formsArray = configJsonObject.getJSONArray("forms");
                     for(int i = 0; i < formsArray.length(); i++)
                     {
                         org.json.JSONObject formObject = formsArray.getJSONObject(i);
