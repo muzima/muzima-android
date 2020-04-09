@@ -316,7 +316,8 @@ public class MuzimaApplication extends MultiDexApplication {
     public SetupConfigurationController getSetupConfigurationController(){
         if(setupConfigurationController == null){
             try {
-                setupConfigurationController = new SetupConfigurationController(muzimaContext.getSetupConfigurationService());
+                setupConfigurationController = new SetupConfigurationController(muzimaContext.getSetupConfigurationService(),
+                        muzimaContext.getLastSyncTimeService(), getSntpService() );
             }catch (IOException e){
                 throw new RuntimeException(e);
             }

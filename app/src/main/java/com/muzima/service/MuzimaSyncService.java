@@ -16,7 +16,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.exception.AuthenticationException;
-import com.muzima.api.model.APIName;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.Concept;
@@ -25,7 +24,6 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormDataStatus;
 import com.muzima.api.model.FormTemplate;
-import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
@@ -54,7 +52,6 @@ import com.muzima.controller.SetupConfigurationController;
 import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.utils.StringUtils;
 import com.muzima.view.progressdialog.ProgressDialogUpdateIntentService;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -64,7 +61,6 @@ import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -1133,6 +1129,52 @@ public class MuzimaSyncService {
         } catch (SetupConfigurationController.SetupConfigurationSaveException e){
             Log.e(getClass().getSimpleName(), "Exception when trying to save setup configs");
             result[0] = SyncStatusConstants.SAVE_ERROR;
+        }
+        return result;
+    }
+
+    public int[] downloadAndSaveUpdatedSetupConfigurationTemplate(String uuid){
+        int[] result = new int[2];
+        try {
+            SetupConfigurationTemplate setupConfigurationTemplate =
+                    setupConfigurationController.downloadUpdatedSetupConfigurationTemplate(uuid);
+            result[0] = SUCCESS;
+            if(setupConfigurationTemplate != null) {
+                result[1] = 1;
+            }
+            setupConfigurationController.updateSetupConfigurationTemplate(setupConfigurationTemplate);
+        } catch (SetupConfigurationController.SetupConfigurationDownloadException e){
+            Log.e(getClass().getSimpleName(), "Exception when trying to download setup configs");
+            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+        } catch (SetupConfigurationController.SetupConfigurationSaveException e){
+            Log.e(getClass().getSimpleName(), "Exception when trying to save setup configs");
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+        }
+        return result;
+    }
+
+    public int[] updateSetupConfigurationTemplates(){
+        int[] result = new int[2];
+        try{
+            for(SetupConfigurationTemplate template:setupConfigurationController.getSetupConfigurationTemplates()){
+                int[] templateResult = downloadAndSaveUpdatedSetupConfigurationTemplate(template.getUuid());
+                if(templateResult[0] == SUCCESS){
+                    result[1] += templateResult[1];
+                    result[0] = SUCCESS;
+
+                    List<MuzimaSetting> settings = settingsController.getSettingsFromSetupConfigurationTemplate(template.getUuid());
+
+                    updateSettingsPreferences(settings);
+                } else {
+                    result[0] = templateResult[0];
+                }
+            }
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception when trying to save setup configs");
+            result[0] = SyncStatusConstants.LOAD_ERROR;
+        } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception when trying to update setup settings preferences");
+            result[0] = SyncStatusConstants.LOAD_ERROR;
         }
         return result;
     }

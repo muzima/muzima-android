@@ -193,6 +193,15 @@ public class DataSyncService extends IntentService {
                     LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
                 }
                 break;
+            case DataSyncServiceConstants.SYNC_SETUP_CONFIGURATION_TEMPLATES:
+                updateNotificationMsg(getString(R.string.info_setup_configuration_template_download_in_progress));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.updateSetupConfigurationTemplates();
+                    String msg = getString(R.string.info_setup_configuration_templates_downloaded,result[1]);
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+                }
+                break;
             default:
                 break;
         }

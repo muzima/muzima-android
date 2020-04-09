@@ -187,6 +187,7 @@
     <string name="general_finish_text">terminer</string>
     <string name="general_form">Formulaire</string>
     <string name="general_forms">Formulaires</string>
+    <string name="general_get_directions">Obtenir des directions</string>
     <string name="general_help">Aide</string>
     <string name="general_large">Large</string>
     <string name="general_load">charger</string>
@@ -319,6 +320,9 @@
     <string name="hint_light_mode">Activer le thème de la lumière</string>
     <string name="hint_loading_progress">Chargement en cours…</string>
     <string name="hint_local_connection_unavailable">S\'il vous plaît connecter votre appareil et essayez à nouveau</string>
+    <string name="hint_location_addresses_not_set">L\'adresse de localisation n\'a pas été définie pour tous les clients
+        disponibles
+    </string>
     <string name="hint_location_pref_add">Ajouter le(s) emplacement(s) que vous souhaitez télécharger.</string>
     <string name="hint_manage_concept">Obtenez plus de concepts à partir du serveur ou supprimez les concepts de ce périphérique.
     </string>
@@ -578,6 +582,8 @@
     <string name="info_setup_complete_fail">Configuration terminée avec des erreurs</string>
     <string name="info_setup_complete_success">Configuration terminée avec succès</string>
     <string name="info_setup_config_load">Chargement des configurations d\'installation</string>
+    <string name="info_setup_configuration_template_download_in_progress">Mise à jour des configurations d\'installation</string>
+    <string formatted="false" name="info_setup_configuration_templates_downloaded">%d modèles de configuration d\'installation téléchargés</string>
     <string name="info_setup_configuration_wizard_prepare">Préparation de l\'assistant de configuration</string>
     <string formatted="false" name="info_submitted_form_data_status">Statut des formulaires récemment soumis:
          %d traité avec succès, %d traité avec erreur, %d en attente de traitement, %d état inconnu.</string>
@@ -698,10 +704,12 @@
     <string name="title_audio_record">enregistrer Audio</string>
     <string name="title_barcode_scanner_check">Vérifiez le Scanner de Barcode </string>
     <string name="title_barcode_scanner_setup">Étape 6: Vérification du scanner BarCode</string>
+    <string name="title_client_location">Emplacement des clients</string>
     <string name="title_client_location_update">Mettre à jour l\'emplacement du client</string>
     <string name="title_client_notifications">Notifications de client</string>
     <string name="title_client_registration_help_video">Enregistrement du client</string>
     <string name="title_client_scan">Numériser codes à barres desclients</string>
+    <string name="title_clients_locations">Emplacements des clients</string>
     <string name="title_cohort_download">Etape 1: Télécharger Cohorte(s)</string>
     <string name="title_cohort_download_help_video">Téléchargement de cohortes (sur demande)</string>
     <string name="title_cohort_prefix_help">Définition de(s) préfixe(s) Cohorts Aide</string>
@@ -715,6 +723,7 @@
     <string name="title_data_synchronize">Synchronisation des données locales</string>
     <string name="title_default_encounter_location">Emplacement de rencontre par défaut</string>
     <string name="title_default_encounter_provider">fournisseur de rencontre par défaut</string>
+    <string name="title_define_custom_concept">Définir un concept personnalisé</string>
     <string name="title_disclaimer">Licence, exclusion de garantie et limitation de responsabilité</string>
     <string name="title_duplicate_form_data_warning">Avertissement de données de formulaire dupliquer</string>
     <string name="title_enable_gps">Activer le GPS</string>
@@ -734,12 +743,14 @@
     <string name="title_guided_setup">Configuration guidée (recommandée)</string>
     <string name="title_guided_setup_help_video">Configuration initiale guidée</string>
     <string name="title_guided_setup_progress">Progression de l\'installation</string>
+    <string name="title_guided_setup_wizard">Assistant de configuration guidée</string>
     <string name="title_help_video_links">Liens vidéo de mUzima</string>
     <string name="title_html_help">Centre d\'aide</string>
     <string name="title_image_caption">Légende de l\'image</string>
     <string name="title_image_capture">Capture d\'image</string>
     <string name="title_image_choose">Choisir l\'image</string>
     <string name="title_initial_setup_guide">guide de configuration initiale de mUzima</string>
+    <string name="title_install_barcode_scanner">Installer le scanner de codes à barres</string>
     <string name="title_install_psmart">Installer l\'application P-Smart</string>
     <string name="title_introduction_video">Vidéo d\'introduction à Muzima</string>
     <string name="title_landing_page">Page d\'atterissage</string>
@@ -758,9 +769,11 @@
     <string name="title_muzima_training_manual">Manuel de formation mUzima</string>
     <string name="title_observations_by_concepts">Par concepte</string>
     <string name="title_observations_by_encounters">Par rencontre</string>
+    <string name="title_pick_location">Choisir l\'emplacement</string>
     <string name="title_provider_download">Étape 4: Ajouter des fournisseurs</string>
     <string name="title_provider_help">Aide fournisseur</string>
     <string name="title_provider_not_set">Impossible de définir en tant que fournisseur</string>
+    <string name="title_provider_reports">Rapports des fournisseurs</string>
     <string name="title_real_time_sync">Synchronisation en temps réel</string>
     <string name="title_require_medical_record_number">" Exiger un numéro de dossier médical"</string>
     <string name="title_search_server">Recherche sur le serveur</string>
@@ -770,6 +783,7 @@
     <string name="title_set_client_location">Définir l\'emplacement du client</string>
     <string name="title_setting_refresh">Actualiser les configurations</string>
     <string name="title_settings_help_html">Paramètres mUzima</string>
+    <string name="title_setup_method">Méthode de configuration</string>
     <string name="title_video_caption">Légende vidéo</string>
     <string name="title_video_choose">Choisissez Vidéo</string>
     <string name="title_video_record">Enregistrez vidéo</string>
@@ -808,16 +822,4 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="write_shr_to_card_general">Ecrire des dossiers de santé partagés à la carte</string>
 
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
-    <string name="title_clients_locations">Emplacements des clients</string>
-    <string name="title_client_location">Emplacement des clients</string>
-    <string name="title_pick_location">Choisir l\'emplacement</string>
-    <string name="title_define_custom_concept">Définir un concept personnalisé</string>
-    <string name="title_install_barcode_scanner">Installer le scanner de codes à barres</string>
-    <string name="title_setup_method">Méthode de configuration</string>
-    <string name="title_guided_setup_wizard">Assistant de configuration guidée</string>
-    <string name="title_provider_reports">Rapports des fournisseurs</string>
-    <string name="hint_location_addresses_not_set">L\'adresse de localisation n\'a pas été définie pour tous les clients
-        disponibles
-    </string>
-    <string name="general_get_directions">Obtenir des directions</string>
 </resources>

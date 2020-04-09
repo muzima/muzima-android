@@ -191,6 +191,7 @@
     <string name="general_finish_text">Finish</string>
     <string name="general_form">Form</string>
     <string name="general_forms">Forms</string>
+    <string name="general_get_directions">Get directions</string>
     <string name="general_help">Help</string>
     <string name="general_large">Large</string>
     <string name="general_load">Load</string>
@@ -351,6 +352,7 @@
     <string name="hint_light_mode">Enable Light Theme</string>
     <string name="hint_loading_progress">Loading…</string>
     <string name="hint_local_connection_unavailable">Please connect your device and try again</string>
+    <string name="hint_location_addresses_not_set">Location address has not been set for all available clients</string>
     <string name="hint_location_pref_add">Add location(s) that you want to download.</string>
     <string name="hint_manage_concept">Get more concepts from the server or remove concepts from this device.
         Concepts are used to configure what observations to download.
@@ -608,6 +610,8 @@
     <string name="info_setup_complete_fail">Setup completed with some failure</string>
     <string name="info_setup_complete_success">Setup completed successfully</string>
     <string name="info_setup_config_load">Loading Setup Configs</string>
+    <string name="info_setup_configuration_template_download_in_progress">Updating Setup Configs</string>
+    <string formatted="false" name="info_setup_configuration_templates_downloaded">Downloaded %d setup configuration templates</string>
     <string name="info_setup_configuration_wizard_prepare">Preparing setup configuration wizard</string>
     <string formatted="false" name="info_submitted_form_data_status">Status of recently submitted forms: %d Processed successfully,
         %d Processed with error, %d Pending processing, %d Unknown status </string>
@@ -722,10 +726,12 @@
     <string name="title_audio_record">Record Audio</string>
     <string name="title_barcode_scanner_check">Check Barcode Scanner</string>
     <string name="title_barcode_scanner_setup">Step 6: Check for BarCode Scanner</string>
+    <string name="title_client_location">Client Location</string>
     <string name="title_client_location_update">Update Client location</string>
     <string name="title_client_notifications">Client Notifications</string>
     <string name="title_client_registration_help_video">Client registration</string>
     <string name="title_client_scan">Scan Clients BarCode</string>
+    <string name="title_clients_locations">Clients Locations</string>
     <string name="title_cohort_download">Step 1: Download Cohort(s)</string>
     <string name="title_cohort_download_help_video">Cohorts download (on demand)</string>
     <string name="title_cohort_prefix_help">Define Cohorts Prefix(es) Help</string>
@@ -739,6 +745,7 @@
     <string name="title_data_synchronize">Step 2: Synchronising Local Data</string>
     <string name="title_default_encounter_location">Default Encounter Location</string>
     <string name="title_default_encounter_provider">Default encounter provider</string>
+    <string name="title_define_custom_concept">Define Custom Concept</string>
     <string name="title_disclaimer">Licensing, Disclaimer of Warranty and Limitation of Liability</string>
     <string name="title_duplicate_form_data_warning">Duplicate form data warning</string>
     <string name="title_enable_gps">Enable GPS</string>
@@ -758,12 +765,14 @@
     <string name="title_guided_setup">Guided setup (Recommended)</string>
     <string name="title_guided_setup_help_video">Guided initial setup</string>
     <string name="title_guided_setup_progress">Setup Progress</string>
+    <string name="title_guided_setup_wizard">Guided Setup Wizard</string>
     <string name="title_help_video_links">mUzima Video Links</string>
     <string name="title_html_help">Help Center</string>
     <string name="title_image_caption">Image Caption</string>
     <string name="title_image_capture">Capture Image</string>
     <string name="title_image_choose">Choose Image</string>
     <string name="title_initial_setup_guide">mUzima initial setup guide</string>
+    <string name="title_install_barcode_scanner">Install Barcode Scanner</string>
     <string name="title_install_psmart">Install P-Smart app</string>
     <string name="title_introduction_video">Video introduction to mUzima</string>
     <string name="title_landing_page">Landing Page</string>
@@ -782,9 +791,11 @@
     <string name="title_muzima_training_manual">mUzima training manual</string>
     <string name="title_observations_by_concepts">By Data Type</string>
     <string name="title_observations_by_encounters">By Date</string>
+    <string name="title_pick_location">Pick Location</string>
     <string name="title_provider_download">Step 4: Add Provider(s)</string>
     <string name="title_provider_help">providers Help</string>
     <string name="title_provider_not_set">Unable to set as Provider</string>
+    <string name="title_provider_reports">Provider Reports</string>
     <string name="title_real_time_sync">Real time sync</string>
     <string name="title_require_medical_record_number">Require medical record number</string>
     <string name="title_search_server">Search server</string>
@@ -794,6 +805,7 @@
     <string name="title_set_client_location">Set Client location</string>
     <string name="title_setting_refresh">Refresh Setting</string>
     <string name="title_settings_help_html">mUzima Settings</string>
+    <string name="title_setup_method">Setup Method</string>
     <string name="title_video_caption">Video Caption</string>
     <string name="title_video_choose">Choose Video</string>
     <string name="title_video_record">Record Video</string>
@@ -841,14 +853,4 @@
     <string name="write_shr_to_card_general">Write SHR to card</string>
 
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
-    <string name="title_client_location">Client Location</string>
-    <string name="title_clients_locations">Clients Locations</string>
-    <string name="title_pick_location">Pick Location</string>
-    <string name="title_define_custom_concept">Define Custom Concept</string>
-    <string name="title_install_barcode_scanner">Install Barcode Scanner</string>
-    <string name="title_setup_method">Setup Method</string>
-    <string name="title_guided_setup_wizard">Guided Setup Wizard</string>
-    <string name="title_provider_reports">Provider Reports</string>
-    <string name="hint_location_addresses_not_set">Location address has not been set for all available clients</string>
-    <string name="general_get_directions">Get directions</string>
 </resources>

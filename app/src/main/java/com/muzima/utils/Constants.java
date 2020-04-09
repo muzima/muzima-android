@@ -99,6 +99,7 @@ public class Constants {
         public static final int SYNC_SETTINGS = 17;
         public static final int SYNC_RELATIONSHIPS = 18;
         public static final int SYNC_ALL_PATIENT_REPORT_HEADERS_AND_REPORTS=19;
+        public static final int SYNC_SETUP_CONFIGURATION_TEMPLATES=20;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;

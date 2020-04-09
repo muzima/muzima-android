@@ -10,19 +10,31 @@
 
 package com.muzima.controller;
 
+import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.SetupConfigurationService;
+import com.muzima.service.SntpService;
 import com.muzima.utils.StringUtils;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+
+import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
 
 public class SetupConfigurationController {
 
     private final SetupConfigurationService setupConfigurationService;
-    public SetupConfigurationController(SetupConfigurationService setupConfigurationService){
+    private final LastSyncTimeService lastSyncTimeService;
+    private final SntpService sntpService;
+
+    public SetupConfigurationController(SetupConfigurationService setupConfigurationService,
+                                        LastSyncTimeService lastSyncTimeService, SntpService sntpService){
         this.setupConfigurationService = setupConfigurationService;
+        this.lastSyncTimeService = lastSyncTimeService;
+        this.sntpService = sntpService;
     }
 
     public List<SetupConfiguration> downloadAllSetupConfigurations() throws SetupConfigurationDownloadException{
@@ -43,9 +55,36 @@ public class SetupConfigurationController {
 
     public SetupConfigurationTemplate downloadSetupConfigurationTemplate(String uuid) throws SetupConfigurationDownloadException{
         try{
-            return setupConfigurationService.downloadSetupConfigurationTemplateByUuid(uuid);
+            SetupConfigurationTemplate template = setupConfigurationService.downloadSetupConfigurationTemplateByUuid(uuid);
+
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_SETUP_CONFIGURATIONS, sntpService.getTimePerDeviceTimeZone(), uuid);
+            lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
+
+            return template;
         }catch (IOException e){
             throw new SetupConfigurationDownloadException(e);
+        }
+    }
+
+    public SetupConfigurationTemplate downloadUpdatedSetupConfigurationTemplate(String uuid) throws SetupConfigurationDownloadException{
+        try{
+            Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_SETUP_CONFIGURATIONS, uuid);
+            SetupConfigurationTemplate template = setupConfigurationService.downloadUpdatedSetupConfigurationTemplateByUuid(uuid,lastSyncTime);
+
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_SETUP_CONFIGURATIONS, sntpService.getTimePerDeviceTimeZone(), uuid);
+            lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
+
+            return template;
+        }catch (IOException e){
+            throw new SetupConfigurationDownloadException(e);
+        }
+    }
+
+    public List<SetupConfigurationTemplate> getSetupConfigurationTemplates() throws SetupConfigurationFetchException{
+        try{
+            return setupConfigurationService.getSetupConfigurationTemplates();
+        }catch (IOException e){
+            throw new SetupConfigurationFetchException(e);
         }
     }
 
@@ -60,6 +99,14 @@ public class SetupConfigurationController {
     public void saveSetupConfigurationTemplate(SetupConfigurationTemplate setupConfigurationTemplate) throws SetupConfigurationSaveException{
         try{
             setupConfigurationService.saveSetupConfigurationTemplate(setupConfigurationTemplate);
+        }catch (IOException e){
+            throw new SetupConfigurationSaveException(e);
+        }
+    }
+
+    public void updateSetupConfigurationTemplate(SetupConfigurationTemplate setupConfigurationTemplate) throws SetupConfigurationSaveException{
+        try{
+            setupConfigurationService.updateSetupConfigurationTemplate(setupConfigurationTemplate);
         }catch (IOException e){
             throw new SetupConfigurationSaveException(e);
         }

@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -74,11 +75,13 @@ public class MuzimaSettingController {
             for(SetupConfigurationTemplate configurationTemplate:configurationTemplates){
                 JSONObject configJson = new JSONObject(configurationTemplate.getConfigJson());
                 configJson = configJson.getJSONObject("config");
-                JSONArray settingsArray = configJson.getJSONArray("settings");
-                for(int i=0; i<settingsArray.length();i++){
-                    JSONObject settingObject = settingsArray.getJSONObject(i);
-                    if(settingObject.has(keyType) && keyValue.equals(settingObject.get(keyType))) {
-                        return parseMuzimaSettingFromJsonObjectRepresentation(settingObject);
+                if(configJson.has("settings")) {
+                    JSONArray settingsArray = configJson.getJSONArray("settings");
+                    for (int i = 0; i < settingsArray.length(); i++) {
+                        JSONObject settingObject = settingsArray.getJSONObject(i);
+                        if (settingObject.has(keyType) && keyValue.equals(settingObject.get(keyType))) {
+                            return parseMuzimaSettingFromJsonObjectRepresentation(settingObject);
+                        }
                     }
                 }
             }
@@ -86,6 +89,26 @@ public class MuzimaSettingController {
             throw new MuzimaSettingFetchException(e);
         }
         return null;
+    }
+
+    public List<MuzimaSetting> getSettingsFromSetupConfigurationTemplate(String templateUuid) throws MuzimaSettingFetchException {
+        List<MuzimaSetting> settings = new ArrayList<>();
+        try {
+            SetupConfigurationTemplate template = setupConfigurationService.getSetupConfigurationTemplate(templateUuid);
+            JSONObject configJson = new JSONObject(template.getConfigJson());
+            configJson = configJson.getJSONObject("config");
+            if(configJson.has("settings")) {
+                JSONArray settingsArray = configJson.getJSONArray("settings");
+                for (int i = 0; i < settingsArray.length(); i++) {
+                    JSONObject settingObject = settingsArray.getJSONObject(i);
+                    MuzimaSetting setting = parseMuzimaSettingFromJsonObjectRepresentation(settingObject);
+                    settings.add(setting);
+                }
+            }
+        } catch (IOException | JSONException e ) {
+            throw new MuzimaSettingFetchException(e);
+        }
+        return settings;
     }
 
     private MuzimaSetting parseMuzimaSettingFromJsonObjectRepresentation(JSONObject settingObject) throws JSONException {
@@ -104,8 +127,8 @@ public class MuzimaSettingController {
             muzimaSetting.setDescription((String) settingObject.get("description"));
         }
 
-        if(settingObject.has("settingDataType")) {
-            String settingDataType = (String) settingObject.get("settingDataType");
+        if(settingObject.has("datatype")) {
+            String settingDataType = (String) settingObject.get("datatype");
             muzimaSetting.setSettingDataType(settingDataType);
             if(settingObject.has("value")) {
                 if ("BOOLEAN".equals(settingDataType)) {
