@@ -641,8 +641,10 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         if(objects != null){
             for(Object object:objects){
                 JSONObject cohort = (JSONObject)object;
-                if((Boolean)cohort.get("isFilterByLocationEnabled")){
-                    isCohortLocationBased = true;
+                if(cohort.get("isFilterByLocationEnabled") != null) {
+                    if ((Boolean) cohort.get("isFilterByLocationEnabled")) {
+                        isCohortLocationBased = true;
+                    }
                 }
             }
         }
