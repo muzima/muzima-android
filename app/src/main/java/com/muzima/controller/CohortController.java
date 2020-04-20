@@ -53,7 +53,6 @@ public class CohortController {
         Context context = muzimaApplication.getApplicationContext();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String setDefaultLocation = preferences.getString("defaultEncounterLocation", null);
-        Log.e(getClass().getSimpleName(),"Default Location is  "+setDefaultLocation);
         if(setDefaultLocation==null)
         {
             setDefaultLocation = null;

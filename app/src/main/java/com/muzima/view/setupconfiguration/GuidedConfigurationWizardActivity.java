@@ -657,7 +657,8 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private void showAlertDialog(){
         AlertDialog.Builder alertDialogBuider = new AlertDialog.Builder(this);
-        alertDialogBuider.setTitle("Select Location:");
+        alertDialogBuider.setTitle(R.string.title_default_encounter_location);
+        alertDialogBuider.setMessage(R.string.select_default_encounter_location);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice);
         final MuzimaApplication muzimaApplication = (MuzimaApplication) this.getApplication();
         final LocationController locationController = muzimaApplication.getLocationController();
