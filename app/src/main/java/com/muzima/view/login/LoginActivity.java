@@ -191,9 +191,8 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
 
                 // FHIR TEST
-                startActivity(new Intent(LoginActivity.this, FhirResourceActivity.class));
+                //startActivity(new Intent(LoginActivity.this, FhirResourceActivity.class));
 
-                /*
                 if (validInput()) {
                     if (backgroundAuthenticationTask != null && backgroundAuthenticationTask.getStatus() == AsyncTask.Status.RUNNING) {
                         Toast.makeText(getApplicationContext(), getString(R.string.info_authentication_in_progress), Toast.LENGTH_SHORT).show();
@@ -226,7 +225,6 @@ public class LoginActivity extends Activity {
                     }
                 }
 
-                 */
             }
         });
 

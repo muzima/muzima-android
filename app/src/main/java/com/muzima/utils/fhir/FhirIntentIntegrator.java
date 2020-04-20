@@ -20,8 +20,8 @@ import java.util.List;
 
 public class FhirIntentIntegrator {
 
-    private static final String ACTION_READ_RESOURCE = "com.muzima.muzimafhir.ACTION_REQUEST_RESOURCE";
-    private static final String ACTION_WRITE_RESOURCE = "com.muzima.muzimafhir.ACTION_WRITE_RESOURCE";
+    private static final String ACTION_REQUEST_RESOURCE = "com.muzima.muzimafhir.ACTION_REQUEST_RESOURCE";
+    private static final String ACTION_INSERT_RESOURCE = "com.muzima.muzimafhir.ACTION_INSERT_RESOURCE";
     private static final int RESOURCE_READ_REQUEST_CODE = 69;
     private static final int RESOURCE_WRITE_RESOURCE_CODE = 70;
     private static final List<String> RESOURCE_TYPES = new ArrayList<>(Arrays.asList("patient", "observation", "encounter"));
@@ -44,15 +44,48 @@ public class FhirIntentIntegrator {
         return requestCode == RESOURCE_WRITE_RESOURCE_CODE;
     }
 
-    public void initiateResourceRead(String resourceType, String queryType) {
+
+
+    public void initiateResourceReadById(String id) {
         Intent intent = new Intent();
-        intent.setAction(ACTION_READ_RESOURCE);
+        intent.setAction(ACTION_REQUEST_RESOURCE);
+        intent.putExtra("resourceType", "patient");
+        intent.putExtra("queryType", "getOne");
+        intent.putExtra("id", id);
+        intent.setType("text/plain");
+        startIntentActivityForResult(intent, RESOURCE_READ_REQUEST_CODE);
+    }
+
+    public void initiateResourceRead() {
+        Intent intent = new Intent();
+        intent.setAction(ACTION_REQUEST_RESOURCE);
         intent.putExtra("resourceType", "patient");
         intent.putExtra("queryType", "getOne");
         intent.putExtra("id", "5e2eb69b21c7a2122726889f");
         intent.setType("text/plain");
         startIntentActivityForResult(intent, RESOURCE_READ_REQUEST_CODE);
+    }
 
+    public void initiateResourceRead(String resourceType, String queryType) {
+        Intent intent = new Intent();
+        intent.setAction(ACTION_REQUEST_RESOURCE);
+        intent.putExtra("resourceType", "patient");
+        intent.putExtra("queryType", "getOne");
+        intent.putExtra("id", "5e2eb69b21c7a2122726889f");
+        intent.setType("text/plain");
+        startIntentActivityForResult(intent, RESOURCE_READ_REQUEST_CODE);
+    }
+
+    // Should be of generic type, not Patient
+    public void initiateResourceWrite(Patient p) {
+        String patientJson = gson.toJson(p);
+        Intent intent = new Intent();
+        intent.setAction(ACTION_INSERT_RESOURCE);
+        intent.putExtra("resourceType", "patient");
+        intent.putExtra("queryType", "create");
+        intent.putExtra("resource", patientJson);
+        intent.setType("text/plain");
+        startIntentActivityForResult(intent, RESOURCE_WRITE_RESOURCE_CODE);
     }
 
     private void startIntentActivityForResult(Intent intent, int requestCode){
@@ -94,6 +127,7 @@ public class FhirIntentIntegrator {
                 String queryType = intent.getStringExtra("queryType");
 
                 if (resourceType != null && queryType != null) {
+                    Log.d("---resourceData---", resourceData);
                     patient = gson.fromJson(resourceData, Patient.class);
                 }
             }
