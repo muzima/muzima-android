@@ -629,6 +629,11 @@ $(document).ready(function () {
             parentName += parseInt(suffixInt) + 1;
         }
         $clonedSection.attr("data-name", parentName);
+        $clonedSection.find('input.datepicker').attr("id", "").removeClass('hasDatepicker').unbind().datepicker({
+            dateFormat: dateFormat,
+            changeMonth: true,
+            changeYear: true
+        });
         document.clearValuesOnClonedFields($clonedSection);
         if(document.isMaxRepeatsReached($clonedSection)){
             $('.add_section').prop('disabled', true);
