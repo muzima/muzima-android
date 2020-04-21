@@ -20,14 +20,19 @@ import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.PersonAttributeType;
 import com.muzima.api.model.PersonName;
+import com.muzima.api.model.Relationship;
+import com.muzima.api.model.RelationshipType;
 import com.muzima.api.model.User;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.PersonController;
+import com.muzima.controller.RelationshipController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
@@ -40,12 +45,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import static com.muzima.utils.DateUtils.parse;
 
 public class GenericRegistrationPatientJSONMapper {
 
     private JSONObject patientJSON;
+    private JSONObject personJSON;
     private JSONObject encounterJSON;
     private Patient patient;
     private MuzimaApplication muzimaApplication;
@@ -151,13 +158,61 @@ public class GenericRegistrationPatientJSONMapper {
         this.muzimaApplication = muzimaApplication;
         setJSONObjects(jsonPayload);
         createPatient();
+        createRelationships();
         return patient;
+    }
+
+    private void createRelationship(JSONObject jsonObject){
+        try {
+            String relationshipTypeUuid = (String)getFromJsonObject(jsonObject,"relationship.type");
+            RelationshipType relationshipType = muzimaApplication.getRelationshipController().getRelationshipTypeByUuid(relationshipTypeUuid);
+            String personBUuid = (String)getFromJsonObject(jsonObject,"personB.uuid");
+            Person personB = muzimaApplication.getPersonController().getPersonByUuid(personBUuid);
+            if (personB == null) {
+                personB = muzimaApplication.getPatientController().getPatientByUuid(personBUuid);
+            }
+
+            if (relationshipType != null && personB != null) {
+                Relationship newRelationship = new Relationship(patient, personB, relationshipType, false);
+                newRelationship.setUuid(UUID.randomUUID().toString());
+                muzimaApplication.getRelationshipController().saveRelationship(newRelationship);
+            }
+        } catch (RelationshipController.RetrieveRelationshipTypeException | JSONException |
+                RelationshipController.SaveRelationshipException | PersonController.PersonLoadException |
+                PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Could not create relationship",e);
+        }
+    }
+
+    private void createRelationships(){
+        if(personJSON != null && personJSON.has("person.relationships")) {
+            Object relationshipObject = null;
+            try {
+                relationshipObject = personJSON.getJSONObject("person.relationships");
+
+            if (relationshipObject instanceof JSONArray) {
+                JSONArray relationships = (JSONArray) relationshipObject;
+                for (int i = 0; i < relationships.length(); i++) {
+                    try {
+                        createRelationship(relationships.getJSONObject(i));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else if (relationshipObject instanceof JSONObject) {
+                createRelationship((JSONObject) relationshipObject);
+            }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setJSONObjects(String jsonPayload) throws JSONException {
         JSONObject responseJSON = new JSONObject(jsonPayload);
         patientJSON = responseJSON.getJSONObject("patient");
         encounterJSON = responseJSON.getJSONObject("encounter");
+        personJSON = responseJSON.getJSONObject("person");
     }
 
     private void createPatient() throws JSONException {
