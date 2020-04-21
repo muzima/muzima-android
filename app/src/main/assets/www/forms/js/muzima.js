@@ -595,6 +595,14 @@ $(document).ready(function () {
         return $.datepicker.formatDate(dateFormat, estimatedDate);
     };
 
+    $.fn.getTempBirthDateFromYearsAndMonths = function (years, months) {
+        var estimatedDate = new Date();
+        estimatedDate.setDate(1);
+        estimatedDate.setMonth( estimatedDate.getMonth() - parseInt(months) );
+        estimatedDate.setFullYear( estimatedDate.getFullYear() - parseInt(years));
+        return $.datepicker.formatDate(dateFormat, estimatedDate);
+    };
+
     $.fn.getAgeInYears = function (birthDateString) {
         var birthDate = new Date(birthDateString);
         var today = new Date();
@@ -1340,6 +1348,33 @@ $(document).ready(function () {
         /* End - validProviderOnly*/
     }
 
+    //Start - Set up auto complete for the person element.
+    document.setupAutoCompleteForPerson = function(searchElementName, resultElementSelector) {
+        var $parent = $(searchElementName).closest('.repeat');
+        $parent.find(searchElementName).autocomplete({
+            source: function(request, response){
+                var searchTerm = request.term;
+                var searchResults = htmlDataStore.getPersonsFromDevice(searchTerm);
+                searchResults = JSON.parse(searchResults);
+                var listOfPersons = [];
+                $.each(searchResults, function (key, person) {
+                    listOfPersons.push({"val": person.uuid, "label": person.name});
+
+                });
+
+                response(listOfPersons);
+
+            },
+            select: function(event, ui) {
+                $parent.find(searchElementName).val(ui.item.label);
+                $parent.find(resultElementSelector).val(ui.item.val);
+                $parent.find(resultElementSelector).trigger('change');
+                return false;
+            }
+        });
+    }
+    //End - Set up auto complete for the person element.
+
     document.setupValidationForLocation = function (value, element) {
 
         var listOfLocations = [];
@@ -1456,4 +1491,59 @@ $(document).ready(function () {
         $('.initialFormOpeningTimestamp').val(date.getTime());
     }
     /*end of populating initial form opening timestamp*/
+
+    /*Start- GPS Location picker Functionality*/
+
+    /* Called by the Activity WebViewActivity*/
+    document.populatePickedGpsLocation = function (sectionName, jsonString) {
+        var $parent = $('div[data-name="' + sectionName + '"]');
+        $.each(jsonString, function (key, value) {
+            var $inputField = $parent.find("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so GPS location value gets populated.
+        });
+    };
+
+    $('.gps-location-picker').click(function () {
+        var $parent = $(this).closest('div[data-name]');
+        gpsLocationPickerComponent.getGPSLocationPicker(
+            $parent.attr('data-name'),
+            $parent.find("input.latitude").attr('name'),
+            $parent.find("input.longitude").attr('name')
+        );
+    });
+
+    /*End- Location picker Functionality*/
+
+    /*Start- GPS Location picker Functionality*/
+
+    /* Called by the Activity WebViewActivity*/
+    document.populatePickedGpsLocation = function (sectionName, jsonString) {
+        var $parent = $('div[data-name="' + sectionName + '"]');
+        $.each(jsonString, function (key, value) {
+            var $inputField = $parent.find("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');  //Need this to trigger the event so GPS location value gets populated.
+        });
+    };
+
+    $('.create-relationship-person').click(function () {
+        var $parent = $(this).closest('div[data-name]');
+        var resultField = $(this).attr('data-result-field');
+        relationshipCreatorComponent.createRelationshipPerson(
+            $parent.attr('data-name'),
+            resultField
+        );
+    });
+
+    document.populateRelationshipPerson = function (sectionName, jsonString) {
+        var $parent = $('div[data-name="' + sectionName + '"]');
+        $.each(jsonString, function (key, value) {
+            var $inputField = $parent.find("input[name='" + key + "']");
+            $inputField.val(value);
+            $inputField.trigger('change');
+        });
+    };
+
+    /*End- Location picker Functionality*/
 });

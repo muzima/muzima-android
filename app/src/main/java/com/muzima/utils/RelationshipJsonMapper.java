@@ -10,6 +10,7 @@
 
 package com.muzima.utils;
 
+import android.util.Log;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
@@ -121,7 +122,7 @@ public class RelationshipJsonMapper {
         try {
             return patientController.getPatientByUuid(personUuid) == null;
         } catch (PatientController.PatientLoadException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Could not load patient",e);
         }
         return true;
     }

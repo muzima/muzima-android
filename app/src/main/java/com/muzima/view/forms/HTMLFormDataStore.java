@@ -27,7 +27,9 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientTag;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.Provider;
+import com.muzima.api.model.RelationshipType;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
@@ -37,12 +39,14 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
+import com.muzima.controller.RelationshipController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.Constants;
+import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
 
 import net.minidev.json.JSONValue;
@@ -206,6 +210,81 @@ class HTMLFormDataStore {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading locations", e);
         }
         return JSONValue.toJSONString(locationsOnDevice);
+    }
+
+    @JavascriptInterface
+    public String getRelationshipTypesFromDevice(){
+        JSONArray relationshipsJsonArray = new JSONArray();
+        try {
+            List<RelationshipType> relationshipTypeList = application.getRelationshipController().getAllRelationshipTypes();
+            for(RelationshipType relationshipType:relationshipTypeList){
+                try {
+                    JSONObject relationshipJsonObject = new JSONObject();
+                    relationshipJsonObject.put("uuid", relationshipType.getUuid());
+                    relationshipJsonObject.put("AIsToB", relationshipType.getAIsToB());
+                    relationshipJsonObject.put("BIsToA", relationshipType.getBIsToA());
+                    relationshipsJsonArray.put(relationshipJsonObject);
+                } catch(JSONException e){
+                    Log.e(getClass().getSimpleName(), "Exception occurred while populating relationship", e);
+                }
+            }
+        } catch (RelationshipController.RetrieveRelationshipTypeException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading relationships", e);
+        }
+        return relationshipsJsonArray.toString();
+
+    }
+
+    @JavascriptInterface
+    public String getPersonDetailsByUuid(String uuid){
+        JSONObject personJsonObject = new JSONObject();
+
+        try {
+            Person person = personController.getPersonByUuid(uuid);
+            if (person == null) {
+                person = patientController.getPatientByUuid(uuid);
+            }
+
+            if (person != null) {
+                personJsonObject.put("uuid", person.getUuid());
+                personJsonObject.put("name", person.getDisplayName());
+                personJsonObject.put("birth_date", DateUtils.getFormattedDate(person.getBirthdate()));
+                personJsonObject.put("sex", person.getGender());
+                personJsonObject.put("attributes", person.getAtributes());
+                personJsonObject.put("addresses", person.getAddresses());
+            }
+        } catch (PersonController.PersonLoadException | PatientController.PatientLoadException | JSONException e){
+            Log.e(getClass().getSimpleName(), "Could not retrieve person record",e);
+        }
+        return personJsonObject.toString();
+    }
+
+    @JavascriptInterface
+    public String getPersonsFromDevice(String searchTerm) {
+        JSONArray personsJsonArray = new JSONArray();
+        try {
+            List<Person> personsOnDevice = personController.searchPersonLocally(searchTerm);
+            List<Patient> patientsOnDevice = patientController.searchPatientLocally(searchTerm, null);
+            for (Patient patient : patientsOnDevice) {
+                if (personController.getPersonByUuid(patient.getUuid()) == null)
+                    personsOnDevice.add(patient);
+            }
+
+            for (Person person:personsOnDevice){
+                try {
+                    JSONObject personJsonObject = new JSONObject();
+                    personJsonObject.put("uuid", person.getUuid());
+                    personJsonObject.put("name", person.getDisplayName());
+                    personsJsonArray.put(personJsonObject);
+                } catch (JSONException e){
+                    Log.e(getClass().getSimpleName(), "Could not add person object into persons array", e);
+                }
+            }
+        } catch (PersonController.PersonLoadException | PatientController.PatientLoadException e) {
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_provider_load), Toast.LENGTH_SHORT).show();
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading persons", e);
+        }
+        return personsJsonArray.toString();
     }
 
     @JavascriptInterface
