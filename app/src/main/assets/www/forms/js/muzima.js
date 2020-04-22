@@ -1461,4 +1461,7 @@ $(document).ready(function () {
         $('.initialFormOpeningTimestamp').val(date.getTime());
     }
     /*end of populating initial form opening timestamp*/
+    document.launchEncounterMiniForm = function(patientUuid,formUuid) {
+        encounterMiniFormCreatorComponent.launchEncounterMiniForm(patientUuid,formUuid);
+    };
 });
