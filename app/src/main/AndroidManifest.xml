@@ -478,5 +478,12 @@
             android:theme="@style/DialogNoTitleBar"
             android:parentActivityName=".view.patients.PatientSummaryActivity"
             android:noHistory="true"/>
+
+        <activity
+            android:name=".view.forms.EncounterMiniFormActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/DialogNoTitleBar"
+            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:noHistory="true"/>
     </application>
 </manifest>
