@@ -80,6 +80,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private static final String VIDEO = "videoComponent";
     private static final String GPS_LOCATION_PICKER = "gpsLocationPickerComponent";
     private static final String RELATIONSHIP_CREATOR = "relationshipCreatorComponent";
+    private static final String ENCOUNTER_MINI_FORM_CREATOR = "encounterMiniFormCreatorComponent";
     public static final String FORM = "form";
     public static final String DISCRIMINATOR = "discriminator";
     private static final String DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS = "2";
@@ -115,6 +116,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private final Handler handler = new Handler();
     private final ThemeUtils themeUtils = new ThemeUtils();
     private boolean isFormReload;
+    private EncounterMiniFormCreatorComponent encounterMiniFormCreatorComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -491,14 +493,22 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         imagingComponent = new ImagingComponent(this);
         audioComponent = new AudioComponent(this);
         videoComponent = new VideoComponent(this);
+
         gpsLocationPickerComponent = new GPSLocationPickerComponent(this);
         relationshipComponent = new RelationshipComponent(this);
+
+        encounterMiniFormCreatorComponent = new EncounterMiniFormCreatorComponent(this);
+
         webView.addJavascriptInterface(barCodeComponent, BARCODE);
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);
         webView.addJavascriptInterface(videoComponent, VIDEO);
+
         webView.addJavascriptInterface(gpsLocationPickerComponent, GPS_LOCATION_PICKER);
         webView.addJavascriptInterface(relationshipComponent, RELATIONSHIP_CREATOR);
+
+        webView.addJavascriptInterface(encounterMiniFormCreatorComponent, ENCOUNTER_MINI_FORM_CREATOR);
+
         webView.addJavascriptInterface(new HTMLFormDataStore(this, formData, isFormReload,
                 (MuzimaApplication) getApplicationContext()), HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);

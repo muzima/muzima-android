@@ -1086,4 +1086,18 @@ public class FormController {
         }
         return result;
     }
+
+    public AvailableForm getAvailableFormByFormUuid(String uuid) throws FormFetchException{
+        AvailableForm availableForm = new AvailableForm();
+        try {
+            Form form = formService.getFormByUuid(uuid);
+            boolean downloadStatus = formService.isFormTemplateDownloaded(uuid);
+            availableForm = new AvailableFormBuilder()
+                        .withAvailableForm(form)
+                        .withDownloadStatus(downloadStatus).build();
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
+        return availableForm;
+    }
 }

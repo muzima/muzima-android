@@ -1551,4 +1551,7 @@ $(document).ready(function () {
     };
 
     /*End- Location picker Functionality*/
+    document.launchEncounterMiniForm = function(patientUuid,formUuid) {
+        encounterMiniFormCreatorComponent.launchEncounterMiniForm(patientUuid,formUuid);
+    };
 });
