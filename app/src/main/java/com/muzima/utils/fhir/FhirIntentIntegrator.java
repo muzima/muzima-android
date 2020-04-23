@@ -45,7 +45,6 @@ public class FhirIntentIntegrator {
     }
 
 
-
     public void initiateResourceReadById(String id) {
         Intent intent = new Intent();
         intent.setAction(ACTION_REQUEST_RESOURCE);
@@ -88,9 +87,9 @@ public class FhirIntentIntegrator {
         startIntentActivityForResult(intent, RESOURCE_WRITE_RESOURCE_CODE);
     }
 
-    private void startIntentActivityForResult(Intent intent, int requestCode){
+    private void startIntentActivityForResult(Intent intent, int requestCode) {
         PackageManager packageManager = activity.getPackageManager();
-        if(intent.resolveActivity(packageManager) != null) {
+        if (intent.resolveActivity(packageManager) != null) {
             activity.startActivityForResult(intent, requestCode);
         } else {
             showFhirDialog();
@@ -116,7 +115,7 @@ public class FhirIntentIntegrator {
 
     public static Patient parseActivityResult(int requestCode, int resultCode, Intent intent) throws Exception {
         if (requestCode == RESOURCE_READ_REQUEST_CODE || requestCode == RESOURCE_WRITE_RESOURCE_CODE) {
-            if(intent == null){
+            if (intent == null) {
                 throw new Exception("Cannot get result intent");
             }
 
@@ -127,12 +126,12 @@ public class FhirIntentIntegrator {
                 String queryType = intent.getStringExtra("queryType");
 
                 if (resourceType != null && queryType != null) {
-                    Log.d("---resourceData---", resourceData);
-                    patient = gson.fromJson(resourceData, Patient.class);
+                    if (resourceType.equals("patient") && queryType.equals("getOne")) {
+                        patient = gson.fromJson(resourceData, Patient.class);
+                    }
                 }
             }
             return patient;
-
         }
         return null;
     }

@@ -369,7 +369,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         switch (item.getItemId()) {
             case R.id.client_download_from_fhir:
                 final FhirIntentIntegrator integrator = new FhirIntentIntegrator(this);
-                integrator.initiateResourceReadById("dd9aacb4-1691-11df-97a5-7038c432aabf");
+                integrator.initiateResourceReadById("dd93f86c-1691-11df-97a5-7038c432aabf"); // Currently hard-coded id for testing
                 return true;
 
             case R.id.menu_client_add_icon:
@@ -623,12 +623,17 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 processResourceReadResult(requestCode, resultCode, dataIntent);
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-                String message = patient.getDisplayName() + "\n"
-                        + patient.getUuid() + "\n"
-                        + patient.getGender() + "\n"
-                        + patient.getBirthdate() + "\n"
-                        + patient.getAddresses().get(0).getCityVillage() + ", " + patient.getAddresses().get(0).getCountry();
-
+                String message = "";
+                if (patient == null) {
+                    message = "Patient == null. Error occurred while trying to receive the patient";
+                } else if (patient.getUuid() == null || patient.getUuid().equals("")) {
+                    message = "Patient has no UUID. Error occurred while trying to receive the patient. Wrong ID?";
+                } else {
+                     message = patient.getDisplayName() + "\n"
+                            + patient.getUuid() + "\n"
+                            + patient.getGender() + "\n"
+                            + patient.getBirthdate() + "\n";
+                }
                 builder.setMessage(message).setTitle("Patient");
                 AlertDialog dialog = builder.create();
 
