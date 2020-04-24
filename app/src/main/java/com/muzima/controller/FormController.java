@@ -146,13 +146,9 @@ public class FormController {
             List<Form> allForms = formService.getAllForms();
             List<Form> filteredForms = filterFormsByTags(allForms, tagsUuid, alwaysIncludeRegistrationForms);
             AvailableForms availableForms = new AvailableForms();
-            for (Form filteredForm : filteredForms) {
-                boolean downloadStatus = formService.isFormTemplateDownloaded(filteredForm.getUuid());
-                AvailableForm availableForm = new AvailableFormBuilder()
-                        .withAvailableForm(filteredForm)
-                        .withDownloadStatus(downloadStatus).build();
-                availableForms.add(availableForm);
-            }
+            ArrayList<String> formUuids = getFormListAsPerConfigOrder();
+            availableForms = getAvailableFormsPerConfigOrder(formUuids,filteredForms);
+
             return availableForms;
         } catch (IOException e) {
             throw new FormFetchException(e);
@@ -210,9 +206,18 @@ public class FormController {
         DownloadedForms downloadedFormsByTags = new DownloadedForms();
         try {
             List<Form> allForms = formService.getAllForms();
-            for (Form form : allForms) {
+            ArrayList<String> formUuids = getFormListAsPerConfigOrder();
+            for(String formUuid : formUuids){
+                Form form = formService.getFormByUuid(formUuid);
                 if (formService.isFormTemplateDownloaded(form.getUuid())) {
                     downloadedFormsByTags.add(new DownloadedFormBuilder().withDownloadedForm(form).build());
+                }
+            }
+            for (Form form : allForms) {
+                if(!formUuids.contains(form.getUuid())) {
+                    if (formService.isFormTemplateDownloaded(form.getUuid())) {
+                        downloadedFormsByTags.add(new DownloadedFormBuilder().withDownloadedForm(form).build());
+                    }
                 }
             }
         } catch (IOException e) {
@@ -1035,41 +1040,8 @@ public class FormController {
             List<Form> allForms = formService.getAllForms();
             List<Form> filteredForms = filterFormsByTags(allForms, tagsUuid, alwaysIncludeRegistrationForms);
             AvailableForms availableForms = new AvailableForms();
-            ArrayList<String> formUuids = new ArrayList<String>();
-            List<SetupConfigurationTemplate> setupConfigurationTemplates = setupConfigurationService.getSetupConfigurationTemplates();
-            for(SetupConfigurationTemplate setupConfigurationTemplate:setupConfigurationTemplates){
-                org.json.JSONObject object = null;
-                try {
-                    object = new org.json.JSONObject(setupConfigurationTemplate.getConfigJson());
-                    org.json.JSONObject forms = object.getJSONObject("config");
-                    org.json.JSONArray formsArray = forms.getJSONArray("forms");
-                    for(int i = 0; i < formsArray.length(); i++)
-                    {
-                        org.json.JSONObject formObject = formsArray.getJSONObject(i);
-                        Form form = formService.getFormByUuid(formObject.get("uuid").toString());
-                        if(form != null) {
-                            boolean downloadStatus = formService.isFormTemplateDownloaded(form.getUuid());
-                            AvailableForm availableForm = new AvailableFormBuilder().withAvailableForm(form).withDownloadStatus(downloadStatus).build();
-                            availableForms.add(availableForm);
-                            formUuids.add(formObject.get("uuid").toString());
-                        } else {
-                            Log.d(getClass().getSimpleName(),"Could not find form with uuid = "+formObject.get("uuid").toString() +
-                                    " specified in setup config with uuid = "+setupConfigurationTemplate.getUuid());
-                        }
-                    }
-                } catch (JSONException e) {
-                    Log.e(getClass().getSimpleName(),"Encountered JsonException while sorting forms");
-                }
-            }
-            for (Form filteredForm : filteredForms) {
-                if (!formUuids.contains(filteredForm.getUuid())) {
-                    boolean downloadStatus = formService.isFormTemplateDownloaded(filteredForm.getUuid());
-                    AvailableForm availableForm = new AvailableFormBuilder()
-                            .withAvailableForm(filteredForm)
-                            .withDownloadStatus(downloadStatus).build();
-                    availableForms.add(availableForm);
-                }
-            }
+            ArrayList<String> formUuids = getFormListAsPerConfigOrder();
+            availableForms = getAvailableFormsPerConfigOrder(formUuids,filteredForms);
             return availableForms;
         } catch (IOException e) {
             throw new FormFetchException(e);
@@ -1099,5 +1071,64 @@ public class FormController {
             throw new FormFetchException(e);
         }
         return availableForm;
+    }
+
+    public ArrayList<String> getFormListAsPerConfigOrder() throws IOException {
+        List<SetupConfigurationTemplate> setupConfigurationTemplates = setupConfigurationService.getSetupConfigurationTemplates();
+        ArrayList<String> formUuids = new ArrayList<>();
+        for(SetupConfigurationTemplate setupConfigurationTemplate:setupConfigurationTemplates){
+            org.json.JSONObject object = null;
+            try {
+                object = new org.json.JSONObject(setupConfigurationTemplate.getConfigJson());
+                org.json.JSONObject forms = object.getJSONObject("config");
+                org.json.JSONArray formsArray = forms.getJSONArray("forms");
+                for(int i = 0; i < formsArray.length(); i++)
+                {
+                    org.json.JSONObject formObject = formsArray.getJSONObject(i);
+                    Form form = formService.getFormByUuid(formObject.get("uuid").toString());
+                    if(form != null) {
+                        formUuids.add(formObject.get("uuid").toString());
+                    } else {
+                        Log.d(getClass().getSimpleName(),"Could not find form with uuid = "+formObject.get("uuid").toString() +
+                                " specified in setup config with uuid = "+setupConfigurationTemplate.getUuid());
+                    }
+                }
+            } catch (JSONException e) {
+                Log.e(getClass().getSimpleName(),"Encountered JsonException while sorting forms");
+            }
+        }
+        return formUuids;
+    }
+
+    public AvailableForms getAvailableFormsPerConfigOrder(ArrayList<String> formUuids, List<Form> filteredForms) throws IOException {
+        AvailableForms availableForms = new AvailableForms();
+        if(formUuids.size()>0) {
+            for (String formUuid : formUuids) {
+                Form form = formService.getFormByUuid(formUuid);
+                boolean downloadStatus = formService.isFormTemplateDownloaded(form.getUuid());
+                AvailableForm availableForm = new AvailableFormBuilder().withAvailableForm(form).withDownloadStatus(downloadStatus).build();
+                availableForms.add(availableForm);
+            }
+        }
+
+        //check if forms in config are among those filtered and remove those excluded by the filter
+        for(Form filteredForm : filteredForms){
+            if(!formUuids.contains(filteredForm.getUuid())) {
+                availableForms.remove(filteredForm);
+            }
+        }
+
+        //add forms not in the setup config
+        for (Form filteredForm : filteredForms) {
+            if (!formUuids.contains(filteredForm.getUuid())) {
+                boolean downloadStatus = formService.isFormTemplateDownloaded(filteredForm.getUuid());
+                AvailableForm availableForm = new AvailableFormBuilder()
+                        .withAvailableForm(filteredForm)
+                        .withDownloadStatus(downloadStatus).build();
+                availableForms.add(availableForm);
+            }
+        }
+
+        return availableForms;
     }
 }
