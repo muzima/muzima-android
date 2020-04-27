@@ -19,8 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 import com.muzima.utils.Fonts;
@@ -68,7 +70,20 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
             this.pendingUpdateImage = (ImageView) convertView.findViewById(R.id.pendingUpdateImg);
             this.name = (CheckedTextView) convertView
                     .findViewById(R.id.cohort_name);
+             setImageSizes(this);
+
         }
+         private void setImageSizes(ViewHolder holder){
+             int lineHeight = holder.name.getLineHeight();
+             int imageLayoutMargin = 10;
+             int imageSize = 2*lineHeight-2*imageLayoutMargin;
+             int width = imageSize;
+             int height = imageSize;
+             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,height);
+             params.setMargins(imageLayoutMargin,imageLayoutMargin,imageLayoutMargin,imageLayoutMargin);
+             holder.downloadedImage.setLayoutParams(params);
+             holder.pendingUpdateImage.setLayoutParams(params);
+         }
 
         void displayDownloadImage() {
             downloadedImage.setVisibility(View.VISIBLE);

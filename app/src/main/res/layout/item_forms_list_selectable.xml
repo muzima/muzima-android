@@ -8,11 +8,13 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
-<com.muzima.view.CheckedRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_height="wrap_content"
-                android:checkable="true"
-                android:background="?attr/listMultiSelectorBlue"
-                android:layout_width="match_parent">
+<com.muzima.view.CheckedRelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_height="wrap_content"
+        android:checkable="true"
+        android:background="?attr/listMultiSelectorBlue"
+        android:layout_width="match_parent">
     <com.muzima.view.CheckedLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,18 +24,18 @@
 
         <CheckedTextView
                 android:id="@+id/form_name"
-                android:layout_weight="80"
+                android:layout_weight="95"
                 android:layout_width="0dp"
                 android:checkMark="@null"
                 style="@style/ListViewSelectableText"/>
 
         <ImageView
                 android:id="@+id/downloadImg"
-                android:layout_weight="20"
+                android:layout_weight="5"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_gravity="top|right"
-                android:src="@drawable/ic_action_blue_tick_circle"
+                app:srcCompat="@drawable/ic_downloaded_icon"
                 android:visibility="gone"
                 android:contentDescription="@string/info_downloaded_image"/>
     </com.muzima.view.CheckedLinearLayout>
