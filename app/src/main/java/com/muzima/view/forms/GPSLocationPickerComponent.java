@@ -33,11 +33,12 @@ public class GPSLocationPickerComponent {
         this.latitudeField = latitudeField;
         this.longitudeField = longitudeField;
         Intent intent = new Intent(activity, MapLocationPickerActivity.class);
+        intent.putExtra(MapLocationPickerActivity.DEFAULT_ZOOM_LEVEL,12);
         activity.startActivityForResult(intent, PICK_LOCATION_REQUEST_CODE);
     }
 
     public static LocationPickerResult parseActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == PICK_LOCATION_REQUEST_CODE) {
+        if (requestCode == PICK_LOCATION_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if(intent.hasExtra(LATITUDE) && intent.hasExtra(LONGITUDE)) {
                 String latitude = intent.getStringExtra(LATITUDE);
                 String longitude = intent.getStringExtra(LONGITUDE);

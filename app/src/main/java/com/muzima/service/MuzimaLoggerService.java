@@ -29,7 +29,7 @@ public class MuzimaLoggerService {
         if(isLoggingFeatureEnabled(muzimaApplication)) {
             MuzimaGPSLocationService muzimaLocationService = muzimaApplication.getMuzimaGPSLocationService();
 
-            HashMap<String, Object> locationDataHashMap = muzimaLocationService.getLastKnownGPS();
+            HashMap<String, Object> locationDataHashMap = muzimaLocationService.getLastKnownGPSLocationAndSettingDetails();
             if (locationDataHashMap.containsKey("gps_location")) {
                 MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation) locationDataHashMap.get("gps_location"));
                 try {

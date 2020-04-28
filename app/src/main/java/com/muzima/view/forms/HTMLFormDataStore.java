@@ -645,7 +645,7 @@ class HTMLFormDataStore {
                 if(muzimaLocationService.isLocationServicesSwitchedOn()){
                     HashMap<String, Object> locationDataHashMap;
                     try {
-                        locationDataHashMap = muzimaLocationService.getLastKnownGPS();
+                        locationDataHashMap = muzimaLocationService.getLastKnownGPSLocationAndSettingDetails();
                         if(locationDataHashMap.containsKey("gps_location")) {
                             if (jsonReturnType.equals("json-object")){
                                 gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonObject().toString();

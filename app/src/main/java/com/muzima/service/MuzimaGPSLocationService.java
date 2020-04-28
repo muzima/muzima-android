@@ -40,7 +40,7 @@ public class MuzimaGPSLocationService {
     private Context context;
 
     private GoogleApiClient googleApiClient;
-    final static int REQUEST_LOCATION = 199;
+    public final static int REQUEST_LOCATION = 199;
 
     @SuppressLint("MissingPermission")
     public MuzimaGPSLocationService(Context context) {
@@ -48,11 +48,11 @@ public class MuzimaGPSLocationService {
         locationManager = (LocationManager) this.context.getSystemService(Context.LOCATION_SERVICE);
 
         if(isGPSLocationPermissionsGranted()) {
-            requestLocationUpdates();
+            requestLocationUpdates(null);
         }
     }
 
-    public HashMap<String, Object> getLastKnownGPS() {
+    public HashMap<String, Object> getLastKnownGPSLocationAndSettingDetails() {
 
         HashMap<String, Object> locationResultMap = new HashMap<>();
         if(!isGPSLocationFeatureEnabled()){
@@ -82,6 +82,20 @@ public class MuzimaGPSLocationService {
         return locationResultMap;
     }
 
+    public MuzimaGPSLocation getLastKnownGPSLocation(){
+        if(isGPSLocationPermissionsGranted() && isLocationServicesSwitchedOn()){
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(location == null){
+                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            }
+
+            if(location != null){
+                return new MuzimaGPSLocation(location);
+            }
+        }
+        return null;
+    }
+
     public boolean isGPSLocationFeatureEnabled(){
         GPSFeaturePreferenceService gpsFeaturePreferenceService = ((MuzimaApplication) context.getApplicationContext()).getGPSFeaturePreferenceService();
         return gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled();
@@ -106,37 +120,47 @@ public class MuzimaGPSLocationService {
     }
 
     public void requestGPSLocationPermissions(Activity activity) {
-        GPSFeaturePreferenceService gpsFeaturePreferenceService = ((MuzimaApplication) context.getApplicationContext()).getGPSFeaturePreferenceService();
-        if(gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled()){
+        requestGPSLocationPermissions(activity,false);
+    }
+
+    public void requestGPSLocationPermissions(Activity activity, boolean ignoreGPSFeaturePreference) {
+        if(ignoreGPSFeaturePreference || ((MuzimaApplication) context.getApplicationContext())
+                .getGPSFeaturePreferenceService().isGPSDataCollectionSettingEnabled()){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 ActivityCompat.requestPermissions(activity,
-                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                     LOCATION_ACCESS_PERMISSION_REQUEST_CODE);
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        LOCATION_ACCESS_PERMISSION_REQUEST_CODE);
             }
         }
     }
 
     public void requestSwitchOnLocation(final Activity activity) {
-        if (googleApiClient == null && isGPSLocationPermissionsGranted()) {
-            googleApiClient = new GoogleApiClient.Builder(activity)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                    @Override
-                    public void onConnected(Bundle bundle) {
-                        requestLocationUpdates();
-                    }
+        requestSwitchOnLocation(activity, null);
+    }
 
-                    @Override
-                    public void onConnectionSuspended(int i) {
-                        googleApiClient.connect();
-                    }
-                })
-                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(ConnectionResult connectionResult) {
-                        Log.d(getClass().getSimpleName(),"Location error " + connectionResult.getErrorCode());
-                    }
-                }).build();
+    public void requestSwitchOnLocation(final Activity activity, final LocationListener locationListener) {
+        if(isGPSLocationPermissionsGranted()){
+            if (googleApiClient == null ) {
+                googleApiClient = new GoogleApiClient.Builder(activity)
+                        .addApi(LocationServices.API)
+                        .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                            @Override
+                            public void onConnected(Bundle bundle) {
+                                requestLocationUpdates(locationListener);
+                            }
+
+                            @Override
+                            public void onConnectionSuspended(int i) {
+                                googleApiClient.connect();
+                            }
+                        })
+                        .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                            @Override
+                            public void onConnectionFailed(ConnectionResult connectionResult) {
+                                Log.d(getClass().getSimpleName(), "Location error " + connectionResult.getErrorCode());
+                            }
+                        }).build();
+            }
             googleApiClient.connect();
 
             LocationRequest locationRequest = LocationRequest.create();
@@ -153,26 +177,28 @@ public class MuzimaGPSLocationService {
             result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
                 @Override
                 public void onResult(LocationSettingsResult result) {
-                final Status status = result.getStatus();
-                switch (status.getStatusCode()) {
-                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                        try {
-                            status.startResolutionForResult(activity, REQUEST_LOCATION);
-                        } catch (IntentSender.SendIntentException e) {
-                            Log.e(getClass().getSimpleName(),"Cannot load activity",e);
-                        }
-                        break;
-                }
+                    final Status status = result.getStatus();
+                    switch (status.getStatusCode()) {
+                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                            try {
+                                status.startResolutionForResult(activity, REQUEST_LOCATION);
+                            } catch (IntentSender.SendIntentException e) {
+                                Log.e(getClass().getSimpleName(),"Cannot load activity",e);
+                            }
+                            break;
+                    }
                 }
             });
         }
     }
 
-    private void requestLocationUpdates(){
+    public void requestLocationUpdates(LocationListener locationListener){
+        this.locationListener = locationListener;
         if(locationListener == null) {
             locationListener = new LocationListener() {
                 @Override
-                public void onLocationChanged(android.location.Location location) {}
+                public void onLocationChanged(android.location.Location location) {
+                }
 
                 @Override
                 public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -188,4 +214,6 @@ public class MuzimaGPSLocationService {
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
     }
+
+
 }
