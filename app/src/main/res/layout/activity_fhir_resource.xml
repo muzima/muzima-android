@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".view.FhirResourceActivity">
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Get patient with id: 5e2eb69b21c7a2122726889f from mUzima resource server, mapped from FHIR model to mUzima model via the FHIR app"
+        android:textColor="#ffffff"
+        android:layout_marginBottom="50dp"
+        android:id="@+id/infoTV"/>
+
+    <TextView
+        android:id="@+id/resourceTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:text=""
+        android:layout_marginBottom="50dp"/>
+
+    <Button
+        android:id="@+id/getResourceBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#3D3DFF"
+        android:textColor="#ffffff"
+        android:text="Get Patient"
+        android:padding="10dp"/>
+
+</LinearLayout>

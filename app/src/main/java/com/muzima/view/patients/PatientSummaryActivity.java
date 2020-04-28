@@ -54,6 +54,7 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.LocationUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
+import com.muzima.utils.fhir.FhirIntentIntegrator;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
@@ -214,9 +215,12 @@ public class PatientSummaryActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.client_summary, menu);
+        MenuItem FHIRMenuItem = menu.findItem(R.id.client_upload_to_fhir);
         MenuItem SHRCardMenuItem = menu.findItem(R.id.SHR_client_summary);
         MenuItem relationshipsMenuItem = menu.findItem(R.id.client_relationship);
         MenuItem geoMappingMenuItem = menu.findItem(R.id.client_geomapping);
+
+        FHIRMenuItem.setVisible(true);
 
         if(isSHREnabled) {
             if (isRegisteredOnSHR) {
@@ -256,6 +260,7 @@ public class PatientSummaryActivity extends BaseActivity {
                     writeSHRDataOptionDialog.show();
                 }
                 break;
+
             case R.id.client_relationship:
                 showRelationships();
                 return true;
@@ -263,6 +268,12 @@ public class PatientSummaryActivity extends BaseActivity {
             case R.id.client_geomapping:
                 navigateToClientLocationMap();
                 return true;
+
+            case R.id.client_upload_to_fhir:
+                final FhirIntentIntegrator integrator = new FhirIntentIntegrator(this);
+                integrator.initiateResourceWrite(patient);
+                return true;
+
             default:
                 break;
         }
@@ -380,6 +391,9 @@ public class PatientSummaryActivity extends BaseActivity {
 
                 writeSHRDataOptionDialog.dismiss();
                 writeSHRDataOptionDialog.cancel();
+                break;
+            case 70:
+                Toast.makeText(getApplicationContext(), "Patient uploaded", Toast.LENGTH_LONG).show();
                 break;
         }
     }
