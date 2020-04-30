@@ -28,12 +28,20 @@ public class GPSLocationPickerComponent {
     }
 
     @JavascriptInterface
-    public void getGPSLocationPicker(String sectionName, String latitudeField, String longitudeField){
+    public void getGPSLocationPicker(String sectionName, String latitudeField, String longitudeField, String zoomLevelStr){
         this.sectionName = sectionName;
         this.latitudeField = latitudeField;
         this.longitudeField = longitudeField;
+        int zoomLevel = Integer.valueOf(zoomLevelStr);
+
+        if(zoomLevel < 9 ){
+            zoomLevel = 9;
+        } else if(zoomLevel > 23){
+            zoomLevel = 23;
+        }
+
         Intent intent = new Intent(activity, MapLocationPickerActivity.class);
-        intent.putExtra(MapLocationPickerActivity.DEFAULT_ZOOM_LEVEL,12);
+        intent.putExtra(MapLocationPickerActivity.DEFAULT_ZOOM_LEVEL,zoomLevel);
         activity.startActivityForResult(intent, PICK_LOCATION_REQUEST_CODE);
     }
 

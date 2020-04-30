@@ -1511,10 +1511,15 @@ $(document).ready(function () {
 
     $('.gps-location-picker').click(function () {
         var $parent = $(this).closest('div[data-name]');
+        var zoomLevel =  $(this).attr('data-zoomlevel');
+        if (typeof zoomLevel === typeof undefined || zoomLevel === false) {
+            zoomLevel = 12;
+        }
         gpsLocationPickerComponent.getGPSLocationPicker(
             $parent.attr('data-name'),
             $parent.find("input.latitude").attr('name'),
-            $parent.find("input.longitude").attr('name')
+            $parent.find("input.longitude").attr('name'),
+            zoomLevel
         );
     });
 

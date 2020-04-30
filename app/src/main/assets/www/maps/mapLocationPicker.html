@@ -69,6 +69,8 @@
 <script>
 
     var map=null;
+    var defaultZoomLevel = 9;
+
     function initMap() {
         var lp;
 
@@ -76,7 +78,7 @@
             document.getElementById("loader").style.display="hidden";
             document.getElementById("map").style.display="block";
             currentLocation = JSON.parse(currentLocation);
-            var defaultZoomLevel = locationPickerInterface.getDefaultZoomLevel();
+            defaultZoomLevel = locationPickerInterface.getDefaultZoomLevel();
 
             if (currentLocation != null && currentLocation.latitude != undefined && currentLocation.longitude != undefined) {
                 lp = new locationPicker('map', {
@@ -128,7 +130,7 @@
                 document.updateCurrentLocationAndAccuracy(latitude,longitude,accuracy);
             }, 1000);
         } else {
-            var accuracyCircleRadius = 400; //this is the set minimum value
+            var accuracyCircleRadius = 4800/defaultZoomLevel; //this is the set minimum value
             if (accuracy > accuracyCircleRadius) {
                 accuracyCircleRadius = accuracy;
             }
@@ -143,15 +145,17 @@
                     center: {lat: latitude, lng: longitude},
                     radius: accuracyCircleRadius
                 });
+
+                var currentLocationCircleRadius = 2400/defaultZoomLevel;
                 currentLocationCircle = new google.maps.Circle({
                     strokeColor: '#FFFFFF',
                     strokeOpacity: 1,
                     strokeWeight: 2,
                     fillColor: '#12A5F4',
-                    fillOpacity: 1,
+                    fillOpacity: 0.65,
                     map: map,
                     center: {lat: latitude, lng: longitude},
-                    radius: 200
+                    radius: currentLocationCircleRadius
                 });
             } else {
                 currentLocationCircle.setCenter({lat: latitude, lng: longitude});
