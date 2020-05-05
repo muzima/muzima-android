@@ -69,7 +69,6 @@
 <script>
 
     var map=null;
-    var defaultZoomLevel = 9;
 
     function initMap() {
         var lp;
@@ -78,7 +77,7 @@
             document.getElementById("loader").style.display="hidden";
             document.getElementById("map").style.display="block";
             currentLocation = JSON.parse(currentLocation);
-            defaultZoomLevel = locationPickerInterface.getDefaultZoomLevel();
+            var defaultZoomLevel = locationPickerInterface.getDefaultZoomLevel();
 
             if (currentLocation != null && currentLocation.latitude != undefined && currentLocation.longitude != undefined) {
                 lp = new locationPicker('map', {
@@ -130,10 +129,18 @@
                 document.updateCurrentLocationAndAccuracy(latitude,longitude,accuracy);
             }, 1000);
         } else {
-            var accuracyCircleRadius = 4800/defaultZoomLevel; //this is the set minimum value
-            if (accuracy > accuracyCircleRadius) {
-                accuracyCircleRadius = accuracy;
+            var zoomLevel = map.getZoom();
+            var accuracyCircleRadius = accuracy;
+            var factor = Math.pow(20/zoomLevel, 20/zoomLevel)
+            var currentLocationCircleRadius = 200 * factor;
+
+            if(currentLocationCircleRadius < 10 * factor/2){
+                currentLocationCircleRadius = 10 * factor/2;
             }
+            if (accuracyCircleRadius <= currentLocationCircleRadius) {
+                accuracyCircleRadius = currentLocationCircleRadius + 10 * factor;
+            }
+
             if (accuracyCircle == null) {
                 accuracyCircle = new google.maps.Circle({
                     strokeColor: '#12A5F4',
@@ -146,19 +153,19 @@
                     radius: accuracyCircleRadius
                 });
 
-                var currentLocationCircleRadius = 2400/defaultZoomLevel;
                 currentLocationCircle = new google.maps.Circle({
                     strokeColor: '#FFFFFF',
                     strokeOpacity: 1,
-                    strokeWeight: 2,
+                    strokeWeight: 1,
                     fillColor: '#12A5F4',
-                    fillOpacity: 0.65,
+                    fillOpacity: 0.45,
                     map: map,
                     center: {lat: latitude, lng: longitude},
                     radius: currentLocationCircleRadius
                 });
             } else {
                 currentLocationCircle.setCenter({lat: latitude, lng: longitude});
+                currentLocationCircle.setRadius(currentLocationCircleRadius);
                 accuracyCircle.setCenter({lat: latitude, lng: longitude});
                 accuracyCircle.setRadius(accuracyCircleRadius);
             }
