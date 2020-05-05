@@ -28,6 +28,7 @@ import com.muzima.api.model.PersonName;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
 import com.muzima.api.model.User;
+import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
@@ -35,6 +36,7 @@ import com.muzima.controller.PersonController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.RelationshipJsonMapper;
 import com.muzima.utils.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -162,29 +164,54 @@ public class GenericRegistrationPatientJSONMapper {
         return patient;
     }
 
-    private void createRelationship(JSONObject jsonObject){
+    private void createRelationship(JSONObject jsonObject) throws JSONException{
         try {
-            String relationshipTypeUuid = (String)getFromJsonObject(jsonObject,"relationship.type");
+            String relationshipTypeUuid = (String)getFromJsonObject(jsonObject,"person.relationshipType");
             RelationshipType relationshipType = muzimaApplication.getRelationshipController().getRelationshipTypeByUuid(relationshipTypeUuid);
             String personBUuid = (String)getFromJsonObject(jsonObject,"personB.uuid");
-            Person personB = muzimaApplication.getPersonController().getPersonByUuid(personBUuid);
-            if (personB == null) {
-                personB = muzimaApplication.getPatientController().getPatientByUuid(personBUuid);
+            String personAUuid = (String)getFromJsonObject(jsonObject,"personA.uuid");
+
+            Person personA;
+            if(StringUtils.equals(personAUuid,patient.getUuid())){
+                personA = patient;
+            } else {
+                personA = muzimaApplication.getPersonController().getPersonByUuid(personAUuid);
+                if (personA == null) {
+                    personA = muzimaApplication.getPatientController().getPatientByUuid(personAUuid);
+                }
             }
 
-            if (relationshipType != null && personB != null) {
+            Person personB;
+            if(StringUtils.equals(personBUuid,patient.getUuid())){
+                personB = patient;
+            } else {
+                personB = muzimaApplication.getPersonController().getPersonByUuid(personBUuid);
+                if (personB == null) {
+                    personB = muzimaApplication.getPatientController().getPatientByUuid(personBUuid);
+                }
+            }
+
+            if (relationshipType != null && personA != null && personB != null && personA != personB) {
                 Relationship newRelationship = new Relationship(patient, personB, relationshipType, false);
                 newRelationship.setUuid(UUID.randomUUID().toString());
+
+                RelationshipJsonMapper relationshipJsonMapper = new RelationshipJsonMapper(newRelationship, patient,
+                        muzimaApplication.getPatientController(), muzimaApplication.getAuthenticatedUser());
+                muzimaApplication.getFormController().saveFormData(relationshipJsonMapper.createFormDataFromRelationship());
+
                 muzimaApplication.getRelationshipController().saveRelationship(newRelationship);
+            } else {
+                throw new JSONException("Could not create relationship");
             }
         } catch (RelationshipController.RetrieveRelationshipTypeException | JSONException |
                 RelationshipController.SaveRelationshipException | PersonController.PersonLoadException |
-                PatientController.PatientLoadException e) {
+                PatientController.PatientLoadException | FormController.FormDataSaveException e) {
             Log.e(getClass().getSimpleName(), "Could not create relationship",e);
+            throw new JSONException("Could not create relationship");
         }
     }
 
-    private void createRelationships(){
+    private void createRelationships() throws JSONException{
         if(personJSON != null && personJSON.has("person.relationships")) {
             Object relationshipObject = null;
             try {
@@ -193,11 +220,7 @@ public class GenericRegistrationPatientJSONMapper {
             if (relationshipObject instanceof JSONArray) {
                 JSONArray relationships = (JSONArray) relationshipObject;
                 for (int i = 0; i < relationships.length(); i++) {
-                    try {
-                        createRelationship(relationships.getJSONObject(i));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    createRelationship(relationships.getJSONObject(i));
                 }
             } else if (relationshipObject instanceof JSONObject) {
                 createRelationship((JSONObject) relationshipObject);

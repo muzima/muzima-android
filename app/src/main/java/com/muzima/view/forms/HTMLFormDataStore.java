@@ -132,7 +132,6 @@ class HTMLFormDataStore {
             }
 
             if (encounterDetailsValidityStatus) {
-
                 if (isRegistrationComplete(status)) {
                     Patient newPatient = formController.createNewPatient(application, formData);
                     formData.setPatientUuid(newPatient.getUuid());

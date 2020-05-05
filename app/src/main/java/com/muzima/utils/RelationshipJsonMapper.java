@@ -14,13 +14,17 @@ import android.util.Log;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
+import com.muzima.api.model.PersonAddress;
+import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.User;
 import com.muzima.controller.PatientController;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP;
@@ -76,6 +80,8 @@ public class RelationshipJsonMapper {
             personAJsonObject.put("sex", person.getGender());
             personAJsonObject.put("birth_date", DateUtils.getFormattedDateTime(person.getBirthdate()));
             personAJsonObject.put("birthdate_estimated", person.getBirthdateEstimated());
+            patientJsonObject.put("addresses", createAddressesJsonArray(person));
+            patientJsonObject.put("attributes", createAttributesJsonArray(person));
         }
 
         // Person B
@@ -91,6 +97,8 @@ public class RelationshipJsonMapper {
             personBJsonObject.put("sex", person.getGender());
             personBJsonObject.put("birth_date", DateUtils.getFormattedDateTime(person.getBirthdate()));
             personBJsonObject.put("birthdate_estimated", person.getBirthdateEstimated());
+            patientJsonObject.put("addresses", createAddressesJsonArray(person));
+            patientJsonObject.put("attributes", createAttributesJsonArray(person));
         }
 
         // Relationship Type
@@ -116,6 +124,51 @@ public class RelationshipJsonMapper {
         jsonMainObject.put("discriminator", discriminatorObject);
 
         return jsonMainObject.toString();
+    }
+
+    private JSONArray createAddressesJsonArray(Person person) throws JSONException {
+        JSONArray addressesJSONArray = new JSONArray();
+        if(!person.getAddresses().isEmpty()) {
+            List<PersonAddress> addresses = person.getAddresses();
+            for (PersonAddress address : addresses) {
+                JSONObject addressJSONObject = new JSONObject();
+                addressJSONObject.put("address1", address.getAddress1());
+                addressJSONObject.put("address2", address.getAddress2());
+                addressJSONObject.put("address3", address.getAddress3());
+                addressJSONObject.put("address4", address.getAddress4());
+                addressJSONObject.put("address5", address.getAddress5());
+                addressJSONObject.put("address6", address.getAddress6());
+                addressJSONObject.put("cityVillage", address.getCityVillage());
+                addressJSONObject.put("stateProvince", address.getStateProvince());
+                addressJSONObject.put("country", address.getCountry());
+                addressJSONObject.put("postalCode", address.getPostalCode());
+                addressJSONObject.put("countyDistrict", address.getCountyDistrict());
+                addressJSONObject.put("latitude", address.getLatitude());
+                addressJSONObject.put("longitude", address.getLongitude());
+                addressJSONObject.put("startDate", address.getStartDate());
+                addressJSONObject.put("endDate", address.getEndDate());
+                addressJSONObject.put("preferred", address.getPreferred());
+                addressJSONObject.put("uuid", address.getUuid());
+                addressesJSONArray.put(addressJSONObject);
+            }
+        }
+        return addressesJSONArray;
+    }
+
+    private JSONArray createAttributesJsonArray(Person person) throws JSONException {
+        JSONArray attributesJSONArray = new JSONArray();
+        if(!person.getAtributes().isEmpty()){
+            List<PersonAttribute> attributes = patient.getAtributes();
+
+            for(PersonAttribute attribute : attributes){
+                JSONObject attributeJSONObject = new JSONObject();
+                attributeJSONObject.put("attribute_type_uuid",attribute.getAttributeType().getUuid());
+                attributeJSONObject.put("attribute_type_name",attribute.getAttributeType().getName());
+                attributeJSONObject.put("attribute_value",attribute.getAttribute());
+                attributesJSONArray.put(attributeJSONObject);
+            }
+        }
+        return attributesJSONArray;
     }
 
     private boolean personIsNotPatient(String personUuid) {
