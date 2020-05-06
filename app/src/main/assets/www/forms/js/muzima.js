@@ -1354,28 +1354,33 @@ $(document).ready(function () {
     }
 
     //Start - Set up auto complete for the person element.
-    document.setupAutoCompleteForPerson = function(searchElementName, resultElementSelector,searchServer) {
-        var $parent = $(searchElementName).closest('.repeat');
-        $parent.find(searchElementName).autocomplete({
-            source: function(request, response){
-                var searchTerm = request.term;
-                var searchResults = htmlDataStore.searchPersons(searchTerm, searchServer);
-                searchResults = JSON.parse(searchResults);
-                var listOfPersons = [];
-                $.each(searchResults, function (key, person) {
-                    listOfPersons.push({"val": person.uuid, "label": person.name});
+    document.setupAutoCompleteForPerson = function($searchElementSelector, $resultElementSelector,searchServer) {
+        $searchElementSelector.focus(function () {
+            $searchElementSelector.autocomplete({
+                source: function (request, response) {
+                    var searchTerm = request.term;
+                    var searchResults = htmlDataStore.searchPersons(searchTerm, searchServer);
+                    searchResults = JSON.parse(searchResults);
+                    var listOfPersons = [];
+                    $.each(searchResults, function (key, person) {
+                        listOfPersons.push({"val": person.uuid, "label": person.name});
 
-                });
+                    });
 
-                response(listOfPersons);
+                    response(listOfPersons);
 
-            },
-            select: function(event, ui) {
-                $parent.find(searchElementName).val(ui.item.label);
-                $parent.find(resultElementSelector).val(ui.item.val);
-                $parent.find(resultElementSelector).trigger('change');
-                return false;
-            }
+                },
+                select: function (event, ui) {
+                    $searchElementSelector.val(ui.item.label);
+                    $resultElementSelector.val(ui.item.val);
+                    $resultElementSelector.trigger('change');
+                    return false;
+                }
+            });
+        });
+
+        $searchElementSelector.blur(function () {
+            $searchElementSelector.autocomplete("destroy");
         });
     }
     //End - Set up auto complete for the person element.
@@ -1512,6 +1517,13 @@ $(document).ready(function () {
     $('.gps-location-picker').click(function () {
         var $parent = $(this).closest('div[data-name]');
         var zoomLevel =  $(this).attr('data-zoomlevel');
+        var createDemographiPreferredcsUpdate = $(this).attr('data-create-demographics-update');
+
+        if(createDemographiPreferredcsUpdate == 'true' || createDemographiPreferredcsUpdate == true || createDemographiPreferredcsUpdate == 1){
+            createDemographiPreferredcsUpdate = true;
+        } else {
+            createDemographiPreferredcsUpdate = false;
+        }
         if (typeof zoomLevel === typeof undefined || zoomLevel === false) {
             zoomLevel = 12;
         }
@@ -1519,7 +1531,8 @@ $(document).ready(function () {
             $parent.attr('data-name'),
             $parent.find("input.latitude").attr('name'),
             $parent.find("input.longitude").attr('name'),
-            zoomLevel
+            zoomLevel,
+            createDemographiPreferredcsUpdate
         );
     });
 
@@ -1553,10 +1566,214 @@ $(document).ready(function () {
             $inputField.val(value);
             $inputField.trigger('change');
         });
+        console.log("Populating: "+JSON.stringify(jsonString));
     };
 
     /*End- Location picker Functionality*/
     document.launchEncounterMiniForm = function(patientUuid,formUuid) {
         encounterMiniFormCreatorComponent.launchEncounterMiniForm(patientUuid,formUuid);
     };
+
+
+    document.setupAutoCompleteForCountry = function(elementName) {
+        var dataDictionary = [
+            {"val": "Afghanistan", "label": "Afghanistan"},
+            {"val": "Albania", "label": "Albania"},
+            {"val": "Algeria", "label": "Algeria"},
+            {"val": "Andorra", "label": "Andorra"},
+            {"val": "Angola", "label": "Angola"},
+            {"val": "Antigua and Barbuda", "label": "Antigua and Barbuda"},
+            {"val": "Argentina", "label": "Argentina"},
+            {"val": "Armenia", "label": "Armenia"},
+            {"val": "Australia", "label": "Australia"},
+            {"val": "Austria", "label": "Austria"},
+            {"val": "Azerbaijan", "label": "Azerbaijan"},
+            {"val": "Bahamas", "label": "Bahamas"},
+            {"val": "Bahrain", "label": "Bahrain"},
+            {"val": "Bangladesh", "label": "Bangladesh"},
+            {"val": "Barbados", "label": "Barbados"},
+            {"val": "Belarus", "label": "Belarus"},
+            {"val": "Belgium", "label": "Belgium"},
+            {"val": "Belize", "label": "Belize"},
+            {"val": "Benin", "label": "Benin"},
+            {"val": "Bhutan", "label": "Bhutan"},
+            {"val": "Bolivia", "label": "Bolivia"},
+            {"val": "Bosnia and Herzegovina", "label": "Bosnia and Herzegovina"},
+            {"val": "Botswana", "label": "Botswana"},
+            {"val": "Brazil", "label": "Brazil"},
+            {"val": "Brunei", "label": "Brunei"},
+            {"val": "Bulgaria", "label": "Bulgaria"},
+            {"val": "Burkina Faso", "label": "Burkina Faso"},
+            {"val": "Burundi", "label": "Burundi"},
+            {"val": "Côte d'Ivoire", "label": "Côte d'Ivoire"},
+            {"val": "Cabo Verde", "label": "Cabo Verde"},
+            {"val": "Cambodia", "label": "Cambodia"},
+            {"val": "Cameroon", "label": "Cameroon"},
+            {"val": "Canada", "label": "Canada"},
+            {"val": "Central African Republic", "label": "Central African Republic"},
+            {"val": "Chad", "label": "Chad"},
+            {"val": "Chile", "label": "Chile"},
+            {"val": "China", "label": "China"},
+            {"val": "Colombia", "label": "Colombia"},
+            {"val": "Comoros", "label": "Comoros"},
+            {"val": "Congo (Congo-Brazzaville)", "label": "Congo (Congo-Brazzaville)"},
+            {"val": "Costa Rica", "label": "Costa Rica"},
+            {"val": "Croatia", "label": "Croatia"},
+            {"val": "Cuba", "label": "Cuba"},
+            {"val": "Cyprus", "label": "Cyprus"},
+            {"val": "Czechia (Czech Republic)", "label": "Czechia (Czech Republic)"},
+            {"val": "Democratic Republic of the Congo", "label": "Democratic Republic of the Congo"},
+            {"val": "Denmark", "label": "Denmark"},
+            {"val": "Djibouti", "label": "Djibouti"},
+            {"val": "Dominica", "label": "Dominica"},
+            {"val": "Dominican Republic", "label": "Dominican Republic"},
+            {"val": "Ecuador", "label": "Ecuador"},
+            {"val": "Egypt", "label": "Egypt"},
+            {"val": "El Salvador", "label": "El Salvador"},
+            {"val": "Equatorial Guinea", "label": "Equatorial Guinea"},
+            {"val": "Eritrea", "label": "Eritrea"},
+            {"val": "Estonia", "label": "Estonia"},
+            {"val": "Eswatini (fmr. Swaziland)", "label": "Eswatini (fmr. Swaziland)"},
+            {"val": "Ethiopia", "label": "Ethiopia"},
+            {"val": "Fiji", "label": "Fiji"},
+            {"val": "Finland", "label": "Finland"},
+            {"val": "France", "label": "France"},
+            {"val": "Gabon", "label": "Gabon"},
+            {"val": "Gambia", "label": "Gambia"},
+            {"val": "Georgia", "label": "Georgia"},
+            {"val": "Germany", "label": "Germany"},
+            {"val": "Ghana", "label": "Ghana"},
+            {"val": "Greece", "label": "Greece"},
+            {"val": "Grenada", "label": "Grenada"},
+            {"val": "Guatemala", "label": "Guatemala"},
+            {"val": "Guinea", "label": "Guinea"},
+            {"val": "Guinea-Bissau", "label": "Guinea-Bissau"},
+            {"val": "Guyana", "label": "Guyana"},
+            {"val": "Haiti", "label": "Haiti"},
+            {"val": "Holy See", "label": "Holy See"},
+            {"val": "Honduras", "label": "Honduras"},
+            {"val": "Hungary", "label": "Hungary"},
+            {"val": "Iceland", "label": "Iceland"},
+            {"val": "India", "label": "India"},
+            {"val": "Indonesia", "label": "Indonesia"},
+            {"val": "Iran", "label": "Iran"},
+            {"val": "Iraq", "label": "Iraq"},
+            {"val": "Ireland", "label": "Ireland"},
+            {"val": "Israel", "label": "Israel"},
+            {"val": "Italy", "label": "Italy"},
+            {"val": "Jamaica", "label": "Jamaica"},
+            {"val": "Japan", "label": "Japan"},
+            {"val": "Jordan", "label": "Jordan"},
+            {"val": "Kazakhstan", "label": "Kazakhstan"},
+            {"val": "Kenya", "label": "Kenya"},
+            {"val": "Kiribati", "label": "Kiribati"},
+            {"val": "Kuwait", "label": "Kuwait"},
+            {"val": "Kyrgyzstan", "label": "Kyrgyzstan"},
+            {"val": "Laos", "label": "Laos"},
+            {"val": "Latvia", "label": "Latvia"},
+            {"val": "Lebanon", "label": "Lebanon"},
+            {"val": "Lesotho", "label": "Lesotho"},
+            {"val": "Liberia", "label": "Liberia"},
+            {"val": "Libya", "label": "Libya"},
+            {"val": "Liechtenstein", "label": "Liechtenstein"},
+            {"val": "Lithuania", "label": "Lithuania"},
+            {"val": "Luxembourg", "label": "Luxembourg"},
+            {"val": "Madagascar", "label": "Madagascar"},
+            {"val": "Malawi", "label": "Malawi"},
+            {"val": "Malaysia", "label": "Malaysia"},
+            {"val": "Maldives", "label": "Maldives"},
+            {"val": "Mali", "label": "Mali"},
+            {"val": "Malta", "label": "Malta"},
+            {"val": "Marshall Islands", "label": "Marshall Islands"},
+            {"val": "Mauritania", "label": "Mauritania"},
+            {"val": "Mauritius", "label": "Mauritius"},
+            {"val": "Mexico", "label": "Mexico"},
+            {"val": "Micronesia", "label": "Micronesia"},
+            {"val": "Moldova", "label": "Moldova"},
+            {"val": "Monaco", "label": "Monaco"},
+            {"val": "Mongolia", "label": "Mongolia"},
+            {"val": "Montenegro", "label": "Montenegro"},
+            {"val": "Morocco", "label": "Morocco"},
+            {"val": "Mozambique", "label": "Mozambique"},
+            {"val": "Myanmar (formerly Burma)", "label": "Myanmar (formerly Burma)"},
+            {"val": "Namibia", "label": "Namibia"},
+            {"val": "Nauru", "label": "Nauru"},
+            {"val": "Nepal", "label": "Nepal"},
+            {"val": "Netherlands", "label": "Netherlands"},
+            {"val": "New Zealand", "label": "New Zealand"},
+            {"val": "Nicaragua", "label": "Nicaragua"},
+            {"val": "Niger", "label": "Niger"},
+            {"val": "Nigeria", "label": "Nigeria"},
+            {"val": "North Korea", "label": "North Korea"},
+            {"val": "North Macedonia", "label": "North Macedonia"},
+            {"val": "Norway", "label": "Norway"},
+            {"val": "Oman", "label": "Oman"},
+            {"val": "Pakistan", "label": "Pakistan"},
+            {"val": "Palau", "label": "Palau"},
+            {"val": "Palestine State", "label": "Palestine State"},
+            {"val": "Panama", "label": "Panama"},
+            {"val": "Papua New Guinea", "label": "Papua New Guinea"},
+            {"val": "Paraguay", "label": "Paraguay"},
+            {"val": "Peru", "label": "Peru"},
+            {"val": "Philippines", "label": "Philippines"},
+            {"val": "Poland", "label": "Poland"},
+            {"val": "Portugal", "label": "Portugal"},
+            {"val": "Qatar", "label": "Qatar"},
+            {"val": "Romania", "label": "Romania"},
+            {"val": "Russia", "label": "Russia"},
+            {"val": "Rwanda", "label": "Rwanda"},
+            {"val": "Saint Kitts and Nevis", "label": "Saint Kitts and Nevis"},
+            {"val": "Saint Lucia", "label": "Saint Lucia"},
+            {"val": "Saint Vincent and the Grenadines", "label": "Saint Vincent and the Grenadines"},
+            {"val": "Samoa", "label": "Samoa"},
+            {"val": "San Marino", "label": "San Marino"},
+            {"val": "Sao Tome and Principe", "label": "Sao Tome and Principe"},
+            {"val": "Saudi Arabia", "label": "Saudi Arabia"},
+            {"val": "Senegal", "label": "Senegal"},
+            {"val": "Serbia", "label": "Serbia"},
+            {"val": "Seychelles", "label": "Seychelles"},
+            {"val": "Sierra Leone", "label": "Sierra Leone"},
+            {"val": "Singapore", "label": "Singapore"},
+            {"val": "Slovakia", "label": "Slovakia"},
+            {"val": "Slovenia", "label": "Slovenia"},
+            {"val": "Solomon Islands", "label": "Solomon Islands"},
+            {"val": "Somalia", "label": "Somalia"},
+            {"val": "South Africa", "label": "South Africa"},
+            {"val": "South Korea", "label": "South Korea"},
+            {"val": "South Sudan", "label": "South Sudan"},
+            {"val": "Spain", "label": "Spain"},
+            {"val": "Sri Lanka", "label": "Sri Lanka"},
+            {"val": "Sudan", "label": "Sudan"},
+            {"val": "Suriname", "label": "Suriname"},
+            {"val": "Sweden", "label": "Sweden"},
+            {"val": "Switzerland", "label": "Switzerland"},
+            {"val": "Syria", "label": "Syria"},
+            {"val": "Tajikistan", "label": "Tajikistan"},
+            {"val": "Tanzania", "label": "Tanzania"},
+            {"val": "Thailand", "label": "Thailand"},
+            {"val": "Timor-Leste", "label": "Timor-Leste"},
+            {"val": "Togo", "label": "Togo"},
+            {"val": "Tonga", "label": "Tonga"},
+            {"val": "Trinidad and Tobago", "label": "Trinidad and Tobago"},
+            {"val": "Tunisia", "label": "Tunisia"},
+            {"val": "Turkey", "label": "Turkey"},
+            {"val": "Turkmenistan", "label": "Turkmenistan"},
+            {"val": "Tuvalu", "label": "Tuvalu"},
+            {"val": "Uganda", "label": "Uganda"},
+            {"val": "Ukraine", "label": "Ukraine"},
+            {"val": "United Arab Emirates", "label": "United Arab Emirates"},
+            {"val": "United Kingdom", "label": "United Kingdom"},
+            {"val": "United States of America", "label": "United States of America"},
+            {"val": "Uruguay", "label": "Uruguay"},
+            {"val": "Uzbekistan", "label": "Uzbekistan"},
+            {"val": "Vanuatu", "label": "Vanuatu"},
+            {"val": "Venezuela", "label": "Venezuela"},
+            {"val": "Vietnam", "label": "Vietnam"},
+            {"val": "Yemen", "label": "Yemen"},
+            {"val": "Zambia", "label": "Zambia"},
+            {"val": "Zimbabwe", "label": "Zimbabwe"}
+        ];
+        document.setupAutoComplete(elementName, dataDictionary);
+    };
+
 });
