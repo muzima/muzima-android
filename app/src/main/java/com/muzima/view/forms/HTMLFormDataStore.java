@@ -40,6 +40,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.RelationshipController;
+import com.muzima.domain.Credentials;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
@@ -47,6 +48,7 @@ import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 
 import net.minidev.json.JSONValue;
@@ -235,6 +237,26 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
+    public String getPatientDetailsFromServerByUuid(String uuid){
+        JSONObject patientJsonObject = new JSONObject();
+        try {
+            Patient patient = patientController.downloadPatientByUUID(uuid);
+            if (patient != null) {
+                patientController.savePatient(patient);
+                patientJsonObject.put("uuid", patient.getUuid());
+                patientJsonObject.put("name", patient.getDisplayName());
+                patientJsonObject.put("birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
+                patientJsonObject.put("sex", patient.getGender());
+                patientJsonObject.put("attributes", patient.getAtributes());
+                patientJsonObject.put("addresses", patient.getAddresses());
+            }
+        } catch (PatientController.PatientDownloadException | JSONException | PatientController.PatientSaveException e) {
+            Log.e(getClass().getSimpleName(), "Could not download patient record",e);
+        }
+        return patientJsonObject.toString();
+    }
+
+    @JavascriptInterface
     public String getPersonDetailsByUuid(String uuid){
         JSONObject personJsonObject = new JSONObject();
 
@@ -259,7 +281,16 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getPersonsFromDevice(String searchTerm) {
+    public String searchPersons(String searchTerm, boolean searchServer) {
+        if(searchServer){
+            return searchPatientOnServer(searchTerm);
+        } else {
+            return searchPersonsLocally(searchTerm);
+        }
+    }
+
+    @JavascriptInterface
+    public String searchPersonsLocally(String searchTerm){
         JSONArray personsJsonArray = new JSONArray();
         try {
             List<Person> personsOnDevice = personController.searchPersonLocally(searchTerm);
@@ -284,6 +315,32 @@ class HTMLFormDataStore {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading persons", e);
         }
         return personsJsonArray.toString();
+    }
+
+    @JavascriptInterface
+    public String searchPatientOnServer(String searchTerm){
+        JSONArray patientsJsonArray = new JSONArray();
+
+        if(searchTerm != null && searchTerm.length() >=3) {
+            Credentials credentials = new Credentials(formWebViewActivity);
+            Constants.SERVER_CONNECTIVITY_STATUS serverStatus = NetworkUtils.getServerStatus(formWebViewActivity, credentials.getServerUrl());
+
+            List<Patient> patientList = new ArrayList<>();
+            if (serverStatus == Constants.SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE) {
+                patientList = patientController.searchPatientOnServer(searchTerm);
+            }
+            for (Patient patient : patientList) {
+                try {
+                    JSONObject patientJsonObject = new JSONObject();
+                    patientJsonObject.put("uuid", patient.getUuid());
+                    patientJsonObject.put("name", patient.getDisplayName());
+                    patientsJsonArray.put(patientJsonObject);
+                } catch (JSONException e) {
+                    Log.e(getClass().getSimpleName(), "Could not add person object into persons array", e);
+                }
+            }
+        }
+        return patientsJsonArray.toString();
     }
 
     @JavascriptInterface

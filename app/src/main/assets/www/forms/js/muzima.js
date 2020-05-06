@@ -1354,12 +1354,12 @@ $(document).ready(function () {
     }
 
     //Start - Set up auto complete for the person element.
-    document.setupAutoCompleteForPerson = function(searchElementName, resultElementSelector) {
+    document.setupAutoCompleteForPerson = function(searchElementName, resultElementSelector,searchServer) {
         var $parent = $(searchElementName).closest('.repeat');
         $parent.find(searchElementName).autocomplete({
             source: function(request, response){
                 var searchTerm = request.term;
-                var searchResults = htmlDataStore.getPersonsFromDevice(searchTerm);
+                var searchResults = htmlDataStore.searchPersons(searchTerm, searchServer);
                 searchResults = JSON.parse(searchResults);
                 var listOfPersons = [];
                 $.each(searchResults, function (key, person) {
