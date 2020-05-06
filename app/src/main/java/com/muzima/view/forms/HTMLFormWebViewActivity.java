@@ -31,6 +31,7 @@ import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Form;
@@ -43,6 +44,7 @@ import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.Constants;
+import com.muzima.utils.GeolocationJsonMapper;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
@@ -406,12 +408,27 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             sectionName = gpsLocationPickerComponent.getSectionName();
             gpsLocationPickerResultMap.put(gpsLocationPickerComponent.getLatitudeField(), locationPickerResult.getLatitude());
             gpsLocationPickerResultMap.put(gpsLocationPickerComponent.getLongitudeField(), locationPickerResult.getLongitude());
+            if(gpsLocationPickerComponent.isCreateDemographicsUpdatePreferred()){
+                createLocationUpdateFormData();
+            }
         }
 
-         CreateRelationshipPersonResult relationshipPersonResult = RelationshipComponent.parseActivityResult(requestCode, resultCode, intent);
+        CreateRelationshipPersonResult relationshipPersonResult = RelationshipComponent.parseActivityResult(requestCode, resultCode, intent);
         if (relationshipPersonResult != null) {
             sectionName = relationshipComponent.getSectionName();
             relationshipPersonResultMap.put(relationshipComponent.getPersonUuidField(), relationshipPersonResult.getPersonUuid());
+        }
+    }
+
+    private void createLocationUpdateFormData(){
+        try {
+            new GeolocationJsonMapper(patient, (MuzimaApplication) getApplicationContext()).createAndSaveLocationUpdateFormData();
+        } catch (FormController.FormDataSaveException e) {
+            Log.e(getClass().getSimpleName(), "Could not create location Update formData",e);
+            Toast.makeText(this, R.string.error_geolocation_update_failure,Toast.LENGTH_LONG).show();
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Could not create location Update formData",e);
+            Toast.makeText(this, R.string.error_geolocation_update_failure,Toast.LENGTH_LONG).show();
         }
     }
 

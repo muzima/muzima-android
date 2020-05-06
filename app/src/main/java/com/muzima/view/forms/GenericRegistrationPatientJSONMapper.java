@@ -153,6 +153,7 @@ public class GenericRegistrationPatientJSONMapper {
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "Could not populate patient registration data to JSON", e);
         }
+        System.out.println(prepopulateJSON.toString());
         return prepopulateJSON.toString();
     }
 

@@ -31,13 +31,15 @@ import com.muzima.utils.GeolocationJsonMapper;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.maps.MapLocationPickerActivity;
+import com.muzima.view.maps.GPSLocationPickerActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
-import static com.muzima.view.maps.MapLocationPickerActivity.LATITUDE;
-import static com.muzima.view.maps.MapLocationPickerActivity.LONGITUDE;
+import static com.muzima.view.maps.GPSLocationPickerActivity.LATITUDE;
+import static com.muzima.view.maps.GPSLocationPickerActivity.LONGITUDE;
 import static java.text.MessageFormat.format;
 
 public class PatientLocationMapActivity extends BroadcastListenerActivity{
@@ -191,7 +193,7 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.general_ok),
             new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(PatientLocationMapActivity.this, MapLocationPickerActivity.class);
+                    Intent intent = new Intent(PatientLocationMapActivity.this, GPSLocationPickerActivity.class);
                     startActivityForResult(intent, PICK_LOCATION_REQUEST_CODE);
                 }
             });
@@ -212,7 +214,7 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.general_ok),
             new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(PatientLocationMapActivity.this, MapLocationPickerActivity.class);
+                    Intent intent = new Intent(PatientLocationMapActivity.this, GPSLocationPickerActivity.class);
                     if(patientHomeLocationExists()){
                         intent.putExtra(LATITUDE, patient.getPreferredAddress().getLatitude());
                         intent.putExtra(LONGITUDE, patient.getPreferredAddress().getLongitude());
@@ -234,7 +236,7 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode ==PICK_LOCATION_REQUEST_CODE) {
             if(resultCode == RESULT_OK) {
-                if(data.hasExtra(MapLocationPickerActivity.LATITUDE) && data.hasExtra(LONGITUDE)) {
+                if(data.hasExtra(GPSLocationPickerActivity.LATITUDE) && data.hasExtra(LONGITUDE)) {
 
                     try {
                         String latitude = data.getStringExtra(LATITUDE);
@@ -243,9 +245,14 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
                         PersonAddress preferredAddress = patient.getPreferredAddress();
 
                         if (preferredAddress == null) {
-                            preferredAddress = new PersonAddress();
+                            List<PersonAddress> addresses = patient.getAddresses();
+                            if(addresses.size() == 1){
+                                preferredAddress = addresses.get(0);
+                            } else {
+                                preferredAddress = new PersonAddress();
+                                patient.getAddresses().add(preferredAddress);
+                            }
                             preferredAddress.setPreferred(true);
-                            patient.getAddresses().add(preferredAddress);
                         }
 
                         preferredAddress.setLatitude(latitude);

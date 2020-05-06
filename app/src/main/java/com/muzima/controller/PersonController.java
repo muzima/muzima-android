@@ -67,7 +67,6 @@ public class PersonController {
             JSONObject personJSON = responseJSON.getJSONObject("patient");
 
             Person person = new Person();
-
             person.setUuid(personUuid);
             person.setGender(personJSON.getString("patient.sex"));
             List<PersonName> names = new ArrayList<>();
@@ -75,9 +74,7 @@ public class PersonController {
             person.setNames(names);
             person.setBirthdate(getBirthDate(personJSON));
             person.setBirthdateEstimated(personJSON.getBoolean("patient.birthdate_estimated"));
-
             return personService.savePerson(person);
-
         } catch (Exception e) {
             Log.e("PersonController", e.getMessage(), e);
         }

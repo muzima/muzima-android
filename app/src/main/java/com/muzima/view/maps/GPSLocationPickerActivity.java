@@ -35,7 +35,7 @@ import static com.muzima.service.MuzimaGPSLocationService.REQUEST_LOCATION;
 import static com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_ACCESS_PERMISSION_REQUEST_CODE;
 import static java.text.MessageFormat.format;
 
-public class MapLocationPickerActivity extends BroadcastListenerActivity {
+public class GPSLocationPickerActivity extends BroadcastListenerActivity {
     public static String LATITUDE = "Latitude";
     public static String LONGITUDE = "Longitude";
     public static String DEFAULT_ZOOM_LEVEL = "DefaultZoomLevel";

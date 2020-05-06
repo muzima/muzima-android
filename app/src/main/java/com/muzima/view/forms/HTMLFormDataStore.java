@@ -257,7 +257,7 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getPersonDetailsByUuid(String uuid){
+    public String getPersonDetailsFromDeviceByUuid(String uuid){
         JSONObject personJsonObject = new JSONObject();
 
         try {
