@@ -153,7 +153,6 @@ public class GenericRegistrationPatientJSONMapper {
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "Could not populate patient registration data to JSON", e);
         }
-        System.out.println(prepopulateJSON.toString());
         return prepopulateJSON.toString();
     }
 
@@ -215,8 +214,8 @@ public class GenericRegistrationPatientJSONMapper {
     private void createRelationships() throws JSONException{
         if(personJSON != null && personJSON.has("person.relationships")) {
             Object relationshipObject = null;
-            try {
-                relationshipObject = personJSON.getJSONObject("person.relationships");
+
+                relationshipObject = personJSON.get("person.relationships");
 
             if (relationshipObject instanceof JSONArray) {
                 JSONArray relationships = (JSONArray) relationshipObject;
@@ -225,9 +224,6 @@ public class GenericRegistrationPatientJSONMapper {
                 }
             } else if (relationshipObject instanceof JSONObject) {
                 createRelationship((JSONObject) relationshipObject);
-            }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
         }
     }

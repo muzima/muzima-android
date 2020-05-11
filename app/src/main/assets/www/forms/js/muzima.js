@@ -537,9 +537,11 @@ $(document).ready(function () {
     var phoneNumberValidationFailureMessage = "";
     $.validator.addMethod("phoneNumber", function (value, element) {
             phoneNumberValidationFailureMessage = htmlDataStore.getStringResource("hint_phone_number_validation_failure");
-            if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
-            var inputLength = value.length;
-            return inputLength >= 8 && inputLength <= 12;
+            if ($.fn.isNotRequiredAndEmpty(value, element)){
+                return true;
+            }
+            var validPhoneNumberRegex = /^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$/
+            return validPhoneNumberRegex.test(value);
         }, phoneNumberValidationFailureMessage
     );
 
@@ -1354,7 +1356,7 @@ $(document).ready(function () {
     }
 
     //Start - Set up auto complete for the person element.
-    document.setupAutoCompleteForPerson = function($searchElementSelector, $resultElementSelector,searchServer) {
+    document.setupAutoCompleteForPerson = function($searchElementSelector, $resultElementSelector, $noResultsElement, searchServer) {
         $searchElementSelector.focus(function () {
             $searchElementSelector.autocomplete({
                 source: function (request, response) {
@@ -1364,8 +1366,11 @@ $(document).ready(function () {
                     var listOfPersons = [];
                     $.each(searchResults, function (key, person) {
                         listOfPersons.push({"val": person.uuid, "label": person.name});
-
                     });
+                    if(!searchServer || searchTerm.length >=3) {
+                        $noResultsElement.val(searchResults.length);
+                        $noResultsElement.trigger('change');
+                    }
 
                     response(listOfPersons);
 

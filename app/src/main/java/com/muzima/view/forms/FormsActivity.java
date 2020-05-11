@@ -252,7 +252,7 @@ public class FormsActivity extends FormsActivityBase {
         return new FormsPagerAdapter(getApplicationContext(), getSupportFragmentManager());
     }
 
-    private void hideProgressbar() {
+    public void hideProgressbar() {
         menubarLoadButton.setActionView(null);
     }
 

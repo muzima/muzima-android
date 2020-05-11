@@ -83,7 +83,8 @@
                 lp = new locationPicker('map', {
                     lat: currentLocation.latitude, lng: currentLocation.longitude
                 }, {
-                    zoom: defaultZoomLevel
+                    zoom: defaultZoomLevel,
+                    streetViewControl:false
                 });
             }
 
@@ -94,6 +95,8 @@
                     locationPickerInterface.updateSelectedLocation(location.lat, location.lng);
                 }
             });
+            map.streetViewControl= false;
+            map.disableDefaultUI=true;
         }
 
         function getCurrentLocationAndLoadLocationPicker () {

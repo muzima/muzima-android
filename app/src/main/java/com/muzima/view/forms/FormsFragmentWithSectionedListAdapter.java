@@ -22,9 +22,11 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.R;
+import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.adapters.forms.SectionedFormsAdapter;
 import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
+import com.muzima.model.FormWithData;
 import com.muzima.utils.ThemeUtils;
 
 import java.util.ArrayList;
@@ -111,6 +113,8 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
             endActionMode();
             reloadData();
             ((SectionedFormsAdapter) listAdapter).clearSelectedFormsUuid();
+            listAdapter.notifyDataSetChanged();
+            unselectAllItems();
             Toast.makeText(getActivity(), R.string.info_form_delete_success, Toast.LENGTH_SHORT).show();
         }
         private void onPartialCompleteOfFormDelete(Collection<List<FormData>> remnantFormData){

@@ -918,7 +918,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private void executeDownloadPatientInBackgroundTask() {
         BackgroundPatientDownloadTask patientDownloadTask = new BackgroundPatientDownloadTask();
         patientDownloadTask.execute();
-
     }
 
     private void executePatientRegistrationBackgroundTask(){
