@@ -11,6 +11,8 @@
 package com.muzima.service;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -510,7 +512,7 @@ public class MuzimaSyncService {
         try {
             long startDownloadCohortData = System.currentTimeMillis();
 
-            List<CohortData> cohortDataList = cohortController.downloadCohortData(cohortUuids);
+            List<CohortData> cohortDataList = cohortController.downloadCohortData(cohortUuids, getDefaultLocation());
 
             long endDownloadCohortData = System.currentTimeMillis();
             Log.i(getClass().getSimpleName(), "Cohort data download successful with " + cohortDataList.size() + " cohorts");
@@ -974,9 +976,9 @@ public class MuzimaSyncService {
         List<String> cohortPrefixes = cohortPrefixPreferenceService.getCohortPrefixes();
         List<Cohort> cohorts;
         if (cohortPrefixes.isEmpty()) {
-            cohorts = cohortController.downloadAllCohorts();
+            cohorts = cohortController.downloadAllCohorts(getDefaultLocation());
         } else {
-            cohorts = cohortController.downloadCohortsByPrefix(cohortPrefixes);
+            cohorts = cohortController.downloadCohortsByPrefix(cohortPrefixes,getDefaultLocation());
         }
         return cohorts;
     }
@@ -1273,5 +1275,16 @@ public class MuzimaSyncService {
             result[0] = SyncStatusConstants.LOAD_ERROR;
         }
         return result;
+    }
+
+    public String getDefaultLocation(){
+        android.content.Context context = muzimaApplication.getApplicationContext();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String setDefaultLocation = preferences.getString("defaultEncounterLocation", null);
+        if(setDefaultLocation==null)
+        {
+            setDefaultLocation = null;
+        }
+        return setDefaultLocation;
     }
 }

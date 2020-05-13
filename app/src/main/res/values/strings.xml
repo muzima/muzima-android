@@ -851,4 +851,5 @@
     <string name="title_provider_reports">Provider Reports</string>
     <string name="hint_location_addresses_not_set">Location address has not been set for all available clients</string>
     <string name="general_get_directions">Get directions</string>
+    <string name="select_default_encounter_location">Choose your default encounter location</string>
 </resources>
