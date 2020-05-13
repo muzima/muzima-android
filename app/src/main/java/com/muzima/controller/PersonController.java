@@ -38,7 +38,8 @@ public class PersonController {
 
     public Person getPersonByUuid(String uuid) throws PersonLoadException {
         try {
-            return personService.getPersonByUuid(uuid);
+            Person person =  personService.getPersonByUuid(uuid);
+        return person;
         } catch (IOException e) {
             throw new PersonLoadException(e);
         }
@@ -59,53 +60,6 @@ public class PersonController {
             Log.e(getClass().getSimpleName(), "Error while saving the person : " + person.getUuid(), e);
             throw new PersonSaveException(e);
         }
-    }
-
-    public Person createNewPerson(MuzimaApplication muzimaApplication, String jsonPayload, String personUuid) {
-        try {
-            JSONObject responseJSON = new JSONObject(jsonPayload);
-            JSONObject personJSON = responseJSON.getJSONObject("patient");
-
-            Person person = new Person();
-            person.setUuid(personUuid);
-            person.setGender(personJSON.getString("patient.sex"));
-            List<PersonName> names = new ArrayList<>();
-            names.add(getPersonName(personJSON));
-            person.setNames(names);
-            person.setBirthdate(getBirthDate(personJSON));
-            person.setBirthdateEstimated(personJSON.getBoolean("patient.birthdate_estimated"));
-            return personService.savePerson(person);
-        } catch (Exception e) {
-            Log.e("PersonController", e.getMessage(), e);
-        }
-        return null;
-    }
-
-    private PersonName getPersonName(JSONObject jsonObject) throws JSONException {
-        PersonName personName = new PersonName();
-        personName.setFamilyName(jsonObject.getString("patient.family_name"));
-        personName.setGivenName(jsonObject.getString("patient.given_name"));
-
-        String middleNameJSONString = "patient.middle_name";
-        String middleName = "";
-        if (jsonObject.has(middleNameJSONString))
-            middleName = jsonObject.getString(middleNameJSONString);
-        personName.setMiddleName(middleName);
-
-        return personName;
-    }
-
-
-    private Date getBirthDate(JSONObject jsonObject) throws JSONException {
-        String birthDateAsString = jsonObject.getString("patient.birth_date");
-        Date birthDate = null;
-        try {
-            if (birthDateAsString != null)
-                birthDate = parse(birthDateAsString);
-        } catch (java.text.ParseException e) {
-            Log.e(getClass().getSimpleName(), "Could not parse birth_date", e);
-        }
-        return birthDate;
     }
 
     /********************************************************************************************************

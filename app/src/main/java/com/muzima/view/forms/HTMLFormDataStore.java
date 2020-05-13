@@ -49,6 +49,7 @@ import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.RelationshipJsonMapper;
 import com.muzima.utils.StringUtils;
 
 import net.minidev.json.JSONValue;
@@ -820,9 +821,12 @@ class HTMLFormDataStore {
     @JavascriptInterface
     public void createPersonAndDiscardHTML(String jsonPayload) {
         try {
-            personController.createNewPerson(application, jsonPayload, formData.getPatientUuid());
+            RelationshipJsonMapper mapper = new RelationshipJsonMapper((MuzimaApplication) formWebViewActivity.getApplicationContext());
+            Person person = mapper.createNewPerson(jsonPayload, formData.getPatientUuid());
+            personController.savePerson(person);
             formWebViewActivity.finish();
-        } catch (Exception e) {
+        } catch (Exception | PersonController.PersonSaveException e) {
+            Toast.makeText(formWebViewActivity, R.string.info_person_creation_failure, Toast.LENGTH_LONG).show();
             Log.e(getClass().getSimpleName(), "Exception occurred while parsing object", e);
         }
 

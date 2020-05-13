@@ -50,6 +50,13 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.muzima.utils.DateUtils.parse;
+import static com.muzima.utils.PersonRegistrationUtils.createBirthDate;
+import static com.muzima.utils.PersonRegistrationUtils.createBirthDateEstimated;
+import static com.muzima.utils.PersonRegistrationUtils.createPersonAddresses;
+import static com.muzima.utils.PersonRegistrationUtils.createPersonAttribute;
+import static com.muzima.utils.PersonRegistrationUtils.createPersonAddress;
+import static com.muzima.utils.PersonRegistrationUtils.createPersonAttributes;
+import static com.muzima.utils.PersonRegistrationUtils.createPersonName;
 
 public class GenericRegistrationPatientJSONMapper {
 
@@ -192,12 +199,11 @@ public class GenericRegistrationPatientJSONMapper {
             }
 
             if (relationshipType != null && personA != null && personB != null && personA != personB) {
-                Relationship newRelationship = new Relationship(patient, personB, relationshipType, false);
+                Relationship newRelationship = new Relationship(personA, personB, relationshipType, false);
                 newRelationship.setUuid(UUID.randomUUID().toString());
 
-                RelationshipJsonMapper relationshipJsonMapper = new RelationshipJsonMapper(newRelationship, patient,
-                        muzimaApplication.getPatientController(), muzimaApplication.getAuthenticatedUser());
-                muzimaApplication.getFormController().saveFormData(relationshipJsonMapper.createFormDataFromRelationship());
+                RelationshipJsonMapper relationshipJsonMapper = new RelationshipJsonMapper(muzimaApplication);
+                muzimaApplication.getFormController().saveFormData(relationshipJsonMapper.createFormDataFromRelationship(patient, newRelationship));
 
                 muzimaApplication.getRelationshipController().saveRelationship(newRelationship);
             } else {
@@ -261,7 +267,7 @@ public class GenericRegistrationPatientJSONMapper {
 
     private void setPatientNames() throws JSONException {
         List<PersonName> names = new ArrayList<>();
-        names.add(getPersonName());
+        names.add(createPersonName(patientJSON));
         patient.setNames(names);
     }
 
@@ -271,8 +277,8 @@ public class GenericRegistrationPatientJSONMapper {
     }
 
     private void setPatientBirthDate() throws JSONException {
-        Date date = getBirthDate();
-        patient.setBirthdate(date);
+        patient.setBirthdate(createBirthDate(patientJSON));
+        patient.setBirthdateEstimated(createBirthDateEstimated(patientJSON));
     }
 
     private List<PatientIdentifier> getPatientIdentifiers() throws JSONException {
@@ -428,179 +434,17 @@ public class GenericRegistrationPatientJSONMapper {
         return patientIdentifier;
     }
 
-    private Date getBirthDate() throws JSONException {
-        String birthDateAsString = patientJSON.getString("patient.birth_date");
-        Date birthDate = null;
-        try {
-            if (birthDateAsString != null)
-                birthDate = parse(birthDateAsString);
-        } catch (ParseException e) {
-            Log.e(getClass().getSimpleName(), "Could not parse birth_date", e);
-        }
-        return birthDate;
-    }
-
-    private PersonName getPersonName() throws JSONException {
-        PersonName personName = new PersonName();
-        personName.setFamilyName(patientJSON.getString("patient.family_name"));
-        personName.setGivenName(patientJSON.getString("patient.given_name"));
-
-        String middleNameJSONString = "patient.middle_name";
-        String middleName = "";
-        if (patientJSON.has(middleNameJSONString))
-            middleName = patientJSON.getString(middleNameJSONString);
-        personName.setMiddleName(middleName);
-
-        return personName;
-    }
-
     private void setPersonAddresses() throws JSONException {
-        List<PersonAddress> addresses = new ArrayList<>();
-        if(patientJSON.has("patient.personaddress")){
-            Object personAddress = patientJSON.get("patient.personaddress");
-            if(personAddress instanceof JSONObject){
-                try {
-                    addresses.add(createPersonAddress((JSONObject) personAddress));
-                } catch (InvalidPersonAddressException e){
-                    Log.e(getClass().getSimpleName(),"Error while creating person address.",e);
-                }
-            } else if(personAddress instanceof JSONArray){
-                JSONArray address = (JSONArray)personAddress;
-                for(int i=0; i<address.length(); i++){
-                    try {
-                        addresses.add(createPersonAddress(address.getJSONObject(i)));
-                    } catch (InvalidPersonAddressException e){
-                        Log.e(getClass().getSimpleName(),"Error while creating person address.",e);
-                    }
-                }
-            }
-        }
-
-        Iterator<String> keys = patientJSON.keys();
-        while(keys.hasNext()){
-            String key = keys.next();
-            if(key.startsWith("patient.personaddress^")){
-                try {
-                    addresses.add(createPersonAddress(patientJSON.getJSONObject(key)));
-                } catch (InvalidPersonAddressException e){
-                    Log.e(getClass().getSimpleName(),"Error while creating person address.",e);
-                }
-            }
-        }
-
+        List<PersonAddress> addresses = createPersonAddresses(patientJSON);
         if(!addresses.isEmpty()){
             patient.setAddresses(addresses);
         }
     }
 
-    private PersonAddress createPersonAddress(JSONObject addressObject) throws JSONException,InvalidPersonAddressException {
-        PersonAddress personAddress = new PersonAddress();
-        personAddress.setAddress1((String)getFromJsonObject(addressObject,"address1"));
-        personAddress.setAddress2((String)getFromJsonObject(addressObject,"address2"));
-        personAddress.setAddress3((String)getFromJsonObject(addressObject,"address3"));
-        personAddress.setAddress4((String)getFromJsonObject(addressObject,"address4"));
-        personAddress.setAddress5((String)getFromJsonObject(addressObject,"address5"));
-        personAddress.setAddress6((String)getFromJsonObject(addressObject,"address6"));
-        personAddress.setCityVillage((String)getFromJsonObject(addressObject,"cityVillage"));
-        personAddress.setCountyDistrict((String)getFromJsonObject(addressObject,"countyDistrict"));
-        personAddress.setCountry((String)getFromJsonObject(addressObject,"country"));
-        personAddress.setStateProvince((String)getFromJsonObject(addressObject,"stateProvince"));
-        personAddress.setPostalCode((String)getFromJsonObject(addressObject,"postalCode"));
-        personAddress.setLatitude((String)getFromJsonObject(addressObject,"latitude"));
-        personAddress.setLongitude((String)getFromJsonObject(addressObject,"longitude"));
-        personAddress.setPreferred((Boolean)getFromJsonObject(addressObject, "preferred"));
-        if(addressObject.has("startDate")) {
-            try {
-                Date startDate = parse(addressObject.getString("startDate"));
-                personAddress.setStartDate(startDate);
-            } catch (ParseException e) {
-                Log.e(getClass().getSimpleName(), "Could not parse personaddress.startDate", e);
-            }
-        }
-        if(addressObject.has("endDate")) {
-            try {
-                Date endDate = parse(addressObject.getString("endDate"));
-                personAddress.setEndDate(endDate);
-            } catch (ParseException e) {
-                Log.e(getClass().getSimpleName(), "Could not parse personaddress.endDate", e);
-            }
-        }
-        if(personAddress.isBlank()) {
-            throw new InvalidPersonAddressException("No person address information available.");
-        }
-        return personAddress;
-    }
-
     private void setPersonAttributes() throws JSONException{
-        List<PersonAttribute> attributes = new ArrayList<>();
-        if(patientJSON.has("patient.personattribute")){
-
-            Object personAttribute = patientJSON.get("patient.personattribute");
-            if(personAttribute instanceof JSONObject){
-                try{
-                    attributes.add(createPersonAttribute((JSONObject)personAttribute));
-                } catch (InvalidPersonAttributeException e){
-                    Log.e(getClass().getSimpleName(),"Error while creating attribute.",e);
-                }
-            } else if(personAttribute instanceof JSONArray){
-                JSONArray att = (JSONArray)personAttribute;
-                for(int i=0; i<att.length(); i++){
-                    try{
-                        attributes.add(createPersonAttribute(att.getJSONObject(i)));
-                    } catch (InvalidPersonAttributeException e){
-                        Log.e(getClass().getSimpleName(),"Error while creating attribute.",e);
-                    }
-                }
-            }
-        }
-        Iterator<String> keys = patientJSON.keys();
-        while(keys.hasNext()){
-            String key = keys.next();
-            if(key.startsWith("patient.personattribute^")){
-                try {
-                    attributes.add(createPersonAttribute(patientJSON.getJSONObject(key)));
-                } catch (InvalidPersonAttributeException e){
-                    Log.e(getClass().getSimpleName(),"Error while creating attribute.",e);
-                }
-            }
-        }
+        List<PersonAttribute> attributes = createPersonAttributes(patientJSON,muzimaApplication);
         if(!attributes.isEmpty()) {
             patient.setAttributes(attributes);
-        }
-    }
-
-    private PersonAttribute createPersonAttribute(JSONObject jsonObject) throws JSONException,InvalidPersonAttributeException{
-        if(!jsonObject.has("attribute_value") || !jsonObject.has("attribute_type_name")
-                && !jsonObject.has("attribute_type_uuid")) {
-            throw new InvalidPersonAttributeException("Could not create person attribute due to missing value or attribute type information");
-        } else {
-            String attributeValue = jsonObject.getString("attribute_value");
-            PersonAttribute attribute = new PersonAttribute();
-            attribute.setAttribute(attributeValue);
-
-            PersonAttributeType attributeType = null;
-            PatientController patientController = muzimaApplication.getPatientController();
-            if (jsonObject.has("attribute_type_uuid")) {
-                String personAttributeTypeUuid = jsonObject.getString("attribute_type_uuid");
-                attributeType = patientController.getPersonAttributeTypeByUuid(personAttributeTypeUuid);
-            } else if (jsonObject.has("attribute_type_name")) {
-                String personAttributeTypeName = jsonObject.getString("attribute_type_name");
-                List<PersonAttributeType> attributeTypes = patientController.getPersonAttributeTypeByName(personAttributeTypeName);
-                if (attributeTypes != null && attributeTypes.size() == 1) {
-                    attributeType = attributeTypes.get(0);
-                }
-            }
-
-            if(attributeType == null){
-                attributeType = new PersonAttributeType();
-                if(jsonObject.has("attribute_type_uuid")) {
-                    attributeType.setUuid(jsonObject.getString("attribute_type_uuid"));
-                }else if(jsonObject.has("attribute_type_name")) {
-                    attributeType.setName(jsonObject.getString("attribute_type_name"));
-                }
-            }
-            attribute.setAttributeType(attributeType);
-            return attribute;
         }
     }
 

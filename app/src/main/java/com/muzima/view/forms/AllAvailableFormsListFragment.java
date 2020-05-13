@@ -187,7 +187,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
             Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
             String lastSyncedMsg = mActivity.getString(R.string.info_last_sync_unavailable);
             if (lastSyncedTime != null) {
-                lastSyncedMsg = getString(R.string.hint_last_synced, DateUtils.getFormattedDateTime(lastSyncedTime));
+                lastSyncedMsg = getString(R.string.hint_last_synced, DateUtils.getFormattedStandardDisplayDateTime(lastSyncedTime));
             }
             syncText.setText(lastSyncedMsg);
         } catch (IOException e) {
@@ -270,9 +270,9 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                         @Override
                         protected void onPostExecute(int[] results) {
                             if(results[0] == SUCCESS) {
-                                Toast.makeText(mActivity, "Downloaded " + results[1] + " form templates", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mActivity, getString(R.string.info_form_templates_downloaded, results[1]), Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(mActivity, "There was an error downloading form templates", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mActivity, getString(R.string.info_form_download_failure), Toast.LENGTH_SHORT).show();
                             }
 
                             //Disabling downoad of subsequent items (concepts, locations, providers) till further discussion

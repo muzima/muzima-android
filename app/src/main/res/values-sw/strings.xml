@@ -183,6 +183,7 @@
     <string name="general_finish_text">Maliza</string>
     <string name="general_form">Fomu</string>
     <string name="general_forms">Fomu</string>
+    <string name="general_get_directions">Pata maelekezo</string>
     <string name="general_help">Msaada (nomino)/ Saidia (kitenzi)</string>
     <string name="general_large">Kubwa</string>
     <string name="general_load">pakia</string>
@@ -310,6 +311,7 @@
     <string name="hint_light_mode">Wezesha mwanga mandhari</string>
     <string name="hint_loading_progress">Inapakiwa…</string>
     <string name="hint_local_connection_unavailable">Tafadhali unganisha kifaa chako na ujaribu tena</string>
+    <string name="hint_location_addresses_not_set">Anwani ya eneo haijawekwa kwa wateja wote wanaopatikana</string>
     <string name="hint_location_pref_add">Ongeza sehemu unayo/unazo taka zipakuliwe.</string>
     <string name="hint_manage_concept">pata dhana zaidi kutoka kwenye Seva ama ondosha dhana kutoka kwenye kifaa hichi. Dhana zinatumika katika kusanidi ukaguzi upi wa daktari upakuliwe.</string>
     <string name="hint_manage_location">Pata sehemu nyingine kutoka katika seva au ondoa sehemu kutoka katika kifaa hiki</string>
@@ -385,7 +387,8 @@
     <string name="info_concept_unavailable">Hamna dhana zilizoongezwa tayari</string>
     <string formatted="false" name="info_concepts_downloaded">Dhana %d zimepakuliwa</string>
     <string name="info_data_sync_cancelled">Ulandanishaji wa data ya mUzima ulisitishwa.</string>
-    <string name="info_disclaimer"><![CDATA[
+    <string name="info_disclaimer">
+        <![CDATA[
         <p>Mfumo wa mUzima umesambazwa chini ya masharti ya leseni kwa umma ya Mozilla, v.2.0.(MPL 2.0). Nakala ya leseni
         ya MPL 2.0 yaweza patikanwa kwa upakuaji katika http://mozilla.org/MPL/2.0.</p><p>Mfumo wa mUzima pia umesambazwa chini ya kibadhi cha ilani ya kujitoa hatiani na kizuizi cha dhima yenye kikomo.</p><p><strong>Kibadhi cha ilani yakujitoa hatiani na kizuizi cha dhima yenye kikomo</strong></p><p>Katika nchi ya Marekani, au mamlaka yoyote ambapo patahusika, vipengele zaidi vifuatavyo vya kibadhi cha ilani
         yakujitoa hatiani na kizuizi cha dhima yenye kikomo vimeshirikishwa kwenye  sheria na masharti ya leseni ya MPL 2.0:</p><p> 1. Hakuna dhamana ya aina yoyote ile kwa vyovyote vile imetolewa kwa ajili ya natija utakayoipata kutoka na
@@ -404,7 +407,8 @@
         za  kanuni na masharti ya siri za kliniki hata kama wahusika hao watakuwa wameelezwa uwezekano wa madhara kama hayo.</p><p>3. Mfumo wa mUzima  ni hatimiliki ya wadhamini wa vyuo vikuu vya Indana, Moi na kituo cha afya cha chuo cha Vanderbilt.</p><p>4. Ikiwa mtumiaji wa mfumo huu ni shirika ambalo linadhamiria kupata faida ya kibiashara ama natija kwa njia
         yoyote ile kwa mfumo utakaotumia kodi za mfumo huu kwenye biashara ya faida, mtumiaji anashurutishwa kuwasiliana na
         mwenye hatimiliki kupitia barua pepe: mUzima.mobile@gmail.com</p>
-        ]]></string>
+        ]]>
+    </string>
     <string formatted="false" name="info_download_complete">Udukuzi umekamilika na hali %d</string>
     <string name="info_downloaded_forms_unavailable">Hakuna fomu zilizodukuliwa</string>
     <string name="info_downloaded_image">Taswira/Picha imedukuliwa</string>
@@ -428,6 +432,7 @@
     <string name="info_form_delete_success">Fomu zimefanikiwa kufutwa</string>
     <string name="info_form_download">Fomu zinapakuliwa</string>
     <string formatted="false" name="info_form_download_delete">Fomu %d na fomu zilizopumzishwa %d zimepakuliwa</string>
+    <string name="info_form_download_failure">Kulikuwa na hitilafu wakati wa kupakua templeti za fomu</string>
     <string name="info_form_downloaded">Fomu 1 imepakuliwa</string>
     <string name="info_form_fetch_in_progress">Tayari utaratibu wa kuchukua fomu unaendelea, ombi limepuuzwa</string>
     <string name="info_form_load">Fomu zinapakiwa…</string>
@@ -487,6 +492,7 @@
     <string formatted="false" name="info_patient_reports_downloaded">Imepakua ripoti %d</string>
     <string name="info_patient_reports_fetch_in_progress">Tayari ripoti zinalandanishwa, ombi limepuuzwa</string>
     <string name="info_patient_reports_unavailable">Hakuna Ripoti za Mteja Zinazopatikana</string>
+    <string name="info_person_creation_failure">Haikuweza kuunda rekodi ya mtu</string>
     <string formatted="false" name="info_provider_delete_success">Watoa huduma %d wamefanikiwa kufutwa </string>
     <string name="info_provider_download">Watoa huduma wanapakuliwa</string>
     <string name="info_provider_downloaded">Mtoa huduma mmoja amepakuliwa</string>
@@ -631,10 +637,12 @@
     <string name="title_audio_record">Rekodi sauti</string>
     <string name="title_barcode_scanner_check">chunguza kifaa cha kusomea baakodi</string>
     <string name="title_barcode_scanner_setup">Hatua 6: Hakiki kifaa cha kusomea baakodi</string>
+    <string name="title_client_location">Mahali pa mteja</string>
     <string name="title_client_location_update">Sasisha eneo la Mteja</string>
     <string name="title_client_notifications">Notifikesheni za mteja</string>
     <string name="title_client_registration_help_video">Usajili wa Mteja</string>
     <string name="title_client_scan">Soma Vitambulisho vya wateja</string>
+    <string name="title_clients_locations">Sehemu za Nyumbani za wateja</string>
     <string name="title_cohort_download">Hatua 1: pakua kikundi/vikundi</string>
     <string name="title_cohort_download_help_video">Upakuaji wa Vikundi vya wateja (kwa mahitaji)</string>
     <string name="title_cohort_prefix_help">Eleza viambishi awali kwa msaada wa vikundi</string>
@@ -648,6 +656,7 @@
     <string name="title_data_synchronize">hatua 2: Ulandanishi wa data katika hifadhi ya kifaa unafanyika</string>
     <string name="title_default_encounter_location">Lokesheni ya Kikawaida</string>
     <string name="title_default_encounter_provider">Mtoa huduma wa inkaunta aliyechaguliwa</string>
+    <string name="title_define_custom_concept">Fafanua Dhana iliyodhamiriwa</string>
     <string name="title_disclaimer">Utoaji wa leseni,kibadhi cha ilani yakujitoa hatiani na kizuizi cha dhima yenye kikomo</string>
     <string name="title_duplicate_form_data_warning">Onyo la fomu kujazwa zaidi ya mara moja na data zilezile</string>
     <string name="title_enable_gps">Wezesha GPS</string>
@@ -667,12 +676,14 @@
     <string name="title_guided_setup">Utaratibu uliyoelekezwa (unapendekezwa)</string>
     <string name="title_guided_setup_help_video">Kuanzisha awali kwa kuelekezwa</string>
     <string name="title_guided_setup_progress">Utaratibu unavyoendelea</string>
+    <string name="title_guided_setup_wizard">Mchawi wa Usanidi ulioongozwa</string>
     <string name="title_help_video_links">Viungo vya video</string>
     <string name="title_html_help">Usaidizi</string>
     <string name="title_image_caption">Maelezo mafupi ya taswira/picha</string>
     <string name="title_image_capture">Chukua picha</string>
     <string name="title_image_choose">Chagua picha</string>
     <string name="title_initial_setup_guide">Muongozo wa kutumia muzima kwa mara ya kwanza</string>
+    <string name="title_install_barcode_scanner">Weka Scanner ya Barcode</string>
     <string name="title_install_psmart">Sakinisha programu ya P-Smart</string>
     <string name="title_introduction_video">utangulizi wa video kwa muzima</string>
     <string name="title_landing_page">Ukurasa wa mwanzo kwenye mfumo.</string>
@@ -691,9 +702,11 @@
     <string name="title_muzima_training_manual">Maelekezo ya kufundishia mUzima</string>
     <string name="title_observations_by_concepts">Kwa dhana husika</string>
     <string name="title_observations_by_encounters">Kwa inkaunta husika</string>
+    <string name="title_pick_location">Chagua Mahali</string>
     <string name="title_provider_download">Hatua 4: Ongeza mtoa/watoa huduma</string>
     <string name="title_provider_help">Msaada kwa watoa huduma</string>
     <string name="title_provider_not_set">Imeshindikana kuweka mtoa huduma</string>
+    <string name="title_provider_reports">Ripoti za Mtoaji</string>
     <string name="title_real_time_sync">Ulandanishi wa wakati halisi.</string>
     <string name="title_require_medical_record_number">sisitiza nambari ya recodi ya matibabu </string>
     <string name="title_search_server">Tafuta Seva husika</string>
@@ -703,6 +716,7 @@
     <string name="title_set_client_location">Weka eneo la mteja</string>
     <string name="title_setting_refresh">utaratibu unaonyeshwa upya</string>
     <string name="title_settings_help_html">Mipangilio ya mUzima</string>
+    <string name="title_setup_method">Njia ya Usanidi</string>
     <string name="title_video_caption">Maelezo mafupi ya video</string>
     <string name="title_video_choose">Chagua video</string>
     <string name="title_video_record">Rekodi video</string>
@@ -723,6 +737,7 @@
     <string name="warning_form_close">Ufungaji wa fomu: Kitendo hiki kitapoteza mabadiliko yeyote uliyofanya. Una uhakika ungependa kufanya hivyo?</string>
     <string name="warning_form_data_already_exists">Fomu hii ya data tayari ipo ya mteja huu kwa data yenye inkaunta ya data  sawa na hii</string>
     <string formatted="false" name="warning_forms_complete_and_sync">%s ina fomu husika ndani yake. Tafadhali maliza kisha landanisha fomu hizo kabla ya kupakuwa toleo jipya kutoka kwenye Seva</string>
+    <string name="warning_incompatible_module">Programu yako ya sasa ya mUzima haiendani na seva. Tafadhali wasiliana na msimamizi wako.</string>
     <string name="warning_invalid_url_provided">URL uliyoweka ni batili</string>
     <string name="warning_logout_confirm">Una uhakika unataka kutoka nje ya mfumo wa muzima?</string>
     <string name="warning_registration_form_data_delete">Kitendo hichi kitapelekea kufutwa kwa data za usajili hivyo basi rekodi ya mgojwa pia itafutwa kutoka kwenye kifaa hichi. Je una uhakika wa kuendelea? </string>
@@ -738,15 +753,4 @@
     <string name="write_shr_to_card_general">Andika kumbukumbu za afya za pamoja kwenye kadi</string>
 
     <string name="youTube_player_error">Hitilafu ilitokea wakati wa kupakia video ya YouTube</string>
-    <string name="warning_incompatible_module">Programu yako ya sasa ya mUzima haiendani na seva. Tafadhali wasiliana na msimamizi wako.</string>
-    <string name="title_clients_locations">Sehemu za Nyumbani za wateja</string>
-    <string name="title_client_location">Mahali pa mteja</string>
-    <string name="title_pick_location">Chagua Mahali</string>
-    <string name="title_define_custom_concept">Fafanua Dhana iliyodhamiriwa</string>
-    <string name="title_install_barcode_scanner">Weka Scanner ya Barcode</string>
-    <string name="title_setup_method">Njia ya Usanidi</string>
-    <string name="title_guided_setup_wizard">Mchawi wa Usanidi ulioongozwa</string>
-    <string name="title_provider_reports">Ripoti za Mtoaji</string>
-    <string name="hint_location_addresses_not_set">Anwani ya eneo haijawekwa kwa wateja wote wanaopatikana</string>
-    <string name="general_get_directions">Pata maelekezo</string>
 </resources>

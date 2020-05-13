@@ -11,11 +11,15 @@
 package com.muzima.utils;
 
 import android.util.Log;
+import com.muzima.MuzimaApplication;
+import com.muzima.api.exception.InvalidPersonAddressException;
+import com.muzima.api.exception.InvalidPersonAttributeException;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PersonAttribute;
+import com.muzima.api.model.PersonName;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.User;
 import com.muzima.controller.PatientController;
@@ -23,12 +27,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
+import static com.muzima.utils.DateUtils.parse;
+import static com.muzima.utils.PersonRegistrationUtils.createBirthDate;
+import static com.muzima.utils.PersonRegistrationUtils.createBirthDateEstimated;
+import static com.muzima.utils.PersonRegistrationUtils.createPersonAddress;
+import static com.muzima.utils.PersonRegistrationUtils.createPersonAddresses;
+import static com.muzima.utils.PersonRegistrationUtils.createPersonAttribute;
+import static com.muzima.utils.PersonRegistrationUtils.createPersonAttributes;
+import static com.muzima.utils.PersonRegistrationUtils.createPersonName;
 
 public class RelationshipJsonMapper {
 
@@ -36,15 +50,17 @@ public class RelationshipJsonMapper {
     private Patient patient;
     private Relationship relationship;
     private PatientController patientController;
+    private MuzimaApplication muzimaApplication;
 
-    public RelationshipJsonMapper(Relationship relationship, Patient patient, PatientController patientController, User loggedInUser){
-        this.relationship = relationship;
-        this.patientController = patientController;
-        this.patient =patient;
-        this.loggedInUser =loggedInUser;
+    public RelationshipJsonMapper(MuzimaApplication muzimaApplication){
+        this.muzimaApplication = muzimaApplication;
+        this.patientController = muzimaApplication.getPatientController();
+        loggedInUser = muzimaApplication.getAuthenticatedUser();
     }
 
-    public FormData createFormDataFromRelationship() throws JSONException {
+    public FormData createFormDataFromRelationship(Patient patient, Relationship relationship) throws JSONException {
+        this.patient =patient;
+        this.relationship = relationship;
         FormData formData = new FormData();
         formData.setDiscriminator(FORM_JSON_DISCRIMINATOR_RELATIONSHIP);
         formData.setEncounterDate(new Date());
@@ -80,8 +96,8 @@ public class RelationshipJsonMapper {
             personAJsonObject.put("sex", person.getGender());
             personAJsonObject.put("birth_date", DateUtils.getFormattedDateTime(person.getBirthdate()));
             personAJsonObject.put("birthdate_estimated", person.getBirthdateEstimated());
-            patientJsonObject.put("addresses", createAddressesJsonArray(person));
-            patientJsonObject.put("attributes", createAttributesJsonArray(person));
+            personAJsonObject.put("addresses", createAddressesJsonArray(person));
+            personAJsonObject.put("attributes", createAttributesJsonArray(person));
         }
 
         // Person B
@@ -97,8 +113,8 @@ public class RelationshipJsonMapper {
             personBJsonObject.put("sex", person.getGender());
             personBJsonObject.put("birth_date", DateUtils.getFormattedDateTime(person.getBirthdate()));
             personBJsonObject.put("birthdate_estimated", person.getBirthdateEstimated());
-            patientJsonObject.put("addresses", createAddressesJsonArray(person));
-            patientJsonObject.put("attributes", createAttributesJsonArray(person));
+            personBJsonObject.put("addresses", createAddressesJsonArray(person));
+            personBJsonObject.put("attributes", createAttributesJsonArray(person));
         }
 
         // Relationship Type
@@ -158,7 +174,7 @@ public class RelationshipJsonMapper {
     private JSONArray createAttributesJsonArray(Person person) throws JSONException {
         JSONArray attributesJSONArray = new JSONArray();
         if(!person.getAtributes().isEmpty()){
-            List<PersonAttribute> attributes = patient.getAtributes();
+            List<PersonAttribute> attributes = person.getAtributes();
 
             for(PersonAttribute attribute : attributes){
                 JSONObject attributeJSONObject = new JSONObject();
@@ -169,6 +185,28 @@ public class RelationshipJsonMapper {
             }
         }
         return attributesJSONArray;
+    }
+
+    public Person createNewPerson( String jsonPayload, String personUuid) {
+        try {
+            JSONObject responseJSON = new JSONObject(jsonPayload);
+            JSONObject personJSON = responseJSON.getJSONObject("patient");
+
+            Person person = new Person();
+            person.setUuid(personUuid);
+            person.setGender(personJSON.getString("patient.sex"));
+            List<PersonName> names = new ArrayList<>();
+            names.add(createPersonName(personJSON));
+            person.setNames(names);
+            person.setBirthdate(createBirthDate(personJSON));
+            person.setBirthdateEstimated(createBirthDateEstimated(personJSON));
+            person.setAddresses(createPersonAddresses(personJSON));
+            person.setAttributes(createPersonAttributes(personJSON, muzimaApplication));
+            return person;
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Could not create new person", e);
+        }
+        return null;
     }
 
     private boolean personIsNotPatient(String personUuid) {
