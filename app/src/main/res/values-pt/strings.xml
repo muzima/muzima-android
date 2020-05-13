@@ -723,6 +723,7 @@
 
     <string name="select_a_registration_form_text">Selecione um formulário de inscrição</string>
     <string name="select_a_relationship_form_text">Selecione um formulário</string>
+    <string name="select_default_encounter_location">Escolha seu local de encontro padrão</string>
 
     <string name="send_feedback">Enviar comentários</string>
     <string name="send_general_text">Mandar</string>

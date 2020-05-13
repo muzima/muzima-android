@@ -671,6 +671,7 @@
 
     <string name="select_a_registration_form_text">Sélectionnez un formulaire d\'inscription</string>
     <string name="select_a_relationship_form_text">Sélectionnez un formulaire</string>
+    <string name="select_default_encounter_location">Choisissez votre lieu de rencontre par défaut</string>
 
     <string name="send_feedback">Envoyer des commentaires</string>
     <string name="send_general_text">Envoyer</string>
