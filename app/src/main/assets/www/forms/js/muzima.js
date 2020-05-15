@@ -1507,7 +1507,7 @@ $(document).ready(function () {
     }
     /*end of populating initial form opening timestamp*/
 
-    /*Start- GPS Location picker Functionality*/
+    /*Start- GPS Location picker functionality*/
 
     /* Called by the Activity WebViewActivity*/
     document.populatePickedGpsLocation = function (sectionName, jsonString) {
@@ -1522,12 +1522,12 @@ $(document).ready(function () {
     $('.gps-location-picker').click(function () {
         var $parent = $(this).closest('div[data-name]');
         var zoomLevel =  $(this).attr('data-zoomlevel');
-        var createDemographiPreferredcsUpdate = $(this).attr('data-create-demographics-update');
+        var createDemographicsPreferredUpdate = $(this).attr('data-create-demographics-update');
 
-        if(createDemographiPreferredcsUpdate == 'true' || createDemographiPreferredcsUpdate == true || createDemographiPreferredcsUpdate == 1){
-            createDemographiPreferredcsUpdate = true;
+        if(createDemographicsPreferredUpdate == 'true' || createDemographicsPreferredUpdate == true || createDemographicsPreferredUpdate == 1){
+            createDemographicsPreferredUpdate = true;
         } else {
-            createDemographiPreferredcsUpdate = false;
+            createDemographicsPreferredUpdate = false;
         }
         if (typeof zoomLevel === typeof undefined || zoomLevel === false) {
             zoomLevel = 12;
@@ -1537,24 +1537,13 @@ $(document).ready(function () {
             $parent.find("input.latitude").attr('name'),
             $parent.find("input.longitude").attr('name'),
             zoomLevel,
-            createDemographiPreferredcsUpdate
+            createDemographicsPreferredUpdate
         );
     });
 
-    /*End- Location picker Functionality*/
+    /*End- Location picker functionality*/
 
-    /*Start- GPS Location picker Functionality*/
-
-    /* Called by the Activity WebViewActivity*/
-    document.populatePickedGpsLocation = function (sectionName, jsonString) {
-        var $parent = $('div[data-name="' + sectionName + '"]');
-        $.each(jsonString, function (key, value) {
-            var $inputField = $parent.find("input[name='" + key + "']");
-            $inputField.val(value);
-            $inputField.trigger('change');  //Need this to trigger the event so GPS location value gets populated.
-        });
-    };
-
+    /*Start- Create and populate relationship person functionality*/
     $('.create-relationship-person').click(function () {
         var $parent = $(this).closest('div[data-name]');
         var resultField = $(this).attr('data-result-field');
@@ -1573,8 +1562,8 @@ $(document).ready(function () {
         });
         console.log("Populating: "+JSON.stringify(jsonString));
     };
+    /*End- Create and populate relationship person functionality*/
 
-    /*End- Location picker Functionality*/
     document.launchEncounterMiniForm = function(patientUuid,formUuid) {
         encounterMiniFormCreatorComponent.launchEncounterMiniForm(patientUuid,formUuid);
     };

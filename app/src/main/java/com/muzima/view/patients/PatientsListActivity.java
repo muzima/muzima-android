@@ -512,13 +512,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private MuzimaGPSLocation getCurrentGPSLocation(){
         MuzimaGPSLocationService muzimaLocationService = muzimaApplication.getMuzimaGPSLocationService();
-
-        HashMap<String, Object> locationDataHashMap = muzimaLocationService.getLastKnownGPSLocationAndSettingDetails();
-        if (locationDataHashMap.containsKey("gps_location")) {
-            MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation) locationDataHashMap.get("gps_location"));
-            return muzimaGPSLocation;
-        }
-        return null;
+        return muzimaLocationService.getLastKnownGPSLocation();
     }
 
     private void setupNoDataView() {
