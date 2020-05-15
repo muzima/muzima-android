@@ -140,6 +140,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
             ((DownloadedFormsAdapter) listAdapter).clearSelectedForms();
+            unselectAllItems(list);
         }
     }
 

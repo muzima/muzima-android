@@ -298,6 +298,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
             ((AllAvailableFormsAdapter) listAdapter).clearSelectedForms();
+            unselectAllItems(list);
         }
     }
 

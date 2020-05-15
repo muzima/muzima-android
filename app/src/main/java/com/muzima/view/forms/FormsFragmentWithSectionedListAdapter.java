@@ -145,6 +145,8 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
+            ((SectionedFormsAdapter) listAdapter).clearSelectedFormsUuid();
+            unselectAllItems(list);
         }
     }
 }
