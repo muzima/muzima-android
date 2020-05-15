@@ -35,8 +35,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
-import static com.muzima.utils.Constants.STANDARD_DATE_LOCALE_FORMAT;
 import static com.muzima.utils.DateUtils.parse;
 
 public class HTMLFormObservationCreator {

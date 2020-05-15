@@ -67,6 +67,10 @@ public abstract class MuzimaListFragment extends Fragment implements AdapterView
             return;
         }
         for (int i = listView.getCount() - 1; i >= 0; i--){
+            if(listView.getChildAt(i) instanceof CheckedRelativeLayout){
+                listView.getChildAt(i).setActivated(false);
+                ((CheckedRelativeLayout) listView.getChildAt(i)).setChecked(false);
+            }
             listView.setItemChecked(i, false);
         }
     }

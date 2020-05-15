@@ -1,8 +1,13 @@
 package com.muzima.view.maps;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.webkit.ConsoleMessage;
@@ -11,11 +16,13 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.location.MuzimaGPSLocation;
+import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.util.Constants;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
@@ -23,17 +30,22 @@ import com.muzima.view.BroadcastListenerActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
+import static com.muzima.service.MuzimaGPSLocationService.REQUEST_LOCATION;
+import static com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_ACCESS_PERMISSION_REQUEST_CODE;
 import static java.text.MessageFormat.format;
 
-public class MapLocationPickerActivity extends BroadcastListenerActivity {
+public class GPSLocationPickerActivity extends BroadcastListenerActivity {
     public static String LATITUDE = "Latitude";
     public static String LONGITUDE = "Longitude";
+    public static String DEFAULT_ZOOM_LEVEL = "DefaultZoomLevel";
     private String latitude;
     private String longitude;
+    private int defaultZoomLevel;
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private MuzimaGPSLocationService gpsLocationService;
+
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +58,90 @@ public class MapLocationPickerActivity extends BroadcastListenerActivity {
         if(getIntent().hasExtra(LONGITUDE)){
             longitude = getIntent().getStringExtra(LONGITUDE);
         }
-        initializeLocationPickerActionButtons();
-        initializeLocationPickerMapView();
+
+        defaultZoomLevel = getIntent().getIntExtra(DEFAULT_ZOOM_LEVEL,12);
+        checkAndRequestGPSPermissions();
+    }
+
+    @Override
+    protected void onResume(){
+        themeUtils.onCreate(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_LOCATION){
+            if(resultCode != Activity.RESULT_OK){
+                Toast.makeText(this,"Could not obtain the current GPS location.",Toast.LENGTH_LONG).show();
+                latitude = "0.5117";
+                longitude = "35.282614";
+            } else {
+                getLastKnowntGPSLocation();
+            }
+
+            initializeLocationPickerActionButtons();
+            initializeLocationPickerMapView();
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //ToDo: Pass request code as parameter to gpslocationservice
+        if (requestCode == LOCATION_ACCESS_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                checkAndRequestGPSPermissions();
+            } else {
+                Toast.makeText(this,"Could not obtain the current GPS location.",Toast.LENGTH_LONG).show();
+                latitude = "0.5117";
+                longitude = "35.282614";
+
+                initializeLocationPickerActionButtons();
+                initializeLocationPickerMapView();
+            }
+        }
+    }
+
+    private void checkAndRequestGPSPermissions(){
+        gpsLocationService = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService();
+        if (!gpsLocationService.isGPSLocationPermissionsGranted()) {
+            gpsLocationService.requestGPSLocationPermissions(this, true);
+        } else{
+            LocationListener locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(android.location.Location location) {
+                    webView.loadUrl("javascript:document.updateCurrentLocationAndAccuracy(" +
+                            location.getLatitude() + ", " + location.getLongitude() + "," + location.getAccuracy() +")");
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+                @Override
+                public void onProviderEnabled(String provider) {}
+
+                @Override
+                public void onProviderDisabled(String provider) {}
+            };
+
+            if (!gpsLocationService.isLocationServicesSwitchedOn()) {
+                gpsLocationService.requestSwitchOnLocation(this,locationListener);
+            } else {
+                gpsLocationService.requestLocationUpdates(locationListener);
+                getLastKnowntGPSLocation();
+                initializeLocationPickerActionButtons();
+                initializeLocationPickerMapView();
+            }
+        }
+    }
+
+    private void getLastKnowntGPSLocation(){
+        MuzimaGPSLocation muzimaGPSLocation = gpsLocationService.getLastKnownGPSLocation();
+        if(muzimaGPSLocation != null){
+            latitude = muzimaGPSLocation.getLatitude();
+            longitude = muzimaGPSLocation.getLongitude();
+        }
     }
 
     private void initializeLocationPickerActionButtons(){
@@ -61,7 +155,7 @@ public class MapLocationPickerActivity extends BroadcastListenerActivity {
 
     private void initializeLocationPickerMapView(){
 
-        WebView webView = findViewById(R.id.webview);
+        webView = findViewById(R.id.webview);
 
         webView.setWebChromeClient(createWebChromeClient());
         WebSettings webSettings = webView.getSettings();
@@ -75,8 +169,6 @@ public class MapLocationPickerActivity extends BroadcastListenerActivity {
         }
 
         webView.addJavascriptInterface(this,"locationPickerInterface");
-
-
         webView.loadUrl("file:///android_asset/www/maps/mapLocationPicker.html");
     }
 
@@ -84,6 +176,11 @@ public class MapLocationPickerActivity extends BroadcastListenerActivity {
     public void updateSelectedLocation(String latitude, String longitude){
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    @JavascriptInterface
+    public int getDefaultZoomLevel(){
+        return defaultZoomLevel;
     }
 
     @JavascriptInterface
@@ -99,14 +196,13 @@ public class MapLocationPickerActivity extends BroadcastListenerActivity {
             }
         }
 
-        HashMap locationDataHashMap = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService().getLastKnownGPS();
-        if (locationDataHashMap.containsKey("gps_location")) {
-            MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation) locationDataHashMap.get("gps_location"));
-            try {
-                return muzimaGPSLocation.toJsonObject().toString();
-            } catch (JSONException e) {
-                Log.e(getClass().getSimpleName(), "Error while obtaining GPS location", e);
+        MuzimaGPSLocation gpsLocation = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService().getLastKnownGPSLocation();
+        try {
+            if(gpsLocation != null) {
+                return gpsLocation.toJsonObject().toString();
             }
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Error while obtaining GPS location", e);
         }
         return null;
     }
@@ -168,12 +264,4 @@ public class MapLocationPickerActivity extends BroadcastListenerActivity {
             }
         };
     }
-
-    @Override
-    protected void onResume(){
-        themeUtils.onCreate(this);
-        super.onResume();
-    }
-
-
 }

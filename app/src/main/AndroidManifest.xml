@@ -349,7 +349,7 @@
                     android:value="com.muzima.view.patients.PatientsListActivity"/>
         </activity>
         <activity
-                android:name=".view.maps.MapLocationPickerActivity"
+                android:name=".view.maps.GPSLocationPickerActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/title_pick_location"
                 android:parentActivityName=".view.patients.PatientsListActivity"

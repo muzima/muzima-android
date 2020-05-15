@@ -453,9 +453,9 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         } else {
             // we will create a formData payload and save the relationship ONLY on success
             try {
-                RelationshipJsonMapper relationshipJsonMapper = new RelationshipJsonMapper(newRelationship, patient, patientController,
-                        ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser());
-                ((MuzimaApplication) getApplicationContext()).getFormController().saveFormData(relationshipJsonMapper.createFormDataFromRelationship());
+                RelationshipJsonMapper relationshipJsonMapper = new RelationshipJsonMapper( (MuzimaApplication) getApplicationContext());
+                ((MuzimaApplication) getApplicationContext()).getFormController()
+                        .saveFormData(relationshipJsonMapper.createFormDataFromRelationship(patient, newRelationship));
                 newRelationship.setSynced(false);
                 relationshipController.saveRelationship(newRelationship);
                 patientRelationshipsAdapter.reloadData();

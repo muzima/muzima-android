@@ -233,8 +233,8 @@ public class PatientSummaryActivity extends BaseActivity {
             relationshipsMenuItem.setVisible(false);
         }
 
-        if(isGeoMappingFeatureEnabled()) {
-            geoMappingMenuItem.setVisible(true);
+        if(!isGeoMappingFeatureEnabled()) {
+            geoMappingMenuItem.setVisible(false);
         }
 
         super.onCreateOptionsMenu(menu);

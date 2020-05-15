@@ -50,6 +50,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+
 public class AllAvailableFormsListFragment extends FormsListFragment {
     private ActionMode actionMode;
     private boolean actionModeActive = false;
@@ -185,7 +187,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
             Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
             String lastSyncedMsg = mActivity.getString(R.string.info_last_sync_unavailable);
             if (lastSyncedTime != null) {
-                lastSyncedMsg = getString(R.string.hint_last_synced, DateUtils.getFormattedDateTime(lastSyncedTime));
+                lastSyncedMsg = getString(R.string.hint_last_synced, DateUtils.getFormattedStandardDisplayDateTime(lastSyncedTime));
             }
             syncText.setText(lastSyncedMsg);
         } catch (IOException e) {
@@ -267,7 +269,20 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
                         @Override
                         protected void onPostExecute(int[] results) {
-                            navigateToNextActivity();
+                            if(results[0] == SUCCESS) {
+                                Toast.makeText(mActivity, getString(R.string.info_form_templates_downloaded, results[1]), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(mActivity, getString(R.string.info_form_download_failure), Toast.LENGTH_SHORT).show();
+                            }
+
+                            //Disabling downoad of subsequent items (concepts, locations, providers) till further discussion
+                            //ToDo: Discuss whether and how these further downloads should be supported
+                            //navigateToNextActivity();
+                            ((MuzimaApplication) mActivity.getApplicationContext()).restartTimer();
+                            ((FormsActivity) mActivity).hideProgressbar();
+                            unselectAllItems();
+                            ((AllAvailableFormsAdapter) listAdapter).clearSelectedForms();
+                            setRunningBackgroundQueryTask(null);
                         }
                     };
                     setRunningBackgroundQueryTask(asynTask);
@@ -289,7 +304,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     private void navigateToNextActivity() {
         Intent intent = new Intent(mActivity.getApplicationContext(), LocationListActivity.class);
         if(isAdded()) {
-            startActivity(intent);
+            //startActivity(intent);
         }
         mActivity.finish();
     }

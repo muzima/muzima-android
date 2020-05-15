@@ -187,6 +187,7 @@
     <string name="general_finish_text">terminer</string>
     <string name="general_form">Formulaire</string>
     <string name="general_forms">Formulaires</string>
+    <string name="general_get_directions">Obtenir des directions</string>
     <string name="general_help">Aide</string>
     <string name="general_large">Large</string>
     <string name="general_load">charger</string>
@@ -319,6 +320,9 @@
     <string name="hint_light_mode">Activer le thème de la lumière</string>
     <string name="hint_loading_progress">Chargement en cours…</string>
     <string name="hint_local_connection_unavailable">S\'il vous plaît connecter votre appareil et essayez à nouveau</string>
+    <string name="hint_location_addresses_not_set">L\'adresse de localisation n\'a pas été définie pour tous les clients
+        disponibles
+    </string>
     <string name="hint_location_pref_add">Ajouter le(s) emplacement(s) que vous souhaitez télécharger.</string>
     <string name="hint_manage_concept">Obtenez plus de concepts à partir du serveur ou supprimez les concepts de ce périphérique.
     </string>
@@ -400,7 +404,8 @@
     <string name="info_concept_unavailable">Aucun concept n\'a été ajouté encore.</string>
     <string formatted="false" name="info_concepts_downloaded">%d concepts Téléchargé</string>
     <string name="info_data_sync_cancelled">La synchronisation des données mUzima a été annulée.</string>
-    <string name="info_disclaimer"><![CDATA[
+    <string name="info_disclaimer">
+        <![CDATA[
      <P>
         MUzima est distribué sous les termes de la licence publique de Mozilla, v. 2.0 (MPL 2.0).
         Une copie de la licence MPL 2.0 peut être trouvée sur http://mozilla.org/MPL/2.0/.
@@ -468,7 +473,8 @@
             Code dans une entreprise à but lucratif, l\'utilisateur est tenu de contacter le détenteur du copyright
             (Copyright Les administrateurs de l\'Université d\'Indiana).
             </ P>
-    ]]></string>
+    ]]>
+    </string>
     <string formatted="false" name="info_download_complete">Téléchargement completé avec l\'état %d</string>
     <string name="info_downloaded_forms_unavailable">aucun formulaire n\'a été téléchargé</string>
     <string name="info_downloaded_image">Image en Téléchargée</string>
@@ -492,6 +498,7 @@
     <string name="info_form_delete_success">Formulaires supprimés avec succès</string>
     <string formatted="false" name="info_form_download">Téléchargement en cours de %d formulaires</string>
     <string formatted="false" name="info_form_download_delete">%d formulaires Téléchargé et %d formulaires retiré</string>
+    <string name="info_form_download_failure">Une erreur s\'est produite lors du téléchargement des modèles de formulaire</string>
     <string name="info_form_downloaded"> 1 (un) formuliare Téléchargé</string>
     <string name="info_form_fetch_in_progress">Extraction des formulaires déjà en cours,demande ignorée</string>
     <string name="info_form_load">Chargement des formulaires …</string>
@@ -552,6 +559,7 @@
     <string formatted="false" name="info_patient_reports_downloaded">%d Rapports téléchargés</string>
     <string name="info_patient_reports_fetch_in_progress">Récupération déjà des rapports, ignoré la demande</string>
     <string name="info_patient_reports_unavailable">Aucun rapport client disponible</string>
+    <string name="info_person_creation_failure">Impossible de créer un enregistrement de personne</string>
     <string formatted="false" name="info_provider_delete_success">%d fournisseurs supprimés avec succés</string>
     <string name="info_provider_download">Téléchargement en cours des fournisseurs</string>
     <string name="info_provider_downloaded">1(une) fournisseur Téléchargé</string>
@@ -663,6 +671,7 @@
 
     <string name="select_a_registration_form_text">Sélectionnez un formulaire d\'inscription</string>
     <string name="select_a_relationship_form_text">Sélectionnez un formulaire</string>
+    <string name="select_default_encounter_location">Choisissez votre lieu de rencontre par défaut</string>
 
     <string name="send_feedback">Envoyer des commentaires</string>
     <string name="send_general_text">Envoyer</string>
@@ -698,10 +707,12 @@
     <string name="title_audio_record">enregistrer Audio</string>
     <string name="title_barcode_scanner_check">Vérifiez le Scanner de Barcode </string>
     <string name="title_barcode_scanner_setup">Étape 6: Vérification du scanner BarCode</string>
+    <string name="title_client_location">Emplacement des clients</string>
     <string name="title_client_location_update">Mettre à jour l\'emplacement du client</string>
     <string name="title_client_notifications">Notifications de client</string>
     <string name="title_client_registration_help_video">Enregistrement du client</string>
     <string name="title_client_scan">Numériser codes à barres desclients</string>
+    <string name="title_clients_locations">Emplacements des clients</string>
     <string name="title_cohort_download">Etape 1: Télécharger Cohorte(s)</string>
     <string name="title_cohort_download_help_video">Téléchargement de cohortes (sur demande)</string>
     <string name="title_cohort_prefix_help">Définition de(s) préfixe(s) Cohorts Aide</string>
@@ -715,6 +726,7 @@
     <string name="title_data_synchronize">Synchronisation des données locales</string>
     <string name="title_default_encounter_location">Emplacement de rencontre par défaut</string>
     <string name="title_default_encounter_provider">fournisseur de rencontre par défaut</string>
+    <string name="title_define_custom_concept">Définir un concept personnalisé</string>
     <string name="title_disclaimer">Licence, exclusion de garantie et limitation de responsabilité</string>
     <string name="title_duplicate_form_data_warning">Avertissement de données de formulaire dupliquer</string>
     <string name="title_enable_gps">Activer le GPS</string>
@@ -734,12 +746,14 @@
     <string name="title_guided_setup">Configuration guidée (recommandée)</string>
     <string name="title_guided_setup_help_video">Configuration initiale guidée</string>
     <string name="title_guided_setup_progress">Progression de l\'installation</string>
+    <string name="title_guided_setup_wizard">Assistant de configuration guidée</string>
     <string name="title_help_video_links">Liens vidéo de mUzima</string>
     <string name="title_html_help">Centre d\'aide</string>
     <string name="title_image_caption">Légende de l\'image</string>
     <string name="title_image_capture">Capture d\'image</string>
     <string name="title_image_choose">Choisir l\'image</string>
     <string name="title_initial_setup_guide">guide de configuration initiale de mUzima</string>
+    <string name="title_install_barcode_scanner">Installer le scanner de codes à barres</string>
     <string name="title_install_psmart">Installer l\'application P-Smart</string>
     <string name="title_introduction_video">Vidéo d\'introduction à Muzima</string>
     <string name="title_landing_page">Page d\'atterissage</string>
@@ -758,9 +772,11 @@
     <string name="title_muzima_training_manual">Manuel de formation mUzima</string>
     <string name="title_observations_by_concepts">Par concepte</string>
     <string name="title_observations_by_encounters">Par rencontre</string>
+    <string name="title_pick_location">Choisir l\'emplacement</string>
     <string name="title_provider_download">Étape 4: Ajouter des fournisseurs</string>
     <string name="title_provider_help">Aide fournisseur</string>
     <string name="title_provider_not_set">Impossible de définir en tant que fournisseur</string>
+    <string name="title_provider_reports">Rapports des fournisseurs</string>
     <string name="title_real_time_sync">Synchronisation en temps réel</string>
     <string name="title_require_medical_record_number">" Exiger un numéro de dossier médical"</string>
     <string name="title_search_server">Recherche sur le serveur</string>
@@ -770,6 +786,7 @@
     <string name="title_set_client_location">Définir l\'emplacement du client</string>
     <string name="title_setting_refresh">Actualiser les configurations</string>
     <string name="title_settings_help_html">Paramètres mUzima</string>
+    <string name="title_setup_method">Méthode de configuration</string>
     <string name="title_video_caption">Légende vidéo</string>
     <string name="title_video_choose">Choisissez Vidéo</string>
     <string name="title_video_record">Enregistrez vidéo</string>
@@ -808,17 +825,4 @@ Ces formulaires avant de télécharger une version plus récente. </string>
     <string name="write_shr_to_card_general">Ecrire des dossiers de santé partagés à la carte</string>
 
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
-    <string name="title_clients_locations">Emplacements des clients</string>
-    <string name="title_client_location">Emplacement des clients</string>
-    <string name="title_pick_location">Choisir l\'emplacement</string>
-    <string name="title_define_custom_concept">Définir un concept personnalisé</string>
-    <string name="title_install_barcode_scanner">Installer le scanner de codes à barres</string>
-    <string name="title_setup_method">Méthode de configuration</string>
-    <string name="title_guided_setup_wizard">Assistant de configuration guidée</string>
-    <string name="title_provider_reports">Rapports des fournisseurs</string>
-    <string name="hint_location_addresses_not_set">L\'adresse de localisation n\'a pas été définie pour tous les clients
-        disponibles
-    </string>
-    <string name="general_get_directions">Obtenir des directions</string>
-    <string name="select_default_encounter_location">Choisissez votre lieu de rencontre par défaut</string>
 </resources>

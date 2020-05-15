@@ -11,36 +11,106 @@
             left:0px !important;
             position: fixed !important;
         }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            max-width: 1000px;
+            margin: 100px auto 0;
+            padding-left: 6.25%;
+        }
+
+        .loader {
+            position: relative;
+            display: inline-block;
+            margin: 49% 50%;
+            width: 50px;
+            height: 50px;
+            border: 2px solid #0cf;
+            border-radius: 50%;
+
+            animation: spin 0.75s infinite linear;
+        }
+        .loader::before,
+        .loader::after {
+            left: -2px;
+            top: -2px;
+            display: none;
+            position: absolute;
+            content: '';
+            width: inherit;
+            height: inherit;
+            border: inherit;
+            border-radius: inherit;
+        }
+
+        .loader-1 {
+            border-top-width: 0;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
 <body>
-<div id="map"></div>
+<div id="loader" class="loader loader-1"></div>
+<div id="map" style="display:none"></div>
 <script>
+
+    var map=null;
 
     function initMap() {
         var lp;
-        var currentLocation = locationPickerInterface.getCurrentGPSLocation();
-        if (currentLocation != null) {
+
+        function setupLocationPicker(currentLocation){
+            document.getElementById("loader").style.display="hidden";
+            document.getElementById("map").style.display="block";
             currentLocation = JSON.parse(currentLocation);
-        }
+            var defaultZoomLevel = locationPickerInterface.getDefaultZoomLevel();
 
-        if (currentLocation != null && currentLocation.latitude != undefined && currentLocation.longitude != undefined) {
-            lp = new locationPicker('map', {
-                lat: currentLocation.latitude, lng: currentLocation.longitude
-            }, {
-                zoom: 9
-            });
-        } else {
-            lp = new locationPicker('map',{lat: 0.5117, lng: 35.282614}, {zoom: 9});
-        }
-
-        google.maps.event.addListener(lp.map, 'idle', function (event) {
-            if (locationPickerInterface != null) {
-                var location = lp.getMarkerPosition();
-                locationPickerInterface.updateSelectedLocation(location.lat, location.lng);
+            if (currentLocation != null && currentLocation.latitude != undefined && currentLocation.longitude != undefined) {
+                lp = new locationPicker('map', {
+                    lat: currentLocation.latitude, lng: currentLocation.longitude
+                }, {
+                    zoom: defaultZoomLevel,
+                    streetViewControl:false
+                });
             }
-        });
+
+            map = lp.map;
+            google.maps.event.addListener(lp.map, 'idle', function (event) {
+                if (locationPickerInterface != null) {
+                    var location = lp.getMarkerPosition();
+                    locationPickerInterface.updateSelectedLocation(location.lat, location.lng);
+                }
+            });
+            map.streetViewControl= false;
+            map.disableDefaultUI=true;
+        }
+
+        function getCurrentLocationAndLoadLocationPicker () {
+            var currentLocation = locationPickerInterface.getCurrentGPSLocation();
+
+            if (currentLocation == null) {
+                setTimeout(function () {
+                    getCurrentLocationAndLoadLocationPicker();
+                }, 1000);
+            } else {
+                setupLocationPicker(currentLocation);
+            }
+        }
+        getCurrentLocationAndLoadLocationPicker();
     };
 
 
@@ -53,6 +123,57 @@
         document.head.prepend(mapsScript);
     }
     injectApiKeyIntoMapsScriptElement();
+
+    var accuracyCircle = null;
+    var currentLocationCircle = null;
+    document.updateCurrentLocationAndAccuracy = function(latitude, longitude, accuracy){
+        if(map == null) {
+            setTimeout(function () {
+                document.updateCurrentLocationAndAccuracy(latitude,longitude,accuracy);
+            }, 1000);
+        } else {
+            var zoomLevel = map.getZoom();
+            var accuracyCircleRadius = accuracy;
+            var factor = Math.pow(20/zoomLevel, 20/zoomLevel)
+            var currentLocationCircleRadius = 200 * factor;
+
+            if(currentLocationCircleRadius < 10 * factor/2){
+                currentLocationCircleRadius = 10 * factor/2;
+            }
+            if (accuracyCircleRadius <= currentLocationCircleRadius) {
+                accuracyCircleRadius = currentLocationCircleRadius + 10 * factor;
+            }
+
+            if (accuracyCircle == null) {
+                accuracyCircle = new google.maps.Circle({
+                    strokeColor: '#12A5F4',
+                    strokeOpacity: 0.2,
+                    strokeWeight: 1,
+                    fillColor: '#12A5F4',
+                    fillOpacity: 0.15,
+                    map: map,
+                    center: {lat: latitude, lng: longitude},
+                    radius: accuracyCircleRadius
+                });
+
+                currentLocationCircle = new google.maps.Circle({
+                    strokeColor: '#FFFFFF',
+                    strokeOpacity: 1,
+                    strokeWeight: 1,
+                    fillColor: '#12A5F4',
+                    fillOpacity: 0.45,
+                    map: map,
+                    center: {lat: latitude, lng: longitude},
+                    radius: currentLocationCircleRadius
+                });
+            } else {
+                currentLocationCircle.setCenter({lat: latitude, lng: longitude});
+                currentLocationCircle.setRadius(currentLocationCircleRadius);
+                accuracyCircle.setCenter({lat: latitude, lng: longitude});
+                accuracyCircle.setRadius(accuracyCircleRadius);
+            }
+        }
+    }
 </script>
 
 </body>

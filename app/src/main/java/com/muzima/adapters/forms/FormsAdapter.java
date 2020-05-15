@@ -64,6 +64,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
             holder.downloadedImg = convertView.findViewById(R.id.downloadImg);
 
             convertView.setTag(holder);
+            setDownloadImageSize(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -83,6 +84,17 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
             holder.savedTime.setVisibility(View.GONE);
         }
         return convertView;
+    }
+
+    private void setDownloadImageSize(ViewHolder holder){
+        int lineHeight = holder.name.getLineHeight();
+        int imageLayoutMargin = 10;
+        int imageSize = 2*lineHeight-2*imageLayoutMargin;
+        int width = imageSize;
+        int height = imageSize;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,height);
+        params.setMargins(imageLayoutMargin,imageLayoutMargin,imageLayoutMargin,imageLayoutMargin);
+        holder.downloadedImg.setLayoutParams(params);
     }
 
     int getFormItemLayout() {
