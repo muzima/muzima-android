@@ -149,6 +149,8 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
+            ((FormsWithDataAdapter) listAdapter).clearSelectedFormsUuid();
+            unselectAllItems(list);
         }
     }
 
