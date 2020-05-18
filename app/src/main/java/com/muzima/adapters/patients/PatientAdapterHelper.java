@@ -66,8 +66,11 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         }
 
         holder = (ViewHolder) convertView.getTag();
-
-        holder.dateOfBirth.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
+        if(patient.getBirthdate() != null) {
+            holder.dateOfBirth.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
+        }else{
+            holder.dateOfBirth.setText(String.format(""));
+        }
         holder.identifier.setText(patient.getIdentifier());
         holder.distanceToClientAddress.setText(getDistanceToClientAddress(patient));
         holder.name.setText(getPatientFullName(patient));

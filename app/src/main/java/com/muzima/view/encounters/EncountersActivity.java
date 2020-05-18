@@ -68,7 +68,11 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
         genderIcon.setImageDrawable(getResources().getDrawable(genderDrawable));
 
         TextView dob = findViewById(R.id.dob);
-        dob.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
+        if(patient.getBirthdate() != null) {
+            dob.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
+        }else{
+            dob.setText(String.format(""));
+        }
 
         TextView patientIdentifier = findViewById(R.id.patientIdentifier);
         patientIdentifier.setText(patient.getIdentifier());
