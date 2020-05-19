@@ -464,7 +464,8 @@
     <string name="info_concept_unavailable">Nenhum conceito adicionado ainda</string>
     <string formatted="false" name="info_concepts_downloaded">Baixou %d conceitos</string>
     <string name="info_data_sync_cancelled">A sincronização de dados do mUzima foi cancelada.</string>
-    <string name="info_disclaimer"><![CDATA[
+    <string name="info_disclaimer">
+        <![CDATA[
         <p>
             mUzima é distribuído sob os termos da Licença Pública de Mozilla, v. 2.0 (MPL 2.0).
             Uma cópia da licença MPL 2.0 pode ser encontrada em http://mozilla.org/MPL/2.0/.
@@ -511,7 +512,8 @@
             direitos autorais
             pelo email info@mUzima.org.
         </p>
-    ]]></string>
+    ]]>
+    </string>
     <string formatted="false" name="info_download_complete">Descarregamento completo com o estado %d</string>
     <string name="info_downloaded_forms_unavailable">Nenhum formulário foi baixado</string>
     <string name="info_downloaded_image">Baixou a imagem</string>
@@ -540,6 +542,7 @@
     <string name="info_form_delete_success">Formulários apagados com sucesso</string>
     <string formatted="false" name="info_form_download">Baixou %d formulários</string>
     <string formatted="false" name="info_form_download_delete">Baixou %d formulários and retirou %d formulários</string>
+    <string name="info_form_download_failure">Ocorreu um erro ao fazer o download de modelos de formulário</string>
     <string name="info_form_downloaded">Baixou 1 formulário</string>
     <string name="info_form_fetch_in_progress">Já está buscando of formulários, ignorou o pedido</string>
     <string name="info_form_load">Carregando Formulários…</string>
@@ -609,6 +612,7 @@
     <string formatted="false" name="info_patient_reports_downloaded">%d Relatórios baixados</string>
     <string name="info_patient_reports_fetch_in_progress">Já buscando relatórios, ignorou a solicitação</string>
     <string name="info_patient_reports_unavailable">Não há relatórios de clientes disponíveis</string>
+    <string name="info_person_creation_failure">Não foi possível criar o registro da pessoa</string>
     <string formatted="false" name="info_provider_delete_success">%d Provedores apagados com sucesso</string>
     <string name="info_provider_download">Baixando Provedores…</string>
     <string name="info_provider_downloaded">Baixou 1 provedor</string>
@@ -721,6 +725,7 @@
 
     <string name="select_a_registration_form_text">Selecione um formulário de inscrição</string>
     <string name="select_a_relationship_form_text">Selecione um formulário</string>
+    <string name="select_default_encounter_location">Escolha seu local de encontro padrão</string>
 
     <string name="send_feedback">Enviar comentários</string>
     <string name="send_general_text">Mandar</string>

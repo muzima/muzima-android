@@ -28,7 +28,7 @@
             });
 
             var map = new google.maps.Map(
-                document.getElementById('map'), {zoom: 9, center: homeLocation});
+                document.getElementById('map'), {zoom: 12, center: homeLocation,streetViewControl:false});
 
             var marker = new google.maps.Marker({position: homeLocation, map: map});
 

@@ -44,6 +44,11 @@ public class DateUtils {
         return formattedDate.format(date);
     }
 
+    public static String getFormattedStandardDisplayDateTime(Date date){
+        SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DISPLAY_FORMAT);
+        return formattedDate.format(date);
+    }
+
     public static String getFormattedDate(Date date, String pattern){
         SimpleDateFormat formattedDate = new SimpleDateFormat(pattern);
         return formattedDate.format(date);

@@ -186,7 +186,7 @@ public class AllCohortsListFragment extends CohortListFragment {
             Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS);
             String lastSyncedMsg = getActivity().getString(R.string.info_last_sync_unavailable);
             if(lastSyncedTime != null){
-                lastSyncedMsg = getString(R.string.hint_last_synced,DateUtils.getFormattedDateTime(lastSyncedTime));
+                lastSyncedMsg = getString(R.string.hint_last_synced,DateUtils.getFormattedStandardDisplayDateTime(lastSyncedTime));
             }
             syncText.setText(lastSyncedMsg);
         } catch (IOException e) {

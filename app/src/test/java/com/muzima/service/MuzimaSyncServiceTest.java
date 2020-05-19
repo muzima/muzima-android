@@ -288,13 +288,13 @@ public class MuzimaSyncServiceTest {
     public void downloadCohort_shouldDownloadAllCohortsWhenNoPrefixesAreAvailableAndReplaceOldCohorts() throws CohortController.CohortDownloadException, CohortController.CohortDeleteException, CohortController.CohortSaveException {
         List<Cohort> cohorts = new ArrayList<>();
 
-        when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
+        when(cohortController.downloadAllCohorts(null)).thenReturn(cohorts);
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
 
         muzimaSyncService.downloadCohorts();
 
-        verify(cohortController).downloadAllCohorts();
+        verify(cohortController).downloadAllCohorts(null);
         verify(cohortController).saveOrUpdateCohorts(cohorts);
         verify(cohortController).deleteCohorts(new ArrayList<Cohort>());
         verifyNoMoreInteractions(cohortController);
@@ -310,7 +310,7 @@ public class MuzimaSyncServiceTest {
         cohorts.add(aCohort);
         cohorts.add(voidedCohort);
 
-        when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
+        when(cohortController.downloadAllCohorts(null)).thenReturn(cohorts);
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
 
@@ -327,13 +327,13 @@ public class MuzimaSyncServiceTest {
             add("Pref2");
         }};
 
-        when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
+        when(cohortController.downloadAllCohorts(null)).thenReturn(cohorts);
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(prefixesPreferenceService.getCohortPrefixes()).thenReturn(cohortPrefixes);
 
         muzimaSyncService.downloadCohorts();
 
-        verify(cohortController).downloadCohortsByPrefix(cohortPrefixes);
+        verify(cohortController).downloadCohortsByPrefix(cohortPrefixes,null);
         verify(cohortController).saveOrUpdateCohorts(cohorts);
         verify(cohortController).deleteCohorts(new ArrayList<Cohort>());
         verifyNoMoreInteractions(cohortController);
@@ -349,7 +349,7 @@ public class MuzimaSyncServiceTest {
 
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
-        when(cohortController.downloadAllCohorts()).thenReturn(cohorts);
+        when(cohortController.downloadAllCohorts(null)).thenReturn(cohorts);
 
         assertThat(muzimaSyncService.downloadCohorts(), is(result));
     }
@@ -358,7 +358,7 @@ public class MuzimaSyncServiceTest {
     public void downloadCohort_shouldReturnDownloadErrorIfDownloadExceptionOccurs() throws CohortController.CohortDownloadException {
         when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
-        doThrow(new CohortController.CohortDownloadException(null)).when(cohortController).downloadAllCohorts();
+        doThrow(new CohortController.CohortDownloadException(null)).when(cohortController).downloadAllCohorts(null);
 
         assertThat(muzimaSyncService.downloadCohorts()[0], is(SyncStatusConstants.DOWNLOAD_ERROR));
     }
@@ -373,7 +373,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadPatientsForCohorts_shouldDownloadAndReplaceCohortMembersAndPatients() throws CohortController.CohortDownloadException, CohortController.CohortReplaceException, PatientController.PatientSaveException, CohortController.CohortUpdateException {
+    public void downloadPatientsForCohorts_shouldDownloadAndReplaceCohortMembersAndPatients() throws CohortController.CohortDownloadException, CohortController.CohortReplaceException, PatientController.PatientSaveException, CohortController.CohortUpdateException, ProviderController.ProviderLoadException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
         List<CohortData> cohortDataList = new ArrayList<CohortData>() {{
             add(new CohortData() {{
@@ -386,12 +386,12 @@ public class MuzimaSyncServiceTest {
             }});
         }};
 
-        when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
+        when(cohortController.downloadCohortData(cohortUuids, null)).thenReturn(cohortDataList);
         when(cohortController.downloadRemovedCohortData(cohortUuids)).thenReturn(new ArrayList<CohortData>());
 
         muzimaSyncService.downloadPatientsForCohorts(cohortUuids);
 
-        verify(cohortController).downloadCohortData(cohortUuids);
+        verify(cohortController).downloadCohortData(cohortUuids, null );
         verify(cohortController).addCohortMembers(cohortDataList.get(0).getCohortMembers());
         verify(cohortController).addCohortMembers(cohortDataList.get(1).getCohortMembers());
         verify(cohortController).downloadRemovedCohortData(cohortUuids);
@@ -403,7 +403,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void shouldDeleteVoidedPatientsDuringPatientDownload() throws CohortController.CohortDownloadException, PatientController.PatientDeleteException {
+    public void shouldDeleteVoidedPatientsDuringPatientDownload() throws CohortController.CohortDownloadException, PatientController.PatientDeleteException, ProviderController.ProviderLoadException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
         final Patient voidedPatient = mock(Patient.class);
         when(voidedPatient.isVoided()).thenReturn(true);
@@ -419,7 +419,7 @@ public class MuzimaSyncServiceTest {
             }});
         }};
 
-        when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
+        when(cohortController.downloadCohortData(cohortUuids, null)).thenReturn(cohortDataList);
 
         muzimaSyncService.downloadPatientsForCohorts(cohortUuids);
 
@@ -441,7 +441,7 @@ public class MuzimaSyncServiceTest {
             }});
         }};
 
-        when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
+        when(cohortController.downloadCohortData(cohortUuids, null)).thenReturn(cohortDataList);
 
         int[] result = muzimaSyncService.downloadPatientsForCohorts(cohortUuids);
         assertThat(result[0], is(SyncStatusConstants.SUCCESS));
@@ -450,16 +450,16 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadPatientsForCohorts_shouldReturnDownloadErrorIfDownloadExceptionIsThrown() throws CohortController.CohortDownloadException {
+    public void downloadPatientsForCohorts_shouldReturnDownloadErrorIfDownloadExceptionIsThrown() throws CohortController.CohortDownloadException, ProviderController.ProviderLoadException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
 
-        doThrow(new CohortController.CohortDownloadException(null)).when(cohortController).downloadCohortData(cohortUuids);
+        doThrow(new CohortController.CohortDownloadException(null)).when(cohortController).downloadCohortData(cohortUuids, null);
 
         assertThat(muzimaSyncService.downloadPatientsForCohorts(cohortUuids)[0], is(SyncStatusConstants.DOWNLOAD_ERROR));
     }
 
     @Test
-    public void downloadPatientsForCohorts_shouldReturnReplaceErrorIfReplaceExceptionIsThrownForCohorts() throws CohortController.CohortReplaceException, CohortController.CohortDownloadException {
+    public void downloadPatientsForCohorts_shouldReturnReplaceErrorIfReplaceExceptionIsThrownForCohorts() throws CohortController.CohortReplaceException, CohortController.CohortDownloadException, ProviderController.ProviderLoadException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
         List<CohortData> cohortDataList = new ArrayList<CohortData>() {{
             add(new CohortData() {{
@@ -473,14 +473,14 @@ public class MuzimaSyncServiceTest {
             }});
         }};
 
-        when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
+        when(cohortController.downloadCohortData(cohortUuids, null)).thenReturn(cohortDataList);
         doThrow(new CohortController.CohortReplaceException(null)).when(cohortController).addCohortMembers(anyList());
 
         assertThat(muzimaSyncService.downloadPatientsForCohorts(cohortUuids)[0], is(SyncStatusConstants.REPLACE_ERROR));
     }
 
     @Test
-    public void downloadPatientsForCohorts_shouldReturnReplaceErrorIfReplaceExceptionIsThrownForPatients() throws CohortController.CohortDownloadException, PatientController.PatientSaveException {
+    public void downloadPatientsForCohorts_shouldReturnReplaceErrorIfReplaceExceptionIsThrownForPatients() throws CohortController.CohortDownloadException, PatientController.PatientSaveException, ProviderController.ProviderLoadException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
         List<CohortData> cohortDataList = new ArrayList<CohortData>() {{
             add(new CohortData() {{
@@ -494,7 +494,7 @@ public class MuzimaSyncServiceTest {
             }});
         }};
 
-        when(cohortController.downloadCohortData(cohortUuids)).thenReturn(cohortDataList);
+        when(cohortController.downloadCohortData(cohortUuids, null)).thenReturn(cohortDataList);
         doThrow(new PatientController.PatientSaveException(null)).when(patientController).replacePatients(anyList());
 
         assertThat(muzimaSyncService.downloadPatientsForCohorts(cohortUuids)[0], is(SyncStatusConstants.REPLACE_ERROR));

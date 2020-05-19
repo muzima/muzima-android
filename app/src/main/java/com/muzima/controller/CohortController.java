@@ -10,10 +10,18 @@
 
 package com.muzima.controller;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.Provider;
+import com.muzima.api.model.User;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.SntpService;
@@ -32,12 +40,44 @@ public class CohortController {
     private final CohortService cohortService;
     private final LastSyncTimeService lastSyncTimeService;
     private final SntpService sntpService;
+    private final MuzimaApplication muzimaApplication;
 
-    public CohortController(CohortService cohortService, LastSyncTimeService lastSyncTimeService, SntpService sntpService) {
+    public CohortController(CohortService cohortService, LastSyncTimeService lastSyncTimeService, SntpService sntpService, MuzimaApplication muzimaApplication) {
         this.cohortService = cohortService;
         this.lastSyncTimeService = lastSyncTimeService;
         this.sntpService = sntpService;
+        this.muzimaApplication = muzimaApplication;
     }
+
+    public String getDefaultLocation(){
+        Context context = muzimaApplication.getApplicationContext();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String setDefaultLocation = preferences.getString("defaultEncounterLocation", null);
+        if(setDefaultLocation==null)
+        {
+            setDefaultLocation = null;
+        }
+        return setDefaultLocation;
+    }
+
+    public Provider getLoggedInProvider(){
+        Provider loggedInProvider = new Provider();
+        try {
+            User authenticatedUser = muzimaApplication.getAuthenticatedUser();
+            if(authenticatedUser != null) {
+                loggedInProvider = muzimaApplication.getProviderController().getLoggedInProvider(
+                        muzimaApplication.getAuthenticatedUser().getSystemId());
+            }else {
+                loggedInProvider = null;
+            }
+        } catch (ProviderController.ProviderLoadException e) {
+            loggedInProvider = null;
+            Log.e(getClass().getSimpleName(),"Exception while fetching logged in provider "+e);
+        }
+        return  loggedInProvider;
+    }
+
+
 
     public List<Cohort> getAllCohorts() throws CohortFetchException {
         try {
@@ -55,11 +95,11 @@ public class CohortController {
         }
     }
 
-    public List<Cohort> downloadAllCohorts() throws CohortDownloadException {
+    public List<Cohort> downloadAllCohorts(String defaultLocation) throws CohortDownloadException {
         try {
             Date lastSyncTimeForCohorts = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS);
-            List<Cohort> allCohorts = cohortService.downloadCohortsByNameAndSyncDate(StringUtils.EMPTY, lastSyncTimeForCohorts);
-
+            Provider loggedInProvider = getLoggedInProvider();
+            List<Cohort> allCohorts = cohortService.downloadCohortsByNameAndSyncDate(StringUtils.EMPTY, lastSyncTimeForCohorts, defaultLocation, loggedInProvider);
             LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getTimePerDeviceTimeZone());
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return allCohorts;
@@ -68,10 +108,10 @@ public class CohortController {
         }
     }
 
-    public List<CohortData> downloadCohortData(String[] cohortUuids) throws CohortDownloadException {
+    public List<CohortData> downloadCohortData(String[] cohortUuids, String defaulLocation) throws CohortDownloadException {
         ArrayList<CohortData> allCohortData = new ArrayList<>();
-        for (String cohortUuid : cohortUuids) {
-            allCohortData.add(downloadCohortDataByUuid(cohortUuid));
+         for (String cohortUuid : cohortUuids) {
+            allCohortData.add(downloadCohortDataByUuid(cohortUuid, defaulLocation));
         }
         return allCohortData;
     }
@@ -84,10 +124,11 @@ public class CohortController {
         return allCohortData;
     }
 
-    public CohortData downloadCohortDataByUuid(String uuid) throws CohortDownloadException {
+    public CohortData downloadCohortDataByUuid(String uuid,String defaultLocation) throws CohortDownloadException {
         try {
             Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS_DATA, uuid);
-            CohortData cohortData = cohortService.downloadCohortDataAndSyncDate(uuid, false, lastSyncDate);
+            Provider loggedInProvider = getLoggedInProvider();
+            CohortData cohortData = cohortService.downloadCohortDataAndSyncDate(uuid, false, lastSyncDate, defaultLocation, loggedInProvider);
             LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS_DATA, sntpService.getTimePerDeviceTimeZone(), uuid);
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return cohortData;
@@ -98,8 +139,10 @@ public class CohortController {
 
     public CohortData downloadRemovedCohortDataByUuid(String uuid) throws CohortDownloadException {
         try {
+            String defaultLocation = getDefaultLocation();
+            Provider loggedInProvider = getLoggedInProvider();
             Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_REMOVED_COHORTS_DATA, uuid);
-            CohortData cohortData = cohortService.downloadRemovedStaticCohortMemberByCohortUuidAndSyncDate(uuid, lastSyncDate);
+            CohortData cohortData = cohortService.downloadRemovedStaticCohortMemberByCohortUuidAndSyncDate(uuid, lastSyncDate, defaultLocation, loggedInProvider);
             LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_REMOVED_COHORTS_DATA, sntpService.getTimePerDeviceTimeZone(), uuid);
             lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             return cohortData;
@@ -108,14 +151,15 @@ public class CohortController {
         }
     }
 
-    public List<Cohort> downloadCohortsByPrefix(List<String> cohortPrefixes) throws CohortDownloadException {
+    public List<Cohort> downloadCohortsByPrefix(List<String> cohortPrefixes,String defaultLocation) throws CohortDownloadException {
+        Provider loggedInProvider = getLoggedInProvider();
         List<Cohort> filteredCohorts = new ArrayList<>();
         try {
             Date lastSyncDateOfCohort;
             LastSyncTime lastSyncTime;
             for (String cohortPrefix : cohortPrefixes) {
                 lastSyncDateOfCohort = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS, cohortPrefix);
-                List<Cohort> cohorts = cohortService.downloadCohortsByNameAndSyncDate(cohortPrefix, lastSyncDateOfCohort);
+                List<Cohort> cohorts = cohortService.downloadCohortsByNameAndSyncDate(cohortPrefix, lastSyncDateOfCohort, defaultLocation, loggedInProvider);
                 List<Cohort> filteredCohortsForPrefix = filterCohortsByPrefix(cohorts, cohortPrefix);
                 addUniqueCohorts(filteredCohorts, filteredCohortsForPrefix);
                 lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getTimePerDeviceTimeZone(), cohortPrefix);
@@ -309,18 +353,22 @@ public class CohortController {
     }
 
     public List<Cohort> downloadCohortByName(String name) throws CohortDownloadException {
+        String defaultLocation = getDefaultLocation();
+        Provider loggedInProvider = getLoggedInProvider();
         try {
-            return cohortService.downloadCohortsByName(name);
+            return cohortService.downloadCohortsByName(name, defaultLocation, loggedInProvider);
         } catch (IOException e) {
             throw new CohortDownloadException(e);
         }
     }
 
     public List<Cohort> downloadCohortsByUuidList(String[] uuidList) throws CohortDownloadException {
+        String defaultLocation = getDefaultLocation();
+        Provider loggedInProvider = getLoggedInProvider();
         try {
             List<Cohort> cohortList = new ArrayList<>();
             for(String uuid:uuidList){
-                cohortList.add(cohortService.downloadCohortByUuid(uuid));
+                cohortList.add(cohortService.downloadCohortByUuid(uuid, defaultLocation, loggedInProvider));
             }
             return cohortList;
         } catch (IOException e) {

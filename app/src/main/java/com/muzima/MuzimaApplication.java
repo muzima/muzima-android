@@ -216,7 +216,7 @@ public class MuzimaApplication extends MultiDexApplication {
         if (cohortController == null) {
             try {
                 cohortController = new CohortController(muzimaContext.getCohortService(), muzimaContext.getLastSyncTimeService(),
-                        getSntpService());
+                        getSntpService(),this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

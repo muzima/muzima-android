@@ -46,6 +46,7 @@
                     style="@style/LoginInfoEditText"
                     android:inputType="textShortMessage"
                     android:nextFocusDown="@+id/password"
+                    android:text=""
                     android:hint="@string/general_username"/>
 
             <View style="@style/LoginInfoLayoutDivider"/>
@@ -55,6 +56,7 @@
                     android:hint="@string/general_password"
                     style="@style/LoginInfoEditText"
                     android:nextFocusDown="@+id/login"
+                    android:text=""
                     android:inputType="textPassword"/>
 
         </LinearLayout>

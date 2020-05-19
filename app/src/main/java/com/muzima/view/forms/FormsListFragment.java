@@ -135,6 +135,7 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
 
         private void onCompleteOfFormDelete() {
             endActionMode();
+            unselectAllItems();
             reloadData();
             Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_delete_success), Toast.LENGTH_SHORT).show();
         }
@@ -148,6 +149,8 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
+            ((FormsWithDataAdapter) listAdapter).clearSelectedFormsUuid();
+            unselectAllItems(list);
         }
     }
 

@@ -67,6 +67,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private static final String IMAGE = "imagingComponent";
     private static final String AUDIO = "audioComponent";
     private static final String VIDEO = "videoComponent";
+    private static final String ENCOUNTER_MINI_FORM_CREATOR = "encounterMiniFormCreatorComponent";
     private static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     private static final String FORM = "form";
     private static final String DISCRIMINATOR = "discriminator";
@@ -83,6 +84,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private ImagingComponent imagingComponent;
     private AudioComponent audioComponent;
     private VideoComponent videoComponent;
+    private EncounterMiniFormCreatorComponent encounterMiniFormCreatorComponent;
     private Map<String, String> scanResultMap;
     private Map<String, String> imageResultMap;
     private Map<String, String> audioResultMap;
@@ -327,10 +329,12 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         imagingComponent = new ImagingComponent(this);
         audioComponent = new AudioComponent(this);
         videoComponent = new VideoComponent(this);
+        encounterMiniFormCreatorComponent = new EncounterMiniFormCreatorComponent(this);
         webView.addJavascriptInterface(barCodeComponent, BARCODE);
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);
         webView.addJavascriptInterface(videoComponent, VIDEO);
+        webView.addJavascriptInterface(encounterMiniFormCreatorComponent, ENCOUNTER_MINI_FORM_CREATOR);
         webView.addJavascriptInterface(new ZiggyFileLoader("www/ziggy", getApplicationContext().getAssets(), formInstance.getModelJson()), ZIGGY_FILE_LOADER);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {

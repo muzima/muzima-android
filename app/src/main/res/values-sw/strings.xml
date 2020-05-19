@@ -387,7 +387,8 @@
     <string name="info_concept_unavailable">Hamna dhana zilizoongezwa tayari</string>
     <string formatted="false" name="info_concepts_downloaded">Dhana %d zimepakuliwa</string>
     <string name="info_data_sync_cancelled">Ulandanishaji wa data ya mUzima ulisitishwa.</string>
-    <string name="info_disclaimer"><![CDATA[
+    <string name="info_disclaimer">
+        <![CDATA[
         <p>Mfumo wa mUzima umesambazwa chini ya masharti ya leseni kwa umma ya Mozilla, v.2.0.(MPL 2.0). Nakala ya leseni
         ya MPL 2.0 yaweza patikanwa kwa upakuaji katika http://mozilla.org/MPL/2.0.</p><p>Mfumo wa mUzima pia umesambazwa chini ya kibadhi cha ilani ya kujitoa hatiani na kizuizi cha dhima yenye kikomo.</p><p><strong>Kibadhi cha ilani yakujitoa hatiani na kizuizi cha dhima yenye kikomo</strong></p><p>Katika nchi ya Marekani, au mamlaka yoyote ambapo patahusika, vipengele zaidi vifuatavyo vya kibadhi cha ilani
         yakujitoa hatiani na kizuizi cha dhima yenye kikomo vimeshirikishwa kwenye  sheria na masharti ya leseni ya MPL 2.0:</p><p> 1. Hakuna dhamana ya aina yoyote ile kwa vyovyote vile imetolewa kwa ajili ya natija utakayoipata kutoka na
@@ -406,7 +407,8 @@
         za  kanuni na masharti ya siri za kliniki hata kama wahusika hao watakuwa wameelezwa uwezekano wa madhara kama hayo.</p><p>3. Mfumo wa mUzima  ni hatimiliki ya wadhamini wa vyuo vikuu vya Indana, Moi na kituo cha afya cha chuo cha Vanderbilt.</p><p>4. Ikiwa mtumiaji wa mfumo huu ni shirika ambalo linadhamiria kupata faida ya kibiashara ama natija kwa njia
         yoyote ile kwa mfumo utakaotumia kodi za mfumo huu kwenye biashara ya faida, mtumiaji anashurutishwa kuwasiliana na
         mwenye hatimiliki kupitia barua pepe: mUzima.mobile@gmail.com</p>
-        ]]></string>
+        ]]>
+    </string>
     <string formatted="false" name="info_download_complete">Udukuzi umekamilika na hali %d</string>
     <string name="info_downloaded_forms_unavailable">Hakuna fomu zilizodukuliwa</string>
     <string name="info_downloaded_image">Taswira/Picha imedukuliwa</string>
@@ -430,6 +432,7 @@
     <string name="info_form_delete_success">Fomu zimefanikiwa kufutwa</string>
     <string name="info_form_download">Fomu zinapakuliwa</string>
     <string formatted="false" name="info_form_download_delete">Fomu %d na fomu zilizopumzishwa %d zimepakuliwa</string>
+    <string name="info_form_download_failure">Kulikuwa na hitilafu wakati wa kupakua templeti za fomu</string>
     <string name="info_form_downloaded">Fomu 1 imepakuliwa</string>
     <string name="info_form_fetch_in_progress">Tayari utaratibu wa kuchukua fomu unaendelea, ombi limepuuzwa</string>
     <string name="info_form_load">Fomu zinapakiwa…</string>
@@ -489,6 +492,7 @@
     <string formatted="false" name="info_patient_reports_downloaded">Imepakua ripoti %d</string>
     <string name="info_patient_reports_fetch_in_progress">Tayari ripoti zinalandanishwa, ombi limepuuzwa</string>
     <string name="info_patient_reports_unavailable">Hakuna Ripoti za Mteja Zinazopatikana</string>
+    <string name="info_person_creation_failure">Haikuweza kuunda rekodi ya mtu</string>
     <string formatted="false" name="info_provider_delete_success">Watoa huduma %d wamefanikiwa kufutwa </string>
     <string name="info_provider_download">Watoa huduma wanapakuliwa</string>
     <string name="info_provider_downloaded">Mtoa huduma mmoja amepakuliwa</string>
@@ -600,6 +604,7 @@
 
     <string name="select_a_registration_form_text">Chagua fomu ya usajili</string>
     <string name="select_a_relationship_form_text">Chagua fomu</string>
+    <string name="select_default_encounter_location">Chagua eneo lako la kukutana la msingi</string>
 
     <string name="send_feedback">Tuma maoni</string>
     <string name="send_general_text">Tuma</string>

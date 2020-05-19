@@ -31,6 +31,7 @@ import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Form;
@@ -43,6 +44,7 @@ import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.Constants;
+import com.muzima.utils.GeolocationJsonMapper;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
@@ -51,6 +53,7 @@ import com.muzima.utils.barcode.IntentResult;
 import com.muzima.utils.imaging.ImageResult;
 import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.maps.LocationPickerResult;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import org.apache.commons.lang.time.DateUtils;
@@ -77,6 +80,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private static final String IMAGE = "imagingComponent";
     private static final String AUDIO = "audioComponent";
     private static final String VIDEO = "videoComponent";
+    private static final String GPS_LOCATION_PICKER = "gpsLocationPickerComponent";
+    private static final String RELATIONSHIP_CREATOR = "relationshipCreatorComponent";
+    private static final String ENCOUNTER_MINI_FORM_CREATOR = "encounterMiniFormCreatorComponent";
     public static final String FORM = "form";
     public static final String DISCRIMINATOR = "discriminator";
     private static final String DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS = "2";
@@ -97,10 +103,14 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private ImagingComponent imagingComponent;
     private AudioComponent audioComponent;
     private VideoComponent videoComponent;
+    private GPSLocationPickerComponent gpsLocationPickerComponent;
+    private RelationshipComponent relationshipComponent;
     private Map<String, String> scanResultMap;
     private Map<String, String> imageResultMap;
     private Map<String, String> audioResultMap;
     private Map<String, String> videoResultMap;
+    private Map<String, String> gpsLocationPickerResultMap;
+    private Map<String, String> relationshipPersonResultMap;
     private String sectionName;
     private FormController formController;
     private String autoSaveIntervalPreference;
@@ -108,6 +118,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private final Handler handler = new Handler();
     private final ThemeUtils themeUtils = new ThemeUtils();
     private boolean isFormReload;
+    private EncounterMiniFormCreatorComponent encounterMiniFormCreatorComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +135,8 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         imageResultMap = new HashMap<>();
         audioResultMap = new HashMap<>();
         videoResultMap = new HashMap<>();
+        gpsLocationPickerResultMap = new HashMap<>();
+        relationshipPersonResultMap = new HashMap<>();
 
         setContentView(R.layout.activity_form_webview);
         if(getIntent().getSerializableExtra(POPUP) != null) {
@@ -248,6 +261,18 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             String jsonMap = new JSONObject(videoResultMap).toString();
             Log.d(getClass().getSimpleName(), "Header:" + sectionName + "json:" + jsonMap);
             webView.loadUrl("javascript:document.populateVideo('" + sectionName + "', " + jsonMap + ")");
+        }
+
+        if (gpsLocationPickerResultMap != null && !gpsLocationPickerResultMap.isEmpty()) {
+            String jsonMap = new JSONObject(gpsLocationPickerResultMap).toString();
+            Log.d(getClass().getSimpleName(), "Header:" + sectionName + "json:" + jsonMap);
+            webView.loadUrl("javascript:document.populatePickedGpsLocation('" + sectionName + "', " + jsonMap + ")");
+        }
+
+        if (relationshipComponent != null && !relationshipPersonResultMap.isEmpty()) {
+            String jsonMap = new JSONObject(relationshipPersonResultMap).toString();
+            Log.d(getClass().getSimpleName(), "Header:" + sectionName + "json:" + jsonMap);
+            webView.loadUrl("javascript:document.populateRelationshipPerson('" + sectionName + "', " + jsonMap + ")");
         }
         super.onResume();
         themeUtils.onResume(this);
@@ -377,6 +402,34 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             videoResultMap.put(videoComponent.getVideoPathField(), videoResult.getVideoUri());
             videoResultMap.put(videoComponent.getVideoCaptionField(), videoResult.getVideoCaption());
         }
+
+        LocationPickerResult locationPickerResult = GPSLocationPickerComponent.parseActivityResult(requestCode, resultCode, intent);
+        if (locationPickerResult != null) {
+            sectionName = gpsLocationPickerComponent.getSectionName();
+            gpsLocationPickerResultMap.put(gpsLocationPickerComponent.getLatitudeField(), locationPickerResult.getLatitude());
+            gpsLocationPickerResultMap.put(gpsLocationPickerComponent.getLongitudeField(), locationPickerResult.getLongitude());
+            if(gpsLocationPickerComponent.isCreateDemographicsUpdatePreferred()){
+                createLocationUpdateFormData();
+            }
+        }
+
+        CreateRelationshipPersonResult relationshipPersonResult = RelationshipComponent.parseActivityResult(requestCode, resultCode, intent);
+        if (relationshipPersonResult != null) {
+            sectionName = relationshipComponent.getSectionName();
+            relationshipPersonResultMap.put(relationshipComponent.getPersonUuidField(), relationshipPersonResult.getPersonUuid());
+        }
+    }
+
+    private void createLocationUpdateFormData(){
+        try {
+            new GeolocationJsonMapper(patient, (MuzimaApplication) getApplicationContext()).createAndSaveLocationUpdateFormData();
+        } catch (FormController.FormDataSaveException e) {
+            Log.e(getClass().getSimpleName(), "Could not create location Update formData",e);
+            Toast.makeText(this, R.string.error_geolocation_update_failure,Toast.LENGTH_LONG).show();
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Could not create location Update formData",e);
+            Toast.makeText(this, R.string.error_geolocation_update_failure,Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -457,10 +510,22 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         imagingComponent = new ImagingComponent(this);
         audioComponent = new AudioComponent(this);
         videoComponent = new VideoComponent(this);
+
+        gpsLocationPickerComponent = new GPSLocationPickerComponent(this);
+        relationshipComponent = new RelationshipComponent(this);
+
+        encounterMiniFormCreatorComponent = new EncounterMiniFormCreatorComponent(this);
+
         webView.addJavascriptInterface(barCodeComponent, BARCODE);
         webView.addJavascriptInterface(imagingComponent, IMAGE);
         webView.addJavascriptInterface(audioComponent, AUDIO);
         webView.addJavascriptInterface(videoComponent, VIDEO);
+
+        webView.addJavascriptInterface(gpsLocationPickerComponent, GPS_LOCATION_PICKER);
+        webView.addJavascriptInterface(relationshipComponent, RELATIONSHIP_CREATOR);
+
+        webView.addJavascriptInterface(encounterMiniFormCreatorComponent, ENCOUNTER_MINI_FORM_CREATOR);
+
         webView.addJavascriptInterface(new HTMLFormDataStore(this, formData, isFormReload,
                 (MuzimaApplication) getApplicationContext()), HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);

@@ -130,6 +130,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
 
         private void onCompleteOfFormDelete() {
             endActionMode();
+            unselectAllItems();
             reloadData();
             allAvailableFormsCompleteListener.reloadData();
             Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_delete_success), Toast.LENGTH_SHORT).show();
@@ -139,6 +140,7 @@ public class DownloadedFormsListFragment extends FormsListFragment implements Al
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
             ((DownloadedFormsAdapter) listAdapter).clearSelectedForms();
+            unselectAllItems(list);
         }
     }
 

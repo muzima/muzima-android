@@ -349,7 +349,7 @@
                     android:value="com.muzima.view.patients.PatientsListActivity"/>
         </activity>
         <activity
-                android:name=".view.maps.MapLocationPickerActivity"
+                android:name=".view.maps.GPSLocationPickerActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/title_pick_location"
                 android:parentActivityName=".view.patients.PatientsListActivity"
@@ -475,6 +475,13 @@
             android:name=".view.relationship.RelationshipFormsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/select_a_relationship_form_text"
+            android:theme="@style/DialogNoTitleBar"
+            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:noHistory="true"/>
+
+        <activity
+            android:name=".view.forms.EncounterMiniFormActivity"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/DialogNoTitleBar"
             android:parentActivityName=".view.patients.PatientSummaryActivity"
             android:noHistory="true"/>

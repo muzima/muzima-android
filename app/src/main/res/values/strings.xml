@@ -449,7 +449,8 @@
     <string name="info_concept_unavailable">No Concepts added yet.</string>
     <string formatted="false" name="info_concepts_downloaded">Downloaded %d concepts</string>
     <string name="info_data_sync_cancelled">mUzima data sync was cancelled.</string>
-    <string name="info_disclaimer"><![CDATA[
+    <string name="info_disclaimer">
+        <![CDATA[
         <p>
         mUzima is distributed under the terms of the Mozilla Public License, v. 2.0 (MPL 2.0).
         A copy of the MPL 2.0 license can be found at http://mozilla.org/MPL/2.0/.
@@ -487,7 +488,8 @@
 	application that uses this code in a for-profit venture, the user is required to contact the copyright holder
 	through mUzima.mobile@gmail.com
 	</p>
-        ]]></string>
+        ]]>
+    </string>
     <string name="info_download_complete">Download complete with status %d</string>
     <string name="info_downloaded_forms_unavailable">No forms have been downloaded</string>
     <string name="info_downloaded_image">Downloaded image</string>
@@ -517,6 +519,7 @@
     <string name="info_form_delete_success">Forms deleted successfully</string>
     <string name="info_form_download">Downloading Forms</string>
     <string formatted="false" name="info_form_download_delete">Downloaded %d forms and retired %d forms</string>
+    <string name="info_form_download_failure">There was an error downloading form templates</string>
     <string name="info_form_downloaded">Downloaded 1 form</string>
     <string name="info_form_fetch_in_progress">Already fetching forms, ignored the request</string>
     <string name="info_form_load">Loading Forms…</string>
@@ -582,6 +585,7 @@
     <string formatted="false" name="info_patient_reports_downloaded">Downloaded %d reports</string>
     <string name="info_patient_reports_fetch_in_progress">Already fetching reports, ignored the request</string>
     <string name="info_patient_reports_unavailable">No Client Reports Available</string>
+    <string name="info_person_creation_failure">Could not create person record</string>
     <string name="info_provider_delete_success">%d Providers deleted successfully</string>
     <string name="info_provider_download">Downloading Providers</string>
     <string name="info_provider_downloaded">Downloaded 1 provider</string>
@@ -691,6 +695,7 @@
 
     <string name="select_a_registration_form_text">Select a registration form</string>
     <string name="select_a_relationship_form_text">Select a form</string>
+    <string name="select_default_encounter_location">Choose your default encounter location</string>
 
     <string name="send_feedback">Send feedback</string>
     <string name="send_general_text">Send</string>
