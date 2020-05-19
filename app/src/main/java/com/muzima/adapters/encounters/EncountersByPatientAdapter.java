@@ -103,7 +103,7 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
             try {
                encounters = encounterController.getEncountersByPatientUuid(patientUuid);
 
-            }catch(EncounterController.DownloadEncounterException e){
+            }catch(EncounterController.FetchEncounterException e){
                 Log.e(this.getClass().getSimpleName(),"Could not get patient encounters",e);
             }
 

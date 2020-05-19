@@ -53,26 +53,26 @@ public class EncounterController {
         return encounterService.countEncountersByPatientUuid(patientUuid);
     }
 
-    public List<Encounter>  getEncountersByPatientUuid(String patientUuid) throws DownloadEncounterException{
+    public List<Encounter>  getEncountersByPatientUuid(String patientUuid) throws FetchEncounterException{
         try {
             return encounterService.getEncountersByPatientUuid(patientUuid);
         } catch (IOException e) {
-            throw new DownloadEncounterException(e);
+            throw new FetchEncounterException(e);
         }
     }
 
-    public List<Encounter> downloadEncountersByPatientUuids(List<String> patientUuids) throws DownloadEncounterException {
+    public List<Encounter> downloadEncountersByPatientUuids(List<String> patientUuids, String activeSetupConfigUuid) throws DownloadEncounterException {
         try {
             String paramSignature = StringUtils.getCommaSeparatedStringFromList(patientUuids);
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS, paramSignature);
             List<Encounter> encounters = new ArrayList<>();
             List<String> previousPatientsUuid = new ArrayList<>();
             if (hasThisCallHappenedBefore(lastSyncTime)) {
-                encounters.addAll(downloadEncounters(patientUuids, lastSyncTime));
+                encounters.addAll(downloadEncounters(patientUuids, lastSyncTime, activeSetupConfigUuid));
             } else {
                 //ToDo: Revise this while working on Encounter Delta download
                 //previousPatientsUuid = updateEncountersAndReturnPrevPatientUUIDs(patientUuids, encounters, previousPatientsUuid);
-                encounters.addAll(downloadEncounters(patientUuids, null));
+                encounters.addAll(downloadEncounters(patientUuids, null, activeSetupConfigUuid));
             }
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_ENCOUNTERS, sntpService.getTimePerDeviceTimeZone(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
@@ -82,18 +82,19 @@ public class EncounterController {
         }
     }
 
-    private List<Encounter> downloadEncounters(List<String> patientUuids, Date lastSyncTime) throws IOException {
-        return encounterService.downloadEncountersByPatientUuidsAndSyncDate(patientUuids, lastSyncTime);
+    private List<Encounter> downloadEncounters(List<String> patientUuids, Date lastSyncTime, String activeSetupConfigUuid) throws IOException {
+        return encounterService.downloadEncountersByPatientUuidsAndSyncDateAndSetupConfig(patientUuids, lastSyncTime, activeSetupConfigUuid);
     }
 
-    private List<String> updateEncountersAndReturnPrevPatientUUIDs(List<String> patientUuids, List<Encounter> encounters, List<String> previousPatientsUuid) throws IOException {
+    private List<String> updateEncountersAndReturnPrevPatientUUIDs(List<String> patientUuids, List<Encounter> encounters,
+                                                                   List<String> previousPatientsUuid, String activeSetupConfigUuid) throws IOException {
         LastSyncTime lastSyncTimeRecorded = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS);
         if (hasAnyDownloadHappened(lastSyncTimeRecorded)) {
             previousPatientsUuid = asList(lastSyncTimeRecorded.getParamSignature().split(UUID_SEPARATOR));
-            encounters.addAll(downloadEncounters(previousPatientsUuid, lastSyncTimeRecorded.getLastSyncDate()));
+            encounters.addAll(downloadEncounters(previousPatientsUuid, lastSyncTimeRecorded.getLastSyncDate(), activeSetupConfigUuid));
             patientUuids.removeAll(previousPatientsUuid);
         }
-        encounters.addAll(downloadEncounters(patientUuids, null));
+        encounters.addAll(downloadEncounters(patientUuids, null, activeSetupConfigUuid));
         return previousPatientsUuid;
     }
 
@@ -123,35 +124,35 @@ public class EncounterController {
 
     }
 
-    public List<EncounterType> getEncounterTypes() throws DownloadEncounterException {
+    public List<EncounterType> getEncounterTypes() throws FetchEncounterException {
         try {
             return encounterService.getAllEncounterTypes();
         } catch (IOException e) {
-            throw new DownloadEncounterException(e);
+            throw new FetchEncounterException(e);
         }
     }
 
-    public List<Encounter> getEncountersByEncounterTypeNameAndPatientUuid(String name,String patientUuid) throws DownloadEncounterException{
+    public List<Encounter> getEncountersByEncounterTypeNameAndPatientUuid(String name,String patientUuid) throws FetchEncounterException{
         try{
             return encounterService.getEncountersByEncounterTypeNameAndPatientUuid(name,patientUuid);
         }catch(IOException e){
-            throw new DownloadEncounterException(e);
+            throw new FetchEncounterException(e);
         }
     }
 
-    public List<Encounter> getEncountersByEncounterTypeUuidAndPatientUuid(String encounterTypeUuid,String patientUuid) throws DownloadEncounterException{
+    public List<Encounter> getEncountersByEncounterTypeUuidAndPatientUuid(String encounterTypeUuid,String patientUuid) throws FetchEncounterException{
         try{
             return encounterService.getEncountersByEncounterTypeUuidAndPatientUuid(encounterTypeUuid,patientUuid);
         }catch(IOException e){
-            throw new DownloadEncounterException(e);
+            throw new FetchEncounterException(e);
         }
     }
 
-    public List<Encounter> getEncountersByEncounterTypeIdAndPatientUuid(int encounterTypeId,String patientUuid) throws DownloadEncounterException{
+    public List<Encounter> getEncountersByEncounterTypeIdAndPatientUuid(int encounterTypeId,String patientUuid) throws FetchEncounterException{
         try{
             return encounterService.getEncountersByEncounterTypeIdAndPatientUuid(encounterTypeId,patientUuid);
         }catch(IOException e){
-            throw new DownloadEncounterException(e);
+            throw new FetchEncounterException(e);
         }
     }
 
@@ -175,6 +176,12 @@ public class EncounterController {
 
     public class DownloadEncounterException extends Throwable {
         DownloadEncounterException(IOException e) {
+            super(e);
+        }
+    }
+
+    public class FetchEncounterException extends Throwable {
+        FetchEncounterException(IOException e) {
             super(e);
         }
     }

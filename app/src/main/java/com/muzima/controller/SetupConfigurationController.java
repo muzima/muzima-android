@@ -120,6 +120,23 @@ public class SetupConfigurationController {
         }
     }
 
+    public SetupConfigurationTemplate getActiveSetupConfigurationTemplate() throws SetupConfigurationFetchException{
+        try{
+            List<SetupConfigurationTemplate> setupConfigurationTemplates = setupConfigurationService.getSetupConfigurationTemplates();
+            if(setupConfigurationTemplates.size() == 1){
+                return setupConfigurationTemplates.get(0);
+            } else if(setupConfigurationTemplates.size() > 1){
+                //For now, the app supports only one setup config template
+                //Logic should be updated here in case multiple configs are supported in future
+                throw new SetupConfigurationFetchException("Could not uniquely identify active setup config templates");
+            } else {
+                throw new SetupConfigurationFetchException("Could not find any setup config templates");
+            }
+        } catch (IOException e){
+            throw new SetupConfigurationFetchException("Could not retrieve setup config templates",e);
+        }
+    }
+
     public static class SetupConfigurationDownloadException  extends Throwable {
         SetupConfigurationDownloadException(Throwable throwable){
             super(throwable);
@@ -135,6 +152,14 @@ public class SetupConfigurationController {
     public static class SetupConfigurationFetchException  extends Throwable {
         SetupConfigurationFetchException(Throwable throwable){
             super(throwable);
+        }
+
+        SetupConfigurationFetchException(String message,Throwable throwable){
+            super(message,throwable);
+        }
+
+        SetupConfigurationFetchException(String message){
+            super(message);
         }
     }
 }

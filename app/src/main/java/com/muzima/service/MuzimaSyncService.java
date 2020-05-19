@@ -741,6 +741,15 @@ public class MuzimaSyncService {
     public int[] downloadEncountersForPatientsByPatientUUIDs(List<String> patientUuids, boolean replaceExistingEncounters) {
         int[] result = new int[4];
         try {
+            String activeSetupConfigUuid = null;
+            try{
+                SetupConfigurationTemplate setupConfigurationTemplate = setupConfigurationController.getActiveSetupConfigurationTemplate();
+                if(setupConfigurationTemplate != null){
+                    activeSetupConfigUuid = setupConfigurationTemplate.getUuid();
+                }
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e){
+                Log.e(getClass().getSimpleName(), "Could not obtain active setup config",e);
+            }
             List<List<String>> slicedPatientUuids = split(patientUuids);
             Set<String> patientsForDownloadedEncounters = new HashSet();
             long totalTimeDownloading = 0, totalTimeReplacing = 0,totalTimeSaving = 0;
@@ -748,7 +757,7 @@ public class MuzimaSyncService {
             for (List<String> slicedPatientUuid : slicedPatientUuids) {
                 Log.i(getClass().getSimpleName(), "Downloading encounters for "+ slicedPatientUuid.size() + " patients");
                 long startDownloadEncounters = System.currentTimeMillis();
-                List<Encounter> allEncounters = new ArrayList<>(encounterController.downloadEncountersByPatientUuids(slicedPatientUuid));
+                List<Encounter> allEncounters = new ArrayList<>(encounterController.downloadEncountersByPatientUuids(slicedPatientUuid, activeSetupConfigUuid));
 
                 long endDownloadObservations = System.currentTimeMillis();
                 Log.d(getClass().getSimpleName(), "In Downloading encounters : " + (endDownloadObservations - startDownloadEncounters) / 1000 + " sec\n");
@@ -1123,8 +1132,8 @@ public class MuzimaSyncService {
             result[0] = SUCCESS;
             if(setupConfigurationTemplate != null) {
                 result[1] = 1;
+                setupConfigurationController.saveSetupConfigurationTemplate(setupConfigurationTemplate);
             }
-            setupConfigurationController.saveSetupConfigurationTemplate(setupConfigurationTemplate);
         } catch (SetupConfigurationController.SetupConfigurationDownloadException e){
             Log.e(getClass().getSimpleName(), "Exception when trying to download setup configs");
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
@@ -1322,11 +1331,6 @@ public class MuzimaSyncService {
     public String getDefaultLocation(){
         android.content.Context context = muzimaApplication.getApplicationContext();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String setDefaultLocation = preferences.getString("defaultEncounterLocation", null);
-        if(setDefaultLocation==null)
-        {
-            setDefaultLocation = null;
-        }
-        return setDefaultLocation;
+        return preferences.getString("defaultEncounterLocation", null);
     }
 }

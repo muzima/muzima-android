@@ -30,6 +30,7 @@ import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.RelationshipType;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
@@ -40,6 +41,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.RelationshipController;
+import com.muzima.controller.SetupConfigurationController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
@@ -125,6 +127,7 @@ class HTMLFormDataStore {
     public void saveHTML(String jsonPayload, String status, boolean keepFormOpen) {
         jsonPayload = injectUserSystemIdToEncounterPayload(jsonPayload);
         jsonPayload = injectTimeZoneToEncounterPayload(jsonPayload);
+        jsonPayload = injectActiveSetupConfigUuidToEncounterPayload(jsonPayload);
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
         String patientUuid = formData.getPatientUuid();
@@ -428,7 +431,7 @@ class HTMLFormDataStore {
         List<Encounter> encounters = new ArrayList<>();
         try {
             encounters = encounterController.getEncountersByPatientUuid(patientuuid);
-        } catch (EncounterController.DownloadEncounterException | Exception e) {
+        } catch (EncounterController.FetchEncounterException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading encounters", e);
         }
         return JSONValue.toJSONString(encounters);
@@ -447,7 +450,7 @@ class HTMLFormDataStore {
                     encountertypes.add(encounter);
                 }
             }
-        } catch (EncounterController.DownloadEncounterException | Exception e) {
+        } catch (EncounterController.FetchEncounterException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading encounterTypes", e);
         }
         return JSONValue.toJSONString(encountertypes);
@@ -491,7 +494,7 @@ class HTMLFormDataStore {
             Collections.sort(observations, observationDateTimeComparator);
         } catch (ObservationController.LoadObservationException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
-        } catch (EncounterController.DownloadEncounterException e) {
+        } catch (EncounterController.FetchEncounterException e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading encounters", e);
         }
         return createObsJsonArray(observations);
@@ -652,6 +655,25 @@ class HTMLFormDataStore {
             return jsonPayload;
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "Error while parsing response JSON", e);
+        }
+
+        return jsonPayload;
+    }
+    private String injectActiveSetupConfigUuidToEncounterPayload(String jsonPayload) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonPayload);
+            JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
+            if (!(jsonObjectInner.has("encounter.setup_config_uuid"))) {
+                SetupConfigurationTemplate activeSetupConfig = application.getSetupConfigurationController().getActiveSetupConfigurationTemplate();
+                jsonObjectInner.put("encounter.setup_config_uuid", activeSetupConfig.getUuid());
+                jsonObject.put("encounter", jsonObjectInner);
+                jsonPayload = jsonObject.toString();
+            }
+            return jsonPayload;
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Error while parsing response JSON", e);
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+            Log.e(getClass().getSimpleName(), "Could not add active setup config UUID", e);
         }
 
         return jsonPayload;

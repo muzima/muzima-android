@@ -935,7 +935,7 @@ public class KenyaEmrShrMapper {
             if(!encountersWithObservations.isEmpty()){
                 shrModel = addEncounterObservationsToShrModel(shrModel,encountersWithObservations);
             }
-        } catch (EncounterController.DownloadEncounterException e) {
+        } catch (EncounterController.FetchEncounterException e) {
             Log.e("Kenya EMR Shr","Could not obtain encounterType");
         } catch (ObservationController.LoadObservationException e) {
             Log.e("Kenya EMR Shr","Could not obtain Observations");
@@ -1093,7 +1093,7 @@ public class KenyaEmrShrMapper {
             if(!encountersWithObservations.isEmpty()){
                 shrModel = addEncounterObservationsToShrModel(shrModel,encountersWithObservations);
             }
-        } catch (EncounterController.DownloadEncounterException e) {
+        } catch (EncounterController.FetchEncounterException e) {
             Log.e("Kenya EMR Shr","Could not obtain encounterType");
         } catch (ObservationController.LoadObservationException e) {
             Log.e("Kenya EMR Shr","Could not obtain Observations");
