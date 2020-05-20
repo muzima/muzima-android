@@ -1152,8 +1152,9 @@ public class MuzimaSyncService {
             result[0] = SUCCESS;
             if(setupConfigurationTemplate != null) {
                 result[1] = 1;
+                setupConfigurationController.updateSetupConfigurationTemplate(setupConfigurationTemplate);
             }
-            setupConfigurationController.updateSetupConfigurationTemplate(setupConfigurationTemplate);
+
         } catch (SetupConfigurationController.SetupConfigurationDownloadException e){
             Log.e(getClass().getSimpleName(), "Exception when trying to download setup configs");
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;

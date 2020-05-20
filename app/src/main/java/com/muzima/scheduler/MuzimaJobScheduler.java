@@ -92,8 +92,8 @@ public class MuzimaJobScheduler extends JobService {
             new CohortsAndPatientFullDataSyncBackgroundTask().execute();
             new FormDataUploadBackgroundTask().execute();
             new ProcessedTemporaryFormDataCleanUpBackgroundTask().execute();
-            new SyncSettinsBackgroundTask().execute();
             new SyncSetupConfigTemplatesBackgroundTask().execute();
+            new SyncSettinsBackgroundTask().execute();
             if(muzimaSettingController.isClinicalSummaryEnabled()) {
                 new SyncAllPatientReportsBackgroundTask().execute();
             }
