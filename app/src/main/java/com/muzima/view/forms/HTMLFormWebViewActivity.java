@@ -640,6 +640,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             if(formData != null) {
                 eventDetails.put("patientuuid", formData.getPatientUuid());
                 eventDetails.put("formDataUuid", formData.getUuid());
+                eventDetails.put("formDiscriminator", formData.getDiscriminator());
             }
             logEvent("FORM_CLOSED",eventDetails.toString());
         } catch (JSONException e) {

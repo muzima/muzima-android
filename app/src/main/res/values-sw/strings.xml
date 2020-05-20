@@ -519,6 +519,8 @@
     <string name="info_setup_complete_fail">Utaratibu umekamilika kwa dosari.</string>
     <string name="info_setup_complete_success">Utaratibu umefanikiwa kukamilika.</string>
     <string name="info_setup_config_load">Usanidi wa utaratibu unapakiwa.</string>
+    <string name="info_setup_configuration_template_download_in_progress">Kusasisha Usanidi</string>
+    <string formatted="false" name="info_setup_configuration_templates_downloaded">Imepakua templeti %d za usanidi</string>
     <string name="info_setup_configuration_wizard_prepare">Utayarishaji wa sogora ya utaratibu wa usanidi.</string>
     <string formatted="false" name="info_submitted_form_data_status">Hali ya fomu zilizowasilishwa hivi karibuni:
          %d Ilishughulikiwa kwa mafanikio, %d Iliyosindika na kosa, %d Inasubiri usindikaji, %d Hali haijulikani.</string>
@@ -677,7 +679,7 @@
     <string name="title_guided_setup">Utaratibu uliyoelekezwa (unapendekezwa)</string>
     <string name="title_guided_setup_help_video">Kuanzisha awali kwa kuelekezwa</string>
     <string name="title_guided_setup_progress">Utaratibu unavyoendelea</string>
-    <string name="title_guided_setup_wizard">Mchawi wa Usanidi ulioongozwa</string>
+    <string name="title_guided_setup_wizard">Usanidi ulioongozwa</string>
     <string name="title_help_video_links">Viungo vya video</string>
     <string name="title_html_help">Usaidizi</string>
     <string name="title_image_caption">Maelezo mafupi ya taswira/picha</string>

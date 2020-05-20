@@ -140,7 +140,7 @@ public class NotificationActivity extends BaseActivity {
                 if (formDataUuid != null && formDataUuid.equals(notification.getSource()))
                     notificationEncounter =  encounter;
             }
-        } catch (EncounterController.DownloadEncounterException e) {
+        } catch (EncounterController.FetchEncounterException e) {
             Log.e(getClass().getSimpleName(), "Error getting encounter data " + e.getMessage(), e);
         }
     }

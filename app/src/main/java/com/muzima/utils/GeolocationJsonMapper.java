@@ -52,16 +52,17 @@ public class GeolocationJsonMapper {
 
     private JSONObject createPatientStub() throws JSONException {
         JSONObject patientDetails = new JSONObject();
-        JSONObject medicalRecordNumber = new JSONObject();
         List<PatientIdentifier> identifiers = patient.getIdentifiers();
         for(PatientIdentifier identifier:identifiers) {
             if(identifier.isPreferred()) {
+                JSONObject medicalRecordNumber = new JSONObject();
                 medicalRecordNumber.put("identifier_value", identifier.getIdentifier());
                 medicalRecordNumber.put("identifier_type_uuid", identifier.getIdentifierType().getUuid());
                 medicalRecordNumber.put("identifier_type_name", identifier.getIdentifierType().getName());
+                patientDetails.put("patient.medical_record_number", medicalRecordNumber);
+                break;
             }
         }
-        patientDetails.put("patient.medical_record_number", medicalRecordNumber);
         patientDetails.put("patient.given_name", StringUtils.defaultString(patient.getGivenName()));
         patientDetails.put("patient.middle_name", StringUtils.defaultString(patient.getMiddleName()));
         patientDetails.put("patient.family_name", StringUtils.defaultString(patient.getFamilyName()));

@@ -4,13 +4,19 @@ import android.util.Log;
 
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.MuzimaSetting;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.MuzimaSettingService;
 
+import com.muzima.api.service.SetupConfigurationService;
 import com.muzima.service.SntpService;
 import org.apache.lucene.queryParser.ParseException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,16 +32,22 @@ public class MuzimaSettingController {
     private final MuzimaSettingService settingService;
     private final LastSyncTimeService lastSyncTimeService;
     private final SntpService sntpService;
+    private final SetupConfigurationService setupConfigurationService;
 
     public MuzimaSettingController(MuzimaSettingService settingService, LastSyncTimeService lastSyncTimeService,
-                                   SntpService sntpService) {
+                                   SntpService sntpService, SetupConfigurationService setupConfigurationService) {
         this.settingService = settingService;
         this.lastSyncTimeService = lastSyncTimeService;
         this.sntpService = sntpService;
+        this.setupConfigurationService = setupConfigurationService;
     }
 
     public MuzimaSetting getSettingByProperty(String property) throws MuzimaSettingFetchException {
         try {
+            MuzimaSetting configLevelSetting = getSetupConfigurationSettingByKey("property", property);
+            if(configLevelSetting != null){
+                return configLevelSetting;
+            }
             return settingService.getSettingByProperty(property);
         } catch (IOException | ParseException e) {
             throw new MuzimaSettingFetchException(e);
@@ -44,10 +56,89 @@ public class MuzimaSettingController {
 
     public MuzimaSetting getSettingByUuid(String uuid) throws MuzimaSettingFetchException {
         try {
+            MuzimaSetting configLevelSetting = getSetupConfigurationSettingByKey("uuid", uuid);
+            if(configLevelSetting != null){
+                return configLevelSetting;
+            }
             return settingService.getSettingByUuid(uuid);
         } catch (IOException e) {
             throw new MuzimaSettingFetchException(e);
         }
+    }
+
+    public MuzimaSetting getSetupConfigurationSettingByKey(String keyType, String keyValue) throws MuzimaSettingFetchException{
+        try{
+            // Currently mUzima supports one config. So the expectation here is that only one config may be available
+            // If the app is ever modified to support multiple configs, there should be an option to specify
+            // the priority of the configs so that the setting in highest priority config is returned to avoid ambiguity
+            List<SetupConfigurationTemplate> configurationTemplates = setupConfigurationService.getSetupConfigurationTemplates();
+            for(SetupConfigurationTemplate configurationTemplate:configurationTemplates){
+                JSONObject configJson = new JSONObject(configurationTemplate.getConfigJson());
+                configJson = configJson.getJSONObject("config");
+                if(configJson.has("settings")) {
+                    JSONArray settingsArray = configJson.getJSONArray("settings");
+                    for (int i = 0; i < settingsArray.length(); i++) {
+                        JSONObject settingObject = settingsArray.getJSONObject(i);
+                        if (settingObject.has(keyType) && keyValue.equals(settingObject.get(keyType))) {
+                            return parseMuzimaSettingFromJsonObjectRepresentation(settingObject);
+                        }
+                    }
+                }
+            }
+        } catch (IOException | JSONException e ) {
+            throw new MuzimaSettingFetchException(e);
+        }
+        return null;
+    }
+
+    public List<MuzimaSetting> getSettingsFromSetupConfigurationTemplate(String templateUuid) throws MuzimaSettingFetchException {
+        List<MuzimaSetting> settings = new ArrayList<>();
+        try {
+            SetupConfigurationTemplate template = setupConfigurationService.getSetupConfigurationTemplate(templateUuid);
+            JSONObject configJson = new JSONObject(template.getConfigJson());
+            configJson = configJson.getJSONObject("config");
+            if(configJson.has("settings")) {
+                JSONArray settingsArray = configJson.getJSONArray("settings");
+                for (int i = 0; i < settingsArray.length(); i++) {
+                    JSONObject settingObject = settingsArray.getJSONObject(i);
+                    MuzimaSetting setting = parseMuzimaSettingFromJsonObjectRepresentation(settingObject);
+                    settings.add(setting);
+                }
+            }
+        } catch (IOException | JSONException e ) {
+            throw new MuzimaSettingFetchException(e);
+        }
+        return settings;
+    }
+
+    private MuzimaSetting parseMuzimaSettingFromJsonObjectRepresentation(JSONObject settingObject) throws JSONException {
+        MuzimaSetting muzimaSetting = new MuzimaSetting();
+        muzimaSetting.setProperty((String)settingObject.get("property"));
+
+        if(settingObject.has("uuid")) {
+            muzimaSetting.setUuid((String) settingObject.get("uuid"));
+        }
+
+        if(settingObject.has("name")) {
+            muzimaSetting.setName((String) settingObject.get("name"));
+        }
+
+        if(settingObject.has("description")) {
+            muzimaSetting.setDescription((String) settingObject.get("description"));
+        }
+
+        if(settingObject.has("datatype")) {
+            String settingDataType = (String) settingObject.get("datatype");
+            muzimaSetting.setSettingDataType(settingDataType);
+            if(settingObject.has("value")) {
+                if ("BOOLEAN".equals(settingDataType)) {
+                    muzimaSetting.setValueBoolean((Boolean) settingObject.get("value"));
+                } else {
+                    muzimaSetting.setValueString((String) settingObject.get("value"));
+                }
+            }
+        }
+        return muzimaSetting;
     }
 
     public void saveSetting(MuzimaSetting setting) throws MuzimaSettingSaveException {

@@ -12,6 +12,7 @@ package com.muzima.view.forms;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.FormData;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
@@ -19,6 +20,7 @@ import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
+import com.muzima.controller.SetupConfigurationController;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
 import org.junit.Before;
@@ -54,6 +56,8 @@ public class HTMLFormDataStoreTest {
     private ObservationController observationController;
     @Mock
     private EncounterController encounterController;
+    @Mock
+    private SetupConfigurationController setupConfigurationController;
 
     @Before
     public void setUp() {
@@ -63,6 +67,7 @@ public class HTMLFormDataStoreTest {
         formWebViewActivity = mock(HTMLFormWebViewActivity.class);
         formData = mock(FormData.class);
         htmlFormObservationCreator = mock(HTMLFormObservationCreator.class);
+        setupConfigurationController = mock(SetupConfigurationController.class);
         MuzimaApplication muzimaApplication = mock(MuzimaApplication.class);
 
         when(muzimaApplication.getFormController()).thenReturn(formController);
@@ -73,6 +78,7 @@ public class HTMLFormDataStoreTest {
         when(muzimaApplication.getObservationController()).thenReturn(observationController);
         when(muzimaApplication.getEncounterController()).thenReturn(encounterController);
         when(muzimaApplication.getMuzimaSettingController()).thenReturn(settingController);
+        when(muzimaApplication.getSetupConfigurationController()).thenReturn(setupConfigurationController);
         htmlFormDataStore = new HTMLFormDataStore(formWebViewActivity, formData, false, muzimaApplication){
             @Override
             public HTMLFormObservationCreator getFormParser(){
@@ -92,8 +98,13 @@ public class HTMLFormDataStoreTest {
 //    }
 
     @Test
-    public void shouldNotParseIncompletedForm() {
+    public void shouldNotParseIncompletedForm() throws SetupConfigurationController.SetupConfigurationFetchException {
         when(formWebViewActivity.getString(anyInt())).thenReturn("success");
+
+        SetupConfigurationTemplate setupConfigurationTemplate = new SetupConfigurationTemplate();
+        setupConfigurationTemplate.setUuid("dummySetupConfig");
+        when(setupConfigurationController.getActiveSetupConfigurationTemplate()).thenReturn(setupConfigurationTemplate);
+
         String jsonPayLoad = readFile();
         htmlFormDataStore.saveHTML(jsonPayLoad, Constants.STATUS_INCOMPLETE);
         verify(htmlFormObservationCreator, times(0)).createAndPersistObservations(jsonPayLoad,formData.getUuid());

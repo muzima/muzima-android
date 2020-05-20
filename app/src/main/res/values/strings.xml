@@ -614,6 +614,8 @@
     <string name="info_setup_complete_fail">Setup completed with some failure</string>
     <string name="info_setup_complete_success">Setup completed successfully</string>
     <string name="info_setup_config_load">Loading Setup Configs</string>
+    <string name="info_setup_configuration_template_download_in_progress">Updating Setup Configs</string>
+    <string formatted="false" name="info_setup_configuration_templates_downloaded">Downloaded %d setup configuration templates</string>
     <string name="info_setup_configuration_wizard_prepare">Preparing setup configuration wizard</string>
     <string formatted="false" name="info_submitted_form_data_status">Status of recently submitted forms: %d Processed successfully,
         %d Processed with error, %d Pending processing, %d Unknown status </string>

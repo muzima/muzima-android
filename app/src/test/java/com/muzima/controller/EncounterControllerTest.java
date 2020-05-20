@@ -43,6 +43,7 @@ public class EncounterControllerTest {
     private LastSyncTimeService lastSyncTimeService;
     private EncounterService encounterService;
     private SntpService sntpService;
+    private String activeSetupConfigUuid;
 
     @Before
     public void setUp() {
@@ -50,6 +51,7 @@ public class EncounterControllerTest {
         lastSyncTimeService = mock(LastSyncTimeService.class);
         sntpService = mock(SntpService.class);
         encounterController = new EncounterController(encounterService, lastSyncTimeService, sntpService);
+        activeSetupConfigUuid = "dummySetupConfigUuid";
     }
 
     @Test
@@ -57,7 +59,7 @@ public class EncounterControllerTest {
         List<String> patientUuids = asList("patientUuid1", "patientUuid2");
         Date aDate = mock(Date.class);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(aDate);
-        encounterController.downloadEncountersByPatientUuids(patientUuids);
+        encounterController.downloadEncountersByPatientUuids(patientUuids, activeSetupConfigUuid);
 
         verify(lastSyncTimeService).getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2");
         verify(lastSyncTimeService, never()).getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS);
@@ -69,9 +71,9 @@ public class EncounterControllerTest {
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(lastSyncDate);
 
         List<String> patientUuids = asList("patientUuid1", "patientUuid2");
-        encounterController.downloadEncountersByPatientUuids(patientUuids);
+        encounterController.downloadEncountersByPatientUuids(patientUuids, activeSetupConfigUuid);
         verify(encounterService, never()).downloadEncountersByPatientUuids(anyList());
-        verify(encounterService).downloadEncountersByPatientUuidsAndSyncDate(patientUuids, lastSyncDate);
+        verify(encounterService).downloadEncountersByPatientUuidsAndSyncDateAndSetupConfig(patientUuids, lastSyncDate, activeSetupConfigUuid);
     }
 
     @Test
@@ -81,7 +83,7 @@ public class EncounterControllerTest {
         when(sntpService.getTimePerDeviceTimeZone()).thenReturn(updatedDate);
         Date lastSyncDate = mock(Date.class);
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(lastSyncDate);
-        encounterController.downloadEncountersByPatientUuids(patientUuids);
+        encounterController.downloadEncountersByPatientUuids(patientUuids, activeSetupConfigUuid);
 
         ArgumentCaptor<LastSyncTime> argumentCaptor = ArgumentCaptor.forClass(LastSyncTime.class);
         verify(lastSyncTimeService).saveLastSyncTime(argumentCaptor.capture());
@@ -114,7 +116,7 @@ public class EncounterControllerTest {
         Date updatedDate = mock(Date.class);
         when(sntpService.getTimePerDeviceTimeZone()).thenReturn(updatedDate);
 
-        encounterController.downloadEncountersByPatientUuids(patientUuids);
+        encounterController.downloadEncountersByPatientUuids(patientUuids, activeSetupConfigUuid);
 
         ArgumentCaptor<LastSyncTime> argumentCaptor = ArgumentCaptor.forClass(LastSyncTime.class);
         verify(lastSyncTimeService).saveLastSyncTime(argumentCaptor.capture());
@@ -144,7 +146,7 @@ public class EncounterControllerTest {
         when(encounterService.downloadEncountersByPatientUuidsAndSyncDate(previouslySynchedPatient, lastSyncTime)).thenReturn(someEncounters);
         when(encounterService.downloadEncountersByPatientUuidsAndSyncDate(newPatients, null)).thenReturn(someOtherEncounters);
 
-        List<Encounter> encounters = encounterController.downloadEncountersByPatientUuids(patientUuids);
+        List<Encounter> encounters = encounterController.downloadEncountersByPatientUuids(patientUuids, activeSetupConfigUuid);
 
         assertThat(encounters, hasItems(anEncounter, anotherEncounter));
         assertThat(encounters.size(), is(2));
@@ -162,7 +164,7 @@ public class EncounterControllerTest {
         when(fullLastSyncTime.getParamSignature()).thenReturn("patientUuid1,patientUuid3");
         when(fullLastSyncTime.getLastSyncDate()).thenReturn(lastSyncTime);
 
-        encounterController.downloadEncountersByPatientUuids(patientUuids);
+        encounterController.downloadEncountersByPatientUuids(patientUuids, activeSetupConfigUuid);
 
         verify(encounterService).downloadEncountersByPatientUuidsAndSyncDate(previouslySynchedPatient, lastSyncTime);
         verify(encounterService).downloadEncountersByPatientUuidsAndSyncDate(newPatients, null);
@@ -174,7 +176,7 @@ public class EncounterControllerTest {
         List<String> patientUuids = new ArrayList<>(asList("patientUuid1", "patientUuid2"));
         when(lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_ENCOUNTERS,"patientUuid1,patientUuid2")).thenReturn(null);
 
-        encounterController.downloadEncountersByPatientUuids(patientUuids);
+        encounterController.downloadEncountersByPatientUuids(patientUuids, activeSetupConfigUuid);
 
         verify(lastSyncTimeService).getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS);
     }
@@ -186,7 +188,7 @@ public class EncounterControllerTest {
         when(lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_ENCOUNTERS)).thenReturn(null);
 
         List<String> mPatientUuids = asList("patientUuid1", "patientUuid2");
-        encounterController.downloadEncountersByPatientUuids(mPatientUuids);
+        encounterController.downloadEncountersByPatientUuids(mPatientUuids, activeSetupConfigUuid);
 
         verify(encounterService, never()).downloadEncountersByPatientUuidsAndSyncDate(newPatients, null);
     }

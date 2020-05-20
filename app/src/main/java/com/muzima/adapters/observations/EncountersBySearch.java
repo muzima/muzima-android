@@ -44,7 +44,7 @@ class EncountersBySearch extends EncounterAction {
     List<Encounter> getEncounters() throws ObservationController.LoadObservationException {
         try {
             return encounterController.getEncountersByPatientUuid(patientUuid);
-        }catch (EncounterController.DownloadEncounterException e){
+        }catch (EncounterController.FetchEncounterException e){
             throw new ObservationController.LoadObservationException(e);
         }
     }

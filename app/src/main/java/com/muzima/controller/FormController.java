@@ -1039,9 +1039,8 @@ public class FormController {
         try {
             List<Form> allForms = formService.getAllForms();
             List<Form> filteredForms = filterFormsByTags(allForms, tagsUuid, alwaysIncludeRegistrationForms);
-            AvailableForms availableForms = new AvailableForms();
             ArrayList<String> formUuids = getFormListAsPerConfigOrder();
-            availableForms = getAvailableFormsPerConfigOrder(formUuids,filteredForms);
+            AvailableForms availableForms = getAvailableFormsPerConfigOrder(formUuids,filteredForms);
             return availableForms;
         } catch (IOException e) {
             throw new FormFetchException(e);

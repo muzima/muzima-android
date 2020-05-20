@@ -22,6 +22,7 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.model.User;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
@@ -30,11 +31,13 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
+import com.muzima.controller.SetupConfigurationController;
 import com.muzima.utils.Constants;
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -80,6 +83,7 @@ public class MuzimaSyncServiceTest {
     private ConceptController conceptController;
     private EncounterController encounterController;
     private CohortPrefixPreferenceService prefixesPreferenceService;
+    private SetupConfigurationController setupConfigurationController;
 
     @Before
     public void setUp() {
@@ -92,6 +96,7 @@ public class MuzimaSyncServiceTest {
         sharedPref = mock(SharedPreferences.class);
         conceptController = mock(ConceptController.class);
         encounterController = mock(EncounterController.class);
+        setupConfigurationController = mock(SetupConfigurationController.class);
         prefixesPreferenceService = mock(CohortPrefixPreferenceService.class);
         ProviderController providerController = mock(ProviderController.class);
         User authenticatedUser = mock(User.class);
@@ -106,6 +111,7 @@ public class MuzimaSyncServiceTest {
         when(muzimaApplication.getObservationController()).thenReturn(observationController);
         when(muzimaApplication.getConceptController()).thenReturn(conceptController);
         when(muzimaApplication.getEncounterController()).thenReturn(encounterController);
+        when(muzimaApplication.getSetupConfigurationController()).thenReturn(setupConfigurationController);
         when(muzimaApplication.getCohortPrefixesPreferenceService()).thenReturn(prefixesPreferenceService);
         when(muzimaApplication.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPref);
         when(muzimaApplication.getApplicationContext()).thenReturn(RuntimeEnvironment.application);
@@ -626,7 +632,7 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadEncountersForPatients_shouldDownloadInBatch() throws PatientController.PatientLoadException, EncounterController.ReplaceEncounterException, EncounterController.DownloadEncounterException {
+    public void downloadEncountersForPatients_shouldDownloadInBatch() throws PatientController.PatientLoadException, EncounterController.ReplaceEncounterException, EncounterController.DownloadEncounterException, SetupConfigurationController.SetupConfigurationFetchException {
         String[] cohortUuids = new String[]{"uuid1"};
         final Patient patient = new Patient() {{
             setUuid("patient1");
@@ -639,22 +645,31 @@ public class MuzimaSyncServiceTest {
             add(new Encounter(){{setPatient(patient);}});
         }};
 
+        SetupConfigurationTemplate setupConfigurationTemplate = new SetupConfigurationTemplate();
+        setupConfigurationTemplate.setUuid("dummySetupConfig");
+        when(setupConfigurationController.getActiveSetupConfigurationTemplate()).thenReturn(setupConfigurationTemplate);
+
         when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
         List<String> patientUuids = Collections.singletonList("patient1");
-        when(encounterController.downloadEncountersByPatientUuids(patientUuids)).thenReturn(encounters);
+
+        when(encounterController.downloadEncountersByPatientUuids(patientUuids, setupConfigurationTemplate.getUuid())).thenReturn(encounters);
         muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(cohortUuids, true);
 
-        verify(encounterController).downloadEncountersByPatientUuids(patientUuids);
+        verify(encounterController).downloadEncountersByPatientUuids(patientUuids, setupConfigurationTemplate.getUuid());
         verify(encounterController).replaceEncounters(encounters);
         verifyNoMoreInteractions(observationController);
     }
 
     @Test
-    public void shouldDeleteVoidedEncountersWhenDownloadingEncounters() throws EncounterController.DeleteEncounterException, EncounterController.DownloadEncounterException {
+    public void shouldDeleteVoidedEncountersWhenDownloadingEncounters() throws EncounterController.DeleteEncounterException, EncounterController.DownloadEncounterException, SetupConfigurationController.SetupConfigurationFetchException {
         String[] patientUuids = new String[]{"patientUuid1", "patientUuid2"};
         final Patient patient = new Patient() {{
             setUuid("patient1");
         }};
+
+        SetupConfigurationTemplate setupConfigurationTemplate = new SetupConfigurationTemplate();
+        setupConfigurationTemplate.setUuid("dummySetupConfig");
+        when(setupConfigurationController.getActiveSetupConfigurationTemplate()).thenReturn(setupConfigurationTemplate);
 
         List<Encounter> encounters = new ArrayList<>();
         encounters.add(new Encounter(){{setPatient(patient);}});
@@ -664,7 +679,7 @@ public class MuzimaSyncServiceTest {
         when(voidedEncounter.getPatient()).thenReturn(patient);
         encounters.add(voidedEncounter);
 
-        when(encounterController.downloadEncountersByPatientUuids(asList(patientUuids))).thenReturn(encounters);
+        when(encounterController.downloadEncountersByPatientUuids(asList(patientUuids), setupConfigurationTemplate.getUuid())).thenReturn(encounters);
         muzimaSyncService.downloadEncountersForPatientsByPatientUUIDs(asList(patientUuids),true);
         verify(encounterController).deleteEncounters(Collections.singletonList(voidedEncounter));
     }

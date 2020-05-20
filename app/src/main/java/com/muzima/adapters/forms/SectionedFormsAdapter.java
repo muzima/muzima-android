@@ -107,7 +107,11 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
     public Object[] getSections() {
         String[] familyNames = new String[patients.size()];
         for (int i = 0; i < patients.size(); i++) {
-            familyNames[i] = String.valueOf(patients.get(i).getFamilyName().charAt(0));
+            if(StringUtils.isEmpty(patients.get(i).getFamilyName())) {
+                familyNames[i] = " ";
+            } else {
+                familyNames[i] = String.valueOf(patients.get(i).getFamilyName().charAt(0));
+            }
         }
         return familyNames;
     }

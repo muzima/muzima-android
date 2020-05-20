@@ -640,6 +640,8 @@
     <string name="info_setup_complete_fail">Instalação completada com alguma falha</string>
     <string name="info_setup_complete_success">Instalação completada com sucesso</string>
     <string name="info_setup_config_load">Carregando Configurações de Instalação</string>
+    <string name="info_setup_configuration_template_download_in_progress">Atualizando configurações</string>
+    <string formatted="false" name="info_setup_configuration_templates_downloaded">%d modelos de configuração baixados</string>
     <string name="info_setup_configuration_wizard_prepare">Preparando wizard de instalção de configuração</string>
     <string formatted="false" name="info_submitted_form_data_status">Status dos formulários enviados recentemente:
         %d Processado com sucesso, %d Processado com erro, %d Processamento pendente, %d status desconhecido.</string>

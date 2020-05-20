@@ -586,6 +586,8 @@
     <string name="info_setup_complete_fail">Configuration terminée avec des erreurs</string>
     <string name="info_setup_complete_success">Configuration terminée avec succès</string>
     <string name="info_setup_config_load">Chargement des configurations d\'installation</string>
+    <string name="info_setup_configuration_template_download_in_progress">Mise à jour des configurations d\'installation</string>
+    <string formatted="false" name="info_setup_configuration_templates_downloaded">%d modèles de configuration d\'installation téléchargés</string>
     <string name="info_setup_configuration_wizard_prepare">Préparation de l\'assistant de configuration</string>
     <string formatted="false" name="info_submitted_form_data_status">Statut des formulaires récemment soumis:
          %d traité avec succès, %d traité avec erreur, %d en attente de traitement, %d état inconnu.</string>
