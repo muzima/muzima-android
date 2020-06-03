@@ -485,10 +485,12 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                     try {
                         closeSoftKeyboard();
                         Person p = personController.getPersonByUuid(patient.getUuid());
-                        autoCompletePersonTextView.setText(p.getDisplayName(), false);
-                        createPersonView.setVisibility(View.GONE);
-                        selectedPerson = p;
-                        saveButton.setVisibility(View.VISIBLE);
+                        if (p != null) {
+                            autoCompletePersonTextView.setText(p.getDisplayName(), false);
+                            createPersonView.setVisibility(View.GONE);
+                            selectedPerson = p;
+                            saveButton.setVisibility(View.VISIBLE);
+                        }
                     } catch (PersonController.PersonLoadException e) {
                         e.printStackTrace();
                         closeNewRelationshipWindow();
