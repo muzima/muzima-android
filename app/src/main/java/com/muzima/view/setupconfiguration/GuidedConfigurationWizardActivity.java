@@ -32,6 +32,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.SetupConfigurationTemplate;
+import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.SetupActionLogModel;
@@ -48,14 +49,16 @@ import net.minidev.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import com.muzima.utils.Constants.SetupLogConstants;
 
+@SuppressWarnings("staticFieldLeak")
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     public static final String SETUP_CONFIG_UUID_INTENT_KEY = "SETUP_CONFIG_UUID";
     private SetupConfigurationTemplate setupConfigurationTemplate;
     private String progressUpdateMessage;
-    private int wizardLevel =0;
+    private int wizardLevel = 0;
     private boolean wizardcompletedSuccessfully = true;
     private GuidedSetupActionLogAdapter setupActionLogAdapter;
     private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
@@ -75,7 +78,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 finish();
             }
         });
-        setupActionLogAdapter = new GuidedSetupActionLogAdapter(this,R.id.setup_logs_list);
+        setupActionLogAdapter = new GuidedSetupActionLogAdapter(this, R.id.setup_logs_list);
         ListView setupLogsListView = findViewById(R.id.setup_logs_list);
         setupLogsListView.setAdapter(setupActionLogAdapter);
 
@@ -90,18 +93,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         return true;
     }
 
-    private void initiateSetupConfiguration(){
+    private void initiateSetupConfiguration() {
         String setupConfigTemplateUuid = getIntent().getStringExtra(SETUP_CONFIG_UUID_INTENT_KEY);
         fetchConfigurationTemplate(setupConfigTemplateUuid);
         downloadSettings();
     }
 
-    private void fetchConfigurationTemplate(String setupConfigTemplateUuid){
+    private void fetchConfigurationTemplate(String setupConfigTemplateUuid) {
         try {
             SetupConfigurationController setupConfigurationController =
-                    ((MuzimaApplication)getApplicationContext()).getSetupConfigurationController();
+                    ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController();
             setupConfigurationTemplate = setupConfigurationController.getSetupConfigurationTemplate(setupConfigTemplateUuid);
-        }catch (SetupConfigurationController.SetupConfigurationFetchException e){
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not get setup configuration template", e);
         }
     }
@@ -115,29 +118,31 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadSettingsLog.setSetupAction(getString(R.string.info_settings_download_progress));
                 onQueryTaskStarted();
             }
+
             @Override
             protected int[] doInBackground(Void... voids) {
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 return muzimaSyncService.downloadNewSettings();
             }
+
             @Override
             protected void onPostExecute(int[] result) {
-                String resultStatus=null;
-                String resultDescription=null;
-                if (result == null){
+                String resultStatus = null;
+                String resultDescription = null;
+                if (result == null) {
                     resultDescription = getString(R.string.info_cohort_not_downloaded);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if(result[0] == SyncStatusConstants.SUCCESS) {
-                    if(result[1] == 0) {
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    if (result[1] == 0) {
                         resultDescription = getString(R.string.info_settings_not_download);
-                    } else if(result[1] == 1) {
+                    } else if (result[1] == 1) {
                         resultDescription = getString(R.string.info_setting_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_settings_downloaded, result[1]);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    wizardcompletedSuccessfully=false;
+                    wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_settings_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
@@ -145,8 +150,55 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadSettingsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
                 downloadCohorts();
+                downloadPersonRegistrationFormsIfNecessary();
             }
         }.execute();
+    }
+
+    private void downloadPersonRegistrationFormsIfNecessary() {
+        boolean isRelationshipFeatureEnabled = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController()
+                .isRelationshipEnabled();
+
+        if (isRelationshipFeatureEnabled) {
+            //Download person registration forms
+            new AsyncTask<Void, Void, int[]>() {
+
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                }
+
+                @Override
+                protected int[] doInBackground(Void... voids) {
+
+                    int[] result = new int[1];
+
+                    try {
+                        ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService()
+                                .downloadPersonRegistrationForm();
+                        result[0] = SyncStatusConstants.SUCCESS;
+                    } catch (FormController.FormFetchException e) {
+                        Log.e(getClass().getSimpleName(), "Failed to download relationship forms: " + e);
+                        result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+                    } catch (FormController.FormSaveException e) {
+                        Log.e(getClass().getSimpleName(), "Failed to download relationship forms: " + e);
+                        result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+                    }
+                    return result;
+                }
+
+                @Override
+                protected void onPostExecute(int[] result) {
+                    super.onPostExecute(result);
+
+                    if (result[0] == SyncStatusConstants.SUCCESS) {
+                        Log.e(getClass().getSimpleName(), "Relationship registration form download success");
+                    } else if (result[0] == SyncStatusConstants.DOWNLOAD_ERROR) {
+                        Log.e(getClass().getSimpleName(), "Relationship registration form download failed");
+                    }
+                }
+            }.execute();
+        }
     }
 
     private void downloadCohorts() {
@@ -158,27 +210,29 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadCohortsLog.setSetupAction(getString(R.string.info_cohort_download));
                 onQueryTaskStarted();
             }
+
             @Override
             protected int[] doInBackground(Void... voids) {
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 return muzimaSyncService.downloadCohorts();
             }
+
             @Override
             protected void onPostExecute(int[] result) {
-                String resultStatus=null;
-                String resultDescription=null;
-                if (result == null){
+                String resultStatus = null;
+                String resultDescription = null;
+                if (result == null) {
                     resultDescription = getString(R.string.info_cohort_not_downloaded);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if(result[0] == SyncStatusConstants.SUCCESS) {
-                    if(result[1] == 1) {
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    if (result[1] == 1) {
                         resultDescription = getString(R.string.info_cohort_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_cohorts_downloaded, result[1]);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    wizardcompletedSuccessfully=false;
+                    wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_cohort_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
@@ -199,10 +253,11 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadPatientsLog.setSetupAction(getString(R.string.info_patient_download));
                 onQueryTaskStarted();
             }
+
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractCohortsUuids();
-                if (!uuids.isEmpty()){
+                if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(uuids.toArray(new String[uuids.size()]));
 
@@ -215,26 +270,27 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 }
                 return null;
             }
+
             @Override
             protected void onPostExecute(int[] result) {
-                String resultDescription=null;
-                String resultStatus=null;
+                String resultDescription = null;
+                String resultStatus = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_cohort_patient_not_download);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else if (result[0] == SyncStatusConstants.SUCCESS) {
-                    if(result[1] == 1 && result[2] == 1) {
+                    if (result[1] == 1 && result[2] == 1) {
                         resultDescription = getString(R.string.info_cohort_patient_download);
-                    } else if(result[1] == 1) {
+                    } else if (result[1] == 1) {
                         resultDescription = getString(R.string.info_cohorts_patient_download, result[2]);
-                    } else if(result[2] == 1) {
+                    } else if (result[2] == 1) {
                         resultDescription = getString(R.string.info_cohort_patients_download, result[1]);
                     } else {
-                        resultDescription = getString(R.string.info_cohorts_patients_download, result[1],result[2]);
+                        resultDescription = getString(R.string.info_cohorts_patients_download, result[1], result[2]);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    wizardcompletedSuccessfully=false;
+                    wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_patient_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
 
@@ -256,27 +312,29 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadFormsLog.setSetupAction(getString(R.string.info_form_download));
                 onQueryTaskStarted();
             }
+
             @Override
             protected int[] doInBackground(Void... voids) {
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 return muzimaSyncService.downloadForms();
             }
+
             @Override
             protected void onPostExecute(int[] result) {
                 String resultDescription = null;
-                String resultStatus=null;
-                if (result == null){
+                String resultStatus = null;
+                if (result == null) {
                     resultDescription = getString(R.string.info_form_not_downloaded);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if(result[0] == SyncStatusConstants.SUCCESS) {
-                    if(result[1] == 1) {
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    if (result[1] == 1) {
                         resultDescription = getString(R.string.info_form_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_forms_downloaded, result[1]);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    wizardcompletedSuccessfully=false;
+                    wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_form_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
@@ -297,32 +355,34 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadFormTemplatesLog.setSetupAction(getString(R.string.info_form_template_download));
                 onQueryTaskStarted();
             }
+
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractFormTemplatesUuids();
-                if (!uuids.isEmpty()){
+                if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                    return muzimaSyncService.downloadFormTemplates(uuids.toArray(new String[uuids.size()]),false);
+                    return muzimaSyncService.downloadFormTemplates(uuids.toArray(new String[uuids.size()]), false);
 
                 }
                 return null;
             }
+
             @Override
             protected void onPostExecute(int[] result) {
                 String resultDescription = null;
-                String resultStatus=null;
-                if(result == null){
+                String resultStatus = null;
+                if (result == null) {
                     resultDescription = getString(R.string.info_form_template_not_downloaded);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else if (result[0] == SyncStatusConstants.SUCCESS) {
-                    if(result[1] == 1) {
+                    if (result[1] == 1) {
                         resultDescription = getString(R.string.info_form_template_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_form_templates_downloaded, result[1]);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else{
-                    wizardcompletedSuccessfully=false;
+                } else {
+                    wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_form_templates_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
@@ -334,6 +394,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
         }.execute();
     }
+
     private void downloadLocations() {
         final SetupActionLogModel downloadLocationsLog = new SetupActionLogModel();
         addSetupActionLog(downloadLocationsLog);
@@ -343,32 +404,34 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadLocationsLog.setSetupAction(getString(R.string.info_location_download));
                 onQueryTaskStarted();
             }
+
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractLocationsUuids();
-                if (!uuids.isEmpty()){
+                if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     return muzimaSyncService.downloadLocations(uuids.toArray(new String[uuids.size()]));
 
                 }
                 return null;
             }
+
             @Override
             protected void onPostExecute(int[] result) {
-                String resultDescription =null;
-                String resultStatus=null;
-                if (result == null){
+                String resultDescription = null;
+                String resultStatus = null;
+                if (result == null) {
                     resultDescription = getString(R.string.info_location_not_downloaded);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                }else if(result[0] == SyncStatusConstants.SUCCESS) {
-                    if(result[1] == 1) {
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    if (result[1] == 1) {
                         resultDescription = getString(R.string.info_location_downloaded);
                     } else {
-                        resultDescription = getString(R.string.info_locations_downloaded,result[1]);
+                        resultDescription = getString(R.string.info_locations_downloaded, result[1]);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    wizardcompletedSuccessfully=false;
+                    wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_location_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
@@ -379,6 +442,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
         }.execute();
     }
+
     private void downloadProviders() {
         final SetupActionLogModel downloadProvidersLog = new SetupActionLogModel();
         addSetupActionLog(downloadProvidersLog);
@@ -388,32 +452,34 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadProvidersLog.setSetupAction(getString(R.string.info_provider_download));
                 onQueryTaskStarted();
             }
+
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractProvidersUuids();
-                if (!uuids.isEmpty()){
+                if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     return muzimaSyncService.downloadProviders(uuids.toArray(new String[uuids.size()]));
 
                 }
                 return null;
             }
+
             @Override
             protected void onPostExecute(int[] result) {
-                String resultDescription =null;
-                String resultStatus=null;
-                if (result == null){
+                String resultDescription = null;
+                String resultStatus = null;
+                if (result == null) {
                     resultDescription = getString(R.string.info_provider_not_downloaded);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if( result[0] == SyncStatusConstants.SUCCESS) {
-                    if(result[1] == 1) {
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    if (result[1] == 1) {
                         resultDescription = getString(R.string.info_provider_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_providers_downloaded, result[1]);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    wizardcompletedSuccessfully=false;
+                    wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_provider_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
@@ -423,6 +489,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
         }.execute();
     }
+
     private void downloadConcepts() {
         final SetupActionLogModel downloadConceptsLog = new SetupActionLogModel();
         addSetupActionLog(downloadConceptsLog);
@@ -432,32 +499,34 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadConceptsLog.setSetupAction(getString(R.string.info_concept_download));
                 onQueryTaskStarted();
             }
+
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractConceptsUuids();
-                if (!uuids.isEmpty()){
+                if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     return muzimaSyncService.downloadConcepts(uuids.toArray(new String[uuids.size()]));
 
                 }
                 return null;
             }
+
             @Override
             protected void onPostExecute(int[] result) {
-                String resultDescription =null;
-                String resultStatus=null;
-                if (result == null){
+                String resultDescription = null;
+                String resultStatus = null;
+                if (result == null) {
                     resultDescription = getString(R.string.info_concept_not_downloaded);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if(result[0] == SyncStatusConstants.SUCCESS) {
-                    if(result[1] == 1) {
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    if (result[1] == 1) {
                         resultDescription = getString(R.string.info_concept_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_concepts_downloaded, result[1]);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    wizardcompletedSuccessfully=false;
+                    wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_concept_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
@@ -469,6 +538,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
         }.execute();
     }
+
     private void downloadEncounters() {
         final SetupActionLogModel downloadEncountersLog = new SetupActionLogModel();
         addSetupActionLog(downloadEncountersLog);
@@ -478,40 +548,42 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadEncountersLog.setSetupAction(getString(R.string.info_encounter_download));
                 onQueryTaskStarted();
             }
+
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractCohortsUuids();
-                if (!uuids.isEmpty()){
+                if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                    return muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(uuids.toArray(new String[uuids.size()]),false);
+                    return muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(uuids.toArray(new String[uuids.size()]), false);
 
                 }
                 return null;
             }
+
             @Override
             protected void onPostExecute(int[] result) {
-                String resultDescription =null;
-                String resultStatus=null;
-                if (result == null){
+                String resultDescription = null;
+                String resultStatus = null;
+                if (result == null) {
                     resultDescription = getString(R.string.info_encounter_patient_not_downloaded);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if(result[0] == SyncStatusConstants.SUCCESS) {
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     int downloadedEncounters = result[1];
                     int patients = result[3];
-                    if(downloadedEncounters == 1 && patients == 1) {
+                    if (downloadedEncounters == 1 && patients == 1) {
                         resultDescription = getString(R.string.info_encounter_patient_downloaded);
-                    } else if(downloadedEncounters == 1) {
+                    } else if (downloadedEncounters == 1) {
                         resultDescription = getString(R.string.info_encounter_patients_downloaded, patients);
-                    } else if(patients == 1) {
+                    } else if (patients == 1) {
                         resultDescription = getString(R.string.info_encounters_patient_downloaded, downloadedEncounters);
-                    } else if(downloadedEncounters == 0) {
+                    } else if (downloadedEncounters == 0) {
                         resultDescription = getString(R.string.info_encounter_patient_not_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_encounters_patients_downloaded, downloadedEncounters, patients);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    wizardcompletedSuccessfully=false;
+                    wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_encounter_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
@@ -521,6 +593,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
         }.execute();
     }
+
     private void downloadObservations() {
         final SetupActionLogModel downloadObservationsLog = new SetupActionLogModel();
         addSetupActionLog(downloadObservationsLog);
@@ -530,41 +603,43 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadObservationsLog.setSetupAction(getString(R.string.info_observation_download));
                 onQueryTaskStarted();
             }
+
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractCohortsUuids();
-                if (!uuids.isEmpty()){
+                if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     return muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(
-                            uuids.toArray(new String[uuids.size()]),false);
+                            uuids.toArray(new String[uuids.size()]), false);
 
                 }
                 return null;
             }
+
             @Override
             protected void onPostExecute(int[] result) {
-                String resultDescription =null;
-                String resultStatus=null;
-                if (result == null){
+                String resultDescription = null;
+                String resultStatus = null;
+                if (result == null) {
                     resultDescription = getString(R.string.info_observation_patient_not_downloaded);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if(result[0] == SyncStatusConstants.SUCCESS) {
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     int downloadedObs = result[1];
                     int patients = result[3];
-                    if(downloadedObs == 1 && patients == 1) {
+                    if (downloadedObs == 1 && patients == 1) {
                         resultDescription = getString(R.string.info_observation_patient_downloaded);
-                    } else if(downloadedObs == 1) {
+                    } else if (downloadedObs == 1) {
                         resultDescription = getString(R.string.info_observation_patients_downloaded, patients);
-                    } else if(patients == 1) {
+                    } else if (patients == 1) {
                         resultDescription = getString(R.string.info_observations_patient_downloaded, patients);
-                    } else if(downloadedObs == 0) {
+                    } else if (downloadedObs == 0) {
                         resultDescription = getString(R.string.info_observation_patient_not_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_observations_patients_downloaded, downloadedObs, patients);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
-                    wizardcompletedSuccessfully=false;
+                    wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_observation_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
@@ -575,87 +650,87 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         }.execute();
     }
 
-    private List<String> extractConceptsUuids(){
+    private List<String> extractConceptsUuids() {
         List<String> conceptsUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(),"$['config']['concepts']");
-        if(objects != null){
-            for(Object object:objects){
-                JSONObject cohort = (JSONObject)object;
-                conceptsUuids.add((String)cohort.get("uuid"));
+        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['concepts']");
+        if (objects != null) {
+            for (Object object : objects) {
+                JSONObject cohort = (JSONObject) object;
+                conceptsUuids.add((String) cohort.get("uuid"));
             }
         }
         return conceptsUuids;
     }
 
-    private List<String> extractProvidersUuids(){
+    private List<String> extractProvidersUuids() {
         List<String> providerUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(),"$['config']['providers']");
-        if(objects != null){
-            for(Object object:objects){
-                JSONObject cohort = (JSONObject)object;
-                providerUuids.add((String)cohort.get("uuid"));
+        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['providers']");
+        if (objects != null) {
+            for (Object object : objects) {
+                JSONObject cohort = (JSONObject) object;
+                providerUuids.add((String) cohort.get("uuid"));
             }
         }
         return providerUuids;
     }
 
-    private List<String> extractLocationsUuids(){
+    private List<String> extractLocationsUuids() {
         List<String> locationUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(),"$['config']['locations']");
-        if(objects != null){
-            for(Object object:objects){
-                JSONObject cohort = (JSONObject)object;
-                locationUuids.add((String)cohort.get("uuid"));
+        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['locations']");
+        if (objects != null) {
+            for (Object object : objects) {
+                JSONObject cohort = (JSONObject) object;
+                locationUuids.add((String) cohort.get("uuid"));
             }
         }
         return locationUuids;
     }
 
-    private List<String> extractFormTemplatesUuids(){
+    private List<String> extractFormTemplatesUuids() {
         List<String> formsuuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(),"$['config']['forms']");
-        if(objects != null){
-            for(Object object:objects){
-                JSONObject cohort = (JSONObject)object;
-                formsuuids.add((String)cohort.get("uuid"));
+        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['forms']");
+        if (objects != null) {
+            for (Object object : objects) {
+                JSONObject cohort = (JSONObject) object;
+                formsuuids.add((String) cohort.get("uuid"));
             }
         }
         return formsuuids;
     }
 
-    private List<String> extractCohortsUuids(){
+    private List<String> extractCohortsUuids() {
         List<String> cohortUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(),"$['config']['cohorts']");
-        if(objects != null){
-            for(Object object:objects){
-                JSONObject cohort = (JSONObject)object;
-                cohortUuids.add((String)cohort.get("uuid"));
+        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['cohorts']");
+        if (objects != null) {
+            for (Object object : objects) {
+                JSONObject cohort = (JSONObject) object;
+                cohortUuids.add((String) cohort.get("uuid"));
             }
         }
         return cohortUuids;
     }
 
-    public void checkIfCohortWithFilterByLocationExists(){
+    public void checkIfCohortWithFilterByLocationExists() {
         boolean isCohortLocationBased = false;
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(),"$['config']['cohorts']");
-        if(objects != null){
-            for(Object object:objects){
-                JSONObject cohort = (JSONObject)object;
-                if(cohort.get("isFilterByLocationEnabled") != null) {
+        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['cohorts']");
+        if (objects != null) {
+            for (Object object : objects) {
+                JSONObject cohort = (JSONObject) object;
+                if (cohort.get("isFilterByLocationEnabled") != null) {
                     if ((Boolean) cohort.get("isFilterByLocationEnabled")) {
                         isCohortLocationBased = true;
                     }
                 }
             }
         }
-        if(isCohortLocationBased){
+        if (isCohortLocationBased) {
             showAlertDialog();
-        }else{
+        } else {
             downloadAndSavePatients();
         }
     }
 
-    private void showAlertDialog(){
+    private void showAlertDialog() {
         AlertDialog.Builder alertDialogBuider = new AlertDialog.Builder(this);
         alertDialogBuider.setTitle(R.string.title_default_encounter_location);
         alertDialogBuider.setMessage(R.string.select_default_encounter_location);
@@ -666,11 +741,11 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         try {
             locations = locationController.getAllLocations();
         } catch (LocationController.LocationLoadException e) {
-            Log.e(getClass().getSimpleName(),e.getMessage());
+            Log.e(getClass().getSimpleName(), e.getMessage());
         }
 
         for (Location location : locations) {
-            arrayAdapter.add(location.getId()+"-"+location.getName());
+            arrayAdapter.add(location.getId() + "-" + location.getName());
         }
 
         alertDialogBuider.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
@@ -690,21 +765,21 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         alertDialog.show();
     }
 
-    private void addSetupActionLog(SetupActionLogModel setupActionLogModel){
+    private void addSetupActionLog(SetupActionLogModel setupActionLogModel) {
         setupActionLogAdapter.add(setupActionLogModel);
     }
 
-    private synchronized void incrementWizardStep(){
+    private synchronized void incrementWizardStep() {
         wizardLevel++;
     }
 
-    private synchronized void evaluateFinishStatus(){
+    private synchronized void evaluateFinishStatus() {
         int TOTAL_WIZARD_STEPS = 10;
-        if(wizardLevel == (TOTAL_WIZARD_STEPS)) {
+        if (wizardLevel == (TOTAL_WIZARD_STEPS)) {
             TextView finalResult = findViewById(R.id.setup_actions_final_result);
-            if(wizardcompletedSuccessfully){
+            if (wizardcompletedSuccessfully) {
                 finalResult.setText(getString(R.string.info_setup_complete_success));
-            } else{
+            } else {
                 finalResult.setText(getString(R.string.info_setup_complete_fail));
                 finalResult.setTextColor(Color.RED);
             }
@@ -714,6 +789,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             nextButtonLayout.setVisibility(View.VISIBLE);
         }
     }
+
     @Override
     public void onQueryTaskStarted() {
         setupActionLogAdapter.notifyDataSetChanged();
@@ -727,8 +803,10 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     @Override
-    public void onQueryTaskCancelled(){}
+    public void onQueryTaskCancelled() {
+    }
 
     @Override
-    public void onQueryTaskCancelled(Object errorDefinition){}
+    public void onQueryTaskCancelled(Object errorDefinition) {
+    }
 }
