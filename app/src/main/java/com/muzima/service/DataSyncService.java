@@ -235,6 +235,7 @@ public class DataSyncService extends IntentService {
         broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
 
         //Sync Relationships for all clients
+        muzimaSyncService.downloadRelationshipsTypes();
         int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByPatientUUIDs(patientUUIDList);
         broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
     }

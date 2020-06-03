@@ -202,12 +202,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractCohortsUuids();
+                MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                muzimaSyncService.downloadRelationshipsTypes();
+
                 if (!uuids.isEmpty()){
-                    MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(uuids.toArray(new String[uuids.size()]));
 
                     if (resultForPatients[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
-                        muzimaSyncService.downloadRelationshipsTypes();
                         muzimaSyncService.downloadRelationshipsForPatientsByCohortUUIDs(uuids.toArray(new String[uuids.size()]));
                     }
 
