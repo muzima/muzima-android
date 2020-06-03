@@ -47,6 +47,7 @@ import com.muzima.view.BroadcastListenerActivity;
 
 import net.minidev.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,6 +160,8 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         boolean isRelationshipFeatureEnabled = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController()
                 .isRelationshipEnabled();
 
+        Log.i(getClass().getSimpleName(), "downloadPersonRegistrationFormsIfNecessary: isRelationshipEnabled " + isRelationshipFeatureEnabled);
+
         if (isRelationshipFeatureEnabled) {
             //Download person registration forms
             new AsyncTask<Void, Void, int[]>() {
@@ -177,13 +180,16 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                         ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService()
                                 .downloadPersonRegistrationForm();
                         result[0] = SyncStatusConstants.SUCCESS;
-                    } catch (FormController.FormFetchException e) {
-                        Log.e(getClass().getSimpleName(), "Failed to download relationship forms: " + e);
-                        result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
                     } catch (FormController.FormSaveException e) {
-                        Log.e(getClass().getSimpleName(), "Failed to download relationship forms: " + e);
+                        Log.w(getClass().getSimpleName(), "Failed to download relationship forms: " + e);
+                        result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+                    } catch (IOException e) {
+                        Log.w(getClass().getSimpleName(), "Failed to download relationship forms: " + e);
                         result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
                     }
+
+                    Log.i(getClass().getSimpleName(), "Download relationship forms: result " + result);
+
                     return result;
                 }
 
@@ -192,9 +198,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     super.onPostExecute(result);
 
                     if (result[0] == SyncStatusConstants.SUCCESS) {
-                        Log.e(getClass().getSimpleName(), "Relationship registration form download success");
+                        Log.i(getClass().getSimpleName(), "Relationship registration form download success");
                     } else if (result[0] == SyncStatusConstants.DOWNLOAD_ERROR) {
-                        Log.e(getClass().getSimpleName(), "Relationship registration form download failed");
+                        Log.w(getClass().getSimpleName(), "Relationship registration form download failed");
                     }
                 }
             }.execute();

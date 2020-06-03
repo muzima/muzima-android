@@ -12,6 +12,7 @@ package com.muzima.controller;
 
 import android.content.Context;
 import android.util.Log;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.APIName;
 import com.muzima.api.model.Encounter;
@@ -147,7 +148,7 @@ public class FormController {
             List<Form> filteredForms = filterFormsByTags(allForms, tagsUuid, alwaysIncludeRegistrationForms);
             AvailableForms availableForms = new AvailableForms();
             ArrayList<String> formUuids = getFormListAsPerConfigOrder();
-            availableForms = getAvailableFormsPerConfigOrder(formUuids,filteredForms);
+            availableForms = getAvailableFormsPerConfigOrder(formUuids, filteredForms);
 
             return availableForms;
         } catch (IOException e) {
@@ -207,14 +208,14 @@ public class FormController {
         try {
             List<Form> allForms = formService.getAllForms();
             ArrayList<String> formUuids = getFormListAsPerConfigOrder();
-            for(String formUuid : formUuids){
+            for (String formUuid : formUuids) {
                 Form form = formService.getFormByUuid(formUuid);
                 if (formService.isFormTemplateDownloaded(form.getUuid())) {
                     downloadedFormsByTags.add(new DownloadedFormBuilder().withDownloadedForm(form).build());
                 }
             }
             for (Form form : allForms) {
-                if(!formUuids.contains(form.getUuid())) {
+                if (!formUuids.contains(form.getUuid())) {
                     if (formService.isFormTemplateDownloaded(form.getUuid())) {
                         downloadedFormsByTags.add(new DownloadedFormBuilder().withDownloadedForm(form).build());
                     }
@@ -244,6 +245,11 @@ public class FormController {
             formTemplates.add(downloadFormTemplateByUuid(uuid));
         }
         return formTemplates;
+    }
+
+    public List<Form> downloadFormsByDiscriminator(String formDiscriminator) throws IOException {
+        List<FormTemplate> formTemplates = new ArrayList<>();
+        return formService.downloadFormsByDiscriminator(formDiscriminator);
     }
 
     public FormTemplate downloadFormTemplateByUuid(String uuid) throws FormFetchException {
@@ -365,7 +371,7 @@ public class FormController {
 
     public List<FormData> getFormDataByUuids(List<String> formDataUuids) throws FormDataFetchException {
         try {
-            return formService.getFormDataByUuids (formDataUuids);
+            return formService.getFormDataByUuids(formDataUuids);
         } catch (IOException e) {
             throw new FormDataFetchException(e);
         }
@@ -377,7 +383,7 @@ public class FormController {
         try {
             FormData formData = formService.getFormDataByUuid(formDataUuid);
             if (formData != null && (StringUtils.equals(formData.getStatus(), Constants.STATUS_UPLOADED)) ||
-                    StringUtils.equals(formData.getStatus(), Constants.STATUS_COMPLETE)){
+                    StringUtils.equals(formData.getStatus(), Constants.STATUS_COMPLETE)) {
                 Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
                 completeForm = new CompleteFormWithPatientDataBuilder()
                         .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
@@ -404,9 +410,9 @@ public class FormController {
     }
 
     public List<FormData> getAllFormData(String status) throws FormDataFetchException {
-            try {
-                return formService.getAllFormData(status);
-            } catch (Exception e) {
+        try {
+            return formService.getAllFormData(status);
+        } catch (Exception e) {
             throw new FormDataFetchException(e);
         }
     }
@@ -460,7 +466,7 @@ public class FormController {
             for (FormData formData : allFormData) {
                 Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
                 Form form = formService.getFormByUuid(formData.getTemplateUuid());
-                if(form != null) {
+                if (form != null) {
                     CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
                             .withForm(form)
                             .withFormDataUuid(formData.getUuid())
@@ -469,18 +475,18 @@ public class FormController {
                             .withEncounterDate(formData.getEncounterDate())
                             .build();
                     completeForms.add(completeForm);
-                }else{
-                    if(formData.getDiscriminator() != null){
-                        if(formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS)){
+                } else {
+                    if (formData.getDiscriminator() != null) {
+                        if (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS)) {
                             CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
-                                    .withIndividualObsForm(form,context)
+                                    .withIndividualObsForm(form, context)
                                     .withFormDataUuid(formData.getUuid())
                                     .withPatient(patient)
                                     .withLastModifiedDate(formData.getSaveTime())
                                     .withEncounterDate(formData.getEncounterDate())
                                     .build();
                             completeForms.add(completeForm);
-                        }else if(formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION)){
+                        } else if (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION)) {
                             CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
                                     .withSHRRegistrationForm(form, context)
                                     .withFormDataUuid(formData.getUuid())
@@ -489,7 +495,7 @@ public class FormController {
                                     .withEncounterDate(formData.getEncounterDate())
                                     .build();
                             completeForms.add(completeForm);
-                        } else if(formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP)){
+                        } else if (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP)) {
                             CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
                                     .withRelationshipForm(form, context)
                                     .withFormDataUuid(formData.getUuid())
@@ -531,7 +537,7 @@ public class FormController {
             List<FormData> allFormData = formService.getFormDataByPatient(patientUuid, Constants.STATUS_COMPLETE);
             for (FormData formData : allFormData) {
                 Form form = formService.getFormByUuid(formData.getTemplateUuid());
-                if(form != null) {
+                if (form != null) {
                     completePatientForms.add(new CompleteFormBuilder()
                             .withForm(form)
                             .withFormDataUuid(formData.getUuid())
@@ -573,14 +579,14 @@ public class FormController {
         return result;
     }
 
-    public Patient createNewPatient(MuzimaApplication muzimaApplication,FormData formData) {
+    public Patient createNewPatient(MuzimaApplication muzimaApplication, FormData formData) {
         try {
             Patient patient;
-            if(isGenericRegistrationHTMLFormData(formData)){
-                patient = new GenericRegistrationPatientJSONMapper().getPatient(muzimaApplication,formData.getJsonPayload());
-            } else if(isRegistrationHTMLFormData(formData)) {
-                patient = new HTMLPatientJSONMapper().getPatient(muzimaApplication,formData.getJsonPayload());
-            } else if(isRegistrationXMLFormData(formData)){
+            if (isGenericRegistrationHTMLFormData(formData)) {
+                patient = new GenericRegistrationPatientJSONMapper().getPatient(muzimaApplication, formData.getJsonPayload());
+            } else if (isRegistrationHTMLFormData(formData)) {
+                patient = new HTMLPatientJSONMapper().getPatient(muzimaApplication, formData.getJsonPayload());
+            } else if (isRegistrationXMLFormData(formData)) {
                 patient = new PatientJSONMapper(formData.getJsonPayload()).getPatient();
                 patientService.savePatient(patient);
             } else {
@@ -618,7 +624,7 @@ public class FormController {
 
     public AvailableForms getRecommendedForms() throws FormFetchException {
         AvailableForms result = new AvailableForms();
-        for (AvailableForm form : getAvailableFormByTagsSortedByConfigOrder(null,false)) {
+        for (AvailableForm form : getAvailableFormByTagsSortedByConfigOrder(null, false)) {
             if (form.isDownloaded() && !form.isRegistrationForm() && !form.isProviderReport() && !form.isRelationshipForm()) {
                 result.add(form);
             }
@@ -645,7 +651,7 @@ public class FormController {
         return REGISTRATION.equalsIgnoreCase(formTag.getName());
     }
 
-    public void deleteCompleteAndIncompleteEncounterFormData(List<String> formDataUuids) throws FormDataDeleteException{
+    public void deleteCompleteAndIncompleteEncounterFormData(List<String> formDataUuids) throws FormDataDeleteException {
         try {
             List<FormData> formDataList = getFormDataByUuids(formDataUuids);
             deleteEncounterFormDataAndRelatedPatientData(formDataList);
@@ -740,7 +746,7 @@ public class FormController {
                 //DO NOT save base64 string in DB
                 formData.setJsonPayload(rawPayload);
                 formService.saveFormData(formData);
-                MuzimaLoggerService.log(muzimaApplication,"SYNCED_FORM_DATA",  "{\"formDataUuid\":\""+formData.getUuid()+"\"}");
+                MuzimaLoggerService.log(muzimaApplication, "SYNCED_FORM_DATA", "{\"formDataUuid\":\"" + formData.getUuid() + "\"}");
 
             } else {
                 result = false;
@@ -750,7 +756,9 @@ public class FormController {
     }
 
     public void markFormDataAsIncompleteAndDeleteRelatedEncountersAndObs(final FormData formData) throws FormDataSaveException, FormDataDeleteException {
-        deletePatientDataRelatedToFormData(new ArrayList<FormData>(){{add(formData);}});
+        deletePatientDataRelatedToFormData(new ArrayList<FormData>() {{
+            add(formData);
+        }});
         formData.setStatus(STATUS_INCOMPLETE);
         saveFormData(formData);
     }
@@ -767,7 +775,7 @@ public class FormController {
     public List<FormData> getArchivedFormData() throws FormDataFetchException {
         try {
             return formService.getAllFormData(STATUS_UPLOADED);
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new FormDataFetchException(e);
         }
     }
@@ -819,7 +827,7 @@ public class FormController {
         }
     }
 
-    private void replaceMediaPathWithMedia(String key, String value){
+    private void replaceMediaPathWithMedia(String key, String value) {
         if (value.contains("/muzima/media/")) {
             String newKeyValPair = "\"" + key + "\":\"" + getStringMedia(value) + "\"";
             if (!jsonPayload.contains(value)) {
@@ -845,10 +853,10 @@ public class FormController {
 
     private static String getStringMedia(String mediaUri) {
         String mediaString = null;
-        if (!StringUtils.isEmpty(mediaUri))  {
+        if (!StringUtils.isEmpty(mediaUri)) {
             //fetch the media and convert it to @Base64 encoded string.
-            File f = new File(mediaUri) ;
-            if (f.exists()){
+            File f = new File(mediaUri);
+            if (f.exists()) {
 
                 // here the media file is encrypted so we decrypt it
                 EnDeCrypt.decrypt(f, "this-is-supposed-to-be-a-secure-key");
@@ -871,18 +879,19 @@ public class FormController {
                 EnDeCrypt.encrypt(f, "this-is-supposed-to-be-a-secure-key");
             }
         }
-        return mediaString != null? mediaString : mediaUri;
+        return mediaString != null ? mediaString : mediaUri;
     }
+
     public boolean isFormAlreadyExist(String jsonPayload, FormData formData) throws IOException, JSONException {
         org.json.JSONObject temp = new org.json.JSONObject(jsonPayload);
-        String checkEncounterDate = ((org.json.JSONObject)temp.get("encounter")).get("encounter.encounter_datetime").toString();
-        String checkPatientUuid = ((org.json.JSONObject)temp.get("patient")).get("patient.uuid").toString();
-        String checkFormUuid = ((org.json.JSONObject)temp.get("encounter")).get("encounter.form_uuid").toString();
+        String checkEncounterDate = ((org.json.JSONObject) temp.get("encounter")).get("encounter.encounter_datetime").toString();
+        String checkPatientUuid = ((org.json.JSONObject) temp.get("patient")).get("patient.uuid").toString();
+        String checkFormUuid = ((org.json.JSONObject) temp.get("encounter")).get("encounter.form_uuid").toString();
 
         List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_INCOMPLETE);
         allFormData.addAll(formService.getAllFormData(Constants.STATUS_COMPLETE));
-        for (FormData formData1 : allFormData){
-            if(!isRegistrationFormData(formData1) && !formData1.getUuid().equals(formData.getUuid())) {
+        for (FormData formData1 : allFormData) {
+            if (!isRegistrationFormData(formData1) && !formData1.getUuid().equals(formData.getUuid())) {
                 org.json.JSONObject object = new org.json.JSONObject(formData1.getJsonPayload());
                 String encounterDate = ((org.json.JSONObject) object.get("encounter")).get("encounter.encounter_datetime").toString();
                 String patientUuid = ((org.json.JSONObject) object.get("patient")).get("patient.uuid").toString();
@@ -902,11 +911,11 @@ public class FormController {
         return isRegistrationFormData(formData) && hasEncounterForm(formData);
     }
 
-    private boolean hasEncounterForm(FormData registrationFormData) throws FormDataFetchException{
-        return countAllFormDataByPatientUuid(registrationFormData.getPatientUuid(),null)>1;
+    private boolean hasEncounterForm(FormData registrationFormData) throws FormDataFetchException {
+        return countAllFormDataByPatientUuid(registrationFormData.getPatientUuid(), null) > 1;
     }
 
-    public boolean isRegistrationFormData(FormData formData){
+    public boolean isRegistrationFormData(FormData formData) {
         return formData.getDiscriminator().equalsIgnoreCase(FORM_DISCRIMINATOR_REGISTRATION)
                 || formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_REGISTRATION)
                 || formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION);
@@ -931,34 +940,34 @@ public class FormController {
         return (formData.getDiscriminator() != null) && !isRegistrationFormData(formData);
     }
 
-    private boolean isCompleteFormData(FormData formData){
+    private boolean isCompleteFormData(FormData formData) {
         return StringUtils.equals(formData.getStatus(), Constants.STATUS_COMPLETE);
     }
 
-    private boolean isArchivedFormData(FormData formData){
+    private boolean isArchivedFormData(FormData formData) {
         return StringUtils.equals(formData.getStatus(), STATUS_UPLOADED);
     }
 
-    public Map<String,List<FormData>> getFormDataGroupedByPatient(List<String> uuids) throws FormDataFetchException{
-        Map<String,List<FormData>> formDataMap = new HashMap<>();
-        List<FormData> formDataList =  getFormDataByUuids(uuids);
-        if(!formDataList.isEmpty()){
-            for(FormData formData:formDataList){
+    public Map<String, List<FormData>> getFormDataGroupedByPatient(List<String> uuids) throws FormDataFetchException {
+        Map<String, List<FormData>> formDataMap = new HashMap<>();
+        List<FormData> formDataList = getFormDataByUuids(uuids);
+        if (!formDataList.isEmpty()) {
+            for (FormData formData : formDataList) {
                 String patientUuid = formData.getPatientUuid();
-                if(formDataMap.containsKey(patientUuid)){
+                if (formDataMap.containsKey(patientUuid)) {
                     formDataMap.get(patientUuid).add(formData);
                 } else {
                     List patientFormData = new ArrayList<FormData>();
                     patientFormData.add(formData);
-                    formDataMap.put(patientUuid,patientFormData);
+                    formDataMap.put(patientUuid, patientFormData);
                 }
             }
         }
         return formDataMap;
     }
 
-    public Map<String,List<FormData>> deleteFormDataWithNoRelatedCompleteRegistrationFormDataInGroup(
-                                                Map<String,List<FormData>> groupedFormData) throws FormDataDeleteException{
+    public Map<String, List<FormData>> deleteFormDataWithNoRelatedCompleteRegistrationFormDataInGroup(
+            Map<String, List<FormData>> groupedFormData) throws FormDataDeleteException {
         Map<String, List<FormData>> remnantData = new HashMap<>();
         for (String patientUuid : groupedFormData.keySet()) {
             List<FormData> formDataList = groupedFormData.get(patientUuid);
@@ -978,12 +987,12 @@ public class FormController {
         return remnantData;
     }
 
-    private void deleteEncounterFormDataAndRelatedPatientData(List<FormData> formDataList) throws FormDataDeleteException{
+    private void deleteEncounterFormDataAndRelatedPatientData(List<FormData> formDataList) throws FormDataDeleteException {
         try {
             for (FormData formData : formDataList) {
                 if (isCompleteFormData(formData) || isArchivedFormData(formData)) {
                     List<Encounter> encounters = encounterService.getEncountersByFormDataUuid(formData.getUuid());
-                    for (Encounter encounter:encounters) {
+                    for (Encounter encounter : encounters) {
                         List<Observation> observations = observationService.getObservationsByEncounter(encounter.getUuid());
                         observationService.deleteObservations(observations);
                     }
@@ -991,46 +1000,46 @@ public class FormController {
                 }
                 formService.deleteFormData(formData);
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             throw new FormDataDeleteException(e);
         }
     }
 
-    private void deletePatientDataRelatedToFormData(List<FormData> formDataList) throws FormDataDeleteException{
+    private void deletePatientDataRelatedToFormData(List<FormData> formDataList) throws FormDataDeleteException {
         try {
             for (FormData formData : formDataList) {
                 if (isCompleteFormData(formData) || isArchivedFormData(formData)) {
                     List<Encounter> encounters = encounterService.getEncountersByFormDataUuid(formData.getUuid());
-                    for (Encounter encounter:encounters) {
+                    for (Encounter encounter : encounters) {
                         List<Observation> observations = observationService.getObservationsByEncounter(encounter.getUuid());
                         observationService.deleteObservations(observations);
                     }
                     encounterService.deleteEncounters(encounters);
                 }
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             throw new FormDataDeleteException(e);
         }
     }
 
-    public Map<String,List<FormData>> deleteRegistrationFormDataWithAllRelatedEncountersInGroup(Map<String,List<FormData>> groupedFormData) throws FormDeleteException,FormDataFetchException{
-        try{
+    public Map<String, List<FormData>> deleteRegistrationFormDataWithAllRelatedEncountersInGroup(Map<String, List<FormData>> groupedFormData) throws FormDeleteException, FormDataFetchException {
+        try {
             Map<String, List<FormData>> remnantData = new HashMap<>();
             for (String patientUuid : groupedFormData.keySet()) {
                 List<FormData> formDataList = groupedFormData.get(patientUuid);
-                int actualPatientFormDataCount = countAllFormDataByPatientUuid(patientUuid,null);
-                if(actualPatientFormDataCount == formDataList.size()) {
+                int actualPatientFormDataCount = countAllFormDataByPatientUuid(patientUuid, null);
+                if (actualPatientFormDataCount == formDataList.size()) {
                     formService.deleteFormData(formDataList);
                     Patient patient = patientService.getPatientByUuid(patientUuid);
-                    if(patient != null) {
+                    if (patient != null) {
                         patientService.deletePatient(patient);
                     }
                 } else {
-                    remnantData.put(patientUuid,formDataList);
+                    remnantData.put(patientUuid, formDataList);
                 }
             }
             return remnantData;
-        } catch(IOException e){
+        } catch (IOException e) {
             throw new FormDeleteException(e);
         }
     }
@@ -1040,7 +1049,7 @@ public class FormController {
             List<Form> allForms = formService.getAllForms();
             List<Form> filteredForms = filterFormsByTags(allForms, tagsUuid, alwaysIncludeRegistrationForms);
             ArrayList<String> formUuids = getFormListAsPerConfigOrder();
-            AvailableForms availableForms = getAvailableFormsPerConfigOrder(formUuids,filteredForms);
+            AvailableForms availableForms = getAvailableFormsPerConfigOrder(formUuids, filteredForms);
             return availableForms;
         } catch (IOException e) {
             throw new FormFetchException(e);
@@ -1058,14 +1067,14 @@ public class FormController {
         return result;
     }
 
-    public AvailableForm getAvailableFormByFormUuid(String uuid) throws FormFetchException{
+    public AvailableForm getAvailableFormByFormUuid(String uuid) throws FormFetchException {
         AvailableForm availableForm = new AvailableForm();
         try {
             Form form = formService.getFormByUuid(uuid);
             boolean downloadStatus = formService.isFormTemplateDownloaded(uuid);
             availableForm = new AvailableFormBuilder()
-                        .withAvailableForm(form)
-                        .withDownloadStatus(downloadStatus).build();
+                    .withAvailableForm(form)
+                    .withDownloadStatus(downloadStatus).build();
         } catch (IOException e) {
             throw new FormFetchException(e);
         }
@@ -1075,25 +1084,24 @@ public class FormController {
     public ArrayList<String> getFormListAsPerConfigOrder() throws IOException {
         List<SetupConfigurationTemplate> setupConfigurationTemplates = setupConfigurationService.getSetupConfigurationTemplates();
         ArrayList<String> formUuids = new ArrayList<>();
-        for(SetupConfigurationTemplate setupConfigurationTemplate:setupConfigurationTemplates){
+        for (SetupConfigurationTemplate setupConfigurationTemplate : setupConfigurationTemplates) {
             org.json.JSONObject object = null;
             try {
                 object = new org.json.JSONObject(setupConfigurationTemplate.getConfigJson());
                 org.json.JSONObject forms = object.getJSONObject("config");
                 org.json.JSONArray formsArray = forms.getJSONArray("forms");
-                for(int i = 0; i < formsArray.length(); i++)
-                {
+                for (int i = 0; i < formsArray.length(); i++) {
                     org.json.JSONObject formObject = formsArray.getJSONObject(i);
                     Form form = formService.getFormByUuid(formObject.get("uuid").toString());
-                    if(form != null) {
+                    if (form != null) {
                         formUuids.add(formObject.get("uuid").toString());
                     } else {
-                        Log.d(getClass().getSimpleName(),"Could not find form with uuid = "+formObject.get("uuid").toString() +
-                                " specified in setup config with uuid = "+setupConfigurationTemplate.getUuid());
+                        Log.d(getClass().getSimpleName(), "Could not find form with uuid = " + formObject.get("uuid").toString() +
+                                " specified in setup config with uuid = " + setupConfigurationTemplate.getUuid());
                     }
                 }
             } catch (JSONException e) {
-                Log.e(getClass().getSimpleName(),"Encountered JsonException while sorting forms");
+                Log.e(getClass().getSimpleName(), "Encountered JsonException while sorting forms");
             }
         }
         return formUuids;
@@ -1101,7 +1109,7 @@ public class FormController {
 
     public AvailableForms getAvailableFormsPerConfigOrder(ArrayList<String> formUuids, List<Form> filteredForms) throws IOException {
         AvailableForms availableForms = new AvailableForms();
-        if(formUuids.size()>0) {
+        if (formUuids.size() > 0) {
             for (String formUuid : formUuids) {
                 Form form = formService.getFormByUuid(formUuid);
                 boolean downloadStatus = formService.isFormTemplateDownloaded(form.getUuid());
@@ -1111,8 +1119,8 @@ public class FormController {
         }
 
         //check if forms in config are among those filtered and remove those excluded by the filter
-        for(Form filteredForm : filteredForms){
-            if(!formUuids.contains(filteredForm.getUuid())) {
+        for (Form filteredForm : filteredForms) {
+            if (!formUuids.contains(filteredForm.getUuid())) {
                 availableForms.remove(filteredForm);
             }
         }

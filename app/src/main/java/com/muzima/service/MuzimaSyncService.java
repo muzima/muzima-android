@@ -1336,15 +1336,9 @@ public class MuzimaSyncService {
         return preferences.getString("defaultEncounterLocation", null);
     }
 
-    public void downloadPersonRegistrationForm() throws FormController.FormFetchException, FormController.FormSaveException {
-        List<Form> allDownloadedForms = muzimaApplication.getFormController().downloadAllForms();
-        List<Form> relationshipForms = new ArrayList<>();
-        for (Form form : allDownloadedForms) {
-            if (form.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP)){
-                relationshipForms.add(form);
-            }
-        }
-
-        muzimaApplication.getFormController().saveAllForms(relationshipForms);
+    public void downloadPersonRegistrationForm() throws IOException, FormController.FormSaveException {
+        Log.e(TAG, "downloadPersonRegistrationForm: " );
+        List<Form> allDownloadedForms = muzimaApplication.getFormController().downloadFormsByDiscriminator(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP);
+        muzimaApplication.getFormController().saveAllForms(allDownloadedForms);
     }
 }

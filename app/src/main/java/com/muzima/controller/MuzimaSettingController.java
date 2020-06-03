@@ -49,7 +49,7 @@ public class MuzimaSettingController {
                 return configLevelSetting;
             }
             return settingService.getSettingByProperty(property);
-        } catch (IOException | ParseException e) {
+        } catch (IOException | ArrayIndexOutOfBoundsException | ParseException e) { //Fails with ArrayIndexOutOfBoundsException onCall #getSettingByProperty
             throw new MuzimaSettingFetchException(e);
         }
     }
