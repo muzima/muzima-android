@@ -1335,10 +1335,4 @@ public class MuzimaSyncService {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString("defaultEncounterLocation", null);
     }
-
-    public void downloadPersonRegistrationForm() throws IOException, FormController.FormSaveException {
-        Log.e(TAG, "downloadPersonRegistrationForm: " );
-        List<Form> allDownloadedForms = muzimaApplication.getFormController().downloadFormsByDiscriminator(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP);
-        muzimaApplication.getFormController().saveAllForms(allDownloadedForms);
-    }
 }

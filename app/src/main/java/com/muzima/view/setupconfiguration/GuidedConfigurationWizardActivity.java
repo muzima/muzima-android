@@ -30,11 +30,13 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
+import com.muzima.api.model.Form;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.SetupConfigurationController;
+import com.muzima.model.DownloadedForm;
 import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.DefaultEncounterLocationPreferenceService;
 import com.muzima.service.LandingPagePreferenceService;
@@ -151,60 +153,8 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadSettingsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
                 downloadCohorts();
-                downloadPersonRegistrationFormsIfNecessary();
             }
         }.execute();
-    }
-
-    private void downloadPersonRegistrationFormsIfNecessary() {
-        boolean isRelationshipFeatureEnabled = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController()
-                .isRelationshipEnabled();
-
-        Log.i(getClass().getSimpleName(), "downloadPersonRegistrationFormsIfNecessary: isRelationshipEnabled " + isRelationshipFeatureEnabled);
-
-        if (isRelationshipFeatureEnabled) {
-            //Download person registration forms
-            new AsyncTask<Void, Void, int[]>() {
-
-                @Override
-                protected void onPreExecute() {
-                    super.onPreExecute();
-                }
-
-                @Override
-                protected int[] doInBackground(Void... voids) {
-
-                    int[] result = new int[1];
-
-                    try {
-                        ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService()
-                                .downloadPersonRegistrationForm();
-                        result[0] = SyncStatusConstants.SUCCESS;
-                    } catch (FormController.FormSaveException e) {
-                        Log.w(getClass().getSimpleName(), "Failed to download relationship forms: " + e);
-                        result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
-                    } catch (IOException e) {
-                        Log.w(getClass().getSimpleName(), "Failed to download relationship forms: " + e);
-                        result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
-                    }
-
-                    Log.i(getClass().getSimpleName(), "Download relationship forms: result " + result);
-
-                    return result;
-                }
-
-                @Override
-                protected void onPostExecute(int[] result) {
-                    super.onPostExecute(result);
-
-                    if (result[0] == SyncStatusConstants.SUCCESS) {
-                        Log.i(getClass().getSimpleName(), "Relationship registration form download success");
-                    } else if (result[0] == SyncStatusConstants.DOWNLOAD_ERROR) {
-                        Log.w(getClass().getSimpleName(), "Relationship registration form download failed");
-                    }
-                }
-            }.execute();
-        }
     }
 
     private void downloadCohorts() {
@@ -266,7 +216,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 muzimaSyncService.downloadRelationshipsTypes();
 
-                if (!uuids.isEmpty()){
+                if (!uuids.isEmpty()) {
                     int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(uuids.toArray(new String[uuids.size()]));
 
                     if (resultForPatients[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
@@ -365,13 +315,28 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
             @Override
             protected int[] doInBackground(Void... voids) {
-                List<String> uuids = extractFormTemplatesUuids();
-                if (!uuids.isEmpty()) {
-                    MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                    return muzimaSyncService.downloadFormTemplates(uuids.toArray(new String[uuids.size()]), false);
+                try {
+                    List<String> formTemplateUuidsFromFormTemplates = extractFormTemplatesUuids();
 
+                    if (isRelationshipFeatureEnabled()) {
+                        List<String> relationshipFormTemplateUuids = extractRelationshipFormTemplatesUuids();
+                        for (String relationshipFormTemplateUuid : relationshipFormTemplateUuids) {
+                            if (!formTemplateUuidsFromFormTemplates.contains(relationshipFormTemplateUuid))
+                                formTemplateUuidsFromFormTemplates.add(relationshipFormTemplateUuid);
+                        }
+                    }
+                    if (!formTemplateUuidsFromFormTemplates.isEmpty()) {
+                        MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                        return muzimaSyncService.downloadFormTemplates(formTemplateUuidsFromFormTemplates.toArray(new String[formTemplateUuidsFromFormTemplates.size()]), false);
+
+                    }
+                } catch (FormController.FormFetchException e) {
+                    Log.e(getClass().getSimpleName(), "Form fetch error: ");
+                    downloadFormTemplatesLog.setSetupActionResult("Form download completed with an error");
                 }
+
                 return null;
+
             }
 
             @Override
@@ -400,6 +365,21 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadConcepts();
             }
         }.execute();
+    }
+
+    private boolean isRelationshipFeatureEnabled() {
+        return ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController()
+                .isRelationshipEnabled();
+    }
+
+    private List<String> extractRelationshipFormTemplatesUuids() throws FormController.FormFetchException {
+        List<String> formUuids = new ArrayList<>();
+        List<Form> availableForms = ((MuzimaApplication) getApplicationContext()).getFormController().getAllAvailableForms();
+        for (Form availableForm : availableForms) {
+            if (availableForm.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP))
+                formUuids.add(availableForm.getUuid());
+        }
+        return formUuids;
     }
 
     private void downloadLocations() {

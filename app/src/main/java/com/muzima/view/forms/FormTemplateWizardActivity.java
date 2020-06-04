@@ -52,6 +52,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
+@SuppressWarnings("staticFieldLeak")
 public class FormTemplateWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     private MenuItem tagsButton;
     private DrawerLayout mainLayout;

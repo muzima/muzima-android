@@ -247,11 +247,6 @@ public class FormController {
         return formTemplates;
     }
 
-    public List<Form> downloadFormsByDiscriminator(String formDiscriminator) throws IOException {
-        List<FormTemplate> formTemplates = new ArrayList<>();
-        return formService.downloadFormsByDiscriminator(formDiscriminator);
-    }
-
     public FormTemplate downloadFormTemplateByUuid(String uuid) throws FormFetchException {
         try {
             return formService.downloadFormTemplateByUuid(uuid);
