@@ -58,6 +58,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     private OnTemplateDownloadComplete templateDownloadCompleteListener;
     private TextView syncText;
     private boolean newFormsSyncInProgress;
+    private boolean syncing = false;
     private Activity mActivity;
 
     public static AllAvailableFormsListFragment newInstance(FormController formController) {
@@ -251,6 +252,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                         alertDialog.show();
                         return true;
                     }
+                    syncing = true;
 
                     //syncAllFormTemplatesInBackgroundService();
 
@@ -281,6 +283,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                             ((MuzimaApplication) mActivity.getApplicationContext()).restartTimer();
                             ((FormsActivity) mActivity).hideProgressbar();
                             unselectAllItems();
+                            reloadData();
                             ((AllAvailableFormsAdapter) listAdapter).clearSelectedForms();
                             setRunningBackgroundQueryTask(null);
                         }
@@ -289,6 +292,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                     asynTask.execute();
 
                     endActionMode();
+                    syncing = false;
                     return true;
             }
             return false;
@@ -298,7 +302,9 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
             ((AllAvailableFormsAdapter) listAdapter).clearSelectedForms();
-            unselectAllItems(list);
+            if (!syncing) {
+                unselectAllItems();
+            }
         }
     }
 
