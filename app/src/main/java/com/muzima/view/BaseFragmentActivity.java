@@ -10,18 +10,18 @@
 
 package com.muzima.view;
 
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.model.User;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaLoggerService;
@@ -63,7 +63,6 @@ public class BaseFragmentActivity extends AppCompatActivity {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
         boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
-        Log.i("Disclaimer", "Disclaimer is accepted: " + disclaimerAccepted);
         if (!disclaimerAccepted) {
             Intent intent = new Intent(this, DisclaimerActivity.class);
             startActivity(intent);

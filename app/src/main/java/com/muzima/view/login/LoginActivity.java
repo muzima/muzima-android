@@ -10,6 +10,7 @@
 
 package com.muzima.view.login;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -28,7 +29,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.animation.ValueAnimator;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
@@ -52,7 +53,6 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
-import java.lang.reflect.Array;
 import java.util.Locale;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
