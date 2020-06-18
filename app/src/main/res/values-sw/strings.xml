@@ -749,7 +749,7 @@
     <string name="warning_relationship_type_missing">" Tafadhali chagua aina ya uhusiano"</string>
     <string name="warning_session_timeout">Muda wa sesheni kuisha: Haikuweza kuweka muda wa kusitisha.
        Tafadhali ingiza thamani kati ya 1 na 500. </string>
-    <string name="info_no_client_available_locally">Hakuna wateja wanaopatikana ndani ya nchi. Ingiza angalau herufi 3 kwa utaftaji wa mbali au sajili wateja wapya.</string>
+    <string name="info_no_client_available_locally">Hakuna wateja wanaopatikana ndani ya simu. Ingiza angalau herufi 3 kwa utaftaji wa mbali au sajili wateja wapya kwenye simu</string>
     <string name="warning_setting_download_failure">Imeshindikana kupakua kisasisho cha utaratibu</string>
     <string name="warning_switch_server">Ubadilishaji wa seva: Kitendo hiki kitafuta data zote za mUzima katika kifaa chako, ikiwa ni pamoja na fomu zozote ambazo hazijakamilika bado. Una hakika unataka kubadili mpangilio huu?</string>
 
