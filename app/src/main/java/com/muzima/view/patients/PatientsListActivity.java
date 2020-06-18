@@ -84,7 +84,6 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_REA
 import com.muzima.api.model.SmartCardRecord;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

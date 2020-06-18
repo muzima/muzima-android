@@ -10,7 +10,6 @@
 
 package com.muzima.scheduler;
 
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import com.muzima.MuzimaApplication;

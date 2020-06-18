@@ -16,7 +16,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.TimeoutPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
-import com.muzima.util.MuzimaLogger;
 import com.muzima.view.login.LoginActivity;
 
 public class MuzimaTimer extends CountDownTimer {

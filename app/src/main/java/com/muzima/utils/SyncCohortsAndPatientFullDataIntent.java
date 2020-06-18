@@ -1,6 +1,5 @@
 package com.muzima.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import com.muzima.view.SyncIntent;
 

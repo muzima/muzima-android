@@ -10,7 +10,6 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.muzima.R;
-import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptType;
 import com.muzima.api.model.Encounter;

@@ -9,11 +9,7 @@
  */
 package com.muzima.adapters.forms;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -23,8 +19,6 @@ import com.muzima.controller.FormController;
 import com.muzima.view.forms.CompletePatientsFormsListFragment;
 import com.muzima.view.forms.IncompletePatientsFormsListFragment;
 import com.muzima.view.forms.RecommendedFormsListFragment;
-
-import static com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_ACCESS_PERMISSION_REQUEST_CODE;
 
 /**
  * Responsible to hold all the form pages that are part of a specific patient.

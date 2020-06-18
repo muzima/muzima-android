@@ -24,7 +24,6 @@ import com.muzima.api.model.User;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.StringUtils;
-import org.apache.lucene.queryParser.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;

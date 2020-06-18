@@ -25,7 +25,6 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
 import com.muzima.model.location.MuzimaGPSLocation;
 
 import java.util.HashMap;

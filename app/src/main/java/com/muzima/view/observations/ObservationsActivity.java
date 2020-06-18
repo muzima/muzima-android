@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Patient;
-import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;

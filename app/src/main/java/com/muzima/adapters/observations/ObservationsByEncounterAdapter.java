@@ -26,8 +26,6 @@ import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
-import com.muzima.api.model.Person;
-import com.muzima.api.model.PersonAttribute;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
@@ -37,7 +35,6 @@ import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 

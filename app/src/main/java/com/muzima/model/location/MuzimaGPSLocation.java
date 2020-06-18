@@ -2,12 +2,10 @@ package com.muzima.model.location;
 
 import android.location.Location;
 
-import org.apache.lucene.document.DateTools;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MuzimaGPSLocation {

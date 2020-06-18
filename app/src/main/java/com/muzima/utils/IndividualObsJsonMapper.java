@@ -7,7 +7,6 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
-import com.muzima.api.model.Person;
 import com.muzima.api.model.User;
 
 import org.json.JSONException;
@@ -16,7 +15,6 @@ import org.json.JSONObject;
 import java.util.UUID;
 
 import com.muzima.controller.FormController;
-import com.muzima.view.MainActivity;
 import com.muzima.MuzimaApplication;
 import com.muzima.view.forms.HTMLPatientJSONMapper;
 

@@ -12,8 +12,6 @@ package com.muzima.utils;
 
 import android.util.Log;
 import com.muzima.MuzimaApplication;
-import com.muzima.api.exception.InvalidPersonAddressException;
-import com.muzima.api.exception.InvalidPersonAttributeException;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
@@ -29,18 +27,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.DateUtils.parse;
 import static com.muzima.utils.PersonRegistrationUtils.createBirthDate;
 import static com.muzima.utils.PersonRegistrationUtils.createBirthDateEstimated;
-import static com.muzima.utils.PersonRegistrationUtils.createPersonAddress;
 import static com.muzima.utils.PersonRegistrationUtils.createPersonAddresses;
-import static com.muzima.utils.PersonRegistrationUtils.createPersonAttribute;
 import static com.muzima.utils.PersonRegistrationUtils.createPersonAttributes;
 import static com.muzima.utils.PersonRegistrationUtils.createPersonName;
 

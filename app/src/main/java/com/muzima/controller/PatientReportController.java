@@ -12,9 +12,7 @@ package com.muzima.controller;
 
 import android.util.Log;
 
-import com.muzima.api.model.APIName;
 import com.muzima.api.model.LastSyncTime;
-import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientReport;
 import com.muzima.api.model.PatientReportHeader;
 import com.muzima.api.service.LastSyncTimeService;
