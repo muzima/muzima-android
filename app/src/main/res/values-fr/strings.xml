@@ -245,7 +245,7 @@
     <string name="header_muzima_category">Paramètres de mUzima</string>
     <string name="header_openmrs_category">Paramètres de OpenMRS</string>
     <string name="header_provider_location_category">Paramètres du fournisseur / emplacement</string>
-    <string name="info_no_client_avaialble_localy">Aucun client disponible localement. Saisissez au moins 3 caractères pour la recherche à distance ou enregistrez de nouveaux clients.</string>
+    <string name="info_no_client_available_locally">Aucun client disponible localement. Saisissez au moins 3 caractères pour la recherche à distance ou enregistrez de nouveaux clients.</string>
 
     <string name="hello_general">Bonjour</string>
 

@@ -84,7 +84,6 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_REA
 import com.muzima.api.model.SmartCardRecord;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -524,7 +523,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
             int localPatientsCount = patientController.countAllPatients();
             if (localPatientsCount == 0)
-                noDataMsgTextView.setText(getResources().getText(R.string.info_no_client_avaialble_localy));
+                noDataMsgTextView.setText(getResources().getText(R.string.info_no_client_available_locally));
             else
                 noDataMsgTextView.setText(getResources().getText(R.string.info_client_local_search_not_found));
 

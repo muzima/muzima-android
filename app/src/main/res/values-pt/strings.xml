@@ -875,7 +875,7 @@
     <string name="warning_registration_form_data_delete">Está para apagar dados de registo. Isto irá apagar o registo do
         cliente no dispositivo. Tem certeza?
     </string>
-    <string name="info_no_client_avaialble_localy">Nenhum cliente disponível localmente. Digite pelo menos três caracteres para pesquisa remota ou registre novos clientes.</string>
+    <string name="info_no_client_available_locally">Nenhum cliente disponível localmente. Digite pelo menos três caracteres para pesquisa remota ou registre novos clientes.</string>
     <string name="warning_related_person_missing">Por favor, escolha uma pessoa relacionada</string>
     <string name="warning_relationship_exists">O cliente já possui relacionamento %s:%s com %s</string>
     <string name="warning_relationship_type_missing">Por favor, escolha um tipo de relacionamento</string>
