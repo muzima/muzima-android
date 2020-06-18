@@ -238,7 +238,9 @@ public class GenericRegistrationPatientJSONMapper {
         JSONObject responseJSON = new JSONObject(jsonPayload);
         patientJSON = responseJSON.getJSONObject("patient");
         encounterJSON = responseJSON.getJSONObject("encounter");
-        personJSON = responseJSON.getJSONObject("person");
+        if(responseJSON.has("person")) {
+            personJSON = responseJSON.getJSONObject("person");
+        }
     }
 
     private void createPatient() throws JSONException {
