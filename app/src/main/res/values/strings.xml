@@ -425,6 +425,9 @@
     <string name="info_client_local_search_not_found">No clients matched your search locally. Enter at least 3
         characters for remote search.
     </string>
+    <string name="info_no_client_available_locally">No clients available locally. Enter at least 3
+        characters for remote search or register new clients.
+    </string>
     <string name="info_client_remote_search_not_found">No clients matched your search on the server</string>
     <string name="info_cohort_download">Downloading Cohorts</string>
     <string name="info_cohort_downloaded">Downloaded 1 cohort</string>
