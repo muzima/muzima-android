@@ -22,11 +22,9 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.R;
-import com.muzima.adapters.forms.AllAvailableFormsAdapter;
 import com.muzima.adapters.forms.SectionedFormsAdapter;
 import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
-import com.muzima.model.FormWithData;
 import com.muzima.utils.ThemeUtils;
 
 import java.util.ArrayList;

@@ -32,9 +32,6 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
-import com.muzima.api.model.Person;
-import com.muzima.api.model.PersonAttribute;
-import com.muzima.api.model.Provider;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
@@ -44,7 +41,6 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.MainActivity;
 import com.muzima.view.custom.CustomObsEntryDialog;
 
 import java.io.IOException;

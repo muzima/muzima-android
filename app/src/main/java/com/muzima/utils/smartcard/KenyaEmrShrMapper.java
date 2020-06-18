@@ -47,7 +47,6 @@ import com.muzima.utils.PatientIdentifierUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.HTMLPatientJSONMapper;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;

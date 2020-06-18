@@ -10,15 +10,10 @@
 
 package com.muzima.view.forms;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;

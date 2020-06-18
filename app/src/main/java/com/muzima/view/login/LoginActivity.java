@@ -52,7 +52,6 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
-import java.lang.reflect.Array;
 import java.util.Locale;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;

@@ -36,7 +36,6 @@ import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.SetupConfigurationController;
-import com.muzima.model.DownloadedForm;
 import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.DefaultEncounterLocationPreferenceService;
 import com.muzima.service.LandingPagePreferenceService;
@@ -44,17 +43,15 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.JsonUtils;
 import com.muzima.utils.Constants;
+import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import com.muzima.utils.Constants.SetupLogConstants;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 
 import net.minidev.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
-import com.muzima.utils.Constants.SetupLogConstants;
 
 @SuppressWarnings("staticFieldLeak")
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {

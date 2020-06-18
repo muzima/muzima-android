@@ -13,7 +13,6 @@ import com.muzima.R;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.utils.StringUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

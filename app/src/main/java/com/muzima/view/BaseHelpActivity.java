@@ -15,13 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.context.Context;
-import com.muzima.api.model.User;
 import com.muzima.domain.Credentials;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
-
-import java.io.IOException;
 
 public class BaseHelpActivity extends BaseActivity {
 

@@ -17,7 +17,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.muzima.utils.Constants.*;
-import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
 
 public class DateUtils {
     public static String getFormattedDate(Date date){

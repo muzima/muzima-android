@@ -11,22 +11,14 @@
 package com.muzima.controller;
 
 import android.util.Log;
-import com.muzima.MuzimaApplication;
+
 import com.muzima.api.model.Person;
-import com.muzima.api.model.PersonName;
 import com.muzima.api.service.PersonService;
-import com.muzima.utils.DateUtils;
-import com.muzima.utils.StringUtils;
+
 import org.apache.lucene.queryParser.ParseException;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import static com.muzima.utils.DateUtils.parse;
 
 public class PersonController {
 

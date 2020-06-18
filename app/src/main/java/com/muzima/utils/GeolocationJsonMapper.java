@@ -7,7 +7,7 @@ import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.User;
 import com.muzima.controller.FormController;
-import com.muzima.view.forms.HTMLPatientJSONMapper;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
