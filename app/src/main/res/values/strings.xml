@@ -11,58 +11,38 @@
     <string name="SHR_card_text">SHR Card</string>
     <string name="SHR_data_title_text">SHR Data</string>
     <string name="SHR_extracted_data_text">SHR extracted data</string>
-
     <string name="add_individual_observation_text">Add Individual Observation</string>
-
     <string name="app_name">mUzima</string>
     <string name="app_title">mUzima for Health Providers</string>
-
     <string name="ask_help">Asking help</string>
-
     <string name="autocomplete_server_not_found">Server is unreachable! \nPlease connect your device and try again OR create a new person</string>
-
     <string name="captured_date">Captured Date:</string>
-
-    <string name="card_sync_status_content_description">card_sync_status</string>
-
+    <string name="card_sync_status_content_description">Card synchronisation status</string>
     <string name="change_settings">Change Settings</string>
-
-    <string name="client_registration_question_text">Would you like to register client in mUzima ?</string>
-
+    <string name="client_registration_question_text">Would you like to register client in mUzima?</string>
     <string name="complex_obs">Complex Obs</string>
-
-    <string name="concept_description">Concept Descrition</string>
+    <string name="concept_description">Concept Description</string>
     <string name="concept_details">Concept Details</string>
     <string name="concept_name">Concept Name:</string>
-
-    <string name="confirm_create_patient_from_person">This will register this person as a client. Are you sure you would like to
-        do this?
-    </string>
+    <string name="confirm_create_patient_from_person">This will register this person as a client. Are you sure you would like to do this?</string>
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
     <string name="confirm_patient_id_exists">Does the client already have existing ID?</string>
-
     <string name="date_general">Date</string>
     <string name="date_temp">June 8</string>
-
     <string name="default_auto_save_interval" translatable="false">2</string>
     <string name="default_form_register">Registration Forms</string>
     <string name="default_server" translatable="false">https://demo2.muzima.org</string>
-
     <string name="downloaded_reports">Downloaded Reports</string>
-
     <string name="downloading_cohorts_text">Downloading Cohorts</string>
     <string name="downloading_forms">Downloading Forms</string>
-
     <string name="encounter_date">Encounter Date:</string>
     <string name="encounter_date_dialog_label">Encounter Date</string>
     <string name="encounter_details">Encounter Details</string>
     <string name="encounter_location">Encounter Location:</string>
     <string name="encounter_type">Encounter Type:</string>
-
     <string name="enter_concept_name_text">Enter concept name …</string>
     <string name="enter_location_name">Enter location name …</string>
     <string name="enter_provider_name_hint">Enter provider name …</string>
-
     <string name="error_action_allow">Action not allowed while sync is in progress</string>
     <string name="error_audio_chose_activity_find">Error: Activity for choosing audio not found</string>
     <string name="error_audio_play_activity_find">Error: Activity for playing audio not found</string>
@@ -138,27 +118,19 @@
     <string name="error_target_application_find">No target applications</string>
     <string name="error_username_invalid_format">Invalid Character in Username. These are not allowed: %s</string>
     <string name="error_wizard_interrupted">Wizard was interrupted, please logout and run the wizard again.</string>
-
     <string name="failure_obtain_smartcard_record">Could not obtain smartcard record for writing to card.</string>
     <string name="failure_obtaining_card_serial_number">Could not obtain card serial number</string>
     <string name="failure_reading_card">Card Read Failed</string>
-    <string name="failure_updating_smartcard_record_for_writing">Could not update smartcard record before writing to
-        card
-    </string>
+    <string name="failure_updating_smartcard_record_for_writing">Could not update smartcard record before writing to card</string>
     <string name="failure_writing_smartcard">Failed writing Smart card data.</string>
-
     <string name="feedback_header">Please send us your comments and feedback</string>
     <string name="feedback_hint">What is in your mind?</string>
     <string name="feedback_rating_question">How easy to use mUzima App?</string>
-
     <string name="fill_out_forms_for_a_patient_general">Fill out forms for a patient</string>
-
     <string name="form_encounter_date">Encounter date</string>
     <string name="form_encounter_location">Encounter location</string>
     <string name="form_encounter_provider">Encounter provider</string>
-
     <string name="gender_image_content_description">Gender Image</string>
-
     <string name="general_accept">Accept</string>
     <string name="general_add">Add</string>
     <string name="general_agree">Agree</string>
@@ -174,7 +146,7 @@
     <string name="general_cohorts">Cohorts</string>
     <string name="general_concepts">Concepts</string>
     <string name="general_dashboard">Dashboard</string>
-    <string name="general_data_syc_required">Data syc required</string>
+    <string name="general_data_sync_required">Data sync required</string>
     <string name="general_date">Date</string>
     <string name="general_delete">Delete</string>
     <string name="general_description_unavailable">No description available</string>
@@ -242,19 +214,14 @@
     <string name="general_view_encounter">View encounter</string>
     <string name="general_welcome">Welcome</string>
     <string name="general_yes">Yes</string>
-
     <string name="get_more">More from Server</string>
-
     <string name="header_cohort_category">Cohort Settings</string>
     <string name="header_muzima_category">mUzima Settings</string>
     <string name="header_openmrs_category">OpenMRS Settings</string>
     <string name="header_provider_location_category">Provider/Location Settings</string>
-
     <string name="hello_general">Hello</string>
-
     <string name="help_center">Help Center</string>
     <string name="help_general">Help!</string>
-
     <string name="hint_advanced_setup">Use a step by step wizard to choose what you want</string>
     <string name="hint_audio_caption">Please enter a caption for the audio</string>
     <string name="hint_audio_record">Record or choose audio</string>
@@ -289,18 +256,14 @@
     </string>
     <string name="hint_cohort_sync">Please select cohorts from all cohorts list and click sync</string>
     <string name="hint_cohort_wizard_help">In this step of the wizard, you download the cohorts you need. Please select
-        the
-        cohorts and click next.
+        the cohorts and click next.
     </string>
     <string name="hint_complete_form_unavailable">Complete forms are available only if you have filled a form completely
-        but have
-        not synced it with the server
+        but have not synced it with the server
     </string>
     <string name="hint_concept_pref_add">Add concept(s) that you want observation(s) to be downloaded.</string>
     <string name="hint_configuration_search">Search a configuration</string>
-    <string name="hint_consultation_consultant_validation_failure">Please provide a consultant from the list of possible
-        consultants
-    </string>
+    <string name="hint_consultation_consultant_validation_failure">Please provide a consultant from the list of possible consultants</string>
     <string name="hint_crash_dialog">An unexpected error occurred forcing mUzima to stop. Please help us fix
         this by sending us error data, all you have to do is click OK.
     </string>
@@ -325,12 +288,8 @@
     </string>
     <string name="hint_enable_GPS">Enable GPS Data collection feature</string>
     <string name="hint_enable_shr">Enable smart card feature</string>
-    <string name="hint_encounter_location_validation_failure">Please provide a location from the list of possible
-        locations
-    </string>
-    <string name="hint_encounter_provider_validation_failure">Please provide a provider from the list of possible
-        providers
-    </string>
+    <string name="hint_encounter_location_validation_failure">Please provide a location from the list of possible locations</string>
+    <string name="hint_encounter_provider_validation_failure">Please provide a provider from the list of possible providers</string>
     <string name="hint_feedback_prompt">Please enter your message</string>
     <string name="hint_form_auto_save_interval">The value in which your forms will be automatically saved</string>
     <string name="hint_form_download">Please select forms from all forms list and click download</string>
@@ -344,8 +303,7 @@
     <string name="hint_help_prompt">Please enter your message</string>
     <string name="hint_image_caption_prompt">Please enter a caption for the image</string>
     <string name="hint_incomplete_form_unavailable">Incomplete forms are available only if you have saved a partially
-        filled
-        form
+        filled form
     </string>
     <string name="hint_install_psmart">Would you like to install P-Smart app?</string>
     <string name="hint_last_synced">Last synced on: %s</string>
@@ -376,18 +334,12 @@
     </string>
     <string name="hint_provider_pref_add">Add provider(s) that you want to download.</string>
     <string name="hint_real_time_sync">Enable real time synchronization of data</string>
-    <string name="hint_recommended_forms_unavailable">Please select non-registration forms from all forms list and click
-        download
-    </string>
+    <string name="hint_recommended_forms_unavailable">Please select non-registration forms from all forms list and click ehdownload</string>
     <string name="hint_registration_form_select">Please select at least one registration form!</string>
-    <string name="hint_repeating_section_minimum_repeats_validation_failure">Minimum repeats not satisfied. Needs at
-        least
-    </string>
+    <string name="hint_repeating_section_minimum_repeats_validation_failure">Minimum repeats not satisfied. Needs at least</string>
     <string name="hint_reports_unavailable">Please select reports from all forms list and click download</string>
     <string name="hint_require_medical_record_number">Require client\'s medical record number during registration</string>
-    <string name="hint_server_connection_unavailable">Please contact your server administrator to check server
-        connectivity
-    </string>
+    <string name="hint_server_connection_unavailable">Please contact your server administrator to check server connectivity</string>
     <string name="hint_server_password_prompt">Enter the OpenMRS password</string>
     <string name="hint_server_url">Server URL</string>
     <string name="hint_server_url_prompt">Please enter server URL</string>
@@ -402,20 +354,13 @@
     <string name="hint_username_prompt">Please enter username</string>
     <string name="hint_video_caption_prompt">Please enter a caption for the video</string>
     <string name="hint_video_record">Record or choose video</string>
-    <string name="hint_wizard_form_download">Select one or more form templates from the list and click on \'Next\' to
-        download
-    </string>
+    <string name="hint_wizard_form_download">Select one or more form templates from the list and click on \'Next\' to download</string>
     <string name="hint_write_SHR_to_card">Do you want to write Shared Health Record to card ?</string>
-
     <string name="how_to_general">How To:</string>
-
     <string name="inbox_outbox_label_text">## Inbox, ## Outbox</string>
-
     <string name="incomplete_outbox_text">## Incomplete, ## Outbox</string>
-
     <string name="individual_obs">Individual Obs</string>
     <string name="individual_obs_description">Individual Obs</string>
-
     <string name="info_authentication_in_progress">Authentication in progress…</string>
     <string name="info_background_data_sync_started">Syncing data in background</string>
     <string name="info_client_demographics_download">Downloading clients demographic…</string>
@@ -424,9 +369,6 @@
     </string>
     <string name="info_client_local_search_not_found">No clients matched your search locally. Enter at least 3
         characters for remote search.
-    </string>
-    <string name="info_no_client_available_locally">No clients available locally. Enter at least 3
-        characters for remote search or register new clients.
     </string>
     <string name="info_client_remote_search_not_found">No clients matched your search on the server</string>
     <string name="info_cohort_download">Downloading Cohorts</string>
@@ -485,12 +427,12 @@
         even if such party shall have been informed of the possibility of such damages.
         </p><p>
         3. mUzima is copyrighted to The Trustees of Indiana University, Moi University, and Vanderbilt University
-	Medical Center.
+	    Medical Center.
         </p><p>
-	4.  If the user of this application is an entity intending to commercialize or make a profit out of any
-	application that uses this code in a for-profit venture, the user is required to contact the copyright holder
-	through mUzima.mobile@gmail.com
-	</p>
+        4.  If the user of this application is an entity intending to commercialize or make a profit out of any
+        application that uses this code in a for-profit venture, the user is required to contact the copyright holder
+        through mUzima.mobile@gmail.com
+	    </p>
         ]]>
     </string>
     <string name="info_download_complete">Download complete with status %d</string>
@@ -500,9 +442,7 @@
     <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
     <string name="info_encounter_download">Downloading Encounters</string>
     <string formatted="false" name="info_encounter_download_progress">Downloaded encounters for client %d of %d.</string>
-    <string formatted="false" name="info_encounter_not_downloaded_progress">Encounters for client %d of %d not
-        downloaded.
-    </string>
+    <string formatted="false" name="info_encounter_not_downloaded_progress">Encounters for client %d of %d not downloaded.</string>
     <string name="info_encounter_observation_download">Downloading observations and encounters…</string>
     <string name="info_encounter_patient_downloaded">Downloaded 1 encounter for 1 client</string>
     <string name="info_encounter_patient_not_downloaded">Did not download any encounters</string>
@@ -512,9 +452,7 @@
     <string formatted="false" name="info_encounters_patients_downloaded">Downloaded %d encounters for %d clients</string>
     <string formatted="false" name="info_form_data_delete">Deleted %d forms</string>
     <string name="info_form_data_save_success">Completed form data was saved successfully.</string>
-    <string name="info_form_data_upload_fail">Failed to Sync Form data to the current server. Do you still want to
-        continue?
-    </string>
+    <string name="info_form_data_upload_fail">Failed to Sync Form data to the current server. Do you still want to continue?</string>
     <string name="info_form_data_upload_sucess">Upload form data success</string>
     <string name="info_form_delete_integrity_failure">Integrity failure: Cannot delete registration form data that has
         associated encounter form data
@@ -554,15 +492,12 @@
     <string name="info_new_cohort_download">Downloaded %d new cohorts</string>
     <string formatted="false" name="info_new_cohort_download_delete">Downloaded %d new cohorts and retired %d cohorts</string>
     <string name="info_new_encounter_download">Downloaded %d new encounters</string>
-    <string formatted="false" name="info_new_encounter_download_delete">Downloaded %d new encounters and retired %d
-        encounters
-    </string>
+    <string formatted="false" name="info_new_encounter_download_delete">Downloaded %d new encounters and retired %d encounters</string>
     <string name="info_new_notification">New Notification</string>
     <string name="info_new_observation_download">Downloaded %d new observations</string>
-    <string formatted="false" name="info_new_observation_download_delete">Downloaded %d new observations and retired %d
-        observations
-    </string>
+    <string formatted="false" name="info_new_observation_download_delete">Downloaded %d new observations and retired %d observations</string>
     <string name="info_new_patient_download">Downloaded %d new clients</string>
+    <string name="info_no_client_available_locally">No clients available locally. Enter at least 3 characters for remote search or register new clients.</string>
     <string name="info_no_cohort_download">No cohorts have been synced</string>
     <string formatted="false" name="info_notification_download">Downloaded %d notifications</string>
     <string name="info_notification_download_in_progress">Downloading notifications</string>
@@ -577,9 +512,7 @@
     <string name="info_observation_unavailable">No observations available</string>
     <string formatted="false" name="info_observations_download_progress">Downloaded observations for client %d of %d.</string>
     <string name="info_observations_load_in_progress">Observations are still loading</string>
-    <string formatted="false" name="info_observations_not_downloaded_progress">Observations for client %d of %d not
-        downloaded.
-    </string>
+    <string formatted="false" name="info_observations_not_downloaded_progress">Observations for client %d of %d not downloaded.</string>
     <string formatted="false" name="info_observations_patient_downloaded">Downloaded 1 observation for %d clients</string>
     <string formatted="false" name="info_observations_patients_downloaded">Downloaded %d observations for %d clients</string>
     <string name="info_patient_data_download">Downloading clients data</string>
@@ -601,9 +534,7 @@
     <string name="info_relationships_delete_success">%d Relationships deleted successfully</string>
     <string formatted="false" name="info_relationships_download">Downloaded %d relationships for %d client(s).</string>
     <string formatted="false" name="info_relationships_download_progress">Downloaded relationships for client %d of %d.</string>
-    <string formatted="false" name="info_relationships_not_downloaded_progress">Relationships for client %d of %d not
-        downloaded.
-    </string>
+    <string formatted="false" name="info_relationships_not_downloaded_progress">Relationships for client %d of %d not downloaded.</string>
     <string name="info_relationships_unavailable">No relationships available</string>
     <string name="info_scanner_exists">Barcode scanner is already installed.</string>
     <string name="info_session_time_out">Your session had timed out. Please log in again to proceed.</string>
@@ -629,94 +560,63 @@
     <string name="info_video_chose_activity_unavailable">Error: Application for choosing video not found</string>
     <string name="info_video_play_activity_unavailable">Error: Application for playing video not found</string>
     <string name="info_video_record_activity_unavailable">Error: Application for recording video not found</string>
-
     <string name="initial_setup_for_muzima_general">Initial setup for mUzima</string>
-
     <string name="interactive_help_choose">Choose an Option:</string>
     <string name="interactive_help_header">Please tell us how we can help you</string>
     <string name="interactive_help_hint">Type your message</string>
-
     <string name="introduction_to_muzima_general_text">Introduction to mUzima</string>
-
     <string name="june_8_sample_date">June 8</string>
-
     <string formatted="false" name="menu_SHR_data_sync">Sync SHR data (%d)</string>
     <string name="menu_all_data_sync">Sync all data</string>
     <string name="menu_form_back_to_draft">Back To Draft</string>
     <string name="menu_form_data_sync">Sync form data</string>
-
     <string name="message_feedback_halt">Your message will not be sent.</string>
     <string name="message_feedback_sent">Thank you for your message. \n Your feedback is important for us.</string>
     <string name="message_help_halt">Maybe next time.</string>
-    <string name="message_help_sent">Thanks for reaching out. \n
-        Our support team will investigate your request. \n
+    <string name="message_help_sent">Thanks for reaching out. \nOur support team will investigate your request. \n
         We will get back to you as soon as possible.</string>
     <string name="message_missing_form_encounter_details_error">must be provided</string>
-
     <string name="muzima_training_manual_general">mUzima Training Manual</string>
-
     <string name="new_messages_number_text"># new messages</string>
-
     <string name="no_default_encounter_location">No default encounter location</string>
     <string name="no_description_general">No description</string>
-    <string name="no_email_client">No email client installed on this device. \n
-        Please install one and then leave your feedback.</string>
-
+    <string name="no_email_client">No email client installed on this device. \nPlease install one and then leave your feedback.</string>
     <string name="null_encounter_date_error">An error occurred while saving the form. Encounter date must be provided</string>
     <string name="null_encounter_location_error">An error occurred while saving the form. Encounter location must be provided</string>
     <string name="null_encounter_provider_error">An error occurred while saving the form. Encounter provider must be provided</string>
-
     <string name="number_hashtag_representation">##</string>
-
     <string name="observation_details">Observation Details</string>
     <string name="observation_text_dialog">Observation:</string>
     <string name="observation_value">Observation Value:</string>
-
     <string name="patient_SHR_search_dialog_title">Client SHR Search</string>
     <string name="patient_SHR_search_title_text">Client SHR Search</string>
-
     <string name="provider_details">Provider Details</string>
     <string name="provider_identifier">Provider Identifier:</string>
     <string name="provider_name">Provider Name:</string>
     <string name="provider_name_general">Provider Name</string>
     <string name="provider_reports_general">Provider Reports</string>
-
     <string name="registering_patient_message_title_text">Registering client in mUzima…</string>
-
     <string name="relationship_create_success">Relationship created successfully</string>
     <string name="relationship_delete_fail">Cannot delete the relationship as it is already saved on the server. Contact the Administrator</string>
     <string name="relationship_to_self_error">Client cannot relate to him/herself</string>
-
     <string name="reply_hint_text">send your reply</string>
-
     <string name="sample_date_rep">21 March 2018</string>
     <string name="sample_date_text">21/02/2018</string>
-
     <string name="scan_card_id_title">Scan card ID</string>
-
     <string name="search_patient_on_server_option_title_text">Client is not available locally, would you like to search server?</string>
-
     <string name="select_a_registration_form_text">Select a registration form</string>
     <string name="select_a_relationship_form_text">Select a form</string>
     <string name="select_default_encounter_location">Choose your default encounter location</string>
-
     <string name="send_feedback">Send feedback</string>
     <string name="send_general_text">Send</string>
-
     <string name="server_side_setup_general">Server side Setup</string>
-
     <string name="setting_up_muzima_general_text">Setting Up mUzima</string>
-
     <string name="shr_registration">SHR Registration</string>
     <string name="shr_registration_description">SHR Registration Data</string>
-
     <string name="success_writing_smartcard">Smart card data was written successfully.</string>
-
     <string name="synced_label_text">## Synced</string>
     <string name="synced_total_label_text">## Synced, ## Total</string>
-
     <string name="tagging_forms">Tagging Forms</string>
-
     <string name="title_about_dashboard_help_html">About Dashboard</string>
     <string name="title_activity_audio">Add Audio</string>
     <string name="title_activity_client_encounters">Client Encounters</string>
@@ -817,26 +717,16 @@
     <string name="title_video_caption">Video Caption</string>
     <string name="title_video_choose">Choose Video</string>
     <string name="title_video_record">Record Video</string>
-
     <string name="to_text">To</string>
-
     <string name="type_a_message_hint">Type a message</string>
     <string name="type_cohort_name_hint">Type Cohort name …</string>
-
     <string name="video_links_general_text">Video Links:</string>
-
-    <string name="warning_auto_save_interval">Auto Save Interval: Could not set auto save interval.
-        \nPlease enter a value between 1 and 120.
-    </string>
+    <string name="warning_auto_save_interval">Auto Save Interval: Could not set auto save interval. \nPlease enter a value between 1 and 120.</string>
     <string name="warning_cancel_form_download">This will cancel the form download. Are you sure you want to cancel form download?</string>
     <string name="warning_cohort_prefix_exists">Cohort prefix exists</string>
     <string name="warning_empty_cohort_prefix">You cannot add an empty cohort prefix</string>
-    <string name="warning_form_close">Closing Form: This will discard all your changes. Are you sure you would like to
-        do this?
-    </string>
-    <string name="warning_form_data_already_exists">This Form Data already exists for this client with same encounter
-        date.
-    </string>
+    <string name="warning_form_close">Closing Form: This will discard all your changes. Are you sure you would like to do this?</string>
+    <string name="warning_form_data_already_exists">This Form Data already exists for this client with same encounter date.</string>
     <string name="warning_forms_complete_and_sync">%s contains some associated forms with it. Please complete and sync
         those forms before downloading a newer version.
     </string>
@@ -849,16 +739,12 @@
     <string name="warning_related_person_missing">Please choose a related person</string>
     <string name="warning_relationship_exists">Client already has %s:%s relationship with %s</string>
     <string name="warning_relationship_type_missing">Please choose a relationship type</string>
-    <string name="warning_session_timeout">Session Timeout: Could not set session timeout.
-        Please enter a value between 1 and 500.
-    </string>
+    <string name="warning_session_timeout">Session Timeout: Could not set session timeout. Please enter a value between 1 and 500.</string>
     <string name="warning_setting_download_failure">Could not download or update setting</string>
     <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
         device, including any incomplete forms. Are you sure you want to change this setting?
     </string>
-
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
-
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
 </resources>

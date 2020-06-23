@@ -263,7 +263,7 @@
                         android:id="@+id/SHR_card_Description"
                         style="@style/DashboardItemDescription"
                         android:layout_alignParentBottom="true"
-                        android:text="@string/general_data_syc_required"/>
+                        android:text="@string/general_data_sync_required"/>
 
                     <ImageView
                         android:id="@+id/sync_status_imageview"

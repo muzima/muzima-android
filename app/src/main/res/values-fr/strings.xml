@@ -170,7 +170,7 @@
     <string name="general_cohorts">Cohortes</string>
     <string name="general_concepts">Concepts</string>
     <string name="general_dashboard">Tableau de bord</string>
-    <string name="general_data_syc_required">Données syc requises</string>
+    <string name="general_data_sync_required">Données syc requises</string>
     <string name="general_date">Rendez-vous amoureux</string>
     <string name="general_delete">Supprimer</string>
     <string name="general_description_unavailable">Description non disponible</string>

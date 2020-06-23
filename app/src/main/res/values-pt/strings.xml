@@ -181,7 +181,7 @@
     <string name="general_cohorts">Coortes</string>
     <string name="general_concepts">Conceitos</string>
     <string name="general_dashboard">Painel de controle</string>
-    <string name="general_data_syc_required">Solicitação de dados syc</string>
+    <string name="general_data_sync_required">Solicitação de dados syc</string>
     <string name="general_date">Encontro</string>
     <string name="general_delete">Apagar</string>
     <string name="general_description_unavailable">Sem descrição disponível</string>
