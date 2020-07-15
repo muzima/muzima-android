@@ -28,9 +28,7 @@
     <string name="confirm_patient_id_exists">Le client possède-t-il déjà un identifiant ?</string>
     <string name="date_general">Date</string>
     <string name="date_temp">8 juin</string>
-    <string name="default_auto_save_interval" translatable="false">2</string>
     <string name="default_form_register">Formulaires d\'inscription</string>
-    <string name="default_server" translatable="false">https://demo2.muzima.org</string>
     <string name="downloaded_reports">Rapports téléchargés</string>
     <string name="downloading_cohorts_text">Téléchargement de cohortes</string>
     <string name="downloading_forms">Téléchargement de formulaires</string>
@@ -141,7 +139,7 @@
     <string name="general_cohorts">Cohortes</string>
     <string name="general_concepts">Concepts</string>
     <string name="general_dashboard">Tableau de bord</string>
-    <string name="general_data_sync_required">Data sync required</string>
+    <string name="general_data_sync_required">Données syc requises</string>
     <string name="general_date">Date</string>
     <string name="general_delete">Supprimer</string>
     <string name="general_description_unavailable">Description non disponible</string>

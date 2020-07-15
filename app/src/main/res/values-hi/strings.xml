@@ -28,9 +28,7 @@
     <string name="confirm_patient_id_exists">क्या क्लाइंट के पास पहले से आईडी मौजूद है</string>
     <string name="date_general">तारीख</string>
     <string name="date_temp">8 जून</string>
-    <string name="default_auto_save_interval" translatable="false">2</string>
     <string name="default_form_register">पंजीकरण फार्म</string>
-    <string name="default_server" translatable="false">https://demo2.muzima.org</string>
     <string name="downloaded_reports">डाउनलोड की गई रिपोर्ट</string>
     <string name="downloading_cohorts_text">समूह डाउनलोड करना</string>
     <string name="downloading_forms">फॉर्म डाउनलोड करना</string>
@@ -141,7 +139,7 @@
     <string name="general_cohorts">समूह</string>
     <string name="general_concepts">अवधारणाओं</string>
     <string name="general_dashboard">डैशबोर्ड</string>
-    <string name="general_data_sync_required">Data sync required</string>
+    <string name="general_data_sync_required">डेटा तुल्यकालन आवश्यकता है</string>
     <string name="general_date">तारीख</string>
     <string name="general_delete">हटाएं</string>
     <string name="general_description_unavailable">कोई वर्णन उपलब्ध नहीं</string>
