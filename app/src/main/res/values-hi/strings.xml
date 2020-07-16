@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+--><resources>
+    <string name="SHR_card_text">SHR कार्ड</string>
+    <string name="SHR_data_title_text">SHR डेटा</string>
+    <string name="SHR_extracted_data_text">SHR डेटा निकाला गया</string>
+    <string name="add_individual_observation_text">व्यक्तिगत अवलोकन जोड़ें</string>
+    <string name="app_name">mUzima</string>
+    <string name="app_title">स्वास्थ्य प्रदाताओं के लिए mUzima</string>
+    <string name="ask_help">मदद मांगना</string>
+    <string name="autocomplete_server_not_found">सर्वर अगम्य है! \n कृपया अपने डिवाइस को कनेक्ट करें और फिर से प्रयास करें या एक नया व्यक्ति बनाएं</string>
+    <string name="captured_date">कैप्चर की गई तारीख:</string>
+    <string name="card_sync_status_content_description">कार्ड सिंक्रनाइज़ेशन स्थिति</string>
+    <string name="change_settings">सेटिंग्स बदले</string>
+    <string name="client_registration_question_text">क्या आप mUzima में क्लाइंट रजिस्टर करना चाहेंगे?</string>
+    <string name="complex_obs">जटिल अवलोकन</string>
+    <string name="concept_description">संकल्पना विवरण</string>
+    <string name="concept_details">संकल्पना विवरण</string>
+    <string name="concept_name">संकल्पना नाम:</string>
+    <string name="confirm_create_patient_from_person">यह इस व्यक्ति को ग्राहक के रूप में पंजीकृत करेगा। क्या आप वाकई ऐसा करना चाहते हैं?</string>
+    <string name="confirm_duplicate_form_data_save">डुप्लीकेट फॉर्म डेटा को सेव करें</string>
+    <string name="confirm_patient_id_exists">क्या क्लाइंट के पास पहले से आईडी मौजूद है</string>
+    <string name="date_general">तारीख</string>
+    <string name="date_temp">8 जून</string>
+    <string name="default_form_register">पंजीकरण फार्म</string>
+    <string name="downloaded_reports">डाउनलोड की गई रिपोर्ट</string>
+    <string name="downloading_cohorts_text">समूह डाउनलोड करना</string>
+    <string name="downloading_forms">फॉर्म डाउनलोड करना</string>
+    <string name="encounter_date">एनकाउंटर की तारीख:</string>
+    <string name="encounter_date_dialog_label">एनकाउंटर की तारीख</string>
+    <string name="encounter_details">एनकाउंटर विवरण</string>
+    <string name="encounter_location">एनकाउंटर स्थान:</string>
+    <string name="encounter_type">एनकाउंटर प्रकार:</string>
+    <string name="enter_concept_name_text">संकल्पना नाम दर्ज करें …</string>
+    <string name="enter_location_name">स्थान का नाम दर्ज करें …</string>
+    <string name="enter_provider_name_hint">प्रदाता नाम दर्ज करें …</string>
+    <string name="error_action_allow">सिंक के दौरान कार्रवाई की अनुमति नहीं है</string>
+    <string name="error_audio_chose_activity_find">त्रुटि: ऑडियो चुनने के लिए गतिविधि नहीं मिली</string>
+    <string name="error_audio_play_activity_find">त्रुटि: ऑडियो चलाने के लिए गतिविधि नहीं मिली</string>
+    <string name="error_audio_record_activity_find">त्रुटि: ऑडियो रिकॉर्डिंग के लिए गतिविधि नहीं मिली</string>
+    <string name="error_authentication_fail">प्रमाणीकरण विफल हो गया</string>
+    <string name="error_authentication_occur">प्रमाणीकरण त्रुटि हुई</string>
+    <string name="error_client_download">क्लाइंट डाउनलोड नहीं कर सके</string>
+    <string name="error_cohort_download">समूहो को डाउनलोड नहीं किया जा सका</string>
+    <string name="error_cohort_fetch">स्थानीय रेपो से कॉहर्ट्स (समूहो) को लाते समय कुछ गलत हो गया</string>
+    <string name="error_cohort_load">समूहो को लोड नहीं किया जा सका</string>
+    <string name="error_concept_download">अवधारणाओं को डाउनलोड नहीं किया जा सका</string>
+    <string name="error_concept_fetch">स्थानीय रेपो से अवधारणाओं को लाने के दौरान कुछ गलत हो गया</string>
+    <string name="error_concept_parse">फॉर्म में अवधारणाओं को पार्स करते समय एक त्रुटि हुई</string>
+    <string name="error_connection_data_download">डेटा डाउनलोड करते समय कनेक्शन त्रुटि हुई</string>
+    <string name="error_credential_invalid">अमान्य उपयोगकर्ता नाम, पासवर्ड, सर्वर संयोजन।</string>
+    <string name="error_data_download">डेटा फॉर्म सर्वर डाउनलोड करते समय एक त्रुटि हुई</string>
+    <string name="error_data_save">स्थानीय रेपो में डेटा सहेजते समय एक त्रुटि हुई</string>
+    <string name="error_empty_message_text">खाली संदेश नहीं भेज सकते।</string>
+    <string name="error_encounter_download">मुठभेड़ों को डाउनलोड नहीं किया जा सका</string>
+    <string name="error_encounter_load">मुठभेड़ों को लोड नहीं किया जा सका</string>
+    <string name="error_encounter_observation_download">ग्राहकों के लिए टिप्पणियों को डाउनलोड नहीं किया जा सका</string>
+    <string name="error_exception_data_load">डेटा लोड करते समय लोड अपवाद आया</string>
+    <string name="error_exception_data_upload">सर्वर अपलोड किए गए डेटा को संसाधित नहीं कर सका</string>
+    <string name="error_form_data_delete">कुछ फ़ॉर्म डेटा को हटाया नहीं जा सका</string>
+    <string name="error_form_download">फॉर्म डाउनलोड नहीं कर सके</string>
+    <string name="error_form_fetch">स्थानीय रेपो से फॉर्म लाते समय कुछ गलत हो गया</string>
+    <string name="error_form_load">फॉर्म लोड नहीं किए जा सके</string>
+    <string name="error_form_load_fail">फॉर्म लोड नहीं कर सके</string>
+    <string name="error_form_location_load">फॉर्म के लिए स्थानों को लोड करते समय एक त्रुटि हुई</string>
+    <string name="error_form_patient_data_exist">चयनित फ़ॉर्म के लिए मौजूदा फ़ॉर्म डेटा है। अधूरा डेटा समाप्त करें और फ़ॉर्म डाउनलोड करने से पहले सर्वर पर पूरा डेटा सिंक करें।</string>
+    <string name="error_form_provider_load">फॉर्म के लिए प्रदाता लोड करते समय एक त्रुटि हुई</string>
+    <string name="error_form_save">फॉर्म सहेजते समय एक त्रुटि हुई</string>
+    <string name="error_form_templates_download">फॉर्म टेम्पलेट डाउनलोड नहीं किया जा सका</string>
+    <string name="error_geolocation_update_failure">स्थान की जानकारी अपडेट करने में त्रुटि हुई।</string>
+    <string name="error_image_capture_activity_unavailable">त्रुटि: एक छवि कैप्चर करने के लिए आवेदन नहीं मिला</string>
+    <string name="error_image_chose_activity_unavailable">त्रुटि: छवि चुनने के लिए आवेदन नहीं मिला</string>
+    <string name="error_image_view_activity_unavailable">त्रुटि: छवि देखने के लिए आवेदन नहीं मिला</string>
+    <string name="error_local_connection_unavailable">नेटवर्क कनेक्शन नहीं मिला</string>
+    <string name="error_local_repo_data_delete">स्थानीय रेपो से डेटा हटाते समय एक त्रुटि हुई</string>
+    <string name="error_location_download">स्थानों को डाउनलोड नहीं किया जा सका</string>
+    <string name="error_location_fetch">स्थानीय रेपो से स्थानों को लाते समय कुछ गलत हो गया</string>
+    <string name="error_notification_download">सूचनाएं डाउनलोड करने में त्रुटि</string>
+    <string name="error_notification_fetch">स्थानीय रेपो से सूचनाएं प्राप्त करते समय कुछ गलत हुआ</string>
+    <string name="error_observation_download">टिप्पणियों को डाउनलोड नहीं किया जा सका</string>
+    <string name="error_observation_fetch">स्थानीय रेपो से टिप्पणियों को लेते समय कुछ गलत हो गया</string>
+    <string name="error_observation_form_save">प्रपत्र में टिप्पणियों को सहेजते समय एक त्रुटि हुई</string>
+    <string name="error_observation_load">टिप्पणियों को लोड नहीं किया जा सका</string>
+    <string name="error_observation_unavailable">कोई अवलोकन उपलब्ध नहीं है</string>
+    <string name="error_parse_exception_data_fetch">डेटा प्राप्त करते समय पार्स अपवाद को फेंक दिया गया है</string>
+    <string name="error_patient_data_form_exist">मौजूदा फॉर्म डेटा है। अपूर्ण डेटा को समाप्त करें और प्रपत्र टेम्पलेट्स को सिंक्रनाइज़ करने से पहले सर्वर को पूरा डेटा सिंक करें।</string>
+    <string name="error_patient_download">क्लाइंट डाउनलोड नहीं कर सके</string>
+    <string name="error_patient_encounter_download">क्लाइंट्स के लिए एनकाउंटर डाउनलोड नहीं कर सके</string>
+    <string name="error_patient_fetch">क्लाइंट लाते समय एक त्रुटि हुई</string>
+    <string name="error_patient_repo_fetch">स्थानीय रेपो से ग्राहकों को लाने के दौरान कुछ गलत हुआ</string>
+    <string name="error_patient_report_fetch">स्थानीय रेपो से ग्राहक रिपोर्ट प्राप्त करते समय कुछ गलत हो गया</string>
+    <string name="error_patient_search">क्लाइंट को खोजते समय कुछ गड़बड़ हुई</string>
+    <string name="error_provider_download">प्रदाताओं को डाउनलोड नहीं किया जा सका</string>
+    <string name="error_provider_fetch">स्थानीय रेपो से प्रदाताओं को लाने के दौरान कुछ गलत हुआ</string>
+    <string name="error_relationship_load">रिश्ते लोड नहीं किए जा सके</string>
+    <string name="error_relationship_type_load">संबंध प्रकार लोड नहीं किए जा सके</string>
+    <string name="error_server_connection_unavailable">सर्वर पहुँच से बाहर</string>
+    <string name="error_server_url_invalid">अमान्य सर्वर URL</string>
+    <string name="error_settings_download">सेटिंग्स डाउनलोड नहीं कर सका</string>
+    <string name="error_setup_configuration_download">सेटअप कॉन्फ़िगरेशन लोड नहीं किया जा सका</string>
+    <string name="error_setup_configuration_template_download">सेटअप कॉन्फ़िगरेशन टेम्पलेट डाउनलोड नहीं किया जा सका</string>
+    <string name="error_smartcard_client_not_in_server">स्मार्टकार्ड क्लाइंट सर्वर में नहीं। अभी mUzima में क्लाइंट रजिस्टर करें?</string>
+    <string name="error_sync_not_allowed">सिंक के दौरान कार्रवाई की अनुमति नहीं है</string>
+    <string name="error_tag_fetch">स्थानीय रेपो से टैग प्राप्त करते समय कुछ गलत हो गया</string>
+    <string name="error_target_application_find">कोई लक्षित एप्लिकेशन नहीं</string>
+    <string name="error_username_invalid_format">उपयोगकर्ता नाम में अमान्य वर्ण। इन्हें अनुमति नहीं है:%s</string>
+    <string name="error_wizard_interrupted">विज़ार्ड बाधित हो गया था, कृपया लॉगआउट करें और विज़ार्ड को फिर से चलाएँ।</string>
+    <string name="failure_obtain_smartcard_record">कार्ड पर लिखने के लिए स्मार्टकार्ड रिकॉर्ड प्राप्त नहीं किया जा सका।</string>
+    <string name="failure_obtaining_card_serial_number">कार्ड सीरियल नंबर प्राप्त नहीं कर सका</string>
+    <string name="failure_reading_card">कार्ड पढ़ना विफल</string>
+    <string name="failure_updating_smartcard_record_for_writing">स्मार्टकार्ड रिकॉर्ड अपडेट नहीं किया जा सका</string>
+    <string name="failure_writing_smartcard">स्मार्ट कार्ड डेटा लिखने में विफल।</string>
+    <string name="feedback_header">कृपया हमें अपनी टिप्पणियाँ और प्रतिक्रिया भेजें</string>
+    <string name="feedback_hint">आपके मन में क्या चल रहा है?</string>
+    <string name="feedback_rating_question">MUzima App का उपयोग करना कितना आसान है?</string>
+    <string name="fill_out_forms_for_a_patient_general">एक मरीज के लिए फॉर्म भरें</string>
+    <string name="form_encounter_date">एनकाउंटर की तारीख</string>
+    <string name="form_encounter_location">मुठभेड़ स्थान</string>
+    <string name="form_encounter_provider">एनकाउंटर करने वाला</string>
+    <string name="gender_image_content_description">लिंग छवि</string>
+    <string name="general_accept">स्वीकार करना</string>
+    <string name="general_add">जोड़ना</string>
+    <string name="general_agree">इस बात से सहमत</string>
+    <string name="general_alert">चेतावनी!</string>
+    <string name="general_all">सभी</string>
+    <string name="general_application_version">संस्करण %1$s</string>
+    <string name="general_cancel">रद्द करना</string>
+    <string name="general_caution">सावधान!</string>
+    <string name="general_client_list">ग्राहक सूची</string>
+    <string name="general_client_register">ग्राहक रजिस्टर करें</string>
+    <string name="general_clients">ग्राहकों</string>
+    <string name="general_close">बंद करे</string>
+    <string name="general_cohorts">समूह</string>
+    <string name="general_concepts">अवधारणाओं</string>
+    <string name="general_dashboard">डैशबोर्ड</string>
+    <string name="general_data_sync_required">डेटा तुल्यकालन आवश्यकता है</string>
+    <string name="general_date">तारीख</string>
+    <string name="general_delete">हटाएं</string>
+    <string name="general_description_unavailable">कोई वर्णन उपलब्ध नहीं</string>
+    <string name="general_disagree">असहमत</string>
+    <string name="general_done">किया हुआ</string>
+    <string name="general_download">डाउनलोड</string>
+    <string name="general_draft">प्रारूप</string>
+    <string name="general_encounters">मुठभेड़ों</string>
+    <string name="general_fail">विफल</string>
+    <string name="general_failure">असफलता</string>
+    <string name="general_feedback">प्रतिपुष्टि</string>
+    <string name="general_filling_forms">फॉर्म भरना</string>
+    <string name="general_finish">समाप्त</string>
+    <string name="general_finish_text">समाप्त</string>
+    <string name="general_form">प्रपत्र</string>
+    <string name="general_forms">फॉर्म</string>
+    <string name="general_get_directions">दिशा - निर्देश प्राप्त करें</string>
+    <string name="general_help">सहायता</string>
+    <string name="general_large">विशाल</string>
+    <string name="general_load">भार</string>
+    <string name="general_loading_encounters">मुठभेड़ अभी भी लोड हो रहे हैं</string>
+    <string name="general_loading_relationships">रिश्ते अभी भी लोड हो रहे हैं</string>
+    <string name="general_loading_reports">रिपोर्टें अभी भी लोड हो रही हैं</string>
+    <string name="general_location_setting">स्थान सेटिंग्स</string>
+    <string name="general_locations">स्थान</string>
+    <string name="general_login">लॉग इन करें</string>
+    <string name="general_logout">लॉग आउट</string>
+    <string name="general_medium">मध्यम</string>
+    <string name="general_next">आगे</string>
+    <string name="general_no">नहीं</string>
+    <string name="general_not_available_text">उपलब्ध नहीं है</string>
+    <string name="general_notice">नोटिस</string>
+    <string name="general_notices">नोटिस</string>
+    <string name="general_notification">अधिसूचना</string>
+    <string name="general_notifications">अधिसूचनाएं</string>
+    <string name="general_observations">अवलोकन</string>
+    <string name="general_ok">ठीक</string>
+    <string name="general_other">अन्य</string>
+    <string name="general_password">पासवर्ड</string>
+    <string name="general_patient_registration">ग्राहक पंजीकरण</string>
+    <string name="general_person_create">व्यक्ति बनाएँ</string>
+    <string name="general_previous">पिछला</string>
+    <string name="general_progress_message">इसमें कुछ समय लग सकता है</string>
+    <string name="general_providers">प्रदाताओं</string>
+    <string name="general_relationship">संबंध</string>
+    <string name="general_relationships">रिश्तों</string>
+    <string name="general_reports">रिपोर्ट</string>
+    <string name="general_requirement">आवश्यकता</string>
+    <string name="general_retry">पुन: प्रयास करें</string>
+    <string name="general_save">सहेजें</string>
+    <string name="general_saving_forms">फॉर्म सहेजना</string>
+    <string name="general_search">खोज</string>
+    <string name="general_searching">खोज कर रहे है…</string>
+    <string name="general_server">सर्वर</string>
+    <string name="general_settings">समायोजन</string>
+    <string name="general_skip">छोड़ें</string>
+    <string name="general_small">छोटा</string>
+    <string name="general_synced">सिंक किया गया</string>
+    <string name="general_tags">लेबल</string>
+    <string name="general_thank_you">धन्यवाद!</string>
+    <string name="general_unexpected_error_occurred">अनपेक्षित त्रुटि</string>
+    <string name="general_update">अपडेट करें</string>
+    <string name="general_upload">अपलोड</string>
+    <string name="general_username">उपयोगकर्ता नाम</string>
+    <string name="general_view_encounter">मुठभेड़ देखें</string>
+    <string name="general_welcome">स्वागत हे</string>
+    <string name="general_yes">हाँ</string>
+    <string name="get_more">सर्वर से अधिक</string>
+    <string name="header_cohort_category">जत्था सेटिंग्स</string>
+    <string name="header_muzima_category">mUzima सेटिंग्स</string>
+    <string name="header_openmrs_category">OpenMRS सेटिंग्स</string>
+    <string name="header_provider_location_category">प्रदाता / स्थान सेटिंग्स</string>
+    <string name="hello_general">नमस्ते</string>
+    <string name="help_center">सहायता केंद्र</string>
+    <string name="help_general">सहायता!</string>
+    <string name="hint_advanced_setup">आप जो चाहते हैं उसे चुनने के लिए स्टेप बाई स्टेप विज़ार्ड का उपयोग करें</string>
+    <string name="hint_audio_caption">कृपया ऑडियो के लिए एक कैप्शन दर्ज करें</string>
+    <string name="hint_audio_record">ऑडियो रिकॉर्ड करें या चुनें</string>
+    <string name="hint_authentication_progress">प्रमाणित कर रहे है …</string>
+    <string name="hint_barcode_scanner_setup">मोबाइल से क्लाइंट रजिस्टर करने के लिए आपको बारकोड स्कैनर एप्लीकेशन की आवश्यकता होती है। कृपया जांचें कि यह आपके डिवाइस में स्थापित है या नहीं।</string>
+    <string name="hint_card_blank">पढ़ना सफल लेकिन कार्ड खाली दिखाई देता है:</string>
+    <string name="hint_card_not_empty">कार्ड खाली नहीं है। कृपया नए कार्ड का उपयोग करें।</string>
+    <string name="hint_check_digit_validation_failure">कृपया चेकडिजिट एल्गोरिथ्म से मेल खाने वाले अंकों को दर्ज करें</string>
+    <string name="hint_client_local_search">आपकी खोज में क्लाइंट आईडी, दिया गया नाम, मध्य नाम और परिवार का नाम शामिल है और केवल डिवाइस में खोजा गया है</string>
+    <string name="hint_client_location_update">क्या आप इस क्लाइंट के लिए घर का स्थान अपडेट करना चाहते हैं?</string>
+    <string name="hint_client_remote_search">आपकी खोज में क्लाइंट आईडी, दिया गया नाम, मध्य नाम और परिवार का नाम शामिल है और केवल सर्वर में खोजा गया है</string>
+    <string name="hint_client_search">ग्राहक खोजें</string>
+    <string formatted="false" name="hint_client_summary_encounters">%d एनकाउंटर</string>
+    <string formatted="false" name="hint_client_summary_forms">%d अपूर्ण,%d पूर्ण,%d अनुशंसित</string>
+    <string formatted="false" name="hint_client_summary_notifications">%d नई सूचनाएं,%d कुल सूचनाएं</string>
+    <string formatted="false" name="hint_client_summary_observations">%d अवलोकन</string>
+    <string formatted="false" name="hint_client_summary_reports">%d रिपोर्ट</string>
+    <string name="hint_cohort_download">सूची में से एक या एक से अधिक साथियों का चयन करें और डाउनलोड करने के लिए \'आगे\' पर क्लिक करें</string>
+    <string name="hint_cohort_filter">समूहो को फ़िल्टर करने के लिए लिखना प्रारंभ करें …</string>
+    <string name="hint_cohort_list_download">कृपया सर्वर से उपलब्ध कॉहार्ट सूची लाने के लिए लोड दबाएं</string>
+    <string name="hint_cohort_prefix_help">कोहोर्ट (समूह) ग्राहकों का एक पूर्वनिर्धारित समूह है जिसके लिए आप फॉर्म भर सकते हैं और अवलोकन डाउनलोड कर सकते हैं। यहाँ सेट किए गए उपसर्ग का उपयोग बाद में सहकर्मियों को डाउनलोड करने के लिए किया जाएगा।</string>
+    <string name="hint_cohort_prefix_manage">कॉहर्ट उपसर्ग आपके कोहर्ट डाउनलोड को केवल उन निर्दिष्ट उपसर्ग के साथ शुरू करने तक सीमित रखना हैं</string>
+    <string name="hint_cohort_sync">कृपया सभी सहकर्मियों की सूची में से कॉहोर्ट्स चुनें और सिंक पर क्लिक करें</string>
+    <string name="hint_cohort_wizard_help">विज़ार्ड के इस चरण में, आप अपनी आवश्यकता वाले कोहॉर्ट्स डाउनलोड करते हैं। कृपया सहकर्मियों का चयन करें और अगले पर क्लिक करें।</string>
+    <string name="hint_complete_form_unavailable">पूर्ण प्रपत्र केवल तभी उपलब्ध होते हैं जब आपने कोई फ़ॉर्म पूरी तरह से भरा हो, लेकिन इसे सर्वर के साथ सिंक नहीं किया हो</string>
+    <string name="hint_concept_pref_add">वह संकल्पना जोड़ें जो आप अवलोकन(नो) को डाउनलोड करना चाहते हैं।</string>
+    <string name="hint_configuration_search">एक कॉन्फ़िगरेशन खोजें</string>
+    <string name="hint_consultation_consultant_validation_failure">कृपया संभावित सलाहकारों की सूची से एक सलाहकार प्रदान करें</string>
+    <string name="hint_crash_dialog">MUzima को रोकने में एक अप्रत्याशित त्रुटि हुई। कृपया हमें त्रुटि डेटा भेजकर इसे ठीक करने में मदद करें, आपको बस ठीक पर क्लिक करना है।</string>
+    <string name="hint_crash_dialog_comment_prompt">कृपया नीचे दी गई समस्या के बारे में अपनी टिप्पणी जोड़ें।</string>
+    <string name="hint_create_new_SHR">क्लाइंट के पास SHR नहीं है। क्या आप नया SHR बनाना चाहते हैं और कार्ड लिखना चाहते हैं?</string>
+    <string name="hint_current_or_past_date_validation_failure">कृपया आज से पहले या उसके बराबर एक तारीख दर्ज करें</string>
+    <string name="hint_custom_concept_help">यहां आप उन अवधारणाओं को परिभाषित करते हैं जिनका डेटा बाद में डाउनलोड में शामिल किया जाएगा।</string>
+    <string name="hint_custom_location_help">यहां आप उन स्थानों को डाउनलोड करते हैं जो रूपों में दिखाई देंगे।</string>
+    <string name="hint_custom_provider_help">यहां आप उन प्रदाताओं को डाउनलोड करते हैं जो रूपों में दिखाई देंगे।</string>
+    <string formatted="false" name="hint_dashboard_clients_description">%d सिंक किया गया</string>
+    <string formatted="false" name="hint_dashboard_cohorts_description">%d सिंक किए, %d कुल</string>
+    <string formatted="false" name="hint_dashboard_forms_description">%d अपूर्ण, %d पूर्ण</string>
+    <string formatted="false" name="hint_dashboard_notifications_description">%d नए, %d कुल</string>
+    <string name="hint_default_encounter_location">यह चयनित मुठभेड़ स्थान सभी रूपों के लिए डिफ़ॉल्ट मुठभेड़ स्थान होगा</string>
+    <string name="hint_default_encounter_provider">लॉग-इन उपयोगकर्ता को डिफ़ॉल्ट मुठभेड़ प्रदाता के रूप में उपयोग किया जाएगा</string>
+    <string name="hint_drawer_close">टेग्स ड्रोअर बंद</string>
+    <string name="hint_drawer_open">टेग्स ड्रोअर खुला</string>
+    <string name="hint_duplicate_form_data_warning">जब समान एनकाउंटर की तारीख के साथ एक ही क्लाइंट के डुप्लिकेट फॉर्म डेटा को सहजा जाए तब उपयोगकर्ता को चेतावनी दें</string>
+    <string name="hint_enable_GPS">GPS डेटा संग्रह सुविधा सक्षम करें</string>
+    <string name="hint_enable_shr">स्मार्ट कार्ड सुविधा सक्षम करें</string>
+    <string name="hint_encounter_location_validation_failure">कृपया संभावित स्थानों की सूची से एक स्थान प्रदान करें</string>
+    <string name="hint_encounter_provider_validation_failure">कृपया संभावित प्रदाताओं की सूची से एक प्रदाता प्रदान करें</string>
+    <string name="hint_feedback_prompt">कृपया अपना संदेश लिखें</string>
+    <string name="hint_form_auto_save_interval">वह मूल्य जिसमें आपके फॉर्म स्वतः सहेजे जाएंगे</string>
+    <string name="hint_form_download">कृपया सभी फ़ॉर्म सूची से फ़ॉर्म चुनें और डाउनलोड पर क्लिक करें</string>
+    <string name="hint_form_list_download">कृपया सर्वर से उपलब्ध प्रपत्र लाने के लिए लोड दबाएं</string>
+    <string name="hint_form_validation_failure">इस फॉर्म पर एक या अधिक सत्यापन जांच विफल है। कृपया समीक्षा करें और फ़ॉर्म को पुनः सबमिट करें</string>
+    <string name="hint_future_date_validation_failure">कृपया भविष्य में एक तारीख दर्ज करें</string>
+    <string name="hint_gps_location_off">स्थान बंद है! कृपया सेटिंग्स में स्थान को चालू करें।</string>
+    <string name="hint_guided_setup">एक पूर्व निर्धारित कन्फ़िग्रेशन चुने और mUzima आप के लिए बाकी का काम कर देगा</string>
+    <string name="hint_help_prompt">कृपया अपना संदेश लिखें</string>
+    <string name="hint_image_caption_prompt">कृपया छवि के लिए एक कैप्शन दर्ज करें</string>
+    <string name="hint_incomplete_form_unavailable">अपूर्ण रूप केवल तभी उपलब्ध होते हैं यदि आपने आंशिक रूप से भरे हुए फॉर्म को सहेजा है</string>
+    <string name="hint_install_psmart">क्या आप पी-स्मार्ट ऐप इंस्टॉल करना चाहेंगे?</string>
+    <string name="hint_last_synced">अंतिम बार पर सिंक किया गया: %s</string>
+    <string name="hint_light_mode">लाइट थीम सक्षम करें</string>
+    <string name="hint_loading_progress">लोड हो रहा है…</string>
+    <string name="hint_local_connection_unavailable">कृपया अपना उपकरण कनेक्ट करें और पुनः प्रयास करें</string>
+    <string name="hint_location_addresses_not_set">सभी उपलब्ध ग्राहकों के लिए स्थान का पता निर्धारित नहीं किया गया है</string>
+    <string name="hint_location_pref_add">वह स्थान जोड़ें जिसे आप डाउनलोड करना चाहते हैं।</string>
+    <string name="hint_manage_concept">सर्वर से अधिक संकल्पनाएँ प्राप्त करें या इस उपकरण से संकल्पनाएँ निकालें। कौन से अवलोकनों को डाउनलोड करना है उसे कॉन्फ़िगर करने के लिए संकल्पनाओं का उपयोग किया जाता है।</string>
+    <string name="hint_manage_location">सर्वर से अधिक स्थान प्राप्त करें या इस उपकरण से स्थान निकालें</string>
+    <string name="hint_manage_provider">सर्वर से अधिक प्रदाता प्राप्त करें या इस डिवाइस से प्रदाताओं को हटा दें</string>
+    <string name="hint_mandatory_question_validation_failure">इस प्रश्न का उत्तर दिया जाना आवश्यक है</string>
+    <string name="hint_notification_sync">सुनिश्चित करें कि आपके पास सर्वर से कनेक्टिविटी है और लोड बटन दबाएं</string>
+    <string name="hint_opening_card_reader">कार्ड रीडर खोल रहे है</string>
+    <string name="hint_option_none_exclusive_selection_validation_failure">यदि \'कोई नहीं\' चुना जाता है, तो कोई अन्य विकल्प नहीं चुना जा सकता है</string>
+    <string name="hint_password_change">क्या आपने हाल ही में अपना पासवर्ड बदला है?</string>
+    <string name="hint_password_prompt">कृप्या पासवर्ड डाले</string>
+    <string name="hint_patient_report_list_download">सर्वर से उपलब्ध रिपोर्ट सूची लाने के लिए कृपया लोड दबाएं</string>
+    <string name="hint_patient_reports_sync">कृपया सर्वर सूची से रिपोर्ट चुनें और सिंक पर क्लिक करें</string>
+    <string name="hint_person_search">नाम या पहचानकर्ता से व्यक्ति को खोजें</string>
+    <string name="hint_phone_number_validation_failure">अवैध फोन नंबर। कृपया जाँच करें और फिर से दर्ज करें</string>
+    <string name="hint_provider_not_set">आपके पास प्रदाता अधिकार नहीं हैं या आपका प्रदाता डेटा डाउनलोड नहीं किया गया है, कृपया प्रदाता जोड़ें विकल्प का उपयोग करें।</string>
+    <string name="hint_provider_pref_add">प्रदाता (ओं) को जोड़ें जिन्हें आप डाउनलोड करना चाहते हैं।</string>
+    <string name="hint_real_time_sync">डेटा का वास्तविक समय सिंक्रनाइज़ेशन सक्षम करें</string>
+    <string name="hint_recommended_forms_unavailable">कृपया सभी फ़ॉर्म सूची से गैर-पंजीकरण फ़ॉर्म चुनें और डाउनलोड पर क्लिक करें</string>
+    <string name="hint_registration_form_select">कृपया कम से कम एक पंजीकरण फॉर्म चुनें!</string>
+    <string name="hint_repeating_section_minimum_repeats_validation_failure">न्यूनतम दोहराना संतुष्ट नहीं हुआ। कम से कम चाहिए</string>
+    <string name="hint_reports_unavailable">कृपया सभी फ़ॉर्म सूची से रिपोर्ट चुनें और डाउनलोड पर क्लिक करें</string>
+    <string name="hint_require_medical_record_number">पंजीकरण के दौरान ग्राहक के मेडिकल रिकॉर्ड नंबर की आवश्यकता होती है</string>
+    <string name="hint_server_connection_unavailable">सर्वर कनेक्टिविटी की जांच के लिए कृपया अपने सर्वर व्यवस्थापक से संपर्क करें</string>
+    <string name="hint_server_password_prompt">OpenMRS पासवर्ड दर्ज करें</string>
+    <string name="hint_server_url">सर्वर URL</string>
+    <string name="hint_server_url_prompt">कृपया सर्वर URL दर्ज करें</string>
+    <string name="hint_session_timeout">यदि इस समय के लिए असक्रिय है, mUzima स्वचालित रूप से लॉगआउट होगा</string>
+    <string name="hint_set_client_location">इस ग्राहक का गृह स्थान सेट नहीं किया गया है। क्या आप इसे अभी सेट करना चाहते हैं?</string>
+    <string name="hint_set_default_encounter_location_for_SHR">कृपया डिफ़ॉल्ट मुठभेड़ स्थान सेट करें ताकि नया कार्ड लिखने में सक्षम हो</string>
+    <string name="hint_setting_refresh">क्या आप इस सेटिंग को सर्वर से पुनः डाउनलोड करना चाहते हैं?</string>
+    <string name="hint_switch_location_on">कृपया सेटिंग्स में स्थान पर स्विच करें।</string>
+    <string name="hint_username_prompt">कृपया उपयोगकर्ता नाम दर्ज करें</string>
+    <string name="hint_video_caption_prompt">कृपया वीडियो के लिए एक कैप्शन दर्ज करें</string>
+    <string name="hint_video_record">वीडियो रिकॉर्ड करें या चुनें</string>
+    <string name="hint_wizard_form_download">सूची में से एक या एक से अधिक फॉर्म टेम्प्लेट चुनें और डाउनलोड करने के लिए \'आगे\' पर क्लिक करें</string>
+    <string name="hint_write_SHR_to_card">क्या आप कार्ड में साझा स्वास्थ्य रिकॉर्ड लिखना चाहते हैं?</string>
+    <string name="how_to_general">कैसे:</string>
+    <string name="inbox_outbox_label_text">## इनबॉक्स, ## आउटबॉक्स</string>
+    <string name="incomplete_outbox_text">## अधूरा,## आउटबॉक्स</string>
+    <string name="individual_obs">व्यक्तिगत अवलोकन</string>
+    <string name="individual_obs_description">व्यक्तिगत अवलोकन</string>
+    <string name="info_authentication_in_progress">प्रमाणीकरण प्रगति में …</string>
+    <string name="info_background_data_sync_started">पृष्ठभूमि में डेटा सिंक करना</string>
+    <string name="info_client_demographics_download">ग्राहक जनसांख्यिकीय डाउनलोड कर रहे है…</string>
+    <string name="info_client_identifier_change">क्लाइंट पहचानकर्ता सर्वर पर बदल गया। नए पहचानकर्ता का उपयोग आगे जाकर किया जाएगा।</string>
+    <string name="info_client_local_search_not_found">किसी भी ग्राहक ने आपकी खोज का स्थानीय रूप से मिलान नहीं किया। दूरस्थ खोज के लिए कम से कम 3 वर्ण दर्ज करें।</string>
+    <string name="info_client_remote_search_not_found">सर्वर पर कोई भी क्लाइंट आपकी खोज से मैच नहीं हुआ</string>
+    <string name="info_cohort_download">कोहोर्ट्स डाउनलोड करना</string>
+    <string name="info_cohort_downloaded">1 कोहोर्ट डाउनलोड किया गया</string>
+    <string name="info_cohort_fetch_in_progress">पहले से ही कोहोर्ट ला रहे है, अनुरोध को अनदेखा कर दिया</string>
+    <string name="info_cohort_load">कोहोर्ट लोड हो रहे है…</string>
+    <string formatted="false" name="info_cohort_new_patient_download">%d कॉहर्ट्स के लिए %d नए क्लाइंट डाउनलोड किए गए।</string>
+    <string name="info_cohort_not_downloaded">कोई कोहोर्ट डाउनलोड नहीं हुआ</string>
+    <string name="info_cohort_patient_download">1 कोहोर्ट के लिए 1 ग्राहक डाउनलोड किया गया</string>
+    <string name="info_cohort_patient_not_download">कोई क्लाइंट डाउनलोड नहीं किया गया</string>
+    <string formatted="false" name="info_cohort_patients_download">1 कॉहोर्ट के लिए %d क्लाइंट डाउनलोड किए गए</string>
+    <string name="info_cohort_prefixes_unavailable">कोई कोहोर्ट उपसर्ग नहीं जोड़ा गया</string>
+    <string name="info_cohort_update">कुछ कोहोर्ट बदल गए हैं।</string>
+    <string formatted="false" name="info_cohorts_downloaded">%d कोहोर्ट डाउनलोड किए गए</string>
+    <string formatted="false" name="info_cohorts_patient_download">%d कोहोर्ट के लिए 1 ग्राहक डाउनलोड किया गया</string>
+    <string formatted="false" name="info_cohorts_patients_download">%d कोहोर्ट के लिए %d क्लाइंट डाउनलोड किए गए</string>
+    <string name="info_cohorts_unavailable">कोई कोहोर्ट उपलब्ध नहीं है</string>
+    <string name="info_complete_form_unavailable">कोई पूर्ण और गैर समन्वित रूप नहीं</string>
+    <string name="info_concept_delete_success">%d अवधारणाओं को सफलतापूर्वक हटा दिया गया !!</string>
+    <string name="info_concept_download">संकल्पना डाउनलोड करना</string>
+    <string name="info_concept_downloaded">1 संकल्पना डाउनलोड की गई</string>
+    <string name="info_concept_not_downloaded">किसी भी अवधारणा को डाउनलोड नहीं किया</string>
+    <string name="info_concept_unavailable">अभी तक कोई संकल्पना नहीं जोड़ी गई है।</string>
+    <string formatted="false" name="info_concepts_downloaded">%d संकल्पनाएँ डाउनलोड की गई</string>
+    <string name="info_data_sync_cancelled">mUzima डेटा सिंक रद कर दिया गया था।</string>
+    <string name="info_disclaimer">
+        <![CDATA[
+        <p>
+        mUzima, Mozilla Public License, v. 2.0 (MPL 2.0) की शर्तों के तहत वितरित किया जाता है. MPL 2.0 लाइसेंस की एक प्रति
+        http://mozilla.org/MPL/2.0/ पर देखी जा सकती है।
+        </p><p>
+        mUzima को वारंटी के निम्नलिखित अतिरिक्त अस्वीकरण की शर्तों के तहत भी वितरित किया जाता है और देयता की सीमा।
+        </p><p><strong> देयता की वारंटी और सीमा का अतिरिक्त अस्वीकरण </strong></p><p>
+        संयुक्त राज्य अमेरिका, या किसी अन्य क्षेत्राधिकार में, जहां वे आवेदन कर सकते हैं, वारंटी और देयता की सीमा के अतिरिक्त अस्वीकरण को इसके अलावा MPL 2.0
+        के नियमों और शर्तों में शामिल किया गया है:
+        </p><p>
+        1. किसी भी प्रकार की कोई वारंटियां उस परिणाम के रूप में नहीं की जाती हैं जो आप कवर किए गए कोड (या कवर किए गए कोड के माध्यम से प्राप्त की गई कोई भी
+        जानकारी या सामग्री) पर निर्भा रहने से प्राप्त करेंगे, जिसमें गोपनीयता कानून या विनियम या नैदानिक ​​देखभाल उद्योग के मानकों और प्रोटोकॉल के अनुपालन तक सीमित
+        नहीं है। कवर कोड का उपयोग स्वास्थ्य देखभाल प्रदाता के मानक अभ्यास या पेशेवर निर्णय के लिए एक विकल्प नहीं है। उपचार की उपयुक्तता, या कवर किए गए कोड द्वारा
+        उपलब्ध कराई गई जानकारी या सामग्री की वैधता या विश्वसनीयता के संबंध में कोई भी निर्णय एकमात्र स्वास्थ्य देखभाल प्रदाता की जिम्मेदारी है। नतीजतन, यह प्रत्येक रोगी
+        के साथ सभी चिकित्सा इतिहास और उपचार योजनाओं को सत्यापित करने के लिए प्रत्येक स्वास्थ्य देखभाल प्रदाता पर निर्भर है।
+        </p><p>
+        2. किसी भी परिस्थिति में और किसी कानूनी सिद्धांत के तहत, चाहे यातना (लापरवाही सहित), अनुबंध, या अन्यथा, कोई योगदानकर्ता, या कोई भी जो लाइसेंस के अनुसार
+        अनुमत सॉफ़्टवेयर को वितरित करेगा, किसी भी अप्रत्यक्ष, विशेष, आकस्मिक के लिए आपके लिए उत्तरदायी होगा। , बिना किसी सीमा के किसी भी चरित्र के परिणामी
+        नुकसान, सद्भाव की हानि के लिए नुकसान, काम रुकना, कंप्यूटर की विफलता या खराबी, या किसी भी और सभी नुकसान या नुकसान, किसी भी प्रकृति का
+        (प्रत्यक्ष या अन्यथा) कवर की गई सामग्री का उपयोग करने या उपयोग करने में असमर्थता के साथ जुड़े (सहित, सीमा के बिना, कवर कोड द्वारा उपलब्ध कराई गई
+        जानकारी, या सामग्री का उपयोग, सभी दस्तावेज जुड़े हुए, और कवर की विफलता के कारण) गोपनीयता कानूनों और विनियमों या नैदानिक ​​देखभाल उद्योग मानकों और
+        प्रोटोकॉल का पालन करने के लिए कोड), भले ही ऐसी पार्टी को इस तरह के नुकसान की संभावना के बारे में सूचित किया गया हो।
+        </p><p>
+        3. mUzima को Indiana University, Moi University , और Vanderbilt University Medical Center के ट्रस्टियों का कॉपीराइट प्राप्त है।
+        </p><p>
+        4. यदि इस एप्लिकेशन का उपयोगकर्ता एक ऐसी इकाई है जो व्यवसायीकरण करने या किसी भी एप्लिकेशन से लाभ कमाने का इरादा रखती है, जो इस कोड का लाभ-साहस
+        के उपक्रम में उपयोग करती है, तो उपयोगकर्ता को mUzima.mobile@gmail.com के माध्यम से कॉपीराइट धारक से संपर्क करना होगा।
+        </p>
+        ]]>
+    </string>
+    <string name="info_download_complete">%d स्थिति के साथ डाउनलोड पूर्ण </string>
+    <string name="info_downloaded_forms_unavailable">कोई फॉर्म डाउनलोड नहीं किए गए हैं</string>
+    <string name="info_downloaded_image">डाउनलोड की गई छवि</string>
+    <string name="info_downloaded_reports_unavailable">कोई रिपोर्ट डाउनलोड नहीं की गई है</string>
+    <string name="info_draft_form_save_success">ड्राफ्ट फॉर्म को सफलतापूर्वक सहेज लिया गया था।</string>
+    <string name="info_encounter_download">एनकाउंटर डाउनलोड करना</string>
+    <string formatted="false" name="info_encounter_download_progress">%d में से %d ग्राहक के लिए एनकाउंटर डाउनलोड किए गए।</string>
+    <string formatted="false" name="info_encounter_not_downloaded_progress">%d में से %d ग्राहक के लिए एनकाउंटर डाउनलोड नहीं किए गए।</string>
+    <string name="info_encounter_observation_download">अवलोकन और मुठभेड़ों को डाउनलोड करना …</string>
+    <string name="info_encounter_patient_downloaded">1 क्लाइंट के लिए 1 एनकाउंटर डाउनलोड किया</string>
+    <string name="info_encounter_patient_not_downloaded">कोई भी एनकाउंटर डाउनलोड नहीं किया</string>
+    <string formatted="false" name="info_encounter_patients_downloaded">%d क्लाइंट के लिए 1 एनकाउंटर डाउनलोड किया गया</string>
+    <string name="info_encounter_unavailable">कोई एनकाउंटर उपलब्ध नहीं है</string>
+    <string formatted="false" name="info_encounters_patient_downloaded">1 क्लाइंट के लिए %d एनकाउंटर डाउनलोड किया गया</string>
+    <string formatted="false" name="info_encounters_patients_downloaded">%d क्लाइंट के लिए %d एनकाउंटर डाउनलोड किया गया</string>
+    <string formatted="false" name="info_form_data_delete">%d फॉर्म हटाए गए</string>
+    <string name="info_form_data_save_success">पूर्ण फॉर्म डेटा सफलतापूर्वक सहेजा गया था।</string>
+    <string name="info_form_data_upload_fail">वर्तमान सर्वर में फ़ॉर्म डेटा को सिंक करने में विफल। क्या आप अभी भी जारी रखना चाहते हैं?</string>
+    <string name="info_form_data_upload_sucess">फॉर्म डेटा सफलता अपलोड करें</string>
+    <string name="info_form_delete_integrity_failure">अखंडता विफलता: पंजीकरण फॉर्म डेटा को हटा नहीं सकता है जिसमें एनकाउंटर फॉर्म डेटा जुड़ा हुआ है</string>
+    <string name="info_form_delete_success">फॉर्म सफलतापूर्वक हटा दिए गए</string>
+    <string name="info_form_download">फॉर्म डाउनलोड करना</string>
+    <string formatted="false" name="info_form_download_delete">%d फॉर्म डाउनलोड किए और %d फॉर्म रिटायर किए गए</string>
+    <string name="info_form_download_failure">प्रपत्र टेम्पलेट डाउनलोड करने में त्रुटि हुई थी</string>
+    <string name="info_form_downloaded">1 फॉर्म डाउनलोड किया</string>
+    <string name="info_form_fetch_in_progress">पहले से ही फार्म ला रहे है, अनुरोध को नजरअंदाज कर दिया</string>
+    <string name="info_form_load">फ़ॉर्म लोड हो रहे हैं…</string>
+    <string name="info_form_metadata_download">मेटाडेटा फॉर्म डाउनलोड करना</string>
+    <string name="info_form_not_downloaded">कोई फॉर्म डाउनलोड नहीं किया गया</string>
+    <string formatted="false" name="info_form_template_concept_download">%d फ़ॉर्म टेम्प्लेट और %d संकल्पनाएँ डाउनलोड किए गए</string>
+    <string name="info_form_template_download">फॉर्म टेम्पलेट डाउनलोड करना</string>
+    <string name="info_form_template_downloaded">डाउनलोड किया गया 1 फ़ॉर्म टेम्पलेट</string>
+    <string name="info_form_template_not_downloaded">कोई फॉर्म टेम्पलेट डाउनलोड नहीं किया गया</string>
+    <string name="info_form_template_recommended">अनुशंसित फॉर्म टेम्पलेट</string>
+    <string name="info_form_template_with_count_download">%d रूपों के लिए फॉर्म टेम्पलेट डाउनलोड करना</string>
+    <string formatted="false" name="info_form_templates_downloaded">%d फॉर्म टेम्प्लेट डाउनलोड किए गए</string>
+    <string name="info_form_upload">फॉर्म अपलोड करना</string>
+    <string name="info_form_upload_in_progress">पहले से ही अपलोड करने के रूपों, अनुरोध को नजरअंदाज कर दिया</string>
+    <string name="info_form_upload_success">फॉर्म सफलतापूर्वक अपलोड किए गए</string>
+    <string name="info_forms_downloaded">%d फॉर्म डाउनलोड किए गए</string>
+    <string name="info_forms_unavailable">कोई फॉर्म उपलब्ध नहीं है</string>
+    <string name="info_incomplete_form_unvailable">कोई अपूर्ण फॉर्म नहीं</string>
+    <string name="info_initial_setup_progress">प्रारंभिक सेटअप चल रहा है। कृपया प्रतीक्षा कीजिये</string>
+    <string name="info_last_sync_unavailable">अभी तक समन्वयित नहीं किया गया है</string>
+    <string name="info_location_delete_success">%d स्थान सफलतापूर्वक हटा दिए गए</string>
+    <string name="info_location_download">स्थान डाउनलोड करना</string>
+    <string name="info_location_downloaded">1 स्थान डाउनलोड किया</string>
+    <string name="info_location_not_downloaded">किसी भी स्थान को डाउनलोड नहीं किया</string>
+    <string name="info_location_unavailable">अभी तक कोई स्थान नहीं जोड़ा गया है</string>
+    <string formatted="false" name="info_locations_downloaded">%d स्थान डाउनलोड किया</string>
+    <string name="info_muzima_sync_service_finish">mUzima सिंक सेवा समाप्त</string>
+    <string name="info_muzima_sync_service_in_progress">mUzima सिंक सेवा चल रही है</string>
+    <string name="info_new_cohort_download">%d नए समूह डाउनलोड किए गए</string>
+    <string formatted="false" name="info_new_cohort_download_delete">%d नए कोहोर्ट और %d निवृत्त कोहोर्ट डाउनलोड किए गए</string>
+    <string name="info_new_encounter_download">%d नए एनकाउंटर डाउनलोड किए गए</string>
+    <string formatted="false" name="info_new_encounter_download_delete">%d नए एनकाउंटर और %d रिटायर्ड एनकाउंटर डाउनलोड किए गए</string>
+    <string name="info_new_notification">नई अधिसूचना</string>
+    <string name="info_new_observation_download">%d नए अवलोकन डाउनलोड किए गए</string>
+    <string formatted="false" name="info_new_observation_download_delete">%d नए अवलोकन और %d निवृत अवलोकन डाउनलोड किए गए</string>
+    <string name="info_new_patient_download">%d नए क्लाइंट डाउनलोड किए गए</string>
+    <string name="info_no_client_available_locally">कोई भी ग्राहक स्थानीय रूप से उपलब्ध नहीं है। दूरस्थ खोज के लिए कम से कम 3 वर्ण दर्ज करें या नए ग्राहक पंजीकृत करें</string>
+    <string name="info_no_cohort_download">कोई भी सहकर्मी समन्‍वयित नहीं किया गया है</string>
+    <string formatted="false" name="info_notification_download">%d अधिसूचनाएँ डाउनलोड की गईं</string>
+    <string name="info_notification_download_in_progress">अधिसूचनाएं डाउनलोड कर रहा है</string>
+    <string name="info_notification_unavailable">कोई अधिसूचना उपलब्ध नहीं है</string>
+    <string name="info_observation_download">अवलोकन डाउनलोड करना</string>
+    <string name="info_observation_in_progress">अवलोकन अभी भी लोड हो रहे हैं</string>
+    <string name="info_observation_load">अवलोकन लोड हो रहे हैं</string>
+    <string name="info_observation_patient_downloaded">1 ग्राहक के लिए 1 अवलोकन डाउनलोड किया गया</string>
+    <string name="info_observation_patient_not_downloaded">कोई अवलोकन नहीं किया</string>
+    <string formatted="false" name="info_observation_patients_downloaded">1 ग्राहक के लिए डाउनलोड किए गए %d अवलोकन</string>
+    <string name="info_observation_search">अवलोकन देखें</string>
+    <string name="info_observation_unavailable">कोई अवलोकन उपलब्ध नहीं है</string>
+    <string formatted="false" name="info_observations_download_progress">%d में से %d क्लाइंट के लिए अवलोकन डाउनलोड किए गए।</string>
+    <string name="info_observations_load_in_progress">अवलोकन अभी भी लोड हो रहे हैं</string>
+    <string formatted="false" name="info_observations_not_downloaded_progress">%d में से %d क्लाइंट के लिए अवलोकन डाउनलोड नहीं हुए।</string>
+    <string formatted="false" name="info_observations_patient_downloaded">%d क्लाइंट के लिए 1 अवलोकन डाउनलोड किया गया</string>
+    <string formatted="false" name="info_observations_patients_downloaded">%d ग्राहकों के लिए %d अवलोकन डाउनलोड किया गया</string>
+    <string name="info_patient_data_download">क्लाइंट डेटा डाउनलोड करना</string>
+    <string name="info_patient_download">क्लायंट डाउनलोड करना</string>
+    <string name="info_patient_reports_download_in_progress">क्लाइंट रिपोर्ट डाउनलोड करना</string>
+    <string formatted="false" name="info_patient_reports_downloaded">%d रिपोर्ट डाउनलोड किए</string>
+    <string name="info_patient_reports_fetch_in_progress">पहले से ही रिपोर्ट ला रहे है, अनुरोध को अनदेखा कर दिया</string>
+    <string name="info_patient_reports_unavailable">कोई क्लाइंट रिपोर्ट उपलब्ध नहीं है</string>
+    <string name="info_person_creation_failure">व्यक्ति का रिकॉर्ड नहीं बना सका</string>
+    <string name="info_provider_delete_success">%d प्रदाताओं को सफलतापूर्वक हटा दिया</string>
+    <string name="info_provider_download">प्रदाता डाउनलोड हो रहे है</string>
+    <string name="info_provider_downloaded">1 प्रदाता को डाउनलोड किया</string>
+    <string name="info_provider_load">प्रदाता लोड हो रहे हैं …</string>
+    <string name="info_provider_not_downloaded">किसी भी प्रदाता को डाउनलोड नहीं किया</string>
+    <string name="info_provider_unavailable">अभी तक कोई प्रदाता नहीं जोड़ा गया है</string>
+    <string formatted="false" name="info_providers_downloaded">%d प्रदाता डाउनलोड किए गए</string>
+    <string name="info_real_time_upload">mUzima आपका डेटा अपलोड कर रहा है</string>
+    <string name="info_real_time_upload_success">mUzima ने आपका डेटा सफलतापूर्वक अपलोड कर दिया है</string>
+    <string name="info_relationships_delete_success">%d संबंधों को सफलतापूर्वक नष्ट कर दिया</string>
+    <string formatted="false" name="info_relationships_download">%d क्लाइंट के लिए %d संबंध डाउनलोड किए गए।</string>
+    <string formatted="false" name="info_relationships_download_progress">%d क्लाइंट के लिए %d संबंध डाउनलोड किए गए।</string>
+    <string formatted="false" name="info_relationships_not_downloaded_progress">%d क्लाइंट के लिए %d संबंध डाउनलोड नहीं हुए हैं।</string>
+    <string name="info_relationships_unavailable">कोई संबंध उपलब्ध नहीं है</string>
+    <string name="info_scanner_exists">बारकोड स्कैनर पहले से इंस्टॉल है।</string>
+    <string name="info_session_time_out">आपका सत्र समाप्त हो गया था। आगे बढ़ने के लिए कृपया फिर से लॉग इन करें।</string>
+    <string name="info_setting_download_success">सेटिंग सफलतापूर्वक डाउनलोड और अपडेट की गई </string>
+    <string name="info_setting_downloaded">1 सेटिंग डाउनलोड हुई</string>
+    <string name="info_settings_download_progress">सेटिंग डाउनलोड हो रही है</string>
+    <string name="info_settings_download_success">सेटिंग सफलतापूर्वक डाउनलोड और अपडेट की गई </string>
+    <string formatted="false" name="info_settings_downloaded">%d सेटिंग्स डाउनलोड हुई</string>
+    <string name="info_settings_not_download">कोई सेटिंग डाउनलोड नहीं की गई</string>
+    <string name="info_settings_update">सेटिंग्स अपडेट कर रहे है</string>
+    <string name="info_setup_complete_fail">सेटअप कुछ विफलता के साथ पूरा हुआ</string>
+    <string name="info_setup_complete_success">सेटअप सफलतापूर्वक पूरा हुआ</string>
+    <string name="info_setup_config_load">सेटअप कन्फ़िग लोड हो रहा है</string>
+    <string name="info_setup_configuration_template_download_in_progress">सेटअप विन्यास अद्यतन कर रहा है</string>
+    <string formatted="false" name="info_setup_configuration_templates_downloaded">डाउनलोड किए गए %d सेटअप विन्यास टेम्प्लेट</string>
+    <string name="info_setup_configuration_wizard_prepare">सेटअप कॉन्फ़िगरेशन विज़ार्ड तैयार कर रहे है</string>
+    <string formatted="false" name="info_submitted_form_data_status">हाल ही में प्रस्तुत फॉर्मों की स्थिति:%d सफलतापूर्वक संसाधित,%d त्रुटि के साथ संसाधित,%d लंबित प्रसंस्करण,%d अज्ञात स्थिति</string>
+    <string name="info_submitted_form_data_status_check">हाल ही में प्रस्तुत फॉर्मों की स्थिति की जाँच कर रहे है</string>
+    <string name="info_submitted_form_data_status_check_failure">हाल ही में प्रस्तुत फॉर्मों की स्थिति की जाँच नहीं कर सके</string>
+    <string name="info_tag_unavailable">कोई टैग उपलब्ध नहीं है</string>
+    <string name="info_url_validate">चरण 1: URL मान्य करना</string>
+    <string name="info_video_chose_activity_unavailable">त्रुटि: वीडियो चुनने के लिए आवेदन नहीं मिला</string>
+    <string name="info_video_play_activity_unavailable">त्रुटि: वीडियो चलाने के लिए आवेदन नहीं मिला</string>
+    <string name="info_video_record_activity_unavailable">त्रुटि: वीडियो रिकॉर्डिंग के लिए आवेदन नहीं मिला</string>
+    <string name="initial_setup_for_muzima_general">MUzima के लिए प्रारंभिक सेटअप</string>
+    <string name="interactive_help_choose">एक विकल्प चुनें:</string>
+    <string name="interactive_help_header">कृपया हमें बताएं कि हम आपकी कैसे मदद कर सकते हैं</string>
+    <string name="interactive_help_hint">अपना संदेश टाइप करें</string>
+    <string name="introduction_to_muzima_general_text">mUzima का परिचय</string>
+    <string name="june_8_sample_date">8 जून</string>
+    <string formatted="false" name="menu_SHR_data_sync">सिंक SHR डेटा (%d)</string>
+    <string name="menu_all_data_sync">सभी डेटा को सिंक करें</string>
+    <string name="menu_form_back_to_draft">ड्राफ्ट पर वापस जाएं</string>
+    <string name="menu_form_data_sync">डेटा को सिंक करें</string>
+    <string name="message_feedback_halt">आपका संदेश नहीं भेजा जाएगा</string>
+    <string name="message_feedback_sent">आपके संदेश के लिए धन्यवाद। \n आपकी प्रतिक्रिया हमारे लिए महत्वपूर्ण है।</string>
+    <string name="message_help_halt">शायद अगली बार।</string>
+    <string name="message_help_sent">संपर्क करने के लिए धन्यवाद। \n हमारी सहायता टीम आपके अनुरोध की जांच करेगी। \n हम जल्द से जल्द आपके पास वापस आएँगे।</string>
+    <string name="message_missing_form_encounter_details_error">प्रदान करना आवश्यक है</string>
+    <string name="muzima_training_manual_general">mUzima प्रशिक्षण मैनुअल</string>
+    <string name="new_messages_number_text"># नए संदेश</string>
+    <string name="no_default_encounter_location">कोई डिफ़ॉल्ट मुठभेड़ स्थान नहीं</string>
+    <string name="no_description_general">कोई विवरण नहीं</string>
+    <string name="no_email_client">इस उपकरण पर कोई ईमेल क्लाइंट स्थापित नहीं किया गया है। \n कृपया एक इंस्टॉल करें और फिर अपनी प्रतिक्रिया दें।</string>
+    <string name="null_encounter_date_error">फॉर्म सहेजते समय एक त्रुटि हुई। एनकाउंटर की तारीख प्रदान कराई जानी चाहिए</string>
+    <string name="null_encounter_location_error">फॉर्म सहेजते समय एक त्रुटि हुई। एनकाउंटर स्थान प्रदान किया जाना चाहिए</string>
+    <string name="null_encounter_provider_error">फॉर्म सहेजते समय एक त्रुटि हुई। एनकाउंटर प्रदाता प्रदान किया जाना चाहिए</string>
+    <string name="number_hashtag_representation">##</string>
+    <string name="observation_details">अवलोकन विवरण</string>
+    <string name="observation_text_dialog">निरीक्षण:</string>
+    <string name="observation_value">अवलोकन मूल्य:</string>
+    <string name="patient_SHR_search_dialog_title">ग्राहक SHR खोज</string>
+    <string name="patient_SHR_search_title_text">ग्राहक SHR खोज</string>
+    <string name="provider_details">प्रदाता विवरण</string>
+    <string name="provider_identifier">प्रदाता पहचानकर्ता:</string>
+    <string name="provider_name">प्रदाता का नाम:</string>
+    <string name="provider_name_general">प्रदाता का नाम</string>
+    <string name="provider_reports_general">प्रदाता रिपोर्ट</string>
+    <string name="registering_patient_message_title_text">mUzima में ग्राहक का पंजीकरण …</string>
+    <string name="relationship_create_success">संबंध सफलतापूर्वक बना</string>
+    <string name="relationship_delete_fail">सर्वर पर पहले से सहेजे गए संबंध को हटा नहीं सकता। व्यवस्थापक से संपर्क करें</string>
+    <string name="relationship_to_self_error">ग्राहक का खुद से संबंध नहीं हो सकता</string>
+    <string name="reply_hint_text">अपना जवाब भेजें</string>
+    <string name="sample_date_rep">21 मार्च 2018</string>
+    <string name="sample_date_text">21/02/2018</string>
+    <string name="scan_card_id_title">कार्ड आईडी स्कैन करें</string>
+    <string name="search_patient_on_server_option_title_text">क्लाइंट स्थानीय रूप से उपलब्ध नहीं है, क्या आप सर्वर पर खोजना चाहेंगे?</string>
+    <string name="select_a_registration_form_text">एक पंजीकरण फॉर्म चुनें</string>
+    <string name="select_a_relationship_form_text">एक फार्म का चयन करें</string>
+    <string name="select_default_encounter_location">अपना डिफ़ॉल्ट मुठभेड़ स्थान चुनें</string>
+    <string name="send_feedback">प्रतिक्रिया भेजें</string>
+    <string name="send_general_text">संदेश</string>
+    <string name="server_side_setup_general">सर्वर साइड सेटअप</string>
+    <string name="setting_up_muzima_general_text">MUzima की स्थापना</string>
+    <string name="shr_registration">SHR पंजीकरण</string>
+    <string name="shr_registration_description">SHR पंजीकरण डेटा</string>
+    <string name="success_writing_smartcard">स्मार्ट कार्ड डेटा सफलतापूर्वक लिखा गया था।</string>
+    <string name="synced_label_text">## सिंक किया गया</string>
+    <string name="synced_total_label_text">## सिंक किया गया, ## संपूर्ण</string>
+    <string name="tagging_forms">प्रपत्र टैग करना</string>
+    <string name="title_about_dashboard_help_html">डैशबोर्ड के बारे में</string>
+    <string name="title_activity_audio">ऑडियो जोड़ें</string>
+    <string name="title_activity_client_encounters">क्लाइंट एनकाउंटर</string>
+    <string name="title_activity_client_observations">ग्राहक अवलोकन</string>
+    <string name="title_activity_client_reports">ग्राहक रिपोर्ट</string>
+    <string name="title_activity_client_summary">ग्राहक सारांश</string>
+    <string name="title_activity_cohort_prefix">कोहार्ट उपसर्गों</string>
+    <string name="title_activity_image">छवि जोड़ें</string>
+    <string name="title_activity_video">वीडियो जोड़ें</string>
+    <string name="title_advanced_setup">उन्नत सेटअप</string>
+    <string name="title_advanced_setup_help_html">MUzima के लिए प्रारंभिक सेटअप</string>
+    <string name="title_advanced_setup_help_video">उन्नत प्रारंभिक सेटअप</string>
+    <string name="title_audio_caption">ऑडियो कैप्शन</string>
+    <string name="title_audio_choose">ऑडियो चुनें</string>
+    <string name="title_audio_record">ध्वनि रिकॉर्ड करें</string>
+    <string name="title_barcode_scanner_check">बारकोड स्कैनर की जाँच करें</string>
+    <string name="title_barcode_scanner_setup">चरण 6: बारकोड स्कैनर की जाँच करें</string>
+    <string name="title_client_location">ग्राहक का स्थान</string>
+    <string name="title_client_location_update">ग्राहक का स्थान अपडेट करें</string>
+    <string name="title_client_notifications">ग्राहक सूचनाएँ</string>
+    <string name="title_client_registration_help_video">ग्राहक पंजीकरण</string>
+    <string name="title_client_scan">ग्राहक बारकोड स्कैन करें</string>
+    <string name="title_clients_locations">ग्राहक के स्थान</string>
+    <string name="title_cohort_download">चरण 1: कोहोर्ट डाउनलोड करें</string>
+    <string name="title_cohort_download_help_video">कोहोर्ट डाउनलोड (मांग पर)</string>
+    <string name="title_cohort_prefix_help">कोहार्ट उपसर्ग परिभाषित करने में सहायता</string>
+    <string name="title_cohort_prefix_manage">कोहोर्ट उपसर्गों को प्रबंधित करें</string>
+    <string name="title_cohort_wizard_help">कोहोर्ट डाउनलोड में सहायता</string>
+    <string name="title_concept_download">चरण 5: संकल्पना जोड़ें</string>
+    <string name="title_concept_download_help_video">अवधारणाओं को डाउनलोड करें (मांग पर)</string>
+    <string name="title_concept_help">अवधारणाओं की सहायता</string>
+    <string name="title_crash_dialog">muzima क्रेश हो गया है …</string>
+    <string name="title_data_reset">चरण 3: डेटा रीसेट करना</string>
+    <string name="title_data_synchronize">चरण 2: स्थानीय डेटा को सिंक्रनाइज़ करना</string>
+    <string name="title_default_encounter_location">डिफ़ॉल्ट मुठभेड़ स्थान</string>
+    <string name="title_default_encounter_provider">डिफ़ॉल्ट मुठभेड़ प्रदाता</string>
+    <string name="title_define_custom_concept">कस्टम कॉन्सेप्ट (संकल्पना) परिभाषित करें</string>
+    <string name="title_disclaimer">लाइसेंसिंग, वारंटी की अस्वीकृति और दायित्व की सीमा</string>
+    <string name="title_duplicate_form_data_warning">डुप्लिकेट प्रपत्र डेटा चेतावनी</string>
+    <string name="title_enable_gps">GPS सक्षम करें</string>
+    <string name="title_enable_gps_location">स्थान और इंटरनेट कनेक्टिविटी सक्षम करें।</string>
+    <string name="title_enable_shr">SHR सक्षम करें</string>
+    <string name="title_fill_patient_forms_help">क्लाइंट के लिए फॉर्म भरें</string>
+    <string name="title_font_size">फ़ॉन्ट आकार</string>
+    <string name="title_form_auto_save_interval">स्वचालित रूप से सहेजने का अंतराल (मिनट)</string>
+    <string name="title_form_data_complete">पूर्ण प्रपत्र डेटा</string>
+    <string name="title_form_data_incomplete">अपूर्ण प्रपत्र डेटा</string>
+    <string name="title_form_download">चरण 2: फॉर्म टेम्पलेट डाउनलोड करें</string>
+    <string name="title_form_download_help_video">प्रपत्र डाउनलोड (मांग पर)</string>
+    <string name="title_form_template_all">सभी प्रपत्र टेम्पलेट</string>
+    <string name="title_form_template_downloaded">डाउनलोड किए गए प्रपत्र टेम्पलेट</string>
+    <string name="title_general_notifications">सामान्य सूचनाएं</string>
+    <string name="title_gps_location">जीपीएस स्थान</string>
+    <string name="title_guided_setup">निर्देशित सेटअप (अनुशंसित)</string>
+    <string name="title_guided_setup_help_video">मार्गदर्शित प्रारंभिक सेटअप</string>
+    <string name="title_guided_setup_progress">सेटअप प्रगति</string>
+    <string name="title_guided_setup_wizard">मार्गदर्शित सेटअप विज़ार्ड</string>
+    <string name="title_help_video_links">mUzima वीडियो लिंक</string>
+    <string name="title_html_help">सहायता केंद्र</string>
+    <string name="title_image_caption">तस्वीर का शीर्षक</string>
+    <string name="title_image_capture">छवि पर कब्जा</string>
+    <string name="title_image_choose">छवि चुनें</string>
+    <string name="title_initial_setup_guide">mUzima प्रारंभिक सेटअप गाइड</string>
+    <string name="title_install_barcode_scanner">बारकोड स्कैनर स्थापित करें</string>
+    <string name="title_install_psmart">P-Smart ऐप इंस्टॉल करें</string>
+    <string name="title_introduction_video">mUzima का वीडियो परिचय</string>
+    <string name="title_landing_page">लैंडिंग पेज</string>
+    <string name="title_light_mode">डे मोड सक्षम करें</string>
+    <string name="title_local_client_search_help_video">ग्राहक खोज (स्थानीय)</string>
+    <string name="title_location_download">चरण 3: स्थान जोड़ें</string>
+    <string name="title_location_help">स्थान मदद</string>
+    <string name="title_logo">MuzimaLogo</string>
+    <string name="title_logout_confirm">पुष्टिकरण!</string>
+    <string name="title_manage_concept">संकल्पनाओं को प्रबंधित करें</string>
+    <string name="title_manage_location">स्थानों को प्रबंधित करें</string>
+    <string name="title_manage_provider">प्रदाताओं को प्रबंधित करें</string>
+    <string name="title_media_preview">मीडिया का पूर्वावलोकन करें</string>
+    <string name="title_missing_form_encounter_details_error">लापता एनकाउंटर का विवरण</string>
+    <string name="title_muzima_disclaimer">muzima अस्वीकरण</string>
+    <string name="title_muzima_training_manual">mUzima प्रशिक्षण मैनुअल</string>
+    <string name="title_observations_by_concepts">डेटा प्रकार अनुसार</string>
+    <string name="title_observations_by_encounters">तिथि के अनुसार</string>
+    <string name="title_pick_location">स्थान चुनें</string>
+    <string name="title_provider_download">चरण 4: प्रदाता जोड़ें</string>
+    <string name="title_provider_help">प्रदाताओं में मदद</string>
+    <string name="title_provider_not_set">प्रदाता के रूप में सेट करने में असमर्थ</string>
+    <string name="title_provider_reports">प्रदाता रिपोर्ट</string>
+    <string name="title_real_time_sync">वास्तविक समय सिंक</string>
+    <string name="title_require_medical_record_number">चिकित्सा रिकॉर्ड संख्या आवश्यक है</string>
+    <string name="title_search_server">सर्वर खोजें</string>
+    <string name="title_server_client_search_help_video">ग्राहक खोज (सर्वर के सामने)</string>
+    <string name="title_server_side_setup">सर्वर साइड सेटअप</string>
+    <string name="title_session_timeout">सत्र समय समाप्त (मिनट)</string>
+    <string name="title_set_client_location">क्लाइंट स्थान सेट करें</string>
+    <string name="title_setting_refresh">सेटिंग रीफ्रेश करें</string>
+    <string name="title_settings_help_html">mUzima सेटिंग्स</string>
+    <string name="title_setup_method">सेटअप विधि</string>
+    <string name="title_video_caption">वीडियो कैप्शन</string>
+    <string name="title_video_choose">वीडियो चुनें</string>
+    <string name="title_video_record">वीडियो रिकॉर्ड करो</string>
+    <string name="to_text">सेवा</string>
+    <string name="type_a_message_hint">एक संदेश लिखें</string>
+    <string name="type_cohort_name_hint">कोहोर्ट नाम लिखें …</string>
+    <string name="video_links_general_text">वीडियो लिंक:</string>
+    <string name="warning_auto_save_interval">ऑटो सेव इंटरवल: ऑटो सेव इंटरवल सेट नहीं कर सका। \n कृपया 1 और 120 के बीच मान दर्ज करें।</string>
+    <string name="warning_cancel_form_download">इससे फॉर्म डाउनलोड रद्द हो जाएगा। क्या आप वाकई फॉर्म डाउनलोड रद्द करना चाहते हैं?</string>
+    <string name="warning_cohort_prefix_exists">कोहोर्ट उपसर्ग मौजूद है</string>
+    <string name="warning_empty_cohort_prefix">आप एक खाली कॉहोर्ट उपसर्ग नहीं जोड़ सकते हैं</string>
+    <string name="warning_form_close">फॉर्म बंद करना: यह आपके सभी परिवर्तनों को छोड़ देगा। क्या आप वाकई ऐसा करना चाहते हैं?</string>
+    <string name="warning_form_data_already_exists">यह फॉर्म डेटा पहले से मौजूद क्लाइंट के लिए समान एनकाउंटर तिथि के साथ है।</string>
+    <string name="warning_forms_complete_and_sync">%s में इसके साथ कुछ संबद्ध फॉर्म्स हैं। कृपया एक नया संस्करण डाउनलोड करने से पहले उन रूपों को पूरा और सिंक करें।</string>
+    <string name="warning_incompatible_module">आपका वर्तमान mUzima एप्लिकेशन सर्वर के साथ संगत नहीं है। कृपया अपने व्यवस्थापक से संपर्क करें।</string>
+    <string name="warning_invalid_url_provided">आपके द्वारा प्रदत्त URL अमान्य है</string>
+    <string name="warning_logout_confirm">क्या आप वाकई mUzima ऐप से लॉग आउट करना और बाहर निकलना चाहते हैं?</string>
+    <string name="warning_registration_form_data_delete">आप पंजीकरण डेटा को हटाने वाले हैं। यह डिवाइस पर क्लाइंट रिकॉर्ड को भी हटा देगा। क्या आप निश्चित है?</string>
+    <string name="warning_related_person_missing">कृपया संबंधित व्यक्ति चुनें</string>
+    <string name="warning_relationship_exists">क्लाइंट के पास पहले से ही %s के साथ %s:%s संबंध है</string>
+    <string name="warning_relationship_type_missing">कृपया एक संबंध प्रकार चुनें</string>
+    <string name="warning_session_timeout">सत्र टाइमआउट: सत्र टाइमआउट सेट नहीं हो सका। कृपया 1 और 500 के बीच एक मान दर्ज करें।</string>
+    <string name="warning_setting_download_failure">सेटिंग डाउनलोड या अपडेट नहीं हो सका</string>
+    <string name="warning_switch_server">सर्वर बदली: यह आपके डिवाइस पर मौजूद सभी mUzima डेटा को साफ कर देगा, जिसमें कोई अधूरा फॉर्म भी शामिल है। क्या आप वाकई इस सेटिंग को बदलना चाहते हैं?</string>
+    <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
+    <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
+    <string name="youTube_player_error">YouTube वीडियो लोड करते समय एक त्रुटि हुई</string>
+</resources>
