@@ -143,8 +143,11 @@ class HTMLFormDataStore {
                     formData.setPatientUuid(newPatient.getUuid());
                     formWebViewActivity.startPatientSummaryView(newPatient);
                 }
-
-                parseForm(jsonPayload, status);
+                if(formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP)) {
+                    formData.setDiscriminator(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS);
+                }else{
+                    parseForm(jsonPayload, status);
+                }
 
                 Date encounterDate = getEncounterDateFromForm(jsonPayload);
                 formData.setEncounterDate(encounterDate);
@@ -846,6 +849,10 @@ class HTMLFormDataStore {
             RelationshipJsonMapper mapper = new RelationshipJsonMapper((MuzimaApplication) formWebViewActivity.getApplicationContext());
             Person person = mapper.createNewPerson(jsonPayload, formData.getPatientUuid());
             personController.savePerson(person);
+            JSONObject jsonObject = new JSONObject(jsonPayload);
+            if (jsonObject.has("observation")) {
+                saveHTML(jsonPayload,"complete",false);
+            }
             formWebViewActivity.finish();
         } catch (Exception | PersonController.PersonSaveException e) {
             Toast.makeText(formWebViewActivity, R.string.info_person_creation_failure, Toast.LENGTH_LONG).show();
