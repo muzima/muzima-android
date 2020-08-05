@@ -12,6 +12,8 @@ package com.muzima.view.preferences;
 
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.util.Log;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.TimeoutPreferenceService;
