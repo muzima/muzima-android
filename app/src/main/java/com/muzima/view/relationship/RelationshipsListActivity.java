@@ -87,6 +87,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private Person selectedRelatedPerson;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
+    public static final String INDEX_PATIENT = "indexPatient";
 
     private boolean isSearching = false;
 
@@ -274,6 +275,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         pat.setNames(selectedRelatedPerson.getNames());
 
         intent.putExtra(PatientSummaryActivity.PATIENT, pat);
+        intent.putExtra(INDEX_PATIENT, patient);
         startActivity(intent);
     }
 

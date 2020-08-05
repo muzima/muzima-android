@@ -10,6 +10,7 @@
 
 package com.muzima.view.forms;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,10 +29,13 @@ import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.UUID;
 
+import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
+
 public class RegistrationFormsActivity extends BaseActivity {
     private RegistrationFormsAdapter registrationFormsAdapter;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private Patient patient;
+    private Patient indexPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class RegistrationFormsActivity extends BaseActivity {
         setContentView(R.layout.activity_registration_form_list);
 
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
+        indexPatient = (Patient) getIntent().getSerializableExtra(INDEX_PATIENT);
 
         FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
         AvailableForms availableForms = getRegistrationForms(formController);
@@ -79,7 +84,9 @@ public class RegistrationFormsActivity extends BaseActivity {
             patient = new Patient();
             patient.setUuid(String.valueOf(UUID.randomUUID()));
         }
-        startActivity(new FormViewIntent(this, form, patient, false));
+        Intent intent = new FormViewIntent(this, form, patient, false);
+        intent.putExtra(INDEX_PATIENT, indexPatient);
+        startActivity(intent);
         finish();
     }
 

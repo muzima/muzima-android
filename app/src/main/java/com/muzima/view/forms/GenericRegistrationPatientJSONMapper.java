@@ -57,7 +57,7 @@ public class GenericRegistrationPatientJSONMapper {
     private Patient patient;
     private MuzimaApplication muzimaApplication;
 
-    public String map(Patient patient, FormData formData, User loggedInUser, boolean isLoggedInUserIsDefaultProvider) {
+    public String map(Patient patient, FormData formData, User loggedInUser, boolean isLoggedInUserIsDefaultProvider, Patient indexPatient) {
         JSONObject prepopulateJSON = new JSONObject();
         JSONObject patientDetails = new JSONObject();
         JSONObject encounterDetails = new JSONObject();
@@ -70,6 +70,12 @@ public class GenericRegistrationPatientJSONMapper {
             patientDetails.put("patient.uuid", StringUtils.defaultString(patient.getUuid()));
             if (patient.getBirthdate() != null) {
                 patientDetails.put("patient.birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
+            }
+            if(indexPatient != null){
+                patientDetails.put("patient.index_given_name", StringUtils.defaultString(indexPatient.getGivenName()));
+                patientDetails.put("patient.index_middle_name", StringUtils.defaultString(indexPatient.getMiddleName()));
+                patientDetails.put("patient.index_family_name", StringUtils.defaultString(indexPatient.getFamilyName()));
+                patientDetails.put("patient.index_uuid", StringUtils.defaultString(indexPatient.getUuid()));
             }
             encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(formData.getTemplateUuid()));
             encounterDetails.put("encounter.user_system_id", StringUtils.defaultString(formData.getUserSystemId()));

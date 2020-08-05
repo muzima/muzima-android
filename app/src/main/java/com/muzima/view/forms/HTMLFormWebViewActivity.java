@@ -70,6 +70,7 @@ import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.controller.FormController.FormFetchException;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
+import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 import static java.text.MessageFormat.format;
 
 public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
@@ -119,6 +120,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private final ThemeUtils themeUtils = new ThemeUtils();
     private boolean isFormReload;
     private EncounterMiniFormCreatorComponent encounterMiniFormCreatorComponent;
+    private Patient indexPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -462,6 +464,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         BaseForm baseForm = (BaseForm) getIntent().getSerializableExtra(FORM);
         form = formController.getFormByUuid(baseForm.getFormUuid());
         patient = (Patient) getIntent().getSerializableExtra(PATIENT);
+        indexPatient = (Patient) getIntent().getSerializableExtra(INDEX_PATIENT);
         formTemplate = formController.getFormTemplateByUuid(baseForm.getFormUuid());
 
         if (baseForm.hasData()) {
@@ -486,7 +489,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         User user = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
 
         if (isGenericRegistrationForm() || isEncounterForm()) {
-            formData.setJsonPayload(new GenericRegistrationPatientJSONMapper().map(patient, formData, user, encounterProviderPreference));
+            formData.setJsonPayload(new GenericRegistrationPatientJSONMapper().map(patient, formData, user, encounterProviderPreference, indexPatient));
         } else {
             formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData, user, encounterProviderPreference));
         }
