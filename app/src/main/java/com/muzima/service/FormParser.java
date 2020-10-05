@@ -138,7 +138,7 @@ public class FormParser {
                 userSystemId = String.valueOf(parser.nextText());
             }
             if (isStartOf("encounter.encounter_datetime")) {
-                encounter = observationParserUtility.getEncounterEntity(parse(parser.nextText()), formUuid, providerId, locationId, userSystemId, patient, formDataUuid);
+                encounter = observationParserUtility.getEncounterEntity(parse(parser.nextText()), formUuid, providerId, locationId, userSystemId, formDataUuid, patient, false);
             }
             parser.next();
         }

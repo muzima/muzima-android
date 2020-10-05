@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -53,6 +54,7 @@ import com.muzima.utils.RelationshipJsonMapper;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.forms.PersonDemographicsUpdateFormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import es.dmoral.toasty.Toasty;
@@ -231,7 +233,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                             } else {
                                 selectedRelatedPerson = relationship.getPersonA();
                             }
-                            showAlertDialog();
+                            selectAction();
                         }
                     } catch (PatientController.PatientLoadException e) {
                         e.printStackTrace();
@@ -277,6 +279,43 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         intent.putExtra(PatientSummaryActivity.PATIENT, pat);
         intent.putExtra(INDEX_PATIENT, patient);
         startActivity(intent);
+    }
+
+    private void OpenUpdatePersonDemographicsForm() {
+        Intent intent = new Intent(this, PersonDemographicsUpdateFormsActivity.class);
+        intent.putExtra(PersonDemographicsUpdateFormsActivity.PERSON, selectedRelatedPerson);
+        intent.putExtra(INDEX_PATIENT, patient);
+        startActivity(intent);
+    }
+
+    private void selectAction(){
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(RelationshipsListActivity.this);
+        builderSingle.setIcon(R.drawable.ic_accept);
+        builderSingle.setTitle("What would you like to do?");
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(RelationshipsListActivity.this, android.R.layout.simple_selectable_list_item);
+        arrayAdapter.add("Convert person to patient");
+        arrayAdapter.add("Update person demographics");
+
+        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String strName = arrayAdapter.getItem(which);
+                if("Convert person to patient".equals(strName)){
+                    showAlertDialog();
+                } else {
+                    OpenUpdatePersonDemographicsForm();
+                }
+            }
+        });
+        builderSingle.show();
     }
 
     private void showAlertDialog() {
@@ -523,6 +562,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
 
     public void createPerson(View view) {
         Intent intent = new Intent(this, RelationshipFormsActivity.class);
+        intent.putExtra(INDEX_PATIENT, patient);
         startActivityForResult(intent, 1);
     }
 

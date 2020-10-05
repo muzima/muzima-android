@@ -64,7 +64,7 @@ public class IndividualObsJsonMapper {
     }
 
     private String createJsonPayloadFromPatientEncounter(Patient patient, FormData formData){
-        String payload = new HTMLPatientJSONMapper().map(patient, formData, currentUser, true);
+        String payload = new HTMLPatientJSONMapper().map(muzimaApplication, patient, formData, true);
         try {
             JSONObject jsonObject = new JSONObject(payload);
             JSONObject discriminatorObject = new JSONObject();

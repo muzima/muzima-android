@@ -16,11 +16,13 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Person;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 
+import com.muzima.controller.PersonController;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,23 +41,27 @@ import static com.muzima.utils.DateUtils.parse;
 public class HTMLFormObservationCreator {
 
     private final PatientController patientController;
+    private final PersonController personController;
     private final ConceptController conceptController;
     private final EncounterController encounterController;
     private final ObservationController observationController;
     private final ObservationParserUtility observationParserUtility;
 
-    private Patient patient;
+    private Person person;
     private Encounter encounter;
     private List<Observation> observations;
     private boolean createObservationsForConceptsNotAvailableLocally;
+    private boolean parseAsObsForPerson;
 
-    public HTMLFormObservationCreator(MuzimaApplication muzimaApplication, boolean createObservationsForConceptsNotAvailableLocally) {
+    public HTMLFormObservationCreator(MuzimaApplication muzimaApplication, boolean createObservationsForConceptsNotAvailableLocally, boolean parseAsObsForPerson) {
         this.patientController = muzimaApplication.getPatientController();
+        this.personController = muzimaApplication.getPersonController();
         this.conceptController = muzimaApplication.getConceptController();
         this.encounterController = muzimaApplication.getEncounterController();
         this.observationController = muzimaApplication.getObservationController();
         this.observationParserUtility = new ObservationParserUtility(muzimaApplication,createObservationsForConceptsNotAvailableLocally);
         this.createObservationsForConceptsNotAvailableLocally = createObservationsForConceptsNotAvailableLocally;
+        this.parseAsObsForPerson = parseAsObsForPerson;
     }
 
     public void createAndPersistObservations(String jsonResponse,String formDataUuid) {
@@ -91,17 +97,20 @@ public class HTMLFormObservationCreator {
     private void parseJSONResponse(String jsonResponse, String formDataUuid) {
         try {
             JSONObject responseJSON = new JSONObject(jsonResponse);
-            patient = getPatient(responseJSON.getJSONObject("patient"));
+            if(parseAsObsForPerson){
+                person = getPerson(responseJSON.getJSONObject("patient"));
+            } else {
+                person = getPatient(responseJSON.getJSONObject("patient"));
+            }
             encounter = createEncounter(responseJSON.getJSONObject("encounter"), formDataUuid);
-
 
             if (responseJSON.has("observation")) {
                 observations = extractObservationFromJSONObject(responseJSON.getJSONObject("observation"));
-
-            } else {
             }
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Error while fetching Patient", e);
+        } catch (PersonController.PersonLoadException e) {
+            Log.e(getClass().getSimpleName(), "Error while fetching Person", e);
         } catch (ConceptController.ConceptFetchException e) {
             Log.e(getClass().getSimpleName(), "Error while fetching Concept", e);
         }catch (JSONException | ParseException e) {
@@ -114,8 +123,8 @@ public class HTMLFormObservationCreator {
     private void saveObservationsAndRelatedEntities() throws EncounterController.SaveEncounterException,
             ObservationController.SaveObservationException, ConceptController.ConceptSaveException {
 
-
         try {
+
             encounterController.saveEncounters(Collections.singletonList(encounter));
 
             if(createObservationsForConceptsNotAvailableLocally) {
@@ -175,8 +184,8 @@ public class HTMLFormObservationCreator {
                     createObservationsForConceptsNotAvailableLocally);
             if(concept != null) {
                 Observation observation = observationParserUtility.getObservationEntity(concept, value);
+                observation.setPerson(person);
                 observation.setEncounter(encounter);
-                observation.setPerson(patient);
                 observation.setObservationDatetime(encounter.getEncounterDatetime());
                 return observation;
             }
@@ -193,18 +202,17 @@ public class HTMLFormObservationCreator {
         return observationParserUtility.getEncounterEntity(encounterDate,
                 encounterJSON.getString("encounter.form_uuid"), encounterJSON.getString("encounter.provider_id"),
                 Integer.parseInt(encounterJSON.getString("encounter.location_id")),
-                encounterJSON.getString("encounter.user_system_id"), patient,formDataUuid);
+                encounterJSON.getString("encounter.user_system_id"),formDataUuid, person, parseAsObsForPerson);
     }
 
     public Date getEncounterDateFromFormDate(String jsonResponse){
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
             JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
-            //return parse(jsonObjectInner.getString("encounter.encounter_datetime"));
             DateFormat dateTimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
             String dateTime = jsonObjectInner.getString("encounter.encounter_datetime");
             if(dateTime.length()<=10){
-                 dateTime = dateTime.concat(" 00:00");
+                 dateTime = dateTime.concat(" 00:10");
             }
             return  dateTimeFormat.parse(dateTime);
         } catch (JSONException | ParseException e) {
@@ -216,5 +224,10 @@ public class HTMLFormObservationCreator {
     private Patient getPatient(JSONObject patient) throws JSONException, PatientController.PatientLoadException {
         String uuid = patient.getString("patient.uuid");
         return patientController.getPatientByUuid(uuid);
+    }
+
+    private Person getPerson(JSONObject person) throws JSONException, PersonController.PersonLoadException {
+        String uuid = person.getString("patient.uuid");
+        return personController.getPersonByUuid(uuid);
     }
 }

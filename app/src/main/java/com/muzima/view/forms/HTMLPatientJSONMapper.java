@@ -42,7 +42,7 @@ public class HTMLPatientJSONMapper {
     private Patient patient;
     private MuzimaApplication muzimaApplication;
 
-    public String map(Patient patient, FormData formData, User loggedInUser, boolean isLoggedInUserIsDefaultProvider) {
+    public String map(MuzimaApplication muzimaApplication,Patient patient, FormData formData, boolean isLoggedInUserIsDefaultProvider) {
         JSONObject prepopulateJSON = new JSONObject();
         JSONObject patientDetails = new JSONObject();
         JSONObject encounterDetails = new JSONObject();
@@ -61,6 +61,7 @@ public class HTMLPatientJSONMapper {
             encounterDetails.put("encounter.user_system_id", StringUtils.defaultString(formData.getUserSystemId()));
 
             if (isLoggedInUserIsDefaultProvider) {
+                User loggedInUser = muzimaApplication.getAuthenticatedUser();
                 encounterDetails.put("encounter.provider_id_select", loggedInUser.getSystemId());
                 encounterDetails.put("encounter.provider_id", loggedInUser.getSystemId());
             }

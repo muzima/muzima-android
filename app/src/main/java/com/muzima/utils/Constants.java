@@ -47,6 +47,7 @@ public class Constants {
     public static final String FORM_DISCRIMINATOR_PROVIDER_REPORT = "provider-report";
     public static final String FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS = "json-individual-obs";
     public static final String FORM_JSON_DISCRIMINATOR_RELATIONSHIP = "json-relationship";
+    public static final String FORM_JSON_DISCRIMINATOR_PERSON_UPDATE = "json-person-demographics-update";
 
     private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
     private static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
@@ -60,7 +61,7 @@ public class Constants {
     public static final String MINIMUM_SERVER_SIDE_MODULE_VERSION = "1.6.0";
 
     public static final String STANDARD_DATE_FORMAT = "dd-MM-yyyy";
-    public static final String STANDARD_DATE_LOCALE_FORMAT = "dd-MM-yyyy hh:mm";
+    public static final String STANDARD_DATE_LOCALE_FORMAT = "dd-MM-yyyy HH:mm";
     public static final String STANDARD_DISPLAY_FORMAT = "MMM dd, yyyy HH:mm";
 
     public static class MuzimaGPSLocationConstants {

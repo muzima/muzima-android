@@ -23,6 +23,7 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PersonName;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.EncounterService;
@@ -52,8 +53,9 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.CustomColor;
 import com.muzima.utils.EnDeCrypt;
 import com.muzima.utils.MediaUtils;
+import com.muzima.utils.PersonRegistrationUtils;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.forms.GenericRegistrationPatientJSONMapper;
+import com.muzima.view.forms.GenericPatientRegistrationJSONMapper;
 import com.muzima.view.forms.HTMLPatientJSONMapper;
 import com.muzima.view.forms.PatientJSONMapper;
 import net.minidev.json.JSONArray;
@@ -74,7 +76,9 @@ import java.util.Map;
 import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION;
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_PERSON_UPDATE;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static com.muzima.utils.Constants.STATUS_UPLOADED;
@@ -439,6 +443,20 @@ public class FormController {
                 if (patientUuid != null) {
                     patient = patientService.getPatientByUuid(patientUuid);
                 }
+                if(patient == null){
+                    try {
+                        patient = new Patient();
+                        org.json.JSONObject payloadObject = new org.json.JSONObject(formData.getJsonPayload());
+                        org.json.JSONObject patientJSON = payloadObject.getJSONObject("patient");
+                        final PersonName personName = PersonRegistrationUtils.createPersonName(patientJSON);
+                        patient.setNames(new ArrayList<PersonName>() {{
+                            add(personName);
+                        }});
+                    } catch (JSONException e) {
+                        patient = null;
+                        Log.e(getClass().getSimpleName(),"Could not create temporary patient",e);
+                    }
+                }
                 incompleteForms.add(new IncompleteFormWithPatientDataBuilder()
                         .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
                         .withFormDataUuid(formData.getUuid())
@@ -578,12 +596,11 @@ public class FormController {
         try {
             Patient patient;
             if (isGenericRegistrationHTMLFormData(formData)) {
-                patient = new GenericRegistrationPatientJSONMapper().getPatient(muzimaApplication, formData.getJsonPayload());
+                patient = new GenericPatientRegistrationJSONMapper().getPatient(muzimaApplication, formData.getJsonPayload());
             } else if (isRegistrationHTMLFormData(formData)) {
                 patient = new HTMLPatientJSONMapper().getPatient(muzimaApplication, formData.getJsonPayload());
             } else if (isRegistrationXMLFormData(formData)) {
                 patient = new PatientJSONMapper(formData.getJsonPayload()).getPatient();
-                patientService.savePatient(patient);
             } else {
                 throw new Exception("Could not determine type of registration form. Patient not created.");
             }
@@ -611,7 +628,8 @@ public class FormController {
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
-            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER), result);
+            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_PERSON_UPDATE), result);
         } catch (IOException e) {
             throw new UploadFormDataException(e);
         }
@@ -620,7 +638,8 @@ public class FormController {
     public AvailableForms getRecommendedForms() throws FormFetchException {
         AvailableForms result = new AvailableForms();
         for (AvailableForm form : getAvailableFormByTagsSortedByConfigOrder(null, false)) {
-            if (form.isDownloaded() && !form.isRegistrationForm() && !form.isProviderReport() && !form.isRelationshipForm()) {
+            if (form.isDownloaded() && !form.isRegistrationForm() && !form.isProviderReport()
+                    && !form.isRelationshipForm() && !form.isPersonUpdateForm()) {
                 result.add(form);
             }
         }
@@ -921,6 +940,16 @@ public class FormController {
                 && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION);
     }
 
+    public boolean isPersonRegistrationHTMLFormData(FormData formData) {
+        return (formData.getDiscriminator() != null)
+                && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_RELATIONSHIP);
+    }
+
+    public boolean isPersonUpdateHTMLFormData(FormData formData) {
+        return (formData.getDiscriminator() != null)
+                && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_PERSON_UPDATE);
+    }
+
     private boolean isRegistrationHTMLFormData(FormData formData) {
         return (formData.getDiscriminator() != null)
                 && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_REGISTRATION);
@@ -1056,6 +1085,17 @@ public class FormController {
 
         for (AvailableForm form : getAvailableFormByTags(null)) {
             if (form.isDownloaded() && form.isRelationshipForm()) {
+                result.add(form);
+            }
+        }
+        return result;
+    }
+
+    public AvailableForms getDownloadedPersonUpdateForms() throws FormFetchException {
+        AvailableForms result = new AvailableForms();
+
+        for (AvailableForm form : getAvailableFormByTags(null)) {
+            if (form.isDownloaded() && form.isPersonUpdateForm()) {
                 result.add(form);
             }
         }

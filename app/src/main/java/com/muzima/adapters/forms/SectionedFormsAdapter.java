@@ -77,14 +77,16 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
                 holder = (HeaderViewHolder) convertView.getTag();
             }
 
-            if (!patients.isEmpty()) {
+            if (!patients.isEmpty() && getItem(position).getPatient() != null) {
                 Patient patient = patients.get(getSectionForPosition(position));
-                if (patient != null) {
+                if (patient != null && !StringUtils.isEmpty(patient.getDisplayName())) {
                     holder.patientName.setText(patient.getDisplayName());
                     holder.patientIdentifier.setText(patient.getIdentifier());
                 } else {
                     holder.patientName.setText(getContext().getString(R.string.default_form_register));
                 }
+            } else {
+                holder.patientName.setText(getContext().getString(R.string.default_form_register));
             }
         }
         return convertView;
