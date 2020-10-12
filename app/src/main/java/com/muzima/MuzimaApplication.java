@@ -17,7 +17,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import androidx.multidex.MultiDexApplication;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.model.User;
@@ -65,7 +65,6 @@ import java.security.Security;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.fabric.sdk.android.Fabric;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
@@ -130,7 +129,8 @@ public class MuzimaApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
-        Fabric.with(this, new Crashlytics());
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }
