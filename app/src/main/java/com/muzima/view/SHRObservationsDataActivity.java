@@ -7,9 +7,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.SearchView;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -91,7 +91,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     }
 
     /**
-     * Set up the {@link android.support.v7.app.ActionBar}.
+     * Set up the {@link androidx.appcompat.app.ActionBar}.
      */
     private void setupActionBar() {
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);

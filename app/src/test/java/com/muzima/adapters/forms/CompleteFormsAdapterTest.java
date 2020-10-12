@@ -11,7 +11,7 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.muzima.api.model.Patient;

@@ -34,7 +34,7 @@
 			android:title="@string/title_client_scan"/>
 	<item
 			android:id="@+id/search"
-			custom:actionViewClass="android.support.v7.widget.SearchView"
+			custom:actionViewClass="androidx.appcompat.widget.SearchView"
 			android:icon="?attr/icSearch"
 			android:visible="false"
 			custom:showAsAction="always"

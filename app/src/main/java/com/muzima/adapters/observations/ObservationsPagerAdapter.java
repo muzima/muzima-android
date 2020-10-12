@@ -11,8 +11,8 @@
 package com.muzima.adapters.observations;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.SearchView;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.widget.SearchView;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
