@@ -27,7 +27,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowLooper;
+//import org.robolectric.shadows.ShadowLooper;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -76,27 +76,27 @@ public class CompleteFormsAdapterTest {
         assertEquals(completeFormsWithPatientData, queryTask.get(100, TimeUnit.MILLISECONDS));
     }
 
-    @Test
-    public void shouldGroupPatients() throws FormController.FormFetchException {
-        BackgroundQueryTask queryTask = new BackgroundQueryTask(formsAdapter);
-        final Patient patient1 = patient("identifier1");
-        final Patient patient2 = patient("identifier2");
-        CompleteFormsWithPatientData completeFormsWithPatientData = new CompleteFormsWithPatientData() {{
-            add(completeFormWithPatientData(patient1));
-            add(completeFormWithPatientData(patient2));
-            add(completeFormWithPatientData(patient1));
-        }};
-
-        when(formController.getAllCompleteFormsWithPatientData(context)).thenReturn(completeFormsWithPatientData);
-        StickyListHeadersListView listView = new StickyListHeadersListView(RuntimeEnvironment.application);
-        listView.setAdapter(formsAdapter);
-        formsAdapter.setListView(listView);
-
-        queryTask.execute();
-        Robolectric.flushBackgroundThreadScheduler();
-        ShadowLooper.runUiThreadTasks();
-        assertThat(formsAdapter.getPatients(), is(asList(patient1, patient2)));
-    }
+//    @Test
+//    public void shouldGroupPatients() throws FormController.FormFetchException {
+//        BackgroundQueryTask queryTask = new BackgroundQueryTask(formsAdapter);
+//        final Patient patient1 = patient("identifier1");
+//        final Patient patient2 = patient("identifier2");
+//        CompleteFormsWithPatientData completeFormsWithPatientData = new CompleteFormsWithPatientData() {{
+//            add(completeFormWithPatientData(patient1));
+//            add(completeFormWithPatientData(patient2));
+//            add(completeFormWithPatientData(patient1));
+//        }};
+//
+//        when(formController.getAllCompleteFormsWithPatientData(context)).thenReturn(completeFormsWithPatientData);
+//        StickyListHeadersListView listView = new StickyListHeadersListView(RuntimeEnvironment.application);
+//        listView.setAdapter(formsAdapter);
+//        formsAdapter.setListView(listView);
+//
+//        queryTask.execute();
+//        Robolectric.flushBackgroundThreadScheduler();
+//        ShadowLooper.runUiThreadTasks();
+//        assertThat(formsAdapter.getPatients(), is(asList(patient1, patient2)));
+//    }
 
     private CompleteFormWithPatientData completeFormWithPatientData(final Patient patient1) {
         return new CompleteFormWithPatientData() {{
