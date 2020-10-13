@@ -35,11 +35,11 @@ import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaCoreModuleVersionController;
-import com.muzima.controller.PatientReportController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.PatientReportController;
 import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.RelationshipController;
@@ -432,7 +432,7 @@ public class MuzimaApplication extends MultiDexApplication {
         authenticatedUser = null;
     }
 
-    public String getAuthenticatedUserId(){
+    public String getAuthenticatedUserId(){ //might need to delete this block ; no caller
         User authenticatedUser = getAuthenticatedUser();
         if(authenticatedUser != null)
             return authenticatedUser.getUsername() != null ? authenticatedUser.getUsername():authenticatedUser.getSystemId();

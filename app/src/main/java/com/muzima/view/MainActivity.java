@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.User;
@@ -35,12 +36,16 @@ import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.utils.MuzimaPreferenceUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.notifications.NotificationsListActivity;
 import com.muzima.view.patients.PatientsListActivity;
+
 import org.apache.lucene.queryParser.ParseException;
+
+import java.util.Locale;
 
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
 
@@ -59,7 +64,7 @@ public class MainActivity extends BroadcastListenerActivity {
         credentials = new Credentials(this);
         mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard, null);
         setContentView(mMainView);
-        RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(),false);
+        RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), false);
         setupActionbar();
         logEvent("VIEW_DASHBOARD", null);
     }
@@ -102,9 +107,22 @@ public class MainActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onDestroy() {
-        if (!themeUtils.isLightModeChanged(this)) {
+        String localePref = MuzimaPreferenceUtils.getSelectedUserLocalePreference(MainActivity.this);
+        Boolean isUserPreferenceThemeLightMode = PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                .getBoolean(getResources().getString(R.string.preference_light_mode), false);
+        Boolean isPreviousThemeLightMode = MuzimaPreferenceUtils.getIsLightModeThemeSelectedPreference(MainActivity.this);
+
+        if (isUserPreferenceThemeLightMode.equals(isPreviousThemeLightMode) && Locale.getDefault().toString().equalsIgnoreCase(localePref)) {
+            Log.i(TAG, "onDestroy:  this is not a theme change or local change logout user,onDestroy");
             ((MuzimaApplication) getApplication()).logOut();
+        } else {
+            Log.i(TAG, "onDestroy: application logout is NOT necessary, updating variables");
+            boolean isLightThemeModeSelected = PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                    .getBoolean(getResources().getString(R.string.preference_light_mode), false);
+            MuzimaPreferenceUtils.setLightModeThemeSelectedPreference(MainActivity.this, isLightThemeModeSelected);
+            MuzimaPreferenceUtils.setSelectedUserLocalePreference(MainActivity.this, Locale.getDefault().toString());
         }
+
         super.onDestroy();
     }
 
@@ -218,7 +236,7 @@ public class MainActivity extends BroadcastListenerActivity {
                     homeActivityMetadata.syncedCohorts, homeActivityMetadata.totalCohorts));
 
             ImageView cortUpdateAvailable = (ImageView) mMainView.findViewById(R.id.pendingUpdateImg);
-            if(homeActivityMetadata.isCohortUpdateAvailable){
+            if (homeActivityMetadata.isCohortUpdateAvailable) {
                 cortUpdateAvailable.setVisibility(View.VISIBLE);
             } else {
                 cortUpdateAvailable.setVisibility(View.GONE);
