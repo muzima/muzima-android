@@ -15,6 +15,8 @@ import android.app.ActivityManager;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
 import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -63,6 +65,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Security;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
@@ -138,11 +141,22 @@ public class MuzimaApplication extends MultiDexApplication {
         muzimaTimer = getTimer(this);
 
         super.onCreate();
+        checkAndSetLocaleToDeviceLocaleIFDisclaimerNotAccepted();
         try {
             ContextFactory.setProperty(Constants.LUCENE_DIRECTORY_PATH, APP_DIR);
             muzimaContext = ContextFactory.createContext();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void checkAndSetLocaleToDeviceLocaleIFDisclaimerNotAccepted(){
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
+        boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
+        if (!disclaimerAccepted) {
+            String localeKey = getResources().getString(R.string.preference_app_language);
+            settings.edit().putString(localeKey, Locale.getDefault().getLanguage()).commit();
         }
     }
 

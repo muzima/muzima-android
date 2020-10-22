@@ -106,7 +106,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         String lightModePreferenceKey = getResources().getString(R.string.preference_light_mode);
-        if (key.equals(lightModePreferenceKey)) {
+        String localePreferenceKey = getResources().getString(R.string.preference_app_language);
+        if (key.equals(lightModePreferenceKey) || key.equals(localePreferenceKey)) {
             onResume();
         }
     }
