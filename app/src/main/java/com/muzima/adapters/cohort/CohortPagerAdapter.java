@@ -10,13 +10,18 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
+import android.content.res.Configuration;
+
 import androidx.fragment.app.FragmentManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.CohortController;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.view.cohort.AllCohortsListFragment;
 import com.muzima.view.cohort.SyncedCohortsListFragment;
+
+import java.util.Locale;
 
 /**
  * Responsible to hold all the cohort fragments as multiple pages/tabs.
@@ -39,8 +44,10 @@ public class CohortPagerAdapter extends MuzimaPagerAdapter {
 
         allCohortsListFragment.setCohortDataDownloadListener(syncedCohortsListFragment);
 
-        pagers[TAB_SYNCED] = new PagerView(context.getString(R.string.general_synced), syncedCohortsListFragment);
-        pagers[TAB_All] = new PagerView(context.getString(R.string.general_all), allCohortsListFragment);
+        LanguageUtil languageUtil = new LanguageUtil();
+        Context localizedContext = languageUtil.getLocalizedContext(context);
+        pagers[TAB_SYNCED] = new PagerView(localizedContext.getResources().getString(R.string.general_synced), syncedCohortsListFragment);
+        pagers[TAB_All] = new PagerView(localizedContext.getResources().getString(R.string.general_all), allCohortsListFragment);
     }
 
     public void onCohortDownloadStart() {

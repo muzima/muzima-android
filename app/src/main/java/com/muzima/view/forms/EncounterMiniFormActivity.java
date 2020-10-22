@@ -11,6 +11,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.AvailableForm;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 
 public class EncounterMiniFormActivity extends AppCompatActivity {
@@ -18,6 +19,7 @@ public class EncounterMiniFormActivity extends AppCompatActivity {
     public static final String PATIENT_UUID = "patientUuid";
 
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private final LanguageUtil languageUtil = new LanguageUtil();
     private Patient patient;
     private AvailableForm form;
     private FormController formController;
@@ -27,6 +29,7 @@ public class EncounterMiniFormActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_relationship_form_list);
 

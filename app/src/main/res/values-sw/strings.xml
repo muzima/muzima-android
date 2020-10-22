@@ -687,4 +687,11 @@
     <string name="write_SHR_to_card_text">Andika SHR kwenye kadi</string>
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
     <string name="youTube_player_error">Hitilafu ilitokea wakati wa kupakia video ya YouTube</string>
+    <string name="language_english">Kiingereza</string>
+    <string name="language_french">Kifaransa</string>
+    <string name="language_portuguese">Kireno</string>
+    <string name="language_swahili">Kiswahili</string>
+    <string name="language_hindi">Kihindi</string>
+    <string name="language_gujarati">Kigujarati</string>
+    <string name="title_app_language">Lugha</string>
 </resources>

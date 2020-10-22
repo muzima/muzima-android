@@ -16,6 +16,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.NotificationController;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.view.notifications.GeneralNotificationsListFragment;
 import com.muzima.view.notifications.PatientsNotificationsListFragment;
 
@@ -40,8 +41,11 @@ public class NotificationsPagerAdapter extends MuzimaPagerAdapter {
         PatientsNotificationsListFragment patientsNotificationsListFragment = PatientsNotificationsListFragment.newInstance(notificationController);
         GeneralNotificationsListFragment generalNotificationsListFragment = GeneralNotificationsListFragment.newInstance(muzimaApplication);
 
-        pagers[TAB_GENERAL] = new PagerView(context.getString(R.string.title_general_notifications), generalNotificationsListFragment);
-        pagers[TAB_PATIENT] = new PagerView(context.getString(R.string.title_client_notifications), patientsNotificationsListFragment);
+        LanguageUtil languageUtil = new LanguageUtil();
+        Context localizedContext = languageUtil.getLocalizedContext(context);
+
+        pagers[TAB_GENERAL] = new PagerView(localizedContext.getResources().getString(R.string.title_general_notifications), generalNotificationsListFragment);
+        pagers[TAB_PATIENT] = new PagerView(localizedContext.getResources().getString(R.string.title_client_notifications), patientsNotificationsListFragment);
 
 
     }

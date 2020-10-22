@@ -36,6 +36,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.MuzimaPreferenceUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.cohort.CohortActivity;
@@ -56,10 +57,12 @@ public class MainActivity extends BroadcastListenerActivity {
     private Credentials credentials;
 
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         credentials = new Credentials(this);
         mMainView = getLayoutInflater().inflate(R.layout.activity_dashboard, null);
@@ -73,6 +76,7 @@ public class MainActivity extends BroadcastListenerActivity {
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
+        languageUtil.onResume(this);
         showIncompleteWizardWarning();
         executeBackgroundTask();
     }

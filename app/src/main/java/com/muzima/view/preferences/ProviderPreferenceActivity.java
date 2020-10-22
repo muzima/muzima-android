@@ -23,6 +23,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.view.ActionMode;
 import android.view.Menu;
+
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
@@ -45,12 +47,15 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
     private boolean actionModeActive = false;
     private ActionMode actionMode;
     private ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
+        setTitle(R.string.general_providers);
 
         selectedProviderListView = findViewById(R.id.provider_preference_list);
         final MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();

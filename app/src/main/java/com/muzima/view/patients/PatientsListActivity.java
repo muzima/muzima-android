@@ -57,6 +57,7 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
@@ -136,14 +137,18 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private DrawerLayout mainLayout;
     private PatientTagsListAdapter tagsListAdapter;
     private TagPreferenceService tagPreferenceService;
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_patient_list, null);
         setContentView(mainLayout);
         Bundle intentExtras = getIntent().getExtras();
+
+        setTitle(R.string.general_clients);
 
         muzimaApplication = (MuzimaApplication) getApplicationContext();
 
@@ -407,6 +412,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
+        languageUtil.onResume(this);
         if (isSHRSettingEnabled()) {
             invalidateOptionsMenu();
             preparedServerSearchNegativeResultHandlerDialog();

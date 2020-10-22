@@ -25,6 +25,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.controller.SmartCardController;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
@@ -46,10 +47,12 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     private Patient patient;
     private AlertDialog writeSHRDataOptionDialog;
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shr__observations__data_);
 
@@ -65,6 +68,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
+        languageUtil.onResume(this);
         if (!isSHREnabled()){
             onBackPressed();
         }

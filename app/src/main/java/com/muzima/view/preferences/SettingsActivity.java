@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.service.MuzimaLoggerService;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.MuzimaPreferenceUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
@@ -32,6 +33,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     private AppCompatDelegate delegate;
     private final ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     public void onUserInteraction() {
@@ -42,9 +44,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
+        setTitle(R.string.general_settings);
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsPreferenceFragment()).commit();
         setupActionBar();
@@ -55,6 +59,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
+        languageUtil.onResume(this);
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
     }
 

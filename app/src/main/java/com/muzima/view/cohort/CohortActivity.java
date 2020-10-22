@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPagerAdapter;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
@@ -34,12 +35,15 @@ public class CohortActivity extends BroadcastListenerActivity {
     private MenuItem menubarLoadButton;
     private boolean syncInProgress;
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
+        setTitle(R.string.general_cohorts);
         initPager();
         initPagerIndicator();
         logEvent("VIEW_SYNCED_COHORTS");

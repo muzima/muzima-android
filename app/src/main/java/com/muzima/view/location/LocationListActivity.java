@@ -37,6 +37,8 @@ public class LocationListActivity extends LocationPreferenceActivity {
         super.onCreate(savedInstanceState);
         Credentials credentials = new Credentials(this);
 
+        setTitle(R.string.general_locations);
+
         Button nextButton = findViewById(R.id.next);
         muzimaProgressDialog = new MuzimaProgressDialog(this);
         nextButton.setOnClickListener(new View.OnClickListener() {

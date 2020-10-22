@@ -21,6 +21,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.view.observations.ObservationByEncountersFragment;
 import com.muzima.view.observations.ObservationsByConceptFragment;
 import com.muzima.view.observations.ObservationsListFragment;
@@ -51,8 +52,11 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
                 ObservationsByConceptFragment.newInstance(conceptController, observationController,isShrData,patient);
         observationByEncountersFragment = ObservationByEncountersFragment.newInstance(encounterController, observationController,isShrData, patient);
 
-        pagers[TAB_BY_DATE] = new PagerView(context.getString(R.string.title_observations_by_concepts), observationByConceptListFragment);
-        pagers[TAB_BY_ENCOUNTERS] = new PagerView(context.getString(R.string.title_observations_by_encounters), observationByEncountersFragment);
+        LanguageUtil languageUtil = new LanguageUtil();
+        Context localizedContext = languageUtil.getLocalizedContext(context);
+
+        pagers[TAB_BY_DATE] = new PagerView(localizedContext.getResources().getString(R.string.title_observations_by_concepts), observationByConceptListFragment);
+        pagers[TAB_BY_ENCOUNTERS] = new PagerView(localizedContext.getResources().getString(R.string.title_observations_by_encounters), observationByEncountersFragment);
     }
 
     @Override

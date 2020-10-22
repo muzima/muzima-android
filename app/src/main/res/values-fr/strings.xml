@@ -692,4 +692,11 @@
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
+    <string name="language_english">Anglais</string>
+    <string name="language_french">Française</string>
+    <string name="language_portuguese">Portugais</string>
+    <string name="language_swahili">Swahili</string>
+    <string name="language_hindi">Hindi</string>
+    <string name="language_gujarati">Gujarati</string>
+    <string name="title_app_language">Langue</string>
 </resources>

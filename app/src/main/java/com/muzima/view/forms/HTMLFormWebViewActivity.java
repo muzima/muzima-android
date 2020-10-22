@@ -45,6 +45,7 @@ import com.muzima.model.FormWithData;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.GeolocationJsonMapper;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
@@ -121,10 +122,12 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private boolean isFormReload;
     private EncounterMiniFormCreatorComponent encounterMiniFormCreatorComponent;
     private Patient indexPatient;
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
 
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
@@ -151,6 +154,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             }
         }
 
+        setTitle(R.string.general_form);
         progressDialog = new MuzimaProgressDialog(this);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         autoSaveIntervalPreference = preferences.getString("autoSaveIntervalPreference", DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS);
@@ -278,6 +282,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         }
         super.onResume();
         themeUtils.onResume(this);
+        languageUtil.onResume(this);
     }
 
     @Override

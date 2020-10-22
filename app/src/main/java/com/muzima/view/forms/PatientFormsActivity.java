@@ -21,16 +21,19 @@ import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.adapters.forms.PatientFormsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Constants;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 public class PatientFormsActivity extends FormsActivityBase {
     private Patient patient;
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
         Intent intent = getIntent();
@@ -46,6 +49,7 @@ public class PatientFormsActivity extends FormsActivityBase {
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
+        languageUtil.onResume(this);
     }
 
 

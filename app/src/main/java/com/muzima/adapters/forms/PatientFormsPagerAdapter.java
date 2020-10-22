@@ -16,6 +16,7 @@ import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.view.forms.CompletePatientsFormsListFragment;
 import com.muzima.view.forms.IncompletePatientsFormsListFragment;
 import com.muzima.view.forms.RecommendedFormsListFragment;
@@ -44,9 +45,12 @@ public class PatientFormsPagerAdapter extends MuzimaPagerAdapter {
         RecommendedFormsListFragment recommendedFormsListFragment = RecommendedFormsListFragment.newInstance(formController, patient);
         CompletePatientsFormsListFragment completeFormsListFragment = CompletePatientsFormsListFragment.newInstance(formController, patient);
 
-        pagers[TAB_INCOMPLETE] = new PagerView(context.getString(R.string.title_form_data_incomplete), incompleteFormsListFragment);
-        pagers[TAB_RECOMMENDED] = new PagerView(context.getString(R.string.info_form_template_recommended), recommendedFormsListFragment);
-        pagers[TAB_COMPLETE] = new PagerView(context.getString(R.string.title_form_data_complete), completeFormsListFragment);
+        LanguageUtil languageUtil = new LanguageUtil();
+        Context localizedContext = languageUtil.getLocalizedContext(context);
+
+        pagers[TAB_INCOMPLETE] = new PagerView(localizedContext.getResources().getString(R.string.title_form_data_incomplete), incompleteFormsListFragment);
+        pagers[TAB_RECOMMENDED] = new PagerView(localizedContext.getResources().getString(R.string.info_form_template_recommended), recommendedFormsListFragment);
+        pagers[TAB_COMPLETE] = new PagerView(localizedContext.getResources().getString(R.string.title_form_data_complete), completeFormsListFragment);
     }
 
     public void onFormUploadFinish() {

@@ -26,6 +26,7 @@ import com.muzima.controller.CohortController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.Constants;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
@@ -43,9 +44,11 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
     private boolean isProcessDialogOn = false;
     private PowerManager.WakeLock wakeLock = null ;
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     public void onCreate(Bundle savedInstanceState) {
         super.setThemeUtils(themeUtils);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         credentials = new Credentials(this);
 
