@@ -72,8 +72,9 @@ public class GenericPatientRegistrationJSONMapper{
             patientDetails.put("patient.uuid", StringUtils.defaultString(patient.getUuid()));
             if (patient.getBirthdate() != null) {
                 patientDetails.put("patient.birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
-                patientDetails.put("patient.birthdate_estimated", patient.getBirthdateEstimated());
+                patientDetails.put("patient.birthdate_estimated", Boolean.toString(patient.getBirthdateEstimated()));
             }
+
             encounterDetails.put("encounter.form_uuid", StringUtils.defaultString(formData.getTemplateUuid()));
             encounterDetails.put("encounter.user_system_id", StringUtils.defaultString(formData.getUserSystemId()));
 
@@ -95,7 +96,7 @@ public class GenericPatientRegistrationJSONMapper{
                             preferredIdentifierJSONObject.put("identifier_value", identifier.getIdentifier());
                             preferredIdentifierJSONObject.put("identifier_type_uuid", identifier.getIdentifierType().getUuid());
                             preferredIdentifierJSONObject.put("identifier_type_name", identifier.getIdentifierType().getName());
-                            patientDetails.put("patient.medical_record_number", StringUtils.defaultString(patient.getIdentifier()));
+                            patientDetails.put("patient.medical_record_number", preferredIdentifierJSONObject);
                         } else if (!identifier.getIdentifier().equals(patient.getUuid())) {
                             JSONObject identifierJSONObject = new JSONObject();
                             identifierJSONObject.put("identifier_value", identifier.getIdentifier());
@@ -178,7 +179,7 @@ public class GenericPatientRegistrationJSONMapper{
                 indexPatientDetails.put("index_patient.medical_record_number", StringUtils.defaultString(indexPatient.getIdentifier()));
                 if(indexPatient.getBirthdate() != null) {
                     indexPatientDetails.put("index_patient.birth_date", DateUtils.getFormattedDate(indexPatient.getBirthdate()));
-                    indexPatientDetails.put("index_patient.birthdate_estimated", indexPatient.getBirthdateEstimated());
+                    indexPatientDetails.put("index_patient.birthdate_estimated", Boolean.toString(indexPatient.getBirthdateEstimated()));
                 }
             }
 
@@ -219,6 +220,10 @@ public class GenericPatientRegistrationJSONMapper{
             RelationshipType relationshipType = muzimaApplication.getRelationshipController().getRelationshipTypeByUuid(relationshipTypeUuid);
             String personBUuid = (String)getFromJsonObject(jsonObject,"personB.uuid");
             String personAUuid = (String)getFromJsonObject(jsonObject,"personA.uuid");
+
+            if(StringUtils.isEmpty(personAUuid) || StringUtils.isEmpty(personBUuid)){
+                return;
+            }
 
             Person personA;
             if(StringUtils.equals(personAUuid,patient.getUuid())){
@@ -380,19 +385,20 @@ public class GenericPatientRegistrationJSONMapper{
     }
 
     private PatientIdentifier getMedicalRecordNumberIdentifier() throws JSONException {
-        PatientIdentifier preferredPatientIdentifier = null;
         if(patientJSON.has("patient.medical_record_number")) {
-            JSONObject identifierObject = patientJSON.getJSONObject("patient.medical_record_number");
+            Object identifierObject = patientJSON.getJSONObject("patient.medical_record_number");
             try {
-                preferredPatientIdentifier = createPatientIdentifier(identifierObject);
+                if(identifierObject instanceof String && !StringUtils.isEmpty((String)identifierObject)){
+                    return createPatientIdentifier(Constants.LOCAL_PATIENT, null, (String)identifierObject);
+                } else if(identifierObject instanceof JSONObject){
+                    return createPatientIdentifier((JSONObject) identifierObject);
+                }
             } catch (InvalidPatientIdentifierException e){
+
                 throw new RuntimeException("Invalid patient medical record number", e);
             }
-        } else {
-            throw new RuntimeException("Cannot find patient medical record number");
         }
-
-        return preferredPatientIdentifier;
+        throw new RuntimeException("Cannot find patient medical record number");
     }
 
     private List<PatientIdentifier> getOtherPatientIdentifiers() throws JSONException {

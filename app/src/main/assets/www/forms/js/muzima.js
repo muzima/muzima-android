@@ -1394,10 +1394,12 @@ $(document).ready(function () {
     }
 
     //Start - Set up auto complete for the person element.
-    document.setupAutoCompleteForPerson = function($searchElementSelector, $resultElementSelector, $noResultsElement, searchServer) {
+    document.setupAutoCompleteForPerson = function($searchElementSelector, $resultElementSelector, $noResultsElement, $searchLoadingWidget,searchServer) {
+        $searchLoadingWidget.hide();
         $searchElementSelector.focus(function () {
             $searchElementSelector.autocomplete({
                 source: function (request, response) {
+                    $searchLoadingWidget.show();
                     var searchTerm = request.term;
                     var searchResults = htmlDataStore.searchPersons(searchTerm, searchServer);
                     searchResults = JSON.parse(searchResults);
@@ -1410,6 +1412,7 @@ $(document).ready(function () {
                         $noResultsElement.trigger('change');
                     }
 
+                    $searchLoadingWidget.hide();
                     response(listOfPersons);
 
                 },
@@ -1423,6 +1426,7 @@ $(document).ready(function () {
         });
 
         $searchElementSelector.blur(function () {
+            $searchLoadingWidget.hide();
             $searchElementSelector.autocomplete("destroy");
         });
     }

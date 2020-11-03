@@ -687,4 +687,7 @@
     <string name="write_SHR_to_card_text">Andika SHR kwenye kadi</string>
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
     <string name="youTube_player_error">Hitilafu ilitokea wakati wa kupakia video ya YouTube</string>
+    <string name="info_convert_person_to_patient">Convert person to patient</string>
+    <string name="info_update_person_demographics">Update person demographics</string>
+    <string name="hint_person_action_prompt">What would you like to do?</string>
 </resources>

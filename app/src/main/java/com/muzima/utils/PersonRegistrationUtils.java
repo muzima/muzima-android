@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import static com.muzima.utils.DateUtils.parse;
 
@@ -141,6 +142,12 @@ public class PersonRegistrationUtils {
                 Log.e(PersonRegistrationUtils.class.getSimpleName(), "Could not parse personaddress.endDate", e);
             }
         }
+
+        personAddress.setUuid((String)getFromJsonObject(addressObject,"uuid"));
+        if(personAddress.getUuid() == null){
+            personAddress.setUuid(UUID.randomUUID().toString());
+        }
+
         if(personAddress.isBlank()) {
             throw new InvalidPersonAddressException("No person address information available.");
         }

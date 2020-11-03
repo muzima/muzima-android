@@ -22,13 +22,15 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Concept;
-import com.muzima.api.model.Observation;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.Person;
+import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
@@ -260,6 +262,32 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
+    public String getRelationshipForPersons(String person1Uuid, String person2Uuid){
+        JSONArray relationshipsJsonArray = new JSONArray();
+        RelationshipController relationshipController = ((MuzimaApplication)formWebViewActivity.getApplicationContext()).getRelationshipController();
+        try {
+            List<Relationship> relationships = relationshipController.getRelationshipsForPerson(person1Uuid);
+
+            for (Relationship relationship:relationships) {
+                if(StringUtils.equals(relationship.getPersonA().getUuid(), person2Uuid) ||
+                        StringUtils.equals(relationship.getPersonB().getUuid(), person2Uuid)) {
+                    JSONObject relationshipJsonObject = new JSONObject();
+                    relationshipJsonObject.put("personA", relationship.getPersonA().getUuid());
+                    relationshipJsonObject.put("personB", relationship.getPersonB().getUuid());
+                    relationshipJsonObject.put("relationshipType", relationship.getRelationshipType().getUuid());
+
+                    relationshipsJsonArray.put(relationshipJsonObject);
+                }
+            }
+        } catch (RelationshipController.RetrieveRelationshipException e) {
+            Log.e(getClass().getSimpleName(), "Could not retrieve relationships",e);
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Could not build relationships JSON",e);
+        }
+        return relationshipsJsonArray.toString();
+    }
+
+    @JavascriptInterface
     public String getRelationshipTypesFromDevice(){
         JSONArray relationshipsJsonArray = new JSONArray();
         try {
@@ -283,6 +311,47 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
+    public String getPersonAttribute(String patientUuid, String attributeTypeNameOrUuid) {
+        JSONObject attributeJSONObject = new JSONObject();
+        try {
+            Person person = personController.getPersonByUuid(patientUuid);
+            if (person == null)
+                person = patientController.getPatientByUuid(patientUuid);
+
+            if(person != null) {
+                PersonAttribute attribute = person.getAttribute(attributeTypeNameOrUuid);
+                if (attribute != null) {
+                    attributeJSONObject.put("attribute_type_uuid", attribute.getAttributeType().getUuid());
+                    attributeJSONObject.put("attribute_type_name", attribute.getAttributeType().getName());
+                    attributeJSONObject.put("attribute_value", attribute.getAttribute());
+                }
+            }
+        } catch (PersonController.PersonLoadException | PatientController.PatientLoadException | JSONException e) {
+            Log.e(getClass().getSimpleName(), "Could not retrieve patient record",e);
+        }
+        return attributeJSONObject.toString();
+    }
+
+    @JavascriptInterface
+    public String getPatientIdentifier(String patientUuid, String identifierType) {
+        JSONObject identifierJSONObject = new JSONObject();
+        try {
+            Patient patient = patientController.getPatientByUuid(patientUuid);
+            if(patient != null) {
+                PatientIdentifier identifier = patient.getIdentifier(identifierType);
+                if (identifier != null) {
+                    identifierJSONObject.put("identifier_type_uuid", identifier.getIdentifierType().getUuid());
+                    identifierJSONObject.put("identifier_type_name", identifier.getIdentifierType().getName());
+                    identifierJSONObject.put("identifier_value", identifier.getIdentifier());
+                }
+            }
+        } catch ( PatientController.PatientLoadException | JSONException e) {
+            Log.e(getClass().getSimpleName(), "Could not retrieve patient record",e);
+        }
+        return identifierJSONObject.toString();
+    }
+
+    @JavascriptInterface
     public String getPatientDetailsFromServerByUuid(String uuid){
         JSONObject patientJsonObject = new JSONObject();
         try {
@@ -292,6 +361,7 @@ class HTMLFormDataStore {
                 patientJsonObject.put("uuid", patient.getUuid());
                 patientJsonObject.put("name", patient.getDisplayName());
                 patientJsonObject.put("birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
+                patientJsonObject.put("birthdate_estimated", Boolean.toString(patient.getBirthdateEstimated()));
                 patientJsonObject.put("sex", patient.getGender());
                 patientJsonObject.put("attributes", patient.getAtributes());
                 patientJsonObject.put("addresses", patient.getAddresses());
@@ -562,8 +632,7 @@ class HTMLFormDataStore {
         int i = 0;
         JSONArray arr = new JSONArray();
         HashMap<String, JSONObject> map = new HashMap<>();
-        List<Concept> concepts = new ArrayList<>();
-        concepts = conceptController.getConcepts();
+        List<Concept> concepts = conceptController.getConcepts();
         for (Observation obs : observations) {
             String conceptName = "";
             String conceptUuid = obs.getConcept().getUuid();

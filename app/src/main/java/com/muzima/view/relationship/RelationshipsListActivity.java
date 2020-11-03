@@ -291,11 +291,11 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private void selectAction(){
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(RelationshipsListActivity.this);
         builderSingle.setIcon(R.drawable.ic_accept);
-        builderSingle.setTitle("What would you like to do?");
+        builderSingle.setTitle(R.string.hint_person_action_prompt);
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(RelationshipsListActivity.this, android.R.layout.simple_selectable_list_item);
-        arrayAdapter.add("Convert person to patient");
-        arrayAdapter.add("Update person demographics");
+        arrayAdapter.add(getString(R.string.info_convert_person_to_patient));
+        arrayAdapter.add(getString(R.string.info_update_person_demographics));
 
         builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -308,7 +308,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String strName = arrayAdapter.getItem(which);
-                if("Convert person to patient".equals(strName)){
+                if(getString(R.string.info_convert_person_to_patient).equals(strName)){
                     showAlertDialog();
                 } else {
                     OpenUpdatePersonDemographicsForm();
