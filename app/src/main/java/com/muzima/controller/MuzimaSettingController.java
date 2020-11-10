@@ -27,6 +27,7 @@ import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTI
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.RELATIONSHIP_FEATURE_ENABLED;
 import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.DEMOGRAPHICS_UPDATE_MANUAL_REVIEW_REQUIRED_SETTING;
 
 public class MuzimaSettingController {
     private final MuzimaSettingService settingService;
@@ -292,6 +293,19 @@ public class MuzimaSettingController {
                 return muzimaSetting.getValueBoolean();
             else
                 Log.e(getClass().getSimpleName(), "muzima Relationship Feature setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "muzima Relationship Feature setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isDemographicsUpdateManulReviewNeeded() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(DEMOGRAPHICS_UPDATE_MANUAL_REVIEW_REQUIRED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "muzima demographicsUpdateManualReviewRequired setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "muzima Relationship Feature setting is missing on this server");
         }

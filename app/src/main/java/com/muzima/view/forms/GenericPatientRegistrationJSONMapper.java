@@ -21,6 +21,7 @@ import com.muzima.api.model.PatientIdentifierType;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PersonAttribute;
+import com.muzima.api.model.PersonAttributeType;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
@@ -41,10 +42,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
+import static com.muzima.utils.PersonRegistrationUtils.copyPersonAddress;
 import static com.muzima.utils.PersonRegistrationUtils.createBirthDate;
 import static com.muzima.utils.PersonRegistrationUtils.createBirthDateEstimated;
+import static com.muzima.utils.PersonRegistrationUtils.createDemographicsUpdateBirthDate;
+import static com.muzima.utils.PersonRegistrationUtils.createDemographicsUpdateBirthDateEstimated;
+import static com.muzima.utils.PersonRegistrationUtils.createDemographicsUpdatePersonAddresses;
+import static com.muzima.utils.PersonRegistrationUtils.createDemographicsUpdatePersonAttributes;
+import static com.muzima.utils.PersonRegistrationUtils.createDemographicsUpdatePersonName;
 import static com.muzima.utils.PersonRegistrationUtils.createPersonAddresses;
 import static com.muzima.utils.PersonRegistrationUtils.createPersonAttributes;
 import static com.muzima.utils.PersonRegistrationUtils.createPersonName;
@@ -54,6 +62,7 @@ public class GenericPatientRegistrationJSONMapper{
     private JSONObject patientJSON;
     private JSONObject personJSON;
     private JSONObject encounterJSON;
+    private JSONObject demographicsUpdateJSON;
     private Patient patient;
     private MuzimaApplication muzimaApplication;
 
@@ -201,101 +210,28 @@ public class GenericPatientRegistrationJSONMapper{
         return patient;
     }
 
-    public void createRelationshipIfDefinedInPayload(MuzimaApplication muzimaApplication, String jsonPayload) throws JSONException {
+    public Patient processDemographicsUpdateForPatient(MuzimaApplication muzimaApplication, String jsonPayload, Patient patient) throws JSONException {
         setJSONObjects(jsonPayload);
+        setMuzimaApplication(muzimaApplication);
+        setDemographicsUpdatePatient(patient);
+        updatePatient();
         if(isRelationshipStuDefined()) {
-            setMuzimaApplication(muzimaApplication);
-            createPatient();
             createRelationships();
         }
+        return patient;
+    }
+
+    public Person processDemographicsUpdateForPerson(MuzimaApplication muzimaApplication, String jsonPayload, Person person) throws JSONException {
+        setJSONObjects(jsonPayload);
+        setMuzimaApplication(muzimaApplication);
+        setDemographicsUpdatePersonAsPatient(person);
+        updatePersonAsPatient();
+        copyDemographicsUpdateFromPatient(person);
+        return person;
     }
 
     private void setMuzimaApplication(MuzimaApplication muzimaApplication){
         this.muzimaApplication = muzimaApplication;
-    }
-
-    private void createRelationship(JSONObject jsonObject) throws JSONException{
-        try {
-            String relationshipTypeUuid = (String)getFromJsonObject(jsonObject,"person.relationshipType");
-            RelationshipType relationshipType = muzimaApplication.getRelationshipController().getRelationshipTypeByUuid(relationshipTypeUuid);
-            String personBUuid = (String)getFromJsonObject(jsonObject,"personB.uuid");
-            String personAUuid = (String)getFromJsonObject(jsonObject,"personA.uuid");
-
-            if(StringUtils.isEmpty(personAUuid) || StringUtils.isEmpty(personBUuid)){
-                return;
-            }
-
-            Person personA;
-            if(StringUtils.equals(personAUuid,patient.getUuid())){
-                personA = patient;
-            } else {
-                personA = muzimaApplication.getPersonController().getPersonByUuid(personAUuid);
-                if (personA == null) {
-                    personA = muzimaApplication.getPatientController().getPatientByUuid(personAUuid);
-                }
-            }
-
-            Person personB;
-            if(StringUtils.equals(personBUuid,patient.getUuid())){
-                personB = patient;
-            } else {
-                personB = muzimaApplication.getPersonController().getPersonByUuid(personBUuid);
-                if (personB == null) {
-                    personB = muzimaApplication.getPatientController().getPatientByUuid(personBUuid);
-                }
-            }
-
-            if (relationshipType != null && personA != null && personB != null && personA != personB) {
-                List<Relationship> existingRelationships = muzimaApplication.getRelationshipController().getRelationshipsForPerson(personA.getUuid());
-                Relationship existingRelationship = null;
-                for (Relationship relationship:existingRelationships){
-                    if((StringUtils.equals(relationship.getPersonA().getUuid(),personA.getUuid()) ||
-                            StringUtils.equals(relationship.getPersonA().getUuid(),personB.getUuid()))
-                        && (StringUtils.equals(relationship.getPersonB().getUuid(),personA.getUuid()) ||
-                            StringUtils.equals(relationship.getPersonB().getUuid(),personB.getUuid()))){
-                        existingRelationship = relationship;
-                        break;
-                    }
-                }
-
-                if(existingRelationship == null) {
-                    Relationship newRelationship = new Relationship(personA, personB, relationshipType, false);
-                    newRelationship.setUuid(UUID.randomUUID().toString());
-
-                    RelationshipJsonMapper relationshipJsonMapper = new RelationshipJsonMapper(muzimaApplication);
-                    muzimaApplication.getFormController().saveFormData(relationshipJsonMapper.createFormDataFromRelationship(patient, newRelationship));
-
-                    muzimaApplication.getRelationshipController().saveRelationship(newRelationship);
-                } else if(!StringUtils.equals(existingRelationship.getRelationshipType().getUuid(),relationshipType.getUuid())) {
-                    //ToDo: Consider updating relationship type for existing relationship
-                    Log.d(getClass().getSimpleName(), "Could not create relationship");
-                }
-            } else {
-                throw new JSONException("Could not create relationship");
-            }
-        } catch (RelationshipController.RetrieveRelationshipTypeException | JSONException | RelationshipController.SaveRelationshipException | PersonController.PersonLoadException | PatientController.PatientLoadException | FormController.FormDataSaveException | RelationshipController.RetrieveRelationshipException e) {
-            Log.e(getClass().getSimpleName(), "Could not create relationship",e);
-            throw new JSONException("Could not create relationship");
-        }
-    }
-
-    private void createRelationships() throws JSONException{
-        if(isRelationshipStuDefined()) {
-            Object relationshipObject = personJSON.get("person.relationships");
-
-            if (relationshipObject instanceof JSONArray) {
-                JSONArray relationships = (JSONArray) relationshipObject;
-                for (int i = 0; i < relationships.length(); i++) {
-                    createRelationship(relationships.getJSONObject(i));
-                }
-            } else if (relationshipObject instanceof JSONObject) {
-                createRelationship((JSONObject) relationshipObject);
-            }
-        }
-    }
-
-    private boolean isRelationshipStuDefined(){
-        return personJSON != null && personJSON.has("person.relationships");
     }
 
     private void setJSONObjects(String jsonPayload) throws JSONException {
@@ -305,21 +241,69 @@ public class GenericPatientRegistrationJSONMapper{
         if(responseJSON.has("person")) {
             personJSON = responseJSON.getJSONObject("person");
         }
+        if(responseJSON.has("demographicsupdate")) {
+            demographicsUpdateJSON = responseJSON.getJSONObject("demographicsupdate");
+        }
     }
 
     private void createPatient() throws JSONException {
-        initializePatient();
-        setPatientIdentifiers();
-        setPatientNames();
-        setPatientGender();
-        setPatientBirthDate();
-        setPersonAddresses();
-        setPersonAttributes();
+        if(patientJSON != null) {
+            initializePatient();
+            setPatientIdentifiers();
+            setPatientNames();
+            setPatientGender();
+            setPatientBirthDate();
+            setPersonAddresses();
+            setPersonAttributes();
+        }
+    }
+
+    private void updatePatient() throws JSONException {
+        if(demographicsUpdateJSON != null) {
+            updatePatientIdentifiers();
+            updatePatientNames();
+            updatePatientGender();
+            updatePatientBirthDate();
+            updatePersonAddresses();
+            updatePersonAttributes();
+        }
+    }
+
+    private void updatePersonAsPatient() throws JSONException {
+        if(demographicsUpdateJSON != null) {
+            updatePatientNames();
+            updatePatientGender();
+            updatePatientBirthDate();
+            updatePersonAddresses();
+            updatePersonAttributes();
+        }
     }
 
     private void initializePatient() throws JSONException {
         patient = new Patient();
         patient.setUuid(patientJSON.getString("patient.uuid"));
+    }
+
+    private void setDemographicsUpdatePatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    private void setDemographicsUpdatePersonAsPatient(Person person) throws JSONException {
+        patient = new Patient();
+        patient.setUuid(person.getUuid());
+        patient.setNames(person.getNames());
+        patient.setGender(person.getGender());
+        patient.setBirthdate(person.getBirthdate());
+        patient.setAddresses(person.getAddresses());
+        patient.setAttributes(person.getAtributes());
+    }
+
+    private void copyDemographicsUpdateFromPatient(Person person) throws JSONException {
+        person.setNames(patient.getNames());
+        person.setGender(patient.getGender());
+        person.setBirthdate(patient.getBirthdate());
+        person.setAddresses(patient.getAddresses());
+        person.setAttributes(patient.getAtributes());
     }
 
     private void setPatientIdentifiers() throws JSONException {
@@ -331,10 +315,43 @@ public class GenericPatientRegistrationJSONMapper{
         patient.setIdentifiers(identifiers);
     }
 
+    private void updatePatientIdentifiers() throws JSONException {
+        List<PatientIdentifier> identifiers = getUpdatedPatientIdentifiers();
+        Location location = getEncounterLocation();
+        for(PatientIdentifier identifier:identifiers){
+            identifier.setLocation(location);
+            PatientIdentifier existingIdentifier = patient.getIdentifier(identifier.getIdentifierType().getUuid());
+            if(existingIdentifier == null){
+                existingIdentifier = patient.getIdentifier(identifier.getIdentifierType().getName());
+            }
+            if(existingIdentifier != null){
+                existingIdentifier.setIdentifier(identifier.getIdentifier());
+            } else {
+                patient.addIdentifier(identifier);
+            }
+        }
+    }
+
     private void setPatientNames() throws JSONException {
         List<PersonName> names = new ArrayList<>();
         names.add(createPersonName(patientJSON));
+        if(demographicsUpdateJSON != null && demographicsUpdateJSON.has("demographicsupdate.given_name")) {
+            names.add(createDemographicsUpdatePersonName(demographicsUpdateJSON));
+        }
         patient.setNames(names);
+    }
+
+    private void updatePatientNames() throws JSONException {
+        if(demographicsUpdateJSON != null && demographicsUpdateJSON.has("demographicsupdate.given_name")) {
+            PersonName newName = createDemographicsUpdatePersonName(demographicsUpdateJSON);
+            if(newName != null) {
+                for (PersonName personName : patient.getNames()) {
+                    personName.setPreferred(false);
+                }
+                newName.setPreferred(true);
+                patient.addName(newName);
+            }
+        }
     }
 
     private void setPatientGender() throws JSONException {
@@ -342,9 +359,27 @@ public class GenericPatientRegistrationJSONMapper{
         patient.setGender(gender);
     }
 
+    private void updatePatientGender() throws JSONException {
+        if(!muzimaApplication.getMuzimaSettingController().isDemographicsUpdateManulReviewNeeded() &&
+                demographicsUpdateJSON != null && demographicsUpdateJSON.has("demographicsupdate.sex")
+        ){
+            String gender = demographicsUpdateJSON.getString("demographicsupdate.sex");
+            patient.setGender(gender);
+        }
+    }
+
     private void setPatientBirthDate() throws JSONException {
         patient.setBirthdate(createBirthDate(patientJSON));
         patient.setBirthdateEstimated(createBirthDateEstimated(patientJSON));
+    }
+
+    private void updatePatientBirthDate() throws JSONException {
+        if(!muzimaApplication.getMuzimaSettingController().isDemographicsUpdateManulReviewNeeded() &&
+                demographicsUpdateJSON != null && demographicsUpdateJSON.has("demographicsupdate.birth_date")
+        ){
+            patient.setBirthdate(createDemographicsUpdateBirthDate(demographicsUpdateJSON));
+            patient.setBirthdateEstimated(createDemographicsUpdateBirthDateEstimated(demographicsUpdateJSON));
+        }
     }
 
     private List<PatientIdentifier> getPatientIdentifiers() throws JSONException {
@@ -353,18 +388,38 @@ public class GenericPatientRegistrationJSONMapper{
         patientIdentifiers.add(getPatientUuidAsIdentifier());
         boolean requireMedicalRecordNumber = muzimaApplication.getMuzimaSettingController()
                 .isMedicalRecordNumberRequiredDuringRegistration();
+        PatientIdentifier medicalRecordIdentifier = null;
         if(requireMedicalRecordNumber || patientJSON.has("patient.medical_record_number")) {
-            PatientIdentifier medicalRecordIdentifier = getMedicalRecordNumberIdentifier();
+            medicalRecordIdentifier = getMedicalRecordNumberIdentifier();
+        }
 
-            if(medicalRecordIdentifier != null) {
-                if(requireMedicalRecordNumber){
-                    medicalRecordIdentifier.setPreferred(true);
-                }
-                patientIdentifiers.add(medicalRecordIdentifier);
+        if(medicalRecordIdentifier != null) {
+            if(requireMedicalRecordNumber){
+                medicalRecordIdentifier.setPreferred(true);
             }
+            patientIdentifiers.add(medicalRecordIdentifier);
         }
 
         List<PatientIdentifier> otherIdentifiers = getOtherPatientIdentifiers();
+        if (!otherIdentifiers.isEmpty())
+            patientIdentifiers.addAll(otherIdentifiers);
+        return patientIdentifiers;
+    }
+
+    private List<PatientIdentifier> getUpdatedPatientIdentifiers() throws JSONException {
+        List<PatientIdentifier> patientIdentifiers = new ArrayList<>();
+
+        PatientIdentifier medicalRecordIdentifier = null;
+        if(demographicsUpdateJSON != null && demographicsUpdateJSON.has("demographicsupdate.medical_record_number")){
+             medicalRecordIdentifier = getDemographicsUpdateMedicalRecordNumberIdentifier();
+        }
+
+        if(medicalRecordIdentifier != null) {
+            medicalRecordIdentifier.setPreferred(true);
+            patientIdentifiers.add(medicalRecordIdentifier);
+        }
+
+        List<PatientIdentifier> otherIdentifiers = getOtherUpdatedPatientIdentifiers();
         if (!otherIdentifiers.isEmpty())
             patientIdentifiers.addAll(otherIdentifiers);
         return patientIdentifiers;
@@ -382,6 +437,23 @@ public class GenericPatientRegistrationJSONMapper{
         } catch (LocationController.LocationLoadException e) {
             throw new JSONException("Could not find location in local repo");
         }
+    }
+
+    private PatientIdentifier getDemographicsUpdateMedicalRecordNumberIdentifier() throws JSONException {
+        if(demographicsUpdateJSON.has("demographicsupdate.medical_record_number")) {
+            Object identifierObject = patientJSON.getJSONObject("demographicsupdate.medical_record_number");
+            try {
+                if(identifierObject instanceof String && !StringUtils.isEmpty((String)identifierObject)){
+                    return createPatientIdentifier(Constants.LOCAL_PATIENT, null, (String)identifierObject);
+                } else if(identifierObject instanceof JSONObject){
+                    return createPatientIdentifier((JSONObject) identifierObject);
+                }
+            } catch (InvalidPatientIdentifierException e){
+
+                throw new RuntimeException("Invalid demographicsupdate medical record number", e);
+            }
+        }
+        throw new RuntimeException("Cannot find demographicsupdate medical record number");
     }
 
     private PatientIdentifier getMedicalRecordNumberIdentifier() throws JSONException {
@@ -438,6 +510,52 @@ public class GenericPatientRegistrationJSONMapper{
                     otherIdentifiers.add(createPatientIdentifier(patientJSON.getJSONObject(key)));
                 } catch (InvalidPatientIdentifierException e){
                     Log.e(getClass().getSimpleName(), "Error while creating identifier.", e);
+                }
+            }
+        }
+
+        return otherIdentifiers;
+    }
+
+    private List<PatientIdentifier> getOtherUpdatedPatientIdentifiers() throws JSONException {
+        List<PatientIdentifier> otherIdentifiers = new ArrayList<>();
+        if (demographicsUpdateJSON != null) {
+            if(demographicsUpdateJSON.has("demographicsupdate.otheridentifier")) {
+                Object otherIdentifierObject = demographicsUpdateJSON.get("demographicsupdate.otheridentifier");
+
+                if (otherIdentifierObject instanceof JSONArray) {
+                    JSONArray identifiers = (JSONArray) otherIdentifierObject;
+                    for (int i = 0; i < identifiers.length(); i++) {
+                        try {
+                            PatientIdentifier identifier = createPatientIdentifier(identifiers.getJSONObject(i));
+                            if (identifier != null) {
+                                otherIdentifiers.add(identifier);
+                            }
+                        }catch (InvalidPatientIdentifierException e){
+                            Log.e(getClass().getSimpleName(), "Error while creating identifier.", e);
+                        }
+                    }
+                } else if (otherIdentifierObject instanceof JSONObject) {
+                    try {
+                        PatientIdentifier identifier = createPatientIdentifier((JSONObject) otherIdentifierObject);
+                        if (identifier != null) {
+                            otherIdentifiers.add(identifier);
+                        }
+                    } catch (InvalidPatientIdentifierException e){
+                        Log.e(getClass().getSimpleName(), "Error while creating identifier.", e);
+                    }
+                }
+            }
+
+            Iterator<String> keys = demographicsUpdateJSON.keys();
+            while(keys.hasNext()){
+                String key = keys.next();
+                if(key.startsWith("demographicsupdate.otheridentifier^")){
+                    try {
+                        otherIdentifiers.add(createPatientIdentifier(demographicsUpdateJSON.getJSONObject(key)));
+                    } catch (InvalidPatientIdentifierException e){
+                        Log.e(getClass().getSimpleName(), "Error while creating identifier.", e);
+                    }
                 }
             }
         }
@@ -507,12 +625,138 @@ public class GenericPatientRegistrationJSONMapper{
             patient.setAddresses(addresses);
         }
     }
+    private void updatePersonAddresses() throws JSONException {
+        List<PersonAddress> demographicsUpdateAddresses = createDemographicsUpdatePersonAddresses(demographicsUpdateJSON);
+        for(PersonAddress demographicsUpdateAddress:demographicsUpdateAddresses){
+            boolean preExistingAddressFound = false;
+            for(PersonAddress preExistingAddress:patient.getAddresses()){
+                if (StringUtils.equals(demographicsUpdateAddress.getUuid(), preExistingAddress.getUuid())) {
+                    preExistingAddressFound = true;
+                    copyPersonAddress(demographicsUpdateAddress, preExistingAddress);
+                    break;
+                }
+            }
+            if(!preExistingAddressFound){
+                patient.addAddress(demographicsUpdateAddress);
+            }
+        }
+    }
 
     private void setPersonAttributes() throws JSONException{
         List<PersonAttribute> attributes = createPersonAttributes(patientJSON,muzimaApplication);
+
         if(!attributes.isEmpty()) {
             patient.setAttributes(attributes);
         }
+    }
+
+    private void updatePersonAttributes() throws JSONException{
+        List<PersonAttribute> demographicsUpdatePersonAttributes  = createDemographicsUpdatePersonAttributes(demographicsUpdateJSON,muzimaApplication);
+
+        Iterator<PersonAttribute> demographicsUpdateAttributesIterator = demographicsUpdatePersonAttributes.iterator();
+        while(demographicsUpdateAttributesIterator.hasNext()) {
+            boolean preExistingAttributeFound = false;
+            PersonAttribute demographicsUpdateAttribute = demographicsUpdateAttributesIterator.next();
+            PersonAttributeType demographicsUpdateAttributeType = demographicsUpdateAttribute.getAttributeType();
+
+            for (PersonAttribute preExistingAttribute:patient.getAtributes()) {
+                PersonAttributeType preExistingAttributeType = preExistingAttribute.getAttributeType();
+                if(StringUtils.equals(preExistingAttributeType.getUuid(), demographicsUpdateAttributeType.getUuid()) ||
+                        StringUtils.equals(preExistingAttributeType.getName(), demographicsUpdateAttributeType.getName())) {
+                    preExistingAttributeFound = true;
+                    preExistingAttribute.setAttribute(demographicsUpdateAttribute.getAttribute());
+                    break;
+                }
+            }
+
+            if(!preExistingAttributeFound){
+                patient.addattribute(demographicsUpdateAttribute);
+            }
+        }
+    }
+
+    private void createRelationship(JSONObject jsonObject) throws JSONException{
+        try {
+            String relationshipTypeUuid = (String)getFromJsonObject(jsonObject,"person.relationshipType");
+            RelationshipType relationshipType = muzimaApplication.getRelationshipController().getRelationshipTypeByUuid(relationshipTypeUuid);
+            String personBUuid = (String)getFromJsonObject(jsonObject,"personB.uuid");
+            String personAUuid = (String)getFromJsonObject(jsonObject,"personA.uuid");
+
+            if(StringUtils.isEmpty(personAUuid) || StringUtils.isEmpty(personBUuid)){
+                return;
+            }
+
+            Person personA;
+            if(StringUtils.equals(personAUuid,patient.getUuid())){
+                personA = patient;
+            } else {
+                personA = muzimaApplication.getPersonController().getPersonByUuid(personAUuid);
+                if (personA == null) {
+                    personA = muzimaApplication.getPatientController().getPatientByUuid(personAUuid);
+                }
+            }
+
+            Person personB;
+            if(StringUtils.equals(personBUuid,patient.getUuid())){
+                personB = patient;
+            } else {
+                personB = muzimaApplication.getPersonController().getPersonByUuid(personBUuid);
+                if (personB == null) {
+                    personB = muzimaApplication.getPatientController().getPatientByUuid(personBUuid);
+                }
+            }
+
+            if (relationshipType != null && personA != null && personB != null && personA != personB) {
+                List<Relationship> existingRelationships = muzimaApplication.getRelationshipController().getRelationshipsForPerson(personA.getUuid());
+                Relationship existingRelationship = null;
+                for (Relationship relationship:existingRelationships){
+                    if((StringUtils.equals(relationship.getPersonA().getUuid(),personA.getUuid()) ||
+                            StringUtils.equals(relationship.getPersonA().getUuid(),personB.getUuid()))
+                            && (StringUtils.equals(relationship.getPersonB().getUuid(),personA.getUuid()) ||
+                            StringUtils.equals(relationship.getPersonB().getUuid(),personB.getUuid()))){
+                        existingRelationship = relationship;
+                        break;
+                    }
+                }
+
+                if(existingRelationship == null) {
+                    Relationship newRelationship = new Relationship(personA, personB, relationshipType, false);
+                    newRelationship.setUuid(UUID.randomUUID().toString());
+
+                    RelationshipJsonMapper relationshipJsonMapper = new RelationshipJsonMapper(muzimaApplication);
+                    muzimaApplication.getFormController().saveFormData(relationshipJsonMapper.createFormDataFromRelationship(patient, newRelationship));
+
+                    muzimaApplication.getRelationshipController().saveRelationship(newRelationship);
+                } else if(!StringUtils.equals(existingRelationship.getRelationshipType().getUuid(),relationshipType.getUuid())) {
+                    //ToDo: Consider updating relationship type for existing relationship
+                    Log.d(getClass().getSimpleName(), "Could not create relationship");
+                }
+            } else {
+                throw new JSONException("Could not create relationship");
+            }
+        } catch (RelationshipController.RetrieveRelationshipTypeException | JSONException | RelationshipController.SaveRelationshipException | PersonController.PersonLoadException | PatientController.PatientLoadException | FormController.FormDataSaveException | RelationshipController.RetrieveRelationshipException e) {
+            Log.e(getClass().getSimpleName(), "Could not create relationship",e);
+            throw new JSONException("Could not create relationship");
+        }
+    }
+
+    private void createRelationships() throws JSONException{
+        if(isRelationshipStuDefined()) {
+            Object relationshipObject = personJSON.get("person.relationships");
+
+            if (relationshipObject instanceof JSONArray) {
+                JSONArray relationships = (JSONArray) relationshipObject;
+                for (int i = 0; i < relationships.length(); i++) {
+                    createRelationship(relationships.getJSONObject(i));
+                }
+            } else if (relationshipObject instanceof JSONObject) {
+                createRelationship((JSONObject) relationshipObject);
+            }
+        }
+    }
+
+    private boolean isRelationshipStuDefined(){
+        return personJSON != null && personJSON.has("person.relationships");
     }
 
     private Object getFromJsonObject(JSONObject jsonObject, String key) throws JSONException{

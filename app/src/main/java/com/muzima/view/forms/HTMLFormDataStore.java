@@ -151,18 +151,31 @@ class HTMLFormDataStore {
                     formData.setDiscriminator(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS);
                     parseObsFromCompletedForm(jsonPayload, status, true);
                 } else if(formData.getDiscriminator() != null &&
-                        (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_PERSON_UPDATE) ||
-                                formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS))) {
+                        (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS))) {
 
                     if(personController.getPersonByUuid(patientUuid) != null) {
                         parseObsFromCompletedForm(jsonPayload, status, true);
                     } else {
                         parseObsFromCompletedForm(jsonPayload, status, false);
                     }
+                } else if(formData.getDiscriminator() != null &&
+                        (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_PERSON_UPDATE))) {
+
+                    Person updatePerson = personController.getPersonByUuid(patientUuid);
+                    if(updatePerson != null) {
+                        formController.updatePerson(application,formData);
+                        parseObsFromCompletedForm(jsonPayload, status, true);
+                    } else {
+                        formController.updatePatient(application, formData);
+                        parseObsFromCompletedForm(jsonPayload, status, false);
+                    }
                 } else if(status.equals("complete") && formData.getDiscriminator() != null &&
                         formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE)){
-                    new GenericPatientRegistrationJSONMapper()
-                            .createRelationshipIfDefinedInPayload(application,formData.getJsonPayload());
+                    Patient updatedPatient = formController.updatePatient(application, formData);
+                    if(updatedPatient != null) {
+                        parseObsFromCompletedForm(jsonPayload, status, false);
+                        formWebViewActivity.startPatientSummaryView(updatedPatient);
+                    }
                 } else {
                     parseObsFromCompletedForm(jsonPayload, status, false);
                 }
@@ -314,9 +327,9 @@ class HTMLFormDataStore {
     public String getPersonAttribute(String patientUuid, String attributeTypeNameOrUuid) {
         JSONObject attributeJSONObject = new JSONObject();
         try {
-            Person person = personController.getPersonByUuid(patientUuid);
+            Person person = patientController.getPatientByUuid(patientUuid);
             if (person == null)
-                person = patientController.getPatientByUuid(patientUuid);
+                person = personController.getPersonByUuid(patientUuid);
 
             if(person != null) {
                 PersonAttribute attribute = person.getAttribute(attributeTypeNameOrUuid);
@@ -951,6 +964,7 @@ class HTMLFormDataStore {
             eventDetails.put("patientuuid", formData.getPatientUuid());
             eventDetails.put("formDataUuid", formData.getUuid());
             eventDetails.put("formDiscriminator", formData.getDiscriminator());
+            eventDetails.put("formUuid", formData.getTemplateUuid());
 
             switch(status) {
                 case STATUS_COMPLETE :logEvent( "SAVE_COMPLETE_FORM", eventDetails.toString());

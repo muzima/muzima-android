@@ -23,6 +23,24 @@ import java.util.UUID;
 import static com.muzima.utils.DateUtils.parse;
 
 public class PersonRegistrationUtils {
+    public static PersonName createDemographicsUpdatePersonName(JSONObject demographicsUpdateJsonObject) throws JSONException {
+        if(demographicsUpdateJsonObject == null){
+            throw new JSONException("Invalid DemographicsUpdate Json object. Null value supplied");
+        }
+
+        PersonName personName = new PersonName();
+        personName.setFamilyName(demographicsUpdateJsonObject.getString("demographicsupdate.family_name"));
+        personName.setGivenName(demographicsUpdateJsonObject.getString("demographicsupdate.given_name"));
+
+        String middleNameJSONString = "demographicsupdate.middle_name";
+        String middleName = "";
+        if (demographicsUpdateJsonObject.has(middleNameJSONString))
+            middleName = demographicsUpdateJsonObject.getString(middleNameJSONString);
+        personName.setMiddleName(middleName);
+
+        return personName;
+    }
+
     public static PersonName createPersonName(JSONObject personJsonObject) throws JSONException {
         if(personJsonObject == null){
             throw new JSONException("Invalid Person Json object. Null value supplied");
@@ -41,11 +59,29 @@ public class PersonRegistrationUtils {
         return personName;
     }
 
+    public static Date createDemographicsUpdateBirthDate(JSONObject demographicsUpdateJsonObject) throws JSONException {
+        if(demographicsUpdateJsonObject == null){
+            throw new JSONException("Invalid DemographicsUpdate Json object. Null value supplied");
+        } else if (!demographicsUpdateJsonObject.has("demographicsupdate.birth_date")){
+            throw new JSONException("Invalid DemographicsUpdate Json object. Value with the key demographicsupdate.birth_date not found");
+        }
+
+        String birthDateAsString = demographicsUpdateJsonObject.getString("demographicsupdate.birth_date");
+        Date birthDate = null;
+        try {
+            if (birthDateAsString != null)
+                birthDate = parse(birthDateAsString);
+        } catch (ParseException e) {
+            Log.e(PersonRegistrationUtils.class.getSimpleName(), "Could not parse birth_date", e);
+        }
+        return birthDate;
+    }
+
     public static Date createBirthDate(JSONObject personJsonObject) throws JSONException {
         if(personJsonObject == null){
             throw new JSONException("Invalid Person Json object. Null value supplied");
         } else if (!personJsonObject.has("patient.birth_date")){
-            throw new JSONException("Invalid Person Json object. Value with the key patient.birthdate_estimated not found");
+            throw new JSONException("Invalid Person Json object. Value with the key patient.birth_date not found");
         }
 
         String birthDateAsString = personJsonObject.getString("patient.birth_date");
@@ -59,6 +95,16 @@ public class PersonRegistrationUtils {
         return birthDate;
     }
 
+    public static boolean createDemographicsUpdateBirthDateEstimated(JSONObject demographicsUpdateJsonObject) throws JSONException {
+        if(demographicsUpdateJsonObject == null){
+            throw new JSONException("Invalid DemographicsUpdate Json object. Null value supplied");
+        }
+        if (!demographicsUpdateJsonObject.has("demographicsupdate.birthdate_estimated")){
+            throw new JSONException("Invalid DemographicsUpdate Json object. Value with the key demographicsupdate.birthdate_estimated not found");
+        }
+        return demographicsUpdateJsonObject.getBoolean("demographicsupdate.birthdate_estimated");
+    }
+
     public static boolean createBirthDateEstimated(JSONObject personJsonObject) throws JSONException {
         if(personJsonObject == null){
             throw new JSONException("Invalid Person Json object. Null value supplied");
@@ -68,6 +114,49 @@ public class PersonRegistrationUtils {
         }
         return personJsonObject.getBoolean("patient.birthdate_estimated");
     }
+    public static List<PersonAddress> createDemographicsUpdatePersonAddresses(JSONObject demographicsUpdateJsonObject) throws JSONException {
+
+        if(demographicsUpdateJsonObject == null){
+            throw new JSONException("Invalid demographicsUpdate Json object. Null value supplied");
+        }
+
+        List<PersonAddress> addresses = new ArrayList<>();
+        List<Object> personAddressObjects = new ArrayList<>();
+        if(demographicsUpdateJsonObject.has("demographicsupdate.personaddress")) {
+            personAddressObjects.add(demographicsUpdateJsonObject.get("demographicsupdate.personaddress"));
+        }
+        for (Object personAddress:personAddressObjects){
+            if(personAddress instanceof JSONObject){
+                try {
+                    addresses.add(createPersonAddress((JSONObject) personAddress));
+                } catch (InvalidPersonAddressException e){
+                    Log.e(PersonRegistrationUtils.class.getSimpleName(),"Error while creating person address.",e);
+                }
+            } else if(personAddress instanceof JSONArray){
+                JSONArray address = (JSONArray)personAddress;
+                for(int i=0; i<address.length(); i++){
+                    try {
+                        addresses.add(createPersonAddress(address.getJSONObject(i)));
+                    } catch (InvalidPersonAddressException e){
+                        Log.e(PersonRegistrationUtils.class.getSimpleName(),"Error while creating person address.",e);
+                    }
+                }
+            }
+        }
+
+        Iterator<String> keys = demographicsUpdateJsonObject.keys();
+        while(keys.hasNext()){
+            String key = keys.next();
+            if(key.startsWith("demographicsupdate.personaddress^")){
+                try {
+                    addresses.add(createPersonAddress(demographicsUpdateJsonObject.getJSONObject(key)));
+                } catch (InvalidPersonAddressException e){
+                    Log.e(PersonRegistrationUtils.class.getSimpleName(),"Error while creating person address.",e);
+                }
+            }
+        }
+        return addresses;
+    }
 
     public static List<PersonAddress> createPersonAddresses(JSONObject personJsonObject) throws JSONException {
         List<PersonAddress> addresses = new ArrayList<>();
@@ -76,8 +165,12 @@ public class PersonRegistrationUtils {
             throw new JSONException("Invalid Person Json object. Null value supplied");
         }
 
-        if(personJsonObject.has("patient.personaddress")){
-            Object personAddress = personJsonObject.get("patient.personaddress");
+        List<Object> personAddressObjects = new ArrayList<>();
+        if(personJsonObject.has("patient.personaddress")) {
+            personAddressObjects.add(personJsonObject.get("patient.personaddress"));
+        }
+
+        for (Object personAddress:personAddressObjects){
             if(personAddress instanceof JSONObject){
                 try {
                     addresses.add(createPersonAddress((JSONObject) personAddress));
@@ -151,7 +244,77 @@ public class PersonRegistrationUtils {
         if(personAddress.isBlank()) {
             throw new InvalidPersonAddressException("No person address information available.");
         }
+
         return personAddress;
+    }
+
+    public static void copyPersonAddress(PersonAddress copyFrom, PersonAddress copyTo){
+        if(copyFrom == null || copyTo == null){
+
+        }
+        copyTo.setAddress1(copyFrom.getAddress1());
+        copyTo.setAddress2(copyFrom.getAddress2());
+        copyTo.setAddress3(copyFrom.getAddress3());
+        copyTo.setAddress4(copyFrom.getAddress4());
+        copyTo.setAddress5(copyFrom.getAddress5());
+        copyTo.setAddress6(copyFrom.getAddress6());
+        copyTo.setCityVillage(copyFrom.getCityVillage());
+        copyTo.setCountyDistrict(copyFrom.getCountyDistrict());
+        copyTo.setStateProvince(copyFrom.getStateProvince());
+        copyTo.setCountry(copyFrom.getCountry());
+        copyTo.setPostalCode(copyFrom.getPostalCode());
+        copyTo.setLatitude(copyFrom.getLatitude());
+        copyTo.setLongitude(copyFrom.getLongitude());
+        copyTo.setStartDate(copyFrom.getStartDate());
+        copyTo.setEndDate(copyFrom.getEndDate());
+        copyTo.setPreferred(copyFrom.getPreferred());
+    }
+
+    public static List<PersonAttribute> createDemographicsUpdatePersonAttributes(JSONObject demographicsupdateJsonObject, MuzimaApplication muzimaApplication) throws JSONException{
+        List<PersonAttribute> attributes = new ArrayList<>();
+
+        if(demographicsupdateJsonObject == null){
+            throw new JSONException("Invalid demographicsupdate Json object. Null value supplied");
+        }
+
+        List<Object> personAttributeObjects = new ArrayList<>();
+
+        if(demographicsupdateJsonObject.has("demographicsupdate.personattribute")) {
+            personAttributeObjects.add(demographicsupdateJsonObject.get("demographicsupdate.personattribute"));
+        }
+
+        for (Object personAttribute:personAttributeObjects){
+
+            if(personAttribute instanceof JSONObject){
+                try{
+                    attributes.add(createPersonAttribute((JSONObject)personAttribute, muzimaApplication));
+                } catch (InvalidPersonAttributeException e){
+                    Log.e(PersonRegistrationUtils.class.getSimpleName(),"Error while creating attribute.",e);
+                }
+            } else if(personAttribute instanceof JSONArray){
+                JSONArray att = (JSONArray)personAttribute;
+                for(int i=0; i<att.length(); i++){
+                    try{
+                        attributes.add(createPersonAttribute(att.getJSONObject(i), muzimaApplication));
+                    } catch (InvalidPersonAttributeException e){
+                        Log.e(PersonRegistrationUtils.class.getSimpleName(),"Error while creating attribute.",e);
+                    }
+                }
+            }
+        }
+
+        Iterator<String> keys = demographicsupdateJsonObject.keys();
+        while(keys.hasNext()){
+            String key = keys.next();
+            if(key.startsWith("demographicsupdate.personattribute^")){
+                try {
+                    attributes.add(createPersonAttribute(demographicsupdateJsonObject.getJSONObject(key), muzimaApplication));
+                } catch (InvalidPersonAttributeException e){
+                    Log.e(PersonRegistrationUtils.class.getSimpleName(),"Error while creating attribute.",e);
+                }
+            }
+        }
+        return attributes;
     }
 
     public static List<PersonAttribute> createPersonAttributes(JSONObject personJsonObject, MuzimaApplication muzimaApplication) throws JSONException{
@@ -161,9 +324,14 @@ public class PersonRegistrationUtils {
             throw new JSONException("Invalid Person Json object. Null value supplied");
         }
 
-        if(personJsonObject.has("patient.personattribute")){
+        List<Object> personAttributeObjects = new ArrayList<>();
 
-            Object personAttribute = personJsonObject.get("patient.personattribute");
+        if(personJsonObject.has("patient.personattribute")) {
+            personAttributeObjects.add(personJsonObject.get("patient.personattribute"));
+        }
+
+        for (Object personAttribute:personAttributeObjects){
+
             if(personAttribute instanceof JSONObject){
                 try{
                     attributes.add(createPersonAttribute((JSONObject)personAttribute, muzimaApplication));
@@ -185,7 +353,7 @@ public class PersonRegistrationUtils {
         Iterator<String> keys = personJsonObject.keys();
         while(keys.hasNext()){
             String key = keys.next();
-            if(key.startsWith("patient.personattribute^")){
+            if(key.startsWith("patient.personattribute^") || key.startsWith("demographicsupdate.personattribute^")){
                 try {
                     attributes.add(createPersonAttribute(personJsonObject.getJSONObject(key), muzimaApplication));
                 } catch (InvalidPersonAttributeException e){

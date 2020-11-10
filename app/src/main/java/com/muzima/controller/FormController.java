@@ -23,6 +23,7 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.model.Tag;
@@ -31,6 +32,7 @@ import com.muzima.api.service.FormService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PatientService;
+import com.muzima.api.service.PersonService;
 import com.muzima.api.service.SetupConfigurationService;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.CompleteFormWithPatientData;
@@ -75,6 +77,7 @@ import java.util.Map;
 
 import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION;
+import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_PERSON_UPDATE;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
@@ -87,6 +90,7 @@ public class FormController {
 
     private final FormService formService;
     private final PatientService patientService;
+    private final PersonService personService;
     private final LastSyncTimeService lastSyncTimeService;
     private final SntpService sntpService;
     private final ObservationService observationService;
@@ -100,6 +104,7 @@ public class FormController {
     public FormController(MuzimaApplication muzimaApplication) throws IOException {
         this.formService = muzimaApplication.getMuzimaContext().getFormService();
         this.patientService = muzimaApplication.getMuzimaContext().getPatientService();
+        this.personService = muzimaApplication.getMuzimaContext().getPersonService();
         this.lastSyncTimeService = muzimaApplication.getMuzimaContext().getLastSyncTimeService();
         this.sntpService = muzimaApplication.getSntpService();
         this.observationService = muzimaApplication.getMuzimaContext().getObservationService();
@@ -602,10 +607,49 @@ public class FormController {
             } else if (isRegistrationXMLFormData(formData)) {
                 patient = new PatientJSONMapper(formData.getJsonPayload()).getPatient();
             } else {
-                throw new Exception("Could not determine type of registration form. Patient not created.");
+                throw new Exception("Could not determine type of registration form: ["+formData.getDiscriminator()+"]. Patient not created.");
             }
             patientService.savePatient(patient);
             return patient;
+        } catch (Exception e) {
+            Log.e("FormController", e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public Patient updatePatient(MuzimaApplication muzimaApplication, FormData formData) {
+        try {
+            Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
+            if(patient == null){
+                throw new Exception("Could not find patient for demographics update.");
+            }
+            if (isDemographicsUpdateFormData(formData)) {
+                new GenericPatientRegistrationJSONMapper().processDemographicsUpdateForPatient(muzimaApplication, formData.getJsonPayload(), patient);
+            } else {
+                throw new Exception("Could not determine type of demographics update form: ["+formData.getDiscriminator()+"]. Patient not updated.");
+            }
+            patientService.updatePatient(patient);
+            return patient;
+        } catch (Exception e) {
+            Log.e("FormController", e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public Person updatePerson(MuzimaApplication muzimaApplication, FormData formData) {
+        try {
+            Person person = personService.getPersonByUuid(formData.getPatientUuid());
+            if(person == null){
+                throw new Exception("Could not find person for demographics update.");
+            }
+            if (isPersonDemographicsUpdateFormData(formData)) {
+                new GenericPatientRegistrationJSONMapper().processDemographicsUpdateForPerson(muzimaApplication, formData.getJsonPayload(), person);
+            } else {
+                throw new Exception("Could not determine type of person demographics update form: ["+
+                        formData.getDiscriminator()+"]. Person not updated.");
+            }
+            personService.updatePerson(person);
+            return person;
         } catch (Exception e) {
             Log.e("FormController", e.getMessage(), e);
         }
@@ -958,6 +1002,16 @@ public class FormController {
     private boolean isRegistrationXMLFormData(FormData formData) {
         return (formData.getDiscriminator() != null)
                 && formData.getDiscriminator().equalsIgnoreCase(FORM_DISCRIMINATOR_REGISTRATION);
+    }
+
+    private boolean isDemographicsUpdateFormData(FormData formData) {
+        return (formData.getDiscriminator() != null)
+                && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE);
+    }
+
+    private boolean isPersonDemographicsUpdateFormData(FormData formData) {
+        return (formData.getDiscriminator() != null)
+                && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_PERSON_UPDATE);
     }
 
     public boolean isEncounterFormData(FormData formData) {
