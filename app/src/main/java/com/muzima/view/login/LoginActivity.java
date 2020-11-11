@@ -30,10 +30,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.muzima.BuildConfig;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
+import com.muzima.api.model.MinimumSupportedAppVersion;
 import com.muzima.api.model.MuzimaCoreModuleVersion;
+import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaCoreModuleVersionController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
@@ -328,7 +331,7 @@ public class LoginActivity extends Activity {
                     //delay for 10 seconds to allow next UI activity to finish loading
                     muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(10000,false);
                 }
-                checkMuzimaCoreModuleVersion(result);
+                checkMuzimaCoreModuleCompatibility(result);
             } else {
                 MuzimaLoggerService.log((MuzimaApplication)getApplicationContext(),"LOGIN_FAILURE",
                         result.credentials.getUserName(),MuzimaLoggerService.getAndParseGPSLocationForLogging((MuzimaApplication)getApplicationContext()),"{}");
@@ -359,8 +362,8 @@ public class LoginActivity extends Activity {
             }
         }
 
-        private void checkMuzimaCoreModuleVersion(Result result){
-            new DownloadMuzimaCoreModuleVersionBackGroundTask().execute(result.credentials.getServerUrl());
+        private void checkMuzimaCoreModuleCompatibility(Result result){
+            new DownloadMuzimaAppVersionCodeBackGroundTask().execute(result.credentials.getServerUrl());
         }
 
 
@@ -410,65 +413,57 @@ public class LoginActivity extends Activity {
         });
     }
 
-    private class DownloadMuzimaCoreModuleVersionBackGroundTask extends AsyncTask<String, Void,String > {
+    private class DownloadMuzimaAppVersionCodeBackGroundTask extends AsyncTask<String, Void,String > {
         @Override
         public String doInBackground(String... params){
             String serverUrl = params[0];
-            MuzimaCoreModuleVersionController muzimaCoreModuleVersionController = ((MuzimaApplication) getApplication()).getMuzimaCoreModuleVersionController();
+            MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
             try {
                 if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
-                    MuzimaCoreModuleVersion localmuzimaCoreModuleVersion = muzimaCoreModuleVersionController.getMuzimaCoreModuleVersion();
-                    MuzimaCoreModuleVersion serverMuzimaCoreModuleVersion = muzimaCoreModuleVersionController.downloadMuzimaCoreModuleVersion();
-                    if(serverMuzimaCoreModuleVersion != null) {
-                        if (localmuzimaCoreModuleVersion.getVersion() != null) {
-                            muzimaCoreModuleVersionController.updateMuzimaCoreModuleVersion(serverMuzimaCoreModuleVersion);
+                    MinimumSupportedAppVersion localMinimumSupportedAppVersion = minimumSupportedAppVersionController.getMinimumSupportedAppVersion();
+                    MinimumSupportedAppVersion downloadedMinimumSupportedAppVersion = minimumSupportedAppVersionController.downloadMinimumSupportedAppVersion();
+                    if(downloadedMinimumSupportedAppVersion != null) {
+                        if (localMinimumSupportedAppVersion.getVersion() != null) {
+                            minimumSupportedAppVersionController.updateMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
                         } else {
-                            muzimaCoreModuleVersionController.saveMuzimaCoreModuleVersion(serverMuzimaCoreModuleVersion);
+                            minimumSupportedAppVersionController.saveMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
                         }
                     }
                 }
-            } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionDownloadException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while downloading module version ",e);
-            } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionFetchException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving module version ",e);
-            } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionSaveException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while saving module version ",e);
+            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionDownloadException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while downloading supported app version ",e);
+            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionFetchException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
+            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionSaveException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while saving supported app version ",e);
             }
             return serverUrl;
         }
 
         @Override
         protected void onPostExecute(String serverUrl) {
-            MuzimaCoreModuleVersion currentmuzimaCoreModuleVersion;
-            MuzimaCoreModuleVersionController muzimaCoreModuleVersionController = ((MuzimaApplication) getApplication()).getMuzimaCoreModuleVersionController();
+            MinimumSupportedAppVersion currentMinimumSupportedAppVersion;
+            MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
             try {
-                currentmuzimaCoreModuleVersion = muzimaCoreModuleVersionController.getMuzimaCoreModuleVersion();
-                if(currentmuzimaCoreModuleVersion == null || currentmuzimaCoreModuleVersion.getVersion() == null){
+                currentMinimumSupportedAppVersion = minimumSupportedAppVersionController.getMinimumSupportedAppVersion();
+                if(currentMinimumSupportedAppVersion == null || currentMinimumSupportedAppVersion.getVersion() == null){
                     showAlertDialog();
                 }else {
-                    String version = currentmuzimaCoreModuleVersion.getVersion();
-                    String[] versionNumbers = version.replace(".",":").split(":");
-                    if(versionNumbers.length<3){
-                        showAlertDialog();
-                    }else {
-                        String[] minimumVersionNumbers = com.muzima.utils.Constants.MINIMUM_SERVER_SIDE_MODULE_VERSION.replace(".", ":").split(":");
-                        String[] thirdVersionNumber = versionNumbers[2].split("-");
-                        try{
-                            if (Integer.valueOf(minimumVersionNumbers[0]) > Integer.valueOf(versionNumbers[0]) ||
-                                    Integer.valueOf(minimumVersionNumbers[1]) > Integer.valueOf(versionNumbers[1]) ||
-                                    Integer.valueOf(minimumVersionNumbers[2]) > Integer.valueOf(thirdVersionNumber[0])) {
-                                showAlertDialog();
-                            } else {
-                                startNextActivity();
-                            }
-                        }catch (NumberFormatException e){
-                            Log.e(getClass().getSimpleName(),"Encountered an exception while parsing string to integer ",e);
+                    int version = currentMinimumSupportedAppVersion.getVersion();
+                    int appVersionCode = BuildConfig.VERSION_CODE;
+                    try{
+                        if (appVersionCode < version) {
                             showAlertDialog();
+                        } else {
+                            startNextActivity();
                         }
+                    }catch (NumberFormatException e){
+                        Log.e(getClass().getSimpleName(),"Encountered an exception while parsing string to integer ",e);
+                        showAlertDialog();
                     }
                 }
-            } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionFetchException e) {
-                 Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving module version ",e);
+            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionFetchException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
             }
         }
 
