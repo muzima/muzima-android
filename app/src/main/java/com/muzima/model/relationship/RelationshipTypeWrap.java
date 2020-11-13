@@ -10,7 +10,7 @@
 
 package com.muzima.model.relationship;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.muzima.api.model.RelationshipType;
 
 public class RelationshipTypeWrap implements Comparable<RelationshipTypeWrap> {

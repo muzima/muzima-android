@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
   ~ Copyright (c) The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
@@ -10,36 +11,54 @@
     <string name="SHR_card_text">SHR कार्ड</string>
     <string name="SHR_data_title_text">SHR डेटा</string>
     <string name="SHR_extracted_data_text">SHR डेटा निकाला गया</string>
+
     <string name="add_individual_observation_text">व्यक्तिगत अवलोकन जोड़ें</string>
+
     <string name="app_name">mUzima</string>
     <string name="app_title">स्वास्थ्य प्रदाताओं के लिए mUzima</string>
+
     <string name="ask_help">मदद मांगना</string>
+
     <string name="autocomplete_server_not_found">सर्वर अगम्य है! \n कृपया अपने डिवाइस को कनेक्ट करें और फिर से प्रयास करें या एक नया व्यक्ति बनाएं</string>
+
     <string name="captured_date">कैप्चर की गई तारीख:</string>
+
     <string name="card_sync_status_content_description">कार्ड सिंक्रनाइज़ेशन स्थिति</string>
+
     <string name="change_settings">सेटिंग्स बदले</string>
+
     <string name="client_registration_question_text">क्या आप mUzima में क्लाइंट रजिस्टर करना चाहेंगे?</string>
+
     <string name="complex_obs">जटिल अवलोकन</string>
+
     <string name="concept_description">संकल्पना विवरण</string>
     <string name="concept_details">संकल्पना विवरण</string>
     <string name="concept_name">संकल्पना नाम:</string>
+
     <string name="confirm_create_patient_from_person">यह इस व्यक्ति को ग्राहक के रूप में पंजीकृत करेगा। क्या आप वाकई ऐसा करना चाहते हैं?</string>
     <string name="confirm_duplicate_form_data_save">डुप्लीकेट फॉर्म डेटा को सेव करें</string>
     <string name="confirm_patient_id_exists">क्या क्लाइंट के पास पहले से आईडी मौजूद है</string>
+
     <string name="date_general">तारीख</string>
     <string name="date_temp">8 जून</string>
+
     <string name="default_form_register">पंजीकरण फार्म</string>
+
     <string name="downloaded_reports">डाउनलोड की गई रिपोर्ट</string>
+
     <string name="downloading_cohorts_text">समूह डाउनलोड करना</string>
     <string name="downloading_forms">फॉर्म डाउनलोड करना</string>
+
     <string name="encounter_date">एनकाउंटर की तारीख:</string>
     <string name="encounter_date_dialog_label">एनकाउंटर की तारीख</string>
     <string name="encounter_details">एनकाउंटर विवरण</string>
     <string name="encounter_location">एनकाउंटर स्थान:</string>
     <string name="encounter_type">एनकाउंटर प्रकार:</string>
+
     <string name="enter_concept_name_text">संकल्पना नाम दर्ज करें …</string>
     <string name="enter_location_name">स्थान का नाम दर्ज करें …</string>
     <string name="enter_provider_name_hint">प्रदाता नाम दर्ज करें …</string>
+
     <string name="error_action_allow">सिंक के दौरान कार्रवाई की अनुमति नहीं है</string>
     <string name="error_audio_chose_activity_find">त्रुटि: ऑडियो चुनने के लिए गतिविधि नहीं मिली</string>
     <string name="error_audio_play_activity_find">त्रुटि: ऑडियो चलाने के लिए गतिविधि नहीं मिली</string>
@@ -111,19 +130,25 @@
     <string name="error_target_application_find">कोई लक्षित एप्लिकेशन नहीं</string>
     <string name="error_username_invalid_format">उपयोगकर्ता नाम में अमान्य वर्ण। इन्हें अनुमति नहीं है:%s</string>
     <string name="error_wizard_interrupted">विज़ार्ड बाधित हो गया था, कृपया लॉगआउट करें और विज़ार्ड को फिर से चलाएँ।</string>
+
     <string name="failure_obtain_smartcard_record">कार्ड पर लिखने के लिए स्मार्टकार्ड रिकॉर्ड प्राप्त नहीं किया जा सका।</string>
     <string name="failure_obtaining_card_serial_number">कार्ड सीरियल नंबर प्राप्त नहीं कर सका</string>
     <string name="failure_reading_card">कार्ड पढ़ना विफल</string>
     <string name="failure_updating_smartcard_record_for_writing">स्मार्टकार्ड रिकॉर्ड अपडेट नहीं किया जा सका</string>
     <string name="failure_writing_smartcard">स्मार्ट कार्ड डेटा लिखने में विफल।</string>
+
     <string name="feedback_header">कृपया हमें अपनी टिप्पणियाँ और प्रतिक्रिया भेजें</string>
     <string name="feedback_hint">आपके मन में क्या चल रहा है?</string>
     <string name="feedback_rating_question">MUzima App का उपयोग करना कितना आसान है?</string>
+
     <string name="fill_out_forms_for_a_patient_general">एक मरीज के लिए फॉर्म भरें</string>
+
     <string name="form_encounter_date">एनकाउंटर की तारीख</string>
     <string name="form_encounter_location">मुठभेड़ स्थान</string>
     <string name="form_encounter_provider">एनकाउंटर करने वाला</string>
+
     <string name="gender_image_content_description">लिंग छवि</string>
+
     <string name="general_accept">स्वीकार करना</string>
     <string name="general_add">जोड़ना</string>
     <string name="general_agree">इस बात से सहमत</string>
@@ -207,14 +232,19 @@
     <string name="general_view_encounter">मुठभेड़ देखें</string>
     <string name="general_welcome">स्वागत हे</string>
     <string name="general_yes">हाँ</string>
+
     <string name="get_more">सर्वर से अधिक</string>
+
     <string name="header_cohort_category">जत्था सेटिंग्स</string>
     <string name="header_muzima_category">mUzima सेटिंग्स</string>
     <string name="header_openmrs_category">OpenMRS सेटिंग्स</string>
     <string name="header_provider_location_category">प्रदाता / स्थान सेटिंग्स</string>
+
     <string name="hello_general">नमस्ते</string>
+
     <string name="help_center">सहायता केंद्र</string>
     <string name="help_general">सहायता!</string>
+
     <string name="hint_advanced_setup">आप जो चाहते हैं उसे चुनने के लिए स्टेप बाई स्टेप विज़ार्ड का उपयोग करें</string>
     <string name="hint_audio_caption">कृपया ऑडियो के लिए एक कैप्शन दर्ज करें</string>
     <string name="hint_audio_record">ऑडियो रिकॉर्ड करें या चुनें</string>
@@ -292,6 +322,7 @@
     <string name="hint_password_prompt">कृप्या पासवर्ड डाले</string>
     <string name="hint_patient_report_list_download">सर्वर से उपलब्ध रिपोर्ट सूची लाने के लिए कृपया लोड दबाएं</string>
     <string name="hint_patient_reports_sync">कृपया सर्वर सूची से रिपोर्ट चुनें और सिंक पर क्लिक करें</string>
+    <string name="hint_person_action_prompt">आप क्या करना पसंद करेंगे?</string>
     <string name="hint_person_search">नाम या पहचानकर्ता से व्यक्ति को खोजें</string>
     <string name="hint_phone_number_validation_failure">अवैध फोन नंबर। कृपया जाँच करें और फिर से दर्ज करें</string>
     <string name="hint_provider_not_set">आपके पास प्रदाता अधिकार नहीं हैं या आपका प्रदाता डेटा डाउनलोड नहीं किया गया है, कृपया प्रदाता जोड़ें विकल्प का उपयोग करें।</string>
@@ -316,11 +347,16 @@
     <string name="hint_video_record">वीडियो रिकॉर्ड करें या चुनें</string>
     <string name="hint_wizard_form_download">सूची में से एक या एक से अधिक फॉर्म टेम्प्लेट चुनें और डाउनलोड करने के लिए \'आगे\' पर क्लिक करें</string>
     <string name="hint_write_SHR_to_card">क्या आप कार्ड में साझा स्वास्थ्य रिकॉर्ड लिखना चाहते हैं?</string>
+
     <string name="how_to_general">कैसे:</string>
+
     <string name="inbox_outbox_label_text">## इनबॉक्स, ## आउटबॉक्स</string>
+
     <string name="incomplete_outbox_text">## अधूरा,## आउटबॉक्स</string>
+
     <string name="individual_obs">व्यक्तिगत अवलोकन</string>
     <string name="individual_obs_description">व्यक्तिगत अवलोकन</string>
+
     <string name="info_authentication_in_progress">प्रमाणीकरण प्रगति में …</string>
     <string name="info_background_data_sync_started">पृष्ठभूमि में डेटा सिंक करना</string>
     <string name="info_client_demographics_download">ग्राहक जनसांख्यिकीय डाउनलोड कर रहे है…</string>
@@ -349,6 +385,7 @@
     <string name="info_concept_not_downloaded">किसी भी अवधारणा को डाउनलोड नहीं किया</string>
     <string name="info_concept_unavailable">अभी तक कोई संकल्पना नहीं जोड़ी गई है।</string>
     <string formatted="false" name="info_concepts_downloaded">%d संकल्पनाएँ डाउनलोड की गई</string>
+    <string name="info_convert_person_to_patient">व्यक्ति को रोगी में बदलें</string>
     <string name="info_data_sync_cancelled">mUzima डेटा सिंक रद कर दिया गया था।</string>
     <string name="info_disclaimer">
         <![CDATA[
@@ -499,66 +536,103 @@
     <string name="info_submitted_form_data_status_check">हाल ही में प्रस्तुत फॉर्मों की स्थिति की जाँच कर रहे है</string>
     <string name="info_submitted_form_data_status_check_failure">हाल ही में प्रस्तुत फॉर्मों की स्थिति की जाँच नहीं कर सके</string>
     <string name="info_tag_unavailable">कोई टैग उपलब्ध नहीं है</string>
+    <string name="info_update_person_demographics">व्यक्ति जनसांख्यिकी को अपडेट करें</string>
     <string name="info_url_validate">चरण 1: URL मान्य करना</string>
     <string name="info_video_chose_activity_unavailable">त्रुटि: वीडियो चुनने के लिए आवेदन नहीं मिला</string>
     <string name="info_video_play_activity_unavailable">त्रुटि: वीडियो चलाने के लिए आवेदन नहीं मिला</string>
     <string name="info_video_record_activity_unavailable">त्रुटि: वीडियो रिकॉर्डिंग के लिए आवेदन नहीं मिला</string>
+
     <string name="initial_setup_for_muzima_general">MUzima के लिए प्रारंभिक सेटअप</string>
+
     <string name="interactive_help_choose">एक विकल्प चुनें:</string>
     <string name="interactive_help_header">कृपया हमें बताएं कि हम आपकी कैसे मदद कर सकते हैं</string>
     <string name="interactive_help_hint">अपना संदेश टाइप करें</string>
+
     <string name="introduction_to_muzima_general_text">mUzima का परिचय</string>
+
     <string name="june_8_sample_date">8 जून</string>
+
+    <string name="language_english">अंग्रेज़ी</string>
+    <string name="language_french">फ्रेंच</string>
+    <string name="language_gujarati">गुजराती</string>
+    <string name="language_hindi">हिंदी</string>
+    <string name="language_portuguese">पुर्तगाली</string>
+    <string name="language_swahili">स्वाहिली</string>
+
     <string formatted="false" name="menu_SHR_data_sync">सिंक SHR डेटा (%d)</string>
     <string name="menu_all_data_sync">सभी डेटा को सिंक करें</string>
     <string name="menu_form_back_to_draft">ड्राफ्ट पर वापस जाएं</string>
     <string name="menu_form_data_sync">डेटा को सिंक करें</string>
+
     <string name="message_feedback_halt">आपका संदेश नहीं भेजा जाएगा</string>
     <string name="message_feedback_sent">आपके संदेश के लिए धन्यवाद। \n आपकी प्रतिक्रिया हमारे लिए महत्वपूर्ण है।</string>
     <string name="message_help_halt">शायद अगली बार।</string>
     <string name="message_help_sent">संपर्क करने के लिए धन्यवाद। \n हमारी सहायता टीम आपके अनुरोध की जांच करेगी। \n हम जल्द से जल्द आपके पास वापस आएँगे।</string>
     <string name="message_missing_form_encounter_details_error">प्रदान करना आवश्यक है</string>
+
     <string name="muzima_training_manual_general">mUzima प्रशिक्षण मैनुअल</string>
+
     <string name="new_messages_number_text"># नए संदेश</string>
+
     <string name="no_default_encounter_location">कोई डिफ़ॉल्ट मुठभेड़ स्थान नहीं</string>
     <string name="no_description_general">कोई विवरण नहीं</string>
     <string name="no_email_client">इस उपकरण पर कोई ईमेल क्लाइंट स्थापित नहीं किया गया है। \n कृपया एक इंस्टॉल करें और फिर अपनी प्रतिक्रिया दें।</string>
+
     <string name="null_encounter_date_error">फॉर्म सहेजते समय एक त्रुटि हुई। एनकाउंटर की तारीख प्रदान कराई जानी चाहिए</string>
     <string name="null_encounter_location_error">फॉर्म सहेजते समय एक त्रुटि हुई। एनकाउंटर स्थान प्रदान किया जाना चाहिए</string>
     <string name="null_encounter_provider_error">फॉर्म सहेजते समय एक त्रुटि हुई। एनकाउंटर प्रदाता प्रदान किया जाना चाहिए</string>
+
     <string name="number_hashtag_representation">##</string>
+
     <string name="observation_details">अवलोकन विवरण</string>
     <string name="observation_text_dialog">निरीक्षण:</string>
     <string name="observation_value">अवलोकन मूल्य:</string>
+
     <string name="patient_SHR_search_dialog_title">ग्राहक SHR खोज</string>
     <string name="patient_SHR_search_title_text">ग्राहक SHR खोज</string>
+
     <string name="provider_details">प्रदाता विवरण</string>
     <string name="provider_identifier">प्रदाता पहचानकर्ता:</string>
     <string name="provider_name">प्रदाता का नाम:</string>
     <string name="provider_name_general">प्रदाता का नाम</string>
     <string name="provider_reports_general">प्रदाता रिपोर्ट</string>
+
     <string name="registering_patient_message_title_text">mUzima में ग्राहक का पंजीकरण …</string>
+
     <string name="relationship_create_success">संबंध सफलतापूर्वक बना</string>
     <string name="relationship_delete_fail">सर्वर पर पहले से सहेजे गए संबंध को हटा नहीं सकता। व्यवस्थापक से संपर्क करें</string>
     <string name="relationship_to_self_error">ग्राहक का खुद से संबंध नहीं हो सकता</string>
+
     <string name="reply_hint_text">अपना जवाब भेजें</string>
+
     <string name="sample_date_rep">21 मार्च 2018</string>
     <string name="sample_date_text">21/02/2018</string>
+
     <string name="scan_card_id_title">कार्ड आईडी स्कैन करें</string>
+
     <string name="search_patient_on_server_option_title_text">क्लाइंट स्थानीय रूप से उपलब्ध नहीं है, क्या आप सर्वर पर खोजना चाहेंगे?</string>
+
     <string name="select_a_registration_form_text">एक पंजीकरण फॉर्म चुनें</string>
     <string name="select_a_relationship_form_text">एक फार्म का चयन करें</string>
     <string name="select_default_encounter_location">अपना डिफ़ॉल्ट मुठभेड़ स्थान चुनें</string>
+
     <string name="send_feedback">प्रतिक्रिया भेजें</string>
     <string name="send_general_text">संदेश</string>
+
     <string name="server_side_setup_general">सर्वर साइड सेटअप</string>
+
     <string name="setting_up_muzima_general_text">MUzima की स्थापना</string>
+
     <string name="shr_registration">SHR पंजीकरण</string>
     <string name="shr_registration_description">SHR पंजीकरण डेटा</string>
+
     <string name="success_writing_smartcard">स्मार्ट कार्ड डेटा सफलतापूर्वक लिखा गया था।</string>
+
     <string name="synced_label_text">## सिंक किया गया</string>
     <string name="synced_total_label_text">## सिंक किया गया, ## संपूर्ण</string>
+
     <string name="tagging_forms">प्रपत्र टैग करना</string>
+
     <string name="title_about_dashboard_help_html">डैशबोर्ड के बारे में</string>
     <string name="title_activity_audio">ऑडियो जोड़ें</string>
     <string name="title_activity_client_encounters">क्लाइंट एनकाउंटर</string>
@@ -571,6 +645,7 @@
     <string name="title_advanced_setup">उन्नत सेटअप</string>
     <string name="title_advanced_setup_help_html">MUzima के लिए प्रारंभिक सेटअप</string>
     <string name="title_advanced_setup_help_video">उन्नत प्रारंभिक सेटअप</string>
+    <string name="title_app_language">भाषा: हिन्दी</string>
     <string name="title_audio_caption">ऑडियो कैप्शन</string>
     <string name="title_audio_choose">ऑडियो चुनें</string>
     <string name="title_audio_record">ध्वनि रिकॉर्ड करें</string>
@@ -659,10 +734,14 @@
     <string name="title_video_caption">वीडियो कैप्शन</string>
     <string name="title_video_choose">वीडियो चुनें</string>
     <string name="title_video_record">वीडियो रिकॉर्ड करो</string>
+
     <string name="to_text">सेवा</string>
+
     <string name="type_a_message_hint">एक संदेश लिखें</string>
     <string name="type_cohort_name_hint">कोहोर्ट नाम लिखें …</string>
+
     <string name="video_links_general_text">वीडियो लिंक:</string>
+
     <string name="warning_auto_save_interval">ऑटो सेव इंटरवल: ऑटो सेव इंटरवल सेट नहीं कर सका। \n कृपया 1 और 120 के बीच मान दर्ज करें।</string>
     <string name="warning_cancel_form_download">इससे फॉर्म डाउनलोड रद्द हो जाएगा। क्या आप वाकई फॉर्म डाउनलोड रद्द करना चाहते हैं?</string>
     <string name="warning_cohort_prefix_exists">कोहोर्ट उपसर्ग मौजूद है</string>
@@ -680,10 +759,9 @@
     <string name="warning_session_timeout">सत्र टाइमआउट: सत्र टाइमआउट सेट नहीं हो सका। कृपया 1 और 500 के बीच एक मान दर्ज करें।</string>
     <string name="warning_setting_download_failure">सेटिंग डाउनलोड या अपडेट नहीं हो सका</string>
     <string name="warning_switch_server">सर्वर बदली: यह आपके डिवाइस पर मौजूद सभी mUzima डेटा को साफ कर देगा, जिसमें कोई अधूरा फॉर्म भी शामिल है। क्या आप वाकई इस सेटिंग को बदलना चाहते हैं?</string>
+
     <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
+
     <string name="youTube_player_error">YouTube वीडियो लोड करते समय एक त्रुटि हुई</string>
-    <string name="info_convert_person_to_patient">व्यक्ति को रोगी में बदलें</string>
-    <string name="info_update_person_demographics">व्यक्ति जनसांख्यिकी को अपडेट करें</string>
-    <string name="hint_person_action_prompt">आप क्या करना पसंद करेंगे?</string>
 </resources>

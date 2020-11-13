@@ -12,8 +12,8 @@ package com.muzima.adapters.observations;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,8 +55,8 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     private LayoutInflater layoutInflater;
     private View addNewObservationValuesDialog;
     private View obsDetailsDialog;
-    private android.support.v7.app.AlertDialog addIndividualObsDialog;
-    private android.support.v7.app.AlertDialog obsDetailsViewDialog;
+    private androidx.appcompat.app.AlertDialog addIndividualObsDialog;
+    private androidx.appcompat.app.AlertDialog obsDetailsViewDialog;
     private HashMap<Integer, Concept> rederedConceptsVisualizationMap = new HashMap<>(); //enable visualization of what is rendered on the UI. for ease of access.
     private EditText obsDialogEditText;
     private Button obsDialogAddButton;
@@ -85,8 +85,8 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
          * Prepare add obs dialog
          */
         layoutInflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        android.support.v7.app.AlertDialog.Builder addIndividualObservationsDialogBuilder =
-                new android.support.v7.app.AlertDialog.Builder(
+        androidx.appcompat.app.AlertDialog.Builder addIndividualObservationsDialogBuilder =
+                new androidx.appcompat.app.AlertDialog.Builder(
                         parent.getContext()
                 );
         addNewObservationValuesDialog = layoutInflater.inflate(R.layout.add_individual_obs_dialog_layout, null);
@@ -307,8 +307,8 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         RelativeLayout providerDetails;
 
         layoutInflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        android.support.v7.app.AlertDialog.Builder addIndividualObservationsDialogBuilder =
-                new android.support.v7.app.AlertDialog.Builder(
+        androidx.appcompat.app.AlertDialog.Builder addIndividualObservationsDialogBuilder =
+                new androidx.appcompat.app.AlertDialog.Builder(
                         view.getContext()
                 );
         obsDetailsDialog = layoutInflater.inflate(R.layout.obs_details_dialog_layout, null);

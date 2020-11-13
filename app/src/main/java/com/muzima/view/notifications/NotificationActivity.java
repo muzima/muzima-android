@@ -30,6 +30,7 @@ import com.muzima.controller.NotificationController;
 import com.muzima.controller.ProviderController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.custom.CustomNotificationReplyDialog;
@@ -52,6 +53,8 @@ public class NotificationActivity extends BaseActivity {
         themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+
+        setTitle(R.string.general_notification);
 
         NotificationController notificationController = ((MuzimaApplication) getApplicationContext()).getNotificationController();
 

@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.custom.ScrollViewWithDetection;
 import com.muzima.view.login.LoginActivity;
@@ -33,10 +34,12 @@ import com.muzima.view.login.LoginActivity;
 public class DisclaimerActivity extends Activity {
 
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disclaimer);
 

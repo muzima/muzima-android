@@ -19,7 +19,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
+import com.google.android.material.snackbar.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,6 +51,7 @@ import com.muzima.model.shr.kenyaemr.InternalPatientId;
 import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.LocationUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
@@ -111,6 +112,7 @@ public class PatientSummaryActivity extends BaseActivity {
         setSHRLayoutVisibility();
         setClinicalSummaryVisibility();
         setRelationshipEnabled();
+        setTitle(R.string.title_activity_client_summary);
 
         Bundle intentExtras = getIntent( ).getExtras( );
         if (intentExtras != null) {

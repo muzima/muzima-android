@@ -10,11 +10,12 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.FormController;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.view.forms.AllAvailableFormsListFragment;
 import com.muzima.view.forms.CompleteFormsListFragment;
 import com.muzima.view.forms.DownloadedFormsListFragment;
@@ -69,10 +70,13 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
         allAvailableFormsListFragment.setTemplateDownloadCompleteListener(downloadedFormsListFragment);
         downloadedFormsListFragment.setAllAvailableFormsCompleteListener(allAvailableFormsListFragment);
 
-        pagers[TAB_All] = new PagerView(context.getString(R.string.title_form_template_all), allAvailableFormsListFragment);
-        pagers[TAB_DOWNLOADED] = new PagerView(context.getString(R.string.title_form_template_downloaded), downloadedFormsListFragment);
-        pagers[TAB_COMPLETE] = new PagerView(context.getString(R.string.title_form_data_complete), completeFormsListFragment);
-        pagers[TAB_INCOMPLETE] = new PagerView(context.getString(R.string.title_form_data_incomplete), incompleteFormsListFragment);
+        LanguageUtil languageUtil = new LanguageUtil();
+        Context localizedContext = languageUtil.getLocalizedContext(context);
+
+        pagers[TAB_All] = new PagerView(localizedContext.getResources().getString(R.string.title_form_template_all), allAvailableFormsListFragment);
+        pagers[TAB_DOWNLOADED] = new PagerView(localizedContext.getResources().getString(R.string.title_form_template_downloaded), downloadedFormsListFragment);
+        pagers[TAB_COMPLETE] = new PagerView(localizedContext.getResources().getString(R.string.title_form_data_complete), completeFormsListFragment);
+        pagers[TAB_INCOMPLETE] = new PagerView(localizedContext.getResources().getString(R.string.title_form_data_incomplete), incompleteFormsListFragment);
     }
 
     public void endActionMode() {

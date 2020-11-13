@@ -14,7 +14,7 @@
             android:cacheColorHint="#00000000">
         </ListView>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:visibility="gone"
             android:layout_width="wrap_content"

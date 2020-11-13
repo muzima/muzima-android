@@ -23,6 +23,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
@@ -36,10 +37,12 @@ public class RegistrationFormsActivity extends BaseActivity {
     private final ThemeUtils themeUtils = new ThemeUtils();
     private Patient patient;
     private Patient indexPatient;
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_form_list);
 

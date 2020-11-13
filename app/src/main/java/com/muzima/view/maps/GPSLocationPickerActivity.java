@@ -6,8 +6,8 @@ import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.webkit.ConsoleMessage;
@@ -24,6 +24,7 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.util.Constants;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
@@ -44,12 +45,14 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
     private int defaultZoomLevel;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private MuzimaGPSLocationService gpsLocationService;
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_location_picker);
         if(getIntent().hasExtra(LATITUDE)){
@@ -65,8 +68,9 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onResume(){
-        themeUtils.onCreate(this);
         super.onResume();
+        themeUtils.onResume(this);
+        languageUtil.onResume(this);
     }
 
     @Override

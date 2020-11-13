@@ -382,8 +382,8 @@
         renseignements personnels ou aux normes et protocoles de l\'industrie des soins médicaux); Même si cette partie a
         été informée de la possibilité de tels dommages.
         </p><p>
-        3. mUzima est protégé par les droits d'auteur des administrateurs de l'Université de l'Indiana, de l'Université
-        Moi et de l'Université Vanderbilt Centre médical.
+        3. mUzima est protégé par les droits d\'auteur des administrateurs de l\'Université de l\'Indiana, de l\'Université
+        Moi et de l\'Université Vanderbilt Centre médical.
         </p><p>
         4. Si l\'utilisateur de cette demande est une entité qui a l\'intention de commercialiser une application qui
         utilise cette Code dans une entreprise à but lucratif, l\'utilisateur est tenu de contacter le détenteur des
@@ -695,4 +695,11 @@
     <string name="info_convert_person_to_patient">Convertir une personne en patient</string>
     <string name="info_update_person_demographics">Mettre à jour les données démographiques des personnes</string>
     <string name="hint_person_action_prompt">Qu\'est-ce que tu aimerais faire?</string>
+    <string name="language_english">Anglais</string>
+    <string name="language_french">Française</string>
+    <string name="language_portuguese">Portugais</string>
+    <string name="language_swahili">Swahili</string>
+    <string name="language_hindi">Hindi</string>
+    <string name="language_gujarati">Gujarati</string>
+    <string name="title_app_language">Langue</string>
 </resources>

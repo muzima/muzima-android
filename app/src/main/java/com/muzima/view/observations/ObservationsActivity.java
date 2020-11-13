@@ -12,8 +12,8 @@ package com.muzima.view.observations;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.SearchView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.SearchView;
 import android.view.Menu;
 import android.view.View;
 import android.widget.DatePicker;
@@ -80,7 +80,7 @@ public class ObservationsActivity extends BroadcastListenerActivity {
     }
 
     /**
-     * Set up the {@link android.support.v7.app.ActionBar}.
+     * Set up the {@link androidx.appcompat.app.ActionBar}.
      */
     private void setupActionBar() {
         Patient patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);

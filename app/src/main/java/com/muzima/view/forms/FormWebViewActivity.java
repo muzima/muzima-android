@@ -10,7 +10,7 @@
 
 package com.muzima.view.forms;
 
-import android.support.v7.app.ActionBar;
+import androidx.appcompat.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -37,6 +37,7 @@ import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.Constants;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
@@ -92,10 +93,12 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private String sectionName;
     private FormController formController;
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
         ActionBar actionBar = getSupportActionBar();
@@ -109,6 +112,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
         showProgressBar("Loading...");
+        setTitle(R.string.general_form);
 
         try {
             setupFormData();
@@ -184,6 +188,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
         super.onResume();
         themeUtils.onResume(this);
+        languageUtil.onResume(this);
     }
 
     @Override

@@ -10,7 +10,7 @@
 
 package com.muzima.view.forms;
 
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import com.muzima.view.SyncIntent;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;

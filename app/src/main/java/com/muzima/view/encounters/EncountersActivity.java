@@ -25,6 +25,7 @@ import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
@@ -36,16 +37,19 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
     private EncountersByPatientAdapter encountersByPatientAdapter;
     private View noDataView;
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_encounters);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         setupPatientMetadata();
         setupStillLoadingView();
         setupPatientEncounters();
+        setTitle(R.string.title_activity_client_encounters);
             logEvent("VIEW_CLIENT_ENCOUNTERS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
     }
 
@@ -53,6 +57,7 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
+        languageUtil.onResume(this);
     }
 
     private void setupPatientMetadata() {

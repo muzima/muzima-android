@@ -14,7 +14,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -50,6 +50,7 @@ import com.muzima.controller.PersonController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.model.relationship.RelationshipTypeWrap;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.RelationshipJsonMapper;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
@@ -92,10 +93,12 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     public static final String INDEX_PATIENT = "indexPatient";
 
     private boolean isSearching = false;
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_relationships);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
@@ -120,6 +123,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         setupPatientMetadata();
         setupStillLoadingView();
         setupPatientRelationships();
+        setTitle(R.string.general_relationships);
 
         if (actionModeActive) {
             actionMode = startActionMode(new DeleteRelationshipsActionModeCallback());
@@ -175,6 +179,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
+        languageUtil.onResume(this);
         patientRelationshipsAdapter.reloadData();
     }
 

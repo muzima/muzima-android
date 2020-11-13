@@ -15,9 +15,11 @@ import android.app.ActivityManager;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+import androidx.multidex.MultiDexApplication;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.model.User;
@@ -34,6 +36,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaCoreModuleVersionController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
@@ -63,9 +66,9 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Security;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import io.fabric.sdk.android.Fabric;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
@@ -94,6 +97,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private PatientReportController patientReportController;
     private RelationshipController relationshipController;
     private PersonController personController;
+    private MinimumSupportedAppVersionController minimumSupportedAppVersionController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -130,7 +134,8 @@ public class MuzimaApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
-        Fabric.with(this, new Crashlytics());
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }
@@ -138,11 +143,22 @@ public class MuzimaApplication extends MultiDexApplication {
         muzimaTimer = getTimer(this);
 
         super.onCreate();
+        checkAndSetLocaleToDeviceLocaleIFDisclaimerNotAccepted();
         try {
             ContextFactory.setProperty(Constants.LUCENE_DIRECTORY_PATH, APP_DIR);
             muzimaContext = ContextFactory.createContext();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void checkAndSetLocaleToDeviceLocaleIFDisclaimerNotAccepted(){
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
+        boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
+        if (!disclaimerAccepted) {
+            String localeKey = getResources().getString(R.string.preference_app_language);
+            settings.edit().putString(localeKey, Locale.getDefault().getLanguage()).commit();
         }
     }
 
@@ -464,5 +480,16 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return muzimaCoreModuleVersionController;
+    }
+
+    public MinimumSupportedAppVersionController getMinimumSupportedVersionController() {
+        if(minimumSupportedAppVersionController == null){
+            try {
+                minimumSupportedAppVersionController = new MinimumSupportedAppVersionController(muzimaContext.getMinimumSupportedAppVersionService());
+            } catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        return minimumSupportedAppVersionController;
     }
 }

@@ -673,12 +673,20 @@ $(document).ready(function () {
             changeYear: true
         });
         document.clearValuesOnClonedFields($clonedSection);
+        document.renameFields($clonedSection,parentName);
         if(document.isMaxRepeatsReached($clonedSection)){
             $('.add_section').prop('disabled', true);
         }
         var showErrorMessageIfInvalid = false;
         document.multipleSectionRepeatsValidationCheck($("." + $clonedSection.attr("id")),showErrorMessageIfInvalid);
     });
+
+    document.renameFields = function ($clonedSection,parentName){
+        $clonedSection.find(':input:not(:button)').each(function(index,item) {
+            item.setAttribute('name',item.name+'_'+parentName);
+            item.setAttribute('id',item.id+'_'+parentName);
+        });
+    }
 
     $(document.body).on('click', '.remove_section', function () {
         document.removeIfRepeatedSection($(this));

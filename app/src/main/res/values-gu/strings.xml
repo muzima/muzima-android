@@ -687,4 +687,11 @@
     <string name="info_convert_person_to_patient">વ્યક્તિને દર્દીમાં ફેરવો</string>
     <string name="info_update_person_demographics">વ્યક્તિ વસ્તી વિષયક અપડેટ કરો</string>
     <string name="hint_person_action_prompt">તમને શું કરવું ગમશે?</string>
+    <string name="language_english">અંગ્રેજી</string>
+    <string name="language_french">ફ્રેન્ચ</string>
+    <string name="language_portuguese">પોર્ટુગીઝ</string>
+    <string name="language_swahili">સ્વાહિલી</string>
+    <string name="language_hindi">હિન્દી</string>
+    <string name="language_gujarati">ગુજરાતી</string>
+    <string name="title_app_language">ભાષા</string>
 </resources>
