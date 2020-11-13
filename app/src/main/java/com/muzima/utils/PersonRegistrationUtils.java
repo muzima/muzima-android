@@ -248,9 +248,9 @@ public class PersonRegistrationUtils {
         return personAddress;
     }
 
-    public static void copyPersonAddress(PersonAddress copyFrom, PersonAddress copyTo){
+    public static void copyPersonAddress(PersonAddress copyFrom, PersonAddress copyTo) throws Exception {
         if(copyFrom == null || copyTo == null){
-
+            throw new Exception("unable to copy person address due to null object'");
         }
         copyTo.setAddress1(copyFrom.getAddress1());
         copyTo.setAddress2(copyFrom.getAddress2());

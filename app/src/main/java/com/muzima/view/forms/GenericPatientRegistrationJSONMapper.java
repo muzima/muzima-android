@@ -42,7 +42,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import static com.muzima.utils.PersonRegistrationUtils.copyPersonAddress;
@@ -215,7 +214,7 @@ public class GenericPatientRegistrationJSONMapper{
         setMuzimaApplication(muzimaApplication);
         setDemographicsUpdatePatient(patient);
         updatePatient();
-        if(isRelationshipStuDefined()) {
+        if(isRelationshipStubDefined()) {
             createRelationships();
         }
         return patient;
@@ -632,7 +631,11 @@ public class GenericPatientRegistrationJSONMapper{
             for(PersonAddress preExistingAddress:patient.getAddresses()){
                 if (StringUtils.equals(demographicsUpdateAddress.getUuid(), preExistingAddress.getUuid())) {
                     preExistingAddressFound = true;
-                    copyPersonAddress(demographicsUpdateAddress, preExistingAddress);
+                    try{
+                        copyPersonAddress(demographicsUpdateAddress, preExistingAddress);
+                    } catch (Exception e){
+                        Log.e(getClass().getSimpleName(), "Could not copy address",e);
+                    }
                     break;
                 }
             }
@@ -734,14 +737,16 @@ public class GenericPatientRegistrationJSONMapper{
             } else {
                 throw new JSONException("Could not create relationship");
             }
-        } catch (RelationshipController.RetrieveRelationshipTypeException | JSONException | RelationshipController.SaveRelationshipException | PersonController.PersonLoadException | PatientController.PatientLoadException | FormController.FormDataSaveException | RelationshipController.RetrieveRelationshipException e) {
+        } catch (RelationshipController.RetrieveRelationshipTypeException | JSONException |
+                RelationshipController.SaveRelationshipException | PersonController.PersonLoadException | PatientController.PatientLoadException |
+                FormController.FormDataSaveException | RelationshipController.RetrieveRelationshipException e) {
             Log.e(getClass().getSimpleName(), "Could not create relationship",e);
             throw new JSONException("Could not create relationship");
         }
     }
 
     private void createRelationships() throws JSONException{
-        if(isRelationshipStuDefined()) {
+        if(isRelationshipStubDefined()) {
             Object relationshipObject = personJSON.get("person.relationships");
 
             if (relationshipObject instanceof JSONArray) {
@@ -755,7 +760,7 @@ public class GenericPatientRegistrationJSONMapper{
         }
     }
 
-    private boolean isRelationshipStuDefined(){
+    private boolean isRelationshipStubDefined(){
         return personJSON != null && personJSON.has("person.relationships");
     }
 
