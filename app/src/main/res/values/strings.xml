@@ -747,4 +747,11 @@
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
+    <string name="language_english">English</string>
+    <string name="language_french">French</string>
+    <string name="language_portuguese">Portuguese</string>
+    <string name="language_swahili">Swahili</string>
+    <string name="language_hindi">Hindi</string>
+    <string name="language_gujarati">Gujarati</string>
+    <string name="title_app_language">Language</string>
 </resources>

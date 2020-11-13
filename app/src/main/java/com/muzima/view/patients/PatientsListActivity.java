@@ -20,10 +20,10 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.app.ActionBarDrawerToggle;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.legacy.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +36,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v7.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -57,6 +57,7 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
@@ -68,7 +69,7 @@ import com.muzima.view.MainActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 
-import android.support.design.widget.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.widget.Toast;
 
 import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
@@ -136,14 +137,18 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private DrawerLayout mainLayout;
     private PatientTagsListAdapter tagsListAdapter;
     private TagPreferenceService tagPreferenceService;
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_patient_list, null);
         setContentView(mainLayout);
         Bundle intentExtras = getIntent().getExtras();
+
+        setTitle(R.string.general_clients);
 
         muzimaApplication = (MuzimaApplication) getApplicationContext();
 
@@ -407,6 +412,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
+        languageUtil.onResume(this);
         if (isSHRSettingEnabled()) {
             invalidateOptionsMenu();
             preparedServerSearchNegativeResultHandlerDialog();

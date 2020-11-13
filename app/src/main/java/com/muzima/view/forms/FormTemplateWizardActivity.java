@@ -13,9 +13,9 @@ package com.muzima.view.forms;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import androidx.legacy.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
@@ -38,6 +38,7 @@ import com.muzima.model.AvailableForm;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.HelpActivity;
@@ -64,9 +65,11 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     private ListView listView;
     private boolean isProcessDialogOn = false;
     private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     public void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_form_templates_wizard, null);
         setContentView(mainLayout);
@@ -166,6 +169,7 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
     @Override
     protected void onResume() {
         super.onResume();
+        languageUtil.onResume(this);
         tagsListAdapter.reloadData();
     }
 

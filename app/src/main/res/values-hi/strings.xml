@@ -683,4 +683,11 @@
     <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
     <string name="youTube_player_error">YouTube वीडियो लोड करते समय एक त्रुटि हुई</string>
+    <string name="language_english">अंग्रेज़ी</string>
+    <string name="language_french">फ्रेंच</string>
+    <string name="language_portuguese">पुर्तगाली</string>
+    <string name="language_swahili">स्वाहिली</string>
+    <string name="language_hindi">हिंदी</string>
+    <string name="language_gujarati">गुजराती</string>
+    <string name="title_app_language">भाषा: हिन्दी</string>
 </resources>

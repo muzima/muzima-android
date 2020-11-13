@@ -10,8 +10,10 @@
 
 package com.muzima.view;
 
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,14 +22,17 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.controller.SmartCardController;
 import com.muzima.service.MuzimaLoggerService;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 
 public class BaseActivity extends AppCompatActivity {
 
     private DefaultMenuDropDownHelper dropDownHelper;
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setupActionBar();
         dropDownHelper = new DefaultMenuDropDownHelper(this);
@@ -50,6 +55,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        languageUtil.onResume(this);
         ((MuzimaApplication) getApplication()).setCurrentActivity(this);
     }
 

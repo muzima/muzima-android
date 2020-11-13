@@ -15,9 +15,11 @@ import android.app.ActivityManager;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+import androidx.multidex.MultiDexApplication;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.model.User;
@@ -63,9 +65,9 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Security;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import io.fabric.sdk.android.Fabric;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
@@ -130,7 +132,8 @@ public class MuzimaApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
-        Fabric.with(this, new Crashlytics());
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
         }
@@ -138,11 +141,22 @@ public class MuzimaApplication extends MultiDexApplication {
         muzimaTimer = getTimer(this);
 
         super.onCreate();
+        checkAndSetLocaleToDeviceLocaleIFDisclaimerNotAccepted();
         try {
             ContextFactory.setProperty(Constants.LUCENE_DIRECTORY_PATH, APP_DIR);
             muzimaContext = ContextFactory.createContext();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void checkAndSetLocaleToDeviceLocaleIFDisclaimerNotAccepted(){
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
+        boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
+        if (!disclaimerAccepted) {
+            String localeKey = getResources().getString(R.string.preference_app_language);
+            settings.edit().putString(localeKey, Locale.getDefault().getLanguage()).commit();
         }
     }
 

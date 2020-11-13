@@ -11,7 +11,7 @@ package com.muzima.view.progressdialog;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;

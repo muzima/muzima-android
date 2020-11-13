@@ -21,6 +21,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -47,6 +48,7 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.Constants;
 import com.muzima.util.NetworkUtils;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.utils.ThemeUtils;
@@ -76,10 +78,12 @@ public class LoginActivity extends Activity {
     private ValueAnimator flipFromAuthToLoginAnimator;
     private boolean isUpdatePasswordChecked;
     private ThemeUtils themeUtils = new ThemeUtils(R.style.LoginTheme_Light, R.style.LoginTheme_Dark);
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         ((MuzimaApplication) getApplication()).cancelTimer();
         setContentView(R.layout.activity_login);
@@ -140,7 +144,9 @@ public class LoginActivity extends Activity {
         String versionCode = "";
         try {
             versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
-            versionText = LoginActivity.this.getApplication().getResources().getString(R.string.general_application_version, versionCode);
+            LanguageUtil languageUtil = new LanguageUtil();
+            android.content.Context localizedContext = languageUtil.getLocalizedContext(LoginActivity.this.getApplication());
+            versionText = localizedContext.getResources().getString(R.string.general_application_version, versionCode);
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(getClass().getSimpleName(), "Unable to read application version.", e);
         }
@@ -157,6 +163,7 @@ public class LoginActivity extends Activity {
     public void onResume() {
         super.onResume();
         themeUtils.onResume(this);
+        languageUtil.onCreate(this);
         setupStatusView();
     }
 
@@ -320,8 +327,12 @@ public class LoginActivity extends Activity {
                 new CredentialsPreferenceService(getApplicationContext()).saveCredentials(result.credentials);
                 ((MuzimaApplication) getApplication()).restartTimer();
                 LocalePreferenceService localePreferenceService = ((MuzimaApplication) getApplication()).getLocalePreferenceService();
-                String currentLocale = Locale.getDefault().toString();
-                localePreferenceService.setPreferredLocale(currentLocale);
+
+                String languageKey = getApplicationContext().getResources().getString(R.string.preference_app_language);
+                String defaultLanguage = getApplicationContext().getString(R.string.language_english);
+                String preferredLocale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(languageKey,defaultLanguage);
+
+                localePreferenceService.setPreferredLocale(preferredLocale);
 
                 MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

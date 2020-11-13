@@ -17,9 +17,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import androidx.legacy.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -35,6 +35,7 @@ import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ThemeUtils;
 
@@ -58,10 +59,12 @@ public class FormsActivity extends FormsActivityBase {
     private MenuItem menuUpload;
     private TagPreferenceService tagPreferenceService;
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_forms, null);
         setContentView(mainLayout);
@@ -70,6 +73,7 @@ public class FormsActivity extends FormsActivityBase {
         initDrawer();
         initPager();
         initPagerIndicator();
+        setTitle(R.string.general_forms);
         logEvent("VIEW_ALL_FORMS");
     }
 
@@ -77,6 +81,7 @@ public class FormsActivity extends FormsActivityBase {
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
+        languageUtil.onResume(this);
         tagsListAdapter.reloadData();
     }
 

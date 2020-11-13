@@ -7,9 +7,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.SearchView;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +25,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.controller.SmartCardController;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
@@ -46,10 +47,12 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     private Patient patient;
     private AlertDialog writeSHRDataOptionDialog;
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shr__observations__data_);
 
@@ -65,6 +68,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
+        languageUtil.onResume(this);
         if (!isSHREnabled()){
             onBackPressed();
         }
@@ -91,7 +95,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     }
 
     /**
-     * Set up the {@link android.support.v7.app.ActionBar}.
+     * Set up the {@link androidx.appcompat.app.ActionBar}.
      */
     private void setupActionBar() {
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);

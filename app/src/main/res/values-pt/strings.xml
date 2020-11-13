@@ -691,4 +691,11 @@
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
     <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
+    <string name="language_english">Inglês</string>
+    <string name="language_french">Francesa</string>
+    <string name="language_portuguese">Português</string>
+    <string name="language_swahili">Suaíli</string>
+    <string name="language_hindi">Hindi</string>
+    <string name="language_gujarati">Guzerate</string>
+    <string name="title_app_language">Língua</string>
 </resources>

@@ -95,6 +95,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         setUpDefaultEncounterLocationPreference();
         setUpGPSLocationFeaturePreference();
         setUpSHRFeaturePreference();
+        setUpLocalePreference();
     }
 
     private void setUpServerPreference(){
@@ -370,6 +371,14 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         }
         defaultEncounterLocationPreference.setSummary(locationName);
         registerListPreferenceChangeHandlerForDefaultLocation(defaultEncounterLocationkey, defaultEncounterLocationPreference);
+
+    }
+
+    private void setUpLocalePreference(){
+        String localePreferenceKey = getResources().getString(R.string.preference_app_language);
+        ListPreference localePreference = (ListPreference) getPreferenceScreen().findPreference(localePreferenceKey);
+        localePreference.setSummary(localePreference.getValue());
+        registerListPreferenceChangeHandler(localePreferenceKey, localePreference);
 
     }
 

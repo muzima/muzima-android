@@ -105,7 +105,7 @@ public class SmartCardIntentIntegrator {
         AlertDialog.Builder downloadDialog = new AlertDialog.Builder(activity);
         downloadDialog.setTitle(activity.getString(R.string.title_install_psmart));
         downloadDialog.setMessage(activity.getString(R.string.hint_install_psmart));
-        downloadDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        downloadDialog.setPositiveButton(R.string.general_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String packageName = "org.kenyahmis.psmart";
