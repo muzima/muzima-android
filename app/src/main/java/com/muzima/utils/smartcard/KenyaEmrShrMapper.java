@@ -156,9 +156,7 @@ public class KenyaEmrShrMapper {
                 setDiscriminator(FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION);
             }};
 
-            User user = muzimaApplication.getAuthenticatedUser();
-
-            formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData, user, true));
+            formData.setJsonPayload(new HTMLPatientJSONMapper().map(muzimaApplication, patient, formData, true));
             muzimaApplication.getFormController().saveFormData(formData);
         } catch (Throwable E){
             Log.e("Kenya EMR Shr", "Could not create and save registration payload");
@@ -187,9 +185,7 @@ public class KenyaEmrShrMapper {
                     setDiscriminator(FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE);
                 }};
 
-                User user = muzimaApplication.getAuthenticatedUser();
-
-                JSONObject formDataJSON = new JSONObject(new HTMLPatientJSONMapper().map(patient, formData, user, true));
+                JSONObject formDataJSON = new JSONObject(new HTMLPatientJSONMapper().map(muzimaApplication, patient, formData, true));
                 JSONObject demographicsUpdateJson = new JSONObject();
 
                 JSONObject newIdentifierJson = new JSONObject();
@@ -342,7 +338,7 @@ public class KenyaEmrShrMapper {
         for(final String payload:payloads) {
             Log.e("KenyaEmrShrMapper","Saving payload data ");
             final String newFormDataUuid = UUID.randomUUID().toString();
-            HTMLFormObservationCreator htmlFormObservationCreator = new HTMLFormObservationCreator(muzimaApplication, false);
+            HTMLFormObservationCreator htmlFormObservationCreator = new HTMLFormObservationCreator(muzimaApplication, false, false);
             htmlFormObservationCreator.createObservationsAndRelatedEntities(payload, newFormDataUuid);
 
             List<Concept> newConcepts = new ArrayList(htmlFormObservationCreator.getNewConceptList());

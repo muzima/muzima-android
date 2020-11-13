@@ -684,6 +684,9 @@
     <string name="write_SHR_to_card_text">SHR ને કાર્ડ પર લખો</string>
     <string name="write_shr_to_card_general">SHR ને કાર્ડ પર લખો</string>
     <string name="youTube_player_error">YouTube વિડિઓ લોડ કરતી વખતે ભૂલ આવી</string>
+    <string name="info_convert_person_to_patient">વ્યક્તિને દર્દીમાં ફેરવો</string>
+    <string name="info_update_person_demographics">વ્યક્તિ વસ્તી વિષયક અપડેટ કરો</string>
+    <string name="hint_person_action_prompt">તમને શું કરવું ગમશે?</string>
     <string name="language_english">અંગ્રેજી</string>
     <string name="language_french">ફ્રેન્ચ</string>
     <string name="language_portuguese">પોર્ટુગીઝ</string>

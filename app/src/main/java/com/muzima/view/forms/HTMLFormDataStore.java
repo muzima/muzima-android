@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
@@ -21,14 +22,17 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Concept;
-import com.muzima.api.model.Observation;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.Person;
+import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.Provider;
+import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.CohortController;
@@ -143,10 +147,37 @@ class HTMLFormDataStore {
                     formData.setPatientUuid(newPatient.getUuid());
                     formWebViewActivity.startPatientSummaryView(newPatient);
                 }
-                if(formData.getDiscriminator() != null && formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP)) {
+                if(formData.getDiscriminator() != null && (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP))) {
                     formData.setDiscriminator(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS);
-                }else{
-                    parseForm(jsonPayload, status);
+                    parseObsFromCompletedForm(jsonPayload, status, true);
+                } else if(formData.getDiscriminator() != null &&
+                        (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS))) {
+
+                    if(personController.getPersonByUuid(patientUuid) != null) {
+                        parseObsFromCompletedForm(jsonPayload, status, true);
+                    } else {
+                        parseObsFromCompletedForm(jsonPayload, status, false);
+                    }
+                } else if(formData.getDiscriminator() != null &&
+                        (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_PERSON_UPDATE))) {
+
+                    Person updatePerson = personController.getPersonByUuid(patientUuid);
+                    if(updatePerson != null) {
+                        formController.updatePerson(application,formData);
+                        parseObsFromCompletedForm(jsonPayload, status, true);
+                    } else {
+                        formController.updatePatient(application, formData);
+                        parseObsFromCompletedForm(jsonPayload, status, false);
+                    }
+                } else if(status.equals("complete") && formData.getDiscriminator() != null &&
+                        formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE)){
+                    Patient updatedPatient = formController.updatePatient(application, formData);
+                    if(updatedPatient != null) {
+                        parseObsFromCompletedForm(jsonPayload, status, false);
+                        formWebViewActivity.startPatientSummaryView(updatedPatient);
+                    }
+                } else {
+                    parseObsFromCompletedForm(jsonPayload, status, false);
                 }
 
                 Date encounterDate = getEncounterDateFromForm(jsonPayload);
@@ -195,11 +226,11 @@ class HTMLFormDataStore {
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show();
             Log.e(getClass().getSimpleName(), "Exception occurred while saving form data", e);
-        }
-        catch (PatientController.PatientLoadException e) {
+        } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while fetching patient", e);
-        }
-        catch (PatientController.PatientSaveException e) {
+        } catch (PersonController.PersonLoadException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while fetching person", e);
+        } catch (PatientController.PatientSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while saving patient", e);
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while parsing object", e);
@@ -218,6 +249,55 @@ class HTMLFormDataStore {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading locations", e);
         }
         return JSONValue.toJSONString(locationsOnDevice);
+    }
+
+    @JavascriptInterface
+    public String getRelationships(String patientUuid){
+        JSONArray relationshipsJsonArray = new JSONArray();
+        RelationshipController relationshipController = ((MuzimaApplication)formWebViewActivity.getApplicationContext()).getRelationshipController();
+        try {
+            List<Relationship> relationships = relationshipController.getRelationshipsForPerson(patientUuid);
+
+            for (Relationship relationship:relationships) {
+                JSONObject relationshipJsonObject = new JSONObject();
+                relationshipJsonObject.put("personA",relationship.getPersonA().getUuid());
+                relationshipJsonObject.put("personB",relationship.getPersonB().getUuid());
+                relationshipJsonObject.put("relationshipType",relationship.getRelationshipType().getUuid());
+
+                relationshipsJsonArray.put(relationshipJsonObject);
+            }
+        } catch (RelationshipController.RetrieveRelationshipException e) {
+            Log.e(getClass().getSimpleName(), "Could not retrieve relationships",e);
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Could not build relationships JSON",e);
+        }
+        return relationshipsJsonArray.toString();
+    }
+
+    @JavascriptInterface
+    public String getRelationshipForPersons(String person1Uuid, String person2Uuid){
+        JSONArray relationshipsJsonArray = new JSONArray();
+        RelationshipController relationshipController = ((MuzimaApplication)formWebViewActivity.getApplicationContext()).getRelationshipController();
+        try {
+            List<Relationship> relationships = relationshipController.getRelationshipsForPerson(person1Uuid);
+
+            for (Relationship relationship:relationships) {
+                if(StringUtils.equals(relationship.getPersonA().getUuid(), person2Uuid) ||
+                        StringUtils.equals(relationship.getPersonB().getUuid(), person2Uuid)) {
+                    JSONObject relationshipJsonObject = new JSONObject();
+                    relationshipJsonObject.put("personA", relationship.getPersonA().getUuid());
+                    relationshipJsonObject.put("personB", relationship.getPersonB().getUuid());
+                    relationshipJsonObject.put("relationshipType", relationship.getRelationshipType().getUuid());
+
+                    relationshipsJsonArray.put(relationshipJsonObject);
+                }
+            }
+        } catch (RelationshipController.RetrieveRelationshipException e) {
+            Log.e(getClass().getSimpleName(), "Could not retrieve relationships",e);
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Could not build relationships JSON",e);
+        }
+        return relationshipsJsonArray.toString();
     }
 
     @JavascriptInterface
@@ -244,6 +324,47 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
+    public String getPersonAttribute(String patientUuid, String attributeTypeNameOrUuid) {
+        JSONObject attributeJSONObject = new JSONObject();
+        try {
+            Person person = patientController.getPatientByUuid(patientUuid);
+            if (person == null)
+                person = personController.getPersonByUuid(patientUuid);
+
+            if(person != null) {
+                PersonAttribute attribute = person.getAttribute(attributeTypeNameOrUuid);
+                if (attribute != null) {
+                    attributeJSONObject.put("attribute_type_uuid", attribute.getAttributeType().getUuid());
+                    attributeJSONObject.put("attribute_type_name", attribute.getAttributeType().getName());
+                    attributeJSONObject.put("attribute_value", attribute.getAttribute());
+                }
+            }
+        } catch (PersonController.PersonLoadException | PatientController.PatientLoadException | JSONException e) {
+            Log.e(getClass().getSimpleName(), "Could not retrieve patient record",e);
+        }
+        return attributeJSONObject.toString();
+    }
+
+    @JavascriptInterface
+    public String getPatientIdentifier(String patientUuid, String identifierType) {
+        JSONObject identifierJSONObject = new JSONObject();
+        try {
+            Patient patient = patientController.getPatientByUuid(patientUuid);
+            if(patient != null) {
+                PatientIdentifier identifier = patient.getIdentifier(identifierType);
+                if (identifier != null) {
+                    identifierJSONObject.put("identifier_type_uuid", identifier.getIdentifierType().getUuid());
+                    identifierJSONObject.put("identifier_type_name", identifier.getIdentifierType().getName());
+                    identifierJSONObject.put("identifier_value", identifier.getIdentifier());
+                }
+            }
+        } catch ( PatientController.PatientLoadException | JSONException e) {
+            Log.e(getClass().getSimpleName(), "Could not retrieve patient record",e);
+        }
+        return identifierJSONObject.toString();
+    }
+
+    @JavascriptInterface
     public String getPatientDetailsFromServerByUuid(String uuid){
         JSONObject patientJsonObject = new JSONObject();
         try {
@@ -253,6 +374,7 @@ class HTMLFormDataStore {
                 patientJsonObject.put("uuid", patient.getUuid());
                 patientJsonObject.put("name", patient.getDisplayName());
                 patientJsonObject.put("birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
+                patientJsonObject.put("birthdate_estimated", Boolean.toString(patient.getBirthdateEstimated()));
                 patientJsonObject.put("sex", patient.getGender());
                 patientJsonObject.put("attributes", patient.getAtributes());
                 patientJsonObject.put("addresses", patient.getAddresses());
@@ -384,20 +506,25 @@ class HTMLFormDataStore {
     }
 
 
-    private void parseForm(String jsonPayload, String status) {
+    private void parseObsFromCompletedForm(String jsonPayload, String status, boolean parseForPerson) {
         if (status.equals(Constants.STATUS_INCOMPLETE)) {
             return;
         }
-        getFormParser().createAndPersistObservations(jsonPayload, formData.getUuid());
+
+        getFormParser(parseForPerson).createAndPersistObservations(jsonPayload, formData.getUuid());
     }
 
     public Date getEncounterDateFromForm(String jsonPayload) {
         return getFormParser().getEncounterDateFromFormDate(jsonPayload);
     }
 
-    HTMLFormObservationCreator getFormParser() {
+    HTMLFormObservationCreator getFormParser(boolean parseAsPersonObs) {
         MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
-        return new HTMLFormObservationCreator(applicationContext, false);
+        return new HTMLFormObservationCreator(applicationContext, false, parseAsPersonObs);
+    }
+
+    HTMLFormObservationCreator getFormParser() {
+        return getFormParser(false);
     }
 
     private boolean isRegistrationComplete(String status) {
@@ -438,6 +565,17 @@ class HTMLFormDataStore {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading encounters", e);
         }
         return JSONValue.toJSONString(encounters);
+    }
+
+    @JavascriptInterface
+    public String getObservationsByPatientUuid(String patientuuid) throws JSONException, ConceptController.ConceptFetchException {
+        List<Observation> observations = new ArrayList<>();
+        try {
+            observations = observationController.getObservationsByPatient(patientuuid);
+        } catch (Exception | ObservationController.LoadObservationException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading encounters", e);
+        }
+        return createObsJsonArray(observations);
     }
 
     @JavascriptInterface
@@ -507,8 +645,7 @@ class HTMLFormDataStore {
         int i = 0;
         JSONArray arr = new JSONArray();
         HashMap<String, JSONObject> map = new HashMap<>();
-        List<Concept> concepts = new ArrayList<>();
-        concepts = conceptController.getConcepts();
+        List<Concept> concepts = conceptController.getConcepts();
         for (Observation obs : observations) {
             String conceptName = "";
             String conceptUuid = obs.getConcept().getUuid();
@@ -543,6 +680,10 @@ class HTMLFormDataStore {
             } else {
                 json.put("conceptName", "Concept Created On Phone");
             }
+
+            json.put("conceptId",obs.getConcept().getId());
+            json.put("conceptUuid",obs.getConcept().getUuid());
+
             json.put("obsDate", convertedEncounterDate);
             if(obs.getValueCoded() != null) {
                 codedConcept.put("uuid",obs.getValueCoded().getUuid());
@@ -823,6 +964,7 @@ class HTMLFormDataStore {
             eventDetails.put("patientuuid", formData.getPatientUuid());
             eventDetails.put("formDataUuid", formData.getUuid());
             eventDetails.put("formDiscriminator", formData.getDiscriminator());
+            eventDetails.put("formUuid", formData.getTemplateUuid());
 
             switch(status) {
                 case STATUS_COMPLETE :logEvent( "SAVE_COMPLETE_FORM", eventDetails.toString());

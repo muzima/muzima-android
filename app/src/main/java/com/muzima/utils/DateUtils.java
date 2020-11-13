@@ -26,10 +26,12 @@ public class DateUtils {
 
     public static Date parse(String dateAsString) throws ParseException {
 
-        String datePattern = "[\\d]{2}-[\\d]{2}-[\\d]{4}";
-        Pattern pattern = Pattern.compile(datePattern);
-        Matcher matcher = pattern.matcher(dateAsString);
-        if (matcher.matches()) {
+        Pattern dateTimePattern = Pattern.compile("[\\d]{2}-[\\d]{2}-[\\d]{4} [\\d]{2}:[\\d]{2}");
+        Pattern datePattern = Pattern.compile("[\\d]{2}-[\\d]{2}-[\\d]{4}");
+        if (dateTimePattern.matcher(dateAsString).matches()) {
+            SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_LOCALE_FORMAT);
+            return formattedDate.parse(dateAsString);
+        } else if (datePattern.matcher(dateAsString).matches()) {
             SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
             return formattedDate.parse(dateAsString);
         } else {

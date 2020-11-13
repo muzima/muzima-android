@@ -103,7 +103,7 @@ public class ObservationParserUtilityTest {
 
         when(providerController.getAllProviders()).thenReturn(providers);
         when(formController.getFormByUuid(formUuid)).thenReturn(form);
-        Encounter encounter = observationParserUtility.getEncounterEntity(encounterDateTime, formUuid,providerId, locationId, userSystemId, patient, formDataUuid);
+        Encounter encounter = observationParserUtility.getEncounterEntity(encounterDateTime, formUuid,providerId, locationId, userSystemId, formDataUuid, patient,false);
         assertTrue(encounter.getUuid().startsWith("encounterUuid"));
         assertThat(encounter.getEncounterType().getUuid(), is(form.getEncounterType().getUuid()));
         assertThat(encounter.getProvider().getUuid(), is("providerForObservationsCreatedOnPhone"));

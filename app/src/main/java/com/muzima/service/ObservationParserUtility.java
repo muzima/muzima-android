@@ -62,7 +62,8 @@ class ObservationParserUtility {
         this.createObservationsForConceptsNotAvailableLocally = createObservationsForConceptsNotAvailableLocally;
     }
 
-    public Encounter getEncounterEntity(Date encounterDateTime,String  formUuid,String providerId, int locationId, String userSystemId, Patient patient, String formDataUuid) {
+    public Encounter getEncounterEntity(Date encounterDateTime,String  formUuid,String providerId, int locationId,
+                                        String userSystemId, String formDataUuid, Person person, boolean parseAsPersonObs) {
         Encounter encounter = new Encounter();
         encounter.setProvider(getDummyProvider(providerId));
         encounter.setUuid(getEncounterUUID());
@@ -71,7 +72,14 @@ class ObservationParserUtility {
         encounter.setEncounterDatetime(encounterDateTime);
         encounter.setUserSystemId(userSystemId);
         encounter.setFormDataUuid(formDataUuid);
-        encounter.setPatient(patient);
+
+        if(parseAsPersonObs){
+            encounter.setPersonEncounter(true);
+            encounter.setPerson(person);
+        } else {
+            encounter.setPersonEncounter(false);
+            encounter.setPatient((Patient) person);
+        }
 
         return encounter;
     }

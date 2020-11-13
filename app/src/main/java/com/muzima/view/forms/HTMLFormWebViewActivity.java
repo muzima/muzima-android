@@ -491,12 +491,13 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             setTemplateUuid(form.getUuid());
             setDiscriminator(form.getDiscriminator());
         }};
-        User user = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
 
         if (isGenericRegistrationForm() || isEncounterForm()) {
-            formData.setJsonPayload(new GenericRegistrationPatientJSONMapper().map(patient, formData, user, encounterProviderPreference, indexPatient));
+            formData.setJsonPayload(new GenericPatientRegistrationJSONMapper().map(((MuzimaApplication) getApplicationContext()),patient, formData, encounterProviderPreference, indexPatient));
+        } else if (isPersonRegistrationForm() || isPersonUpdateForm()) {
+            formData.setJsonPayload(new GenericPatientRegistrationJSONMapper().map(((MuzimaApplication) getApplicationContext()),patient, formData, encounterProviderPreference, indexPatient));
         } else {
-            formData.setJsonPayload(new HTMLPatientJSONMapper().map(patient, formData, user, encounterProviderPreference));
+            formData.setJsonPayload(new HTMLPatientJSONMapper().map(((MuzimaApplication) getApplicationContext()), patient, formData, encounterProviderPreference));
         }
     }
 
@@ -520,7 +521,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         videoComponent = new VideoComponent(this);
 
         gpsLocationPickerComponent = new GPSLocationPickerComponent(this);
-        relationshipComponent = new RelationshipComponent(this);
+        relationshipComponent = new RelationshipComponent(this, patient);
 
         encounterMiniFormCreatorComponent = new EncounterMiniFormCreatorComponent(this);
 
@@ -625,6 +626,14 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     private boolean isGenericRegistrationForm() {
         return formController.isGenericRegistrationHTMLFormData(formData);
+    }
+
+    private boolean isPersonRegistrationForm(){
+        return formController.isPersonRegistrationHTMLFormData(formData);
+    }
+
+    private boolean isPersonUpdateForm(){
+        return formController.isPersonUpdateHTMLFormData(formData);
     }
 
     public Handler getHandler() {

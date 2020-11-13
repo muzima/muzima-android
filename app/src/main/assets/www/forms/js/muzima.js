@@ -508,6 +508,34 @@ $(document).ready(function () {
 
     /* End - nonFutureDate*/
 
+    /* Start - Checking that the current date is not after encounter date */
+    $.validator.addMethod("nonPostEncounterDate", function (value, element) {
+            if ($.fn.isNotRequiredAndEmpty(value, element)) return true;
+            var pattern = /(\d{2})-(\d{2})-(\d{4})/g;
+            var matches = pattern.exec(value);
+            var enteredDate = new Date(matches[3], matches[2] - 1, matches[1]);
+            var today = new Date();
+
+            pattern = /(\d{2})-(\d{2})-(\d{4})/;
+            matches=pattern.exec($('#encounter\\.encounter_datetime').val());
+            if(matches == null){
+                return true;
+            }
+            var encounterDate = new Date(matches[3], matches[2] - 1, matches[1]);
+            return enteredDate <= encounterDate;
+        }, "Please enter a date prior to encounter date."
+    );
+
+    // attach 'checkFutureDate' class to perform validation.
+    jQuery.validator.addClassRules({
+        nonPostEncounterDate: { nonPostEncounterDate: true }
+    });
+
+    $('.nonPostEncounterDate').change(function () {
+        $(this).valid();
+    });
+    /* End - nonPostEncounterDate*/
+
     /* Start - Checking that the current date is in the future */
 
     var futureDateValidationFailureMessage = "";
@@ -1038,7 +1066,7 @@ $(document).ready(function () {
         console.time("Starting population");
         var prePopulateJSON = JSON.parse(prePopulateData);
         $.each(prePopulateJSON, function (key, value) {
-            if (key === 'observation') {
+            if (key === 'observation' || key === 'index_obs') {
                 populateObservations($('form'),value);
             } else {
                 populateNonObservations($('form'),value);
@@ -1062,6 +1090,9 @@ $(document).ready(function () {
             var dotIndex = k.indexOf(".");
             if (dotIndex >= 0) {
                 key = k.substr(0, k.indexOf("."));
+                if(key == 'index_obs'){
+                    k = k.substr(k.indexOf(".")+1, k.length-1);
+                }
             }
             if (key !== "obs_datetime") {
                 var objects = completeObject[key];
@@ -1125,9 +1156,12 @@ $(document).ready(function () {
                 var subResult2 = serializeConcepts($(element));
                 var subResultCombined = $.extend({}, subResult1,subResult2);
                 result = pushIntoArray(result, $(element).attr('data-concept'), subResultCombined);
+            } else if ($(element).hasClass('is-index-obs')){
+                var $allConcepts = $(element).find('*[data-concept]');
+                result = pushIntoArray(result, 'index_obs.'+$(element).attr('data-concept'), jsonifyConcepts($allConcepts, false));
             } else {
                 var $allConcepts = $(element).find('*[data-concept]');
-                result = pushIntoArray(result, $(element).attr('data-concept'), jsonifyConcepts($allConcepts));
+                result = pushIntoArray(result, $(element).attr('data-concept'), jsonifyConcepts($allConcepts, true));
             }
         });
         return result;
@@ -1159,7 +1193,7 @@ $(document).ready(function () {
         $.each(allConcepts, function (i, element) {
             var $closestElement = $(element).closest('.section, .concept-set', $form);
             if ($form.is($closestElement) || $closestElement.attr('data-concept') == undefined ) {
-                var jsonifiedConcepts = jsonifyConcepts($(element));
+                var jsonifiedConcepts = jsonifyConcepts($(element, true));
                 if (JSON.stringify(jsonifiedConcepts) != '{}' && jsonifiedConcepts != "") {
                     $.each(jsonifiedConcepts, function (key, value) {
                         if (object[key] !== undefined) {
@@ -1177,7 +1211,7 @@ $(document).ready(function () {
         return object;
     };
 
-    var jsonifyConcepts = function ($allConcepts) {
+    var jsonifyConcepts = function ($allConcepts, codeIndexPatientObsIfAvailable) {
         var o = {};
         $.each($allConcepts, function (i, element) {
             if ($(element).is(':checkbox') || $(element).is(':radio')) {
@@ -1191,6 +1225,8 @@ $(document).ready(function () {
                             v = pushIntoArray(v, 'obs_datetime', obs_datetime);
                             o = pushIntoArray(o, $(element).attr('data-concept'), v);
                         }
+                    } else if ($(element).hasClass('is-index-obs')){
+                        o = pushIntoArray(o, 'index_obs.'+$(element).attr('data-concept'), $(element).val());
                     } else {
                         o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
                     }
@@ -1205,6 +1241,8 @@ $(document).ready(function () {
                         v = pushIntoArray(v, 'obs_datetime', obs_datetime);
                         o = pushIntoArray(o, $(element).attr('data-concept'), v);
                     }
+                } else if ($(element).hasClass('is-index-obs') && codeIndexPatientObsIfAvailable == true){
+                    o = pushIntoArray(o, 'index_obs.'+$(element).attr('data-concept'), $(element).val());
                 } else {
                     o = pushIntoArray(o, $(element).attr('data-concept'), $(element).val());
                 }
@@ -1364,10 +1402,12 @@ $(document).ready(function () {
     }
 
     //Start - Set up auto complete for the person element.
-    document.setupAutoCompleteForPerson = function($searchElementSelector, $resultElementSelector, $noResultsElement, searchServer) {
+    document.setupAutoCompleteForPerson = function($searchElementSelector, $resultElementSelector, $noResultsElement, $searchLoadingWidget,searchServer) {
+        $searchLoadingWidget.hide();
         $searchElementSelector.focus(function () {
             $searchElementSelector.autocomplete({
                 source: function (request, response) {
+                    $searchLoadingWidget.show();
                     var searchTerm = request.term;
                     var searchResults = htmlDataStore.searchPersons(searchTerm, searchServer);
                     searchResults = JSON.parse(searchResults);
@@ -1380,6 +1420,7 @@ $(document).ready(function () {
                         $noResultsElement.trigger('change');
                     }
 
+                    $searchLoadingWidget.hide();
                     response(listOfPersons);
 
                 },
@@ -1393,6 +1434,7 @@ $(document).ready(function () {
         });
 
         $searchElementSelector.blur(function () {
+            $searchLoadingWidget.hide();
             $searchElementSelector.autocomplete("destroy");
         });
     }
@@ -1561,6 +1603,14 @@ $(document).ready(function () {
         );
     });
 
+    document.updatePersonDemographics = function(sectionName, resultField, personUuid){
+        relationshipCreatorComponent.updateRelationshipPerson(
+            sectionName,
+            resultField,
+            personUuid
+        );
+    }
+
     document.populateRelationshipPerson = function (sectionName, jsonString) {
         var $parent = $('div[data-name="' + sectionName + '"]');
         $.each(jsonString, function (key, value) {
@@ -1568,7 +1618,6 @@ $(document).ready(function () {
             $inputField.val(value);
             $inputField.trigger('change');
         });
-        console.log("Populating: "+JSON.stringify(jsonString));
     };
     /*End- Create and populate relationship person functionality*/
 
