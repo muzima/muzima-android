@@ -10,15 +10,18 @@
 
 package com.muzima.view.forms;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
 import com.muzima.builder.PatientBuilder;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,10 +29,20 @@ import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.containsString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest= Config.NONE)
 public class HTMLPatientJSONMapperTest {
+    private MuzimaApplication muzimaApplication;
+
+    @Before
+    public void setup() throws IOException {
+        muzimaApplication = mock(MuzimaApplication.class);
+        User user = new User();
+        when(muzimaApplication.getAuthenticatedUser()).thenReturn(user);
+    }
 
     @Test
     public void shouldAddPatientDetailsOnJSONFromPatient() {
@@ -38,9 +51,8 @@ public class HTMLPatientJSONMapperTest {
         Patient patient = patient(new Date());
         HTMLPatientJSONMapper mapper = new HTMLPatientJSONMapper();
         FormData formData = new FormData();
-        User user = new User();
         formData.setTemplateUuid("formUuid");
-        String json = mapper.map(patient, formData, user, false);
+        String json = mapper.map(muzimaApplication,patient, formData, false);
         assertThat(json, containsString("\"patient\":{"));
         assertThat(json, containsString("\"encounter\":{"));
         assertThat(json, containsString("\"patient.given_name\":\"givenname\""));
@@ -56,8 +68,7 @@ public class HTMLPatientJSONMapperTest {
     public void shouldNotFailIFBirthDateIsNull() {
         Patient patient = patient(null);
         HTMLPatientJSONMapper htmlPatientJSONMapper = new HTMLPatientJSONMapper();
-        User user = new User();
-        String json = htmlPatientJSONMapper.map(patient, new FormData(), user, false);
+        String json = htmlPatientJSONMapper.map(muzimaApplication,patient, new FormData(), false);
         assertThat(json,not(containsString("\"patient.birth_date\"")));
     }
 
