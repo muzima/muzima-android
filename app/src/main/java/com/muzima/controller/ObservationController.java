@@ -212,18 +212,18 @@ public class ObservationController {
         }
     }
 
-    public List<Observation> downloadObservationsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> conceptUuids) throws DownloadObservationException {
+    public List<Observation> downloadObservationsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> conceptUuids,String activeSetupConfigUuid) throws DownloadObservationException {
         try {
             String paramSignature = buildParamSignature(patientUuids, conceptUuids);
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_OBSERVATIONS, paramSignature);
             List<Observation> observations = new ArrayList<>();
             if (hasExactCallBeenMadeBefore(lastSyncTime)) {
-                observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, lastSyncTime));
+                observations.addAll(observationService.downloadObservationsAndSetupConfig(patientUuids, conceptUuids, lastSyncTime, activeSetupConfigUuid));
             } else {
 
                 LastSyncTime fullLastSyncTimeInfo = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS);
                 if (isFirstCallToDownloadObservationsEver(fullLastSyncTimeInfo)) {
-                    observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, null));
+                    observations.addAll(observationService.downloadObservationsAndSetupConfig(patientUuids, conceptUuids, null, activeSetupConfigUuid));
                 } else {
                     String[] parameterSplit = fullLastSyncTimeInfo.getParamSignature().split(UUID_TYPE_SEPARATOR, -1);
                     List<String> knownPatientsUuid = asList(parameterSplit[0].split(UUID_SEPARATOR));
@@ -234,12 +234,12 @@ public class ObservationController {
                     List<String> allPatientsUuids = getAllUuids(knownPatientsUuid, newPatientsUuids);
                     paramSignature = buildParamSignature(allPatientsUuids, allConceptsUuids);
                     if(newPatientsUuids.size()!=0) {
-                        observations = observationService.downloadObservations(newPatientsUuids, allConceptsUuids, null);
-                        observations.addAll(observationService.downloadObservations(knownPatientsUuid, newConceptsUuids, null));
-                        observations.addAll(observationService.downloadObservations(knownPatientsUuid, knownConceptsUuid, fullLastSyncTimeInfo.getLastSyncDate()));
+                        observations = observationService.downloadObservationsAndSetupConfig(newPatientsUuids, allConceptsUuids, null, activeSetupConfigUuid);
+                        observations.addAll(observationService.downloadObservationsAndSetupConfig(knownPatientsUuid, newConceptsUuids, null, activeSetupConfigUuid));
+                        observations.addAll(observationService.downloadObservationsAndSetupConfig(knownPatientsUuid, knownConceptsUuid, fullLastSyncTimeInfo.getLastSyncDate(), activeSetupConfigUuid));
                     }
                     else{
-                        observations.addAll(observationService.downloadObservations(patientUuids, conceptUuids, fullLastSyncTimeInfo.getLastSyncDate()));
+                        observations.addAll(observationService.downloadObservationsAndSetupConfig(patientUuids, conceptUuids, fullLastSyncTimeInfo.getLastSyncDate(),activeSetupConfigUuid));
                     }
                 }
             }

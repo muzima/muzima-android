@@ -640,13 +640,24 @@ public class MuzimaSyncService {
             List<List<String>> slicedConceptUuids = split(conceptUuidsFromConcepts);
             Set<String> patientUuidsForDownloadedObs = new HashSet<>();
             long totalTimeDownloading = 0, totalTimeReplacing = 0, totalTimeSaving = 0;
+
+            String activeSetupConfigUuid = null;
+            try {
+                SetupConfigurationTemplate setupConfigurationTemplate = setupConfigurationController.getActiveSetupConfigurationTemplate();
+                if (setupConfigurationTemplate != null) {
+                    activeSetupConfigUuid = setupConfigurationTemplate.getUuid();
+                }
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+                Log.e(getClass().getSimpleName(), "Could not obtain active setup config", e);
+            }
+
             int i = 0;
             for (List<String> slicedPatientUuid : slicedPatientUuids) {
                 for (List<String> slicedConceptUuid : slicedConceptUuids) {
                     long startDownloadObservations = System.currentTimeMillis();
 
                     List<Observation> allObservations = new ArrayList<>(observationController.downloadObservationsByPatientUuidsAndConceptUuids(
-                            slicedPatientUuid, slicedConceptUuid));
+                            slicedPatientUuid, slicedConceptUuid,activeSetupConfigUuid));
 
                     for (Observation observation : allObservations) {
                         patientUuidsForDownloadedObs.add(observation.getPerson().getUuid());

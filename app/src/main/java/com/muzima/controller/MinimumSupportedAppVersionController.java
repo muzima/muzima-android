@@ -17,7 +17,6 @@ public class MinimumSupportedAppVersionController {
     public MinimumSupportedAppVersion downloadMinimumSupportedAppVersion() throws MinimumSupportedAppVersionController.MinimumSupportedAppVersionDownloadException {
         try {
             MinimumSupportedAppVersion minimumSupportedAppVersion =  minimumSupportedAppVersionService.downloadMinimumSupportedAppVersion();
-            Log.e("","YYYYYYYYYY"+minimumSupportedAppVersion.getVersion());
             return  minimumSupportedAppVersion;
         } catch (IOException e) {
             throw new MinimumSupportedAppVersionController.MinimumSupportedAppVersionDownloadException(e);
