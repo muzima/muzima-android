@@ -692,7 +692,7 @@
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
-    <string name="info_convert_person_to_patient">Convert person to patient</string>
-    <string name="info_update_person_demographics">Update person demographics</string>
-    <string name="hint_person_action_prompt">What would you like to do?</string>
+    <string name="info_convert_person_to_patient">Convertir une personne en patient</string>
+    <string name="info_update_person_demographics">Mettre à jour les données démographiques des personnes</string>
+    <string name="hint_person_action_prompt">Qu\'est-ce que tu aimerais faire?</string>
 </resources>

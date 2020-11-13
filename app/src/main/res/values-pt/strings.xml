@@ -691,7 +691,7 @@
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
     <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
-    <string name="info_convert_person_to_patient">Convert person to patient</string>
-    <string name="info_update_person_demographics">Update person demographics</string>
-    <string name="hint_person_action_prompt">What would you like to do?</string>
+    <string name="info_convert_person_to_patient">Converter pessoa em paciente</string>
+    <string name="info_update_person_demographics">Atualizar dados demográficos de pessoas</string>
+    <string name="hint_person_action_prompt">O que você gostaria de fazer?</string>
 </resources>
