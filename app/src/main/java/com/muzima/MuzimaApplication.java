@@ -36,6 +36,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaCoreModuleVersionController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
@@ -96,6 +97,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private PatientReportController patientReportController;
     private RelationshipController relationshipController;
     private PersonController personController;
+    private MinimumSupportedAppVersionController minimumSupportedAppVersionController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -478,5 +480,16 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return muzimaCoreModuleVersionController;
+    }
+
+    public MinimumSupportedAppVersionController getMinimumSupportedVersionController() {
+        if(minimumSupportedAppVersionController == null){
+            try {
+                minimumSupportedAppVersionController = new MinimumSupportedAppVersionController(muzimaContext.getMinimumSupportedAppVersionService());
+            } catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        return minimumSupportedAppVersionController;
     }
 }
