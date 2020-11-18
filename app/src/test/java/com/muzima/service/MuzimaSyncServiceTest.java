@@ -507,8 +507,13 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadObservationsForPatients_shouldDownloadObservationsForGiveCohortIdsAndSavedConcepts() throws PatientController.PatientLoadException, ObservationController.DownloadObservationException, ObservationController.ReplaceObservationException, ConceptController.ConceptFetchException, ObservationController.DeleteObservationException {
+    public void downloadObservationsForPatients_shouldDownloadObservationsForGiveCohortIdsAndSavedConcepts() throws PatientController.PatientLoadException, ObservationController.DownloadObservationException, ObservationController.ReplaceObservationException, ConceptController.ConceptFetchException, ObservationController.DeleteObservationException, SetupConfigurationController.SetupConfigurationFetchException {
         String[] cohortUuids = new String[]{"uuid1", "uuid2"};
+
+        String activeSetupConfigUuid = "activeSetupConfigUuid";
+        SetupConfigurationTemplate setupConfigurationTemplate = new SetupConfigurationTemplate();
+        setupConfigurationTemplate.setUuid(activeSetupConfigUuid);
+
         final Patient patient = new Patient() {{
             setUuid("patient1");
         }};
@@ -525,25 +530,33 @@ public class MuzimaSyncServiceTest {
         when(muzimaApplication.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         List<String> patientUuids = Collections.singletonList("patient1");
         List<String> conceptUuids = asList("weight", "temp");
-        when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids))
+        when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids,activeSetupConfigUuid))
                 .thenReturn(allObservations);
         Concept conceptWeight = new Concept();
         conceptWeight.setUuid("weight");
         Concept conceptTemp = new Concept();
         conceptTemp.setUuid("temp");
         when(conceptController.getConcepts()).thenReturn(asList(conceptWeight, conceptTemp));
+        when(setupConfigurationController.getActiveSetupConfigurationTemplate()).thenReturn(setupConfigurationTemplate);
 
         muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids,true);
 
-        verify(observationController).downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids);
+        verify(observationController).downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids,activeSetupConfigUuid);
         verify(observationController).deleteObservations(new ArrayList<Observation>());
         verify(observationController).replaceObservations(allObservations);
         verifyNoMoreInteractions(observationController);
     }
 
     @Test
-    public void downloadObservationsForPatients_shouldReturnSuccessAndCountWhenDownloadingObservationsForPatient() throws PatientController.PatientLoadException, ObservationController.DownloadObservationException, ConceptController.ConceptFetchException {
+    public void downloadObservationsForPatients_shouldReturnSuccessAndCountWhenDownloadingObservationsForPatient()
+            throws PatientController.PatientLoadException, ObservationController.DownloadObservationException, ConceptController.ConceptFetchException,
+            SetupConfigurationController.SetupConfigurationFetchException {
         String[] cohortUuids = new String[]{"uuid1"};
+
+        String activeSetupConfigUuid = "activeSetupConfigUuid";
+        SetupConfigurationTemplate setupConfigurationTemplate = new SetupConfigurationTemplate();
+        setupConfigurationTemplate.setUuid(activeSetupConfigUuid);
+
         final Patient patient = new Patient() {{
             setUuid("patient1");
         }};
@@ -561,7 +574,8 @@ public class MuzimaSyncServiceTest {
         Concept conceptWeight = new Concept();
         conceptWeight.setUuid("weight");
         when(conceptController.getConcepts()).thenReturn(Collections.singletonList(conceptWeight));
-        when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(Collections.singletonList("patient1"), conceptUuids))
+        when(setupConfigurationController.getActiveSetupConfigurationTemplate()).thenReturn(setupConfigurationTemplate);
+        when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(Collections.singletonList("patient1"), conceptUuids,activeSetupConfigUuid))
                 .thenReturn(allObservations);
 
         int[] result = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids,true);
@@ -581,8 +595,13 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadObservationsForPatients_shouldReturnDownloadErrorWhenDownloadExceptionIsThrownForObservations() throws ObservationController.DownloadObservationException, PatientController.PatientLoadException, ConceptController.ConceptFetchException {
+    public void downloadObservationsForPatients_shouldReturnDownloadErrorWhenDownloadExceptionIsThrownForObservations() throws ObservationController.DownloadObservationException, PatientController.PatientLoadException, ConceptController.ConceptFetchException, SetupConfigurationController.SetupConfigurationFetchException {
         String[] cohortUuids = new String[]{"uuid1"};
+        String activeSetupConfigUuid = "activeSetupConfigUuid";
+
+        SetupConfigurationTemplate setupConfigurationTemplate = new SetupConfigurationTemplate();
+        setupConfigurationTemplate.setUuid(activeSetupConfigUuid);
+
         List<Patient> patients = new ArrayList<Patient>() {{
             add(new Patient() {{
                 setUuid("patient1");
@@ -602,7 +621,8 @@ public class MuzimaSyncServiceTest {
         when(conceptController.getConcepts()).thenReturn(conceptList);
         when(muzimaApplication.getSharedPreferences(Constants.CONCEPT_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
         when(sharedPref.getStringSet(Constants.CONCEPT_PREF_KEY, new HashSet<String>())).thenReturn(concepts);
-        doThrow(new ObservationController.DownloadObservationException(null)).when(observationController).downloadObservationsByPatientUuidsAndConceptUuids(anyList(), anyList());
+        when(setupConfigurationController.getActiveSetupConfigurationTemplate()).thenReturn(setupConfigurationTemplate);
+        doThrow(new ObservationController.DownloadObservationException(null)).when(observationController).downloadObservationsByPatientUuidsAndConceptUuids(anyList(), anyList(), anyString());
 
         int[] result = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids,true);
         assertThat(result[0], is(SyncStatusConstants.DOWNLOAD_ERROR));
@@ -752,8 +772,13 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void shouldDeleteVoidedObservationsWhenDownloadingObservations() throws ObservationController.DeleteObservationException, ObservationController.DownloadObservationException, ReplaceObservationException, ConceptController.ConceptFetchException {
+    public void shouldDeleteVoidedObservationsWhenDownloadingObservations() throws ObservationController.DeleteObservationException, ObservationController.DownloadObservationException, ReplaceObservationException, ConceptController.ConceptFetchException, SetupConfigurationController.SetupConfigurationFetchException {
         List<String> patientUuids = Collections.singletonList("patientUuid");
+        String activeSetupConfigUuid = "activeSetupConfigUuid";
+
+        SetupConfigurationTemplate setupConfigurationTemplate = new SetupConfigurationTemplate();
+        setupConfigurationTemplate.setUuid(activeSetupConfigUuid);
+
         final Patient patient = new Patient() {{
             setUuid("patientUuid");
         }};
@@ -776,8 +801,9 @@ public class MuzimaSyncServiceTest {
         }};
         when(conceptController.getConcepts()).thenReturn(conceptList);
 
+        when(setupConfigurationController.getActiveSetupConfigurationTemplate()).thenReturn(setupConfigurationTemplate);
         when(observationController.downloadObservationsByPatientUuidsAndConceptUuids
-                (eq(patientUuids), eq(Collections.singletonList("concept1")))).thenReturn(observations);
+                (eq(patientUuids), eq(Collections.singletonList("concept1")),eq(activeSetupConfigUuid))).thenReturn(observations);
 
         muzimaSyncService.downloadObservationsForPatientsByPatientUUIDs(patientUuids,true);
 
