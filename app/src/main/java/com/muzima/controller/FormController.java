@@ -597,7 +597,7 @@ public class FormController {
         return result;
     }
 
-    public Patient createNewPatient(MuzimaApplication muzimaApplication, FormData formData) {
+    public Patient createNewPatient(MuzimaApplication muzimaApplication, FormData formData) throws FormDataProcessException {
         try {
             Patient patient;
             if (isGenericRegistrationHTMLFormData(formData)) {
@@ -612,12 +612,11 @@ public class FormController {
             patientService.savePatient(patient);
             return patient;
         } catch (Exception e) {
-            Log.e("FormController", e.getMessage(), e);
+            throw new FormDataProcessException(e);
         }
-        return null;
     }
 
-    public Patient updatePatient(MuzimaApplication muzimaApplication, FormData formData) {
+    public Patient updatePatient(MuzimaApplication muzimaApplication, FormData formData) throws FormDataProcessException {
         try {
             Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
             if(patient == null){
@@ -631,12 +630,11 @@ public class FormController {
             patientService.updatePatient(patient);
             return patient;
         } catch (Exception e) {
-            Log.e("FormController", e.getMessage(), e);
+            throw new FormDataProcessException(e);
         }
-        return null;
     }
 
-    public Person updatePerson(MuzimaApplication muzimaApplication, FormData formData) {
+    public Person updatePerson(MuzimaApplication muzimaApplication, FormData formData) throws FormDataProcessException {
         try {
             Person person = personService.getPersonByUuid(formData.getPatientUuid());
             if(person == null){
@@ -651,9 +649,8 @@ public class FormController {
             personService.updatePerson(person);
             return person;
         } catch (Exception e) {
-            Log.e("FormController", e.getMessage(), e);
+            throw new FormDataProcessException(e);
         }
-        return null;
     }
 
     public boolean uploadAllCompletedForms() throws UploadFormDataException {
@@ -715,6 +712,12 @@ public class FormController {
             deleteEncounterFormDataAndRelatedPatientData(formDataList);
         } catch (FormDataFetchException e) {
             throw new FormDataDeleteException(e);
+        }
+    }
+
+    public static class FormDataProcessException extends Throwable {
+        FormDataProcessException(Throwable throwable) {
+            super(throwable);
         }
     }
 

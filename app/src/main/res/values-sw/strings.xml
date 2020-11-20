@@ -768,4 +768,5 @@
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
 
     <string name="youTube_player_error">Hitilafu ilitokea wakati wa kupakia video ya YouTube</string>
+    <string name="error_form_data_processing">Hitilafu ilitokea wakati wa kuchakata data ya fomu</string>
 </resources>

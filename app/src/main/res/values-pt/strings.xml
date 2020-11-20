@@ -772,4 +772,5 @@
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
 
     <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
+    <string name="error_form_data_processing">Ocorreu um erro ao processar os dados do formulário</string>
 </resources>

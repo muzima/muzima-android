@@ -99,7 +99,7 @@ public class FormDataStoreTest {
     }
 
     @Test
-    public void shouldCreateANewPatientAndStoreHisUUIDAsPatientUUID() {
+    public void shouldCreateANewPatientAndStoreHisUUIDAsPatientUUID() throws FormController.FormDataProcessException {
         String tempUUIDAssignedByDevice = "newUUID";
         formData.setPatientUuid(null);
         formData.setDiscriminator(FORM_DISCRIMINATOR_REGISTRATION);
