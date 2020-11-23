@@ -647,6 +647,8 @@ public class FormController {
                         formData.getDiscriminator()+"]. Person not updated.");
             }
             personService.updatePerson(person);
+
+            person = personService.getPersonByUuid(person.getUuid());
             return person;
         } catch (Exception e) {
             throw new FormDataProcessException(e);

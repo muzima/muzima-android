@@ -38,9 +38,6 @@ public class PersonRegistrationUtils {
             middleName = demographicsUpdateJsonObject.getString(middleNameJSONString);
         personName.setMiddleName(middleName);
 
-        personName.setPreferred(true);
-        System.out.println("Processed Updated Name");
-
         return personName;
     }
 
