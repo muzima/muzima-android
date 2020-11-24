@@ -85,6 +85,7 @@
     <string name="error_exception_data_load">Load exception has been thrown while loading data</string>
     <string name="error_exception_data_upload">Server could not process uploaded data</string>
     <string name="error_form_data_delete">Could not delete some form data</string>
+    <string name="error_form_data_processing">An error occurred while processing form data</string>
     <string name="error_form_download">Could not download forms</string>
     <string name="error_form_fetch">Something went wrong while fetching forms from local repo</string>
     <string name="error_form_load">Could not load forms</string>
@@ -109,7 +110,6 @@
     <string name="error_observation_download">Could not download observations</string>
     <string name="error_observation_fetch">Something went wrong while fetching observations from local repo</string>
     <string name="error_observation_form_save">An error occurred while saving observations in the form</string>
-    <string name="error_form_data_processing">An error occurred while processing form data</string>
     <string name="error_observation_load">Observations could not be loaded</string>
     <string name="error_observation_unavailable">No observations Available</string>
     <string name="error_parse_exception_data_fetch">Parse exception has been thrown while fetching data</string>

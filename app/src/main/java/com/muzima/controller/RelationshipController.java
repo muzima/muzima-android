@@ -200,7 +200,7 @@ public class RelationshipController {
                     if(person != null){
                         relationship.setPersonA(person);
                     } else {
-                        person = personService.getPersonByUuid(personUuid);
+                        person = personService.getPersonByUuid(relationship.getPersonA().getUuid());
                         if(person != null){
                             relationship.setPersonA(person);
                         }
