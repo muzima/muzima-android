@@ -463,7 +463,7 @@ public class LoginActivity extends Activity {
                     int version = currentMinimumSupportedAppVersion.getVersion();
                     int appVersionCode = BuildConfig.VERSION_CODE;
                     try{
-                        if (appVersionCode < version) {
+                        if (appVersionCode < version || version==0) {
                             showAlertDialog();
                         } else {
                             startNextActivity();
