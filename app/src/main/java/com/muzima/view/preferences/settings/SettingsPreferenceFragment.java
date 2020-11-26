@@ -114,8 +114,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                             .setIcon(getIconWarning())
                             .setTitle(getResources().getString(R.string.general_caution))
                             .setMessage(getResources().getString(R.string.warning_switch_server))
-                            .setPositiveButton("Yes", positiveClickListener())
-                            .setNegativeButton("No", null).create().show();
+                            .setPositiveButton(R.string.general_yes, positiveClickListener())
+                            .setNegativeButton(R.string.general_no, null).create().show();
                 }
                 return false;
             }
