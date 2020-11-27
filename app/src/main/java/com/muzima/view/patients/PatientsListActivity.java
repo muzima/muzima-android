@@ -336,8 +336,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 .setIcon(ThemeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
                 .setMessage(getResources().getString(R.string.confirm_patient_id_exists))
-                .setPositiveButton("Yes", yesClickListener())
-                .setNegativeButton("No", noClickListener()).create().show();
+                .setPositiveButton(R.string.general_yes, yesClickListener())
+                .setNegativeButton(R.string.general_no, noClickListener()).create().show();
     }
 
     private Dialog.OnClickListener yesClickListener() {
