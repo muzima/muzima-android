@@ -114,17 +114,26 @@ public class MainActivity extends BroadcastListenerActivity {
         String localePref = MuzimaPreferenceUtils.getSelectedUserLocalePreference(MainActivity.this);
         Boolean isUserPreferenceThemeLightMode = PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
                 .getBoolean(getResources().getString(R.string.preference_light_mode), false);
+        String currentAppLocalePreference = PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                .getString(getResources().getString(R.string.preference_app_language),getResources().getString(R.string.language_english));
         Boolean isPreviousThemeLightMode = MuzimaPreferenceUtils.getIsLightModeThemeSelectedPreference(MainActivity.this);
+        String previousAppLocalePreference = MuzimaPreferenceUtils.getAppLocalePreference(MainActivity.this);
 
-        if (isUserPreferenceThemeLightMode.equals(isPreviousThemeLightMode) && Locale.getDefault().toString().equalsIgnoreCase(localePref)) {
+        if (isUserPreferenceThemeLightMode.equals(isPreviousThemeLightMode) && Locale.getDefault().toString().equalsIgnoreCase(localePref)
+                && currentAppLocalePreference.equalsIgnoreCase(previousAppLocalePreference)) {
             Log.i(TAG, "onDestroy:  this is not a theme change or local change logout user,onDestroy");
             ((MuzimaApplication) getApplication()).logOut();
         } else {
             Log.i(TAG, "onDestroy: application logout is NOT necessary, updating variables");
             boolean isLightThemeModeSelected = PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
                     .getBoolean(getResources().getString(R.string.preference_light_mode), false);
+
+            String preferredAppLocale = PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                    .getString(getResources().getString(R.string.preference_app_language),getString(R.string.language_english));
+
             MuzimaPreferenceUtils.setLightModeThemeSelectedPreference(MainActivity.this, isLightThemeModeSelected);
             MuzimaPreferenceUtils.setSelectedUserLocalePreference(MainActivity.this, Locale.getDefault().toString());
+            MuzimaPreferenceUtils.setAppLocalePreference(MainActivity.this,preferredAppLocale);
         }
 
         super.onDestroy();
