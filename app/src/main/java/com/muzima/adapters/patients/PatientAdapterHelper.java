@@ -74,7 +74,9 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         holder.identifier.setText(patient.getIdentifier());
         holder.distanceToClientAddress.setText(getDistanceToClientAddress(patient));
         holder.name.setText(getPatientFullName(patient));
-        holder.genderImg.setImageResource(getGenderImage(patient.getGender()));
+        if(patient.getGender() != null) {
+            holder.genderImg.setImageResource(getGenderImage(patient.getGender()));
+        }
         addTags(holder,patient);
         return convertView;
     }

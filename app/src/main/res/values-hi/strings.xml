@@ -83,6 +83,7 @@
     <string name="error_exception_data_load">डेटा लोड करते समय लोड अपवाद आया</string>
     <string name="error_exception_data_upload">सर्वर अपलोड किए गए डेटा को संसाधित नहीं कर सका</string>
     <string name="error_form_data_delete">कुछ फ़ॉर्म डेटा को हटाया नहीं जा सका</string>
+    <string name="error_form_data_processing">प्रपत्र डेटा संसाधित करते समय एक त्रुटि हुई</string>
     <string name="error_form_download">फॉर्म डाउनलोड नहीं कर सके</string>
     <string name="error_form_fetch">स्थानीय रेपो से फॉर्म लाते समय कुछ गलत हो गया</string>
     <string name="error_form_load">फॉर्म लोड नहीं किए जा सके</string>

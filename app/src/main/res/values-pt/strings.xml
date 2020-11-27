@@ -83,6 +83,7 @@
     <string name="error_exception_data_load">Uma excepção de carregamento foi lançada ao carregar os dados</string>
     <string name="error_exception_data_upload">Uma excepção foi lançada ao carregar os dados</string>
     <string name="error_form_data_delete">Não poderá apagar alguns dados do formulário</string>
+    <string name="error_form_data_processing">Ocorreu um erro ao processar os dados do formulário</string>
     <string name="error_form_download">Não poderá baixar formulários</string>
     <string name="error_form_fetch">Algo deu errado enquanto buscava formulários do repositório local</string>
     <string name="error_form_load">Não poderá carregar os formulários</string>

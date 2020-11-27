@@ -88,6 +88,9 @@ class FormDataStore {
         } catch (IOException e) {
             Toast.makeText(formWebViewActivity,formWebViewActivity.getString(R.string.error_observation_form_save), Toast.LENGTH_SHORT).show();
             Log.e(getClass().getSimpleName(), "IOException occurred while saving observations parsed from the form data", e);
+        } catch (FormController.FormDataProcessException e) {
+            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_data_processing), Toast.LENGTH_SHORT).show();
+            Log.e(getClass().getSimpleName(), "Exception occurred while processing form data", e);
         }
     }
 

@@ -11,11 +11,14 @@
 package com.muzima.controller;
 
 import android.util.Log;
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
+import com.muzima.api.service.PatientService;
 import com.muzima.api.service.PersonService;
 import com.muzima.api.service.RelationshipService;
+import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -26,10 +29,12 @@ public class RelationshipController {
 
     private final RelationshipService relationshipService;
     private final PersonService personService;
+    private final PatientService patientService;
 
-    public RelationshipController(RelationshipService relationshipService, PersonService personService) {
-        this.relationshipService = relationshipService;
-        this.personService = personService;
+    public RelationshipController(MuzimaApplication muzimaApplication) throws IOException {
+        this.relationshipService = muzimaApplication.getMuzimaContext().getRelationshipService();
+        this.personService = muzimaApplication.getMuzimaContext().getPersonService();
+        patientService = muzimaApplication.getMuzimaContext().getPatientService();
     }
 
     /********************************************************************************************************
@@ -188,7 +193,31 @@ public class RelationshipController {
 
     public List<Relationship>  getRelationshipsForPerson(String personUuid) throws RetrieveRelationshipException{
         try {
-            return relationshipService.getRelationshipsForPerson(personUuid);
+            List<Relationship>  relationships = relationshipService.getRelationshipsForPerson(personUuid);
+            for(Relationship relationship:relationships){
+                if(!StringUtils.equals(relationship.getPersonA().getUuid(),personUuid)){
+                    Person person = patientService.getPatientByUuid(relationship.getPersonA().getUuid());
+                    if(person != null){
+                        relationship.setPersonA(person);
+                    } else {
+                        person = personService.getPersonByUuid(relationship.getPersonA().getUuid());
+                        if(person != null){
+                            relationship.setPersonA(person);
+                        }
+                    }
+                } else if(!StringUtils.equals(relationship.getPersonB().getUuid(),personUuid)){
+                    Person person = patientService.getPatientByUuid(relationship.getPersonB().getUuid());
+                    if(person != null){
+                        relationship.setPersonB(person);
+                    } else {
+                        person = personService.getPersonByUuid(relationship.getPersonB().getUuid());
+                        if(person != null){
+                            relationship.setPersonB(person);
+                        }
+                    }
+                }
+            }
+            return relationships;
         } catch (IOException e) {
             throw new RetrieveRelationshipException(e);
         }

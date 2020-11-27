@@ -334,9 +334,6 @@ public class GenericPatientRegistrationJSONMapper{
     private void setPatientNames() throws JSONException {
         List<PersonName> names = new ArrayList<>();
         names.add(createPersonName(patientJSON));
-        if(demographicsUpdateJSON != null && demographicsUpdateJSON.has("demographicsupdate.given_name")) {
-            names.add(createDemographicsUpdatePersonName(demographicsUpdateJSON));
-        }
         patient.setNames(names);
     }
 

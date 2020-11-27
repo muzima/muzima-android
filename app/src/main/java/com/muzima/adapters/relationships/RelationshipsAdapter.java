@@ -77,8 +77,10 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         if (StringUtils.equalsIgnoreCase(patientUuid, relationship.getPersonA().getUuid())) {
             holder.relatedPerson.setText(relationship.getPersonB().getDisplayName());
             holder.relationshipType.setText(relationship.getRelationshipType().getBIsToA());
-            int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
-            holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+            if(relationship.getPersonB().getGender() != null) {
+                int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
+                holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+            }
             try {
                 Patient p = patientController.getPatientByUuid(relationship.getPersonB().getUuid());
                 if (p != null){
@@ -92,8 +94,11 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         } else {
             holder.relatedPerson.setText(relationship.getPersonA().getDisplayName());
             holder.relationshipType.setText(relationship.getRelationshipType().getAIsToB());
-            int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
-            holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+
+            if(relationship.getPersonA().getGender() != null) {
+                int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
+                holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+            }
             try {
                 Patient p = patientController.getPatientByUuid(relationship.getPersonA().getUuid());
                 if (p != null){

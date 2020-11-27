@@ -391,8 +391,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public RelationshipController getRelationshipController() {
         if (relationshipController == null) {
             try {
-                relationshipController = new RelationshipController(muzimaContext.getService(RelationshipService.class),
-                        muzimaContext.getService(PersonService.class));
+                relationshipController = new RelationshipController(this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

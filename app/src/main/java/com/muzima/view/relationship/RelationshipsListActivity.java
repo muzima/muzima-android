@@ -137,8 +137,10 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         patientName.setText(PatientAdapterHelper.getPatientFormattedName(patient));
 
         ImageView genderIcon = findViewById(R.id.genderImg);
-        int genderDrawable = patient.getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
-        genderIcon.setImageDrawable(getResources().getDrawable(genderDrawable));
+        if(patient.getGender() != null) {
+            int genderDrawable = patient.getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
+            genderIcon.setImageDrawable(getResources().getDrawable(genderDrawable));
+        }
 
         TextView dob = findViewById(R.id.dob);
         dob.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));

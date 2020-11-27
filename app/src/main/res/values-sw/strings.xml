@@ -83,6 +83,7 @@
     <string name="error_exception_data_load">Tatizo la kimfumo limetokea wakati wa kupakia data</string>
     <string name="error_exception_data_upload">Seva imeshindwa kutumia data zilizopandishwa</string>
     <string name="error_form_data_delete">Imeshindikana kufuta baadhi ya fomu za data</string>
+    <string name="error_form_data_processing">Hitilafu ilitokea wakati wa kuchakata data ya fomu</string>
     <string name="error_form_download">Imeshindikana kupakua fomu.</string>
     <string name="error_form_fetch">Tatizo limetokea wakati wa kuchukua fomu kutoka katika hifadhi ya kifaa</string>
     <string name="error_form_load">Imeshindikana kupakia fomu</string>
