@@ -1009,7 +1009,7 @@ public class FormController {
                 && formData.getDiscriminator().equalsIgnoreCase(FORM_DISCRIMINATOR_REGISTRATION);
     }
 
-    private boolean isDemographicsUpdateFormData(FormData formData) {
+    public boolean isDemographicsUpdateFormData(FormData formData) {
         return (formData.getDiscriminator() != null)
                 && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE);
     }

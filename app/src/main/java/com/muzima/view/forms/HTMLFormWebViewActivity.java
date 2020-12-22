@@ -492,9 +492,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             setDiscriminator(form.getDiscriminator());
         }};
 
-        if (isGenericRegistrationForm()) {
-            formData.setJsonPayload(new GenericPatientRegistrationJSONMapper().map(((MuzimaApplication) getApplicationContext()),patient, formData, encounterProviderPreference, indexPatient));
-        } else if (isPersonRegistrationForm() || isPersonUpdateForm()) {
+        if (isGenericRegistrationForm() || isDemographicsUpdateForm() || isPersonRegistrationForm() || isPersonUpdateForm()) {
             formData.setJsonPayload(new GenericPatientRegistrationJSONMapper().map(((MuzimaApplication) getApplicationContext()),patient, formData, encounterProviderPreference, indexPatient));
         } else {
             formData.setJsonPayload(new HTMLPatientJSONMapper().map(((MuzimaApplication) getApplicationContext()), patient, formData, encounterProviderPreference));
@@ -618,6 +616,10 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 progressDialog.show(message);
             }
         });
+    }
+
+    private boolean isDemographicsUpdateForm() {
+        return formController.isDemographicsUpdateFormData(formData);
     }
 
     private boolean isEncounterForm() {
