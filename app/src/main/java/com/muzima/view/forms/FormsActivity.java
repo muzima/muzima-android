@@ -70,8 +70,8 @@ public class FormsActivity extends FormsActivityBase {
         setContentView(mainLayout);
         formController = ((MuzimaApplication) getApplication()).getFormController();
         tagPreferenceService = new TagPreferenceService(this);
-        initDrawer();
         initPager();
+        initDrawer();
         initPagerIndicator();
         setTitle(R.string.general_forms);
         logEvent("VIEW_ALL_FORMS");
