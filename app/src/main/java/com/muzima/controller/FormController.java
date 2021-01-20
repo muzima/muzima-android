@@ -156,8 +156,7 @@ public class FormController {
             List<Form> allForms = formService.getAllForms();
             List<Form> filteredForms = filterFormsByTags(allForms, tagsUuid, alwaysIncludeRegistrationForms);
             AvailableForms availableForms = new AvailableForms();
-            ArrayList<String> formUuids = getFormListAsPerConfigOrder();
-            availableForms = getAvailableFormsPerConfigOrder(formUuids, filteredForms);
+            availableForms = getAvailableForms(filteredForms);
 
             return availableForms;
         } catch (IOException e) {
@@ -216,18 +215,9 @@ public class FormController {
         DownloadedForms downloadedFormsByTags = new DownloadedForms();
         try {
             List<Form> allForms = formService.getAllForms();
-            ArrayList<String> formUuids = getFormListAsPerConfigOrder();
-            for (String formUuid : formUuids) {
-                Form form = formService.getFormByUuid(formUuid);
+            for (Form form : allForms) {
                 if (formService.isFormTemplateDownloaded(form.getUuid())) {
                     downloadedFormsByTags.add(new DownloadedFormBuilder().withDownloadedForm(form).build());
-                }
-            }
-            for (Form form : allForms) {
-                if (!formUuids.contains(form.getUuid())) {
-                    if (formService.isFormTemplateDownloaded(form.getUuid())) {
-                        downloadedFormsByTags.add(new DownloadedFormBuilder().withDownloadedForm(form).build());
-                    }
                 }
             }
         } catch (IOException e) {
@@ -680,7 +670,7 @@ public class FormController {
 
     public AvailableForms getRecommendedForms() throws FormFetchException {
         AvailableForms result = new AvailableForms();
-        for (AvailableForm form : getAvailableFormByTagsSortedByConfigOrder(null, false)) {
+        for (AvailableForm form : getRecommendedFormsByTagsSortedByConfigOrder(null, false)) {
             if (form.isDownloaded() && !form.isRegistrationForm() && !form.isProviderReport()
                     && !form.isRelationshipForm() && !form.isPersonUpdateForm()) {
                 result.add(form);
@@ -1127,12 +1117,12 @@ public class FormController {
         }
     }
 
-    public AvailableForms getAvailableFormByTagsSortedByConfigOrder(List<String> tagsUuid, boolean alwaysIncludeRegistrationForms) throws FormFetchException {
+    public AvailableForms getRecommendedFormsByTagsSortedByConfigOrder(List<String> tagsUuid, boolean alwaysIncludeRegistrationForms) throws FormFetchException {
         try {
             List<Form> allForms = formService.getAllForms();
             List<Form> filteredForms = filterFormsByTags(allForms, tagsUuid, alwaysIncludeRegistrationForms);
             ArrayList<String> formUuids = getFormListAsPerConfigOrder();
-            AvailableForms availableForms = getAvailableFormsPerConfigOrder(formUuids, filteredForms);
+            AvailableForms availableForms = getRecommendedFormsByConfigOrder(formUuids, filteredForms);
             return availableForms;
         } catch (IOException e) {
             throw new FormFetchException(e);
@@ -1201,7 +1191,7 @@ public class FormController {
         return formUuids;
     }
 
-    public AvailableForms getAvailableFormsPerConfigOrder(ArrayList<String> formUuids, List<Form> filteredForms) throws IOException {
+    public AvailableForms getRecommendedFormsByConfigOrder(ArrayList<String> formUuids, List<Form> filteredForms) throws IOException{
         AvailableForms availableForms = new AvailableForms();
         if (formUuids.size() > 0) {
             for (String formUuid : formUuids) {
@@ -1209,13 +1199,6 @@ public class FormController {
                 boolean downloadStatus = formService.isFormTemplateDownloaded(form.getUuid());
                 AvailableForm availableForm = new AvailableFormBuilder().withAvailableForm(form).withDownloadStatus(downloadStatus).build();
                 availableForms.add(availableForm);
-            }
-        }
-
-        //check if forms in config are among those filtered and remove those excluded by the filter
-        for (Form filteredForm : filteredForms) {
-            if (!formUuids.contains(filteredForm.getUuid())) {
-                availableForms.remove(filteredForm);
             }
         }
 
@@ -1229,6 +1212,28 @@ public class FormController {
                 availableForms.add(availableForm);
             }
         }
+
+        return availableForms;
+    }
+
+    public AvailableForms getAvailableForms(List<Form> filteredForms) throws IOException {
+        AvailableForms availableFormsDownloaded = new AvailableForms();
+        AvailableForms availableFormsNotDownloaded = new AvailableForms();
+        AvailableForms availableForms = new AvailableForms();
+        for (Form filteredForm : filteredForms) {
+            boolean downloadStatus = formService.isFormTemplateDownloaded(filteredForm.getUuid());
+            AvailableForm availableForm = new AvailableFormBuilder().withAvailableForm(filteredForm).withDownloadStatus(downloadStatus).build();
+            if(downloadStatus){
+                availableFormsDownloaded.add(availableForm);
+            }else{
+                availableFormsNotDownloaded.add(availableForm);
+
+            }
+        }
+        if(availableFormsDownloaded.size()>0)
+            availableForms.addAll(availableFormsDownloaded);
+        if(availableFormsNotDownloaded.size()>0)
+            availableForms.addAll(availableFormsNotDownloaded);
 
         return availableForms;
     }
