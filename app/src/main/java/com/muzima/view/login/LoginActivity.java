@@ -16,6 +16,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -37,9 +38,11 @@ import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.model.MinimumSupportedAppVersion;
 import com.muzima.api.model.MuzimaCoreModuleVersion;
+import com.muzima.api.model.Provider;
 import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaCoreModuleVersionController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.ProviderController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.service.CredentialsPreferenceService;
@@ -58,6 +61,7 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
+import java.util.List;
 import java.util.Locale;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -426,14 +430,14 @@ public class LoginActivity extends Activity {
 
     private class DownloadMuzimaAppVersionCodeBackGroundTask extends AsyncTask<String, Void,String > {
         @Override
-        public String doInBackground(String... params){
+        public String doInBackground(String... params) {
             String serverUrl = params[0];
             MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
             try {
-                if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
+                if (NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
                     MinimumSupportedAppVersion localMinimumSupportedAppVersion = minimumSupportedAppVersionController.getMinimumSupportedAppVersion();
                     MinimumSupportedAppVersion downloadedMinimumSupportedAppVersion = minimumSupportedAppVersionController.downloadMinimumSupportedAppVersion();
-                    if(downloadedMinimumSupportedAppVersion != null) {
+                    if (downloadedMinimumSupportedAppVersion != null) {
                         if (localMinimumSupportedAppVersion.getVersion() != null) {
                             minimumSupportedAppVersionController.updateMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
                         } else {
@@ -442,11 +446,11 @@ public class LoginActivity extends Activity {
                     }
                 }
             } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionDownloadException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while downloading supported app version ",e);
+                Log.e(getClass().getSimpleName(), "Encountered an exception while downloading supported app version ", e);
             } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionFetchException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
+                Log.e(getClass().getSimpleName(), "Encountered an exception while fetching/retrieving supported app version ", e);
             } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionSaveException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while saving supported app version ",e);
+                Log.e(getClass().getSimpleName(), "Encountered an exception while saving supported app version ", e);
             }
             return serverUrl;
         }
@@ -457,24 +461,78 @@ public class LoginActivity extends Activity {
             MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
             try {
                 currentMinimumSupportedAppVersion = minimumSupportedAppVersionController.getMinimumSupportedAppVersion();
-                if(currentMinimumSupportedAppVersion == null || currentMinimumSupportedAppVersion.getVersion() == null){
+                if (currentMinimumSupportedAppVersion == null || currentMinimumSupportedAppVersion.getVersion() == null) {
                     showAlertDialog();
-                }else {
+                } else {
                     int version = currentMinimumSupportedAppVersion.getVersion();
                     int appVersionCode = BuildConfig.VERSION_CODE;
-                    try{
-                        if (appVersionCode < version || version==0) {
+                    try {
+                        if (appVersionCode < version || version == 0) {
                             showAlertDialog();
                         } else {
-                            startNextActivity();
+                            ProviderController providerController = ((MuzimaApplication) getApplication()).getProviderController();
+                            Provider provider = providerController.getProviderBySystemId(((MuzimaApplication) getApplication()).getAuthenticatedUser().getSystemId());
+                            if (provider == null) {
+                                downloadAssociatedProvider(serverUrl);
+                            } else {
+                                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                                String providerKey = getResources().getString(R.string.preference_encounter_provider_key);
+                                if (!settings.getBoolean(providerKey, false)) {
+                                    settings.edit().putBoolean(providerKey, true).commit();
+                                }
+                                startNextActivity();
+                            }
                         }
-                    }catch (NumberFormatException e){
-                        Log.e(getClass().getSimpleName(),"Encountered an exception while parsing string to integer ",e);
+                    } catch (NumberFormatException e) {
+                        Log.e(getClass().getSimpleName(), "Encountered an exception while parsing string to integer ", e);
                         showAlertDialog();
                     }
                 }
             } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionFetchException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
+                Log.e(getClass().getSimpleName(), "Encountered an exception while fetching/retrieving supported app version ", e);
+            }
+
+        }
+        private void downloadAssociatedProvider(String serverUrl){
+            new DownloadAssociatedProviderBackGroundTask().execute(serverUrl);
+        }
+
+    }
+
+        private class DownloadAssociatedProviderBackGroundTask extends AsyncTask<String, Void,String > {
+            @Override
+            public String doInBackground(String... params) {
+                String serverUrl = params[0];
+                ProviderController providerController = ((MuzimaApplication) getApplication()).getProviderController();
+                try {
+                    if (NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
+                        List<Provider> providers = providerController.downloadProviderFromServerByName("");
+                        if (providers != null || providers.size()>0) {
+                            providerController.saveProviders(providers);
+                        }
+                    }
+                }  catch (ProviderController.ProviderDownloadException e) {
+                    Log.e(getClass().getSimpleName(), "Encountered an exception while saving Providers ", e);
+                } catch (ProviderController.ProviderSaveException e) {
+                    Log.e(getClass().getSimpleName(), "Encountered an exception while saving Providers ", e);
+                }
+                return serverUrl;
+            }
+
+            @Override
+            protected void onPostExecute(String serverUrl) {
+                ProviderController providerController = ((MuzimaApplication) getApplication()).getProviderController();
+                Provider provider = providerController.getProviderBySystemId(((MuzimaApplication) getApplication()).getAuthenticatedUser().getSystemId());
+                if (provider == null) {
+                    showProviderAlertDialog();
+                } else {
+                    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                    String providerKey = getResources().getString(R.string.preference_encounter_provider_key);
+                    if (!settings.getBoolean(providerKey, false)) {
+                        settings.edit().putBoolean(providerKey, true).commit();
+                    }
+                    startNextActivity();
+                }
             }
         }
 
@@ -514,6 +572,17 @@ public class LoginActivity extends Activity {
                     .show();
         }
 
+        private void showProviderAlertDialog() {
+            new AlertDialog.Builder(LoginActivity.this)
+                    .setCancelable(true)
+                    .setIcon(ThemeUtils.getIconWarning(LoginActivity.this))
+                    .setTitle("Provider not Set")
+                    .setMessage("You dont have provider account set for this provider. Please contact the administrator to set an account for you. ")
+                    .setPositiveButton(getString(R.string.general_ok), positiveClickListener())
+                    .create()
+                    .show();
+        }
+
         private Dialog.OnClickListener positiveClickListener() {
             return new Dialog.OnClickListener() {
                 @Override
@@ -525,6 +594,4 @@ public class LoginActivity extends Activity {
                 }
             };
         }
-
     }
-}

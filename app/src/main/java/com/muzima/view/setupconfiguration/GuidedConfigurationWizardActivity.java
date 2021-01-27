@@ -12,10 +12,13 @@ package com.muzima.view.setupconfiguration;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
+
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -32,9 +35,11 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.Provider;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.DefaultEncounterLocationPreferenceService;
@@ -47,6 +52,7 @@ import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import com.muzima.utils.Constants.SetupLogConstants;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.login.LoginActivity;
 
 import net.minidev.json.JSONObject;
 
@@ -419,6 +425,17 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     resultDescription = getString(R.string.error_location_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(GuidedConfigurationWizardActivity.this);
+                String locationKey = getResources().getString(R.string.preference_default_encounter_location);
+                List<Location> locations = new ArrayList<>();
+                try {
+                    locations = ((MuzimaApplication) getApplicationContext()).getLocationController().getAllLocations();
+                } catch (LocationController.LocationLoadException e) {
+                    e.printStackTrace();
+                }
+                if(locations.size()>0) {
+                    settings.edit().putString(locationKey, Integer.toString(locations.get(0).getId())).commit();
+                }
                 checkIfCohortWithFilterByLocationExists();
                 downloadLocationsLog.setSetupActionResult(resultDescription);
                 downloadLocationsLog.setSetupActionResultStatus(resultStatus);
@@ -440,12 +457,11 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractProvidersUuids();
-                if (!uuids.isEmpty()) {
+                //if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     return muzimaSyncService.downloadProviders(uuids.toArray(new String[uuids.size()]));
-
-                }
-                return null;
+                //}
+                //return null;
             }
 
             @Override
@@ -466,6 +482,17 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_provider_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                }
+                ProviderController providerController = ((MuzimaApplication) getApplication()).getProviderController();
+                Provider provider = providerController.getProviderBySystemId(((MuzimaApplication) getApplication()).getAuthenticatedUser().getSystemId());
+                if (provider == null) {
+                    // do nothing for now
+                } else {
+                    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(GuidedConfigurationWizardActivity.this);
+                    String providerKey = getResources().getString(R.string.preference_encounter_provider_key);
+                    if (!settings.getBoolean(providerKey, false)) {
+                        settings.edit().putBoolean(providerKey, true).commit();
+                    }
                 }
                 downloadProvidersLog.setSetupActionResult(resultDescription);
                 downloadProvidersLog.setSetupActionResultStatus(resultStatus);

@@ -349,7 +349,7 @@ public class MuzimaSyncService {
         int[] result = new int[4];
 
         try {
-            List<Provider> providers = providerController.downloadProvidersFromServerByUuid(providerIds);
+            List<Provider> providers = providerController.downloadProviderFromServerByName("");
             providerController.saveProviders(providers);
             Log.i(getClass().getSimpleName(), "Downloaded " + providers.size() + " providers");
 

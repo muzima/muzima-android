@@ -492,7 +492,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             setDiscriminator(form.getDiscriminator());
         }};
 
-        if (isGenericRegistrationForm() || isEncounterForm()) {
+        if (isGenericRegistrationForm()) {
             formData.setJsonPayload(new GenericPatientRegistrationJSONMapper().map(((MuzimaApplication) getApplicationContext()),patient, formData, encounterProviderPreference, indexPatient));
         } else if (isPersonRegistrationForm() || isPersonUpdateForm()) {
             formData.setJsonPayload(new GenericPatientRegistrationJSONMapper().map(((MuzimaApplication) getApplicationContext()),patient, formData, encounterProviderPreference, indexPatient));
