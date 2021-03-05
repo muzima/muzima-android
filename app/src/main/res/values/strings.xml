@@ -173,6 +173,7 @@
     <string name="general_dashboard">Dashboard</string>
     <string name="general_data_sync_required">Data sync required</string>
     <string name="general_date">Date</string>
+    <string name="general_days_character">d</string>
     <string name="general_delete">Delete</string>
     <string name="general_description_unavailable">No description available</string>
     <string name="general_disagree">Disagree</string>
@@ -200,6 +201,7 @@
     <string name="general_login">Login</string>
     <string name="general_logout">Logout</string>
     <string name="general_medium">Medium</string>
+    <string name="general_months_character">m</string>
     <string name="general_next">Next</string>
     <string name="general_no">No</string>
     <string name="general_not_available_text">Not Available</string>
@@ -238,6 +240,7 @@
     <string name="general_username">Username</string>
     <string name="general_view_encounter">View encounter</string>
     <string name="general_welcome">Welcome</string>
+    <string name="general_years_character">y</string>
     <string name="general_yes">Yes</string>
 
     <string name="get_more">More from Server</string>
