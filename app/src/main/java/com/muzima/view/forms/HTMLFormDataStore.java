@@ -376,6 +376,7 @@ class HTMLFormDataStore {
                 patientController.savePatient(patient);
                 patientJsonObject.put("uuid", patient.getUuid());
                 patientJsonObject.put("name", patient.getDisplayName());
+                patientJsonObject.put("identifier", patient.getIdentifier());
                 patientJsonObject.put("birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
                 patientJsonObject.put("birthdate_estimated", Boolean.toString(patient.getBirthdateEstimated()));
                 patientJsonObject.put("sex", patient.getGender());
@@ -425,26 +426,21 @@ class HTMLFormDataStore {
     public String searchPersonsLocally(String searchTerm){
         JSONArray personsJsonArray = new JSONArray();
         try {
-            List<Person> personsOnDevice = personController.searchPersonLocally(searchTerm);
             List<Patient> patientsOnDevice = patientController.searchPatientLocally(searchTerm, null);
             for (Patient patient : patientsOnDevice) {
                 if (personController.getPersonByUuid(patient.getUuid()) == null)
-                    personsOnDevice.add(patient);
+                    personsJsonArray.put(createPatientJsonObject(patient));
             }
 
+            List<Person> personsOnDevice = personController.searchPersonLocally(searchTerm);
             for (Person person:personsOnDevice){
-                try {
-                    JSONObject personJsonObject = new JSONObject();
-                    personJsonObject.put("uuid", person.getUuid());
-                    personJsonObject.put("name", person.getDisplayName());
-                    personsJsonArray.put(personJsonObject);
-                } catch (JSONException e){
-                    Log.e(getClass().getSimpleName(), "Could not add person object into persons array", e);
-                }
+                personsJsonArray.put(createPersonJsonObject(person));
             }
         } catch (PersonController.PersonLoadException | PatientController.PatientLoadException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_provider_load), Toast.LENGTH_SHORT).show();
             Log.e(getClass().getSimpleName(), "Exception occurred while loading persons", e);
+        } catch (JSONException e){
+            Log.e(getClass().getSimpleName(), "Could not add person object into persons array", e);
         }
         return personsJsonArray.toString();
     }
@@ -463,16 +459,34 @@ class HTMLFormDataStore {
             }
             for (Patient patient : patientList) {
                 try {
-                    JSONObject patientJsonObject = new JSONObject();
-                    patientJsonObject.put("uuid", patient.getUuid());
-                    patientJsonObject.put("name", patient.getDisplayName());
-                    patientsJsonArray.put(patientJsonObject);
+                    patientsJsonArray.put(createPatientJsonObject(patient));
                 } catch (JSONException e) {
                     Log.e(getClass().getSimpleName(), "Could not add person object into persons array", e);
                 }
             }
         }
         return patientsJsonArray.toString();
+    }
+
+    private JSONObject createPatientJsonObject(Patient patient) throws JSONException {
+        JSONObject patientJsonObject = new JSONObject();
+        patientJsonObject.put("uuid", patient.getUuid());
+        patientJsonObject.put("name", patient.getDisplayName());
+        patientJsonObject.put("birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
+        patientJsonObject.put("birthdate_estimated", Boolean.toString(patient.getBirthdateEstimated()));
+        patientJsonObject.put("sex", patient.getGender());
+        patientJsonObject.put("identifier", patient.getIdentifier());
+        return patientJsonObject;
+    }
+
+    private JSONObject createPersonJsonObject(Person person) throws JSONException {
+        JSONObject personJsonObject = new JSONObject();
+        personJsonObject.put("uuid", person.getUuid());
+        personJsonObject.put("name", person.getDisplayName());
+        personJsonObject.put("birth_date", DateUtils.getFormattedDate(person.getBirthdate()));
+        personJsonObject.put("birthdate_estimated", Boolean.toString(person.getBirthdateEstimated()));
+        personJsonObject.put("sex", person.getGender());
+        return personJsonObject;
     }
 
     @JavascriptInterface

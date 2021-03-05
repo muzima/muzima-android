@@ -167,6 +167,7 @@
     <string name="general_dashboard">Dashibodi</string>
     <string name="general_data_sync_required">Usawazishaji wa data unahitajika</string>
     <string name="general_date">Tarehe</string>
+    <string name="general_days_character">s</string>
     <string name="general_delete">Futa</string>
     <string name="general_description_unavailable">Hakuna maelezo</string>
     <string name="general_disagree">Kutokubali</string>
@@ -194,6 +195,7 @@
     <string name="general_login">Ingia</string>
     <string name="general_logout">Toka</string>
     <string name="general_medium">Wastani</string>
+    <string name="general_months_character">m</string>
     <string name="general_next">Inayofuata</string>
     <string name="general_no">Hapana</string>
     <string name="general_not_available_text">Haipatikani</string>
@@ -232,6 +234,7 @@
     <string name="general_username">Jina la mtumiaji.</string>
     <string name="general_view_encounter">Tazama mkutano</string>
     <string name="general_welcome">Karibu</string>
+    <string name="general_years_character">M</string>
     <string name="general_yes">Ndiyo</string>
 
     <string name="get_more">Zaidi kutoka seva</string>

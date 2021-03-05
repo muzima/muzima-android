@@ -640,6 +640,13 @@ $(document).ready(function () {
         return (today - birthDate) / milliSecondsInAYear;
     };
 
+    $.fn.getAgeInDays = function (birthDateString) {
+        var birthDate = new Date(birthDateString);
+        var today = new Date();
+        var milliSecondsInADay = 1000 * 60 * 60 * 24;
+        return (today - birthDate) / milliSecondsInADay;
+    };
+
     /* Start - Used for Sub-Forms */
 
     $('.repeat')
@@ -1396,6 +1403,11 @@ $(document).ready(function () {
     //Start - Set up auto complete for the person element.
     document.setupAutoCompleteForPerson = function($searchElementSelector, $resultElementSelector, $noResultsElement, $searchLoadingWidget,searchServer) {
         $searchLoadingWidget.hide();
+
+        var yearsRepresentationCharacter = htmlDataStore.getStringResource("general_years_character");
+        var monthsRepresentationCharacter = htmlDataStore.getStringResource("general_months_character");
+        var daysRepresentationCharacter = htmlDataStore.getStringResource("general_days_character");
+
         $searchElementSelector.focus(function () {
             $searchElementSelector.autocomplete({
                 source: function (request, response) {
@@ -1405,7 +1417,40 @@ $(document).ready(function () {
                     searchResults = JSON.parse(searchResults);
                     var listOfPersons = [];
                     $.each(searchResults, function (key, person) {
-                        listOfPersons.push({"val": person.uuid, "label": person.name});
+                        var label = person.name;
+                        if(person.sex != undefined && person.sex != ''){
+                            label = label + ', ' + person.sex;
+                        }
+                        if(person.birth_date != undefined && person.birth_date != ''){
+                            var parts = person.birth_date.split("-");
+                            var birthDate = new Date(parseInt(parts[2]),parseInt(parts[1])-1,parseInt(parts[0]));
+                            var years = $.fn.getAgeInYears(birthDate);
+                            var age_years = Math.floor(years)
+                            var age_months = Math.floor((years-age_years)*12)
+                            var month = birthDate.toLocaleString('default', { month: 'short' });
+                            var day = birthDate.getDate();
+                            var year = birthDate.getFullYear();
+
+                            label = label + ', ' + day + ' ' + month + ' ' + year + ' (';
+                            if(person.birthdate_estimated == 'true') {
+                                label += '~ ';
+                            }
+
+                            if(age_years > 0) {
+                                label += age_years+ yearsRepresentationCharacter;
+                            }
+
+                            if(age_months > 0) {
+                                if(age_years > 0) label +=  ' ';
+                                label += age_months + monthsRepresentationCharacter + ')';
+                            }
+
+                            if(age_months == 0 && age_years == 0){
+                                var age_days = Math.floor($.fn.getAgeInDays(birthDate));
+                                label += age_days + daysRepresentationCharacter + ')';
+                            }
+                        }
+                        listOfPersons.push({"val": person.uuid, "label": label});
                     });
                     if(!searchServer || searchTerm.length >=3) {
                         $noResultsElement.val(searchResults.length);

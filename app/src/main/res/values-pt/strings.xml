@@ -167,6 +167,7 @@
     <string name="general_dashboard">Painel de controle</string>
     <string name="general_data_sync_required">Solicitação de dados syc</string>
     <string name="general_date">Encontro</string>
+    <string name="general_days_character">d</string>
     <string name="general_delete">Apagar</string>
     <string name="general_description_unavailable">Sem descrição disponível</string>
     <string name="general_disagree">Discordo</string>
@@ -194,6 +195,7 @@
     <string name="general_login">Entrar</string>
     <string name="general_logout">Sair</string>
     <string name="general_medium">Médio</string>
+    <string name="general_months_character">m</string>
     <string name="general_next">Próximo</string>
     <string name="general_no">Não</string>
     <string name="general_not_available_text">Não disponível</string>
@@ -232,6 +234,7 @@
     <string name="general_username">Nome do utilizador</string>
     <string name="general_view_encounter">Ver visita</string>
     <string name="general_welcome">Bem-vindo</string>
+    <string name="general_years_character">A</string>
     <string name="general_yes">Sim</string>
 
     <string name="get_more">Mais do servidor</string>

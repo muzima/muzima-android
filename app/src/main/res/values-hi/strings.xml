@@ -167,6 +167,7 @@
     <string name="general_dashboard">डैशबोर्ड</string>
     <string name="general_data_sync_required">डेटा तुल्यकालन आवश्यकता है</string>
     <string name="general_date">तारीख</string>
+    <string name="general_days_character">दि</string>
     <string name="general_delete">हटाएं</string>
     <string name="general_description_unavailable">कोई वर्णन उपलब्ध नहीं</string>
     <string name="general_disagree">असहमत</string>
@@ -194,6 +195,7 @@
     <string name="general_login">लॉग इन करें</string>
     <string name="general_logout">लॉग आउट</string>
     <string name="general_medium">मध्यम</string>
+    <string name="general_months_character">म</string>
     <string name="general_next">आगे</string>
     <string name="general_no">नहीं</string>
     <string name="general_not_available_text">उपलब्ध नहीं है</string>
@@ -232,6 +234,7 @@
     <string name="general_username">उपयोगकर्ता नाम</string>
     <string name="general_view_encounter">मुठभेड़ देखें</string>
     <string name="general_welcome">स्वागत हे</string>
+    <string name="general_years_character">य</string>
     <string name="general_yes">हाँ</string>
 
     <string name="get_more">सर्वर से अधिक</string>
