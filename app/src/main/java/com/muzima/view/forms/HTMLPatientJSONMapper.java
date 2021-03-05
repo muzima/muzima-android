@@ -17,6 +17,8 @@ import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
+import com.muzima.api.model.PersonAddress;
+import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.User;
 import com.muzima.controller.LocationController;
@@ -81,6 +83,49 @@ public class HTMLPatientJSONMapper {
                 prepopulateJSON.put("other_identifier_type", identifierTypeName);
                 prepopulateJSON.put("other_identifier_value", identifierValue);
             }
+
+            if(!patient.getAtributes().isEmpty()){
+                List<PersonAttribute> attributes = patient.getAtributes();
+
+                JSONArray attributesJSONArray = new JSONArray();
+
+                for(PersonAttribute attribute : attributes){
+                    JSONObject attributeJSONObject = new JSONObject();
+                    attributeJSONObject.put("attribute_type_uuid",attribute.getAttributeType().getUuid());
+                    attributeJSONObject.put("attribute_type_name",attribute.getAttributeType().getName());
+                    attributeJSONObject.put("attribute_value",attribute.getAttribute());
+                    attributesJSONArray.put(attributeJSONObject);
+                }
+                patientDetails.put("patient.personattribute",attributesJSONArray);
+            }
+
+            if(!patient.getAddresses().isEmpty()){
+                List<PersonAddress> addresses = patient.getAddresses();
+                JSONArray addressesJSONArray = new JSONArray();
+                for(PersonAddress address : addresses){
+                    JSONObject addressJSONObject = new JSONObject();
+                    addressJSONObject.put("address1",address.getAddress1());
+                    addressJSONObject.put("address2",address.getAddress2());
+                    addressJSONObject.put("address3",address.getAddress3());
+                    addressJSONObject.put("address4",address.getAddress4());
+                    addressJSONObject.put("address5",address.getAddress5());
+                    addressJSONObject.put("address6",address.getAddress6());
+                    addressJSONObject.put("cityVillage",address.getCityVillage());
+                    addressJSONObject.put("stateProvince",address.getStateProvince());
+                    addressJSONObject.put("country",address.getCountry());
+                    addressJSONObject.put("postalCode",address.getPostalCode());
+                    addressJSONObject.put("countyDistrict",address.getCountyDistrict());
+                    addressJSONObject.put("latitude",address.getLatitude());
+                    addressJSONObject.put("longitude",address.getLongitude());
+                    addressJSONObject.put("startDate",address.getStartDate());
+                    addressJSONObject.put("endDate",address.getEndDate());
+                    addressJSONObject.put("preferred",address.getPreferred());
+                    addressJSONObject.put("uuid",address.getUuid());
+                    addressesJSONArray.put(addressJSONObject);
+                }
+                patientDetails.put("patient.personaddress",addressesJSONArray);
+            }
+
             prepopulateJSON.put("patient", patientDetails);
             prepopulateJSON.put("encounter", encounterDetails);
         } catch (JSONException e) {
