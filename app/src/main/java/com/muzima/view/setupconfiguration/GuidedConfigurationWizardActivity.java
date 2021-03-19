@@ -358,7 +358,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadFormTemplatesLog.setSetupActionResult(resultDescription);
                 downloadFormTemplatesLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
-                downloadProviders();
                 downloadConcepts();
             }
         }.execute();
@@ -470,6 +469,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadProvidersLog.setSetupActionResult(resultDescription);
                 downloadProvidersLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
+                downloadCohorts();
             }
         }.execute();
     }
@@ -710,7 +710,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         if (isCohortLocationBased) {
             showAlertDialog();
         } else {
-            downloadCohorts();
+            downloadProviders();
         }
     }
 
@@ -740,7 +740,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String[] location = strName.split("-");
                 defaultEncounterLocationPreferenceService.setDefaultEncounterLocationPreference(location[0]);
                 Toast.makeText(GuidedConfigurationWizardActivity.this, strName, Toast.LENGTH_LONG).show();
-                downloadCohorts();
+                downloadProviders();
             }
         });
         AlertDialog alertDialog = alertDialogBuider.create();
