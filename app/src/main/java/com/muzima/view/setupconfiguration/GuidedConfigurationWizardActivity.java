@@ -149,7 +149,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadSettingsLog.setSetupActionResult(resultDescription);
                 downloadSettingsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
-                downloadCohorts();
+                downloadLocations();
             }
         }.execute();
     }
@@ -192,7 +192,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadCohortsLog.setSetupActionResult(resultDescription);
                 downloadCohortsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
-                downloadLocations();
+                downloadAndSavePatients();
             }
         }.execute();
     }
@@ -710,14 +710,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         if (isCohortLocationBased) {
             showAlertDialog();
         } else {
-            downloadAndSavePatients();
+            downloadCohorts();
         }
     }
 
     private void showAlertDialog() {
         AlertDialog.Builder alertDialogBuider = new AlertDialog.Builder(this);
         alertDialogBuider.setTitle(R.string.title_default_encounter_location);
-        alertDialogBuider.setMessage(R.string.select_default_encounter_location);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice);
         final MuzimaApplication muzimaApplication = (MuzimaApplication) this.getApplication();
         final LocationController locationController = muzimaApplication.getLocationController();
@@ -741,7 +740,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String[] location = strName.split("-");
                 defaultEncounterLocationPreferenceService.setDefaultEncounterLocationPreference(location[0]);
                 Toast.makeText(GuidedConfigurationWizardActivity.this, strName, Toast.LENGTH_LONG).show();
-                downloadAndSavePatients();
+                downloadCohorts();
             }
         });
         AlertDialog alertDialog = alertDialogBuider.create();
