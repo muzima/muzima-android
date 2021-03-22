@@ -677,62 +677,64 @@ public class GenericPatientRegistrationJSONMapper{
 
     private void createRelationship(JSONObject jsonObject) throws JSONException{
         try {
-            String relationshipTypeUuid = (String)getFromJsonObject(jsonObject,"person.relationshipType");
-            RelationshipType relationshipType = muzimaApplication.getRelationshipController().getRelationshipTypeByUuid(relationshipTypeUuid);
-            String personBUuid = (String)getFromJsonObject(jsonObject,"personB.uuid");
-            String personAUuid = (String)getFromJsonObject(jsonObject,"personA.uuid");
+            if(jsonObject.has("person.relationshipType")) {
+                String relationshipTypeUuid = (String) getFromJsonObject(jsonObject, "person.relationshipType");
+                RelationshipType relationshipType = muzimaApplication.getRelationshipController().getRelationshipTypeByUuid(relationshipTypeUuid);
+                String personBUuid = (String) getFromJsonObject(jsonObject, "personB.uuid");
+                String personAUuid = (String) getFromJsonObject(jsonObject, "personA.uuid");
 
-            if(StringUtils.isEmpty(personAUuid) || StringUtils.isEmpty(personBUuid)){
-                return;
-            }
-
-            Person personA;
-            if(StringUtils.equals(personAUuid,patient.getUuid())){
-                personA = patient;
-            } else {
-                personA = muzimaApplication.getPersonController().getPersonByUuid(personAUuid);
-                if (personA == null) {
-                    personA = muzimaApplication.getPatientController().getPatientByUuid(personAUuid);
+                if (StringUtils.isEmpty(personAUuid) || StringUtils.isEmpty(personBUuid)) {
+                    return;
                 }
-            }
 
-            Person personB;
-            if(StringUtils.equals(personBUuid,patient.getUuid())){
-                personB = patient;
-            } else {
-                personB = muzimaApplication.getPersonController().getPersonByUuid(personBUuid);
-                if (personB == null) {
-                    personB = muzimaApplication.getPatientController().getPatientByUuid(personBUuid);
-                }
-            }
-
-            if (relationshipType != null && personA != null && personB != null && personA != personB) {
-                List<Relationship> existingRelationships = muzimaApplication.getRelationshipController().getRelationshipsForPerson(personA.getUuid());
-                Relationship existingRelationship = null;
-                for (Relationship relationship:existingRelationships){
-                    if((StringUtils.equals(relationship.getPersonA().getUuid(),personA.getUuid()) ||
-                            StringUtils.equals(relationship.getPersonA().getUuid(),personB.getUuid()))
-                            && (StringUtils.equals(relationship.getPersonB().getUuid(),personA.getUuid()) ||
-                            StringUtils.equals(relationship.getPersonB().getUuid(),personB.getUuid()))){
-                        existingRelationship = relationship;
-                        break;
+                Person personA;
+                if (StringUtils.equals(personAUuid, patient.getUuid())) {
+                    personA = patient;
+                } else {
+                    personA = muzimaApplication.getPersonController().getPersonByUuid(personAUuid);
+                    if (personA == null) {
+                        personA = muzimaApplication.getPatientController().getPatientByUuid(personAUuid);
                     }
                 }
 
-                if(existingRelationship == null) {
-                    Relationship newRelationship = new Relationship(personA, personB, relationshipType, false);
-                    newRelationship.setUuid(UUID.randomUUID().toString());
-
-                    RelationshipJsonMapper relationshipJsonMapper = new RelationshipJsonMapper(muzimaApplication);
-                    muzimaApplication.getFormController().saveFormData(relationshipJsonMapper.createFormDataFromRelationship(patient, newRelationship));
-
-                    muzimaApplication.getRelationshipController().saveRelationship(newRelationship);
-                } else if(!StringUtils.equals(existingRelationship.getRelationshipType().getUuid(),relationshipType.getUuid())) {
-                    //ToDo: Consider updating relationship type for existing relationship
-                    Log.d(getClass().getSimpleName(), "Could not create relationship");
+                Person personB;
+                if (StringUtils.equals(personBUuid, patient.getUuid())) {
+                    personB = patient;
+                } else {
+                    personB = muzimaApplication.getPersonController().getPersonByUuid(personBUuid);
+                    if (personB == null) {
+                        personB = muzimaApplication.getPatientController().getPatientByUuid(personBUuid);
+                    }
                 }
-            } else {
-                throw new JSONException("Could not create relationship");
+
+                if (relationshipType != null && personA != null && personB != null && personA != personB) {
+                    List<Relationship> existingRelationships = muzimaApplication.getRelationshipController().getRelationshipsForPerson(personA.getUuid());
+                    Relationship existingRelationship = null;
+                    for (Relationship relationship : existingRelationships) {
+                        if ((StringUtils.equals(relationship.getPersonA().getUuid(), personA.getUuid()) ||
+                                StringUtils.equals(relationship.getPersonA().getUuid(), personB.getUuid()))
+                                && (StringUtils.equals(relationship.getPersonB().getUuid(), personA.getUuid()) ||
+                                StringUtils.equals(relationship.getPersonB().getUuid(), personB.getUuid()))) {
+                            existingRelationship = relationship;
+                            break;
+                        }
+                    }
+
+                    if (existingRelationship == null) {
+                        Relationship newRelationship = new Relationship(personA, personB, relationshipType, false);
+                        newRelationship.setUuid(UUID.randomUUID().toString());
+
+                        RelationshipJsonMapper relationshipJsonMapper = new RelationshipJsonMapper(muzimaApplication);
+                        muzimaApplication.getFormController().saveFormData(relationshipJsonMapper.createFormDataFromRelationship(patient, newRelationship));
+
+                        muzimaApplication.getRelationshipController().saveRelationship(newRelationship);
+                    } else if (!StringUtils.equals(existingRelationship.getRelationshipType().getUuid(), relationshipType.getUuid())) {
+                        //ToDo: Consider updating relationship type for existing relationship
+                        Log.d(getClass().getSimpleName(), "Could not create relationship");
+                    }
+                } else {
+                    throw new JSONException("Could not create relationship");
+                }
             }
         } catch (RelationshipController.RetrieveRelationshipTypeException | JSONException |
                 RelationshipController.SaveRelationshipException | PersonController.PersonLoadException | PatientController.PatientLoadException |
