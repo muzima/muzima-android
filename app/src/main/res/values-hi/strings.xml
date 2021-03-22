@@ -540,6 +540,7 @@
     <string name="info_submitted_form_data_status_check">हाल ही में प्रस्तुत फॉर्मों की स्थिति की जाँच कर रहे है</string>
     <string name="info_submitted_form_data_status_check_failure">हाल ही में प्रस्तुत फॉर्मों की स्थिति की जाँच नहीं कर सके</string>
     <string name="info_tag_unavailable">कोई टैग उपलब्ध नहीं है</string>
+    <string name="info_update_available">उपलब्ध अद्यतन</string>
     <string name="info_update_person_demographics">व्यक्ति जनसांख्यिकी को अपडेट करें</string>
     <string name="info_url_validate">चरण 1: URL मान्य करना</string>
     <string name="info_video_chose_activity_unavailable">त्रुटि: वीडियो चुनने के लिए आवेदन नहीं मिला</string>

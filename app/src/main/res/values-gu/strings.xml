@@ -541,6 +541,7 @@
     <string name="info_submitted_form_data_status_check">તાજેતરમાં સબમિટ કરેલા ફોર્મ્સની સ્થિતિ તપાસી રહ્યું છે</string>
     <string name="info_submitted_form_data_status_check_failure">તાજેતરમાં સબમિટ કરેલા ફોર્મ્સની સ્થિતિ ચકાસી શક્યાં નથી</string>
     <string name="info_tag_unavailable">કોઈ ટેગ્સ ઉપલબ્ધ નથી</string>
+    <string name="info_update_available">અપડેટ ઉપલબ્ધ છે</string>
     <string name="info_update_person_demographics">વ્યક્તિ વસ્તી વિષયક અપડેટ કરો</string>
     <string name="info_url_validate">પગલું 1: URL ની માન્યતા ચકાસણી</string>
     <string name="info_video_chose_activity_unavailable">ભૂલ: વિડિઓ પસંદ કરવા માટેની એપ્લિકેશન મળી નથી</string>

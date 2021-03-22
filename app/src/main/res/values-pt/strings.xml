@@ -548,6 +548,7 @@
     <string name="info_submitted_form_data_status_check">Verificando o status dos formulários enviados recentemente.</string>
     <string name="info_submitted_form_data_status_check_failure">Não foi possível verificar o estado dos formulários enviados recentemente.</string>
     <string name="info_tag_unavailable">Nenhuma etiqueta disponível</string>
+    <string name="info_update_available">Atualização disponível</string>
     <string name="info_update_person_demographics">Atualizar dados demográficos de pessoas</string>
     <string name="info_url_validate">Passo 1: Validar URL</string>
     <string name="info_video_chose_activity_unavailable">Erro: Aplicação para escolha de vídeo não encontrado</string>

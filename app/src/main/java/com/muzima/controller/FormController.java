@@ -560,6 +560,20 @@ public class FormController {
         return completePatientForms;
     }
 
+    public boolean isFormTemplateUpdatesAvailable() throws FormFetchException {
+        try {
+            List<Form> forms = formService.getAllForms();
+            for (Form form : forms) {
+                if (form.isUpdateAvailable() && formService.isFormTemplateDownloaded(form.getUuid())) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (IOException e){
+            throw new FormFetchException(e);
+        }
+    }
+
     public int countAllIncompleteForms() throws FormFetchException {
         return getAllIncompleteFormsWithPatientData().size();
     }
@@ -705,6 +719,11 @@ public class FormController {
         } catch (FormDataFetchException e) {
             throw new FormDataDeleteException(e);
         }
+    }
+
+    public boolean isFormWithPatientDataAvailable(Context context) throws FormFetchException {
+        return !(getAllIncompleteFormsWithPatientData().isEmpty() &&
+                getAllCompleteFormsWithPatientData(context).isEmpty());
     }
 
     public static class FormDataProcessException extends Throwable {
@@ -1158,7 +1177,8 @@ public class FormController {
             boolean downloadStatus = formService.isFormTemplateDownloaded(uuid);
             availableForm = new AvailableFormBuilder()
                     .withAvailableForm(form)
-                    .withDownloadStatus(downloadStatus).build();
+                    .withDownloadStatus(downloadStatus)
+                    .withUpdateAvailableStatus(form.isUpdateAvailable()).build();
         } catch (IOException e) {
             throw new FormFetchException(e);
         }
@@ -1197,7 +1217,9 @@ public class FormController {
             for (String formUuid : formUuids) {
                 Form form = formService.getFormByUuid(formUuid);
                 boolean downloadStatus = formService.isFormTemplateDownloaded(form.getUuid());
-                AvailableForm availableForm = new AvailableFormBuilder().withAvailableForm(form).withDownloadStatus(downloadStatus).build();
+                AvailableForm availableForm = new AvailableFormBuilder().withAvailableForm(form)
+                        .withDownloadStatus(downloadStatus)
+                        .withUpdateAvailableStatus(form.isUpdateAvailable()).build();
                 availableForms.add(availableForm);
             }
         }
@@ -1208,7 +1230,8 @@ public class FormController {
                 boolean downloadStatus = formService.isFormTemplateDownloaded(filteredForm.getUuid());
                 AvailableForm availableForm = new AvailableFormBuilder()
                         .withAvailableForm(filteredForm)
-                        .withDownloadStatus(downloadStatus).build();
+                        .withDownloadStatus(downloadStatus)
+                        .withUpdateAvailableStatus(filteredForm.isUpdateAvailable()).build();
                 availableForms.add(availableForm);
             }
         }
@@ -1222,7 +1245,9 @@ public class FormController {
         AvailableForms availableForms = new AvailableForms();
         for (Form filteredForm : filteredForms) {
             boolean downloadStatus = formService.isFormTemplateDownloaded(filteredForm.getUuid());
-            AvailableForm availableForm = new AvailableFormBuilder().withAvailableForm(filteredForm).withDownloadStatus(downloadStatus).build();
+            AvailableForm availableForm = new AvailableFormBuilder().withAvailableForm(filteredForm)
+                    .withDownloadStatus(downloadStatus)
+                    .withUpdateAvailableStatus(filteredForm.isUpdateAvailable()).build();
             if(downloadStatus){
                 availableFormsDownloaded.add(availableForm);
             }else{
