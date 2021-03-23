@@ -35,6 +35,11 @@ public class AvailableFormBuilder{
         return this;
     }
 
+    public AvailableFormBuilder withUpdateAvailableStatus(boolean updateStatus) {
+        availableForm.setUpdateAvailable(updateStatus);
+        return this;
+    }
+
     public AvailableForm build() {
         return availableForm;
     }

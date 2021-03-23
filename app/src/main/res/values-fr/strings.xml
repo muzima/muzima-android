@@ -549,6 +549,7 @@
     <string name="info_submitted_form_data_status_check">Vérification du statut des formulaires récemment soumis.</string>
     <string name="info_submitted_form_data_status_check_failure">Impossible de vérifier l\'état des formulaires récemment soumis.</string>
     <string name="info_tag_unavailable">Aucune etiquette n\'est disponible</string>
+    <string name="info_update_available">Mise à jour disponible</string>
     <string name="info_update_person_demographics">Mettre à jour les données démographiques des personnes</string>
     <string name="info_url_validate">Étape 1: Validation de l\'URL</string>
     <string name="info_video_chose_activity_unavailable">Erreur: Application pour choisir la vidéo non trouvée</string>

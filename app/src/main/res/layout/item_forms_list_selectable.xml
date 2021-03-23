@@ -38,6 +38,16 @@
                 app:srcCompat="@drawable/ic_downloaded_icon"
                 android:visibility="gone"
                 android:contentDescription="@string/info_downloaded_image"/>
+
+        <ImageView
+                android:id="@+id/updateAvailableImg"
+                android:layout_weight="20"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="top|right"
+                app:srcCompat="@drawable/pending_update"
+                android:visibility="gone"
+                android:contentDescription="@string/info_downloaded_image"/>
     </com.muzima.view.CheckedLinearLayout>
 
 

@@ -11,6 +11,9 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import androidx.annotation.NonNull;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
@@ -32,6 +35,23 @@ public class RecommendedFormsAdapter extends FormsAdapter<AvailableForm> {
         new BackgroundQueryTask(this).execute();
     }
 
+    @NonNull
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        convertView = super.getView(position, convertView, parent);
+
+        ViewHolder viewHolder = (ViewHolder) convertView.getTag();
+        markIfUpdateAvailable(viewHolder.updateAvailableImg, getItem(position));
+        return convertView;
+    }
+
+    private void markIfUpdateAvailable(View updateAvailableImg, AvailableForm form) {
+        if (form.isUpdateAvailable() && form.isDownloaded()) {
+            updateAvailableImg.setVisibility(View.VISIBLE);
+        } else {
+            updateAvailableImg.setVisibility(View.GONE);
+        }
+    }
     /**
      * Responsible to fetch all the available forms from DB.
      */

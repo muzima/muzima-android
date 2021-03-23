@@ -17,6 +17,7 @@ public class AvailableForm extends BaseForm {
 
     private Tag[] tags;
     private boolean isDownloaded;
+    private boolean isUpdateAvailable;
 
     public Tag[] getTags() {
         return tags;
@@ -32,6 +33,14 @@ public class AvailableForm extends BaseForm {
 
     public void setDownloaded(boolean downloaded) {
         isDownloaded = downloaded;
+    }
+
+    public boolean isUpdateAvailable() {
+        return isUpdateAvailable;
+    }
+
+    public void setUpdateAvailable(boolean updateAvailable) {
+        isUpdateAvailable = updateAvailable;
     }
 
     public boolean isRegistrationForm(){

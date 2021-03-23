@@ -544,6 +544,7 @@
     <string name="info_submitted_form_data_status_check">Hali ya fomu zilizowasilishwa hivi karibuni inachunguzwa.</string>
     <string name="info_submitted_form_data_status_check_failure">Haikuwezekana kuchunguza hali ya fomu zilizowasilishwa hivi karibuni.</string>
     <string name="info_tag_unavailable">Hakuna tagi zilizopatikana</string>
+    <string name="info_update_available">Sasisho linapatikana</string>
     <string name="info_update_person_demographics">Sasisha maelezo ya mtu</string>
     <string name="info_url_validate">Hatua ya 1: Kuhakiki URL</string>
     <string name="info_video_chose_activity_unavailable">Tatizo: Mfumo wa kuchagua video haupo</string>
