@@ -134,7 +134,7 @@ public class MuzimaApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");

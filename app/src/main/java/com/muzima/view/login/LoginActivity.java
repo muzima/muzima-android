@@ -31,14 +31,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.muzima.BuildConfig;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.model.MinimumSupportedAppVersion;
-import com.muzima.api.model.MuzimaCoreModuleVersion;
 import com.muzima.controller.MinimumSupportedAppVersionController;
-import com.muzima.controller.MuzimaCoreModuleVersionController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
@@ -55,10 +55,9 @@ import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.utils.ThemeUtils;
+import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
-
-import java.util.Locale;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
@@ -76,6 +75,8 @@ public class LoginActivity extends Activity {
     private BackgroundAuthenticationTask backgroundAuthenticationTask;
     private TextView authenticatingText;
     private TextView helpText;
+    private Button barcodeScanner;
+    private static final int RC_BARCODE_CAPTURE = 9001;
 
     private ValueAnimator flipFromLoginToAuthAnimator;
     private ValueAnimator flipFromAuthToLoginAnimator;
@@ -238,6 +239,37 @@ public class LoginActivity extends Activity {
                 startActivity(helpIntent);
             }
         });
+
+        barcodeScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                intent = new Intent(getApplicationContext(), BarcodeCaptureActivity.class);
+                intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+                startActivityForResult(intent, RC_BARCODE_CAPTURE);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                    serverUrlText.setText(barcode.displayValue);
+                } else {
+                    Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null");
+                }
+            } else {
+                Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null "+CommonStatusCodes.getStatusCodeString(resultCode));
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private boolean validInput() {
@@ -255,6 +287,7 @@ public class LoginActivity extends Activity {
         authenticatingText = findViewById(R.id.authenticatingText);
         versionText = findViewById(R.id.version);
         helpText = findViewById(R.id.helpText);
+        barcodeScanner = findViewById(R.id.bar_code_scan);
     }
 
     public void onUpdatePasswordCheckboxClicked(View view) {

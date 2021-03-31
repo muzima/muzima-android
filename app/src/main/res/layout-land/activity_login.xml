@@ -27,14 +27,28 @@
         <View style="@style/LoginActivityDivider.Style"/>
 
         <LinearLayout style="@style/LoginInfoLayout">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="4dip"
+                android:layout_gravity="left">
+                <Button
+                    android:id="@+id/bar_code_scan"
+                    android:layout_width="60dp"
+                    android:layout_height="48dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/barcode_icon" />
 
-            <EditText
-                android:id="@+id/serverUrl"
-                style="@style/LoginInfoEditText"
-                android:inputType="textUri"
-                android:text="@string/default_server"
-                android:nextFocusDown="@+id/username"
-                android:hint="@string/hint_server_url"/>
+                <EditText
+                    android:id="@+id/serverUrl"
+                    style="@style/LoginInfoEditText"
+                    android:inputType="textUri"
+                    android:text="@string/default_server"
+                    android:nextFocusDown="@+id/username"
+                    android:hint="@string/hint_server_url"/>
+            </LinearLayout>
 
             <View
                 style="@style/LoginInfoLayoutDivider"
