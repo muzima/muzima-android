@@ -13,10 +13,6 @@ import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +24,6 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-import com.google.android.material.snackbar.Snackbar;
 import com.muzima.R;
 import com.muzima.utils.barcode.BarcodeGraphic;
 import com.muzima.utils.barcode.BarcodeGraphicTracker;
@@ -62,10 +57,6 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     private CameraSourcePreview mPreview;
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
 
-    // helper objects for detecting taps and pinches.
-    private ScaleGestureDetector scaleGestureDetector;
-    private GestureDetector gestureDetector;
-
     /**
      * Initializes the UI and creates the detector pipeline.
      */
@@ -89,13 +80,6 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
         } else {
             requestCameraPermission();
         }
-
-        gestureDetector = new GestureDetector(this, new CaptureGestureListener());
-        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
-
-        Snackbar.make(mGraphicOverlay, "Tap to capture. Pinch/Stretch to zoom",
-                Snackbar.LENGTH_LONG)
-                .show();
     }
 
     /**
@@ -105,37 +89,10 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
      */
     private void requestCameraPermission() {
         final String[] permissions = new String[]{Manifest.permission.CAMERA};
-
-        if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.CAMERA)) {
-            ActivityCompat.requestPermissions(this, permissions, RC_HANDLE_CAMERA_PERM);
-            return;
-        }
-
         final Activity thisActivity = this;
 
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ActivityCompat.requestPermissions(thisActivity, permissions,
-                        RC_HANDLE_CAMERA_PERM);
-            }
-        };
-
-        findViewById(R.id.topLayout).setOnClickListener(listener);
-        Snackbar.make(mGraphicOverlay, "Camera permissions",
-                Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.general_ok, listener)
-                .show();
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent e) {
-        boolean b = scaleGestureDetector.onTouchEvent(e);
-
-        boolean c = gestureDetector.onTouchEvent(e);
-
-        return b || c || super.onTouchEvent(e);
+        ActivityCompat.requestPermissions(thisActivity, permissions,
+                RC_HANDLE_CAMERA_PERM);
     }
 
     /**
@@ -297,112 +254,11 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
         }
     }
 
-    /**
-     * onTap returns the tapped barcode result to the calling Activity.
-     *
-     * @param rawX - the raw position of the tap
-     * @param rawY - the raw position of the tap.
-     * @return true if the activity is ending.
-     */
-    private boolean onTap(float rawX, float rawY) {
-        // Find tap point in preview frame coordinates.
-        int[] location = new int[2];
-        mGraphicOverlay.getLocationOnScreen(location);
-        float x = (rawX - location[0]) / mGraphicOverlay.getWidthScaleFactor();
-        float y = (rawY - location[1]) / mGraphicOverlay.getHeightScaleFactor();
-
-        // Find the barcode whose center is closest to the tapped point.
-        Barcode best = null;
-        float bestDistance = Float.MAX_VALUE;
-        for (BarcodeGraphic graphic : mGraphicOverlay.getGraphics()) {
-            Barcode barcode = graphic.getBarcode();
-            if (barcode.getBoundingBox().contains((int) x, (int) y)) {
-                // Exact hit, no need to keep looking.
-                best = barcode;
-                break;
-            }
-            float dx = x - barcode.getBoundingBox().centerX();
-            float dy = y - barcode.getBoundingBox().centerY();
-            float distance = (dx * dx) + (dy * dy);  // actually squared distance
-            if (distance < bestDistance) {
-                best = barcode;
-                bestDistance = distance;
-            }
-        }
-
-        if (best != null) {
-            Intent data = new Intent();
-            data.putExtra(BarcodeObject, best);
-            setResult(CommonStatusCodes.SUCCESS, data);
-            finish();
-            return true;
-        }
-        return false;
-    }
-
-    private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            return onTap(e.getRawX(), e.getRawY()) || super.onSingleTapConfirmed(e);
-        }
-    }
-
-    private class ScaleListener implements ScaleGestureDetector.OnScaleGestureListener {
-
-        /**
-         * Responds to scaling events for a gesture in progress.
-         * Reported by pointer motion.
-         *
-         * @param detector The detector reporting the event - use this to
-         *                 retrieve extended info about event state.
-         * @return Whether or not the detector should consider this event
-         * as handled. If an event was not handled, the detector
-         * will continue to accumulate movement until an event is
-         * handled. This can be useful if an application, for example,
-         * only wants to update scaling factors if the change is
-         * greater than 0.01.
-         */
-        @Override
-        public boolean onScale(ScaleGestureDetector detector) {
-            return false;
-        }
-
-        /**
-         * Responds to the beginning of a scaling gesture. Reported by
-         * new pointers going down.
-         *
-         * @param detector The detector reporting the event - use this to
-         *                 retrieve extended info about event state.
-         * @return Whether or not the detector should continue recognizing
-         * this gesture. For example, if a gesture is beginning
-         * with a focal point outside of a region where it makes
-         * sense, onScaleBegin() may return false to ignore the
-         * rest of the gesture.
-         */
-        @Override
-        public boolean onScaleBegin(ScaleGestureDetector detector) {
-            return true;
-        }
-
-        /**
-         * Responds to the end of a scale gesture. Reported by existing
-         * pointers going up.
-         * <p/>
-         * Once a scale has ended, {@link ScaleGestureDetector#getFocusX()}
-         * and {@link ScaleGestureDetector#getFocusY()} will return focal point
-         * of the pointers remaining on the screen.
-         *
-         * @param detector The detector reporting the event - use this to
-         *                 retrieve extended info about event state.
-         */
-        @Override
-        public void onScaleEnd(ScaleGestureDetector detector) {
-            mCameraSource.doZoom(detector.getScaleFactor());
-        }
-    }
-
     @Override
     public void onBarcodeDetected(Barcode barcode) {
-        //do something with barcode data returned
+        Intent data = new Intent();
+        data.putExtra(BarcodeObject, barcode);
+        setResult(CommonStatusCodes.SUCCESS, data);
+        finish();
     }
 }
