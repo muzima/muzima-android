@@ -130,6 +130,7 @@ public class LoginActivity extends Activity {
 
     private void removeServerUrlAsInput() {
         serverUrlText.setVisibility(View.GONE);
+        barcodeScanner.setVisibility(View.GONE);
         findViewById(R.id.server_url_divider).setVisibility(View.GONE);
     }
 
