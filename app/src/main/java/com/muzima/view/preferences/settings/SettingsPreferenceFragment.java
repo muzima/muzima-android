@@ -15,6 +15,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -27,6 +28,9 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Location;
@@ -42,6 +46,7 @@ import com.muzima.util.Constants;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
+import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
 import org.apache.commons.lang.math.NumberUtils;
@@ -69,9 +74,11 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private CheckBoxPreference requireMedicalRecordNumberCheckBoxPreference;
     private CheckBoxPreference gpsLocationFeatureCheckBoxPreference;
     private Activity mActivity;
+    private static final int RC_BARCODE_CAPTURE = 9001;
 
 
     private String newURL;
+    private EditTextPreference serverPreferences;
     private final Map<String, SettingsPreferenceFragment.PreferenceChangeHandler> actions = new HashMap<>();
 
     @Override
@@ -101,8 +108,25 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private void setUpServerPreference(){
         String serverPreferenceKey = getResources().getString(R.string.preference_server);
         final EditTextPreference serverPreference = (EditTextPreference) getPreferenceScreen().findPreference(serverPreferenceKey);
+        serverPreferences = serverPreference;
         serverPreference.setSummary(serverPreference.getText());
         serverPreference.getEditText().setSingleLine();
+        serverPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+              @Override
+              public boolean onPreferenceClick(Preference preference) {
+                  AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                  builder
+                          .setCancelable(true)
+                          .setIcon(getIconWarning())
+                          .setTitle(getResources().getString(R.string.title_qrcode))
+                          .setMessage(getResources().getString(R.string.info_scan_qrcode))
+                          .setPositiveButton(R.string.general_yes, positiveBarcodeClickListener())
+                          .setNegativeButton(R.string.general_no, null).create().show();
+                  return true;
+              }
+        });
+
+
         serverPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(final Preference preference, final Object newValue) {
@@ -480,10 +504,49 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         };
     }
 
+    private Dialog.OnClickListener positiveBarcodeClickListener() {
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                launchScanner();
+            }
+
+        };
+    }
+
     private void changeServerURL(DialogInterface dialog) {
         dialog.dismiss();
         if (NetworkUtils.isConnectedToNetwork(getActivity())) {
             new ValidateURLTask(this).execute(newURL);
+        }
+    }
+
+    private void launchScanner(){
+        Intent intent;
+        intent = new Intent(this.mActivity, BarcodeCaptureActivity.class);
+        intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+        intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+        startActivityForResult(intent, RC_BARCODE_CAPTURE);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                    serverPreferences.getEditText().setText(barcode.displayValue);
+                } else {
+                    Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null");
+                }
+            } else {
+                Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null "+CommonStatusCodes.getStatusCodeString(resultCode));
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

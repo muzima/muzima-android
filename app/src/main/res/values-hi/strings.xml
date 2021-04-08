@@ -769,4 +769,6 @@
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
 
     <string name="youTube_player_error">YouTube वीडियो लोड करते समय एक त्रुटि हुई</string>
+    <string name="title_qrcode">क्यू आर संहिता</string>
+    <string name="info_scan_qrcode">सर्वर url को बदलने के लिए qr कोड को स्कैन करें</string>
 </resources>

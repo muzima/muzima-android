@@ -777,4 +777,6 @@
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
 
     <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
+    <string name="title_qrcode">Código QR</string>
+    <string name="info_scan_qrcode">Leia o código QR para alterar o URL do servidor</string>
 </resources>

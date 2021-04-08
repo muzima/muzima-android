@@ -832,4 +832,6 @@
     <string name="write_shr_to_card_general">Write SHR to card</string>
 
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
+    <string name="title_qrcode">QR code</string>
+    <string name="info_scan_qrcode">Scan QR code to change server URL</string>
 </resources>
