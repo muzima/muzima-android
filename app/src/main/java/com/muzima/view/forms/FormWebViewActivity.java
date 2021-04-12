@@ -26,6 +26,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Form;
@@ -40,11 +43,10 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
-import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
-import com.muzima.utils.barcode.IntentResult;
 import com.muzima.utils.imaging.ImageResult;
 import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import org.json.JSONException;
@@ -58,6 +60,7 @@ import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.controller.FormController.FormFetchException;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
+import static com.muzima.view.forms.BarCodeComponent.RC_BARCODE_CAPTURE;
 import static java.text.MessageFormat.format;
 
 public class FormWebViewActivity extends BroadcastListenerActivity {
@@ -224,9 +227,17 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        IntentResult scanResult = BarCodeScannerIntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanResult != null) {
-            scanResultMap.put(barCodeComponent.getFieldName(), scanResult.getContents());
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (intent != null) {
+                    Barcode barcode = intent.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                    scanResultMap.put(barCodeComponent.getFieldName(), barcode.displayValue);
+                } else {
+                    Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null");
+                }
+            } else {
+                Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null "+CommonStatusCodes.getStatusCodeString(resultCode));
+            }
         }
 
         ImageResult imageResult = ImagingComponent.parseActivityResult(requestCode, resultCode, intent);

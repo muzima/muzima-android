@@ -399,11 +399,6 @@
                 android:label="@string/title_define_custom_concept"
                 android:theme="@style/WizardTheme.Dark"/>
         <activity
-                android:name=".view.InstallBarCodeWizardActivity"
-                android:configChanges="orientation|screenSize"
-                android:label="@string/title_install_barcode_scanner"
-                android:theme="@style/WizardTheme.Dark"/>
-        <activity
                 android:name=".view.setupconfiguration.SetupMethodPreferenceWizardActivity"
                 android:configChanges="orientation|screenSize|keyboardHidden"
                 android:label="@string/title_setup_method"
