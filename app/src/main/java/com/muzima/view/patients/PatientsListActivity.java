@@ -20,6 +20,9 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -59,13 +62,12 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
-import com.muzima.utils.barcode.IntentResult;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainActivity;
+import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 
@@ -79,7 +81,6 @@ import static android.view.View.VISIBLE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
-import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.BARCODE_SCAN_REQUEST_CODE;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 import com.muzima.api.model.SmartCardRecord;
@@ -133,6 +134,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private static final boolean DEFAULT_SHR_STATUS = false;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private boolean isSHREnabled;
+    private static final int RC_BARCODE_CAPTURE = 9001;
 
     private DrawerLayout mainLayout;
     private PatientTagsListAdapter tagsListAdapter;
@@ -579,8 +581,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void invokeBarcodeScan() {
-        BarCodeScannerIntentIntegrator scanIntegrator = new BarCodeScannerIntentIntegrator(this);
-        scanIntegrator.initiateScan();
+        Intent intent;
+        intent = new Intent(getApplicationContext(), BarcodeCaptureActivity.class);
+        intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+        intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+        startActivityForResult(intent, RC_BARCODE_CAPTURE);
     }
 
     private void readSmartCard() {
@@ -597,19 +603,19 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 serverSearchProgressDialog.dismiss();
                 serverSearchProgressDialog.cancel();
                 break;
-            case BARCODE_SCAN_REQUEST_CODE:
-                IntentResult scanningResult = BarCodeScannerIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
-                if (scanningResult != null) {
-                    intentBarcodeResults = true;
-                    searchView.setQuery(scanningResult.getContents(), false);
-                } else {
-                    Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed.", Snackbar.LENGTH_LONG)
-                            .setAction("RETRY", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    readSmartCard();
-                                }
-                            }).show();
+            case RC_BARCODE_CAPTURE:
+                if (requestCode == RC_BARCODE_CAPTURE) {
+                    if (resultCode == CommonStatusCodes.SUCCESS) {
+                        if (dataIntent != null) {
+                            intentBarcodeResults = true;
+                            Barcode barcode = dataIntent.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                            searchView.setQuery(barcode.displayValue, false);
+                        } else {
+                            Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null");
+                        }
+                    } else {
+                        Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null "+CommonStatusCodes.getStatusCodeString(resultCode));
+                    }
                 }
                 break;
             default:
