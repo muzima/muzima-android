@@ -712,6 +712,7 @@ class HTMLFormDataStore {
             }
             json.put("valueNumeric", obs.getValueNumeric());
             json.put("valueText", obs.getValueText());
+            json.put("valueComplex", obs.getValueComplex());
             json.put("valueDatetime",convertedvalueDateTime);
             map.put("json" + i, json);
             arr.put(map.get("json" + i));
