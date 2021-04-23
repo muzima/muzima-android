@@ -116,11 +116,17 @@ dependencies {
     }
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
 
-    // Add the Firebase Crashlytics SDK.
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:26.7.0')
 
+    // Declare the dependencies for the Firebase Cloud Messaging, Analytics and crashlystics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-messaging'
     // Recommended: Add the Google Analytics SDK.
-    implementation 'com.google.firebase:firebase-analytics:17.6.0'
+    implementation 'com.google.firebase:firebase-analytics'
+
+    // Add the Firebase Crashlytics SDK.
+    implementation 'com.google.firebase:firebase-crashlytics'
 
     compile files('lib/YouTubeAndroidPlayerApi.jar')
 }

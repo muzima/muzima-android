@@ -19,6 +19,7 @@ import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
@@ -27,6 +28,7 @@ import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LocationService;
 import com.muzima.api.service.NotificationService;
+import com.muzima.api.service.NotificationTokenService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PersonService;
 import com.muzima.api.service.ProviderService;
@@ -34,6 +36,7 @@ import com.muzima.api.service.RelationshipService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
+import com.muzima.controller.FCMTokenContoller;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
@@ -98,6 +101,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private RelationshipController relationshipController;
     private PersonController personController;
     private MinimumSupportedAppVersionController minimumSupportedAppVersionController;
+    private FCMTokenContoller fcmTokenContoller;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -135,6 +139,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public void onCreate() {
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+        FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Security.removeProvider("AndroidOpenSSL");
@@ -490,5 +495,16 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return minimumSupportedAppVersionController;
+    }
+
+    public FCMTokenContoller getFCMTokenController() {
+        if (fcmTokenContoller == null) {
+            try {
+                fcmTokenContoller = new FCMTokenContoller(muzimaContext.getService(NotificationTokenService.class));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return fcmTokenContoller;
     }
 }
