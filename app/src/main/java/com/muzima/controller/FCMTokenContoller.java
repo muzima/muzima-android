@@ -1,5 +1,7 @@
 package com.muzima.controller;
 
+import android.util.Log;
+
 import com.muzima.api.service.NotificationTokenService;
 
 import java.io.IOException;
