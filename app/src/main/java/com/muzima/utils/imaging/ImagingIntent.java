@@ -43,8 +43,6 @@ import com.muzima.view.BaseActivity;
 
 import java.io.File;
 
-import static com.muzima.utils.Constants.APP_IMAGE_DIR;
-import static com.muzima.utils.Constants.TMP_FILE_PATH;
 
 public class ImagingIntent extends BaseActivity {
 
@@ -58,6 +56,7 @@ public class ImagingIntent extends BaseActivity {
     public static final String KEY_IMAGE_CAPTION = "imageCaption";
     public static final String KEY_SECTION_NAME = "sectionName";
     private String IMAGE_FOLDER;
+    private String TMP_FILE_PATH;
 
     private ImageView mImagePreview;
     private EditText mImageCaption;
@@ -81,7 +80,8 @@ public class ImagingIntent extends BaseActivity {
         mSectionName = i.getStringExtra(KEY_SECTION_NAME);
 
         // we are not using formUuid in the media path anymore
-        IMAGE_FOLDER = APP_IMAGE_DIR;
+        IMAGE_FOLDER = this.getApplicationContext().getExternalFilesDir(null)+"/muzima/media/image";
+        TMP_FILE_PATH = this.getApplicationContext().getExternalFilesDir(null)+"/.cache";
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_IMAGE_PATH))
@@ -158,39 +158,27 @@ public class ImagingIntent extends BaseActivity {
     }
 
     public void captureImage(View view) {
-        int cameraPermision = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        int writeStorage = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (cameraPermision != PackageManager.PERMISSION_GRANTED || writeStorage != PackageManager.PERMISSION_GRANTED) {
-            requestCameraAndStoragePermission();
-        } else {
-            Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-
-            i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
-                    FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName()
-                            + ".provider", new File(TMP_FILE_PATH)));
-            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            try {
-                startActivityForResult(i, IMAGE_CAPTURE);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(getApplicationContext(), getString(R.string.error_image_capture_activity_unavailable), Toast.LENGTH_SHORT).show();
-            }
+        Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
+                FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName()
+                        + ".provider", new File(TMP_FILE_PATH)));
+        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
+            startActivityForResult(i, IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getApplicationContext(), getString(R.string.error_image_capture_activity_unavailable), Toast.LENGTH_SHORT).show();
         }
     }
 
     public void chooseImage(View view) {
-        int writeStorage = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (writeStorage != PackageManager.PERMISSION_GRANTED) {
-            requestStoragePermission();
-        } else {
-            Intent i;
-            i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent i;
+        i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-            try {
-                i.setType("image/*");
-                startActivityForResult(i, IMAGE_CHOOSE);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(getApplicationContext(), getString(R.string.error_image_chose_activity_unavailable), Toast.LENGTH_SHORT).show();
-            }
+        try {
+            i.setType("image/*");
+            startActivityForResult(i, IMAGE_CHOOSE);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getApplicationContext(), getString(R.string.error_image_chose_activity_unavailable), Toast.LENGTH_SHORT).show();
         }
     }
     
@@ -308,9 +296,9 @@ public class ImagingIntent extends BaseActivity {
             case IMAGE_CHOOSE:
                 String sourceImagePath = null;
                 Uri selectedImage = intent.getData();
-                if (selectedImage.toString().startsWith("file"))
+                if (selectedImage.toString().startsWith("file")){
                     sourceImagePath = selectedImage.toString().substring(6);
-                else {
+                } else {
                     String[] projection = {MediaStore.Images.Media.DATA};
                     Cursor cursor = managedQuery(selectedImage, projection, null, null, null);
                     startManagingCursor(cursor);

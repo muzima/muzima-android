@@ -132,6 +132,7 @@ class HTMLFormDataStore {
         jsonPayload = injectUserSystemIdToEncounterPayload(jsonPayload);
         jsonPayload = injectTimeZoneToEncounterPayload(jsonPayload);
         jsonPayload = injectActiveSetupConfigUuidToEncounterPayload(jsonPayload);
+        Log.e(getClass().getSimpleName(),jsonPayload);
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
         String patientUuid = formData.getPatientUuid();
