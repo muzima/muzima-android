@@ -132,7 +132,6 @@ class HTMLFormDataStore {
         jsonPayload = injectUserSystemIdToEncounterPayload(jsonPayload);
         jsonPayload = injectTimeZoneToEncounterPayload(jsonPayload);
         jsonPayload = injectActiveSetupConfigUuidToEncounterPayload(jsonPayload);
-        Log.e(getClass().getSimpleName(),jsonPayload);
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
         String patientUuid = formData.getPatientUuid();
@@ -713,7 +712,6 @@ class HTMLFormDataStore {
             }
             json.put("valueNumeric", obs.getValueNumeric());
             json.put("valueText", obs.getValueText());
-            json.put("valueComplex", obs.getValueComplex());
             json.put("valueDatetime",convertedvalueDateTime);
             map.put("json" + i, json);
             arr.put(map.get("json" + i));
