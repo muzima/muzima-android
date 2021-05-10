@@ -43,7 +43,7 @@
             <EditText
                     android:id="@+id/imageCaption"
                     style="@style/CaptionEditText"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:hint="@string/title_image_caption"/>
         </LinearLayout>
     </ScrollView>
@@ -62,7 +62,7 @@
                 android:background="@color/hint_text_grey"
                 android:gravity="center_vertical|center_horizontal"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="visible">
 
             <Button
                     android:id="@+id/acceptImage"
