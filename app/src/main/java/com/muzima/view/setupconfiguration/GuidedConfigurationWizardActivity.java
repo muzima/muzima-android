@@ -12,10 +12,13 @@ package com.muzima.view.setupconfiguration;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
+
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -33,8 +36,10 @@ import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.SetupConfigurationTemplate;
+import com.muzima.controller.FCMTokenContoller;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.DefaultEncounterLocationPreferenceService;
@@ -50,6 +55,7 @@ import com.muzima.view.BroadcastListenerActivity;
 
 import net.minidev.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -390,6 +396,19 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
             @Override
             protected int[] doInBackground(Void... voids) {
+                MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+                boolean notificationSetting = muzimaSettingController.isPushNotificationsEnabled();
+                if(notificationSetting) {
+                    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(GuidedConfigurationWizardActivity.this);
+                    String appTokenKey = GuidedConfigurationWizardActivity.this.getResources().getString(R.string.preference_app_token);
+                    String token = settings.getString(appTokenKey, null);
+                    FCMTokenContoller fcmTokenContoller = ((MuzimaApplication) getApplicationContext()).getFCMTokenController();
+                    try {
+                        fcmTokenContoller.sendTokenToServer(token, ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getSystemId());
+                    } catch (IOException e) {
+                        Log.e(getClass().getSimpleName(), "Exception thrown while sending token to server" + e);
+                    }
+                }
                 List<String> uuids = extractLocationsUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();

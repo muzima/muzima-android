@@ -12,9 +12,11 @@ package com.muzima.view.cohort;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -33,6 +35,8 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.cohort.AllCohortsAdapter;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.LastSyncTimeService;
+import com.muzima.controller.FCMTokenContoller;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.utils.Constants;
@@ -224,6 +228,8 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
     }
 
     private int[] downloadAndSavePatients(AllCohortsAdapter cohortsAdapter) {
+        syncTokenToServer();
+
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
 
         List<String> selectedCohortsArray = cohortsAdapter.getSelectedCohorts();
@@ -235,6 +241,22 @@ public class CohortWizardActivity extends BroadcastListenerActivity implements L
         }
 
         return resultForPatients;
+    }
+
+    private void syncTokenToServer(){
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+        boolean notificationSetting = muzimaSettingController.isPushNotificationsEnabled();
+        if(notificationSetting) {
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(CohortWizardActivity.this);
+            String appTokenKey = CohortWizardActivity.this.getResources().getString(R.string.preference_app_token);
+            String token = settings.getString(appTokenKey, null);
+            FCMTokenContoller fcmTokenContoller = ((MuzimaApplication) getApplicationContext()).getFCMTokenController();
+            try {
+                fcmTokenContoller.sendTokenToServer(token, ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getSystemId());
+            } catch (IOException e) {
+                Log.e(getClass().getSimpleName(), "Exception thrown while sending token to server" + e);
+            }
+        }
     }
 
     private void navigateToNextActivity() {

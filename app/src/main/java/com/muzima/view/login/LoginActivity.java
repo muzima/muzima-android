@@ -471,18 +471,6 @@ public class LoginActivity extends Activity {
             MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
             try {
                 if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
-                    if(initialSetup){
-                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-                        String appTokenKey = LoginActivity.this.getResources().getString(R.string.preference_app_token);
-                        String token = settings.getString(appTokenKey,null);
-                        FCMTokenContoller fcmTokenContoller = ((MuzimaApplication) getApplicationContext()).getFCMTokenController();
-                        try {
-                            fcmTokenContoller.sendTokenToServer(token,((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getSystemId());
-                        } catch (IOException e) {
-                            Log.e(getClass().getSimpleName(),"Exception thrown while sending token to server"+e);
-                        }
-                    }
-
                     MinimumSupportedAppVersion localMinimumSupportedAppVersion = minimumSupportedAppVersionController.getMinimumSupportedAppVersion();
                     MinimumSupportedAppVersion downloadedMinimumSupportedAppVersion = minimumSupportedAppVersionController.downloadMinimumSupportedAppVersion();
                     if(downloadedMinimumSupportedAppVersion != null) {
