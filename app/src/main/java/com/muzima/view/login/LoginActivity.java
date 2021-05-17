@@ -151,9 +151,6 @@ public class LoginActivity extends Activity {
     }
 
     private String getApplicationVersion() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-        String appTokenKey = LoginActivity.this.getResources().getString(R.string.preference_app_token);
-        Log.e(getClass().getSimpleName(), "FCM token "+settings.getString(appTokenKey,null));
         String versionText = "";
         String versionCode = "";
         try {
