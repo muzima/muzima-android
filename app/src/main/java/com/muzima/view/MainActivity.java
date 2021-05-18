@@ -291,7 +291,7 @@ public class MainActivity extends BroadcastListenerActivity {
 
     private void setupActionbar() {
         ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
+        if (actionBar == null)return;
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(false);

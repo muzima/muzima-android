@@ -13,7 +13,7 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="@style/Theme.AppCompat">
+    <style name="AppBaseTheme" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@color/primary_black</item>
         <item name="android:textColorSecondary">@color/primary_white</item>
         <item name="colorAccent">@color/primary_blue</item>
@@ -53,7 +53,7 @@
     </style>
 
 
-    <style name="AppBaseTheme.Light" parent="@style/Theme.AppCompat.Light">
+    <style name="AppBaseTheme.Light" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="colorAccent">@color/primary_blue</item>
