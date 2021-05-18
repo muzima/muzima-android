@@ -9,16 +9,38 @@
   -->
 
 <com.muzima.view.CheckedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:background="@drawable/list_multi_selector_blue"
-             android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:layout_marginEnd="12dp"
+    android:background="@drawable/list_multi_selector_blue"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <CheckedTextView
+            android:id="@+id/config_name"
+            style="@style/ListViewSelectableText"
+            android:checkMark="@null" />
+
+        <ImageView
+            android:id="@+id/info_view"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_action_info" />
+
+    </RelativeLayout>
 
     <CheckedTextView
-            android:id="@+id/config_name"
-            android:checkMark="@null"
-            style="@style/ListViewSelectableText"/>
-    <CheckedTextView
-            android:id="@+id/config_description"
-            style="@style/ListViewSelectableDescription"/>
+        android:id="@+id/config_description"
+        style="@style/ListViewSelectableDescription"
+        android:layout_alignParentStart="true" />
+
+
 </com.muzima.view.CheckedLinearLayout>
