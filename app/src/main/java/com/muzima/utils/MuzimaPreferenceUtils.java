@@ -17,7 +17,16 @@ public class MuzimaPreferenceUtils {
 
     private static final String LIGHT_MODE_SELECTED_PREFS = "light_mode_selected_prefs";
     private static final String SELECTED_USER_LOCALE_PREFERENCE = "selected_locale_pref";
+    private static final String ON_BOARDING_COMPLETED_PREFERENCE = "onboarding_completed_pref";
     private static final String APP_LOCALE_PREFERENCE = "app_locale_pref";
+
+    public static void setOnBoardingCompletedPreference(Context context, boolean isLightMode) {
+        setBooleanPreference(context, ON_BOARDING_COMPLETED_PREFERENCE, isLightMode);
+    }
+
+    public static boolean getOnBoardingCompletedPreference(Context context) {
+        return getBooleanPreference(context, ON_BOARDING_COMPLETED_PREFERENCE,false);
+    }
 
     public static void setLightModeThemeSelectedPreference(Context context, boolean isLightMode) {
         setBooleanPreference(context, LIGHT_MODE_SELECTED_PREFS, isLightMode);

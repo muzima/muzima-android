@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <androidx.viewpager.widget.ViewPager
+            android:layout_alignParentTop="true"
+            android:id="@+id/on_boarding_view_pager"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+
+        <LinearLayout
+            android:layout_below="@+id/on_boarding_view_pager"
+            android:gravity="end"
+            android:layout_gravity="end"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent">
+
+            <Button
+                android:background="@drawable/border_button_gray"
+                android:id="@+id/on_boarding_skip_button"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_width="wrap_content"
+                android:text="@string/general_skip" />
+
+            <Button
+                android:background="@drawable/border_button_blue"
+                android:id="@+id/on_boarding_next_button"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_width="wrap_content"
+                android:text="@string/general_next" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
+

@@ -492,5 +492,8 @@
                 android:theme="@style/DialogNoTitleBar"
                 android:parentActivityName=".view.patients.PatientSummaryActivity"
                 android:noHistory="true"/>
+        <activity android:name=".view.fragments.OnboardingThirdScreenActivity" />
+        <activity android:name=".view.fragments.OnboardingFirstScreenActivity" />
+        <activity android:name=".view.fragments.OnboardingSecondScreenActivity" />
     </application>
 </manifest>
