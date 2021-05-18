@@ -829,4 +829,12 @@
 
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
     <string name="info_for_health_providers">for health providers</string>
+    <string name="info_license_and_disclaimer">License and Disclaimer</string>
+    <string name="info_agree_to_muzima_license_and_disclaimer">Agree to mUzima License and Disclaimer</string>
+    <string name="info_privacy_policy_statement">Privacy Policy Statement</string>
+    <string name="info_agree_to_muzima_privacy_policy_statement">Agree to mUzima Privacy Policy Statement</string>
+    <string name="info_terms_and_conditions">Terms and Conditions</string>
+    <string name="info_agree_to_muzima_terms_and_conditions">Agree to mUzima Terms and Conditions</string>
+    <string name="info_accept_all">Accept all</string>
+    <string name="error_policy_not_accepted">Accept policy statements to proceed</string>
 </resources>

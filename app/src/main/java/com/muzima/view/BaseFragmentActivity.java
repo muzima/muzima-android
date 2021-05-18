@@ -71,7 +71,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else if (!disclaimerAccepted) {
-            Intent intent = new Intent(this, DisclaimerActivity.class);
+            Intent intent = new Intent(this, TermsAndPolicyActivity.class);
             startActivity(intent);
             finish();
         } else if (new Credentials(this).isEmpty()) {
