@@ -471,7 +471,6 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">center</item>
-        <item name="android:padding">32dp</item>
     </style>
 
     <style name="LoginActivityLogo">
@@ -480,7 +479,7 @@
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:gravity">center</item>
         <item name="android:scaleType">fitCenter</item>
-        <item name="android:src">?attr/icLauncherLogo</item>
+        <item name="android:src">@drawable/curved_wallpaper</item>
     </style>
 
     <style name="LoginActivityHeader">

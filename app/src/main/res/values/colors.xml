@@ -14,27 +14,27 @@
     <color name="primary_blue">#137EFE</color>
     <color name="primary_white">#FFFFFF</color>
     <color name="hint_text_grey">#888888</color>
-    <color name="primary_black">#000000</color>
+    <color name="primary_black">#303030</color>
     <color name="theme_color">#333333</color>
     <color name="theme_color_light">#eaeaea</color>
     <color name="theme_color_background">@android:color/white</color>
     <color name="secondary_text">#888888</color>
     <color name="secondary_text_light">#777777</color>
     <color name="divider">#d4d4d4</color>
-    <color name="dark_button_background">#262626</color>
+    <color name="dark_button_background">#303030</color>
     <color name="primary_background">@android:color/white</color>
 
     <color name="tab_indicator_pressed">#6633B5E5</color>
     <color name="tab_indicator">#09A9E4</color>
-    <color name="tab_background_color_dark">#1a1a1a</color>
+    <color name="tab_background_color_dark">#303030</color>
     <color name="tab_background_color_light">#e8e8e8</color>
 
     <color name="listitem_state_pressed">#6633B5E5</color>
     <color name="listitem_state_focused">#6633B5E5</color>
 
-    <color name="drawer_background">#232323</color>
+    <color name="drawer_background">#303030</color>
     <color name="drawer_background_light">#f0f0f0</color>
-    <color name="drawer_header_separator_background">#161616</color>
+    <color name="drawer_header_separator_background">#303030</color>
 
     <color name="list_section_header_background">#bb09A9E4</color>
 
@@ -52,8 +52,8 @@
     <color name="login_divider_background">#0d484e</color>
     <color name="login_divider_background_light">#cedadb</color>
     <color name="dashboard_base_text_color">#eeeeee</color>
-    <color name="dashboard_base_text_color_light">#111111</color>
-    <color name="sync_text_background">#222222</color>
+    <color name="dashboard_base_text_color_light">#303030</color>
+    <color name="sync_text_background">#303030</color>
     <color name="sync_text_background_light">#dddddd</color>
 
 </resources>

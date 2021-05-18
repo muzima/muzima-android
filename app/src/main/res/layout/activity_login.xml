@@ -9,91 +9,127 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            style="@style/LoginActivityLayout"
-            android:padding="0dp">
+    android:scrollbarSize="0dp"
+    style="@style/LoginActivityLayout">
 
     <LinearLayout
-            android:orientation="vertical"
-            style="@style/LoginActivityLayout">
+        style="@style/LoginActivityLayout"
+        android:orientation="vertical">
 
-        <ImageView
+        <RelativeLayout
+            android:background="@drawable/curved_wallpaper"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            <ImageView
+                android:layout_marginTop="12dp"
+                android:layout_centerHorizontal="true"
                 android:id="@+id/logo"
-                style="@style/LoginActivityLogo"
-                android:contentDescription="@string/title_logo"/>
+                android:scaleType="fitXY"
+                android:src="@drawable/logo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:contentDescription="@string/title_logo" />
+
+            <TextView
+                android:textSize="40sp"
+                android:textColor="@color/primary_white"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:text="@string/app_title"
+                android:layout_below="@+id/logo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
 
         <TextView
-                android:id="@+id/title_login"
-                style="@style/LoginActivityHeader"/>
+            android:visibility="gone"
+            android:padding="22dp"
+            android:id="@+id/title_login"
+            style="@style/LoginActivityHeader" />
 
-        <View style="@style/LoginActivityDivider.Style"/>
+        <View
+            android:visibility="invisible"
+            style="@style/LoginActivityDivider.Style" />
 
-        <LinearLayout style="@style/LoginInfoLayout">
+        <LinearLayout
+            android:layout_marginStart="22dp"
+            android:layout_marginEnd="22dp"
+            style="@style/LoginInfoLayout">
 
             <EditText
-                    android:id="@+id/serverUrl"
-                    style="@style/LoginInfoEditText"
-                    android:inputType="textUri"
-                    android:text="@string/default_server"
-                    android:nextFocusDown="@+id/username"
-                    android:hint="@string/hint_server_url"/>
+                android:background="@drawable/border_button_gray"
+                android:id="@+id/serverUrl"
+                style="@style/LoginInfoEditText"
+                android:hint="@string/hint_server_url"
+                android:inputType="textUri"
+                android:nextFocusDown="@+id/username"
+                android:text="@string/default_server" />
 
             <View
-                    style="@style/LoginInfoLayoutDivider"
-                    android:id="@+id/server_url_divider"/>
+                android:id="@+id/server_url_divider"
+                style="@style/LoginInfoLayoutDivider" />
 
             <EditText
-                    android:id="@+id/username"
-                    style="@style/LoginInfoEditText"
-                    android:inputType="textShortMessage"
-                    android:nextFocusDown="@+id/password"
-                    android:text=""
-                    android:hint="@string/general_username"/>
+                android:background="@drawable/border_button_gray"
+                android:id="@+id/username"
+                style="@style/LoginInfoEditText"
+                android:drawableLeft="@drawable/ic_action_arrow_person_dark"
+                android:hint="@string/general_username"
+                android:inputType="textShortMessage"
+                android:nextFocusDown="@+id/password"
+                android:text="" />
 
-            <View style="@style/LoginInfoLayoutDivider"/>
+            <View style="@style/LoginInfoLayoutDivider" />
 
             <EditText
-                    android:id="@+id/password"
-                    android:hint="@string/general_password"
-                    style="@style/LoginInfoEditText"
-                    android:nextFocusDown="@+id/login"
-                    android:text=""
-                    android:inputType="textPassword"/>
+                android:background="@drawable/border_button_gray"
+                android:id="@+id/password"
+                android:drawableLeft="@drawable/ic_action_lock_dark"
+                style="@style/LoginInfoEditText"
+                android:hint="@string/general_password"
+                android:inputType="textPassword"
+                android:nextFocusDown="@+id/login"
+                android:text="" />
 
         </LinearLayout>
 
         <CheckBox
-                  android:id="@+id/update_password"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/hint_password_change"
-                  style="@style/LoginInfoQuestion"
-                  android:onClick="onUpdatePasswordCheckboxClicked"/>
+            android:id="@+id/update_password"
+            style="@style/LoginInfoQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onUpdatePasswordCheckboxClicked"
+            android:text="@string/hint_password_change" />
 
-        <FrameLayout
-                style="@style/LoginButtonLayout">
+        <FrameLayout style="@style/LoginButtonLayout">
 
             <Button
-                    android:id="@+id/login"
-                    style="@style/LoginButton"
-                    android:text="@string/general_login"/>
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="22dp"
+                android:id="@+id/login"
+                style="@style/LoginButton"
+                android:text="@string/general_login" />
 
             <TextView
-                    android:id="@+id/authenticatingText"
-                    style="@style/LoginAuthenticatingButton"
-                    android:text="@string/hint_authentication_progress"
-                    android:visibility="gone"/>
+                android:id="@+id/authenticatingText"
+                style="@style/LoginAuthenticatingButton"
+                android:text="@string/hint_authentication_progress"
+                android:visibility="gone" />
         </FrameLayout>
 
         <TextView
-                android:id="@+id/version"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Versiontext"
-                android:layout_gravity="center"/>
+            android:id="@+id/version"
+            style="@style/Versiontext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
         <TextView
-                android:id="@+id/helpText"
-                android:text="@string/help_center"
-                style="@style/ClickableText"
-                android:paddingTop="16dp"/>
+            android:id="@+id/helpText"
+            style="@style/ClickableText"
+            android:paddingTop="16dp"
+            android:text="@string/help_center" />
     </LinearLayout>
 </ScrollView>
