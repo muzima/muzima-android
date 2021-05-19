@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -26,8 +27,10 @@ import com.muzima.utils.Fonts;
 import org.apache.commons.lang.StringUtils;
 
 public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel> {
+    private Context context;
     public GuidedSetupActionLogAdapter(Context context, int textViewResourceId){
         super(context, textViewResourceId);
+        this.context = context;
     }
 
     @Override
@@ -53,22 +56,17 @@ public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel
         return convertView;
     }
     class ViewHolder {
-        private final TextView setupAction;
         private final TextView setupActionResult;
-        private final TextView setupActionResultStatus;
+        private final ImageView statusImageView;
 
         ViewHolder(View convertView) {
-            setupAction = convertView
-                    .findViewById(R.id.setup_action);
-            setupActionResult = convertView
-                    .findViewById(R.id.setup_action_result);
-            setupActionResultStatus = convertView
-                    .findViewById(R.id.setup_action_result_status);
+            setupActionResult = convertView.findViewById(R.id.setup_action_result);
+            statusImageView = convertView.findViewById(R.id.item_guided_setup_status_image_view);
         }
 
         void setSetupAction(String text) {
-            setupAction.setText(text);
-            setupAction.setTypeface(Fonts.roboto_medium(getContext()));
+            setupActionResult.setText(text);
+            setupActionResult.setTypeface(Fonts.roboto_medium(getContext()));
         }
 
         void setSetupActionResult(String text) {
@@ -77,14 +75,15 @@ public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel
         }
 
         void setSetupActionResultStatus(String text){
+            //update progress here
             if(!StringUtils.isEmpty(text) && StringUtils.equals(text, Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG)){
-                setupActionResultStatus.setTextColor(Color.RED);
                 setupActionResult.setTextColor(Color.RED);
-                setupActionResultStatus.setText(String.format("%s: ", (getContext().getString(R.string.general_fail)).toUpperCase()));
+                //setupActionResult.setText(String.format("%s: ", (getContext().getString(R.string.general_fail)).toUpperCase()));
+                statusImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_cancel_image_view));
             } else if(!StringUtils.isEmpty(text) && StringUtils.equals(text, Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG)){
-                setupActionResultStatus.setTextColor(ContextCompat.getColor(getContext(),R.color.primary_blue));
                 setupActionResult.setTextColor(ContextCompat.getColor(getContext(),R.color.primary_blue));
-                setupActionResultStatus.setText(String.format("%s: ", (getContext().getString(R.string.general_ok)).toUpperCase()));
+               // setupActionResult.setText(String.format("%s: ", (getContext().getString(R.string.general_ok)).toUpperCase()));
+                statusImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_tick));
             }
         }
     }

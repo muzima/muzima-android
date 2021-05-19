@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
@@ -9,53 +8,73 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/border_button_gray"
-    android:layout_margin="8dp"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_toStartOf="@+id/item_log_info_view"
         android:id="@+id/item_log_main"
-        android:layout_alignParentStart="true"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/setup_action"
-            android:textColor="?attr/primaryTextColor"
-            android:layout_width="wrap_content"
-            style="@style/SetUpLogList"
-            android:layout_height="wrap_content"
-            />
-        <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/item_log_info_view"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/setup_action_result_status"
+
+            <ImageView
+                android:id="@+id/item_guided_setup_status_image_view"
+                android:src="@drawable/ic_action_tick"
+                android:layout_alignParentStart="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/SetUpLogList"
-                android:textColor="@color/primary_blue"/>
+                android:layout_height="wrap_content"/>
+
             <TextView
                 android:id="@+id/setup_action_result"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/primary_blue"
+                android:layout_toEndOf="@+id/item_guided_setup_status_image_view"
                 style="@style/SetUpLogList"
-                android:layout_marginStart="2dp"/>
+                android:layout_marginStart="6dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/primaryTextColor" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+<!--            <TextView-->
+<!--                android:id="@+id/setup_action_result_status"-->
+<!--                style="@style/SetUpLogList"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/primary_blue" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/setup_action_result"-->
+<!--                style="@style/SetUpLogList"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="2dp"-->
+<!--                android:textColor="@color/primary_blue" />-->
         </LinearLayout>
 
     </LinearLayout>
 
     <ImageView
         android:id="@+id/item_log_info_view"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="12dp"
-        android:layout_marginStart="12dp"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_action_info"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_action_info"
+        android:visibility="gone" />
 
 </RelativeLayout>

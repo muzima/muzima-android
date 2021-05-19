@@ -664,7 +664,6 @@
         <item name="android:background">?attr/listMultiSelectorBlue</item>
         <item name="android:textColor">?attr/selectableHintText</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-        <item name="android:listDivider">@color/hint_text_grey</item>
     </style>
 
     <style name="ListViewText">

@@ -25,7 +25,7 @@ public class LandingPagePreferenceService extends PreferenceService{
         String preferredLandingPage = settings.getString(landingPageKey,defaultLandingPage);
         Intent intent;
         if(StringUtils.equals(preferredLandingPage,context.getString(R.string.general_client_list))){
-           intent = new Intent(context, PatientsListActivity.class);
+           intent = new Intent(context, MainActivity.class);
         } else {
             intent = new Intent(context, MainActivity.class);
         }

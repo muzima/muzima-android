@@ -92,7 +92,7 @@ import java.util.UUID;
 
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
         ListAdapter.BackgroundListQueryTaskListener {
-
+    private static final String TAG = "PatientsListActivity";
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     private static final String QUICK_SEARCH = "quickSearch";
@@ -235,6 +235,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.e(TAG, "onCreateOptionsMenu: ");
         getMenuInflater().inflate(R.menu.client_list, menu);
 
         setUpGeoMappingFeatureMenuItems(menu);
@@ -263,6 +264,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void setUpSearchFeatureMenuItems(Menu menu) {
+        Log.e(TAG, "setUpSearchFeatureMenuItems: ");
         searchMenuItem = menu.findItem(R.id.search);
         searchView = (SearchView) searchMenuItem.getActionView();
 
