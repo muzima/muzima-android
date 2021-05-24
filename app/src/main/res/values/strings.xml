@@ -846,4 +846,7 @@
     <string name="general_search_forms">Search Forms</string>
     <string name="general_all_forms">All forms</string>
     <string name="general_search_cohorts">Search cohorts</string>
+    <string name="general_search_patient">Search patient</string>
+    <string name="general_or_search_by">Or search by:</string>
+    <string name="app_sub_title">for health providers</string>
 </resources>

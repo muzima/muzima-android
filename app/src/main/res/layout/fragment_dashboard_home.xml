@@ -1,6 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout android:background="@color/primary_black"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="42dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-</LinearLayout>
+    <LinearLayout android:background="@color/primary_black"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="12dp">
+
+        <LinearLayout
+            android:background="@color/primary_black"
+            android:elevation="12dp"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_height="?attr/actionBarSize"
+                android:layout_width="match_parent" />
+
+            <TextView
+                android:id="@+id/dashboard_home_welcome_message_text_view"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="6dp"
+                android:layout_width="match_parent"
+                android:text="Hello Provider"
+                android:textColor="@color/primary_white"
+                android:textSize="16sp" />
+
+            <include layout="@layout/forms_top_bar_view" />
+
+            <RelativeLayout
+                android:background="@drawable/border_button_gray"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="6dp"
+                android:layout_width="match_parent"
+                android:padding="4dp">
+
+                <EditText
+                    android:background="@null"
+                    android:hint="@string/general_search_patient"
+                    android:id="@+id/dashboard_forms_search_edit_text"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:padding="2dp" />
+
+                <ImageView
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/ic_search" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent">
+
+                <TextView
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/general_or_search_by"
+                    android:textAllCaps="true"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:background="@drawable/border_button_gray"
+                        android:id="@+id/search_barcode_view"
+                        android:layout_height="26dp"
+                        android:layout_marginEnd="6dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_width="26dp"
+                        android:padding="2dp"
+                        android:src="@drawable/barcode_icon" />
+
+                    <ImageView
+                        android:background="@drawable/border_button_gray"
+                        android:id="@+id/search_fingerprint"
+                        android:layout_height="26dp"
+                        android:layout_marginEnd="6dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_width="26dp"
+                        android:padding="4dp"
+                        android:src="@drawable/fingerprint_white" />
+
+                    <ImageView
+                        android:background="@drawable/border_button_gray"
+                        android:id="@+id/search_server_view"
+                        android:layout_height="26dp"
+                        android:layout_marginEnd="6dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_width="26dp"
+                        android:padding="4dp"
+                        android:src="@drawable/firebase" />
+
+                    <ImageView
+                        android:background="@drawable/border_button_gray"
+                        android:id="@+id/search_smart_card_view"
+                        android:layout_height="26dp"
+                        android:layout_marginEnd="6dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_width="26dp"
+                        android:padding="4dp"
+                        android:src="@drawable/smartcard" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/favourite_list_container"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Favorite List" />
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/ic_action_arrow_down_dark" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/patient_lists_layout"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+
+                <ListView
+                    style="@style/MuzimaSelectableListView"
+                    android:id="@+id/list"/>
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:id="@+id/no_data_layout"
+                    android:layout_below="@id/list"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:paddingRight="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:id="@+id/no_data_msg"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textSize="25sp"/>
+
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:id="@+id/no_data_tip"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textSize="20sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:gravity="center_horizontal"
+                    android:id="@+id/search_server_layout"
+                    android:layout_below="@id/no_data_layout"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="invisible">
+
+                    <LinearLayout
+                        style="@style/DividerLine"
+                        android:layout_marginTop="30dp" />
+
+                    <Button
+                        style="@style/Button.Next"
+                        android:drawableLeft="?attr/icSearch"
+                        android:gravity="center"
+                        android:id="@+id/search_server_btn"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:text="@string/title_search_server" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <include layout="@layout/progress_bar" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_search"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="26dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:src="?attr/icSearch" />
+
+</RelativeLayout>
+

@@ -3,6 +3,7 @@ package com.muzima.view;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -34,7 +35,6 @@ public class MainDashboardActivity extends AppCompatActivity {
         themeUtils.onCreate(MainDashboardActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_main_layout);
-
         initializeResources();
     }
 
@@ -71,5 +71,7 @@ public class MainDashboardActivity extends AppCompatActivity {
         }
         adapter = new MainDashboardAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+
+        setTitle(" ");
     }
 }

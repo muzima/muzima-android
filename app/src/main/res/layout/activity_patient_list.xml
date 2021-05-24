@@ -84,6 +84,8 @@
 
         <include layout="@layout/progress_bar"/>
     </FrameLayout>
+
+
     <!-- The navigation drawer -->
     <FrameLayout android:id="@+id/tags_drawer"
         android:layout_gravity="right"
