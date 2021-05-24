@@ -111,7 +111,9 @@ public class FormsActivity extends FormsActivityBase {
         if(((FormsPagerAdapter) formsPagerAdapter).isFormDownloadBackgroundTaskRunning()) {
             showWarningDialog();
         }else{
-            super.onBackPressed();
+            Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 

@@ -59,7 +59,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
             holder.dateOfBirth = convertView.findViewById(R.id.dateOfBirth);
             holder.distanceToClientAddress = convertView.findViewById(R.id.distanceToClientAddress);
             holder.identifier = convertView.findViewById(R.id.identifier);
-            holder.tagsScroller = convertView.findViewById(R.id.tags_scroller);
+//            holder.tagsScroller = convertView.findViewById(R.id.tags_scroller);
             holder.tagsLayout = convertView.findViewById(R.id.menu_tags);
             holder.tags = new ArrayList<>();
             convertView.setTag(holder);
@@ -99,7 +99,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
     private void addTags(ViewHolder holder, Patient patient) {
         PatientTag[] tags = patient.getTags();
         if (tags.length > 0) {
-            holder.tagsScroller.setVisibility(View.VISIBLE);
+//            holder.tagsScroller.setVisibility(View.VISIBLE);
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 
             //add update tags
@@ -128,7 +128,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
                 holder.removeTags(tagsToRemove);
             }
         } else {
-            holder.tagsScroller.setVisibility(View.INVISIBLE);
+//            holder.tagsScroller.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -232,7 +232,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         TextView distanceToClientAddress;
         List<TextView> tags;
         LinearLayout tagsLayout;
-        RelativeLayout tagsScroller;
+//        RelativeLayout tagsScroller;
 
         public void addTag(TextView tag) {
             this.tags.add(tag);
