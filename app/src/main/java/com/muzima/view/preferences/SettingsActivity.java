@@ -22,7 +22,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.LanguageUtil;
-import com.muzima.utils.MuzimaPreferenceUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.DefaultMenuDropDownHelper;

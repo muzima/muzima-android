@@ -7,11 +7,13 @@
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
-<com.muzima.view.CheckedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.muzima.view.CheckedLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="12dp"
     android:layout_marginEnd="12dp"
+    android:layout_marginBottom="6dp"
     android:background="@drawable/list_multi_selector_blue"
     android:orientation="vertical">
 
@@ -21,6 +23,7 @@
 
         <CheckedTextView
             android:id="@+id/config_name"
+            android:layout_marginStart="6dp"
             style="@style/ListViewSelectableText"
             android:checkMark="@null" />
 
@@ -38,7 +41,9 @@
 
     <CheckedTextView
         android:id="@+id/config_description"
-        style="@style/ListViewSelectableDescription"
+        android:layout_marginStart="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true" />
 
 

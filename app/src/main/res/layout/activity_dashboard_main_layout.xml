@@ -4,11 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/Theme.AppCompat.NoActionBar"
     android:id="@+id/main_dashboard_drawer_layout"
+    android:background="@color/primary_black"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:background="@color/primary_black"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,7 +19,9 @@
             android:id="@+id/dashboard_toolbar"
             android:background="@color/primary_black"
             android:elevation="12dp"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:layout_alignParentTop="true"
+            android:theme="@style/DarkToolbar"
+            app:title=""
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"/>
 
@@ -31,9 +35,9 @@
             android:id="@+id/main_dashboard_bottom_navigation"
             android:layout_alignParentBottom="true"
             android:elevation="12dp"
-            android:background="@color/default_black"
-            app:itemIconTint="@color/primary_blue"
-            app:itemTextColor="@color/primary_white"
+            android:background="@color/primary_black"
+            app:itemTextAppearanceActive="@style/bottom_nav_active_text"
+            app:itemTextAppearanceInactive="@style/bottom_nav_inactive_text"
             app:menu="@menu/dashboard_bottom_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -41,7 +45,7 @@
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation"
+        android:id="@+id/dashboard_navigation"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start|left"

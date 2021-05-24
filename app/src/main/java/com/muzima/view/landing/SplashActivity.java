@@ -1,18 +1,16 @@
 package com.muzima.view.landing;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.muzima.R;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.MainActivity;
+import com.muzima.view.BaseFragmentActivity;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseFragmentActivity {
 
     private final ThemeUtils themeUtils = new ThemeUtils();
     private Toolbar toolbar;
@@ -38,16 +36,22 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                handleLaunchNextActivity();
+
             }
         };
 
         countDownTimer.start();
     }
 
-    private void handleLaunchNextActivity() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
+//    private void handleLaunchNextActivity() {
+//        if (MuzimaPreferences.getOnBoardingCompletedPreference(getApplicationContext())){
+//            Intent intent = new Intent(getApplicationContext(), OnboardingFirstScreenActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }else {
+//            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
+//    }
 }

@@ -63,8 +63,13 @@ public class Constants {
     public static final String STANDARD_DATE_FORMAT = "dd-MM-yyyy";
     public static final String STANDARD_DATE_LOCALE_FORMAT = "dd-MM-yyyy HH:mm";
     public static final String STANDARD_DISPLAY_FORMAT = "MMM dd, yyyy HH:mm";
-
+    public static final class FORMS_LAUNCH_MODE {
+        public static final int INCOMPLETE_FORMS_VIEW = 0;
+        public static final int COMPLETE_FORMS_VIEW = 1;
+        public static final int ALL_FORMS_VIEW = 2;
+    };
     public static class MuzimaGPSLocationConstants {
+
         public static final int LOCATION_ACCESS_PERMISSION_REQUEST_CODE = 9111;
         public static final int LOCATION_SERVICES_SWITCH_REQUEST_CODE = 9122;
     }

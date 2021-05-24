@@ -37,7 +37,7 @@ import com.muzima.domain.Credentials;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.LanguageUtil;
-import com.muzima.utils.MuzimaPreferenceUtils;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
@@ -111,13 +111,13 @@ public class MainActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onDestroy() {
-        String localePref = MuzimaPreferenceUtils.getSelectedUserLocalePreference(MainActivity.this);
+        String localePref = MuzimaPreferences.getSelectedUserLocalePreference(MainActivity.this);
         Boolean isUserPreferenceThemeLightMode = PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
                 .getBoolean(getResources().getString(R.string.preference_light_mode), false);
         String currentAppLocalePreference = PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
                 .getString(getResources().getString(R.string.preference_app_language),getResources().getString(R.string.language_english));
-        Boolean isPreviousThemeLightMode = MuzimaPreferenceUtils.getIsLightModeThemeSelectedPreference(MainActivity.this);
-        String previousAppLocalePreference = MuzimaPreferenceUtils.getAppLocalePreference(MainActivity.this);
+        Boolean isPreviousThemeLightMode = MuzimaPreferences.getIsLightModeThemeSelectedPreference(MainActivity.this);
+        String previousAppLocalePreference = MuzimaPreferences.getAppLocalePreference(MainActivity.this);
 
         if (isUserPreferenceThemeLightMode.equals(isPreviousThemeLightMode) && Locale.getDefault().toString().equalsIgnoreCase(localePref)
                 && currentAppLocalePreference.equalsIgnoreCase(previousAppLocalePreference)) {
@@ -131,9 +131,9 @@ public class MainActivity extends BroadcastListenerActivity {
             String preferredAppLocale = PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
                     .getString(getResources().getString(R.string.preference_app_language),getString(R.string.language_english));
 
-            MuzimaPreferenceUtils.setLightModeThemeSelectedPreference(MainActivity.this, isLightThemeModeSelected);
-            MuzimaPreferenceUtils.setSelectedUserLocalePreference(MainActivity.this, Locale.getDefault().toString());
-            MuzimaPreferenceUtils.setAppLocalePreference(MainActivity.this,preferredAppLocale);
+            MuzimaPreferences.setLightModeThemeSelectedPreference(MainActivity.this, isLightThemeModeSelected);
+            MuzimaPreferences.setSelectedUserLocalePreference(MainActivity.this, Locale.getDefault().toString());
+            MuzimaPreferences.setAppLocalePreference(MainActivity.this,preferredAppLocale);
         }
 
         super.onDestroy();

@@ -72,7 +72,7 @@
                 android:name=".view.cohort.CohortActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_cohorts"
-                android:parentActivityName=".view.MainActivity">
+                android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.MainActivity"/>
@@ -81,7 +81,7 @@
                 android:name=".view.preferences.SettingsActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_settings"
-                android:parentActivityName=".view.MainActivity"
+                android:parentActivityName=".view.MainDashboardActivity"
                 android:theme="@style/PreferencesTheme.Dark"/>
         <activity
                 android:name=".view.preferences.ProviderPreferenceActivity"
@@ -131,7 +131,7 @@
                 android:name=".view.HelpActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_help"
-                android:parentActivityName=".view.MainActivity">
+                android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.MainActivity"/>
@@ -140,7 +140,7 @@
                 android:name=".view.InteractiveHelpActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/ask_help"
-                android:parentActivityName=".view.MainActivity">
+                android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.MainActivity"/>
@@ -149,7 +149,7 @@
                 android:name=".view.FeedbackActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_feedback"
-                android:parentActivityName=".view.MainActivity">
+                android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.MainActivity"/>
@@ -167,7 +167,7 @@
                 android:name=".view.patients.PatientsListActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_clients"
-                android:parentActivityName=".view.MainActivity"
+                android:parentActivityName=".view.MainDashboardActivity"
                 android:windowSoftInputMode="adjustResize">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -181,7 +181,7 @@
                 android:name=".view.forms.FormsActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_forms"
-                android:parentActivityName=".view.MainActivity">
+                android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.MainActivity"/>
@@ -367,7 +367,7 @@
                 android:name=".view.notifications.NotificationsListActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/general_notifications"
-                android:parentActivityName=".view.MainActivity">
+                android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.MainActivity"/>
@@ -419,7 +419,7 @@
                 android:name=".view.reports.ProviderReportViewActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/title_provider_reports"
-                android:parentActivityName=".view.MainActivity">
+                android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.MainActivity" />
@@ -428,7 +428,7 @@
                 android:name=".view.reports.ProviderReportListActivity"
                 android:configChanges="orientation|screenSize"
                 android:label="@string/title_provider_reports"
-                android:parentActivityName=".view.MainActivity">
+                android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.MainActivity" />

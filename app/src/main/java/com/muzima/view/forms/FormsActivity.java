@@ -17,6 +17,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.legacy.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -38,6 +40,7 @@ import com.muzima.utils.Fonts;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ThemeUtils;
+import com.muzima.view.MainDashboardActivity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -52,6 +55,7 @@ public class FormsActivity extends FormsActivityBase {
 
     private DrawerLayout mainLayout;
     private TagsListAdapter tagsListAdapter;
+    private Toolbar toolbar;
     private MenuItem menubarLoadButton;
     private MenuItem menuUpload;
     private MenuItem tagsButton;
@@ -70,11 +74,20 @@ public class FormsActivity extends FormsActivityBase {
         setContentView(mainLayout);
         formController = ((MuzimaApplication) getApplication()).getFormController();
         tagPreferenceService = new TagPreferenceService(this);
+        initToolbar();
         initPager();
         initDrawer();
         initPagerIndicator();
         setTitle(R.string.general_forms);
         logEvent("VIEW_ALL_FORMS");
+    }
+
+    private void initToolbar() {
+        toolbar = findViewById(R.id.forms_activity_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("Incomplete forms");
+        }
     }
 
     @Override
@@ -325,7 +338,7 @@ public class FormsActivity extends FormsActivityBase {
 
     @Override
     protected void onPageChange(int position) {
-        ((FormsPagerAdapter) formsPagerAdapter).endActionMode();
+       // ((FormsPagerAdapter) formsPagerAdapter).endActionMode();
         if (tagsButton == null || menuUpload == null || menubarLoadButton == null) {
             return;
         }
@@ -371,6 +384,9 @@ public class FormsActivity extends FormsActivityBase {
     public void handleBackPressed(){
         super.onBackPressed();
         ((FormsPagerAdapter) formsPagerAdapter).cancelBackgroundQueryTasks();
+        Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

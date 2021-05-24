@@ -9,8 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.muzima.R;
-import com.muzima.utils.MuzimaPreferenceUtils;
-import com.muzima.view.MainActivity;
+import com.muzima.utils.MuzimaPreferences;
+import com.muzima.view.login.LoginActivity;
 
 public class OnboardingFirstScreenActivity extends AppCompatActivity {
 
@@ -37,8 +37,8 @@ public class OnboardingFirstScreenActivity extends AppCompatActivity {
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MuzimaPreferenceUtils.setOnBoardingCompletedPreference(getApplicationContext(), true);
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                MuzimaPreferences.setOnBoardingCompletedPreference(getApplicationContext(), true);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
                 finish();
             }

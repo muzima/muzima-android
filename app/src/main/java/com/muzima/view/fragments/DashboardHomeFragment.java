@@ -1,15 +1,12 @@
 package com.muzima.view.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,11 +26,13 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
+import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.MuzimaPreferences;
+import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.patients.PatientsListActivity;
 
-import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
@@ -42,7 +41,9 @@ public class DashboardHomeFragment extends Fragment implements AdapterView.OnIte
 
     private TextView incompleteFormsTextView;
     private TextView completeFormsTextView;
-    private EditText searchPatientEditText;
+    private View incompleteFormsView;
+    private View completeFormsView;
+    private View searchPatientEditText;
     private View searchByBarCode;
     private View searchByFingerprint;
     private View searchByServer;
@@ -86,7 +87,7 @@ public class DashboardHomeFragment extends Fragment implements AdapterView.OnIte
         noDataMsgTextView = view.findViewById(R.id.no_data_msg);
         incompleteFormsTextView = view.findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
         completeFormsTextView = view.findViewById(R.id.dashboard_forms_complete_forms_count_view);
-        searchPatientEditText = view.findViewById(R.id.dashboard_forms_search_edit_text);
+        searchPatientEditText = view.findViewById(R.id.dashboard_main_patient_search_view);
         searchByBarCode = view.findViewById(R.id.search_barcode_view);
         searchByFingerprint = view.findViewById(R.id.search_fingerprint);
         searchByServer = view.findViewById(R.id.search_server_view);
@@ -94,6 +95,41 @@ public class DashboardHomeFragment extends Fragment implements AdapterView.OnIte
         favouriteListView = view.findViewById(R.id.favourite_list_container);
         progressBarContainer = view.findViewById(R.id.progressbarContainer);
         fabSearchButton = view.findViewById(R.id.fab_search);
+        completeFormsView = view.findViewById(R.id.dashboard_forms_complete_forms_view);
+        incompleteFormsView = view.findViewById(R.id.dashboard_forms_incomplete_forms_view);
+
+        incompleteFormsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MuzimaPreferences.setFormsActivityActionModePreference(getActivity().getApplicationContext(), Constants.FORMS_LAUNCH_MODE.INCOMPLETE_FORMS_VIEW);
+                Intent intent = new Intent(getActivity().getApplicationContext(), FormsActivity.class);
+                intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN,1);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+        completeFormsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MuzimaPreferences.setFormsActivityActionModePreference(getActivity().getApplicationContext(), Constants.FORMS_LAUNCH_MODE.COMPLETE_FORMS_VIEW);
+                Intent intent = new Intent(getActivity().getApplicationContext(), FormsActivity.class);
+                intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN,1);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+
+
+        searchPatientEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(),PatientsListActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
 
         fabSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override

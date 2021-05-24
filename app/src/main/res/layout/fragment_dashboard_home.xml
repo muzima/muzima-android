@@ -37,6 +37,7 @@
             <include layout="@layout/forms_top_bar_view" />
 
             <RelativeLayout
+                android:id="@+id/dashboard_main_patient_search_view"
                 android:background="@drawable/border_button_gray"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
@@ -45,9 +46,9 @@
                 android:layout_width="match_parent"
                 android:padding="4dp">
 
-                <EditText
-                    android:background="@null"
-                    android:hint="@string/general_search_patient"
+                <TextView
+                    android:background="@color/primary_black"
+                    android:text="@string/general_search_patient"
                     android:id="@+id/dashboard_forms_search_edit_text"
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content"

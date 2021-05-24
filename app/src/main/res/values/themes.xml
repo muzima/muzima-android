@@ -54,6 +54,10 @@
         <item name="icEdit">@drawable/edit_light</item>
     </style>
 
+    <style name="DarkToolbar" parent="AppThemeNoActionBar.Dark">
+        <item name="background">@color/primary_white</item>
+        <item name="android:textColor">@color/primary_black</item>
+    </style>
 
     <style name="AppBaseTheme.Light" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/primary_white</item>

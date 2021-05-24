@@ -292,7 +292,7 @@
         but have not synced it with the server
     </string>
     <string name="hint_concept_pref_add">Add concept(s) that you want observation(s) to be downloaded.</string>
-    <string name="hint_configuration_search">Search a configuration</string>
+    <string name="hint_configuration_search">Search a Program</string>
     <string name="hint_consultation_consultant_validation_failure">Please provide a consultant from the list of possible consultants</string>
     <string name="hint_crash_dialog">An unexpected error occurred forcing mUzima to stop. Please help us fix
         this by sending us error data, all you have to do is click OK.
@@ -329,7 +329,7 @@
     </string>
     <string name="hint_future_date_validation_failure">Please enter a date in the future</string>
     <string name="hint_gps_location_off">Location is switched off! Kindly turn on location in settings.</string>
-    <string name="hint_guided_setup">Select a preset configuration and let mUzima do the rest for you</string>
+    <string name="hint_guided_setup">Let’s select the program within which you will be working</string>
     <string name="hint_help_prompt">Please enter your message</string>
     <string name="hint_image_caption_prompt">Please enter a caption for the image</string>
     <string name="hint_incomplete_form_unavailable">Incomplete forms are available only if you have saved a partially
@@ -839,7 +839,7 @@
     <string name="error_policy_not_accepted">Accept policy statements to proceed</string>
     <string name="general_home">Home</string>
     <string name="contact_us">Contact Us</string>
-    <string name="drawer_open" translatable="false">Open</string>
+    <string name="drawer_open" translatable="false">open</string>
     <string name="drawer_close" translatable="false">close</string>
     <string name="info_incomplete_form">Incomplete Forms</string>
     <string name="info_complete_form">Completed Forms</string>
@@ -849,4 +849,5 @@
     <string name="general_search_patient">Search patient</string>
     <string name="general_or_search_by">Or search by:</string>
     <string name="app_sub_title">for health providers</string>
+    <string name="general_policy_title">Usage Policies</string>
 </resources>

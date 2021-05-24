@@ -13,12 +13,21 @@ import java.util.Set;
  * Support system preferences including prefs not
  * displayed in the settings UI
  */
-public class MuzimaPreferenceUtils {
+public class MuzimaPreferences {
 
     private static final String LIGHT_MODE_SELECTED_PREFS = "light_mode_selected_prefs";
     private static final String SELECTED_USER_LOCALE_PREFERENCE = "selected_locale_pref";
     private static final String ON_BOARDING_COMPLETED_PREFERENCE = "onboarding_completed_pref";
     private static final String APP_LOCALE_PREFERENCE = "app_locale_pref";
+    private static final String FORMS_ACTIVITY_ACTION_MODE_PREFERENCE = "forms_action_mode_pref";
+
+    public static void setFormsActivityActionModePreference(Context context, int formType) {
+        setIntegerPrefrence(context, FORMS_ACTIVITY_ACTION_MODE_PREFERENCE, formType);
+    }
+
+    public static int getFormsActivityActionModePreference(Context context) {
+        return getIntegerPreference(context, FORMS_ACTIVITY_ACTION_MODE_PREFERENCE,Constants.FORMS_LAUNCH_MODE.INCOMPLETE_FORMS_VIEW);
+    }
 
     public static void setOnBoardingCompletedPreference(Context context, boolean isLightMode) {
         setBooleanPreference(context, ON_BOARDING_COMPLETED_PREFERENCE, isLightMode);

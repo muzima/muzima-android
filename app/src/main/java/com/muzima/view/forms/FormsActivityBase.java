@@ -23,8 +23,6 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
 
     public static final int FORM_VIEW_ACTIVITY_RESULT = 1;
     public static final String KEY_FORMS_TAB_TO_OPEN = "formsTabToOpen";
-
-
     ViewPager formsPager;
     MuzimaPagerAdapter formsPagerAdapter;
 
@@ -46,7 +44,7 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
 
     void initPagerIndicator() {
         Intent intent = getIntent();
-        int tabToOpen = intent.getIntExtra(KEY_FORMS_TAB_TO_OPEN, -1);
+        int tabToOpen = -1;
         if (tabToOpen == -1) {
             tabToOpen = 0;
         }

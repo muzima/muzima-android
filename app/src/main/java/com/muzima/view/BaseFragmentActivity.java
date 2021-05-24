@@ -26,7 +26,7 @@ import com.muzima.R;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaLoggerService;
-import com.muzima.utils.MuzimaPreferenceUtils;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.fragments.OnboardingFirstScreenActivity;
 
@@ -66,7 +66,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
         boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
-        if (!MuzimaPreferenceUtils.getOnBoardingCompletedPreference(getApplicationContext())) {
+        if (!MuzimaPreferences.getOnBoardingCompletedPreference(getApplicationContext())) {
             Intent intent = new Intent(this, OnboardingFirstScreenActivity.class);
             startActivity(intent);
             finish();

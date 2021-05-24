@@ -17,5 +17,4 @@
     <item android:state_activated="true" android:drawable="@color/primary_blue"/>
 
     <item android:drawable="@drawable/border_button_gray"/>
-
 </selector>
