@@ -38,6 +38,7 @@
             android:background="@color/primary_black"
             app:itemTextAppearanceActive="@style/bottom_nav_active_text"
             app:itemTextAppearanceInactive="@style/bottom_nav_inactive_text"
+            app:itemIconTint="@drawable/bottom_navigation_selected_icon"
             app:menu="@menu/dashboard_bottom_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
