@@ -845,4 +845,5 @@
     <string name="info_complete_form">Completed Forms</string>
     <string name="general_search_forms">Search Forms</string>
     <string name="general_all_forms">All forms</string>
+    <string name="general_search_cohorts">Search cohorts</string>
 </resources>
