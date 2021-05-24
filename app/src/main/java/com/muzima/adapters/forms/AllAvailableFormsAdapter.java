@@ -35,12 +35,12 @@ import java.util.List;
  */
 public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implements TagsListAdapter.TagsChangedListener {
     private final MuzimaSyncService muzimaSyncService;
-
+    private Context context;
 
     public AllAvailableFormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
         muzimaSyncService = ((MuzimaApplication) (getContext().getApplicationContext())).getMuzimaSyncService();
-
+        this.context = context;
     }
 
     @NonNull
@@ -82,8 +82,8 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
                     holder.addTag(textView);
                 }
                 textView = holder.tags.get(i);
-                textView.setBackgroundColor(formController.getTagColor(tags[i].getUuid()));
-                List<Tag> selectedTags = formController.getSelectedTags();
+                textView.setBackgroundColor(((MuzimaApplication) context.getApplicationContext()).getFormController().getTagColor(tags[i].getUuid()));
+                List<Tag> selectedTags = ((MuzimaApplication) context.getApplicationContext()).getFormController().getSelectedTags();
                 if (selectedTags.isEmpty() || selectedTags.contains(tags[i])) {
                     textView.setText(tags[i].getName());
                 } else {
@@ -146,7 +146,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
                     muzimaSyncService.downloadForms();
-                    allForms = formsAdapter.getFormController().getAvailableFormByTags(getSelectedTagUuids());
+                    allForms = ((MuzimaApplication) context.getApplicationContext()).getFormController().getAvailableFormByTags(getSelectedTagUuids());
                     Log.i(getClass().getSimpleName(), "#Forms: " + allForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(getClass().getSimpleName(), "Exception occurred while fetching local forms ", e);

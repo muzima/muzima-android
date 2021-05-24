@@ -42,6 +42,7 @@ import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.location.LocationListActivity;
 
 import java.io.IOException;
@@ -149,8 +150,8 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
      */
     private boolean patientDataExistsWithSelectedForms() {
         try {
-            IncompleteFormsWithPatientData incompleteForms = formController.getAllIncompleteFormsWithPatientData();
-            CompleteFormsWithPatientData completeForms = formController.getAllCompleteFormsWithPatientData(mActivity.getApplicationContext());
+            IncompleteFormsWithPatientData incompleteForms = ((MuzimaApplication) mActivity.getApplicationContext()).getFormController().getAllIncompleteFormsWithPatientData();
+            CompleteFormsWithPatientData completeForms = ((MuzimaApplication) mActivity.getApplicationContext()).getFormController().getAllCompleteFormsWithPatientData(mActivity.getApplicationContext());
             if (patientDataExistsWithSelectedForms(incompleteForms) || patientDataExistsWithSelectedForms(completeForms)) {
                 return true;
             }
@@ -261,7 +262,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                         protected void onPreExecute() {
                             Log.i(getClass().getSimpleName(), "Canceling timeout timer!");
                             ((MuzimaApplication) mActivity.getApplicationContext()).cancelTimer();
-                            ((FormsActivity) mActivity).showProgressBar();
+                            ((MainDashboardActivity) mActivity).showProgressBar();
                         }
 
                         @Override
@@ -281,7 +282,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                             //ToDo: Discuss whether and how these further downloads should be supported
                             //navigateToNextActivity();
                             ((MuzimaApplication) mActivity.getApplicationContext()).restartTimer();
-                            ((FormsActivity) mActivity).hideProgressbar();
+                            ((MainDashboardActivity) mActivity).hideProgressbar();
                             unselectAllItems();
                             reloadData();
                             ((AllAvailableFormsAdapter) listAdapter).clearSelectedForms();

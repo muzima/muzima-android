@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import com.muzima.R;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.MainActivity;
+import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.patients.PatientsListActivity;
 
 public class LandingPagePreferenceService extends PreferenceService{
@@ -25,9 +26,9 @@ public class LandingPagePreferenceService extends PreferenceService{
         String preferredLandingPage = settings.getString(landingPageKey,defaultLandingPage);
         Intent intent;
         if(StringUtils.equals(preferredLandingPage,context.getString(R.string.general_client_list))){
-           intent = new Intent(context, MainActivity.class);
+           intent = new Intent(context, MainDashboardActivity.class);
         } else {
-            intent = new Intent(context, MainActivity.class);
+            intent = new Intent(context, MainDashboardActivity.class);
         }
         return intent;
     }

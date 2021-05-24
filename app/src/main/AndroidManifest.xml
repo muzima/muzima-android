@@ -496,5 +496,6 @@
         <activity android:name=".view.fragments.OnboardingFirstScreenActivity" />
         <activity android:name=".view.fragments.OnboardingSecondScreenActivity" />
         <activity android:name=".view.TermsAndPolicyActivity" />
+        <activity android:name=".view.MainDashboardActivity" />
     </application>
 </manifest>

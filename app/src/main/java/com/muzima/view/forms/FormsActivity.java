@@ -53,10 +53,10 @@ public class FormsActivity extends FormsActivityBase {
     private DrawerLayout mainLayout;
     private TagsListAdapter tagsListAdapter;
     private MenuItem menubarLoadButton;
-    private FormController formController;
-    private MenuItem tagsButton;
-    private boolean syncInProgress;
     private MenuItem menuUpload;
+    private MenuItem tagsButton;
+    private FormController formController;
+    private boolean syncInProgress;
     private TagPreferenceService tagPreferenceService;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();

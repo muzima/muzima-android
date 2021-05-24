@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Tag;
@@ -39,10 +41,12 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     final FormController formController;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private AsyncTask<?, ?, ?> backgroundQueryTask;
+    private Context context;
 
     protected FormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId);
         this.formController = formController;
+        this.context = context;
     }
 
     @NonNull
@@ -102,7 +106,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     }
 
     protected List<String> getSelectedTagUuids() {
-        List<Tag> selectedTags = formController.getSelectedTags();
+        List<Tag> selectedTags = ((MuzimaApplication) context.getApplicationContext()).getFormController().getSelectedTags();
         List<String> tags = new ArrayList<String>();
         for (Tag selectedTag : selectedTags) {
             tags.add(selectedTag.getUuid());
@@ -157,7 +161,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     }
 
     public FormController getFormController() {
-        return formController;
+        return ((MuzimaApplication) context.getApplicationContext()).getFormController();
     }
 
     public interface MuzimaClickListener {

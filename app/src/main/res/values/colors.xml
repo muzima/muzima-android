@@ -55,5 +55,6 @@
     <color name="dashboard_base_text_color_light">#303030</color>
     <color name="sync_text_background">#303030</color>
     <color name="sync_text_background_light">#dddddd</color>
+    <color name="default_black">#000000</color>
 
 </resources>

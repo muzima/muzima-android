@@ -837,4 +837,12 @@
     <string name="info_agree_to_muzima_terms_and_conditions">Agree to mUzima Terms and Conditions</string>
     <string name="info_accept_all">Accept all</string>
     <string name="error_policy_not_accepted">Accept policy statements to proceed</string>
+    <string name="general_home">Home</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="drawer_open" translatable="false">Open</string>
+    <string name="drawer_close" translatable="false">close</string>
+    <string name="info_incomplete_form">Incomplete Forms</string>
+    <string name="info_complete_form">Completed Forms</string>
+    <string name="general_search_forms">Search Forms</string>
+    <string name="general_all_forms">All forms</string>
 </resources>

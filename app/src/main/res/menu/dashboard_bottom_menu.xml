@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main_dashboard_home_menu"
+        android:title="@string/general_home"
+        android:icon="@drawable/ic_action_home"/>
+    <item
+        android:id="@+id/main_dashboard_cohorts_menu"
+        android:title="@string/general_cohorts"
+        android:icon="@drawable/ic_action_cohorts"/>
+    <item
+        android:id="@+id/main_dashboard_forms_menu"
+        android:title="@string/general_forms"
+        android:icon="@drawable/ic_action_form"/>
+</menu>

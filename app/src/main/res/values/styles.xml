@@ -786,4 +786,9 @@
     <style name="ListMultiSelectableLayout">
         <item name="android:background">@drawable/list_multi_selector_blue</item>
     </style>
+
+    <style name="TabLayoutStyle" parent="Base.Widget.Design.TabLayout">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
 </resources>
