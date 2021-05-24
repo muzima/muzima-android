@@ -25,6 +25,7 @@ import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.DefaultMenuDropDownHelper;
+import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.settings.SettingsPreferenceFragment;
 
@@ -94,12 +95,18 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                launchDashboard();
                 return true;
         }
         DefaultMenuDropDownHelper dropDownHelper = new DefaultMenuDropDownHelper(this);
         boolean result = dropDownHelper.onOptionsItemSelected(item);
         return result || super.onOptionsItemSelected(item);
+    }
+
+    private void launchDashboard() {
+        Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

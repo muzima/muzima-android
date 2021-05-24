@@ -20,13 +20,14 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.SwitchPreference;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Location;
@@ -63,11 +64,11 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private static final Integer AUTO_SAVE_INTERVAL_MAXIMUM = 120;
     private static final Integer AUTO_SAVE_INTERVAL_INVALID_VALUE = -1;
 
-    private CheckBoxPreference encounterProviderPreference;
-    private CheckBoxPreference realTimeSyncPreference;
-    private CheckBoxPreference sHRFeatureCheckBoxPreference;
-    private CheckBoxPreference requireMedicalRecordNumberCheckBoxPreference;
-    private CheckBoxPreference gpsLocationFeatureCheckBoxPreference;
+    private SwitchPreference encounterProviderPreference;
+    private SwitchPreference realTimeSyncPreference;
+    private SwitchPreference sHRFeatureCheckBoxPreference;
+    private SwitchPreference requireMedicalRecordNumberCheckBoxPreference;
+    private SwitchPreference gpsLocationFeatureCheckBoxPreference;
     private Activity mActivity;
 
 
@@ -225,7 +226,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     private void setUpRealTimeSyncPreference(){
         String realTimeSyncPreferenceKey = getResources().getString(R.string.preference_real_time_sync);
-        realTimeSyncPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(realTimeSyncPreferenceKey);
+        realTimeSyncPreference = (SwitchPreference) getPreferenceScreen().findPreference(realTimeSyncPreferenceKey);
         realTimeSyncPreference.setSummary(realTimeSyncPreference.getSummary());
         realTimeSyncPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -247,7 +248,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     private void setUpDefaultEncounterProviderPreference(){
         String encounterProviderPreferenceKey = getResources().getString(R.string.preference_encounter_provider_key);
-        encounterProviderPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(encounterProviderPreferenceKey);
+        encounterProviderPreference = (SwitchPreference) getPreferenceScreen().findPreference(encounterProviderPreferenceKey);
         encounterProviderPreference.setSummary(encounterProviderPreference.getSummary());
 
         encounterProviderPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -276,7 +277,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     private void setUpDuplicateFormDataWarningPreference(){
         String duplicateFormDataPreferenceKey = getResources().getString(R.string.preference_duplicate_form_data_key);
-        CheckBoxPreference duplicateFormDataPreference = (CheckBoxPreference) getPreferenceScreen().findPreference(duplicateFormDataPreferenceKey);
+        SwitchPreference duplicateFormDataPreference = (SwitchPreference) getPreferenceScreen().findPreference(duplicateFormDataPreferenceKey);
         duplicateFormDataPreference.setSummary(duplicateFormDataPreference.getSummary());
     }
 
@@ -296,14 +297,14 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     private void setUpLightModePreference(){
         String lightModePreferenceKey = getResources().getString(R.string.preference_light_mode);
-        final CheckBoxPreference lightModePreference = (CheckBoxPreference) getPreferenceScreen()
+        final SwitchPreference lightModePreference = (SwitchPreference) getPreferenceScreen()
                 .findPreference(lightModePreferenceKey);
         lightModePreference.setSummary(lightModePreference.getSummary());
     }
 
     private void setUpRequireMedicalRecordNumberPreference(){
         String requireMedicalRecordNumberKey = getResources().getString(R.string.preference_require_medical_record_number);
-        requireMedicalRecordNumberCheckBoxPreference = (CheckBoxPreference) getPreferenceScreen()
+        requireMedicalRecordNumberCheckBoxPreference = (SwitchPreference) getPreferenceScreen()
                 .findPreference(requireMedicalRecordNumberKey);
         requireMedicalRecordNumberCheckBoxPreference.setOnPreferenceChangeListener(
                 new ServerSideSettingPreferenceChangeListener(new DownloadRequireMedicalRecordNumberSettingAsyncTask()
@@ -313,7 +314,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     private void setUpGPSLocationFeaturePreference(){
         String enableGPSLocationFeaturePreferenceKey = getResources().getString(R.string.preference_enable_gps_key);
-        gpsLocationFeatureCheckBoxPreference = (CheckBoxPreference) getPreferenceScreen()
+        gpsLocationFeatureCheckBoxPreference = (SwitchPreference) getPreferenceScreen()
                 .findPreference(enableGPSLocationFeaturePreferenceKey);
         gpsLocationFeatureCheckBoxPreference.setOnPreferenceChangeListener(
                 new ServerSideSettingPreferenceChangeListener(new DownloadGPSLocationSettingAsyncTask()));
@@ -321,7 +322,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     private void setUpSHRFeaturePreference(){
         String enableSHRFeaturePreferencePreferenceKey = getResources().getString(R.string.preference_enable_shr_key);
-        sHRFeatureCheckBoxPreference = (CheckBoxPreference) getPreferenceScreen()
+        sHRFeatureCheckBoxPreference = (SwitchPreference) getPreferenceScreen()
                 .findPreference(enableSHRFeaturePreferencePreferenceKey);
         sHRFeatureCheckBoxPreference.setOnPreferenceChangeListener(
                 new ServerSideSettingPreferenceChangeListener(new DownloadSHRSettingAsyncTask()));
@@ -461,7 +462,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         });
     }
 
-    private void registerCheckboxPreferenceChangeHandler(final String key, final CheckBoxPreference preference) {
+    private void registerCheckboxPreferenceChangeHandler(final String key, final SwitchPreference preference) {
         actions.put(key, new PreferenceChangeHandler() {
             @Override
             public void handle(SharedPreferences sharedPreferences) {

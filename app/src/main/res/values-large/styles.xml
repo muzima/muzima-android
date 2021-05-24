@@ -23,11 +23,11 @@
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme.Dark" parent="AppBaseTheme">
+    <style name="AppTheme.Dark" parent="AppBaseTheme.NoActionBar">
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme.Light" parent="AppBaseTheme.Light">
+    <style name="AppTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
     </style>
 
     <style name="LoginTheme.Dark" parent="AppThemeNoActionBar.Dark">
@@ -45,13 +45,13 @@
     </style>
 
 
-    <style name="PreferencesTheme.Dark" parent="AppBaseTheme">
+    <style name="PreferencesTheme.Dark" parent="AppBaseTheme.NoActionBar">
         <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
         <item name="android:textColorPrimary">@color/preference_primary_color</item>
         <item name="android:textColorSecondary">@color/preference_secondary_color</item>
     </style>
 
-    <style name="PreferencesTheme.Light" parent="AppBaseTheme.Light">
+    <style name="PreferencesTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
         <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
         <item name="android:textColorPrimary">@color/preference_primary_color_light</item>
         <item name="android:textColorSecondary">@color/preference_secondary_color_light</item>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
@@ -9,156 +8,158 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/header_openmrs_category">
         <EditTextPreference
-                android:defaultValue="@string/default_server"
-                android:dialogMessage="@string/hint_server_url_prompt"
-                android:dialogTitle="@string/general_server"
-                android:key="@string/preference_server"
-                android:negativeButtonText="@android:string/cancel"
-                android:positiveButtonText="@android:string/ok"
-                android:title="@string/general_server"
-        />
+            android:defaultValue="@string/default_server"
+            android:dialogMessage="@string/hint_server_url_prompt"
+            android:dialogTitle="@string/general_server"
+            android:key="@string/preference_server"
+            android:negativeButtonText="@android:string/cancel"
+            android:positiveButtonText="@android:string/ok"
+            android:title="@string/general_server" />
         <EditTextPreference
-                android:defaultValue="admin"
-                android:dialogMessage="@string/hint_username_prompt"
-                android:dialogTitle="@string/general_username"
-                android:key="@string/preference_username"
-                android:negativeButtonText="@android:string/cancel"
-                android:positiveButtonText="@android:string/ok"
-                android:title="@string/general_username"/>
+            android:defaultValue="admin"
+            android:dialogMessage="@string/hint_username_prompt"
+            android:dialogTitle="@string/general_username"
+            android:key="@string/preference_username"
+            android:negativeButtonText="@android:string/cancel"
+            android:positiveButtonText="@android:string/ok"
+            android:title="@string/general_username" />
         <EditTextPreference
-                android:defaultValue="test"
-                android:dialogMessage="@string/hint_server_password_prompt"
-                android:dialogTitle="@string/general_password"
-                android:key="@string/preference_password"
-                android:negativeButtonText="@android:string/cancel"
-                android:positiveButtonText="@android:string/ok"
-                android:title="@string/general_password"
-                android:inputType="textPassword"/>
+            android:defaultValue="test"
+            android:dialogMessage="@string/hint_server_password_prompt"
+            android:dialogTitle="@string/general_password"
+            android:inputType="textPassword"
+            android:key="@string/preference_password"
+            android:negativeButtonText="@android:string/cancel"
+            android:positiveButtonText="@android:string/ok"
+            android:title="@string/general_password" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/header_muzima_category">
         <EditTextPreference
-                android:defaultValue="5"
-                android:dialogMessage="@string/hint_session_timeout"
-                android:dialogTitle="@string/title_session_timeout"
-                android:key="@string/preference_timeout"
-                android:negativeButtonText="@android:string/cancel"
-                android:positiveButtonText="@android:string/ok"
-                android:title="@string/title_session_timeout"
-                android:inputType="number"
-                android:selectAllOnFocus="true"/>
+            android:defaultValue="5"
+            android:dialogMessage="@string/hint_session_timeout"
+            android:dialogTitle="@string/title_session_timeout"
+            android:icon="@drawable/timer_icon"
+            android:inputType="number"
+            android:key="@string/preference_timeout"
+            android:negativeButtonText="@android:string/cancel"
+            android:positiveButtonText="@android:string/ok"
+            android:selectAllOnFocus="true"
+            android:title="@string/title_session_timeout" />
         <EditTextPreference
-                android:defaultValue="@string/default_auto_save_interval"
-                android:dialogMessage="@string/hint_form_auto_save_interval"
-                android:dialogTitle="@string/title_form_auto_save_interval"
-                android:key="@string/preference_auto_save_interval"
-                android:negativeButtonText="@android:string/cancel"
-                android:positiveButtonText="@android:string/ok"
-                android:title="@string/title_form_auto_save_interval"
-                android:inputType="number"
-                android:selectAllOnFocus="true"/>
-        <CheckBoxPreference
-                android:defaultValue="false"
-                android:summary="@string/hint_real_time_sync"
-                android:title="@string/title_real_time_sync"
-                android:key="@string/preference_real_time_sync" />
-        <CheckBoxPreference
-                android:defaultValue="false"
-                android:editable="false"
-                android:summary="@string/hint_require_medical_record_number"
-                android:title="@string/title_require_medical_record_number"
-                android:key="@string/preference_require_medical_record_number" />
+            android:defaultValue="@string/default_auto_save_interval"
+            android:dialogMessage="@string/hint_form_auto_save_interval"
+            android:dialogTitle="@string/title_form_auto_save_interval"
+            android:icon="@drawable/save_diskette"
+            android:inputType="number"
+            android:key="@string/preference_auto_save_interval"
+            android:negativeButtonText="@android:string/cancel"
+            android:positiveButtonText="@android:string/ok"
+            android:selectAllOnFocus="true"
+            android:title="@string/title_form_auto_save_interval" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/preference_real_time_sync"
+            android:summary="@string/hint_real_time_sync"
+            android:title="@string/title_real_time_sync" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:editable="false"
+            android:key="@string/preference_require_medical_record_number"
+            android:summary="@string/hint_require_medical_record_number"
+            android:title="@string/title_require_medical_record_number" />
 
-        <CheckBoxPreference
-                android:defaultValue="true"
-                android:checked="true"
-                android:key="@string/preference_duplicate_form_data_key"
-                android:summary="@string/hint_duplicate_form_data_warning"
-                android:title="@string/title_duplicate_form_data_warning" />
+        <SwitchPreference
+            android:checked="true"
+            android:defaultValue="true"
+            android:key="@string/preference_duplicate_form_data_key"
+            android:summary="@string/hint_duplicate_form_data_warning"
+            android:title="@string/title_duplicate_form_data_warning" />
 
         <ListPreference
-                android:title="@string/title_font_size"
-                android:key="@string/preference_font_size"
-                android:defaultValue="@string/general_medium"
-                android:entries="@array/font_sizes"
-                android:entryValues="@array/font_sizes">
-        </ListPreference>
+            android:defaultValue="@string/general_medium"
+            android:entries="@array/font_sizes"
+            android:entryValues="@array/font_sizes"
+            android:key="@string/preference_font_size"
+            android:title="@string/title_font_size" />
         <ListPreference
-            android:title="@string/title_landing_page"
-            android:key="@string/preference_landing_page"
             android:defaultValue="@string/general_client_list"
             android:entries="@array/landing_pages"
-            android:entryValues="@array/landing_pages">
-        </ListPreference>
-        <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="@string/preference_light_mode"
-                android:summary="@string/hint_light_mode"
-                android:title="@string/title_light_mode"/>
+            android:entryValues="@array/landing_pages"
+            android:key="@string/preference_landing_page"
+            android:title="@string/title_landing_page" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/preference_light_mode"
+            android:summary="@string/hint_light_mode"
+            android:title="@string/title_light_mode" />
 
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="@string/preference_enable_shr_key"
             android:summary="@string/hint_enable_shr"
             android:title="@string/title_enable_shr" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="@string/preference_enable_gps_key"
             android:summary="@string/hint_enable_GPS"
             android:title="@string/title_enable_gps" />
 
         <ListPreference
-            android:title="@string/title_app_language"
-            android:key="@string/preference_app_language"
             android:defaultValue="@string/language_english"
             android:entries="@array/app_language_entries"
-            android:entryValues="@array/app_language_values">
-        </ListPreference>
+            android:entryValues="@array/app_language_values"
+            android:key="@string/preference_app_language"
+            android:title="@string/title_app_language" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/header_provider_location_category">
-        <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="@string/preference_encounter_provider_key"
-                android:summary="@string/hint_default_encounter_provider"
-                android:title="@string/title_default_encounter_provider" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/preference_encounter_provider_key"
+            android:summary="@string/hint_default_encounter_provider"
+            android:title="@string/title_default_encounter_provider" />
         <Preference
-                android:title="@string/title_manage_provider"
-                android:summary="@string/hint_manage_provider">
-            <intent android:targetPackage="com.muzima"
-                    android:targetClass="com.muzima.view.preferences.ProviderPreferenceActivity"/>
+            android:summary="@string/hint_manage_provider"
+            android:title="@string/title_manage_provider">
+            <intent
+                android:targetClass="com.muzima.view.preferences.ProviderPreferenceActivity"
+                android:targetPackage="com.muzima" />
         </Preference>
         <ListPreference
-            android:summary="@string/hint_default_encounter_location"
-            android:title="@string/title_default_encounter_location"
+            android:defaultValue="@string/no_default_encounter_location"
             android:key="@string/preference_default_encounter_location"
-            android:defaultValue="@string/no_default_encounter_location">
-        </ListPreference>
+            android:summary="@string/hint_default_encounter_location"
+            android:title="@string/title_default_encounter_location" />
         <Preference
-                android:title="@string/title_manage_location"
-                android:summary="@string/hint_manage_location">
-            <intent android:targetPackage="com.muzima"
-                    android:targetClass="com.muzima.view.preferences.LocationPreferenceActivity"/>
+            android:summary="@string/hint_manage_location"
+            android:title="@string/title_manage_location">
+            <intent
+                android:targetClass="com.muzima.view.preferences.LocationPreferenceActivity"
+                android:targetPackage="com.muzima" />
         </Preference>
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/header_cohort_category">
         <Preference
-                android:title="@string/title_cohort_prefix_manage"
-                android:summary="@string/hint_cohort_prefix_manage">
-            <intent android:targetPackage="com.muzima"
-                    android:targetClass="com.muzima.view.preferences.CohortPreferenceActivity"/>
+            android:summary="@string/hint_cohort_prefix_manage"
+            android:title="@string/title_cohort_prefix_manage">
+            <intent
+                android:targetClass="com.muzima.view.preferences.CohortPreferenceActivity"
+                android:targetPackage="com.muzima" />
         </Preference>
         <Preference
-                android:title="@string/title_manage_concept"
-                android:summary="@string/hint_manage_concept">
-            <intent android:targetPackage="com.muzima"
-                    android:targetClass="com.muzima.view.preferences.ConceptPreferenceActivity"/>
+            android:summary="@string/hint_manage_concept"
+            android:title="@string/title_manage_concept">
+            <intent
+                android:targetClass="com.muzima.view.preferences.ConceptPreferenceActivity"
+                android:targetPackage="com.muzima" />
         </Preference>
 
     </PreferenceCategory>

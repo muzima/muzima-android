@@ -18,11 +18,11 @@
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme.Dark" parent="AppBaseTheme">
+    <style name="AppTheme.Dark" parent="AppBaseTheme.NoActionBar">
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme.Light" parent="AppBaseTheme.Light">
+    <style name="AppTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
     </style>
 
     <style name="LoginTheme.Dark" parent="AppThemeNoActionBar.Dark">

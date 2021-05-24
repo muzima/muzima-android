@@ -828,6 +828,8 @@
     <string name="write_shr_to_card_general">Write SHR to card</string>
 
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
+    <string name="drawer_open" translatable="false">open</string>
+    <string name="drawer_close" translatable="false">close</string>
     <string name="info_for_health_providers">for health providers</string>
     <string name="info_license_and_disclaimer">License and Disclaimer</string>
     <string name="info_agree_to_muzima_license_and_disclaimer">Agree to mUzima License and Disclaimer</string>
@@ -839,10 +841,8 @@
     <string name="error_policy_not_accepted">Accept policy statements to proceed</string>
     <string name="general_home">Home</string>
     <string name="contact_us">Contact Us</string>
-    <string name="drawer_open" translatable="false">open</string>
-    <string name="drawer_close" translatable="false">close</string>
     <string name="info_incomplete_form">Incomplete Forms</string>
-    <string name="info_complete_form">Completed Forms</string>
+    <string name="info_complete_form">Complete Forms</string>
     <string name="general_search_forms">Search Forms</string>
     <string name="general_all_forms">All forms</string>
     <string name="general_search_cohorts">Search cohorts</string>
