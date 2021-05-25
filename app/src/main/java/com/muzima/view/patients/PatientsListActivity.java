@@ -945,7 +945,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private boolean isGeoMappingFeatureEnabled() {
-        return muzimaApplication.getMuzimaSettingController().isGeoMappingEnabled();
+        try {
+            return muzimaApplication.getMuzimaSettingController().isGeoMappingEnabled();
+        }catch(StringIndexOutOfBoundsException e){
+            Log.e(getClass().getSimpleName(),"Encountered an exception while getting geomapping feature setting");
+            return false;
+        }
     }
 
     private void initDrawer() {

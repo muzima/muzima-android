@@ -101,7 +101,6 @@ public class MuzimaFirebaseMessagingService extends FirebaseMessagingService {
                 .putString(appTokenKey, token)
                 .commit();
 
-        sendRegistrationToServer(token);
     }
     // [END on_new_token]
 
@@ -129,9 +128,6 @@ public class MuzimaFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param token The new token.
      */
-    private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
-    }
 
     /**
      * Create and show a simple notification containing the received FCM message.
