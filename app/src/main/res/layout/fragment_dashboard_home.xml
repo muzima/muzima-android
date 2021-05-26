@@ -165,9 +165,14 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical">
 
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
                     style="@style/MuzimaSelectableListView"
                     android:id="@+id/list"/>
+
+                <ProgressBar
+                    android:id="@+id/patient_loader_progress_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
                 <LinearLayout
                     android:gravity="center"

@@ -850,4 +850,13 @@
     <string name="general_or_search_by">Or search by:</string>
     <string name="app_sub_title">for health providers</string>
     <string name="general_policy_title">Usage Policies</string>
+    <string name="general_historical_data">Historical Data</string>
+    <string name="general_data_collection">Data Collection</string>
+    <string name="info_emergency_contacts">Emmergency contacts</string>
+    <string name="info_by_type">By Type</string>
+    <string name="info_by_abstract">By Abstract</string>
+    <string name="info_by_encounter">By Encounter</string>
+    <string name="general_add_single_element">Add single element</string>
+    <string name="info_no_client_available">No clients available remote search or register new clients.</string>
+
 </resources>

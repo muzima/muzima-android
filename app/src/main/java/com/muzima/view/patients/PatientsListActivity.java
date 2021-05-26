@@ -70,6 +70,7 @@ import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.ClientSummaryActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -153,6 +154,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         muzimaApplication = (MuzimaApplication) getApplicationContext();
         toolbar = findViewById(R.id.patient_list_toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         if (intentExtras != null) {
             quickSearch = intentExtras.getBoolean(QUICK_SEARCH);
@@ -549,9 +554,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         patientAdapter.cancelBackgroundTask();
         Patient patient = patientAdapter.getItem(position);
-        Intent intent = new Intent(this, PatientSummaryActivity.class);
-
-        intent.putExtra(PatientSummaryActivity.PATIENT, patient);
+        Intent intent = new Intent(this, ClientSummaryActivity.class);
+        intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
         startActivity(intent);
     }
 

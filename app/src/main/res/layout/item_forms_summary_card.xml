@@ -1,0 +1,32 @@
+<LinearLayout
+    android:id="@+id/item__forms_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@drawable/incomplete_forms_gradient"
+    android:orientation="vertical"
+    android:paddingBottom="12dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="6dp"
+    android:paddingTop="12dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/item_forms_count_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="##"
+        android:layout_marginEnd="6dp"
+        android:textColor="@color/primary_white"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/item_forms_title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="6dp"
+        android:textColor="@color/primary_white"
+        android:textSize="14sp" />
+
+</LinearLayout>

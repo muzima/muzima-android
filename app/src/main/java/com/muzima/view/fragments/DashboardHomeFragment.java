@@ -2,42 +2,44 @@ package com.muzima.view.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.ListAdapter;
-import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
+import com.muzima.adapters.patients.AllPatientsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
+import com.muzima.tasks.LoadPatientsListService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.MuzimaPreferences;
+import com.muzima.view.ClientSummaryActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.patients.PatientsListActivity;
 
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DashboardHomeFragment extends Fragment implements AdapterView.OnItemClickListener,
-        ListAdapter.BackgroundListQueryTaskListener{
+public class DashboardHomeFragment extends Fragment implements LoadPatientsListService.PatientsListLoadedCallback,
+        AllPatientsAdapter.OnPatientClickedListener {
 
     private TextView incompleteFormsTextView;
     private TextView completeFormsTextView;
@@ -49,13 +51,16 @@ public class DashboardHomeFragment extends Fragment implements AdapterView.OnIte
     private View searchByServer;
     private View searchBySmartCard;
     private View favouriteListView;
-    private ListView listView;
+    private RecyclerView listView;
     private View noDataView;
     private FloatingActionButton fabSearchButton;
     private FrameLayout progressBarContainer;
-    private PatientsLocalSearchAdapter patientAdapter;
     private TextView noDataTipTextView;
     private TextView noDataMsgTextView;
+    private AllPatientsAdapter allPatientsAdapter;
+    private ProgressBar progressBar;
+
+    private List<Patient> patients = new ArrayList<>();
 
     @Nullable
     @Override
@@ -64,9 +69,39 @@ public class DashboardHomeFragment extends Fragment implements AdapterView.OnIte
 
         initializeResources(view);
         setupNoDataView();
-        setupListView();
         setUpFormsCount();
+        loadAllPatients();
         return view;
+    }
+
+    private void loadAllPatients() {
+        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
+                .execute(new LoadPatientsListService(getActivity().getApplicationContext(), this));
+    }
+
+    @Override
+    public void onPatientsLoaded(final List<Patient> patientsList) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                patients.addAll(patientsList);
+                allPatientsAdapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+                if (patients.isEmpty())
+                    noDataView.setVisibility(View.VISIBLE);
+                else
+                    listView.setVisibility(View.VISIBLE);
+
+            }
+        });
+    }
+
+    @Override
+    public void onPatientClicked(int position) {
+        Patient patient = patients.get(position);
+        Intent intent = new Intent(getActivity().getApplicationContext(), ClientSummaryActivity.class);
+        intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
+        startActivity(intent);
     }
 
     private void setUpFormsCount() {
@@ -97,13 +132,21 @@ public class DashboardHomeFragment extends Fragment implements AdapterView.OnIte
         fabSearchButton = view.findViewById(R.id.fab_search);
         completeFormsView = view.findViewById(R.id.dashboard_forms_complete_forms_view);
         incompleteFormsView = view.findViewById(R.id.dashboard_forms_incomplete_forms_view);
+        progressBar = view.findViewById(R.id.patient_loader_progress_bar);
+        allPatientsAdapter = new AllPatientsAdapter(patients, this, getCurrentGPSLocation());
+        listView.setAdapter(allPatientsAdapter);
+        listView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        listView.setVisibility(View.GONE);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity().getApplicationContext(),DividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider_item_view));
+        listView.addItemDecoration(dividerItemDecoration);
 
         incompleteFormsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MuzimaPreferences.setFormsActivityActionModePreference(getActivity().getApplicationContext(), Constants.FORMS_LAUNCH_MODE.INCOMPLETE_FORMS_VIEW);
                 Intent intent = new Intent(getActivity().getApplicationContext(), FormsActivity.class);
-                intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN,1);
+                intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, 1);
                 startActivity(intent);
                 getActivity().finish();
             }
@@ -114,18 +157,17 @@ public class DashboardHomeFragment extends Fragment implements AdapterView.OnIte
             public void onClick(View view) {
                 MuzimaPreferences.setFormsActivityActionModePreference(getActivity().getApplicationContext(), Constants.FORMS_LAUNCH_MODE.COMPLETE_FORMS_VIEW);
                 Intent intent = new Intent(getActivity().getApplicationContext(), FormsActivity.class);
-                intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN,1);
+                intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, 1);
                 startActivity(intent);
                 getActivity().finish();
             }
         });
 
 
-
         searchPatientEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(),PatientsListActivity.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), PatientsListActivity.class);
                 startActivity(intent);
                 getActivity().finish();
             }
@@ -134,7 +176,7 @@ public class DashboardHomeFragment extends Fragment implements AdapterView.OnIte
         fabSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(),PatientsListActivity.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), PatientsListActivity.class);
                 startActivity(intent);
                 getActivity().finish();
             }
@@ -142,67 +184,9 @@ public class DashboardHomeFragment extends Fragment implements AdapterView.OnIte
     }
 
     private void setupNoDataView() {
-        try {
-
-            int localPatientsCount = ((MuzimaApplication) getActivity().getApplicationContext())
-                    .getPatientController()
-                    .countAllPatients();
-            if (localPatientsCount == 0)
-                noDataMsgTextView.setText(getResources().getText(R.string.info_no_client_available_locally));
-            else
-                noDataMsgTextView.setText(getResources().getText(R.string.info_client_local_search_not_found));
-
-            noDataTipTextView.setText(R.string.hint_client_local_search);
-
-            noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(getActivity().getApplicationContext()));
-            noDataTipTextView.setTypeface(Fonts.roboto_medium(getActivity().getApplicationContext()));
-        } catch (PatientController.PatientLoadException ex) {
-            Toast.makeText(getActivity().getApplicationContext(), R.string.error_patient_search, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void setupListView() {
-        patientAdapter = new PatientsLocalSearchAdapter(getActivity().getApplicationContext(), R.layout.layout_list,
-                ((MuzimaApplication) getActivity().getApplicationContext()).getPatientController(), null, getCurrentGPSLocation());
-
-        patientAdapter.setBackgroundListQueryTaskListener(this);
-        listView.setAdapter(patientAdapter);
-        listView.setOnItemClickListener(this);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        patientAdapter.cancelBackgroundTask();
-        Patient patient = patientAdapter.getItem(position);
-        Intent intent = new Intent(getActivity().getApplicationContext(), PatientSummaryActivity.class);
-
-        intent.putExtra(PatientSummaryActivity.PATIENT, patient);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onQueryTaskStarted() {
-        listView.setVisibility(INVISIBLE);
-        noDataView.setVisibility(INVISIBLE);
-        listView.setEmptyView(progressBarContainer);
-        progressBarContainer.setVisibility(VISIBLE);
-    }
-
-    @Override
-    public void onQueryTaskFinish() {
-        listView.setVisibility(VISIBLE);
-        listView.setEmptyView(noDataView);
-        progressBarContainer.setVisibility(INVISIBLE);
-    }
-
-    @Override
-    public void onQueryTaskCancelled() {
-        Log.e(getClass().getSimpleName(), "Cancelled...");
-    }
-
-    @Override
-    public void onQueryTaskCancelled(Object errorDefinition) {
-        Log.e(getClass().getSimpleName(), "Cancelled...");
+        noDataMsgTextView.setText(getResources().getText(R.string.info_no_client_available));
+        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(getActivity().getApplicationContext()));
+        noDataTipTextView.setTypeface(Fonts.roboto_medium(getActivity().getApplicationContext()));
     }
 
     private MuzimaGPSLocation getCurrentGPSLocation() {

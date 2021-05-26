@@ -33,6 +33,7 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
+import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
@@ -65,6 +66,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_main_layout);
         credentials = new Credentials(this);
+        RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), false);
         initializeResources();
     }
 
