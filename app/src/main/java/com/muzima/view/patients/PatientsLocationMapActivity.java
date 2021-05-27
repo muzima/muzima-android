@@ -113,15 +113,15 @@ public class PatientsLocationMapActivity extends BroadcastListenerActivity {
 
     @JavascriptInterface
     public String getCurrentGPSLocation(){
-        HashMap locationDataHashMap = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService().getLastKnownGPSLocationAndSettingDetails();
-        if (locationDataHashMap.containsKey("gps_location")) {
-            MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation) locationDataHashMap.get("gps_location"));
-            try {
-                return muzimaGPSLocation.toJsonObject().toString();
-            } catch (JSONException e) {
-                Log.e(getClass().getSimpleName(), "Error while obtaining GPS location", e);
-            }
-        }
+//        HashMap locationDataHashMap = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService().getLastKnownGPSLocationAndSettingDetails();
+//        if (locationDataHashMap.containsKey("gps_location")) {
+//            MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation) locationDataHashMap.get("gps_location"));
+//            try {
+//                return muzimaGPSLocation.toJsonObject().toString();
+//            } catch (JSONException e) {
+//                Log.e(getClass().getSimpleName(), "Error while obtaining GPS location", e);
+//            }
+//        }
         return null;
     }
     @JavascriptInterface

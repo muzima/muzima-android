@@ -832,4 +832,5 @@
     <string name="write_shr_to_card_general">Write SHR to card</string>
 
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
+    <string name="title_privacy_policy">Privacy Policy</string>
 </resources>

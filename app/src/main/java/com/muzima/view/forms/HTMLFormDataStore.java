@@ -878,37 +878,38 @@ class HTMLFormDataStore {
 
     @JavascriptInterface
     public String getLastKnowGPSLocation(String jsonReturnType) {
-        String gps_location_string = "Unknown Error Occured!";
-        MuzimaGPSLocationService muzimaLocationService = application.getMuzimaGPSLocationService();
-        if (muzimaLocationService.isGPSLocationFeatureEnabled()) {
-            if (muzimaLocationService.isGPSLocationPermissionsGranted()) {
-                if(muzimaLocationService.isLocationServicesSwitchedOn()){
-                    HashMap<String, Object> locationDataHashMap;
-                    try {
-                        locationDataHashMap = muzimaLocationService.getLastKnownGPSLocationAndSettingDetails();
-                        if(locationDataHashMap.containsKey("gps_location")) {
-                            if (jsonReturnType.equals("json-object")){
-                                gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonObject().toString();
-                            } else {
-                                gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonArray().toString();
-                            }
-                        } else if(locationDataHashMap.containsKey("gps_location_status")){
-                            gps_location_string = (String)locationDataHashMap.get("gps_location_status");
-                        }
-                        return gps_location_string;
-                    } catch (Exception e) {
-                        Log.e(getClass().getSimpleName(), "Unable to process gps data, unknow Error Occurred", e);
-                        return gps_location_string;
-                    }
-                } else {
-                    return "Location service disabled by user";
-                }
-            } else {
-                return "Location Permissions Denied By User.";
-            }
-        } else {
-            return "GPS Feature is Disabled by User";
-        }
+//        String gps_location_string = "Unknown Error Occured!";
+//        MuzimaGPSLocationService muzimaLocationService = application.getMuzimaGPSLocationService();
+//        if (muzimaLocationService.isGPSLocationFeatureEnabled()) {
+//            if (muzimaLocationService.isGPSLocationPermissionsGranted()) {
+//                if(muzimaLocationService.isLocationServicesSwitchedOn()){
+//                    HashMap<String, Object> locationDataHashMap;
+//                    try {
+//                        locationDataHashMap = muzimaLocationService.getLastKnownGPSLocationAndSettingDetails();
+//                        if(locationDataHashMap.containsKey("gps_location")) {
+//                            if (jsonReturnType.equals("json-object")){
+//                                gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonObject().toString();
+//                            } else {
+//                                gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonArray().toString();
+//                            }
+//                        } else if(locationDataHashMap.containsKey("gps_location_status")){
+//                            gps_location_string = (String)locationDataHashMap.get("gps_location_status");
+//                        }
+//                        return gps_location_string;
+//                    } catch (Exception e) {
+//                        Log.e(getClass().getSimpleName(), "Unable to process gps data, unknow Error Occurred", e);
+//                        return gps_location_string;
+//                    }
+//                } else {
+//                    return "Location service disabled by user";
+//                }
+//            } else {
+//                return "Location Permissions Denied By User.";
+//            }
+//        } else {
+//            return "GPS Feature is Disabled by User";
+//        }
+        return "GPS Location access is unavailable";
     }
 
     @JavascriptInterface

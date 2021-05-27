@@ -75,7 +75,7 @@ public class PatientFormsActivity extends FormsActivityBase {
     }
 
     public void requestGPSLocationPermissions() {
-        MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
-        muzimaApplication.getMuzimaGPSLocationService().requestGPSLocationPermissions(this);
+//        MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
+//        muzimaApplication.getMuzimaGPSLocationService().requestGPSLocationPermissions(this);
     }
 }

@@ -108,44 +108,49 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
     }
 
     private void checkAndRequestGPSPermissions(){
-        gpsLocationService = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService();
-        if (!gpsLocationService.isGPSLocationPermissionsGranted()) {
-            gpsLocationService.requestGPSLocationPermissions(this, true);
-        } else{
-            LocationListener locationListener = new LocationListener() {
-                @Override
-                public void onLocationChanged(android.location.Location location) {
-                    webView.loadUrl("javascript:document.updateCurrentLocationAndAccuracy(" +
-                            location.getLatitude() + ", " + location.getLongitude() + "," + location.getAccuracy() +")");
-                }
-
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-                @Override
-                public void onProviderEnabled(String provider) {}
-
-                @Override
-                public void onProviderDisabled(String provider) {}
-            };
-
-            if (!gpsLocationService.isLocationServicesSwitchedOn()) {
-                gpsLocationService.requestSwitchOnLocation(this,locationListener);
-            } else {
-                gpsLocationService.requestLocationUpdates(locationListener);
-                getLastKnowntGPSLocation();
-                initializeLocationPickerActionButtons();
-                initializeLocationPickerMapView();
-            }
-        }
+//        gpsLocationService = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService();
+//        if (!gpsLocationService.isGPSLocationPermissionsGranted()) {
+//           // gpsLocationService.requestGPSLocationPermissions(this, true);
+//        } else{
+//            LocationListener locationListener = new LocationListener() {
+//                @Override
+//                public void onLocationChanged(android.location.Location location) {
+//                    webView.loadUrl("javascript:document.updateCurrentLocationAndAccuracy(" +
+//                            location.getLatitude() + ", " + location.getLongitude() + "," + location.getAccuracy() +")");
+//                }
+//
+//                @Override
+//                public void onStatusChanged(String provider, int status, Bundle extras) {}
+//
+//                @Override
+//                public void onProviderEnabled(String provider) {}
+//
+//                @Override
+//                public void onProviderDisabled(String provider) {}
+//            };
+//
+//            if (!gpsLocationService.isLocationServicesSwitchedOn()) {
+//               // gpsLocationService.requestSwitchOnLocation(this,locationListener);
+//            } else {
+//                //gpsLocationService.requestLocationUpdates(locationListener);
+//                getLastKnowntGPSLocation();
+//                initializeLocationPickerActionButtons();
+//                initializeLocationPickerMapView();
+//            }
+//        }
+        getLastKnowntGPSLocation();
+        initializeLocationPickerActionButtons();
+        initializeLocationPickerMapView();
     }
 
     private void getLastKnowntGPSLocation(){
-        MuzimaGPSLocation muzimaGPSLocation = gpsLocationService.getLastKnownGPSLocation();
-        if(muzimaGPSLocation != null){
-            latitude = muzimaGPSLocation.getLatitude();
-            longitude = muzimaGPSLocation.getLongitude();
-        }
+//        MuzimaGPSLocation muzimaGPSLocation = gpsLocationService.getLastKnownGPSLocation();
+//        if(muzimaGPSLocation != null){
+//            latitude = muzimaGPSLocation.getLatitude();
+//            longitude = muzimaGPSLocation.getLongitude();
+//        }
+        latitude = "0.5117";
+        longitude = "35.282614";
     }
 
     private void initializeLocationPickerActionButtons(){

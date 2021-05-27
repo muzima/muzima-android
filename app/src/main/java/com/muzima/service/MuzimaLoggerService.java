@@ -26,21 +26,21 @@ public class MuzimaLoggerService {
     private static Timer timer;
 
     public static String getAndParseGPSLocationForLogging(final MuzimaApplication muzimaApplication){
-        if(isLoggingFeatureEnabled(muzimaApplication)) {
-            MuzimaGPSLocationService muzimaLocationService = muzimaApplication.getMuzimaGPSLocationService();
-
-            HashMap<String, Object> locationDataHashMap = muzimaLocationService.getLastKnownGPSLocationAndSettingDetails();
-            if (locationDataHashMap.containsKey("gps_location")) {
-                MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation) locationDataHashMap.get("gps_location"));
-                try {
-                    return muzimaGPSLocation.toJsonObject().toString();
-                } catch (JSONException e) {
-                    Log.e("MuzimaLoggerService", "Error while obtaining GPS location", e);
-                }
-            } else if (locationDataHashMap.containsKey("gps_location_status")) {
-                return "{\"gps_location_status\":\"" + locationDataHashMap.get("gps_location_status") + "\"}";
-            }
-        }
+//        if(isLoggingFeatureEnabled(muzimaApplication)) {
+//            MuzimaGPSLocationService muzimaLocationService = muzimaApplication.getMuzimaGPSLocationService();
+//
+//            HashMap<String, Object> locationDataHashMap = muzimaLocationService.getLastKnownGPSLocationAndSettingDetails();
+//            if (locationDataHashMap.containsKey("gps_location")) {
+//                MuzimaGPSLocation muzimaGPSLocation = ((MuzimaGPSLocation) locationDataHashMap.get("gps_location"));
+//                try {
+//                    return muzimaGPSLocation.toJsonObject().toString();
+//                } catch (JSONException e) {
+//                    Log.e("MuzimaLoggerService", "Error while obtaining GPS location", e);
+//                }
+//            } else if (locationDataHashMap.containsKey("gps_location_status")) {
+//                return "{\"gps_location_status\":\"" + locationDataHashMap.get("gps_location_status") + "\"}";
+//            }
+//        }
         return "{}";
     }
 

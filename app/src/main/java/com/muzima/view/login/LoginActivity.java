@@ -290,17 +290,17 @@ public class LoginActivity extends Activity {
     }
 
     private void initializeGPSDataCollection(){
-        gpsLocationService = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService();
-
-        if(gpsLocationService.isGPSLocationFeatureEnabled()) {
-            if (!gpsLocationService.isGPSLocationPermissionsGranted()) {
-                gpsLocationService.requestGPSLocationPermissions(this);
-            }
-
-            if (!gpsLocationService.isLocationServicesSwitchedOn()) {
-                gpsLocationService.requestSwitchOnLocation(this);
-            }
-        }
+//        gpsLocationService = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService();
+//
+//        if(gpsLocationService.isGPSLocationFeatureEnabled()) {
+//            if (!gpsLocationService.isGPSLocationPermissionsGranted()) {
+//                gpsLocationService.requestGPSLocationPermissions(this);
+//            }
+//
+//            if (!gpsLocationService.isLocationServicesSwitchedOn()) {
+//                gpsLocationService.requestSwitchOnLocation(this);
+//            }
+//        }
     }
     
     private class BackgroundAuthenticationTask extends AsyncTask<Credentials, Void, BackgroundAuthenticationTask.Result> {

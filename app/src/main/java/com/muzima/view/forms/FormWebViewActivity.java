@@ -133,17 +133,17 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private void checkAndEnableGPSLocation() {
-        MuzimaGPSLocationService gpsLocationService = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService();
-
-        if(gpsLocationService.isGPSLocationFeatureEnabled()) {
-            if (!gpsLocationService.isGPSLocationPermissionsGranted()) {
-                gpsLocationService.requestGPSLocationPermissions(this);
-            }
-
-            if (!gpsLocationService.isLocationServicesSwitchedOn()) {
-                gpsLocationService.requestSwitchOnLocation(this);
-            }
-        }
+//        MuzimaGPSLocationService gpsLocationService = ((MuzimaApplication)getApplicationContext()).getMuzimaGPSLocationService();
+//
+//        if(gpsLocationService.isGPSLocationFeatureEnabled()) {
+//            if (!gpsLocationService.isGPSLocationPermissionsGranted()) {
+//                gpsLocationService.requestGPSLocationPermissions(this);
+//            }
+//
+//            if (!gpsLocationService.isLocationServicesSwitchedOn()) {
+//                gpsLocationService.requestSwitchOnLocation(this);
+//            }
+//        }
     }
 
     @Override

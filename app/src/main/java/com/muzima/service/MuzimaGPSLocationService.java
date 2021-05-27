@@ -51,7 +51,7 @@ public class MuzimaGPSLocationService {
         }
     }
 
-    public HashMap<String, Object> getLastKnownGPSLocationAndSettingDetails() {
+    private HashMap<String, Object> getLastKnownGPSLocationAndSettingDetails() {
 
         HashMap<String, Object> locationResultMap = new HashMap<>();
         if(!isGPSLocationFeatureEnabled()){
@@ -82,39 +82,40 @@ public class MuzimaGPSLocationService {
     }
 
     public MuzimaGPSLocation getLastKnownGPSLocation(){
-        if(isGPSLocationPermissionsGranted() && isLocationServicesSwitchedOn()){
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(location == null){
-                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            }
-
-            if(location != null){
-                return new MuzimaGPSLocation(location);
-            }
-        }
+//        if(isGPSLocationPermissionsGranted() && isLocationServicesSwitchedOn()){
+//            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//            if(location == null){
+//                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//            }
+//
+//            if(location != null){
+//                return new MuzimaGPSLocation(location);
+//            }
+//        }
         return null;
     }
 
-    public boolean isGPSLocationFeatureEnabled(){
+    private boolean isGPSLocationFeatureEnabled(){
         GPSFeaturePreferenceService gpsFeaturePreferenceService = ((MuzimaApplication) context.getApplicationContext()).getGPSFeaturePreferenceService();
         return gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled();
     }
 
     public boolean isLocationServicesSwitchedOn() {
-        boolean isGPSProviderEnabled = false;
-        boolean isNetworkEnabled = false;
-        if(locationManager != null){
-            isGPSProviderEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        }
-        return (isGPSProviderEnabled || isNetworkEnabled);
+//        boolean isGPSProviderEnabled = false;
+//        boolean isNetworkEnabled = false;
+//        if(locationManager != null){
+//            isGPSProviderEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+//        }
+//        return (isGPSProviderEnabled || isNetworkEnabled);
+        return false;
     }
 
     public boolean isGPSLocationPermissionsGranted() {
-        int permissionStatus = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
+//        int permissionStatus = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
+//        if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
+//            return true;
+//        }
         return false;
     }
 
@@ -122,7 +123,7 @@ public class MuzimaGPSLocationService {
         requestGPSLocationPermissions(activity,false);
     }
 
-    public void requestGPSLocationPermissions(Activity activity, boolean ignoreGPSFeaturePreference) {
+    private void requestGPSLocationPermissions(Activity activity, boolean ignoreGPSFeaturePreference) {
         if(ignoreGPSFeaturePreference || ((MuzimaApplication) context.getApplicationContext())
                 .getGPSFeaturePreferenceService().isGPSDataCollectionSettingEnabled()){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -133,11 +134,11 @@ public class MuzimaGPSLocationService {
         }
     }
 
-    public void requestSwitchOnLocation(final Activity activity) {
+    private void requestSwitchOnLocation(final Activity activity) {
         requestSwitchOnLocation(activity, null);
     }
 
-    public void requestSwitchOnLocation(final Activity activity, final LocationListener locationListener) {
+    private void requestSwitchOnLocation(final Activity activity, final LocationListener locationListener) {
         if(isGPSLocationPermissionsGranted()){
             if (googleApiClient == null ) {
                 googleApiClient = new GoogleApiClient.Builder(activity)
@@ -191,7 +192,7 @@ public class MuzimaGPSLocationService {
         }
     }
 
-    public void requestLocationUpdates(LocationListener locationListener){
+    private void requestLocationUpdates(LocationListener locationListener){
         this.locationListener = locationListener;
         if(locationListener == null) {
             locationListener = new LocationListener() {
