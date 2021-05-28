@@ -30,9 +30,8 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="6dp"
                 android:layout_width="match_parent"
-                android:text="Hello Provider"
                 android:textColor="@color/primary_white"
-                android:textSize="16sp" />
+                android:textSize="21sp" />
 
             <include layout="@layout/forms_top_bar_view" />
 

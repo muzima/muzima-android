@@ -94,18 +94,13 @@
 
                 </RelativeLayout>
 
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/client_summary_historical_data_view_pager"
+                <FrameLayout
+                    android:id="@+id/historical_data_fragment_container"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="4dp"
                     android:layout_width="match_parent"
-                    android:layout_height="220dp">
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/client_summary_historical_data_tab_layout"
-                        app:tabSelectedTextColor="@color/primary_blue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-                </androidx.viewpager.widget.ViewPager>
+                    android:layout_height="220dp"/>
 
             </LinearLayout>
 

@@ -37,6 +37,7 @@ import com.muzima.view.patients.PatientsListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DashboardHomeFragment extends Fragment implements LoadPatientsListService.PatientsListLoadedCallback,
         AllPatientsAdapter.OnPatientClickedListener {
@@ -51,6 +52,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
     private View searchByServer;
     private View searchBySmartCard;
     private View favouriteListView;
+    private TextView providerNameTextView;
     private RecyclerView listView;
     private View noDataView;
     private FloatingActionButton fabSearchButton;
@@ -133,6 +135,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         completeFormsView = view.findViewById(R.id.dashboard_forms_complete_forms_view);
         incompleteFormsView = view.findViewById(R.id.dashboard_forms_incomplete_forms_view);
         progressBar = view.findViewById(R.id.patient_loader_progress_bar);
+        providerNameTextView = view.findViewById(R.id.dashboard_home_welcome_message_text_view);
         allPatientsAdapter = new AllPatientsAdapter(patients, this, getCurrentGPSLocation());
         listView.setAdapter(allPatientsAdapter);
         listView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
@@ -181,6 +184,11 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
                 getActivity().finish();
             }
         });
+
+        providerNameTextView.setText(String.format(Locale.getDefault(), "%s %s",
+                getResources().getString(R.string.general_hello_greeting),
+                ((MuzimaApplication) getActivity().getApplicationContext()).getAuthenticatedUser().getUsername()));
+
     }
 
     private void setupNoDataView() {

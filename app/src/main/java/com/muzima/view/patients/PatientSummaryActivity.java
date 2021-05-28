@@ -51,7 +51,6 @@ import com.muzima.model.shr.kenyaemr.InternalPatientId;
 import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
-import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.LocationUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
@@ -63,7 +62,7 @@ import com.muzima.view.SHRObservationsDataActivity;
 import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
-import com.muzima.view.observations.ObservationsActivity;
+import com.muzima.view.observations.ObservationsFragment;
 import com.muzima.view.relationship.RelationshipsListActivity;
 import com.muzima.view.reports.PatientReportActivity;
 
@@ -403,7 +402,7 @@ public class PatientSummaryActivity extends BaseActivity {
     }
 
     public void showObservations(View v) {
-        Intent intent = new Intent(this, ObservationsActivity.class);
+        Intent intent = new Intent(this, ObservationsFragment.class);
         intent.putExtra(PATIENT, patient);
         startActivity(intent);
     }

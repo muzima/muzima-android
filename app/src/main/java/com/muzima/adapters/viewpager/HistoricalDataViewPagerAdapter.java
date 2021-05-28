@@ -11,6 +11,7 @@ import com.muzima.R;
 import com.muzima.view.fragments.HistoricalDataByAbstractFragment;
 import com.muzima.view.fragments.HistoricalDataByEncounterFragment;
 import com.muzima.view.fragments.HistoricalDataByTypeFragment;
+import com.muzima.view.observations.ObservationsFragment;
 
 public class HistoricalDataViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -25,11 +26,7 @@ public class HistoricalDataViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return new HistoricalDataByTypeFragment();
-            case 1:
-                return new HistoricalDataByAbstractFragment();
-            case 2:
-                return new HistoricalDataByEncounterFragment();
+                return new ObservationsFragment();
             default:
                 return null;
         }
@@ -41,10 +38,6 @@ public class HistoricalDataViewPagerAdapter extends FragmentPagerAdapter {
         switch (position){
             case 0:
                 return context.getResources().getString(R.string.info_by_type);
-            case 1:
-                return context.getResources().getString(R.string.info_by_abstract);
-            case 2:
-                return context.getResources().getString(R.string.info_by_encounter);
             default:
                 return null;
         }
@@ -52,6 +45,6 @@ public class HistoricalDataViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 1;
     }
 }

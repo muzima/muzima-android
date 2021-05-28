@@ -234,15 +234,15 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="com.muzima.view.patients.PatientSummaryActivity"/>
         </activity>
-        <activity
-                android:name=".view.observations.ObservationsActivity"
-                android:configChanges="orientation|screenSize"
-                android:label="@string/title_activity_client_observations"
-                android:parentActivityName=".view.patients.PatientSummaryActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>
-        </activity>
+<!--        <activity-->
+<!--                android:name=".view.observations.ObservationsFragment"-->
+<!--                android:configChanges="orientation|screenSize"-->
+<!--                android:label="@string/title_activity_client_observations"-->
+<!--                android:parentActivityName=".view.patients.PatientSummaryActivity">-->
+<!--            <meta-data-->
+<!--                    android:name="android.support.PARENT_ACTIVITY"-->
+<!--                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>-->
+<!--        </activity>-->
         <activity
                 android:name=".view.encounters.EncountersActivity"
                 android:configChanges="orientation|screenSize"

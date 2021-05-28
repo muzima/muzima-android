@@ -858,5 +858,6 @@
     <string name="info_by_encounter">By Encounter</string>
     <string name="general_add_single_element">Add single element</string>
     <string name="info_no_client_available">No clients available remote search or register new clients.</string>
+    <string name="general_hello_greeting">Hello</string>
 
 </resources>

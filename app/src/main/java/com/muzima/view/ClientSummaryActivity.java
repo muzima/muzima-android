@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -24,6 +25,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.model.FormsSummary;
 import com.muzima.tasks.FormsCountService;
+import com.muzima.view.observations.ObservationsFragment;
 import com.muzima.view.patients.PatientsListActivity;
 
 import net.sf.cglib.core.Local;
@@ -47,7 +49,6 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     private View expandDataCollectionView;
     private View expandHistoricalDataImageView;
     private View expandDataCollectionImageView;
-    private ViewPager historicalDataViewPager;
     private ViewPager dataCollectionViewPager;
     private String patientUuid;
     private Patient patient;
@@ -55,7 +56,6 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     private FormSummaryCardsAdapter formSummaryCardsAdapter;
     private List<FormsSummary> formsSummaries = new ArrayList<>();
 
-    private HistoricalDataViewPagerAdapter historicalDataViewPagerAdapter;
     private DataCollectionViewPagerAdapter dataCollectionViewPagerAdapter;
 
     @Override
@@ -66,6 +66,13 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         loadPatientData();
         loadSummaryHeaders();
         loadFormsCountData();
+        loadHistoricalDataView();
+    }
+
+    private void loadHistoricalDataView() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.historical_data_fragment_container, new ObservationsFragment());
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -117,15 +124,12 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         expandDataCollectionView = findViewById(R.id.expand_data_collection_view);
         expandHistoricalDataImageView = findViewById(R.id.expand_historical_data_image_view);
         expandDataCollectionImageView = findViewById(R.id.expand_data_collection_image_view);
-        historicalDataViewPager = findViewById(R.id.client_summary_historical_data_view_pager);
         dataCollectionViewPager = findViewById(R.id.client_summary_data_collection_view_pager);
 
         formSummaryCardsAdapter = new FormSummaryCardsAdapter(formsSummaries, this);
         formCountSummaryRecyclerView.setAdapter(formSummaryCardsAdapter);
         formCountSummaryRecyclerView.setLayoutManager( new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL,false));
-        historicalDataViewPagerAdapter = new HistoricalDataViewPagerAdapter(getSupportFragmentManager(), getApplicationContext());
         dataCollectionViewPagerAdapter = new DataCollectionViewPagerAdapter(getSupportFragmentManager(), getApplicationContext(), getIntent().getStringExtra(PATIENT_UUID));
-        historicalDataViewPager.setAdapter(historicalDataViewPagerAdapter);
         dataCollectionViewPager.setAdapter(dataCollectionViewPagerAdapter);
 
         setSupportActionBar(toolbar);
@@ -133,6 +137,21 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        expandHistoricalDataView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        expandDataCollectionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dataCollectionViewPager.getVisibility() == View.VISIBLE) dataCollectionViewPager.setVisibility(View.GONE);
+                else dataCollectionViewPager.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
