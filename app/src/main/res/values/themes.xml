@@ -21,6 +21,7 @@
         <item name="colorAccent">@color/primary_blue</item>
         <item name="colorPrimary">@color/primary_black</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
+        <item name="toolbarTitleTextColor">@color/primary_white</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
         <item name="primaryTextColor">@color/primary_white</item>
         <item name="secondaryTextColor">@color/secondary_text</item>
@@ -53,7 +54,15 @@
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
         <item name="icNavigation">@drawable/navigation_light</item>
         <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_dark</item>
+        <item name="ic_action_arrow_down_dark">@drawable/ic_action_arrow_down_dark</item>
+        <item name="menu_inactive_text_color">@color/primary_white</item>
         <item name="icEdit">@drawable/edit_light</item>
+        <item name="bottom_navigation_selected_icon">@drawable/bottom_navigation_selected_icon_light</item>
+        <item name="ic_action_home_dark">@drawable/ic_action_home_dark</item>
+        <item name="ic_action_settings">@drawable/ic_action_settings_dark</item>
+        <item name="ic_action_help">@drawable/ic_action_help_dark</item>
+        <item name="ic_action_mail_dark">@drawable/ic_action_mail_dark</item>
+        <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
     </style>
 
 
@@ -65,6 +74,7 @@
         <item name="colorAccent">@color/primary_blue</item>
         <item name="colorPrimary">@color/primary_black</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
+        <item name="toolbarTitleTextColor">@color/primary_white</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
         <item name="primaryTextColor">@color/primary_white</item>
         <item name="secondaryTextColor">@color/secondary_text</item>
@@ -96,13 +106,21 @@
         <item name="ic_action_lock_dark">@drawable/ic_action_lock_dark</item>
         <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_dark</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
+        <item name="ic_action_arrow_down_dark">@drawable/ic_action_arrow_down_dark</item>
         <item name="icNavigation">@drawable/navigation_light</item>
         <item name="icEdit">@drawable/edit_light</item>
+        <item name="menu_inactive_text_color">@color/primary_white</item>
+        <item name="ic_action_home_dark">@drawable/ic_action_home_dark</item>
+        <item name="bottom_navigation_selected_icon">@drawable/bottom_navigation_selected_icon_dark</item>
+        <item name="ic_action_settings">@drawable/ic_action_settings_dark</item>
+        <item name="ic_action_help">@drawable/ic_action_help_dark</item>
+        <item name="ic_action_mail_dark">@drawable/ic_action_mail_dark</item>
+        <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
     </style>
 
-    <style name="DarkToolbar" parent="AppThemeNoActionBar.Dark">
-        <item name="background">@color/primary_white</item>
-        <item name="android:textColor">@color/primary_black</item>
+    <style name="ToolbarTheme" parent="AppThemeNoActionBar.Dark">
+        <item name="background">?attr/primaryBackgroundColor</item>
+        <item name="android:textColor">?attr/toolbarTitleTextColor</item>
     </style>
 
     <style name="AppBaseTheme.Light.NoActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
@@ -113,6 +131,7 @@
         <item name="colorAccent">@color/primary_blue</item>
         <item name="colorPrimary">@color/primary_white</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
+        <item name="toolbarTitleTextColor">@color/primary_black</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color_light</item>
         <item name="primaryTextColor">@color/primary_black</item>
         <item name="secondaryTextColor">@color/secondary_text_light</item>
@@ -145,7 +164,15 @@
         <item name="icNavigation">@drawable/navigation_dark</item>
         <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_dark</item>
         <item name="ic_action_lock_dark">@drawable/ic_action_lock_light</item>
+        <item name="ic_action_arrow_down_dark">@drawable/ic_action_arrow_down_light</item>
         <item name="icEdit">@drawable/edit_dark</item>
+        <item name="menu_inactive_text_color">@color/primary_black</item>
+        <item name="ic_action_home_dark">@drawable/ic_action_home_light</item>
+        <item name="bottom_navigation_selected_icon">@drawable/bottom_navigation_selected_icon_dark</item>
+        <item name="ic_action_settings">@drawable/ic_action_settings_light</item>
+        <item name="ic_action_help">@drawable/ic_action_help_light</item>
+        <item name="ic_action_mail_dark">@drawable/ic_action_mail_light</item>
+        <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_light</item>
     </style>
 
     <style name="AppBaseTheme.Light" parent="@style/Theme.AppCompat.Light.DarkActionBar">
@@ -156,6 +183,7 @@
         <item name="colorAccent">@color/primary_blue</item>
         <item name="colorPrimary">@color/primary_white</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
+        <item name="toolbarTitleTextColor">@color/primary_black</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color_light</item>
         <item name="primaryTextColor">@color/primary_black</item>
         <item name="secondaryTextColor">@color/secondary_text_light</item>
@@ -188,7 +216,15 @@
         <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
         <item name="icNavigation">@drawable/navigation_dark</item>
         <item name="ic_action_lock_dark">@drawable/ic_action_lock_light</item>
+        <item name="ic_action_arrow_down_dark">@drawable/ic_action_arrow_down_light</item>
         <item name="icEdit">@drawable/edit_dark</item>
+        <item name="menu_inactive_text_color">@color/primary_black</item>
+        <item name="bottom_navigation_selected_icon">@drawable/bottom_navigation_selected_icon_dark</item>
+        <item name="ic_action_home_dark">@drawable/ic_action_home_light</item>
+        <item name="ic_action_settings">@drawable/ic_action_settings_light</item>
+        <item name="ic_action_help">@drawable/ic_action_help_light</item>
+        <item name="ic_action_mail_dark">@drawable/ic_action_mail_light</item>
+        <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_light</item>
     </style>
 
 
@@ -200,6 +236,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="colorAccent">@color/primary_blue</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
+        <item name="toolbarTitleTextColor">@color/primary_white</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
         <item name="primaryTextColor">@color/primary_white</item>
         <item name="secondaryTextColor">@color/secondary_text</item>
@@ -233,6 +270,13 @@
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
         <item name="icNavigation">@drawable/navigation_light</item>
         <item name="icEdit">@drawable/edit_light</item>
+        <item name="menu_inactive_text_color">@color/primary_white</item>
+        <item name="bottom_navigation_selected_icon">@drawable/bottom_navigation_selected_icon_light</item>
+        <item name="ic_action_home_dark">@drawable/ic_action_home_dark</item>
+        <item name="ic_action_settings">@drawable/ic_action_settings_dark</item>
+        <item name="ic_action_help">@drawable/ic_action_help_dark</item>
+        <item name="ic_action_mail_dark">@drawable/ic_action_mail_dark</item>
+        <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
     </style>
 
     <!-- Application theme. -->
@@ -243,6 +287,7 @@
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="colorAccent">@color/primary_blue</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
+        <item name="toolbarTitleTextColor">@color/primary_black</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color_light</item>
         <item name="primaryTextColor">@color/primary_black</item>
         <item name="secondaryTextColor">#777777</item>
@@ -276,6 +321,13 @@
         <item name="ic_action_lock_dark">@drawable/ic_action_lock_light</item>
         <item name="icNavigation">@drawable/navigation_dark</item>
         <item name="icEdit">@drawable/edit_dark</item>
+        <item name="menu_inactive_text_color">@color/primary_black</item>
+        <item name="bottom_navigation_selected_icon">@drawable/bottom_navigation_selected_icon_dark</item>
+        <item name="ic_action_home_dark">@drawable/ic_action_home_dark</item>
+        <item name="ic_action_settings">@drawable/ic_action_settings_light</item>
+        <item name="ic_action_help">@drawable/ic_action_help_light</item>
+        <item name="ic_action_mail_dark">@drawable/ic_action_mail_light</item>
+        <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_light</item>
     </style>
 
     <style name="DialogNoTitleBar" parent="android:style/Theme.Dialog">

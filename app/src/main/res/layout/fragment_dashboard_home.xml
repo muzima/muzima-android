@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:background="@color/primary_black"
+<RelativeLayout
+    android:background="?attr/primaryBackgroundColor"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:paddingBottom="42dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout android:background="@color/primary_black"
+    <LinearLayout
+        android:background="?attr/primaryBackgroundColor"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:paddingBottom="12dp">
 
         <LinearLayout
-            android:background="@color/primary_black"
+            android:background="?attr/primaryBackgroundColor"
             android:elevation="12dp"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -30,7 +32,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="6dp"
                 android:layout_width="match_parent"
-                android:textColor="@color/primary_white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="21sp" />
 
             <include layout="@layout/forms_top_bar_view" />
@@ -46,8 +48,9 @@
                 android:padding="4dp">
 
                 <TextView
-                    android:background="@color/primary_black"
+                    android:background="?attr/primaryBackgroundColor"
                     android:text="@string/general_search_patient"
+                    android:textColor="?attr/primaryTextColor"
                     android:id="@+id/dashboard_forms_search_edit_text"
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content"
@@ -59,7 +62,7 @@
                     android:layout_centerVertical="true"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:src="@drawable/ic_search" />
+                    android:src="?attr/icSearch" />
 
             </RelativeLayout>
 
@@ -76,6 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="@string/general_or_search_by"
+                    android:textColor="?attr/primaryTextColor"
                     android:textAllCaps="true"
                     android:textSize="12sp" />
 
@@ -142,6 +146,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:textColor="?attr/primaryTextColor"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="Favorite List" />
@@ -150,7 +155,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:src="@drawable/ic_action_arrow_down_dark" />
+                android:src="?attr/ic_action_arrow_down_dark" />
 
         </LinearLayout>
 

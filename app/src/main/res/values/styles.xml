@@ -798,7 +798,7 @@
     </style>
 
     <style name="bottom_nav_inactive_text">
-        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColor">?attr/menu_inactive_text_color</item>
         <item name="android:textSize">14sp</item>
     </style>
 

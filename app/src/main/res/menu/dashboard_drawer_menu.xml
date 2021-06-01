@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/drawer_menu_home"
         android:title="@string/general_home"
-        android:icon="@drawable/ic_action_home_dark"/>
+        android:icon="?attr/ic_action_home_dark"/>
 
     <item
         android:id="@+id/drawer_menu_settings"
         android:title="@string/general_settings"
-        android:icon="@drawable/ic_action_settings"/>
+        android:icon="?attr/ic_action_settings"/>
 
     <item
         android:id="@+id/drawer_menu_help"
         android:title="@string/help_general"
-        android:icon="@drawable/ic_action_help"/>
+        android:icon="?attr/ic_action_help"/>
 
     <item
         android:id="@+id/drawer_menu_feedback"
         android:title="@string/general_feedback"
-        android:icon="@drawable/ic_action_mail_dark"/>
+        android:icon="?attr/ic_action_mail_dark"/>
 
     <item
         android:id="@+id/drawer_menu_contact_us"
         android:title="@string/contact_us"
-        android:icon="@drawable/ic_action_settings"/>
+        android:icon="?attr/ic_action_settings"/>
 
     <item
         android:id="@+id/drawer_menu_logout"
         android:title="@string/general_logout"
-        android:icon="@drawable/ic_action_power_setting_dark"/>
+        android:icon="?attr/ic_action_power_setting_dark"/>
 
 </menu>
