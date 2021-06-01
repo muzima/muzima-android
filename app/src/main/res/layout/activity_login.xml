@@ -87,7 +87,7 @@
                 android:background="@drawable/border_button_gray"
                 android:id="@+id/username"
                 style="@style/LoginInfoEditText"
-                android:drawableLeft="@drawable/ic_action_arrow_person_dark"
+                android:drawableLeft="?attr/ic_action_arrow_person_dark"
                 android:hint="@string/general_username"
                 android:inputType="textShortMessage"
                 android:nextFocusDown="@+id/password"
@@ -98,7 +98,7 @@
             <EditText
                 android:background="@drawable/border_button_gray"
                 android:id="@+id/password"
-                android:drawableLeft="@drawable/ic_action_lock_dark"
+                android:drawableLeft="?attr/ic_action_lock_dark"
                 style="@style/LoginInfoEditText"
                 android:hint="@string/general_password"
                 android:inputType="textPassword"

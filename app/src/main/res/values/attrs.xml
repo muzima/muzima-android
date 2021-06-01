@@ -38,6 +38,8 @@
     <attr name="icCancel" format="reference"/>
     <attr name="icSend" format="reference"/>
     <attr name="icUndo" format="reference"/>
+    <attr name="ic_action_arrow_person_dark" format="reference"/>
+    <attr name="ic_action_lock_dark" format="reference"/>
     <declare-styleable name="PagerSlidingTabStrip">
         <attr name="indicatorTextColor" format="color"/>
         <attr name="indicatorColor" format="color"/>

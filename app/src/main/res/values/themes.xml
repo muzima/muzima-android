@@ -47,10 +47,12 @@
         <item name="listSelectorBlue">@drawable/list_selector_blue</item>
         <item name="icLauncherLogo">@drawable/ic_launcher_logo</item>
         <item name="icCancel">@drawable/ic_cancel</item>
+        <item name="ic_action_lock_dark">@drawable/ic_action_lock_dark</item>
         <item name="icSend">@drawable/ic_action_send</item>
         <item name="icUndo">@drawable/ic_action_undo</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
         <item name="icNavigation">@drawable/navigation_light</item>
+        <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_dark</item>
         <item name="icEdit">@drawable/edit_light</item>
     </style>
 
@@ -91,6 +93,8 @@
         <item name="icCancel">@drawable/ic_cancel</item>
         <item name="icSend">@drawable/ic_action_send</item>
         <item name="icUndo">@drawable/ic_action_undo</item>
+        <item name="ic_action_lock_dark">@drawable/ic_action_lock_dark</item>
+        <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_dark</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
         <item name="icNavigation">@drawable/navigation_light</item>
         <item name="icEdit">@drawable/edit_light</item>
@@ -139,6 +143,8 @@
         <item name="icUndo">@drawable/ic_action_undo_light</item>
         <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
         <item name="icNavigation">@drawable/navigation_dark</item>
+        <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_dark</item>
+        <item name="ic_action_lock_dark">@drawable/ic_action_lock_light</item>
         <item name="icEdit">@drawable/edit_dark</item>
     </style>
 
@@ -178,8 +184,10 @@
         <item name="icCancel">@drawable/ic_cancel_light</item>
         <item name="icSend">@drawable/ic_action_send_light</item>
         <item name="icUndo">@drawable/ic_action_undo_light</item>
+        <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_light</item>
         <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
         <item name="icNavigation">@drawable/navigation_dark</item>
+        <item name="ic_action_lock_dark">@drawable/ic_action_lock_light</item>
         <item name="icEdit">@drawable/edit_dark</item>
     </style>
 
@@ -220,6 +228,8 @@
         <item name="icCancel">@drawable/ic_cancel</item>
         <item name="icSend">@drawable/ic_action_send</item>
         <item name="icUndo">@drawable/ic_action_undo</item>
+        <item name="ic_action_lock_dark">@drawable/ic_action_lock_dark</item>
+        <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_dark</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
         <item name="icNavigation">@drawable/navigation_light</item>
         <item name="icEdit">@drawable/edit_light</item>
@@ -261,7 +271,9 @@
         <item name="icCancel">@drawable/ic_cancel_light</item>
         <item name="icSend">@drawable/ic_action_send_light</item>
         <item name="icUndo">@drawable/ic_action_undo_light</item>
+        <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_light</item>
         <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
+        <item name="ic_action_lock_dark">@drawable/ic_action_lock_light</item>
         <item name="icNavigation">@drawable/navigation_dark</item>
         <item name="icEdit">@drawable/edit_dark</item>
     </style>
