@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/DashboardWrapper"
-              android:id="@+id/rl"
-              tools:context="com.muzima.view.MainActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl"
+    style="@style/DashboardWrapper"
+    android:orientation="vertical"
+    tools:context="com.muzima.view.MainActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/help_toolbar"
+        app:title="@string/help_general"
+        android:theme="@style/Base_ToolbarStyle"
+        android:elevation="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
 
     <ExpandableListView
-            android:id="@+id/lvExp"
-            android:layout_height="match_parent"
-            android:layout_width="fill_parent"/>
+        android:id="@+id/lvExp"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
