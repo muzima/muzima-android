@@ -51,10 +51,17 @@
         <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
         <item name="android:textColorPrimary">@color/preference_primary_color_light</item>
         <item name="android:textColorSecondary">@color/preference_secondary_color_light</item>
+        <item name="actionBarStyle">@style/Base_ToolbarStyle</item>
+        <item name="actionBarTabTextStyle">@style/preferenceToolbarTitleStyle</item>
+    </style>
+
+    <style name="preferenceToolbarTitleStyle">
+        <item name="android:textColor">?attr/toolbarTitleTextColor</item>
     </style>
 
     <style name="preferenceCategoryStyle">
     </style>
+
 
     <style name="DashboardWrapper">
         <item name="android:layout_width">match_parent</item>
@@ -805,4 +812,36 @@
     <style name="TabLayoutTextStyle">
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="Base_ToolbarStyle">
+        <item name="android:background">?attr/primaryBackgroundColor</item>
+        <item name="android:theme">@style/Base_ToolbarTheme</item>
+        <item name="titleTextAppearance">@style/CustomTitleTextAppearance</item>
+        <item name="subtitleTextAppearance">@style/CustomSubTitleTextAppearance</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="colorControlNormal">?attr/toolbarTitleTextColor</item>
+    </style>
+
+    <style name="Base_ToolbarTheme">
+        <item name="android:textColorPrimary">?attr/toolbarTitleTextColor</item>
+        <item name="android:textColorSecondary">?attr/toolbarTitleTextColor</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">?attr/toolbarTitleTextColor</item>
+    </style>
+
+    <style name="CustomTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/toolbarTitleTextColor</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CustomSubTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/toolbarTitleTextColor</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
 </resources>

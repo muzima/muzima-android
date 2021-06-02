@@ -20,15 +20,18 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormSummaryCardsAdapter;
 import com.muzima.adapters.viewpager.DataCollectionViewPagerAdapter;
-import com.muzima.adapters.viewpager.HistoricalDataViewPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
-import com.muzima.model.FormsSummary;
+import com.muzima.model.SummaryCard;
+import com.muzima.model.enums.CardsSummaryCategory;
 import com.muzima.tasks.FormsCountService;
+import com.muzima.utils.Constants;
+import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.MuzimaPreferences;
+import com.muzima.utils.ThemeUtils;
+import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.observations.ObservationsFragment;
 import com.muzima.view.patients.PatientsListActivity;
-
-import net.sf.cglib.core.Local;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,14 +55,18 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     private ViewPager dataCollectionViewPager;
     private String patientUuid;
     private Patient patient;
+    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     private FormSummaryCardsAdapter formSummaryCardsAdapter;
-    private List<FormsSummary> formsSummaries = new ArrayList<>();
+    private List<SummaryCard> formsSummaries = new ArrayList<>();
 
     private DataCollectionViewPagerAdapter dataCollectionViewPagerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        themeUtils.onCreate(ClientSummaryActivity.this);
+        languageUtil.onCreate(ClientSummaryActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_summary_dashboard);
         initializeResources();
@@ -80,9 +87,9 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                formsSummaries.add(new FormsSummary(getResources().getString(R.string.info_complete_form), completeFormsCount));
-                formsSummaries.add(new FormsSummary(getResources().getString(R.string.info_incomplete_form), incompleteFormsCount));
-                formsSummaries.add(new FormsSummary(getString(R.string.info_emergency_contacts), 0));
+                formsSummaries.add(new SummaryCard(CardsSummaryCategory.COMPLETE_FORMS, getResources().getString(R.string.info_complete_form), completeFormsCount));
+                formsSummaries.add(new SummaryCard(CardsSummaryCategory.COMPLETE_FORMS, getResources().getString(R.string.info_incomplete_form), incompleteFormsCount));
+                formsSummaries.add(new SummaryCard(CardsSummaryCategory.COMPLETE_FORMS, getString(R.string.info_emergency_contacts), 0));
                 formSummaryCardsAdapter.notifyDataSetChanged();
             }
         });
@@ -128,7 +135,7 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
 
         formSummaryCardsAdapter = new FormSummaryCardsAdapter(formsSummaries, this);
         formCountSummaryRecyclerView.setAdapter(formSummaryCardsAdapter);
-        formCountSummaryRecyclerView.setLayoutManager( new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL,false));
+        formCountSummaryRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
         dataCollectionViewPagerAdapter = new DataCollectionViewPagerAdapter(getSupportFragmentManager(), getApplicationContext(), getIntent().getStringExtra(PATIENT_UUID));
         dataCollectionViewPager.setAdapter(dataCollectionViewPagerAdapter);
 
@@ -148,7 +155,8 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         expandDataCollectionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (dataCollectionViewPager.getVisibility() == View.VISIBLE) dataCollectionViewPager.setVisibility(View.GONE);
+                if (dataCollectionViewPager.getVisibility() == View.VISIBLE)
+                    dataCollectionViewPager.setVisibility(View.GONE);
                 else dataCollectionViewPager.setVisibility(View.VISIBLE);
             }
         });
@@ -166,6 +174,25 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
 
     @Override
     public void onCardClicked(int position) {
-        FormsSummary header = formsSummaries.get(position);
+        SummaryCard header = formsSummaries.get(position);
+        CardsSummaryCategory category = header.getCategory();
+        switch (category) {
+            case COMPLETE_FORMS:
+                MuzimaPreferences.setFormsActivityActionModePreference(getApplicationContext(), Constants.FORMS_LAUNCH_MODE.COMPLETE_FORMS_VIEW);
+                Intent completeFormsIntent = new Intent(getApplicationContext(), FormsActivity.class);
+                completeFormsIntent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, 1);
+                startActivity(completeFormsIntent);
+                finish();
+                break;
+            case INCOMPLETE_FORMS:
+                MuzimaPreferences.setFormsActivityActionModePreference(getApplicationContext(), Constants.FORMS_LAUNCH_MODE.INCOMPLETE_FORMS_VIEW);
+                Intent intent = new Intent(getApplicationContext(), FormsActivity.class);
+                intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, 1);
+                startActivity(intent);
+                finish();
+                break;
+            case EMERGENCY_CONTACT:
+                break;
+        }
     }
 }

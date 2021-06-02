@@ -63,6 +63,7 @@
         <item name="ic_action_help">@drawable/ic_action_help_dark</item>
         <item name="ic_action_mail_dark">@drawable/ic_action_mail_dark</item>
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
 
@@ -116,11 +117,7 @@
         <item name="ic_action_help">@drawable/ic_action_help_dark</item>
         <item name="ic_action_mail_dark">@drawable/ic_action_mail_dark</item>
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
-    </style>
-
-    <style name="ToolbarTheme" parent="AppThemeNoActionBar.Dark">
-        <item name="background">?attr/primaryBackgroundColor</item>
-        <item name="android:textColor">?attr/toolbarTitleTextColor</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
     <style name="AppBaseTheme.Light.NoActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
@@ -173,6 +170,7 @@
         <item name="ic_action_help">@drawable/ic_action_help_light</item>
         <item name="ic_action_mail_dark">@drawable/ic_action_mail_light</item>
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_light</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
     <style name="AppBaseTheme.Light" parent="@style/Theme.AppCompat.Light.DarkActionBar">
@@ -225,6 +223,7 @@
         <item name="ic_action_help">@drawable/ic_action_help_light</item>
         <item name="ic_action_mail_dark">@drawable/ic_action_mail_light</item>
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_light</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
 
@@ -277,6 +276,7 @@
         <item name="ic_action_help">@drawable/ic_action_help_dark</item>
         <item name="ic_action_mail_dark">@drawable/ic_action_mail_dark</item>
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
     <!-- Application theme. -->
@@ -328,6 +328,7 @@
         <item name="ic_action_help">@drawable/ic_action_help_light</item>
         <item name="ic_action_mail_dark">@drawable/ic_action_mail_light</item>
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_light</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
     <style name="DialogNoTitleBar" parent="android:style/Theme.Dialog">

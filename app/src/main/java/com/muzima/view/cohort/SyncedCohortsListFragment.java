@@ -16,6 +16,8 @@ import com.google.android.material.snackbar.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortPagerAdapter;
 import com.muzima.adapters.cohort.SyncedCohortsAdapter;
@@ -53,7 +55,7 @@ public class SyncedCohortsListFragment extends CohortListFragment implements All
 
     private void determineAndShowCohortUpdateAvailabilityAction(){
         try {
-            if(cohortController.isUpdateAvailable()) {
+            if(((MuzimaApplication) getActivity().getApplicationContext()).getCohortController().isUpdateAvailable()) {
                 Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.info_cohort_update, Snackbar.LENGTH_LONG)
                         .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark))
                         .setAction(R.string.general_update, new View.OnClickListener() {

@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
+import com.muzima.view.patients.PatientsListActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -45,16 +47,15 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     private NavigationView navigationView;
     private Toolbar toolbar;
     private ViewPager viewPager;
+    private TextView headerTitleTextView;
     private MainDashboardAdapter adapter;
     private BottomNavigationView bottomNavigationView;
     private ActionBarDrawerToggle drawerToggle;
     private final ThemeUtils themeUtils = new ThemeUtils();
-    private MenuItem menubarLoadButton;
-    private MenuItem menuUpload;
-    private MenuItem tagsButton;
+    private final LanguageUtil languageUtil = new LanguageUtil();
+    private MenuItem menuItemRegisterPatient;
     private Credentials credentials;
     private BackgroundQueryTask mBackgroundQueryTask;
-    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,19 +69,26 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.form_list_menu, menu);
-        menubarLoadButton = menu.findItem(R.id.menu_load);
-        tagsButton = menu.findItem(R.id.menu_tags);
-        menuUpload = menu.findItem(R.id.menu_upload);
+        getMenuInflater().inflate(R.menu.register_patient_menu, menu);
+        menuItemRegisterPatient = menu.findItem(R.id.menu_client_add_icon);
+        menuItemRegisterPatient.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Intent intent = new Intent(getApplicationContext(), PatientsListActivity.class);
+                startActivity(intent);
+                finish();
+                return false;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 
     public void hideProgressbar() {
-        menubarLoadButton.setActionView(null);
+        menuItemRegisterPatient.setActionView(null);
     }
 
     public void showProgressBar() {
-        menubarLoadButton.setActionView(R.layout.refresh_menuitem);
+        menuItemRegisterPatient.setActionView(R.layout.refresh_menuitem);
     }
 
     private void initializeResources() {
@@ -89,6 +97,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         toolbar = findViewById(R.id.dashboard_toolbar);
         drawerLayout = findViewById(R.id.main_dashboard_drawer_layout);
         navigationView = findViewById(R.id.dashboard_navigation);
+        headerTitleTextView = navigationView.getHeaderView(0).findViewById(R.id.dashboard_header_title_text_view);
 
         setSupportActionBar(toolbar);
         drawerToggle = new ActionBarDrawerToggle(MainDashboardActivity.this, drawerLayout,
@@ -114,6 +123,8 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
                 return false;
             }
         });
+
+        headerTitleTextView.setText(((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getUsername());
 
         setTitle(" ");
 

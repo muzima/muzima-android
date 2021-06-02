@@ -86,7 +86,9 @@ public class FormsActivity extends FormsActivityBase {
         toolbar = findViewById(R.id.forms_activity_toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Incomplete forms");
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getResources().getString(R.string.info_complete_form));
         }
     }
 

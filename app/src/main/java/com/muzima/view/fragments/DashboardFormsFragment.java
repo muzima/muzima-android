@@ -1,5 +1,6 @@
 package com.muzima.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,9 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.viewpager.FormsViewPagerAdapter;
 import com.muzima.tasks.FormsCountService;
+import com.muzima.utils.Constants;
+import com.muzima.utils.MuzimaPreferences;
+import com.muzima.view.forms.FormsActivity;
 
 public class DashboardFormsFragment extends Fragment implements FormsCountService.FormsCountServiceCallback {
 
@@ -40,7 +44,7 @@ public class DashboardFormsFragment extends Fragment implements FormsCountServic
 
     private void loadFormsCount() {
         ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
-                .execute( new FormsCountService(getActivity().getApplicationContext(),this));
+                .execute(new FormsCountService(getActivity().getApplicationContext(), this));
     }
 
     private void initializeResources(View view) {
@@ -52,20 +56,28 @@ public class DashboardFormsFragment extends Fragment implements FormsCountServic
         viewPager = view.findViewById(R.id.dashboard_forms_view_pager);
         tabLayout = view.findViewById(R.id.dashboard_forms_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-        viewPagerAdapter = new FormsViewPagerAdapter(getChildFragmentManager(),getActivity().getApplicationContext());
+        viewPagerAdapter = new FormsViewPagerAdapter(getChildFragmentManager(), getActivity().getApplicationContext());
         viewPager.setAdapter(viewPagerAdapter);
 
         completeFormsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo start complete forms
+                MuzimaPreferences.setFormsActivityActionModePreference(getActivity().getApplicationContext(), Constants.FORMS_LAUNCH_MODE.INCOMPLETE_FORMS_VIEW);
+                Intent intent = new Intent(getActivity().getApplicationContext(), FormsActivity.class);
+                intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, 1);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 
         incompleteFormsCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo start incomplete forms
+                MuzimaPreferences.setFormsActivityActionModePreference(getActivity().getApplicationContext(), Constants.FORMS_LAUNCH_MODE.COMPLETE_FORMS_VIEW);
+                Intent intent = new Intent(getActivity().getApplicationContext(), FormsActivity.class);
+                intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, 1);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
     }

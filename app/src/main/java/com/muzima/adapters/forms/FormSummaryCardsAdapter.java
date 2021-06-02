@@ -9,16 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.R;
-import com.muzima.model.FormsSummary;
+import com.muzima.model.SummaryCard;
 
 import java.util.List;
 
 public class FormSummaryCardsAdapter extends RecyclerView.Adapter<FormSummaryCardsAdapter.ViewHolder> {
 
-    private List<FormsSummary> summaryList;
+    private List<SummaryCard> summaryList;
     private OnCardClickedListener cardClickedListener;
 
-    public FormSummaryCardsAdapter(List<FormsSummary> summaryList, OnCardClickedListener cardClickedListener) {
+    public FormSummaryCardsAdapter(List<SummaryCard> summaryList, OnCardClickedListener cardClickedListener) {
         this.summaryList = summaryList;
         this.cardClickedListener = cardClickedListener;
     }
@@ -32,9 +32,9 @@ public class FormSummaryCardsAdapter extends RecyclerView.Adapter<FormSummaryCar
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        FormsSummary formsSummary = summaryList.get(position);
-        holder.titleTextView.setText(formsSummary.getTitle());
-        holder.countTextView.setText(String.valueOf(formsSummary.getCount()));
+        SummaryCard summaryCard = summaryList.get(position);
+        holder.titleTextView.setText(summaryCard.getTitle());
+        holder.countTextView.setText(String.valueOf(summaryCard.getCount()));
     }
 
     @Override
@@ -56,6 +56,8 @@ public class FormSummaryCardsAdapter extends RecyclerView.Adapter<FormSummaryCar
             titleTextView = itemView.findViewById(R.id.item_forms_title_text_view);
 
             this.cardClickedListener = cardClickedListener;
+
+            containerView.setOnClickListener(this);
         }
 
         @Override

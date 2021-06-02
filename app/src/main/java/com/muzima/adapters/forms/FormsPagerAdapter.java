@@ -76,7 +76,7 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
         Context localizedContext = languageUtil.getLocalizedContext(context);
         int launchMode = MuzimaPreferences.getFormsActivityActionModePreference(context.getApplicationContext());
         if (launchMode == Constants.FORMS_LAUNCH_MODE.COMPLETE_FORMS_VIEW){
-            pagers[0] = new PagerView(localizedContext.getResources().getString(R.string.title_form_data_incomplete), completeFormsListFragment);
+            pagers[0] = new PagerView(localizedContext.getResources().getString(R.string.title_form_data_complete), completeFormsListFragment);
         }else if (launchMode == Constants.FORMS_LAUNCH_MODE.INCOMPLETE_FORMS_VIEW){
             pagers[0] = new PagerView(localizedContext.getResources().getString(R.string.title_form_data_incomplete), incompleteFormsListFragment);
         }

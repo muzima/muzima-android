@@ -18,7 +18,8 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/dashboard_toolbar"
             android:elevation="12dp"
-            android:theme="@style/ToolbarTheme"
+            app:titleTextColor="?attr/toolbarTitleTextColor"
+            android:theme="@style/Base_ToolbarStyle"
             android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"/>
@@ -50,6 +51,8 @@
         android:layout_gravity="start|left"
         android:background="?attr/primaryBackgroundColor"
         app:headerLayout="@layout/dashboard_header"
+        app:itemTextColor="?attr/toolbarTitleTextColor"
+        app:itemIconTint="?attr/toolbarTitleTextColor"
         app:menu="@menu/dashboard_drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
