@@ -45,7 +45,7 @@ public class SplashActivity extends BaseFragmentActivity {
 
 //    private void handleLaunchNextActivity() {
 //        if (MuzimaPreferences.getOnBoardingCompletedPreference(getApplicationContext())){
-//            Intent intent = new Intent(getApplicationContext(), OnboardingFirstScreenActivity.class);
+//            Intent intent = new Intent(getApplicationContext(), OnboardScreenActivity.class);
 //            startActivity(intent);
 //            finish();
 //        }else {

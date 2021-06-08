@@ -9,101 +9,134 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:scrollbarSize="0dp"
-    style="@style/LoginActivityLayout">
+    style="@style/LoginActivityLayout"
+    android:scrollbarSize="0dp">
 
     <LinearLayout
         style="@style/LoginActivityLayout"
         android:orientation="vertical">
 
         <RelativeLayout
-            android:background="@drawable/curved_wallpaper"
             android:layout_width="match_parent"
-            android:layout_height="300dp">
+            android:layout_height="250dp"
+            android:background="@drawable/curved_wallpaper">
 
             <ImageView
-                android:layout_marginTop="12dp"
-                android:layout_centerHorizontal="true"
                 android:id="@+id/logo"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:contentDescription="@string/title_logo"
                 android:scaleType="fitXY"
-                android:src="@drawable/logo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:contentDescription="@string/title_logo" />
+                android:src="@drawable/logo" />
 
             <TextView
                 android:id="@+id/main_title_view"
-                android:textSize="40sp"
-                android:textColor="@color/primary_white"
-                android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:text="@string/app_name"
-                android:layout_below="@+id/logo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/logo"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textColor="@color/primary_white"
+                android:textSize="40sp" />
 
 
             <TextView
-                android:textSize="20sp"
-                android:textColor="@color/primary_white"
-                android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:text="@string/app_sub_title"
-                android:layout_below="@+id/main_title_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/main_title_view"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="@string/app_sub_title"
+                android:textColor="@color/primary_white"
+                android:textSize="20sp" />
 
         </RelativeLayout>
 
         <TextView
-            android:visibility="gone"
-            android:padding="22dp"
             android:id="@+id/title_login"
-            style="@style/LoginActivityHeader" />
+            style="@style/LoginActivityHeader"
+            android:padding="22dp"
+            android:visibility="gone" />
 
         <View
-            android:visibility="invisible"
-            style="@style/LoginActivityDivider.Style" />
+            style="@style/LoginActivityDivider.Style"
+            android:visibility="invisible" />
 
         <LinearLayout
+            style="@style/LoginInfoLayout"
             android:layout_marginStart="22dp"
-            android:layout_marginEnd="22dp"
-            style="@style/LoginInfoLayout">
+            android:layout_marginEnd="22dp">
 
             <EditText
-                android:background="@drawable/border_button_gray"
                 android:id="@+id/serverUrl"
                 style="@style/LoginInfoEditText"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/border_button_gray"
+                android:drawableEnd="@drawable/ic_action_dark_dashboard"
                 android:hint="@string/hint_server_url"
                 android:inputType="textUri"
                 android:nextFocusDown="@+id/username"
                 android:text="@string/default_server" />
 
-            <View
-                android:id="@+id/server_url_divider"
-                style="@style/LoginInfoLayoutDivider" />
-
-            <EditText
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="6dp"
                 android:background="@drawable/border_button_gray"
-                android:id="@+id/username"
-                style="@style/LoginInfoEditText"
-                android:drawableLeft="?attr/ic_action_arrow_person_dark"
-                android:hint="@string/general_username"
-                android:inputType="textShortMessage"
-                android:nextFocusDown="@+id/password"
-                android:text="" />
+                android:orientation="horizontal">
 
-            <View style="@style/LoginInfoLayoutDivider" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_action_arrow_person_dark" />
 
-            <EditText
+                <EditText
+                    android:id="@+id/username"
+                    style="@style/LoginInfoEditText"
+                    android:hint="@string/general_username"
+                    android:inputType="textShortMessage"
+                    android:nextFocusDown="@+id/password"
+                    android:text="" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="6dp"
                 android:background="@drawable/border_button_gray"
-                android:id="@+id/password"
-                android:drawableLeft="?attr/ic_action_lock_dark"
-                style="@style/LoginInfoEditText"
-                android:hint="@string/general_password"
-                android:inputType="textPassword"
-                android:nextFocusDown="@+id/login"
-                android:text="" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/ic_action_lock_dark" />
+
+                <EditText
+                    android:id="@+id/password"
+                    style="@style/LoginInfoEditText"
+                    android:hint="@string/general_password"
+                    android:inputType="textPassword"
+                    android:nextFocusDown="@+id/login"
+                    android:text="" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -117,12 +150,19 @@
 
         <FrameLayout style="@style/LoginButtonLayout">
 
-            <Button
-                android:layout_marginStart="22dp"
-                android:layout_marginEnd="22dp"
+            <TextView
                 android:id="@+id/login"
                 style="@style/LoginButton"
-                android:text="@string/general_login" />
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="22dp"
+                android:gravity="center"
+                android:paddingStart="12dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="10dp"
+                android:text="@string/general_login"
+                android:textAllCaps="true"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/authenticatingText"

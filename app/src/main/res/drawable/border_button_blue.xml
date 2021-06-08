@@ -8,7 +8,7 @@
         android:angle="270"/>
 
     <corners
-        android:radius="1.5dp"/>
+        android:radius="6dp"/>
 
 
     <stroke

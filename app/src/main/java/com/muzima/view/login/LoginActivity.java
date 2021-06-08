@@ -70,7 +70,7 @@ public class LoginActivity extends Activity {
     private EditText serverUrlText;
     private EditText usernameText;
     private EditText passwordText;
-    private Button loginButton;
+    private TextView loginButton;
     private CheckBox updatePassword;
     private TextView versionText;
     private BackgroundAuthenticationTask backgroundAuthenticationTask;

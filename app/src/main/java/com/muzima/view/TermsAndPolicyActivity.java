@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -11,10 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.muzima.R;
+import com.muzima.view.fragments.OnboardScreenActivity;
 import com.muzima.view.login.LoginActivity;
 
 public class TermsAndPolicyActivity extends AppCompatActivity {
@@ -28,8 +32,9 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
     private TextView licenseContentTextView;
     private TextView privacyPolicyContentTextView;
     private TextView termsAndConditionsContentTextView;
-    private Button acceptAllButton;
-    private Button nextButton;
+    private TextView acceptAllButton;
+    private TextView nextButton;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +56,36 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
         termsAndConditionsContentTextView = findViewById(R.id.terms_and_conditions_container_text_view);
         acceptAllButton = findViewById(R.id.policy_accept_all_button);
         nextButton = findViewById(R.id.policy_next_button);
+        toolbar = findViewById(R.id.policy_and_terms_toolbar);
+
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        privacyPolicyCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                acceptAllButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        termsAndConditionsCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                acceptAllButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        licenseCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                acceptAllButton.setVisibility(View.VISIBLE);
+            }
+        });
+
 
         licenseExpandView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +138,7 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
                 licenseCheckBox.setChecked(true);
                 privacyPolicyCheckbox.setChecked(true);
                 termsAndConditionsCheckbox.setChecked(true);
+                acceptAllButton.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -116,6 +152,16 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            Intent intent = new Intent(getApplicationContext(), OnboardScreenActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return true;
     }
 
     private void navigateToNextActivity() {

@@ -28,7 +28,7 @@ import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.fragments.OnboardingFirstScreenActivity;
+import com.muzima.view.fragments.OnboardScreenActivity;
 
 public class BaseFragmentActivity extends AppCompatActivity {
 
@@ -67,7 +67,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
         boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
         if (!MuzimaPreferences.getOnBoardingCompletedPreference(getApplicationContext())) {
-            Intent intent = new Intent(this, OnboardingFirstScreenActivity.class);
+            Intent intent = new Intent(this, OnboardScreenActivity.class);
             startActivity(intent);
             finish();
         } else if (!disclaimerAccepted) {

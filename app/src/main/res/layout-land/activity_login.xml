@@ -88,10 +88,16 @@
 
         <FrameLayout style="@style/LoginButtonLayout">
 
-            <Button
+            <TextView
                 android:layout_marginStart="22dp"
                 android:layout_marginEnd="22dp"
                 android:id="@+id/login"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:gravity="center"
+                android:textSize="16sp"
                 style="@style/LoginButton"
                 android:text="@string/general_login" />
 

@@ -717,6 +717,7 @@
     <style name="LoginInfoQuestion">
         <item name="android:layout_margin">6dp</item>
         <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
         <item name="android:textSize">20sp</item>
     </style>
 

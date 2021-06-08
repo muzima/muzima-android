@@ -492,9 +492,7 @@
                 android:theme="@style/DialogNoTitleBar"
                 android:parentActivityName=".view.patients.PatientSummaryActivity"
                 android:noHistory="true"/>
-        <activity android:name=".view.fragments.OnboardingThirdScreenActivity" />
-        <activity android:name=".view.fragments.OnboardingFirstScreenActivity" />
-        <activity android:name=".view.fragments.OnboardingSecondScreenActivity" />
+        <activity android:name=".view.fragments.OnboardScreenActivity" />
         <activity android:name=".view.TermsAndPolicyActivity" />
         <activity android:name=".view.MainDashboardActivity" />
         <activity android:name=".view.ClientSummaryActivity" />
