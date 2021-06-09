@@ -43,8 +43,8 @@ import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener, KeyboardWatcher.OnKeyboardToggleListener  {
-    private Button activeNextButton;
-    private Button inactiveNextButton;
+    private TextView activeNextButton;
+    private TextView inactiveNextButton;
     private CheckedLinearLayout advancedSetupLayout;
     private LinearLayout nextButtonLayout;
     private ListView configsListView;

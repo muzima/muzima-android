@@ -129,7 +129,6 @@ public class LoginActivity extends Activity {
 
     private void removeServerUrlAsInput() {
         serverUrlText.setVisibility(View.GONE);
-        findViewById(R.id.server_url_divider).setVisibility(View.GONE);
     }
 
     private void useSavedServerUrl(String serverUrl) {
