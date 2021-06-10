@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +62,10 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private int wizardLevel = 0;
     private boolean wizardcompletedSuccessfully = true;
     private GuidedSetupActionLogAdapter setupActionLogAdapter;
+    private ProgressBar mainProgressbar;
+    private ListView setupLogsListView;
+    private TextView initialSetupStatusTextView;
+    private ProgressBar secondaryProgressBar;
     private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guided_setup_wizard);
         Button finishSetupButton = findViewById(R.id.finish);
+        mainProgressbar = findViewById(R.id.setup_progress_bar);
+        secondaryProgressBar = findViewById(R.id.secondary_progress_bar);
+        initialSetupStatusTextView = findViewById(R.id.setup_progress_status_message);
 
         finishSetupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +87,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
         });
         setupActionLogAdapter = new GuidedSetupActionLogAdapter(this, R.id.setup_logs_list);
-        ListView setupLogsListView = findViewById(R.id.setup_logs_list);
+        setupLogsListView = findViewById(R.id.setup_logs_list);
         setupLogsListView.setAdapter(setupActionLogAdapter);
+        setupLogsListView.setVisibility(View.GONE);
 
         logEvent("VIEW_GUIDED_SETUP_METHOD");
         initiateSetupConfiguration();
@@ -754,6 +763,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private synchronized void incrementWizardStep() {
+        mainProgressbar.setProgress(wizardLevel);
         wizardLevel++;
     }
 
@@ -767,10 +777,10 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 finalResult.setText(getString(R.string.info_setup_complete_fail));
                 finalResult.setTextColor(Color.RED);
             }
-            LinearLayout progressBarLayout = findViewById(R.id.progress_bar_container);
-            progressBarLayout.setVisibility(View.GONE);
-            LinearLayout nextButtonLayout = findViewById(R.id.next_button_layout);
-            nextButtonLayout.setVisibility(View.VISIBLE);
+            mainProgressbar.setProgress(10);
+            secondaryProgressBar.setVisibility(View.GONE);
+            setupLogsListView.setVisibility(View.VISIBLE);
+            initialSetupStatusTextView.setText(getResources().getString(R.string.general_setup_completed_message));
         }
     }
 

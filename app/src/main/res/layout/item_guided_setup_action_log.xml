@@ -30,8 +30,8 @@
                 android:id="@+id/item_guided_setup_status_image_view"
                 android:src="@drawable/ic_action_tick"
                 android:layout_alignParentStart="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="24dp"
+                android:layout_height="24dp"/>
 
             <TextView
                 android:id="@+id/setup_action_result"

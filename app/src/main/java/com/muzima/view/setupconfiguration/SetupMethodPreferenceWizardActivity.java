@@ -21,7 +21,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.azimolabs.keyboardwatcher.KeyboardWatcher;
 import com.muzima.MuzimaApplication;
@@ -34,8 +39,6 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.CheckedLinearLayout;
-import com.muzima.view.cohort.CohortWizardActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
 import java.io.IOException;

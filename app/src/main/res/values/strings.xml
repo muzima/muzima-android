@@ -859,5 +859,7 @@
     <string name="general_add_single_element">Add single element</string>
     <string name="info_no_client_available">No clients available remote search or register new clients.</string>
     <string name="general_hello_greeting">Hello</string>
+    <string name="initial_setup_running_please_wait">Initial setup running. Please wait...</string>
+    <string name="general_setup_completed_message">Setup complete</string>
 
 </resources>
