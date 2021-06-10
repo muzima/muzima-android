@@ -745,7 +745,7 @@
     <string name="title_form_template_downloaded">Downloaded Form Templates</string>
     <string name="title_general_notifications">General Notifications</string>
     <string name="title_gps_location">GPS Location</string>
-    <string name="title_guided_setup">Guided setup (Recommended)</string>
+    <string name="title_guided_setup">Guided setup</string>
     <string name="title_guided_setup_help_video">Guided initial setup</string>
     <string name="title_guided_setup_progress">Setup Progress</string>
     <string name="title_guided_setup_wizard">Guided Setup Wizard</string>

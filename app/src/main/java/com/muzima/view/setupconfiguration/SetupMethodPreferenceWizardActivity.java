@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
+
 import com.azimolabs.keyboardwatcher.KeyboardWatcher;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -38,19 +39,19 @@ import com.muzima.view.cohort.CohortWizardActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
-public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener, KeyboardWatcher.OnKeyboardToggleListener  {
-    private TextView activeNextButton;
-    private TextView inactiveNextButton;
-    private CheckedLinearLayout advancedSetupLayout;
-    private LinearLayout nextButtonLayout;
+public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener, KeyboardWatcher.OnKeyboardToggleListener {
+    private Button activeNextButton;
+    private Button inactiveNextButton;
+    private View nextButtonLayout;
     private ListView configsListView;
     private MuzimaProgressDialog progressDialog;
     private boolean isProcessDialogOn = false;
-    private PowerManager.WakeLock wakeLock = null ;
+    private PowerManager.WakeLock wakeLock = null;
     private KeyboardWatcher keyboardWatcher;
     private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
@@ -64,11 +65,8 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
 
         inactiveNextButton = findViewById(R.id.inactive_next);
 
-        advancedSetupLayout = findViewById(R.id.advanced_setup_layout);
-        advancedSetupLayout.setOnClickListener(advancedSetupClickListener());
-
         final SetupConfigurationAdapter setupConfigurationAdapter = new SetupConfigurationAdapter(
-                this,R.layout.item_setup_configs_list,
+                this, R.layout.item_setup_configs_list,
                 ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController());
         setupConfigurationAdapter.setBackgroundListQueryTaskListener(this);
 
@@ -79,8 +77,8 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
 
         //set clearing ability for the imageButton under Guided setup
         ImageButton imageButton = findViewById(R.id.cancel_filter_txt);
-        imageButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 configSetupFilter.setText("");
             }
         });
@@ -89,11 +87,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         activeNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(advancedSetupLayout.isChecked()) {
-                    navigateToCohortsWizardActivity();
-                } else {
-                    navigateToGuidedWizardActivity(setupConfigurationAdapter);
-                }
+                navigateToGuidedWizardActivity(setupConfigurationAdapter);
             }
         });
 
@@ -130,71 +124,37 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
 
     @Override
     public void onKeyboardClosed() {
-        advancedSetupLayout.setVisibility(View.VISIBLE);
         nextButtonLayout.setVisibility(View.VISIBLE);
 
     }
 
-    private void hideKeyboard(){
+    private void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             view.clearFocus();
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
-    private View.OnClickListener advancedSetupClickListener(){
-
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activateNextButton();
-                deselectGuidedSetupConfigsView();
-                selectAdvancedSetupView();
-                hideKeyboard();
-            }
-        };
-    }
-
-    private AdapterView.OnItemClickListener configsListViewSelectedListener(final SetupConfigurationAdapter setupConfigurationAdapter){
+    private AdapterView.OnItemClickListener configsListViewSelectedListener(final SetupConfigurationAdapter setupConfigurationAdapter) {
 
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 activateNextButton();
-                deselectAdvancedSetupView();
                 hideKeyboard();
                 setupConfigurationAdapter.onListItemClick(position);
             }
         };
     }
 
-    private void selectAdvancedSetupView(){
-        advancedSetupLayout.setChecked(true);
-    }
-
-    private void deselectAdvancedSetupView(){
-        advancedSetupLayout.setChecked(false);
-    }
-
-    private void deselectGuidedSetupConfigsView(){
-        configsListView.clearChoices();
-        configsListView.requestLayout();
-    }
-
-    private void activateNextButton(){
+    private void activateNextButton() {
         inactiveNextButton.setVisibility(View.GONE);
         activeNextButton.setVisibility(View.VISIBLE);
     }
 
-    private void navigateToCohortsWizardActivity() {
-            Intent intent = new Intent(getApplicationContext(), CohortWizardActivity.class);
-            startActivity(intent);
-            finish();
-    }
-
-    private void navigateToGuidedWizardActivity(final SetupConfigurationAdapter setupConfigurationAdapter){
+    private void navigateToGuidedWizardActivity(final SetupConfigurationAdapter setupConfigurationAdapter) {
         turnOnProgressDialog(getString(R.string.info_setup_configuration_wizard_prepare));
         new AsyncTask<Void, Void, int[]>() {
 
@@ -238,19 +198,20 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         }.execute();
     }
 
-    private int[] downloadSetupConfiguration(SetupConfigurationAdapter setupConfigurationAdapter){
+    private int[] downloadSetupConfiguration(SetupConfigurationAdapter setupConfigurationAdapter) {
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
         String selectedConfigUuid = setupConfigurationAdapter.getSelectedConfigurationUuid();
         return muzimaSyncService.downloadSetupConfigurationTemplate(selectedConfigUuid);
     }
+
     private void keepPhoneAwake(boolean awakeState) {
-        Log.d(getClass().getSimpleName(), "Launching wake state: " + awakeState) ;
+        Log.d(getClass().getSimpleName(), "Launching wake state: " + awakeState);
         if (awakeState) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
+            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, UUID.randomUUID().toString());
             wakeLock.acquire();
         } else {
-            if(wakeLock != null) {
+            if (wakeLock != null) {
                 wakeLock.release();
             }
         }
@@ -286,18 +247,20 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
     }
 
     @Override
-    public void onQueryTaskCancelled(){}
+    public void onQueryTaskCancelled() {
+    }
 
     @Override
-    public void onQueryTaskCancelled(Object erroeDefinition){}
+    public void onQueryTaskCancelled(Object erroeDefinition) {
+    }
 
-    private void turnOnProgressDialog(String message){
+    private void turnOnProgressDialog(String message) {
         progressDialog.show(message);
         isProcessDialogOn = true;
     }
 
-    private void dismissProgressDialog(){
-        if (progressDialog != null){
+    private void dismissProgressDialog() {
+        if (progressDialog != null) {
             progressDialog.dismiss();
             isProcessDialogOn = false;
         }
