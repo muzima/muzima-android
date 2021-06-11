@@ -1,17 +1,22 @@
 package com.muzima.adapters.patients;
 
+import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.utils.StringUtils;
@@ -21,12 +26,13 @@ import java.util.List;
 import java.util.Locale;
 
 public class AllPatientsAdapter extends RecyclerView.Adapter<AllPatientsAdapter.ViewHolder> {
-
+    private Context context;
     private List<Patient> patientList;
     private OnPatientClickedListener patientClickedListener;
     private MuzimaGPSLocation currentLocation;
 
-    public AllPatientsAdapter(List<Patient> patientList, OnPatientClickedListener patientClickedListener, MuzimaGPSLocation currentLocation) {
+    public AllPatientsAdapter(Context context, List<Patient> patientList, OnPatientClickedListener patientClickedListener, MuzimaGPSLocation currentLocation) {
+        this.context = context;
         this.patientList = patientList;
         this.patientClickedListener = patientClickedListener;
         this.currentLocation = currentLocation;
@@ -42,6 +48,14 @@ public class AllPatientsAdapter extends RecyclerView.Adapter<AllPatientsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Patient patient = patientList.get(position);
+        PatientTag[] tags = patient.getTags();
+        String[] tagsArray = new String[tags.length];
+        for (int i = 0; i < tags.length; i++) {
+            tagsArray[i] = tags[i].getName();
+        }
+        PatientTagsListAdapter tagsAdapter = new PatientTagsListAdapter(context, R.layout.item_tags_list, ((MuzimaApplication) context.getApplicationContext()).getPatientController());
+        holder.tagListView.setAdapter(tagsAdapter);
+        if (tagsArray.length == 0) holder.tagListView.setVisibility(View.GONE);
         holder.patientNameTextView.setText(patient.getDisplayName());
         holder.identifierTextView.setText(patient.getIdentifier());
         holder.dobTextView.setText(new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
@@ -77,6 +91,7 @@ public class AllPatientsAdapter extends RecyclerView.Adapter<AllPatientsAdapter.
 
         private final View container;
         private final ImageView genderImageView;
+        private final ListView tagListView;
         private final TextView patientNameTextView;
         private final TextView dobTextView;
         private final TextView identifierTextView;
@@ -90,6 +105,7 @@ public class AllPatientsAdapter extends RecyclerView.Adapter<AllPatientsAdapter.
             genderImageView = itemView.findViewById(R.id.genderImg);
             patientNameTextView = itemView.findViewById(R.id.name);
             dobTextView = itemView.findViewById(R.id.dateOfBirth);
+            tagListView = itemView.findViewById(R.id.tag_list_view);
             identifierTextView = itemView.findViewById(R.id.identifier);
             distanceToAddressTextView = itemView.findViewById(R.id.distanceToClientAddress);
             this.patientClickedListener = patientClickedListener;

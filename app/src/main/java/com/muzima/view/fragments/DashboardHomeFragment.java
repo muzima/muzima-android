@@ -136,7 +136,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         incompleteFormsView = view.findViewById(R.id.dashboard_forms_incomplete_forms_view);
         progressBar = view.findViewById(R.id.patient_loader_progress_bar);
         providerNameTextView = view.findViewById(R.id.dashboard_home_welcome_message_text_view);
-        allPatientsAdapter = new AllPatientsAdapter(patients, this, getCurrentGPSLocation());
+        allPatientsAdapter = new AllPatientsAdapter(getActivity().getApplicationContext(), patients, this, getCurrentGPSLocation());
         listView.setAdapter(allPatientsAdapter);
         listView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         listView.setVisibility(View.GONE);
