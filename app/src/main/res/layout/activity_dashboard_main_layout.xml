@@ -27,20 +27,37 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/main_dashboard_view_pager"
             android:layout_alignParentTop="true"
+            android:layout_above="@+id/bottom_nav_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/main_dashboard_bottom_navigation"
+        <LinearLayout
+            android:id="@+id/bottom_nav_container"
+            android:orientation="vertical"
             android:layout_alignParentBottom="true"
-            android:elevation="12dp"
-            android:background="?attr/primaryBackgroundColor"
-            app:itemTextAppearanceActive="@style/bottom_nav_active_text"
-            app:itemTextAppearanceInactive="@style/bottom_nav_inactive_text"
-            app:itemIconTint="?attr/bottom_navigation_selected_icon"
-            app:menu="@menu/dashboard_bottom_menu"
+            android:elevation="14dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+
+            <View
+                android:background="?attr/primaryBackgroundColor"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"/>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/main_dashboard_bottom_navigation"
+                android:layout_marginTop="6dp"
+                android:background="?attr/primaryBackgroundColor"
+                app:itemTextAppearanceActive="@style/bottom_nav_active_text"
+                app:itemTextAppearanceInactive="@style/bottom_nav_inactive_text"
+                app:itemIconTint="?attr/bottom_navigation_selected_icon"
+                app:menu="@menu/dashboard_bottom_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 

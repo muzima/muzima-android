@@ -49,17 +49,21 @@ public class AllPatientsAdapter extends RecyclerView.Adapter<AllPatientsAdapter.
         holder.distanceToAddressTextView.setText(getDistanceToClientAddress(patient));
     }
 
-    private String getDistanceToClientAddress(Patient patient){
-        PersonAddress personAddress = patient.getPreferredAddress();
-        if (currentLocation != null && personAddress != null && !StringUtils.isEmpty(personAddress.getLatitude()) && !StringUtils.isEmpty(personAddress.getLongitude())) {
-            double startLatitude = Double.parseDouble(currentLocation.getLatitude());
-            double startLongitude = Double.parseDouble(currentLocation.getLongitude());
-            double endLatitude = Double.parseDouble(personAddress.getLatitude());
-            double endLongitude= Double.parseDouble(personAddress.getLongitude());
+    private String getDistanceToClientAddress(Patient patient) {
+        try {
+            PersonAddress personAddress = patient.getPreferredAddress();
+            if (currentLocation != null && personAddress != null && !StringUtils.isEmpty(personAddress.getLatitude()) && !StringUtils.isEmpty(personAddress.getLongitude())) {
+                double startLatitude = Double.parseDouble(currentLocation.getLatitude());
+                double startLongitude = Double.parseDouble(currentLocation.getLongitude());
+                double endLatitude = Double.parseDouble(personAddress.getLatitude());
+                double endLongitude = Double.parseDouble(personAddress.getLongitude());
 
-            float[] results = new float[1];
-            Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
-            return String.format("%.02f",results[0]/1000) + " km";
+                float[] results = new float[1];
+                Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
+                return String.format("%.02f", results[0] / 1000) + " km";
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
         return "";
     }

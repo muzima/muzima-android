@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="42dp"
+    android:paddingBottom="2dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
@@ -16,7 +16,8 @@
 
         <LinearLayout
             android:background="?attr/primaryBackgroundColor"
-            android:elevation="12dp"
+            android:elevation="8dp"
+            android:paddingBottom="6dp"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="vertical">
@@ -30,7 +31,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="4dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="6dp"
+                android:layout_marginTop="12dp"
                 android:layout_width="match_parent"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="21sp" />
@@ -41,15 +44,16 @@
                 android:id="@+id/dashboard_main_patient_search_view"
                 android:background="@drawable/border_button_gray"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
-                android:padding="4dp">
+                android:padding="12dp">
 
                 <TextView
                     android:background="?attr/primaryBackgroundColor"
                     android:text="@string/general_search_patient"
+                    android:textSize="14sp"
                     android:textColor="?attr/primaryTextColor"
                     android:id="@+id/dashboard_forms_search_edit_text"
                     android:layout_centerVertical="true"
@@ -69,7 +73,8 @@
             <RelativeLayout
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_width="match_parent">
 
@@ -81,7 +86,7 @@
                     android:text="@string/general_or_search_by"
                     android:textColor="?attr/primaryTextColor"
                     android:textAllCaps="true"
-                    android:textSize="12sp" />
+                    android:textSize="10sp" />
 
                 <LinearLayout
                     android:layout_alignParentEnd="true"
@@ -91,42 +96,42 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:background="@drawable/border_button_gray"
+                        android:background="@drawable/border_button_sharp_gray"
                         android:id="@+id/search_barcode_view"
-                        android:layout_height="26dp"
+                        android:layout_height="32dp"
+                        android:layout_width="32dp"
                         android:layout_marginEnd="6dp"
                         android:layout_marginStart="6dp"
-                        android:layout_width="26dp"
-                        android:padding="2dp"
+                        android:padding="4dp"
                         android:src="@drawable/barcode_icon" />
 
                     <ImageView
-                        android:background="@drawable/border_button_gray"
+                        android:background="@drawable/border_button_sharp_gray"
                         android:id="@+id/search_fingerprint"
-                        android:layout_height="26dp"
+                        android:layout_height="32dp"
+                        android:layout_width="32dp"
                         android:layout_marginEnd="6dp"
                         android:layout_marginStart="6dp"
-                        android:layout_width="26dp"
                         android:padding="4dp"
                         android:src="@drawable/fingerprint_white" />
 
                     <ImageView
-                        android:background="@drawable/border_button_gray"
+                        android:background="@drawable/border_button_sharp_gray"
                         android:id="@+id/search_server_view"
-                        android:layout_height="26dp"
+                        android:layout_height="32dp"
+                        android:layout_width="32dp"
                         android:layout_marginEnd="6dp"
                         android:layout_marginStart="6dp"
-                        android:layout_width="26dp"
                         android:padding="4dp"
                         android:src="@drawable/firebase" />
 
                     <ImageView
-                        android:background="@drawable/border_button_gray"
+                        android:background="@drawable/border_button_sharp_gray"
                         android:id="@+id/search_smart_card_view"
-                        android:layout_height="26dp"
+                        android:layout_height="32dp"
+                        android:layout_width="32dp"
                         android:layout_marginEnd="6dp"
                         android:layout_marginStart="6dp"
-                        android:layout_width="26dp"
                         android:padding="4dp"
                         android:src="@drawable/smartcard" />
 
@@ -140,12 +145,13 @@
         <LinearLayout
             android:id="@+id/favourite_list_container"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:orientation="horizontal">
 
             <TextView
+                android:layout_marginStart="4dp"
                 android:textColor="?attr/primaryTextColor"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -155,12 +161,17 @@
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginStart="6dp"
                 android:src="?attr/ic_action_arrow_down_dark" />
 
         </LinearLayout>
 
         <FrameLayout
             android:id="@+id/patient_lists_layout"
+            android:paddingStart="18dp"
+            android:paddingEnd="12dp"
+            android:layout_marginTop="8dp"
             android:layout_height="match_parent"
             android:layout_width="match_parent">
 
@@ -240,9 +251,10 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="26dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:src="?attr/icSearch" />
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="6dp"
+        android:backgroundTint="@color/fab_tint_color"
+        android:src="?attr/addPatient" />
 
 </RelativeLayout>
 

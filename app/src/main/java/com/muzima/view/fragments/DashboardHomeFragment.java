@@ -140,9 +140,6 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         listView.setAdapter(allPatientsAdapter);
         listView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         listView.setVisibility(View.GONE);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity().getApplicationContext(),DividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider_item_view));
-        listView.addItemDecoration(dividerItemDecoration);
 
         incompleteFormsView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,7 +182,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
             }
         });
 
-        providerNameTextView.setText(String.format(Locale.getDefault(), "%s %s",
+        providerNameTextView.setText(String.format(Locale.getDefault(), "%s, %s",
                 getResources().getString(R.string.general_hello_greeting),
                 ((MuzimaApplication) getActivity().getApplicationContext()).getAuthenticatedUser().getUsername()));
 

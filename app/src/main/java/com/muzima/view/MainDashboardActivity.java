@@ -62,7 +62,6 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         themeUtils.onCreate(MainDashboardActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_main_layout);
-        credentials = new Credentials(this);
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), false);
         initializeResources();
     }
@@ -107,6 +106,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         navigationView.setNavigationItemSelectedListener(this);
         adapter = new MainDashboardAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+        credentials = new Credentials(this);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

@@ -16,6 +16,7 @@
     <color name="hint_text_grey">#888888</color>
     <color name="primary_black">#303030</color>
     <color name="theme_color">#333333</color>
+    <color name="fab_tint_color">#0D57AF</color>
     <color name="theme_color_light">#eaeaea</color>
     <color name="theme_color_background">@android:color/white</color>
     <color name="secondary_text">#888888</color>
@@ -56,5 +57,6 @@
     <color name="sync_text_background">#303030</color>
     <color name="sync_text_background_light">#dddddd</color>
     <color name="default_black">#000000</color>
+    <color name="white_smoke">#A1A0A0</color>
 
 </resources>
