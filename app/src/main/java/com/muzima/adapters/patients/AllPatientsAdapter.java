@@ -2,7 +2,6 @@ package com.muzima.adapters.patients;
 
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.model.location.MuzimaGPSLocation;
+import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
 
 import java.text.SimpleDateFormat;
@@ -58,8 +58,9 @@ public class AllPatientsAdapter extends RecyclerView.Adapter<AllPatientsAdapter.
         if (tagsArray.length == 0) holder.tagListView.setVisibility(View.GONE);
         holder.patientNameTextView.setText(patient.getDisplayName());
         holder.identifierTextView.setText(patient.getIdentifier());
-        holder.dobTextView.setText(new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
-                .format(patient.getBirthdate()));
+        holder.ageTextView.setText(String.format(Locale.getDefault(), "%s yrs", DateUtils.calculateAge(patient.getBirthdate())));
+        holder.dobTextView.setText(String.format(Locale.getDefault(), "%s %s", "DOB:", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
+                .format(patient.getBirthdate())));
         holder.distanceToAddressTextView.setText(getDistanceToClientAddress(patient));
     }
 
@@ -96,6 +97,7 @@ public class AllPatientsAdapter extends RecyclerView.Adapter<AllPatientsAdapter.
         private final TextView dobTextView;
         private final TextView identifierTextView;
         private final TextView distanceToAddressTextView;
+        private final TextView ageTextView;
         private final OnPatientClickedListener patientClickedListener;
 
         public ViewHolder(@NonNull View itemView, OnPatientClickedListener patientClickedListener) {
@@ -107,9 +109,9 @@ public class AllPatientsAdapter extends RecyclerView.Adapter<AllPatientsAdapter.
             dobTextView = itemView.findViewById(R.id.dateOfBirth);
             tagListView = itemView.findViewById(R.id.tag_list_view);
             identifierTextView = itemView.findViewById(R.id.identifier);
+            ageTextView = itemView.findViewById(R.id.age_text_label);
             distanceToAddressTextView = itemView.findViewById(R.id.distanceToClientAddress);
             this.patientClickedListener = patientClickedListener;
-
             container.setOnClickListener(this);
         }
 

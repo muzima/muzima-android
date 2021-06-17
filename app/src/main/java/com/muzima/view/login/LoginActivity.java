@@ -70,11 +70,11 @@ public class LoginActivity extends Activity {
     private EditText serverUrlText;
     private EditText usernameText;
     private EditText passwordText;
-    private TextView loginButton;
+    private Button loginButton;
     private CheckBox updatePassword;
     private TextView versionText;
     private BackgroundAuthenticationTask backgroundAuthenticationTask;
-    private TextView authenticatingText;
+    private Button authenticatingText;
     private TextView helpText;
 
     private ValueAnimator flipFromLoginToAuthAnimator;

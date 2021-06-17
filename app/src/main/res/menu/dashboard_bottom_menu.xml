@@ -8,9 +8,9 @@
     <item
         android:id="@+id/main_dashboard_cohorts_menu"
         android:title="@string/general_cohorts"
-        android:icon="@drawable/ic_action_cohorts"/>
+        android:icon="@drawable/groups_white_outlined"/>
     <item
         android:id="@+id/main_dashboard_forms_menu"
         android:title="@string/general_forms"
-        android:icon="@drawable/ic_action_form"/>
+        android:icon="@drawable/files_outlined"/>
 </menu>

@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="190dp"
@@ -109,29 +108,20 @@
             android:layout_marginBottom="?attr/actionBarSize"
             android:paddingTop="12dp">
 
-            <TextView
+            <Button
                 android:id="@+id/on_boarding_skip_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/border_button_gray"
-                android:paddingStart="18dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="18dp"
-                android:paddingBottom="8dp"
                 android:text="@string/general_skip"
                 android:textAllCaps="true" />
 
-            <TextView
+            <Button
                 android:id="@+id/on_boarding_next_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/border_button_blue"
-                android:paddingStart="18dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="18dp"
-                android:paddingBottom="8dp"
+                android:backgroundTint="@color/primary_blue"
                 android:text="@string/general_next"
                 android:textAllCaps="true" />
 

@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:id="@+id/dashboard_forms_incomplete_forms_view"
-            android:layout_width="180dp"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/incomplete_forms_gradient"
@@ -42,7 +42,7 @@
 
         <LinearLayout
             android:id="@+id/dashboard_forms_complete_forms_view"
-            android:layout_width="180dp"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"

@@ -61,7 +61,7 @@ public class ThemeUtils {
         }
     }
 
-    private static boolean getPreferenceLightMode(Context context) {
+    public static boolean getPreferenceLightMode(Context context) {
         //check if night mode enabled or not
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String lightModeKey = context.getResources().getString(R.string.preference_light_mode);

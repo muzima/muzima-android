@@ -608,10 +608,8 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">18sp</item>
         <item name="android:singleLine">true</item>
         <item name="android:padding">4dp</item>
-        <item name="android:background">@drawable/rounded_corner_loginbutton</item>
     </style>
 
     <style name="HelpContent">

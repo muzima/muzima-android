@@ -1,0 +1,255 @@
+<RelativeLayout
+    android:background="?attr/primaryBackgroundColor"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/dashboard_home_fragment_container"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:background="?attr/primaryBackgroundColor"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:background="?attr/primaryBackgroundColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:background="?attr/primaryBackgroundColor"
+                android:paddingBottom="6dp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dashboard_home_welcome_message_text_view"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginStart="8dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="6dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="24sp" />
+
+                <include layout="@layout/forms_top_bar_view" />
+
+                <RelativeLayout
+                    android:id="@+id/dashboard_main_patient_search_view"
+                    android:background="@drawable/border_button_gray"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_width="match_parent"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:background="?attr/primaryBackgroundColor"
+                        android:text="@string/general_search_patient"
+                        android:textSize="14sp"
+                        android:textColor="?attr/primaryTextColor"
+                        android:id="@+id/dashboard_forms_search_edit_text"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:padding="4dp" />
+
+                    <ImageView
+                        android:layout_marginEnd="4dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:src="?attr/icSearch" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent">
+
+                    <TextView
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="@string/general_or_search_by"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textAllCaps="true"
+                        android:textSize="10sp" />
+
+                    <LinearLayout
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:background="@drawable/border_button_sharp_gray"
+                            android:id="@+id/search_barcode_view"
+                            android:layout_height="32dp"
+                            android:layout_width="32dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginStart="6dp"
+                            android:padding="4dp"
+                            android:src="@drawable/barcode_icon" />
+
+                        <ImageView
+                            android:background="@drawable/border_button_sharp_gray"
+                            android:id="@+id/search_fingerprint"
+                            android:layout_height="32dp"
+                            android:layout_width="32dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginStart="6dp"
+                            android:padding="4dp"
+                            android:src="@drawable/fingerprint_white" />
+
+                        <ImageView
+                            android:background="@drawable/border_button_sharp_gray"
+                            android:id="@+id/search_server_view"
+                            android:layout_height="32dp"
+                            android:layout_width="32dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginStart="6dp"
+                            android:padding="4dp"
+                            android:src="@drawable/firebase" />
+
+                        <ImageView
+                            android:background="@drawable/border_button_sharp_gray"
+                            android:id="@+id/search_smart_card_view"
+                            android:layout_height="32dp"
+                            android:layout_width="32dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginStart="6dp"
+                            android:padding="4dp"
+                            android:src="@drawable/smartcard" />
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:id="@+id/favourite_list_container"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:paddingTop="6dp"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/dashboard_home_filter_text_view"
+                android:layout_marginStart="4dp"
+                android:maxLength="25"
+                android:ellipsize="end"
+                android:textSize="18sp"
+                android:textColor="?attr/primaryTextColor"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/general_filter_by" />
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:layout_height="32dp"
+                android:layout_width="32dp"
+                android:paddingBottom="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
+                android:src="?attr/ic_action_arrow_down_dark" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/patient_lists_layout"
+            android:paddingStart="12dp"
+            android:paddingEnd="8dp"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    style="@style/MuzimaSelectableListView"
+                    android:id="@+id/list"/>
+
+                <ProgressBar
+                    android:id="@+id/patient_loader_progress_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:id="@+id/no_data_layout"
+                    android:layout_below="@id/list"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:paddingRight="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:id="@+id/no_data_msg"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textSize="25sp"/>
+
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:id="@+id/no_data_tip"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textSize="20sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:gravity="center_horizontal"
+                    android:id="@+id/search_server_layout"
+                    android:layout_below="@id/no_data_layout"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="invisible">
+
+                    <LinearLayout
+                        style="@style/DividerLine"
+                        android:layout_marginTop="30dp" />
+
+                    <Button
+                        style="@style/Button.Next"
+                        android:drawableLeft="?attr/icSearch"
+                        android:gravity="center"
+                        android:id="@+id/search_server_btn"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:text="@string/title_search_server" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <include layout="@layout/progress_bar" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

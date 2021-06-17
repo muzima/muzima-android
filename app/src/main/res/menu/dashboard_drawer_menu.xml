@@ -5,6 +5,9 @@
     <item
         android:id="@+id/drawer_menu_home"
         android:title="@string/general_home"
+        android:enabled="true"
+        android:checked="true"
+        android:checkable="true"
         android:icon="?attr/ic_action_home_dark"/>
 
     <item

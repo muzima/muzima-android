@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_alignParentStart="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/item_cohort_name_text_view"
+            android:textColor="?attr/primaryTextColor"
+            android:text="Cohort title"
+            android:textSize="14sp"
+            android:layout_marginBottom="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/item_cohort_description_text_view"
+            android:layout_marginTop="8dp"
+            android:textSize="12sp"
+            android:textColor="?attr/primaryTextColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/metadata_container"
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/item_cohort_status_image_view"
+            android:layout_gravity="end"
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+
+        <TextView
+            android:id="@+id/item_cohort_clients_count_text_view"
+            android:textColor="?attr/primaryTextColor"
+            android:layout_marginTop="6dp"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/metadata_container"
+        android:layout_width="match_parent"
+        android:background="@color/divider_color"
+        android:layout_height="2dp"/>
+
+</RelativeLayout>

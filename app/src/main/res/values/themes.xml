@@ -13,7 +13,7 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme.NoActionBar" parent="@style/Theme.AppCompat.NoActionBar">
+    <style name="AppBaseTheme.NoActionBar" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <item name="android:windowBackground">@color/primary_black</item>
         <item name="android:textColorSecondary">@color/primary_white</item>
         <item name="android:windowActionBar">false</item>
@@ -21,6 +21,7 @@
         <item name="colorAccent">@color/primary_blue</item>
         <item name="colorPrimary">@color/primary_black</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
+        <item name="bottomSheetBackground">@color/dark_bottom_sheet_background</item>
         <item name="toolbarTitleTextColor">@color/primary_white</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
         <item name="primaryTextColor">@color/primary_white</item>
@@ -36,7 +37,7 @@
         <item name="listMultiSelectorBlue">@drawable/list_multi_selector_blue</item>
         <item name="loginLayoutBackground">@drawable/login_layout_background</item>
         <item name="icLabels">@drawable/ic_labels</item>
-        <item name="icRefresh">@drawable/ic_refresh</item>
+        <item name="icRefresh">@drawable/ic_refresh_dark</item>
         <item name="icActionUpload">@drawable/ic_action_upload</item>
         <item name="dataTipColor">#e8e8e8</item>
         <item name="icDiscard">@drawable/ic_action_discard</item>
@@ -57,18 +58,20 @@
         <item name="ic_action_arrow_down_dark">@drawable/ic_action_arrow_down_dark</item>
         <item name="menu_inactive_text_color">@color/primary_white</item>
         <item name="icEdit">@drawable/edit_light</item>
+        <item name="cardColor">@color/card_background</item>
         <item name="bottom_navigation_selected_icon">@drawable/bottom_navigation_selected_icon_light</item>
         <item name="ic_action_home_dark">@drawable/ic_action_home_dark</item>
         <item name="ic_action_settings">@drawable/ic_action_settings_dark</item>
         <item name="ic_action_help">@drawable/ic_action_help_dark</item>
         <item name="ic_action_mail_dark">@drawable/ic_action_mail_dark</item>
         <item name="addPatient">@drawable/ic_add_patient_light</item>
+        <item name="icLocation">@drawable/ic_location_dark</item>
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
 
-    <style name="AppBaseTheme" parent="@style/Theme.AppCompat">
+    <style name="AppBaseTheme" parent="Theme.MaterialComponents.Bridge">
         <item name="android:windowBackground">@color/primary_black</item>
         <item name="android:textColorSecondary">@color/primary_white</item>
         <item name="android:windowActionBar">false</item>
@@ -76,6 +79,7 @@
         <item name="colorAccent">@color/primary_blue</item>
         <item name="colorPrimary">@color/primary_black</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
+        <item name="bottomSheetBackground">@color/dark_bottom_sheet_background</item>
         <item name="toolbarTitleTextColor">@color/primary_white</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
         <item name="primaryTextColor">@color/primary_white</item>
@@ -91,7 +95,7 @@
         <item name="listMultiSelectorBlue">@drawable/list_multi_selector_blue</item>
         <item name="loginLayoutBackground">@drawable/login_layout_background</item>
         <item name="icLabels">@drawable/ic_labels</item>
-        <item name="icRefresh">@drawable/ic_refresh</item>
+        <item name="icRefresh">@drawable/ic_refresh_dark</item>
         <item name="icActionUpload">@drawable/ic_action_upload</item>
         <item name="dataTipColor">#e8e8e8</item>
         <item name="icDiscard">@drawable/ic_action_discard</item>
@@ -120,9 +124,11 @@
         <item name="addPatient">@drawable/ic_add_patient_light</item>
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="cardColor">@color/primary_white</item>
+        <item name="icLocation">@drawable/ic_location_dark</item>
     </style>
 
-    <style name="AppBaseTheme.Light.NoActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="AppBaseTheme.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="android:windowActionBar">false</item>
@@ -130,6 +136,7 @@
         <item name="colorAccent">@color/primary_blue</item>
         <item name="colorPrimary">@color/primary_white</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
+        <item name="bottomSheetBackground">@color/primary_white</item>
         <item name="toolbarTitleTextColor">@color/primary_black</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color_light</item>
         <item name="primaryTextColor">@color/primary_black</item>
@@ -174,9 +181,11 @@
         <item name="addPatient">@drawable/ic_add_patient_light</item>
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_light</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="icLocation">@drawable/ic_location_dark</item>
+        <item name="cardColor">@color/primary_white</item>
     </style>
 
-    <style name="AppBaseTheme.Light" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppBaseTheme.Light" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="android:windowActionBar">false</item>
@@ -184,6 +193,7 @@
         <item name="colorAccent">@color/primary_blue</item>
         <item name="colorPrimary">@color/primary_white</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
+        <item name="bottomSheetBackground">@color/primary_white</item>
         <item name="toolbarTitleTextColor">@color/primary_black</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color_light</item>
         <item name="primaryTextColor">@color/primary_black</item>
@@ -228,17 +238,20 @@
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_light</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="addPatient">@drawable/ic_add_patient_light</item>
+        <item name="icLocation">@drawable/ic_location_light</item>
+        <item name="cardColor">@color/primary_white</item>
     </style>
 
 
     <!-- Application theme. -->
-    <style name="AppThemeNoActionBar.Dark" parent="@style/Theme.AppCompat.NoActionBar">
+    <style name="AppThemeNoActionBar.Dark" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <item name="android:windowBackground">@color/primary_black</item>
         <item name="android:textColorSecondary">@color/primary_white</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="colorAccent">@color/primary_blue</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
+        <item name="bottomSheetBackground">@color/dark_bottom_sheet_background</item>
         <item name="toolbarTitleTextColor">@color/primary_white</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
         <item name="primaryTextColor">@color/primary_white</item>
@@ -254,7 +267,7 @@
         <item name="selectableHintText">@color/selectable_hint_text</item>
         <item name="loginLayoutBackground">@drawable/login_layout_background</item>
         <item name="icLabels">@drawable/ic_labels</item>
-        <item name="icRefresh">@drawable/ic_refresh</item>
+        <item name="icRefresh">@drawable/ic_refresh_dark</item>
         <item name="icActionUpload">@drawable/ic_action_upload</item>
         <item name="dataTipColor">#e8e8e8</item>
         <item name="icDiscard">@drawable/ic_action_discard</item>
@@ -282,10 +295,12 @@
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="addPatient">@drawable/ic_add_patient_light</item>
+        <item name="cardColor">@color/primary_white</item>
+        <item name="icLocation">@drawable/ic_location_dark</item>
     </style>
 
     <!-- Application theme. -->
-    <style name="AppThemeNoActionBar.Light" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="AppThemeNoActionBar.Light" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -335,6 +350,9 @@
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_light</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="addPatient">@drawable/ic_add_patient_light</item>
+        <item name="cardColor">@color/card_background</item>
+        <item name="icLocation">@drawable/ic_location_light</item>
+        <item name="bottomSheetBackground">@color/dark_bottom_sheet_background</item>
     </style>
 
     <style name="DialogNoTitleBar" parent="android:style/Theme.Dialog">
@@ -346,4 +364,5 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="windowActionBar">false</item>
     </style>
+
 </resources>

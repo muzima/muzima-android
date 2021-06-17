@@ -15,10 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.muzima.MuzimaApplication;
@@ -34,7 +34,6 @@ import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.patients.PatientsListActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -42,10 +41,9 @@ import org.apache.lucene.queryParser.ParseException;
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
 
 public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private Toolbar toolbar;
+    private MaterialToolbar toolbar;
     private ViewPager viewPager;
     private TextView headerTitleTextView;
     private MainDashboardAdapter adapter;
@@ -53,7 +51,8 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     private ActionBarDrawerToggle drawerToggle;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
-    private MenuItem menuItemRegisterPatient;
+    private MenuItem menuLocation;
+    private MenuItem menuRefresh;
     private Credentials credentials;
     private BackgroundQueryTask mBackgroundQueryTask;
 
@@ -68,26 +67,18 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.register_patient_menu, menu);
-        menuItemRegisterPatient = menu.findItem(R.id.menu_client_add_icon);
-        menuItemRegisterPatient.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                Intent intent = new Intent(getApplicationContext(), PatientsListActivity.class);
-                startActivity(intent);
-                finish();
-                return false;
-            }
-        });
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_dashboard_home, menu);
+        menuLocation = menu.findItem(R.id.menu_location);
+        menuRefresh = menu.findItem(R.id.menu_load);
+        return true;
     }
 
     public void hideProgressbar() {
-        menuItemRegisterPatient.setActionView(null);
+        menuRefresh.setActionView(null);
     }
 
     public void showProgressBar() {
-        menuItemRegisterPatient.setActionView(R.layout.refresh_menuitem);
+        menuRefresh.setActionView(R.layout.refresh_menuitem);
     }
 
     private void initializeResources() {

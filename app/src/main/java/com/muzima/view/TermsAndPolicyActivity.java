@@ -29,18 +29,17 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
     private ImageView licenseExpandView;
     private ImageView expandPrivacyPolicyView;
     private ImageView expandTermsAndConditionsView;
-    private TextView licenseContentTextView;
-    private TextView privacyPolicyContentTextView;
-    private TextView termsAndConditionsContentTextView;
+    private View licenseContentTextView;
+    private View privacyPolicyContentTextView;
+    private View termsAndConditionsContentTextView;
     private TextView acceptAllButton;
-    private TextView nextButton;
+    private Button nextButton;
     private Toolbar toolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terms_policy_layout);
-
         initializeResources();
     }
 
@@ -139,6 +138,7 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
                 privacyPolicyCheckbox.setChecked(true);
                 termsAndConditionsCheckbox.setChecked(true);
                 acceptAllButton.setVisibility(View.INVISIBLE);
+                nextButton.setEnabled(true);
             }
         });
 

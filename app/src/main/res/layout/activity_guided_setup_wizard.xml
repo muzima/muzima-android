@@ -13,17 +13,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/setup_progress_background"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/oboarding_container" />
+        android:layout_width="match_parent"
+        android:layout_height="250dp"/>
 
     <LinearLayout
         android:id="@+id/stepper_indicator_container"
@@ -32,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
         android:orientation="horizontal"
         android:paddingStart="12dp"
         android:paddingTop="2dp"
@@ -61,6 +59,7 @@
     <LinearLayout
         android:id="@+id/guided_setup_header"
         android:layout_marginTop="6dp"
+        android:visibility="gone"
         style="@style/NotClickableSummaryItem"
         android:layout_below="@+id/stepper_indicator_container">
 
@@ -81,6 +80,8 @@
         android:paddingEnd="12dp">
 
         <LinearLayout
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -94,6 +95,7 @@
             <ProgressBar
                 android:id="@+id/secondary_progress_bar"
                 style="@android:style/Widget.ProgressBar.Small"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
@@ -125,15 +127,8 @@
             android:id="@+id/setup_logs_list"
             style="@style/SetUpLogList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"/>
 
-        </ListView>
-
-        <TextView
-            android:id="@+id/setup_actions_final_result"
-            style="@style/SetupActionFinalResult"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
     </LinearLayout>
 
     <LinearLayout
@@ -170,9 +165,10 @@
             android:id="@+id/finish"
             android:text="@string/general_finish"
             android:layout_gravity="end"
+            android:visibility="gone"
             android:textSize="12sp"
+            android:backgroundTint="@color/primary_blue"
             android:textAllCaps="true"
-            style="@style/Widget.MaterialComponents.Button"
             android:layout_marginBottom="12dp"
             android:layout_marginEnd="12dp"
             android:layout_width="wrap_content"

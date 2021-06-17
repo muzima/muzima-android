@@ -48,7 +48,6 @@
                 <RelativeLayout
                     style="@style/ClickableGridItem"
                     android:layout_weight="50"
-                    android:onClick="cohortList"
                     android:orientation="vertical">
 
                     <TextView

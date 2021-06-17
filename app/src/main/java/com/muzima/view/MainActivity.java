@@ -39,7 +39,6 @@ import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.cohort.CohortActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.notifications.NotificationsListActivity;
 import com.muzima.view.patients.PatientsListActivity;
@@ -165,14 +164,6 @@ public class MainActivity extends BroadcastListenerActivity {
                 System.exit(0);
             }
         };
-    }
-
-    /**
-     * Called when the user clicks the Cohort area
-     */
-    public void cohortList(View view) {
-        Intent intent = new Intent(this, CohortActivity.class);
-        startActivity(intent);
     }
 
     /**

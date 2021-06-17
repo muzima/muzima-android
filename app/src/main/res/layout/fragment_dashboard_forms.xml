@@ -5,22 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
-
-        <ImageView
-            android:src="@drawable/ic_action_refresh_dark"
-            android:rotation="180"
-            android:layout_marginEnd="16dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </RelativeLayout>
-
-    <include layout="@layout/forms_top_bar_view"/>
+<!--    <include layout="@layout/forms_top_bar_view"/>-->
 
     <RelativeLayout
         android:background="@drawable/border_button_gray"
@@ -35,13 +20,14 @@
             android:id="@+id/dashboard_forms_search_edit_text"
             android:background="@null"
             android:hint="@string/general_search_forms"
-            android:padding="2dp"
+            android:padding="6dp"
             android:layout_centerVertical="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <ImageView
             android:src="?attr/icSearch"
+            android:layout_marginEnd="6dp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
@@ -57,7 +43,7 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/dashboard_forms_tab_layout"
-            app:tabTextAppearance="@style/TabLayoutStyle"
+            app:tabSelectedTextColor="@color/primary_blue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

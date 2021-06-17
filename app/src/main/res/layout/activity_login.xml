@@ -18,15 +18,16 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="280dp"
+            android:paddingTop="18dp"
             android:background="@drawable/curved_wallpaper">
 
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="16dp"
                 android:contentDescription="@string/title_logo"
                 android:scaleType="fitXY"
                 android:src="@drawable/logo" />
@@ -39,6 +40,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="@string/app_name"
+                android:textStyle="bold"
                 android:textColor="@color/primary_white"
                 android:textSize="40sp" />
 
@@ -150,23 +152,20 @@
 
         <FrameLayout style="@style/LoginButtonLayout">
 
-            <TextView
+            <Button
                 android:id="@+id/login"
                 style="@style/LoginButton"
                 android:layout_marginStart="22dp"
                 android:layout_marginEnd="22dp"
                 android:gravity="center"
-                android:paddingStart="12dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="10dp"
+                android:backgroundTint="@color/primary_blue"
                 android:text="@string/general_login"
-                android:textAllCaps="true"
-                android:textSize="16sp" />
+                android:textAllCaps="true" />
 
-            <TextView
+            <Button
                 android:id="@+id/authenticatingText"
                 style="@style/LoginAuthenticatingButton"
+                android:backgroundTint="@color/primary_blue"
                 android:text="@string/hint_authentication_progress"
                 android:visibility="gone" />
         </FrameLayout>

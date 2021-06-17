@@ -12,6 +12,8 @@ package com.muzima.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -63,5 +65,11 @@ public class DateUtils {
     public static Date parseDateByPattern(String dateAsString, String pattern) throws ParseException {
         SimpleDateFormat dateFormatter = new SimpleDateFormat(pattern);
         return dateFormatter.parse(dateAsString);
+    }
+
+    public static int calculateAge(Date birthdate) {
+        Calendar dob = Calendar.getInstance();
+        dob.setTime(birthdate);
+        return Calendar.getInstance().get(Calendar.YEAR) - dob.get(Calendar.YEAR);
     }
 }

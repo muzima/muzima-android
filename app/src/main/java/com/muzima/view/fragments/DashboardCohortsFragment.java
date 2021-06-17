@@ -13,18 +13,16 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.muzima.R;
-import com.muzima.adapters.cohort.CohortPagerAdapter;
-import com.muzima.utils.Fonts;
+import com.muzima.adapters.cohort.CohortsViewPagerAdapter;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.cohort.SyncCohortsIntent;
-import com.muzima.view.custom.PagerSlidingTabStrip;
 
 public class DashboardCohortsFragment extends Fragment {
 
     private ViewPager viewPager;
-    private CohortPagerAdapter cohortPagerAdapter;
+    private CohortsViewPagerAdapter cohortPagerAdapter;
     private MenuItem menubarLoadButton;
     private boolean syncInProgress;
     private final ThemeUtils themeUtils = new ThemeUtils();
@@ -43,7 +41,6 @@ public class DashboardCohortsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard_cohorts, container, false);
         initPager(view);
-        initPagerIndicator(view);
         return view;
     }
 
@@ -111,47 +108,12 @@ public class DashboardCohortsFragment extends Fragment {
 
     private void initPager(View view) {
         viewPager = view.findViewById(R.id.pager);
-        cohortPagerAdapter = new CohortPagerAdapter(getActivity().getApplicationContext(), getActivity().getSupportFragmentManager());
-        cohortPagerAdapter.initPagerViews();
+        cohortPagerAdapter = new CohortsViewPagerAdapter(getChildFragmentManager(), getActivity().getApplicationContext());
         viewPager.setAdapter(cohortPagerAdapter);
-    }
-
-    private void initPagerIndicator(View view) {
-        PagerSlidingTabStrip pagerTabsLayout = view.findViewById(R.id.pager_indicator);
-        pagerTabsLayout.setTextColor(pagerTabsLayout.getIndicatorTextColor());
-        pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
-        pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
-        pagerTabsLayout.setTypeface(Fonts.roboto_medium(this.getActivity().getApplicationContext()), -1);
-        pagerTabsLayout.setShouldExpand(true);
-        pagerTabsLayout.setViewPager(viewPager);
-        viewPager.setCurrentItem(0);
-        pagerTabsLayout.markCurrentSelected(0);
-        pagerTabsLayout.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                onPageChange(position);
-            }
-        });
-    }
-
-    private void onPageChange(int position) {
-        if (menubarLoadButton == null) {
-            return;
-        }
-        switch (position) {
-            case CohortPagerAdapter.TAB_SYNCED:
-                cohortPagerAdapter.reinitializeAllCohortsTab();
-                menubarLoadButton.setVisible(false);
-                break;
-            case CohortPagerAdapter.TAB_All:
-                menubarLoadButton.setVisible(true);
-                break;
-        }
     }
 
     private void syncCohortsInBackgroundService() {
         syncInProgress = true;
-        cohortPagerAdapter.onCohortDownloadStart();
         showProgressBar();
         new SyncCohortsIntent(this.getActivity()).start();
     }

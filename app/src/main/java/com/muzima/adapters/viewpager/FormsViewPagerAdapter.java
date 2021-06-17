@@ -39,9 +39,9 @@ public class FormsViewPagerAdapter extends FragmentPagerAdapter {
         if (position == 0){
             return context.getString(R.string.general_all_forms);
         }else if (position == 1){
-            return context.getString(R.string.info_complete_form);
+            return context.getString(R.string.general_downloaded);
         }else if (position == 2){
-            return context.getString(R.string.info_incomplete_form);
+            return context.getString(R.string.general_available_online);
         }else
             return null;
     }
