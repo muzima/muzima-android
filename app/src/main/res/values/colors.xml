@@ -48,7 +48,7 @@
     <color name="login_divider_background_light">#cedadb</color>
     <color name="dashboard_base_text_color">#eeeeee</color>
     <color name="dashboard_base_text_color_light">#303030</color>
-    <color name="progress_max">#06B80D</color>
+    <color name="progress_max">#0AE613</color>
     <color name="sync_text_background">#303030</color>
     <color name="sync_text_background_light">#dddddd</color>
     <color name="default_black">#000000</color>
@@ -57,4 +57,6 @@
     <color name="card_background">#8AA1A0A0</color>
     <color name="dark_bottom_sheet_background">#252424</color>
     <color name="divider_color">#48A1A0A0</color>
+    <color name="list_selection_background">#60137EFE</color>
+    <color name="green_370">#0BA511</color>
 </resources>

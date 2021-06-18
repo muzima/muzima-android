@@ -9,6 +9,7 @@
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingEnd="12dp"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
@@ -30,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="12dp"
+                android:textSize="16sp"
                 android:text="@string/info_license_and_disclaimer" />
 
             <ImageView
@@ -46,13 +48,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="42dp"
+            android:layout_marginStart="62dp"
             android:text="@string/info_agree_to_muzima_license_and_disclaimer" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_margin="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="62dp"
+            android:layout_marginEnd="12dp"
             android:background="@drawable/border_button_gray" />
 
         <ScrollView
@@ -62,7 +67,8 @@
             android:layout_height="200dp">
 
             <TextView
-                android:layout_marginStart="21dp"
+                android:layout_marginStart="46dp"
+                android:paddingEnd="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/info_disclaimer" />
@@ -81,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="12dp"
+                android:textSize="16sp"
                 android:text="@string/info_privacy_policy_statement" />
 
             <ImageView
@@ -97,13 +104,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="42dp"
+            android:layout_marginStart="62dp"
             android:text="@string/info_agree_to_muzima_privacy_policy_statement" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginStart="21dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="62dp"
+            android:layout_marginEnd="12dp"
             android:background="@drawable/border_button_gray" />
 
         <ScrollView
@@ -116,9 +126,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingEnd="6dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="42dp"
                 android:text="@string/info_disclaimer" />
 
         </ScrollView>
@@ -134,6 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="12dp"
+                android:textSize="16sp"
                 android:text="@string/info_terms_and_conditions" />
 
             <ImageView
@@ -150,13 +162,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="42dp"
+            android:layout_marginStart="62dp"
             android:text="@string/info_agree_to_muzima_terms_and_conditions" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_margin="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="62dp"
+            android:layout_marginEnd="12dp"
             android:background="@drawable/border_button_gray" />
 
         <ScrollView
@@ -169,7 +184,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="21dp"
+                android:layout_marginStart="42dp"
+                android:paddingEnd="6dp"
                 android:text="@string/info_disclaimer"/>
 
         </ScrollView>

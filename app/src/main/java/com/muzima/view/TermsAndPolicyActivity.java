@@ -152,6 +152,18 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
             }
         });
 
+        appCheckBoxPadding(privacyPolicyCheckbox);
+        appCheckBoxPadding(termsAndConditionsCheckbox);
+        appCheckBoxPadding(licenseCheckBox);
+
+    }
+
+    private void appCheckBoxPadding(CheckBox checkBox) {
+        final float scale = this.getResources().getDisplayMetrics().density;
+        checkBox.setPadding(checkBox.getPaddingLeft() + (int)(20.0f * scale + 0.5f),
+                checkBox.getPaddingTop(),
+                checkBox.getPaddingRight(),
+                checkBox.getPaddingBottom());
     }
 
     @Override

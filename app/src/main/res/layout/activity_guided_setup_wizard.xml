@@ -15,18 +15,18 @@
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/setup_progress_background"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
         android:layout_alignParentTop="true"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="?attr/actionBarSize"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"/>
+        android:layout_marginEnd="16dp" />
 
     <LinearLayout
         android:id="@+id/stepper_indicator_container"
-        android:layout_below="@+id/setup_progress_background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/setup_progress_background"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="6dp"
@@ -58,10 +58,10 @@
 
     <LinearLayout
         android:id="@+id/guided_setup_header"
-        android:layout_marginTop="6dp"
-        android:visibility="gone"
         style="@style/NotClickableSummaryItem"
-        android:layout_below="@+id/stepper_indicator_container">
+        android:layout_below="@+id/stepper_indicator_container"
+        android:layout_marginTop="6dp"
+        android:visibility="gone">
 
         <TextView
             style="@style/SummaryHeader"
@@ -80,11 +80,11 @@
         android:paddingEnd="12dp">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="6dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/setup_progress_status_message"
@@ -95,24 +95,23 @@
             <ProgressBar
                 android:id="@+id/secondary_progress_bar"
                 style="@android:style/Widget.ProgressBar.Small"
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
                 android:layout_marginStart="8dp"
-                android:progress="30" />
+                android:layout_marginEnd="5dp"
+                android:progress="30"
+                android:visibility="gone" />
 
         </LinearLayout>
-
 
         <ProgressBar
             android:id="@+id/setup_progress_bar"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:max="10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:indeterminate="false" />
+            android:indeterminate="false"
+            android:max="10" />
 
     </LinearLayout>
 
@@ -127,7 +126,7 @@
             android:id="@+id/setup_logs_list"
             style="@style/SetUpLogList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -154,25 +153,25 @@
 
     <RelativeLayout
         android:id="@+id/next_button_layout"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:background="@color/primary_black"
         android:visibility="visible">
 
         <Button
-            android:layout_alignParentEnd="true"
             android:id="@+id/finish"
-            android:text="@string/general_finish"
-            android:layout_gravity="end"
-            android:visibility="gone"
-            android:textSize="12sp"
-            android:backgroundTint="@color/primary_blue"
-            android:textAllCaps="true"
-            android:layout_marginBottom="12dp"
-            android:layout_marginEnd="12dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/primary_blue"
+            android:text="@string/general_finish"
+            android:textAllCaps="true"
+            android:textSize="12sp"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </RelativeLayout>

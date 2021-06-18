@@ -10,18 +10,12 @@
 
 package com.muzima.view.cohort;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.CheckedTextView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,29 +26,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.cohort.AllCohortsAdapter;
 import com.muzima.adapters.cohort.CohortRecyclerViewAdapter;
-import com.muzima.api.model.APIName;
 import com.muzima.api.model.Cohort;
-import com.muzima.api.service.LastSyncTimeService;
-import com.muzima.controller.CohortController;
+import com.muzima.model.cohort.CohortItem;
+import com.muzima.model.events.CohortsActionModeEvent;
+import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.tasks.LoadAllCohortsTask;
-import com.muzima.utils.DateUtils;
-import com.muzima.utils.NetworkUtils;
-import com.muzima.view.CheckedLinearLayout;
-import com.muzima.view.patients.SyncPatientDataIntent;
 
-import java.io.IOException;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class AllCohortsListFragment extends Fragment {
-
+public class AllCohortsListFragment extends Fragment implements CohortRecyclerViewAdapter.OnCohortClickedListener {
     private ProgressBar progressBar;
     private RecyclerView cohortListRecyclerView;
     private CohortRecyclerViewAdapter recyclerViewAdapter;
-    private List<Cohort> allCohortsList = new ArrayList<>();
+    private List<CohortItem> allCohortsList = new ArrayList<>();
+    private List<Cohort> selectedCohorts = new ArrayList<>();
 
     @Nullable
     @Override
@@ -68,17 +58,29 @@ public class AllCohortsListFragment extends Fragment {
         loadData();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadData() {
         cohortListRecyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
-                .execute( new LoadAllCohortsTask(getActivity().getApplicationContext(), new LoadAllCohortsTask.OnAllCohortsLoadedCallback() {
+                .execute(new LoadAllCohortsTask(getActivity().getApplicationContext(), new LoadAllCohortsTask.OnAllCohortsLoadedCallback() {
                     @Override
                     public void onCohortsLoaded(final List<Cohort> cohorts) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                allCohortsList.addAll(cohorts);
+                                for (Cohort cohort : cohorts) {
+                                    allCohortsList.add(new CohortItem(cohort, false));
+                                }
                                 recyclerViewAdapter.notifyDataSetChanged();
                                 progressBar.setVisibility(View.GONE);
                                 cohortListRecyclerView.setVisibility(View.VISIBLE);
@@ -91,9 +93,25 @@ public class AllCohortsListFragment extends Fragment {
     private void initializeResources(View view) {
         cohortListRecyclerView = view.findViewById(R.id.cohorts_list_recycler_view);
         progressBar = view.findViewById(R.id.chorts_load_progress_bar);
-        recyclerViewAdapter = new CohortRecyclerViewAdapter(getActivity().getApplicationContext(), allCohortsList);
+        recyclerViewAdapter = new CohortRecyclerViewAdapter(getActivity().getApplicationContext(), allCohortsList, this);
         cohortListRecyclerView.setAdapter(recyclerViewAdapter);
-        cohortListRecyclerView.addItemDecoration( new DividerItemDecoration(getActivity().getApplicationContext(), RecyclerView.VERTICAL));
-        cohortListRecyclerView.setLayoutManager( new LinearLayoutManager(getActivity().getApplicationContext()));
+        cohortListRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getApplicationContext(), RecyclerView.VERTICAL));
+        cohortListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+    }
+
+    @Override
+    public void onCohortClicked(int position) {
+        Cohort cohort = allCohortsList.get(position).getCohort();
+        selectedCohorts.add(cohort);
+        recyclerViewAdapter.setSelectedCohorts(selectedCohorts);
+        recyclerViewAdapter.notifyDataSetChanged();
+        EventBus.getDefault().post(new CohortsActionModeEvent(selectedCohorts));
+    }
+
+    @Subscribe
+    public void actionModeClearedEvent(DestroyActionModeEvent event) {
+        selectedCohorts.clear();
+        recyclerViewAdapter.setSelectedCohorts(selectedCohorts);
+        recyclerViewAdapter.notifyDataSetChanged();
     }
 }

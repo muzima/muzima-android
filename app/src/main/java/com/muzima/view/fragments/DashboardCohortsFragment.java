@@ -1,7 +1,9 @@
 package com.muzima.view.fragments;
 
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +29,6 @@ public class DashboardCohortsFragment extends Fragment {
     private boolean syncInProgress;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

@@ -6,8 +6,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,23 +26,34 @@ import com.google.android.material.navigation.NavigationView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MainDashboardAdapter;
+import com.muzima.api.model.Cohort;
 import com.muzima.api.model.User;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
+import com.muzima.model.events.CohortsActionModeEvent;
+import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.tasks.DownloadCohortsTask;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.preferences.SettingsActivity;
 
 import org.apache.lucene.queryParser.ParseException;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
 
 public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = "MainDashboardActivity";
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private MaterialToolbar toolbar;
@@ -53,8 +66,12 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     private final LanguageUtil languageUtil = new LanguageUtil();
     private MenuItem menuLocation;
     private MenuItem menuRefresh;
+    private ActionMode.Callback actionModeCallback;
+    private ActionMode actionMode;
     private Credentials credentials;
     private BackgroundQueryTask mBackgroundQueryTask;
+    private MenuItem loadingMenuItem;
+    private List<Cohort> selectedCohorts = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +88,73 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         menuLocation = menu.findItem(R.id.menu_location);
         menuRefresh = menu.findItem(R.id.menu_load);
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void onCohortDownloadActionModeEvent(CohortsActionModeEvent actionModeEvent) {
+        selectedCohorts = actionModeEvent.getSelectedCohorts();
+        initActionMode();
+    }
+
+    private void initActionMode() {
+        actionModeCallback = new ActionMode.Callback() {
+
+            @Override
+            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                getMenuInflater().inflate(R.menu.menu_cohort_actions, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                loadingMenuItem = menu.findItem(R.id.menu_downloading_action);
+                return true;
+            }
+
+            @Override
+            public boolean onActionItemClicked(final ActionMode actionMode, MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.menu_download_action) {
+                    loadingMenuItem.setActionView(new ProgressBar(MainDashboardActivity.this));
+                    loadingMenuItem.setVisible(true);
+                    menuItem.setVisible(false);
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
+                    ((MuzimaApplication) getApplicationContext()).getExecutorService()
+                            .execute(new DownloadCohortsTask(getApplicationContext(), selectedCohorts, new DownloadCohortsTask.CohortDownloadCallback() {
+                                @Override
+                                public void callbackDownload() {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            actionMode.finish();
+                                            loadingMenuItem.setVisible(false);
+                                            EventBus.getDefault().post(new DestroyActionModeEvent());
+                                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_finish), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+                            }));
+                }
+                return true;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode) {
+                Log.e(TAG, "onDestroyActionMode: ");
+            }
+        };
+
+        actionMode = startActionMode(actionModeCallback);
+        actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedCohorts.size(), getResources().getString(R.string.general_selected)));
     }
 
     public void hideProgressbar() {
@@ -133,11 +217,6 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     private void executeBackgroundTask() {
         mBackgroundQueryTask = new BackgroundQueryTask();
         mBackgroundQueryTask.execute();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
     private void showIncompleteWizardWarning() {

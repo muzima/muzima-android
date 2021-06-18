@@ -97,6 +97,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-places:17.0.0'
     implementation group: 'com.github.GrenderG', name: 'Toasty', version: '1.3.0'
+    implementation 'org.greenrobot:eventbus:3.2.0'
     //implementation 'com.google.firebase:firebase-core:16.0.1'
 
     implementation(group: 'com.muzima', name: 'muzima-api', version: '1.3.9') {

@@ -292,7 +292,7 @@
         but have not synced it with the server
     </string>
     <string name="hint_concept_pref_add">Add concept(s) that you want observation(s) to be downloaded.</string>
-    <string name="hint_configuration_search">Search a Program</string>
+    <string name="hint_configuration_search">Search a program</string>
     <string name="hint_consultation_consultant_validation_failure">Please provide a consultant from the list of possible consultants</string>
     <string name="hint_crash_dialog">An unexpected error occurred forcing mUzima to stop. Please help us fix
         this by sending us error data, all you have to do is click OK.
@@ -715,7 +715,7 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="title_form_template_downloaded">Downloaded Form Templates</string>
     <string name="title_general_notifications">General Notifications</string>
     <string name="title_gps_location">GPS Location</string>
-    <string name="title_guided_setup">Guided setup</string>
+    <string name="title_guided_setup">Guided Setup</string>
     <string name="title_guided_setup_help_video">Guided initial setup</string>
     <string name="title_guided_setup_progress">Setup Progress</string>
     <string name="title_guided_setup_wizard">Guided Setup Wizard</string>
@@ -837,5 +837,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="general_display_all">DISPLAY ALL</string>
     <string name="general_downloaded">Downloaded</string>
     <string name="general_available_online">Available online</string>
+    <string name="general_selected">Selected</string>
 
 </resources>
