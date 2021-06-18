@@ -14,6 +14,13 @@
         android:background="?attr/primaryBackgroundColor"
         android:orientation="vertical">
 
+        <View
+            android:id="@+id/content_over_lay"
+            android:visibility="gone"
+            android:background="@color/hint_text_grey_opaque"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout_top"
             android:layout_width="match_parent"
@@ -63,7 +70,6 @@
 
 
         </LinearLayout>
-
 
     </RelativeLayout>
 

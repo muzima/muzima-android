@@ -16,10 +16,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortsViewPagerAdapter;
+import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.cohort.SyncCohortsIntent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class DashboardCohortsFragment extends Fragment {
 

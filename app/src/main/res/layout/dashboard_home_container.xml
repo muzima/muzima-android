@@ -6,19 +6,23 @@
     android:id="@+id/dashboard_home_fragment_container"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <View
+        android:id="@+id/dashboard_home_fragment_child_container"
+        android:visibility="gone"
+        android:background="@color/hint_text_grey_opaque"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <LinearLayout
-        android:background="?attr/primaryBackgroundColor"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:background="?attr/primaryBackgroundColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:background="?attr/primaryBackgroundColor"
                 android:paddingBottom="6dp"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -42,14 +46,13 @@
                     android:id="@+id/dashboard_main_patient_search_view"
                     android:background="@drawable/border_button_gray"
                     android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_marginEnd="18dp"
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="4dp"
-                    android:layout_width="match_parent"
                     android:padding="8dp">
 
                     <TextView
-                        android:background="?attr/primaryBackgroundColor"
                         android:text="@string/general_search_patient"
                         android:textSize="14sp"
                         android:textColor="?attr/primaryTextColor"

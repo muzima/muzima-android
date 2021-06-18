@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -59,6 +61,12 @@ public class CohortRecyclerViewAdapter extends RecyclerView.Adapter<CohortRecycl
                 holder.container.setBackgroundColor(context.getResources().getColor(R.color.list_selection_background));
         }
 
+        List<String> tags = new ArrayList<>();
+        tags.add("Tag1");
+        tags.add("Tag2");
+        CohortTagsAdapter tagsAdapter = new CohortTagsAdapter(context.getApplicationContext(), R.layout.item_cohort_tags_layout, tags);
+        holder.tagsListView.setAdapter(tagsAdapter);
+
     }
 
     @Override
@@ -70,6 +78,7 @@ public class CohortRecyclerViewAdapter extends RecyclerView.Adapter<CohortRecycl
         private final View container;
         private final TextView titleTextView;
         private final TextView descriptionTextView;
+        private final ListView tagsListView;
         private final ImageView iconImageView;
         private final TextView clientsCountTextView;
         private final OnCohortClickedListener cohortClickedListener;
@@ -81,6 +90,7 @@ public class CohortRecyclerViewAdapter extends RecyclerView.Adapter<CohortRecycl
             iconImageView = itemView.findViewById(R.id.item_cohort_status_image_view);
             clientsCountTextView = itemView.findViewById(R.id.item_cohort_clients_count_text_view);
             container = itemView.findViewById(R.id.item_cohort_layout);
+            tagsListView = itemView.findViewById(R.id.item_cohort_tags_list_view);
             this.cohortClickedListener = cohortClickedListener;
             container.setOnClickListener(this);
         }

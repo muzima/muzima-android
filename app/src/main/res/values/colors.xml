@@ -59,4 +59,5 @@
     <color name="divider_color">#48A1A0A0</color>
     <color name="list_selection_background">#60137EFE</color>
     <color name="green_370">#0BA511</color>
+    <color name="hint_text_grey_opaque">#5EA1A0A0</color>
 </resources>

@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,23 +20,31 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MainDashboardAdapter;
+import com.muzima.adapters.cohort.CohortFilterAdapter;
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.CohortFilter;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
+import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.CohortsActionModeEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
+import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.DownloadCohortsTask;
@@ -52,7 +62,7 @@ import java.util.Locale;
 
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
 
-public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, CohortFilterAdapter.CohortFilterClickedListener {
     private static final String TAG = "MainDashboardActivity";
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -71,15 +81,24 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     private Credentials credentials;
     private BackgroundQueryTask mBackgroundQueryTask;
     private MenuItem loadingMenuItem;
+    private View contentOverlay;
+    private BottomSheetBehavior bottomSheetBehavior;
+    private View bottomSheetView;
+    private View closeBottomSheet;
+    private CheckBox allCohortsFilter;
+    private CohortFilterAdapter cohortFilterAdapter;
+    private RecyclerView filterOptionsRecyclerView;
     private List<Cohort> selectedCohorts = new ArrayList<>();
+    private List<CohortFilter> cohortList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         themeUtils.onCreate(MainDashboardActivity.this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard_main_layout);
+        setContentView(R.layout.activity_dashboard_root_layout);
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), false);
         initializeResources();
+        loadCohorts();
     }
 
     @Override
@@ -90,6 +109,20 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         return true;
     }
 
+    private void loadCohorts() {
+        try {
+            cohortList.clear();
+            for (Cohort cohort : ((MuzimaApplication) getApplicationContext()).getCohortController()
+                    .getAllCohorts()) {
+                cohortList.add(new CohortFilter(cohort, false));
+            }
+            Log.e(TAG, "loadCohorts: size " + cohortList.size());
+            cohortFilterAdapter.notifyDataSetChanged();
+        } catch (CohortController.CohortFetchException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -98,6 +131,11 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Subscribe
+    public void showCohortFilterEvent(ShowCohortFilterEvent event) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     @Subscribe
@@ -171,6 +209,15 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         toolbar = findViewById(R.id.dashboard_toolbar);
         drawerLayout = findViewById(R.id.main_dashboard_drawer_layout);
         navigationView = findViewById(R.id.dashboard_navigation);
+        bottomSheetView = findViewById(R.id.dashboard_home_bottom_view_container);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
+        closeBottomSheet = findViewById(R.id.bottom_sheet_close_view);
+        allCohortsFilter = findViewById(R.id.all_cohorts_options_checkbox);
+        filterOptionsRecyclerView = findViewById(R.id.dashboard_home_filter_recycler_view);
+        contentOverlay = findViewById(R.id.content_over_lay);
+        cohortFilterAdapter = new CohortFilterAdapter(cohortList, this);
+        filterOptionsRecyclerView.setAdapter(cohortFilterAdapter);
+        filterOptionsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         headerTitleTextView = navigationView.getHeaderView(0).findViewById(R.id.dashboard_header_title_text_view);
 
         setSupportActionBar(toolbar);
@@ -199,10 +246,65 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
             }
         });
 
+        closeBottomSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+        });
+
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    contentOverlay.setVisibility(View.VISIBLE);
+                } else {
+                   contentOverlay.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
+        allCohortsFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                allCohortsFilter.setChecked(true);
+                EventBus.getDefault().post(new CohortFilterActionEvent(null, false));
+            }
+        });
+
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
         headerTitleTextView.setText(((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getUsername());
 
         setTitle(" ");
 
+    }
+
+    @Override
+    public void onCohortFilterClicked(int position) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        List<CohortFilter> updatedList = unselectAllFilters(cohortList);
+        cohortList.clear();
+        cohortList.addAll(updatedList);
+        cohortFilterAdapter.notifyDataSetChanged();
+        CohortFilter cohortFilter = cohortList.get(position);
+        cohortFilter.setSelected(true);
+        cohortFilterAdapter.notifyDataSetChanged();
+    }
+
+    private List<CohortFilter> unselectAllFilters(List<CohortFilter> cohortList) {
+        List<CohortFilter> filters = new ArrayList<>();
+        for (CohortFilter cohortFilter : cohortList) {
+            cohortFilter.setSelected(false);
+            filters.add(cohortFilter);
+        }
+        return filters;
     }
 
     @Override

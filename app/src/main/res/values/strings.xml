@@ -838,5 +838,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="general_downloaded">Downloaded</string>
     <string name="general_available_online">Available online</string>
     <string name="general_selected">Selected</string>
+    <string name="general_sort_by_status">Sort by status</string>
 
 </resources>

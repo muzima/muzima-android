@@ -6,8 +6,6 @@
 
     <include layout="@layout/dashboard_home_container"/>
 
-    <include layout="@layout/dashboard_home_bottom_navigation"/>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_search"
         android:layout_height="wrap_content"
