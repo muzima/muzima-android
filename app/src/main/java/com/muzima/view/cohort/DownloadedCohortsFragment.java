@@ -85,7 +85,6 @@ public class DownloadedCohortsFragment extends Fragment implements CohortRecycle
         progressBar = view.findViewById(R.id.chorts_load_progress_bar);
         recyclerViewAdapter = new CohortRecyclerViewAdapter(getActivity().getApplicationContext(), downloadedCohortsList, this);
         cohortListRecyclerView.setAdapter(recyclerViewAdapter);
-        cohortListRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getApplicationContext(), RecyclerView.VERTICAL));
         cohortListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
     }
 

@@ -67,6 +67,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/dashboard_forms_tab_layout"
             app:tabSelectedTextColor="@color/primary_blue"
+            app:tabMode="scrollable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

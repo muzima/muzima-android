@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
@@ -10,7 +12,6 @@
         android:id="@+id/guided_setup_header"
         style="@style/NotClickableSummaryItem"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="12dp">
 
         <TextView
@@ -71,8 +72,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/guided_setup_header"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
             android:fillViewport="true"
             android:scrollbars="vertical">
 
@@ -83,8 +82,8 @@
                 android:choiceMode="singleChoice"
                 android:divider="#00000000"
                 android:dividerHeight="10dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
                 android:scrollbarSize="1dp"
                 android:scrollbarStyle="outsideOverlay" />
         </ScrollView>

@@ -143,7 +143,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         thirdDotView = findViewById(R.id.third_page_dot_view);
         guidedSetupCardsViewPagerAdapter = new GuidedSetupCardsViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(guidedSetupCardsViewPagerAdapter);
-
         finishSetupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -15,11 +15,11 @@
             android:id="@+id/dashboard_forms_incomplete_forms_view"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="6dp"
             android:background="@drawable/incomplete_forms_gradient"
             android:orientation="vertical"
             android:paddingBottom="4dp"
-            android:paddingStart="8dp"
+            android:paddingStart="6dp"
             android:paddingEnd="6dp">
 
             <TextView
@@ -44,13 +44,13 @@
             android:id="@+id/dashboard_forms_complete_forms_view"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="4dp"
             android:background="@drawable/complete_forms_gradient"
             android:orientation="vertical"
             android:paddingBottom="4dp"
-            android:paddingStart="8dp"
+            android:paddingStart="6dp"
             android:paddingEnd="6dp">
 
             <TextView

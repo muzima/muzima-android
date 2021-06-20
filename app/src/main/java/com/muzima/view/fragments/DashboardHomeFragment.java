@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,22 +15,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.cohort.CohortFilterAdapter;
 import com.muzima.adapters.patients.AllPatientsAdapter;
-import com.muzima.api.model.Cohort;
-import com.muzima.api.model.CohortFilter;
 import com.muzima.api.model.Patient;
-import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
-import com.muzima.controller.PatientController;
 import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
+import com.muzima.tasks.FilterPatientsListTask;
 import com.muzima.tasks.LoadPatientsListService;
 import com.muzima.utils.Fonts;
 import com.muzima.view.ClientSummaryActivity;
@@ -190,27 +184,28 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
     }
 
     @Subscribe
-    public void cohortFilterEvent(CohortFilterActionEvent event) {
-        if (event.getFilter() == null && event.isNoSelectionEvent()) {
-            try {
-                patients.addAll(((MuzimaApplication) getActivity().getApplicationContext()).getPatientController()
-                        .getAllPatients());
-                allPatientsAdapter.notifyDataSetChanged();
-            } catch (PatientController.PatientLoadException ex) {
-                ex.printStackTrace();
-            }
-        } else if (event.getFilter() != null && event.isNoSelectionEvent() == false) {
-            try {
-                List<Patient> patientList = ((MuzimaApplication) getActivity().getApplicationContext()).getPatientController()
-                        .getPatientsForCohorts(new String[]{event.getFilter().getUuid()});
-                patients.clear();
-                patients.addAll(patientList);
-                allPatientsAdapter.notifyDataSetChanged();
-                filterLabelTextView.setText(event.getFilter().getName());
-            } catch (PatientController.PatientLoadException ex) {
-                ex.printStackTrace();
-            }
-        }
+    public void cohortFilterEvent(final CohortFilterActionEvent event) {
+        progressBar.setVisibility(View.VISIBLE);
+        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService().execute(
+                new FilterPatientsListTask(getActivity().getApplicationContext(), event, new FilterPatientsListTask.PatientsListFilterCallback() {
+                    @Override
+                    public void onPatientsFiltered(final List<Patient> patientList) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(View.GONE);
+                                patients.clear();
+                                patients.addAll(patientList);
+                                allPatientsAdapter.notifyDataSetChanged();
+                                if (event.getFilter() != null)
+                                    filterLabelTextView.setText(event.getFilter().getName());
+                                else
+                                    filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
+                            }
+                        });
+                    }
+                })
+        );
     }
 
     private void setupNoDataView() {

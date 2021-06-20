@@ -211,8 +211,6 @@
         <item name="android:paddingRight">8dp</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
-        <item name="android:layout_marginStart">12dp</item>
-        <item name="android:layout_marginEnd">12dp</item>
         <item name="android:layout_marginBottom">12dp</item>
         <item name="android:orientation">vertical</item>
     </style>
@@ -553,8 +551,8 @@
         <item name="android:layout_height">48dp</item>
         <item name="android:textColor">@color/primary_blue</item>
         <item name="android:textColorHint">@color/hint_text_grey</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
         <item name="android:typeface">normal</item>
         <item name="android:cursorVisible">true</item>
         <item name="android:textCursorDrawable" tools:ignore="NewApi">@null</item>
@@ -616,10 +614,8 @@
         <item name="android:singleLine">true</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
-        <item name="android:paddingStart">12dp</item>
-        <item name="android:paddingEnd">12dp</item>
-        <item name="android:layout_marginStart">22dp</item>
-        <item name="android:layout_marginEnd">22dp</item>
+        <item name="android:layout_marginStart">6dp</item>
+        <item name="android:layout_marginEnd">6dp</item>
     </style>
 
     <style name="HelpContent">

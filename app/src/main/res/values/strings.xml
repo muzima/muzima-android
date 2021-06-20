@@ -831,7 +831,7 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="general_hello_greeting">Hello</string>
     <string name="initial_setup_running_please_wait">Initial setup running. Please wait...</string>
     <string name="general_setup_completed_message">Setup complete</string>
-    <string name="general_filter_by">Filtered List</string>
+    <string name="general_filter_by">Filtered by</string>
     <string name="general_all_cohorts">All Cohorts</string>
     <string name="general_all_clients">All Clients</string>
     <string name="general_display_all">DISPLAY ALL</string>
@@ -839,5 +839,44 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="general_available_online">Available online</string>
     <string name="general_selected">Selected</string>
     <string name="general_sort_by_status">Sort by status</string>
+    <string name="privacy_policy">mUzima for Health Providers app is built as an Open Source end-user app and is provided at no cost and is intended for use as is. If you’re using our application for an organization, you’re agreeing to this Privacy Policy on behalf of that organization. If you’re using our application to provide services, software, and content for some else, you’re agreeing to this Privacy Policy on their behalf.
+
+IF YOU OR THE ORGANIZATION YOU REPRESENT DON’T AGREE TO BE BOUND TO THIS PRIVACY POLICY, YOU SHOULD NOT USE OUR SERVICES.
+
+Information Collection and Use
+
+For a better experience, while using our application, we may require you to provide us with certain information. The information that we request will be retained by us and used as described in this privacy policy.
+
+The app does use third-party services that may collect information used to identify you. Links to the privacy policy of third party service providers used by the app:
+
+Google Play Services https://www.google.com/policies/privacy/
+Firebase Analytics https://firebase.google.com/policies/analytics
+Fabric https://fabric.io/privacy Crashlytics http://try.crashlytics.com/terms/privacy-policy.pdf
+
+
+Log Data
+
+We want to inform you that whenever you use our application, in case of an error in the app, we collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as device name, operating system version, the configuration of the app when utilizing our application, the time and date of your use of the application, and other statistics, such as location information, depending on your settings.
+
+Cookies
+
+Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers These are sent to your browser from the websites that you visit and are stored on your device’s internal memory. mUzima app does not use these “cookies” explicitly. However, the app may use third-party code and libraries that use “cookies” to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service.
+
+Location Data
+
+Some optional features provided by mUzima for Health Providers may require the use of location data. This Location Data is purely for the features localized in the implementation and in no way being shared with us or any third party. The application may use the location information if you give the app permissions to do so. You can enable or disable location services when you use our application at any time, through your device settings.
+
+Security
+
+We value your trust in our application. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and we cannot guarantee its absolute security. Please be aware that certain Personal Information and other information provided by you in connection with your use of the application may be stored on your device (even if we do not collect that information). You are solely responsible for maintaining the security of your device from unauthorized access.
+
+Changes to This Privacy Policy
+
+We may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted on this page.
+
+Contact Us
+
+If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us through mUzima.mobile@gmail.com
+    </string>
 
 </resources>

@@ -56,6 +56,7 @@
 
             <com.google.android.material.tabs.TabLayout
                 custom:tabSelectedTextColor="@color/primary_blue"
+                custom:tabMode="scrollable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

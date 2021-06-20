@@ -1,5 +1,9 @@
 package com.muzima.adapters.cohort;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.R;
 import com.muzima.api.model.CohortFilter;
+import com.muzima.utils.MuzimaPreferences;
+import com.muzima.utils.ThemeUtils;
 
 import java.util.List;
 
 public class CohortFilterAdapter extends RecyclerView.Adapter<CohortFilterAdapter.ViewHolder> {
 
+    private Context context;
     private List<CohortFilter> cohortList;
     private CohortFilterClickedListener filterClickedListener;
 
-    public CohortFilterAdapter(List<CohortFilter> cohortList, CohortFilterClickedListener filterClickedListener) {
+    public CohortFilterAdapter(Context context, List<CohortFilter> cohortList, CohortFilterClickedListener filterClickedListener) {
+        this.context = context;
         this.cohortList = cohortList;
         this.filterClickedListener = filterClickedListener;
     }
@@ -33,8 +41,25 @@ public class CohortFilterAdapter extends RecyclerView.Adapter<CohortFilterAdapte
     @Override
     public void onBindViewHolder(@NonNull CohortFilterAdapter.ViewHolder holder, int position) {
         CohortFilter cohort = cohortList.get(position);
-        holder.checkBox.setText(cohort.getCohort().getName());
+        if (cohort.getCohort() == null) {
+            holder.checkBox.setText(context.getResources().getString(R.string.general_all_clients));
+        } else {
+            holder.checkBox.setText(cohort.getCohort().getName());
+        }
         holder.checkBox.setChecked(cohort.isSelected());
+        if (cohort.isSelected())
+            holder.container.setBackgroundColor(context.getResources().getColor(R.color.hint_blue_opaque));
+        else {
+            if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(context))
+                holder.container.setBackgroundColor(context.getResources().getColor(R.color.primary_white));
+            else
+                holder.container.setBackgroundColor(context.getResources().getColor(R.color.primary_black));
+        }
+
+        if (!cohort.isCheckboxPadded()) {
+            applyCheckBoxPadding(holder.checkBox);
+            cohort.setCheckboxPadded(true);
+        }
     }
 
     @Override
@@ -63,5 +88,13 @@ public class CohortFilterAdapter extends RecyclerView.Adapter<CohortFilterAdapte
 
     public interface CohortFilterClickedListener {
         void onCohortFilterClicked(int position);
+    }
+
+    private void applyCheckBoxPadding(CheckBox checkBox) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        checkBox.setPadding(checkBox.getPaddingLeft() + (int) (20.0f * scale + 0.5f),
+                checkBox.getPaddingTop(),
+                checkBox.getPaddingRight(),
+                checkBox.getPaddingBottom());
     }
 }
