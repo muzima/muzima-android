@@ -40,6 +40,7 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
+import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.CohortsActionModeEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
@@ -80,7 +81,6 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     private Credentials credentials;
     private BackgroundQueryTask mBackgroundQueryTask;
     private MenuItem loadingMenuItem;
-    private View contentOverlay;
     private BottomSheetBehavior bottomSheetBehavior;
     private View bottomSheetView;
     private View closeBottomSheet;
@@ -216,7 +216,6 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
         closeBottomSheet = findViewById(R.id.bottom_sheet_close_view);
         filterOptionsRecyclerView = findViewById(R.id.dashboard_home_filter_recycler_view);
-        contentOverlay = findViewById(R.id.content_over_lay);
         cohortFilterAdapter = new CohortFilterAdapter(getApplicationContext(), cohortList, this);
         filterOptionsRecyclerView.setAdapter(cohortFilterAdapter);
         filterOptionsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -258,11 +257,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    contentOverlay.setVisibility(View.VISIBLE);
-                } else {
-                    contentOverlay.setVisibility(View.GONE);
-                }
+                EventBus.getDefault().post( new BottomSheetToggleEvent(newState));
             }
 
             @Override

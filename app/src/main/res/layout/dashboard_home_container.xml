@@ -19,6 +19,7 @@
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/dashboard_home_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -105,7 +106,7 @@
                             android:layout_marginEnd="4dp"
                             android:layout_marginStart="4dp"
                             android:padding="2dp"
-                            android:src="@drawable/barcode_icon" />
+                            android:src="@drawable/barcode_scanner" />
 
                         <ImageView
                             android:background="@drawable/border_button_sharp_gray"
@@ -115,7 +116,7 @@
                             android:layout_marginEnd="4dp"
                             android:layout_marginStart="4dp"
                             android:padding="2dp"
-                            android:src="@drawable/fingerprint_white" />
+                            android:src="@drawable/fingerprint" />
 
                         <ImageView
                             android:background="@drawable/border_button_sharp_gray"
@@ -135,7 +136,7 @@
                             android:layout_marginEnd="2dp"
                             android:layout_marginStart="2dp"
                             android:padding="2dp"
-                            android:src="@drawable/smartcard" />
+                            android:src="@drawable/debit_card" />
 
 
                     </LinearLayout>

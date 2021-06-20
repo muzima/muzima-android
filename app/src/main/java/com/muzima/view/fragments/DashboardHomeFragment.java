@@ -15,12 +15,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.patients.AllPatientsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
+import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
@@ -28,6 +31,7 @@ import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.tasks.FilterPatientsListTask;
 import com.muzima.tasks.LoadPatientsListService;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.view.ClientSummaryActivity;
 import com.muzima.view.patients.PatientsListActivity;
 
@@ -40,7 +44,6 @@ import java.util.Locale;
 
 public class DashboardHomeFragment extends Fragment implements LoadPatientsListService.PatientsListLoadedCallback,
         AllPatientsAdapter.OnPatientClickedListener {
-    private static final String TAG = "DashboardHomeFragment";
     private TextView incompleteFormsTextView;
     private TextView completeFormsTextView;
     private View searchPatientEditText;
@@ -60,6 +63,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
     private TextView noDataMsgTextView;
     private AllPatientsAdapter allPatientsAdapter;
     private ProgressBar progressBar;
+    private AppBarLayout appBarLayout;
     private TextView filterLabelTextView;
     private List<Patient> patients = new ArrayList<>();
 
@@ -135,6 +139,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         fragmentContentContainer = view.findViewById(R.id.dashboard_home_fragment_container);
         filterLabelTextView = view.findViewById(R.id.dashboard_home_filter_text_view);
         childContainer = view.findViewById(R.id.dashboard_home_fragment_child_container);
+        appBarLayout = view.findViewById(R.id.dashboard_home_app_bar);
         allPatientsAdapter = new AllPatientsAdapter(getActivity().getApplicationContext(), patients, this, getCurrentGPSLocation());
         listView.setAdapter(allPatientsAdapter);
         listView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
@@ -180,6 +185,21 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
             EventBus.getDefault().register(this);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void bottomNavigationToggleEvent(BottomSheetToggleEvent event){
+        if (event.getState() == BottomSheetBehavior.STATE_EXPANDED){
+            childContainer.setVisibility(View.VISIBLE);
+            appBarLayout.setBackgroundColor(getResources().getColor(R.color.hint_text_grey_opaque));
+        }else if (event.getState() == BottomSheetBehavior.STATE_HIDDEN){
+            childContainer.setVisibility(View.GONE);
+            if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(getActivity().getApplicationContext()))
+                appBarLayout.setBackgroundColor(getResources().getColor(R.color.primary_white));
+            else
+                appBarLayout.setBackgroundColor(getResources().getColor(R.color.primary_black));
+
         }
     }
 
