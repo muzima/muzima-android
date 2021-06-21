@@ -17,8 +17,10 @@ import com.muzima.R;
 import com.muzima.adapters.cohort.CohortRecyclerViewAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.model.cohort.CohortItem;
+import com.muzima.model.events.CohortSearchEvent;
 import com.muzima.model.events.CohortsActionModeEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
+import com.muzima.tasks.CohortSearchTask;
 import com.muzima.tasks.LoadAvailableCohortsTask;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,6 +59,33 @@ public class AvailableCohortsFragment extends Fragment implements CohortRecycler
         }
     }
 
+    @Subscribe
+    public void cohortSearchEvent(CohortSearchEvent event) {
+        searchCohorts(event.getSearchTerm());
+    }
+
+    private void searchCohorts(String searchTerm) {
+        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
+                .execute(new CohortSearchTask(getActivity().getApplicationContext(), searchTerm, new CohortSearchTask.CohortSearchCallback() {
+                    @Override
+                    public void onCohortSearchFinished(final List<Cohort> cohortList) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                List<Cohort> availableCohortsList = new ArrayList<>();
+                                for (Cohort cohort : cohortList) {
+                                    if(!((MuzimaApplication) getActivity().getApplicationContext()).getCohortController()
+                                            .isDownloaded(cohort)){
+                                        availableCohortsList.add(cohort);
+                                    }
+                                }
+                                renderCohortsList(availableCohortsList);
+                            }
+                        });
+                    }
+                }));
+    }
+
     private void loadData() {
         cohortListRecyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
@@ -67,16 +96,21 @@ public class AvailableCohortsFragment extends Fragment implements CohortRecycler
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                for (Cohort cohort : cohorts) {
-                                    allCohortsList.add(new CohortItem(cohort));
-                                }
-                                recyclerViewAdapter.notifyDataSetChanged();
-                                progressBar.setVisibility(View.GONE);
-                                cohortListRecyclerView.setVisibility(View.VISIBLE);
+                                renderCohortsList(cohorts);
                             }
                         });
                     }
                 }));
+    }
+
+    private void renderCohortsList(final List<Cohort> cohorts) {
+        allCohortsList.clear();
+        for (Cohort cohort : cohorts) {
+            allCohortsList.add(new CohortItem(cohort));
+        }
+        recyclerViewAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
+        cohortListRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void initializeResources(View view) {

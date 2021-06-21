@@ -29,8 +29,10 @@ import com.muzima.R;
 import com.muzima.adapters.cohort.CohortRecyclerViewAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.model.cohort.CohortItem;
+import com.muzima.model.events.CohortSearchEvent;
 import com.muzima.model.events.CohortsActionModeEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
+import com.muzima.tasks.CohortSearchTask;
 import com.muzima.tasks.LoadAllCohortsTask;
 
 import org.greenrobot.eventbus.EventBus;
@@ -66,6 +68,36 @@ public class AllCohortsListFragment extends Fragment implements CohortRecyclerVi
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Subscribe
+    public void cohortSearchEvent(CohortSearchEvent event){
+        searchCohorts(event.getSearchTerm());
+    }
+
+    private void searchCohorts(String searchTerm) {
+        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
+                .execute(new CohortSearchTask(getActivity().getApplicationContext(), searchTerm, new CohortSearchTask.CohortSearchCallback() {
+                    @Override
+                    public void onCohortSearchFinished(final List<Cohort> cohortList) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                renderCohortsList(cohortList);
+                            }
+                        });
+                    }
+                }));
+    }
+
+    private void renderCohortsList(final List<Cohort> cohorts) {
+        allCohortsList.clear();
+        for (Cohort cohort : cohorts) {
+            allCohortsList.add(new CohortItem(cohort));
+        }
+        recyclerViewAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
+        cohortListRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void loadData() {

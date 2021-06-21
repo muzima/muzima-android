@@ -68,6 +68,7 @@
             android:id="@+id/dashboard_forms_tab_layout"
             app:tabSelectedTextColor="@color/primary_blue"
             app:tabMode="scrollable"
+            android:paddingStart="14dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

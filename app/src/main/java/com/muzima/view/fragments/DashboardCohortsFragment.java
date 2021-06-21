@@ -1,12 +1,15 @@
 package com.muzima.view.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +20,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortsViewPagerAdapter;
 import com.muzima.model.events.CohortFilterActionEvent;
+import com.muzima.model.events.CohortSearchEvent;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ThemeUtils;
@@ -31,6 +35,7 @@ public class DashboardCohortsFragment extends Fragment {
     private CohortsViewPagerAdapter cohortPagerAdapter;
     private MenuItem menubarLoadButton;
     private boolean syncInProgress;
+    private EditText searchEditText;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
 
@@ -49,6 +54,31 @@ public class DashboardCohortsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        initalizeResources(view);
+    }
+
+    private void initalizeResources(View view) {
+        searchEditText = view.findViewById(R.id.dashboard_cohorts_search_edit_text);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (searchEditText.getText().toString() != null && !searchEditText.getText().toString().isEmpty())
+                    EventBus.getDefault().post(new CohortSearchEvent(searchEditText.getText().toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
 
     @Override
     public void onResume() {

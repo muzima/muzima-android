@@ -15,6 +15,7 @@
     xmlns:app="http://schemas.android.com/tools">
     <!-- The main content view -->
     <LinearLayout
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -57,6 +58,8 @@
             <com.google.android.material.tabs.TabLayout
                 custom:tabSelectedTextColor="@color/primary_blue"
                 custom:tabMode="scrollable"
+                android:paddingStart="14dp"
+                android:paddingEnd="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

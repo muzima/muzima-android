@@ -18,8 +18,10 @@ import com.muzima.R;
 import com.muzima.adapters.cohort.CohortRecyclerViewAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.model.cohort.CohortItem;
+import com.muzima.model.events.CohortSearchEvent;
 import com.muzima.model.events.CohortsActionModeEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
+import com.muzima.tasks.CohortSearchTask;
 import com.muzima.tasks.LoadDownloadedCohortsTask;
 
 import org.greenrobot.eventbus.EventBus;
@@ -52,6 +54,33 @@ public class DownloadedCohortsFragment extends Fragment implements CohortRecycle
         }
     }
 
+    @Subscribe
+    public void cohortSearchEvent(CohortSearchEvent event){
+        searchCohorts(event.getSearchTerm());
+    }
+
+    private void searchCohorts(String searchTerm) {
+        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
+                .execute(new CohortSearchTask(getActivity().getApplicationContext(), searchTerm, new CohortSearchTask.CohortSearchCallback() {
+                    @Override
+                    public void onCohortSearchFinished(final List<Cohort> cohortList) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                List<Cohort> downloadedList = new ArrayList<>();
+                                for (Cohort cohort : cohortList) {
+                                    if(((MuzimaApplication) getActivity().getApplicationContext()).getCohortController()
+                                            .isDownloaded(cohort)){
+                                        downloadedList.add(cohort);
+                                    }
+                                }
+                                renderCohortsList(downloadedList);
+                            }
+                        });
+                    }
+                }));
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         initializeResources(view);
@@ -68,16 +97,21 @@ public class DownloadedCohortsFragment extends Fragment implements CohortRecycle
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                for (Cohort cohort : cohorts) {
-                                    downloadedCohortsList.add(new CohortItem(cohort));
-                                }
-                                recyclerViewAdapter.notifyDataSetChanged();
-                                progressBar.setVisibility(View.GONE);
-                                cohortListRecyclerView.setVisibility(View.VISIBLE);
+                                renderCohortsList(cohorts);
                             }
                         });
                     }
                 }));
+    }
+
+    private void renderCohortsList(final List<Cohort> cohorts) {
+        downloadedCohortsList.clear();
+        for (Cohort cohort : cohorts) {
+            downloadedCohortsList.add(new CohortItem(cohort));
+        }
+        recyclerViewAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
+        cohortListRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void initializeResources(View view) {

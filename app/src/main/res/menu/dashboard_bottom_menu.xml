@@ -12,5 +12,5 @@
     <item
         android:id="@+id/main_dashboard_forms_menu"
         android:title="@string/general_forms"
-        android:icon="@drawable/files_outlined"/>
+        android:icon="@drawable/description"/>
 </menu>
