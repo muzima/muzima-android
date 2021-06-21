@@ -1,6 +1,8 @@
 package com.muzima.view.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.muzima.R;
 import com.muzima.adapters.viewpager.FormsViewPagerAdapter;
+import com.muzima.model.events.FormSearchEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class DashboardFormsFragment extends Fragment {
 
@@ -38,5 +43,21 @@ public class DashboardFormsFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
         viewPagerAdapter = new FormsViewPagerAdapter(getChildFragmentManager(), getActivity().getApplicationContext());
         viewPager.setAdapter(viewPagerAdapter);
+
+        searchFormsEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                EventBus.getDefault().post( new FormSearchEvent(searchFormsEditText.getText().toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
     }
 }
