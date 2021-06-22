@@ -30,9 +30,11 @@ import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.tasks.FilterPatientsListTask;
 import com.muzima.tasks.LoadPatientsListService;
+import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.view.ClientSummaryActivity;
+import com.muzima.view.forms.FormsListActivity;
 import com.muzima.view.patients.PatientsListActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -46,6 +48,8 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         AllPatientsAdapter.OnPatientClickedListener {
     private TextView incompleteFormsTextView;
     private TextView completeFormsTextView;
+    private View incompleteFormsView;
+    private View completeFormsView;
     private View searchPatientEditText;
     private View searchByBarCode;
     private View searchByFingerprint;
@@ -85,6 +89,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
 
     @Override
     public void onPatientsLoaded(final List<Patient> patientsList) {
+        if (getActivity() == null) return;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -140,10 +145,32 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         filterLabelTextView = view.findViewById(R.id.dashboard_home_filter_text_view);
         childContainer = view.findViewById(R.id.dashboard_home_fragment_child_container);
         appBarLayout = view.findViewById(R.id.dashboard_home_app_bar);
+        incompleteFormsView = view.findViewById(R.id.dashboard_forms_incomplete_forms_view);
+        completeFormsView = view.findViewById(R.id.dashboard_forms_complete_forms_view);
         allPatientsAdapter = new AllPatientsAdapter(getActivity().getApplicationContext(), patients, this, getCurrentGPSLocation());
         listView.setAdapter(allPatientsAdapter);
         listView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         listView.setVisibility(View.GONE);
+
+        incompleteFormsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), FormsListActivity.class);
+                intent.putExtra(FormsListActivity.FILTER_FORM_KEY, Constants.FORM_TYPE.INCOMPLETE_FORMS_KEY);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+        completeFormsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), FormsListActivity.class);
+                intent.putExtra(FormsListActivity.FILTER_FORM_KEY, Constants.FORM_TYPE.COMPLETE_FORMS_KEY);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
 
         favouriteListView.setOnClickListener(new View.OnClickListener() {
             @Override

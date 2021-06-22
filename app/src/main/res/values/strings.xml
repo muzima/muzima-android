@@ -881,5 +881,6 @@ If you have any questions or suggestions about our Privacy Policy, do not hesita
     <string name="gender_female_symbol">F</string>
     <string name="gender_male_symbole">M</string>
     <string name="general_filtered_list">Filtered List</string>
+    <string name="general_no_forms_available">No forms available</string>
 
 </resources>

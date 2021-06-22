@@ -460,4 +460,9 @@ public class Constants {
         public static final int COHORTS_DOWNLOAD_ACTION = 1211;
         public static final int FORMS_DOWNLOAD_ACTION = 1221;
     }
+
+    public class FORM_TYPE {
+        public static final String INCOMPLETE_FORMS_KEY = "incomplete_forms_key";
+        public static final String COMPLETE_FORMS_KEY = "complete_forms_key";
+    }
 }

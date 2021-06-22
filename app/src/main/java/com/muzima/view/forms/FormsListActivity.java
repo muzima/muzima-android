@@ -1,0 +1,118 @@
+package com.muzima.view.forms;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.appbar.MaterialToolbar;
+import com.muzima.MuzimaApplication;
+import com.muzima.R;
+import com.muzima.adapters.forms.CompletedFormsWithDataAdapter;
+import com.muzima.adapters.forms.FormsRecyclerViewAdapter;
+import com.muzima.model.CompleteFormWithPatientData;
+import com.muzima.tasks.LoadFormsWithDataTask;
+import com.muzima.utils.Constants;
+import com.muzima.utils.ThemeUtils;
+import com.muzima.view.MainDashboardActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class FormsListActivity extends AppCompatActivity implements FormsRecyclerViewAdapter.OnFormClickedListener {
+    public static final String FILTER_FORM_KEY = "form_filter_key";
+    private MaterialToolbar toolbar;
+    private ProgressBar progressBar;
+    private RecyclerView recyclerView;
+    private View notDataView;
+    private CompletedFormsWithDataAdapter recyclerViewAdapter;
+    private List<CompleteFormWithPatientData> formList = new ArrayList<>();
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        new ThemeUtils().onCreate(FormsListActivity.this);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_forms_list_layout);
+        initializeResources();
+        loadData();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            launchDashboard();
+        }
+        return true;
+    }
+
+    private void loadData() {
+        ((MuzimaApplication) getApplicationContext()).getExecutorService()
+                .execute(new LoadFormsWithDataTask(getApplicationContext(), getIntent().getStringExtra(FILTER_FORM_KEY), new LoadFormsWithDataTask.LoadFormsFinishedCallback() {
+                    @Override
+                    public void onFormsLoaded(final List<CompleteFormWithPatientData> forms) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(View.GONE);
+                                if (forms.isEmpty()) {
+                                    Toast.makeText(getApplicationContext(), "No items available", Toast.LENGTH_LONG).show();
+                                    notDataView.setVisibility(View.VISIBLE);
+                                    recyclerView.setVisibility(View.GONE);
+                                } else {
+                                    notDataView.setVisibility(View.GONE);
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    formList.clear();
+                                    formList.addAll(forms);
+                                    recyclerViewAdapter.notifyDataSetChanged();
+                                }
+
+                            }
+                        });
+                    }
+                }));
+    }
+
+    private void initializeResources() {
+        toolbar = findViewById(R.id.forms_list_toolbar);
+        recyclerView = findViewById(R.id.forms_list_recycler_view);
+        progressBar = findViewById(R.id.forms_list_progress);
+        notDataView = findViewById(R.id.no_data_view);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            if (getIntent().getStringExtra(FILTER_FORM_KEY) == Constants.FORM_TYPE.COMPLETE_FORMS_KEY)
+                getSupportActionBar().setTitle(getResources().getString(R.string.info_complete_form));
+            else if (getIntent().getStringExtra(FILTER_FORM_KEY) == Constants.FORM_TYPE.INCOMPLETE_FORMS_KEY)
+                getSupportActionBar().setTitle(getResources().getString(R.string.info_complete_form));
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        recyclerViewAdapter = new CompletedFormsWithDataAdapter(getApplicationContext(), formList, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setAdapter(recyclerViewAdapter);
+    }
+
+    @Override
+    public void onFormClicked(int position) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        launchDashboard();
+    }
+
+    private void launchDashboard() {
+        startActivity(new Intent(getApplicationContext(), MainDashboardActivity.class));
+        finish();
+    }
+}

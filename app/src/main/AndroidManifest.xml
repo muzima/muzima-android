@@ -491,5 +491,6 @@
         <activity android:name=".view.TermsAndPolicyActivity" />
         <activity android:name=".view.MainDashboardActivity" />
         <activity android:name=".view.ClientSummaryActivity" />
+        <activity android:name=".view.forms.FormsListActivity" />
     </application>
 </manifest>
