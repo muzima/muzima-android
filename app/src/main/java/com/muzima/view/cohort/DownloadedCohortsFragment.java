@@ -55,8 +55,9 @@ public class DownloadedCohortsFragment extends Fragment implements CohortRecycle
     }
 
     @Subscribe
-    public void cohortSearchEvent(CohortSearchEvent event){
-        searchCohorts(event.getSearchTerm());
+    public void cohortSearchEvent(CohortSearchEvent event) {
+        if (event.getPage() == 1)
+            searchCohorts(event.getSearchTerm());
     }
 
     private void searchCohorts(String searchTerm) {
@@ -69,8 +70,8 @@ public class DownloadedCohortsFragment extends Fragment implements CohortRecycle
                             public void run() {
                                 List<Cohort> downloadedList = new ArrayList<>();
                                 for (Cohort cohort : cohortList) {
-                                    if(((MuzimaApplication) getActivity().getApplicationContext()).getCohortController()
-                                            .isDownloaded(cohort)){
+                                    if (((MuzimaApplication) getActivity().getApplicationContext()).getCohortController()
+                                            .isDownloaded(cohort)) {
                                         downloadedList.add(cohort);
                                     }
                                 }

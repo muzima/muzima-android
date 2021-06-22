@@ -32,6 +32,7 @@ import com.muzima.R;
 import com.muzima.adapters.MainDashboardAdapter;
 import com.muzima.adapters.cohort.CohortFilterAdapter;
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.Form;
 import com.muzima.api.model.User;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
@@ -43,11 +44,14 @@ import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.CohortsActionModeEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
+import com.muzima.model.events.FormsActionModeEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.DownloadCohortsTask;
+import com.muzima.tasks.DownloadFormsTask;
 import com.muzima.tasks.LoadDownloadedCohortsTask;
+import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.preferences.SettingsActivity;
@@ -86,6 +90,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     private CohortFilterAdapter cohortFilterAdapter;
     private RecyclerView filterOptionsRecyclerView;
     private List<Cohort> selectedCohorts = new ArrayList<>();
+    private List<Form> selectedForms = new ArrayList<>();
     private List<CohortFilter> cohortList = new ArrayList<>();
     private List<CohortFilter> selectedCohortFilters = new ArrayList<>();
 
@@ -145,10 +150,16 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     @Subscribe
     public void onCohortDownloadActionModeEvent(CohortsActionModeEvent actionModeEvent) {
         selectedCohorts = actionModeEvent.getSelectedCohorts();
-        initActionMode();
+        initActionMode(Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION);
     }
 
-    private void initActionMode() {
+    @Subscribe
+    public void onFormsDownloadActionModeEvent(FormsActionModeEvent actionModeEvent) {
+        selectedForms = actionModeEvent.getSelectedFormsList();
+        initActionMode(Constants.ACTION_MODE_EVENT.FORMS_DOWNLOAD_ACTION);
+    }
+
+    private void initActionMode(final int action) {
         actionModeCallback = new ActionMode.Callback() {
 
             @Override
@@ -170,21 +181,39 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
                     loadingMenuItem.setVisible(true);
                     menuItem.setVisible(false);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
-                    ((MuzimaApplication) getApplicationContext()).getExecutorService()
-                            .execute(new DownloadCohortsTask(getApplicationContext(), selectedCohorts, new DownloadCohortsTask.CohortDownloadCallback() {
-                                @Override
-                                public void callbackDownload() {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            actionMode.finish();
-                                            loadingMenuItem.setVisible(false);
-                                            EventBus.getDefault().post(new DestroyActionModeEvent());
-                                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_finish), Toast.LENGTH_LONG).show();
-                                        }
-                                    });
-                                }
-                            }));
+                    if (action == Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION) {
+                        ((MuzimaApplication) getApplicationContext()).getExecutorService()
+                                .execute(new DownloadCohortsTask(getApplicationContext(), selectedCohorts, new DownloadCohortsTask.CohortDownloadCallback() {
+                                    @Override
+                                    public void callbackDownload() {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                actionMode.finish();
+                                                loadingMenuItem.setVisible(false);
+                                                EventBus.getDefault().post(new DestroyActionModeEvent());
+                                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_finish), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
+                                }));
+                    } else if (action == Constants.ACTION_MODE_EVENT.FORMS_DOWNLOAD_ACTION) {
+                        ((MuzimaApplication) getApplicationContext()).getExecutorService()
+                                .execute(new DownloadFormsTask(getApplicationContext(), selectedForms, new DownloadFormsTask.FormsDownloadCallback() {
+                                    @Override
+                                    public void formsDownloadFinished() {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                actionMode.finish();
+                                                loadingMenuItem.setVisible(false);
+                                                EventBus.getDefault().post(new DestroyActionModeEvent());
+                                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_finish), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
+                                }));
+                    }
                 }
                 return true;
             }
@@ -195,7 +224,10 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         };
 
         actionMode = startActionMode(actionModeCallback);
-        actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedCohorts.size(), getResources().getString(R.string.general_selected)));
+        if (action == Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION)
+            actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedCohorts.size(), getResources().getString(R.string.general_selected)));
+        if (action == Constants.ACTION_MODE_EVENT.FORMS_DOWNLOAD_ACTION)
+            actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedForms.size(), getResources().getString(R.string.general_selected)));
     }
 
     public void hideProgressbar() {

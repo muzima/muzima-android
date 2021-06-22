@@ -1,33 +1,48 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.tags.TagsAdapter;
 import com.muzima.api.model.Form;
+import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
+import com.muzima.model.FormItem;
+import com.muzima.utils.MuzimaPreferences;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecyclerViewAdapter.ViewHolder> {
+    private static final String TAG = "FormsRecyclerViewAdapte";
     private Context context;
-    private List<Form> formList;
+    private List<FormItem> formList;
+    private List<FormItem> itemsCopy = new ArrayList<>();
     private OnFormClickedListener onFormClickedListener;
 
-    public FormsRecyclerViewAdapter(Context context, List<Form> formList, OnFormClickedListener onFormClickedListener) {
+    public FormsRecyclerViewAdapter(Context context, List<FormItem> formList, OnFormClickedListener onFormClickedListener) {
         this.context = context;
         this.formList = formList;
         this.onFormClickedListener = onFormClickedListener;
+    }
+
+    public void setItemsCopy(List<FormItem> itemsCopy, String source) {
+        Log.e(TAG, "setItemsCopy: itemsCopy size " + itemsCopy.size() + " source " + source);
+        this.itemsCopy = itemsCopy;
     }
 
     @NonNull
@@ -40,13 +55,27 @@ public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecycler
     @Override
     public void onBindViewHolder(@NonNull FormsRecyclerViewAdapter.ViewHolder holder, int position) {
         try {
-            Form form = formList.get(position);
-            holder.titleTextView.setText(form.getName());
-            holder.descriptionTextView.setText(form.getDescription());
-            holder.formVersionCodeTextView.setText(String.format(Locale.getDefault(), "v%s",form.getVersion()));
+            FormItem form = formList.get(position);
+            holder.titleTextView.setText(form.getForm().getName());
+            holder.descriptionTextView.setText(form.getForm().getDescription());
+            holder.formVersionCodeTextView.setText(String.format(Locale.getDefault(), "v%s", form.getForm().getVersion()));
             if (((MuzimaApplication) context.getApplicationContext()).getFormController()
-                    .isFormDownloaded(form))
+                    .isFormDownloaded(form.getForm()))
                 holder.iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_downloaded));
+            TagsAdapter adapter = new TagsAdapter(form.getForm().getTags());
+            holder.tagsListView.setLayoutManager(new LinearLayoutManager(context.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+            holder.tagsListView.setAdapter(adapter);
+            if (form.getForm().getTags().length > 0)
+                holder.tagsListView.setVisibility(View.VISIBLE);
+            if (form.isSelected())
+                holder.container.setBackgroundColor(context.getResources().getColor(R.color.hint_blue_opaque));
+            else {
+                if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(context))
+                    holder.container.setBackgroundColor(context.getResources().getColor(R.color.primary_white));
+                else
+                    holder.container.setBackgroundColor(context.getResources().getColor(R.color.primary_black));
+            }
+
         } catch (FormController.FormFetchException ex) {
             ex.printStackTrace();
         }
@@ -61,7 +90,7 @@ public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecycler
         private final View container;
         private final TextView titleTextView;
         private final TextView descriptionTextView;
-        private final ListView tagsListView;
+        private final RecyclerView tagsListView;
         private final ImageView iconImageView;
         private final TextView formVersionCodeTextView;
         private final OnFormClickedListener onFormClickedListener;
@@ -86,5 +115,43 @@ public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecycler
 
     public interface OnFormClickedListener {
         void onFormClicked(int position);
+    }
+
+    public void filter(String searchKey) {
+        Log.e(TAG, "filter: key " + searchKey);
+        formList.clear();
+        Log.e(TAG, "filter: items copy size " + itemsCopy.size());
+
+        for (FormItem formItem : itemsCopy) {
+            if (formItem.getForm().getName().contains(searchKey) ||
+                    formItem.getForm().getDescription().contains(searchKey) ||
+                    formItem.getForm().getDiscriminator().contains(searchKey)) {
+                Log.e(TAG, "filter: match found " + formItem.getForm().getName());
+                formList.add(formItem);
+            }
+        }
+
+        Log.e(TAG, "filter: permutation run 1 result size " + formList.size());
+
+        if (formList.isEmpty()) {
+            for (FormItem formItem : itemsCopy) {
+                boolean tagsMatch = false;
+                for (Tag tag : formItem.getForm().getTags()) {
+                    if (tag.getName().startsWith(searchKey))
+                        tagsMatch = true;
+                }
+
+                if (tagsMatch)
+                    formList.add(formItem);
+            }
+        }
+
+        Log.e(TAG, "filter: permutation run 2 result size " + formList.size());
+
+
+        if (formList.isEmpty())
+            formList.addAll(itemsCopy);
+
+        notifyDataSetChanged();
     }
 }

@@ -8,10 +8,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.muzima.R;
-import com.muzima.view.forms.AllAvailableFormsListFragment;
-import com.muzima.view.forms.CompleteFormsListFragment;
-import com.muzima.view.forms.IncompleteFormsListFragment;
 import com.muzima.view.fragments.forms.AllFormsListFragment;
+import com.muzima.view.fragments.forms.AvailableFormsFragment;
+import com.muzima.view.fragments.forms.DownloadedFormsFragment;
 
 public class FormsViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -27,9 +26,9 @@ public class FormsViewPagerAdapter extends FragmentPagerAdapter {
         if (position == 0){
             return new AllFormsListFragment();
         }else if (position == 1){
-            return new IncompleteFormsListFragment();
+            return new DownloadedFormsFragment();
         }else if (position == 2){
-            return new CompleteFormsListFragment();
+            return new AvailableFormsFragment();
         }else
             return null;
     }

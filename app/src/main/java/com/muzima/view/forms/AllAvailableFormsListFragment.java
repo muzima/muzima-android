@@ -51,6 +51,7 @@ import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.location.LocationListActivity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -91,24 +92,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        try {
-            EventBus.getDefault().register(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void formsSearchEvent(FormSearchEvent event){
-        searchForms(event.getSearchTerm());
-    }
-
-    private void searchForms(String searchTerm) {
-//        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
-//                .execute( new FormSearchTask(searchTerm));
-    }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

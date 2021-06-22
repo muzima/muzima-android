@@ -3,9 +3,7 @@ package com.muzima.view.fragments;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +17,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortsViewPagerAdapter;
-import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.CohortSearchEvent;
+import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.cohort.SyncCohortsIntent;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 public class DashboardCohortsFragment extends Fragment {
 
@@ -56,10 +53,10 @@ public class DashboardCohortsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        initalizeResources(view);
+        initializeResources(view);
     }
 
-    private void initalizeResources(View view) {
+    private void initializeResources(final View view) {
         searchEditText = view.findViewById(R.id.dashboard_cohorts_search_edit_text);
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -70,7 +67,7 @@ public class DashboardCohortsFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (searchEditText.getText().toString() != null && !searchEditText.getText().toString().isEmpty())
-                    EventBus.getDefault().post(new CohortSearchEvent(searchEditText.getText().toString()));
+                    EventBus.getDefault().post(new CohortSearchEvent(searchEditText.getText().toString(), viewPager.getCurrentItem()));
             }
 
             @Override
@@ -145,6 +142,22 @@ public class DashboardCohortsFragment extends Fragment {
         viewPager = view.findViewById(R.id.pager);
         cohortPagerAdapter = new CohortsViewPagerAdapter(getChildFragmentManager(), getActivity().getApplicationContext());
         viewPager.setAdapter(cohortPagerAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                searchEditText.setText(Constants.EMPTY_STRING);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void syncCohortsInBackgroundService() {

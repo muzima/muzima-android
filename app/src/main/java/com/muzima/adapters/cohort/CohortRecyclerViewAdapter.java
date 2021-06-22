@@ -10,11 +10,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.tags.TagsAdapter;
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.Tag;
 import com.muzima.model.cohort.CohortItem;
 
 import java.util.ArrayList;
@@ -61,11 +64,14 @@ public class CohortRecyclerViewAdapter extends RecyclerView.Adapter<CohortRecycl
                 holder.container.setBackgroundColor(context.getResources().getColor(R.color.list_selection_background));
         }
 
-        List<String> tags = new ArrayList<>();
-        tags.add("Tag1");
-        tags.add("Tag2");
-        CohortTagsAdapter tagsAdapter = new CohortTagsAdapter(context.getApplicationContext(), R.layout.item_cohort_tags_layout, tags);
+        Tag tag1 = new Tag();
+        tag1.setName("Tag1");
+        Tag tag2 = new Tag();
+        tag2.setName("Tag2");
+        Tag[] tags = new Tag[]{tag1, tag2};
+        TagsAdapter tagsAdapter = new TagsAdapter(tags);
         holder.tagsListView.setAdapter(tagsAdapter);
+        holder.tagsListView.setLayoutManager(new LinearLayoutManager(context.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
 
     }
 
@@ -78,7 +84,7 @@ public class CohortRecyclerViewAdapter extends RecyclerView.Adapter<CohortRecycl
         private final View container;
         private final TextView titleTextView;
         private final TextView descriptionTextView;
-        private final ListView tagsListView;
+        private final RecyclerView tagsListView;
         private final ImageView iconImageView;
         private final TextView clientsCountTextView;
         private final OnCohortClickedListener cohortClickedListener;

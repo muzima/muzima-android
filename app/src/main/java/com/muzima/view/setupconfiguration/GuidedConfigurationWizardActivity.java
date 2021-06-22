@@ -50,11 +50,8 @@ import com.muzima.util.JsonUtils;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import com.muzima.utils.Constants.SetupLogConstants;
-import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.TermsAndPolicyActivity;
-import com.muzima.view.fragments.OnboardScreenActivity;
 
 import net.minidev.json.JSONObject;
 
@@ -63,7 +60,6 @@ import java.util.List;
 
 @SuppressWarnings("staticFieldLeak")
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
-    private static final String TAG = "GuidedConfigurationWiza";
     public static final String SETUP_CONFIG_UUID_INTENT_KEY = "SETUP_CONFIG_UUID";
     private SetupConfigurationTemplate setupConfigurationTemplate;
     private String progressUpdateMessage;

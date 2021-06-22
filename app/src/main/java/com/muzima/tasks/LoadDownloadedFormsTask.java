@@ -9,12 +9,12 @@ import com.muzima.controller.FormController;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoadAllFormsTask implements Runnable {
+public class LoadDownloadedFormsTask implements Runnable {
     private Context context;
     private String searchKey;
-    private FormsLoadedCallback callback;
+    private LoadAllFormsTask.FormsLoadedCallback callback;
 
-    public LoadAllFormsTask(Context context, String searchKey, FormsLoadedCallback callback) {
+    public LoadDownloadedFormsTask(Context context, String searchKey, LoadAllFormsTask.FormsLoadedCallback callback) {
         this.context = context;
         this.searchKey = searchKey;
         this.callback = callback;
@@ -23,15 +23,21 @@ public class LoadAllFormsTask implements Runnable {
     @Override
     public void run() {
         try {
-            if (searchKey == null || searchKey.isEmpty())
-                callback.onFormsLoaded(((MuzimaApplication) context.getApplicationContext()).getFormController()
-                        .getAllAvailableForms());
-            else {
+            if (searchKey == null || searchKey.isEmpty()) {
+                List<Form> forms = new ArrayList<>();
+                for (Form form : ((MuzimaApplication) context.getApplicationContext()).getFormController()
+                        .getAllAvailableForms()) {
+                    if (((MuzimaApplication) context.getApplicationContext()).getFormController().isFormDownloaded(form))
+                        forms.add(form);
+                }
+                callback.onFormsLoaded(forms);
+            }else {
                 List<Form> searchResult = new ArrayList<>();
                 for (Form allAvailableForm : ((MuzimaApplication) context.getApplicationContext()).getFormController()
                         .getAllAvailableForms()) {
                     if (allAvailableForm.getName().toLowerCase().startsWith(searchKey.toLowerCase()) || allAvailableForm.getDescription().toLowerCase().startsWith(searchKey.toLowerCase())) {
-                        searchResult.add(allAvailableForm);
+                        if (((MuzimaApplication) context.getApplicationContext()).getFormController().isFormDownloaded(allAvailableForm))
+                            searchResult.add(allAvailableForm);
                     }
                 }
                 callback.onFormsLoaded(searchResult);

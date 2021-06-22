@@ -48,6 +48,7 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS = "json-individual-obs";
     public static final String FORM_JSON_DISCRIMINATOR_RELATIONSHIP = "json-relationship";
     public static final String FORM_JSON_DISCRIMINATOR_PERSON_UPDATE = "json-person-demographics-update";
+    public static final String EMPTY_STRING = "";
 
     private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
     private static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
@@ -455,4 +456,8 @@ public class Constants {
         }
     }
 
+    public class ACTION_MODE_EVENT {
+        public static final int COHORTS_DOWNLOAD_ACTION = 1211;
+        public static final int FORMS_DOWNLOAD_ACTION = 1221;
+    }
 }

@@ -1,7 +1,6 @@
 package com.muzima.view.fragments.forms;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.model.events.FormSearchEvent;
 import com.muzima.model.events.FormsActionModeEvent;
 import com.muzima.tasks.LoadAllFormsTask;
+import com.muzima.tasks.LoadAvailableFormsTask;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,7 +29,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllFormsListFragment extends Fragment implements FormsRecyclerViewAdapter.OnFormClickedListener {
+public class AvailableFormsFragment extends Fragment implements FormsRecyclerViewAdapter.OnFormClickedListener {
     private RecyclerView formsRecyclerView;
     private ProgressBar progressBar;
     private FormsRecyclerViewAdapter recyclerViewAdapter;
@@ -44,12 +44,6 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        initializeResources(view);
-        loadData(null);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         try {
@@ -60,8 +54,8 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
     }
 
     @Subscribe
-    public void formsSearchEvent(FormSearchEvent event){
-        if (event.getPage() == 0)
+    public void formsSearchEvent(FormSearchEvent event) {
+        if (event.getPage() == 2)
             searchForms(event.getSearchTerm());
     }
 
@@ -70,7 +64,7 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
     }
 
     @Subscribe
-    public void actionModeClosedEvent(DestroyActionModeEvent event){
+    public void actionModeClosedEvent(DestroyActionModeEvent event) {
         selectedForms.clear();
         for (FormItem formItem : formList) {
             formItem.setSelected(false);
@@ -78,21 +72,26 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
         recyclerViewAdapter.notifyDataSetChanged();
     }
 
-    private void loadData(String searchKey) {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        initializeResources(view);
+        loadData(null);
+    }
+
+    private void loadData(String searchTerm) {
         ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
-                .execute(new LoadAllFormsTask(getActivity().getApplicationContext(),searchKey, new LoadAllFormsTask.FormsLoadedCallback() {
+                .execute(new LoadAvailableFormsTask(getActivity().getApplicationContext(), searchTerm, new LoadAllFormsTask.FormsLoadedCallback() {
                     @Override
                     public void onFormsLoaded(final List<Form> forms) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                formList.clear();
                                 progressBar.setVisibility(View.GONE);
                                 for (Form form : forms) {
                                     formList.add(new FormItem(form, false));
                                 }
                                 recyclerViewAdapter.notifyDataSetChanged();
-                                recyclerViewAdapter.setItemsCopy(formList, "AllFormsCallback");
+                                recyclerViewAdapter.setItemsCopy(formList, "Available forms callback");
                             }
                         });
                     }
@@ -117,6 +116,6 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
             selectedForms.add(form.getForm());
         else
             selectedForms.remove(form.getForm());
-        EventBus.getDefault().post( new FormsActionModeEvent(selectedForms));
+        EventBus.getDefault().post(new FormsActionModeEvent(selectedForms));
     }
 }
