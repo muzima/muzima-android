@@ -553,7 +553,7 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="info_settings_not_download">No settings downloaded</string>
     <string name="info_settings_update">Updating settings</string>
     <string name="info_setup_complete_fail">Setup completed with some failure</string>
-    <string name="info_setup_complete_success">Setup completed successfully</string>
+    <string name="info_setup_complete_success">Setup completed</string>
     <string name="info_setup_config_load">Loading Setup Configs</string>
     <string name="info_setup_configuration_template_download_in_progress">Updating Setup Configs</string>
     <string name="info_setup_configuration_templates_downloaded" formatted="false">Downloaded %d setup configuration templates</string>
@@ -878,5 +878,8 @@ Contact Us
 
 If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us through mUzima.mobile@gmail.com
     </string>
+    <string name="gender_female_symbol">F</string>
+    <string name="gender_male_symbole">M</string>
+    <string name="general_filtered_list">Filtered List</string>
 
 </resources>

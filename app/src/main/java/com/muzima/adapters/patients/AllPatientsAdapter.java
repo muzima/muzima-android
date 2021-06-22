@@ -2,6 +2,7 @@ package com.muzima.adapters.patients;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class AllPatientsAdapter extends RecyclerView.Adapter<AllPatientsAdapter.ViewHolder> {
+    private static final String TAG = "AllPatientsAdapter";
     private Context context;
     private List<Patient> patientList;
     private OnPatientClickedListener patientClickedListener;
@@ -58,6 +60,12 @@ public class AllPatientsAdapter extends RecyclerView.Adapter<AllPatientsAdapter.
         if (tagsArray.length == 0) holder.tagListView.setVisibility(View.GONE);
         holder.patientNameTextView.setText(patient.getDisplayName());
         holder.identifierTextView.setText(patient.getIdentifier());
+        Log.e(TAG, "onBindViewHolder: patient gender " + patient.getGender());
+        if (patient.getGender().equalsIgnoreCase(context.getResources().getString(R.string.gender_female_symbol)))
+            holder.genderImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.gender_female));
+        else if (patient.getGender().equalsIgnoreCase(context.getResources().getString(R.string.gender_male_symbole)))
+            holder.genderImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.gender_male));
+
         holder.ageTextView.setText(String.format(Locale.getDefault(), "%s yrs", DateUtils.calculateAge(patient.getBirthdate())));
         holder.dobTextView.setText(String.format(Locale.getDefault(), "%s %s", "DOB:", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
                 .format(patient.getBirthdate())));

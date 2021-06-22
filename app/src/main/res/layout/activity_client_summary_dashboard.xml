@@ -6,13 +6,29 @@
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
-        app:title="@string/title_activity_client_summary"
+    <com.google.android.material.appbar.AppBarLayout
         android:elevation="12dp"
-        android:id="@+id/client_summary_dashboard_toolbar"
-        android:background="?attr/primaryBackgroundColor"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"/>
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                app:title="@string/title_activity_client_summary"
+                android:id="@+id/client_summary_dashboard_toolbar"
+                android:background="?attr/primaryBackgroundColor"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"/>
+
+            <include layout="@layout/item_patients_list"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,8 +45,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <include layout="@layout/item_patients_list_multi_checkable"/>
 
             <HorizontalScrollView
                 android:background="?attr/primaryBackgroundColor"

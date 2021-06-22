@@ -1,4 +1,6 @@
-package com.muzima.api.model;
+package com.muzima.model;
+
+import com.muzima.api.model.Cohort;
 
 public class CohortFilter {
     private Cohort cohort;

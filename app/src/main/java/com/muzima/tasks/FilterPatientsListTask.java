@@ -5,6 +5,7 @@ import android.content.Context;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
+import com.muzima.model.CohortFilter;
 import com.muzima.model.events.CohortFilterActionEvent;
 
 import java.util.List;
@@ -24,13 +25,15 @@ public class FilterPatientsListTask implements Runnable {
     @Override
     public void run() {
         try {
-            if (event.getFilter() == null && !event.isNoSelectionEvent()) {
-                patientsListFilterCallback.onPatientsFiltered(((MuzimaApplication) context.getApplicationContext()).getPatientController()
-                        .getAllPatients());
-            } else if (event.getFilter() != null && !event.isNoSelectionEvent()) {
-                List<Patient> patientList = ((MuzimaApplication) context.getApplicationContext()).getPatientController()
-                        .getPatientsForCohorts(new String[]{event.getFilter().getUuid()});
-                patientsListFilterCallback.onPatientsFiltered(patientList);
+            for (CohortFilter filter : event.getFilters()) {
+                if (filter.getCohort() == null && !event.isNoSelectionEvent()) {
+                    patientsListFilterCallback.onPatientsFiltered(((MuzimaApplication) context.getApplicationContext()).getPatientController()
+                            .getAllPatients());
+                } else if (filter.getCohort() != null && !event.isNoSelectionEvent()) {
+                    List<Patient> patientList = ((MuzimaApplication) context.getApplicationContext()).getPatientController()
+                            .getPatientsForCohorts(new String[]{filter.getCohort().getUuid()});
+                    patientsListFilterCallback.onPatientsFiltered(patientList);
+                }
             }
         } catch (PatientController.PatientLoadException ex) {
             ex.printStackTrace();

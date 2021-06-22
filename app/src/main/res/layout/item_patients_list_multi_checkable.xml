@@ -9,115 +9,136 @@
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_patient_container"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:orientation="vertical"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ListView
-        android:id="@+id/tag_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"/>
+    <ImageView
+        android:id="@+id/genderImg"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="top"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_alignParentStart="true"
+        android:contentDescription="@string/gender_image_content_description"
+        android:src="@drawable/gender_male" />
 
     <LinearLayout
-        android:id="@+id/item_patient_details"
+        android:id="@+id/patient_details_container"
+        android:layout_toEndOf="@+id/genderImg"
+        android:orientation="vertical"
+        android:layout_marginStart="18dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="2dp">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/genderImg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:contentDescription="@string/gender_image_content_description"
-            android:src="@drawable/ic_male"
-            android:tint="@color/primary_blue" />
+        <ListView
+            android:id="@+id/tag_list_view"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/identifier"
+                style="@style/ListDescription"
+                android:text="ident"
+                android:textColor="?attr/primaryTextColor"
+                android:layout_width="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="12dp"
+                android:gravity="end" />
+
+        </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/item_patient_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginBottom="3dp"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="7dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/name"
-                    style="@style/ListHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/identifier"
-                    style="@style/ListDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="12dp"
-                    android:gravity="right" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_alignParentStart="true"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="7dp"
+                    android:layout_marginEnd="6dp"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/dateOfBirth"
-                        style="@style/ListDescription"
+                        android:id="@+id/name"
+                        style="@style/ListHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_alignParentStart="true"
                         android:layout_width="wrap_content"
-                        android:layout_marginEnd="6dp" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="7dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/dateOfBirth"
+                            style="@style/ListDescription"
+                            android:layout_width="wrap_content"
+                            android:layout_marginEnd="6dp" />
+
+                        <TextView
+                            android:id="@+id/distanceToClientAddress"
+                            style="@style/ListDescription"
+                            android:layout_width="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:gravity="right" />
+
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/distanceToClientAddress"
-                        style="@style/ListDescription"
+                        android:id="@+id/age_text_label"
+                        android:layout_marginEnd="12dp"
+                        android:paddingBottom="4dp"
+                        android:textSize="12sp"
+                        android:gravity="end"
+                        android:text="24 yrs"
+                        android:textColor="?attr/primaryTextColor"
+                        android:layout_alignParentEnd="true"
                         android:layout_width="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:gravity="right" />
+                        android:layout_height="wrap_content"/>
 
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/age_text_label"
-                    android:layout_marginEnd="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingBottom="4dp"
-                    android:textSize="12sp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-            </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
     <View
+        android:layout_below="@+id/patient_details_container"
         android:layout_width="match_parent"
-        android:layout_height="0.4dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="6dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
-        android:background="@color/white_smoke" />
+        android:background="@color/white_smoke_transparent" />
 
-</LinearLayout>
+
+</RelativeLayout>
 
 

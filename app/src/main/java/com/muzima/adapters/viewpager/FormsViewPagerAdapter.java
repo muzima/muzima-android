@@ -11,6 +11,7 @@ import com.muzima.R;
 import com.muzima.view.forms.AllAvailableFormsListFragment;
 import com.muzima.view.forms.CompleteFormsListFragment;
 import com.muzima.view.forms.IncompleteFormsListFragment;
+import com.muzima.view.fragments.forms.AllFormsListFragment;
 
 public class FormsViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -24,7 +25,7 @@ public class FormsViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0){
-            return new AllAvailableFormsListFragment();
+            return new AllFormsListFragment();
         }else if (position == 1){
             return new IncompleteFormsListFragment();
         }else if (position == 2){

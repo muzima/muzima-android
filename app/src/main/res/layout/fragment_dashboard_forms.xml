@@ -33,31 +33,6 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:paddingStart="6dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginStart="12dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:text="@string/general_sort_by_status"
-            android:layout_gravity="center_vertical"
-            android:textSize="14sp"
-            android:textColor="?attr/primaryTextColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <ImageView
-            android:src="@drawable/ic_action_arrow_down_dark"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="6dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/dashboard_forms_view_pager"
         android:layout_marginTop="4dp"

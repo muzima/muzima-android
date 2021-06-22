@@ -1,22 +1,24 @@
 package com.muzima.model.events;
 
-import com.muzima.api.model.Cohort;
+import com.muzima.model.CohortFilter;
+
+import java.util.List;
 
 public class CohortFilterActionEvent {
-    private Cohort filter;
+    private List<CohortFilter> filters;
     private boolean noSelectionEvent;
 
-    public CohortFilterActionEvent(Cohort filter, boolean noSelectionEvent) {
-        this.filter = filter;
+    public CohortFilterActionEvent(List<CohortFilter> filters, boolean noSelectionEvent) {
+        this.filters = filters;
         this.noSelectionEvent = noSelectionEvent;
     }
 
-    public Cohort getFilter() {
-        return filter;
+    public List<CohortFilter> getFilters() {
+        return filters;
     }
 
-    public void setFilter(Cohort filter) {
-        this.filter = filter;
+    public void setFilters(List<CohortFilter> filters) {
+        this.filters = filters;
     }
 
     public boolean isNoSelectionEvent() {

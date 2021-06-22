@@ -72,10 +72,12 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private GuidedSetupActionLogAdapter setupActionLogAdapter;
     private ProgressBar mainProgressbar;
     private ListView setupLogsListView;
+    private View setupLogsContainer;
     private TextView initialSetupStatusTextView;
     private ProgressBar secondaryProgressBar;
     private Button finishSetupButton;
     private ViewPager viewPager;
+    private ViewPager viewPagerLg;
     private CountDownTimer countDownTimer;
     private ImageView firstDotView;
     private ImageView secondDotView;
@@ -99,6 +101,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             public void onTick(long tick) {
                 if (pageCount > 3) pageCount = 0;
                 viewPager.setCurrentItem(pageCount);
+                viewPagerLg.setCurrentItem(pageCount);
                 updateStepper(pageCount);
                 pageCount = pageCount + 1;
             }
@@ -141,8 +144,10 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         firstDotView = findViewById(R.id.first_page_dot_view);
         secondDotView = findViewById(R.id.second_page_dot_view);
         thirdDotView = findViewById(R.id.third_page_dot_view);
+        viewPagerLg = findViewById(R.id.setup_progress_background_lg);
         guidedSetupCardsViewPagerAdapter = new GuidedSetupCardsViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(guidedSetupCardsViewPagerAdapter);
+        viewPagerLg.setAdapter(guidedSetupCardsViewPagerAdapter);
         finishSetupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,10 +159,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         });
         setupActionLogAdapter = new GuidedSetupActionLogAdapter(this, R.id.setup_logs_list);
         setupLogsListView = findViewById(R.id.setup_logs_list);
+        setupLogsContainer = findViewById(R.id.setup_logs_layout);
         setupLogsListView.setAdapter(setupActionLogAdapter);
-        setupLogsListView.setVisibility(View.GONE);
+        setupLogsContainer.setVisibility(View.GONE);
         setupLogsListView.setDividerHeight(0);
         finishSetupButton.setVisibility(View.GONE);
+        viewPager.setVisibility(View.GONE);
+        viewPagerLg.setVisibility(View.VISIBLE);
         logEvent("VIEW_GUIDED_SETUP_METHOD");
     }
 
@@ -845,7 +853,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             mainProgressbar.setProgress(10);
             finishSetupButton.setVisibility(View.VISIBLE);
             secondaryProgressBar.setVisibility(View.GONE);
-            setupLogsListView.setVisibility(View.VISIBLE);
+            setupLogsContainer.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.VISIBLE);
+            viewPagerLg.setVisibility(View.GONE);
         }
     }
 

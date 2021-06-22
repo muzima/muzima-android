@@ -12,7 +12,7 @@
 <resources>
     <color name="primary_color">#105b63</color>
     <color name="primary_blue">#137EFE</color>
-    <color name="primary_white">#FFFFFF</color>
+    <color name="primary_white">#B2FFFFFF</color>
     <color name="hint_text_grey">#888888</color>
     <color name="primary_black">#303030</color>
     <color name="theme_color">#333333</color>
@@ -61,4 +61,6 @@
     <color name="green_370">#0BA511</color>
     <color name="hint_text_grey_opaque">#5EA1A0A0</color>
     <color name="hint_blue_opaque">#61137EFE</color>
+    <color name="white_smoke_transparent">#54FFFFFF</color>
+    <color name="white">#fff</color>
 </resources>

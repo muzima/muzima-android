@@ -189,11 +189,11 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
     }
 
     @Subscribe
-    public void bottomNavigationToggleEvent(BottomSheetToggleEvent event){
-        if (event.getState() == BottomSheetBehavior.STATE_EXPANDED){
+    public void bottomNavigationToggleEvent(BottomSheetToggleEvent event) {
+        if (event.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             childContainer.setVisibility(View.VISIBLE);
             appBarLayout.setBackgroundColor(getResources().getColor(R.color.hint_text_grey_opaque));
-        }else if (event.getState() == BottomSheetBehavior.STATE_HIDDEN){
+        } else if (event.getState() == BottomSheetBehavior.STATE_HIDDEN) {
             childContainer.setVisibility(View.GONE);
             if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(getActivity().getApplicationContext()))
                 appBarLayout.setBackgroundColor(getResources().getColor(R.color.primary_white));
@@ -217,10 +217,13 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
                                 patients.clear();
                                 patients.addAll(patientList);
                                 allPatientsAdapter.notifyDataSetChanged();
-                                if (event.getFilter() != null)
-                                    filterLabelTextView.setText(event.getFilter().getName());
-                                else
+                                if (event.getFilters().size() == 1)
+                                    filterLabelTextView.setText(event.getFilters().get(0).getCohort().getName());
+                                else if (event.getFilters().isEmpty())
                                     filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
+                                else if (event.getFilters().size() > 1) {
+                                    filterLabelTextView.setText(getResources().getString(R.string.general_filtered_list));
+                                }
                             }
                         });
                     }

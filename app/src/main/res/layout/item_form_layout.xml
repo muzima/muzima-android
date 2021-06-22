@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_cohort_layout"
+    android:id="@+id/item_form_layout"
     android:paddingTop="8dp"
     android:paddingEnd="16dp"
     android:paddingStart="24dp"
@@ -9,30 +9,37 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:layout_marginBottom="4dp"
         android:layout_alignParentStart="true"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <ListView
-            android:id="@+id/item_cohort_tags_list_view"
+            android:id="@+id/item_form_tags_list_view"
             android:scrollbars="none"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/item_cohort_name_text_view"
+            android:id="@+id/item_form_name_text_view"
             android:textColor="?attr/primaryTextColor"
-            android:text="Cohort title"
+            android:text="Form title"
             android:textSize="16sp"
+            android:maxLines="1"
+            android:maxLength="30"
+            android:ellipsize="end"
             android:layout_marginBottom="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/item_cohort_description_text_view"
+            android:id="@+id/item_form_description_text_view"
             android:layout_marginTop="8dp"
             android:textSize="12sp"
+            android:maxLines="1"
+            android:maxLength="60"
+            android:ellipsize="end"
             android:textColor="?attr/primaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -47,13 +54,13 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/item_cohort_status_image_view"
+            android:id="@+id/item_form_status_image_view"
             android:layout_gravity="end"
             android:layout_width="24dp"
             android:layout_height="24dp"/>
 
         <TextView
-            android:id="@+id/item_cohort_clients_count_text_view"
+            android:id="@+id/item_form_version_code_text_view"
             android:textColor="?attr/primaryTextColor"
             android:layout_marginTop="6dp"
             android:textSize="12sp"
@@ -64,7 +71,7 @@
     </LinearLayout>
 
     <View
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/metadata_container"
         android:layout_width="match_parent"
         android:background="@color/divider_color"

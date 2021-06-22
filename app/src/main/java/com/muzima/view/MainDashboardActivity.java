@@ -10,7 +10,6 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,13 +32,13 @@ import com.muzima.R;
 import com.muzima.adapters.MainDashboardAdapter;
 import com.muzima.adapters.cohort.CohortFilterAdapter;
 import com.muzima.api.model.Cohort;
-import com.muzima.api.model.CohortFilter;
 import com.muzima.api.model.User;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
+import com.muzima.model.CohortFilter;
 import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.CohortsActionModeEvent;
@@ -88,6 +87,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     private RecyclerView filterOptionsRecyclerView;
     private List<Cohort> selectedCohorts = new ArrayList<>();
     private List<CohortFilter> cohortList = new ArrayList<>();
+    private List<CohortFilter> selectedCohortFilters = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -238,12 +238,47 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
                 menuItem.setEnabled(true);
                 if (menuItem.getItemId() == R.id.main_dashboard_home_menu) {
                     viewPager.setCurrentItem(0);
+                    if (menuLocation != null)
+                        menuLocation.setVisible(true);
                 } else if (menuItem.getItemId() == R.id.main_dashboard_cohorts_menu) {
                     viewPager.setCurrentItem(1);
+                    if (menuLocation != null)
+                        menuLocation.setVisible(false);
                 } else if (menuItem.getItemId() == R.id.main_dashboard_forms_menu) {
                     viewPager.setCurrentItem(2);
+                    if (menuLocation != null)
+                        menuLocation.setVisible(false);
                 }
                 return false;
+            }
+        });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (position == viewPager.getCurrentItem()) return;
+                switch (position) {
+                    case 0:
+                        bottomNavigationView.setSelectedItemId(R.id.main_dashboard_cohorts_menu);
+                        break;
+                    case 1:
+                        bottomNavigationView.setSelectedItemId(R.id.main_dashboard_forms_menu);
+                        break;
+                    case 2:
+                        bottomNavigationView.setSelectedItemId(R.id.main_dashboard_forms_menu);
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
 
@@ -257,7 +292,17 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                EventBus.getDefault().post( new BottomSheetToggleEvent(newState));
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    if (!selectedCohortFilters.isEmpty()) {
+                        List<CohortFilter> updatedList = unselectAllFilters(cohortList);
+                        cohortList.clear();
+                        cohortList.addAll(updatedList);
+                        cohortFilterAdapter.notifyDataSetChanged();
+                        EventBus.getDefault().post(new CohortFilterActionEvent(selectedCohortFilters, false));
+                    }
+                } else if (newState == BottomSheetBehavior.STATE_EXPANDED)
+                    selectedCohortFilters.clear();
+                EventBus.getDefault().post(new BottomSheetToggleEvent(newState));
             }
 
             @Override
@@ -275,16 +320,22 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     }
 
     @Override
+    public void onUserInteraction() {
+        ((MuzimaApplication) getApplication()).restartTimer();
+        super.onUserInteraction();
+    }
+
+    @Override
     public void onCohortFilterClicked(int position) {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        List<CohortFilter> updatedList = unselectAllFilters(cohortList);
-        cohortList.clear();
-        cohortList.addAll(updatedList);
-        cohortFilterAdapter.notifyDataSetChanged();
         CohortFilter cohortFilter = cohortList.get(position);
-        cohortFilter.setSelected(true);
+        if (cohortFilter.isSelected()) {
+            cohortFilter.setSelected(false);
+            selectedCohortFilters.remove(cohortFilter);
+        } else {
+            cohortFilter.setSelected(true);
+            selectedCohortFilters.add(cohortFilter);
+        }
         cohortFilterAdapter.notifyDataSetChanged();
-        EventBus.getDefault().post(new CohortFilterActionEvent(cohortFilter.getCohort(), false));
     }
 
     private List<CohortFilter> unselectAllFilters(List<CohortFilter> cohortList) {

@@ -76,6 +76,12 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         loadHistoricalDataView();
     }
 
+    @Override
+    public void onUserInteraction() {
+        ((MuzimaApplication) getApplication()).restartTimer();
+        super.onUserInteraction();
+    }
+
     private void loadHistoricalDataView() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.historical_data_fragment_container, new ObservationsFragment());

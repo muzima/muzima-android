@@ -12,7 +12,8 @@ public class DownloadCohortsTask implements Runnable {
     private Context context;
     private List<Cohort> cohortList;
     private CohortDownloadCallback cohortDownloadCallback;
-    public DownloadCohortsTask(Context context, List<Cohort> cohortList,CohortDownloadCallback cohortDownloadCallback) {
+
+    public DownloadCohortsTask(Context context, List<Cohort> cohortList, CohortDownloadCallback cohortDownloadCallback) {
         this.context = context;
         this.cohortList = cohortList;
         this.cohortDownloadCallback = cohortDownloadCallback;
@@ -23,7 +24,7 @@ public class DownloadCohortsTask implements Runnable {
         try {
             String[] cohortUuids = extractCohortUuids();
             ((MuzimaApplication) context.getApplicationContext()).getCohortController()
-                    .downloadCohortsByUuidList(cohortUuids);
+                    .downloadCohortData(cohortUuids, null);
             cohortDownloadCallback.callbackDownload();
         } catch (CohortController.CohortDownloadException ex) {
             ex.printStackTrace();
@@ -38,7 +39,7 @@ public class DownloadCohortsTask implements Runnable {
         return cohortUuids;
     }
 
-    public interface CohortDownloadCallback{
+    public interface CohortDownloadCallback {
         void callbackDownload();
     }
 }
