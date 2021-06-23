@@ -55,12 +55,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:background="?attr/primaryBackgroundColor"
+                app:elevation="12dp"
+                android:background="@color/bottom_navigation_background"
                 app:itemIconTint="?attr/bottom_navigation_selected_icon"
                 app:itemTextAppearanceActive="@style/bottom_nav_active_text"
                 app:itemTextAppearanceInactive="@style/bottom_nav_inactive_text"
                 app:menu="@menu/dashboard_bottom_menu" />
-
 
         </LinearLayout>
 
@@ -72,8 +72,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start|left"
         app:headerLayout="@layout/dashboard_header"
-        app:itemBackground="@android:color/transparent"
-        app:itemIconTint="@drawable/drawer_menu_item"
+        app:itemIconTint="?attr/primaryTextColor"
         app:itemTextColor="@drawable/drawer_menu_item"
         app:menu="@menu/dashboard_drawer_menu" />
 

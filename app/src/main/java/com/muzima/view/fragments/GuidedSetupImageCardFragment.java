@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,9 +16,16 @@ import com.muzima.R;
 public class GuidedSetupImageCardFragment extends Fragment {
 
     private int drawableId;
+    private ImageView imageView;
+    private TextView titleTextView;
+    private TextView descriptionTextView;
+    private String title;
+    private String description;
 
-    public GuidedSetupImageCardFragment(int drawableId) {
+    public GuidedSetupImageCardFragment(int drawableId, String title, String description) {
         this.drawableId = drawableId;
+        this.title = title;
+        this.description = description;
     }
 
     @Override
@@ -37,7 +45,11 @@ public class GuidedSetupImageCardFragment extends Fragment {
     }
 
     private void initializeResources(View view) {
-        ImageView imageView = view.findViewById(R.id.card_image_view);
+        imageView = view.findViewById(R.id.card_image_view);
+        titleTextView = view.findViewById(R.id.fragment_guided_setup_title_text_view);
+        descriptionTextView = view.findViewById(R.id.fragment_guided_setup_description_text_view);
         imageView.setImageDrawable(getResources().getDrawable(drawableId));
+        titleTextView.setText(title);
+        descriptionTextView.setText(description);
     }
 }

@@ -86,6 +86,7 @@ public class AvailableFormsFragment extends Fragment implements FormsRecyclerVie
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                formList.clear();
                                 progressBar.setVisibility(View.GONE);
                                 for (Form form : forms) {
                                     formList.add(new FormItem(form, false));

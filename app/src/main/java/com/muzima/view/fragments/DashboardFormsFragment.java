@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,8 +16,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.muzima.R;
 import com.muzima.adapters.viewpager.FormsViewPagerAdapter;
-import com.muzima.model.events.CohortSearchEvent;
 import com.muzima.model.events.FormSearchEvent;
+import com.muzima.utils.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -58,6 +57,26 @@ public class DashboardFormsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                EventBus.getDefault().post( new FormSearchEvent(Constants.EMPTY_STRING,0));
+                EventBus.getDefault().post( new FormSearchEvent(Constants.EMPTY_STRING,1));
+                EventBus.getDefault().post( new FormSearchEvent(Constants.EMPTY_STRING,2));
+                searchFormsEditText.setText(Constants.EMPTY_STRING);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
             }
         });

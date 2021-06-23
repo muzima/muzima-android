@@ -12,9 +12,9 @@ import java.util.List;
 public class LoadDownloadedFormsTask implements Runnable {
     private Context context;
     private String searchKey;
-    private LoadAllFormsTask.FormsLoadedCallback callback;
+    private FormsLoadedCallback callback;
 
-    public LoadDownloadedFormsTask(Context context, String searchKey, LoadAllFormsTask.FormsLoadedCallback callback) {
+    public LoadDownloadedFormsTask(Context context, String searchKey, FormsLoadedCallback callback) {
         this.context = context;
         this.searchKey = searchKey;
         this.callback = callback;

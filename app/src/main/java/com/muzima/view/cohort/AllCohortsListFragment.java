@@ -109,6 +109,7 @@ public class AllCohortsListFragment extends Fragment implements CohortRecyclerVi
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                allCohortsList.clear();
                                 for (Cohort cohort : cohorts) {
                                     allCohortsList.add(new CohortItem(cohort, false));
                                 }

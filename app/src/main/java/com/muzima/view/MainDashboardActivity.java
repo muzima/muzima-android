@@ -53,6 +53,7 @@ import com.muzima.tasks.DownloadFormsTask;
 import com.muzima.tasks.LoadDownloadedCohortsTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.preferences.SettingsActivity;
 
@@ -285,35 +286,6 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
             }
         });
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position == viewPager.getCurrentItem()) return;
-                switch (position) {
-                    case 0:
-                        bottomNavigationView.setSelectedItemId(R.id.main_dashboard_cohorts_menu);
-                        break;
-                    case 1:
-                        bottomNavigationView.setSelectedItemId(R.id.main_dashboard_forms_menu);
-                        break;
-                    case 2:
-                        bottomNavigationView.setSelectedItemId(R.id.main_dashboard_forms_menu);
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
         closeBottomSheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -326,14 +298,11 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     if (!selectedCohortFilters.isEmpty()) {
-                        List<CohortFilter> updatedList = unselectAllFilters(cohortList);
-                        cohortList.clear();
-                        cohortList.addAll(updatedList);
-                        cohortFilterAdapter.notifyDataSetChanged();
                         EventBus.getDefault().post(new CohortFilterActionEvent(selectedCohortFilters, false));
                     }
-                } else if (newState == BottomSheetBehavior.STATE_EXPANDED)
-                    selectedCohortFilters.clear();
+                } else if (newState == BottomSheetBehavior.STATE_EXPANDED){
+
+                }
                 EventBus.getDefault().post(new BottomSheetToggleEvent(newState));
             }
 
@@ -363,20 +332,20 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         if (cohortFilter.isSelected()) {
             cohortFilter.setSelected(false);
             selectedCohortFilters.remove(cohortFilter);
+            markAllClientsCohortFilter(selectedCohortFilters.isEmpty());
         } else {
             cohortFilter.setSelected(true);
             selectedCohortFilters.add(cohortFilter);
+            markAllClientsCohortFilter(false);
         }
         cohortFilterAdapter.notifyDataSetChanged();
     }
 
-    private List<CohortFilter> unselectAllFilters(List<CohortFilter> cohortList) {
-        List<CohortFilter> filters = new ArrayList<>();
-        for (CohortFilter cohortFilter : cohortList) {
-            cohortFilter.setSelected(false);
-            filters.add(cohortFilter);
+    private void markAllClientsCohortFilter(boolean b) {
+        for (CohortFilter filter : cohortList) {
+            if (filter.getCohort() == null)
+                filter.setSelected(b);
         }
-        return filters;
     }
 
     @Override

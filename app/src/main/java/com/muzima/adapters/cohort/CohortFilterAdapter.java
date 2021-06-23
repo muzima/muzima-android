@@ -44,7 +44,7 @@ public class CohortFilterAdapter extends RecyclerView.Adapter<CohortFilterAdapte
         }
         holder.checkBox.setChecked(cohort.isSelected());
         if (cohort.isSelected())
-            holder.container.setBackgroundColor(context.getResources().getColor(R.color.hint_blue_opaque));
+            holder.container.setBackground(context.getResources().getDrawable(R.drawable.global_highlight_background));
         else {
             if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(context))
                 holder.container.setBackgroundColor(context.getResources().getColor(R.color.primary_white));

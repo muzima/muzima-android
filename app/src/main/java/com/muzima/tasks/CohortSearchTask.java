@@ -26,7 +26,7 @@ public class CohortSearchTask implements Runnable {
             List<Cohort> searchResult = new ArrayList<>();
             for (Cohort allCohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
                     .getAllCohorts()) {
-                if (allCohort.getName().startsWith(searchTerm))
+                if (allCohort.getName().toLowerCase().contains(searchTerm.toLowerCase()))
                     searchResult.add(allCohort);
             }
             callback.onCohortSearchFinished(searchResult);

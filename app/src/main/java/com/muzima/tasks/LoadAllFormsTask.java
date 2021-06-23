@@ -30,7 +30,8 @@ public class LoadAllFormsTask implements Runnable {
                 List<Form> searchResult = new ArrayList<>();
                 for (Form allAvailableForm : ((MuzimaApplication) context.getApplicationContext()).getFormController()
                         .getAllAvailableForms()) {
-                    if (allAvailableForm.getName().toLowerCase().startsWith(searchKey.toLowerCase()) || allAvailableForm.getDescription().toLowerCase().startsWith(searchKey.toLowerCase())) {
+                    if (allAvailableForm.getName().toLowerCase().contains(searchKey.toLowerCase()) ||
+                            allAvailableForm.getDescription().toLowerCase().contains(searchKey.toLowerCase())) {
                         searchResult.add(allAvailableForm);
                     }
                 }

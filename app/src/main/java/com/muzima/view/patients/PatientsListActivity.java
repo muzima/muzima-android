@@ -516,6 +516,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private void setupListView(String cohortId) {
         listView = findViewById(R.id.list);
+        listView.setDividerHeight(0);
         patientAdapter = new PatientsLocalSearchAdapter(this, R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), cohortId, getCurrentGPSLocation());
 

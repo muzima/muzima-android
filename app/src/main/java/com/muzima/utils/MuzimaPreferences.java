@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import com.muzima.R;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -20,13 +21,31 @@ public class MuzimaPreferences {
     private static final String ON_BOARDING_COMPLETED_PREFERENCE = "onboarding_completed_pref";
     private static final String APP_LOCALE_PREFERENCE = "app_locale_pref";
     private static final String FORMS_ACTIVITY_ACTION_MODE_PREFERENCE = "forms_action_mode_pref";
+    private static final String COHORT_FILTER_KEYS_PREF = "cohorts_filter_keys_pref";
+    private static final String FORMS_FILTER_KEYS_PREF = "forms_filter_keys_pref";
+
+    public static void setCohortFilterKeysPref(Context context, Set<String> keys) {
+        createSetPreference(context, COHORT_FILTER_KEYS_PREF, keys);
+    }
+
+    public static Set<String> getCohortFilterKeysPref(Context context) {
+        return getStringSetPreference(context, COHORT_FILTER_KEYS_PREF, new HashSet<String>());
+    }
+
+    public static void setFormsFilterKeysPref(Context context, Set<String> keys) {
+        createSetPreference(context, FORMS_FILTER_KEYS_PREF, keys);
+    }
+
+    public static Set<String> getFormsFilterKeysPref(Context context) {
+        return getStringSetPreference(context, FORMS_FILTER_KEYS_PREF, new HashSet<String>());
+    }
 
     public static void setFormsActivityActionModePreference(Context context, int formType) {
         setIntegerPrefrence(context, FORMS_ACTIVITY_ACTION_MODE_PREFERENCE, formType);
     }
 
     public static int getFormsActivityActionModePreference(Context context) {
-        return getIntegerPreference(context, FORMS_ACTIVITY_ACTION_MODE_PREFERENCE,Constants.FORMS_LAUNCH_MODE.INCOMPLETE_FORMS_VIEW);
+        return getIntegerPreference(context, FORMS_ACTIVITY_ACTION_MODE_PREFERENCE, Constants.FORMS_LAUNCH_MODE.INCOMPLETE_FORMS_VIEW);
     }
 
     public static void setOnBoardingCompletedPreference(Context context, boolean isLightMode) {
@@ -34,7 +53,7 @@ public class MuzimaPreferences {
     }
 
     public static boolean getOnBoardingCompletedPreference(Context context) {
-        return getBooleanPreference(context, ON_BOARDING_COMPLETED_PREFERENCE,false);
+        return getBooleanPreference(context, ON_BOARDING_COMPLETED_PREFERENCE, false);
     }
 
     public static void setLightModeThemeSelectedPreference(Context context, boolean isLightMode) {
@@ -42,7 +61,7 @@ public class MuzimaPreferences {
     }
 
     public static boolean getIsLightModeThemeSelectedPreference(Context context) {
-        return getBooleanPreference(context, LIGHT_MODE_SELECTED_PREFS,false);
+        return getBooleanPreference(context, LIGHT_MODE_SELECTED_PREFS, false);
     }
 
     public static void setSelectedUserLocalePreference(Context context, String localeDescription) {
@@ -100,6 +119,13 @@ public class MuzimaPreferences {
         } else {
             return defaultValues;
         }
+    }
+
+    private static void createSetPreference(Context context, String key, Set<String> values) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        Set<String> set = new HashSet<>(values);
+        editor.putStringSet(key, set);
+        editor.apply();
     }
 
     public static void setAppLocalePreference(Context context, String localeDescription) {

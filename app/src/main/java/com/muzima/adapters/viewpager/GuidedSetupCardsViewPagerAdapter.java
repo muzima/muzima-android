@@ -1,6 +1,6 @@
 package com.muzima.adapters.viewpager;
 
-import android.widget.ImageView;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -10,12 +10,12 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.muzima.R;
 import com.muzima.view.fragments.GuidedSetupImageCardFragment;
 
-import java.util.List;
-
 public class GuidedSetupCardsViewPagerAdapter extends FragmentPagerAdapter {
+    private Context context;
 
-    public GuidedSetupCardsViewPagerAdapter(@NonNull FragmentManager fm) {
+    public GuidedSetupCardsViewPagerAdapter(@NonNull FragmentManager fm,Context context) {
         super(fm);
+        this.context = context;
     }
 
     @NonNull
@@ -23,11 +23,11 @@ public class GuidedSetupCardsViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new GuidedSetupImageCardFragment(R.drawable.slide_a);
+                return new GuidedSetupImageCardFragment(R.drawable.logo, context.getResources().getString(R.string.general_security), context.getResources().getString(R.string.general_security_description));
             case 1:
-                return new GuidedSetupImageCardFragment(R.drawable.slide_b);
+                return new GuidedSetupImageCardFragment(R.drawable.logo, context.getResources().getString(R.string.general_multiple_use_cases), context.getResources().getString(R.string.general_multiple_cases_description));
             case 2:
-                return new GuidedSetupImageCardFragment(R.drawable.slide_c);
+                return new GuidedSetupImageCardFragment(R.drawable.logo, context.getResources().getString(R.string.general_openmrs_compatibility), context.getResources().getString(R.string.general_openmrs_compatibility_description));
         }
         return null;
     }

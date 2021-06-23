@@ -145,6 +145,9 @@ public class DashboardCohortsFragment extends Fragment {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                EventBus.getDefault().post(new CohortSearchEvent(Constants.EMPTY_STRING, 0));
+                EventBus.getDefault().post(new CohortSearchEvent(Constants.EMPTY_STRING, 1));
+                EventBus.getDefault().post(new CohortSearchEvent(Constants.EMPTY_STRING, 2));
                 searchEditText.setText(Constants.EMPTY_STRING);
             }
 

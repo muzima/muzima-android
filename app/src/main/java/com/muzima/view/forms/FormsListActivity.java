@@ -88,12 +88,12 @@ public class FormsListActivity extends AppCompatActivity implements FormsRecycle
         notDataView = findViewById(R.id.no_data_view);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            if (getIntent().getStringExtra(FILTER_FORM_KEY) == Constants.FORM_TYPE.COMPLETE_FORMS_KEY)
-                getSupportActionBar().setTitle(getResources().getString(R.string.info_complete_form));
-            else if (getIntent().getStringExtra(FILTER_FORM_KEY) == Constants.FORM_TYPE.INCOMPLETE_FORMS_KEY)
-                getSupportActionBar().setTitle(getResources().getString(R.string.info_complete_form));
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if (getIntent().getStringExtra(FILTER_FORM_KEY) != null && getIntent().getStringExtra(FILTER_FORM_KEY).equalsIgnoreCase(Constants.FORM_TYPE.COMPLETE_FORMS_KEY))
+                getSupportActionBar().setTitle(getResources().getString(R.string.info_complete_form));
+            else if (getIntent().getStringExtra(FILTER_FORM_KEY) != null && getIntent().getStringExtra(FILTER_FORM_KEY).equalsIgnoreCase(Constants.FORM_TYPE.INCOMPLETE_FORMS_KEY))
+                getSupportActionBar().setTitle(getResources().getString(R.string.info_incomplete_form));
         }
         recyclerViewAdapter = new CompletedFormsWithDataAdapter(getApplicationContext(), formList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

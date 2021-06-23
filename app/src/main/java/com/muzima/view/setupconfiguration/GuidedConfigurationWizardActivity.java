@@ -141,7 +141,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         secondDotView = findViewById(R.id.second_page_dot_view);
         thirdDotView = findViewById(R.id.third_page_dot_view);
         viewPagerLg = findViewById(R.id.setup_progress_background_lg);
-        guidedSetupCardsViewPagerAdapter = new GuidedSetupCardsViewPagerAdapter(getSupportFragmentManager());
+        guidedSetupCardsViewPagerAdapter = new GuidedSetupCardsViewPagerAdapter(getSupportFragmentManager(), getApplicationContext());
         viewPager.setAdapter(guidedSetupCardsViewPagerAdapter);
         viewPagerLg.setAdapter(guidedSetupCardsViewPagerAdapter);
         finishSetupButton.setOnClickListener(new View.OnClickListener() {

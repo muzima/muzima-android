@@ -80,12 +80,13 @@ public class DownloadedFormsFragment extends Fragment implements FormsRecyclerVi
 
     private void loadData(String searchTerm) {
         ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
-                .execute(new LoadDownloadedFormsTask(getActivity().getApplicationContext(), searchTerm, new LoadAllFormsTask.FormsLoadedCallback() {
+                .execute(new LoadDownloadedFormsTask(getActivity().getApplicationContext(), searchTerm, new LoadDownloadedFormsTask.FormsLoadedCallback() {
                     @Override
                     public void onFormsLoaded(final List<Form> forms) {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                formList.clear();
                                 progressBar.setVisibility(View.GONE);
                                 for (Form form : forms) {
                                     formList.add(new FormItem(form, false));
