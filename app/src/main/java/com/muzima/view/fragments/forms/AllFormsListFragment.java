@@ -1,11 +1,11 @@
 package com.muzima.view.fragments.forms;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +21,9 @@ import com.muzima.model.FormItem;
 import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.model.events.FormSearchEvent;
 import com.muzima.model.events.FormsActionModeEvent;
+import com.muzima.model.events.ShowFormsFilterEvent;
 import com.muzima.tasks.LoadAllFormsTask;
+import com.muzima.utils.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -33,7 +35,8 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
     private RecyclerView formsRecyclerView;
     private ProgressBar progressBar;
     private FormsRecyclerViewAdapter recyclerViewAdapter;
-    private View filterByStatusView;
+    private View filterStrategyContainer;
+    private TextView filterStrategyTextView;
     private List<FormItem> formList = new ArrayList<>();
     private List<Form> selectedForms = new ArrayList<>();
 
@@ -101,11 +104,19 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
 
     private void initializeResources(View view) {
         formsRecyclerView = view.findViewById(R.id.forms_list_recycler_view);
-        filterByStatusView = view.findViewById(R.id.forms_sort_by_status);
+        filterStrategyContainer = view.findViewById(R.id.forms_filter_strategy_view);
         progressBar = view.findViewById(R.id.form_list_progress_bar);
+        filterStrategyTextView = view.findViewById(R.id.forms_sort_by_status);
         recyclerViewAdapter = new FormsRecyclerViewAdapter(getActivity().getApplicationContext(), formList, this);
         formsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         formsRecyclerView.setAdapter(recyclerViewAdapter);
+
+        filterStrategyContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventBus.getDefault().post( new ShowFormsFilterEvent(Constants.FORM_FILTERS.FORM_FILTER_STATUS));
+            }
+        });
     }
 
     @Override

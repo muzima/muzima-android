@@ -6,6 +6,8 @@
 
     <include layout="@layout/activity_dashboard_main_layout"/>
 
-    <include layout="@layout/dashboard_home_bottom_navigation"/>
+    <include layout="@layout/dashboard_home_cohort_filter_bottom_sheet"/>
+
+    <include layout="@layout/dashboard_home_form_filter_bottom_sheet"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

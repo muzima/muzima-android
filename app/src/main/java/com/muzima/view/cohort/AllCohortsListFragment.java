@@ -11,6 +11,7 @@
 package com.muzima.view.cohort;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,6 @@ public class AllCohortsListFragment extends Fragment implements CohortRecyclerVi
     private RecyclerView cohortListRecyclerView;
     private CohortRecyclerViewAdapter recyclerViewAdapter;
     private List<CohortItem> allCohortsList = new ArrayList<>();
-    private List<Cohort> selectedCohorts = new ArrayList<>();
 
     @Nullable
     @Override
@@ -132,17 +132,18 @@ public class AllCohortsListFragment extends Fragment implements CohortRecyclerVi
 
     @Override
     public void onCohortClicked(int position) {
-        Cohort cohort = allCohortsList.get(position).getCohort();
-        selectedCohorts.add(cohort);
-        recyclerViewAdapter.setSelectedCohorts(selectedCohorts);
+        if (allCohortsList.isEmpty() || position < 0) return;
+        CohortItem selectedCohortItem = allCohortsList.get(position);
+        selectedCohortItem.setSelected(!selectedCohortItem.isSelected());
         recyclerViewAdapter.notifyDataSetChanged();
-        EventBus.getDefault().post(new CohortsActionModeEvent(selectedCohorts));
+        EventBus.getDefault().post(new CohortsActionModeEvent(allCohortsList));
     }
 
     @Subscribe
     public void actionModeClearedEvent(DestroyActionModeEvent event) {
-        selectedCohorts.clear();
-        recyclerViewAdapter.setSelectedCohorts(selectedCohorts);
+        for (CohortItem cohortItem : allCohortsList) {
+            cohortItem.setSelected(false);
+        }
         recyclerViewAdapter.notifyDataSetChanged();
     }
 }

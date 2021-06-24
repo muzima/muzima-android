@@ -1,56 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:background="@drawable/border_button_gray"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="12dp"
-        android:padding="4dp"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/dashboard_forms_search_edit_text"
-            android:background="@null"
-            android:hint="@string/general_search_forms"
-            android:padding="6dp"
-            android:layout_centerVertical="true"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/border_button_gray"
+            android:padding="4dp">
 
-        <ImageView
-            android:src="?attr/icSearch"
-            android:layout_marginEnd="6dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <EditText
+                android:id="@+id/dashboard_forms_search_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:hint="@string/general_search_forms"
+                android:padding="6dp" />
 
-    </RelativeLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="6dp"
+                android:src="?attr/icSearch" />
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/dashboard_forms_view_pager"
-        android:layout_marginTop="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        </RelativeLayout>
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/dashboard_forms_tab_layout"
-            app:tabSelectedTextColor="@color/primary_blue"
-            app:tabMode="scrollable"
-            android:paddingStart="14dp"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/dashboard_forms_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
 
-        </com.google.android.material.tabs.TabLayout>
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/dashboard_forms_tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="14dp"
+                app:tabMode="scrollable"
+                app:tabSelectedTextColor="@color/primary_blue">
 
-    </androidx.viewpager.widget.ViewPager>
+            </com.google.android.material.tabs.TabLayout>
+
+        </androidx.viewpager.widget.ViewPager>
 
 
-
-</LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

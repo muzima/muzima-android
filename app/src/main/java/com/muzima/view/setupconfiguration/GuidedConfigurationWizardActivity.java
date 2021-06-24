@@ -70,7 +70,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private ListView setupLogsListView;
     private View setupLogsContainer;
     private TextView initialSetupStatusTextView;
-    private ProgressBar secondaryProgressBar;
     private Button finishSetupButton;
     private ViewPager viewPager;
     private ViewPager viewPagerLg;
@@ -134,7 +133,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private void initializeResources() {
         finishSetupButton = findViewById(R.id.finish);
         mainProgressbar = findViewById(R.id.setup_progress_bar);
-        secondaryProgressBar = findViewById(R.id.secondary_progress_bar);
         initialSetupStatusTextView = findViewById(R.id.setup_progress_status_message);
         viewPager = findViewById(R.id.setup_progress_background);
         firstDotView = findViewById(R.id.first_page_dot_view);
@@ -848,7 +846,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
             mainProgressbar.setProgress(10);
             finishSetupButton.setVisibility(View.VISIBLE);
-            secondaryProgressBar.setVisibility(View.GONE);
             setupLogsContainer.setVisibility(View.VISIBLE);
             viewPager.setVisibility(View.VISIBLE);
             viewPagerLg.setVisibility(View.GONE);

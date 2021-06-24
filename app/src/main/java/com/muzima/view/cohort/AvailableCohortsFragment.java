@@ -30,12 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AvailableCohortsFragment extends Fragment implements CohortRecyclerViewAdapter.OnCohortClickedListener {
-
     private ProgressBar progressBar;
     private RecyclerView cohortListRecyclerView;
     private CohortRecyclerViewAdapter recyclerViewAdapter;
     private List<CohortItem> allCohortsList = new ArrayList<>();
-    private List<Cohort> selectedCohorts = new ArrayList<>();
 
     @Nullable
     @Override
@@ -124,17 +122,18 @@ public class AvailableCohortsFragment extends Fragment implements CohortRecycler
 
     @Override
     public void onCohortClicked(int position) {
-        Cohort cohort = allCohortsList.get(position).getCohort();
-        selectedCohorts.add(cohort);
-        recyclerViewAdapter.setSelectedCohorts(selectedCohorts);
+        if (allCohortsList.isEmpty() || position < 0) return;
+        CohortItem selectedCohortItem = allCohortsList.get(position);
+        selectedCohortItem.setSelected(!selectedCohortItem.isSelected());
         recyclerViewAdapter.notifyDataSetChanged();
-        EventBus.getDefault().post(new CohortsActionModeEvent(selectedCohorts));
+        EventBus.getDefault().post(new CohortsActionModeEvent(allCohortsList));
     }
 
     @Subscribe
     public void actionModeClearedEvent(DestroyActionModeEvent event) {
-        selectedCohorts.clear();
-        recyclerViewAdapter.setSelectedCohorts(selectedCohorts);
+        for (CohortItem cohortItem : allCohortsList) {
+            cohortItem.setSelected(false);
+        }
         recyclerViewAdapter.notifyDataSetChanged();
     }
 

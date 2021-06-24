@@ -465,4 +465,8 @@ public class Constants {
         public static final String INCOMPLETE_FORMS_KEY = "incomplete_forms_key";
         public static final String COMPLETE_FORMS_KEY = "complete_forms_key";
     }
+
+    public class FORM_FILTERS {
+        public static final int FORM_FILTER_STATUS = 1;
+    }
 }

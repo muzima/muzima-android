@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,12 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DownloadedCohortsFragment extends Fragment implements CohortRecyclerViewAdapter.OnCohortClickedListener {
-
     private ProgressBar progressBar;
     private RecyclerView cohortListRecyclerView;
     private CohortRecyclerViewAdapter recyclerViewAdapter;
     private List<CohortItem> downloadedCohortsList = new ArrayList<>();
-    private List<Cohort> selectedCohorts = new ArrayList<>();
 
     @Nullable
     @Override
@@ -125,17 +122,18 @@ public class DownloadedCohortsFragment extends Fragment implements CohortRecycle
 
     @Override
     public void onCohortClicked(int position) {
-        Cohort cohort = downloadedCohortsList.get(position).getCohort();
-        selectedCohorts.add(cohort);
-        recyclerViewAdapter.setSelectedCohorts(selectedCohorts);
+        if (downloadedCohortsList.isEmpty() || position < 0) return;
+        CohortItem selectedCohortItem = downloadedCohortsList.get(position);
+        selectedCohortItem.setSelected(!selectedCohortItem.isSelected());
         recyclerViewAdapter.notifyDataSetChanged();
-        EventBus.getDefault().post(new CohortsActionModeEvent(selectedCohorts));
+        EventBus.getDefault().post(new CohortsActionModeEvent(downloadedCohortsList));
     }
 
     @Subscribe
     public void actionModeClearedEvent(DestroyActionModeEvent event) {
-        selectedCohorts.clear();
-        recyclerViewAdapter.setSelectedCohorts(selectedCohorts);
+        for (CohortItem cohortItem : downloadedCohortsList) {
+            cohortItem.setSelected(false);
+        }
         recyclerViewAdapter.notifyDataSetChanged();
     }
 }

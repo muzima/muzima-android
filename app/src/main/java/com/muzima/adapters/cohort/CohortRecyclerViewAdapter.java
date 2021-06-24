@@ -19,6 +19,7 @@ import com.muzima.adapters.tags.TagsAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Tag;
 import com.muzima.model.cohort.CohortItem;
+import com.muzima.utils.MuzimaPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +30,11 @@ public class CohortRecyclerViewAdapter extends RecyclerView.Adapter<CohortRecycl
     private Context context;
     private List<CohortItem> cohortList;
     private OnCohortClickedListener cohortClickedListener;
-    private List<Cohort> selectedCohorts = new ArrayList<>();
 
     public CohortRecyclerViewAdapter(Context context, List<CohortItem> cohortList, OnCohortClickedListener cohortClickedListener) {
         this.context = context;
         this.cohortList = cohortList;
         this.cohortClickedListener = cohortClickedListener;
-    }
-
-    public void setSelectedCohorts(List<Cohort> selectedCohorts) {
-        this.selectedCohorts = selectedCohorts;
     }
 
     @NonNull
@@ -50,18 +46,22 @@ public class CohortRecyclerViewAdapter extends RecyclerView.Adapter<CohortRecycl
 
     @Override
     public void onBindViewHolder(@NonNull CohortRecyclerViewAdapter.ViewHolder holder, int position) {
-        CohortItem cohort = cohortList.get(position);
-        holder.titleTextView.setText(cohort.getCohort().getName());
-        holder.clientsCountTextView.setText(String.format(Locale.getDefault(), "%s Clients", String.valueOf(cohort.getCohort().getSize())));
+        CohortItem cohortItem = cohortList.get(position);
+        holder.titleTextView.setText(cohortItem.getCohort().getName());
+        holder.clientsCountTextView.setText(String.format(Locale.getDefault(), "%s Clients", String.valueOf(cohortItem.getCohort().getSize())));
         if (((MuzimaApplication) context.getApplicationContext()).getCohortController()
-                .isDownloaded(cohort.getCohort()))
+                .isDownloaded(cohortItem.getCohort()))
             holder.iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_downloaded));
-        if (cohort.getCohort().getSyncStatus() == 1)
+        if (cohortItem.getCohort().getSyncStatus() == 1)
             holder.iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_sync));
 
-        for (Cohort selectedCohort : selectedCohorts) {
-            if (selectedCohort.getUuid() == cohort.getCohort().getUuid())
-                holder.container.setBackgroundColor(context.getResources().getColor(R.color.list_selection_background));
+        if (cohortItem.isSelected())
+            holder.container.setBackgroundColor(context.getResources().getColor(R.color.hint_blue_opaque));
+        else {
+            if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(context))
+                holder.container.setBackgroundColor(context.getResources().getColor(R.color.primary_white));
+            else
+                holder.container.setBackgroundColor(context.getResources().getColor(R.color.primary_black));
         }
 
         Tag tag1 = new Tag();

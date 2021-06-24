@@ -5,18 +5,29 @@ import android.content.Context;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
+import com.muzima.model.cohort.CohortItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DownloadCohortsTask implements Runnable {
     private Context context;
-    private List<Cohort> cohortList;
+    private List<Cohort> cohortList = new ArrayList<>();
     private CohortDownloadCallback cohortDownloadCallback;
 
     public DownloadCohortsTask(Context context, List<Cohort> cohortList, CohortDownloadCallback cohortDownloadCallback) {
         this.context = context;
         this.cohortList = cohortList;
         this.cohortDownloadCallback = cohortDownloadCallback;
+    }
+
+    public DownloadCohortsTask(Context context, List<CohortItem> selectedCohorts, boolean holder, CohortDownloadCallback callback) {
+        this.context = context;
+        this.cohortDownloadCallback = callback;
+        for (CohortItem selectedCohort : selectedCohorts) {
+            if (selectedCohort.isSelected())
+                this.cohortList.add(selectedCohort.getCohort());
+        }
     }
 
     @Override

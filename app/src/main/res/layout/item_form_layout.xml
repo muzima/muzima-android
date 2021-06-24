@@ -11,7 +11,6 @@
 
     <RelativeLayout
         android:id="@+id/metadata_container"
-        android:layout_alignParentTop="true"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -34,7 +33,6 @@
             <TextView
                 android:id="@+id/item_form_name_text_view"
                 android:textColor="?attr/primaryTextColor"
-                android:text="Form title"
                 android:textSize="16sp"
                 android:maxLines="1"
                 android:maxLength="30"
@@ -45,10 +43,8 @@
 
             <TextView
                 android:id="@+id/item_form_description_text_view"
-                android:layout_marginTop="8dp"
                 android:textSize="12sp"
                 android:maxLines="1"
-                android:text="description "
                 android:maxLength="60"
                 android:ellipsize="end"
                 android:textColor="?attr/primaryTextColor"
@@ -72,9 +68,9 @@
             <TextView
                 android:id="@+id/item_form_version_code_text_view"
                 android:textColor="?attr/primaryTextColor"
-                android:layout_marginTop="6dp"
                 android:textSize="12sp"
-                android:text="v1"
+                android:layout_gravity="end"
+                android:gravity="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

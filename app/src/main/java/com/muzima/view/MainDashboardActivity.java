@@ -10,6 +10,7 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,12 +41,15 @@ import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.CohortFilter;
+import com.muzima.model.cohort.CohortItem;
 import com.muzima.model.events.BottomSheetToggleEvent;
+import com.muzima.model.events.CloseBottomSheetEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.CohortsActionModeEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.model.events.FormsActionModeEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
+import com.muzima.model.events.ShowFormsFilterEvent;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.DownloadCohortsTask;
@@ -85,15 +89,24 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     private Credentials credentials;
     private BackgroundQueryTask mBackgroundQueryTask;
     private MenuItem loadingMenuItem;
-    private BottomSheetBehavior bottomSheetBehavior;
-    private View bottomSheetView;
+    private BottomSheetBehavior cohortFilterBottomSheetBehavior;
+    private View cohortFilterBottomSheetView;
+    private BottomSheetBehavior formFilterBottomSheetBehavior;
+    private View formFilterBottomSheetView;
     private View closeBottomSheet;
+    private View closeFormsBottomSheetView;
+    private View formFilterStatusContainer;
+    private CheckBox formFilterStatusCheckbox;
+    private View formFilterNamesContainer;
+    private CheckBox formFilterNamesCheckbox;
     private CohortFilterAdapter cohortFilterAdapter;
     private RecyclerView filterOptionsRecyclerView;
-    private List<Cohort> selectedCohorts = new ArrayList<>();
+    private List<CohortItem> selectedCohorts = new ArrayList<>();
     private List<Form> selectedForms = new ArrayList<>();
     private List<CohortFilter> cohortList = new ArrayList<>();
     private List<CohortFilter> selectedCohortFilters = new ArrayList<>();
+    private int selectedCohortsCount = 0;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -144,8 +157,13 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     }
 
     @Subscribe
+    public void closeBottomSheetEvent(CloseBottomSheetEvent event) {
+        cohortFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
+    @Subscribe
     public void showCohortFilterEvent(ShowCohortFilterEvent event) {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        cohortFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     @Subscribe
@@ -161,6 +179,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     }
 
     private void initActionMode(final int action) {
+        selectedCohortsCount = 0;
         actionModeCallback = new ActionMode.Callback() {
 
             @Override
@@ -184,7 +203,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
                     if (action == Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION) {
                         ((MuzimaApplication) getApplicationContext()).getExecutorService()
-                                .execute(new DownloadCohortsTask(getApplicationContext(), selectedCohorts, new DownloadCohortsTask.CohortDownloadCallback() {
+                                .execute(new DownloadCohortsTask(getApplicationContext(), selectedCohorts, false, new DownloadCohortsTask.CohortDownloadCallback() {
                                     @Override
                                     public void callbackDownload() {
                                         runOnUiThread(new Runnable() {
@@ -206,6 +225,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                selectedForms.clear();
                                                 actionMode.finish();
                                                 loadingMenuItem.setVisible(false);
                                                 EventBus.getDefault().post(new DestroyActionModeEvent());
@@ -224,11 +244,17 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
             }
         };
 
+        for (CohortItem selectedCohort : selectedCohorts) {
+            if (selectedCohort.isSelected()) selectedCohortsCount = selectedCohortsCount + 1;
+        }
         actionMode = startActionMode(actionModeCallback);
-        if (action == Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION)
-            actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedCohorts.size(), getResources().getString(R.string.general_selected)));
-        if (action == Constants.ACTION_MODE_EVENT.FORMS_DOWNLOAD_ACTION)
+        if (action == Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION) {
+            if (selectedCohortsCount < 1) actionMode.finish();
+            actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedCohortsCount, getResources().getString(R.string.general_selected)));
+        } else if (action == Constants.ACTION_MODE_EVENT.FORMS_DOWNLOAD_ACTION) {
+            if (selectedForms.size() < 1) actionMode.finish();
             actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedForms.size(), getResources().getString(R.string.general_selected)));
+        }
     }
 
     public void hideProgressbar() {
@@ -245,10 +271,17 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         toolbar = findViewById(R.id.dashboard_toolbar);
         drawerLayout = findViewById(R.id.main_dashboard_drawer_layout);
         navigationView = findViewById(R.id.dashboard_navigation);
-        bottomSheetView = findViewById(R.id.dashboard_home_bottom_view_container);
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
+        cohortFilterBottomSheetView = findViewById(R.id.dashboard_home_bottom_view_container);
+        cohortFilterBottomSheetBehavior = BottomSheetBehavior.from(cohortFilterBottomSheetView);
         closeBottomSheet = findViewById(R.id.bottom_sheet_close_view);
         filterOptionsRecyclerView = findViewById(R.id.dashboard_home_filter_recycler_view);
+        formFilterBottomSheetView = findViewById(R.id.dashboard_home_form_bottom_view_container);
+        formFilterBottomSheetBehavior = BottomSheetBehavior.from(formFilterBottomSheetView);
+        formFilterNamesContainer = findViewById(R.id.form_filter_by_name_container);
+        formFilterNamesCheckbox = findViewById(R.id.form_filter_name_checkbox);
+        formFilterStatusContainer = findViewById(R.id.form_filter_by_status_container);
+        formFilterStatusCheckbox = findViewById(R.id.form_filter_status_checkbox);
+        closeFormsBottomSheetView = findViewById(R.id.forms_bottom_sheet_close_view);
         cohortFilterAdapter = new CohortFilterAdapter(getApplicationContext(), cohortList, this);
         filterOptionsRecyclerView.setAdapter(cohortFilterAdapter);
         filterOptionsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -289,18 +322,18 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         closeBottomSheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                cohortFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
 
-        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+        cohortFilterBottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     if (!selectedCohortFilters.isEmpty()) {
                         EventBus.getDefault().post(new CohortFilterActionEvent(selectedCohortFilters, false));
                     }
-                } else if (newState == BottomSheetBehavior.STATE_EXPANDED){
+                } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
 
                 }
                 EventBus.getDefault().post(new BottomSheetToggleEvent(newState));
@@ -312,11 +345,55 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
             }
         });
 
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        closeFormsBottomSheetView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+        });
 
+        formFilterStatusContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                formFilterNamesCheckbox.setChecked(false);
+                formFilterStatusCheckbox.setChecked(true);
+                formFilterNamesContainer.setBackground(getResources().getDrawable(R.drawable.global_highlight_background));
+                if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(getApplicationContext()))
+                    formFilterStatusContainer.setBackgroundColor(getResources().getColor(R.color.primary_white));
+                else
+                    formFilterStatusContainer.setBackgroundColor(getResources().getColor(R.color.primary_black));
+
+            }
+        });
+
+        formFilterNamesContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                formFilterNamesCheckbox.setChecked(true);
+                formFilterStatusCheckbox.setChecked(false);
+                formFilterStatusContainer.setBackground(getResources().getDrawable(R.drawable.global_highlight_background));
+                if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(getApplicationContext()))
+                    formFilterNamesContainer.setBackgroundColor(getResources().getColor(R.color.primary_white));
+                else
+                    formFilterNamesContainer.setBackgroundColor(getResources().getColor(R.color.primary_black));
+
+            }
+        });
+
+        cohortFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         headerTitleTextView.setText(((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getUsername());
 
         setTitle(" ");
+
+    }
+
+    @Subscribe
+    public void showFormsFilterBottomSheetEvent(ShowFormsFilterEvent event) {
+        if (event.isCloseAction())
+            formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        else
+            formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
     }
 

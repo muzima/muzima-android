@@ -25,7 +25,8 @@ public class FilterPatientsListTask implements Runnable {
     @Override
     public void run() {
         try {
-            for (CohortFilter filter : event.getFilters()) {
+            List<CohortFilter> filters = event.getFilters();
+            for (CohortFilter filter : filters) {
                 if (filter.getCohort() == null && !event.isNoSelectionEvent()) {
                     patientsListFilterCallback.onPatientsFiltered(((MuzimaApplication) context.getApplicationContext()).getPatientController()
                             .getAllPatients());

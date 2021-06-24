@@ -24,6 +24,7 @@ import com.muzima.adapters.patients.AllPatientsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.events.BottomSheetToggleEvent;
+import com.muzima.model.events.CloseBottomSheetEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
@@ -70,6 +71,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
     private AppBarLayout appBarLayout;
     private TextView filterLabelTextView;
     private List<Patient> patients = new ArrayList<>();
+    private boolean bottomSheetFilterVisible;
 
     @Nullable
     @Override
@@ -107,10 +109,14 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
 
     @Override
     public void onPatientClicked(int position) {
-        Patient patient = patients.get(position);
-        Intent intent = new Intent(getActivity().getApplicationContext(), ClientSummaryActivity.class);
-        intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
-        startActivity(intent);
+        if (bottomSheetFilterVisible) {
+            closeBottomSheet();
+        } else {
+            Patient patient = patients.get(position);
+            Intent intent = new Intent(getActivity().getApplicationContext(), ClientSummaryActivity.class);
+            intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
+            startActivity(intent);
+        }
     }
 
     private void setUpFormsCount() {
@@ -155,38 +161,49 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         incompleteFormsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), FormsListActivity.class);
-                intent.putExtra(FormsListActivity.FILTER_FORM_KEY, Constants.FORM_TYPE.INCOMPLETE_FORMS_KEY);
-                startActivity(intent);
-                getActivity().finish();
+                if (bottomSheetFilterVisible) {
+                    closeBottomSheet();
+                } else {
+                    launchFormDataList(Constants.FORM_TYPE.INCOMPLETE_FORMS_KEY);
+                }
             }
         });
 
         completeFormsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), FormsListActivity.class);
-                intent.putExtra(FormsListActivity.FILTER_FORM_KEY, Constants.FORM_TYPE.COMPLETE_FORMS_KEY);
-                startActivity(intent);
-                getActivity().finish();
+                if (bottomSheetFilterVisible) {
+                    closeBottomSheet();
+                } else {
+                    launchFormDataList(Constants.FORM_TYPE.COMPLETE_FORMS_KEY);
+                }
             }
         });
 
         favouriteListView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new ShowCohortFilterEvent());
-                childContainer.setBackgroundColor(getResources().getColor(R.color.hint_text_grey_opaque));
-                fabSearchButton.hide();
+                if (bottomSheetFilterVisible) {
+                    closeBottomSheet();
+                } else {
+                    EventBus.getDefault().post(new ShowCohortFilterEvent());
+                    bottomSheetFilterVisible = true;
+                    childContainer.setBackgroundColor(getResources().getColor(R.color.hint_text_grey_opaque));
+                    fabSearchButton.hide();
+                }
             }
         });
 
         searchPatientEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), PatientsListActivity.class);
-                startActivity(intent);
-                getActivity().finish();
+                if (bottomSheetFilterVisible) {
+                    closeBottomSheet();
+                } else {
+                    Intent intent = new Intent(getActivity().getApplicationContext(), PatientsListActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
             }
         });
 
@@ -199,10 +216,29 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
             }
         });
 
+        childContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventBus.getDefault().post(new CloseBottomSheetEvent());
+            }
+        });
+
         providerNameTextView.setText(String.format(Locale.getDefault(), "%s, %s",
                 getResources().getString(R.string.general_hello_greeting),
                 ((MuzimaApplication) getActivity().getApplicationContext()).getAuthenticatedUser().getUsername()));
 
+    }
+
+    private void launchFormDataList(String incompleteFormsKey) {
+        Intent intent = new Intent(getActivity().getApplicationContext(), FormsListActivity.class);
+        intent.putExtra(FormsListActivity.FILTER_FORM_KEY, incompleteFormsKey);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+    private void closeBottomSheet() {
+        EventBus.getDefault().post(new CloseBottomSheetEvent());
+        bottomSheetFilterVisible = false;
     }
 
     @Override
@@ -232,6 +268,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
 
     @Subscribe
     public void cohortFilterEvent(final CohortFilterActionEvent event) {
+        bottomSheetFilterVisible = false;
         progressBar.setVisibility(View.VISIBLE);
         ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService().execute(
                 new FilterPatientsListTask(getActivity().getApplicationContext(), event, new FilterPatientsListTask.PatientsListFilterCallback() {
