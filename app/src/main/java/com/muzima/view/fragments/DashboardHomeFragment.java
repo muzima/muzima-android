@@ -31,11 +31,12 @@ import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.tasks.FilterPatientsListTask;
 import com.muzima.tasks.LoadPatientsListService;
-import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.view.ClientSummaryActivity;
-import com.muzima.view.forms.FormsListActivity;
+import com.muzima.view.MainDashboardActivity;
+import com.muzima.view.forms.CompletedFormsListActivity;
+import com.muzima.view.forms.IncompleteFormsListActivity;
 import com.muzima.view.patients.PatientsListActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -115,6 +116,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
             Patient patient = patients.get(position);
             Intent intent = new Intent(getActivity().getApplicationContext(), ClientSummaryActivity.class);
             intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
+            intent.putExtra(ClientSummaryActivity.CALLING_ACTIVITY, MainDashboardActivity.class.getSimpleName());
             startActivity(intent);
         }
     }
@@ -164,7 +166,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
                 if (bottomSheetFilterVisible) {
                     closeBottomSheet();
                 } else {
-                    launchFormDataList(Constants.FORM_TYPE.INCOMPLETE_FORMS_KEY);
+                    launchFormDataList(true);
                 }
             }
         });
@@ -175,7 +177,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
                 if (bottomSheetFilterVisible) {
                     closeBottomSheet();
                 } else {
-                    launchFormDataList(Constants.FORM_TYPE.COMPLETE_FORMS_KEY);
+                    launchFormDataList(false);
                 }
             }
         });
@@ -229,11 +231,16 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
 
     }
 
-    private void launchFormDataList(String incompleteFormsKey) {
-        Intent intent = new Intent(getActivity().getApplicationContext(), FormsListActivity.class);
-        intent.putExtra(FormsListActivity.FILTER_FORM_KEY, incompleteFormsKey);
+    private void launchFormDataList(boolean incompleteForms) {
+        Intent intent;
+        if (incompleteForms){
+            intent = new Intent(getActivity().getApplicationContext(), IncompleteFormsListActivity.class);
+        }else {
+            intent = new Intent(getActivity().getApplicationContext(), CompletedFormsListActivity.class);
+        }
         startActivity(intent);
         getActivity().finish();
+
     }
 
     private void closeBottomSheet() {

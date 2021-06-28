@@ -10,18 +10,24 @@
 
 package com.muzima.utils;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.muzima.utils.Constants.*;
 
 public class DateUtils {
-    public static String getFormattedDate(Date date){
+    private static final String TAG = "DateUtils";
+    public static final String SIMPLE_DATE_FORMAT = "yyyy.MM.dd";
+
+    public static String getFormattedDate(Date date) {
         SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
         return formattedDate.format(date);
     }
@@ -42,22 +48,22 @@ public class DateUtils {
         }
     }
 
-    public static String getFormattedDateTime(Date date){
+    public static String getFormattedDateTime(Date date) {
         SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_LOCALE_FORMAT);
         return formattedDate.format(date);
     }
 
-    public static String getFormattedStandardDisplayDateTime(Date date){
+    public static String getFormattedStandardDisplayDateTime(Date date) {
         SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DISPLAY_FORMAT);
         return formattedDate.format(date);
     }
 
-    public static String getFormattedDate(Date date, String pattern){
+    public static String getFormattedDate(Date date, String pattern) {
         SimpleDateFormat formattedDate = new SimpleDateFormat(pattern);
         return formattedDate.format(date);
     }
 
-    public static String getMonthNameFormattedDate(Date date){
+    public static String getMonthNameFormattedDate(Date date) {
         SimpleDateFormat formattedDate = new SimpleDateFormat("dd MMM yyyy");
         return formattedDate.format(date);
     }
@@ -71,5 +77,13 @@ public class DateUtils {
         Calendar dob = Calendar.getInstance();
         dob.setTime(birthdate);
         return Calendar.getInstance().get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+    }
+
+    public static String convertDateToStdString(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(SIMPLE_DATE_FORMAT, Locale.getDefault());
+        Log.e(TAG, "convertDateToStdString: date " + simpleDateFormat.format(calendar.getTime()));
+        return simpleDateFormat.format(calendar.getTime());
     }
 }

@@ -891,5 +891,7 @@ If you have any questions or suggestions about our Privacy Policy, do not hesita
     <string name="forms_general_sort_by">Sort by</string>
     <string name="general_sort_by_name">Sort by name</string>
     <string name="general_sort_status">Sort by status</string>
+    <string name="general_add_reading">Add reading</string>
+    <string name="general_reading">Reading</string>
 
 </resources>

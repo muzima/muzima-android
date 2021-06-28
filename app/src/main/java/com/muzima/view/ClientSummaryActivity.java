@@ -1,16 +1,22 @@
 package com.muzima.view;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.ViewUtils;
@@ -19,15 +25,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.forms.ClientDynamicObsFormsAdapter;
 import com.muzima.adapters.forms.FormSummaryCardsAdapter;
 import com.muzima.adapters.viewpager.DataCollectionViewPagerAdapter;
+import com.muzima.api.model.Concept;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
+import com.muzima.controller.CohortController;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.PatientController;
+import com.muzima.model.SingleObsForm;
 import com.muzima.model.SummaryCard;
 import com.muzima.model.enums.CardsSummaryCategory;
+import com.muzima.model.events.CloseSingleFormEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.tasks.FormsCountService;
@@ -41,14 +54,20 @@ import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.observations.ObservationsFragment;
 import com.muzima.view.patients.PatientsListActivity;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ClientSummaryActivity extends AppCompatActivity implements FormSummaryCardsAdapter.OnCardClickedListener, FormsCountService.FormsCountServiceCallback {
-
+public class ClientSummaryActivity extends AppCompatActivity implements FormSummaryCardsAdapter.OnCardClickedListener, FormsCountService.FormsCountServiceCallback, ClientDynamicObsFormsAdapter.DatePickerClickedListener {
+    private static final String TAG = "ClientSummaryActivity";
     public static final String PATIENT_UUID = "patient_uuid";
+    public static final String CALLING_ACTIVITY = "calling_activity_key";
     private Toolbar toolbar;
     private TextView patientNameTextView;
     private ImageView patientGenderImageView;
@@ -56,20 +75,30 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     private TextView identifierTextView;
     private TextView gpsAddressTextView;
     private TextView ageTextView;
+    private TextView bottomSheetConceptTitleTextView;
     private RecyclerView formCountSummaryRecyclerView;
     private View expandHistoricalDataView;
     private View expandDataCollectionView;
+    private View childContainerView;
     private ImageView expandHistoricalDataImageView;
     private ImageView expandDataCollectionImageView;
     private View historicalDataContainerView;
     private ViewPager dataCollectionViewPager;
+    private View addReadingActionView;
+    private View cancelBottomSheetActionView;
+    private View saveBottomSheetEntriesActionView;
+    private BottomSheetBehavior bottomSheetBehavior;
+    private RecyclerView singleObsFormsRecyclerView;
+    private View bottomSheetView;
     private String patientUuid;
     private Patient patient;
+    private Concept selectedBottomSheetConcept;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
-
+    private ClientDynamicObsFormsAdapter clientDynamicObsFormsAdapter;
     private FormSummaryCardsAdapter formSummaryCardsAdapter;
     private List<SummaryCard> formsSummaries = new ArrayList<>();
+    private List<SingleObsForm> singleObsFormsList = new ArrayList<>();
 
     private DataCollectionViewPagerAdapter dataCollectionViewPagerAdapter;
 
@@ -78,12 +107,22 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         themeUtils.onCreate(ClientSummaryActivity.this);
         languageUtil.onCreate(ClientSummaryActivity.this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_client_summary_dashboard);
+        setContentView(R.layout.activity_main_client_summary);
         initializeResources();
         loadPatientData();
         loadSummaryHeaders();
         loadFormsCountData();
         loadHistoricalDataView();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -185,9 +224,19 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         expandDataCollectionImageView = findViewById(R.id.expand_data_collection_image_view);
         dataCollectionViewPager = findViewById(R.id.client_summary_data_collection_view_pager);
         historicalDataContainerView = findViewById(R.id.historical_data_fragment_container);
-
-        formSummaryCardsAdapter = new FormSummaryCardsAdapter(getApplicationContext(),formsSummaries, this);
+        addReadingActionView = findViewById(R.id.general_add_reading_button);
+        cancelBottomSheetActionView = findViewById(R.id.close_summary_bottom_sheet_view);
+        saveBottomSheetEntriesActionView = findViewById(R.id.client_summary_save_action_bottom_sheet);
+        bottomSheetView = findViewById(R.id.client_summary_dynamic_form_bottom_sheet_container);
+        singleObsFormsRecyclerView = findViewById(R.id.client_summary_single_obs_form_recycler_view);
+        childContainerView = findViewById(R.id.bottom_sheet_child_container);
+        bottomSheetConceptTitleTextView = findViewById(R.id.cohort_name_text_view);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
+        formSummaryCardsAdapter = new FormSummaryCardsAdapter(getApplicationContext(), formsSummaries, this);
         formCountSummaryRecyclerView.setAdapter(formSummaryCardsAdapter);
+        clientDynamicObsFormsAdapter = new ClientDynamicObsFormsAdapter(getApplicationContext(), singleObsFormsList, this);
+        singleObsFormsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        singleObsFormsRecyclerView.setAdapter(clientDynamicObsFormsAdapter);
         formCountSummaryRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
         dataCollectionViewPagerAdapter = new DataCollectionViewPagerAdapter(getSupportFragmentManager(), getApplicationContext(), getIntent().getStringExtra(PATIENT_UUID));
         dataCollectionViewPager.setAdapter(dataCollectionViewPagerAdapter);
@@ -204,13 +253,13 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
                 if (historicalDataContainerView.getVisibility() == View.VISIBLE) {
                     historicalDataContainerView.setVisibility(View.GONE);
                     dataCollectionViewPager.setVisibility(View.VISIBLE);
-                    expandHistoricalDataImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this,R.attr.icActionArrowDown));
-                    expandDataCollectionImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this,R.attr.icActionArrowUp));
-                }else {
+                    expandHistoricalDataImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowDown));
+                    expandDataCollectionImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowUp));
+                } else {
                     historicalDataContainerView.setVisibility(View.VISIBLE);
                     dataCollectionViewPager.setVisibility(View.GONE);
-                    expandHistoricalDataImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this,R.attr.icActionArrowUp));
-                    expandDataCollectionImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this,R.attr.icActionArrowDown));
+                    expandHistoricalDataImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowUp));
+                    expandDataCollectionImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowDown));
                 }
             }
         });
@@ -221,26 +270,90 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
                 if (dataCollectionViewPager.getVisibility() == View.VISIBLE) {
                     dataCollectionViewPager.setVisibility(View.GONE);
                     historicalDataContainerView.setVisibility(View.VISIBLE);
-                    expandHistoricalDataImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this,R.attr.icActionArrowUp));
-                    expandDataCollectionImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this,R.attr.icActionArrowDown));
-                }else {
+                    expandHistoricalDataImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowUp));
+                    expandDataCollectionImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowDown));
+                } else {
                     dataCollectionViewPager.setVisibility(View.VISIBLE);
                     historicalDataContainerView.setVisibility(View.GONE);
-                    expandHistoricalDataImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this,R.attr.icActionArrowDown));
-                    expandDataCollectionImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this,R.attr.icActionArrowUp));
+                    expandHistoricalDataImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowDown));
+                    expandDataCollectionImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowUp));
                 }
             }
         });
+
+        cancelBottomSheetActionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+        });
+
+        saveBottomSheetEntriesActionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //todo save form entries as individual obs
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+        });
+
+        addReadingActionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SingleObsForm form = new SingleObsForm(selectedBottomSheetConcept, new Date(), selectedBottomSheetConcept.getConceptType().getName(), "", singleObsFormsList.size() + 1);
+                singleObsFormsList.add(form);
+                clientDynamicObsFormsAdapter.notifyDataSetChanged();
+            }
+        });
+
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    childContainerView.setVisibility(View.GONE);
+                } else {
+                    childContainerView.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
+        //todo remove
+        try {
+            selectedBottomSheetConcept = ((MuzimaApplication) getApplicationContext()).getConceptController().getConcepts().get(0);
+            if (selectedBottomSheetConcept != null) bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)",selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
+        } catch (ConceptController.ConceptFetchException ex) {
+            ex.printStackTrace();
+        }
+
+
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (android.R.id.home == item.getItemId()) {
-            Intent intent = new Intent(getApplicationContext(), PatientsListActivity.class);
-            startActivity(intent);
-            finish();
+            if (getIntent().getStringExtra(CALLING_ACTIVITY) != null && getIntent().getStringExtra(CALLING_ACTIVITY).equalsIgnoreCase(PatientsListActivity.class.getSimpleName())) {
+                Intent intent = new Intent(getApplicationContext(), PatientsListActivity.class);
+                startActivity(intent);
+                finish();
+            } else if (getIntent().getStringExtra(CALLING_ACTIVITY) != null && getIntent().getStringExtra(CALLING_ACTIVITY).equalsIgnoreCase(MainDashboardActivity.class.getSimpleName())) {
+                Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
         return true;
+    }
+
+    @Subscribe
+    public void closeSingleFormEvent(CloseSingleFormEvent event) {
+        int position = event.getPosition();
+        singleObsFormsList.remove(position);
+        clientDynamicObsFormsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -265,5 +378,40 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
             case EMERGENCY_CONTACT:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getIntent().getStringExtra(CALLING_ACTIVITY) != null && getIntent().getStringExtra(CALLING_ACTIVITY).equalsIgnoreCase(PatientsListActivity.class.getSimpleName())) {
+            Intent intent = new Intent(getApplicationContext(), PatientsListActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (getIntent().getStringExtra(CALLING_ACTIVITY) != null && getIntent().getStringExtra(CALLING_ACTIVITY).equalsIgnoreCase(MainDashboardActivity.class.getSimpleName())) {
+            Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDatePickerClicked(final int position, EditText dateEditText) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(ClientSummaryActivity.this);
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                Log.e(TAG, "onDateSet: year, " + year + " month " + month + "day" + day);
+                SingleObsForm form = singleObsFormsList.get(position);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, day);
+                form.setDate(calendar.getTime());
+                singleObsFormsList.remove(position);
+                singleObsFormsList.add(position, form);
+                clientDynamicObsFormsAdapter.notifyDataSetChanged();
+            }
+        });
+        datePickerDialog.show();
     }
 }

@@ -74,6 +74,7 @@ import com.muzima.view.ClientSummaryActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
+import com.muzima.view.fragments.DashboardHomeFragment;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -556,6 +557,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         patientAdapter.cancelBackgroundTask();
         Patient patient = patientAdapter.getItem(position);
         Intent intent = new Intent(this, ClientSummaryActivity.class);
+        intent.putExtra(ClientSummaryActivity.CALLING_ACTIVITY, PatientsListActivity.class.getSimpleName());
         intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
         startActivity(intent);
     }

@@ -2,7 +2,6 @@ package com.muzima.view.forms;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -17,29 +16,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.forms.CompletedFormsWithDataAdapter;
-import com.muzima.adapters.forms.FormsRecyclerViewAdapter;
+import com.muzima.adapters.IncompleteFormsWithDataAdapter;
 import com.muzima.model.CompleteFormWithPatientData;
+import com.muzima.model.IncompleteFormWithPatientData;
 import com.muzima.tasks.LoadFormsWithDataTask;
-import com.muzima.utils.Constants;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.MainDashboardActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FormsListActivity extends AppCompatActivity implements FormsRecyclerViewAdapter.OnFormClickedListener {
-    public static final String FILTER_FORM_KEY = "form_filter_key";
+public class IncompleteFormsListActivity extends AppCompatActivity implements IncompleteFormsWithDataAdapter.OnFormClickedListener {
     private MaterialToolbar toolbar;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private View notDataView;
-    private CompletedFormsWithDataAdapter recyclerViewAdapter;
-    private List<CompleteFormWithPatientData> formList = new ArrayList<>();
+    private IncompleteFormsWithDataAdapter recyclerViewAdapter;
+    private List<IncompleteFormWithPatientData> formList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        new ThemeUtils().onCreate(FormsListActivity.this);
+        new ThemeUtils().onCreate(IncompleteFormsListActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forms_list_layout);
         initializeResources();
@@ -56,9 +53,9 @@ public class FormsListActivity extends AppCompatActivity implements FormsRecycle
 
     private void loadData() {
         ((MuzimaApplication) getApplicationContext()).getExecutorService()
-                .execute(new LoadFormsWithDataTask(getApplicationContext(), getIntent().getStringExtra(FILTER_FORM_KEY), new LoadFormsWithDataTask.LoadFormsFinishedCallback() {
+                .execute(new LoadFormsWithDataTask(getApplicationContext(), null, true, new LoadFormsWithDataTask.LoadFormsFinishedCallback() {
                     @Override
-                    public void onFormsLoaded(final List<CompleteFormWithPatientData> forms) {
+                    public void onIncompleteFormsLoaded(final List<IncompleteFormWithPatientData> forms) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -74,7 +71,15 @@ public class FormsListActivity extends AppCompatActivity implements FormsRecycle
                                     formList.addAll(forms);
                                     recyclerViewAdapter.notifyDataSetChanged();
                                 }
+                            }
+                        });
+                    }
 
+                    @Override
+                    public void onCompleteFormsLoaded(final List<CompleteFormWithPatientData> forms) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
                             }
                         });
                     }
@@ -90,12 +95,9 @@ public class FormsListActivity extends AppCompatActivity implements FormsRecycle
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            if (getIntent().getStringExtra(FILTER_FORM_KEY) != null && getIntent().getStringExtra(FILTER_FORM_KEY).equalsIgnoreCase(Constants.FORM_TYPE.COMPLETE_FORMS_KEY))
-                getSupportActionBar().setTitle(getResources().getString(R.string.info_complete_form));
-            else if (getIntent().getStringExtra(FILTER_FORM_KEY) != null && getIntent().getStringExtra(FILTER_FORM_KEY).equalsIgnoreCase(Constants.FORM_TYPE.INCOMPLETE_FORMS_KEY))
-                getSupportActionBar().setTitle(getResources().getString(R.string.info_incomplete_form));
+            getSupportActionBar().setTitle(getResources().getString(R.string.info_incomplete_form));
         }
-        recyclerViewAdapter = new CompletedFormsWithDataAdapter(getApplicationContext(), formList, this);
+        recyclerViewAdapter = new IncompleteFormsWithDataAdapter(getApplicationContext(), formList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(recyclerViewAdapter);
     }
