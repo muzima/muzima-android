@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_shr"
+        android:title="@string/SHR_card_text"
+        android:icon="?attr/NoSHRCardIcon"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/menu_cohort_group"
+        android:title="@string/general_cohorts"
+        android:icon="?attr/cohortGroupIcon"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/menu_location_item"
+        android:title="@string/title_gps_location"
+        android:icon="?attr/icLocation"
+        app:showAsAction="ifRoom"/>
+
+</menu>

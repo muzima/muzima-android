@@ -35,9 +35,6 @@ public class ClientSummaryFormsAdapter extends RecyclerView.Adapter<ClientSummar
         DownloadedForm form = forms.get(position);
         holder.formNameTextView.setText(form.getName());
         holder.formDescriptionTextView.setText(form.getDescription());
-//        Tag[] tags = form.get();
-//        if (tags.length > 0)
-//            holder.formTag.setText(tags[0].getName());
     }
 
     @Override

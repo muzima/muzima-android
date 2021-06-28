@@ -1,5 +1,6 @@
 package com.muzima.adapters.forms;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,12 @@ import java.util.List;
 
 public class FormSummaryCardsAdapter extends RecyclerView.Adapter<FormSummaryCardsAdapter.ViewHolder> {
 
+    private Context context;
     private List<SummaryCard> summaryList;
     private OnCardClickedListener cardClickedListener;
 
-    public FormSummaryCardsAdapter(List<SummaryCard> summaryList, OnCardClickedListener cardClickedListener) {
+    public FormSummaryCardsAdapter(Context context, List<SummaryCard> summaryList, OnCardClickedListener cardClickedListener) {
+        this.context = context;
         this.summaryList = summaryList;
         this.cardClickedListener = cardClickedListener;
     }
@@ -33,6 +36,10 @@ public class FormSummaryCardsAdapter extends RecyclerView.Adapter<FormSummaryCar
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SummaryCard summaryCard = summaryList.get(position);
+        if (summaryCard.getTitle().equalsIgnoreCase(context.getResources().getString(R.string.info_incomplete_form))){
+            holder.containerView.setBackground(context.getResources().getDrawable(R.drawable.incomplete_forms_gradient));
+        }
+
         holder.titleTextView.setText(summaryCard.getTitle());
         holder.countTextView.setText(String.valueOf(summaryCard.getCount()));
     }

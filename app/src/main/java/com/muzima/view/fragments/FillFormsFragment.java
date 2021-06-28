@@ -58,9 +58,6 @@ public class FillFormsFragment extends Fragment implements FormsLoaderService.Fo
         formsAdapter = new ClientSummaryFormsAdapter(forms, this);
         formsRecyclerView.setAdapter(formsAdapter);
         formsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity().getApplicationContext(),DividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider_item_view));
-        formsRecyclerView.addItemDecoration(dividerItemDecoration);
         try {
             patient = ((MuzimaApplication) getActivity().getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
         }catch (PatientController.PatientLoadException ex){

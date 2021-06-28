@@ -59,7 +59,7 @@
     <color name="divider_color">#48A1A0A0</color>
     <color name="list_selection_background">#60137EFE</color>
     <color name="green_370">#0BA511</color>
-    <color name="hint_text_grey_opaque">#90A1A0A0</color>
+    <color name="hint_text_grey_opaque">#7CA1A0A0</color>
     <color name="hint_blue_opaque">#61137EFE</color>
     <color name="white_smoke_transparent">#54FFFFFF</color>
     <color name="white">#fff</color>

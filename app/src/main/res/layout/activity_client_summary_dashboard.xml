@@ -7,7 +7,8 @@
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:elevation="12dp"
+        app:elevation="6dp"
+        android:background="?attr/primaryBackgroundColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -23,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"/>
 
-            <include layout="@layout/item_patients_list"/>
+            <include layout="@layout/client_summary_patients_list"/>
 
         </LinearLayout>
 
@@ -36,7 +37,6 @@
         android:paddingStart="2dp"
         android:paddingEnd="2dp"
         android:scrollbarSize="1dp"
-        android:paddingBottom="?attr/actionBarSize"
         android:background="?attr/primaryBackgroundColor"
         android:orientation="vertical">
 
@@ -99,7 +99,7 @@
 
                     <ImageView
                         android:id="@+id/expand_historical_data_image_view"
-                        android:src="?attr/ic_action_arrow_down_dark"
+                        android:src="?attr/icActionArrowUp"
                         android:layout_marginStart="12dp"
                         android:layout_marginEnd="8dp"
                         android:layout_centerVertical="true"
@@ -153,7 +153,7 @@
 
                     <ImageView
                         android:id="@+id/expand_data_collection_image_view"
-                        android:src="?attr/ic_action_arrow_down_dark"
+                        android:src="?attr/icActionArrowUp"
                         android:layout_marginStart="12dp"
                         android:layout_marginEnd="8dp"
                         android:layout_centerVertical="true"

@@ -175,7 +175,7 @@
                 android:layout_width="26dp"
                 android:layout_marginBottom="6dp"
                 android:layout_marginStart="2dp"
-                android:src="?attr/ic_action_arrow_down_dark" />
+                android:src="?attr/icActionArrowDown" />
 
         </LinearLayout>
 
