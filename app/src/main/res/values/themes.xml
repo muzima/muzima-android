@@ -44,6 +44,7 @@
         <item name="icDownload">@drawable/ic_download</item>
         <item name="icReplyNotification">@drawable/reply_notification_image_icon</item>
         <item name="icAdd">@drawable/ic_action_add</item>
+        <item name="icActionAccount">@drawable/ic_action_account_circle_dark</item>
         <item name="icAddClient">@drawable/ic_action_add_client</item>
         <item name="icSearch">@drawable/ic_search</item>
         <item name="listSelectorBlue">@drawable/list_selector_blue</item>
@@ -108,6 +109,7 @@
         <item name="icAdd">@drawable/ic_action_add</item>
         <item name="icAddClient">@drawable/ic_action_add_client</item>
         <item name="icSearch">@drawable/ic_search</item>
+        <item name="icActionAccount">@drawable/ic_action_account_circle_dark</item>
         <item name="listSelectorBlue">@drawable/list_selector_blue</item>
         <item name="icLauncherLogo">@drawable/ic_launcher_logo</item>
         <item name="icCancel">@drawable/ic_cancel</item>
@@ -161,6 +163,7 @@
         <item name="loginLayoutBackground">@drawable/login_layout_background_light</item>
         <item name="icLabels">@drawable/ic_labels_light</item>
         <item name="icRefresh">@drawable/ic_refresh_light</item>
+        <item name="icActionAccount">@drawable/ic_action_account_circle_light</item>
         <item name="icActionUpload">@drawable/ic_action_upload_light</item>
         <item name="dataTipColor">@color/primary_black</item>
         <item name="icDiscard">@drawable/ic_action_discard_light</item>
@@ -226,6 +229,7 @@
         <item name="dataTipColor">@color/primary_black</item>
         <item name="icDiscard">@drawable/ic_action_discard_light</item>
         <item name="icDownload">@drawable/ic_download_light</item>
+        <item name="icActionAccount">@drawable/ic_action_account_circle_light</item>
         <item name="icReplyNotification">@drawable/reply_notification_image_icon_light</item>
         <item name="icAdd">@drawable/ic_action_add_light</item>
         <item name="icAddClient">@drawable/ic_action_add_client_light</item>
@@ -286,6 +290,7 @@
         <item name="icRefresh">@drawable/ic_refresh_dark</item>
         <item name="icActionUpload">@drawable/ic_action_upload</item>
         <item name="dataTipColor">#e8e8e8</item>
+        <item name="icActionAccount">@drawable/ic_action_account_circle_light</item>
         <item name="icDiscard">@drawable/ic_action_discard</item>
         <item name="icDownload">@drawable/ic_download</item>
         <item name="icReplyNotification">@drawable/reply_notification_image_icon</item>
@@ -345,6 +350,7 @@
         <item name="icRefresh">@drawable/ic_refresh_light</item>
         <item name="icActionUpload">@drawable/ic_action_upload_light</item>
         <item name="dataTipColor">@color/primary_black</item>
+        <item name="icActionAccount">@drawable/ic_action_account_circle_light</item>
         <item name="icDiscard">@drawable/ic_action_discard_light</item>
         <item name="icDownload">@drawable/ic_download_light</item>
         <item name="icReplyNotification">@drawable/reply_notification_image_icon_light</item>

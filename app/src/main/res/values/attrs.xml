@@ -57,6 +57,7 @@
     <attr name="colorNavigationItemSelected" format="color" />
     <attr name="drawableNavigationItemBackground" format="reference" />
     <attr name="defaultNavigationDrawerStyle" format="reference"/>
+    <attr name="icActionAccount" format="reference"/>
 
     <declare-styleable name="PagerSlidingTabStrip">
         <attr name="indicatorTextColor" format="color"/>

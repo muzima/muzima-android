@@ -2,37 +2,45 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/drawer_menu_home"
-        android:title="@string/general_home"
-        android:enabled="true"
-        android:checked="true"
-        android:checkable="true"
-        android:icon="?attr/ic_action_home_dark"/>
+    <group android:id="@+id/dashboard_top">
+        <item
+            android:id="@+id/drawer_menu_home"
+            android:title="@string/general_home"
+            android:enabled="true"
+            android:checked="true"
+            android:checkable="true"
+            android:icon="?attr/icActionAccount"/>
 
-    <item
-        android:id="@+id/drawer_menu_settings"
-        android:title="@string/general_settings"
-        android:icon="?attr/ic_action_settings"/>
+        <item
+            android:id="@+id/drawer_menu_settings"
+            android:title="@string/general_settings"
+            android:icon="?attr/ic_action_settings"/>
+    </group>
 
-    <item
-        android:id="@+id/drawer_menu_help"
-        android:title="@string/help_general"
-        android:icon="?attr/ic_action_help"/>
 
-    <item
-        android:id="@+id/drawer_menu_feedback"
-        android:title="@string/general_feedback"
-        android:icon="?attr/ic_action_mail_dark"/>
+    <group
+        android:id="@+id/dashboard_help_group">
+        <item
+            android:id="@+id/drawer_menu_help"
+            android:title="@string/help_general"
+            android:icon="?attr/ic_action_help"/>
 
-    <item
-        android:id="@+id/drawer_menu_contact_us"
-        android:title="@string/contact_us"
-        android:icon="?attr/ic_action_settings"/>
+        <item
+            android:id="@+id/drawer_menu_feedback"
+            android:title="@string/general_feedback"
+            android:icon="?attr/ic_action_mail_dark"/>
 
-    <item
-        android:id="@+id/drawer_menu_logout"
-        android:title="@string/general_logout"
-        android:icon="?attr/ic_action_power_setting_dark"/>
+        <item
+            android:id="@+id/drawer_menu_contact_us"
+            android:title="@string/contact_us"
+            android:icon="?attr/ic_action_settings"/>
+
+        <item
+            android:id="@+id/drawer_menu_logout"
+            android:title="@string/general_logout"
+            android:icon="?attr/ic_action_power_setting_dark"/>
+    </group>
+
+
 
 </menu>
