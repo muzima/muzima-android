@@ -63,7 +63,7 @@
     <color name="hint_blue_opaque">#61137EFE</color>
     <color name="white_smoke_transparent">#54FFFFFF</color>
     <color name="white">#fff</color>
-    <color name="light_blue">#1D82F8</color>
+    <color name="light_blue">#5EA4F4</color>
     <color name="bottom_navigation_background">#CD2B2A2A</color>
-    <color name="dark_blue">#334BC8</color>
+    <color name="dark_blue">#E62B42BC</color>
 </resources>

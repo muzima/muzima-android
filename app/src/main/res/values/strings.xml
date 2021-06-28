@@ -888,7 +888,8 @@ If you have any questions or suggestions about our Privacy Policy, do not hesita
     <string name="general_multiple_use_cases">Multiple Use Cases</string>
     <string name="general_openmrs_compatibility_description">mUzima was designed to be the mHealth extension of OpenMRS. OpenMRS is deployed nationally in several countries.</string>
     <string name="general_openmrs_compatibility">OpenMRS Compatibility</string>
-    <string name="general_sort_by_name">Sort by name</string>
     <string name="forms_general_sort_by">Sort by</string>
+    <string name="general_sort_by_name">Sort by name</string>
+    <string name="general_sort_status">Sort by status</string>
 
 </resources>

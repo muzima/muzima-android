@@ -39,13 +39,13 @@
 
     <FrameLayout
         android:id="@+id/form_filter_by_status_container"
+        android:background="@drawable/global_highlight_background"
         android:paddingStart="12dp"
         android:paddingEnd="2dp"
         android:layout_marginEnd="22dp"
         android:paddingTop="6dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:background="@drawable/global_highlight_background"
         android:paddingBottom="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

@@ -20,6 +20,7 @@ import com.muzima.api.model.Form;
 import com.muzima.model.FormItem;
 import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.model.events.FormSearchEvent;
+import com.muzima.model.events.FormSortEvent;
 import com.muzima.model.events.FormsActionModeEvent;
 import com.muzima.model.events.ShowFormsFilterEvent;
 import com.muzima.tasks.LoadAllFormsTask;
@@ -59,6 +60,17 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
             EventBus.getDefault().register(this);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void formSortEvent(FormSortEvent event){
+        if (event.getSortingStrategy() == Constants.FORM_SORT_STRATEGY.SORT_BY_NAME){
+            formList.clear();
+            loadData(null);
+            filterStrategyTextView.setText(getResources().getString(R.string.general_sort_by_name));
+        }else if (event.getSortingStrategy() == Constants.FORM_SORT_STRATEGY.SORT_BY_STATUS){
+            filterStrategyTextView.setText(getResources().getString(R.string.general_sort_status));
         }
     }
 
@@ -110,6 +122,7 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
         recyclerViewAdapter = new FormsRecyclerViewAdapter(getActivity().getApplicationContext(), formList, this);
         formsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         formsRecyclerView.setAdapter(recyclerViewAdapter);
+        filterStrategyContainer.setVisibility(View.VISIBLE);
 
         filterStrategyContainer.setOnClickListener(new View.OnClickListener() {
             @Override

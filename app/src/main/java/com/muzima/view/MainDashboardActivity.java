@@ -47,6 +47,7 @@ import com.muzima.model.events.CloseBottomSheetEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.CohortsActionModeEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
+import com.muzima.model.events.FormSortEvent;
 import com.muzima.model.events.FormsActionModeEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.events.ShowFormsFilterEvent;
@@ -352,31 +353,31 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
             }
         });
 
-        formFilterStatusContainer.setOnClickListener(new View.OnClickListener() {
+        formFilterStatusCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 formFilterNamesCheckbox.setChecked(false);
-                formFilterStatusCheckbox.setChecked(true);
-                formFilterNamesContainer.setBackground(getResources().getDrawable(R.drawable.global_highlight_background));
-                if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(getApplicationContext()))
-                    formFilterStatusContainer.setBackgroundColor(getResources().getColor(R.color.primary_white));
-                else
-                    formFilterStatusContainer.setBackgroundColor(getResources().getColor(R.color.primary_black));
-
-            }
-        });
-
-        formFilterNamesContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                formFilterNamesCheckbox.setChecked(true);
-                formFilterStatusCheckbox.setChecked(false);
                 formFilterStatusContainer.setBackground(getResources().getDrawable(R.drawable.global_highlight_background));
                 if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(getApplicationContext()))
                     formFilterNamesContainer.setBackgroundColor(getResources().getColor(R.color.primary_white));
                 else
                     formFilterNamesContainer.setBackgroundColor(getResources().getColor(R.color.primary_black));
+                EventBus.getDefault().post( new FormSortEvent(Constants.FORM_SORT_STRATEGY.SORT_BY_STATUS));
+                formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+        });
 
+        formFilterNamesCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                formFilterStatusCheckbox.setChecked(false);
+                formFilterNamesContainer.setBackground(getResources().getDrawable(R.drawable.global_highlight_background));
+                if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(getApplicationContext()))
+                    formFilterStatusContainer.setBackgroundColor(getResources().getColor(R.color.primary_white));
+                else
+                    formFilterStatusContainer.setBackgroundColor(getResources().getColor(R.color.primary_black));
+                EventBus.getDefault().post( new FormSortEvent(Constants.FORM_SORT_STRATEGY.SORT_BY_NAME));
+                formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
 

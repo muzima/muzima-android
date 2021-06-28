@@ -469,4 +469,9 @@ public class Constants {
     public class FORM_FILTERS {
         public static final int FORM_FILTER_STATUS = 1;
     }
+
+    public class FORM_SORT_STRATEGY {
+        public static final int SORT_BY_NAME = 1;
+        public static final int SORT_BY_STATUS = 0;
+    }
 }
