@@ -39,6 +39,11 @@
     <style name="WizardTheme.Light" parent="AppThemeNoActionBar.Light">
     </style>
 
+    <style name="Widget.Custom.NavigationView" parent="Widget.Design.NavigationView">
+        <item name="itemIconTint">?attr/colorNavigationItem</item>
+        <item name="itemTextColor">?attr/colorNavigationItem</item>
+        <item name="itemBackground">?attr/drawableNavigationItemBackground</item>
+    </style>
 
     <style name="PreferencesTheme.Dark" parent="AppBaseTheme">
         <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>

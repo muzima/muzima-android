@@ -53,6 +53,10 @@
     <attr name="ic_action_power_setting_dark" format="reference"/>
     <attr name="icLocation" format="reference"/>
     <attr name="bottomSheetBackground" format="reference"/>
+    <attr name="colorNavigationItem" format="color" />
+    <attr name="colorNavigationItemSelected" format="color" />
+    <attr name="drawableNavigationItemBackground" format="reference" />
+    <attr name="defaultNavigationDrawerStyle" format="reference"/>
 
     <declare-styleable name="PagerSlidingTabStrip">
         <attr name="indicatorTextColor" format="color"/>

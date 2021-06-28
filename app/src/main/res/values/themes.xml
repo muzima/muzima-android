@@ -68,6 +68,10 @@
         <item name="icLocation">@drawable/ic_location_dark</item>
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+<!--        <item name="defaultNavigationDrawerStyle">@style/navigationDrawerStyle</item>-->
+        <item name="colorNavigationItem">@color/menu_item_color_state</item>
+        <item name="colorNavigationItemSelected">@color/primary_white</item>
+        <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
 
@@ -126,6 +130,10 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="cardColor">@color/primary_white</item>
         <item name="icLocation">@drawable/ic_location_dark</item>
+<!--        <item name="defaultNavigationDrawerStyle">@style/navigationDrawerStyle</item>-->
+        <item name="colorNavigationItem">@color/menu_item_color_state</item>
+        <item name="colorNavigationItemSelected">@color/primary_white</item>
+        <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
     <style name="AppBaseTheme.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
@@ -183,6 +191,10 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="icLocation">@drawable/ic_location_dark</item>
         <item name="cardColor">@color/primary_white</item>
+<!--        <item name="defaultNavigationDrawerStyle">@style/navigationDrawerStyle</item>-->
+        <item name="colorNavigationItem">@color/menu_item_color_state</item>
+        <item name="colorNavigationItemSelected">@color/primary_white</item>
+        <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
     <style name="AppBaseTheme.Light" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
@@ -240,6 +252,10 @@
         <item name="addPatient">@drawable/ic_add_patient_light</item>
         <item name="icLocation">@drawable/ic_location_light</item>
         <item name="cardColor">@color/primary_white</item>
+<!--        <item name="defaultNavigationDrawerStyle">@style/navigationDrawerStyle</item>-->
+        <item name="colorNavigationItem">@color/menu_item_color_state</item>
+        <item name="colorNavigationItemSelected">@color/primary_white</item>
+        <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
 
@@ -297,6 +313,10 @@
         <item name="addPatient">@drawable/ic_add_patient_light</item>
         <item name="cardColor">@color/primary_white</item>
         <item name="icLocation">@drawable/ic_location_dark</item>
+<!--        <item name="defaultNavigationDrawerStyle">@style/navigationDrawerStyle</item>-->
+        <item name="colorNavigationItem">@color/menu_item_color_state</item>
+        <item name="colorNavigationItemSelected">@color/primary_white</item>
+        <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
     <!-- Application theme. -->
@@ -353,6 +373,10 @@
         <item name="cardColor">@color/card_background</item>
         <item name="icLocation">@drawable/ic_location_light</item>
         <item name="bottomSheetBackground">@color/dark_bottom_sheet_background</item>
+<!--        <item name="defaultNavigationDrawerStyle">@style/navigationDrawerStyle</item>-->
+        <item name="colorNavigationItem">@color/menu_item_color_state</item>
+        <item name="colorNavigationItemSelected">@color/primary_white</item>
+        <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
     <style name="DialogNoTitleBar" parent="android:style/Theme.Dialog">

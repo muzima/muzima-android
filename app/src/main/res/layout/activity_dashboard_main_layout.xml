@@ -72,9 +72,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start|left"
+        style="@style/Widget.Custom.NavigationView"
         app:headerLayout="@layout/dashboard_header"
-        app:itemIconTint="?attr/primaryTextColor"
-        app:itemTextColor="@drawable/drawer_menu_item"
         app:menu="@menu/dashboard_drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
