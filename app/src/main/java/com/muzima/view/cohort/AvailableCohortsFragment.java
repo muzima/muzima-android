@@ -64,6 +64,7 @@ public class AvailableCohortsFragment extends Fragment implements CohortRecycler
     }
 
     private void searchCohorts(String searchTerm) {
+        if (getActivity() != null) return;
         ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
                 .execute(new CohortSearchTask(getActivity().getApplicationContext(), searchTerm, new CohortSearchTask.CohortSearchCallback() {
                     @Override

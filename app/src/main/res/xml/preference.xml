@@ -67,7 +67,7 @@
             android:title="@string/title_form_auto_save_interval" />
         <SwitchPreference
             android:defaultValue="false"
-            android:icon="@drawable/ic_action_sync"
+            android:icon="@drawable/ic_action_sync_settings"
             android:key="@string/preference_real_time_sync"
             android:summary="@string/hint_real_time_sync"
             android:title="@string/title_real_time_sync" />

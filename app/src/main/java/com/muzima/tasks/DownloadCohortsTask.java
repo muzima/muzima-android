@@ -1,16 +1,22 @@
 package com.muzima.tasks;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.CohortData;
+import com.muzima.api.model.CohortMember;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.PatientController;
 import com.muzima.model.cohort.CohortItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DownloadCohortsTask implements Runnable {
+    private static final String TAG = "DownloadCohortsTask";
     private Context context;
     private List<Cohort> cohortList = new ArrayList<>();
     private CohortDownloadCallback cohortDownloadCallback;
@@ -34,10 +40,19 @@ public class DownloadCohortsTask implements Runnable {
     public void run() {
         try {
             String[] cohortUuids = extractCohortUuids();
-            ((MuzimaApplication) context.getApplicationContext()).getCohortController()
+            List<CohortData> cohortDataList = ((MuzimaApplication) context.getApplicationContext()).getCohortController()
                     .downloadCohortData(cohortUuids, null);
+            Log.e(TAG, "run: downloaded cohort data size " + cohortDataList.size());
+            for (CohortData cohortData : cohortDataList) {
+                ((MuzimaApplication) context.getApplicationContext()).getCohortController().saveAllCohorts(Collections.singletonList(cohortData.getCohort()));
+                Log.e(TAG, "run: " + cohortData.getCohort().getName() + " members " + cohortData.getCohortMembers().size());
+                for (CohortMember cohortMember : cohortData.getCohortMembers()) {
+                    ((MuzimaApplication) context.getApplicationContext()).getPatientController().savePatient(cohortMember.getPatient());
+                    Log.e(TAG, "run: cohort member " + cohortMember.getPatient().getDisplayName() + " gender " + cohortMember.getPatient().getGender());
+                }
+            }
             cohortDownloadCallback.callbackDownload();
-        } catch (CohortController.CohortDownloadException ex) {
+        } catch (CohortController.CohortDownloadException | CohortController.CohortSaveException | PatientController.PatientSaveException ex) {
             ex.printStackTrace();
         }
     }
