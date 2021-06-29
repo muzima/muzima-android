@@ -35,11 +35,9 @@
                 <TextView
                     android:id="@+id/dashboard_home_welcome_message_text_view"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginStart="8dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="6dp"
+                    android:layout_marginBottom="12dp"
                     android:paddingTop="12dp"
+                    android:text="Hello"
                     android:layout_width="match_parent"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="24sp" />
@@ -77,9 +75,7 @@
                 <RelativeLayout
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent">
 
                     <TextView
@@ -127,11 +123,11 @@
                             android:layout_marginEnd="6dp"
                             android:layout_marginStart="6dp"
                             android:padding="2dp"
-                            android:src="@drawable/firebase" />
+                            android:src="@drawable/fhir_icon" />
 
                         <ImageView
-                            android:background="@drawable/border_button_sharp_gray"
                             android:id="@+id/search_smart_card_view"
+                            android:background="@drawable/border_button_sharp_gray"
                             android:layout_height="24dp"
                             android:layout_width="24dp"
                             android:layout_marginEnd="2dp"
@@ -148,6 +144,13 @@
 
 
         </com.google.android.material.appbar.AppBarLayout>
+
+        <ProgressBar
+            android:id="@+id/patient_list_filtering_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:indeterminate="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:id="@+id/favourite_list_container"
@@ -222,6 +225,7 @@
                         android:id="@+id/no_data_tip"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
+                        android:textColor="@color/primary_red"
                         android:textSize="20sp"/>
                 </LinearLayout>
 
@@ -239,9 +243,9 @@
                         android:layout_marginTop="30dp" />
 
                     <Button
-                        style="@style/Button.Next"
                         android:drawableLeft="?attr/icSearch"
                         android:gravity="center"
+                        android:backgroundTint="@color/primary_blue"
                         android:id="@+id/search_server_btn"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"

@@ -11,10 +11,8 @@
 package com.muzima.view.patients;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -36,7 +34,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.legacy.app.ActionBarDrawerToggle;
 
@@ -73,8 +70,6 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.ClientSummaryActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.FormsActivity;
-import com.muzima.view.forms.RegistrationFormsActivity;
-import com.muzima.view.fragments.DashboardHomeFragment;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -82,7 +77,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -155,7 +149,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         muzimaApplication = (MuzimaApplication) getApplicationContext();
         toolbar = findViewById(R.id.patient_list_toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -244,30 +238,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.client_list, menu);
-
-        setUpGeoMappingFeatureMenuItems(menu);
-        setUpSHRFeatureMenuItems(menu);
         setUpSearchFeatureMenuItems(menu);
-        super.onCreateOptionsMenu(menu);
         return true;
-    }
-
-    private void setUpGeoMappingFeatureMenuItems(Menu menu) {
-        MenuItem geoMappingFeatureMenuItem = menu.findItem(R.id.clients_geomapping);
-        if (isGeoMappingFeatureEnabled()) {
-            geoMappingFeatureMenuItem.setVisible(true);
-        } else {
-            geoMappingFeatureMenuItem.setVisible(false);
-        }
-    }
-
-    private void setUpSHRFeatureMenuItems(Menu menu) {
-        MenuItem shrCardItem = menu.findItem(R.id.scan_SHR_card);
-        if (isSHRSettingEnabled()) {
-            shrCardItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS);
-        } else {
-            shrCardItem.setVisible(false);
-        }
     }
 
     private void setUpSearchFeatureMenuItems(Menu menu) {
@@ -327,6 +299,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             searchMenuItem.setVisible(true);
             searchView.requestFocus();
         }
+
+        fabSearchButton.callOnClick();
     }
 
     private void activateRemoteAfterThreeCharacterEntered(String searchString) {
@@ -336,84 +310,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             searchServerLayout.setVisibility(View.VISIBLE);
     }
 
-    // Confirmation dialog for confirming if the patient have an existing ID
-    private void callConfirmationDialog() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(PatientsListActivity.this);
-        builder.setCancelable(true)
-                .setIcon(ThemeUtils.getIconWarning(this))
-                .setTitle(getResources().getString(R.string.title_logout_confirm))
-                .setMessage(getResources().getString(R.string.confirm_patient_id_exists))
-                .setPositiveButton(R.string.general_yes, yesClickListener())
-                .setNegativeButton(R.string.general_no, noClickListener()).create().show();
-    }
-
-    private Dialog.OnClickListener yesClickListener() {
-        return new Dialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                searchMenuItem.setVisible(true);
-                searchView.setIconified(false);
-                searchView.requestFocus();
-            }
-        };
-    }
-
-    private Dialog.OnClickListener noClickListener() {
-        return new Dialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(PatientsListActivity.this, RegistrationFormsActivity.class));
-            }
-        };
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_client_add_icon:
-                callConfirmationDialog();
-                return true;
-
-            case R.id.menu_client_add_text:
-                callConfirmationDialog();
-                return true;
-
-            case R.id.bar_card_scan:
-                invokeBarcodeScan();
-                return true;
-
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-
-            case R.id.menu_dashboard:
-                launchDashboardActivity();
-                return true;
-
-            case R.id.menu_complete_form_data:
-                launchCompleteFormsActivity();
-                return true;
-
-            case R.id.scan_SHR_card:
-                readSmartCard();
-                return true;
-
-            case R.id.menu_tags:
-                if (mainLayout.isDrawerOpen(GravityCompat.END)) {
-                    mainLayout.closeDrawer(GravityCompat.END);
-                } else {
-                    mainLayout.openDrawer(GravityCompat.END);
-                }
-                return true;
-
-            case R.id.clients_geomapping:
-                navigateToClientsLocationMap();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
         }
+        return true;
     }
 
     @Override
@@ -430,10 +332,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         tagsListAdapter.reloadData();
     }
 
-    private void navigateToClientsLocationMap() {
-        Intent intent = new Intent(this, PatientsLocationMapActivity.class);
-        startActivity(intent);
-    }
 
     private void prepareLocalSearchNotifyDialog(Patient patient) {
 
@@ -548,7 +446,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
             noDataTipTextView.setTypeface(Fonts.roboto_medium(this));
         } catch (PatientController.PatientLoadException ex) {
-            Toast.makeText(PatientsListActivity.this,R.string.error_patient_search,Toast.LENGTH_LONG).show();
+            Toast.makeText(PatientsListActivity.this, R.string.error_patient_search, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -587,19 +485,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         Log.e(getClass().getSimpleName(), "Cancelled...");
     }
 
-    private void invokeBarcodeScan() {
-        BarCodeScannerIntentIntegrator scanIntegrator = new BarCodeScannerIntentIntegrator(this);
-        scanIntegrator.initiateScan();
-    }
-
-    private void readSmartCard() {
-        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(this);
-        SHRIntegrator.initiateCardRead();
-        Toast.makeText(getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
+        super.onActivityResult(requestCode, resultCode, dataIntent);
         switch (requestCode) {
             case SMARTCARD_READ_REQUEST_CODE:
                 processSmartCardReadResult(requestCode, resultCode, dataIntent);
@@ -678,6 +566,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                         }
                     }).show();
         }
+    }
+
+    private void readSmartCard() {
+        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(this);
+        SHRIntegrator.initiateCardRead();
+        Toast.makeText(getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
     }
 
     @Override

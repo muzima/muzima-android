@@ -102,7 +102,7 @@
                             android:layout_marginTop="6dp"
                             android:text="@string/general_historical_data"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
 
                         <ImageView
                             android:id="@+id/expand_historical_data_image_view"
@@ -155,7 +155,7 @@
                             android:layout_marginTop="6dp"
                             android:text="@string/general_data_collection"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
 
                         <ImageView
                             android:id="@+id/expand_data_collection_image_view"

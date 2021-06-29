@@ -1,5 +1,6 @@
 package com.muzima.view;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -28,13 +29,18 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MainDashboardAdapter;
 import com.muzima.adapters.cohort.CohortFilterAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Form;
+import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.model.User;
+import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
@@ -60,6 +66,12 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ThemeUtils;
+import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
+import com.muzima.utils.barcode.IntentResult;
+import com.muzima.utils.smartcard.KenyaEmrShrMapper;
+import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
+import com.muzima.utils.smartcard.SmartCardIntentResult;
+import com.muzima.view.patients.PatientsLocationMapActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -71,6 +83,8 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
+import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.BARCODE_SCAN_REQUEST_CODE;
+import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, CohortFilterAdapter.CohortFilterClickedListener {
     private DrawerLayout drawerLayout;
@@ -107,7 +121,10 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     private List<CohortFilter> cohortList = new ArrayList<>();
     private List<CohortFilter> selectedCohortFilters = new ArrayList<>();
     private int selectedCohortsCount = 0;
-
+    private SmartCardRecordService smartCardService;
+    private SmartCardRecord smartCardRecord;
+    private Patient SHRPatient;
+    private Patient SHRToMuzimaMatchingPatient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,6 +141,14 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         getMenuInflater().inflate(R.menu.menu_dashboard_home, menu);
         menuLocation = menu.findItem(R.id.menu_location);
         menuRefresh = menu.findItem(R.id.menu_load);
+        menuLocation.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.general_launching_map_message), Toast.LENGTH_SHORT).show();
+                navigateToClientsLocationMap();
+                return true;
+            }
+        });
         return true;
     }
 
@@ -387,6 +412,98 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
 
         setTitle(" ");
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
+        super.onActivityResult(requestCode, resultCode, dataIntent);
+        switch (requestCode) {
+            case SMARTCARD_READ_REQUEST_CODE:
+                processSmartCardReadResult(requestCode, resultCode, dataIntent);
+                break;
+            case BARCODE_SCAN_REQUEST_CODE:
+                IntentResult scanningResult = BarCodeScannerIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
+                if (scanningResult != null) {
+//                    intentBarcodeResults = true;
+//                    searchView.setQuery(scanningResult.getContents(), false);
+                } else {
+                    Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed.", Snackbar.LENGTH_LONG)
+                            .setAction("RETRY", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    readSmartCard();
+                                }
+                            }).show();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void readSmartCard() {
+        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(this);
+        SHRIntegrator.initiateCardRead();
+        Toast.makeText(getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
+    }
+
+    private void processSmartCardReadResult(int requestCode, int resultCode, Intent dataIntent) {
+        SmartCardIntentResult cardReadIntentResult = null;
+
+        try {
+            cardReadIntentResult = SmartCardIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Could not get result", e);
+        }
+        if (cardReadIntentResult == null) {
+            Toast.makeText(getApplicationContext(), "Card Read Failed", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (cardReadIntentResult.isSuccessResult()) {
+            smartCardRecord = cardReadIntentResult.getSmartCardRecord();
+            if (smartCardRecord != null) {
+                String SHRPayload = smartCardRecord.getPlainPayload();
+                if (!SHRPayload.equals("") && !SHRPayload.isEmpty()) {
+                    try {
+                        SHRPatient = KenyaEmrShrMapper.extractPatientFromSHRModel(((MuzimaApplication) getApplicationContext()), SHRPayload);
+                        if (SHRPatient != null) {
+                            PatientIdentifier cardNumberIdentifier = SHRPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name);
+
+                            SHRToMuzimaMatchingPatient = null;
+
+                            if (cardNumberIdentifier == null) {
+                                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+                                alertBuilder.setMessage("Could not find Card Serial number in shared health record")
+                                        .setCancelable(true).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
+//                                prepareRegisterLocallyDialog();
+//                                prepareLocalSearchNotifyDialog(SHRPatient);
+//                                executeLocalPatientSearchInBackgroundTask();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "This card seems to be blank", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (KenyaEmrShrMapper.ShrParseException e) {
+                        Log.e("EMR_IN", "EMR Error ", e);
+                    }
+                }
+            }
+        } else {
+            Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed." + cardReadIntentResult.getErrors(), Snackbar.LENGTH_LONG)
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            readSmartCard();
+                        }
+                    }).show();
+        }
+    }
+
+    private void navigateToClientsLocationMap() {
+        Intent intent = new Intent(getApplicationContext(), PatientsLocationMapActivity.class);
+        startActivity(intent);
     }
 
     @Subscribe

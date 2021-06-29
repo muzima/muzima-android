@@ -217,7 +217,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
     }
 
     private int getGenderImage(String gender) {
-        return gender.equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
+        return gender.equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female;
     }
 
     @Override

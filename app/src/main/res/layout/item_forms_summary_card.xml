@@ -19,7 +19,7 @@
         android:text="##"
         android:layout_marginEnd="6dp"
         android:textColor="@color/primary_white"
-        android:textSize="24sp" />
+        android:textSize="28sp" />
 
     <TextView
         android:id="@+id/item_forms_title_text_view"

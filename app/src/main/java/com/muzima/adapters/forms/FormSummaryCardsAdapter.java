@@ -13,6 +13,7 @@ import com.muzima.R;
 import com.muzima.model.SummaryCard;
 
 import java.util.List;
+import java.util.Locale;
 
 public class FormSummaryCardsAdapter extends RecyclerView.Adapter<FormSummaryCardsAdapter.ViewHolder> {
 
@@ -36,12 +37,15 @@ public class FormSummaryCardsAdapter extends RecyclerView.Adapter<FormSummaryCar
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SummaryCard summaryCard = summaryList.get(position);
-        if (summaryCard.getTitle().equalsIgnoreCase(context.getResources().getString(R.string.info_incomplete_form))){
+        if (summaryCard.getTitle().equalsIgnoreCase(context.getResources().getString(R.string.info_incomplete_form))) {
             holder.containerView.setBackground(context.getResources().getDrawable(R.drawable.incomplete_forms_gradient));
         }
 
         holder.titleTextView.setText(summaryCard.getTitle());
-        holder.countTextView.setText(String.valueOf(summaryCard.getCount()));
+        if (summaryCard.getCount() < 10)
+            holder.countTextView.setText(String.format(Locale.getDefault(), "0%d", summaryCard.getCount()));
+        else
+            holder.countTextView.setText(String.valueOf(summaryCard.getCount()));
     }
 
     @Override

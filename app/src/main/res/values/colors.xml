@@ -66,4 +66,5 @@
     <color name="light_blue">#5EA4F4</color>
     <color name="bottom_navigation_background">#CD2B2A2A</color>
     <color name="dark_blue">#E62B42BC</color>
+    <color name="primary_red">#B00020</color>
 </resources>

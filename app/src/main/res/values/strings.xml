@@ -262,13 +262,10 @@
     <string name="hint_card_blank">Read successful but the card appears to be blank:</string>
     <string name="hint_card_not_empty">The card is not empty. Please use a new card.</string>
     <string name="hint_check_digit_validation_failure">Please enter digits that matches CheckDigit algorithm</string>
-    <string name="hint_client_local_search">Your search includes client id, given name, middle name and family
-        name and searched only in the device
+    <string name="hint_client_local_search">We could not find anything related to your search. \n\nTry searching server
     </string>
     <string name="hint_client_location_update">Do you want to update home location for this client?</string>
-    <string name="hint_client_remote_search">Your search includes client id, given name, middle name and family
-        name and searched on the server
-    </string>
+    <string name="hint_client_remote_search">We could not find anything related to your search.\n\n Try searching server</string>
     <string name="hint_client_search">Search clients</string>
     <string name="hint_client_summary_encounters" formatted="false">%d Encounters</string>
     <string name="hint_client_summary_forms" formatted="false">%d Incomplete, %d Complete, %d Recommended</string>
@@ -403,8 +400,7 @@
     <string name="info_client_identifier_change">Client Identifier changed on the server. The new identifier will be
         used going forward.
     </string>
-    <string name="info_client_local_search_not_found">No clients matched your search locally. Enter at least 3
-        characters for remote search.
+    <string name="info_client_local_search_not_found">Sorry!
     </string>
     <string name="info_client_remote_search_not_found">No clients matched your search on the server</string>
     <string name="info_cohort_download">Downloading Cohorts</string>
@@ -893,5 +889,9 @@ If you have any questions or suggestions about our Privacy Policy, do not hesita
     <string name="general_sort_status">Sort by status</string>
     <string name="general_add_reading">Add reading</string>
     <string name="general_reading">Reading</string>
+    <string name="general_update_patient_list_message">Updating patients list... please wait</string>
+    <string name="general_patient_list_updated_message">Patient list has been updated</string>
+    <string name="general_launching_map_message">Launching map, please wait</string>
+    <string name="info_client_local_search_not_found_secondary">We could not find anything related to your search. \n\nTry searching server</string>
 
 </resources>
