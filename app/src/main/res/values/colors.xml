@@ -67,4 +67,5 @@
     <color name="bottom_navigation_background">#CD2B2A2A</color>
     <color name="dark_blue">#E62B42BC</color>
     <color name="primary_red">#B00020</color>
+    <color name="primary_blue_opaque">#80137EFE</color>
 </resources>

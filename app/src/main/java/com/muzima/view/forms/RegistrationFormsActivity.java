@@ -10,12 +10,17 @@
 
 package com.muzima.view.forms;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.google.android.material.appbar.MaterialToolbar;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.RegistrationFormsAdapter;
@@ -26,6 +31,7 @@ import com.muzima.model.collections.AvailableForms;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
+import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.UUID;
@@ -37,6 +43,7 @@ public class RegistrationFormsActivity extends BaseActivity {
     private final ThemeUtils themeUtils = new ThemeUtils();
     private Patient patient;
     private Patient indexPatient;
+    private MaterialToolbar toolbar;
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
@@ -48,15 +55,54 @@ public class RegistrationFormsActivity extends BaseActivity {
 
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         indexPatient = (Patient) getIntent().getSerializableExtra(INDEX_PATIENT);
+        toolbar = findViewById(R.id.registration_forms_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
         AvailableForms availableForms = getRegistrationForms(formController);
-        if (isOnlyOneRegistrationForm(availableForms)) {
-            startWebViewActivity(availableForms.get(0));
-        } else {
-            prepareRegistrationAdapter(formController, availableForms);
+        if (availableForms.isEmpty()){
+            showRegistrationFormsMissingAlert();
+        }else {
+            if (isOnlyOneRegistrationForm(availableForms)) {
+                startWebViewActivity(availableForms.get(0));
+            } else {
+                prepareRegistrationAdapter(formController, availableForms);
+            }
         }
         logEvent("VIEW_REGISTRATION_FORMS");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            startActivity( new Intent(getApplicationContext(), MainDashboardActivity.class));
+            finish();
+        }
+        return true;
+    }
+
+    private void showRegistrationFormsMissingAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationFormsActivity.this);
+        builder.setCancelable(false)
+                .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
+                .setTitle(getResources().getString(R.string.general_alert))
+                .setMessage(getResources().getString(R.string.general_registration_form_missing_message))
+                .setPositiveButton(R.string.general_ok, launchDashboard())
+                .show();
+    }
+
+    private DialogInterface.OnClickListener launchDashboard() {
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity( new Intent(getApplicationContext(), MainDashboardActivity.class));
+                finish();
+            }
+        };
     }
 
     private void prepareRegistrationAdapter(FormController formController, AvailableForms availableForms) {

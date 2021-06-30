@@ -834,7 +834,7 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="general_downloaded">Downloaded</string>
     <string name="general_available_online">Available online</string>
     <string name="general_selected">Selected</string>
-    <string name="general_sort_by_status">Sort by status</string>
+    <string name="general_sort_by_status">By status</string>
     <string name="privacy_policy">mUzima for Health Providers app is built as an Open Source end-user app and is provided at no cost and is intended for use as is. If you’re using our application for an organization, you’re agreeing to this Privacy Policy on behalf of that organization. If you’re using our application to provide services, software, and content for some else, you’re agreeing to this Privacy Policy on their behalf.
 
 IF YOU OR THE ORGANIZATION YOU REPRESENT DON’T AGREE TO BE BOUND TO THIS PRIVACY POLICY, YOU SHOULD NOT USE OUR SERVICES.
@@ -884,14 +884,38 @@ If you have any questions or suggestions about our Privacy Policy, do not hesita
     <string name="general_multiple_use_cases">Multiple Use Cases</string>
     <string name="general_openmrs_compatibility_description">mUzima was designed to be the mHealth extension of OpenMRS. OpenMRS is deployed nationally in several countries.</string>
     <string name="general_openmrs_compatibility">OpenMRS Compatibility</string>
-    <string name="forms_general_sort_by">Sort by</string>
-    <string name="general_sort_by_name">Sort by name</string>
-    <string name="general_sort_status">Sort by status</string>
+    <string name="forms_general_sort_by">Sort Forms</string>
+    <string name="general_sort_by_name">By name</string>
+    <string name="general_sort_status">By status</string>
     <string name="general_add_reading">Add reading</string>
     <string name="general_reading">Reading</string>
     <string name="general_update_patient_list_message">Updating patients list... please wait</string>
     <string name="general_patient_list_updated_message">Patient list has been updated</string>
     <string name="general_launching_map_message">Launching map, please wait</string>
     <string name="info_client_local_search_not_found_secondary">We could not find anything related to your search. \n\nTry searching server</string>
+    <string name="general_data_collection_tools">"Data Collection Tools "</string>
+    <string name="general_works_offline">"Works Offline "</string>
+    <string name="general_error_resolutions">"Error Resolutions "</string>
+    <string name="general_form_management">"Form Management "</string>
+    <string name="general_cohort_management">"Cohort Management "</string>
+    <string name="general_multiple_languages">"Multiple Languages "</string>
+    <string name="general_historical_data_view">"Historical Data View "</string>
+    <string name="general_multiple_themes">"Multiple Themes "</string>
+    <string name="general_relationship_management">"Relationship Management "</string>
+    <string name="general_clinical_summary">"Clinical Summary "</string>
+    <string name="general_geomapping">"Geomapping "</string>
+    <string name="general_data_collection_tools_description">mUzima uses easy-to-develop web-based forms to collect data that can easily be transmitted and stored in OpenMRS.</string>
+    <string name="general_works_offline_description">mUzima works perfectly both in online and offline modes. This allows for data collection and reviews even when the device is offline.</string>
+    <string name="general_error_resolutions_description">mUzima prevents duplicate form data entry on mobile device and resolves errors in OpenMRS during data processing.</string>
+    <string name="general_form_management_description">mUzima enables easy download and update of new forms onto the app without the need for reinstalling or restarting the app.</string>
+    <string name="general_cohort_management_description">This feature allows for the management of different patient or client groups on a mobile device.</string>
+    <string name="general_multiple_languages_description">mUzima provides localisation support out of the box for use in various languages to allow further flexibility of use.</string>
+    <string name="general_historical_data_view_description">mUzima has easy and efficient user-friendly mechanisms for retrieving and viewing historical data on patients or clients.</string>
+    <string name="general_multiple_themes_description">mUzima is shipped on two themes: dark theme (White on Black) and Light theme (Black on white).</string>
+    <string name="general_relationship_management_description">In the healthcare space, a relationship is used to pair/associate two people whose care may be inter-linked.</string>
+    <string name="general_clinical_summary_description">The feature utilizes the OpenMRS Reporting Module to design and generate HTML reports that are then rendered on the app.</string>
+    <string name="general_geomapping_description">Brings in the ability to easily capture and record patient GPS coordinates, then give CHVs direction on subsequent visits.</string>
+    <string name="general_registration_form_missing_message">Missing registration form. Please contact adminstrator</string>
+    <string name="title_registration_form">Select registration form</string>
 
 </resources>

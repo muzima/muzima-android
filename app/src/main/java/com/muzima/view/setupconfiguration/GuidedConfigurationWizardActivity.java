@@ -94,7 +94,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         countDownTimer = new CountDownTimer(1000 * 60, 5000) {
             @Override
             public void onTick(long tick) {
-                if (pageCount > 3) pageCount = 0;
+                if (pageCount > 13) pageCount = 0;
                 viewPager.setCurrentItem(pageCount);
                 viewPagerLg.setCurrentItem(pageCount);
                 updateStepper(pageCount);
@@ -110,23 +110,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private void updateStepper(int page) {
-        switch (page) {
-            case 0:
-                firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-                secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
-                thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-                break;
-            case 1:
-                firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-                secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-                thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
-                break;
-            case 2:
-                firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
-                secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-                thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-                break;
-
+        if (page >= 0 && page <= 4) {
+            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
+            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+        } else if (page >= 5 && page <= 9) {
+            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
+        } else {
+            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
+            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
         }
     }
 

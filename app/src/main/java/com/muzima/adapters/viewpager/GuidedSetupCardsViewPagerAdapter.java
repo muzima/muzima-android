@@ -13,7 +13,7 @@ import com.muzima.view.fragments.GuidedSetupImageCardFragment;
 public class GuidedSetupCardsViewPagerAdapter extends FragmentPagerAdapter {
     private Context context;
 
-    public GuidedSetupCardsViewPagerAdapter(@NonNull FragmentManager fm,Context context) {
+    public GuidedSetupCardsViewPagerAdapter(@NonNull FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
     }
@@ -28,12 +28,34 @@ public class GuidedSetupCardsViewPagerAdapter extends FragmentPagerAdapter {
                 return new GuidedSetupImageCardFragment(R.drawable.multiple_use_cases, context.getResources().getString(R.string.general_multiple_use_cases), context.getResources().getString(R.string.general_multiple_cases_description));
             case 2:
                 return new GuidedSetupImageCardFragment(R.drawable.openmrs_compatibility, context.getResources().getString(R.string.general_openmrs_compatibility), context.getResources().getString(R.string.general_openmrs_compatibility_description));
+            case 3:
+                return new GuidedSetupImageCardFragment(R.drawable.data_collection_tools, context.getResources().getString(R.string.general_data_collection_tools), context.getResources().getString(R.string.general_data_collection_tools_description));
+            case 4:
+                return new GuidedSetupImageCardFragment(R.drawable.works_offline, context.getResources().getString(R.string.general_works_offline), context.getResources().getString(R.string.general_works_offline_description));
+            case 5:
+                return new GuidedSetupImageCardFragment(R.drawable.error_resolution, context.getResources().getString(R.string.general_error_resolutions), context.getResources().getString(R.string.general_error_resolutions_description));
+            case 6:
+                return new GuidedSetupImageCardFragment(R.drawable.form_management, context.getResources().getString(R.string.general_form_management), context.getResources().getString(R.string.general_form_management_description));
+            case 7:
+                return new GuidedSetupImageCardFragment(R.drawable.cohort_management, context.getResources().getString(R.string.general_cohort_management), context.getResources().getString(R.string.general_cohort_management_description));
+            case 8:
+                return new GuidedSetupImageCardFragment(R.drawable.multiple_languages, context.getResources().getString(R.string.general_multiple_languages), context.getResources().getString(R.string.general_multiple_languages_description));
+            case 9:
+                return new GuidedSetupImageCardFragment(R.drawable.historical_data_view, context.getResources().getString(R.string.general_historical_data_view), context.getResources().getString(R.string.general_historical_data_view_description));
+            case 10:
+                return new GuidedSetupImageCardFragment(R.drawable.multiple_themes, context.getResources().getString(R.string.general_multiple_themes), context.getResources().getString(R.string.general_multiple_themes_description));
+            case 11:
+                return new GuidedSetupImageCardFragment(R.drawable.relationship_management , context.getResources().getString(R.string.general_relationship_management), context.getResources().getString(R.string.general_relationship_management_description));
+            case 12:
+                return new GuidedSetupImageCardFragment(R.drawable.clinical_summary , context.getResources().getString(R.string.general_clinical_summary), context.getResources().getString(R.string.general_clinical_summary_description));
+            case 13:
+                return new GuidedSetupImageCardFragment(R.drawable.geomapping , context.getResources().getString(R.string.general_geomapping), context.getResources().getString(R.string.general_geomapping_description));
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 12;
     }
 }

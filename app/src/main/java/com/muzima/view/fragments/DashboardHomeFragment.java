@@ -261,6 +261,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
             closeBottomSheet();
         } else {
             Intent intent = new Intent(getActivity().getApplicationContext(), PatientsListActivity.class);
+            intent.putExtra(PatientsListActivity.QUICK_SEARCH,true);
             startActivity(intent);
             getActivity().finish();
         }
@@ -274,11 +275,11 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
                 .setIcon(ThemeUtils.getIconWarning(getActivity().getApplicationContext()))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
                 .setMessage(getResources().getString(R.string.confirm_patient_id_exists))
-                .setPositiveButton(R.string.general_yes, yesClickListener())
-                .setNegativeButton(R.string.general_no, noClickListener()).create().show();
+                .setPositiveButton(R.string.general_yes, launchPatientsList())
+                .setNegativeButton(R.string.general_no, launchClientRegistrationFormIfPossible()).create().show();
     }
 
-    private Dialog.OnClickListener yesClickListener() {
+    private Dialog.OnClickListener launchPatientsList() {
         return new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -287,7 +288,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         };
     }
 
-    private Dialog.OnClickListener noClickListener() {
+    private Dialog.OnClickListener launchClientRegistrationFormIfPossible() {
         return new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

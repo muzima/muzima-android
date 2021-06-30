@@ -14,30 +14,33 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="190dp"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="?attr/actionBarSize"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/primary_blue_opaque"
             app:cardCornerRadius="6dp">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                android:src="@drawable/oboarding_container" />
+                android:id="@+id/on_boarding_cover_image_view"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_gravity="center"
+                android:src="@drawable/security" />
 
         </androidx.cardview.widget.CardView>
 
         <TextView
+            android:id="@+id/on_boarding_title_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="6dp"
             android:layout_marginEnd="12dp"
             android:text="Heading"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/on_boarding_description_text_view"
@@ -47,7 +50,7 @@
             android:layout_marginTop="6dp"
             android:layout_marginEnd="12dp"
             android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -102,7 +105,6 @@
             android:layout_gravity="end"
             android:layout_marginStart="12dp"
             android:layout_marginTop="21dp"
-            android:layout_marginEnd="12dp"
             android:gravity="end"
             android:paddingBottom="12dp"
             android:layout_marginBottom="?attr/actionBarSize"
@@ -128,7 +130,6 @@
                 android:id="@+id/on_boarding_next_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
                 android:backgroundTint="@color/primary_blue"
                 android:text="@string/general_next"
                 android:textAllCaps="true" />

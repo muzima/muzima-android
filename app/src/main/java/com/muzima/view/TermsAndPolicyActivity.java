@@ -59,7 +59,7 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -68,6 +68,10 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 acceptAllButton.setVisibility(View.VISIBLE);
+                if (licenseCheckBox.isChecked() && privacyPolicyCheckbox.isChecked() && termsAndConditionsCheckbox.isChecked())
+                    nextButton.setEnabled(true);
+                else
+                    nextButton.setEnabled(false);
             }
         });
 
@@ -75,6 +79,10 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 acceptAllButton.setVisibility(View.VISIBLE);
+                if (licenseCheckBox.isChecked() && privacyPolicyCheckbox.isChecked() && termsAndConditionsCheckbox.isChecked())
+                    nextButton.setEnabled(true);
+                else
+                    nextButton.setEnabled(false);
             }
         });
 
@@ -82,6 +90,10 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 acceptAllButton.setVisibility(View.VISIBLE);
+                if (licenseCheckBox.isChecked() && privacyPolicyCheckbox.isChecked() && termsAndConditionsCheckbox.isChecked())
+                    nextButton.setEnabled(true);
+                else
+                    nextButton.setEnabled(false);
             }
         });
 
@@ -160,7 +172,7 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
 
     private void appCheckBoxPadding(CheckBox checkBox) {
         final float scale = this.getResources().getDisplayMetrics().density;
-        checkBox.setPadding(checkBox.getPaddingLeft() + (int)(20.0f * scale + 0.5f),
+        checkBox.setPadding(checkBox.getPaddingLeft() + (int) (20.0f * scale + 0.5f),
                 checkBox.getPaddingTop(),
                 checkBox.getPaddingRight(),
                 checkBox.getPaddingBottom());
@@ -168,7 +180,7 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             Intent intent = new Intent(getApplicationContext(), OnboardScreenActivity.class);
             startActivity(intent);
             finish();

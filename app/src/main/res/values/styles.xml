@@ -350,7 +350,7 @@
 
     <style name="FormSaveDateTime">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">right</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
         <item name="android:paddingLeft">8dp</item>
@@ -635,8 +635,8 @@
         <item name="android:divider">@drawable/divider</item>
         <item name="android:dividerHeight">1dp</item>
         <item name="android:listSelector">@null</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 
     <style name="NoItemInListView">
@@ -683,13 +683,13 @@
     <style name="ListViewText">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
-        <item name="android:paddingLeft">15dp</item>
-        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
 
     <style name="ListViewSingleSelectText">

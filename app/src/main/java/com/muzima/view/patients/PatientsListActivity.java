@@ -37,7 +37,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.legacy.app.ActionBarDrawerToggle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -77,7 +76,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
@@ -88,9 +86,10 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_REA
 
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
         ListAdapter.BackgroundListQueryTaskListener {
+    private static final String TAG = "PatientsListActivity";
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
-    private static final String QUICK_SEARCH = "quickSearch";
+    public static final String QUICK_SEARCH = "quickSearch";
     private ListView listView;
     private boolean quickSearch = false;
     private String cohortId = null;
@@ -98,7 +97,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private FrameLayout progressBarContainer;
     private View noDataView;
     private String searchString;
-    private FloatingActionButton fabSearchButton;
     private LinearLayout searchServerLayout;
     private SearchView searchView;
     private MenuItem searchMenuItem;
@@ -129,7 +127,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private static final boolean DEFAULT_SHR_STATUS = false;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private boolean isSHREnabled;
-
+    private boolean searchViewClosed;
     private DrawerLayout mainLayout;
     private PatientTagsListAdapter tagsListAdapter;
     private TagPreferenceService tagPreferenceService;
@@ -165,19 +163,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         progressBarContainer = findViewById(R.id.progressbarContainer);
         setupListView(cohortId);
 
-        fabSearchButton = findViewById(R.id.fab_search);
-        fabSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchMenuItem.setVisible(true);
-                searchView.setIconified(false);
-                searchView.requestFocusFromTouch();
-                fabSearchButton.setVisibility(GONE);
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
-            }
-        });
-
         searchServerLayout = findViewById(R.id.search_server_layout);
 
         Button searchServerBtn = findViewById(R.id.search_server_btn);
@@ -205,6 +190,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         logEvent("VIEW_CLIENT_LIST", "{\"cohortId\":\"" + cohortId + "\"}");
 
         setupNoDataView();
+
+        Log.e(TAG, "onCreate:  setup patients list " );
 
     }
 
@@ -264,43 +251,41 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
-                    fabSearchButton.setVisibility(GONE);
-                } else {
-                    fabSearchButton.postDelayed(new Runnable() {
-                        public void run() {
-                            fabSearchButton.setVisibility(VISIBLE);
-                        }
-                    }, 500);
-
-                    if (searchView.getQuery().toString().trim().isEmpty()) {
-                        searchMenuItem.setVisible(false);
-                    }
-                }
+                if (!hasFocus) {
+                    onBackPressed();
+                }else
+                    searchViewClosed = false;
             }
         });
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
-                    fabSearchButton.setVisibility(GONE);
-                } else {
-                    fabSearchButton.postDelayed(new Runnable() {
-                        public void run() {
-                            fabSearchButton.setVisibility(VISIBLE);
-                        }
-                    }, 500);
-                    searchMenuItem.setVisible(false);
-                }
+                if (!hasFocus) {
+                    onBackPressed();
+                }else
+                    searchViewClosed = false;
             }
         });
 
-        if (quickSearch) {
-            searchMenuItem.setVisible(true);
-            searchView.requestFocus();
-        }
+        searchMenuItem.setVisible(true);
+        searchMenuItem.setEnabled(true);
+        searchMenuItem.setVisible(true);
+        handleShowSearchView();
 
-        fabSearchButton.callOnClick();
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                handleShowSearchView();
+                return true;
+            }
+        });
+    }
+
+    private void handleShowSearchView() {
+        searchView.setIconified(false);
+        searchView.requestFocusFromTouch();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private void activateRemoteAfterThreeCharacterEntered(String searchString) {
@@ -313,7 +298,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            launchDashboardActivity();
         }
         return true;
     }
@@ -576,11 +561,16 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     @Override
     public void onBackPressed() {
-        patientAdapter.cancelBackgroundTask();
-        if (getCallingActivity() == null) {
-            launchDashboardActivity();
+        Log.e(TAG, "onBackPressed: searchViewClosed" + searchViewClosed );
+        if (!searchViewClosed) {
+            searchViewClosed = true;
         } else {
-            super.onBackPressed();
+            patientAdapter.cancelBackgroundTask();
+            if (getCallingActivity() == null) {
+                launchDashboardActivity();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 

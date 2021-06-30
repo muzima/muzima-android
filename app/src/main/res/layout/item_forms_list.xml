@@ -14,21 +14,19 @@
     android:layout_height="wrap_content"
     android:checkable="true"
     android:paddingStart="16dp"
-    android:paddingTop="8dp"
-    android:paddingEnd="16dp">
+    android:paddingTop="2dp"
+    android:paddingEnd="6dp">
 
     <com.muzima.view.CheckedLinearLayout
         android:id="@+id/form_name_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="100">
+        android:orientation="horizontal">
 
         <CheckedTextView
             android:id="@+id/form_name"
             style="@style/ListViewText"
-            android:layout_width="0dp"
-            android:layout_weight="80"
+            android:layout_width="wrap_content"
             android:checkMark="@null" />
 
         <ImageView
@@ -47,21 +45,20 @@
         android:id="@+id/form_description"
         style="@style/ListViewText"
         android:layout_below="@+id/form_name_layout"
-        android:paddingTop="5dp"
         android:textColor="?attr/secondaryTextColor"/>
 
     <CheckedTextView
         android:id="@+id/form_save_time"
         style="@style/FormSaveDateTime"
         android:layout_below="@+id/form_description"
-        android:paddingTop="15dp"/>
+        android:paddingTop="5dp"/>
 
     <CheckedTextView
         android:id="@+id/form_encounter_date"
         style="@style/FormSaveDateTime"
         android:layout_below="@+id/form_description"
         android:gravity="left"
-        android:paddingTop="15dp" />
+        android:paddingTop="6dp" />
 
     <com.muzima.view.CheckedRelativeLayout
         android:id="@+id/tags_scroller"

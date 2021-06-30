@@ -22,7 +22,9 @@ public class OnboardScreenActivity extends AppCompatActivity {
     private ImageView firstDotView;
     private ImageView secondDotView;
     private ImageView thirdDotView;
+    private ImageView coverImageView;
     private TextView descriptionTextView;
+    private TextView titleTextView;
     private int page;
 
     @Override
@@ -36,11 +38,15 @@ public class OnboardScreenActivity extends AppCompatActivity {
         secondDotView = findViewById(R.id.second_page_dot_view);
         thirdDotView = findViewById(R.id.third_page_dot_view);
         descriptionTextView = findViewById(R.id.on_boarding_description_text_view);
+        coverImageView = findViewById(R.id.on_boarding_cover_image_view);
+        titleTextView = findViewById(R.id.on_boarding_title_text_view);
 
         firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
         secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
         thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-        descriptionTextView.setText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
+        coverImageView.setImageDrawable(getResources().getDrawable(R.drawable.openmrs_compatibility));
+        titleTextView.setText(getResources().getString(R.string.general_openmrs_compatibility));
+        descriptionTextView.setText(getResources().getString(R.string.general_openmrs_compatibility_description));
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,18 +54,22 @@ public class OnboardScreenActivity extends AppCompatActivity {
                 switch (page) {
                     case 0:
                         page = 1;
+                        coverImageView.setImageDrawable(getResources().getDrawable(R.drawable.multiple_use_cases));
                         firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
                         secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
                         thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-                        descriptionTextView.setText("Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
+                        titleTextView.setText(getResources().getString(R.string.general_multiple_use_cases));
+                        descriptionTextView.setText(getResources().getString(R.string.general_multiple_cases_description));
                         break;
                     case 1:
                         skipButton.setVisibility(View.GONE);
                         page = 2;
+                        coverImageView.setImageDrawable(getResources().getDrawable(R.drawable.security));
                         firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
                         secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
                         thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
-                        descriptionTextView.setText("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.");
+                        titleTextView.setText( getResources().getString(R.string.general_security));
+                        descriptionTextView.setText(getResources().getString(R.string.general_security_description));
                         break;
                     case 2:
                         MuzimaPreferences.setOnBoardingCompletedPreference(getApplicationContext(), true);
