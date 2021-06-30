@@ -1,7 +1,6 @@
 package com.muzima.view.fragments.forms;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsRecyclerViewAdapter;
 import com.muzima.api.model.Form;
-import com.muzima.controller.FormController;
 import com.muzima.model.FormItem;
 import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.model.events.FormFilterBottomSheetClosedEvent;
