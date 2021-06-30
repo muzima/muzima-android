@@ -16,24 +16,28 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsRecyclerViewAdapter;
 import com.muzima.api.model.Form;
+import com.muzima.controller.FormController;
 import com.muzima.model.FormItem;
 import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.model.events.FormSearchEvent;
 import com.muzima.model.events.FormsActionModeEvent;
 import com.muzima.tasks.LoadAllFormsTask;
 import com.muzima.tasks.LoadDownloadedFormsTask;
+import com.muzima.utils.ViewUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DownloadedFormsFragment extends Fragment implements FormsRecyclerViewAdapter.OnFormClickedListener {
     private RecyclerView formsRecyclerView;
     private ProgressBar progressBar;
     private FormsRecyclerViewAdapter recyclerViewAdapter;
-    private View filterByStatusView;
+    private View filterStrategyContainer;
     private List<FormItem> formList = new ArrayList<>();
     private List<Form> selectedForms = new ArrayList<>();
 
@@ -91,6 +95,7 @@ public class DownloadedFormsFragment extends Fragment implements FormsRecyclerVi
                                 for (Form form : forms) {
                                     formList.add(new FormItem(form, false));
                                 }
+                                ViewUtil.applyFormsListSorting(getActivity().getApplicationContext(),formList,true);
                                 recyclerViewAdapter.notifyDataSetChanged();
                                 recyclerViewAdapter.setItemsCopy(formList, "Downloaded forms callback");
                             }
@@ -101,11 +106,12 @@ public class DownloadedFormsFragment extends Fragment implements FormsRecyclerVi
 
     private void initializeResources(View view) {
         formsRecyclerView = view.findViewById(R.id.forms_list_recycler_view);
-        filterByStatusView = view.findViewById(R.id.forms_sort_by_status);
+        filterStrategyContainer = view.findViewById(R.id.form_fragment_child_container);
         progressBar = view.findViewById(R.id.form_list_progress_bar);
         recyclerViewAdapter = new FormsRecyclerViewAdapter(getActivity().getApplicationContext(), formList, this);
         formsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         formsRecyclerView.setAdapter(recyclerViewAdapter);
+        filterStrategyContainer.setVisibility(View.GONE);
     }
 
     @Override

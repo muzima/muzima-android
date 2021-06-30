@@ -53,6 +53,7 @@ import com.muzima.model.events.CloseBottomSheetEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.CohortsActionModeEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
+import com.muzima.model.events.FormFilterBottomSheetClosedEvent;
 import com.muzima.model.events.FormSortEvent;
 import com.muzima.model.events.FormsActionModeEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
@@ -387,7 +388,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
                     formFilterNamesContainer.setBackgroundColor(getResources().getColor(R.color.primary_white));
                 else
                     formFilterNamesContainer.setBackgroundColor(getResources().getColor(R.color.primary_black));
-                EventBus.getDefault().post( new FormSortEvent(Constants.FORM_SORT_STRATEGY.SORT_BY_STATUS));
+                EventBus.getDefault().post(new FormSortEvent(Constants.FORM_SORT_STRATEGY.SORT_BY_STATUS));
                 formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
@@ -401,8 +402,23 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
                     formFilterStatusContainer.setBackgroundColor(getResources().getColor(R.color.primary_white));
                 else
                     formFilterStatusContainer.setBackgroundColor(getResources().getColor(R.color.primary_black));
-                EventBus.getDefault().post( new FormSortEvent(Constants.FORM_SORT_STRATEGY.SORT_BY_NAME));
+                EventBus.getDefault().post(new FormSortEvent(Constants.FORM_SORT_STRATEGY.SORT_BY_NAME));
                 formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            }
+        });
+        formFilterBottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN){
+                    EventBus.getDefault().post(new FormFilterBottomSheetClosedEvent(true));
+                }else {
+                    EventBus.getDefault().post(new FormFilterBottomSheetClosedEvent(false));
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
             }
         });
 
@@ -491,8 +507,8 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
                 }
             }
         } else {
-            Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed." + cardReadIntentResult.getErrors(), Snackbar.LENGTH_LONG)
-                    .setAction("RETRY", new View.OnClickListener() {
+            Snackbar.make(findViewById(R.id.patient_lists_layout), getResources().getString(R.string.general_card_read_failed_msg) + cardReadIntentResult.getErrors(), Snackbar.LENGTH_LONG)
+                    .setAction(getResources().getString(R.string.general_retry), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             readSmartCard();
@@ -508,10 +524,11 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
 
     @Subscribe
     public void showFormsFilterBottomSheetEvent(ShowFormsFilterEvent event) {
-        if (event.isCloseAction())
+        if (event.isCloseAction()) {
             formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        else
+        } else {
             formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
 
     }
 

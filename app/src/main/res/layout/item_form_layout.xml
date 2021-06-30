@@ -35,20 +35,18 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:maxLines="1"
-                android:maxLength="30"
                 android:ellipsize="end"
+                android:layout_width="230sp"
                 android:layout_marginBottom="6dp"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/item_form_description_text_view"
                 android:textSize="12sp"
                 android:maxLines="1"
-                android:maxLength="60"
                 android:ellipsize="end"
+                android:layout_width="230sp"
                 android:textColor="?attr/primaryTextColor"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>

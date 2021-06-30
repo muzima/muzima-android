@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecyclerViewAdapter.ViewHolder> {
-    private static final String TAG = "FormsRecyclerViewAdapte";
     private Context context;
     private List<FormItem> formList;
     private List<FormItem> itemsCopy = new ArrayList<>();
@@ -41,7 +40,6 @@ public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecycler
     }
 
     public void setItemsCopy(List<FormItem> itemsCopy, String source) {
-        Log.e(TAG, "setItemsCopy: itemsCopy size " + itemsCopy.size() + " source " + source);
         this.itemsCopy = itemsCopy;
     }
 
@@ -62,6 +60,9 @@ public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecycler
             if (((MuzimaApplication) context.getApplicationContext()).getFormController()
                     .isFormDownloaded(form.getForm()))
                 holder.iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_downloaded));
+            else
+                holder.iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_transparent));
+
             TagsAdapter adapter = new TagsAdapter(form.getForm().getTags());
             holder.tagsListView.setLayoutManager(new LinearLayoutManager(context.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
             holder.tagsListView.setAdapter(adapter);
@@ -71,9 +72,9 @@ public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecycler
                 holder.container.setBackgroundColor(context.getResources().getColor(R.color.hint_blue_opaque));
             else {
                 if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(context))
-                    holder.container.setBackgroundColor(context.getResources().getColor(R.color.primary_white));
+                    holder.container.setBackgroundColor(context.getResources().getColor(R.color.transparent));
                 else
-                    holder.container.setBackgroundColor(context.getResources().getColor(R.color.primary_black));
+                    holder.container.setBackgroundColor(context.getResources().getColor(R.color.transparent));
             }
 
         } catch (FormController.FormFetchException ex) {
@@ -118,20 +119,14 @@ public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecycler
     }
 
     public void filter(String searchKey) {
-        Log.e(TAG, "filter: key " + searchKey);
         formList.clear();
-        Log.e(TAG, "filter: items copy size " + itemsCopy.size());
-
         for (FormItem formItem : itemsCopy) {
             if (formItem.getForm().getName().contains(searchKey) ||
                     formItem.getForm().getDescription().contains(searchKey) ||
                     formItem.getForm().getDiscriminator().contains(searchKey)) {
-                Log.e(TAG, "filter: match found " + formItem.getForm().getName());
                 formList.add(formItem);
             }
         }
-
-        Log.e(TAG, "filter: permutation run 1 result size " + formList.size());
 
         if (formList.isEmpty()) {
             for (FormItem formItem : itemsCopy) {
@@ -145,9 +140,6 @@ public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecycler
                     formList.add(formItem);
             }
         }
-
-        Log.e(TAG, "filter: permutation run 2 result size " + formList.size());
-
 
         if (formList.isEmpty())
             formList.addAll(itemsCopy);

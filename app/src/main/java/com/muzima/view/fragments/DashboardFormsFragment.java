@@ -22,7 +22,6 @@ import com.muzima.utils.Constants;
 import org.greenrobot.eventbus.EventBus;
 
 public class DashboardFormsFragment extends Fragment {
-
     private EditText searchFormsEditText;
     private ViewPager viewPager;
     private TabLayout tabLayout;

@@ -22,6 +22,7 @@ import com.muzima.model.events.FormSearchEvent;
 import com.muzima.model.events.FormsActionModeEvent;
 import com.muzima.tasks.LoadAllFormsTask;
 import com.muzima.tasks.LoadAvailableFormsTask;
+import com.muzima.utils.ViewUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -33,7 +34,7 @@ public class AvailableFormsFragment extends Fragment implements FormsRecyclerVie
     private RecyclerView formsRecyclerView;
     private ProgressBar progressBar;
     private FormsRecyclerViewAdapter recyclerViewAdapter;
-    private View filterByStatusView;
+    private View filterStrategyContainer;
     private List<FormItem> formList = new ArrayList<>();
     private List<Form> selectedForms = new ArrayList<>();
 
@@ -91,6 +92,7 @@ public class AvailableFormsFragment extends Fragment implements FormsRecyclerVie
                                 for (Form form : forms) {
                                     formList.add(new FormItem(form, false));
                                 }
+                                ViewUtil.applyFormsListSorting(getActivity().getApplicationContext(),formList,true);
                                 recyclerViewAdapter.notifyDataSetChanged();
                                 recyclerViewAdapter.setItemsCopy(formList, "Available forms callback");
                             }
@@ -101,11 +103,12 @@ public class AvailableFormsFragment extends Fragment implements FormsRecyclerVie
 
     private void initializeResources(View view) {
         formsRecyclerView = view.findViewById(R.id.forms_list_recycler_view);
-        filterByStatusView = view.findViewById(R.id.forms_sort_by_status);
+        filterStrategyContainer = view.findViewById(R.id.form_fragment_child_container);
         progressBar = view.findViewById(R.id.form_list_progress_bar);
         recyclerViewAdapter = new FormsRecyclerViewAdapter(getActivity().getApplicationContext(), formList, this);
         formsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         formsRecyclerView.setAdapter(recyclerViewAdapter);
+        filterStrategyContainer.setVisibility(View.GONE);
     }
 
     @Override

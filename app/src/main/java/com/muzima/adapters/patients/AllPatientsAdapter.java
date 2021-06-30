@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class AllPatientsAdapter extends RecyclerView.Adapter<AllPatientsAdapter.ViewHolder> {
-    private static final String TAG = "AllPatientsAdapter";
     private Context context;
     private List<Patient> patientList;
     private OnPatientClickedListener patientClickedListener;
@@ -60,7 +59,6 @@ public class AllPatientsAdapter extends RecyclerView.Adapter<AllPatientsAdapter.
         if (tagsArray.length == 0) holder.tagListView.setVisibility(View.GONE);
         holder.patientNameTextView.setText(patient.getDisplayName());
         holder.identifierTextView.setText(patient.getIdentifier());
-        Log.e(TAG, "onBindViewHolder: patient gender " + patient.getGender());
         if (patient.getGender().equalsIgnoreCase(context.getResources().getString(R.string.gender_female_symbol)))
             holder.genderImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.gender_female));
         else if (patient.getGender().equalsIgnoreCase(context.getResources().getString(R.string.gender_male_symbole)))

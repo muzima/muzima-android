@@ -1,6 +1,7 @@
 package com.muzima.view.fragments.forms;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,17 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsRecyclerViewAdapter;
 import com.muzima.api.model.Form;
+import com.muzima.controller.FormController;
 import com.muzima.model.FormItem;
 import com.muzima.model.events.DestroyActionModeEvent;
+import com.muzima.model.events.FormFilterBottomSheetClosedEvent;
 import com.muzima.model.events.FormSearchEvent;
 import com.muzima.model.events.FormSortEvent;
 import com.muzima.model.events.FormsActionModeEvent;
 import com.muzima.model.events.ShowFormsFilterEvent;
 import com.muzima.tasks.LoadAllFormsTask;
 import com.muzima.utils.Constants;
+import com.muzima.utils.ViewUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -37,6 +41,7 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
     private ProgressBar progressBar;
     private FormsRecyclerViewAdapter recyclerViewAdapter;
     private View filterStrategyContainer;
+    private View bottomSheetShieldView;
     private TextView filterStrategyTextView;
     private List<FormItem> formList = new ArrayList<>();
     private List<Form> selectedForms = new ArrayList<>();
@@ -64,18 +69,22 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
     }
 
     @Subscribe
-    public void formSortEvent(FormSortEvent event){
-        if (event.getSortingStrategy() == Constants.FORM_SORT_STRATEGY.SORT_BY_NAME){
+    public void formSortEvent(FormSortEvent event) {
+        if (event.getSortingStrategy() == Constants.FORM_SORT_STRATEGY.SORT_BY_NAME) {
             formList.clear();
             loadData(null);
-            filterStrategyTextView.setText(getResources().getString(R.string.general_sort_by_name));
-        }else if (event.getSortingStrategy() == Constants.FORM_SORT_STRATEGY.SORT_BY_STATUS){
-            filterStrategyTextView.setText(getResources().getString(R.string.general_sort_status));
+            filterStrategyTextView.setText(getResources().getString(R.string.general_label_sort_status));
+            ViewUtil.applyFormsListSorting(getActivity().getApplicationContext(), formList, true);
+            recyclerViewAdapter.notifyDataSetChanged();
+        } else if (event.getSortingStrategy() == Constants.FORM_SORT_STRATEGY.SORT_BY_STATUS) {
+            filterStrategyTextView.setText(getResources().getString(R.string.general_label_sort_by_name));
+            ViewUtil.applyFormsListSorting(getActivity().getApplicationContext(), formList, false);
+            recyclerViewAdapter.notifyDataSetChanged();
         }
     }
 
     @Subscribe
-    public void formsSearchEvent(FormSearchEvent event){
+    public void formsSearchEvent(FormSearchEvent event) {
         if (event.getPage() == 0)
             searchForms(event.getSearchTerm());
     }
@@ -85,7 +94,7 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
     }
 
     @Subscribe
-    public void actionModeClosedEvent(DestroyActionModeEvent event){
+    public void actionModeClosedEvent(DestroyActionModeEvent event) {
         selectedForms.clear();
         for (FormItem formItem : formList) {
             formItem.setSelected(false);
@@ -95,7 +104,7 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
 
     private void loadData(String searchKey) {
         ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
-                .execute(new LoadAllFormsTask(getActivity().getApplicationContext(),searchKey, new LoadAllFormsTask.FormsLoadedCallback() {
+                .execute(new LoadAllFormsTask(getActivity().getApplicationContext(), searchKey, new LoadAllFormsTask.FormsLoadedCallback() {
                     @Override
                     public void onFormsLoaded(final List<Form> forms) {
                         getActivity().runOnUiThread(new Runnable() {
@@ -106,6 +115,7 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
                                 for (Form form : forms) {
                                     formList.add(new FormItem(form, false));
                                 }
+                                ViewUtil.applyFormsListSorting(getActivity().getApplicationContext(), formList, true);
                                 recyclerViewAdapter.notifyDataSetChanged();
                                 recyclerViewAdapter.setItemsCopy(formList, "AllFormsCallback");
                             }
@@ -114,22 +124,33 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
                 }));
     }
 
+
     private void initializeResources(View view) {
         formsRecyclerView = view.findViewById(R.id.forms_list_recycler_view);
         filterStrategyContainer = view.findViewById(R.id.forms_filter_strategy_view);
+        bottomSheetShieldView = view.findViewById(R.id.form_fragment_child_container);
         progressBar = view.findViewById(R.id.form_list_progress_bar);
         filterStrategyTextView = view.findViewById(R.id.forms_sort_by_status);
         recyclerViewAdapter = new FormsRecyclerViewAdapter(getActivity().getApplicationContext(), formList, this);
         formsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         formsRecyclerView.setAdapter(recyclerViewAdapter);
         filterStrategyContainer.setVisibility(View.VISIBLE);
+        bottomSheetShieldView.setVisibility(View.GONE);
 
         filterStrategyContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post( new ShowFormsFilterEvent(Constants.FORM_FILTERS.FORM_FILTER_STATUS));
+                EventBus.getDefault().post(new ShowFormsFilterEvent(Constants.FORM_FILTERS.FORM_FILTER_STATUS));
             }
         });
+    }
+
+    @Subscribe
+    public void formFilterBottomSheetClosedEvent(FormFilterBottomSheetClosedEvent event) {
+        if (event.isCloseEvent())
+            bottomSheetShieldView.setVisibility(View.GONE);
+        else
+            bottomSheetShieldView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -141,6 +162,6 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
             selectedForms.add(form.getForm());
         else
             selectedForms.remove(form.getForm());
-        EventBus.getDefault().post( new FormsActionModeEvent(selectedForms));
+        EventBus.getDefault().post(new FormsActionModeEvent(selectedForms));
     }
 }

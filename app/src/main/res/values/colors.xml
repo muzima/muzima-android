@@ -68,4 +68,5 @@
     <color name="dark_blue">#E62B42BC</color>
     <color name="primary_red">#B00020</color>
     <color name="primary_blue_opaque">#80137EFE</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>
