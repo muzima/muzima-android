@@ -15,8 +15,8 @@
         android:id="@+id/search"
         android:icon="?attr/icSearch"
         android:title="@string/hint_client_search"
-        android:visible="false"
-        custom:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:visible="true"
+        custom:actionViewClass="android.widget.SearchView"
         custom:showAsAction="always" />
 
 </menu>

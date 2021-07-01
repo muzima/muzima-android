@@ -29,10 +29,10 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.legacy.app.ActionBarDrawerToggle;
@@ -98,8 +98,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private View noDataView;
     private String searchString;
     private LinearLayout searchServerLayout;
-    private SearchView searchView;
-    private MenuItem searchMenuItem;
+    private SearchView searchMenuItem;
     private boolean intentBarcodeResults = false;
 
     private PatientController patientController;
@@ -191,7 +190,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         setupNoDataView();
 
-        Log.e(TAG, "onCreate:  setup patients list " );
+        Log.e(TAG, "onCreate:  setup patients list ");
 
     }
 
@@ -230,11 +229,10 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void setUpSearchFeatureMenuItems(Menu menu) {
-        searchMenuItem = menu.findItem(R.id.search);
-        searchView = (SearchView) searchMenuItem.getActionView();
-
-        searchView.setQueryHint(getString(R.string.hint_client_search));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchMenuItem = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchMenuItem.setMinimumWidth(toolbar.getWidth());
+        searchMenuItem.setQueryHint(getString(R.string.hint_client_search));
+        searchMenuItem.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 return false;
@@ -248,31 +246,29 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 return true;
             }
         });
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+        searchMenuItem.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
                     onBackPressed();
-                }else
+                } else
                     searchViewClosed = false;
             }
         });
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+        searchMenuItem.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
                     onBackPressed();
-                }else
+                } else
                     searchViewClosed = false;
             }
         });
 
-        searchMenuItem.setVisible(true);
         searchMenuItem.setEnabled(true);
-        searchMenuItem.setVisible(true);
         handleShowSearchView();
 
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+        searchMenuItem.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
                 handleShowSearchView();
@@ -282,10 +278,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private void handleShowSearchView() {
-        searchView.setIconified(false);
-        searchView.requestFocusFromTouch();
+        searchMenuItem.setIconified(true);
+        searchMenuItem.requestFocus();
+        searchMenuItem.callOnClick();
+        searchMenuItem.onActionViewExpanded();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
+        imm.showSoftInput(searchMenuItem, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private void activateRemoteAfterThreeCharacterEntered(String searchString) {
@@ -483,7 +481,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 IntentResult scanningResult = BarCodeScannerIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
                 if (scanningResult != null) {
                     intentBarcodeResults = true;
-                    searchView.setQuery(scanningResult.getContents(), false);
+                    searchMenuItem.setQuery(scanningResult.getContents(), false);
                 } else {
                     Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed.", Snackbar.LENGTH_LONG)
                             .setAction("RETRY", new View.OnClickListener() {
@@ -561,7 +559,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     @Override
     public void onBackPressed() {
-        Log.e(TAG, "onBackPressed: searchViewClosed" + searchViewClosed );
+        Log.e(TAG, "onBackPressed: searchViewClosed" + searchViewClosed);
         if (!searchViewClosed) {
             searchViewClosed = true;
         } else {

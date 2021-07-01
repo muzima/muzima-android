@@ -13,7 +13,7 @@
 	
 	<item
 			android:id="@+id/search"
-			custom:actionViewClass="androidx.appcompat.widget.SearchView"
+			custom:actionViewClass="android.widget.SearchView"
 			android:icon="?attr/icSearch"
 			custom:showAsAction="always"
 			android:title="@string/hint_client_search"/>
