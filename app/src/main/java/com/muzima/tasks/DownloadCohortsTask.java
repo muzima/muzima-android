@@ -1,33 +1,27 @@
 package com.muzima.tasks;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Cohort;
-import com.muzima.api.model.CohortData;
-import com.muzima.api.model.CohortMember;
-import com.muzima.controller.CohortController;
-import com.muzima.controller.PatientController;
+import com.muzima.domain.Credentials;
 import com.muzima.model.cohort.CohortItem;
+import com.muzima.service.CohortPrefixPreferenceService;
+import com.muzima.service.DataSyncService;
+import com.muzima.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
+
 public class DownloadCohortsTask implements Runnable {
-    private static final String TAG = "DownloadCohortsTask";
     private Context context;
     private List<Cohort> cohortList = new ArrayList<>();
     private CohortDownloadCallback cohortDownloadCallback;
 
-    public DownloadCohortsTask(Context context, List<Cohort> cohortList, CohortDownloadCallback cohortDownloadCallback) {
-        this.context = context;
-        this.cohortList = cohortList;
-        this.cohortDownloadCallback = cohortDownloadCallback;
-    }
-
-    public DownloadCohortsTask(Context context, List<CohortItem> selectedCohorts, boolean holder, CohortDownloadCallback callback) {
+    public DownloadCohortsTask(Context context, List<CohortItem> selectedCohorts, CohortDownloadCallback callback) {
         this.context = context;
         this.cohortDownloadCallback = callback;
         for (CohortItem selectedCohort : selectedCohorts) {
@@ -38,23 +32,22 @@ public class DownloadCohortsTask implements Runnable {
 
     @Override
     public void run() {
-        try {
-            String[] cohortUuids = extractCohortUuids();
-            List<CohortData> cohortDataList = ((MuzimaApplication) context.getApplicationContext()).getCohortController()
-                    .downloadCohortData(cohortUuids, null);
-            Log.e(TAG, "run: downloaded cohort data size " + cohortDataList.size());
-            for (CohortData cohortData : cohortDataList) {
-                ((MuzimaApplication) context.getApplicationContext()).getCohortController().saveAllCohorts(Collections.singletonList(cohortData.getCohort()));
-                Log.e(TAG, "run: " + cohortData.getCohort().getName() + " members " + cohortData.getCohortMembers().size());
-                for (CohortMember cohortMember : cohortData.getCohortMembers()) {
-                    ((MuzimaApplication) context.getApplicationContext()).getPatientController().savePatient(cohortMember.getPatient());
-                    Log.e(TAG, "run: cohort member " + cohortMember.getPatient().getDisplayName() + " gender " + cohortMember.getPatient().getGender());
-                }
-            }
-            cohortDownloadCallback.callbackDownload();
-        } catch (CohortController.CohortDownloadException | CohortController.CohortSaveException | PatientController.PatientSaveException ex) {
-            ex.printStackTrace();
+        String[] cohortUuids = extractCohortUuids();
+        String[] cohortPrefixes = extractCohortPrefixes();
+        CohortPrefixPreferenceService preferenceService = new CohortPrefixPreferenceService(context);
+        for (String cohortPrefix : cohortPrefixes) {
+            preferenceService.addCohortPrefix(cohortPrefix);
         }
+        ((MuzimaApplication) context.getApplicationContext()).getMuzimaSyncService().downloadCohorts(cohortUuids);
+        Intent cohortMetadataIntent = new Intent(context.getApplicationContext(), DataSyncService.class);
+        cohortMetadataIntent.putExtra(CREDENTIALS, new Credentials(context).getCredentialsArray());
+        cohortMetadataIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.SYNC_COHORTS_METADATA);
+        context.startService(cohortMetadataIntent);
+        Intent syncCohortDataIntent = new Intent(context.getApplicationContext(), DataSyncService.class);
+        syncCohortDataIntent.putExtra(CREDENTIALS, new Credentials(context).getCredentialsArray());
+        syncCohortDataIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.SYNC_COHORTS_AND_ALL_PATIENTS_FULL_DATA);
+        context.startService(cohortMetadataIntent);
+        cohortDownloadCallback.callbackDownload();
     }
 
     private String[] extractCohortUuids() {
@@ -63,6 +56,14 @@ public class DownloadCohortsTask implements Runnable {
             cohortUuids[i] = cohortList.get(i).getUuid();
         }
         return cohortUuids;
+    }
+
+    private String[] extractCohortPrefixes() {
+        String[] prefixes = new String[cohortList.size()];
+        for (int i = 0; i < cohortList.size(); i++) {
+            prefixes[i] = cohortList.get(i).getName();
+        }
+        return prefixes;
     }
 
     public interface CohortDownloadCallback {

@@ -230,7 +230,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
                     if (action == Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION) {
                         ((MuzimaApplication) getApplicationContext()).getExecutorService()
-                                .execute(new DownloadCohortsTask(getApplicationContext(), selectedCohorts, false, new DownloadCohortsTask.CohortDownloadCallback() {
+                                .execute(new DownloadCohortsTask(getApplicationContext(), selectedCohorts, new DownloadCohortsTask.CohortDownloadCallback() {
                                     @Override
                                     public void callbackDownload() {
                                         runOnUiThread(new Runnable() {
@@ -409,9 +409,9 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         formFilterBottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN){
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     EventBus.getDefault().post(new FormFilterBottomSheetClosedEvent(true));
-                }else {
+                } else {
                     EventBus.getDefault().post(new FormFilterBottomSheetClosedEvent(false));
                 }
             }

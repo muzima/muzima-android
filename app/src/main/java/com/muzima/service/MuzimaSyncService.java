@@ -78,7 +78,6 @@ import static java.util.Collections.singleton;
 
 public class MuzimaSyncService {
     private static final String TAG = "MuzimaSyncService";
-
     private final MuzimaApplication muzimaApplication;
     private final FormController formController;
     private final ConceptController conceptController;
@@ -657,7 +656,7 @@ public class MuzimaSyncService {
                     long startDownloadObservations = System.currentTimeMillis();
 
                     List<Observation> allObservations = new ArrayList<>(observationController.downloadObservationsByPatientUuidsAndConceptUuids(
-                            slicedPatientUuid, slicedConceptUuid,activeSetupConfigUuid));
+                            slicedPatientUuid, slicedConceptUuid, activeSetupConfigUuid));
 
                     for (Observation observation : allObservations) {
                         patientUuidsForDownloadedObs.add(observation.getPerson().getUuid());
@@ -880,7 +879,7 @@ public class MuzimaSyncService {
         try {
             return formController.getArchivedFormData();
         } catch (FormController.FormDataFetchException e) {
-            Log.e(TAG, "Could not fetch archived form data", e);
+            e.printStackTrace();
         }
         return new ArrayList<>();
     }
@@ -917,11 +916,9 @@ public class MuzimaSyncService {
             result[4] = unknownStatusFormData.size();
 
         } catch (FormController.FormDataStatusDownloadException e) {
-            Log.e(TAG, "Could not download form data status", e);
             result[0] = DOWNLOAD_ERROR;
         } catch (FormController.FormDataDeleteException e) {
             result[0] = DELETE_ERROR;
-            Log.e(TAG, "Could not delete archived form data", e);
         }
         return result;
     }
@@ -989,13 +986,19 @@ public class MuzimaSyncService {
     }
 
     private List<Cohort> downloadCohortsList() throws CohortController.CohortDownloadException {
+        Log.e(TAG, "downloadCohortsList");
         List<String> cohortPrefixes = cohortPrefixPreferenceService.getCohortPrefixes();
+        Log.e(TAG, "downloadCohortsList: available prefixes for download ");
+        for (String cohortPrefix : cohortPrefixes) {
+            Log.e(TAG, "downloadCohortsList: cohortPrefix " + cohortPrefix);
+        }
         List<Cohort> cohorts;
         if (cohortPrefixes.isEmpty()) {
             cohorts = cohortController.downloadAllCohorts(getDefaultLocation());
         } else {
             cohorts = cohortController.downloadCohortsByPrefix(cohortPrefixes, getDefaultLocation());
         }
+        Log.e(TAG, "downloadCohortsList: downloaded cohorts " + cohorts.size());
         return cohorts;
     }
 
