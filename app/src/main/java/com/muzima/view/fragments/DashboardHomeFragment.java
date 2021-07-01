@@ -36,6 +36,7 @@ import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.tasks.FilterPatientsListTask;
 import com.muzima.tasks.LoadPatientsListService;
 import com.muzima.utils.Fonts;
+import com.muzima.utils.FormUtils;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
@@ -256,12 +257,28 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
 
     }
 
+    private void showRegistrationFormsMissingAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog dialog = builder.setCancelable(false)
+                .setIcon(ThemeUtils.getIconWarning(getActivity().getApplicationContext()))
+                .setTitle(getResources().getString(R.string.general_alert))
+                .setMessage(getResources().getString(R.string.general_registration_form_missing_message))
+                .setPositiveButton(R.string.general_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create();
+        dialog.show();
+    }
+
     private void launchPatientsListIfNecessary() {
         if (bottomSheetFilterVisible) {
             closeBottomSheet();
         } else {
             Intent intent = new Intent(getActivity().getApplicationContext(), PatientsListActivity.class);
-            intent.putExtra(PatientsListActivity.QUICK_SEARCH,true);
+            intent.putExtra(PatientsListActivity.QUICK_SEARCH, true);
             startActivity(intent);
             getActivity().finish();
         }
@@ -269,7 +286,6 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
 
     // Confirmation dialog for confirming if the patient have an existing ID
     private void callRegisterPatientConfirmationDialog() {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(true)
                 .setIcon(ThemeUtils.getIconWarning(getActivity().getApplicationContext()))
@@ -289,12 +305,21 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
     }
 
     private Dialog.OnClickListener launchClientRegistrationFormIfPossible() {
-        return new Dialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(getActivity().getApplicationContext(), RegistrationFormsActivity.class));
-            }
-        };
+        if(FormUtils.getRegistrationForms(((MuzimaApplication) getActivity().getApplicationContext()).getFormController()).isEmpty()){
+            return new Dialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    showRegistrationFormsMissingAlert();
+                }
+            };
+        }else {
+            return new Dialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startActivity(new Intent(getActivity().getApplicationContext(), RegistrationFormsActivity.class));
+                }
+            };
+        }
     }
 
     private void invokeBarcodeScan() {

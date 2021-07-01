@@ -323,8 +323,11 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
 
         //todo remove
         try {
-            selectedBottomSheetConcept = ((MuzimaApplication) getApplicationContext()).getConceptController().getConcepts().get(0);
-            if (selectedBottomSheetConcept != null) bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)",selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
+            List<Concept> conceptList = ((MuzimaApplication) getApplicationContext()).getConceptController().getConcepts();
+            if (!conceptList.isEmpty())
+                selectedBottomSheetConcept = conceptList.get(0);
+            if (selectedBottomSheetConcept != null)
+                bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
         } catch (ConceptController.ConceptFetchException ex) {
             ex.printStackTrace();
         }
