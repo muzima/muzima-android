@@ -21,6 +21,7 @@
         <TextView
             android:text="@string/forms_general_sort_by"
             android:textSize="16sp"
+            android:fontFamily="@font/montserrat_regular"
             android:textColor="?attr/primaryTextColor"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
@@ -59,6 +60,7 @@
             android:paddingEnd="2dp"
             android:checked="true"
             android:text="@string/general_sort_by_status"
+            android:fontFamily="@font/montserrat_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -85,6 +87,7 @@
             android:paddingStart="2dp"
             android:paddingEnd="2dp"
             android:text="@string/general_sort_by_name"
+            android:fontFamily="@font/montserrat_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

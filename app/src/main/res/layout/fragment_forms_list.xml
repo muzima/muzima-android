@@ -29,7 +29,8 @@
                 android:id="@+id/forms_sort_by_status"
                 android:layout_alignParentStart="true"
                 android:textColor="?attr/primaryTextColor"
-                android:text="@string/general_sort_by_status"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@string/general_label_sort_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

@@ -21,6 +21,7 @@
         <TextView
             android:text="@string/general_filter_by"
             android:textSize="16sp"
+            android:fontFamily="@font/montserrat_regular"
             android:textColor="?attr/primaryTextColor"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"

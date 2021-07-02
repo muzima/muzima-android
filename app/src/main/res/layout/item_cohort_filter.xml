@@ -19,6 +19,7 @@
         android:paddingBottom="12dp"
         android:paddingStart="2dp"
         android:paddingEnd="2dp"
+        android:fontFamily="@font/montserrat_regular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
