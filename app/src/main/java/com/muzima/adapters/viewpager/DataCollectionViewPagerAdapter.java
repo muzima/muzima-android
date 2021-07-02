@@ -8,8 +8,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.muzima.R;
+import com.muzima.utils.Constants;
 import com.muzima.view.fragments.AddSingleElementFragment;
 import com.muzima.view.fragments.FillFormsFragment;
+import com.muzima.view.fragments.observations.ObservationsListingFragment;
 
 public class DataCollectionViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -28,7 +30,7 @@ public class DataCollectionViewPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new FillFormsFragment(patientUuid);
             case 1:
-                return  new AddSingleElementFragment();
+                return  new ObservationsListingFragment(Constants.OBSERVATIONS_FILTER_CATEGORY.BY_TYPE, patientUuid,true);
             default:
                 return null;
         }

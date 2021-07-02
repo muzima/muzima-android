@@ -10,7 +10,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="2dp"
         android:layout_marginStart="8dp">
 
@@ -26,14 +25,16 @@
 
         <ImageView
             android:id="@+id/item_single_obs_form_close_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_action_close_dark" />
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
+        android:weightSum="2"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -46,15 +47,20 @@
             android:paddingEnd="24dp"
             android:layout_margin="8dp"
             android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_weight="1"
             android:fontFamily="@font/montserrat_regular"
             android:textColor="?attr/primaryTextColor"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:maxWidth="160dp"
             android:layout_height="wrap_content"
             android:hint="Weight in KG" />
 
         <RelativeLayout
             android:id="@+id/item_single_obs_form_date_selector_container"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:background="@drawable/border_button_gray"
@@ -73,19 +79,21 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="10dp"
                 android:background="@null"
+                android:enabled="false"
+                android:layout_centerHorizontal="true"
                 android:fontFamily="@font/montserrat_regular"
                 android:textColor="?attr/primaryTextColor"
                 android:hint="Date taken" />
 
             <ImageView
+                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/item_single_obs_form_date_edit_text"
                 android:src="@drawable/ic_action_calendar" />
 
         </RelativeLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

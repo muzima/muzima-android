@@ -920,5 +920,8 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="general_card_read_failed_msg">Card read failed.</string>
     <string name="general_label_sort_by_name">Sort by name</string>
     <string name="general_label_sort_status">Sort by status</string>
+    <string name="general_by_type_title">By Type</string>
+    <string name="general_by_abstract_title">By abstract</string>
+    <string name="general_by_encounter_title">By Encounter</string>
 
 </resources>

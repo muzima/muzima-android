@@ -1,6 +1,8 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +43,26 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
 
     @Override
     public void onBindViewHolder(@NonNull ClientDynamicObsFormsAdapter.ViewHolder holder, int position) {
-        SingleObsForm form = singleObsFormList.get(position);
+        final SingleObsForm form = singleObsFormList.get(position);
         holder.readingCountTextView.setText(String.format(Locale.getDefault(), "%s %d", context.getResources().getString(R.string.general_reading), form.getReadingCount()));
         holder.valueEditText.setHint(String.format(Locale.getDefault(), "%s %s", form.getConcept().getName(), form.getConcept().getConceptType().getName()));
+        holder.valueEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence text, int start, int before, int count) {
+                form.setInputValue(text.toString());
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         holder.dateEditText.setText(DateUtils.convertDateToStdString(form.getDate()));
     }
 

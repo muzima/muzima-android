@@ -16,6 +16,7 @@
     <color name="hint_text_grey">#888888</color>
     <color name="primary_black">#303030</color>
     <color name="theme_color">#333333</color>
+    <color name="some">#0DFFFFFF</color> <!-- TODO TRY APPLY TO TAGS -->
     <color name="fab_tint_color">#0D57AF</color>
     <color name="theme_color_light">#eaeaea</color>
     <color name="theme_color_background">@android:color/white</color>

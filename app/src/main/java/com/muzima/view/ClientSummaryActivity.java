@@ -13,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,15 +38,18 @@ import com.muzima.api.model.PersonAddress;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.PatientController;
+import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.SingleObsForm;
 import com.muzima.model.SummaryCard;
 import com.muzima.model.enums.CardsSummaryCategory;
+import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import com.muzima.model.events.CloseSingleFormEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.tasks.FormsCountService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.FormUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
@@ -110,9 +114,9 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         setContentView(R.layout.activity_main_client_summary);
         initializeResources();
         loadPatientData();
+        loadHistoricalDataView();
         loadSummaryHeaders();
         loadFormsCountData();
-        loadHistoricalDataView();
     }
 
     @Override
@@ -137,9 +141,17 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         super.onUserInteraction();
     }
 
+    @Subscribe
+    public void clientSummaryObservationSelectedEvent(ClientSummaryObservationSelectedEvent event) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        ObsConceptWrapper conceptWrapper = event.getConceptWrapper();
+        selectedBottomSheetConcept = conceptWrapper.getConcept();
+        bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
+    }
+
     private void loadHistoricalDataView() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.historical_data_fragment_container, new ObservationsFragment());
+        fragmentTransaction.replace(R.id.historical_data_fragment_container, new ClientSummaryObservationsFragment(patient.getUuid()));
         fragmentTransaction.commit();
     }
 
@@ -291,8 +303,14 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         saveBottomSheetEntriesActionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo save form entries as individual obs
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                if (singleObsFormsList.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Enter value to save", Toast.LENGTH_LONG).show();
+                } else {
+                    for (SingleObsForm form : singleObsFormsList) {
+                        FormUtils.handleSaveIndividualObsData(getApplicationContext(), patient, form.getDate(), selectedBottomSheetConcept, form.getInputValue());
+                    }
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                }
             }
         });
 
@@ -333,7 +351,7 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         }
 
 
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     @Override
