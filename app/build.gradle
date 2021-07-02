@@ -117,6 +117,9 @@ dependencies {
         exclude(module: 'guice')
     }
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
+    //Fonts
+    implementation 'io.github.inflationx:calligraphy3:3.1.1'
+    implementation 'io.github.inflationx:viewpump:2.0.3'
 
     // Add the Firebase Crashlytics SDK.
     implementation 'com.google.firebase:firebase-crashlytics:17.2.2'

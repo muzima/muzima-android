@@ -1,8 +1,9 @@
-<RelativeLayout
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/primaryBackgroundColor"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    tools:ignore="MissingPrefix"
     android:id="@+id/dashboard_home_fragment_container"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -37,7 +38,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:paddingTop="12dp"
-                    android:text="Hello"
+                    android:text="Hello Provider"
+                    android:fontFamily="@font/montserrat_medium"
                     android:layout_width="match_parent"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="24sp" />
@@ -55,6 +57,7 @@
                     <TextView
                         android:text="@string/general_search_patient"
                         android:textSize="14sp"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textColor="?attr/primaryTextColor"
                         android:id="@+id/dashboard_forms_search_edit_text"
                         android:layout_centerVertical="true"
@@ -84,9 +87,10 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:text="@string/general_or_search_by"
+                        android:fontFamily="@font/montserrat_medium"
                         android:textColor="?attr/primaryTextColor"
                         android:textAllCaps="true"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
 
                     <LinearLayout
                         android:layout_alignParentEnd="true"
@@ -166,7 +170,8 @@
                 android:layout_marginStart="4dp"
                 android:maxLength="25"
                 android:ellipsize="end"
-                android:textSize="16sp"
+                android:textSize="18sp"
+                android:fontFamily="@font/montserrat_medium"
                 android:textColor="?attr/primaryTextColor"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -176,7 +181,6 @@
                 android:layout_gravity="center_vertical"
                 android:layout_height="26dp"
                 android:layout_width="26dp"
-                android:layout_marginBottom="6dp"
                 android:layout_marginStart="2dp"
                 android:src="?attr/icActionArrowDown" />
 

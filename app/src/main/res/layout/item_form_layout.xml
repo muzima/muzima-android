@@ -37,6 +37,7 @@
                 android:textSize="16sp"
                 android:maxLines="1"
                 android:ellipsize="end"
+                android:fontFamily="@font/montserrat_regular"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="6dp"
                 android:layout_height="wrap_content"/>
@@ -46,6 +47,7 @@
                 android:textSize="12sp"
                 android:maxLines="1"
                 android:ellipsize="end"
+                android:fontFamily="@font/roboto_regular"
                 android:layout_width="match_parent"
                 android:textColor="?attr/primaryTextColor"
                 android:layout_height="wrap_content"/>
@@ -68,6 +70,7 @@
             <TextView
                 android:id="@+id/item_form_version_code_text_view"
                 android:textColor="?attr/primaryTextColor"
+                android:fontFamily="@font/roboto_regular"
                 android:textSize="12sp"
                 android:layout_gravity="end"
                 android:gravity="end"

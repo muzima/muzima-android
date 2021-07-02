@@ -21,7 +21,6 @@ import com.muzima.R;
 import com.muzima.adapters.reports.PatientReportPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.Constants;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
@@ -130,7 +129,6 @@ public class PatientReportActivity extends BroadcastListenerActivity {
         pagerTabsLayout.setTextColor(pagerTabsLayout.getIndicatorTextColor());
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
-        pagerTabsLayout.setTypeface(Fonts.roboto_medium(this), -1);
         pagerTabsLayout.setViewPager(viewPager);
         viewPager.setCurrentItem(0);
         pagerTabsLayout.markCurrentSelected(0);

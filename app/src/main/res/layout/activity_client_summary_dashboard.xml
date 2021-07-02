@@ -7,6 +7,7 @@
 
     <View
         android:id="@+id/bottom_sheet_child_container"
+        android:visibility="gone"
         android:background="@color/white_smoke"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
@@ -101,6 +102,7 @@
                             android:layout_marginStart="6dp"
                             android:layout_marginTop="6dp"
                             android:text="@string/general_historical_data"
+                            android:fontFamily="@font/montserrat_regular"
                             android:textColor="?attr/primaryTextColor"
                             android:textSize="16sp" />
 
@@ -154,6 +156,7 @@
                             android:layout_marginStart="6dp"
                             android:layout_marginTop="6dp"
                             android:text="@string/general_data_collection"
+                            android:fontFamily="@font/montserrat_regular"
                             android:textColor="?attr/primaryTextColor"
                             android:textSize="16sp" />
 

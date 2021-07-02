@@ -55,6 +55,8 @@
                 <TextView
                     android:id="@+id/name"
                     style="@style/ListHeader"
+                    android:text="Name of Patient"
+                    android:fontFamily="@fonts/Montserrat-Regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

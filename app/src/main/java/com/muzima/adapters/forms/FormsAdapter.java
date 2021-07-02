@@ -27,7 +27,6 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -77,14 +76,12 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
             BaseForm form = getItem(position);
 
             holder.name.setText(form.getName());
-            holder.name.setTypeface(Fonts.roboto_medium(getContext()));
 
             String description = form.getDescription();
             if (StringUtils.isEmpty(description)) {
                 description = getContext().getString(R.string.general_description_unavailable);
             }
             holder.description.setText(description);
-            holder.description.setTypeface(Fonts.roboto_regular(getContext()));
             holder.savedTime.setVisibility(View.GONE);
         }
         return convertView;

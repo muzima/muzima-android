@@ -37,7 +37,6 @@ import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
@@ -224,7 +223,6 @@ public class FormTemplateWizardActivity extends BroadcastListenerActivity implem
         mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         TextView tagsNoDataMsg = findViewById(R.id.tags_no_data_msg);
-        tagsNoDataMsg.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
     private List<String> getSelectedForms() {

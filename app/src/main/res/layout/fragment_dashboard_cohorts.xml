@@ -35,6 +35,7 @@
                 android:hint="@string/general_search_cohorts"
                 android:padding="4dp"
                 android:textSize="14sp"
+                android:fontFamily="@font/montserrat_regular"
                 android:layout_centerVertical="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

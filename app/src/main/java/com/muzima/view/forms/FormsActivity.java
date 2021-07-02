@@ -36,7 +36,6 @@ import com.muzima.adapters.forms.TagsListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.service.TagPreferenceService;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ThemeUtils;
@@ -317,7 +316,6 @@ public class FormsActivity extends FormsActivityBase {
         mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         TextView tagsNoDataMsg = findViewById(R.id.tags_no_data_msg);
-        tagsNoDataMsg.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
     private void initSelectedTags() {

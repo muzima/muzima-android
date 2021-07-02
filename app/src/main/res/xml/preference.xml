@@ -8,15 +8,16 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
+        android:fontFamily="@font/montserrat_regular"
         android:title="@string/header_openmrs_category">
         <EditTextPreference
             android:defaultValue="@string/default_server"
             android:dialogMessage="@string/hint_server_url_prompt"
             android:dialogTitle="@string/general_server"
+            android:fontFamily="@font/montserrat_regular"
             android:key="@string/preference_server"
             android:negativeButtonText="@android:string/cancel"
             android:positiveButtonText="@android:string/ok"
@@ -28,6 +29,7 @@
         android:defaultValue="admin"
         android:dialogMessage="@string/hint_username_prompt"
         android:dialogTitle="@string/general_username"
+        android:fontFamily="@font/montserrat_regular"
         android:key="@string/preference_username"
         android:negativeButtonText="@android:string/cancel"
         android:positiveButtonText="@android:string/ok"
@@ -37,17 +39,21 @@
         android:defaultValue="test"
         android:dialogMessage="@string/hint_server_password_prompt"
         android:dialogTitle="@string/general_password"
+        android:fontFamily="@font/montserrat_regular"
         android:inputType="textPassword"
         android:key="@string/preference_password"
         android:negativeButtonText="@android:string/cancel"
         android:positiveButtonText="@android:string/ok"
         android:title="@string/general_password" />
 
-    <PreferenceCategory android:title="@string/header_muzima_category">
+    <PreferenceCategory
+        android:fontFamily="@font/montserrat_regular"
+        android:title="@string/header_muzima_category">
         <EditTextPreference
             android:defaultValue="5"
             android:dialogMessage="@string/hint_session_timeout"
             android:dialogTitle="@string/title_session_timeout"
+            android:fontFamily="@font/montserrat_regular"
             android:icon="@drawable/timer_icon"
             android:inputType="number"
             android:key="@string/preference_timeout"
@@ -59,6 +65,7 @@
             android:defaultValue="@string/default_auto_save_interval"
             android:dialogMessage="@string/hint_form_auto_save_interval"
             android:dialogTitle="@string/title_form_auto_save_interval"
+            android:fontFamily="@font/montserrat_regular"
             android:icon="@drawable/ic_action_font"
             android:inputType="number"
             android:key="@string/preference_auto_save_interval"
@@ -68,6 +75,7 @@
             android:title="@string/title_form_auto_save_interval" />
         <SwitchPreference
             android:defaultValue="false"
+            android:fontFamily="@font/montserrat_regular"
             android:icon="@drawable/ic_action_sync_settings"
             android:key="@string/preference_real_time_sync"
             android:summary="@string/hint_real_time_sync"
@@ -75,6 +83,7 @@
         <SwitchPreference
             android:defaultValue="false"
             android:editable="false"
+            android:fontFamily="@font/montserrat_regular"
             android:icon="@drawable/ic_action_medical_card"
             android:key="@string/preference_require_medical_record_number"
             android:summary="@string/hint_require_medical_record_number"
@@ -83,6 +92,7 @@
         <SwitchPreference
             android:checked="true"
             android:defaultValue="true"
+            android:fontFamily="@font/montserrat_regular"
             android:icon="@drawable/ic_action_warn"
             android:key="@string/preference_duplicate_form_data_key"
             android:summary="@string/hint_duplicate_form_data_warning"
@@ -104,6 +114,7 @@
             android:title="@string/title_landing_page" />
         <SwitchPreference
             android:defaultValue="false"
+            android:fontFamily="@font/montserrat_regular"
             android:icon="@drawable/ic_action_font"
             android:key="@string/preference_light_mode"
             android:summary="@string/hint_light_mode"
@@ -111,12 +122,14 @@
 
         <SwitchPreference
             android:defaultValue="false"
+            android:fontFamily="@font/montserrat_regular"
             android:icon="@drawable/ic_action_font"
             android:key="@string/preference_enable_shr_key"
             android:summary="@string/hint_enable_shr"
             android:title="@string/title_enable_shr" />
         <SwitchPreference
             android:defaultValue="false"
+            android:fontFamily="@font/montserrat_regular"
             android:icon="@drawable/ic_action_font"
             android:key="@string/preference_enable_gps_key"
             android:summary="@string/hint_enable_GPS"
@@ -134,6 +147,7 @@
     <PreferenceCategory android:title="@string/header_provider_location_category">
         <SwitchPreference
             android:defaultValue="false"
+            android:fontFamily="@font/montserrat_regular"
             android:icon="@drawable/ic_action_language"
             android:key="@string/preference_encounter_provider_key"
             android:summary="@string/hint_default_encounter_provider"

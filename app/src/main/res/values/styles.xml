@@ -740,6 +740,7 @@
 
     <style name="SetUpLogList">
         <item name="android:textSize">14sp</item>
+        <item name="font">@font/roboto_regular</item>
     </style>
 
     <style name="SetupActionFinalResult">

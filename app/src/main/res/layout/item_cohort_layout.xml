@@ -31,6 +31,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:text="Cohort title"
                 android:textSize="16sp"
+                android:fontFamily="@font/montserrat_regular"
                 android:layout_marginBottom="6dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -39,6 +40,7 @@
                 android:id="@+id/item_cohort_description_text_view"
                 android:layout_marginTop="8dp"
                 android:textSize="12sp"
+                android:fontFamily="@font/roboto_regular"
                 android:textColor="?attr/primaryTextColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -63,6 +65,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:layout_marginTop="6dp"
                 android:textSize="12sp"
+                android:fontFamily="@font/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

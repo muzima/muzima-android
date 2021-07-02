@@ -107,6 +107,7 @@
                 android:id="@+id/setup_progress_status_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
                 android:text="@string/initial_setup_running_please_wait" />
 
             <ProgressBar

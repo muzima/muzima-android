@@ -36,6 +36,7 @@
 
             <TextView
                 android:id="@+id/config_name"
+                android:fontFamily="@font/montserrat_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -57,6 +58,7 @@
             android:paddingBottom="4dp"
             android:layout_marginStart="6dp"
             android:textSize="12sp"
+            android:fontFamily="@font/roboto_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true" />

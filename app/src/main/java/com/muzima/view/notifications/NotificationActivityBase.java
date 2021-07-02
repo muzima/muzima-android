@@ -14,7 +14,6 @@ import android.content.Intent;
 import androidx.viewpager.widget.ViewPager;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
-import com.muzima.utils.Fonts;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.custom.PagerSlidingTabStrip;
 
@@ -48,7 +47,6 @@ public abstract class NotificationActivityBase extends BroadcastListenerActivity
         pagerTabsLayout.setTextColor(pagerTabsLayout.getIndicatorTextColor());
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
-        pagerTabsLayout.setTypeface(Fonts.roboto_medium(this), -1);
         pagerTabsLayout.setViewPager(notificationPager);
         notificationPager.setCurrentItem(0);
         pagerTabsLayout.markCurrentSelected(0);

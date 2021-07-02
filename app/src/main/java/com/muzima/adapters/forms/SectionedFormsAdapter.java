@@ -23,7 +23,6 @@ import com.muzima.R;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.PatientComparator;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.CheckedRelativeLayout;
@@ -193,7 +192,6 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
             if (!StringUtils.isEmpty(formSaveTime)) {
                 holder.savedTime.setText(formSaveTime);
             }
-            holder.savedTime.setTypeface(Fonts.roboto_italic(getContext()));
             holder.savedTime.setVisibility(View.VISIBLE);
         }
 

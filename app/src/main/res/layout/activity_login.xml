@@ -40,6 +40,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="@string/app_name"
+                android:fontFamily="@font/montserrat_bold"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="40sp" />
@@ -51,9 +52,10 @@
                 android:layout_below="@+id/main_title_view"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
+                android:fontFamily="@font/montserrat_medium"
                 android:text="@string/app_sub_title"
                 android:textColor="@color/primary_white"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </RelativeLayout>
 
@@ -81,7 +83,9 @@
                 android:background="@drawable/border_button_gray"
                 android:drawableEnd="@drawable/ic_action_dark_dashboard"
                 android:hint="@string/hint_server_url"
+                android:textSize="19sp"
                 android:inputType="textUri"
+                android:fontFamily="@font/montserrat_regular"
                 android:nextFocusDown="@+id/username"
                 android:text="@string/default_server" />
 
@@ -106,6 +110,7 @@
                     android:id="@+id/username"
                     style="@style/LoginInfoEditText"
                     android:hint="@string/general_username"
+                    android:fontFamily="@font/montserrat_regular"
                     android:inputType="textShortMessage"
                     android:nextFocusDown="@+id/password"
                     android:text="" />
@@ -134,6 +139,7 @@
                     android:id="@+id/password"
                     style="@style/LoginInfoEditText"
                     android:hint="@string/general_password"
+                    android:fontFamily="@font/montserrat_regular"
                     android:inputType="textPassword"
                     android:nextFocusDown="@+id/login"
                     android:text="" />
@@ -147,6 +153,7 @@
             style="@style/LoginInfoQuestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
             android:onClick="onUpdatePasswordCheckboxClicked"
             android:text="@string/hint_password_change" />
 
@@ -158,6 +165,7 @@
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="6dp"
                 android:gravity="center"
+                android:fontFamily="@font/roboto_medium"
                 android:backgroundTint="@color/primary_blue"
                 android:text="@string/general_login"
                 android:textAllCaps="true" />
@@ -173,6 +181,7 @@
         <TextView
             android:id="@+id/version"
             style="@style/Versiontext"
+            android:fontFamily="@font/roboto_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
@@ -180,6 +189,7 @@
         <TextView
             android:id="@+id/helpText"
             style="@style/ClickableText"
+            android:fontFamily="@font/roboto_regular"
             android:paddingTop="16dp"
             android:text="@string/help_center" />
     </LinearLayout>

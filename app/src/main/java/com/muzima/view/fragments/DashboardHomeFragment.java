@@ -35,7 +35,6 @@ import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.tasks.FilterPatientsListTask;
 import com.muzima.tasks.LoadPatientsListService;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.FormUtils;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ThemeUtils;
@@ -414,8 +413,6 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
 
     private void setupNoDataView() {
         noDataMsgTextView.setText(getResources().getText(R.string.info_no_client_available));
-        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(getActivity().getApplicationContext()));
-        noDataTipTextView.setTypeface(Fonts.roboto_medium(getActivity().getApplicationContext()));
     }
 
     private MuzimaGPSLocation getCurrentGPSLocation() {

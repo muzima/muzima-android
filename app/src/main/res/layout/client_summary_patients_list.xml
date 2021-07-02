@@ -51,6 +51,7 @@
                 <TextView
                     android:id="@+id/identifier"
                     style="@style/ListDescription"
+                    android:fontFamily="@font/roboto_regular"
                     android:layout_width="wrap_content"
                     android:textColor="?attr/primaryTextColor"
                     android:layout_marginEnd="12dp"
@@ -60,6 +61,7 @@
                 <TextView
                     android:id="@+id/distanceToClientAddress"
                     android:textSize="14sp"
+                    android:fontFamily="@font/roboto_regular"
                     android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,6 +80,7 @@
                     android:id="@+id/name"
                     android:text="Patient Name"
                     style="@style/ListHeader"
+                    android:fontFamily="@font/montserrat_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -96,7 +99,9 @@
 
                     <TextView
                         android:id="@+id/dateOfBirth"
+                        android:fontFamily="@font/roboto_regular"
                         style="@style/ListDescription"
+                        android:textSize="16sp"
                         android:layout_width="wrap_content"
                         android:layout_marginEnd="6dp" />
 

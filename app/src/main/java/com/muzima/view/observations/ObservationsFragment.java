@@ -28,11 +28,9 @@ import com.muzima.R;
 import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.ClientSummaryActivity;
 import com.muzima.view.custom.PagerSlidingTabStrip;
-import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.Calendar;
 
@@ -82,7 +80,6 @@ public class ObservationsFragment extends Fragment {
         pagerTabsLayout.setTextColor(pagerTabsLayout.getIndicatorTextColor());
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));
         pagerTabsLayout.setSelectedTextColor(getResources().getColor(R.color.tab_indicator));
-        pagerTabsLayout.setTypeface(Fonts.roboto_medium(getActivity().getApplicationContext()), -1);
         pagerTabsLayout.setViewPager(viewPager);
         viewPager.setCurrentItem(0);
         pagerTabsLayout.markCurrentSelected(0);

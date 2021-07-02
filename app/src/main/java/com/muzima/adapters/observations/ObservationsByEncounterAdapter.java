@@ -32,7 +32,6 @@ import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.EncounterWithObservations;
 import com.muzima.utils.BackgroundTaskHelper;
 import com.muzima.utils.DateUtils;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
 import java.util.Arrays;
@@ -110,7 +109,6 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
         protected void setObservation(LinearLayout layout, final Observation observation) {
             TextView conceptInfo = layout.findViewById(R.id.concept_info);
             conceptInfo.setText(getConceptDisplay(observation.getConcept()));
-            conceptInfo.setTypeface(Fonts.roboto_medium(getContext()));
             int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
             conceptInfo.setTextColor(conceptColor);
 
@@ -128,7 +126,6 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
                 observationValue.setVisibility(View.VISIBLE);
                 observationComplexHolder.setVisibility(View.GONE);
                 observationValue.setText(observation.getValueAsString());
-                observationValue.setTypeface(Fonts.roboto_medium(getContext()));
                 observationValue.setTextColor(conceptColor);
             }
 
@@ -137,7 +134,6 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
 
             TextView observationDateView = layout.findViewById(R.id.observation_date);
             observationDateView.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
-            observationDateView.setTypeface(Fonts.roboto_regular(getContext()));
             observationDateView.setTextColor(conceptColor);
 
             layout.setOnClickListener(new View.OnClickListener() {

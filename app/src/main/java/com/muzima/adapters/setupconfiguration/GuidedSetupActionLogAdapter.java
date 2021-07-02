@@ -26,10 +26,13 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.model.SetupActionLogModel;
 import com.muzima.utils.Constants;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.ThemeUtils;
 
 import org.apache.commons.lang.StringUtils;
+
+import java.util.Locale;
+
+import static android.view.View.GONE;
 
 public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel> {
     private Context context;
@@ -58,7 +61,7 @@ public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel
             holder = (ViewHolder) convertView.getTag();
         }
         holder.setSetupAction(getItem(position).getSetupAction());
-        holder.setSetupActionResult(getItem(position).getSetupActionResult());
+        holder.setSetupActionResult(getItem(position).getSetupActionResult(), getItem(position).getSetupActionResultStatus());
         holder.setSetupActionResultStatus(getItem(position).getSetupActionResultStatus());
         return convertView;
     }
@@ -74,12 +77,13 @@ public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel
 
         void setSetupAction(String text) {
             setupActionResult.setText(text);
-            setupActionResult.setTypeface(Fonts.roboto_medium(getContext()));
         }
 
-        void setSetupActionResult(String text) {
-            setupActionResult.setText(text);
-            setupActionResult.setTypeface(Fonts.roboto_medium(getContext()));
+        void setSetupActionResult(String text, String actionResultText) {
+            if (StringUtils.isEmpty(actionResultText) && StringUtils.equals(text, Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG))
+                setupActionResult.setText(String.format(Locale.getDefault(), "✔ %s", text));
+            else
+                setupActionResult.setText(text);
         }
 
         void setSetupActionResultStatus(String text) {
@@ -95,7 +99,7 @@ public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel
                     setupActionResult.setTextColor(ContextCompat.getColor(getContext(), R.color.primary_white));
 
                 // setupActionResult.setText(String.format("%s: ", (getContext().getString(R.string.general_ok)).toUpperCase()));
-                statusImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_tick));
+                statusImageView.setVisibility(GONE);
             }
         }
     }

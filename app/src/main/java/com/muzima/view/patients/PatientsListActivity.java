@@ -57,7 +57,6 @@ import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Constants;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
@@ -425,9 +424,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
             TextView noDataTipTextView = findViewById(R.id.no_data_tip);
             noDataTipTextView.setText(R.string.hint_client_local_search);
-
-            noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
-            noDataTipTextView.setTypeface(Fonts.roboto_medium(this));
         } catch (PatientController.PatientLoadException ex) {
             Toast.makeText(PatientsListActivity.this, R.string.error_patient_search, Toast.LENGTH_LONG).show();
         }
@@ -865,9 +861,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         };
         mainLayout.setDrawerListener(actionbarDrawerToggle);
         mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
         TextView tagsNoDataMsg = findViewById(R.id.tags_no_data_msg);
-        tagsNoDataMsg.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
     private void initSelectedTags() {

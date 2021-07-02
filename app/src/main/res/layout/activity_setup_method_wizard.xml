@@ -16,12 +16,14 @@
 
         <TextView
             style="@style/SummaryHeader"
+            android:fontFamily="@font/montserrat_medium"
             android:text="@string/title_guided_setup" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:fontFamily="@font/roboto_regular"
             android:text="@string/hint_guided_setup"
             android:textAlignment="center"
             android:textColor="?attr/primaryTextColor" />
@@ -48,6 +50,7 @@
                     android:id="@+id/filter_configs_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_regular"
                     android:textColor="@color/primary_blue" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -117,6 +120,7 @@
             android:layout_alignParentEnd="true"
             android:backgroundTint="@color/primary_blue"
             android:text="@string/general_next"
+            android:fontFamily="@font/roboto_regular"
             android:textAllCaps="true"
             android:textColor="@color/primary_white"
             android:textSize="14sp"
