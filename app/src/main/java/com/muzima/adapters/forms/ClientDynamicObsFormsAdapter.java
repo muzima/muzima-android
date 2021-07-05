@@ -42,7 +42,7 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ClientDynamicObsFormsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ClientDynamicObsFormsAdapter.ViewHolder holder, int position) {
         final SingleObsForm form = singleObsFormList.get(position);
         holder.readingCountTextView.setText(String.format(Locale.getDefault(), "%s %d", context.getResources().getString(R.string.general_reading), form.getReadingCount()));
         holder.valueEditText.setHint(String.format(Locale.getDefault(), "%s %s", form.getConcept().getName(), form.getConcept().getConceptType().getName()));
@@ -55,7 +55,6 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
                 form.setInputValue(text.toString());
-                notifyDataSetChanged();
             }
 
             @Override
@@ -87,7 +86,6 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
             this.dateEditText = itemView.findViewById(R.id.item_single_obs_form_date_edit_text);
             this.valueEditText = itemView.findViewById(R.id.item_single_obs_form_value_edit_text);
             this.datePickerClickedListener = datePickerClickedListener;
-
             this.dateSelectorView.setOnClickListener(this);
 
             this.closeEntryView.setOnClickListener(new View.OnClickListener() {

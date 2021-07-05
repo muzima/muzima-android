@@ -177,15 +177,6 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/header_cohort_category">
-        <Preference
-            android:icon="@drawable/ic_action_language"
-            android:summary="@string/hint_cohort_prefix_manage"
-            android:title="@string/title_cohort_prefix_manage">
-            <intent
-                android:targetClass="com.muzima.view.preferences.CohortPreferenceActivity"
-                android:targetPackage="com.muzima" />
-        </Preference>
         <Preference
             android:icon="@drawable/ic_action_language"
             android:summary="@string/hint_manage_concept"
@@ -195,5 +186,4 @@
                 android:targetPackage="com.muzima" />
         </Preference>
 
-    </PreferenceCategory>
 </PreferenceScreen>

@@ -1,5 +1,6 @@
 package com.muzima.view;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.location.Location;
@@ -44,6 +45,7 @@ import com.muzima.model.SummaryCard;
 import com.muzima.model.enums.CardsSummaryCategory;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import com.muzima.model.events.CloseSingleFormEvent;
+import com.muzima.model.events.ReloadObservationsDataEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.tasks.FormsCountService;
@@ -54,9 +56,11 @@ import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
+import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.observations.ObservationsFragment;
 import com.muzima.view.patients.PatientsListActivity;
+import com.muzima.view.patients.PatientsLocationMapActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -132,7 +136,36 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_client_summary, menu);
+        MenuItem shrMenu = menu.findItem(R.id.menu_shr);
+        MenuItem locationMenu = menu.findItem(R.id.menu_location_item);
+        locationMenu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.general_launching_map_message), Toast.LENGTH_SHORT).show();
+                navigateToClientsLocationMap();
+                return true;
+            }
+        });
+
+        shrMenu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                readSmartCard();
+                return true;
+            }
+        });
         return true;
+    }
+
+    private void readSmartCard() {
+        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(ClientSummaryActivity.this);
+        SHRIntegrator.initiateCardRead();
+        Toast.makeText(getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
+    }
+
+    private void navigateToClientsLocationMap() {
+        Intent intent = new Intent(getApplicationContext(), PatientsLocationMapActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -143,10 +176,20 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
 
     @Subscribe
     public void clientSummaryObservationSelectedEvent(ClientSummaryObservationSelectedEvent event) {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         ObsConceptWrapper conceptWrapper = event.getConceptWrapper();
-        selectedBottomSheetConcept = conceptWrapper.getConcept();
-        bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
+        if (conceptWrapper.getConcept().isCoded() || conceptWrapper.getConcept().isSet() || conceptWrapper.getConcept().isPrecise()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(true)
+                    .setMessage("This data type is not support, consult admin.")
+                    .show();
+        }else {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            selectedBottomSheetConcept = conceptWrapper.getConcept();
+            addReadingActionView.callOnClick();
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
+
+        }
     }
 
     private void loadHistoricalDataView() {
@@ -296,6 +339,8 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         cancelBottomSheetActionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                singleObsFormsList.clear();
+                clientDynamicObsFormsAdapter.notifyDataSetChanged();
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
@@ -304,12 +349,15 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
             @Override
             public void onClick(View view) {
                 if (singleObsFormsList.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Enter value to save", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.general_enter_value_to_save), Toast.LENGTH_LONG).show();
                 } else {
                     for (SingleObsForm form : singleObsFormsList) {
                         FormUtils.handleSaveIndividualObsData(getApplicationContext(), patient, form.getDate(), selectedBottomSheetConcept, form.getInputValue());
                     }
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    singleObsFormsList.clear();
+                    clientDynamicObsFormsAdapter.notifyDataSetChanged();
+                    EventBus.getDefault().post(new ReloadObservationsDataEvent());
                 }
             }
         });
@@ -350,7 +398,7 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
             ex.printStackTrace();
         }
 
-
+        expandDataCollectionView.callOnClick();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 

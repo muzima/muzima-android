@@ -48,7 +48,7 @@ public class ObsVerticalListConceptsRecyclerView extends RecyclerView.Adapter<Ob
             holder.titleTextView.setText(String.format(Locale.getDefault(), "+%s", obsConceptWrapper.getConcept().getName()));
         else
             holder.titleTextView.setText(obsConceptWrapper.getConcept().getName());
-        holder.obsHorizontalListRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        holder.obsHorizontalListRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false));
         ObservationsListRecyclerViewAdapter observationsListAdapter = new ObservationsListRecyclerViewAdapter(obsConceptWrapper.getMatchingConcepts(), new ObservationsListRecyclerViewAdapter.ObservationClickedListener() {
             @Override
             public void onObservationClicked(int position) {

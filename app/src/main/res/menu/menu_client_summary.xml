@@ -7,7 +7,7 @@
         android:icon="?attr/NoSHRCardIcon"
         app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/menu_cohort_group"
+    <item android:id="@+id/menu_relationship"
         android:title="@string/general_cohorts"
         android:icon="?attr/cohortGroupIcon"
         app:showAsAction="ifRoom"/>

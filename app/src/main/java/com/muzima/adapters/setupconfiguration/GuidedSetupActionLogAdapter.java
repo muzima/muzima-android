@@ -97,9 +97,8 @@ public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel
                     setupActionResult.setTextColor(ContextCompat.getColor(getContext(), R.color.primary_blue));
                 else
                     setupActionResult.setTextColor(ContextCompat.getColor(getContext(), R.color.primary_white));
-
+                statusImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_tick));
                 // setupActionResult.setText(String.format("%s: ", (getContext().getString(R.string.general_ok)).toUpperCase()));
-                statusImageView.setVisibility(GONE);
             }
         }
     }

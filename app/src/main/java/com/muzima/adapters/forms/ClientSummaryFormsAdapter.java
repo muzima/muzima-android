@@ -46,16 +46,16 @@ public class ClientSummaryFormsAdapter extends RecyclerView.Adapter<ClientSummar
 
         private View container;
         private TextView formNameTextView;
-        private TextView formTag;
+        private RecyclerView formTagRecyclerView;
         private TextView formDescriptionTextView;
         private OnFormClickedListener formClickedListener;
 
         public ViewHolder(@NonNull View itemView, OnFormClickedListener formClickedListener) {
             super(itemView);
 
-            container = itemView.findViewById(R.id.item_form_container_text_view);
+            container = itemView.findViewById(R.id.item_form_layout);
             formNameTextView = itemView.findViewById(R.id.item_form_name_text_view);
-            formTag = itemView.findViewById(R.id.item_form_tag_text_view);
+            formTagRecyclerView = itemView.findViewById(R.id.item_form_tags_list_view);
             formDescriptionTextView = itemView.findViewById(R.id.item_form_description_text_view);
 
             this.formClickedListener = formClickedListener;

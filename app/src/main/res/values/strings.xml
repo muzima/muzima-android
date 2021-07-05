@@ -923,5 +923,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="general_by_type_title">By Type</string>
     <string name="general_by_abstract_title">By abstract</string>
     <string name="general_by_encounter_title">By Encounter</string>
+    <string name="general_enter_value_to_save">Enter value to save</string>
 
 </resources>

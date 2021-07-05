@@ -50,9 +50,10 @@
 
                 <TextView
                     android:id="@+id/identifier"
-                    style="@style/ListDescription"
                     android:fontFamily="@font/roboto_regular"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:textColor="?attr/primaryTextColor"
                     android:layout_marginEnd="12dp"
                     android:layout_marginBottom="2dp"
@@ -100,8 +101,8 @@
                     <TextView
                         android:id="@+id/dateOfBirth"
                         android:fontFamily="@font/roboto_regular"
-                        style="@style/ListDescription"
-                        android:textSize="16sp"
+                        android:textSize="12sp"
+                        android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:layout_marginEnd="6dp" />
 

@@ -323,6 +323,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         adapter = new MainDashboardAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         credentials = new Credentials(this);
+        viewPager.setOffscreenPageLimit(3);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

@@ -31,7 +31,6 @@ import java.util.Random;
 import java.util.UUID;
 
 public class FormUtils {
-
     public static AvailableForms getRegistrationForms(FormController formController) {
         AvailableForms availableForms = null;
         try {
@@ -102,6 +101,7 @@ public class FormUtils {
         newObservation.setValueCoded(defaultValueCodedConcept());
         newObservation.setPerson(patient);
         newObservation.setObservationDatetime(encounterDateTime);
+        newObservation.setValueText(valueText);
 
         if (concept.isNumeric()) {
             newObservation.setValueNumeric(Double.valueOf(valueText));

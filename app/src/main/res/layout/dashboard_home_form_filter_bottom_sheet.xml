@@ -40,7 +40,6 @@
 
     <FrameLayout
         android:id="@+id/form_filter_by_status_container"
-        android:background="@drawable/global_highlight_background"
         android:paddingStart="12dp"
         android:paddingEnd="2dp"
         android:layout_marginEnd="22dp"
@@ -58,7 +57,6 @@
             android:paddingBottom="12dp"
             android:paddingStart="2dp"
             android:paddingEnd="2dp"
-            android:checked="true"
             android:text="@string/general_sort_by_status"
             android:fontFamily="@font/montserrat_regular"
             android:layout_width="match_parent"
@@ -69,6 +67,7 @@
 
     <FrameLayout
         android:id="@+id/form_filter_by_name_container"
+        android:background="@drawable/global_highlight_background"
         android:paddingStart="12dp"
         android:paddingEnd="2dp"
         android:layout_marginEnd="22dp"
@@ -87,6 +86,7 @@
             android:paddingStart="2dp"
             android:paddingEnd="2dp"
             android:text="@string/general_sort_by_name"
+            android:checked="true"
             android:fontFamily="@font/montserrat_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

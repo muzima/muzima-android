@@ -21,15 +21,16 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
+import com.muzima.model.events.ReloadObservationsDataEvent;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ObservationsListingFragment extends Fragment {
-    private static final String TAG = "ObservationsListingFrag";
     private int category;
     private RecyclerView conceptsListRecyclerView;
     private String patientUuid;
@@ -68,10 +69,8 @@ public class ObservationsListingFragment extends Fragment {
     }
 
     private void loadData() {
-        Log.e(TAG, "loadData: patient uuid " + patientUuid + " page " + category);
         try {
             List<Concept> conceptList = ((MuzimaApplication) getActivity().getApplicationContext()).getConceptController().getConcepts();
-            Log.e(TAG, "loadData: conceptList " + conceptList.size());
             for (Concept concept : conceptList) {
                 List<Observation> matchingObservations = ((MuzimaApplication) getActivity().getApplicationContext()).getObservationController().getObservationsByPatientuuidAndConceptId(patientUuid, concept.getId());
                 obsConceptWrapperList.add(new ObsConceptWrapper(concept, matchingObservations));
@@ -80,5 +79,21 @@ public class ObservationsListingFragment extends Fragment {
         } catch (ObservationController.LoadObservationException | ConceptController.ConceptFetchException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            EventBus.getDefault().register(this);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void onReloadDataEvent(ReloadObservationsDataEvent event){
+        obsConceptWrapperList.clear();
+        loadData();
     }
 }

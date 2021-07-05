@@ -11,7 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.muzima.R;
+import com.muzima.model.events.ReloadObservationsDataEvent;
 
+import org.greenrobot.eventbus.Subscribe;
 import org.jetbrains.annotations.NotNull;
 
 public class ClientSummaryObservationsFragment extends Fragment {

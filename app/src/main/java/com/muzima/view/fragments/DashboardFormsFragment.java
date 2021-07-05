@@ -42,6 +42,7 @@ public class DashboardFormsFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
         viewPagerAdapter = new FormsViewPagerAdapter(getChildFragmentManager(), getActivity().getApplicationContext());
         viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setOffscreenPageLimit(3);
 
         searchFormsEditText.addTextChangedListener(new TextWatcher() {
             @Override

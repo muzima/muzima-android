@@ -35,8 +35,18 @@ public class ObservationsListRecyclerViewAdapter extends RecyclerView.Adapter<Ob
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         Observation observation = observationList.get(position);
-        holder.valueTextView.setText(observation.getValueText());
-        holder.dateTextView.setText(DateUtils.convertDateToStdString(observation.getValueDatetime()));
+        if (observation.getConcept().isNumeric()) {
+            holder.valueTextView.setText(String.valueOf(observation.getValueNumeric()));
+        }
+
+        if (observation.getConcept().isDatetime()) {
+            holder.valueTextView.setText(DateUtils.convertDateToStdString(observation.getValueDatetime()));
+        }
+
+        if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded()) {
+            holder.valueTextView.setText(observation.getValueText());
+        }
+        holder.dateTextView.setText(DateUtils.convertDateToHumanReadableString(observation.getObservationDatetime()));
     }
 
     @Override

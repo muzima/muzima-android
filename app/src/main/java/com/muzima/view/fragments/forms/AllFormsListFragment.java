@@ -71,11 +71,11 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
         if (event.getSortingStrategy() == Constants.FORM_SORT_STRATEGY.SORT_BY_NAME) {
             formList.clear();
             loadData(null);
-            filterStrategyTextView.setText(getResources().getString(R.string.general_label_sort_status));
+            filterStrategyTextView.setText(getResources().getString(R.string.general_label_sort_by_name));
             ViewUtil.applyFormsListSorting(getActivity().getApplicationContext(), formList, true);
             recyclerViewAdapter.notifyDataSetChanged();
         } else if (event.getSortingStrategy() == Constants.FORM_SORT_STRATEGY.SORT_BY_STATUS) {
-            filterStrategyTextView.setText(getResources().getString(R.string.general_label_sort_by_name));
+            filterStrategyTextView.setText(getResources().getString(R.string.general_label_sort_status));
             ViewUtil.applyFormsListSorting(getActivity().getApplicationContext(), formList, false);
             recyclerViewAdapter.notifyDataSetChanged();
         }
@@ -134,7 +134,7 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
         formsRecyclerView.setAdapter(recyclerViewAdapter);
         filterStrategyContainer.setVisibility(View.VISIBLE);
         bottomSheetShieldView.setVisibility(View.GONE);
-
+        filterStrategyTextView.setText(getResources().getString(R.string.general_label_sort_by_name));
         filterStrategyContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

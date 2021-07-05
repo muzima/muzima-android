@@ -9,31 +9,30 @@
   -->
 
 <com.muzima.view.CheckedRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                       android:layout_height="wrap_content"
-                                       android:checkable="true"
-                                       android:background="?attr/listMultiSelectorBlue"
-                                       android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/listMultiSelectorBlue"
+    android:checkable="true">
+
     <com.muzima.view.CheckedLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="100"
-            android:background="?attr/listMultiSelectorBlue"
-            android:id="@+id/concept_name_layout"
-            android:orientation="horizontal">
+        android:id="@+id/concept_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/listMultiSelectorBlue"
+        android:orientation="horizontal"
+        android:weightSum="100">
 
         <CheckedTextView
-                android:id="@+id/concept_name"
-                android:layout_weight="80"
-                android:layout_width="0dp"
-                android:checkMark="@null"
-                style="@style/ListViewSelectableText">
-        </CheckedTextView>
+            android:id="@+id/concept_name"
+            style="@style/ListViewSelectableText"
+            android:layout_width="0dp"
+            android:layout_weight="80"
+            android:checkMark="@null"/>
 
     </com.muzima.view.CheckedLinearLayout>
 
     <CheckedTextView
-            android:id="@+id/concept_synonyms"
-            android:layout_below="@+id/concept_name_layout"
-            style="@style/ListViewSelectableDescription">
-    </CheckedTextView>
+        android:id="@+id/concept_synonyms"
+        style="@style/ListViewSelectableDescription"
+        android:layout_below="@+id/concept_name_layout"/>
 </com.muzima.view.CheckedRelativeLayout>

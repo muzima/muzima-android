@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/item_cohort_tag_text_view"
-        android:textColor="?attr/primaryTextColor"
+        android:textColor="@color/tag_color"
         android:textSize="12sp"
         android:textAllCaps="true"
         android:layout_width="wrap_content"
