@@ -144,7 +144,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
 
     private void applyFormsCount(TextView textView, long count) {
         if (count < 10)
-            textView.setText(String.format(Locale.getDefault(), "0%d", count));
+            textView.setText(String.format(Locale.getDefault(), "%d", count));
         else
             textView.setText(String.valueOf(count));
     }

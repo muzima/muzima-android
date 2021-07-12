@@ -43,7 +43,7 @@ public class FormSummaryCardsAdapter extends RecyclerView.Adapter<FormSummaryCar
 
         holder.titleTextView.setText(summaryCard.getTitle());
         if (summaryCard.getCount() < 10)
-            holder.countTextView.setText(String.format(Locale.getDefault(), "0%d", summaryCard.getCount()));
+            holder.countTextView.setText(String.format(Locale.getDefault(), "%d", summaryCard.getCount()));
         else
             holder.countTextView.setText(String.valueOf(summaryCard.getCount()));
     }
