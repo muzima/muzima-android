@@ -564,6 +564,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 launchDashboardActivity();
             } else {
                 super.onBackPressed();
+                finish();
             }
         }
     }
@@ -571,6 +572,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private void launchDashboardActivity() {
         Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void launchCompleteFormsActivity() {

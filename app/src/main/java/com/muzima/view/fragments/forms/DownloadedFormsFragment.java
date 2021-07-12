@@ -83,6 +83,7 @@ public class DownloadedFormsFragment extends Fragment implements FormsRecyclerVi
     }
 
     private void loadData(String searchTerm) {
+        if (getActivity() == null) return;
         ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
                 .execute(new LoadDownloadedFormsTask(getActivity().getApplicationContext(), searchTerm, new LoadDownloadedFormsTask.FormsLoadedCallback() {
                     @Override

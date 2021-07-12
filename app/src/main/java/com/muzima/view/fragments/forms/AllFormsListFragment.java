@@ -101,10 +101,12 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
     }
 
     private void loadData(String searchKey) {
+        if (getActivity() == null) return;
         ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
                 .execute(new LoadAllFormsTask(getActivity().getApplicationContext(), searchKey, new LoadAllFormsTask.FormsLoadedCallback() {
                     @Override
                     public void onFormsLoaded(final List<Form> forms) {
+                        if (getActivity() == null) return;
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

@@ -1,6 +1,8 @@
 package com.muzima.view;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -19,7 +21,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -87,7 +88,7 @@ import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATIO
 import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.BARCODE_SCAN_REQUEST_CODE;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
-public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, CohortFilterAdapter.CohortFilterClickedListener {
+public class MainDashboardActivity extends BaseFragmentActivity implements NavigationView.OnNavigationItemSelectedListener, CohortFilterAdapter.CohortFilterClickedListener {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private MaterialToolbar toolbar;
@@ -698,5 +699,39 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
 //            TextView currentUser = findViewById(R.id.currentUser);
 //            currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() == 2)
+            viewPager.setCurrentItem(1);
+        else if (viewPager.getCurrentItem() == 1)
+            viewPager.setCurrentItem(0);
+        else {
+           showExitAlertDialog();
+        }
+    }
+
+    private void showExitAlertDialog() {
+        new AlertDialog.Builder(MainDashboardActivity.this)
+                .setCancelable(true)
+                .setIcon(themeUtils.getIconWarning(this))
+                .setTitle(getResources().getString(R.string.title_logout_confirm))
+                .setMessage(getResources().getString(R.string.warning_logout_confirm))
+                .setPositiveButton(getString(R.string.general_yes), exitApplication())
+                .setNegativeButton(getString(R.string.general_no), null)
+                .create()
+                .show();
+    }
+
+    private Dialog.OnClickListener exitApplication() {
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ((MuzimaApplication) getApplication()).logOut();
+                finish();
+                System.exit(0);
+            }
+        };
     }
 }

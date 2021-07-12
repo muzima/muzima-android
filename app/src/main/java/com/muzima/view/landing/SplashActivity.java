@@ -1,5 +1,6 @@
 package com.muzima.view.landing;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
@@ -9,6 +10,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.muzima.R;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseFragmentActivity;
+import com.muzima.view.MainActivity;
+import com.muzima.view.MainDashboardActivity;
+import com.muzima.view.login.LoginActivity;
 
 public class SplashActivity extends BaseFragmentActivity {
 
@@ -31,7 +35,9 @@ public class SplashActivity extends BaseFragmentActivity {
 
             @Override
             public void onFinish() {
-
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
             }
         };
 

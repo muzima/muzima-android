@@ -31,7 +31,7 @@ import com.muzima.utils.StringUtils;
 import com.muzima.view.fragments.OnboardScreenActivity;
 
 public class BaseFragmentActivity extends AppCompatActivity {
-
+    private static final String TAG = "BaseFragmentActivity";
     private DefaultMenuDropDownHelper dropDownHelper;
 
     @Override
@@ -58,11 +58,14 @@ public class BaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e(TAG, "onResume: BaseFragmentActivity");
+        Log.e(TAG, "onResume: BaseFragmentActivity setCurrentActivity " + this.getClass().getSimpleName());
         ((MuzimaApplication) getApplication()).setCurrentActivity(this);
-        checkDisclaimerOrCredentials();
+        boolean isActivityPropagated = checkDisclaimerOrCredentials();
+
     }
 
-    private void checkDisclaimerOrCredentials() {
+    private boolean checkDisclaimerOrCredentials() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
         boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
@@ -70,13 +73,17 @@ public class BaseFragmentActivity extends AppCompatActivity {
             Intent intent = new Intent(this, OnboardScreenActivity.class);
             startActivity(intent);
             finish();
+            return true;
         } else if (!disclaimerAccepted) {
             Intent intent = new Intent(this, TermsAndPolicyActivity.class);
             startActivity(intent);
             finish();
+            return true;
         } else if (new Credentials(this).isEmpty()) {
             dropDownHelper.launchLoginActivity(false);
+            return true;
         }
+        return false;
     }
 
     @Override

@@ -56,10 +56,15 @@ android {
     }
 
     buildTypes {
+        debug {
+            manifestPlaceholders = [crashlyticsCollectionEnabled: "false"]
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.cfg'
             zipAlignEnabled true
+            manifestPlaceholders = [crashlyticsCollectionEnabled: "true"]
         }
     }
 

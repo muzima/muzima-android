@@ -80,6 +80,7 @@ public class AvailableFormsFragment extends Fragment implements FormsRecyclerVie
     }
 
     private void loadData(String searchTerm) {
+        if (getActivity() == null) return;
         ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
                 .execute(new LoadAvailableFormsTask(getActivity().getApplicationContext(), searchTerm, new LoadAllFormsTask.FormsLoadedCallback() {
                     @Override
