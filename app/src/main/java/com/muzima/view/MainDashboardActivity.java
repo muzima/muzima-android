@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,7 +64,6 @@ import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.events.ShowFormsFilterEvent;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.RealTimeFormUploader;
-import com.muzima.service.DataSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.DownloadCohortsTask;
 import com.muzima.tasks.DownloadFormsTask;
@@ -73,7 +71,6 @@ import com.muzima.tasks.LoadDownloadedCohortsTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.MuzimaPreferences;
-import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
@@ -86,19 +83,16 @@ import com.muzima.view.preferences.SettingsActivity;
 import org.apache.lucene.queryParser.ParseException;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
 import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.BARCODE_SCAN_REQUEST_CODE;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 public class MainDashboardActivity extends BaseFragmentActivity implements NavigationView.OnNavigationItemSelectedListener, CohortFilterAdapter.CohortFilterClickedListener {
-    private static final String TAG = "MainDashboardActivity";
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private MaterialToolbar toolbar;
@@ -167,7 +161,7 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
-                new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000,true);
+                new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
                 return true;
             }
         });
@@ -289,7 +283,6 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
 
             @Override
             public void onDestroyActionMode(ActionMode actionMode) {
-                Log.e(TAG, "onDestroyActionMode: ");
             }
         };
 
@@ -392,8 +385,6 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
                     if (!selectedCohortFilters.isEmpty()) {
                         EventBus.getDefault().post(new CohortFilterActionEvent(selectedCohortFilters, false));
                     }
-                } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-
                 }
                 EventBus.getDefault().post(new BottomSheetToggleEvent(newState));
             }
@@ -574,16 +565,17 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
     public void onCohortFilterClicked(int position) {
         CohortFilter cohortFilter = cohortList.get(position);
         if (cohortFilter.getCohort() == null) {
-            if (cohortFilter.isSelected()){
+            if (cohortFilter.isSelected()) {
                 cohortFilter.setSelected(false);
-            }else {
+            } else {
                 cohortFilter.setSelected(true);
                 for (CohortFilter filter : cohortList) {
                     if (filter.getCohort() != null)
                         filter.setSelected(false);
                 }
+                selectedCohortFilters.add(cohortFilter);
             }
-        }else {
+        } else {
             if (cohortFilter.isSelected()) {
                 cohortFilter.setSelected(false);
                 selectedCohortFilters.remove(cohortFilter);
@@ -602,6 +594,9 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
         for (CohortFilter filter : cohortList) {
             if (filter.getCohort() == null)
                 filter.setSelected(b);
+
+            if (filter.isSelected())
+                selectedCohortFilters.add(filter);
         }
     }
 

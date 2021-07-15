@@ -8,6 +8,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.model.CohortFilter;
 import com.muzima.model.events.CohortFilterActionEvent;
 
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class FilterPatientsListTask implements Runnable {
@@ -36,7 +37,7 @@ public class FilterPatientsListTask implements Runnable {
                     patientsListFilterCallback.onPatientsFiltered(patientList);
                 }
             }
-        } catch (PatientController.PatientLoadException ex) {
+        } catch (PatientController.PatientLoadException | ConcurrentModificationException ex) {
             ex.printStackTrace();
         }
     }

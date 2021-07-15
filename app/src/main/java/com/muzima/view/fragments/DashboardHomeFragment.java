@@ -403,11 +403,14 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
     }
 
     private void applySelectedFilters(CohortFilterActionEvent event) {
-        if (event.getFilters().size() == 1)
-            filterLabelTextView.setText(event.getFilters().get(0).getCohort().getName());
-        else if (event.getFilters().isEmpty())
+        if (event.getFilters().size() == 1) {
+            if (event.getFilters().get(0).getCohort() == null)
+                filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
+            else
+                filterLabelTextView.setText(event.getFilters().get(0).getCohort().getName());
+        } else if (event.getFilters().isEmpty())
             filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
-        else if(event.getFilters().size() == 1 && event.getFilters().get(0) != null && event.getFilters().get(0).getCohort() == null)
+        else if (event.getFilters().size() == 1 && event.getFilters().get(0) != null && event.getFilters().get(0).getCohort() == null)
             filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
         else if (event.getFilters().size() > 1) {
             filterLabelTextView.setText(getResources().getString(R.string.general_filtered_list));
