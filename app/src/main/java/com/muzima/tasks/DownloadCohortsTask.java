@@ -46,7 +46,7 @@ public class DownloadCohortsTask implements Runnable {
         Intent syncCohortDataIntent = new Intent(context.getApplicationContext(), DataSyncService.class);
         syncCohortDataIntent.putExtra(CREDENTIALS, new Credentials(context).getCredentialsArray());
         syncCohortDataIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.SYNC_COHORTS_AND_ALL_PATIENTS_FULL_DATA);
-        context.startService(cohortMetadataIntent);
+        context.startService(syncCohortDataIntent);
         cohortDownloadCallback.callbackDownload();
     }
 

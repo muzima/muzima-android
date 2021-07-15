@@ -8,7 +8,9 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+
 import androidx.annotation.RequiresApi;
+
 import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
@@ -22,21 +24,22 @@ public class MuzimaJobScheduleBuilder {
     private MuzimaApplication muzimaApplication;
     private Context context;
 
-    public MuzimaJobScheduleBuilder(Context context){
+    public MuzimaJobScheduleBuilder(Context context) {
         this.muzimaApplication = (MuzimaApplication) context.getApplicationContext();
         this.context = context;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void schedulePeriodicBackgroundJob(int delay, boolean isManualSync){
-        if(isManualSync){
+    public void schedulePeriodicBackgroundJob(int delay, boolean isManualSync) {
+        if (isManualSync) {
             final Handler handler = new Handler();
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    if (!isJobAlreadyScheduled(context)) {
+                    if (!isJobAlreadyScheduled(context))
                         handleScheduledPeriodicDataSyncJob();
-                    }
+                    else
+                        Toast.makeText(context, context.getResources().getString(R.string.general_sync_service_already_running), Toast.LENGTH_LONG).show();
                 }
             };
             handler.postDelayed(runnable, delay);
@@ -60,18 +63,18 @@ public class MuzimaJobScheduleBuilder {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static boolean isJobAlreadyScheduled(Context context) {
-        JobScheduler scheduler = (JobScheduler) context.getSystemService( JOB_SCHEDULER_SERVICE ) ;
+        JobScheduler scheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
 
-        boolean hasBeenScheduled = false ;
+        boolean hasBeenScheduled = false;
 
-        for ( JobInfo jobInfo : scheduler.getAllPendingJobs() ) {
-            if ( jobInfo.getId() == MESSAGE_SYNC_JOB_ID ) {
-                hasBeenScheduled = true ;
-                break ;
+        for (JobInfo jobInfo : scheduler.getAllPendingJobs()) {
+            if (jobInfo.getId() == MESSAGE_SYNC_JOB_ID) {
+                hasBeenScheduled = true;
+                break;
             }
         }
 
-        return hasBeenScheduled ;
+        return hasBeenScheduled;
     }
 
     private void handleScheduledPeriodicDataSyncJob() {
@@ -97,7 +100,7 @@ public class MuzimaJobScheduleBuilder {
     private void cancelPeriodicBackgroundDataSyncJob() {
         JobScheduler jobScheduler = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            jobScheduler = (JobScheduler)context.getSystemService(JOB_SCHEDULER_SERVICE);
+            jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
             jobScheduler.cancel(MESSAGE_SYNC_JOB_ID);
             Toast.makeText(context, R.string.info_data_sync_cancelled, Toast.LENGTH_SHORT).show();
 

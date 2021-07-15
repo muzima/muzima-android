@@ -6,20 +6,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,7 +63,9 @@ import com.muzima.model.events.FormSortEvent;
 import com.muzima.model.events.FormsActionModeEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.events.ShowFormsFilterEvent;
+import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.RealTimeFormUploader;
+import com.muzima.service.DataSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.DownloadCohortsTask;
 import com.muzima.tasks.DownloadFormsTask;
@@ -67,6 +73,7 @@ import com.muzima.tasks.LoadDownloadedCohortsTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.MuzimaPreferences;
+import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
@@ -79,16 +86,19 @@ import com.muzima.view.preferences.SettingsActivity;
 import org.apache.lucene.queryParser.ParseException;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
 import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.BARCODE_SCAN_REQUEST_CODE;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 public class MainDashboardActivity extends BaseFragmentActivity implements NavigationView.OnNavigationItemSelectedListener, CohortFilterAdapter.CohortFilterClickedListener {
+    private static final String TAG = "MainDashboardActivity";
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private MaterialToolbar toolbar;
@@ -148,6 +158,16 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
             public boolean onMenuItemClick(MenuItem menuItem) {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.general_launching_map_message), Toast.LENGTH_SHORT).show();
                 navigateToClientsLocationMap();
+                return true;
+            }
+        });
+
+        menuRefresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
+                new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000,true);
                 return true;
             }
         });
@@ -269,6 +289,7 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
 
             @Override
             public void onDestroyActionMode(ActionMode actionMode) {
+                Log.e(TAG, "onDestroyActionMode: ");
             }
         };
 
@@ -325,6 +346,15 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
         viewPager.setAdapter(adapter);
         credentials = new Credentials(this);
         viewPager.setOffscreenPageLimit(3);
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                //disable event propagation for swipe action
+                viewPager.setCurrentItem(viewPager.getCurrentItem());
+                return true;
+            }
+
+        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -543,15 +573,28 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
     @Override
     public void onCohortFilterClicked(int position) {
         CohortFilter cohortFilter = cohortList.get(position);
-        if (cohortFilter.isSelected()) {
-            cohortFilter.setSelected(false);
-            selectedCohortFilters.remove(cohortFilter);
-            markAllClientsCohortFilter(selectedCohortFilters.isEmpty());
-        } else {
-            cohortFilter.setSelected(true);
-            selectedCohortFilters.add(cohortFilter);
-            markAllClientsCohortFilter(false);
+        if (cohortFilter.getCohort() == null) {
+            if (cohortFilter.isSelected()){
+                cohortFilter.setSelected(false);
+            }else {
+                cohortFilter.setSelected(true);
+                for (CohortFilter filter : cohortList) {
+                    if (filter.getCohort() != null)
+                        filter.setSelected(false);
+                }
+            }
+        }else {
+            if (cohortFilter.isSelected()) {
+                cohortFilter.setSelected(false);
+                selectedCohortFilters.remove(cohortFilter);
+                markAllClientsCohortFilter(selectedCohortFilters.isEmpty());
+            } else {
+                cohortFilter.setSelected(true);
+                selectedCohortFilters.add(cohortFilter);
+                markAllClientsCohortFilter(false);
+            }
         }
+
         cohortFilterAdapter.notifyDataSetChanged();
     }
 
@@ -708,7 +751,7 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
         else if (viewPager.getCurrentItem() == 1)
             viewPager.setCurrentItem(0);
         else {
-           showExitAlertDialog();
+            showExitAlertDialog();
         }
     }
 

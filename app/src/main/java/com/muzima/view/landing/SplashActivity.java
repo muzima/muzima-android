@@ -35,9 +35,9 @@ public class SplashActivity extends BaseFragmentActivity {
 
             @Override
             public void onFinish() {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                startActivity(intent);
+//                finish();
             }
         };
 

@@ -878,7 +878,7 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="gender_male_symbole">M</string>
     <string name="general_filtered_list">Filtered List</string>
     <string name="general_no_forms_available">No forms available</string>
-    <string name="general_security_description">mUzima provides security features including password login,encryption,secure data transmission,timed user logouts.</string>
+    <string name="general_security_description">mUzima provides security features including password login, encryption, secure data transmission, timed user logouts.</string>
     <string name="general_security">Security</string>
     <string name="general_multiple_cases_description">mUzima is easily customizable to support any clinical use cases,both within and outside of clinical facilities.</string>
     <string name="general_multiple_use_cases">Multiple Use Cases</string>
@@ -924,5 +924,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="general_by_abstract_title">By abstract</string>
     <string name="general_by_encounter_title">By Encounter</string>
     <string name="general_enter_value_to_save">Enter value to save</string>
+    <string name="general_sync_service_already_running">mUzima sync service is already running...</string>
 
 </resources>

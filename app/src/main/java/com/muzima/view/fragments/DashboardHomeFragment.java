@@ -27,6 +27,7 @@ import com.muzima.R;
 import com.muzima.adapters.patients.AllPatientsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
+import com.muzima.model.CohortFilter;
 import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CloseBottomSheetEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
@@ -304,14 +305,14 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
     }
 
     private Dialog.OnClickListener launchClientRegistrationFormIfPossible() {
-        if(FormUtils.getRegistrationForms(((MuzimaApplication) getActivity().getApplicationContext()).getFormController()).isEmpty()){
+        if (FormUtils.getRegistrationForms(((MuzimaApplication) getActivity().getApplicationContext()).getFormController()).isEmpty()) {
             return new Dialog.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     showRegistrationFormsMissingAlert();
                 }
             };
-        }else {
+        } else {
             return new Dialog.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -406,8 +407,16 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
             filterLabelTextView.setText(event.getFilters().get(0).getCohort().getName());
         else if (event.getFilters().isEmpty())
             filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
+        else if(event.getFilters().size() == 1 && event.getFilters().get(0) != null && event.getFilters().get(0).getCohort() == null)
+            filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
         else if (event.getFilters().size() > 1) {
             filterLabelTextView.setText(getResources().getString(R.string.general_filtered_list));
+        }
+
+        for (CohortFilter filter : event.getFilters()) {
+            if (filter.getCohort() == null && filter.isSelected())
+                filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
+
         }
     }
 
