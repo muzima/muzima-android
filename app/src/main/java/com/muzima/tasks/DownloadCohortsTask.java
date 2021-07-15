@@ -1,20 +1,15 @@
 package com.muzima.tasks;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Cohort;
-import com.muzima.domain.Credentials;
 import com.muzima.model.cohort.CohortItem;
 import com.muzima.service.CohortPrefixPreferenceService;
-import com.muzima.service.DataSyncService;
-import com.muzima.utils.Constants;
+import com.muzima.service.MuzimaSyncService;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
 
 public class DownloadCohortsTask implements Runnable {
     private Context context;
@@ -39,14 +34,7 @@ public class DownloadCohortsTask implements Runnable {
             preferenceService.addCohortPrefix(cohortPrefix);
         }
         ((MuzimaApplication) context.getApplicationContext()).getMuzimaSyncService().downloadCohorts(cohortUuids);
-        Intent cohortMetadataIntent = new Intent(context.getApplicationContext(), DataSyncService.class);
-        cohortMetadataIntent.putExtra(CREDENTIALS, new Credentials(context).getCredentialsArray());
-        cohortMetadataIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.SYNC_COHORTS_METADATA);
-        context.startService(cohortMetadataIntent);
-        Intent syncCohortDataIntent = new Intent(context.getApplicationContext(), DataSyncService.class);
-        syncCohortDataIntent.putExtra(CREDENTIALS, new Credentials(context).getCredentialsArray());
-        syncCohortDataIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.SYNC_COHORTS_AND_ALL_PATIENTS_FULL_DATA);
-        context.startService(syncCohortDataIntent);
+        new MuzimaSyncService(((MuzimaApplication) context.getApplicationContext())).downloadPatientsForCohorts(cohortUuids);
         cohortDownloadCallback.callbackDownload();
     }
 
