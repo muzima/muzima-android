@@ -205,7 +205,6 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
             public void run() {
                 formsSummaries.add(new SummaryCard(CardsSummaryCategory.INCOMPLETE_FORMS, getResources().getString(R.string.info_incomplete_form), incompleteFormsCount));
                 formsSummaries.add(new SummaryCard(CardsSummaryCategory.COMPLETE_FORMS, getResources().getString(R.string.info_complete_form), completeFormsCount));
-                formsSummaries.add(new SummaryCard(CardsSummaryCategory.EMERGENCY_CONTACT, getString(R.string.info_emergency_contacts), 0));
                 formSummaryCardsAdapter.notifyDataSetChanged();
             }
         });

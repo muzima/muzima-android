@@ -8,6 +8,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.model.CohortFilter;
 import com.muzima.model.events.CohortFilterActionEvent;
 
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
@@ -26,17 +27,18 @@ public class FilterPatientsListTask implements Runnable {
     @Override
     public void run() {
         try {
+            List<Patient> patientList = new ArrayList<>();
             List<CohortFilter> filters = event.getFilters();
             for (CohortFilter filter : filters) {
                 if (filter.getCohort() == null && !event.isNoSelectionEvent()) {
                     patientsListFilterCallback.onPatientsFiltered(((MuzimaApplication) context.getApplicationContext()).getPatientController()
                             .getAllPatients());
                 } else if (filter.getCohort() != null && !event.isNoSelectionEvent()) {
-                    List<Patient> patientList = ((MuzimaApplication) context.getApplicationContext()).getPatientController()
+                    patientList = ((MuzimaApplication) context.getApplicationContext()).getPatientController()
                             .getPatientsForCohorts(new String[]{filter.getCohort().getUuid()});
-                    patientsListFilterCallback.onPatientsFiltered(patientList);
                 }
             }
+            patientsListFilterCallback.onPatientsFiltered(patientList);
         } catch (PatientController.PatientLoadException | ConcurrentModificationException ex) {
             ex.printStackTrace();
         }
