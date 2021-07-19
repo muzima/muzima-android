@@ -391,7 +391,10 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
                             public void run() {
                                 filterProgressBar.setVisibility(View.GONE);
                                 patients.clear();
-                                patients.addAll(patientList);
+                                for (Patient patient : patientList) {
+                                    if (!patient.getDisplayName().isEmpty() && !patient.getIdentifier().isEmpty())
+                                        patients.add(patient);
+                                }
                                 allPatientsAdapter.notifyDataSetChanged();
                                 applySelectedFilters(event);
                                 Toast.makeText(getActivity().getApplicationContext(), getResources().getString(R.string.general_patient_list_updated_message), Toast.LENGTH_SHORT).show();
