@@ -93,6 +93,7 @@ import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.BARCODE_SC
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 public class MainDashboardActivity extends BaseFragmentActivity implements NavigationView.OnNavigationItemSelectedListener, CohortFilterAdapter.CohortFilterClickedListener {
+    private static final String TAG = "MainDashboardActivity";
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private MaterialToolbar toolbar;
@@ -131,6 +132,7 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
     private SmartCardRecord smartCardRecord;
     private Patient SHRPatient;
     private Patient SHRToMuzimaMatchingPatient;
+    private int selectionDifference;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -210,6 +212,7 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
 
     @Subscribe
     public void onCohortDownloadActionModeEvent(CohortsActionModeEvent actionModeEvent) {
+        Log.e(TAG, "onCohortDownloadActionModeEvent: ");
         selectedCohorts = actionModeEvent.getSelectedCohorts();
         initActionMode(Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION);
     }
@@ -283,13 +286,22 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
 
             @Override
             public void onDestroyActionMode(ActionMode actionMode) {
+                Log.e(TAG, "onDestroyActionMode: ");
+                Log.e(TAG, "onDestroyActionMode: selectedCohorts " + selectedCohortsCount);
+                Log.e(TAG, "onDestroyActionMode: selectionDifference " + selectionDifference);
+                if (selectionDifference == selectedCohortsCount)
+                    EventBus.getDefault().post(new DestroyActionModeEvent());
+                else
+                    selectionDifference = selectedCohortsCount;
             }
         };
 
         for (CohortItem selectedCohort : selectedCohorts) {
             if (selectedCohort.isSelected()) selectedCohortsCount = selectedCohortsCount + 1;
         }
+
         actionMode = startActionMode(actionModeCallback);
+
         if (action == Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION) {
             if (selectedCohortsCount < 1) actionMode.finish();
             actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedCohortsCount, getResources().getString(R.string.general_selected)));

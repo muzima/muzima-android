@@ -18,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortsViewPagerAdapter;
 import com.muzima.model.events.CohortSearchEvent;
+import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
