@@ -16,7 +16,6 @@ import com.muzima.utils.MuzimaPreferences;
 import java.util.List;
 
 public class CohortFilterAdapter extends RecyclerView.Adapter<CohortFilterAdapter.ViewHolder> {
-
     private Context context;
     private List<CohortFilter> cohortList;
     private CohortFilterClickedListener filterClickedListener;
@@ -88,9 +87,11 @@ public class CohortFilterAdapter extends RecyclerView.Adapter<CohortFilterAdapte
 
     private void applyCheckBoxPadding(CheckBox checkBox) {
         final float scale = context.getResources().getDisplayMetrics().density;
-        checkBox.setPadding(checkBox.getPaddingLeft() + (int) (20.0f * scale + 0.5f),
-                checkBox.getPaddingTop(),
-                checkBox.getPaddingRight(),
-                checkBox.getPaddingBottom());
+        if (checkBox.getPaddingLeft() <= 7) {
+            checkBox.setPadding(checkBox.getPaddingLeft() + (int) (20.0f * scale + 0.5f),
+                    checkBox.getPaddingTop(),
+                    checkBox.getPaddingRight(),
+                    checkBox.getPaddingBottom());
+        }
     }
 }

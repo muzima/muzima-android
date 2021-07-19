@@ -141,7 +141,7 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
         setContentView(R.layout.activity_dashboard_root_layout);
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), false);
         initializeResources();
-        loadCohorts();
+        loadCohorts(false);
     }
 
     @Override
@@ -170,7 +170,7 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
         return true;
     }
 
-    private void loadCohorts() {
+    private void loadCohorts(final boolean showFilter) {
         ((MuzimaApplication) getApplicationContext()).getExecutorService()
                 .execute(new LoadDownloadedCohortsTask(getApplicationContext(), new LoadDownloadedCohortsTask.OnDownloadedCohortsLoadedCallback() {
                     @Override
@@ -184,6 +184,9 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
                                     cohortList.add(new CohortFilter(cohort, false));
                                 }
                                 cohortFilterAdapter.notifyDataSetChanged();
+                                if (showFilter)
+                                    cohortFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
                             }
                         });
                     }
@@ -207,7 +210,7 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
 
     @Subscribe
     public void showCohortFilterEvent(ShowCohortFilterEvent event) {
-        cohortFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        loadCohorts(true);
     }
 
     @Subscribe

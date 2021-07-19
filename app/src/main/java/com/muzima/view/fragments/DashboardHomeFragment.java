@@ -67,7 +67,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
     private View searchByServer;
     private View searchBySmartCard;
     private View fragmentContentContainer;
-    private View favouriteListView;
+    private View filterActionView;
     private View childContainer;
     private TextView providerNameTextView;
     private RecyclerView listView;
@@ -162,7 +162,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         searchByFingerprint = view.findViewById(R.id.search_fingerprint);
         searchByServer = view.findViewById(R.id.search_server_view);
         searchBySmartCard = view.findViewById(R.id.search_smart_card_view);
-        favouriteListView = view.findViewById(R.id.favourite_list_container);
+        filterActionView = view.findViewById(R.id.favourite_list_container);
         progressBarContainer = view.findViewById(R.id.progressbarContainer);
         fabSearchButton = view.findViewById(R.id.fab_search);
         progressBar = view.findViewById(R.id.patient_loader_progress_bar);
@@ -202,7 +202,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
             }
         });
 
-        favouriteListView.setOnClickListener(new View.OnClickListener() {
+        filterActionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (bottomSheetFilterVisible) {
