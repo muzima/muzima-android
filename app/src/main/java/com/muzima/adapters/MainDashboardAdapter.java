@@ -1,5 +1,7 @@
 package com.muzima.adapters;
 
+import android.util.Log;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -9,7 +11,6 @@ import com.muzima.view.fragments.DashboardFormsFragment;
 import com.muzima.view.fragments.DashboardHomeFragment;
 
 public class MainDashboardAdapter extends FragmentPagerAdapter {
-
     public MainDashboardAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -23,8 +24,9 @@ public class MainDashboardAdapter extends FragmentPagerAdapter {
                 return new DashboardCohortsFragment();
             case 2:
                 return new DashboardFormsFragment();
+            default:
+                return null;
         }
-        return null;
     }
 
     @Override

@@ -102,41 +102,41 @@
                         <ImageView
                             android:background="@drawable/border_button_sharp_gray"
                             android:id="@+id/search_barcode_view"
-                            android:layout_height="24dp"
-                            android:layout_width="24dp"
+                            android:layout_height="34dp"
+                            android:layout_width="34dp"
+                            android:padding="6dp"
                             android:layout_marginEnd="4dp"
                             android:layout_marginStart="4dp"
-                            android:padding="2dp"
                             android:src="@drawable/barcode_scanner" />
 
                         <ImageView
                             android:background="@drawable/border_button_sharp_gray"
                             android:id="@+id/search_fingerprint"
-                            android:layout_height="24dp"
-                            android:layout_width="24dp"
+                            android:layout_height="34dp"
+                            android:layout_width="34dp"
+                            android:padding="6dp"
                             android:layout_marginEnd="4dp"
                             android:layout_marginStart="4dp"
-                            android:padding="2dp"
                             android:src="@drawable/fingerprint" />
 
                         <ImageView
                             android:background="@drawable/border_button_sharp_gray"
                             android:id="@+id/search_server_view"
-                            android:layout_height="24dp"
-                            android:layout_width="24dp"
+                            android:layout_height="34dp"
+                            android:layout_width="34dp"
+                            android:padding="6dp"
                             android:layout_marginEnd="6dp"
                             android:layout_marginStart="6dp"
-                            android:padding="2dp"
                             android:src="@drawable/fhir_icon" />
 
                         <ImageView
                             android:id="@+id/search_smart_card_view"
                             android:background="@drawable/border_button_sharp_gray"
-                            android:layout_height="24dp"
-                            android:layout_width="24dp"
+                            android:layout_height="34dp"
+                            android:layout_width="34dp"
+                            android:padding="6dp"
                             android:layout_marginEnd="2dp"
                             android:layout_marginStart="2dp"
-                            android:padding="2dp"
                             android:src="@drawable/debit_card" />
 
 

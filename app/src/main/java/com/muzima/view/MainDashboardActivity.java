@@ -358,7 +358,14 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 //disable event propagation for swipe action
-                viewPager.setCurrentItem(viewPager.getCurrentItem());
+                if (viewPager.getCurrentItem() != 0)
+                    viewPager.setCurrentItem(10);
+                else if (viewPager.getCurrentItem() == 0)
+                    viewPager.setCurrentItem(-1);
+                else if (viewPager.getCurrentItem() == 1){
+                    viewPager.setCurrentItem(0);
+                    viewPager.setCurrentItem(1);
+                }
                 return true;
             }
 
