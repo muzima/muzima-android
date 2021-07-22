@@ -177,12 +177,12 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     @Subscribe
     public void clientSummaryObservationSelectedEvent(ClientSummaryObservationSelectedEvent event) {
         ObsConceptWrapper conceptWrapper = event.getConceptWrapper();
-        if (conceptWrapper.getConcept().isCoded() || conceptWrapper.getConcept().isSet() || conceptWrapper.getConcept().isPrecise()){
+        if (conceptWrapper.getConcept().isCoded() || conceptWrapper.getConcept().isSet() || conceptWrapper.getConcept().isPrecise()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true)
                     .setMessage("This data type is not support, consult admin.")
                     .show();
-        }else {
+        } else {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             selectedBottomSheetConcept = conceptWrapper.getConcept();
             addReadingActionView.callOnClick();
@@ -212,7 +212,7 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
 
     private void loadFormsCountData() {
         ((MuzimaApplication) getApplicationContext()).getExecutorService()
-                .execute(new FormsCountService(getApplicationContext(), this));
+                .execute(new FormsCountService(patient.getUuid(), getApplicationContext(), this));
     }
 
     private void loadSummaryHeaders() {
