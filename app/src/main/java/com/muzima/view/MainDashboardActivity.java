@@ -764,9 +764,9 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
     @Override
     public void onBackPressed() {
         if (viewPager.getCurrentItem() == 2)
-            viewPager.setCurrentItem(1);
+            bottomNavigationView.setSelectedItemId(R.id.main_dashboard_cohorts_menu);
         else if (viewPager.getCurrentItem() == 1)
-            viewPager.setCurrentItem(0);
+            bottomNavigationView.setSelectedItemId(R.id.main_dashboard_home_menu);
         else {
             showExitAlertDialog();
         }
