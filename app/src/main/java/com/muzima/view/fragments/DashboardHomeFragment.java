@@ -31,6 +31,7 @@ import com.muzima.model.CohortFilter;
 import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CloseBottomSheetEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
+import com.muzima.model.events.ReloadClientsListEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
@@ -81,7 +82,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
     private AppBarLayout appBarLayout;
     private TextView filterLabelTextView;
     private ProgressBar filterProgressBar;
-    private List<Patient> patients = new ArrayList<>();
+    private List<Patient> patientsList = new ArrayList<>();
     private boolean bottomSheetFilterVisible;
 
     @Nullable
@@ -96,6 +97,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
     }
 
     private void loadAllPatients() {
+        patientsList.clear();
         ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
                 .execute(new LoadPatientsListService(getActivity().getApplicationContext(), this));
     }
@@ -106,10 +108,10 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                patients.addAll(patientsList);
+                DashboardHomeFragment.this.patientsList.addAll(patientsList);
                 allPatientsAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
-                if (patients.isEmpty())
+                if (DashboardHomeFragment.this.patientsList.isEmpty())
                     noDataView.setVisibility(View.VISIBLE);
                 else
                     listView.setVisibility(View.VISIBLE);
@@ -123,7 +125,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         if (bottomSheetFilterVisible) {
             closeBottomSheet();
         } else {
-            Patient patient = patients.get(position);
+            Patient patient = patientsList.get(position);
             Intent intent = new Intent(getActivity().getApplicationContext(), ClientSummaryActivity.class);
             intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
             intent.putExtra(ClientSummaryActivity.CALLING_ACTIVITY, MainDashboardActivity.class.getSimpleName());
@@ -174,7 +176,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         incompleteFormsView = view.findViewById(R.id.dashboard_forms_incomplete_forms_view);
         completeFormsView = view.findViewById(R.id.dashboard_forms_complete_forms_view);
         filterProgressBar = view.findViewById(R.id.patient_list_filtering_progress_bar);
-        allPatientsAdapter = new AllPatientsAdapter(getActivity().getApplicationContext(), patients, this, getCurrentGPSLocation());
+        allPatientsAdapter = new AllPatientsAdapter(getActivity().getApplicationContext(), patientsList, this, getCurrentGPSLocation());
         listView.setAdapter(allPatientsAdapter);
         listView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         listView.setVisibility(View.GONE);
@@ -390,10 +392,10 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
                             @Override
                             public void run() {
                                 filterProgressBar.setVisibility(View.GONE);
-                                patients.clear();
+                                patientsList.clear();
                                 for (Patient patient : patientList) {
                                     if (!patient.getDisplayName().isEmpty() && !patient.getIdentifier().isEmpty())
-                                        patients.add(patient);
+                                        patientsList.add(patient);
                                 }
                                 allPatientsAdapter.notifyDataSetChanged();
                                 applySelectedFilters(event);
@@ -403,6 +405,11 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
                     }
                 })
         );
+    }
+
+    @Subscribe
+    public void onClientsListReloadEvent(ReloadClientsListEvent event){
+        loadAllPatients();
     }
 
     private void applySelectedFilters(CohortFilterActionEvent event) {

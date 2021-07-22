@@ -5,8 +5,11 @@ import android.content.Context;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Cohort;
 import com.muzima.model.cohort.CohortItem;
+import com.muzima.model.events.ReloadClientsListEvent;
 import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.MuzimaSyncService;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,7 @@ public class DownloadCohortsTask implements Runnable {
         ((MuzimaApplication) context.getApplicationContext()).getMuzimaSyncService().downloadCohorts(cohortUuids);
         new MuzimaSyncService(((MuzimaApplication) context.getApplicationContext())).downloadPatientsForCohorts(cohortUuids);
         cohortDownloadCallback.callbackDownload();
+        EventBus.getDefault().post( new ReloadClientsListEvent());
     }
 
     private String[] extractCohortUuids() {
