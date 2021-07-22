@@ -926,5 +926,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="general_enter_value_to_save">Enter value to save</string>
     <string name="general_sync_service_already_running">mUzima sync service is already running...</string>
     <string name="general_opening_card_reader">Opening Card Reader</string>
+    <string name="erro_coded_concepts_not_supported">Invalid coded concepts are not support</string>
 
 </resources>

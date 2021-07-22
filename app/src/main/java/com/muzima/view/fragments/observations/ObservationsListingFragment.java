@@ -1,10 +1,10 @@
 package com.muzima.view.fragments.observations;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,7 +62,11 @@ public class ObservationsListingFragment extends Fragment {
         adapter = new ObsVerticalListConceptsRecyclerView(getActivity().getApplicationContext(), obsConceptWrapperList, isSingleElementInputEnabled, new ObsVerticalListConceptsRecyclerView.ConceptInputLabelClickedListener() {
             @Override
             public void onConceptInputLabelClicked(int position) {
-                EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(obsConceptWrapperList.get(position)));
+                if (obsConceptWrapperList.get(position).getConcept().getConceptType().getName().equals(Concept.CODED_TYPE)) {
+                    Toast.makeText(getActivity().getApplicationContext(), getResources().getString(R.string.erro_coded_concepts_not_supported), Toast.LENGTH_LONG).show();
+                } else {
+                    EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(obsConceptWrapperList.get(position)));
+                }
             }
         });
         conceptsListRecyclerView.setAdapter(adapter);
@@ -72,8 +76,10 @@ public class ObservationsListingFragment extends Fragment {
         try {
             List<Concept> conceptList = ((MuzimaApplication) getActivity().getApplicationContext()).getConceptController().getConcepts();
             for (Concept concept : conceptList) {
-                List<Observation> matchingObservations = ((MuzimaApplication) getActivity().getApplicationContext()).getObservationController().getObservationsByPatientuuidAndConceptId(patientUuid, concept.getId());
-                obsConceptWrapperList.add(new ObsConceptWrapper(concept, matchingObservations));
+                if (!concept.getConceptType().getName().equals(Concept.CODED_TYPE)) {
+                    List<Observation> matchingObservations = ((MuzimaApplication) getActivity().getApplicationContext()).getObservationController().getObservationsByPatientuuidAndConceptId(patientUuid, concept.getId());
+                    obsConceptWrapperList.add(new ObsConceptWrapper(concept, matchingObservations));
+                }
             }
             adapter.notifyDataSetChanged();
         } catch (ObservationController.LoadObservationException | ConceptController.ConceptFetchException e) {
@@ -86,13 +92,13 @@ public class ObservationsListingFragment extends Fragment {
         super.onStart();
         try {
             EventBus.getDefault().register(this);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Subscribe
-    public void onReloadDataEvent(ReloadObservationsDataEvent event){
+    public void onReloadDataEvent(ReloadObservationsDataEvent event) {
         obsConceptWrapperList.clear();
         loadData();
     }
