@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.widget.ViewUtils;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +35,6 @@ import com.muzima.adapters.viewpager.DataCollectionViewPagerAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
-import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.ObsConceptWrapper;
@@ -58,7 +56,6 @@ import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.forms.FormsActivity;
-import com.muzima.view.observations.ObservationsFragment;
 import com.muzima.view.patients.PatientsListActivity;
 import com.muzima.view.patients.PatientsLocationMapActivity;
 
@@ -160,7 +157,7 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     private void readSmartCard() {
         SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(ClientSummaryActivity.this);
         SHRIntegrator.initiateCardRead();
-        Toast.makeText(getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), getResources().getString(R.string.general_opening_card_reader), Toast.LENGTH_LONG).show();
     }
 
     private void navigateToClientsLocationMap() {
@@ -203,6 +200,7 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                formsSummaries.clear();
                 formsSummaries.add(new SummaryCard(CardsSummaryCategory.INCOMPLETE_FORMS, getResources().getString(R.string.info_incomplete_form), incompleteFormsCount));
                 formsSummaries.add(new SummaryCard(CardsSummaryCategory.COMPLETE_FORMS, getResources().getString(R.string.info_complete_form), completeFormsCount));
                 formSummaryCardsAdapter.notifyDataSetChanged();
@@ -481,5 +479,13 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
             }
         });
         datePickerDialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FormsActivity.FORM_VIEW_ACTIVITY_RESULT) {
+            loadFormsCountData();
+        }
     }
 }
