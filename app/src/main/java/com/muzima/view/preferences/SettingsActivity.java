@@ -138,4 +138,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     protected void logEvent(String tag){
         logEvent(tag,null);
     }
+
+    @Override
+    public void onBackPressed() {
+        launchDashboard();
+    }
 }

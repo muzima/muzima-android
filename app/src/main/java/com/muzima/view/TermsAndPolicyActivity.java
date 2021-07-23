@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,10 +69,13 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 acceptAllButton.setVisibility(View.VISIBLE);
-                if (licenseCheckBox.isChecked() && privacyPolicyCheckbox.isChecked() && termsAndConditionsCheckbox.isChecked())
+                if (licenseCheckBox.isChecked() && privacyPolicyCheckbox.isChecked() && termsAndConditionsCheckbox.isChecked()) {
                     nextButton.setEnabled(true);
-                else
+                    acceptAllButton.setVisibility(View.GONE);
+                }else {
                     nextButton.setEnabled(false);
+                    acceptAllButton.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -79,10 +83,13 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 acceptAllButton.setVisibility(View.VISIBLE);
-                if (licenseCheckBox.isChecked() && privacyPolicyCheckbox.isChecked() && termsAndConditionsCheckbox.isChecked())
+                if (licenseCheckBox.isChecked() && privacyPolicyCheckbox.isChecked() && termsAndConditionsCheckbox.isChecked()) {
                     nextButton.setEnabled(true);
-                else
+                    acceptAllButton.setVisibility(View.GONE);
+                }else {
                     nextButton.setEnabled(false);
+                    acceptAllButton.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -90,10 +97,13 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 acceptAllButton.setVisibility(View.VISIBLE);
-                if (licenseCheckBox.isChecked() && privacyPolicyCheckbox.isChecked() && termsAndConditionsCheckbox.isChecked())
+                if (licenseCheckBox.isChecked() && privacyPolicyCheckbox.isChecked() && termsAndConditionsCheckbox.isChecked()) {
                     nextButton.setEnabled(true);
-                else
+                    acceptAllButton.setVisibility(View.GONE);
+                }else {
                     nextButton.setEnabled(false);
+                    acceptAllButton.setVisibility(View.VISIBLE);
+                }
             }
         });
 
