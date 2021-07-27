@@ -7,6 +7,8 @@ import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class LoadDownloadedCohortsTask implements Runnable {
@@ -29,6 +31,12 @@ public class LoadDownloadedCohortsTask implements Runnable {
                     downloadedCohorts.add(allCohort);
                 }
             }
+            Collections.sort(downloadedCohorts, new Comparator<Cohort>() {
+                @Override
+                public int compare(Cohort o1, Cohort o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
             cohortsLoadedCallback.onCohortsLoaded(downloadedCohorts);
         } catch (CohortController.CohortFetchException ex) {
             ex.printStackTrace();

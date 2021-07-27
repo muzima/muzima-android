@@ -7,6 +7,8 @@ import com.muzima.api.model.Form;
 import com.muzima.controller.FormController;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class LoadAllFormsTask implements Runnable {
@@ -35,6 +37,12 @@ public class LoadAllFormsTask implements Runnable {
                         searchResult.add(allAvailableForm);
                     }
                 }
+                Collections.sort(searchResult, new Comparator<Form>() {
+                    @Override
+                    public int compare(Form o1, Form o2) {
+                        return o1.getName().compareTo(o2.getName());
+                    }
+                });
                 callback.onFormsLoaded(searchResult);
             }
         } catch (FormController.FormFetchException ex) {
