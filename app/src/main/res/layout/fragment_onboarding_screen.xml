@@ -25,10 +25,11 @@
 
             <ImageView
                 android:id="@+id/on_boarding_cover_image_view"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
                 android:layout_gravity="center"
-                android:src="@drawable/security" />
+                android:src="@drawable/openmrs_compatibility" />
 
         </androidx.cardview.widget.CardView>
 

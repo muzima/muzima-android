@@ -46,21 +46,23 @@ public class CohortRecyclerViewAdapter extends RecyclerView.Adapter<CohortRecycl
         holder.titleTextView.setText(cohortItem.getCohort().getName());
         holder.clientsCountTextView.setText(String.format(Locale.getDefault(), "%s Clients", String.valueOf(cohortItem.getCohort().getSize())));
         if (((MuzimaApplication) context.getApplicationContext()).getCohortController()
-                .isDownloaded(cohortItem.getCohort()))
-            holder.iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_downloaded));
-
-        if (((MuzimaApplication) context.getApplicationContext()).getCohortController()
-                .isDownloaded(cohortItem.getCohort()) && cohortItem.getCohort().getSyncStatus() != 1)
-            holder.iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_sync));
+                .isDownloaded(cohortItem.getCohort())) {
+            if (((MuzimaApplication) context.getApplicationContext()).getCohortController()
+                    .isDownloaded(cohortItem.getCohort()) && cohortItem.getCohort().getSyncStatus() != 1)
+                holder.iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_sync));
+            else
+                holder.iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_downloaded));
+        } else
+            holder.iconImageView.setImageDrawable(null);
 
         if (cohortItem.isSelected())
-            holder.container.setBackgroundColor(context.getResources().getColor(R.color.hint_blue_opaque));
-        else {
-            if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(context))
-                holder.container.setBackgroundColor(context.getResources().getColor(R.color.primary_white));
-            else
-                holder.container.setBackgroundColor(context.getResources().getColor(R.color.primary_black));
-        }
+                holder.container.setBackgroundColor(context.getResources().getColor(R.color.hint_blue_opaque));
+            else {
+                if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(context))
+                    holder.container.setBackgroundColor(context.getResources().getColor(R.color.primary_white));
+                else
+                    holder.container.setBackgroundColor(context.getResources().getColor(R.color.primary_black));
+            }
 
         Tag tag1 = new Tag();
         tag1.setName("Tag1");
