@@ -21,6 +21,7 @@ import com.muzima.api.context.Context;
 import com.muzima.api.exception.AuthenticationException;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
+import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
@@ -464,6 +465,26 @@ public class MuzimaSyncService {
             result[0] = SyncStatusConstants.LOAD_ERROR;
         }
         return result;
+    }
+
+    public void resetFollowedUpCohortMembership(){
+        Cohort followedup = null;
+        List<Cohort> cohorts = null;
+        try {
+            cohorts = cohortController.getAllCohorts();
+            for(Cohort cohort: cohorts){
+                if(cohort.getUuid().equals("abf6a336-f10e-11eb-a534-d0577bb73cd4")){
+                    followedup = cohort;
+                }
+            }
+            if(followedup != null) {
+                cohortController.deleteAllCohortMembers(followedup.getUuid());
+            }
+        } catch (CohortController.CohortFetchException e) {
+            e.printStackTrace();
+        } catch (CohortController.CohortReplaceException e) {
+            e.printStackTrace();
+        }
     }
 
     private List<Cohort> deleteVoidedCohorts(List<Cohort> cohorts) throws CohortController.CohortDeleteException {

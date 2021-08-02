@@ -399,6 +399,22 @@ public class CohortController {
         }
     }
 
+    public void updateCohortMembers(List<CohortMember> cohortMembers) throws CohortMemberUpdateException {
+        try {
+            cohortService.updateCohortMembers(cohortMembers);
+        } catch (IOException e) {
+            throw new CohortMemberUpdateException(e);
+        }
+    }
+
+    public void updateCohortMember(CohortMember cohortMember) throws CohortMemberUpdateException {
+        try {
+            cohortService.updateCohortMember(cohortMember);
+        } catch (IOException e) {
+            throw new CohortMemberUpdateException(e);
+        }
+    }
+
     public static class CohortDownloadException extends Throwable {
         public CohortDownloadException(Throwable throwable) {
             super(throwable);
@@ -431,6 +447,12 @@ public class CohortController {
 
     public static class CohortUpdateException extends Throwable {
         public CohortUpdateException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class CohortMemberUpdateException extends Throwable {
+        public CohortMemberUpdateException(Throwable throwable) {
             super(throwable);
         }
     }
