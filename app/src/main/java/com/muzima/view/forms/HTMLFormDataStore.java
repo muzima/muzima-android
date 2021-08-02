@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
@@ -204,6 +205,30 @@ class HTMLFormDataStore {
                         patientController.updatePatient(patient);
                         patientController.savePatientTags(tag);
                     }
+
+                    List<CohortMember> cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
+                    List<CohortMember> followedCohortMembers = new ArrayList<>();
+                    List<CohortMember> membershipToDelete = new ArrayList<>();
+                    for (CohortMember cohortMember:cohortMembers) {
+                        //get the cohort for followed up patients
+                        Cohort followedupCohort = null;
+                        List<Cohort> cohorts = cohortController.getAllCohorts();
+                        for(Cohort cohort: cohorts){
+                            if(cohort.getUuid().equals("abf6a336-f10e-11eb-a534-d0577bb73cd4")){
+                                followedupCohort = cohort;
+                            }
+                        }
+                        if(followedupCohort != null) {
+                            //delete cohort memebership
+                            membershipToDelete.add(new CohortMember(cohortMember.getCohort(),cohortMember.getPatient()));
+                            cohortController.deleteCohortMembers(membershipToDelete);
+
+                            //add cohort membership
+                            cohortMember.getPatient();
+                            followedCohortMembers.add(new CohortMember(followedupCohort,cohortMember.getPatient()));
+                            cohortController.addCohortMembers(followedCohortMembers);
+                        }
+                    }
                 }
                 if (!keepFormOpen) {
                     formWebViewActivity.finish();
@@ -239,6 +264,12 @@ class HTMLFormDataStore {
         } catch (FormController.FormDataProcessException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_data_processing), Toast.LENGTH_SHORT).show();
             Log.e(getClass().getSimpleName(), "Exception occurred while processing form data", e);
+        } catch (CohortController.CohortFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while fetching cohorts", e);
+        } catch (CohortController.CohortReplaceException e) {
+            e.printStackTrace();
+        } catch (CohortController.CohortDeleteException e) {
+            e.printStackTrace();
         }
     }
 
