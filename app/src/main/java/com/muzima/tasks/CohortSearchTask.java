@@ -24,11 +24,16 @@ public class CohortSearchTask implements Runnable {
     public void run() {
         try {
             List<Cohort> searchResult = new ArrayList<>();
-            for (Cohort allCohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
-                    .getAllCohorts()) {
-                if (allCohort.getName().toLowerCase().contains(searchTerm.toLowerCase()))
-                    searchResult.add(allCohort);
+            if (searchTerm.isEmpty()) {
+                searchResult = ((MuzimaApplication) context.getApplicationContext()).getCohortController().getAllCohorts();
+            } else {
+                for (Cohort allCohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
+                        .getAllCohorts()) {
+                    if (allCohort.getName().toLowerCase().contains(searchTerm.toLowerCase()))
+                        searchResult.add(allCohort);
+                }
             }
+
             callback.onCohortSearchFinished(searchResult);
         } catch (CohortController.CohortFetchException ex) {
             ex.printStackTrace();

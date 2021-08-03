@@ -69,6 +69,9 @@ public class DashboardCohortsFragment extends Fragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (searchEditText.getText().toString() != null && !searchEditText.getText().toString().isEmpty())
                     EventBus.getDefault().post(new CohortSearchEvent(searchEditText.getText().toString(), viewPager.getCurrentItem()));
+                else if (searchEditText.getText().toString().isEmpty())
+                    EventBus.getDefault().post(new CohortSearchEvent(searchEditText.getText().toString(), viewPager.getCurrentItem()));
+
             }
 
             @Override
