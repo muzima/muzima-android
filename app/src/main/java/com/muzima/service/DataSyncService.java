@@ -212,6 +212,9 @@ public class DataSyncService extends IntentService {
         String msg = getString(R.string.info_new_cohort_download_delete,result[1],result[2]);
         prepareBroadcastMsg(broadcastIntent, result, msg);
 
+        //Reset the followed up cohort membership
+        muzimaSyncService.resetFollowedUpCohortMembership();
+
         //Sync cohort updates
         result = muzimaSyncService.downloadPatientsForCohortsWithUpdatesAvailable();
         if(isSuccess(result)) {
