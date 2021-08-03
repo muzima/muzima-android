@@ -155,6 +155,7 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
 
     @Override
     public void onFormClicked(int position) {
+        if (position == -1) return;
         FormItem form = formList.get(position);
         form.setSelected(!form.isSelected());
         recyclerViewAdapter.notifyDataSetChanged();

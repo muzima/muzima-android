@@ -64,7 +64,7 @@ public class OnboardScreenActivity extends AppCompatActivity {
                     case 1:
                         skipButton.setVisibility(View.GONE);
                         page = 2;
-                        coverImageView.setImageDrawable(getResources().getDrawable(R.drawable.security));
+                        coverImageView.setImageDrawable(getResources().getDrawable(R.drawable.security_banner));
                         firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
                         secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
                         thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));

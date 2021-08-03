@@ -48,7 +48,7 @@ public class CohortRecyclerViewAdapter extends RecyclerView.Adapter<CohortRecycl
         if (((MuzimaApplication) context.getApplicationContext()).getCohortController()
                 .isDownloaded(cohortItem.getCohort())) {
             if (((MuzimaApplication) context.getApplicationContext()).getCohortController()
-                    .isDownloaded(cohortItem.getCohort()) && cohortItem.getCohort().getSyncStatus() != 1)
+                    .isDownloaded(cohortItem.getCohort()) && cohortItem.getCohort().isUpdateAvailable())
                 holder.iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_sync));
             else
                 holder.iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_downloaded));
