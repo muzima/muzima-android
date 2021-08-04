@@ -41,6 +41,7 @@
             android:id="@+id/bottom_nav_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/primaryBackgroundColor"
             android:layout_alignParentBottom="true"
             android:elevation="14dp"
             android:orientation="vertical">
@@ -57,7 +58,7 @@
                 android:layout_marginTop="6dp"
                 android:paddingTop="6dp"
                 app:elevation="4dp"
-                android:background="@color/bottom_navigation_background"
+                android:background="?attr/bottomNavigationBackground"
                 app:itemIconTint="?attr/bottom_navigation_selected_icon"
                 app:itemTextAppearanceActive="@style/bottom_nav_active_text"
                 app:itemTextAppearanceInactive="@style/bottom_nav_inactive_text"
@@ -72,6 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start|left"
+        android:background="?attr/primaryBackgroundColor"
         style="@style/Widget.Custom.NavigationView"
         app:headerLayout="@layout/dashboard_header"
         app:menu="@menu/dashboard_drawer_menu" />

@@ -15,9 +15,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+
 import androidx.appcompat.app.AppCompatDelegate;
+
 import android.view.Menu;
 import android.view.MenuItem;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.service.MuzimaLoggerService;
@@ -73,7 +76,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
-        getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getDelegate().getSupportActionBar() != null)
+            getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private AppCompatDelegate getDelegate() {
@@ -127,16 +131,16 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         finish();
     }
 
-    public void logEvent(String tag, String details){
-        if(StringUtils.isEmpty(details)){
+    public void logEvent(String tag, String details) {
+        if (StringUtils.isEmpty(details)) {
             details = "{}";
         }
-        MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
-        MuzimaLoggerService.log(muzimaApplication,tag,  details);
+        MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
+        MuzimaLoggerService.log(muzimaApplication, tag, details);
     }
 
-    protected void logEvent(String tag){
-        logEvent(tag,null);
+    protected void logEvent(String tag) {
+        logEvent(tag, null);
     }
 
     @Override

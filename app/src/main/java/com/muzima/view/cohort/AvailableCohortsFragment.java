@@ -1,7 +1,6 @@
 package com.muzima.view.cohort;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AvailableCohortsFragment extends Fragment implements CohortRecyclerViewAdapter.OnCohortClickedListener {
-    private static final String TAG = "AvailableCohortsFragmen";
     private ProgressBar progressBar;
     private RecyclerView cohortListRecyclerView;
     private CohortRecyclerViewAdapter recyclerViewAdapter;
@@ -61,13 +59,11 @@ public class AvailableCohortsFragment extends Fragment implements CohortRecycler
 
     @Subscribe
     public void cohortSearchEvent(CohortSearchEvent event) {
-        Log.e(TAG, "cohortSearchEvent: event page " + event.getPage());
         if (event.getPage() == 2)
             searchCohorts(event.getSearchTerm());
     }
 
     private void searchCohorts(String searchTerm) {
-        Log.e(TAG, "searchCohorts: search term " + searchTerm );
         if (getActivity() == null) return;
         ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
                 .execute(new CohortSearchTask(getActivity().getApplicationContext(), searchTerm, new CohortSearchTask.CohortSearchCallback() {

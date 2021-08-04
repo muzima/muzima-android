@@ -12,7 +12,7 @@
 <resources>
     <color name="primary_color">#105b63</color>
     <color name="primary_blue">#137EFE</color>
-    <color name="primary_white">#B2FFFFFF</color>
+    <color name="primary_white">#FDFFFCFC</color>
     <color name="hint_text_grey">#888888</color>
     <color name="primary_black">#303030</color>
     <color name="theme_color">#333333</color>

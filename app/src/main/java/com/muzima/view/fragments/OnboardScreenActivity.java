@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.muzima.R;
 import com.muzima.utils.MuzimaPreferences;
+import com.muzima.view.BaseActivity;
+import com.muzima.view.BaseFragmentActivity;
 import com.muzima.view.TermsAndPolicyActivity;
 import com.muzima.view.login.LoginActivity;
 

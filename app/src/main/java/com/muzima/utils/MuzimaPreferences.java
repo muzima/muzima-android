@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.muzima.R;
+import com.muzima.view.MainActivity;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -61,7 +62,8 @@ public class MuzimaPreferences {
     }
 
     public static boolean getIsLightModeThemeSelectedPreference(Context context) {
-        return getBooleanPreference(context, LIGHT_MODE_SELECTED_PREFS, false);
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(context.getResources().getString(R.string.preference_light_mode), false);
     }
 
     public static void setSelectedUserLocalePreference(Context context, String localeDescription) {
