@@ -79,7 +79,7 @@
         <item name="colorNavigationItem">@color/menu_item_color_state</item>
         <item name="bottomNavigationBackground">@color/bottom_navigation_background</item>
         <item name="colorNavigationItemSelected">@color/primary_white</item>
-        <item name="onDarkBackgroundColor">@color/primary_black</item>
+        <item name="onDarkBackgroundColor">@color/dark_smoke</item>
         <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
@@ -151,7 +151,7 @@
         <item name="colorNavigationItem">@color/menu_item_color_state</item>
         <item name="bottomNavigationBackground">@color/bottom_navigation_background</item>
         <item name="colorNavigationItemSelected">@color/primary_white</item>
-        <item name="onDarkBackgroundColor">@color/primary_white</item>
+        <item name="onDarkBackgroundColor">@color/dark_smoke</item>
         <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
@@ -364,7 +364,7 @@
         <!--        <item name="defaultNavigationDrawerStyle">@style/navigationDrawerStyle</item>-->
         <item name="colorNavigationItem">@color/menu_item_color_state</item>
         <item name="colorNavigationItemSelected">@color/primary_white</item>
-        <item name="onDarkBackgroundColor">@color/primary_white</item>
+        <item name="onDarkBackgroundColor">@color/dark_smoke</item>
         <item name="bottomNavigationBackground">@color/bottom_navigation_background</item>
         <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
