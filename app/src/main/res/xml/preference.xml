@@ -66,7 +66,7 @@
             android:dialogMessage="@string/hint_form_auto_save_interval"
             android:dialogTitle="@string/title_form_auto_save_interval"
             android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/ic_action_font"
+            android:icon="@drawable/ic_action_auto_save_form_interval"
             android:inputType="number"
             android:key="@string/preference_auto_save_interval"
             android:negativeButtonText="@android:string/cancel"
@@ -76,7 +76,7 @@
         <SwitchPreference
             android:defaultValue="false"
             android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/ic_action_sync_settings"
+            android:icon="@drawable/ic_action_real_time_sync"
             android:key="@string/preference_real_time_sync"
             android:summary="@string/hint_real_time_sync"
             android:title="@string/title_real_time_sync" />
@@ -84,7 +84,7 @@
             android:defaultValue="false"
             android:editable="false"
             android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/ic_action_medical_card"
+            android:icon="@drawable/ic_action_require_qr_code"
             android:key="@string/preference_require_medical_record_number"
             android:summary="@string/hint_require_medical_record_number"
             android:title="@string/title_require_medical_record_number" />
@@ -93,7 +93,7 @@
             android:checked="true"
             android:defaultValue="true"
             android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/ic_action_warn"
+            android:icon="@drawable/ic_action_warn_blue"
             android:key="@string/preference_duplicate_form_data_key"
             android:summary="@string/hint_duplicate_form_data_warning"
             android:title="@string/title_duplicate_form_data_warning" />
@@ -102,20 +102,20 @@
             android:defaultValue="@string/general_medium"
             android:entries="@array/font_sizes"
             android:entryValues="@array/font_sizes"
-            android:icon="@drawable/ic_action_font"
+            android:icon="@drawable/ic_action_font_blue"
             android:key="@string/preference_font_size"
             android:title="@string/title_font_size" />
         <ListPreference
             android:defaultValue="@string/general_client_list"
             android:entries="@array/landing_pages"
             android:entryValues="@array/landing_pages"
-            android:icon="@drawable/ic_action_dashboard"
+            android:icon="@drawable/ic_action_dashboard_blue"
             android:key="@string/preference_landing_page"
             android:title="@string/title_landing_page" />
         <SwitchPreference
             android:defaultValue="false"
             android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/ic_action_font"
+            android:icon="@drawable/ic_action_day_night"
             android:key="@string/preference_light_mode"
             android:summary="@string/hint_light_mode"
             android:title="@string/title_light_mode" />
@@ -123,14 +123,14 @@
         <SwitchPreference
             android:defaultValue="false"
             android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/ic_action_font"
+            android:icon="@drawable/ic_action_shr_blue"
             android:key="@string/preference_enable_shr_key"
             android:summary="@string/hint_enable_shr"
             android:title="@string/title_enable_shr" />
         <SwitchPreference
             android:defaultValue="false"
             android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/ic_action_font"
+            android:icon="@drawable/ic_action_enabled_gps"
             android:key="@string/preference_enable_gps_key"
             android:summary="@string/hint_enable_GPS"
             android:title="@string/title_enable_gps" />
@@ -148,12 +148,12 @@
         <SwitchPreference
             android:defaultValue="false"
             android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/ic_action_language"
+            android:icon="@drawable/provider"
             android:key="@string/preference_encounter_provider_key"
             android:summary="@string/hint_default_encounter_provider"
             android:title="@string/title_default_encounter_provider" />
         <Preference
-            android:icon="@drawable/ic_action_language"
+            android:icon="@drawable/ic_action_providers_blue"
             android:summary="@string/hint_manage_provider"
             android:title="@string/title_manage_provider">
             <intent
@@ -162,12 +162,12 @@
         </Preference>
         <ListPreference
             android:defaultValue="@string/no_default_encounter_location"
-            android:icon="@drawable/ic_action_language"
+            android:icon="@drawable/ic_action_location_blue"
             android:key="@string/preference_default_encounter_location"
             android:summary="@string/hint_default_encounter_location"
             android:title="@string/title_default_encounter_location" />
         <Preference
-            android:icon="@drawable/ic_action_language"
+            android:icon="@drawable/ic_action_edit_location"
             android:summary="@string/hint_manage_location"
             android:title="@string/title_manage_location">
             <intent

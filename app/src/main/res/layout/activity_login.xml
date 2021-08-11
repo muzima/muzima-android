@@ -134,7 +134,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="12dp"
-                    android:src="?attr/icActionLock" />
+                    app:tint="?attr/onDarkBackgroundColor"
+                    android:src="@drawable/password" />
 
                 <EditText
                     android:id="@+id/password"
