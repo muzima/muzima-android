@@ -150,7 +150,7 @@ public class ProviderController {
             return providerService.getProviderBySystemId(systemId);
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(),"Cannot obtain provider by system ID : "+systemId, e);
-            throw new RuntimeException(e);
+            return null;
         }
     }
     public List<Provider> getRelatedProviders(List<FormTemplate> formTemplates, String systemId) throws ProviderDownloadException, ProviderLoadException {

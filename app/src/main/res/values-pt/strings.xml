@@ -167,6 +167,7 @@
     <string name="general_dashboard">Painel de controle</string>
     <string name="general_data_sync_required">Solicitação de dados syc</string>
     <string name="general_date">Encontro</string>
+    <string name="general_days_character">d</string>
     <string name="general_delete">Apagar</string>
     <string name="general_description_unavailable">Sem descrição disponível</string>
     <string name="general_disagree">Discordo</string>
@@ -194,6 +195,7 @@
     <string name="general_login">Entrar</string>
     <string name="general_logout">Sair</string>
     <string name="general_medium">Médio</string>
+    <string name="general_months_character">m</string>
     <string name="general_next">Próximo</string>
     <string name="general_no">Não</string>
     <string name="general_not_available_text">Não disponível</string>
@@ -232,6 +234,7 @@
     <string name="general_username">Nome do utilizador</string>
     <string name="general_view_encounter">Ver visita</string>
     <string name="general_welcome">Bem-vindo</string>
+    <string name="general_years_character">A</string>
     <string name="general_yes">Sim</string>
 
     <string name="get_more">Mais do servidor</string>
@@ -545,6 +548,7 @@
     <string name="info_submitted_form_data_status_check">Verificando o status dos formulários enviados recentemente.</string>
     <string name="info_submitted_form_data_status_check_failure">Não foi possível verificar o estado dos formulários enviados recentemente.</string>
     <string name="info_tag_unavailable">Nenhuma etiqueta disponível</string>
+    <string name="info_update_available">Atualização disponível</string>
     <string name="info_update_person_demographics">Atualizar dados demográficos de pessoas</string>
     <string name="info_url_validate">Passo 1: Validar URL</string>
     <string name="info_video_chose_activity_unavailable">Erro: Aplicação para escolha de vídeo não encontrado</string>
@@ -773,4 +777,6 @@
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
 
     <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
+    <string name="title_qrcode">Código QR</string>
+    <string name="info_scan_qrcode">Leia o código QR para alterar o URL do servidor</string>
 </resources>

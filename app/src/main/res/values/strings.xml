@@ -173,6 +173,7 @@
     <string name="general_dashboard">Dashboard</string>
     <string name="general_data_sync_required">Data sync required</string>
     <string name="general_date">Date</string>
+    <string name="general_days_character">d</string>
     <string name="general_delete">Delete</string>
     <string name="general_description_unavailable">No description available</string>
     <string name="general_disagree">Disagree</string>
@@ -200,6 +201,7 @@
     <string name="general_login">Login</string>
     <string name="general_logout">Logout</string>
     <string name="general_medium">Medium</string>
+    <string name="general_months_character">m</string>
     <string name="general_next">Next</string>
     <string name="general_no">No</string>
     <string name="general_not_available_text">Not Available</string>
@@ -238,6 +240,7 @@
     <string name="general_username">Username</string>
     <string name="general_view_encounter">View encounter</string>
     <string name="general_welcome">Welcome</string>
+    <string name="general_years_character">y</string>
     <string name="general_yes">Yes</string>
 
     <string name="get_more">More from Server</string>
@@ -598,6 +601,7 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="info_submitted_form_data_status_check">Checking status of recently submitted forms</string>
     <string name="info_submitted_form_data_status_check_failure">Could not check status of recently submitted forms</string>
     <string name="info_tag_unavailable">No tags available</string>
+    <string name="info_update_available">Update available</string>
     <string name="info_update_person_demographics">Update person demographics</string>
     <string name="info_url_validate">Step 1: Validating URL</string>
     <string name="info_video_chose_activity_unavailable">Error: Application for choosing video not found</string>
@@ -927,5 +931,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="general_sync_service_already_running">mUzima sync service is already running...</string>
     <string name="general_opening_card_reader">Opening Card Reader</string>
     <string name="erro_coded_concepts_not_supported">Invalid coded concepts are not support</string>
-
+    <string name="title_qrcode">QR code</string>
+    <string name="info_scan_qrcode">Scan QR code to change server URL</string>
 </resources>

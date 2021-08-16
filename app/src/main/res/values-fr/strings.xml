@@ -167,6 +167,7 @@
     <string name="general_dashboard">Tableau de bord</string>
     <string name="general_data_sync_required">Données syc requises</string>
     <string name="general_date">Date</string>
+    <string name="general_days_character">j</string>
     <string name="general_delete">Supprimer</string>
     <string name="general_description_unavailable">Description non disponible</string>
     <string name="general_disagree">Désaccord</string>
@@ -194,6 +195,7 @@
     <string name="general_login">S\'identifier</string>
     <string name="general_logout">Se deconnecter</string>
     <string name="general_medium">Moyen</string>
+    <string name="general_months_character">m</string>
     <string name="general_next">Suivant</string>
     <string name="general_no">Non</string>
     <string name="general_not_available_text">Indisponible</string>
@@ -232,6 +234,7 @@
     <string name="general_username">Nom d\'utilisateur</string>
     <string name="general_view_encounter">Voir la rencontre</string>
     <string name="general_welcome">Bienvenue</string>
+    <string name="general_years_character">A</string>
     <string name="general_yes">Oui</string>
 
     <string name="get_more">Plus du serveur</string>
@@ -546,6 +549,7 @@
     <string name="info_submitted_form_data_status_check">Vérification du statut des formulaires récemment soumis.</string>
     <string name="info_submitted_form_data_status_check_failure">Impossible de vérifier l\'état des formulaires récemment soumis.</string>
     <string name="info_tag_unavailable">Aucune etiquette n\'est disponible</string>
+    <string name="info_update_available">Mise à jour disponible</string>
     <string name="info_update_person_demographics">Mettre à jour les données démographiques des personnes</string>
     <string name="info_url_validate">Étape 1: Validation de l\'URL</string>
     <string name="info_video_chose_activity_unavailable">Erreur: Application pour choisir la vidéo non trouvée</string>
@@ -774,4 +778,6 @@
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
 
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
+    <string name="title_qrcode">QR code</string>
+    <string name="info_scan_qrcode">Scanner le code QR pour changer l\'URL du serveur</string>
 </resources>

@@ -40,10 +40,10 @@ import com.muzima.tasks.LoadPatientsListService;
 import com.muzima.utils.FormUtils;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.ClientSummaryActivity;
 import com.muzima.view.MainDashboardActivity;
+import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.CompletedFormsListActivity;
 import com.muzima.view.forms.IncompleteFormsListActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -58,6 +58,7 @@ import java.util.Locale;
 
 public class DashboardHomeFragment extends Fragment implements LoadPatientsListService.PatientsListLoadedCallback,
         AllPatientsAdapter.OnPatientClickedListener {
+    private static final int RC_BARCODE_CAPTURE = 9001;
     private TextView incompleteFormsTextView;
     private TextView completeFormsTextView;
     private View incompleteFormsView;
@@ -325,8 +326,12 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
     }
 
     private void invokeBarcodeScan() {
-        BarCodeScannerIntentIntegrator scanIntegrator = new BarCodeScannerIntentIntegrator(getActivity());
-        scanIntegrator.initiateScan();
+        Intent intent;
+        intent = new Intent(getActivity().getApplicationContext(), BarcodeCaptureActivity.class);
+        intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+        intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+        startActivityForResult(intent, RC_BARCODE_CAPTURE);
     }
 
     private void readSmartCard() {

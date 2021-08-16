@@ -167,6 +167,7 @@
     <string name="general_dashboard">ડેશબોર્ડ</string>
     <string name="general_data_sync_required">ડેટા સમન્વયન આવશ્યક છે</string>
     <string name="general_date">તારીખ</string>
+    <string name="general_days_character">દિ</string>
     <string name="general_delete">કાઢી નાખો</string>
     <string name="general_description_unavailable">કોઈ વર્ણન ઉપલબ્ધ નથી</string>
     <string name="general_disagree">અસંમત</string>
@@ -194,6 +195,7 @@
     <string name="general_login">લૉગિન</string>
     <string name="general_logout">લૉગ આઉટ</string>
     <string name="general_medium">માધ્યમ</string>
+    <string name="general_months_character">મ</string>
     <string name="general_next">આગળ</string>
     <string name="general_no">ના</string>
     <string name="general_not_available_text">ઉપલબ્ધ નથી</string>
@@ -232,6 +234,7 @@
     <string name="general_username">વપરાશકર્તા નામ</string>
     <string name="general_view_encounter">એન્કાઉન્ટર જુઓ</string>
     <string name="general_welcome">સ્વાગત છે</string>
+    <string name="general_years_character">व</string>
     <string name="general_yes">હા</string>
 
     <string name="get_more">સર્વરમાંથી વધુ</string>
@@ -538,6 +541,7 @@
     <string name="info_submitted_form_data_status_check">તાજેતરમાં સબમિટ કરેલા ફોર્મ્સની સ્થિતિ તપાસી રહ્યું છે</string>
     <string name="info_submitted_form_data_status_check_failure">તાજેતરમાં સબમિટ કરેલા ફોર્મ્સની સ્થિતિ ચકાસી શક્યાં નથી</string>
     <string name="info_tag_unavailable">કોઈ ટેગ્સ ઉપલબ્ધ નથી</string>
+    <string name="info_update_available">અપડેટ ઉપલબ્ધ છે</string>
     <string name="info_update_person_demographics">વ્યક્તિ વસ્તી વિષયક અપડેટ કરો</string>
     <string name="info_url_validate">પગલું 1: URL ની માન્યતા ચકાસણી</string>
     <string name="info_video_chose_activity_unavailable">ભૂલ: વિડિઓ પસંદ કરવા માટેની એપ્લિકેશન મળી નથી</string>
@@ -766,4 +770,6 @@
     <string name="write_shr_to_card_general">SHR ને કાર્ડ પર લખો</string>
 
     <string name="youTube_player_error">YouTube વિડિઓ લોડ કરતી વખતે ભૂલ આવી</string>
+    <string name="title_qrcode">ક્યૂઆર કોડ</string>
+    <string name="info_scan_qrcode">સર્વર url બદલવા માટે QR કોડ સ્કેન કરો</string>
 </resources>

@@ -55,6 +55,7 @@ import com.muzima.controller.SetupConfigurationController;
 import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.progressdialog.ProgressDialogUpdateIntentService;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -183,6 +184,7 @@ public class MuzimaSyncService {
             long endDownloadForms = System.currentTimeMillis();
             List<Form> voidedForms = deleteVoidedForms(allDownloadedForms);
             allDownloadedForms.removeAll(voidedForms);
+            markUpdatedFormsAsUpdatePendingDownload(allDownloadedForms,allForms);
             formController.updateAllForms(allDownloadedForms);
             long endSaveForms = System.currentTimeMillis();
             Log.d(getClass().getSimpleName(), "In downloading forms: " + (endDownloadForms - startDownloadForms) / 1000 + " sec\n" +
@@ -220,6 +222,20 @@ public class MuzimaSyncService {
         return deletedFormCount;
     }
 
+    private void markUpdatedFormsAsUpdatePendingDownload(List<Form> downloadedForms, List<Form> availableForms) {
+        for (Form form : availableForms) {
+            for (Form downloadedForm : downloadedForms) {
+                if (StringUtils.equals(form.getUuid(),downloadedForm.getUuid()) &&
+
+                downloadedForm.getDateChanged() != null &&
+                        (form.getDateChanged() != null && downloadedForm.getDateChanged().compareTo(form.getDateChanged()) > 0
+                || form.getDateCreated() != null && downloadedForm.getDateChanged().compareTo(form.getDateCreated()) > 0
+                || form.getDateCreated() == null)){
+                    downloadedForm.setUpdateAvailable(true);
+                }
+            }
+        }
+    }
 
     private List<Form> deleteVoidedForms(List<Form> forms) throws FormController.FormDeleteException {
         Log.i(getClass().getSimpleName(), "Voided forms are deleted");
@@ -250,6 +266,7 @@ public class MuzimaSyncService {
                 formController.replaceFormTemplates(formTemplates);
                 conceptController.newConcepts(concepts);
                 providerController.newProviders(providers);
+                markFormTemplatesAsUpToDate(formTemplates);
             } else {
                 formController.saveFormTemplates(formTemplates);
             }
@@ -290,6 +307,21 @@ public class MuzimaSyncService {
             return result;
         }
         return result;
+    }
+
+    private void markFormTemplatesAsUpToDate(List<FormTemplate> formTemplates)
+            throws FormController.FormSaveException, FormController.FormFetchException {
+        List forms = new ArrayList();
+        for(FormTemplate formTemplate:formTemplates){
+            Form form = formController.getFormByUuid(formTemplate.getUuid());
+            if(form != null) {
+                form.setUpdateAvailable(false);
+                forms.add(form);
+            }
+        }
+        if(forms.size()>0){
+            formController.updateAllForms(forms);
+        }
     }
 
     public int[] downloadFormTemplates(String[] formIds, boolean replaceExistingTemplates) {

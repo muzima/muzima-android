@@ -65,9 +65,10 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
             holder.tagsLayout = convertView.findViewById(R.id.menu_tags);
             holder.tags = new ArrayList<>();
             holder.downloadedImg = convertView.findViewById(R.id.downloadImg);
+            holder.updateAvailableImg = convertView.findViewById(R.id.downloadImg);
 
             convertView.setTag(holder);
-            setDownloadImageSize(holder);
+            setIconImageSize(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -87,7 +88,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
         return convertView;
     }
 
-    private void setDownloadImageSize(ViewHolder holder){
+    private void setIconImageSize(ViewHolder holder){
         int lineHeight = holder.name.getLineHeight();
         int imageLayoutMargin = 10;
         int imageSize = 2*lineHeight-2*imageLayoutMargin;
@@ -96,6 +97,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,height);
         params.setMargins(imageLayoutMargin,imageLayoutMargin,imageLayoutMargin,imageLayoutMargin);
         holder.downloadedImg.setLayoutParams(params);
+        holder.updateAvailableImg.setLayoutParams(params);
     }
 
     int getFormItemLayout() {
@@ -115,6 +117,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     static class ViewHolder {
         CheckedTextView name;
         ImageView downloadedImg;
+        ImageView updateAvailableImg;
         TextView description;
         RelativeLayout tagsScroller;
         LinearLayout tagsLayout;

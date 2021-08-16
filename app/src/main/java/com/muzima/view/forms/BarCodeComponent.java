@@ -11,14 +11,16 @@
 package com.muzima.view.forms;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.webkit.JavascriptInterface;
-import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
+import com.muzima.view.barcode.BarcodeCaptureActivity;
 
 class BarCodeComponent {
 
 
     private final Activity activity;
     private String fieldName;
+    public static final int RC_BARCODE_CAPTURE = 9001;
 
     public BarCodeComponent(Activity activity) {
         this.activity = activity;
@@ -27,8 +29,17 @@ class BarCodeComponent {
     @JavascriptInterface
     public void startBarCodeIntent(String fieldName) {
         this.fieldName = fieldName;
-        BarCodeScannerIntentIntegrator barCodeScannerIntentIntegrator = new BarCodeScannerIntentIntegrator(activity);
-        barCodeScannerIntentIntegrator.initiateScan();
+        Intent intent;
+        intent = new Intent(activity, BarcodeCaptureActivity.class);
+        intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+        intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+        startActivityForResult(intent);
+    }
+
+
+    private void startActivityForResult(Intent intent) {
+        activity.startActivityForResult(intent, RC_BARCODE_CAPTURE);
     }
 
     public String getFieldName() {

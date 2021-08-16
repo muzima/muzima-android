@@ -167,6 +167,7 @@
     <string name="general_dashboard">Dashibodi</string>
     <string name="general_data_sync_required">Usawazishaji wa data unahitajika</string>
     <string name="general_date">Tarehe</string>
+    <string name="general_days_character">s</string>
     <string name="general_delete">Futa</string>
     <string name="general_description_unavailable">Hakuna maelezo</string>
     <string name="general_disagree">Kutokubali</string>
@@ -194,6 +195,7 @@
     <string name="general_login">Ingia</string>
     <string name="general_logout">Toka</string>
     <string name="general_medium">Wastani</string>
+    <string name="general_months_character">m</string>
     <string name="general_next">Inayofuata</string>
     <string name="general_no">Hapana</string>
     <string name="general_not_available_text">Haipatikani</string>
@@ -232,6 +234,7 @@
     <string name="general_username">Jina la mtumiaji.</string>
     <string name="general_view_encounter">Tazama mkutano</string>
     <string name="general_welcome">Karibu</string>
+    <string name="general_years_character">M</string>
     <string name="general_yes">Ndiyo</string>
 
     <string name="get_more">Zaidi kutoka seva</string>
@@ -541,6 +544,7 @@
     <string name="info_submitted_form_data_status_check">Hali ya fomu zilizowasilishwa hivi karibuni inachunguzwa.</string>
     <string name="info_submitted_form_data_status_check_failure">Haikuwezekana kuchunguza hali ya fomu zilizowasilishwa hivi karibuni.</string>
     <string name="info_tag_unavailable">Hakuna tagi zilizopatikana</string>
+    <string name="info_update_available">Sasisho linapatikana</string>
     <string name="info_update_person_demographics">Sasisha maelezo ya mtu</string>
     <string name="info_url_validate">Hatua ya 1: Kuhakiki URL</string>
     <string name="info_video_chose_activity_unavailable">Tatizo: Mfumo wa kuchagua video haupo</string>
@@ -769,4 +773,6 @@
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
 
     <string name="youTube_player_error">Hitilafu ilitokea wakati wa kupakia video ya YouTube</string>
+    <string name="title_qrcode">Nambari ya QR</string>
+    <string name="info_scan_qrcode">Changanua nambari ya qr ili kubadilisha url ya seva</string>
 </resources>

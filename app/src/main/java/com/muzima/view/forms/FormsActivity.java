@@ -163,6 +163,7 @@ public class FormsActivity extends FormsActivityBase {
                 syncInProgress = false;
                 if (syncStatus == SyncStatusConstants.SUCCESS) {
                     ((FormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
+                    syncAllFormsInBackgroundService();
                 }
 
                 break;

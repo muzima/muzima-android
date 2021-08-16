@@ -205,6 +205,7 @@ public class MainActivity extends BroadcastListenerActivity {
                 homeActivityMetadata.syncedCohorts = cohortController.countSyncedCohorts();
                 homeActivityMetadata.isCohortUpdateAvailable = cohortController.isUpdateAvailable();
                 homeActivityMetadata.syncedPatients = patientController.countAllPatients();
+                homeActivityMetadata.isFormTemplateUpdateAvailable = formController.isFormTemplateUpdatesAvailable();
                 homeActivityMetadata.incompleteForms = formController.countAllIncompleteForms();
                 homeActivityMetadata.completeAndUnsyncedForms = formController.countAllCompleteForms();
 
@@ -250,6 +251,13 @@ public class MainActivity extends BroadcastListenerActivity {
             patientDescriptionView.setText(getString(R.string.hint_dashboard_clients_description,
                     homeActivityMetadata.syncedPatients));
 
+            ImageView pendingFormUpdateImg = (ImageView) mMainView.findViewById(R.id.pendingFormUpdateImg);
+            if (homeActivityMetadata.isFormTemplateUpdateAvailable) {
+                pendingFormUpdateImg.setVisibility(View.VISIBLE);
+            } else {
+                pendingFormUpdateImg.setVisibility(View.GONE);
+            }
+
             TextView formsDescription = mMainView.findViewById(R.id.formDescription);
             formsDescription.setText(getString(R.string.hint_dashboard_forms_description,
                     homeActivityMetadata.incompleteForms, homeActivityMetadata.completeAndUnsyncedForms));
@@ -272,6 +280,7 @@ public class MainActivity extends BroadcastListenerActivity {
         int newNotifications;
         int totalNotifications;
         boolean isCohortUpdateAvailable;
+        boolean isFormTemplateUpdateAvailable;
     }
 
     @Override

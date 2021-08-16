@@ -26,6 +26,7 @@ import static com.muzima.util.Constants.ServerSettings.GEOMAPPING_FEATURE_ENABLE
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.RELATIONSHIP_FEATURE_ENABLED;
+import static com.muzima.util.Constants.ServerSettings.NOTIFICATION_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEMOGRAPHICS_UPDATE_MANUAL_REVIEW_REQUIRED_SETTING;
 
@@ -320,6 +321,19 @@ public class MuzimaSettingController {
             }
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not fetch muzima Geomapping Feature setting",e);
+        }
+        return false;
+    }
+
+    public Boolean isPushNotificationsEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(NOTIFICATION_FEATURE_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "muzima notification Feature setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "muzima notification Feature setting is missing on this server");
         }
         return false;
     }

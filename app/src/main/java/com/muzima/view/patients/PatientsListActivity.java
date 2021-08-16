@@ -18,6 +18,13 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.legacy.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -59,14 +66,14 @@ import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
-import com.muzima.utils.barcode.IntentResult;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.ClientSummaryActivity;
 import com.muzima.view.MainDashboardActivity;
+
+import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.FormsActivity;
 
 import java.util.ArrayList;
@@ -80,11 +87,11 @@ import static android.view.View.VISIBLE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
-import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.BARCODE_SCAN_REQUEST_CODE;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
         ListAdapter.BackgroundListQueryTaskListener {
+    private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "PatientsListActivity";
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
@@ -464,6 +471,21 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         Log.e(getClass().getSimpleName(), "Cancelled...");
     }
 
+    private void invokeBarcodeScan() {
+        Intent intent;
+        intent = new Intent(getApplicationContext(), BarcodeCaptureActivity.class);
+        intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+        intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+        startActivityForResult(intent, RC_BARCODE_CAPTURE);
+    }
+
+    private void readSmartCard() {
+        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(this);
+        SHRIntegrator.initiateCardRead();
+        Toast.makeText(getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
         super.onActivityResult(requestCode, resultCode, dataIntent);
@@ -473,20 +495,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 serverSearchProgressDialog.dismiss();
                 serverSearchProgressDialog.cancel();
                 break;
-            case BARCODE_SCAN_REQUEST_CODE:
-                IntentResult scanningResult = BarCodeScannerIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
-                if (scanningResult != null) {
-                    intentBarcodeResults = true;
-                    searchMenuItem.setQuery(scanningResult.getContents(), false);
-                } else {
-                    Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed.", Snackbar.LENGTH_LONG)
-                            .setAction("RETRY", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    readSmartCard();
-                                }
-                            }).show();
-                }
+            case RC_BARCODE_CAPTURE:
+               invokeBarcodeScan();
                 break;
             default:
                 break;
@@ -545,12 +555,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                         }
                     }).show();
         }
-    }
-
-    private void readSmartCard() {
-        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(this);
-        SHRIntegrator.initiateCardRead();
-        Toast.makeText(getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -828,7 +832,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     private boolean isGeoMappingFeatureEnabled() {
-        return muzimaApplication.getMuzimaSettingController().isGeoMappingEnabled();
+        try {
+            return muzimaApplication.getMuzimaSettingController().isGeoMappingEnabled();
+        }catch(StringIndexOutOfBoundsException e){
+            Log.e(getClass().getSimpleName(),"Encountered an exception while getting geomapping feature setting");
+            return false;
+        }
     }
 
     private void initDrawer() {

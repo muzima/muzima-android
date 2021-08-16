@@ -59,6 +59,7 @@
             android:visibility="gone"
             android:layout_marginEnd="12dp"
             app:srcCompat="@drawable/ic_downloaded" />
+
     </com.muzima.view.CheckedLinearLayout>
 
 

@@ -25,12 +25,12 @@ import com.muzima.R;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 import com.muzima.domain.Credentials;
+import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.InstallBarCodeWizardActivity;
 import com.muzima.view.provider.CustomProviderWizardActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import com.muzima.view.preferences.ConceptPreferenceActivity;
@@ -161,7 +161,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
         Log.d(getClass().getSimpleName(), "Launching wake state: " + true) ;
         if (true) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
+            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getSimpleName());
             wakeLock.acquire();
         } else {
             if(wakeLock != null) {
@@ -176,7 +176,7 @@ public class CustomConceptWizardActivity extends ConceptPreferenceActivity {
     }
 
     private void navigateToNextActivity() {
-        Intent intent = new Intent(getApplicationContext(), InstallBarCodeWizardActivity.class);
+        Intent intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();
         startActivity(intent);
         finish();
     }

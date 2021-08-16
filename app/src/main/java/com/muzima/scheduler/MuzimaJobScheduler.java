@@ -3,6 +3,7 @@ package com.muzima.scheduler;
 import android.annotation.SuppressLint;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -12,12 +13,14 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.User;
+import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
 import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.SyncSettingsIntent;
+import com.muzima.view.forms.SyncFormIntent;
 import com.muzima.view.reports.SyncAllPatientReports;
 import com.muzima.view.setupconfiguration.SyncSetupConfigurationTemplates;
 
@@ -97,6 +100,7 @@ public class MuzimaJobScheduler extends JobService {
             if(muzimaSettingController.isClinicalSummaryEnabled()) {
                 new SyncAllPatientReportsBackgroundTask().execute();
             }
+            new FormMetaDataSyncBackgroundTask().execute();
         }
     }
 
@@ -134,6 +138,30 @@ public class MuzimaJobScheduler extends JobService {
         protected Void doInBackground(Void... voids) {
             if (new WizardFinishPreferenceService(getApplicationContext()).isWizardFinished()) {
                 RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(),true);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class FormMetaDataSyncBackgroundTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Context context = getApplicationContext();
+                if (new WizardFinishPreferenceService(context).isWizardFinished() &&
+                        !((MuzimaApplication) context).getFormController().isFormWithPatientDataAvailable(context)) {
+
+                    new SyncFormIntent(getApplicationContext()).start();
+                } else {
+                    Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not sync form metadata. Incomplete/unsyched forms exist");
+                }
+            } catch (FormController.FormFetchException e){
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not sync form metadata",e);
             }
             return null;
         }

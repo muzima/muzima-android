@@ -50,7 +50,7 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
 
         ViewHolder viewHolder = (ViewHolder) convertView.getTag();
         addTags(viewHolder, getItem(position));
-        markIfDownloaded(viewHolder.downloadedImg, getItem(position));
+        markIfDownloadedOrUpdateAvailable(viewHolder.downloadedImg, viewHolder.updateAvailableImg, getItem(position));
         return convertView;
     }
 
@@ -60,10 +60,15 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
         return R.layout.item_forms_list_selectable;
     }
 
-    private void markIfDownloaded(View downloadedImg, AvailableForm form) {
-        if (form.isDownloaded()) {
+    private void markIfDownloadedOrUpdateAvailable(View downloadedImg, View updateAvailableImg, AvailableForm form) {
+        if (form.isUpdateAvailable() && form.isDownloaded()) {
+            updateAvailableImg.setVisibility(View.VISIBLE);
+            downloadedImg.setVisibility(View.GONE);
+        } else if (form.isDownloaded()) {
+            updateAvailableImg.setVisibility(View.GONE);
             downloadedImg.setVisibility(View.VISIBLE);
         } else {
+            updateAvailableImg.setVisibility(View.GONE);
             downloadedImg.setVisibility(View.GONE);
         }
     }

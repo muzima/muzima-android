@@ -38,6 +38,7 @@
             android:contentDescription="@string/info_downloaded_image"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_downloaded_icon" />
+
     </com.muzima.view.CheckedLinearLayout>
 
 

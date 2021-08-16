@@ -12,10 +12,12 @@ package com.muzima.view.setupconfiguration;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -38,8 +40,10 @@ import com.muzima.adapters.viewpager.GuidedSetupCardsViewPagerAdapter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.SetupConfigurationTemplate;
+import com.muzima.controller.FCMTokenContoller;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.DefaultEncounterLocationPreferenceService;
@@ -55,6 +59,7 @@ import com.muzima.view.BroadcastListenerActivity;
 
 import net.minidev.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -221,7 +226,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadSettingsLog.setSetupActionResult(resultDescription);
                 downloadSettingsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
-                downloadCohorts();
+                downloadLocations();
             }
         }.execute();
     }
@@ -264,7 +269,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadCohortsLog.setSetupActionResult(resultDescription);
                 downloadCohortsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
-                downloadLocations();
+                downloadAndSavePatients();
             }
         }.execute();
     }
@@ -430,7 +435,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadFormTemplatesLog.setSetupActionResult(resultDescription);
                 downloadFormTemplatesLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
-                downloadProviders();
                 downloadConcepts();
             }
         }.execute();
@@ -463,6 +467,19 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
             @Override
             protected int[] doInBackground(Void... voids) {
+                MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+                boolean notificationSetting = muzimaSettingController.isPushNotificationsEnabled();
+                if(notificationSetting) {
+                    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(GuidedConfigurationWizardActivity.this);
+                    String appTokenKey = GuidedConfigurationWizardActivity.this.getResources().getString(R.string.preference_app_token);
+                    String token = settings.getString(appTokenKey, null);
+                    FCMTokenContoller fcmTokenContoller = ((MuzimaApplication) getApplicationContext()).getFCMTokenController();
+                    try {
+                        fcmTokenContoller.sendTokenToServer(token, ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getSystemId());
+                    } catch (IOException e) {
+                        Log.e(getClass().getSimpleName(), "Exception thrown while sending token to server" + e);
+                    }
+                }
                 List<String> uuids = extractLocationsUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
@@ -542,6 +559,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadProvidersLog.setSetupActionResult(resultDescription);
                 downloadProvidersLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
+                downloadCohorts();
             }
         }.execute();
     }
@@ -782,14 +800,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         if (isCohortLocationBased) {
             showAlertDialog();
         } else {
-            downloadAndSavePatients();
+            downloadProviders();
         }
     }
 
     private void showAlertDialog() {
         AlertDialog.Builder alertDialogBuider = new AlertDialog.Builder(this);
         alertDialogBuider.setTitle(R.string.title_default_encounter_location);
-        alertDialogBuider.setMessage(R.string.select_default_encounter_location);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice);
         final MuzimaApplication muzimaApplication = (MuzimaApplication) this.getApplication();
         final LocationController locationController = muzimaApplication.getLocationController();
@@ -813,7 +830,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String[] location = strName.split("-");
                 defaultEncounterLocationPreferenceService.setDefaultEncounterLocationPreference(location[0]);
                 Toast.makeText(GuidedConfigurationWizardActivity.this, strName, Toast.LENGTH_LONG).show();
-                downloadAndSavePatients();
+                downloadProviders();
             }
         });
         AlertDialog alertDialog = alertDialogBuider.create();

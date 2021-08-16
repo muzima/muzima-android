@@ -17,13 +17,26 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission
+        android:name="android.permission.BROADCAST_WAP_PUSH"
+        tools:ignore="ProtectedPermissions" />
+
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:name=".MuzimaApplication"
@@ -40,6 +53,15 @@
         <meta-data
             android:name="android.app.default_searchable"
             android:value="com.muzima.view.SearchResultsActivity" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.muzima.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
 
         <activity
             android:name=".view.DisclaimerActivity"
@@ -390,11 +412,6 @@
             android:label="@string/title_define_custom_concept"
             android:theme="@style/WizardTheme.Dark" />
         <activity
-            android:name=".view.InstallBarCodeWizardActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/title_install_barcode_scanner"
-            android:theme="@style/WizardTheme.Dark" />
-        <activity
             android:name=".view.setupconfiguration.SetupMethodPreferenceWizardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_setup_method"
@@ -447,6 +464,8 @@
             android:name=".scheduler.MuzimaJobScheduler"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
+        <activity android:name=".view.barcode.BarcodeCaptureActivity" />
+
         <activity
             android:name=".view.YouTubeVideoViewActivity"
             android:configChanges="orientation|screenSize"
@@ -487,11 +506,49 @@
             android:noHistory="true"
             android:parentActivityName=".view.patients.PatientSummaryActivity"
             android:theme="@style/DialogNoTitleBar" />
+
         <activity android:name=".view.fragments.OnboardScreenActivity" />
         <activity android:name=".view.TermsAndPolicyActivity" />
         <activity android:name=".view.MainDashboardActivity" />
         <activity android:name=".view.ClientSummaryActivity" />
         <activity android:name=".view.forms.IncompleteFormsListActivity" />
         <activity android:name=".view.forms.CompletedFormsListActivity" />
+
+        <activity
+            android:name=".view.forms.PersonDemographicsUpdateFormsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/select_a_relationship_form_text"
+            android:theme="@style/DialogNoTitleBar"
+            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:noHistory="true" />
+
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <service
+            android:name=".service.MuzimaFirebaseMessagingService"
+            android:exported="true"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+        See README(https://goo.gl/l4GJaQ) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_launcher_logo" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/primary_white" />
     </application>
 </manifest>

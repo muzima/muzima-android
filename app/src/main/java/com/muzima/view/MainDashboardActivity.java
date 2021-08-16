@@ -72,11 +72,10 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
-import com.muzima.utils.barcode.IntentResult;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
+import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.patients.PatientsLocationMapActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
@@ -89,10 +88,10 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
-import static com.muzima.utils.barcode.BarCodeScannerIntentIntegrator.BARCODE_SCAN_REQUEST_CODE;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 public class MainDashboardActivity extends BaseFragmentActivity implements NavigationView.OnNavigationItemSelectedListener, CohortFilterAdapter.CohortFilterClickedListener {
+    private static final int RC_BARCODE_CAPTURE = 9001;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private MaterialToolbar toolbar;
@@ -477,20 +476,13 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
             case SMARTCARD_READ_REQUEST_CODE:
                 processSmartCardReadResult(requestCode, resultCode, dataIntent);
                 break;
-            case BARCODE_SCAN_REQUEST_CODE:
-                IntentResult scanningResult = BarCodeScannerIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
-                if (scanningResult != null) {
-//                    intentBarcodeResults = true;
-//                    searchView.setQuery(scanningResult.getContents(), false);
-                } else {
-                    Snackbar.make(findViewById(R.id.patient_lists_layout), "Card read failed.", Snackbar.LENGTH_LONG)
-                            .setAction("RETRY", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    readSmartCard();
-                                }
-                            }).show();
-                }
+            case RC_BARCODE_CAPTURE:
+                Intent intent;
+                intent = new Intent(getApplicationContext(), BarcodeCaptureActivity.class);
+                intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+                startActivityForResult(intent, RC_BARCODE_CAPTURE);
                 break;
             default:
                 break;
