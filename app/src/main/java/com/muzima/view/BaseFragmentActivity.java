@@ -12,6 +12,7 @@ package com.muzima.view;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,10 +26,12 @@ import com.muzima.R;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaLoggerService;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.fragments.OnboardScreenActivity;
 
 public class BaseFragmentActivity extends AppCompatActivity {
-
+    private static final String TAG = "BaseFragmentActivity";
     private DefaultMenuDropDownHelper dropDownHelper;
 
     @Override
@@ -40,7 +43,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
 
     private void setActionBar() {
         ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null){
+        if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setDisplayShowTitleEnabled(true);
         }
@@ -55,21 +58,32 @@ public class BaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e(TAG, "onResume: BaseFragmentActivity");
+        Log.e(TAG, "onResume: BaseFragmentActivity setCurrentActivity " + this.getClass().getSimpleName());
         ((MuzimaApplication) getApplication()).setCurrentActivity(this);
-        checkDisclaimerOrCredentials();
+        boolean isActivityPropagated = checkDisclaimerOrCredentials();
+
     }
 
-    private void checkDisclaimerOrCredentials() {
+    private boolean checkDisclaimerOrCredentials() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
         boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
-        if (!disclaimerAccepted) {
-            Intent intent = new Intent(this, DisclaimerActivity.class);
+        if (!MuzimaPreferences.getOnBoardingCompletedPreference(getApplicationContext())) {
+            Intent intent = new Intent(this, OnboardScreenActivity.class);
             startActivity(intent);
             finish();
+            return true;
+        } else if (!disclaimerAccepted) {
+            Intent intent = new Intent(this, TermsAndPolicyActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
         } else if (new Credentials(this).isEmpty()) {
             dropDownHelper.launchLoginActivity(false);
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -79,17 +93,17 @@ public class BaseFragmentActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu){
+    public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem syncSHRMenuItem = menu.findItem(R.id.menu_SHR_data_sync);
-        if(syncSHRMenuItem != null) {
+        if (syncSHRMenuItem != null) {
             try {
-                int count = ((MuzimaApplication)getApplicationContext()).getSmartCardController().getSmartCardRecordWithNonUploadedData().size();
-                 if(count > 0){
-                     syncSHRMenuItem.setVisible(true);
-                     syncSHRMenuItem.setTitle(getString(R.string.menu_SHR_data_sync, count));
-                 } else {
-                     syncSHRMenuItem.setVisible(false);
-                 }
+                int count = ((MuzimaApplication) getApplicationContext()).getSmartCardController().getSmartCardRecordWithNonUploadedData().size();
+                if (count > 0) {
+                    syncSHRMenuItem.setVisible(true);
+                    syncSHRMenuItem.setTitle(getString(R.string.menu_SHR_data_sync, count));
+                } else {
+                    syncSHRMenuItem.setVisible(false);
+                }
             } catch (SmartCardController.SmartCardRecordFetchException e) {
                 Log.e(BaseFragmentActivity.class.getSimpleName(), "Error fetching smartcard records");
             }
@@ -107,15 +121,15 @@ public class BaseFragmentActivity extends AppCompatActivity {
         dropDownHelper.removeSettingsMenu(menu);
     }
 
-    public void logEvent(String tag, String details){
-        if(StringUtils.isEmpty(details)){
+    public void logEvent(String tag, String details) {
+        if (StringUtils.isEmpty(details)) {
             details = "{}";
         }
-        MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
-        MuzimaLoggerService.log(muzimaApplication,tag,  details);
+        MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
+        MuzimaLoggerService.log(muzimaApplication, tag, details);
     }
 
-    protected void logEvent(String tag){
-        logEvent(tag,null);
+    protected void logEvent(String tag) {
+        logEvent(tag, null);
     }
 }

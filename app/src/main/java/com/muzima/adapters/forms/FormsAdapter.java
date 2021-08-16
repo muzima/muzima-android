@@ -20,12 +20,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -39,10 +40,12 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     final FormController formController;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private AsyncTask<?, ?, ?> backgroundQueryTask;
+    private Context context;
 
     protected FormsAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId);
         this.formController = formController;
+        this.context = context;
     }
 
     @NonNull
@@ -62,7 +65,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
             holder.tagsLayout = convertView.findViewById(R.id.menu_tags);
             holder.tags = new ArrayList<>();
             holder.downloadedImg = convertView.findViewById(R.id.downloadImg);
-            holder.updateAvailableImg = convertView.findViewById(R.id.updateAvailableImg);
+            holder.updateAvailableImg = convertView.findViewById(R.id.downloadImg);
 
             convertView.setTag(holder);
             setIconImageSize(holder);
@@ -74,14 +77,12 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
             BaseForm form = getItem(position);
 
             holder.name.setText(form.getName());
-            holder.name.setTypeface(Fonts.roboto_medium(getContext()));
 
             String description = form.getDescription();
             if (StringUtils.isEmpty(description)) {
                 description = getContext().getString(R.string.general_description_unavailable);
             }
             holder.description.setText(description);
-            holder.description.setTypeface(Fonts.roboto_regular(getContext()));
             holder.savedTime.setVisibility(View.GONE);
         }
         return convertView;
@@ -104,7 +105,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     }
 
     protected List<String> getSelectedTagUuids() {
-        List<Tag> selectedTags = formController.getSelectedTags();
+        List<Tag> selectedTags = ((MuzimaApplication) context.getApplicationContext()).getFormController().getSelectedTags();
         List<String> tags = new ArrayList<String>();
         for (Tag selectedTag : selectedTags) {
             tags.add(selectedTag.getUuid());
@@ -160,7 +161,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     }
 
     public FormController getFormController() {
-        return formController;
+        return ((MuzimaApplication) context.getApplicationContext()).getFormController();
     }
 
     public interface MuzimaClickListener {

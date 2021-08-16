@@ -20,7 +20,6 @@ import com.muzima.adapters.encounters.EncounterObservationsAdapter;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.DateUtils;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
@@ -89,7 +88,6 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
 
         TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(getResources().getText(R.string.info_observation_unavailable));
-        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
 
     }
 
@@ -98,7 +96,6 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
 
         TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(getResources().getText(R.string.info_observations_load_in_progress));
-        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
     private void setUpEncounterObservations(){

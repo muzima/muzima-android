@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
 import com.muzima.R;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.MainActivity;
-import com.muzima.view.patients.PatientsListActivity;
+import com.muzima.view.MainDashboardActivity;
 
 public class LandingPagePreferenceService extends PreferenceService{
     private final String clientListLandingPageString = "Client List";
@@ -25,9 +25,9 @@ public class LandingPagePreferenceService extends PreferenceService{
         String preferredLandingPage = settings.getString(landingPageKey,defaultLandingPage);
         Intent intent;
         if(StringUtils.equals(preferredLandingPage,context.getString(R.string.general_client_list))){
-           intent = new Intent(context, PatientsListActivity.class);
+           intent = new Intent(context, MainDashboardActivity.class);
         } else {
-            intent = new Intent(context, MainActivity.class);
+            intent = new Intent(context, MainDashboardActivity.class);
         }
         return intent;
     }

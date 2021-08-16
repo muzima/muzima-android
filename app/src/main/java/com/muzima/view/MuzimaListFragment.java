@@ -20,7 +20,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.service.MuzimaLoggerService;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
 public abstract class MuzimaListFragment extends Fragment implements AdapterView.OnItemClickListener {
@@ -41,8 +40,6 @@ public abstract class MuzimaListFragment extends Fragment implements AdapterView
         noDataMsgTextView.setText(noDataMsg);
         TextView noDataTipTextView = formsLayout.findViewById(R.id.no_data_tip);
         noDataTipTextView.setText(noDataTip);
-        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(getActivity()));
-        noDataTipTextView.setTypeface(Fonts.roboto_medium(getActivity()));
     }
 
     @Override

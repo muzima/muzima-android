@@ -8,9 +8,20 @@
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<WebView xmlns:android="http://schemas.android.com/apk/res/android"
-         android:id="@+id/webView"
-         android:layout_width="fill_parent"
-         android:layout_height="fill_parent"
-        />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/form_web_view_toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"/>
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_below="@+id/form_web_view_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

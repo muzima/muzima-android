@@ -49,7 +49,6 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.model.relationship.RelationshipTypeWrap;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.RelationshipJsonMapper;
 import com.muzima.utils.StringUtils;
@@ -167,14 +166,12 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         noDataView = findViewById(R.id.no_data_layout);
         TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(getResources().getText(R.string.info_relationships_unavailable));
-        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
     private void setupStillLoadingView() {
         noDataView = findViewById(R.id.no_data_layout);
         TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(R.string.general_loading_relationships);
-        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
     @Override

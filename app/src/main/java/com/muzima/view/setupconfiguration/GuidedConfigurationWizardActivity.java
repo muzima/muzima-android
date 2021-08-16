@@ -16,23 +16,27 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
-
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.viewpager.widget.ViewPager;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
+import com.muzima.adapters.viewpager.GuidedSetupCardsViewPagerAdapter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.SetupConfigurationTemplate;
@@ -67,14 +71,77 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private int wizardLevel = 0;
     private boolean wizardcompletedSuccessfully = true;
     private GuidedSetupActionLogAdapter setupActionLogAdapter;
+    private ProgressBar mainProgressbar;
+    private ListView setupLogsListView;
+    private View setupLogsContainer;
+    private TextView initialSetupStatusTextView;
+    private Button finishSetupButton;
+    private ViewPager viewPager;
+    private ViewPager viewPagerLg;
+    private CountDownTimer countDownTimer;
+    private ImageView firstDotView;
+    private ImageView secondDotView;
+    private ImageView thirdDotView;
+    private GuidedSetupCardsViewPagerAdapter guidedSetupCardsViewPagerAdapter;
+    private int pageCount;
     private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     public void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guided_setup_wizard);
-        Button finishSetupButton = findViewById(R.id.finish);
+        initializeResources();
+        initiateSetupConfiguration();
+        startViewPagerAnimation();
+    }
 
+    private void startViewPagerAnimation() {
+        countDownTimer = new CountDownTimer(1000 * 60, 5000) {
+            @Override
+            public void onTick(long tick) {
+                if (pageCount > 13) pageCount = 0;
+                viewPager.setCurrentItem(pageCount);
+                viewPagerLg.setCurrentItem(pageCount);
+                updateStepper(pageCount);
+                pageCount = pageCount + 1;
+            }
+
+            @Override
+            public void onFinish() {
+                countDownTimer.cancel();
+                startViewPagerAnimation();
+            }
+        }.start();
+    }
+
+    private void updateStepper(int page) {
+        if (page >= 0 && page <= 4) {
+            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
+            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+        } else if (page >= 5 && page <= 9) {
+            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
+        } else {
+            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
+            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+        }
+    }
+
+    private void initializeResources() {
+        finishSetupButton = findViewById(R.id.finish);
+        mainProgressbar = findViewById(R.id.setup_progress_bar);
+        initialSetupStatusTextView = findViewById(R.id.setup_progress_status_message);
+        viewPager = findViewById(R.id.setup_progress_background);
+        firstDotView = findViewById(R.id.first_page_dot_view);
+        secondDotView = findViewById(R.id.second_page_dot_view);
+        thirdDotView = findViewById(R.id.third_page_dot_view);
+        viewPagerLg = findViewById(R.id.setup_progress_background_lg);
+        guidedSetupCardsViewPagerAdapter = new GuidedSetupCardsViewPagerAdapter(getSupportFragmentManager(), getApplicationContext());
+        viewPager.setAdapter(guidedSetupCardsViewPagerAdapter);
+        viewPagerLg.setAdapter(guidedSetupCardsViewPagerAdapter);
         finishSetupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,11 +152,15 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
         });
         setupActionLogAdapter = new GuidedSetupActionLogAdapter(this, R.id.setup_logs_list);
-        ListView setupLogsListView = findViewById(R.id.setup_logs_list);
+        setupLogsListView = findViewById(R.id.setup_logs_list);
+        setupLogsContainer = findViewById(R.id.setup_logs_layout);
         setupLogsListView.setAdapter(setupActionLogAdapter);
-
+        setupLogsContainer.setVisibility(View.GONE);
+        setupLogsListView.setDividerHeight(0);
+        finishSetupButton.setVisibility(View.GONE);
+        viewPager.setVisibility(View.GONE);
+        viewPagerLg.setVisibility(View.VISIBLE);
         logEvent("VIEW_GUIDED_SETUP_METHOD");
-        initiateSetupConfiguration();
     }
 
     @Override
@@ -772,23 +843,24 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private synchronized void incrementWizardStep() {
+        mainProgressbar.setProgress(wizardLevel);
         wizardLevel++;
     }
 
     private synchronized void evaluateFinishStatus() {
         int TOTAL_WIZARD_STEPS = 10;
         if (wizardLevel == (TOTAL_WIZARD_STEPS)) {
-            TextView finalResult = findViewById(R.id.setup_actions_final_result);
             if (wizardcompletedSuccessfully) {
-                finalResult.setText(getString(R.string.info_setup_complete_success));
+                initialSetupStatusTextView.setText(getString(R.string.info_setup_complete_success));
             } else {
-                finalResult.setText(getString(R.string.info_setup_complete_fail));
-                finalResult.setTextColor(Color.RED);
+                initialSetupStatusTextView.setText(getString(R.string.info_setup_complete_fail));
+                initialSetupStatusTextView.setTextColor(Color.RED);
             }
-            LinearLayout progressBarLayout = findViewById(R.id.progress_bar_container);
-            progressBarLayout.setVisibility(View.GONE);
-            LinearLayout nextButtonLayout = findViewById(R.id.next_button_layout);
-            nextButtonLayout.setVisibility(View.VISIBLE);
+            mainProgressbar.setProgress(10);
+            finishSetupButton.setVisibility(View.VISIBLE);
+            setupLogsContainer.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.VISIBLE);
+            viewPagerLg.setVisibility(View.GONE);
         }
     }
 

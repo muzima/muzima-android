@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/item_cohort_layout"
+        android:layout_alignParentTop="true"
+        android:paddingEnd="16dp"
+        android:paddingStart="24dp"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_toStartOf="@+id/metadata_container"
+            android:layout_alignParentStart="true"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/item_cohort_tags_list_view"
+                android:layout_marginTop="4dp"
+                android:scrollbars="none"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/item_cohort_name_text_view"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                android:fontFamily="@font/montserrat_regular"
+                android:layout_marginBottom="6dp"
+                android:layout_marginEnd="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/item_cohort_description_text_view"
+                android:layout_marginTop="8dp"
+                android:textSize="12sp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="?attr/primaryTextColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/metadata_container"
+            android:layout_alignParentEnd="true"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/item_cohort_status_image_view"
+                android:layout_gravity="end"
+                android:layout_width="24dp"
+                android:layout_height="24dp"/>
+
+            <TextView
+                android:id="@+id/item_cohort_clients_count_text_view"
+                android:textColor="?attr/primaryTextColor"
+                android:layout_marginTop="6dp"
+                android:textSize="12sp"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@+id/item_cohort_layout"
+        android:layout_width="match_parent"
+        android:background="@color/divider_color"
+        android:layout_marginEnd="14dp"
+        android:layout_marginStart="14dp"
+        android:layout_height="1dp"/>
+
+</RelativeLayout>

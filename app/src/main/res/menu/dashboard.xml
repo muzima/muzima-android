@@ -8,7 +8,8 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:custom="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
             android:id="@+id/menu_SHR_data_sync"

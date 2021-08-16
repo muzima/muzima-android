@@ -15,6 +15,8 @@ import androidx.fragment.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
@@ -23,6 +25,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
+import com.muzima.view.ClientSummaryActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.ArrayList;
@@ -49,8 +52,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         this.encounterController = encounterController;
         this.conceptController = conceptController;
         this.observationController = observationController;
-        Patient patient = (Patient) fragmentActivity.getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
-        patientUuid = patient.getUuid();
+        this.patientUuid = (String) fragmentActivity.getIntent().getSerializableExtra(ClientSummaryActivity.PATIENT_UUID);
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {

@@ -23,7 +23,6 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.PatientReport;
 import com.muzima.controller.PatientReportController;
-import com.muzima.utils.Fonts;
 
 public abstract class ReportsAdapter extends ListAdapter<PatientReport> {
     final PatientReportController patientReportController;
@@ -85,7 +84,6 @@ public abstract class ReportsAdapter extends ListAdapter<PatientReport> {
 
         void setTextToName(String text) {
             name.setText(text);
-            name.setTypeface(Fonts.roboto_medium(getContext()));
         }
 
         void setPendingUpdateTextColor(){

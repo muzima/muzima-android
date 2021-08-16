@@ -14,8 +14,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+
 import com.muzima.R;
 
 public class ThemeUtils {
@@ -49,7 +51,7 @@ public class ThemeUtils {
         }
     }
 
-    private void setLightMode(Activity activity){
+    private void setLightMode(Activity activity) {
         lightMode = getPreferenceLightMode(activity);
     }
 
@@ -61,7 +63,7 @@ public class ThemeUtils {
         }
     }
 
-    private static boolean getPreferenceLightMode(Context context) {
+    public static boolean getPreferenceLightMode(Context context) {
         //check if night mode enabled or not
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String lightModeKey = context.getResources().getString(R.string.preference_light_mode);
@@ -81,11 +83,25 @@ public class ThemeUtils {
         }
     }
 
-    public static Drawable getIconWarning(Context context){
+    public static Drawable getIconWarning(Context context) {
         return getIcon(context, R.drawable.ic_warning_light, R.drawable.ic_warning);
     }
 
-    public static Drawable getIconRefresh(Context context){
+    public static Drawable getIconRefresh(Context context) {
         return getIcon(context, R.drawable.ic_refresh_light, R.drawable.ic_refresh);
+    }
+
+    public static Drawable getDrawableFromThemeAttributes(Activity context, int attribute) {
+        int[] attrs = new int[]{attribute};
+        context.setTheme( new ThemeUtils().getThemeResource(context));
+        TypedArray ta = context.obtainStyledAttributes(attrs);
+        Drawable drawableFromTheme = ta.getDrawable(0);
+        ta.recycle();
+        return drawableFromTheme;
+    }
+
+    private int getThemeResource(Activity context) {
+        if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(context)) return R.style.AppTheme_Light;
+        else return R.style.AppTheme_Dark;
     }
 }

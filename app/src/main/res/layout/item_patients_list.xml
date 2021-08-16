@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_patient_container"
+    android:paddingBottom="8dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ListView
+        android:id="@+id/tag_list_view"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"/>
+
+    <LinearLayout
+        android:id="@+id/item_patient_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="2dp">
+
+        <ImageView
+            android:id="@+id/genderImg"
+            android:padding="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:contentDescription="@string/gender_image_content_description"
+            android:src="@drawable/gender_female" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="3dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/name"
+                    style="@style/ListHeader"
+                    android:text="Name of Patient"
+                    android:fontFamily="@fonts/Montserrat-Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/identifier"
+                    style="@style/ListDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="12dp"
+                    android:gravity="right" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_alignParentStart="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="7dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/dateOfBirth"
+                        style="@style/ListDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_marginEnd="6dp" />
+
+                    <TextView
+                        android:id="@+id/distanceToClientAddress"
+                        style="@style/ListDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:gravity="right" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/age_text_label"
+                    android:layout_marginEnd="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="4dp"
+                    android:textSize="12sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+
+

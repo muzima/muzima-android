@@ -77,9 +77,8 @@ public class LoginActivity extends Activity {
     private CheckBox updatePassword;
     private TextView versionText;
     private BackgroundAuthenticationTask backgroundAuthenticationTask;
-    private TextView authenticatingText;
+    private Button authenticatingText;
     private TextView helpText;
-    private Button barcodeScanner;
     private static final int RC_BARCODE_CAPTURE = 9001;
 
     private ValueAnimator flipFromLoginToAuthAnimator;
@@ -136,7 +135,6 @@ public class LoginActivity extends Activity {
 
     private void removeServerUrlAsInput() {
         serverUrlText.setVisibility(View.GONE);
-        barcodeScanner.setVisibility(View.GONE);
         findViewById(R.id.server_url_divider).setVisibility(View.GONE);
     }
 
@@ -247,36 +245,6 @@ public class LoginActivity extends Activity {
             }
         });
 
-        barcodeScanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent;
-                intent = new Intent(getApplicationContext(), BarcodeCaptureActivity.class);
-                intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
-                intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
-
-                startActivityForResult(intent, RC_BARCODE_CAPTURE);
-            }
-        });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RC_BARCODE_CAPTURE) {
-            if (resultCode == CommonStatusCodes.SUCCESS) {
-                if (data != null) {
-                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
-                    serverUrlText.setText(barcode.displayValue);
-                } else {
-                    Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null");
-                }
-            } else {
-                Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null "+CommonStatusCodes.getStatusCodeString(resultCode));
-            }
-        }
-        else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
     private boolean validInput() {
@@ -294,7 +262,6 @@ public class LoginActivity extends Activity {
         authenticatingText = findViewById(R.id.authenticatingText);
         versionText = findViewById(R.id.version);
         helpText = findViewById(R.id.helpText);
-        barcodeScanner = findViewById(R.id.bar_code_scan);
     }
 
     public void onUpdatePasswordCheckboxClicked(View view) {

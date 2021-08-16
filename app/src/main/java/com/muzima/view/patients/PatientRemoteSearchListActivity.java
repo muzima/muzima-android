@@ -30,7 +30,6 @@ import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
@@ -116,9 +115,6 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
 
         TextView noDataTipTextView = findViewById(R.id.no_data_tip);
         noDataTipTextView.setText(R.string.hint_client_remote_search);
-
-        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
-        noDataTipTextView.setTypeface(Fonts.roboto_medium(this));
 
         createPatientBtn = findViewById(R.id.create_patient_btn);
         createPatientBtn.setOnClickListener(new View.OnClickListener() {

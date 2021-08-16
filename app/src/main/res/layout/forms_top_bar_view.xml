@@ -1,0 +1,76 @@
+<LinearLayout
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:weightSum="2"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:background="@drawable/incomplete_forms_gradient"
+        android:id="@+id/dashboard_forms_incomplete_forms_view"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingBottom="4dp"
+        android:paddingStart="6dp">
+
+        <TextView
+            android:id="@+id/dashboard_forms_incomplete_forms_count_view"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="##"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="@color/primary_white"
+            android:textSize="34sp" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_width="wrap_content"
+            android:text="@string/info_incomplete_form"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="@color/primary_white"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@drawable/complete_forms_gradient"
+        android:id="@+id/dashboard_forms_complete_forms_view"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingBottom="4dp"
+        android:paddingEnd="6dp"
+        android:paddingStart="6dp">
+
+        <TextView
+            android:id="@+id/dashboard_forms_complete_forms_count_view"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="##"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="@color/primary_white"
+            android:textSize="34sp" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_width="wrap_content"
+            android:text="@string/info_complete_form"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="@color/primary_white"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -24,7 +24,6 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
-import com.muzima.utils.Fonts;
 
 /**
  * Responsible for displaying Cohorts as list.
@@ -102,7 +101,6 @@ public abstract class CohortsAdapter extends ListAdapter<Cohort> {
 
         void setTextToName(String text) {
             name.setText(text);
-            name.setTypeface(Fonts.roboto_medium(getContext()));
         }
 
          void setPendingUpdateTextColor(){

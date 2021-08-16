@@ -15,17 +15,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+
 import androidx.appcompat.app.AppCompatDelegate;
+
 import android.view.Menu;
 import android.view.MenuItem;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.LanguageUtil;
-import com.muzima.utils.MuzimaPreferenceUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.DefaultMenuDropDownHelper;
+import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.settings.SettingsPreferenceFragment;
 
@@ -73,7 +76,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
-        getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getDelegate().getSupportActionBar() != null)
+            getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private AppCompatDelegate getDelegate() {
@@ -95,12 +99,18 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                launchDashboard();
                 return true;
         }
         DefaultMenuDropDownHelper dropDownHelper = new DefaultMenuDropDownHelper(this);
         boolean result = dropDownHelper.onOptionsItemSelected(item);
         return result || super.onOptionsItemSelected(item);
+    }
+
+    private void launchDashboard() {
+        Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -121,15 +131,20 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         finish();
     }
 
-    public void logEvent(String tag, String details){
-        if(StringUtils.isEmpty(details)){
+    public void logEvent(String tag, String details) {
+        if (StringUtils.isEmpty(details)) {
             details = "{}";
         }
-        MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
-        MuzimaLoggerService.log(muzimaApplication,tag,  details);
+        MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
+        MuzimaLoggerService.log(muzimaApplication, tag, details);
     }
 
-    protected void logEvent(String tag){
-        logEvent(tag,null);
+    protected void logEvent(String tag) {
+        logEvent(tag, null);
+    }
+
+    @Override
+    public void onBackPressed() {
+        launchDashboard();
     }
 }

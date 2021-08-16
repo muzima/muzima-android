@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/primaryBackgroundColor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="12dp"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/policy_and_terms_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/primary_black"
+            android:elevation="14dp"
+            app:title="@string/general_policy_title" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <CheckBox
+                android:id="@+id/license_disclaimer_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="12dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@string/info_license_and_disclaimer" />
+
+            <ImageView
+                android:id="@+id/expand_license_disclaimer_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/ic_action_arrow_up_dark" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="66dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/info_agree_to_muzima_license_and_disclaimer" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="62dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/border_button_gray" />
+
+        <ScrollView
+            android:id="@+id/license_disclaimer_container_text_view"
+            android:layout_margin="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <TextView
+                android:layout_marginStart="46dp"
+                android:paddingEnd="6dp"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/info_disclaimer" />
+
+        </ScrollView>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <CheckBox
+                android:id="@+id/privacy_policy_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="12dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@string/info_privacy_policy_statement" />
+
+            <ImageView
+                android:id="@+id/expand_privacy_policy_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/ic_action_arrow_down_dark" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="66dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/info_agree_to_muzima_privacy_policy_statement" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="62dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/border_button_gray" />
+
+        <ScrollView
+            android:id="@+id/privacy_policy_container_text_view"
+            android:layout_margin="12dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="46dp"
+                android:paddingEnd="6dp"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/privacy_policy" />
+
+        </ScrollView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <CheckBox
+                android:id="@+id/terms_and_conditions_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="12dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="@string/info_terms_and_conditions" />
+
+            <ImageView
+                android:id="@+id/expand_terms_and_conditions_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/ic_action_arrow_down_dark" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="66dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/info_agree_to_muzima_terms_and_conditions" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="62dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/border_button_gray" />
+
+        <ScrollView
+            android:id="@+id/terms_and_conditions_container_text_view"
+            android:visibility="gone"
+            android:layout_margin="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="42dp"
+                android:paddingEnd="6dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/info_disclaimer"/>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp">
+
+        <TextView
+            android:id="@+id/policy_accept_all_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/border_button_gray"
+            android:paddingTop="9dp"
+            android:fontFamily="@font/roboto_medium"
+            android:paddingBottom="9dp"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:textAllCaps="true"
+            android:text="@string/info_accept_all"
+            android:textColor="@color/primary_blue"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/policy_next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/roboto_medium"
+            android:backgroundTint="@color/primary_blue"
+            android:enabled="false"
+            android:textAllCaps="true"
+            android:text="@string/general_next" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

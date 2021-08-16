@@ -34,7 +34,9 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
     public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
-                                      PatientController patientController, String cohortId, MuzimaGPSLocation currentLocation) {
+                                      PatientController patientController,
+                                      String cohortId,
+                                      MuzimaGPSLocation currentLocation) {
         super(context, textViewResourceId);
         Context context1 = context;
         this.patientController = patientController;

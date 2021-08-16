@@ -27,7 +27,6 @@ import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.EncounterWithObservations;
 import com.muzima.model.observation.Encounters;
 import com.muzima.utils.DateUtils;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -93,7 +92,6 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
                 observationValue.setVisibility(View.VISIBLE);
                 observationComplex.setVisibility(View.GONE);
 
-                observationValue.setTypeface(Fonts.roboto_medium(getContext()));
                 observationValue.setTextColor(conceptColor);
                 observationValue.setText(observation.getValueAsString());
             }
@@ -101,7 +99,6 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
             divider.setBackgroundColor(conceptColor);
 
             observationDate.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
-            observationDate.setTypeface(Fonts.roboto_regular(getContext()));
             observationDate.setTextColor(conceptColor);
 
             conceptQuestion.setBackgroundColor(conceptColor);

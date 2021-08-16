@@ -8,33 +8,77 @@
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="4dp"
+    android:paddingTop="2dp"
+    android:paddingEnd="4dp"
+    android:orientation="vertical">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-    <TextView
-            android:id="@+id/setup_action"
-            android:textColor="?attr/primaryTextColor"
-            android:layout_width="wrap_content"
-            style="@style/SetUpLogList"
-            android:layout_height="wrap_content"
-    />
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
-        <TextView
-                android:id="@+id/setup_action_result_status"
+    <LinearLayout
+        android:id="@+id/item_log_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/item_log_info_view"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/item_guided_setup_status_image_view"
+                android:src="@drawable/ic_action_tick"
+                android:layout_alignParentStart="true"
+                android:layout_width="18dp"
+                android:layout_height="18dp"/>
+
+            <TextView
+                android:id="@+id/setup_action_result"
+                android:layout_toEndOf="@+id/item_guided_setup_status_image_view"
+                style="@style/SetUpLogList"
+                android:textSize="12sp"
+                android:layout_marginStart="6dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/SetUpLogList"
-                android:textColor="@color/primary_blue"/>
-        <TextView
-                android:id="@+id/setup_action_result"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/primary_blue"
-                style="@style/SetUpLogList"
-                android:layout_marginStart="2dp"/>
+                android:textColor="?attr/primaryTextColor" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+<!--            <TextView-->
+<!--                android:id="@+id/setup_action_result_status"-->
+<!--                style="@style/SetUpLogList"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/primary_blue" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/setup_action_result"-->
+<!--                style="@style/SetUpLogList"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="2dp"-->
+<!--                android:textColor="@color/primary_blue" />-->
+        </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/item_log_info_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_action_info"
+        android:visibility="gone" />
+
+</RelativeLayout>

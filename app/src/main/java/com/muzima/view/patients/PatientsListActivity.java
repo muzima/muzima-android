@@ -11,10 +11,8 @@
 package com.muzima.view.patients;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -29,6 +27,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.legacy.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -36,11 +36,15 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
-import android.view.Menu;
-import android.view.MenuItem;
-import androidx.appcompat.widget.SearchView;
+import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.legacy.app.ActionBarDrawerToggle;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
@@ -49,6 +53,7 @@ import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientTag;
+import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.PatientController;
@@ -59,31 +64,17 @@ import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Constants;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.MainActivity;
+import com.muzima.view.ClientSummaryActivity;
+import com.muzima.view.MainDashboardActivity;
+
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.FormsActivity;
-import com.muzima.view.forms.RegistrationFormsActivity;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import android.widget.Toast;
-
-import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
-import static android.view.View.GONE;
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
-import static com.muzima.utils.Constants.DataSyncServiceConstants;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
-import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
-import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
-
-import com.muzima.api.model.SmartCardRecord;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -91,12 +82,20 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+import static com.muzima.utils.Constants.DataSyncServiceConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
+import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
+
 public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
         ListAdapter.BackgroundListQueryTaskListener {
-
+    private static final int RC_BARCODE_CAPTURE = 9001;
+    private static final String TAG = "PatientsListActivity";
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
-    private static final String QUICK_SEARCH = "quickSearch";
+    public static final String QUICK_SEARCH = "quickSearch";
     private ListView listView;
     private boolean quickSearch = false;
     private String cohortId = null;
@@ -104,10 +103,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private FrameLayout progressBarContainer;
     private View noDataView;
     private String searchString;
-    private FloatingActionButton fabSearchButton;
     private LinearLayout searchServerLayout;
-    private SearchView searchView;
-    private MenuItem searchMenuItem;
+    private SearchView searchMenuItem;
     private boolean intentBarcodeResults = false;
 
     private PatientController patientController;
@@ -127,6 +124,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private TextView searchDialogTextView;
     private Button yesOptionSHRSearchButton;
     private Button noOptionSHRSearchButton;
+    private Toolbar toolbar;
 
     private ProgressDialog serverSearchProgressDialog;
     private ProgressDialog patientRegistrationProgressDialog;
@@ -134,8 +132,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private static final boolean DEFAULT_SHR_STATUS = false;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private boolean isSHREnabled;
-    private static final int RC_BARCODE_CAPTURE = 9001;
-
+    private boolean searchViewClosed;
     private DrawerLayout mainLayout;
     private PatientTagsListAdapter tagsListAdapter;
     private TagPreferenceService tagPreferenceService;
@@ -153,6 +150,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         setTitle(R.string.general_clients);
 
         muzimaApplication = (MuzimaApplication) getApplicationContext();
+        toolbar = findViewById(R.id.patient_list_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         if (intentExtras != null) {
             quickSearch = intentExtras.getBoolean(QUICK_SEARCH);
@@ -164,19 +167,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         progressBarContainer = findViewById(R.id.progressbarContainer);
         setupListView(cohortId);
-
-        fabSearchButton = findViewById(R.id.fab_search);
-        fabSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchMenuItem.setVisible(true);
-                searchView.setIconified(false);
-                searchView.requestFocusFromTouch();
-                fabSearchButton.setVisibility(GONE);
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(searchView, InputMethodManager.SHOW_IMPLICIT);
-            }
-        });
 
         searchServerLayout = findViewById(R.id.search_server_layout);
 
@@ -205,6 +195,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         logEvent("VIEW_CLIENT_LIST", "{\"cohortId\":\"" + cohortId + "\"}");
 
         setupNoDataView();
+
+        Log.e(TAG, "onCreate:  setup patients list ");
 
     }
 
@@ -238,38 +230,15 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.client_list, menu);
-
-        setUpGeoMappingFeatureMenuItems(menu);
-        setUpSHRFeatureMenuItems(menu);
         setUpSearchFeatureMenuItems(menu);
-        super.onCreateOptionsMenu(menu);
         return true;
     }
 
-    private void setUpGeoMappingFeatureMenuItems(Menu menu) {
-        MenuItem geoMappingFeatureMenuItem = menu.findItem(R.id.clients_geomapping);
-        if (isGeoMappingFeatureEnabled()) {
-            geoMappingFeatureMenuItem.setVisible(true);
-        } else {
-            geoMappingFeatureMenuItem.setVisible(false);
-        }
-    }
-
-    private void setUpSHRFeatureMenuItems(Menu menu) {
-        MenuItem shrCardItem = menu.findItem(R.id.scan_SHR_card);
-        if (isSHRSettingEnabled()) {
-            shrCardItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS);
-        } else {
-            shrCardItem.setVisible(false);
-        }
-    }
-
     private void setUpSearchFeatureMenuItems(Menu menu) {
-        searchMenuItem = menu.findItem(R.id.search);
-        searchView = (SearchView) searchMenuItem.getActionView();
-
-        searchView.setQueryHint(getString(R.string.hint_client_search));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchMenuItem = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchMenuItem.setMinimumWidth(toolbar.getWidth());
+        searchMenuItem.setQueryHint(getString(R.string.hint_client_search));
+        searchMenuItem.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 return false;
@@ -283,44 +252,44 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 return true;
             }
         });
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+        searchMenuItem.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
-                    fabSearchButton.setVisibility(GONE);
-                } else {
-                    fabSearchButton.postDelayed(new Runnable() {
-                        public void run() {
-                            fabSearchButton.setVisibility(VISIBLE);
-                        }
-                    }, 500);
-
-                    if (searchView.getQuery().toString().trim().isEmpty()) {
-                        searchMenuItem.setVisible(false);
-                    }
-                }
+                if (!hasFocus) {
+                    onBackPressed();
+                } else
+                    searchViewClosed = false;
             }
         });
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+        searchMenuItem.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
-                    fabSearchButton.setVisibility(GONE);
-                } else {
-                    fabSearchButton.postDelayed(new Runnable() {
-                        public void run() {
-                            fabSearchButton.setVisibility(VISIBLE);
-                        }
-                    }, 500);
-                    searchMenuItem.setVisible(false);
-                }
+                if (!hasFocus) {
+                    onBackPressed();
+                } else
+                    searchViewClosed = false;
             }
         });
 
-        if (quickSearch) {
-            searchMenuItem.setVisible(true);
-            searchView.requestFocus();
-        }
+        searchMenuItem.setEnabled(true);
+        handleShowSearchView();
+
+        searchMenuItem.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                handleShowSearchView();
+                return true;
+            }
+        });
+    }
+
+    private void handleShowSearchView() {
+        searchMenuItem.setIconified(true);
+        searchMenuItem.requestFocus();
+        searchMenuItem.callOnClick();
+        searchMenuItem.onActionViewExpanded();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(searchMenuItem, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private void activateRemoteAfterThreeCharacterEntered(String searchString) {
@@ -330,84 +299,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             searchServerLayout.setVisibility(View.VISIBLE);
     }
 
-    // Confirmation dialog for confirming if the patient have an existing ID
-    private void callConfirmationDialog() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(PatientsListActivity.this);
-        builder.setCancelable(true)
-                .setIcon(ThemeUtils.getIconWarning(this))
-                .setTitle(getResources().getString(R.string.title_logout_confirm))
-                .setMessage(getResources().getString(R.string.confirm_patient_id_exists))
-                .setPositiveButton(R.string.general_yes, yesClickListener())
-                .setNegativeButton(R.string.general_no, noClickListener()).create().show();
-    }
-
-    private Dialog.OnClickListener yesClickListener() {
-        return new Dialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                searchMenuItem.setVisible(true);
-                searchView.setIconified(false);
-                searchView.requestFocus();
-            }
-        };
-    }
-
-    private Dialog.OnClickListener noClickListener() {
-        return new Dialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(PatientsListActivity.this, RegistrationFormsActivity.class));
-            }
-        };
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_client_add_icon:
-                callConfirmationDialog();
-                return true;
-
-            case R.id.menu_client_add_text:
-                callConfirmationDialog();
-                return true;
-
-            case R.id.bar_card_scan:
-                invokeBarcodeScan();
-                return true;
-
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-
-            case R.id.menu_dashboard:
-                launchDashboardActivity();
-                return true;
-
-            case R.id.menu_complete_form_data:
-                launchCompleteFormsActivity();
-                return true;
-
-            case R.id.scan_SHR_card:
-                readSmartCard();
-                return true;
-
-            case R.id.menu_tags:
-                if (mainLayout.isDrawerOpen(GravityCompat.END)) {
-                    mainLayout.closeDrawer(GravityCompat.END);
-                } else {
-                    mainLayout.openDrawer(GravityCompat.END);
-                }
-                return true;
-
-            case R.id.clients_geomapping:
-                navigateToClientsLocationMap();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            launchDashboardActivity();
         }
+        return true;
     }
 
     @Override
@@ -424,10 +321,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         tagsListAdapter.reloadData();
     }
 
-    private void navigateToClientsLocationMap() {
-        Intent intent = new Intent(this, PatientsLocationMapActivity.class);
-        startActivity(intent);
-    }
 
     private void prepareLocalSearchNotifyDialog(Patient patient) {
 
@@ -511,6 +404,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     private void setupListView(String cohortId) {
         listView = findViewById(R.id.list);
+        listView.setDividerHeight(0);
         patientAdapter = new PatientsLocalSearchAdapter(this, R.layout.layout_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), cohortId, getCurrentGPSLocation());
 
@@ -537,11 +431,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
             TextView noDataTipTextView = findViewById(R.id.no_data_tip);
             noDataTipTextView.setText(R.string.hint_client_local_search);
-
-            noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
-            noDataTipTextView.setTypeface(Fonts.roboto_medium(this));
         } catch (PatientController.PatientLoadException ex) {
-            Toast.makeText(PatientsListActivity.this,R.string.error_patient_search,Toast.LENGTH_LONG).show();
+            Toast.makeText(PatientsListActivity.this, R.string.error_patient_search, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -549,9 +440,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         patientAdapter.cancelBackgroundTask();
         Patient patient = patientAdapter.getItem(position);
-        Intent intent = new Intent(this, PatientSummaryActivity.class);
-
-        intent.putExtra(PatientSummaryActivity.PATIENT, patient);
+        Intent intent = new Intent(this, ClientSummaryActivity.class);
+        intent.putExtra(ClientSummaryActivity.CALLING_ACTIVITY, PatientsListActivity.class.getSimpleName());
+        intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
         startActivity(intent);
     }
 
@@ -597,6 +488,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
+        super.onActivityResult(requestCode, resultCode, dataIntent);
         switch (requestCode) {
             case SMARTCARD_READ_REQUEST_CODE:
                 processSmartCardReadResult(requestCode, resultCode, dataIntent);
@@ -604,19 +496,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                 serverSearchProgressDialog.cancel();
                 break;
             case RC_BARCODE_CAPTURE:
-                if (requestCode == RC_BARCODE_CAPTURE) {
-                    if (resultCode == CommonStatusCodes.SUCCESS) {
-                        if (dataIntent != null) {
-                            intentBarcodeResults = true;
-                            Barcode barcode = dataIntent.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
-                            searchView.setQuery(barcode.displayValue, false);
-                        } else {
-                            Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null");
-                        }
-                    } else {
-                        Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null "+CommonStatusCodes.getStatusCodeString(resultCode));
-                    }
-                }
+               invokeBarcodeScan();
                 break;
             default:
                 break;
@@ -679,17 +559,24 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     @Override
     public void onBackPressed() {
-        patientAdapter.cancelBackgroundTask();
-        if (getCallingActivity() == null) {
-            launchDashboardActivity();
+        Log.e(TAG, "onBackPressed: searchViewClosed" + searchViewClosed);
+        if (!searchViewClosed) {
+            searchViewClosed = true;
         } else {
-            super.onBackPressed();
+            patientAdapter.cancelBackgroundTask();
+            if (getCallingActivity() == null) {
+                launchDashboardActivity();
+            } else {
+                super.onBackPressed();
+                finish();
+            }
         }
     }
 
     private void launchDashboardActivity() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void launchCompleteFormsActivity() {
@@ -985,9 +872,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         };
         mainLayout.setDrawerListener(actionbarDrawerToggle);
         mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
         TextView tagsNoDataMsg = findViewById(R.id.tags_no_data_msg);
-        tagsNoDataMsg.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
     private void initSelectedTags() {

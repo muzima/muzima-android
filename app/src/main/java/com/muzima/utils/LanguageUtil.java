@@ -22,7 +22,7 @@ public class LanguageUtil {
     }
 
     public void onResume(Activity activity) {
-        if (!currentLocale.equals(getSelectedLocale(activity))) {
+        if (currentLocale != null && !currentLocale.equals(getSelectedLocale(activity))) {
             Intent intent = activity.getIntent();
             activity.finish();
             OverridePendingTransition.invoke(activity);

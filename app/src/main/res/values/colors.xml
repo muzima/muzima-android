@@ -11,36 +11,31 @@
 
 <resources>
     <color name="primary_color">#105b63</color>
-    <color name="primary_blue">#12A5F4</color>
-    <color name="primary_white">#FFFFFF</color>
+    <color name="primary_blue">#137EFE</color>
+    <color name="primary_white">#FDFFFCFC</color>
     <color name="hint_text_grey">#888888</color>
-    <color name="primary_black">#000000</color>
+    <color name="primary_black">#303030</color>
     <color name="theme_color">#333333</color>
+    <color name="fab_tint_color">#0D57AF</color>
     <color name="theme_color_light">#eaeaea</color>
     <color name="theme_color_background">@android:color/white</color>
     <color name="secondary_text">#888888</color>
     <color name="secondary_text_light">#777777</color>
     <color name="divider">#d4d4d4</color>
-    <color name="dark_button_background">#262626</color>
+    <color name="dark_button_background">#303030</color>
     <color name="primary_background">@android:color/white</color>
-
     <color name="tab_indicator_pressed">#6633B5E5</color>
-    <color name="tab_indicator">#09A9E4</color>
-    <color name="tab_background_color_dark">#1a1a1a</color>
+    <color name="tab_indicator">#137EFE</color>
+    <color name="tab_background_color_dark">#303030</color>
     <color name="tab_background_color_light">#e8e8e8</color>
-
     <color name="listitem_state_pressed">#6633B5E5</color>
     <color name="listitem_state_focused">#6633B5E5</color>
-
-    <color name="drawer_background">#232323</color>
+    <color name="drawer_background">#303030</color>
     <color name="drawer_background_light">#f0f0f0</color>
-    <color name="drawer_header_separator_background">#161616</color>
-
+    <color name="drawer_header_separator_background">#303030</color>
     <color name="list_section_header_background">#bb09A9E4</color>
-
     <color name="observation_scroller_background">#d4d4d4</color>
     <color name="observation_by_encounter_header_background">#888888</color>
-
     <color name="previous_button_color">#888888</color>
     <color name="next_button_color">#ff13d4a1</color>
     <color name="login_noConnectivity_background">#962d3e</color>
@@ -52,8 +47,27 @@
     <color name="login_divider_background">#0d484e</color>
     <color name="login_divider_background_light">#cedadb</color>
     <color name="dashboard_base_text_color">#eeeeee</color>
-    <color name="dashboard_base_text_color_light">#111111</color>
-    <color name="sync_text_background">#222222</color>
+    <color name="dashboard_base_text_color_light">#303030</color>
+    <color name="progress_max">#0AE613</color>
+    <color name="sync_text_background">#303030</color>
     <color name="sync_text_background_light">#dddddd</color>
-
+    <color name="default_black">#000000</color>
+    <color name="white_smoke">#A1A0A0</color>
+    <color name="dark_smoke">#5EA1A0A0</color>
+    <color name="card_background">#8AA1A0A0</color>
+    <color name="dark_bottom_sheet_background">#252424</color>
+    <color name="divider_color">#48A1A0A0</color>
+    <color name="list_selection_background">#60137EFE</color>
+    <color name="green_370">#0BA511</color>
+    <color name="hint_text_grey_opaque">#7CA1A0A0</color>
+    <color name="hint_blue_opaque">#61137EFE</color>
+    <color name="white_smoke_transparent">#54FFFFFF</color>
+    <color name="white">#fff</color>
+    <color name="light_blue">#5EA4F4</color>
+    <color name="bottom_navigation_background">#CD2B2A2A</color>
+    <color name="dark_blue">#E62B42BC</color>
+    <color name="primary_red">#B00020</color>
+    <color name="primary_blue_opaque">#80137EFE</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="tag_color">#51FFFFFF</color>
 </resources>
