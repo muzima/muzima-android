@@ -103,6 +103,7 @@ public class DataSyncService extends IntentService {
                 updateNotificationMsg(getString(R.string.info_patient_data_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadPatientsInCohorts(broadcastIntent, cohortIds);
+                    consolidatePatients();
                     downloadObservationsAndEncounters(broadcastIntent, cohortIds);
                 }
                 break;
@@ -111,6 +112,7 @@ public class DataSyncService extends IntentService {
                 updateNotificationMsg(getString(R.string.info_patient_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadPatientsInCohorts(broadcastIntent, cohortIdsToDownload);
+                    consolidatePatients();
                 }
                 break;
             case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_DATA_ONLY:
@@ -275,6 +277,10 @@ public class DataSyncService extends IntentService {
             int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByCohortUUIDs(cohortIds);
             broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
         }
+    }
+
+    private void consolidatePatients(){
+        muzimaSyncService.consolidatePatients();
     }
 
     private void checkAndDeleteTemporaryDataForProcessedFormData(Intent broadcastIntent){
