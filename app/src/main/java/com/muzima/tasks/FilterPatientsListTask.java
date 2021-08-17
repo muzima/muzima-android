@@ -29,13 +29,18 @@ public class FilterPatientsListTask implements Runnable {
         try {
             List<Patient> patientList = new ArrayList<>();
             List<CohortFilter> filters = event.getFilters();
-            for (CohortFilter filter : filters) {
-                if (filter.getCohort() == null && !event.isNoSelectionEvent()) {
-                    patientsListFilterCallback.onPatientsFiltered(((MuzimaApplication) context.getApplicationContext()).getPatientController()
-                            .getAllPatients());
-                } else if (filter.getCohort() != null && !event.isNoSelectionEvent()) {
-                    patientList = ((MuzimaApplication) context.getApplicationContext()).getPatientController()
-                            .getPatientsForCohorts(new String[]{filter.getCohort().getUuid()});
+            if(filters.size() == 0){
+                patientList = ((MuzimaApplication) context.getApplicationContext()).getPatientController()
+                        .getAllPatients();
+            }else {
+                for (CohortFilter filter : filters) {
+                    if (filter.getCohort() == null && !event.isNoSelectionEvent()) {
+                        patientList = ((MuzimaApplication) context.getApplicationContext()).getPatientController()
+                                .getAllPatients();
+                    } else if (filter.getCohort() != null && !event.isNoSelectionEvent()) {
+                        patientList = ((MuzimaApplication) context.getApplicationContext()).getPatientController()
+                                .getPatientsForCohorts(new String[]{filter.getCohort().getUuid()});
+                    }
                 }
             }
             patientsListFilterCallback.onPatientsFiltered(patientList);
