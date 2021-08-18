@@ -177,9 +177,23 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
                             @Override
                             public void run() {
                                 cohortList.clear();
-                                cohortList.add(new CohortFilter(null, true));
+                                Log.e(getClass().getSimpleName(),"Debugging size is === "+selectedCohortFilters.size());
+                                if (selectedCohortFilters.size()==0)
+                                    cohortList.add(new CohortFilter(null, true));
+                                else if(selectedCohortFilters.size()==1 && selectedCohortFilters.get(0).getCohort()==null)
+                                    cohortList.add(new CohortFilter(null, true));
+                                else
+                                    cohortList.add(new CohortFilter(null, false));
                                 for (Cohort cohort : cohorts) {
-                                    cohortList.add(new CohortFilter(cohort, false));
+                                    boolean isCohortSeleted = false;
+                                    for(CohortFilter cohortFilter : selectedCohortFilters){
+                                        if(cohortFilter.getCohort() != null) {
+                                            if (cohortFilter.getCohort().getUuid().equals(cohort.getUuid())) {
+                                                isCohortSeleted = true;
+                                            }
+                                        }
+                                    }
+                                    cohortList.add(new CohortFilter(cohort, isCohortSeleted));
                                 }
                                 cohortFilterAdapter.notifyDataSetChanged();
                                 if (showFilter)
@@ -398,9 +412,7 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    if (!selectedCohortFilters.isEmpty()) {
-                        EventBus.getDefault().post(new CohortFilterActionEvent(selectedCohortFilters, false));
-                    }
+                    EventBus.getDefault().post(new CohortFilterActionEvent(selectedCohortFilters, false));
                 }
                 EventBus.getDefault().post(new BottomSheetToggleEvent(newState));
             }
@@ -572,6 +584,7 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
 
     @Override
     public void onCohortFilterClicked(int position) {
+        List<CohortFilter> cfilter = new ArrayList<>(selectedCohortFilters);
         CohortFilter cohortFilter = cohortList.get(position);
         if (cohortFilter.getCohort() == null) {
             if (cohortFilter.isSelected()) {
@@ -579,18 +592,37 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
             } else {
                 cohortFilter.setSelected(true);
                 for (CohortFilter filter : cohortList) {
-                    if (filter.getCohort() != null)
+                    if (filter.getCohort() != null) {
                         filter.setSelected(false);
+                        for (CohortFilter cf : cfilter){
+                            if(cf.getCohort() != null) {
+                                if (filter.getCohort().getUuid().equals(cf.getCohort().getUuid())) {
+                                    selectedCohortFilters.remove(cf);
+                                }
+                            }
+                        }
+                    }
                 }
                 selectedCohortFilters.add(cohortFilter);
             }
         } else {
             if (cohortFilter.isSelected()) {
+                for (CohortFilter cf : cfilter){
+                    if(cf.getCohort() != null && cohortFilter.getCohort() != null) {
+                        if (cf.getCohort().getUuid().equals(cohortFilter.getCohort().getUuid())) {
+                            selectedCohortFilters.remove(cf);
+                        }
+                    }
+                }
                 cohortFilter.setSelected(false);
-                selectedCohortFilters.remove(cohortFilter);
                 markAllClientsCohortFilter(selectedCohortFilters.isEmpty());
             } else {
                 cohortFilter.setSelected(true);
+                for (CohortFilter cf : cfilter){
+                    if(cf.getCohort() == null) {
+                        selectedCohortFilters.remove(cf);
+                    }
+                }
                 selectedCohortFilters.add(cohortFilter);
                 markAllClientsCohortFilter(false);
             }
@@ -603,9 +635,6 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
         for (CohortFilter filter : cohortList) {
             if (filter.getCohort() == null)
                 filter.setSelected(b);
-
-            if (filter.isSelected())
-                selectedCohortFilters.add(filter);
         }
     }
 

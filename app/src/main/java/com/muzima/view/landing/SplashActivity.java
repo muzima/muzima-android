@@ -7,12 +7,15 @@ import android.os.CountDownTimer;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseFragmentActivity;
 import com.muzima.view.MainActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.login.LoginActivity;
+import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
 public class SplashActivity extends BaseFragmentActivity {
 
@@ -35,9 +38,12 @@ public class SplashActivity extends BaseFragmentActivity {
 
             @Override
             public void onFinish() {
-//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                startActivity(intent);
-//                finish();
+                if(((MuzimaApplication) getApplicationContext()).getAuthenticatedUser() != null &&
+                        !new WizardFinishPreferenceService(SplashActivity.this).isWizardFinished()){
+                    Intent intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         };
 
