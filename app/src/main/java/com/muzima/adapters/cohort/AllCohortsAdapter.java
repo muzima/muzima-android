@@ -23,6 +23,7 @@ import com.muzima.R;
 import com.muzima.api.model.Cohort;
 import com.muzima.controller.CohortController;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.tasks.MuzimaAsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +131,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
     /**
      * Responsible to define contract to CohortBackgroundQueryTasks.
      */
-    abstract class CohortBackgroundQueryTask extends AsyncTask<Void, Void, List<Cohort>> {
+    abstract class CohortBackgroundQueryTask extends MuzimaAsyncTask<Void, Void, List<Cohort>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -157,7 +158,10 @@ public class AllCohortsAdapter extends CohortsAdapter {
             }
         }
 
-        protected abstract List<Cohort> doInBackground(Void... voids);
+        protected abstract List<Cohort> doInBackground(Void voids);
+
+        @Override
+        protected void onBackgroundError(Exception e) {}
     }
 
     /**
@@ -166,7 +170,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
     protected class LoadBackgroundQueryTask extends CohortBackgroundQueryTask {
 
         @Override
-        protected List<Cohort> doInBackground(Void... voids) {
+        protected List<Cohort> doInBackground(Void voids) {
             List<Cohort> allCohorts = null;
             try {
                 Log.i(getClass().getSimpleName(), "Fetching Cohorts from Database...");
@@ -184,7 +188,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
      */
     protected class DownloadBackgroundQueryTask extends CohortBackgroundQueryTask {
         @Override
-        protected List<Cohort> doInBackground(Void... voids) {
+        protected List<Cohort> doInBackground(Void voids) {
             List<Cohort> allCohorts = null;
             try {
                 muzimaSyncService.downloadCohorts();
