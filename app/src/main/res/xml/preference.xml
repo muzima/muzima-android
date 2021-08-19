@@ -84,7 +84,7 @@
             android:defaultValue="false"
             android:editable="false"
             android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/ic_action_require_qr_code"
+            android:icon="@drawable/ic_medical_record_no"
             android:key="@string/preference_require_medical_record_number"
             android:summary="@string/hint_require_medical_record_number"
             android:title="@string/title_require_medical_record_number" />
@@ -148,7 +148,7 @@
         <SwitchPreference
             android:defaultValue="false"
             android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/provider"
+            android:icon="@drawable/ic_default_provider"
             android:key="@string/preference_encounter_provider_key"
             android:summary="@string/hint_default_encounter_provider"
             android:title="@string/title_default_encounter_provider" />
@@ -178,7 +178,7 @@
     </PreferenceCategory>
 
         <Preference
-            android:icon="@drawable/ic_action_language"
+            android:icon="@drawable/ic_concept"
             android:summary="@string/hint_manage_concept"
             android:title="@string/title_manage_concept">
             <intent
