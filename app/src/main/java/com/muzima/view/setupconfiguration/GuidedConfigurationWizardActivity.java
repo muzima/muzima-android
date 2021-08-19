@@ -96,12 +96,12 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private void startViewPagerAnimation() {
-        countDownTimer = new CountDownTimer(1000 * 60, 5000) {
+        countDownTimer = new CountDownTimer(1000 * 120, 7000) {
             @Override
             public void onTick(long tick) {
                 if (pageCount > 13) pageCount = 0;
-                viewPager.setCurrentItem(pageCount);
-                viewPagerLg.setCurrentItem(pageCount);
+                viewPager.setCurrentItem(pageCount, true);
+                viewPagerLg.setCurrentItem(pageCount, true);
                 updateStepper(pageCount);
                 pageCount = pageCount + 1;
             }
@@ -116,17 +116,17 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private void updateStepper(int page) {
         if (page >= 0 && page <= 4) {
-            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
-            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-        } else if (page >= 5 && page <= 9) {
-            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
-        } else {
             firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
             secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
             thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+        } else if (page >= 5 && page <= 9) {
+            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
+            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+        } else {
+            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
         }
     }
 

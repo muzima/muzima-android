@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="12dp"
-                android:src="@drawable/ic_action_arrow_up_dark" />
+                app:srcCompat="@drawable/ic_action_arrow_up_dark" />
 
 
         </RelativeLayout>
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="12dp"
-                android:src="@drawable/ic_action_arrow_down_dark" />
+                app:srcCompat="@drawable/ic_action_arrow_down_dark" />
 
 
         </RelativeLayout>
@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="12dp"
-                android:src="@drawable/ic_action_arrow_down_dark" />
+                app:srcCompat="@drawable/ic_action_arrow_down_dark" />
 
 
         </RelativeLayout>
@@ -234,7 +234,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/roboto_medium"
-            android:backgroundTint="@color/primary_blue"
+            android:backgroundTint="@color/color_state_button"
             android:enabled="false"
             android:textAllCaps="true"
             android:text="@string/general_next" />

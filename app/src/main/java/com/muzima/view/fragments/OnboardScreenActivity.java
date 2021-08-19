@@ -56,7 +56,7 @@ public class OnboardScreenActivity extends AppCompatActivity {
                 switch (page) {
                     case 0:
                         page = 1;
-                        coverImageView.setImageDrawable(getResources().getDrawable(R.drawable.multiple_use_case));
+                        coverImageView.setImageDrawable(getResources().getDrawable(R.drawable.multiple_use_cases));
                         firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
                         secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
                         thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));

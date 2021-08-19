@@ -25,7 +25,7 @@ public class GuidedSetupCardsViewPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new GuidedSetupImageCardFragment(R.drawable.security, context.getResources().getString(R.string.general_security), context.getResources().getString(R.string.general_security_description));
             case 1:
-                return new GuidedSetupImageCardFragment(R.drawable.multiple_use_case, context.getResources().getString(R.string.general_multiple_use_cases), context.getResources().getString(R.string.general_multiple_cases_description));
+                return new GuidedSetupImageCardFragment(R.drawable.multiple_use_cases, context.getResources().getString(R.string.general_multiple_use_cases), context.getResources().getString(R.string.general_multiple_cases_description));
             case 2:
                 return new GuidedSetupImageCardFragment(R.drawable.openmrs_compatibility, context.getResources().getString(R.string.general_openmrs_compatibility), context.getResources().getString(R.string.general_openmrs_compatibility_description));
             case 3:
@@ -56,6 +56,6 @@ public class GuidedSetupCardsViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 12;
+        return 13;
     }
 }
