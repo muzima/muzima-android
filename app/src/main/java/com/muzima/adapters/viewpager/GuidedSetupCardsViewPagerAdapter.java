@@ -56,6 +56,6 @@ public class GuidedSetupCardsViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 13;
+        return 14;
     }
 }

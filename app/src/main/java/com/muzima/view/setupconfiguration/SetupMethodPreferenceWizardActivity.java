@@ -41,6 +41,7 @@ import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.tasks.DownloadSetupConfigurationsTask;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
@@ -168,7 +169,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
 
     private void navigateToGuidedWizardActivity(final SetupConfigurationRecyclerViewAdapter setupConfigurationAdapter) {
         turnOnProgressDialog(getString(R.string.info_setup_configuration_wizard_prepare));
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
 
             @Override
             protected void onPreExecute() {
@@ -177,7 +178,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
             }
 
             @Override
-            protected int[] doInBackground(Void... voids) {
+            protected int[] doInBackground(Void voids) {
                 return downloadSetupConfiguration(setupConfigurationAdapter);
             }
 
@@ -206,6 +207,11 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                     startActivity(intent);
                     finish();
                 }
+            }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
             }
         }.execute();
     }
