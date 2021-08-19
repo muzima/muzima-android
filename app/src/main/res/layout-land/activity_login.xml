@@ -98,13 +98,6 @@
                 android:background="@drawable/border_button_gray"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="12dp"
-                    android:src="?attr/icActionPerson" />
-
                 <EditText
                     android:id="@+id/username"
                     style="@style/LoginInfoEditText"
@@ -112,6 +105,7 @@
                     android:hint="@string/general_username"
                     android:inputType="textShortMessage"
                     android:nextFocusDown="@+id/password"
+                    android:drawableStart="?attr/icActionPerson"
                     android:text="" />
 
             </LinearLayout>
@@ -127,14 +121,6 @@
                 android:background="@drawable/border_button_gray"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="12dp"
-                    android:src="?attr/icActionLock"
-                    app:tint="?attr/onDarkBackgroundColor" />
-
                 <EditText
                     android:id="@+id/password"
                     style="@style/LoginInfoEditText"
@@ -142,6 +128,7 @@
                     android:hint="@string/general_password"
                     android:inputType="textPassword"
                     android:nextFocusDown="@+id/login"
+                    android:drawableStart="?attr/icActionLock"
                     android:text="" />
 
             </LinearLayout>

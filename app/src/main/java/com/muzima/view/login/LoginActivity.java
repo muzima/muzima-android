@@ -23,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
@@ -244,6 +245,43 @@ public class LoginActivity extends Activity {
             }
         });
 
+        serverUrlText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                   if(event.getRawX() >= serverUrlText.getRight() - serverUrlText.getTotalPaddingRight()) {
+                        Intent intent;
+                        intent = new Intent(getApplicationContext(), BarcodeCaptureActivity.class);
+                        intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                        intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+                        startActivityForResult(intent, RC_BARCODE_CAPTURE);
+                        return false;
+                    }
+                }
+                return false;
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                    serverUrlText.setText(barcode.displayValue);
+                } else {
+                    Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null");
+                }
+            } else {
+                Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null "+CommonStatusCodes.getStatusCodeString(resultCode));
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private boolean validInput() {
