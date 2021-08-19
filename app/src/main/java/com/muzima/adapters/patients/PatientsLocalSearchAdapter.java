@@ -20,6 +20,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
