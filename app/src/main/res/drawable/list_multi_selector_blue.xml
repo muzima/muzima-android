@@ -16,6 +16,5 @@
     <item android:state_checked="true" android:drawable="@color/primary_blue"/>
     <item android:state_activated="true" android:drawable="@color/primary_blue"/>
 
-    <item android:drawable="@color/primary_black"/>
-
+    <item android:drawable="@drawable/border_button_gray"/>
 </selector>

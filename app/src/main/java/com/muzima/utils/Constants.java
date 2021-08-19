@@ -48,8 +48,9 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS = "json-individual-obs";
     public static final String FORM_JSON_DISCRIMINATOR_RELATIONSHIP = "json-relationship";
     public static final String FORM_JSON_DISCRIMINATOR_PERSON_UPDATE = "json-person-demographics-update";
+    public static final String EMPTY_STRING = "";
 
-    private static final String APP_EXTERNAL_DIR_ROOT =  Environment.getExternalStorageDirectory().getPath() + "/muzima";
+    private static final String APP_EXTERNAL_DIR_ROOT = Environment.getExternalStorageDirectory().getPath() + "/muzima";
     private static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
     public static final String APP_IMAGE_DIR = APP_MEDIA_DIR + "/image";
     public static final String APP_AUDIO_DIR = APP_MEDIA_DIR + "/audio";
@@ -64,7 +65,16 @@ public class Constants {
     public static final String STANDARD_DATE_LOCALE_FORMAT = "dd-MM-yyyy HH:mm";
     public static final String STANDARD_DISPLAY_FORMAT = "MMM dd, yyyy HH:mm";
 
+    public static final class FORMS_LAUNCH_MODE {
+        public static final int INCOMPLETE_FORMS_VIEW = 0;
+        public static final int COMPLETE_FORMS_VIEW = 1;
+        public static final int ALL_FORMS_VIEW = 2;
+    }
+
+    ;
+
     public static class MuzimaGPSLocationConstants {
+
         public static final int LOCATION_ACCESS_PERMISSION_REQUEST_CODE = 9111;
         public static final int LOCATION_SERVICES_SWITCH_REQUEST_CODE = 9122;
     }
@@ -92,16 +102,16 @@ public class Constants {
         public static final int SYNC_UPLOAD_FORMS = 8;
         public static final int DOWNLOAD_SELECTED_PATIENTS_FULL_DATA = 9;
         public static final int SYNC_NOTIFICATIONS = 10;
-        public static final int SYNC_REAL_TIME_UPLOAD_FORMS =11;
-        public static final int SYNC_SHR =12;
+        public static final int SYNC_REAL_TIME_UPLOAD_FORMS = 11;
+        public static final int SYNC_SHR = 12;
         public static final int SYNC_PATIENT_REPORTS_HEADERS = 13;
         public static final int SYNC_PATIENT_REPORTS = 14;
         public static final int SYNC_COHORTS_AND_ALL_PATIENTS_FULL_DATA = 15;
         public static final int CLEAN_UP_PROCESSED_TEMPORARY_FORM_DATA = 16;
         public static final int SYNC_SETTINGS = 17;
         public static final int SYNC_RELATIONSHIPS = 18;
-        public static final int SYNC_ALL_PATIENT_REPORT_HEADERS_AND_REPORTS=19;
-        public static final int SYNC_SETUP_CONFIGURATION_TEMPLATES=20;
+        public static final int SYNC_ALL_PATIENT_REPORT_HEADERS_AND_REPORTS = 19;
+        public static final int SYNC_SETUP_CONFIGURATION_TEMPLATES = 20;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;
@@ -125,14 +135,14 @@ public class Constants {
         }
 
         public static class MuzimaJobSchedulerConstants {
-            public static final String MUZIMA_JOB_SCHEDULE_INTENT = BuildConfig.APPLICATION_ID+" muzima scheduled job";
+            public static final String MUZIMA_JOB_SCHEDULE_INTENT = BuildConfig.APPLICATION_ID + " muzima scheduled job";
             public static final String WORK_DURATION_KEY = "work duration";
             public static final int MESSAGE_SYNC_JOB_ID = 22;
             public static final int MSG_INDICATOR_START = 18;
             public static final int MSG_INDICATOR_STOP = 19;
             public static final int MSG_COLOR_START = 20;
             public static final int JOB_INDICATOR_STOP = 21;
-            public static final long MUZIMA_JOB_PERIODIC = 15*60*1000;
+            public static final long MUZIMA_JOB_PERIODIC = 15 * 60 * 1000;
         }
     }
 
@@ -155,10 +165,10 @@ public class Constants {
     }
 
     public enum SERVER_CONNECTIVITY_STATUS {
-        SERVER_ONLINE,SERVER_OFFLINE, INTERNET_FAILURE
+        SERVER_ONLINE, SERVER_OFFLINE, INTERNET_FAILURE
     }
 
-    public static class SetupLogConstants{
+    public static class SetupLogConstants {
         public static final String ACTION_SUCCESS_STATUS_LOG = "OK";
         public static final String ACTION_FAILURE_STATUS_LOG = "FAIL";
     }
@@ -166,17 +176,19 @@ public class Constants {
     //This is a hack. Better to use configuration file from server side to obtain SHR definition
     public static class Shr {
 
-        public static class KenyaEmr{
+        public static class KenyaEmr {
 
             public static final String SMART_CARD_RECORD_TYPE = "KenyaEmrSHR";
-            public static class DEFAULT_SHR_USER{
+
+            public static class DEFAULT_SHR_USER {
                 public static final String id = "SHR_user";
             }
+
             public static class DEFAULT_SHR_FACILITY {
                 public static final String MFL_CODE = "10829";
             }
 
-            public static class LocationAttributeType{
+            public static class LocationAttributeType {
                 public static class MASTER_FACILITY_CODE {
                     public static final String name = "Master Facility Code";
                     public static final String uuid = "4c4b11f6-44b0-4345-816b-bddfa093c583";
@@ -184,32 +196,37 @@ public class Constants {
             }
 
             public static class PersonIdentifierType {
-                public static class CARD_SERIAL_NUMBER{
+                public static class CARD_SERIAL_NUMBER {
                     public static final String name = "SMART CARD SERIAL NUMBER";
                     public static final String uuid = "8f842498-1c5b-11e8-accf-0ed5f89f718b";
                     public static final String shr_name = "CARD_SERIAL_NUMBER";
                 }
-                public static class CCC_NUMBER{
+
+                public static class CCC_NUMBER {
                     public static final String name = "UNIQUE PATIENT NUMBER/CCC No";
                     public static final String uuid = "05ee9cf4-7242-4a17-b4d4-00f707265c8a";
                     public static final String shr_name = "CCC_NUMBER";
                 }
-                public static class GODS_NUMBER{
+
+                public static class GODS_NUMBER {
                     public static final String name = "GODS NUMBER";
                     public static final String uuid = "9aedb9ae-1cbd-11e8-accf-0ed5f89f718b";
                     public static final String shr_name = "GODS_NUMBER";
                 }
-                public static class HEI_NUMBER{
+
+                public static class HEI_NUMBER {
                     public static final String name = "HEI UNIQUE NUMBER";
                     public static final String uuid = "0691f522-dd67-4eeb-92c8-af5083baf338";
                     public static final String shr_name = "HEI_NUMBER";
                 }
-                public static class HTS_NUMBER{
+
+                public static class HTS_NUMBER {
                     public static final String name = "HTS NUMBER";
                     public static final String uuid = "e6af3782-1cb3-11e8-accf-0ed5f89f718b";
                     public static final String shr_name = "HTS_NUMBER";
                 }
-                public static class NATIONAL_ID{
+
+                public static class NATIONAL_ID {
                     public static final String name = "NATIONAL ID";
                     public static final String uuid = "49af6cdc-7968-4abb-bf46-de10d7f4859f";
                     public static final String shr_name = "NATIONAL_ID";
@@ -331,94 +348,113 @@ public class Constants {
                         public static final String FORM_UUID = "9bc157d2-2794-11e8-b467-0ed5f89f718b";
                     }
                 }
+
                 public static class IMMUNIZATION {
                     public static class GROUP {
                         public static final String name = "IMMUNIZATION";
                         public static final int concept_id = 1421;
                     }
+
                     public static class VACCINE {
                         public static final String name = "VACCINE";
                         public static final int concept_id = 984;
+
                         public static class ANSWERS {
                             public static class BCG {
                                 public static final String name = "BCG";
                                 public static final int concept_id = 886;
                             }
+
                             public static class OPV_AT_BIRTH {
                                 public static final String name = "OPV_AT_BIRTH";
                                 public static final int concept_id = 783;
                                 public static final int sequence = 0;
                             }
+
                             public static class OPV1 {
                                 public static final String name = "OPV1";
                                 public static final int concept_id = 783;
                                 public static final int sequence = 1;
                             }
+
                             public static class OPV2 {
                                 public static final String name = "OPV2";
                                 public static final int concept_id = 783;
                                 public static final int sequence = 2;
                             }
+
                             public static class OPV3 {
                                 public static final String name = "OPV3";
                                 public static final int concept_id = 783;
                                 public static final int sequence = 3;
                             }
+
                             public static class IPV {
                                 public static final String name = "IPV";
                                 public static final int concept_id = 1422;
                                 public static final int sequence = 1;
                             }
+
                             public static class PCV10_1 {
                                 public static final String name = "PCV10-1";
                                 public static final int concept_id = 162342;
                                 public static final int sequence = 1;
                             }
+
                             public static class PCV10_2 {
                                 public static final String name = "PCV10-2";
                                 public static final int concept_id = 162342;
                                 public static final int sequence = 2;
                             }
+
                             public static class PCV10_3 {
                                 public static final String name = "PCV10-3";
                                 public static final int concept_id = 162342;
                                 public static final int sequence = 3;
                             }
+
                             public static class ROTA1 {
                                 public static final String name = "ROTA1";
                                 public static final int concept_id = 83531;
                                 public static final int sequence = 1;
                             }
+
                             public static class ROTA2 {
                                 public static final String name = "ROTA2";
                                 public static final int concept_id = 83531;
                                 public static final int sequence = 2;
                             }
+
                             public static class MEASLES6 {
                                 public static final String name = "MEASLES6";
                                 public static final int concept_id = 36;
                                 public static final int sequence = 1;
                             }
+
                             public static class MEASLES9 {
                                 public static final String name = "MEASLES9";
                                 public static final int concept_id = 162586;
                                 public static final int sequence = 1;
                             }
+
                             public static class MEASLES18 {
                                 public static final String name = "MEASLES18";
                                 public static final int concept_id = 162586;
                                 public static final int sequence = 2;
                             }
+
                             public static class PENTA1 {
                                 public static final String name = "PENTA1";
                                 public static final int concept_id = 159694;
                                 public static final int sequence = 1;
                             }
+
                             public static class PENTA2 {
                                 public static final String name = "PENTA2";
                                 public static final int concept_id = 159694;
                                 public static final int sequence = 2;
                             }
+
                             public static class PENTA3 {
                                 public static final String name = "PENTA3";
                                 public static final int concept_id = 159694;
@@ -450,4 +486,28 @@ public class Constants {
         }
     }
 
+    public class ACTION_MODE_EVENT {
+        public static final int COHORTS_DOWNLOAD_ACTION = 1211;
+        public static final int FORMS_DOWNLOAD_ACTION = 1221;
+    }
+
+    public class FORM_TYPE {
+        public static final String INCOMPLETE_FORMS_KEY = "incomplete_forms_key";
+        public static final String COMPLETE_FORMS_KEY = "complete_forms_key";
+    }
+
+    public class FORM_FILTERS {
+        public static final int FORM_FILTER_STATUS = 1;
+    }
+
+    public class FORM_SORT_STRATEGY {
+        public static final int SORT_BY_NAME = 1;
+        public static final int SORT_BY_STATUS = 0;
+    }
+
+    public class OBSERVATIONS_FILTER_CATEGORY {
+        public static final int BY_TYPE = 1;
+        public static final int BY_ABSTRACT = 2;
+        public static final int BY_ENCOUNTER = 3;
+    }
 }

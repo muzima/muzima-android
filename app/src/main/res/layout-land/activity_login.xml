@@ -7,106 +7,190 @@
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/LoginActivityLayout"
-    android:padding="0dp">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/LoginActivityLayout">
     <LinearLayout
-        android:orientation="vertical"
-        style="@style/LoginActivityLayout">
+        style="@style/LoginActivityLayout"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/logo"
-            style="@style/LoginActivityLogo"
-            android:contentDescription="@string/title_logo"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:background="@drawable/curved_wallpaper"
+            android:paddingTop="18dp">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/title_logo"
+                android:scaleType="fitXY"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:id="@+id/main_title_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/logo"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/main_title_view"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/montserrat_medium"
+                android:gravity="center"
+                android:text="@string/app_sub_title"
+                android:textColor="@color/primary_white"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/title_login"
-            style="@style/LoginActivityHeader"/>
+            style="@style/LoginActivityHeader"
+            android:padding="22dp"
+            android:visibility="gone" />
 
-        <View style="@style/LoginActivityDivider.Style"/>
+        <View
+            style="@style/LoginActivityDivider.Style"
+            android:visibility="invisible" />
 
-        <LinearLayout style="@style/LoginInfoLayout">
+        <LinearLayout
+            style="@style/LoginInfoLayout"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp">
+
+            <EditText
+                android:id="@+id/serverUrl"
+                style="@style/LoginInfoEditText"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/border_button_gray"
+                android:drawableEnd="@drawable/ic_action_dark_dashboard"
+                android:fontFamily="@font/montserrat_regular"
+                android:hint="@string/hint_server_url"
+                android:inputType="textUri"
+                android:nextFocusDown="@+id/username"
+                android:text="@string/default_server"
+                android:textSize="19sp" />
+
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="4dip"
-                android:layout_gravity="left">
-                <Button
-                    android:id="@+id/bar_code_scan"
-                    android:layout_width="60dp"
-                    android:layout_height="48dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/barcode_icon" />
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/border_button_gray"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="12dp"
+                    android:src="?attr/icActionPerson" />
 
                 <EditText
-                    android:id="@+id/serverUrl"
+                    android:id="@+id/username"
                     style="@style/LoginInfoEditText"
-                    android:inputType="textUri"
-                    android:text="@string/default_server"
-                    android:nextFocusDown="@+id/username"
-                    android:hint="@string/hint_server_url"/>
+                    android:fontFamily="@font/montserrat_regular"
+                    android:hint="@string/general_username"
+                    android:inputType="textShortMessage"
+                    android:nextFocusDown="@+id/password"
+                    android:text="" />
+
             </LinearLayout>
 
-            <View
-                style="@style/LoginInfoLayoutDivider"
-                android:id="@+id/server_url_divider"/>
 
-            <EditText
-                android:id="@+id/username"
-                style="@style/LoginInfoEditText"
-                android:inputType="textShortMessage"
-                android:nextFocusDown="@+id/password"
-                android:hint="@string/general_username"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/border_button_gray"
+                android:orientation="horizontal">
 
-            <View style="@style/LoginInfoLayoutDivider"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="12dp"
+                    android:src="?attr/icActionLock"
+                    app:tint="?attr/onDarkBackgroundColor" />
 
-            <EditText
-                android:id="@+id/password"
-                android:hint="@string/general_password"
-                style="@style/LoginInfoEditText"
-                android:nextFocusDown="@+id/login"
-                android:inputType="textPassword"/>
+                <EditText
+                    android:id="@+id/password"
+                    style="@style/LoginInfoEditText"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:hint="@string/general_password"
+                    android:inputType="textPassword"
+                    android:nextFocusDown="@+id/login"
+                    android:text="" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <CheckBox
             android:id="@+id/update_password"
+            style="@style/LoginInfoQuestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hint_password_change"
-            style="@style/LoginInfoQuestion"
-            android:onClick="onUpdatePasswordCheckboxClicked"/>
+            android:fontFamily="@font/roboto_regular"
+            android:onClick="onUpdatePasswordCheckboxClicked"
+            android:text="@string/hint_password_change" />
 
-        <FrameLayout
-            style="@style/LoginButtonLayout">
+        <FrameLayout style="@style/LoginButtonLayout">
 
             <Button
                 android:id="@+id/login"
                 style="@style/LoginButton"
-                android:text="@string/general_login"/>
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:backgroundTint="@color/primary_blue"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="@string/general_login"
+                android:textAllCaps="true" />
 
-            <TextView
+            <Button
                 android:id="@+id/authenticatingText"
                 style="@style/LoginAuthenticatingButton"
+                android:backgroundTint="@color/primary_blue"
                 android:text="@string/hint_authentication_progress"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </FrameLayout>
 
         <TextView
             android:id="@+id/version"
+            style="@style/Versiontext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Versiontext"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_regular" />
 
         <TextView
             android:id="@+id/helpText"
-            android:text="@string/help_center"
             style="@style/ClickableText"
-            android:paddingTop="16dp"/>
+            android:fontFamily="@font/roboto_regular"
+            android:paddingTop="16dp"
+            android:text="@string/help_center" />
     </LinearLayout>
-
 </ScrollView>

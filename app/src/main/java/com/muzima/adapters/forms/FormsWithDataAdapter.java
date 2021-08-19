@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.CheckedRelativeLayout;
 
@@ -67,10 +66,8 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
         if(!StringUtils.isEmpty(encounterDate)){
             holder.encounterDate.setText(encounterDate);
         }
-        holder.savedTime.setTypeface(Fonts.roboto_italic(getContext()));
         holder.savedTime.setVisibility(View.VISIBLE);
 
-        holder.encounterDate.setTypeface(Fonts.roboto_italic(getContext()));
         holder.savedTime.setVisibility(View.VISIBLE);
 
         return convertView;

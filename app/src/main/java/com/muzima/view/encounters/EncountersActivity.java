@@ -24,7 +24,6 @@ import com.muzima.adapters.encounters.EncountersByPatientAdapter;
 import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Patient;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
@@ -95,11 +94,9 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
     }
 
     private void setupNoDataView() {
-
         noDataView = findViewById(R.id.no_data_layout);
         TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(getResources().getText(R.string.info_encounter_unavailable));
-        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
     private void setupStillLoadingView() {
@@ -107,7 +104,6 @@ public class EncountersActivity extends BroadcastListenerActivity implements Ada
         noDataView = findViewById(R.id.no_data_layout);
         TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(R.string.general_loading_encounters);
-        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
     }
 
     @Override

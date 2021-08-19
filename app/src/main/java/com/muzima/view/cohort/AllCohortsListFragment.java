@@ -15,184 +15,136 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.CheckedTextView;
-import android.widget.Toast;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.ProgressBar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.cohort.AllCohortsAdapter;
-import com.muzima.api.model.APIName;
-import com.muzima.api.service.LastSyncTimeService;
-import com.muzima.controller.CohortController;
-import com.muzima.utils.DateUtils;
-import com.muzima.utils.NetworkUtils;
-import com.muzima.view.CheckedLinearLayout;
-import com.muzima.view.patients.SyncPatientDataIntent;
+import com.muzima.adapters.cohort.CohortRecyclerViewAdapter;
+import com.muzima.api.model.Cohort;
+import com.muzima.model.cohort.CohortItem;
+import com.muzima.model.events.CohortSearchEvent;
+import com.muzima.model.events.CohortsActionModeEvent;
+import com.muzima.model.events.DestroyActionModeEvent;
+import com.muzima.tasks.CohortSearchTask;
+import com.muzima.tasks.LoadAllCohortsTask;
 
-import java.io.IOException;
-import java.util.Date;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
-public class AllCohortsListFragment extends CohortListFragment {
-    private ActionMode actionMode;
-    private boolean actionModeActive = false;
-    private OnCohortDataDownloadListener cohortDataDownloadListener;
-    private CheckedTextView syncText;
-    private boolean cohortsSyncInProgress;
+import java.util.ArrayList;
+import java.util.List;
 
-    public static AllCohortsListFragment newInstance(CohortController cohortController) {
-        AllCohortsListFragment f = new AllCohortsListFragment();
-        f.cohortController = cohortController;
-        return f;
+public class AllCohortsListFragment extends Fragment implements CohortRecyclerViewAdapter.OnCohortClickedListener {
+    private ProgressBar progressBar;
+    private RecyclerView cohortListRecyclerView;
+    private CohortRecyclerViewAdapter recyclerViewAdapter;
+    private List<CohortItem> allCohortsList = new ArrayList<>();
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_cohorts_list, container, false);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        if (listAdapter == null) {
-            listAdapter = new AllCohortsAdapter(getActivity(), R.layout.item_cohorts_list, cohortController);
-        }
-        noDataMsg = getActivity().getResources().getString(R.string.info_cohorts_unavailable);
-        noDataTip = getActivity().getResources().getString(R.string.hint_cohort_list_download);
-        super.onCreate(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        initializeResources(view);
+        loadData();
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser && isResumed()){
-            logEvent("VIEW_ALL_COHORTS");
-        }
-    }
-
-    @Override
-    protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
-        View view = inflater.inflate(R.layout.layout_synced_list, container, false);
-        syncText = view.findViewById(R.id.sync_text);
-        updateSyncText();
-        return view;
-    }
-
-    @Override
-    protected String getSuccessMsg(Integer[] status) {
-        return getString(R.string.info_cohorts_downloaded, status[1]);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
-        boolean isChecked = checkedLinearLayout.isChecked();
-        if (!actionModeActive && isChecked) {
-            actionMode = getActivity().startActionMode(new AllCohortsActionModeCallback());
-            actionModeActive = true;
-        }
-        ((AllCohortsAdapter) listAdapter).onListItemClick(position);
-        int numOfSelectedCohorts = ((AllCohortsAdapter) listAdapter).numberOfCohorts();
-        if (numOfSelectedCohorts == 0 && actionModeActive) {
-            actionMode.finish();
-        }
-        Log.d(getClass().getSimpleName(), "isnull:" + String.valueOf(actionMode==null));
-        actionMode.setTitle(String.valueOf(numOfSelectedCohorts));
-
-    }
-
-    public void setCohortDataDownloadListener(OnCohortDataDownloadListener cohortDataDownloadListener) {
-        this.cohortDataDownloadListener = cohortDataDownloadListener;
-    }
-
-    public void onCohortDownloadFinish() {
-        cohortsSyncInProgress = false;
-        reloadData();
-        updateSyncText();
-        if (cohortDataDownloadListener != null) {
-            cohortDataDownloadListener.onCohortDataDownloadComplete();
-        }
-    }
-
-    public void onCohortDownloadStart() {
-        cohortsSyncInProgress = true;
-    }
-
-    public void onPatientDownloadFinish() {
-        reloadData();
-        if (cohortDataDownloadListener != null) {
-            cohortDataDownloadListener.onCohortDataDownloadComplete();
-        }
-    }
-
-    final class AllCohortsActionModeCallback implements ActionMode.Callback {
-
-        @Override
-        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            getActivity().getMenuInflater().inflate(R.menu.actionmode_menu_download, menu);
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-            switch (menuItem.getItemId()) {
-                case R.id.menu_download:
-                    if (cohortsSyncInProgress) {
-                        Toast.makeText(getActivity(), R.string.error_sync_not_allowed, Toast.LENGTH_SHORT).show();
-                        endActionMode();
-                        break;
-                    }
-
-                    if (!NetworkUtils.isConnectedToNetwork(getActivity())) {
-                        Toast.makeText(getActivity(), R.string.error_local_connection_unavailable, Toast.LENGTH_SHORT).show();
-                        return true;
-                    }
-
-                    syncPatientsAndObservationsInBackgroundService();
-
-                    endActionMode();
-                    return true;
-            }
-            return false;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode actionMode) {
-            actionModeActive = false;
-            ((AllCohortsAdapter) listAdapter).clearSelectedCohorts();
-            unselectAllItems(list);
-        }
-    }
-
-    public void endActionMode() {
-        if (this.actionMode != null) {
-            this.actionMode.finish();
-        }
-    }
-
-    private void syncPatientsAndObservationsInBackgroundService() {
-        ((CohortActivity) getActivity()).showProgressBar();
-        new SyncPatientDataIntent(getActivity(), ((AllCohortsAdapter) listAdapter).getSelectedCohortsArray()).start();
-    }
-
-    public interface OnCohortDataDownloadListener {
-         void onCohortDataDownloadComplete();
-    }
-
-    private void updateSyncText() {
+    public void onStart() {
+        super.onStart();
         try {
-            LastSyncTimeService lastSyncTimeService = ((MuzimaApplication)this.getActivity().getApplicationContext()).getMuzimaContext().getLastSyncTimeService();//((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
-            Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_COHORTS);
-            String lastSyncedMsg = getActivity().getString(R.string.info_last_sync_unavailable);
-            if(lastSyncedTime != null){
-                lastSyncedMsg = getString(R.string.hint_last_synced,DateUtils.getFormattedStandardDisplayDateTime(lastSyncedTime));
-            }
-            syncText.setText(lastSyncedMsg);
-        } catch (IOException e) {
-            Log.i(getClass().getSimpleName(),"Error getting cohort last sync time");
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
+    @Subscribe
+    public void cohortSearchEvent(CohortSearchEvent event) {
+        if (event.getPage() == 0)
+            searchCohorts(event.getSearchTerm());
+    }
+
+    private void searchCohorts(String searchTerm) {
+        if (getActivity() == null) return;
+        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
+                .execute(new CohortSearchTask(getActivity().getApplicationContext(), searchTerm, new CohortSearchTask.CohortSearchCallback() {
+                    @Override
+                    public void onCohortSearchFinished(final List<Cohort> cohortList) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                renderCohortsList(cohortList);
+                            }
+                        });
+                    }
+                }));
+    }
+
+    private void renderCohortsList(final List<Cohort> cohorts) {
+        allCohortsList.clear();
+        for (Cohort cohort : cohorts) {
+            allCohortsList.add(new CohortItem(cohort));
+        }
+        recyclerViewAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
+        cohortListRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void loadData() {
+        cohortListRecyclerView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
+                .execute(new LoadAllCohortsTask(getActivity().getApplicationContext(), new LoadAllCohortsTask.OnAllCohortsLoadedCallback() {
+                    @Override
+                    public void onCohortsLoaded(final List<Cohort> cohorts) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                allCohortsList.clear();
+                                for (Cohort cohort : cohorts) {
+                                    allCohortsList.add(new CohortItem(cohort, false));
+                                }
+                                recyclerViewAdapter.notifyDataSetChanged();
+                                progressBar.setVisibility(View.GONE);
+                                cohortListRecyclerView.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
+                }));
+    }
+
+    private void initializeResources(View view) {
+        cohortListRecyclerView = view.findViewById(R.id.cohorts_list_recycler_view);
+        progressBar = view.findViewById(R.id.chorts_load_progress_bar);
+        recyclerViewAdapter = new CohortRecyclerViewAdapter(getActivity().getApplicationContext(), allCohortsList, this);
+        cohortListRecyclerView.setAdapter(recyclerViewAdapter);
+        cohortListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+    }
+
+    @Override
+    public void onCohortClicked(int position) {
+        if (allCohortsList.isEmpty() || position < 0) return;
+        CohortItem selectedCohortItem = allCohortsList.get(position);
+        selectedCohortItem.setSelected(!selectedCohortItem.isSelected());
+        recyclerViewAdapter.notifyDataSetChanged();
+        EventBus.getDefault().post(new CohortsActionModeEvent(allCohortsList));
+    }
+
+    @Subscribe
+    public void actionModeClearedEvent(DestroyActionModeEvent event) {
+        for (CohortItem cohortItem : allCohortsList) {
+            cohortItem.setSelected(false);
+        }
+        recyclerViewAdapter.notifyDataSetChanged();
+    }
 }

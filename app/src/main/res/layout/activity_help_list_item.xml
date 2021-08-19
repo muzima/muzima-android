@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="55dip"
-              android:orientation="vertical">
-              <!--android:background="#0D355D"-->
+    android:layout_width="match_parent"
+    android:layout_height="55dip"
+    android:orientation="vertical">
+    <!--android:background="#0D355D"-->
 
     <TextView
-            android:id="@+id/lblListItem"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+        android:id="@+id/lblListItem"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textSize="20sp" />
 
 </LinearLayout>

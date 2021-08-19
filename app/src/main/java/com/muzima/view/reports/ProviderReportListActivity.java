@@ -13,7 +13,6 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.reports.AvailableReportsAdapter;
 import com.muzima.model.AvailableForm;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 
@@ -58,8 +57,6 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
         TextView noDataTipTextView = findViewById(R.id.no_data_tip);
         noDataTipTextView.setText(R.string.hint_reports_unavailable);
 
-        noDataMsgTextView.setTypeface(Fonts.roboto_bold_condensed(this));
-        noDataTipTextView.setTypeface(Fonts.roboto_medium(this));
     }
 
     @Override

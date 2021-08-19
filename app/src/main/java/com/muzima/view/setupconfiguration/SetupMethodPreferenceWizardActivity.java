@@ -21,92 +21,115 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.azimolabs.keyboardwatcher.KeyboardWatcher;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.ListAdapter;
-import com.muzima.adapters.setupconfiguration.SetupConfigurationAdapter;
+import com.muzima.adapters.setupconfiguration.SetupConfigurationRecyclerViewAdapter;
 import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
+import com.muzima.tasks.DownloadSetupConfigurationsTask;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.CheckedLinearLayout;
-import com.muzima.view.cohort.CohortWizardActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
-public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener, KeyboardWatcher.OnKeyboardToggleListener  {
+public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivity implements KeyboardWatcher.OnKeyboardToggleListener,
+        SetupConfigurationRecyclerViewAdapter.OnSetupConfigurationClickedListener {
     private Button activeNextButton;
-    private Button inactiveNextButton;
-    private CheckedLinearLayout advancedSetupLayout;
-    private LinearLayout nextButtonLayout;
-    private ListView configsListView;
+    private View nextButtonLayout;
+    private RecyclerView configsListView;
     private MuzimaProgressDialog progressDialog;
     private boolean isProcessDialogOn = false;
-    private PowerManager.WakeLock wakeLock = null ;
+    private PowerManager.WakeLock wakeLock = null;
     private KeyboardWatcher keyboardWatcher;
+    private TextInputEditText configSetupFilter;
+    private ImageButton imageButton;
+    private SetupConfigurationRecyclerViewAdapter setupConfigurationAdapter;
     private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
+    private List<SetupConfiguration> setupConfigurationList = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
+        initializeResources();
+        loadConfigList();
+    }
 
+    private void loadConfigList() {
+        turnOnProgressDialog(getString(R.string.info_setup_config_load));
+        ((MuzimaApplication) getApplicationContext()).getExecutorService()
+                .execute(new DownloadSetupConfigurationsTask(getApplicationContext(), new DownloadSetupConfigurationsTask.SetupConfigurationCompletedCallback() {
+                    @Override
+                    public void setupConfigDownloadCompleted(final List<SetupConfiguration> configurationList) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setupConfigurationList.addAll(configurationList);
+                                setupConfigurationAdapter.notifyDataSetChanged();
+                                setupConfigurationAdapter.setItemsCopy(configurationList);
+                                dismissProgressDialog();
+                            }
+                        });
+                    }
+                }));
+    }
+
+    private void initializeResources() {
         progressDialog = new MuzimaProgressDialog(this);
-
         setContentView(R.layout.activity_setup_method_wizard);
-
-        inactiveNextButton = findViewById(R.id.inactive_next);
-
-        advancedSetupLayout = findViewById(R.id.advanced_setup_layout);
-        advancedSetupLayout.setOnClickListener(advancedSetupClickListener());
-
-        final SetupConfigurationAdapter setupConfigurationAdapter = new SetupConfigurationAdapter(
-                this,R.layout.item_setup_configs_list,
-                ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController());
-        setupConfigurationAdapter.setBackgroundListQueryTaskListener(this);
-
-        final EditText configSetupFilter = findViewById(R.id.filter_configs_txt);
+        configSetupFilter = findViewById(R.id.filter_configs_txt);
+        setupConfigurationAdapter = new SetupConfigurationRecyclerViewAdapter(getApplicationContext(), setupConfigurationList, this);
         configSetupFilter.addTextChangedListener(textWatcherForFilterText(setupConfigurationAdapter));
-
-        setupConfigurationAdapter.reloadData();
-
-        //set clearing ability for the imageButton under Guided setup
-        ImageButton imageButton = findViewById(R.id.cancel_filter_txt);
-        imageButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        imageButton = findViewById(R.id.cancel_filter_txt);
+        nextButtonLayout = findViewById(R.id.next_button_layout);
+        configsListView = findViewById(R.id.configs_wizard_list);
+        activeNextButton = findViewById(R.id.next);
+        activeNextButton.setVisibility(View.GONE);
+        activeNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToGuidedWizardActivity(setupConfigurationAdapter);
+            }
+        });
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 configSetupFilter.setText("");
             }
         });
 
-        activeNextButton = findViewById(R.id.next);
-        activeNextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(advancedSetupLayout.isChecked()) {
-                    navigateToCohortsWizardActivity();
-                } else {
-                    navigateToGuidedWizardActivity(setupConfigurationAdapter);
-                }
-            }
-        });
-
-        nextButtonLayout = findViewById(R.id.next_button_layout);
-
         keyboardWatcher = new KeyboardWatcher(this);
         keyboardWatcher.setListener(this);
-
-        configsListView = findViewById(R.id.configs_wizard_list);
-        configsListView.setOnItemClickListener(configsListViewSelectedListener(setupConfigurationAdapter));
         configsListView.setAdapter(setupConfigurationAdapter);
-
+        configsListView.setLayoutManager( new LinearLayoutManager(getApplicationContext()));
+        hideKeyboard();
         logEvent("VIEW_SETUP_METHODS");
+    }
+
+    @Override
+    public void onSetupConfigClicked(int position) {
+        activeNextButton.setVisibility(View.VISIBLE);
+        setupConfigurationAdapter.setSelectedConfigurationUuid(setupConfigurationList.get(position).getUuid());
+        setupConfigurationAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -130,71 +153,20 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
 
     @Override
     public void onKeyboardClosed() {
-        advancedSetupLayout.setVisibility(View.VISIBLE);
         nextButtonLayout.setVisibility(View.VISIBLE);
 
     }
 
-    private void hideKeyboard(){
+    private void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             view.clearFocus();
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
-    private View.OnClickListener advancedSetupClickListener(){
-
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activateNextButton();
-                deselectGuidedSetupConfigsView();
-                selectAdvancedSetupView();
-                hideKeyboard();
-            }
-        };
-    }
-
-    private AdapterView.OnItemClickListener configsListViewSelectedListener(final SetupConfigurationAdapter setupConfigurationAdapter){
-
-        return new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                activateNextButton();
-                deselectAdvancedSetupView();
-                hideKeyboard();
-                setupConfigurationAdapter.onListItemClick(position);
-            }
-        };
-    }
-
-    private void selectAdvancedSetupView(){
-        advancedSetupLayout.setChecked(true);
-    }
-
-    private void deselectAdvancedSetupView(){
-        advancedSetupLayout.setChecked(false);
-    }
-
-    private void deselectGuidedSetupConfigsView(){
-        configsListView.clearChoices();
-        configsListView.requestLayout();
-    }
-
-    private void activateNextButton(){
-        inactiveNextButton.setVisibility(View.GONE);
-        activeNextButton.setVisibility(View.VISIBLE);
-    }
-
-    private void navigateToCohortsWizardActivity() {
-            Intent intent = new Intent(getApplicationContext(), CohortWizardActivity.class);
-            startActivity(intent);
-            finish();
-    }
-
-    private void navigateToGuidedWizardActivity(final SetupConfigurationAdapter setupConfigurationAdapter){
+    private void navigateToGuidedWizardActivity(final SetupConfigurationRecyclerViewAdapter setupConfigurationAdapter) {
         turnOnProgressDialog(getString(R.string.info_setup_configuration_wizard_prepare));
         new AsyncTask<Void, Void, int[]>() {
 
@@ -238,25 +210,26 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         }.execute();
     }
 
-    private int[] downloadSetupConfiguration(SetupConfigurationAdapter setupConfigurationAdapter){
+    private int[] downloadSetupConfiguration(SetupConfigurationRecyclerViewAdapter setupConfigurationAdapter) {
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
         String selectedConfigUuid = setupConfigurationAdapter.getSelectedConfigurationUuid();
         return muzimaSyncService.downloadSetupConfigurationTemplate(selectedConfigUuid);
     }
+
     private void keepPhoneAwake(boolean awakeState) {
-        Log.d(getClass().getSimpleName(), "Launching wake state: " + awakeState) ;
+        Log.d(getClass().getSimpleName(), "Launching wake state: " + awakeState);
         if (awakeState) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
+            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, UUID.randomUUID().toString());
             wakeLock.acquire();
         } else {
-            if(wakeLock != null) {
+            if (wakeLock != null) {
                 wakeLock.release();
             }
         }
     }
 
-    private TextWatcher textWatcherForFilterText(final SetupConfigurationAdapter setupConfigurationAdapter) {
+    private TextWatcher textWatcherForFilterText(final SetupConfigurationRecyclerViewAdapter setupConfigurationAdapter) {
         return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -275,29 +248,13 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         };
     }
 
-    @Override
-    public void onQueryTaskStarted() {
-        turnOnProgressDialog(getString(R.string.info_setup_config_load));
-    }
-
-    @Override
-    public void onQueryTaskFinish() {
-        dismissProgressDialog();
-    }
-
-    @Override
-    public void onQueryTaskCancelled(){}
-
-    @Override
-    public void onQueryTaskCancelled(Object erroeDefinition){}
-
-    private void turnOnProgressDialog(String message){
+    private void turnOnProgressDialog(String message) {
         progressDialog.show(message);
         isProcessDialogOn = true;
     }
 
-    private void dismissProgressDialog(){
-        if (progressDialog != null){
+    private void dismissProgressDialog() {
+        if (progressDialog != null) {
             progressDialog.dismiss();
             isProcessDialogOn = false;
         }

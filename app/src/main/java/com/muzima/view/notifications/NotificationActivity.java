@@ -30,11 +30,10 @@ import com.muzima.controller.NotificationController;
 import com.muzima.controller.ProviderController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
-import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.custom.CustomNotificationReplyDialog;
-import com.muzima.view.observations.ObservationsActivity;
+import com.muzima.view.observations.ObservationsFragment;
 
 import java.util.List;
 
@@ -127,7 +126,7 @@ public class NotificationActivity extends BaseActivity {
      */
     public void encounterView(View view) {
         if (notificationEncounter != null) {
-            Intent intent = new Intent(this, ObservationsActivity.class);
+            Intent intent = new Intent(this, ObservationsFragment.class);
             intent.putExtra(PATIENT, notificationEncounter.getPatient());
             startActivity(intent);
         }else

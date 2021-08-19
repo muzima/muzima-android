@@ -9,43 +9,45 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/add_concept_layout"
-              style="@style/WizardContainer">
+    android:id="@+id/add_concept_layout"
+    style="@style/WizardContainer">
 
     <LinearLayout style="@style/AutocompleteTextArea">
 
         <AutoCompleteTextView
-                android:id="@+id/concept_add_concept"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:layout_weight="1"
-                android:textColor="@color/primary_blue"
-                android:textColorHint="@color/hint_text_grey"
-                android:textCursorDrawable="@null"
-                android:hint="@string/enter_concept_name_text"
-                android:background="?attr/primaryBackgroundColor"
-                android:popupBackground="?attr/primaryBackgroundColor">
-            <requestFocus/>
+            android:id="@+id/concept_add_concept"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/primaryBackgroundColor"
+            android:hint="@string/enter_concept_name_text"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:popupBackground="?attr/primaryBackgroundColor"
+            android:textColor="@color/primary_blue"
+            android:textColorHint="@color/hint_text_grey"
+            android:textCursorDrawable="@null">
+
+            <requestFocus />
         </AutoCompleteTextView>
 
     </LinearLayout>
 
     <View
-            style="@style/DividerLine"
-            android:layout_height="2dp"/>
+        style="@style/DividerLine"
+        android:layout_height="2dp" />
 
     <ListView
-            android:id="@+id/concept_preference_list"
-            style="@style/MuzimaSelectableListView"
-            android:choiceMode="multipleChoice">
-    </ListView>
+        android:id="@+id/concept_preference_list"
+        style="@style/MuzimaSelectableListView"
+        android:choiceMode="multipleChoice"/>
 
-    <TextView android:id="@+id/no_concept_added"
-              android:text="@string/info_concept_unavailable"
-              style="@style/NoItemInListView"/>
+    <TextView
+        android:id="@+id/no_concept_added"
+        style="@style/NoItemInListView"
+        android:text="@string/info_concept_unavailable" />
+
     <View
-            style="@style/DividerLine"
-            android:layout_height="2dp"/>
+        style="@style/DividerLine"
+        android:layout_height="2dp" />
 </LinearLayout>

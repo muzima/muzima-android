@@ -17,7 +17,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import androidx.fragment.app.FragmentActivity;
+
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.AllAvailableFormsAdapter;
@@ -39,10 +42,16 @@ import com.muzima.model.AvailableForm;
 import com.muzima.model.FormWithData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
+import com.muzima.model.events.FormSearchEvent;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.tasks.FormSearchTask;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.location.LocationListActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,10 +92,12 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
         super.onCreate(savedInstanceState);
     }
 
+
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser && isResumed()){
+        if (isVisibleToUser && isResumed()) {
             logEvent("VIEW_ALL_FORMS");
         }
     }
@@ -94,9 +105,9 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof Activity){
-            mActivity =(Activity) context;
-            }
+        if (context instanceof Activity) {
+            mActivity = (Activity) context;
+        }
     }
 
 
@@ -149,8 +160,8 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
      */
     private boolean patientDataExistsWithSelectedForms() {
         try {
-            IncompleteFormsWithPatientData incompleteForms = formController.getAllIncompleteFormsWithPatientData();
-            CompleteFormsWithPatientData completeForms = formController.getAllCompleteFormsWithPatientData(mActivity.getApplicationContext());
+            IncompleteFormsWithPatientData incompleteForms = ((MuzimaApplication) mActivity.getApplicationContext()).getFormController().getAllIncompleteFormsWithPatientData();
+            CompleteFormsWithPatientData completeForms = ((MuzimaApplication) mActivity.getApplicationContext()).getFormController().getAllCompleteFormsWithPatientData(mActivity.getApplicationContext());
             if (patientDataExistsWithSelectedForms(incompleteForms) || patientDataExistsWithSelectedForms(completeForms)) {
                 return true;
             }
@@ -242,7 +253,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                     if (patientDataExistsWithSelectedForms()) {
                         AlertDialog alertDialog = new AlertDialog.Builder(mActivity).create();
                         alertDialog.setMessage((mActivity.getApplicationContext())
-                                        .getString(R.string.error_form_patient_data_exist)
+                                .getString(R.string.error_form_patient_data_exist)
                         );
                         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
                             @Override
@@ -261,7 +272,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                         protected void onPreExecute() {
                             Log.i(getClass().getSimpleName(), "Canceling timeout timer!");
                             ((MuzimaApplication) mActivity.getApplicationContext()).cancelTimer();
-                            ((FormsActivity) mActivity).showProgressBar();
+                            ((MainDashboardActivity) mActivity).showProgressBar();
                         }
 
                         @Override
@@ -271,7 +282,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
                         @Override
                         protected void onPostExecute(int[] results) {
-                            if(results[0] == SUCCESS) {
+                            if (results[0] == SUCCESS) {
                                 Toast.makeText(mActivity, getString(R.string.info_form_templates_downloaded, results[1]), Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(mActivity, getString(R.string.info_form_download_failure), Toast.LENGTH_SHORT).show();
@@ -281,7 +292,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                             //ToDo: Discuss whether and how these further downloads should be supported
                             //navigateToNextActivity();
                             ((MuzimaApplication) mActivity.getApplicationContext()).restartTimer();
-                            ((FormsActivity) mActivity).hideProgressbar();
+                            ((MainDashboardActivity) mActivity).hideProgressbar();
                             unselectAllItems();
                             reloadData();
                             ((AllAvailableFormsAdapter) listAdapter).clearSelectedForms();
@@ -310,11 +321,12 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
     private void navigateToNextActivity() {
         Intent intent = new Intent(mActivity.getApplicationContext(), LocationListActivity.class);
-        if(isAdded()) {
+        if (isAdded()) {
             //startActivity(intent);
         }
         mActivity.finish();
     }
+
     private int[] downloadFormTemplates() {
         List<String> selectedFormIdsArray = getSelectedForms();
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSyncService();

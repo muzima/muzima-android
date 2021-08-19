@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_cohort_filter_container"
+    android:paddingStart="12dp"
+    android:paddingEnd="2dp"
+    android:layout_marginEnd="22dp"
+    android:paddingTop="6dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:paddingBottom="6dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <CheckBox
+        android:id="@+id/item_cohort_filter_checkbox"
+        android:textSize="16sp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:buttonTint="?attr/primaryTextColor"
+        android:textColor="?attr/primaryTextColor"
+        android:fontFamily="@font/montserrat_regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</FrameLayout>

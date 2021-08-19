@@ -17,6 +17,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -70,8 +71,16 @@ import java.io.IOException;
 import java.security.Security;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+
+import io.github.inflationx.calligraphy3.CalligraphyConfig;
+import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
+import io.github.inflationx.viewpump.ViewPump;
+import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
@@ -106,6 +115,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
     private User authenticatedUser;
+    private ExecutorService executorService;
 
     public void clearApplicationData() {
         try {
@@ -138,7 +148,7 @@ public class MuzimaApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
         FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -155,9 +165,23 @@ public class MuzimaApplication extends MultiDexApplication {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        ViewPump.init(ViewPump.builder()
+                .addInterceptor(new CalligraphyInterceptor(
+                        new CalligraphyConfig.Builder()
+                                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
+                                .setFontAttrId(R.attr.fontPath)
+                                .build()))
+                .build());
     }
 
-    public void checkAndSetLocaleToDeviceLocaleIFDisclaimerNotAccepted(){
+    @Override
+    protected void attachBaseContext(android.content.Context base) {
+        super.attachBaseContext(ViewPumpContextWrapper.wrap(base));
+        MultiDex.install(base);
+    }
+
+    public void checkAndSetLocaleToDeviceLocaleIFDisclaimerNotAccepted() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
         boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
@@ -212,8 +236,8 @@ public class MuzimaApplication extends MultiDexApplication {
         return conceptController;
     }
 
-    public ProviderController getProviderController(){
-        if(providerController ==  null){
+    public ProviderController getProviderController() {
+        if (providerController == null) {
             try {
                 providerController = new ProviderController(muzimaContext.getService(ProviderService.class));
             } catch (IOException e) {
@@ -222,6 +246,7 @@ public class MuzimaApplication extends MultiDexApplication {
         }
         return providerController;
     }
+
     public FormController getFormController() {
         if (formController == null) {
             try {
@@ -237,7 +262,7 @@ public class MuzimaApplication extends MultiDexApplication {
         if (cohortController == null) {
             try {
                 cohortController = new CohortController(muzimaContext.getCohortService(), muzimaContext.getLastSyncTimeService(),
-                        getSntpService(),this);
+                        getSntpService(), this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -294,7 +319,7 @@ public class MuzimaApplication extends MultiDexApplication {
         if (notificationController == null) {
             try {
                 notificationController = new NotificationController(muzimaContext.getService(NotificationService.class),
-                        muzimaContext.getFormService(),this,getSntpService());
+                        muzimaContext.getFormService(), this, getSntpService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -327,19 +352,19 @@ public class MuzimaApplication extends MultiDexApplication {
         return prefixesPreferenceService;
     }
 
-    public LocalePreferenceService getLocalePreferenceService(){
-        if(localePreferenceService == null){
+    public LocalePreferenceService getLocalePreferenceService() {
+        if (localePreferenceService == null) {
             localePreferenceService = new LocalePreferenceService(this);
         }
         return localePreferenceService;
     }
 
-    public SetupConfigurationController getSetupConfigurationController(){
-        if(setupConfigurationController == null){
+    public SetupConfigurationController getSetupConfigurationController() {
+        if (setupConfigurationController == null) {
             try {
                 setupConfigurationController = new SetupConfigurationController(muzimaContext.getSetupConfigurationService(),
-                        muzimaContext.getLastSyncTimeService(), getSntpService() );
-            }catch (IOException e){
+                        muzimaContext.getLastSyncTimeService(), getSntpService());
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -347,21 +372,22 @@ public class MuzimaApplication extends MultiDexApplication {
     }
 
     public MuzimaSettingController getMuzimaSettingController() {
-        if(settingsController == null){
+        if (settingsController == null) {
             try {
                 settingsController = new MuzimaSettingController(muzimaContext.getMuzimaSettingService(),
                         muzimaContext.getLastSyncTimeService(), getSntpService(), muzimaContext.getSetupConfigurationService());
-            } catch (IOException e){
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
         return settingsController;
     }
+
     public SmartCardController getSmartCardController() {
-        if(smartCardController == null){
+        if (smartCardController == null) {
             try {
                 smartCardController = new SmartCardController(muzimaContext.getSmartCardRecordService());
-            } catch (IOException e){
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -371,7 +397,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public PatientReportController getPatientReportController() {
         if (patientReportController == null) {
             try {
-                patientReportController = new PatientReportController(muzimaContext.getPatientReportService(),muzimaContext.getLastSyncTimeService(),getSntpService());
+                patientReportController = new PatientReportController(muzimaContext.getPatientReportService(), muzimaContext.getLastSyncTimeService(), getSntpService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -424,9 +450,9 @@ public class MuzimaApplication extends MultiDexApplication {
     }
 
     public void logOut() {
-        if(authenticatedUser != null) {
+        if (authenticatedUser != null) {
             MuzimaLoggerService.stopLogsSync();
-            MuzimaLoggerService.log(this, "USER_LOGOUT","{}");
+            MuzimaLoggerService.log(this, "USER_LOGOUT", "{}");
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException ie) {
@@ -448,14 +474,14 @@ public class MuzimaApplication extends MultiDexApplication {
         this.currentActivity = currentActivity;
     }
 
-    private void evictAuthenticatedUser(){
+    private void evictAuthenticatedUser() {
         authenticatedUser = null;
     }
 
-    public String getAuthenticatedUserId(){ //might need to delete this block ; no caller
+    public String getAuthenticatedUserId() { //might need to delete this block ; no caller
         User authenticatedUser = getAuthenticatedUser();
-        if(authenticatedUser != null)
-            return authenticatedUser.getUsername() != null ? authenticatedUser.getUsername():authenticatedUser.getSystemId();
+        if (authenticatedUser != null)
+            return authenticatedUser.getUsername() != null ? authenticatedUser.getUsername() : authenticatedUser.getSystemId();
         return "null";
     }
 
@@ -476,10 +502,10 @@ public class MuzimaApplication extends MultiDexApplication {
     }
 
     public MuzimaCoreModuleVersionController getMuzimaCoreModuleVersionController() {
-        if(muzimaCoreModuleVersionController == null){
+        if (muzimaCoreModuleVersionController == null) {
             try {
                 muzimaCoreModuleVersionController = new MuzimaCoreModuleVersionController(muzimaContext.getMuzimaCoreModuleVersionService());
-            } catch (IOException e){
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -487,14 +513,23 @@ public class MuzimaApplication extends MultiDexApplication {
     }
 
     public MinimumSupportedAppVersionController getMinimumSupportedVersionController() {
-        if(minimumSupportedAppVersionController == null){
+        if (minimumSupportedAppVersionController == null) {
             try {
                 minimumSupportedAppVersionController = new MinimumSupportedAppVersionController(muzimaContext.getMinimumSupportedAppVersionService());
-            } catch (IOException e){
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
         return minimumSupportedAppVersionController;
+    }
+
+    public ExecutorService getExecutorService() {
+        if (executorService == null) {
+            return new ThreadPoolExecutor(
+                    20, 20, 3000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(128)
+            );
+        }
+        return executorService;
     }
 
     public FCMTokenContoller getFCMTokenController() {

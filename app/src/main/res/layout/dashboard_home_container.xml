@@ -1,0 +1,265 @@
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/primaryBackgroundColor"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix"
+    android:id="@+id/dashboard_home_fragment_container"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <View
+        android:id="@+id/dashboard_home_fragment_child_container"
+        android:visibility="gone"
+        android:background="@color/hint_text_grey_opaque"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/dashboard_home_app_bar"
+            android:background="?attr/primaryBackgroundColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:paddingBottom="4dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginStart="12dp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dashboard_home_welcome_message_text_view"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:paddingTop="6dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:layout_width="match_parent"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="24sp" />
+
+                <include layout="@layout/forms_top_bar_view" />
+
+                <RelativeLayout
+                    android:id="@+id/dashboard_main_patient_search_view"
+                    android:background="@drawable/border_button_gray"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:text="@string/general_search_patient"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textColor="?attr/primaryTextColor"
+                        android:id="@+id/dashboard_forms_search_edit_text"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:padding="4dp" />
+
+                    <ImageView
+                        android:layout_marginEnd="4dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:src="?attr/icSearch" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent">
+
+                    <TextView
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="@string/general_or_search_by"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textAllCaps="true"
+                        android:textSize="10sp" />
+
+                    <LinearLayout
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:background="@drawable/border_button_sharp_gray"
+                            android:id="@+id/search_barcode_view"
+                            android:layout_height="34dp"
+                            android:layout_width="34dp"
+                            android:padding="6dp"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/barcode_scanner" />
+
+                        <ImageView
+                            android:background="@drawable/border_button_sharp_gray"
+                            android:id="@+id/search_fingerprint"
+                            android:layout_height="34dp"
+                            android:layout_width="34dp"
+                            android:padding="6dp"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/fingerprint" />
+
+                        <ImageView
+                            android:background="@drawable/border_button_sharp_gray"
+                            android:id="@+id/search_server_view"
+                            android:layout_height="34dp"
+                            android:layout_width="34dp"
+                            android:padding="6dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginStart="6dp"
+                            android:src="@drawable/fhir_icon" />
+
+                        <ImageView
+                            android:id="@+id/search_smart_card_view"
+                            android:background="@drawable/border_button_sharp_gray"
+                            android:layout_height="34dp"
+                            android:layout_width="34dp"
+                            android:padding="6dp"
+                            android:layout_marginEnd="2dp"
+                            android:layout_marginStart="2dp"
+                            android:src="@drawable/debit_card" />
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ProgressBar
+            android:id="@+id/patient_list_filtering_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:indeterminate="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/favourite_list_container"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:paddingTop="6dp"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/dashboard_home_filter_text_view"
+                android:layout_marginStart="4dp"
+                android:maxLength="25"
+                android:ellipsize="end"
+                android:textSize="18sp"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="?attr/primaryTextColor"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/general_all_clients" />
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:layout_height="26dp"
+                android:layout_width="26dp"
+                android:layout_marginStart="2dp"
+                android:src="?attr/icActionArrowDown" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/patient_lists_layout"
+            android:paddingStart="12dp"
+            android:paddingEnd="8dp"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    style="@style/MuzimaSelectableListView"
+                    android:id="@+id/list"/>
+
+                <ProgressBar
+                    android:id="@+id/patient_loader_progress_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:id="@+id/no_data_layout"
+                    android:layout_below="@id/list"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:paddingRight="16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:id="@+id/no_data_msg"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textSize="25sp"/>
+
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:id="@+id/no_data_tip"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/primary_red"
+                        android:textSize="20sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:gravity="center_horizontal"
+                    android:id="@+id/search_server_layout"
+                    android:layout_below="@id/no_data_layout"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="invisible">
+
+                    <LinearLayout
+                        style="@style/DividerLine"
+                        android:layout_marginTop="30dp" />
+
+                    <Button
+                        android:drawableLeft="?attr/icSearch"
+                        android:gravity="center"
+                        android:backgroundTint="@color/primary_blue"
+                        android:id="@+id/search_server_btn"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:text="@string/title_search_server" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <include layout="@layout/progress_bar" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

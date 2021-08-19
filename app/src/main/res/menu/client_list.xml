@@ -9,51 +9,14 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-	  xmlns:custom="http://schemas.android.com/apk/res-auto">
-	<item
-		android:id="@+id/menu_tags"
-		android:icon="?attr/icLabels"
-		custom:showAsAction="never"
-		android:title="@string/general_tags"/>
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
 
-	<item
-		android:id="@+id/scan_SHR_card"
-		android:icon="@drawable/ic_action_scan_card"
-		android:title="@string/scan_card_id_title"/>
+    <item
+        android:id="@+id/search"
+        android:icon="?attr/icSearch"
+        android:title="@string/hint_client_search"
+        android:visible="true"
+        custom:actionViewClass="android.widget.SearchView"
+        custom:showAsAction="always" />
 
-	<item
-		android:id="@+id/menu_client_add_icon"
-		android:icon="?attr/icAddClient"
-		android:title="@string/hint_client_search"
-		custom:showAsAction="always" />
-
-	<item
-			android:id="@+id/bar_card_scan"
-			android:icon="@drawable/barcode_icon"
-			custom:showAsAction="ifRoom"
-			android:title="@string/title_client_scan"/>
-	<item
-			android:id="@+id/search"
-			custom:actionViewClass="androidx.appcompat.widget.SearchView"
-			android:icon="?attr/icSearch"
-			android:visible="false"
-			custom:showAsAction="always"
-			android:title="@string/hint_client_search"/>
-	<item
-			android:id="@+id/menu_dashboard"
-			custom:showAsAction="never"
-			android:title="@string/general_dashboard"/>
-	<item
-			android:id="@+id/menu_client_add_text"
-			custom:showAsAction="never"
-			android:title="@string/general_client_register"/>
-	<item
-			android:id="@+id/menu_complete_form_data"
-			custom:showAsAction="never"
-			android:title="@string/menu_form_data_sync"/>
-	<item
-			android:id="@+id/clients_geomapping"
-			android:title=""
-			custom:showAsAction="always"
-			android:icon="?attr/icNavigation"/>
 </menu>

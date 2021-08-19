@@ -12,6 +12,8 @@ package com.muzima.view.forms;
 
 import android.os.Build;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -100,6 +102,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     private WebView webView;
     private Form form;
+    private Toolbar toolbar;
     private FormTemplate formTemplate;
     private MuzimaProgressDialog progressDialog;
     private FormData formData;
@@ -134,10 +137,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         super.onCreate(savedInstanceState);
 
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         scanResultMap = new HashMap<>();
         imageResultMap = new HashMap<>();
@@ -156,6 +155,13 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 getWindow().setLayout(width, height);
             }
         }
+
+        toolbar = findViewById(R.id.form_web_view_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         setTitle(R.string.general_form);
         progressDialog = new MuzimaProgressDialog(this);

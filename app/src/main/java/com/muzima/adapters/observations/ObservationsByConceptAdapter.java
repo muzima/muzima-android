@@ -39,7 +39,6 @@ import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.utils.BackgroundTaskHelper;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
-import com.muzima.utils.Fonts;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.CustomObsEntryDialog;
 
@@ -213,7 +212,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                 observationValue.setVisibility(View.VISIBLE);
                 observationComplexHolder.setVisibility(View.GONE);
                 observationValue.setText(observation.getValueAsString());
-                observationValue.setTypeface(Fonts.roboto_medium(getContext()));
                 observationValue.setTextColor(conceptColor);
             }
 
@@ -234,7 +232,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
 
             TextView observationDateView = (TextView) layout.findViewById(R.id.observation_date);
             observationDateView.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
-            observationDateView.setTypeface(Fonts.roboto_regular(getContext()));
             observationDateView.setTextColor(conceptColor);
 
             layout.setOnClickListener(new View.OnClickListener() {

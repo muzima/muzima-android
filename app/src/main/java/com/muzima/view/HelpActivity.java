@@ -14,9 +14,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+
 import com.muzima.R;
 
 import java.util.ArrayList;
@@ -27,11 +29,13 @@ import java.util.List;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 
+import androidx.appcompat.widget.Toolbar;
+
 public class HelpActivity extends BaseHelpActivity {
 
     public static final int YOUTUBE_API_RESULT = 100;
     public static final String YOUTUBE_API_CANCEL_CASE = "YOUTUBE_API_CANCEL_CASE";
-    public static final String YOUTUBE_INITIALIZATION_FAILURE= "INITIALIZATION_FAILURE";
+    public static final String YOUTUBE_INITIALIZATION_FAILURE = "INITIALIZATION_FAILURE";
     public static final String VIDEO_PATH = "VIDEO_PATH";
     public static final String VIDEO_TITLE = "VIDEO_TITLE";
     public static final String HELP_TYPE = "HELP_TYPE";
@@ -58,6 +62,7 @@ public class HelpActivity extends BaseHelpActivity {
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private List<String> listDataHeader;
+    private Toolbar toolbar;
     private HashMap<String, List<String>> listDataChild;
 
     @Override
@@ -65,15 +70,12 @@ public class HelpActivity extends BaseHelpActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help_new);
 
-        // get the listview
         expListView = findViewById(R.id.lvExp);
-
-        // preparing list data
+        toolbar = findViewById(R.id.help_toolbar);
+        initToolbar();
         prepareListData();
 
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
-
-        // setting list adapter
         expListView.setAdapter(listAdapter);
 
         expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
@@ -81,7 +83,7 @@ public class HelpActivity extends BaseHelpActivity {
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                if(groupPosition != previousGroup)
+                if (groupPosition != previousGroup)
                     expListView.collapseGroup(previousGroup);
                 previousGroup = groupPosition;
             }
@@ -124,6 +126,28 @@ public class HelpActivity extends BaseHelpActivity {
             }
         });
         logEvent("VIEW_HELP");
+    }
+
+    private void initToolbar() {
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (android.R.id.home == item.getItemId()){
+            launchDashboard();
+        }
+        return false;
+    }
+
+    private void launchDashboard() {
+        Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     /*
@@ -202,5 +226,10 @@ public class HelpActivity extends BaseHelpActivity {
         Intent playVideoIntent = new Intent(Intent.ACTION_VIEW);
         playVideoIntent.setData(Uri.parse(videoUrl));
         startActivity(playVideoIntent);
+    }
+
+    @Override
+    public void onBackPressed() {
+       launchDashboard();
     }
 }

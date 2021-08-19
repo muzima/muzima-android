@@ -37,6 +37,7 @@ import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS_DATA;
 import static com.muzima.api.model.APIName.DOWNLOAD_REMOVED_COHORTS_DATA;
 
 public class CohortController {
+    private static final String TAG = "CohortController";
     private final CohortService cohortService;
     private final LastSyncTimeService lastSyncTimeService;
     private final SntpService sntpService;
@@ -49,34 +50,32 @@ public class CohortController {
         this.muzimaApplication = muzimaApplication;
     }
 
-    public String getDefaultLocation(){
+    public String getDefaultLocation() {
         Context context = muzimaApplication.getApplicationContext();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String setDefaultLocation = preferences.getString("defaultEncounterLocation", null);
-        if(setDefaultLocation==null)
-        {
+        if (setDefaultLocation == null) {
             setDefaultLocation = null;
         }
         return setDefaultLocation;
     }
 
-    public Provider getLoggedInProvider(){
+    public Provider getLoggedInProvider() {
         Provider loggedInProvider = new Provider();
         try {
             User authenticatedUser = muzimaApplication.getAuthenticatedUser();
-            if(authenticatedUser != null) {
+            if (authenticatedUser != null) {
                 loggedInProvider = muzimaApplication.getProviderController().getLoggedInProvider(
                         muzimaApplication.getAuthenticatedUser().getSystemId());
-            }else {
+            } else {
                 loggedInProvider = null;
             }
         } catch (ProviderController.ProviderLoadException e) {
             loggedInProvider = null;
-            Log.e(getClass().getSimpleName(),"Exception while fetching logged in provider "+e);
+            Log.e(getClass().getSimpleName(), "Exception while fetching logged in provider " + e);
         }
-        return  loggedInProvider;
+        return loggedInProvider;
     }
-
 
 
     public List<Cohort> getAllCohorts() throws CohortFetchException {
@@ -110,7 +109,7 @@ public class CohortController {
 
     public List<CohortData> downloadCohortData(String[] cohortUuids, String defaulLocation) throws CohortDownloadException {
         ArrayList<CohortData> allCohortData = new ArrayList<>();
-         for (String cohortUuid : cohortUuids) {
+        for (String cohortUuid : cohortUuids) {
             allCohortData.add(downloadCohortDataByUuid(cohortUuid, defaulLocation));
         }
         return allCohortData;
@@ -124,7 +123,7 @@ public class CohortController {
         return allCohortData;
     }
 
-    public CohortData downloadCohortDataByUuid(String uuid,String defaultLocation) throws CohortDownloadException {
+    public CohortData downloadCohortDataByUuid(String uuid, String defaultLocation) throws CohortDownloadException {
         try {
             Date lastSyncDate = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS_DATA, uuid);
             Provider loggedInProvider = getLoggedInProvider();
@@ -151,7 +150,8 @@ public class CohortController {
         }
     }
 
-    public List<Cohort> downloadCohortsByPrefix(List<String> cohortPrefixes,String defaultLocation) throws CohortDownloadException {
+    public List<Cohort> downloadCohortsByPrefix(List<String> cohortPrefixes, String defaultLocation) throws CohortDownloadException {
+        Log.e(TAG, "downloadCohortsByPrefix: " + cohortPrefixes);
         Provider loggedInProvider = getLoggedInProvider();
         List<Cohort> filteredCohorts = new ArrayList<>();
         try {
@@ -160,6 +160,7 @@ public class CohortController {
             for (String cohortPrefix : cohortPrefixes) {
                 lastSyncDateOfCohort = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_COHORTS, cohortPrefix);
                 List<Cohort> cohorts = cohortService.downloadCohortsByNameAndSyncDate(cohortPrefix, lastSyncDateOfCohort, defaultLocation, loggedInProvider);
+                Log.e(TAG, "downloadCohortsByPrefix: downloadCohortsByNameAndSyncDate cohorts " + cohorts.size());
                 List<Cohort> filteredCohortsForPrefix = filterCohortsByPrefix(cohorts, cohortPrefix);
                 addUniqueCohorts(filteredCohorts, filteredCohortsForPrefix);
                 lastSyncTime = new LastSyncTime(DOWNLOAD_COHORTS, sntpService.getTimePerDeviceTimeZone(), cohortPrefix);
@@ -208,12 +209,12 @@ public class CohortController {
 
     public void saveOrUpdateCohorts(List<Cohort> cohorts) throws CohortSaveException {
         try {
-            for(Cohort cohort:cohorts){
-                if(StringUtils.isEmpty(cohort.getUuid())){
+            for (Cohort cohort : cohorts) {
+                if (StringUtils.isEmpty(cohort.getUuid())) {
                     cohortService.saveCohort(cohort);
                 } else {
                     Cohort localCohort = cohortService.getCohortByUuid(cohort.getUuid());
-                    if(localCohort!=null){
+                    if (localCohort != null) {
                         cohort.setSyncStatus(localCohort.getSyncStatus());
                     }
                     cohortService.updateCohort(cohort);
@@ -259,12 +260,12 @@ public class CohortController {
     public boolean isDownloaded(Cohort cohort) {
         try {
             Cohort localCohort = cohortService.getCohortByUuid(cohort.getUuid());
-            if(localCohort!=null) {
+            if (localCohort != null) {
                 //Returning the checking of downloaded cohorts by both sync status and cohort member count.
                 //This is to enable successful upgrades from lower versions to 2.5.0(Lower version did not have sync status)
                 //TODO: should remove the check by cohort member count once implementation have upgraded to version 2.5.0
                 return localCohort.getSyncStatus() == 1 || cohortService.countCohortMembers(cohort.getUuid()) > 0;
-            }else{
+            } else {
                 return false;
             }
         } catch (IOException e) {
@@ -273,8 +274,8 @@ public class CohortController {
     }
 
     public boolean isUpdateAvailable() throws CohortFetchException {
-        for(Cohort cohort: getSyncedCohorts()){
-            if(cohort.isUpdateAvailable()){
+        for (Cohort cohort : getSyncedCohorts()) {
+            if (cohort.isUpdateAvailable()) {
                 return true;
             }
         }
@@ -283,8 +284,8 @@ public class CohortController {
 
     public List<Cohort> getCohortsWithPendingUpdates() throws CohortFetchException {
         List<Cohort> cohortList = new ArrayList<>();
-        for(Cohort cohort: getSyncedCohorts()){
-            if(cohort.isUpdateAvailable()){
+        for (Cohort cohort : getSyncedCohorts()) {
+            if (cohort.isUpdateAvailable()) {
                 cohortList.add(cohort);
             }
         }
@@ -303,7 +304,7 @@ public class CohortController {
                     cohortService.updateCohort(cohort);
                 }
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new CohortUpdateException(e);
         }
     }
@@ -317,7 +318,7 @@ public class CohortController {
                     cohortService.updateCohort(cohort);
                 }
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new CohortUpdateException(e);
         }
     }
@@ -367,7 +368,7 @@ public class CohortController {
         Provider loggedInProvider = getLoggedInProvider();
         try {
             List<Cohort> cohortList = new ArrayList<>();
-            for(String uuid:uuidList){
+            for (String uuid : uuidList) {
                 cohortList.add(cohortService.downloadCohortByUuid(uuid, defaultLocation, loggedInProvider));
             }
             return cohortList;
@@ -379,7 +380,7 @@ public class CohortController {
     public List<CohortMember> getCohortMembershipByPatientUuid(String patientUuid) throws CohortFetchException {
         try {
             List<CohortMember> cohortMembers = cohortService.getCohortMembershipByPatientUuid(patientUuid);
-            return  cohortMembers;
+            return cohortMembers;
         } catch (IOException e) {
             throw new CohortFetchException(e);
         }
