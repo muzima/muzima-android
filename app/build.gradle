@@ -55,6 +55,11 @@ android {
         pickFirst 'META-INF/DEPENDENCIES'
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         debug {
             manifestPlaceholders = [crashlyticsCollectionEnabled: "false"]
@@ -147,5 +152,5 @@ task wrapper(type: Wrapper) {
 configurations {
     all {
         exclude group: 'org.json', module: 'json'
-    } 
+    }
 }
