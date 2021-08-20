@@ -35,19 +35,12 @@
 
         <TextView
                 android:id="@+id/no_data_msg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 style="@style/NoDataMsg">
         </TextView>
 
         <TextView
                 android:id="@+id/no_data_tip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-            android:textColor="@color/primary_red"
-            style="@style/NoDataTip">
+                style="@style/NoDataTip">
         </TextView>
     </LinearLayout>
 
