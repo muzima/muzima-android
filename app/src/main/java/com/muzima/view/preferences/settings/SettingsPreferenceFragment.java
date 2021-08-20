@@ -18,7 +18,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -41,6 +40,7 @@ import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
 import com.muzima.service.SHRStatusPreferenceService;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.tasks.ValidateURLTask;
 import com.muzima.util.Constants;
 import com.muzima.utils.NetworkUtils;
@@ -604,19 +604,24 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     }
 
-    abstract class SettingDownloadAsyncTask extends AsyncTask<Void, Void,int[] >{
+    abstract class SettingDownloadAsyncTask extends MuzimaAsyncTask<Void, Void,int[] > {
         abstract  SettingDownloadAsyncTask newInstance();
     }
 
     public class DownloadGPSLocationSettingAsyncTask extends SettingDownloadAsyncTask {
         public DownloadGPSLocationSettingAsyncTask(){ }
 
+        @Override
+        protected void onPreExecute() {
+
+        }
+
         DownloadGPSLocationSettingAsyncTask newInstance(){
             return new DownloadGPSLocationSettingAsyncTask();
         }
 
         @Override
-        public int[] doInBackground(Void... params){
+        public int[] doInBackground(Void params){
             MuzimaSyncService syncService = ((MuzimaApplication) mActivity
                     .getApplication()).getMuzimaSyncService();
             return syncService.downloadSetting(Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING);
@@ -641,6 +646,11 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                 }
             }
         }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
     }
 
     public class DownloadRequireMedicalRecordNumberSettingAsyncTask extends SettingDownloadAsyncTask {
@@ -649,7 +659,12 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         }
 
         @Override
-        public int[] doInBackground(Void... params){
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        public int[] doInBackground(Void params){
             MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
                     .getApplication()).getMuzimaSyncService();
             return syncService.downloadSetting(Constants.ServerSettings
@@ -676,6 +691,11 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                 }
             }
         }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
     }
 
     public class DownloadSHRSettingAsyncTask extends SettingDownloadAsyncTask {
@@ -684,7 +704,12 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         }
 
         @Override
-        public int[] doInBackground(Void... params){
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        public int[] doInBackground(Void params){
             MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
                     .getApplication()).getMuzimaSyncService();
             return syncService.downloadSetting(Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING);
@@ -708,6 +733,11 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                     Toast.makeText(mActivity, getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
                 }
             }
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 
