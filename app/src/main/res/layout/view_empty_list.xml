@@ -22,19 +22,12 @@
 
     <TextView
             android:id="@+id/no_data_msg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text=""
-            android:textSize="20sp">
+            style="@style/NoDataMsg"
+            android:text="">
     </TextView>
 
     <TextView
             android:id="@+id/no_data_tip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-        android:textColor="@color/primary_red"
-        android:textSize="16sp">
+            style="@style/NoDataTip">
     </TextView>
 </LinearLayout>

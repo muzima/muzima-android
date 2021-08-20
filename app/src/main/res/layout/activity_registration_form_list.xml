@@ -54,17 +54,11 @@
 
             <TextView
                 android:id="@+id/no_data_msg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:textSize="20sp" />
+            style="@style/NoDataMsg"/>
 
             <TextView
                 android:id="@+id/no_data_tip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:textSize="16sp" />
+                style="@style/NoDataTip" />
         </LinearLayout>
 
         <include layout="@layout/progress_bar" />
