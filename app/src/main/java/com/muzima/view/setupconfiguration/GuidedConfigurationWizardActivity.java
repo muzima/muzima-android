@@ -19,6 +19,7 @@ import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -77,6 +79,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private TextView initialSetupStatusTextView;
     private Button finishSetupButton;
     private ViewPager viewPager;
+    private ViewPager2 viewPager2;
     private ViewPager viewPagerLg;
     private CountDownTimer countDownTimer;
     private ImageView firstDotView;
@@ -96,14 +99,26 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private void startViewPagerAnimation() {
-        countDownTimer = new CountDownTimer(1000 * 120, 7000) {
+        countDownTimer = new CountDownTimer(1000 * 120, 6000) {
             @Override
-            public void onTick(long tick) {
-                if (pageCount > 14) pageCount = 0;
+            public void onTick(final long tick) {
+                if(pageCount>55) pageCount=0;
                 viewPager.setCurrentItem(pageCount, true);
                 viewPagerLg.setCurrentItem(pageCount, true);
                 updateStepper(pageCount);
                 pageCount = pageCount + 1;
+                viewPagerLg.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                            countDownTimer.cancel();
+                        }
+                        if(event.getAction() == MotionEvent.ACTION_UP){
+                            countDownTimer.start();
+                        }
+                        return false;
+                    }
+                });
             }
 
             @Override
