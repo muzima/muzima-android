@@ -13,6 +13,7 @@ package com.muzima.view.preferences;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -25,6 +26,10 @@ import android.widget.Toast;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteConceptAdapter;
@@ -33,7 +38,6 @@ import com.muzima.api.model.Concept;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.HelpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +59,16 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        LayoutInflater inflator = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.concept_autocomplete_textview_action, null);
+        actionBar.setCustomView(v);
+
         selectedConceptListView = findViewById(R.id.concept_preference_list);
         final MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
         selectedConceptAdapter = new SelectedConceptAdapter(this, R.layout.item_concept_list,
@@ -65,10 +79,11 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         selectedConceptListView.setClickable(true);
         selectedConceptListView.setEmptyView(findViewById(R.id.no_concept_added));
         selectedConceptListView.setOnItemClickListener(selectedConceptOnClickListener());
-        autoCompleteConceptTextView = findViewById(R.id.concept_add_concept);
+        autoCompleteConceptTextView = v.findViewById(R.id.concept_add_concept);
         AutoCompleteConceptAdapter autoCompleteConceptAdapter = new AutoCompleteConceptAdapter(this, R.layout.item_option_autocomplete, autoCompleteConceptTextView);
         autoCompleteConceptTextView.setAdapter(autoCompleteConceptAdapter);
         autoCompleteConceptTextView.setOnItemClickListener(autoCompleteOnClickListener());
+
 
         // this can happen on orientation change
         if (actionModeActive) {
@@ -117,15 +132,19 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionmode_menu_close, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_help:
-                Intent intent = new Intent(this, HelpActivity.class);
-                intent.putExtra(HelpActivity.HELP_TYPE, HelpActivity.CUSTOM_CONCEPT_HELP);
-                startActivity(intent);
+            case R.id.menu_close:
+                autoCompleteConceptTextView.setText(StringUtils.EMPTY);
                 return true;
             default:
-                return super.onOptionsItemSelected(item);
+                return false;
         }
     }
 

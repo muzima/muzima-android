@@ -126,8 +126,7 @@
             android:name=".view.preferences.ConceptPreferenceActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_concepts"
-            android:parentActivityName=".view.preferences.SettingsActivity"
-            android:theme="@style/PreferencesTheme.Dark">
+            android:parentActivityName=".view.preferences.SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.muzima.view.preferences.SettingsActivity" />

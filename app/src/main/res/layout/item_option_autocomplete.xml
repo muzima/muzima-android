@@ -18,8 +18,8 @@
     <TextView
             android:id="@+id/option_autocomplete_name"
             style="@style/ListHeader"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
             android:background="?attr/listMultiSelectorBlue">
     </TextView>
 
