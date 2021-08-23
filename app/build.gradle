@@ -19,7 +19,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.4'
+        classpath 'com.android.tools.build:gradle:4.1.3'
     }
 }
 
@@ -41,7 +41,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 22
-        versionName "2.7.4-SNAPSHOT"
+        versionName "2.7.5-SNAPSHOT"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [versionCode: defaultConfig.versionCode, versionName: defaultConfig.versionName]
 
@@ -98,6 +98,8 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.4.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation group: 'androidx.navigation', name: 'navigation-fragment', version: '2.3.5'
+    implementation group: 'androidx.navigation', name: 'navigation-ui', version: '2.3.5'
     implementation group: 'com.azimolabs.keyboardwatcher', name: 'keyboardwatcher', version: '0.1.3'
     implementation group: 'lucene.transform', name: 'lucenetransform', version: '0.9.2.2'
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.7.3'
@@ -109,7 +111,7 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.2.0'
     //implementation 'com.google.firebase:firebase-core:16.0.1'
 
-    implementation(group: 'com.muzima', name: 'muzima-api', version: '1.3.10') {
+    implementation(group: 'com.muzima', name: 'muzima-api', version: '1.3.11-SNAPSHOT') {
         exclude(module: 'guice')
     }
     implementation group: 'com.google.inject', name: 'guice', version: '3.0', classifier: 'no_aop'
@@ -123,7 +125,7 @@ dependencies {
     testImplementation group: 'org.robolectric', name: 'robolectric', version: '3.1.1'
     testImplementation 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
     testImplementation group: 'xmlpull', name: 'xmlpull', version: '1.1.3.4d_b4_min'
-    testImplementation(group: 'com.muzima', name: 'muzima-api', version: '1.3.10') {
+    testImplementation(group: 'com.muzima', name: 'muzima-api', version: '1.3.11-SNAPSHOT') {
         exclude(module: 'guice')
     }
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
@@ -134,7 +136,7 @@ dependencies {
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:26.7.0')
 
-    // Declare the dependencies for the Firebase Cloud Messaging, Analytics and crashlystics libraries
+    // Declare the dependencies for the Firebase Cloud Messaging, Analytics and crashlytics libraries
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-messaging'
     // Recommended: Add the Google Analytics SDK.

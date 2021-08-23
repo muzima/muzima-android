@@ -1,4 +1,4 @@
-package com.muzima.view.cohort;
+package com.muzima.view.fragments.cohorts;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +21,7 @@ import com.muzima.model.events.CohortSearchEvent;
 import com.muzima.model.events.CohortsActionModeEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.tasks.CohortSearchTask;
-import com.muzima.tasks.LoadAvailableCohortsTask;
+import com.muzima.tasks.LoadDownloadedCohortsTask;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,22 +29,16 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AvailableCohortsFragment extends Fragment implements CohortRecyclerViewAdapter.OnCohortClickedListener {
+public class DownloadedCohortsFragment extends Fragment implements CohortRecyclerViewAdapter.OnCohortClickedListener {
     private ProgressBar progressBar;
     private RecyclerView cohortListRecyclerView;
     private CohortRecyclerViewAdapter recyclerViewAdapter;
-    private List<CohortItem> allCohortsList = new ArrayList<>();
+    private List<CohortItem> downloadedCohortsList = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_cohorts_list, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        initializeResources(view);
-        loadData();
     }
 
     @Override
@@ -59,7 +53,7 @@ public class AvailableCohortsFragment extends Fragment implements CohortRecycler
 
     @Subscribe
     public void cohortSearchEvent(CohortSearchEvent event) {
-        if (event.getPage() == 2)
+        if (event.getPage() == 1)
             searchCohorts(event.getSearchTerm());
     }
 
@@ -72,25 +66,31 @@ public class AvailableCohortsFragment extends Fragment implements CohortRecycler
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                List<Cohort> availableCohortsList = new ArrayList<>();
+                                List<Cohort> downloadedList = new ArrayList<>();
                                 for (Cohort cohort : cohortList) {
-                                    if (!((MuzimaApplication) getActivity().getApplicationContext()).getCohortController()
+                                    if (((MuzimaApplication) getActivity().getApplicationContext()).getCohortController()
                                             .isDownloaded(cohort)) {
-                                        availableCohortsList.add(cohort);
+                                        downloadedList.add(cohort);
                                     }
                                 }
-                                renderCohortsList(availableCohortsList);
+                                renderCohortsList(downloadedList);
                             }
                         });
                     }
                 }));
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        initializeResources(view);
+        loadData();
+    }
+
     private void loadData() {
         cohortListRecyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
-                .execute(new LoadAvailableCohortsTask(getActivity().getApplicationContext(), new LoadAvailableCohortsTask.OnCohortsLoadedCallback() {
+                .execute(new LoadDownloadedCohortsTask(getActivity().getApplicationContext(), new LoadDownloadedCohortsTask.OnDownloadedCohortsLoadedCallback() {
                     @Override
                     public void onCohortsLoaded(final List<Cohort> cohorts) {
                         getActivity().runOnUiThread(new Runnable() {
@@ -104,9 +104,9 @@ public class AvailableCohortsFragment extends Fragment implements CohortRecycler
     }
 
     private void renderCohortsList(final List<Cohort> cohorts) {
-        allCohortsList.clear();
+        downloadedCohortsList.clear();
         for (Cohort cohort : cohorts) {
-            allCohortsList.add(new CohortItem(cohort));
+            downloadedCohortsList.add(new CohortItem(cohort));
         }
         recyclerViewAdapter.notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
@@ -116,26 +116,25 @@ public class AvailableCohortsFragment extends Fragment implements CohortRecycler
     private void initializeResources(View view) {
         cohortListRecyclerView = view.findViewById(R.id.cohorts_list_recycler_view);
         progressBar = view.findViewById(R.id.chorts_load_progress_bar);
-        recyclerViewAdapter = new CohortRecyclerViewAdapter(getActivity().getApplicationContext(), allCohortsList, this);
+        recyclerViewAdapter = new CohortRecyclerViewAdapter(getActivity().getApplicationContext(), downloadedCohortsList, this);
         cohortListRecyclerView.setAdapter(recyclerViewAdapter);
         cohortListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
     }
 
     @Override
     public void onCohortClicked(int position) {
-        if (allCohortsList.isEmpty() || position < 0) return;
-        CohortItem selectedCohortItem = allCohortsList.get(position);
+        if (downloadedCohortsList.isEmpty() || position < 0) return;
+        CohortItem selectedCohortItem = downloadedCohortsList.get(position);
         selectedCohortItem.setSelected(!selectedCohortItem.isSelected());
         recyclerViewAdapter.notifyDataSetChanged();
-        EventBus.getDefault().post(new CohortsActionModeEvent(allCohortsList));
+        EventBus.getDefault().post(new CohortsActionModeEvent(downloadedCohortsList));
     }
 
     @Subscribe
     public void actionModeClearedEvent(DestroyActionModeEvent event) {
-        for (CohortItem cohortItem : allCohortsList) {
+        for (CohortItem cohortItem : downloadedCohortsList) {
             cohortItem.setSelected(false);
         }
         recyclerViewAdapter.notifyDataSetChanged();
     }
-
 }

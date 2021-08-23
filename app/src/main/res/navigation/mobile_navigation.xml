@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/mobile_navigation"
+            app:startDestination="@+id/nav_home">
+
+    <fragment
+            android:id="@+id/nav_home"
+            android:name="com.muzima.view.fragments.DashboardHomeFragment"
+            tools:layout="@layout/fragment_dashboard_home"/>
+
+    <activity
+            android:id="@+id/nav_settings"
+            android:name="com.muzima.view.preferences.SettingsActivity"/>
+
+    <activity
+            android:id="@+id/nav_help"
+            android:name="com.muzima.view.HelpActivity"
+            tools:layout="@layout/activity_help_new"/>
+
+    <activity
+            android:id="@+id/nav_feedback"
+            android:name="com.muzima.view.FeedbackActivity"
+            tools:layout="@layout/activity_interactive_feedback"/>
+
+    <activity
+            android:id="@+id/nav_contact"
+            android:name="com.muzima.view.InteractiveHelpActivity"
+            tools:layout="@layout/activity_interactive_help"/>
+</navigation>

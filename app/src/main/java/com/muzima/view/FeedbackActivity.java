@@ -20,11 +20,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 import com.muzima.domain.Credentials;
 import com.muzima.R;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
-
 
 public class FeedbackActivity extends BaseActivity {
     private Button sendButton;
@@ -41,6 +41,12 @@ public class FeedbackActivity extends BaseActivity {
         themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interactive_feedback);
+        Toolbar toolbar = findViewById(R.id.help_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         initViews();
         setupListeners();
         logEvent("VIEW_FEEDBACK_PAGE");

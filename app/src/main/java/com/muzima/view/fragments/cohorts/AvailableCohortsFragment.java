@@ -1,17 +1,6 @@
-/*
- * Copyright (c) The Trustees of Indiana University, Moi University
- * and Vanderbilt University Medical Center. All Rights Reserved.
- *
- * This version of the code is licensed under the MPL 2.0 Open Source license
- * with additional health care disclaimer.
- * If the user is an entity intending to commercialize any application that uses
- *  this code in a for-profit venture,please contact the copyright holder.
- */
-
-package com.muzima.view.cohort;
+package com.muzima.view.fragments.cohorts;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +21,7 @@ import com.muzima.model.events.CohortSearchEvent;
 import com.muzima.model.events.CohortsActionModeEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.tasks.CohortSearchTask;
-import com.muzima.tasks.LoadAllCohortsTask;
+import com.muzima.tasks.LoadAvailableCohortsTask;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -40,7 +29,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllCohortsListFragment extends Fragment implements CohortRecyclerViewAdapter.OnCohortClickedListener {
+public class AvailableCohortsFragment extends Fragment implements CohortRecyclerViewAdapter.OnCohortClickedListener {
     private ProgressBar progressBar;
     private RecyclerView cohortListRecyclerView;
     private CohortRecyclerViewAdapter recyclerViewAdapter;
@@ -70,7 +59,7 @@ public class AllCohortsListFragment extends Fragment implements CohortRecyclerVi
 
     @Subscribe
     public void cohortSearchEvent(CohortSearchEvent event) {
-        if (event.getPage() == 0)
+        if (event.getPage() == 2)
             searchCohorts(event.getSearchTerm());
     }
 
@@ -83,7 +72,31 @@ public class AllCohortsListFragment extends Fragment implements CohortRecyclerVi
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                renderCohortsList(cohortList);
+                                List<Cohort> availableCohortsList = new ArrayList<>();
+                                for (Cohort cohort : cohortList) {
+                                    if (!((MuzimaApplication) getActivity().getApplicationContext()).getCohortController()
+                                            .isDownloaded(cohort)) {
+                                        availableCohortsList.add(cohort);
+                                    }
+                                }
+                                renderCohortsList(availableCohortsList);
+                            }
+                        });
+                    }
+                }));
+    }
+
+    private void loadData() {
+        cohortListRecyclerView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
+                .execute(new LoadAvailableCohortsTask(getActivity().getApplicationContext(), new LoadAvailableCohortsTask.OnCohortsLoadedCallback() {
+                    @Override
+                    public void onCohortsLoaded(final List<Cohort> cohorts) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                renderCohortsList(cohorts);
                             }
                         });
                     }
@@ -98,29 +111,6 @@ public class AllCohortsListFragment extends Fragment implements CohortRecyclerVi
         recyclerViewAdapter.notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
         cohortListRecyclerView.setVisibility(View.VISIBLE);
-    }
-
-    private void loadData() {
-        cohortListRecyclerView.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
-        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
-                .execute(new LoadAllCohortsTask(getActivity().getApplicationContext(), new LoadAllCohortsTask.OnAllCohortsLoadedCallback() {
-                    @Override
-                    public void onCohortsLoaded(final List<Cohort> cohorts) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                allCohortsList.clear();
-                                for (Cohort cohort : cohorts) {
-                                    allCohortsList.add(new CohortItem(cohort, false));
-                                }
-                                recyclerViewAdapter.notifyDataSetChanged();
-                                progressBar.setVisibility(View.GONE);
-                                cohortListRecyclerView.setVisibility(View.VISIBLE);
-                            }
-                        });
-                    }
-                }));
     }
 
     private void initializeResources(View view) {
@@ -147,4 +137,5 @@ public class AllCohortsListFragment extends Fragment implements CohortRecyclerVi
         }
         recyclerViewAdapter.notifyDataSetChanged();
     }
+
 }

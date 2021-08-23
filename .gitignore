@@ -17,3 +17,4 @@ classes/
 *.swp
 *.apk
 app/debug
+/release/output-metadata.json

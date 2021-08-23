@@ -18,7 +18,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortsViewPagerAdapter;
 import com.muzima.model.events.CohortSearchEvent;
-import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
@@ -47,7 +46,7 @@ public class DashboardCohortsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dashboard_cohorts, container, false);
+        View view = inflater.inflate(R.layout.activity_cohort_pager, container, false);
         initPager(view);
         return view;
     }
@@ -58,7 +57,7 @@ public class DashboardCohortsFragment extends Fragment {
     }
 
     private void initializeResources(final View view) {
-        searchEditText = view.findViewById(R.id.dashboard_cohorts_search_edit_text);
+        searchEditText = view.findViewById(R.id.search_cohorts);
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -143,7 +142,7 @@ public class DashboardCohortsFragment extends Fragment {
     }
 
     private void initPager(View view) {
-        viewPager = view.findViewById(R.id.pager);
+        viewPager = view.findViewById(R.id.viewPager);
         cohortPagerAdapter = new CohortsViewPagerAdapter(getChildFragmentManager(), getActivity().getApplicationContext());
         viewPager.setAdapter(cohortPagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

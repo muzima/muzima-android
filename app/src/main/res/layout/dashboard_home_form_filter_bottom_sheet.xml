@@ -35,7 +35,6 @@
             android:layout_alignParentEnd="true"
             android:layout_width="24dp"
             android:layout_height="24dp"/>
-
     </RelativeLayout>
 
     <FrameLayout
@@ -61,9 +60,7 @@
             android:fontFamily="@font/montserrat_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
     </FrameLayout>
-
 
     <FrameLayout
         android:id="@+id/form_filter_by_name_container"
@@ -90,7 +87,5 @@
             android:fontFamily="@font/montserrat_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
     </FrameLayout>
-
 </LinearLayout>

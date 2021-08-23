@@ -30,20 +30,20 @@ public class DashboardFormsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dashboard_forms, container, false);
+        View view = inflater.inflate(R.layout.activity_form_pager, container, false);
         initializeResources(view);
         return view;
     }
 
     private void initializeResources(View view) {
-        searchFormsEditText = view.findViewById(R.id.dashboard_forms_search_edit_text);
-        viewPager = view.findViewById(R.id.dashboard_forms_view_pager);
-        tabLayout = view.findViewById(R.id.dashboard_forms_tab_layout);
+        viewPager = view.findViewById(R.id.viewPager);
+        tabLayout = view.findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
         viewPagerAdapter = new FormsViewPagerAdapter(getChildFragmentManager(), getActivity().getApplicationContext());
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(3);
 
+        searchFormsEditText = view.findViewById(R.id.dashboard_forms_search_edit_text);
         searchFormsEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

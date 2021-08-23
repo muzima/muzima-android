@@ -44,6 +44,7 @@ public class CohortRecyclerViewAdapter extends RecyclerView.Adapter<CohortRecycl
     public void onBindViewHolder(@NonNull CohortRecyclerViewAdapter.ViewHolder holder, int position) {
         CohortItem cohortItem = cohortList.get(position);
         holder.titleTextView.setText(cohortItem.getCohort().getName());
+        holder.descriptionTextView.setText(cohortItem.getCohort().getDescription());
         holder.clientsCountTextView.setText(String.format(Locale.getDefault(), "%s Clients", String.valueOf(cohortItem.getCohort().getSize())));
         if (((MuzimaApplication) context.getApplicationContext()).getCohortController()
                 .isDownloaded(cohortItem.getCohort())) {
@@ -72,7 +73,6 @@ public class CohortRecyclerViewAdapter extends RecyclerView.Adapter<CohortRecycl
         TagsAdapter tagsAdapter = new TagsAdapter(tags);
         holder.tagsListView.setAdapter(tagsAdapter);
         holder.tagsListView.setLayoutManager(new LinearLayoutManager(context.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
-
     }
 
     @Override
