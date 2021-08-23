@@ -57,7 +57,7 @@
     <string name="encounter_location">Encounter Location:</string>
     <string name="encounter_type">Encounter Type:</string>
 
-    <string name="enter_concept_name_text">Enter concept name …</string>
+    <string name="enter_concept_name_text">Search Concepts</string>
     <string name="enter_location_name">Enter location name …</string>
     <string name="enter_provider_name_hint">Enter provider name …</string>
 

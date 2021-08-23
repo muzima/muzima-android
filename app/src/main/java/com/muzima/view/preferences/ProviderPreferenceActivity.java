@@ -27,6 +27,9 @@ import android.view.Menu;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.ActionBar;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteProviderAdapter;
@@ -55,7 +58,16 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
-        setTitle(R.string.general_providers);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        LayoutInflater inflator = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.provider_autocomplete_textview_action, null);
+        actionBar.setCustomView(v);
 
         selectedProviderListView = findViewById(R.id.provider_preference_list);
         final MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
@@ -67,7 +79,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
         selectedProviderListView.setClickable(true);
         selectedProviderListView.setEmptyView(findViewById(R.id.no_provider_added));
         selectedProviderListView.setOnItemClickListener(selectedProviderOnClickListener());
-        autoCompleteProvidersTextView = findViewById(R.id.add_provider);
+        autoCompleteProvidersTextView = v.findViewById(R.id.add_provider);
         AutoCompleteProviderAdapter autoCompleteProviderAdapter = new AutoCompleteProviderAdapter(this, R.layout.item_option_autocomplete, autoCompleteProvidersTextView);
         autoCompleteProvidersTextView.setAdapter(autoCompleteProviderAdapter);
         autoCompleteProvidersTextView.setOnItemClickListener(autoCompleteOnClickListener());
@@ -119,15 +131,19 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionmode_menu_close, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_help:
-                Intent intent = new Intent(this, HelpActivity.class);
-                intent.putExtra(HelpActivity.HELP_TYPE, HelpActivity.CUSTOM_PROVIDER_HELP);
-                startActivity(intent);
+            case R.id.menu_close:
+                autoCompleteProvidersTextView.setText(StringUtils.EMPTY);
                 return true;
             default:
-                return super.onOptionsItemSelected(item);
+                return false;
         }
     }
 

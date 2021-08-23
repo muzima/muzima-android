@@ -48,11 +48,9 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
 
     private class ViewHolder {
         private final CheckedTextView name;
-        private final CheckedTextView synonyms;
 
         private ViewHolder(View conceptView) {
             name = conceptView.findViewById(R.id.concept_name);
-            synonyms = conceptView.findViewById(R.id.concept_synonyms);
         }
     }
 
@@ -70,7 +68,6 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
         Concept concept = getItem(position);
         if (concept != null) {
             holder.name.setText(concept.getName());
-            holder.synonyms.setText(concept.getSynonyms());
         }
         return convertView;
     }

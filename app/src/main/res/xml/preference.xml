@@ -109,7 +109,7 @@
             android:defaultValue="@string/general_client_list"
             android:entries="@array/landing_pages"
             android:entryValues="@array/landing_pages"
-            android:icon="@drawable/ic_action_dashboard_blue"
+            android:icon="@drawable/ic_action_dashboards"
             android:key="@string/preference_landing_page"
             android:title="@string/title_landing_page" />
         <SwitchPreference

@@ -19,20 +19,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/listMultiSelectorBlue"
-        android:orientation="horizontal"
-        android:weightSum="100">
+        android:orientation="horizontal">
 
         <CheckedTextView
             android:id="@+id/concept_name"
             style="@style/ListViewSelectableText"
-            android:layout_width="0dp"
-            android:layout_weight="80"
             android:checkMark="@null"/>
 
     </com.muzima.view.CheckedLinearLayout>
-
-    <CheckedTextView
-        android:id="@+id/concept_synonyms"
-        style="@style/ListViewSelectableDescription"
-        android:layout_below="@+id/concept_name_layout"/>
 </com.muzima.view.CheckedRelativeLayout>
