@@ -9,6 +9,7 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -56,19 +57,19 @@
             android:id="@+id/first_page_dot_view"
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:src="@drawable/ic_action_light_blue_dot" />
+            app:srcCompat="@drawable/ic_action_light_blue_dot" />
 
         <ImageView
             android:id="@+id/second_page_dot_view"
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:src="@drawable/ic_action_light_blue_dot" />
+            app:srcCompat="@drawable/ic_action_light_blue_dot" />
 
         <ImageView
             android:id="@+id/third_page_dot_view"
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:src="@drawable/ic_action_blue_dot" />
+            app:srcCompat="@drawable/ic_action_blue_dot" />
 
     </LinearLayout>
 

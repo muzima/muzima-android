@@ -14,12 +14,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -50,6 +51,7 @@ import com.muzima.service.DefaultEncounterLocationPreferenceService;
 import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.util.JsonUtils;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -77,6 +79,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private TextView initialSetupStatusTextView;
     private Button finishSetupButton;
     private ViewPager viewPager;
+    private ViewPager2 viewPager2;
     private ViewPager viewPagerLg;
     private CountDownTimer countDownTimer;
     private ImageView firstDotView;
@@ -96,14 +99,26 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private void startViewPagerAnimation() {
-        countDownTimer = new CountDownTimer(1000 * 60, 5000) {
+        countDownTimer = new CountDownTimer(1000 * 120, 6000) {
             @Override
-            public void onTick(long tick) {
-                if (pageCount > 13) pageCount = 0;
-                viewPager.setCurrentItem(pageCount);
-                viewPagerLg.setCurrentItem(pageCount);
+            public void onTick(final long tick) {
+                if(pageCount>55) pageCount=0;
+                viewPager.setCurrentItem(pageCount, true);
+                viewPagerLg.setCurrentItem(pageCount, true);
                 updateStepper(pageCount);
                 pageCount = pageCount + 1;
+                viewPagerLg.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                            countDownTimer.cancel();
+                        }
+                        if(event.getAction() == MotionEvent.ACTION_UP){
+                            countDownTimer.start();
+                        }
+                        return false;
+                    }
+                });
             }
 
             @Override
@@ -116,17 +131,17 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private void updateStepper(int page) {
         if (page >= 0 && page <= 4) {
-            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
-            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-        } else if (page >= 5 && page <= 9) {
-            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
-            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
-        } else {
             firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
             secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
             thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+        } else if (page >= 5 && page <= 9) {
+            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
+            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+        } else {
+            firstDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            secondDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_light_blue_dot));
+            thirdDotView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_blue_dot));
         }
     }
 
@@ -189,7 +204,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private void downloadSettings() {
         final SetupActionLogModel downloadSettingsLog = new SetupActionLogModel();
         addSetupActionLog(downloadSettingsLog);
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
                 downloadSettingsLog.setSetupAction(getString(R.string.info_settings_download_progress));
@@ -197,7 +212,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void... voids) {
+            protected int[] doInBackground(Void voids) {
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 return muzimaSyncService.downloadNewSettings();
             }
@@ -228,13 +243,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 onQueryTaskFinish();
                 downloadLocations();
             }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
         }.execute();
     }
 
     private void downloadCohorts() {
         final SetupActionLogModel downloadCohortsLog = new SetupActionLogModel();
         addSetupActionLog(downloadCohortsLog);
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
                 downloadCohortsLog.setSetupAction(getString(R.string.info_cohort_download));
@@ -242,7 +262,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void... voids) {
+            protected int[] doInBackground(Void voids) {
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 return muzimaSyncService.downloadCohorts();
             }
@@ -271,13 +291,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 onQueryTaskFinish();
                 downloadAndSavePatients();
             }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
         }.execute();
     }
 
     private void downloadAndSavePatients() {
         final SetupActionLogModel downloadPatientsLog = new SetupActionLogModel();
         addSetupActionLog(downloadPatientsLog);
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
                 downloadPatientsLog.setSetupAction(getString(R.string.info_patient_download));
@@ -285,7 +310,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void... voids) {
+            protected int[] doInBackground(Void voids) {
                 List<String> uuids = extractCohortsUuids();
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 muzimaSyncService.downloadRelationshipsTypes();
@@ -331,13 +356,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 onQueryTaskFinish();
                 downloadForms();
             }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
         }.execute();
     }
 
     private void downloadForms() {
         final SetupActionLogModel downloadFormsLog = new SetupActionLogModel();
         addSetupActionLog(downloadFormsLog);
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
                 downloadFormsLog.setSetupAction(getString(R.string.info_form_download));
@@ -345,7 +375,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void... voids) {
+            protected int[] doInBackground(Void voids) {
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 return muzimaSyncService.downloadForms();
             }
@@ -374,13 +404,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 onQueryTaskFinish();
                 downloadFormTemplates();
             }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
         }.execute();
     }
 
     private void downloadFormTemplates() {
         final SetupActionLogModel downloadFormTemplatesLog = new SetupActionLogModel();
         addSetupActionLog(downloadFormTemplatesLog);
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
                 downloadFormTemplatesLog.setSetupAction(getString(R.string.info_form_template_download));
@@ -388,7 +423,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void... voids) {
+            protected int[] doInBackground(Void voids) {
                 try {
                     List<String> formTemplateUuidsFromFormTemplates = extractFormTemplatesUuids();
 
@@ -437,6 +472,11 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 onQueryTaskFinish();
                 downloadConcepts();
             }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
         }.execute();
     }
 
@@ -458,7 +498,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private void downloadLocations() {
         final SetupActionLogModel downloadLocationsLog = new SetupActionLogModel();
         addSetupActionLog(downloadLocationsLog);
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
                 downloadLocationsLog.setSetupAction(getString(R.string.info_location_download));
@@ -466,7 +506,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void... voids) {
+            protected int[] doInBackground(Void voids) {
                 MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
                 boolean notificationSetting = muzimaSettingController.isPushNotificationsEnabled();
                 if(notificationSetting) {
@@ -513,13 +553,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadLocationsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
             }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
         }.execute();
     }
 
     private void downloadProviders() {
         final SetupActionLogModel downloadProvidersLog = new SetupActionLogModel();
         addSetupActionLog(downloadProvidersLog);
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
                 downloadProvidersLog.setSetupAction(getString(R.string.info_provider_download));
@@ -527,7 +572,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void... voids) {
+            protected int[] doInBackground(Void voids) {
                 List<String> uuids = extractProvidersUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
@@ -561,13 +606,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 onQueryTaskFinish();
                 downloadCohorts();
             }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
         }.execute();
     }
 
     private void downloadConcepts() {
         final SetupActionLogModel downloadConceptsLog = new SetupActionLogModel();
         addSetupActionLog(downloadConceptsLog);
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
                 downloadConceptsLog.setSetupAction(getString(R.string.info_concept_download));
@@ -575,7 +625,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void... voids) {
+            protected int[] doInBackground(Void voids) {
                 List<String> uuids = extractConceptsUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
@@ -610,13 +660,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadEncounters();
                 downloadObservations();
             }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
         }.execute();
     }
 
     private void downloadEncounters() {
         final SetupActionLogModel downloadEncountersLog = new SetupActionLogModel();
         addSetupActionLog(downloadEncountersLog);
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
                 downloadEncountersLog.setSetupAction(getString(R.string.info_encounter_download));
@@ -624,7 +679,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void... voids) {
+            protected int[] doInBackground(Void voids) {
                 List<String> uuids = extractCohortsUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
@@ -665,13 +720,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadEncountersLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
             }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
         }.execute();
     }
 
     private void downloadObservations() {
         final SetupActionLogModel downloadObservationsLog = new SetupActionLogModel();
         addSetupActionLog(downloadObservationsLog);
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
                 downloadObservationsLog.setSetupAction(getString(R.string.info_observation_download));
@@ -679,7 +739,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void... voids) {
+            protected int[] doInBackground(Void voids) {
                 List<String> uuids = extractCohortsUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
@@ -720,6 +780,11 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadObservationsLog.setSetupActionResult(resultDescription);
                 downloadObservationsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
+            }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
             }
         }.execute();
     }

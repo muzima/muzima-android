@@ -177,7 +177,6 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
                             @Override
                             public void run() {
                                 cohortList.clear();
-                                Log.e(getClass().getSimpleName(),"Debugging size is === "+selectedCohortFilters.size());
                                 if (selectedCohortFilters.size()==0)
                                     cohortList.add(new CohortFilter(null, true));
                                 else if(selectedCohortFilters.size()==1 && selectedCohortFilters.get(0).getCohort()==null)
