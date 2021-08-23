@@ -25,6 +25,9 @@ import android.widget.Toast;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.ActionBar;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteLocationAdapter;
@@ -53,6 +56,16 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        LayoutInflater inflator = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.location_autocomplete_textview_action, null);
+        actionBar.setCustomView(v);
+
         selectedLocationListView = findViewById(R.id.location_preference_list);
         final MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
         selectedLocationAdapter = new SelectedLocationAdapter(this, R.layout.item_location_list,
@@ -63,7 +76,7 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
         selectedLocationListView.setClickable(true);
         selectedLocationListView.setEmptyView(findViewById(R.id.no_location_added));
         selectedLocationListView.setOnItemClickListener(selectedLocationOnClickListener());
-        autoCompleteLocationsTextView = findViewById(R.id.add_location);
+        autoCompleteLocationsTextView = v.findViewById(R.id.add_location);
         AutoCompleteLocationAdapter autoCompleteLocationAdapter = new AutoCompleteLocationAdapter(this, R.layout.item_option_autocomplete, autoCompleteLocationsTextView);
         autoCompleteLocationsTextView.setAdapter(autoCompleteLocationAdapter);
         autoCompleteLocationsTextView.setOnItemClickListener(autoCompleteOnClickListener());
@@ -115,15 +128,19 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionmode_menu_close, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_help:
-                Intent intent = new Intent(this, HelpActivity.class);
-                intent.putExtra(HelpActivity.HELP_TYPE, HelpActivity.CUSTOM_LOCATION_HELP);
-                startActivity(intent);
+            case R.id.menu_close:
+                autoCompleteLocationsTextView.setText(StringUtils.EMPTY);
                 return true;
             default:
-                return super.onOptionsItemSelected(item);
+                return false;
         }
     }
 

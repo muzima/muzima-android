@@ -23,17 +23,11 @@
 
         <CheckedTextView
                 android:id="@+id/provider_name"
-                android:layout_weight="80"
+                android:layout_weight="100"
                 android:layout_width="0dp"
                 android:checkMark="@null"
                 style="@style/ListViewSelectableText">
         </CheckedTextView>
 
     </com.muzima.view.CheckedLinearLayout>
-
-    <CheckedTextView
-            android:id="@+id/provider_matches"
-            android:layout_below="@+id/provider_name_layout"
-            style="@style/ListViewSelectableDescription">
-    </CheckedTextView>
 </com.muzima.view.CheckedRelativeLayout>
