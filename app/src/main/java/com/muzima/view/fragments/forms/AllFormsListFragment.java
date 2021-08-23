@@ -156,13 +156,14 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
     @Override
     public void onFormClicked(int position) {
         if (position == -1) return;
-        FormItem form = formList.get(position);
-        form.setSelected(!form.isSelected());
+        FormItem formItem = formList.get(position);
+        formItem.setSelected(!formItem.isSelected());
         recyclerViewAdapter.notifyDataSetChanged();
-        if (form.isSelected())
-            selectedForms.add(form.getForm());
+        if (formItem.isSelected())
+            selectedForms.add(formItem.getForm());
         else
-            selectedForms.remove(form.getForm());
+            selectedForms.remove(formItem.getForm());
+        System.out.println("ssss " + selectedForms.size());
         EventBus.getDefault().post(new FormsActionModeEvent(selectedForms));
     }
 }

@@ -9,9 +9,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.muzima.R;
-import com.muzima.view.cohort.AllCohortsListFragment;
-import com.muzima.view.cohort.AvailableCohortsFragment;
-import com.muzima.view.cohort.DownloadedCohortsFragment;
+import com.muzima.view.fragments.cohorts.AllCohortsListFragment;
+import com.muzima.view.fragments.cohorts.AvailableCohortsFragment;
+import com.muzima.view.fragments.cohorts.DownloadedCohortsFragment;
 
 public class CohortsViewPagerAdapter extends FragmentPagerAdapter {
 

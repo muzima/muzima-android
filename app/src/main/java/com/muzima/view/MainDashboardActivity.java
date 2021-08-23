@@ -13,22 +13,26 @@ import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -71,14 +75,15 @@ import com.muzima.tasks.LoadDownloadedCohortsTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.MuzimaPreferences;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
+import com.muzima.view.custom.ActivityWithBottomNavigation;
 import com.muzima.view.patients.PatientsLocationMapActivity;
 import com.muzima.view.preferences.SettingsActivity;
-
 import org.apache.lucene.queryParser.ParseException;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -86,19 +91,18 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
-public class MainDashboardActivity extends BaseFragmentActivity implements NavigationView.OnNavigationItemSelectedListener, CohortFilterAdapter.CohortFilterClickedListener {
+public class MainDashboardActivity extends ActivityWithBottomNavigation implements CohortFilterAdapter.CohortFilterClickedListener {
     private static final int RC_BARCODE_CAPTURE = 9001;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private MaterialToolbar toolbar;
     private ViewPager viewPager;
     private TextView headerTitleTextView;
     private MainDashboardAdapter adapter;
-    private BottomNavigationView bottomNavigationView;
     private ActionBarDrawerToggle drawerToggle;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
@@ -111,14 +115,7 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
     private MenuItem loadingMenuItem;
     private BottomSheetBehavior cohortFilterBottomSheetBehavior;
     private View cohortFilterBottomSheetView;
-    private BottomSheetBehavior formFilterBottomSheetBehavior;
-    private View formFilterBottomSheetView;
     private View closeBottomSheet;
-    private View closeFormsBottomSheetView;
-    private View formFilterStatusContainer;
-    private CheckBox formFilterStatusCheckbox;
-    private View formFilterNamesContainer;
-    private CheckBox formFilterNamesCheckbox;
     private CohortFilterAdapter cohortFilterAdapter;
     private RecyclerView filterOptionsRecyclerView;
     private List<CohortItem> selectedCohorts = new ArrayList<>();
@@ -132,11 +129,15 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
     private Patient SHRToMuzimaMatchingPatient;
     private int selectionDifference;
 
+    private AppBarConfiguration mAppBarConfiguration;
+    private NavController navController;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         themeUtils.onCreate(MainDashboardActivity.this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard_root_layout);
+        setContentView(R.layout.activity_main);
+        loadBottomNavigation();
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), false);
         initializeResources();
         loadCohorts(false);
@@ -217,6 +218,7 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
 
     @Subscribe
     public void closeBottomSheetEvent(CloseBottomSheetEvent event) {
+        System.out.println("emparambaa");
         cohortFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
@@ -331,75 +333,40 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
     }
 
     private void initializeResources() {
-        viewPager = findViewById(R.id.main_dashboard_view_pager);
-        bottomNavigationView = findViewById(R.id.main_dashboard_bottom_navigation);
-        toolbar = findViewById(R.id.dashboard_toolbar);
+        Toolbar toolbar = findViewById(R.id.dashboard_toolbar);
+        setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.main_dashboard_drawer_layout);
-        navigationView = findViewById(R.id.dashboard_navigation);
+        navigationView = findViewById(R.id.navigation_view);
         cohortFilterBottomSheetView = findViewById(R.id.dashboard_home_bottom_view_container);
         cohortFilterBottomSheetBehavior = BottomSheetBehavior.from(cohortFilterBottomSheetView);
         closeBottomSheet = findViewById(R.id.bottom_sheet_close_view);
         filterOptionsRecyclerView = findViewById(R.id.dashboard_home_filter_recycler_view);
-        formFilterBottomSheetView = findViewById(R.id.dashboard_home_form_bottom_view_container);
-        formFilterBottomSheetBehavior = BottomSheetBehavior.from(formFilterBottomSheetView);
-        formFilterNamesContainer = findViewById(R.id.form_filter_by_name_container);
-        formFilterNamesCheckbox = findViewById(R.id.form_filter_name_checkbox);
-        formFilterStatusContainer = findViewById(R.id.form_filter_by_status_container);
-        formFilterStatusCheckbox = findViewById(R.id.form_filter_status_checkbox);
-        closeFormsBottomSheetView = findViewById(R.id.forms_bottom_sheet_close_view);
         cohortFilterAdapter = new CohortFilterAdapter(getApplicationContext(), cohortList, this);
         filterOptionsRecyclerView.setAdapter(cohortFilterAdapter);
         filterOptionsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         headerTitleTextView = navigationView.getHeaderView(0).findViewById(R.id.dashboard_header_title_text_view);
 
-        setSupportActionBar(toolbar);
-        drawerToggle = new ActionBarDrawerToggle(MainDashboardActivity.this, drawerLayout,
-                toolbar, R.string.drawer_open, R.string.drawer_close);
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
-        adapter = new MainDashboardAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
+        mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_home, R.id.nav_settings, R.id.nav_help, R.id.nav_feedback, R.id.nav_contact)
+                .setOpenableLayout(drawerLayout)
+                .build();
+
+        navigationView.post(() -> {
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            if (navHostFragment != null) {
+                navController = navHostFragment.getNavController();
+                NavigationUI.setupWithNavController(toolbar, navController, mAppBarConfiguration);
+                NavigationUI.setupWithNavController(navigationView, navController);
+            }
+        });
+
+        MenuItem navLogout = navigationView.getMenu().findItem(R.id.nav_logout);
+        navLogout.setOnMenuItemClickListener(item -> {
+            showExitAlertDialog();
+            return true;
+        });
+
         credentials = new Credentials(this);
-        viewPager.setOffscreenPageLimit(3);
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                //disable event propagation for swipe action
-                if (viewPager.getCurrentItem() != 0)
-                    viewPager.setCurrentItem(10);
-                else if (viewPager.getCurrentItem() == 0)
-                    viewPager.setCurrentItem(-1);
-                else if (viewPager.getCurrentItem() == 1){
-                    viewPager.setCurrentItem(0);
-                    viewPager.setCurrentItem(1);
-                }
-                return true;
-            }
-
-        });
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                menuItem.setChecked(true);
-                menuItem.setEnabled(true);
-                if (menuItem.getItemId() == R.id.main_dashboard_home_menu) {
-                    viewPager.setCurrentItem(0);
-                    if (menuLocation != null)
-                        menuLocation.setVisible(true);
-                } else if (menuItem.getItemId() == R.id.main_dashboard_cohorts_menu) {
-                    viewPager.setCurrentItem(1);
-                    if (menuLocation != null)
-                        menuLocation.setVisible(false);
-                } else if (menuItem.getItemId() == R.id.main_dashboard_forms_menu) {
-                    viewPager.setCurrentItem(2);
-                    if (menuLocation != null)
-                        menuLocation.setVisible(false);
-                }
-                return false;
-            }
-        });
 
         closeBottomSheet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -423,62 +390,15 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
             }
         });
 
-        closeFormsBottomSheetView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
-        });
-
-        formFilterStatusCheckbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                formFilterNamesCheckbox.setChecked(false);
-                formFilterStatusContainer.setBackground(getResources().getDrawable(R.drawable.global_highlight_background));
-                if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(getApplicationContext()))
-                    formFilterNamesContainer.setBackgroundColor(getResources().getColor(R.color.primary_white));
-                else
-                    formFilterNamesContainer.setBackgroundColor(getResources().getColor(R.color.primary_black));
-                EventBus.getDefault().post(new FormSortEvent(Constants.FORM_SORT_STRATEGY.SORT_BY_STATUS));
-                formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
-        });
-
-        formFilterNamesCheckbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                formFilterStatusCheckbox.setChecked(false);
-                formFilterNamesContainer.setBackground(getResources().getDrawable(R.drawable.global_highlight_background));
-                if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(getApplicationContext()))
-                    formFilterStatusContainer.setBackgroundColor(getResources().getColor(R.color.primary_white));
-                else
-                    formFilterStatusContainer.setBackgroundColor(getResources().getColor(R.color.primary_black));
-                EventBus.getDefault().post(new FormSortEvent(Constants.FORM_SORT_STRATEGY.SORT_BY_NAME));
-                formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
-        });
-        formFilterBottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    EventBus.getDefault().post(new FormFilterBottomSheetClosedEvent(true));
-                } else {
-                    EventBus.getDefault().post(new FormFilterBottomSheetClosedEvent(false));
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });
-
         cohortFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         headerTitleTextView.setText(((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getUsername());
+        setTitle(StringUtils.EMPTY);
+    }
 
-        setTitle(" ");
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
     }
 
     @Override
@@ -564,16 +484,6 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
     private void navigateToClientsLocationMap() {
         Intent intent = new Intent(getApplicationContext(), PatientsLocationMapActivity.class);
         startActivity(intent);
-    }
-
-    @Subscribe
-    public void showFormsFilterBottomSheetEvent(ShowFormsFilterEvent event) {
-        if (event.isCloseAction()) {
-            formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        } else {
-            formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        }
-
     }
 
     @Override
@@ -667,36 +577,6 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
         return settings.getBoolean(disclaimerKey, false);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        Intent intent;
-
-        if (menuItem.getItemId() == R.id.drawer_menu_home) {
-            intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
-            startActivity(intent);
-            finish();
-        } else if (menuItem.getItemId() == R.id.drawer_menu_settings) {
-            intent = new Intent(getApplicationContext(), SettingsActivity.class);
-            startActivity(intent);
-            finish();
-        } else if (menuItem.getItemId() == R.id.drawer_menu_help) {
-            intent = new Intent(getApplicationContext(), HelpActivity.class);
-            startActivity(intent);
-            finish();
-        } else if (menuItem.getItemId() == R.id.drawer_menu_feedback) {
-            intent = new Intent(getApplicationContext(), FeedbackActivity.class);
-            startActivity(intent);
-            finish();
-        } else if (menuItem.getItemId() == R.id.drawer_menu_contact_us) {
-            intent = new Intent(getApplicationContext(), FeedbackActivity.class);
-            startActivity(intent);
-            finish();
-        } else if (menuItem.getItemId() == R.id.drawer_menu_logout) {
-            finishAffinity();
-        }
-        return false;
-    }
-
     private static class HomeActivityMetadata {
         int totalCohorts;
         int syncedCohorts;
@@ -779,13 +659,15 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
 
     @Override
     public void onBackPressed() {
-        if (viewPager.getCurrentItem() == 2)
-            bottomNavigationView.setSelectedItemId(R.id.main_dashboard_cohorts_menu);
-        else if (viewPager.getCurrentItem() == 1)
-            bottomNavigationView.setSelectedItemId(R.id.main_dashboard_home_menu);
-        else {
-            showExitAlertDialog();
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+            return;
         }
+
+        if(Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.nav_home)
+            showExitAlertDialog();
+        else
+            super.onBackPressed();
     }
 
     private void showExitAlertDialog() {
@@ -809,5 +691,10 @@ public class MainDashboardActivity extends BaseFragmentActivity implements Navig
                 System.exit(0);
             }
         };
+    }
+
+    @Override
+    protected int getBottomNavigationMenuItemId() {
+        return R.id.action_home;
     }
 }

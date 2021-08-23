@@ -71,12 +71,8 @@ public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecycler
             if (form.isSelected())
                 holder.container.setBackgroundColor(context.getResources().getColor(R.color.hint_blue_opaque));
             else {
-                if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(context))
-                    holder.container.setBackgroundColor(context.getResources().getColor(R.color.transparent));
-                else
-                    holder.container.setBackgroundColor(context.getResources().getColor(R.color.transparent));
+                holder.container.setBackgroundColor(context.getResources().getColor(R.color.transparent));
             }
-
         } catch (FormController.FormFetchException ex) {
             ex.printStackTrace();
         }

@@ -32,7 +32,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="16sp"
                 android:fontFamily="@font/montserrat_regular"
-                android:layout_marginBottom="6dp"
+                android:layout_marginBottom="2dp"
                 android:layout_marginEnd="8dp"
                 android:ellipsize="end"
                 android:maxLines="1"
@@ -41,13 +41,15 @@
 
             <TextView
                 android:id="@+id/item_cohort_description_text_view"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:textSize="12sp"
+                android:textStyle="italic"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:fontFamily="@font/roboto_regular"
                 android:textColor="?attr/primaryTextColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-
         </LinearLayout>
 
         <LinearLayout
@@ -71,9 +73,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-
         </LinearLayout>
-
     </RelativeLayout>
 
     <View
@@ -83,5 +83,4 @@
         android:layout_marginEnd="14dp"
         android:layout_marginStart="14dp"
         android:layout_height="1dp"/>
-
 </RelativeLayout>

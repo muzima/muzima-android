@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.utils.StringUtils;
@@ -40,6 +41,12 @@ public class InteractiveHelpActivity extends BaseActivity {
         themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interactive_help);
+        Toolbar toolbar = findViewById(R.id.help_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         initViews();
         setupListeners();
     }

@@ -10,9 +10,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.muzima"
-    android:versionCode="${versionCode}"
     android:versionName="${versionName}">
-
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -31,7 +29,6 @@
     <uses-permission
         android:name="android.permission.BROADCAST_WAP_PUSH"
         tools:ignore="ProtectedPermissions" />
-
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -149,7 +146,7 @@
             android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
+                android:value="com.muzima.view.MainDashboardActivity" />
         </activity>
         <activity
             android:name=".view.InteractiveHelpActivity"
@@ -158,7 +155,7 @@
             android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
+                android:value="com.muzima.view.MainDashboardActivity" />
         </activity>
         <activity
             android:name=".view.FeedbackActivity"
@@ -167,7 +164,7 @@
             android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
+                android:value="com.muzima.view.MainDashboardActivity" />
         </activity>
         <activity
             android:name=".view.WebViewActivity"
@@ -509,18 +506,18 @@
 
         <activity android:name=".view.fragments.OnboardScreenActivity" />
         <activity android:name=".view.TermsAndPolicyActivity" />
-        <activity android:name=".view.MainDashboardActivity" />
+        <activity android:name=".view.MainDashboardActivity"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@style/LoginTheme.Dark"/>
         <activity android:name=".view.ClientSummaryActivity" />
         <activity android:name=".view.forms.IncompleteFormsListActivity" />
         <activity android:name=".view.forms.CompletedFormsListActivity" />
-
-        <activity
-            android:name=".view.forms.PersonDemographicsUpdateFormsActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/select_a_relationship_form_text"
-            android:theme="@style/DialogNoTitleBar"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
-            android:noHistory="true" />
+        <activity android:name=".view.cohort.CohortPagerActivity"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@style/AppTheme"/>
+        <activity android:name=".view.forms.FormPagerActivity"
+                  android:configChanges="orientation|screenSize"
+                  android:theme="@style/AppTheme"/>
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
