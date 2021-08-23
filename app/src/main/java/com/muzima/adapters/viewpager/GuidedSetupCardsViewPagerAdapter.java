@@ -5,12 +5,12 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.muzima.R;
 import com.muzima.view.fragments.GuidedSetupImageCardFragment;
 
-public class GuidedSetupCardsViewPagerAdapter extends FragmentPagerAdapter {
+public class GuidedSetupCardsViewPagerAdapter extends FragmentStatePagerAdapter {
     private Context context;
 
     public GuidedSetupCardsViewPagerAdapter(@NonNull FragmentManager fm, Context context) {
@@ -21,11 +21,18 @@ public class GuidedSetupCardsViewPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
+        if(position>13 && position<=27){
+            position = position-14;
+        }else if(position>27 && position<=41){
+            position = position-28;
+        }else if(position>41 && position<=55){
+            position = position-42;
+        }
         switch (position) {
             case 0:
                 return new GuidedSetupImageCardFragment(R.drawable.security, context.getResources().getString(R.string.general_security), context.getResources().getString(R.string.general_security_description));
             case 1:
-                return new GuidedSetupImageCardFragment(R.drawable.multiple_use_case, context.getResources().getString(R.string.general_multiple_use_cases), context.getResources().getString(R.string.general_multiple_cases_description));
+                return new GuidedSetupImageCardFragment(R.drawable.multiple_use_cases, context.getResources().getString(R.string.general_multiple_use_cases), context.getResources().getString(R.string.general_multiple_cases_description));
             case 2:
                 return new GuidedSetupImageCardFragment(R.drawable.openmrs_compatibility, context.getResources().getString(R.string.general_openmrs_compatibility), context.getResources().getString(R.string.general_openmrs_compatibility_description));
             case 3:
@@ -56,6 +63,6 @@ public class GuidedSetupCardsViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 12;
+        return 55;
     }
 }

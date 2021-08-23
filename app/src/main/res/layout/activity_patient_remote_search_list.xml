@@ -15,6 +15,7 @@
     <ListView
         android:id="@+id/remote_search_list"
         style="@style/MuzimaSelectableListView"
+        android:divider="@null"
         android:choiceMode="multipleChoice" />
 
     <LinearLayout
@@ -28,18 +29,11 @@
 
         <TextView
             android:id="@+id/no_data_msg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textSize="25sp"/>
+            style="@style/NoDataMsg"/>
 
         <TextView
             android:id="@+id/no_data_tip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="@color/primary_red"
-            android:textSize="20sp"/>
+            style="@style/NoDataTip"/>
 
         <Button
             android:id="@+id/create_patient_btn"

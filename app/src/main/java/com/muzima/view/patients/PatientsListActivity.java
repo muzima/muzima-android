@@ -195,9 +195,6 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         logEvent("VIEW_CLIENT_LIST", "{\"cohortId\":\"" + cohortId + "\"}");
 
         setupNoDataView();
-
-        Log.e(TAG, "onCreate:  setup patients list ");
-
     }
 
     @Override
@@ -423,14 +420,17 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             noDataView = findViewById(R.id.no_data_layout);
             TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
 
-            int localPatientsCount = patientController.countAllPatients();
-            if (localPatientsCount == 0)
-                noDataMsgTextView.setText(getResources().getText(R.string.info_no_client_available_locally));
-            else
-                noDataMsgTextView.setText(getResources().getText(R.string.info_client_local_search_not_found));
-
             TextView noDataTipTextView = findViewById(R.id.no_data_tip);
-            noDataTipTextView.setText(R.string.hint_client_local_search);
+
+            int localPatientsCount = patientController.countAllPatients();
+            if (localPatientsCount == 0) {
+                noDataMsgTextView.setText(getResources().getText(R.string.info_no_client_available_locally));
+                noDataTipTextView.setText(R.string.hint_client_remote_search);
+            } else {
+                noDataMsgTextView.setText(getResources().getText(R.string.info_client_local_search_not_found));
+                noDataTipTextView.setText(R.string.hint_client_local_search);
+            }
+
         } catch (PatientController.PatientLoadException ex) {
             Toast.makeText(PatientsListActivity.this, R.string.error_patient_search, Toast.LENGTH_LONG).show();
         }

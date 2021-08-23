@@ -71,7 +71,7 @@
         <item name="ic_action_help">@drawable/ic_action_help_dark</item>
         <item name="ic_action_mail_dark">@drawable/ic_action_mail_dark</item>
         <item name="addPatient">@drawable/ic_add_patient_light</item>
-        <item name="icActionLock">@drawable/ic_action_lock_dark</item>
+        <item name="icActionLock">@drawable/ic_password_light</item>
         <item name="icLocation">@drawable/ic_location_dark</item>
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
@@ -142,7 +142,7 @@
         <item name="ic_action_help">@drawable/ic_action_help_dark</item>
         <item name="ic_action_mail_dark">@drawable/ic_action_mail_dark</item>
         <item name="addPatient">@drawable/ic_add_patient_light</item>
-        <item name="icActionLock">@drawable/ic_action_lock_dark</item>
+        <item name="icActionLock">@drawable/ic_password_light</item>
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="cardColor">@color/primary_white</item>
@@ -212,7 +212,7 @@
         </item>
         <item name="ic_action_settings">@drawable/ic_action_settings_light</item>
         <item name="ic_action_help">@drawable/ic_action_help_light</item>
-        <item name="icActionLock">@drawable/ic_action_lock_light</item>
+        <item name="icActionLock">@drawable/ic_password_dark</item>
         <item name="ic_action_mail_dark">@drawable/ic_action_mail_light</item>
         <item name="addPatient">@drawable/ic_add_patient_light</item>
         <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_light</item>
@@ -277,7 +277,7 @@
         <item name="icActionArrowDown">@drawable/ic_action_arrow_down_light</item>
         <item name="icActionArrowUp">@drawable/ic_action_arrow_up_light</item>
         <item name="icEdit">@drawable/edit_dark</item>
-        <item name="icActionLock">@drawable/ic_action_lock_light</item>
+        <item name="icActionLock">@drawable/ic_password_dark</item>
         <item name="menu_inactive_text_color">@color/primary_black</item>
         <item name="bottom_navigation_selected_icon">
             @drawable/bottom_navigation_selected_icon_dark
@@ -335,7 +335,7 @@
         <item name="icAdd">@drawable/ic_action_add</item>
         <item name="icAddClient">@drawable/ic_action_add_client</item>
         <item name="icSearch">@drawable/ic_search</item>
-        <item name="icActionLock">@drawable/ic_action_lock_dark</item>
+        <item name="icActionLock">@drawable/ic_password_light</item>
         <item name="listSelectorBlue">@drawable/list_selector_blue</item>
         <item name="icLauncherLogo">@drawable/ic_launcher_logo</item>
         <item name="icCancel">@drawable/ic_cancel</item>
@@ -403,7 +403,7 @@
         <item name="icAdd">@drawable/ic_action_add_light</item>
         <item name="icAddClient">@drawable/ic_action_add_client_light</item>
         <item name="icSearch">@drawable/ic_search_light</item>
-        <item name="icActionLock">@drawable/ic_action_lock_light</item>
+        <item name="icActionLock">@drawable/ic_password_dark</item>
         <item name="NoSHRCardIcon">@drawable/ic_action_no_shr_card_light</item>
         <item name="listSelectorBlue">@drawable/list_selector_blue_light</item>
         <item name="icLauncherLogo">@drawable/ic_launcher_logo_light</item>

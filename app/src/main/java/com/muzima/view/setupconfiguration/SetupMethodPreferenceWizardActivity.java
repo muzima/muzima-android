@@ -12,7 +12,6 @@ package com.muzima.view.setupconfiguration;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.text.Editable;
@@ -22,7 +21,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -31,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.azimolabs.keyboardwatcher.KeyboardWatcher;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.setupconfiguration.SetupConfigurationRecyclerViewAdapter;
@@ -41,6 +38,7 @@ import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.tasks.DownloadSetupConfigurationsTask;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
@@ -168,7 +166,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
 
     private void navigateToGuidedWizardActivity(final SetupConfigurationRecyclerViewAdapter setupConfigurationAdapter) {
         turnOnProgressDialog(getString(R.string.info_setup_configuration_wizard_prepare));
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
 
             @Override
             protected void onPreExecute() {
@@ -177,7 +175,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
             }
 
             @Override
-            protected int[] doInBackground(Void... voids) {
+            protected int[] doInBackground(Void voids) {
                 return downloadSetupConfiguration(setupConfigurationAdapter);
             }
 
@@ -206,6 +204,11 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                     startActivity(intent);
                     finish();
                 }
+            }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
             }
         }.execute();
     }

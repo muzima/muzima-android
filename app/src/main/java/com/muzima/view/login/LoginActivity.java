@@ -19,11 +19,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
@@ -51,6 +51,7 @@ import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.util.Constants;
 import com.muzima.util.NetworkUtils;
 import com.muzima.utils.LanguageUtil;
@@ -176,7 +177,7 @@ public class LoginActivity extends Activity {
     }
 
     private void setupStatusView() {
-        if (backgroundAuthenticationTask != null && backgroundAuthenticationTask.getStatus() == AsyncTask.Status.RUNNING) {
+        if (backgroundAuthenticationTask != null && backgroundAuthenticationTask.isTaskRunning) {
             loginButton.setVisibility(View.GONE);
             authenticatingText.setVisibility(View.VISIBLE);
         } else {
@@ -189,7 +190,7 @@ public class LoginActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         if (backgroundAuthenticationTask != null) {
-            backgroundAuthenticationTask.cancel(true);
+            backgroundAuthenticationTask.cancel();
         }
     }
 
@@ -203,7 +204,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (validInput()) {
-                    if (backgroundAuthenticationTask != null && backgroundAuthenticationTask.getStatus() == AsyncTask.Status.RUNNING) {
+                    if (backgroundAuthenticationTask != null && backgroundAuthenticationTask.isTaskRunning) {
                         Toast.makeText(getApplicationContext(), getString(R.string.info_authentication_in_progress), Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -244,6 +245,43 @@ public class LoginActivity extends Activity {
             }
         });
 
+        serverUrlText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                   if(event.getRawX() >= serverUrlText.getRight() - serverUrlText.getTotalPaddingRight()) {
+                        Intent intent;
+                        intent = new Intent(getApplicationContext(), BarcodeCaptureActivity.class);
+                        intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                        intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+                        startActivityForResult(intent, RC_BARCODE_CAPTURE);
+                        return false;
+                    }
+                }
+                return false;
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                    serverUrlText.setText(barcode.displayValue);
+                } else {
+                    Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null");
+                }
+            } else {
+                Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null "+CommonStatusCodes.getStatusCodeString(resultCode));
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private boolean validInput() {
@@ -309,18 +347,19 @@ public class LoginActivity extends Activity {
         }
     }
     
-    private class BackgroundAuthenticationTask extends AsyncTask<Credentials, Void, BackgroundAuthenticationTask.Result> {
-
+    private class BackgroundAuthenticationTask extends MuzimaAsyncTask<Credentials, Void, BackgroundAuthenticationTask.Result> {
+        boolean isTaskRunning = false;
         @Override
         protected void onPreExecute() {
             if (loginButton.getVisibility() == View.VISIBLE) {
                 flipFromLoginToAuthAnimator.start();
             }
+            boolean isTaskRunning = true;
         }
 
         @Override
-        protected Result doInBackground(Credentials... params) {
-            Credentials credentials = params[0];
+        protected Result doInBackground(Credentials params) {
+            Credentials credentials = params;
             MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
             int authenticationStatus = muzimaSyncService.authenticate(credentials.getCredentialsArray(), isUpdatePasswordChecked);
             return new Result(credentials, authenticationStatus);
@@ -348,8 +387,10 @@ public class LoginActivity extends Activity {
                     //delay for 10 seconds to allow next UI activity to finish loading
                     muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(10000,false);
                 }
+                boolean isTaskRunning = false;
                 checkMuzimaCoreModuleCompatibility(result);
             } else {
+                boolean isTaskRunning = false;
                 MuzimaLoggerService.log((MuzimaApplication)getApplicationContext(),"LOGIN_FAILURE",
                         result.credentials.getUserName(),MuzimaLoggerService.getAndParseGPSLocationForLogging((MuzimaApplication)getApplicationContext()),"{}");
                 Toast.makeText(getApplicationContext(), getErrorText(result), Toast.LENGTH_SHORT).show();
@@ -358,6 +399,11 @@ public class LoginActivity extends Activity {
                     flipFromAuthToLoginAnimator.start();
                 }
             }
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
 
         private String getErrorText(Result result) {
@@ -430,10 +476,15 @@ public class LoginActivity extends Activity {
         });
     }
 
-    private class DownloadMuzimaAppVersionCodeBackGroundTask extends AsyncTask<String, Void,String > {
+    private class DownloadMuzimaAppVersionCodeBackGroundTask extends MuzimaAsyncTask<String, Void,String > {
         @Override
-        public String doInBackground(String... params){
-            String serverUrl = params[0];
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        public String doInBackground(String params){
+            String serverUrl = params;
             MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
             try {
                 if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
@@ -482,6 +533,11 @@ public class LoginActivity extends Activity {
             } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionFetchException e) {
                 Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
             }
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
 
         private void startNextActivity(){
