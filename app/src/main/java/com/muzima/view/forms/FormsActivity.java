@@ -223,10 +223,6 @@ public class FormsActivity extends FormsActivityBase {
                 }
                 uploadAllFormsInBackgroundService();
                 return true;
-            case R.id.menu_client_add_icon:
-                intent = new Intent(this, RegistrationFormsActivity.class);
-                startActivity(intent);
-                return true;
             case R.id.menu_tags:
                 if (mainLayout.isDrawerOpen(GravityCompat.END)) {
                     mainLayout.closeDrawer(GravityCompat.END);

@@ -78,7 +78,7 @@ public class ConversationActivity extends BaseActivity {
         setUpMessage();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            floatingActionButton.setBackground(getDrawable(R.drawable.ic_action_need_attention));
+            floatingActionButton.setBackground(getDrawable(R.drawable.ic_accept));
         }
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,11 +123,11 @@ public class ConversationActivity extends BaseActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        floatingActionButton.setBackground(getDrawable(R.drawable.ic_action_send));
+                        floatingActionButton.setBackground(getDrawable(R.drawable.ic_accept));
                     }
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        floatingActionButton.setBackground(getDrawable(R.drawable.ic_action_need_attention));
+                        floatingActionButton.setBackground(getDrawable(R.drawable.ic_accept));
                     }
                 }
             }

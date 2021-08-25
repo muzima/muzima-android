@@ -107,7 +107,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         tabsContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
 
-        addObsButton.setImageResource(R.drawable.ic_action_add_white);
+        addObsButton.setImageResource(R.drawable.ic_action_add);
 
         addView(tabsContainer);
 

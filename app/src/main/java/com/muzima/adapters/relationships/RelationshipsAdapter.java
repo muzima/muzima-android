@@ -78,7 +78,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             holder.relatedPerson.setText(relationship.getPersonB().getDisplayName());
             holder.relationshipType.setText(relationship.getRelationshipType().getBIsToA());
             if(relationship.getPersonB().getGender() != null) {
-                int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
+                int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
                 holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
             }
             try {
@@ -96,7 +96,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             holder.relationshipType.setText(relationship.getRelationshipType().getAIsToB());
 
             if(relationship.getPersonA().getGender() != null) {
-                int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
+                int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
                 holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
             }
             try {
