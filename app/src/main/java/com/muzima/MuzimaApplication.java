@@ -15,7 +15,6 @@ import android.app.ActivityManager;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
@@ -33,7 +32,6 @@ import com.muzima.api.service.NotificationTokenService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PersonService;
 import com.muzima.api.service.ProviderService;
-import com.muzima.api.service.RelationshipService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -41,7 +39,6 @@ import com.muzima.controller.FCMTokenContoller;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
-import com.muzima.controller.MuzimaCoreModuleVersionController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
@@ -104,7 +101,6 @@ public class MuzimaApplication extends MultiDexApplication {
     private LocalePreferenceService localePreferenceService;
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController settingsController;
-    private MuzimaCoreModuleVersionController muzimaCoreModuleVersionController;
     private SmartCardController smartCardController;
     private PatientReportController patientReportController;
     private RelationshipController relationshipController;
@@ -500,18 +496,7 @@ public class MuzimaApplication extends MultiDexApplication {
         List<ActivityManager.RunningTaskInfo> tasks = manager.getRunningTasks(1);
         return tasks.get(0).topActivity.getClassName().contains("Launcher");
     }
-
-    public MuzimaCoreModuleVersionController getMuzimaCoreModuleVersionController() {
-        if (muzimaCoreModuleVersionController == null) {
-            try {
-                muzimaCoreModuleVersionController = new MuzimaCoreModuleVersionController(muzimaContext.getMuzimaCoreModuleVersionService());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return muzimaCoreModuleVersionController;
-    }
-
+    
     public MinimumSupportedAppVersionController getMinimumSupportedVersionController() {
         if (minimumSupportedAppVersionController == null) {
             try {

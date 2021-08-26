@@ -3,7 +3,6 @@ package com.muzima.view.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,10 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.muzima.R;
 import com.muzima.utils.MuzimaPreferences;
-import com.muzima.view.BaseActivity;
-import com.muzima.view.BaseFragmentActivity;
 import com.muzima.view.TermsAndPolicyActivity;
-import com.muzima.view.login.LoginActivity;
 
 public class OnboardScreenActivity extends AppCompatActivity {
 
