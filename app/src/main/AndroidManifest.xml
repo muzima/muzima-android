@@ -61,9 +61,6 @@
         </provider>
 
         <activity
-            android:name=".view.DisclaimerActivity"
-            android:label="mUzima Disclaimer" />
-        <activity
             android:name=".view.MainActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name" />
@@ -76,14 +73,6 @@
             </intent-filter>
 
         </activity>
-        <activity
-            android:name=".view.concept.ConceptListActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/general_concepts" />
-        <activity
-            android:name=".view.location.LocationListActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/general_locations" />
         <activity
             android:name=".view.login.LoginActivity"
             android:configChanges="orientation|screenSize"
@@ -99,20 +88,6 @@
             android:name=".view.preferences.ProviderPreferenceActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_providers"
-            android:parentActivityName=".view.preferences.SettingsActivity"
-            android:theme="@style/PreferencesTheme.Dark">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.preferences.SettingsActivity" />
-        </activity>
-        <activity
-            android:name=".view.provider.ProviderListActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/general_providers" />
-        <activity
-            android:name=".view.preferences.CohortPreferenceActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_cohort_prefix"
             android:parentActivityName=".view.preferences.SettingsActivity"
             android:theme="@style/PreferencesTheme.Dark">
             <meta-data
@@ -385,28 +360,6 @@
         </activity>
 
         <!-- Wizard Activities Start -->
-        <activity
-            android:name=".view.cohort.CohortWizardActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/WizardTheme.Dark" />
-        <activity
-            android:name=".view.forms.FormTemplateWizardActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/WizardTheme.Dark" />
-        <activity
-            android:name=".view.location.CustomLocationWizardActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/WizardTheme.Dark" />
-        <activity
-            android:name=".view.provider.CustomProviderWizardActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/title_define_custom_concept"
-            android:theme="@style/WizardTheme.Dark" />
-        <activity
-            android:name=".view.concept.CustomConceptWizardActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/title_define_custom_concept"
-            android:theme="@style/WizardTheme.Dark" />
         <activity
             android:name=".view.setupconfiguration.SetupMethodPreferenceWizardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

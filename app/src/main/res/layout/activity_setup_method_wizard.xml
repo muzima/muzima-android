@@ -101,19 +101,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/inactive_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="false"
-            android:background="@drawable/curved_button_blue"
-            android:backgroundTint="@color/primary_blue"
-            android:text="@string/general_next"
-            android:textAllCaps="true"
-            android:textSize="14sp"
-            android:visibility="gone" />
-
-        <Button
             android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

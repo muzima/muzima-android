@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.muzima.R;
-import com.muzima.view.MainActivity;
 
 import java.util.Collections;
 import java.util.HashSet;

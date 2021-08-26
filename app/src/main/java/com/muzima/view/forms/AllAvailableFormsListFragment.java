@@ -14,7 +14,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -42,16 +41,10 @@ import com.muzima.model.AvailableForm;
 import com.muzima.model.FormWithData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
-import com.muzima.model.events.FormSearchEvent;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.tasks.FormSearchTask;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.MainDashboardActivity;
-import com.muzima.view.location.LocationListActivity;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -317,14 +310,6 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                 unselectAllItems();
             }
         }
-    }
-
-    private void navigateToNextActivity() {
-        Intent intent = new Intent(mActivity.getApplicationContext(), LocationListActivity.class);
-        if (isAdded()) {
-            //startActivity(intent);
-        }
-        mActivity.finish();
     }
 
     private int[] downloadFormTemplates() {
