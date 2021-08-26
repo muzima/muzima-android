@@ -217,7 +217,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
     @Subscribe
     public void closeBottomSheetEvent(CloseBottomSheetEvent event) {
-        System.out.println("emparambaa");
         cohortFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 

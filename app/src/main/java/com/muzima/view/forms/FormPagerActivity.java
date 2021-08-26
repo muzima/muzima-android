@@ -206,7 +206,6 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
 
     @Subscribe
     public void showFormsFilterBottomSheetEvent(ShowFormsFilterEvent event) {
-        System.out.println("Engeto");
         if (event.isCloseAction()) {
             formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         } else {
@@ -217,7 +216,6 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
     @Subscribe
     public void onFormsDownloadActionModeEvent(FormsActionModeEvent actionModeEvent) {
         selectedForms = actionModeEvent.getSelectedFormsList();
-        System.out.println(selectedForms.size());
         initActionMode(Constants.ACTION_MODE_EVENT.FORMS_DOWNLOAD_ACTION);
     }
 

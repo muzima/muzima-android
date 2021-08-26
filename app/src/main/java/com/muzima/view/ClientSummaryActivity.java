@@ -56,7 +56,7 @@ import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.forms.FormsActivity;
-import com.muzima.view.patients.PatientsListActivity;
+import com.muzima.view.patients.PatientsSearchActivity;
 import com.muzima.view.patients.PatientsLocationMapActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -402,8 +402,8 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (android.R.id.home == item.getItemId()) {
-            if (getIntent().getStringExtra(CALLING_ACTIVITY) != null && getIntent().getStringExtra(CALLING_ACTIVITY).equalsIgnoreCase(PatientsListActivity.class.getSimpleName())) {
-                Intent intent = new Intent(getApplicationContext(), PatientsListActivity.class);
+            if (getIntent().getStringExtra(CALLING_ACTIVITY) != null && getIntent().getStringExtra(CALLING_ACTIVITY).equalsIgnoreCase(PatientsSearchActivity.class.getSimpleName())) {
+                Intent intent = new Intent(getApplicationContext(), PatientsSearchActivity.class);
                 startActivity(intent);
                 finish();
             } else if (getIntent().getStringExtra(CALLING_ACTIVITY) != null && getIntent().getStringExtra(CALLING_ACTIVITY).equalsIgnoreCase(MainDashboardActivity.class.getSimpleName())) {
@@ -448,8 +448,8 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
 
     @Override
     public void onBackPressed() {
-        if (getIntent().getStringExtra(CALLING_ACTIVITY) != null && getIntent().getStringExtra(CALLING_ACTIVITY).equalsIgnoreCase(PatientsListActivity.class.getSimpleName())) {
-            Intent intent = new Intent(getApplicationContext(), PatientsListActivity.class);
+        if (getIntent().getStringExtra(CALLING_ACTIVITY) != null && getIntent().getStringExtra(CALLING_ACTIVITY).equalsIgnoreCase(PatientsSearchActivity.class.getSimpleName())) {
+            Intent intent = new Intent(getApplicationContext(), PatientsSearchActivity.class);
             startActivity(intent);
             finish();
         } else if (getIntent().getStringExtra(CALLING_ACTIVITY) != null && getIntent().getStringExtra(CALLING_ACTIVITY).equalsIgnoreCase(MainDashboardActivity.class.getSimpleName())) {

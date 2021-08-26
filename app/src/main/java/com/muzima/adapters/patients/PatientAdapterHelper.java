@@ -172,6 +172,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         if (backgroundListQueryTaskListener != null) {
             backgroundListQueryTaskListener.onQueryTaskFinish();
         }
+
     }
 
     public void onAuthenticationError(int searchResutStatus, BackgroundListQueryTaskListener backgroundListQueryTaskListener){

@@ -358,8 +358,8 @@ public class LoginActivity extends Activity {
         }
 
         @Override
-        protected Result doInBackground(Credentials params) {
-            Credentials credentials = params;
+        protected Result doInBackground(Credentials... params) {
+            Credentials credentials = params[0];
             MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
             int authenticationStatus = muzimaSyncService.authenticate(credentials.getCredentialsArray(), isUpdatePasswordChecked);
             return new Result(credentials, authenticationStatus);
@@ -483,8 +483,8 @@ public class LoginActivity extends Activity {
         }
 
         @Override
-        public String doInBackground(String params){
-            String serverUrl = params;
+        public String doInBackground(String... params){
+            String serverUrl = params[0];
             MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
             try {
                 if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {

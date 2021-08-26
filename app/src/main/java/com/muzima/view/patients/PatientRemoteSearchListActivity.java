@@ -199,10 +199,10 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
                     startActivity(intent);
                 } catch (PatientController.PatientLoadException e) {
                     Log.e(PatientRemoteSearchListActivity.class.getName(), "Could not load downloaded patient " + e.getMessage());
-                    startActivity(new Intent(PatientRemoteSearchListActivity.this, PatientsListActivity.class));
+                    startActivity(new Intent(PatientRemoteSearchListActivity.this, PatientsSearchActivity.class));
                 }
             } else if (syncStatus == SyncStatusConstants.SUCCESS) {
-                startActivity(new Intent(PatientRemoteSearchListActivity.this, PatientsListActivity.class));
+                startActivity(new Intent(PatientRemoteSearchListActivity.this, PatientsSearchActivity.class));
             }
         }
     }
