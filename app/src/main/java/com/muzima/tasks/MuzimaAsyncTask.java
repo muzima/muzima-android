@@ -21,14 +21,14 @@ public abstract class MuzimaAsyncTask<INPUT, PROGRESS, OUTPUT> {
      * Starts all
      * @param input Data you want to process in the background
      */
-    public void execute(final INPUT input) {
+    public void execute(final INPUT... input) {
         onPreExecute();
-
         ExecutorService executorService = AsyncWorker.getInstance().getExecutorService();
         executorService.execute(() -> {
             try {
                 final OUTPUT output = doInBackground(input);
-                AsyncWorker.getInstance().getHandler().post(() -> onPostExecute(output));
+                if(!isCancelled())
+                    AsyncWorker.getInstance().getHandler().post(() -> onPostExecute(output));
             } catch (final Exception e) {
                 e.printStackTrace();
 
@@ -80,7 +80,7 @@ public abstract class MuzimaAsyncTask<INPUT, PROGRESS, OUTPUT> {
     }
 
     /**
-     * Work which you want to be done on UI thread before {@link #doInBackground(Object)}
+     * Work which you want to be done on UI thread before {@link #doInBackground(Object...)}
      */
     protected abstract void onPreExecute();
 
@@ -92,18 +92,18 @@ public abstract class MuzimaAsyncTask<INPUT, PROGRESS, OUTPUT> {
      * @throws Exception Any uncaught exception which occurred while working in background.
      *  If any occurs, {@link #onBackgroundError(Exception)} will be executed (on the UI thread)
      */
-    protected abstract OUTPUT doInBackground(INPUT input) throws Exception;
+    protected abstract OUTPUT doInBackground(INPUT... input) throws Exception;
 
     /**
-     * Work which you want to be done on UI thread after {@link #doInBackground(Object)}
-     * @param output Output data from {@link #doInBackground(Object)}
+     * Work which you want to be done on UI thread after {@link #doInBackground(Object...)}
+     * @param output Output data from {@link #doInBackground(Object...)}
      */
     protected abstract void onPostExecute(OUTPUT output);
 
     /**
      * Triggered on UI thread if any uncaught exception occurred while working in background
      * @param e Exception
-     * @see #doInBackground(Object)
+     * @see #doInBackground(Object...)
      */
     protected abstract void onBackgroundError(Exception e);
 

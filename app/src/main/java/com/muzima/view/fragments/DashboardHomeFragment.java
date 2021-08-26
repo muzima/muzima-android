@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,15 +18,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.patients.AllPatientsAdapter;
+import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.CohortFilter;
@@ -35,8 +36,6 @@ import com.muzima.model.events.ReloadClientsListEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
-import com.muzima.tasks.FilterPatientsListTask;
-import com.muzima.tasks.LoadPatientsListService;
 import com.muzima.utils.FormUtils;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ThemeUtils;
@@ -47,7 +46,7 @@ import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.CompletedFormsListActivity;
 import com.muzima.view.forms.IncompleteFormsListActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
-import com.muzima.view.patients.PatientsListActivity;
+import com.muzima.view.patients.PatientsSearchActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -56,8 +55,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class DashboardHomeFragment extends Fragment implements LoadPatientsListService.PatientsListLoadedCallback,
-        AllPatientsAdapter.OnPatientClickedListener {
+public class DashboardHomeFragment extends Fragment implements ListAdapter.BackgroundListQueryTaskListener,
+        AdapterView.OnItemClickListener{
     private static final int RC_BARCODE_CAPTURE = 9001;
     private TextView incompleteFormsTextView;
     private TextView completeFormsTextView;
@@ -72,90 +71,43 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
     private View filterActionView;
     private View childContainer;
     private TextView providerNameTextView;
-    private RecyclerView listView;
+    private ListView listView;
     private View noDataView;
     private FloatingActionButton fabSearchButton;
     private FrameLayout progressBarContainer;
     private TextView noDataTipTextView;
     private TextView noDataMsgTextView;
-    private AllPatientsAdapter allPatientsAdapter;
     private ProgressBar progressBar;
     private AppBarLayout appBarLayout;
     private TextView filterLabelTextView;
     private ProgressBar filterProgressBar;
-    private List<Patient> patientsList = new ArrayList<>();
     private boolean bottomSheetFilterVisible;
+    private PatientsLocalSearchAdapter patientSearchAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard_home, container, false);
         initializeResources(view);
+        setupListView(view);
         setupNoDataView();
         setUpFormsCount();
-        loadAllPatients();
         return view;
     }
 
-    private void loadAllPatients() {
-        patientsList.clear();
-        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
-                .execute(new LoadPatientsListService(getActivity().getApplicationContext(), this));
-    }
+    private void setupListView(View view) {
+        listView = view.findViewById(R.id.list);
+        listView.setDividerHeight(0);
+        patientSearchAdapter = new PatientsLocalSearchAdapter(getActivity(), R.layout.layout_list,
+                ((MuzimaApplication) getActivity().getApplicationContext()).getPatientController(), null, getCurrentGPSLocation());
 
-    @Override
-    public void onPatientsLoaded(final List<Patient> patientsList) {
-        if (getActivity() == null) return;
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                DashboardHomeFragment.this.patientsList.addAll(patientsList);
-                allPatientsAdapter.notifyDataSetChanged();
-                progressBar.setVisibility(View.GONE);
-                if (DashboardHomeFragment.this.patientsList.isEmpty())
-                    noDataView.setVisibility(View.VISIBLE);
-                else
-                    listView.setVisibility(View.VISIBLE);
-
-            }
-        });
-    }
-
-    @Override
-    public void onPatientClicked(int position) {
-        if (bottomSheetFilterVisible) {
-            closeBottomSheet();
-        } else {
-            Patient patient = patientsList.get(position);
-            Intent intent = new Intent(getActivity().getApplicationContext(), ClientSummaryActivity.class);
-            intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
-            intent.putExtra(ClientSummaryActivity.CALLING_ACTIVITY, MainDashboardActivity.class.getSimpleName());
-            startActivity(intent);
-        }
-    }
-
-    private void setUpFormsCount() {
-        try {
-            long incompleteForms = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().countAllIncompleteForms();
-            long completeForms = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().countAllCompleteForms();
-            incompleteFormsTextView.setText(String.valueOf(incompleteForms));
-            applyFormsCount(incompleteFormsTextView, incompleteForms);
-            applyFormsCount(completeFormsTextView, completeForms);
-        } catch (FormController.FormFetchException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void applyFormsCount(TextView textView, long count) {
-        if (count < 10)
-            textView.setText(String.format(Locale.getDefault(), "%d", count));
-        else
-            textView.setText(String.valueOf(count));
+        patientSearchAdapter.setBackgroundListQueryTaskListener(this);
+        listView.setAdapter(patientSearchAdapter);
+        listView.setOnItemClickListener(this);
     }
 
     private void initializeResources(View view) {
         noDataView = view.findViewById(R.id.no_data_layout);
-        listView = view.findViewById(R.id.list);
         noDataTipTextView = view.findViewById(R.id.no_data_tip);
         noDataMsgTextView = view.findViewById(R.id.no_data_msg);
         incompleteFormsTextView = view.findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
@@ -177,11 +129,9 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         incompleteFormsView = view.findViewById(R.id.dashboard_forms_incomplete_forms_view);
         completeFormsView = view.findViewById(R.id.dashboard_forms_complete_forms_view);
         filterProgressBar = view.findViewById(R.id.patient_list_filtering_progress_bar);
-        allPatientsAdapter = new AllPatientsAdapter(getActivity().getApplicationContext(), patientsList, this, getCurrentGPSLocation());
-        listView.setAdapter(allPatientsAdapter);
-        listView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
-        listView.setVisibility(View.GONE);
+
         filterProgressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
 
         incompleteFormsView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,7 +172,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         searchPatientEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchPatientsListIfNecessary();
+                launchPatientsSearchView();
             }
         });
 
@@ -260,6 +210,30 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
 
     }
 
+    private void loadAllPatients() {
+        patientSearchAdapter.reloadData();
+    }
+
+
+    private void setUpFormsCount() {
+        try {
+            long incompleteForms = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().countAllIncompleteForms();
+            long completeForms = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().countAllCompleteForms();
+            incompleteFormsTextView.setText(String.valueOf(incompleteForms));
+            applyFormsCount(incompleteFormsTextView, incompleteForms);
+            applyFormsCount(completeFormsTextView, completeForms);
+        } catch (FormController.FormFetchException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void applyFormsCount(TextView textView, long count) {
+        if (count < 10)
+            textView.setText(String.format(Locale.getDefault(), "%d", count));
+        else
+            textView.setText(String.valueOf(count));
+    }
+
     private void showRegistrationFormsMissingAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         AlertDialog dialog = builder.setCancelable(false)
@@ -276,15 +250,12 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         dialog.show();
     }
 
-    private void launchPatientsListIfNecessary() {
-        if (bottomSheetFilterVisible) {
-            closeBottomSheet();
-        } else {
-            Intent intent = new Intent(getActivity().getApplicationContext(), PatientsListActivity.class);
-            intent.putExtra(PatientsListActivity.QUICK_SEARCH, true);
-            startActivity(intent);
-            getActivity().finish();
-        }
+    private void launchPatientsSearchView() {
+        patientSearchAdapter.cancelBackgroundTask();
+        Intent intent = new Intent(getActivity().getApplicationContext(), PatientsSearchActivity.class);
+        intent.putExtra(PatientsSearchActivity.QUICK_SEARCH, true);
+        startActivity(intent);
+        getActivity().finish();
     }
 
     // Confirmation dialog for confirming if the patient have an existing ID
@@ -302,7 +273,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         return new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                launchPatientsListIfNecessary();
+                launchPatientsSearchView();
             }
         };
     }
@@ -363,6 +334,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         super.onStart();
         try {
             EventBus.getDefault().register(this);
+            loadAllPatients();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -379,37 +351,27 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
                 appBarLayout.setBackgroundColor(getResources().getColor(R.color.primary_white));
             else
                 appBarLayout.setBackgroundColor(getResources().getColor(R.color.primary_black));
-
         }
     }
 
     @Subscribe
     public void cohortFilterEvent(final CohortFilterActionEvent event) {
-        Toast.makeText(getActivity().getApplicationContext(), getResources().getString(R.string.general_update_patient_list_message), Toast.LENGTH_LONG).show();
         bottomSheetFilterVisible = false;
-        applySelectedFilters(event);
-        filterProgressBar.setVisibility(View.VISIBLE);
-        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService().execute(
-                new FilterPatientsListTask(getActivity().getApplicationContext(), event, new FilterPatientsListTask.PatientsListFilterCallback() {
-                    @Override
-                    public void onPatientsFiltered(final List<Patient> patientList) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                filterProgressBar.setVisibility(View.GONE);
-                                patientsList.clear();
-                                for (Patient patient : patientList) {
-                                    if (!patient.getDisplayName().isEmpty() && !patient.getIdentifier().isEmpty())
-                                        patientsList.add(patient);
-                                }
-                                allPatientsAdapter.notifyDataSetChanged();
-                                applySelectedFilters(event);
-                                Toast.makeText(getActivity().getApplicationContext(), getResources().getString(R.string.general_patient_list_updated_message), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                })
-        );
+        updateCohortFilterLabel(event);
+
+        List<CohortFilter> filters = event.getFilters();
+
+        List<String> cohortUuidList = new ArrayList<>();
+        if (filters.size() > 0) {
+            for (CohortFilter filter : filters) {
+
+                if (filter.getCohort() != null && !event.isNoSelectionEvent()) {
+                    cohortUuidList.add(filter.getCohort().getUuid());
+                }
+            }
+        }
+
+        patientSearchAdapter.filterByCohorts(cohortUuidList);
     }
 
     @Subscribe
@@ -417,7 +379,7 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         loadAllPatients();
     }
 
-    private void applySelectedFilters(CohortFilterActionEvent event) {
+    private void updateCohortFilterLabel(CohortFilterActionEvent event) {
         if (event.getFilters().size() == 1) {
             if (event.getFilters().get(0).getCohort() == null)
                 filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
@@ -446,5 +408,39 @@ public class DashboardHomeFragment extends Fragment implements LoadPatientsListS
         MuzimaGPSLocationService muzimaLocationService = ((MuzimaApplication) getActivity().getApplicationContext())
                 .getMuzimaGPSLocationService();
         return muzimaLocationService.getLastKnownGPSLocation();
+    }
+
+    @Override
+    public void onQueryTaskStarted() {
+        filterProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onQueryTaskFinish() {
+        filterProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onQueryTaskCancelled() {
+        filterProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition) {
+        filterProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        if (bottomSheetFilterVisible) {
+            closeBottomSheet();
+        } else {
+            patientSearchAdapter.cancelBackgroundTask();
+            Patient patient = patientSearchAdapter.getItem(position);
+            Intent intent = new Intent(getActivity().getApplicationContext(), ClientSummaryActivity.class);
+            intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
+            intent.putExtra(ClientSummaryActivity.CALLING_ACTIVITY, MainDashboardActivity.class.getSimpleName());
+            startActivity(intent);
+        }
     }
 }
