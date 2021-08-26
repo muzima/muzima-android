@@ -269,10 +269,8 @@
                         android:id="@+id/sync_status_imageview"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
-                        android:onClick="switchSyncStatus"
                         android:visibility="gone"
                         android:contentDescription="@string/card_sync_status_content_description"
-                        android:src="@drawable/ic_action_shr_sync_needed"
                         android:background="@drawable/grid_buttons"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />

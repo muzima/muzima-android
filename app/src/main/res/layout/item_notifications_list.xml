@@ -47,8 +47,7 @@
                     android:layout_gravity="center|right"
                     android:background="?attr/listSelectorBlue"
                     android:contentDescription="@string/info_new_notification"
-                    android:visibility="gone"
-                    android:src="@drawable/notifications"/>
+                    android:visibility="gone"/>
         </LinearLayout>
         <TextView
                 android:id="@+id/notificationDate"
