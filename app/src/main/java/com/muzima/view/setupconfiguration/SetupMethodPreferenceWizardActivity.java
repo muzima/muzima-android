@@ -175,7 +175,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
             }
 
             @Override
-            protected int[] doInBackground(Void voids) {
+            protected int[] doInBackground(Void... voids) {
                 return downloadSetupConfiguration(setupConfigurationAdapter);
             }
 

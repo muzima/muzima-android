@@ -21,7 +21,7 @@ import com.muzima.adapters.forms.RecommendedFormsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
-import com.muzima.view.patients.PatientsListActivity;
+import com.muzima.view.patients.PatientsSearchActivity;
 
 public class RecommendedFormsListFragment extends FormsListFragment implements AllAvailableFormsListFragment.OnTemplateDownloadComplete {
     private Patient patient;
@@ -65,7 +65,7 @@ public class RecommendedFormsListFragment extends FormsListFragment implements A
     public void onResume() {
         Activity activity = getActivity();
         if (activity == null) {
-            startActivity(new Intent(getActivity(),PatientsListActivity.class));
+            startActivity(new Intent(getActivity(), PatientsSearchActivity.class));
         }
         super.onResume();
     }

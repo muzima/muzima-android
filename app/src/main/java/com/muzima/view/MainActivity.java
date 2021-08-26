@@ -41,7 +41,7 @@ import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.notifications.NotificationsListActivity;
-import com.muzima.view.patients.PatientsListActivity;
+import com.muzima.view.patients.PatientsSearchActivity;
 
 import org.apache.lucene.queryParser.ParseException;
 
@@ -170,7 +170,7 @@ public class MainActivity extends BroadcastListenerActivity {
      * Called when the user clicks the Clients area or Search Clients Button
      */
     public void patientList(View view) {
-        Intent intent = new Intent(this, PatientsListActivity.class);
+        Intent intent = new Intent(this, PatientsSearchActivity.class);
         startActivity(intent);
     }
 

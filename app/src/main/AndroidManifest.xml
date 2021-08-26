@@ -150,7 +150,7 @@
                 android:value="com.muzima.view.WebViewActivity" />
         </activity>
         <activity
-            android:name=".view.patients.PatientsListActivity"
+            android:name=".view.patients.PatientsSearchActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_clients"
             android:parentActivityName=".view.MainDashboardActivity"
@@ -198,10 +198,10 @@
             android:name=".view.patients.PatientSummaryActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_client_summary"
-            android:parentActivityName=".view.patients.PatientsListActivity">
+            android:parentActivityName=".view.patients.PatientsSearchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientsListActivity" />
+                android:value="com.muzima.view.patients.PatientsSearchActivity" />
         </activity>
         <activity
             android:name=".view.forms.PatientFormsActivity"
@@ -332,21 +332,21 @@
             android:name=".view.patients.PatientsLocationMapActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_clients_locations"
-            android:parentActivityName=".view.patients.PatientsListActivity"
+            android:parentActivityName=".view.patients.PatientsSearchActivity"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientsListActivity" />
+                android:value="com.muzima.view.patients.PatientsSearchActivity" />
         </activity>
         <activity
             android:name=".view.maps.GPSLocationPickerActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_pick_location"
-            android:parentActivityName=".view.patients.PatientsListActivity"
+            android:parentActivityName=".view.patients.PatientsSearchActivity"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientsListActivity" />
+                android:value="com.muzima.view.patients.PatientsSearchActivity" />
         </activity>
 
         <activity

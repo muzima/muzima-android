@@ -158,7 +158,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
             }
         }
 
-        protected abstract List<Cohort> doInBackground(Void voids);
+        protected abstract List<Cohort> doInBackground(Void... voids);
 
         @Override
         protected void onBackgroundError(Exception e) {}
@@ -170,7 +170,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
     protected class LoadBackgroundQueryTask extends CohortBackgroundQueryTask {
 
         @Override
-        protected List<Cohort> doInBackground(Void voids) {
+        protected List<Cohort> doInBackground(Void... voids) {
             List<Cohort> allCohorts = null;
             try {
                 Log.i(getClass().getSimpleName(), "Fetching Cohorts from Database...");
@@ -188,7 +188,7 @@ public class AllCohortsAdapter extends CohortsAdapter {
      */
     protected class DownloadBackgroundQueryTask extends CohortBackgroundQueryTask {
         @Override
-        protected List<Cohort> doInBackground(Void voids) {
+        protected List<Cohort> doInBackground(Void... voids) {
             List<Cohort> allCohorts = null;
             try {
                 muzimaSyncService.downloadCohorts();

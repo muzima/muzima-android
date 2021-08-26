@@ -20,6 +20,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.PatientTag;
 import com.muzima.controller.PatientController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
         super(context, textViewResourceId);
         this.patientController = patientController;
         patientsLocalSearchAdapter = new PatientsLocalSearchAdapter(context,
-                R.layout.layout_list, patientController, "", null);
+                R.layout.layout_list, patientController, new ArrayList<String>(), null);
     }
 
     public void onTagsChanged() {

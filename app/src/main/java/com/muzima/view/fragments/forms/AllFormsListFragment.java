@@ -163,7 +163,6 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
             selectedForms.add(formItem.getForm());
         else
             selectedForms.remove(formItem.getForm());
-        System.out.println("ssss " + selectedForms.size());
         EventBus.getDefault().post(new FormsActionModeEvent(selectedForms));
     }
 }

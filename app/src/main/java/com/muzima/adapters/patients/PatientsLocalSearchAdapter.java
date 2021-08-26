@@ -24,24 +24,28 @@ import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
+public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements MuzimaAsyncTask.OnProgressListener<List<Patient>>{
     private static final String SEARCH = "search";
     private final PatientAdapterHelper patientAdapterHelper;
     private final PatientController patientController;
-    private final String cohortId;
-    private AsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
+    private final List<String> cohortUuids;
+    private MuzimaAsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
     public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
                                       PatientController patientController,
-                                      String cohortId,
+                                      List<String> cohortUuids,
                                       MuzimaGPSLocation currentLocation) {
         super(context, textViewResourceId);
-        Context context1 = context;
         this.patientController = patientController;
-        this.cohortId = cohortId;
+        if (cohortUuids != null){
+            this.cohortUuids = cohortUuids;
+        } else {
+            this.cohortUuids = new ArrayList<>();
+        }
         this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId, patientController);
         patientAdapterHelper.setCurrentLocation(currentLocation);
     }
@@ -55,7 +59,13 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
     @Override
     public void reloadData() {
         cancelBackgroundTask();
-        backgroundQueryTask = new BackgroundQueryTask().execute(cohortId);
+        if(!cohortUuids.isEmpty() ) {
+            backgroundQueryTask = new BackgroundQueryTask();
+            backgroundQueryTask.execute(cohortUuids.toArray(new String[cohortUuids.size()]));
+        } else {
+            backgroundQueryTask = new BackgroundQueryTask();
+            backgroundQueryTask.execute(StringUtils.EMPTY);
+        }
     }
 
     public void search(String text) {
@@ -63,8 +73,16 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         if(StringUtils.isEmpty(text)) {
             reloadData();
         } else {
-            backgroundQueryTask = new BackgroundQueryTask().execute(text, SEARCH);
+            backgroundQueryTask = new BackgroundQueryTask();
+            backgroundQueryTask.execute(text, SEARCH);
         }
+    }
+
+    public void filterByCohorts(List<String> cohortUuids) {
+        cancelBackgroundTask();
+        this.cohortUuids.clear();
+        this.cohortUuids.addAll(cohortUuids);
+        reloadData();
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
@@ -73,17 +91,23 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
 
     public void cancelBackgroundTask(){
         if(backgroundQueryTask != null){
-            backgroundQueryTask.cancel(true);
+            backgroundQueryTask.cancel();
         }
     }
 
+    @Override
+    public void onProgress(List<Patient> patients) {
+        patientAdapterHelper.onProgressUpdate(patients, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
+    }
 
-    private class BackgroundQueryTask extends AsyncTask<String, List<Patient>, List<Patient>> {
+
+    private class BackgroundQueryTask extends MuzimaAsyncTask<String, List<Patient>, List<Patient>> {
 
         @Override
         protected void onPreExecute() {
             patientAdapterHelper.onPreExecute(backgroundListQueryTaskListener);
             PatientsLocalSearchAdapter.this.clear();
+            setOnProgressListener(PatientsLocalSearchAdapter.this);
         }
 
         @Override
@@ -93,35 +117,45 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
 
             if (isSearch(params)) {
                 try {
-                    return patientController.searchPatientLocally(params[0], cohortId);
+                    if(cohortUuids.size() == 1)
+                        return patientController.searchPatientLocally(params[0], cohortUuids.get(0));
+                    else
+                        return patientController.searchPatientLocally(params[0],null);
                 } catch (PatientController.PatientLoadException e) {
                     Log.w(getClass().getSimpleName(), String.format("Exception occurred while searching patients for %s search string." , params[0]), e);
                 }
             }
 
-            String cohortUuid = params[0];
             try {
                 int pageSize = Constants.PATIENT_LOAD_PAGE_SIZE;
-                if (cohortUuid != null) {
-                    int patientCount = patientController.countPatients(cohortUuid);
-                    if(patientCount <= pageSize){
-                        patients = patientController.getPatients(cohortUuid);
-                    } else {
-                        int pages = new Double(Math.ceil((float)patientCount / pageSize)).intValue();
+                if (!cohortUuids.isEmpty()) {
+                    for(String cohortUuid :cohortUuids) {
+                        int patientCount = patientController.countPatients(cohortUuid);
                         List<Patient> temp = null;
-                        for (int page = 1; page <= pages; page++) {
-                            if(!isCancelled()) {
-                                if (patients == null) {
-                                    patients = patientController.getPatients(cohortUuid, page, pageSize);
-                                    if (patients != null) {
-                                        publishProgress(patients);
+
+                        if (patientCount <= pageSize) {
+                            temp = patientController.getPatients(cohortUuid);
+                            patients.addAll(temp);
+                            publishProgress(temp);
+                        } else {
+                            int pages = new Double(Math.ceil((float) patientCount / pageSize)).intValue();
+
+                            for (int page = 1; page <= pages; page++) {
+                                if (!isCancelled()) {
+                                    if (patients == null) {
+                                        patients = patientController.getPatients(cohortUuid, page, pageSize);
+                                        if (patients != null) {
+                                            publishProgress(patients);
+                                        }
+                                    } else {
+                                        temp = patientController.getPatients(cohortUuid, page, pageSize);
+                                        if (temp != null) {
+                                            patients.addAll(temp);
+                                            publishProgress(temp);
+                                        }
                                     }
                                 } else {
-                                    temp = patientController.getPatients(cohortUuid, page, pageSize);
-                                    if (temp != null) {
-                                        patients.addAll(temp);
-                                        publishProgress(temp);
-                                    }
+                                    break;
                                 }
                             }
                         }
@@ -155,7 +189,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                     }
                 }
             } catch (PatientController.PatientLoadException e) {
-                Log.w(getClass().getSimpleName(), "Exception occurred while fetching patients", e);
+                Log.e(getClass().getSimpleName(), "Exception occurred while fetching patients", e);
             }
             List<String> tags = patientController.getSelectedTagUuids();
             filteredPatients = patientController.filterPatientByTags(patients,tags);
@@ -170,12 +204,10 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         protected void onPostExecute(List<Patient> patients) {
             patientAdapterHelper.onPostExecute(patients, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
         }
-        @SafeVarargs
+
         @Override
-        protected final void onProgressUpdate(List<Patient>... patients) {
-            for (List<Patient> patientList : patients) {
-                patientAdapterHelper.onProgressUpdate(patientList, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
-            }
+        protected void onBackgroundError(Exception e) {
+            Log.e(getClass().getSimpleName(), "Error while running background task",e);
         }
     }
 }

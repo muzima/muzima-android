@@ -212,7 +212,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void voids) {
+            protected int[] doInBackground(Void... voids) {
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 return muzimaSyncService.downloadNewSettings();
             }
@@ -262,7 +262,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void voids) {
+            protected int[] doInBackground(Void... voids) {
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 return muzimaSyncService.downloadCohorts();
             }
@@ -310,7 +310,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void voids) {
+            protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractCohortsUuids();
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 muzimaSyncService.downloadRelationshipsTypes();
@@ -375,7 +375,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void voids) {
+            protected int[] doInBackground(Void... voids) {
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 return muzimaSyncService.downloadForms();
             }
@@ -423,7 +423,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void voids) {
+            protected int[] doInBackground(Void... voids) {
                 try {
                     List<String> formTemplateUuidsFromFormTemplates = extractFormTemplatesUuids();
 
@@ -506,7 +506,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void voids) {
+            protected int[] doInBackground(Void... voids) {
                 MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
                 boolean notificationSetting = muzimaSettingController.isPushNotificationsEnabled();
                 if(notificationSetting) {
@@ -572,7 +572,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void voids) {
+            protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractProvidersUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
@@ -625,7 +625,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void voids) {
+            protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractConceptsUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
@@ -679,7 +679,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void voids) {
+            protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractCohortsUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
@@ -739,7 +739,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
 
             @Override
-            protected int[] doInBackground(Void voids) {
+            protected int[] doInBackground(Void... voids) {
                 List<String> uuids = extractCohortsUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
