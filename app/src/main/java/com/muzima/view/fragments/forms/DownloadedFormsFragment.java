@@ -5,32 +5,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsRecyclerViewAdapter;
 import com.muzima.api.model.Form;
-import com.muzima.controller.FormController;
 import com.muzima.model.FormItem;
 import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.model.events.FormSearchEvent;
-import com.muzima.model.events.FormsActionModeEvent;
-import com.muzima.tasks.LoadAllFormsTask;
 import com.muzima.tasks.LoadDownloadedFormsTask;
 import com.muzima.utils.ViewUtil;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class DownloadedFormsFragment extends Fragment implements FormsRecyclerViewAdapter.OnFormClickedListener {
@@ -115,15 +107,16 @@ public class DownloadedFormsFragment extends Fragment implements FormsRecyclerVi
         filterStrategyContainer.setVisibility(View.GONE);
     }
 
+
+    //TODO: This needs to delete
     @Override
     public void onFormClicked(int position) {
-        FormItem form = formList.get(position);
-        form.setSelected(!form.isSelected());
-        recyclerViewAdapter.notifyDataSetChanged();
-        if (form.isSelected())
-            selectedForms.add(form.getForm());
-        else
-            selectedForms.remove(form.getForm());
-        EventBus.getDefault().post(new FormsActionModeEvent(selectedForms));
+//        FormItem form = formList.get(position);
+//        form.setSelected(!form.isSelected());
+//        recyclerViewAdapter.notifyDataSetChanged();
+//        if (form.isSelected())
+//            selectedForms.add(form.getForm());
+//        else
+//            selectedForms.remove(form.getForm());
     }
 }

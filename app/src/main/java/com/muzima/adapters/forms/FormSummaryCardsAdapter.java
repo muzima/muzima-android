@@ -62,7 +62,7 @@ public class FormSummaryCardsAdapter extends RecyclerView.Adapter<FormSummaryCar
 
         public ViewHolder(@NonNull View itemView, OnCardClickedListener cardClickedListener) {
             super(itemView);
-            containerView = itemView.findViewById(R.id.item__forms_view);
+            containerView = itemView.findViewById(R.id.item_forms_view);
             countTextView = itemView.findViewById(R.id.item_forms_count_view);
             titleTextView = itemView.findViewById(R.id.item_forms_title_text_view);
 

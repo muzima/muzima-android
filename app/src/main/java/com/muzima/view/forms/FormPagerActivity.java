@@ -61,6 +61,7 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
     private final LanguageUtil languageUtil = new LanguageUtil();
     private ActionMode.Callback actionModeCallback;
     private ActionMode actionMode;
+    private boolean formSelected = false;
     private List<Form> selectedForms = new ArrayList<>();
     private MenuItem loadingMenuItem;
 
@@ -92,6 +93,10 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
                 searchForms.setText(StringUtils.EMPTY);
+                EventBus.getDefault().post(new DestroyActionModeEvent());
+                if (actionMode != null) {
+                    actionMode.finish();
+                }
             }
 
             @Override
@@ -206,7 +211,6 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
 
     @Subscribe
     public void showFormsFilterBottomSheetEvent(ShowFormsFilterEvent event) {
-        System.out.println("Engeto");
         if (event.isCloseAction()) {
             formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         } else {
@@ -217,7 +221,7 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
     @Subscribe
     public void onFormsDownloadActionModeEvent(FormsActionModeEvent actionModeEvent) {
         selectedForms = actionModeEvent.getSelectedFormsList();
-        System.out.println(selectedForms.size());
+        formSelected = actionModeEvent.getFormSelected();
         initActionMode(Constants.ACTION_MODE_EVENT.FORMS_DOWNLOAD_ACTION);
     }
 
@@ -262,26 +266,22 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
                                 }));
                     }
                 }
-                return true;
+                return false;
             }
 
             @Override
             public void onDestroyActionMode(ActionMode actionMode) {
+                if (!formSelected)
+                    EventBus.getDefault().post(new DestroyActionModeEvent());
             }
         };
 
         actionMode = startActionMode(actionModeCallback);
 
-        if (action == Constants.ACTION_MODE_EVENT.FORMS_DOWNLOAD_ACTION) {
-            if (selectedForms.size() < 1) actionMode.finish();
-            actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedForms.size(), getResources().getString(R.string.general_selected)));
-        }
+        formSelected = false;
+        if (selectedForms.size() < 1) actionMode.finish();
+        actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedForms.size(), getResources().getString(R.string.general_selected)));
     }
-
-
-
-
-
 
     @Override
     protected int getBottomNavigationMenuItemId() {

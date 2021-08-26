@@ -14,8 +14,6 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -33,8 +31,6 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -59,22 +55,13 @@ import com.muzima.model.cohort.CohortItem;
 import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CloseBottomSheetEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
-import com.muzima.model.events.CohortsActionModeEvent;
-import com.muzima.model.events.DestroyActionModeEvent;
-import com.muzima.model.events.FormFilterBottomSheetClosedEvent;
-import com.muzima.model.events.FormSortEvent;
-import com.muzima.model.events.FormsActionModeEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
-import com.muzima.model.events.ShowFormsFilterEvent;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
-import com.muzima.tasks.DownloadCohortsTask;
-import com.muzima.tasks.DownloadFormsTask;
 import com.muzima.tasks.LoadDownloadedCohortsTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
-import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
@@ -83,14 +70,12 @@ import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
 import com.muzima.view.patients.PatientsLocationMapActivity;
-import com.muzima.view.preferences.SettingsActivity;
 import org.apache.lucene.queryParser.ParseException;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
@@ -224,103 +209,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     @Subscribe
     public void showCohortFilterEvent(ShowCohortFilterEvent event) {
         loadCohorts(true);
-    }
-
-    @Subscribe
-    public void onCohortDownloadActionModeEvent(CohortsActionModeEvent actionModeEvent) {
-        selectedCohorts = actionModeEvent.getSelectedCohorts();
-        initActionMode(Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION);
-    }
-
-    @Subscribe
-    public void onFormsDownloadActionModeEvent(FormsActionModeEvent actionModeEvent) {
-        selectedForms = actionModeEvent.getSelectedFormsList();
-        initActionMode(Constants.ACTION_MODE_EVENT.FORMS_DOWNLOAD_ACTION);
-    }
-
-    private void initActionMode(final int action) {
-        selectedCohortsCount = 0;
-        actionModeCallback = new ActionMode.Callback() {
-
-            @Override
-            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-                getMenuInflater().inflate(R.menu.menu_cohort_actions, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                loadingMenuItem = menu.findItem(R.id.menu_downloading_action);
-                return true;
-            }
-
-            @Override
-            public boolean onActionItemClicked(final ActionMode actionMode, MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.menu_download_action) {
-                    loadingMenuItem.setActionView(new ProgressBar(MainDashboardActivity.this));
-                    loadingMenuItem.setVisible(true);
-                    menuItem.setVisible(false);
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
-                    if (action == Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION) {
-                        ((MuzimaApplication) getApplicationContext()).getExecutorService()
-                                .execute(new DownloadCohortsTask(getApplicationContext(), selectedCohorts, new DownloadCohortsTask.CohortDownloadCallback() {
-                                    @Override
-                                    public void callbackDownload() {
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                actionMode.finish();
-                                                loadingMenuItem.setVisible(false);
-                                                EventBus.getDefault().post(new DestroyActionModeEvent());
-                                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_finish), Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-                                    }
-                                }));
-                    } else if (action == Constants.ACTION_MODE_EVENT.FORMS_DOWNLOAD_ACTION) {
-                        ((MuzimaApplication) getApplicationContext()).getExecutorService()
-                                .execute(new DownloadFormsTask(getApplicationContext(), selectedForms, new DownloadFormsTask.FormsDownloadCallback() {
-                                    @Override
-                                    public void formsDownloadFinished() {
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                selectedForms.clear();
-                                                actionMode.finish();
-                                                loadingMenuItem.setVisible(false);
-                                                EventBus.getDefault().post(new DestroyActionModeEvent());
-                                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_finish), Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-                                    }
-                                }));
-                    }
-                }
-                return true;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode actionMode) {
-                if (selectionDifference == selectedCohortsCount)
-                    EventBus.getDefault().post(new DestroyActionModeEvent());
-                else
-                    selectionDifference = selectedCohortsCount;
-            }
-        };
-
-        for (CohortItem selectedCohort : selectedCohorts) {
-            if (selectedCohort.isSelected()) selectedCohortsCount = selectedCohortsCount + 1;
-        }
-
-        actionMode = startActionMode(actionModeCallback);
-
-        if (action == Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION) {
-            if (selectedCohortsCount < 1) actionMode.finish();
-            actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedCohortsCount, getResources().getString(R.string.general_selected)));
-        } else if (action == Constants.ACTION_MODE_EVENT.FORMS_DOWNLOAD_ACTION) {
-            if (selectedForms.size() < 1) actionMode.finish();
-            actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedForms.size(), getResources().getString(R.string.general_selected)));
-        }
     }
 
     public void hideProgressbar() {

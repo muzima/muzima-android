@@ -1,27 +1,20 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.tags.TagsAdapter;
-import com.muzima.api.model.Form;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormItem;
-import com.muzima.utils.MuzimaPreferences;
 
 import java.util.ArrayList;
 import java.util.List;

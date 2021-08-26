@@ -21,17 +21,19 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.tabs.TabLayout;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.ClientDynamicObsFormsAdapter;
 import com.muzima.adapters.forms.FormSummaryCardsAdapter;
-import com.muzima.adapters.viewpager.DataCollectionViewPagerAdapter;
+import com.muzima.adapters.patients.DataCollectionViewPagerAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
@@ -55,6 +57,7 @@ import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
+import com.muzima.view.custom.ClientSummaryPager;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.patients.PatientsListActivity;
 import com.muzima.view.patients.PatientsLocationMapActivity;
@@ -104,20 +107,43 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     private FormSummaryCardsAdapter formSummaryCardsAdapter;
     private List<SummaryCard> formsSummaries = new ArrayList<>();
     private List<SingleObsForm> singleObsFormsList = new ArrayList<>();
-
-    private DataCollectionViewPagerAdapter dataCollectionViewPagerAdapter;
+    private ViewPager2 viewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        themeUtils.onCreate(ClientSummaryActivity.this);
-        languageUtil.onCreate(ClientSummaryActivity.this);
+        themeUtils.onCreate(this);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_client_summary);
         initializeResources();
         loadPatientData();
-        loadHistoricalDataView();
-        loadSummaryHeaders();
         loadFormsCountData();
+
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        viewPager = findViewById(R.id.viewPager);
+
+        ClientSummaryPager clientSummaryPager = new ClientSummaryPager(this, tabLayout.getTabCount(), patientUuid);
+        viewPager.setAdapter(clientSummaryPager);
+        viewPager.setUserInputEnabled(false);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+                tab.getIcon().setTint(ContextCompat.getColor(ClientSummaryActivity.this, (R.color.primary_blue)));
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                if (ThemeUtils.getPreferenceLightMode(ClientSummaryActivity.this))
+                    tab.getIcon().setTint(ContextCompat.getColor(ClientSummaryActivity.this, (R.color.primary_black)));
+                else
+                    tab.getIcon().setTint(ContextCompat.getColor(ClientSummaryActivity.this, (R.color.primary_white)));
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
     }
 
     @Override
@@ -189,12 +215,6 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         }
     }
 
-    private void loadHistoricalDataView() {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.historical_data_fragment_container, new ClientSummaryObservationsFragment(patient.getUuid()));
-        fragmentTransaction.commit();
-    }
-
     @Override
     public void onFormsCountLoaded(final long completeFormsCount, final long incompleteFormsCount) {
         runOnUiThread(new Runnable() {
@@ -211,9 +231,6 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     private void loadFormsCountData() {
         ((MuzimaApplication) getApplicationContext()).getExecutorService()
                 .execute(new FormsCountService(patient.getUuid(), getApplicationContext(), this));
-    }
-
-    private void loadSummaryHeaders() {
     }
 
     private void loadPatientData() {
@@ -270,12 +287,6 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         ageTextView = findViewById(R.id.age_text_label);
         gpsAddressTextView = findViewById(R.id.distanceToClientAddress);
         formCountSummaryRecyclerView = findViewById(R.id.client_summary_stats_tabs_recycler_view);
-        expandHistoricalDataView = findViewById(R.id.expand_historical_data_view);
-        expandDataCollectionView = findViewById(R.id.expand_data_collection_view);
-        expandHistoricalDataImageView = findViewById(R.id.expand_historical_data_image_view);
-        expandDataCollectionImageView = findViewById(R.id.expand_data_collection_image_view);
-        dataCollectionViewPager = findViewById(R.id.client_summary_data_collection_view_pager);
-        historicalDataContainerView = findViewById(R.id.historical_data_fragment_container);
         addReadingActionView = findViewById(R.id.general_add_reading_button);
         cancelBottomSheetActionView = findViewById(R.id.close_summary_bottom_sheet_view);
         saveBottomSheetEntriesActionView = findViewById(R.id.client_summary_save_action_bottom_sheet);
@@ -290,48 +301,12 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         singleObsFormsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         singleObsFormsRecyclerView.setAdapter(clientDynamicObsFormsAdapter);
         formCountSummaryRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
-        dataCollectionViewPagerAdapter = new DataCollectionViewPagerAdapter(getSupportFragmentManager(), getApplicationContext(), getIntent().getStringExtra(PATIENT_UUID));
-        dataCollectionViewPager.setAdapter(dataCollectionViewPagerAdapter);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
-        expandHistoricalDataView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (historicalDataContainerView.getVisibility() == View.VISIBLE) {
-                    historicalDataContainerView.setVisibility(View.GONE);
-                    dataCollectionViewPager.setVisibility(View.VISIBLE);
-                    expandHistoricalDataImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowDown));
-                    expandDataCollectionImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowUp));
-                } else {
-                    historicalDataContainerView.setVisibility(View.VISIBLE);
-                    dataCollectionViewPager.setVisibility(View.GONE);
-                    expandHistoricalDataImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowUp));
-                    expandDataCollectionImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowDown));
-                }
-            }
-        });
-
-        expandDataCollectionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (dataCollectionViewPager.getVisibility() == View.VISIBLE) {
-                    dataCollectionViewPager.setVisibility(View.GONE);
-                    historicalDataContainerView.setVisibility(View.VISIBLE);
-                    expandHistoricalDataImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowUp));
-                    expandDataCollectionImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowDown));
-                } else {
-                    dataCollectionViewPager.setVisibility(View.VISIBLE);
-                    historicalDataContainerView.setVisibility(View.GONE);
-                    expandHistoricalDataImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowDown));
-                    expandDataCollectionImageView.setImageDrawable(ThemeUtils.getDrawableFromThemeAttributes(ClientSummaryActivity.this, R.attr.icActionArrowUp));
-                }
-            }
-        });
 
         cancelBottomSheetActionView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -395,7 +370,6 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
             ex.printStackTrace();
         }
 
-        expandDataCollectionView.callOnClick();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 

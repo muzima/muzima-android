@@ -37,6 +37,7 @@ public class AvailableFormsFragment extends Fragment implements FormsRecyclerVie
     private View filterStrategyContainer;
     private List<FormItem> formList = new ArrayList<>();
     private List<Form> selectedForms = new ArrayList<>();
+    private boolean formSelected = false;
 
     @Nullable
     @Override
@@ -121,6 +122,9 @@ public class AvailableFormsFragment extends Fragment implements FormsRecyclerVie
             selectedForms.add(form.getForm());
         else
             selectedForms.remove(form.getForm());
-        EventBus.getDefault().post(new FormsActionModeEvent(selectedForms));
+
+        if (!formSelected)
+            formSelected = true;
+        EventBus.getDefault().post(new FormsActionModeEvent(selectedForms, formSelected));
     }
 }

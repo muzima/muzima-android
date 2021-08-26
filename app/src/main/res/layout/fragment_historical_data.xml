@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
+        android:orientation="vertical"
+        tools:context="com.muzima.view.fragments.patient.HistoricalDataFragment">
+
+    <com.google.android.material.tabs.TabLayout
+            android:id="@+id/hdTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabSelectedTextColor="@color/primary_blue"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabInlineLabel="true"
+            app:tabIndicatorHeight="3dp">
+
+        <com.google.android.material.tabs.TabItem
+                android:id="@+id/by_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/general_by_type_title"/>
+
+        <com.google.android.material.tabs.TabItem
+                android:id="@+id/by_abstract"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/general_by_abstract_title"/>
+
+        <com.google.android.material.tabs.TabItem
+                android:id="@+id/by_encounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/general_by_encounter_title"/>
+    </com.google.android.material.tabs.TabLayout>
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/hd_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+</LinearLayout>
