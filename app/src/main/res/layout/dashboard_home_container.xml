@@ -199,7 +199,7 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
+                <ListView
                     style="@style/MuzimaSelectableListView"
                     android:id="@+id/list"/>
 

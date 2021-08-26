@@ -137,7 +137,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
 
         ImageView genderIcon = findViewById(R.id.genderImg);
         if(patient.getGender() != null) {
-            int genderDrawable = patient.getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
+            int genderDrawable = patient.getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
             genderIcon.setImageDrawable(getResources().getDrawable(genderDrawable));
         }
 

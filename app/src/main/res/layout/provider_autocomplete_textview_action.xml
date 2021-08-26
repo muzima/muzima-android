@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center">
+    <LinearLayout style="@style/AutocompleteTextArea">
+
+        <AutoCompleteTextView
+            android:id="@+id/add_provider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minWidth="400dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:textColor="@color/primary_blue"
+            android:textColorHint="@color/hint_text_grey"
+            android:textCursorDrawable="@null"
+            android:hint="@string/enter_provider_name_hint"
+            android:background="?attr/primaryBackgroundColor">
+            <requestFocus/>
+        </AutoCompleteTextView>
+
+    </LinearLayout>
+</LinearLayout>

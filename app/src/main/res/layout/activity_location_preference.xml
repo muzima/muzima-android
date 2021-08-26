@@ -12,29 +12,6 @@
               android:id="@+id/add_location_layout"
               style="@style/WizardContainer">
 
-    <LinearLayout style="@style/AutocompleteTextArea">
-
-        <AutoCompleteTextView
-                android:id="@+id/add_location"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:layout_weight="1"
-                android:textColor="@color/primary_blue"
-                android:textColorHint="@color/hint_text_grey"
-                android:textCursorDrawable="@null"
-                android:hint="@string/enter_location_name"
-                android:background="?attr/primaryBackgroundColor">
-            <requestFocus/>
-        </AutoCompleteTextView>
-
-    </LinearLayout>
-
-    <View
-            style="@style/DividerLine"
-            android:layout_height="2dp"/>
-
     <ListView
             android:id="@+id/location_preference_list"
             style="@style/MuzimaSelectableListView"
@@ -44,7 +21,5 @@
     <TextView android:id="@+id/no_location_added"
               android:text="@string/info_location_unavailable"
               style="@style/NoItemInListView"/>
-    <View
-            style="@style/DividerLine"
-            android:layout_height="2dp"/>
+
 </LinearLayout>

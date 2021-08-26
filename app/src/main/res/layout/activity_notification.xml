@@ -64,7 +64,6 @@
             android:layout_margin="12dp"
             android:contentDescription="@string/send_general_text"
             android:layout_alignParentEnd="true"
-            android:src="?attr/icReplyNotification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

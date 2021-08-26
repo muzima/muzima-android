@@ -621,7 +621,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         }
 
         @Override
-        public int[] doInBackground(Void params){
+        public int[] doInBackground(Void... params){
             MuzimaSyncService syncService = ((MuzimaApplication) mActivity
                     .getApplication()).getMuzimaSyncService();
             return syncService.downloadSetting(Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING);
@@ -664,7 +664,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         }
 
         @Override
-        public int[] doInBackground(Void params){
+        public int[] doInBackground(Void... params){
             MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
                     .getApplication()).getMuzimaSyncService();
             return syncService.downloadSetting(Constants.ServerSettings
@@ -709,7 +709,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         }
 
         @Override
-        public int[] doInBackground(Void params){
+        public int[] doInBackground(Void... params){
             MuzimaSyncService syncService = ((MuzimaApplication) getActivity()
                     .getApplication()).getMuzimaSyncService();
             return syncService.downloadSetting(Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING);
