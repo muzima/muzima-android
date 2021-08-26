@@ -61,7 +61,7 @@ public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecycler
                     .isFormDownloaded(form.getForm()))
                 holder.iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_downloaded));
             else
-                holder.iconImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_transparent));
+                holder.iconImageView.setVisibility(View.GONE);
 
             TagsAdapter adapter = new TagsAdapter(form.getForm().getTags());
             holder.tagsListView.setLayoutManager(new LinearLayoutManager(context.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));

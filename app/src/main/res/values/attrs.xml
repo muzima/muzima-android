@@ -25,19 +25,13 @@
     <attr name="listMultiSelectorBlue" format="reference"/>
     <attr name="loginLayoutBackground" format="reference"/>
     <attr name="icRefresh" format="reference"/>
-    <attr name="icActionUpload" format="reference"/>
     <attr name="icLabels" format="reference"/>
-    <attr name="icDiscard" format="reference"/>
     <attr name="icDownload" format="reference"/>
-    <attr name="icReplyNotification" format="reference"/>
-    <attr name="icAddClient" format="reference"/>
     <attr name="icAdd" format="reference"/>
     <attr name="icSearch" format="reference"/>
     <attr name="listSelectorBlue" format="reference"/>
-    <attr name="icLauncherLogo" format="reference"/>
     <attr name="icCancel" format="reference"/>
     <attr name="icSend" format="reference"/>
-    <attr name="icUndo" format="reference"/>
     <attr name="ic_action_arrow_person_dark" format="reference"/>
     <attr name="ic_action_lock_dark" format="reference"/>
     <attr name="icActionArrowDown" format="reference"/>

@@ -88,7 +88,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
     }
 
     private void markItemUnselected(com.muzima.adapters.patients.PatientTagsListAdapter.ViewHolder holder, Resources resources) {
-        holder.icon.setImageDrawable(resources.getDrawable(R.drawable.ic_cancel));
+        holder.icon.setImageDrawable(resources.getDrawable(R.drawable.ic_action_close_dark));
         int drawerColor = resources.getColor(R.color.drawer_background);
         holder.indicator.setBackgroundColor(drawerColor);
     }

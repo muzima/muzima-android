@@ -96,7 +96,7 @@ public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnI
     }
 
     private void markItemUnselected(ViewHolder holder, Resources resources) {
-        holder.icon.setImageDrawable(resources.getDrawable(R.drawable.ic_cancel));
+        holder.icon.setImageDrawable(resources.getDrawable(R.drawable.ic_action_close_dark));
         int drawerColor = resources.getColor(R.color.drawer_background);
         holder.indicator.setBackgroundColor(drawerColor);
     }

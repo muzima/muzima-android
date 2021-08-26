@@ -31,7 +31,7 @@
             android:id="@+id/add_individual_obs_imagebutton"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_action_add_white"
+            android:src="@drawable/ic_action_add"
             android:contentDescription="@string/add_individual_observation_text"
             android:layout_width="32dp"
             android:layout_height="32dp" />

@@ -202,7 +202,7 @@ public class PatientSummaryActivity extends BaseActivity {
         patientName.setText(PatientAdapterHelper.getPatientFormattedName(patient));
 
         ImageView genderIcon = findViewById(R.id.genderImg);
-        int genderDrawable = patient.getGender().equalsIgnoreCase("M") ? R.drawable.ic_male : R.drawable.ic_female;
+        int genderDrawable = patient.getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
         genderIcon.setImageDrawable(getResources().getDrawable(genderDrawable));
 
         TextView dob = findViewById(R.id.dob);
@@ -225,10 +225,10 @@ public class PatientSummaryActivity extends BaseActivity {
 
         if(isSHREnabled) {
             if (isRegisteredOnSHR) {
-                SHRCardMenuItem.setIcon(R.drawable.ic_action_shr_card);
+                SHRCardMenuItem.setIcon(R.drawable.ic_action_no_shr_card_light);
             } else {
                 SHRCardMenuItem.setVisible(true);
-                SHRCardMenuItem.setIcon(R.drawable.ic_action_shr_card);
+                SHRCardMenuItem.setIcon(R.drawable.ic_action_no_shr_card_light);
             }
         } else {
             SHRCardMenuItem.setVisible(false);
@@ -435,10 +435,6 @@ public class PatientSummaryActivity extends BaseActivity {
         Intent intent = new Intent(this, PatientLocationMapActivity.class);
         intent.putExtra(PATIENT, patient);
         startActivity(intent);
-    }
-
-    public void switchSyncStatus(View view) {
-        imageView.setImageResource(R.drawable.ic_action_shr_synced);
     }
 
     private static class PatientSummaryActivityMetadata {
