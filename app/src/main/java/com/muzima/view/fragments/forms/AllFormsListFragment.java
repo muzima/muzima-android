@@ -43,6 +43,7 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
     private TextView filterStrategyTextView;
     private List<FormItem> formList = new ArrayList<>();
     private List<Form> selectedForms = new ArrayList<>();
+    private boolean formSelected = false;
 
     @Nullable
     @Override
@@ -163,6 +164,10 @@ public class AllFormsListFragment extends Fragment implements FormsRecyclerViewA
             selectedForms.add(formItem.getForm());
         else
             selectedForms.remove(formItem.getForm());
-        EventBus.getDefault().post(new FormsActionModeEvent(selectedForms));
+
+        if (!formSelected)
+            formSelected = true;
+
+        EventBus.getDefault().post(new FormsActionModeEvent(selectedForms, formSelected));
     }
 }

@@ -124,7 +124,7 @@
         <item name="menu_inactive_text_color">@color/primary_white</item>
         <item name="ic_action_home_dark">@drawable/ic_action_home_dark</item>
         <item name="bottom_navigation_selected_icon">
-            @drawable/bottom_navigation_selected_icon_dark
+            @drawable/bottom_navigation_selected_icon_light
         </item>
         <item name="ic_action_settings">@drawable/ic_action_settings_dark</item>
         <item name="ic_action_help">@drawable/ic_action_help_dark</item>

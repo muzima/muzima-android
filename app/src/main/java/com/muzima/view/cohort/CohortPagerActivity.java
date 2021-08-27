@@ -79,6 +79,10 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
                 searchCohorts.setText(StringUtils.EMPTY);
+                EventBus.getDefault().post(new DestroyActionModeEvent());
+                if (actionMode != null) {
+                    actionMode.finish();
+                }
             }
 
             @Override
@@ -133,7 +137,6 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
             ex.printStackTrace();
         }
     }
-
 
     @Subscribe
     public void onCohortDownloadActionModeEvent(CohortsActionModeEvent actionModeEvent) {
@@ -205,10 +208,6 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
             actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedCohortsCount, getResources().getString(R.string.general_selected)));
         }
     }
-
-
-
-
 
     @Override
     protected int getBottomNavigationMenuItemId() {
