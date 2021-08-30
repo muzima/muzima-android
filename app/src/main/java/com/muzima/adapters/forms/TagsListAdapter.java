@@ -12,7 +12,6 @@ package com.muzima.adapters.forms;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +26,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
+import com.muzima.tasks.MuzimaAsyncTask;
 
 import java.util.List;
 
@@ -142,7 +142,12 @@ public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnI
     /**
      * Responsible to fetch all the tags that are available in the DB.
      */
-    private class BackgroundQueryTask extends AsyncTask<Void, Void, List<Tag>> {
+    private class BackgroundQueryTask extends MuzimaAsyncTask<Void, Void, List<Tag>> {
+        @Override
+        protected void onPreExecute() {
+
+        }
+
         @Override
         protected List<Tag> doInBackground(Void... voids) {
             List<Tag> allTags = null;
@@ -172,6 +177,11 @@ public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnI
                 add(tag);
             }
             notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
 
 

@@ -75,5 +75,10 @@ public class RecommendedFormsAdapter extends FormsAdapter<AvailableForm> {
             }
             return recommendedForms;
         }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
     }
 }

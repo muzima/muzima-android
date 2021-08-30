@@ -10,7 +10,6 @@
 
 package com.muzima.adapters.concept;
 
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +21,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Location;
 import com.muzima.controller.LocationController;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.view.preferences.LocationPreferenceActivity;
 
 import java.util.Arrays;
@@ -108,7 +108,12 @@ public class SelectedLocationAdapter extends ListAdapter<Location> {
     /**
      * Responsible to save the locations into DB on selection from AutoComplete. And also fetches to Locations from DB to display in the page.
      */
-    class BackgroundSaveAndQueryTask extends AsyncTask<Location, Void, List<Location>> {
+    class BackgroundSaveAndQueryTask extends MuzimaAsyncTask<Location, Void, List<Location>> {
+
+        @Override
+        protected void onPreExecute() {
+
+        }
 
         @Override
         protected List<Location> doInBackground(Location... locations) {
@@ -143,6 +148,11 @@ public class SelectedLocationAdapter extends ListAdapter<Location> {
             clear();
             addAll(locations);
             notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 

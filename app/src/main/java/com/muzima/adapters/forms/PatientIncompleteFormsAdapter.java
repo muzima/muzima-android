@@ -70,5 +70,10 @@ public class PatientIncompleteFormsAdapter extends FormsWithDataAdapter<Incomple
 
             return incompleteForms;
         }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
     }
 }

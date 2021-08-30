@@ -10,7 +10,6 @@
 
 package com.muzima.adapters.concept;
 
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +21,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Provider;
 import com.muzima.controller.ProviderController;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.view.preferences.ProviderPreferenceActivity;
 
 import java.util.Arrays;
@@ -109,7 +109,12 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
     /**
      * Responsible to save the providers into DB on selection from AutoComplete. And also fetches to Providers from DB to display in the page.
      */
-    class BackgroundSaveAndQueryTask extends AsyncTask<Provider, Void, List<Provider>> {
+    class BackgroundSaveAndQueryTask extends MuzimaAsyncTask<Provider, Void, List<Provider>> {
+
+        @Override
+        protected void onPreExecute() {
+
+        }
 
         @Override
         protected List<Provider> doInBackground(Provider... providers) {
@@ -144,6 +149,11 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
             clear();
             addAll(providers);
             notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 

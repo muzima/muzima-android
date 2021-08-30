@@ -59,11 +59,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
-        <activity
-            android:name=".view.MainActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/app_name" />
         <activity
             android:name=".view.landing.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -155,9 +150,6 @@
             android:label="@string/general_clients"
             android:parentActivityName=".view.MainDashboardActivity"
             android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
         </activity>
         <activity
             android:name=".view.patients.PatientRemoteSearchListActivity"
@@ -168,9 +160,6 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/general_forms"
             android:parentActivityName=".view.MainDashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
         </activity>
         <activity
             android:name=".view.forms.FormWebViewActivity"
@@ -354,9 +343,6 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/general_notifications"
             android:parentActivityName=".view.MainDashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
         </activity>
 
         <!-- Wizard Activities Start -->
@@ -379,9 +365,6 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/title_provider_reports"
             android:parentActivityName=".view.MainDashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
         </activity>
         <activity
             android:name=".view.reports.ProviderReportListActivity"

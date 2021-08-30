@@ -54,5 +54,10 @@ public class AvailableReportsAdapter extends FormsAdapter<AvailableForm> {
                 backgroundListQueryTaskListener.onQueryTaskFinish();
             }
         }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
     }
 }

@@ -261,7 +261,6 @@ public class NotificationController {
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
         }
 
         @Override

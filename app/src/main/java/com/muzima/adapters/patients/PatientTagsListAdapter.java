@@ -19,6 +19,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.PatientTag;
 import com.muzima.controller.PatientController;
+import com.muzima.tasks.MuzimaAsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +133,12 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
     /**
      * Responsible to fetch all the tags that are available in the DB.
      */
-    private class BackgroundQueryTask extends AsyncTask<Void, Void, List<PatientTag>> {
+    private class BackgroundQueryTask extends MuzimaAsyncTask<Void, Void, List<PatientTag>> {
+        @Override
+        protected void onPreExecute() {
+
+        }
+
         @Override
         protected List<PatientTag> doInBackground(Void... voids) {
             List<PatientTag> allTags = null;
@@ -161,6 +167,11 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
                 add(tag);
             }
             notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
 
         private PatientTag getAllTagsElement() {

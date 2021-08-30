@@ -15,7 +15,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.appcompat.app.ActionBar;
@@ -36,6 +35,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ThemeUtils;
@@ -103,7 +103,7 @@ public class MainActivity extends BroadcastListenerActivity {
     @Override
     protected void onStop() {
         if (mBackgroundQueryTask != null) {
-            mBackgroundQueryTask.cancel(true);
+            mBackgroundQueryTask.cancel();
         }
         super.onStop();
     }
@@ -190,7 +190,12 @@ public class MainActivity extends BroadcastListenerActivity {
         startActivity(intent);
     }
 
-    class BackgroundQueryTask extends AsyncTask<Void, Void, HomeActivityMetadata> {
+    class BackgroundQueryTask extends MuzimaAsyncTask<Void, Void, HomeActivityMetadata> {
+
+        @Override
+        protected void onPreExecute() {
+
+        }
 
         @Override
         protected HomeActivityMetadata doInBackground(Void... voids) {
@@ -268,6 +273,11 @@ public class MainActivity extends BroadcastListenerActivity {
 
             TextView currentUser = findViewById(R.id.currentUser);
             currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 

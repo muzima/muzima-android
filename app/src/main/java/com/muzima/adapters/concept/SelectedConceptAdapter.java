@@ -9,7 +9,6 @@
  */
 package com.muzima.adapters.concept;
 
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +20,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.controller.ConceptController;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.view.preferences.ConceptPreferenceActivity;
 
 import java.util.Arrays;
@@ -106,7 +106,11 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
     /**
      * Responsible to save the concept into DB on selection from AutoComplete. And also fetches to Concepts from DB to display in the page.
      */
-    class BackgroundSaveAndQueryTask extends AsyncTask<Concept, Void, List<Concept>> {
+    class BackgroundSaveAndQueryTask extends MuzimaAsyncTask<Concept, Void, List<Concept>> {
+        @Override
+        protected void onPreExecute() {
+
+        }
 
         @Override
         protected List<Concept> doInBackground(Concept... concepts) {
@@ -139,6 +143,11 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
             clear();
             addAll(concepts);
             notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 
