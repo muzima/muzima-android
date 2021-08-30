@@ -371,9 +371,6 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/title_provider_reports"
             android:parentActivityName=".view.MainDashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
         </activity>
 
         <receiver android:name=".utils.ConnectivityChangeReceiver">
