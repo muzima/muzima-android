@@ -438,7 +438,6 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
             Patient patient = patientSearchAdapter.getItem(position);
             Intent intent = new Intent(getActivity().getApplicationContext(), ClientSummaryActivity.class);
             intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
-            intent.putExtra(ClientSummaryActivity.CALLING_ACTIVITY, MainDashboardActivity.class.getSimpleName());
             startActivity(intent);
         }
     }

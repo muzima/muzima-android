@@ -15,11 +15,12 @@
             android:id="@+id/hdTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabSelectedTextColor="@color/primary_blue"
+            app:tabSelectedTextColor="#00B0FF"
             app:tabMode="fixed"
             app:tabGravity="fill"
             app:tabInlineLabel="true"
-            app:tabIndicatorHeight="3dp">
+            app:tabIndicatorHeight="3dp"
+            app:tabIndicatorColor="#00B0FF">
 
         <com.google.android.material.tabs.TabItem
                 android:id="@+id/by_type"
