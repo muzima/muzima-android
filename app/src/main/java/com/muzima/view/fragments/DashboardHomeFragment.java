@@ -321,7 +321,6 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         }
         startActivity(intent);
         getActivity().finish();
-
     }
 
     private void closeBottomSheet() {
