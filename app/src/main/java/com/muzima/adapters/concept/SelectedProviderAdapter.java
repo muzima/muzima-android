@@ -10,7 +10,6 @@
 
 package com.muzima.adapters.concept;
 
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +21,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Provider;
 import com.muzima.controller.ProviderController;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.view.preferences.ProviderPreferenceActivity;
 
 import java.util.Arrays;
@@ -109,14 +109,21 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
     /**
      * Responsible to save the providers into DB on selection from AutoComplete. And also fetches to Providers from DB to display in the page.
      */
-    class BackgroundSaveAndQueryTask extends AsyncTask<Provider, Void, List<Provider>> {
+    class BackgroundSaveAndQueryTask extends MuzimaAsyncTask<Provider, Void, List<Provider>> {
+
+        @Override
+        protected void onPreExecute() {
+
+        }
 
         @Override
         protected List<Provider> doInBackground(Provider... providers) {
             List<Provider> selectedProviders = null;
-            List<Provider> providersList = Arrays.asList(providers);
+            List<Provider> providersList = null;
+            if(providers != null)
+                providersList  = Arrays.asList(providers);
             try {
-                if (providers.length > 0) {
+                if (providersList !=null && providers.length > 0) {
                     // Called with Provider which is selected in the AutoComplete menu.
                     providerController.saveProviders(providersList);
                 }
@@ -144,6 +151,11 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
             clear();
             addAll(providers);
             notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 

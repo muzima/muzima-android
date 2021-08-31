@@ -209,7 +209,7 @@
         <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
-    <style name="AppBaseTheme.Light" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+    <style name="AppBaseTheme.Light" parent="Theme.MaterialComponents.Bridge">
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="android:windowActionBar">false</item>

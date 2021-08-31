@@ -1,6 +1,5 @@
 package com.muzima.service;
 
-import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
@@ -9,6 +8,7 @@ import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.User;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.location.MuzimaGPSLocation;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.util.MuzimaLogger;
 import net.minidev.json.JSONObject;
 import org.json.JSONException;
@@ -47,7 +47,12 @@ public class MuzimaLoggerService {
     public static void log(final MuzimaApplication muzimaApplication, final String tag, final String userId, final String gpsLocation, final String details){
         if(isLoggingFeatureEnabled(muzimaApplication)) {
 
-            new AsyncTask<Void, Void, Void>() {
+            new MuzimaAsyncTask<Void, Void, Void>() {
+                @Override
+                protected void onPreExecute() {
+
+                }
+
                 protected Void doInBackground(Void... voids) {
                     String deviceId = getPseudoDeviceId();
                     JSONObject timestamp = new JSONObject(){{
@@ -55,6 +60,16 @@ public class MuzimaLoggerService {
                     }};
 
                     MuzimaLogger.log(muzimaApplication.getMuzimaContext(), tag, userId, gpsLocation, details, deviceId,timestamp.toJSONString());                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void unused) {
+
+                }
+
+                @Override
+                protected void onBackgroundError(Exception e) {
+
                 }
             }.execute();
         }
@@ -80,7 +95,12 @@ public class MuzimaLoggerService {
 
                     @Override
                     public void run() {
-                        new AsyncTask<Void, Void, Void>() {
+                        new MuzimaAsyncTask<Void, Void, Void>() {
+                            @Override
+                            protected void onPreExecute() {
+
+                            }
+
                             protected Void doInBackground(Void... voids) {
                                 try {
                                     Context context = muzimaApplication.getMuzimaContext();
@@ -89,6 +109,16 @@ public class MuzimaLoggerService {
                                     Log.e("LoggerService", "Error syncing", e);
                                 }
                                 return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void unused) {
+
+                            }
+
+                            @Override
+                            protected void onBackgroundError(Exception e) {
+
                             }
                         }.execute();
                     }

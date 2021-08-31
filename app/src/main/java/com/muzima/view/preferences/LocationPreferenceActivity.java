@@ -223,9 +223,5 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
         }
         return locations;
     }
-
-    public void setThemeUtils(ThemeUtils themeUtils){
-        this.themeUtils = themeUtils;
-    }
 }
 

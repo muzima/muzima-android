@@ -1,7 +1,6 @@
 package com.muzima.tasks;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
@@ -27,7 +26,7 @@ public class EncryptedSharedHealthRecordSyncTask {
             syncSharedHealthRecordBackgroundTask.execute();
         }
     }
-    private static class SyncSharedHealthRecordBackgroundTask extends AsyncTask<Void,Void,Integer[]>{
+    private static class SyncSharedHealthRecordBackgroundTask extends MuzimaAsyncTask<Void,Void,Integer[]>{
 
         @Override
         protected void onPreExecute() {
@@ -43,6 +42,11 @@ public class EncryptedSharedHealthRecordSyncTask {
                         result[1] + ", Failed " + result[2], Toast.LENGTH_SHORT).show();
             }
             syncInProgress = false;
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
 
         @Override

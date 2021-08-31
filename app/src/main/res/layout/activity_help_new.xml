@@ -5,7 +5,7 @@
     android:id="@+id/rl"
     style="@style/DashboardWrapper"
     android:orientation="vertical"
-    tools:context="com.muzima.view.MainActivity">
+    tools:context="com.muzima.view.MainDashboardActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/help_toolbar"

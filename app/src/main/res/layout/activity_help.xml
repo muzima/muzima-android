@@ -11,7 +11,7 @@
 <LinearLayout xmlns:tools="http://schemas.android.com/tools"
               xmlns:android="http://schemas.android.com/apk/res/android"
               style="@style/DashboardWrapper"
-              tools:context="com.muzima.view.MainActivity">
+              tools:context="com.muzima.view.MainDashboardActivity">
 
     <TextView
             android:id="@+id/helpContent"

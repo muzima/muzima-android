@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -64,6 +63,7 @@ import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.LoadDownloadedCohortsTask;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
@@ -494,7 +494,12 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         boolean isCohortUpdateAvailable;
     }
 
-    class BackgroundQueryTask extends AsyncTask<Void, Void, HomeActivityMetadata> {
+    class BackgroundQueryTask extends MuzimaAsyncTask<Void, Void, HomeActivityMetadata> {
+
+        @Override
+        protected void onPreExecute() {
+
+        }
 
         @Override
         protected HomeActivityMetadata doInBackground(Void... voids) {
@@ -560,6 +565,11 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
 //            TextView currentUser = findViewById(R.id.currentUser);
 //            currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 

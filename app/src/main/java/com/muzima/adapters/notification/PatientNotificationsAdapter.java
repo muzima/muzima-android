@@ -11,7 +11,6 @@
 package com.muzima.adapters.notification;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +22,7 @@ import com.muzima.api.model.Notification;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
 import com.muzima.controller.NotificationController;
+import com.muzima.tasks.MuzimaAsyncTask;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public class PatientNotificationsAdapter extends NotificationAdapter {
     /**
      * Responsible to define contract to PatientNotificationsBackgroundQueryTask.
      */
-    abstract class PatientNotificationsBackgroundQueryTask extends AsyncTask<Void, Void, List<Notification>> {
+    abstract class PatientNotificationsBackgroundQueryTask extends MuzimaAsyncTask<Void, Void, List<Notification>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -98,6 +98,11 @@ public class PatientNotificationsAdapter extends NotificationAdapter {
                 Log.w(getClass().getSimpleName(), "Exception occurred while fetching the notifications", e);
             }
             return patientNotifications;
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 }

@@ -11,7 +11,6 @@ package com.muzima.adapters.encounters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +25,7 @@ import com.muzima.api.model.Observation;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.EncounterWithObservations;
 import com.muzima.model.observation.Encounters;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
 
@@ -106,7 +106,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
         }
     }
 
-    private class BackgroundQueryTask extends AsyncTask<String, Void, List<Observation>> {
+    private class BackgroundQueryTask extends MuzimaAsyncTask<String, Void, List<Observation>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -142,6 +142,11 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
             addAll(observations);
             notifyDataSetChanged();
             backgroundListQueryTaskListener.onQueryTaskFinish();
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 

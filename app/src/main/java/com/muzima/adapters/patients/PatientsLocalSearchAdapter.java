@@ -11,7 +11,6 @@
 package com.muzima.adapters.patients;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
