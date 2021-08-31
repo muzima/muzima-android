@@ -38,7 +38,6 @@ import com.muzima.api.model.Provider;
 import com.muzima.utils.Constants;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.HelpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,17 +57,14 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
-
         LayoutInflater inflator = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.provider_autocomplete_textview_action, null);
         actionBar.setCustomView(v);
-
         selectedProviderListView = findViewById(R.id.provider_preference_list);
         final MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
         selectedProviderAdapter = new SelectedProviderAdapter(this, R.layout.item_provider_list,
@@ -225,9 +221,5 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
             }
         }
         return providers;
-    }
-
-    public void setThemeUtils(ThemeUtils themeUtils){
-        this.themeUtils = themeUtils;
     }
 }

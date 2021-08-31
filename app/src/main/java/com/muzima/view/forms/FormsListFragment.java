@@ -10,7 +10,6 @@
 
 package com.muzima.view.forms;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import android.util.Log;
@@ -27,6 +26,7 @@ import com.muzima.R;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.adapters.forms.FormsWithDataAdapter;
 import com.muzima.controller.FormController;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.view.MuzimaListFragment;
 
 import java.util.List;
@@ -91,7 +91,7 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
     @Override
     public void onQueryTaskCancelled(Object errorDefinition){}
 
-    public void setRunningBackgroundQueryTask(AsyncTask<?, ?, ?> backgroundQueryTask){
+    public void setRunningBackgroundQueryTask(MuzimaAsyncTask<?, ?, ?> backgroundQueryTask){
         FormsAdapter formsAdapter = ((FormsAdapter)listAdapter);
         if(formsAdapter!= null) formsAdapter.setRunningBackgroundQueryTask(backgroundQueryTask);
     }

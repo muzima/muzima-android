@@ -159,6 +159,11 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
             }
             return allForms;
         }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
     }
 
     /**
@@ -183,6 +188,11 @@ public class AllAvailableFormsAdapter extends FormsAdapter<AvailableForm> implem
                 }
             }
             return allForms;
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
 
     }

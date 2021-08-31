@@ -70,5 +70,10 @@ public class PatientCompleteFormsAdapter extends FormsWithDataAdapter<CompleteFo
 
             return completePatientForms;
         }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
     }
 }

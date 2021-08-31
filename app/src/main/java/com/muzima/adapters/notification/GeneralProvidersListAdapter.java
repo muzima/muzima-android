@@ -11,7 +11,6 @@
 package com.muzima.adapters.notification;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +23,7 @@ import com.muzima.adapters.providers.ProvidersAdapter;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.User;
 import com.muzima.controller.ProviderController;
+import com.muzima.tasks.MuzimaAsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class GeneralProvidersListAdapter extends ProvidersAdapter {
     /**
      * Responsible to define contract to PatientNotificationsBackgroundQueryTask.
      */
-    abstract class ProvidersListBackgroundQueryTask extends AsyncTask<Void, Void, List<Provider>> {
+    abstract class ProvidersListBackgroundQueryTask extends MuzimaAsyncTask<Void, Void, List<Provider>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -110,6 +110,11 @@ public class GeneralProvidersListAdapter extends ProvidersAdapter {
                 Log.e(getClass().getSimpleName(), "Exception occurred while fetching the notifications", e);
             }
             return filteredNotifications;
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 }

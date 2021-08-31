@@ -76,5 +76,10 @@ public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWith
                 }
             }
         }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
     }
 }

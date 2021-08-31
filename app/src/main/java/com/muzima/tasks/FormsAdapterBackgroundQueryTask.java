@@ -10,7 +10,6 @@
 
 package com.muzima.tasks;
 
-import android.os.AsyncTask;
 import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsAdapter;
@@ -21,7 +20,7 @@ import java.util.List;
 
 import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
 
-public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extends AsyncTask<Void, Void, List<T>> {
+public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extends MuzimaAsyncTask<Void, Void, List<T>> {
 
     protected final WeakReference<FormsAdapter> adapterWeakReference;
 

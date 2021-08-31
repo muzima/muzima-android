@@ -10,7 +10,6 @@
 package com.muzima.adapters.reports;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.api.model.PatientReport;
 import com.muzima.controller.PatientReportController;
+import com.muzima.tasks.MuzimaAsyncTask;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class DownloadedPatientReportAdapter extends ReportsAdapter {
         new DownloadedPatientReportAdapter.BackgroundQueryTask().execute();
     }
 
-    class BackgroundQueryTask extends AsyncTask<Void, Void, List<PatientReport>> {
+    class BackgroundQueryTask extends MuzimaAsyncTask<Void, Void, List<PatientReport>> {
 
         @Override
         protected void onPreExecute() {
@@ -84,6 +84,11 @@ public class DownloadedPatientReportAdapter extends ReportsAdapter {
             if(backgroundListQueryTaskListener != null){
                 backgroundListQueryTaskListener.onQueryTaskFinish();
             }
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 }

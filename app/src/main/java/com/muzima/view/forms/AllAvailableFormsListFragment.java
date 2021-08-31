@@ -14,7 +14,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
@@ -42,6 +41,7 @@ import com.muzima.model.FormWithData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.MainDashboardActivity;
@@ -260,7 +260,7 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
                     //syncAllFormTemplatesInBackgroundService();
 
-                    final AsyncTask<Void, Void, int[]> asynTask = new AsyncTask<Void, Void, int[]>() {
+                    final MuzimaAsyncTask<Void, Void, int[]> asynTask = new MuzimaAsyncTask<Void, Void, int[]>() {
                         @Override
                         protected void onPreExecute() {
                             Log.i(getClass().getSimpleName(), "Canceling timeout timer!");
@@ -290,6 +290,11 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
                             reloadData();
                             ((AllAvailableFormsAdapter) listAdapter).clearSelectedForms();
                             setRunningBackgroundQueryTask(null);
+                        }
+
+                        @Override
+                        protected void onBackgroundError(Exception e) {
+
                         }
                     };
                     setRunningBackgroundQueryTask(asynTask);

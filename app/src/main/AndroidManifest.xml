@@ -59,11 +59,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
-        <activity
-            android:name=".view.MainActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/app_name" />
         <activity
             android:name=".view.landing.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -88,30 +83,19 @@
             android:name=".view.preferences.ProviderPreferenceActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_providers"
-            android:parentActivityName=".view.preferences.SettingsActivity"
-            android:theme="@style/PreferencesTheme.Dark">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.preferences.SettingsActivity" />
+            android:parentActivityName=".view.preferences.SettingsActivity">
         </activity>
         <activity
             android:name=".view.preferences.ConceptPreferenceActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_concepts"
             android:parentActivityName=".view.preferences.SettingsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.preferences.SettingsActivity" />
         </activity>
         <activity
             android:name=".view.preferences.LocationPreferenceActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_locations"
-            android:parentActivityName=".view.preferences.SettingsActivity"
-            android:theme="@style/PreferencesTheme.Dark">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.preferences.SettingsActivity" />
+            android:parentActivityName=".view.preferences.SettingsActivity">
         </activity>
         <activity
             android:name=".view.HelpActivity"
@@ -155,9 +139,6 @@
             android:label="@string/general_clients"
             android:parentActivityName=".view.MainDashboardActivity"
             android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
         </activity>
         <activity
             android:name=".view.patients.PatientRemoteSearchListActivity"
@@ -168,9 +149,6 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/general_forms"
             android:parentActivityName=".view.MainDashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
         </activity>
         <activity
             android:name=".view.forms.FormWebViewActivity"
@@ -354,9 +332,6 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/general_notifications"
             android:parentActivityName=".view.MainDashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
         </activity>
 
         <!-- Wizard Activities Start -->
@@ -379,18 +354,12 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/title_provider_reports"
             android:parentActivityName=".view.MainDashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
         </activity>
         <activity
             android:name=".view.reports.ProviderReportListActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_provider_reports"
             android:parentActivityName=".view.MainDashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainActivity" />
         </activity>
 
         <receiver android:name=".utils.ConnectivityChangeReceiver">

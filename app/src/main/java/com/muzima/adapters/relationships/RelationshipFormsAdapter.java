@@ -42,5 +42,10 @@ public class RelationshipFormsAdapter extends FormsAdapter<AvailableForm> {
         protected AvailableForms doInBackground(Void... voids) {
             return availableForms;
         }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
     }
 }
