@@ -10,6 +10,8 @@
 package com.muzima.adapters.concept;
 
 import androidx.annotation.NonNull;
+
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,15 +111,16 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
     class BackgroundSaveAndQueryTask extends MuzimaAsyncTask<Concept, Void, List<Concept>> {
         @Override
         protected void onPreExecute() {
-
         }
 
         @Override
         protected List<Concept> doInBackground(Concept... concepts) {
             List<Concept> selectedConcepts = null;
-            List<Concept> conceptList = Arrays.asList(concepts);
+            List<Concept> conceptList = null;
+            if(concepts != null)
+                conceptList = Arrays.asList(concepts);
             try {
-                if (concepts.length > 0) {
+                if (conceptList != null && concepts.length > 0) {
                     // Called with Concept which is selected in the AutoComplete menu.
                     conceptController.saveConcepts(conceptList);
                 }
@@ -126,6 +129,7 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
                     return conceptController.newConcepts();
                 }
                 selectedConcepts = conceptController.getConcepts();
+
             } catch (ConceptController.ConceptSaveException e) {
                 Log.w(getClass().getSimpleName(), "Exception occurred while saving concept to local data repository!", e);
             } catch (ConceptController.ConceptFetchException e) {
@@ -147,7 +151,6 @@ public class SelectedConceptAdapter extends ListAdapter<Concept> {
 
         @Override
         protected void onBackgroundError(Exception e) {
-
         }
     }
 

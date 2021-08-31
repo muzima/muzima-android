@@ -13,12 +13,12 @@
             android:minWidth="400dp"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
-            android:layout_weight="1"
             android:textColor="@color/primary_blue"
             android:textColorHint="@color/hint_text_grey"
             android:textCursorDrawable="@null"
             android:hint="@string/enter_location_name"
-            android:background="?attr/primaryBackgroundColor">
+            android:background="?attr/primaryBackgroundColor"
+            android:popupBackground="?attr/primaryBackgroundColor">
             <requestFocus/>
         </AutoCompleteTextView>
 

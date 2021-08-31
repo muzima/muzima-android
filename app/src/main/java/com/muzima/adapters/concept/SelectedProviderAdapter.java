@@ -119,9 +119,11 @@ public class SelectedProviderAdapter extends ListAdapter<Provider> {
         @Override
         protected List<Provider> doInBackground(Provider... providers) {
             List<Provider> selectedProviders = null;
-            List<Provider> providersList = Arrays.asList(providers);
+            List<Provider> providersList = null;
+            if(providers != null)
+                providersList  = Arrays.asList(providers);
             try {
-                if (providers.length > 0) {
+                if (providersList !=null && providers.length > 0) {
                     // Called with Provider which is selected in the AutoComplete menu.
                     providerController.saveProviders(providersList);
                 }

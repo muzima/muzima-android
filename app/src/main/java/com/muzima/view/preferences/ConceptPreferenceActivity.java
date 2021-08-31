@@ -225,8 +225,4 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         }
         return concepts;
     }
-
-    public void setThemeUtils(ThemeUtils themeUtils){
-        this.themeUtils = themeUtils;
-    }
 }

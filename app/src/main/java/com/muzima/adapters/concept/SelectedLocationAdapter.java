@@ -118,9 +118,11 @@ public class SelectedLocationAdapter extends ListAdapter<Location> {
         @Override
         protected List<Location> doInBackground(Location... locations) {
             List<Location> selectedLocations = null;
-            List<Location> locationsList = Arrays.asList(locations);
+            List<Location> locationsList = null;
+            if(locations != null)
+                locationsList = Arrays.asList(locations);
             try {
-                if (locations.length > 0) {
+                if (locationsList !=null && locations.length > 0) {
                     // Called with Location which is selected in the AutoComplete menu.
                     locationController.saveLocations(locationsList);
                 }
