@@ -15,7 +15,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="3dp"
     android:layout_marginTop="3dp"
-    android:background="?attr/listSelectorBlue"
+    android:background="@drawable/list_selector_blue"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
             android:layout_marginTop="3dp"
-            android:background="?attr/listSelectorBlue"
+            android:background="@drawable/list_selector_blue"
             android:orientation="vertical">
 
         <LinearLayout
@@ -38,20 +38,20 @@
                     android:id="@+id/subject"
                     style="@style/ListHeader"
                     android:layout_height="wrap_content"
-                    android:background="?attr/listSelectorBlue"/>
+                    android:background="@drawable/list_selector_blue"/>
 
             <ImageView
                     android:id="@+id/newNotificationImg"
                     android:layout_width="40dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center|right"
-                    android:background="?attr/listSelectorBlue"
+                    android:background="@drawable/list_selector_blue"
                     android:contentDescription="@string/info_new_notification"
                     android:visibility="gone"/>
         </LinearLayout>
         <TextView
                 android:id="@+id/notificationDate"
-                android:background="?attr/listSelectorBlue"
+                android:background="@drawable/list_selector_blue"
                 style="@style/ListDescription"/>
     </LinearLayout>
 

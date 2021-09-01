@@ -20,11 +20,11 @@
             android:id="@+id/SHR_client_summary"
             android:title=""
             app:showAsAction="always"
-            android:icon="?attr/NoSHRCardIcon"/>
+            android:icon="@drawable/ic_action_no_shr_card"/>
     <item
             android:id="@+id/client_geomapping"
             android:title=""
             app:showAsAction="always"
-            android:icon="?attr/icNavigation"/>
+            android:icon="@drawable/geomapping"/>
 
 </menu>

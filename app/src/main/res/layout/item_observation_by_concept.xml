@@ -53,7 +53,7 @@
 	<ImageView
 		android:id="@+id/shr_card_obs_image_view"
 		android:contentDescription=""
-		android:src="?attr/NoSHRCardIcon"
+		android:src="@drawable/ic_action_no_shr_card"
 		android:visibility="gone"
 		android:layout_gravity="end"
 		android:layout_marginBottom="12dp"

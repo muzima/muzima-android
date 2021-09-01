@@ -38,7 +38,7 @@
             <ImageView
                 android:layout_toEndOf="@+id/forms_sort_by_status"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_action_arrow_down_dark"
+                android:src="@drawable/ic_action_arrow_down"
                 app:tint="?attr/onDarkBackgroundColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

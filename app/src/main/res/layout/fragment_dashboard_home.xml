@@ -16,7 +16,7 @@
         android:layout_gravity="end|bottom"
         app:fabSize="auto"
         app:backgroundTint="@color/fab_tint_color"
-        android:src="?attr/addPatient" />
+        android:src="@drawable/ic_add_patient" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -95,7 +95,6 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         setUpRealTimeSyncPreference();
         setUpDuplicateFormDataWarningPreference();
         setUpFontSizePreference();
-        setUpLandingPagePreference();
         setUpLightModePreference();
         setUpRequireMedicalRecordNumberPreference();
         setUpDefaultEncounterProviderPreference();
@@ -309,13 +308,6 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         ListPreference fontSizePreference = (ListPreference) getPreferenceScreen().findPreference(fontSizePreferenceKey);
         fontSizePreference.setSummary(fontSizePreference.getValue());
         registerListPreferenceChangeHandler(fontSizePreferenceKey, fontSizePreference);
-    }
-
-    private void setUpLandingPagePreference(){
-        String landingPagePreferenceKey = getResources().getString(R.string.preference_landing_page);
-        ListPreference landingPagePreference = (ListPreference) getPreferenceScreen().findPreference(landingPagePreferenceKey);
-        landingPagePreference.setSummary(landingPagePreference.getValue());
-        registerListPreferenceChangeHandler(landingPagePreferenceKey, landingPagePreference);
     }
 
     private void setUpLightModePreference(){
@@ -757,6 +749,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                     .setIcon(getIconRefresh())
                     .setTitle(getString(R.string.title_setting_refresh))
                     .setMessage(getString(R.string.hint_setting_refresh))
+                    .setNegativeButton(getResources().getText(R.string.general_cancel), null)
                     .setPositiveButton(getResources().getText(R.string.general_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

@@ -14,14 +14,14 @@
 	<item
 			android:id="@+id/search"
 			custom:actionViewClass="android.widget.SearchView"
-			android:icon="?attr/icSearch"
+			android:icon="@drawable/ic_search"
 			custom:showAsAction="always"
 			android:title="@string/hint_client_search"/>
 	
 	<item
 			android:id="@+id/obs_SHR_card_write"
 			android:title="@string/write_SHR_to_card_text"
-			android:icon="?attr/NoSHRCardIcon"
+			android:icon="@drawable/ic_action_no_shr_card"
 			custom:showAsAction="always"/>
 	
 	<item
