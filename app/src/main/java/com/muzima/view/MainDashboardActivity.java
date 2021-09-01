@@ -8,11 +8,13 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -20,8 +22,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -35,7 +40,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.MainDashboardAdapter;
 import com.muzima.adapters.cohort.CohortFilterAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Form;
@@ -87,7 +91,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private NavigationView navigationView;
     private ViewPager viewPager;
     private TextView headerTitleTextView;
-    private MainDashboardAdapter adapter;
     private ActionBarDrawerToggle drawerToggle;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
@@ -224,19 +227,36 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         drawerLayout = findViewById(R.id.main_dashboard_drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         cohortFilterBottomSheetView = findViewById(R.id.dashboard_home_bottom_view_container);
+
         cohortFilterBottomSheetBehavior = BottomSheetBehavior.from(cohortFilterBottomSheetView);
+
         closeBottomSheet = findViewById(R.id.bottom_sheet_close_view);
         filterOptionsRecyclerView = findViewById(R.id.dashboard_home_filter_recycler_view);
         cohortFilterAdapter = new CohortFilterAdapter(getApplicationContext(), cohortList, this);
+
         filterOptionsRecyclerView.setAdapter(cohortFilterAdapter);
         filterOptionsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         headerTitleTextView = navigationView.getHeaderView(0).findViewById(R.id.dashboard_header_title_text_view);
+
+        FragmentContainerView fragmentContainerView = findViewById(R.id.nav_host_fragment);
+
+        getBottomNavigationView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) fragmentContainerView.getLayoutParams();
+                params.setMargins(0, 0, 0, view.getHeight());
+                fragmentContainerView.setLayoutParams(params);
+
+                LinearLayout.LayoutParams bottomSheetFilterOptionsParams = (LinearLayout.LayoutParams)filterOptionsRecyclerView.getLayoutParams();
+                bottomSheetFilterOptionsParams.setMargins(0, 0, 0,view.getHeight());
+                filterOptionsRecyclerView.setLayoutParams(bottomSheetFilterOptionsParams);
+            }
+        });
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_settings, R.id.nav_help, R.id.nav_feedback, R.id.nav_contact)
                 .setOpenableLayout(drawerLayout)
                 .build();
-
         navigationView.post(() -> {
             NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
             if (navHostFragment != null) {

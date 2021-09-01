@@ -69,6 +69,7 @@ import com.muzima.view.MainDashboardActivity;
 
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.FormsActivity;
+import com.muzima.view.forms.HTMLFormWebViewActivity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -86,7 +87,7 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_REA
 public class PatientsSearchActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
         ListAdapter.BackgroundListQueryTaskListener {
     private static final int RC_BARCODE_CAPTURE = 9001;
-    private static final String TAG = "PatientsListActivity";
+    private static final String TAG = "PatientsSearchActivity";
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     public static final String QUICK_SEARCH = "quickSearch";
@@ -205,9 +206,9 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
                 try {
                     PatientController patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
                     Patient patient = patientController.getPatientByUuid(patientUUIDs[0]);
-                    intent = new Intent(this, PatientSummaryActivity.class);
-
-                    intent.putExtra(PatientSummaryActivity.PATIENT, patient);
+                    intent = new Intent(this, ClientSummaryActivity.class);
+                    intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
+                    intent.putExtra(ClientSummaryActivity.CALLING_ACTIVITY, PatientsSearchActivity.class.getSimpleName());
                     startActivity(intent);
                 } catch (PatientController.PatientLoadException e) {
                     Log.e(PatientRemoteSearchListActivity.class.getName(), "Could not load downloaded patient " + e.getMessage());
@@ -680,8 +681,9 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
                 } catch (KenyaEmrShrMapper.ShrParseException e) {
                     Log.e(getClass().getSimpleName(), "Failed to parse SHR", e);
                 }
-                Intent intent = new Intent(PatientsSearchActivity.this, PatientSummaryActivity.class);
-                intent.putExtra(PatientSummaryActivity.PATIENT, SHRToMuzimaMatchingPatient);
+                Intent intent = new Intent(PatientsSearchActivity.this, ClientSummaryActivity.class);
+                intent.putExtra(ClientSummaryActivity.CALLING_ACTIVITY, PatientsSearchActivity.class.getSimpleName());
+                intent.putExtra(ClientSummaryActivity.PATIENT_UUID, SHRToMuzimaMatchingPatient.getUuid());
                 startActivity(intent);
             }
         }
@@ -730,8 +732,8 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
                 patientRegistrationProgressDialog.cancel();
             }
 
-            Intent intent = new Intent(PatientsSearchActivity.this, PatientSummaryActivity.class);
-            intent.putExtra(PatientSummaryActivity.PATIENT, SHRPatient);
+            Intent intent = new Intent(PatientsSearchActivity.this, ClientSummaryActivity.class);
+            intent.putExtra(ClientSummaryActivity.PATIENT_UUID, SHRPatient.getUuid());
             startActivity(intent);
             super.onPostExecute(aBoolean);
         }

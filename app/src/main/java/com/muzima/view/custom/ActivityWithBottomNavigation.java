@@ -78,4 +78,8 @@ public abstract class ActivityWithBottomNavigation extends BaseActivity implemen
     }
 
     protected abstract int getBottomNavigationMenuItemId();
+
+    protected BottomNavigationView getBottomNavigationView(){
+        return navigationView;
+    }
 }
