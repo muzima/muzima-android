@@ -485,26 +485,26 @@ public class LoginActivity extends Activity {
         @Override
         public String doInBackground(String... params){
             String serverUrl = params[0];
-            MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
-            try {
-                if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
-                    MinimumSupportedAppVersion localMinimumSupportedAppVersion = minimumSupportedAppVersionController.getMinimumSupportedAppVersion();
-                    MinimumSupportedAppVersion downloadedMinimumSupportedAppVersion = minimumSupportedAppVersionController.downloadMinimumSupportedAppVersion();
-                    if(downloadedMinimumSupportedAppVersion != null) {
-                        if (localMinimumSupportedAppVersion.getVersion() != null) {
-                            minimumSupportedAppVersionController.updateMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
-                        } else {
-                            minimumSupportedAppVersionController.saveMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
-                        }
-                    }
-                }
-            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionDownloadException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while downloading supported app version ",e);
-            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionFetchException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
-            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionSaveException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while saving supported app version ",e);
-            }
+//            MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
+//            try {
+//                if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
+//                    MinimumSupportedAppVersion localMinimumSupportedAppVersion = minimumSupportedAppVersionController.getMinimumSupportedAppVersion();
+//                    MinimumSupportedAppVersion downloadedMinimumSupportedAppVersion = minimumSupportedAppVersionController.downloadMinimumSupportedAppVersion();
+//                    if(downloadedMinimumSupportedAppVersion != null) {
+//                        if (localMinimumSupportedAppVersion.getVersion() != null) {
+//                            minimumSupportedAppVersionController.updateMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
+//                        } else {
+//                            minimumSupportedAppVersionController.saveMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
+//                        }
+//                    }
+//                }
+//            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionDownloadException e) {
+//                Log.e(getClass().getSimpleName(),"Encountered an exception while downloading supported app version ",e);
+//            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionFetchException e) {
+//                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
+//            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionSaveException e) {
+//                Log.e(getClass().getSimpleName(),"Encountered an exception while saving supported app version ",e);
+//            }
             return serverUrl;
         }
 

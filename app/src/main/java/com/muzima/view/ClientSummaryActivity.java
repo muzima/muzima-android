@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -25,7 +24,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
@@ -33,7 +31,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.ClientDynamicObsFormsAdapter;
 import com.muzima.adapters.forms.FormSummaryCardsAdapter;
-import com.muzima.adapters.patients.DataCollectionViewPagerAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
@@ -59,9 +56,8 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.custom.ClientSummaryPager;
 import com.muzima.view.forms.FormsActivity;
-import com.muzima.view.patients.PatientsSearchActivity;
 import com.muzima.view.patients.PatientsLocationMapActivity;
-
+import com.muzima.view.patients.PatientsSearchActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -84,7 +80,8 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     private TextView gpsAddressTextView;
     private TextView ageTextView;
     private TextView bottomSheetConceptTitleTextView;
-    private RecyclerView formCountSummaryRecyclerView;
+    private TextView incompleteForms;
+    private TextView completeForms;
     private View expandHistoricalDataView;
     private View expandDataCollectionView;
     private View childContainerView;
@@ -104,7 +101,6 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
     private ClientDynamicObsFormsAdapter clientDynamicObsFormsAdapter;
-    private FormSummaryCardsAdapter formSummaryCardsAdapter;
     private List<SummaryCard> formsSummaries = new ArrayList<>();
     private List<SingleObsForm> singleObsFormsList = new ArrayList<>();
     private ViewPager2 viewPager;
@@ -217,15 +213,18 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
 
     @Override
     public void onFormsCountLoaded(final long completeFormsCount, final long incompleteFormsCount) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                formsSummaries.clear();
-                formsSummaries.add(new SummaryCard(CardsSummaryCategory.INCOMPLETE_FORMS, getResources().getString(R.string.info_incomplete_form), incompleteFormsCount));
-                formsSummaries.add(new SummaryCard(CardsSummaryCategory.COMPLETE_FORMS, getResources().getString(R.string.info_complete_form), completeFormsCount));
-                formSummaryCardsAdapter.notifyDataSetChanged();
-            }
-        });
+        incompleteForms.setText(String.format(Locale.getDefault(), "%d", incompleteFormsCount));
+        completeForms.setText(String.format(Locale.getDefault(),"%d", incompleteFormsCount));
+
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                formsSummaries.clear();
+//                formsSummaries.add(new SummaryCard(CardsSummaryCategory.INCOMPLETE_FORMS, getResources().getString(R.string.info_incomplete_form), incompleteFormsCount));
+//                formsSummaries.add(new SummaryCard(CardsSummaryCategory.COMPLETE_FORMS, getResources().getString(R.string.info_complete_form), completeFormsCount));
+//                formSummaryCardsAdapter.notifyDataSetChanged();
+//            }
+//        });
     }
 
     private void loadFormsCountData() {
@@ -286,7 +285,6 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         identifierTextView = findViewById(R.id.identifier);
         ageTextView = findViewById(R.id.age_text_label);
         gpsAddressTextView = findViewById(R.id.distanceToClientAddress);
-        formCountSummaryRecyclerView = findViewById(R.id.client_summary_stats_tabs_recycler_view);
         addReadingActionView = findViewById(R.id.general_add_reading_button);
         cancelBottomSheetActionView = findViewById(R.id.close_summary_bottom_sheet_view);
         saveBottomSheetEntriesActionView = findViewById(R.id.client_summary_save_action_bottom_sheet);
@@ -295,12 +293,11 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         childContainerView = findViewById(R.id.bottom_sheet_child_container);
         bottomSheetConceptTitleTextView = findViewById(R.id.cohort_name_text_view);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
-        formSummaryCardsAdapter = new FormSummaryCardsAdapter(getApplicationContext(), formsSummaries, this);
-        formCountSummaryRecyclerView.setAdapter(formSummaryCardsAdapter);
         clientDynamicObsFormsAdapter = new ClientDynamicObsFormsAdapter(getApplicationContext(), singleObsFormsList, this);
         singleObsFormsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         singleObsFormsRecyclerView.setAdapter(clientDynamicObsFormsAdapter);
-        formCountSummaryRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
+        incompleteForms = findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
+        completeForms = findViewById(R.id.dashboard_forms_complete_forms_count_view);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {

@@ -47,7 +47,7 @@
                 android:textSize="12sp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:fontFamily="@font/roboto_regular"
+                android:fontFamily="@font/roboto_italic"
                 android:layout_width="match_parent"
                 android:textColor="?attr/primaryTextColor"
                 android:layout_height="wrap_content"/>

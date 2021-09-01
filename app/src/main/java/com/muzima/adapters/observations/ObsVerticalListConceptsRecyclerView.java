@@ -14,13 +14,14 @@ import com.muzima.R;
 import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 
+import com.muzima.view.custom.MuzimaRecyclerView;
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Locale;
 
-public class ObsVerticalListConceptsRecyclerView extends RecyclerView.Adapter<ObsVerticalListConceptsRecyclerView.ViewHolder> {
+public class ObsVerticalListConceptsRecyclerView extends MuzimaRecyclerView.Adapter<ObsVerticalListConceptsRecyclerView.ViewHolder> {
 
     private Context context;
     private List<ObsConceptWrapper> conceptWrapperList;

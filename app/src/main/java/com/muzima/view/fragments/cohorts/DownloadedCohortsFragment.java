@@ -23,6 +23,8 @@ import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.tasks.CohortSearchTask;
 import com.muzima.tasks.LoadDownloadedCohortsTask;
 
+import com.muzima.utils.StringUtils;
+import com.muzima.view.custom.MuzimaRecyclerView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -31,7 +33,7 @@ import java.util.List;
 
 public class DownloadedCohortsFragment extends Fragment implements CohortRecyclerViewAdapter.OnCohortClickedListener {
     private ProgressBar progressBar;
-    private RecyclerView cohortListRecyclerView;
+    private MuzimaRecyclerView cohortListRecyclerView;
     private CohortRecyclerViewAdapter recyclerViewAdapter;
     private List<CohortItem> downloadedCohortsList = new ArrayList<>();
 
@@ -82,7 +84,15 @@ public class DownloadedCohortsFragment extends Fragment implements CohortRecycle
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        initializeResources(view);
+        cohortListRecyclerView = view.findViewById(R.id.cohorts_list_recycler_view);
+        progressBar = view.findViewById(R.id.progress_bar);
+        recyclerViewAdapter = new CohortRecyclerViewAdapter(getActivity().getApplicationContext(), downloadedCohortsList, this);
+        cohortListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        cohortListRecyclerView.setAdapter(recyclerViewAdapter);
+        cohortListRecyclerView.setNoDataLayout(view.findViewById(R.id.no_data_layout),
+                getString(R.string.info_cohorts_unavailable),
+                StringUtils.EMPTY);
+
         loadData();
     }
 
@@ -111,14 +121,6 @@ public class DownloadedCohortsFragment extends Fragment implements CohortRecycle
         recyclerViewAdapter.notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
         cohortListRecyclerView.setVisibility(View.VISIBLE);
-    }
-
-    private void initializeResources(View view) {
-        cohortListRecyclerView = view.findViewById(R.id.cohorts_list_recycler_view);
-        progressBar = view.findViewById(R.id.chorts_load_progress_bar);
-        recyclerViewAdapter = new CohortRecyclerViewAdapter(getActivity().getApplicationContext(), downloadedCohortsList, this);
-        cohortListRecyclerView.setAdapter(recyclerViewAdapter);
-        cohortListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
     }
 
     @Override

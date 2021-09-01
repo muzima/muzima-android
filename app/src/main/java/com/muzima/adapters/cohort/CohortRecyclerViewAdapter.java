@@ -17,11 +17,12 @@ import com.muzima.adapters.tags.TagsAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.model.cohort.CohortItem;
 import com.muzima.utils.MuzimaPreferences;
+import com.muzima.view.custom.MuzimaRecyclerView;
 
 import java.util.List;
 import java.util.Locale;
 
-public class CohortRecyclerViewAdapter extends RecyclerView.Adapter<CohortRecyclerViewAdapter.ViewHolder> {
+public class CohortRecyclerViewAdapter extends MuzimaRecyclerView.Adapter<CohortRecyclerViewAdapter.ViewHolder> {
 
     private Context context;
     private List<CohortItem> cohortList;

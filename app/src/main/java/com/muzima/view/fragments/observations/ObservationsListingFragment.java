@@ -23,6 +23,8 @@ import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import com.muzima.model.events.ReloadObservationsDataEvent;
 
+import com.muzima.utils.StringUtils;
+import com.muzima.view.custom.MuzimaRecyclerView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +34,7 @@ import java.util.List;
 
 public class ObservationsListingFragment extends Fragment {
     private int category;
-    private RecyclerView conceptsListRecyclerView;
+    private MuzimaRecyclerView conceptsListRecyclerView;
     private String patientUuid;
     private boolean isSingleElementInputEnabled;
     private ObsVerticalListConceptsRecyclerView adapter;
@@ -69,7 +71,11 @@ public class ObservationsListingFragment extends Fragment {
                 }
             }
         });
+        conceptsListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         conceptsListRecyclerView.setAdapter(adapter);
+        conceptsListRecyclerView.setNoDataLayout(view.findViewById(R.id.no_data_layout),
+                getString(R.string.info_observation_unavailable),
+                StringUtils.EMPTY);
     }
 
     private void loadData() {

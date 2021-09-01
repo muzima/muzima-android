@@ -7,14 +7,15 @@
 
     <ProgressBar
         android:layout_centerVertical="true"
-        android:id="@+id/chorts_load_progress_bar"
+        android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.muzima.view.custom.MuzimaRecyclerView
         android:id="@+id/cohorts_list_recycler_view"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <include layout="@layout/recycler_empty_view"/>
 </RelativeLayout>
