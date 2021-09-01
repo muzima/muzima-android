@@ -53,7 +53,7 @@ public abstract class BroadcastListenerActivity extends BaseFragmentActivity {
 
     private boolean isProgessUpdate(Intent intent){
         String action = intent.getAction();
-        return action == PROGRESS_UPDATE_ACTION;
+        return action.equals(PROGRESS_UPDATE_ACTION);
     }
     private void displayToast(Intent intent) {
         if(isProgessUpdate(intent)){

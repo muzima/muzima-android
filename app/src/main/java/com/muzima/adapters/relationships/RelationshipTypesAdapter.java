@@ -11,7 +11,6 @@ package com.muzima.adapters.relationships;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +24,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.RelationshipType;
 import com.muzima.controller.RelationshipController;
 import com.muzima.model.relationship.RelationshipTypeWrap;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -95,7 +95,7 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipTypeWrap> 
         TextView tvRelationshipType;
     }
 
-    private class BackgroundQueryTask extends AsyncTask<String, Void, List<RelationshipTypeWrap>> {
+    private class BackgroundQueryTask extends MuzimaAsyncTask<String, Void, List<RelationshipTypeWrap>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -135,6 +135,11 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipTypeWrap> 
             clear();
             addAll(sortNameAscending(relationshipTypeWraps));
             notifyDataSetChanged();
+
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
 
         }
 

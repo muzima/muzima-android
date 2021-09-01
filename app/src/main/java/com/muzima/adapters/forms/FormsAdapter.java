@@ -10,7 +10,6 @@
 package com.muzima.adapters.forms;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +26,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ import java.util.List;
 public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     final FormController formController;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
-    private AsyncTask<?, ?, ?> backgroundQueryTask;
+    private MuzimaAsyncTask<?, ?, ?> backgroundQueryTask;
     private Context context;
 
     protected FormsAdapter(Context context, int textViewResourceId, FormController formController) {
@@ -148,11 +148,11 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
 
     public void cancelBackgroundQueryTask() {
         if (backgroundQueryTask != null) {
-            backgroundQueryTask.cancel(true);
+            backgroundQueryTask.cancel();
         }
     }
 
-    public void setRunningBackgroundQueryTask(AsyncTask<?, ?, ?> backgroundQueryTask) {
+    public void setRunningBackgroundQueryTask(MuzimaAsyncTask<?, ?, ?> backgroundQueryTask) {
         this.backgroundQueryTask = backgroundQueryTask;
     }
 

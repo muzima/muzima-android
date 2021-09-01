@@ -11,7 +11,6 @@ package com.muzima.adapters.relationships;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +27,7 @@ import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.RelationshipController;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -168,7 +168,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         ImageView genderImg;
     }
 
-    private class BackgroundQueryTask extends AsyncTask<String, Void, List<Relationship>> {
+    private class BackgroundQueryTask extends MuzimaAsyncTask<String, Void, List<Relationship>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -199,6 +199,11 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             addAll(relationships);
             notifyDataSetChanged();
             backgroundListQueryTaskListener.onQueryTaskFinish();
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 }

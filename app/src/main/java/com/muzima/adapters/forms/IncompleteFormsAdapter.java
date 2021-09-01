@@ -71,5 +71,10 @@ public class IncompleteFormsAdapter extends SectionedFormsAdapter<IncompleteForm
                 }
             }
         }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
     }
 }

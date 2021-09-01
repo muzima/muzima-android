@@ -81,5 +81,10 @@ public class DownloadedFormsAdapter extends FormsAdapter<DownloadedForm> {
             }
             return downloadedForms;
         }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
     }
 }

@@ -71,8 +71,6 @@
         <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
         <item name="android:textColorPrimary">@color/preference_primary_color_light</item>
         <item name="android:textColorSecondary">@color/preference_secondary_color_light</item>
-        <item name="actionBarStyle">@style/Base_ToolbarStyle</item>
-        <item name="actionBarTabTextStyle">@style/preferenceToolbarTitleStyle</item>
     </style>
 
     <style name="preferenceToolbarTitleStyle">

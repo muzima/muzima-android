@@ -11,7 +11,6 @@ package com.muzima.adapters.reports;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.util.TypedValue;
@@ -22,6 +21,7 @@ import com.muzima.R;
 import com.muzima.api.model.PatientReport;
 import com.muzima.api.model.PatientReportHeader;
 import com.muzima.controller.PatientReportController;
+import com.muzima.tasks.MuzimaAsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +103,7 @@ public class AllPatientReportsAdapter extends ReportsAdapter {
     /**
      * Responsible to define contract to PatientReportsBackgroundQueryTask.
      */
-    abstract class PatientReportsBackgroundQueryTask extends AsyncTask<Void, Void, List<PatientReport>> {
+    abstract class PatientReportsBackgroundQueryTask extends MuzimaAsyncTask<Void, Void, List<PatientReport>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -150,6 +150,11 @@ public class AllPatientReportsAdapter extends ReportsAdapter {
                 Log.w(getClass().getSimpleName(), "Exception occurred while fetching local patient report headers ", e);
             }
             return patientReports;
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 }

@@ -57,9 +57,9 @@ import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.imaging.ImageResult;
 import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.ClientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.maps.LocationPickerResult;
-import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import org.apache.commons.lang.time.DateUtils;
 import org.json.JSONException;
@@ -466,8 +466,8 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     public void startPatientSummaryView(Patient patient) {
-        Intent intent = new Intent(this, PatientSummaryActivity.class);
-        intent.putExtra(PatientSummaryActivity.PATIENT, patient);
+        Intent intent = new Intent(this, ClientSummaryActivity.class);
+        intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
         startActivity(intent);
     }
 

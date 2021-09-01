@@ -11,7 +11,6 @@ package com.muzima.adapters.encounters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +22,7 @@ import com.muzima.R;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.EncounterController;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.DateUtils;
 
 import java.util.Collections;
@@ -89,7 +89,7 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
         TextView encounterFormName;
     }
 
-    private class BackgroundQueryTask extends AsyncTask<String, Void, List<Encounter>> {
+    private class BackgroundQueryTask extends MuzimaAsyncTask<String, Void, List<Encounter>> {
         @Override
         protected void onPreExecute() {
             if (backgroundListQueryTaskListener != null) {
@@ -134,6 +134,11 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
             addAll(encounters);
             notifyDataSetChanged();
             backgroundListQueryTaskListener.onQueryTaskFinish();
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 }

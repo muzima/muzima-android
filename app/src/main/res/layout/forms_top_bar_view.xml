@@ -24,7 +24,7 @@
             android:textStyle="bold"
             android:fontFamily="@font/montserrat_regular"
             android:textColor="@color/primary_white"
-            android:textSize="34sp" />
+            android:textSize="21sp" />
 
         <TextView
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:textStyle="bold"
             android:fontFamily="@font/montserrat_regular"
             android:textColor="@color/primary_white"
-            android:textSize="34sp" />
+            android:textSize="21sp" />
 
         <TextView
             android:layout_height="wrap_content"
