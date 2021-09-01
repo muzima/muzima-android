@@ -59,6 +59,7 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
@@ -90,9 +91,9 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     private static final String TAG = "PatientsSearchActivity";
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
-    public static final String QUICK_SEARCH = "quickSearch";
+    public static final String SEARCH_STRING = "searchString";
     private ListView listView;
-    private boolean quickSearch = false;
+    private String initialSearchString;
     private String cohortId = null;
     private PatientsLocalSearchAdapter patientAdapter;
     private FrameLayout progressBarContainer;
@@ -153,7 +154,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         }
 
         if (intentExtras != null) {
-            quickSearch = intentExtras.getBoolean(QUICK_SEARCH);
+            initialSearchString = intentExtras.getString(SEARCH_STRING);
             cohortId = intentExtras.getString(COHORT_ID);
             String title = intentExtras.getString(COHORT_NAME);
             if (title != null)
@@ -260,8 +261,9 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     private void handleShowSearchView() {
         searchMenuItem.setIconified(true);
         searchMenuItem.requestFocus();
-        searchMenuItem.callOnClick();
         searchMenuItem.onActionViewExpanded();
+        searchMenuItem.setQuery(initialSearchString,false);
+
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(searchMenuItem, InputMethodManager.SHOW_IMPLICIT);
     }
