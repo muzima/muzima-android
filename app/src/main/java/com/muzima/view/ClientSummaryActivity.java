@@ -430,6 +430,11 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
             Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
             startActivity(intent);
             finish();
+        } else {
+            //ToDo: Discuss whether we should just navigate back to the dashboard irrespective of the type of calling activity
+            Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
