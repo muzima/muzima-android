@@ -105,13 +105,6 @@
             android:icon="@drawable/ic_action_font_blue"
             android:key="@string/preference_font_size"
             android:title="@string/title_font_size" />
-        <ListPreference
-            android:defaultValue="@string/general_client_list"
-            android:entries="@array/landing_pages"
-            android:entryValues="@array/landing_pages"
-            android:icon="@drawable/ic_action_dashboards"
-            android:key="@string/preference_landing_page"
-            android:title="@string/title_landing_page" />
         <SwitchPreference
             android:defaultValue="false"
             android:fontFamily="@font/montserrat_regular"

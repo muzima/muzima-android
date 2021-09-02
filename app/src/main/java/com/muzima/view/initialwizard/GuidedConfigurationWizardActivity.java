@@ -79,7 +79,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private TextView initialSetupStatusTextView;
     private Button finishSetupButton;
     private ViewPager viewPager;
-    private ViewPager2 viewPager2;
     private ViewPager viewPagerLg;
     private CountDownTimer countDownTimer;
     private ImageView firstDotView;

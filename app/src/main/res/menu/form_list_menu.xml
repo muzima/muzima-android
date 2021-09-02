@@ -11,7 +11,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:custom="http://schemas.android.com/apk/res-auto">
     <item
             android:id="@+id/menu_tags"
-            android:icon="?attr/icLabels"
+            android:icon="@drawable/ic_labels"
             android:orderInCategory="2"
             custom:showAsAction="always"
             android:title="@string/general_tags"/>
@@ -21,7 +21,7 @@
             android:title="@string/general_load"
             android:orderInCategory="10"
             custom:showAsAction="always"
-            android:icon="?attr/icRefresh"/>
+            android:icon="@drawable/ic_refresh"/>
 
     <item
             android:id="@+id/menu_upload"

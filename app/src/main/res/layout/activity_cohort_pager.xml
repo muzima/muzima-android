@@ -39,7 +39,7 @@
                 android:inputType="text"/>
 
         <ImageView
-                android:src="?attr/icSearch"
+                android:src="@drawable/ic_search"
                 android:layout_marginEnd="6dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"

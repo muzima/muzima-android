@@ -112,9 +112,9 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
                 privacyPolicyContentTextView.setVisibility(View.GONE);
                 termsAndConditionsContentTextView.setVisibility(View.GONE);
 
-                licenseExpandView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_arrow_up_dark));
-                expandPrivacyPolicyView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_arrow_down_dark));
-                expandTermsAndConditionsView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_arrow_down_dark));
+                licenseExpandView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_arrow_up));
+                expandPrivacyPolicyView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_arrow_down));
+                expandTermsAndConditionsView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_arrow_down));
             }
         });
 
@@ -126,11 +126,11 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
                 termsAndConditionsContentTextView.setVisibility(View.GONE);
 
                 expandPrivacyPolicyView.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_action_arrow_up_dark));
+                        .getDrawable(R.drawable.ic_action_arrow_up));
                 licenseExpandView.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_action_arrow_down_dark));
+                        .getDrawable(R.drawable.ic_action_arrow_down));
                 expandTermsAndConditionsView.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_action_arrow_down_dark));
+                        .getDrawable(R.drawable.ic_action_arrow_down));
             }
         });
 
@@ -142,11 +142,11 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
                 licenseContentTextView.setVisibility(View.GONE);
 
                 expandTermsAndConditionsView.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_action_arrow_up_dark));
+                        .getDrawable(R.drawable.ic_action_arrow_up));
                 expandPrivacyPolicyView.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_action_arrow_down_dark));
+                        .getDrawable(R.drawable.ic_action_arrow_down));
                 licenseExpandView.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_action_arrow_down_dark));
+                        .getDrawable(R.drawable.ic_action_arrow_down));
             }
         });
 

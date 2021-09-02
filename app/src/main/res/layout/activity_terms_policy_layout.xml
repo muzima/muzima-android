@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="12dp"
-                app:srcCompat="@drawable/ic_action_arrow_up_dark" />
+                app:srcCompat="@drawable/ic_action_arrow_up" />
 
 
         </RelativeLayout>
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="12dp"
-                app:srcCompat="@drawable/ic_action_arrow_down_dark" />
+                app:srcCompat="@drawable/ic_action_arrow_down" />
 
 
         </RelativeLayout>
@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="12dp"
-                app:srcCompat="@drawable/ic_action_arrow_down_dark" />
+                app:srcCompat="@drawable/ic_action_arrow_down" />
 
 
         </RelativeLayout>

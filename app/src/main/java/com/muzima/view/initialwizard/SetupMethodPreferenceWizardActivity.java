@@ -27,7 +27,6 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.azimolabs.keyboardwatcher.KeyboardWatcher;
 import com.google.android.material.textfield.TextInputEditText;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -39,6 +38,7 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.tasks.DownloadSetupConfigurationsTask;
 import com.muzima.tasks.MuzimaAsyncTask;
+import com.muzima.utils.KeyboardWatcher;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;

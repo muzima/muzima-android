@@ -67,7 +67,7 @@
                 android:layout_marginBottom="12dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/info_setup_complete_success"
-                android:src="?attr/icSearch" />
+                android:src="@drawable/ic_search" />
         </RelativeLayout>
 
         <ScrollView

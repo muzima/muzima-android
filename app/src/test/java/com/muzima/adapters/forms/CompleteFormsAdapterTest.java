@@ -13,7 +13,6 @@ package com.muzima.adapters.forms;
 import android.content.Context;
 import androidx.annotation.NonNull;
 
-import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PersonName;
@@ -73,9 +72,6 @@ public class CompleteFormsAdapterTest {
 
         queryTask.execute();
         Robolectric.flushBackgroundThreadScheduler();
-
-        //TODO: Create this method in the MuzimaAsyncTask class
-//        assertEquals(completeFormsWithPatientData, queryTask.get(100, TimeUnit.MILLISECONDS));
     }
 
     private CompleteFormWithPatientData completeFormWithPatientData(final Patient patient1) {

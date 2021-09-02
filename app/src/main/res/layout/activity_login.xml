@@ -103,7 +103,7 @@
                 <EditText
                     android:id="@+id/username"
                     style="@style/LoginInfoEditText"
-                    android:drawableStart="?attr/icActionPerson"
+                    android:drawableStart="@drawable/ic_action_arrow_person"
                     android:fontFamily="@font/montserrat_regular"
                     android:hint="@string/general_username"
                     android:inputType="textShortMessage"
@@ -131,7 +131,7 @@
                     android:inputType="textPassword"
                     android:nextFocusDown="@+id/login"
                     android:text=""
-                    android:drawableStart="?attr/icActionLock"/>
+                    android:drawableStart="@drawable/ic_password"/>
 
             </LinearLayout>
 

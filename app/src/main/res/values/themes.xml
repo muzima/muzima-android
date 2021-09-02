@@ -17,15 +17,12 @@
         <item name="android:textColorSecondary">@color/primary_white</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="colorAccent">@color/primary_blue</item>
-        <item name="colorPrimary">@color/primary_black</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
-        <item name="bottomSheetBackground">@color/dark_bottom_sheet_background</item>
+        <item name="primaryDrawableColor">#CCFFFFFF</item>
         <item name="toolbarTitleTextColor">@color/primary_white</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
         <item name="primaryTextColor">@color/primary_white</item>
         <item name="secondaryTextColor">@color/secondary_text</item>
-        <item name="oppositeTextColor">@color/primary_black</item>
         <item name="tabBackgroundColor">@color/tab_background_color_dark</item>
         <item name="drawerBackgroundColor">@color/drawer_background</item>
         <item name="syncTextBackgroundColor">@color/sync_text_background</item>
@@ -33,48 +30,16 @@
         <item name="loginInfoDividerBackgroundColor">@color/login_info_divider_background</item>
         <item name="selectableHintText">@color/selectable_hint_text</item>
         <item name="themeColor">@color/theme_color</item>
-        <item name="listMultiSelectorBlue">@drawable/list_multi_selector_blue</item>
-        <item name="loginLayoutBackground">@drawable/login_layout_background</item>
-        <item name="icLabels">@drawable/ic_labels</item>
-        <item name="icRefresh">@drawable/ic_refresh_dark</item>
         <item name="dataTipColor">#e8e8e8</item>
-        <item name="icDownload">@drawable/ic_action_download</item>
-        <item name="icAdd">@drawable/ic_action_add</item>
-        <item name="icActionPerson">@drawable/ic_action_arrow_person_dark</item>
-        <item name="icActionAccount">@drawable/ic_action_account_circle_dark</item>
-        <item name="icSearch">@drawable/ic_search</item>
-        <item name="NoSHRCardIcon">@drawable/ic_action_no_shr_card_dark</item>
-        <item name="listSelectorBlue">@drawable/list_selector_blue</item>
-        <item name="icCancel">@drawable/ic_action_close_dark</item>
-        <item name="ic_action_lock_dark">@drawable/ic_action_lock_dark</item>
-        <item name="icSend">@drawable/ic_accept</item>
-        <item name="cohortGroupIcon">@drawable/ic_action_cohorts_dark</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
-        <item name="icNavigation">@drawable/navigation_light</item>
-        <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_dark</item>
-        <item name="icActionArrowDown">@drawable/ic_action_arrow_down_dark</item>
-        <item name="icActionArrowUp">@drawable/ic_action_arrow_up_dark</item>
         <item name="menu_inactive_text_color">@color/primary_white</item>
-        <item name="icEdit">@drawable/edit_light</item>
         <item name="cardColor">@color/card_background</item>
-        <item name="bottom_navigation_selected_icon">
-            @drawable/bottom_navigation_selected_icon_light
-        </item>
-        <item name="ic_action_home_dark">@drawable/ic_action_home_dark</item>
-        <item name="ic_action_settings">@drawable/ic_action_settings_dark</item>
-        <item name="ic_action_help">@drawable/ic_action_help_dark</item>
-        <item name="ic_action_mail_dark">@drawable/ic_action_mail_dark</item>
-        <item name="addPatient">@drawable/ic_add_patient_light</item>
-        <item name="icActionLock">@drawable/ic_password_light</item>
-        <item name="icLocation">@drawable/ic_location_dark</item>
-        <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <!--        <item name="defaultNavigationDrawerStyle">@style/navigationDrawerStyle</item>-->
         <item name="colorNavigationItem">@color/menu_item_color_state</item>
         <item name="bottomNavigationBackground">@color/bottom_navigation_background</item>
         <item name="colorNavigationItemSelected">@color/primary_white</item>
         <item name="onDarkBackgroundColor">@color/dark_smoke</item>
-        <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
 
@@ -83,15 +48,12 @@
         <item name="android:textColorSecondary">@color/primary_white</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="colorAccent">@color/primary_blue</item>
-        <item name="colorPrimary">@color/primary_black</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
-        <item name="bottomSheetBackground">@color/dark_bottom_sheet_background</item>
+        <item name="primaryDrawableColor">#CCFFFFFF</item>
         <item name="toolbarTitleTextColor">@color/primary_white</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
         <item name="primaryTextColor">@color/primary_white</item>
         <item name="secondaryTextColor">@color/secondary_text</item>
-        <item name="oppositeTextColor">@color/primary_black</item>
         <item name="tabBackgroundColor">@color/tab_background_color_dark</item>
         <item name="drawerBackgroundColor">@color/drawer_background</item>
         <item name="syncTextBackgroundColor">@color/sync_text_background</item>
@@ -99,48 +61,16 @@
         <item name="loginInfoDividerBackgroundColor">@color/login_info_divider_background</item>
         <item name="selectableHintText">@color/selectable_hint_text</item>
         <item name="themeColor">@color/theme_color</item>
-        <item name="listMultiSelectorBlue">@drawable/list_multi_selector_blue</item>
-        <item name="loginLayoutBackground">@drawable/login_layout_background</item>
-        <item name="icLabels">@drawable/ic_labels</item>
-        <item name="icRefresh">@drawable/ic_refresh_dark</item>
         <item name="dataTipColor">#e8e8e8</item>
-        <item name="NoSHRCardIcon">@drawable/ic_action_no_shr_card_dark</item>
-        <item name="icDownload">@drawable/ic_action_download</item>
-        <item name="icAdd">@drawable/ic_action_add</item>
-        <item name="icSearch">@drawable/ic_search</item>
-        <item name="icActionAccount">@drawable/ic_action_account_circle_dark</item>
-        <item name="listSelectorBlue">@drawable/list_selector_blue</item>
-        <item name="icCancel">@drawable/ic_action_close_dark</item>
-        <item name="icSend">@drawable/ic_accept</item>
-        <item name="icActionPerson">@drawable/ic_action_arrow_person_dark</item>
-        <item name="cohortGroupIcon">@drawable/ic_action_cohorts_dark</item>
-        <item name="ic_action_lock_dark">@drawable/ic_action_lock_dark</item>
-        <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_dark</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
-        <item name="icActionArrowDown">@drawable/ic_action_arrow_down_dark</item>
-        <item name="icActionArrowUp">@drawable/ic_action_arrow_up_dark</item>
-        <item name="icNavigation">@drawable/navigation_light</item>
-        <item name="icEdit">@drawable/edit_light</item>
         <item name="menu_inactive_text_color">@color/primary_white</item>
-        <item name="ic_action_home_dark">@drawable/ic_action_home_dark</item>
-        <item name="bottom_navigation_selected_icon">
-            @drawable/bottom_navigation_selected_icon_light
-        </item>
-        <item name="ic_action_settings">@drawable/ic_action_settings_dark</item>
-        <item name="ic_action_help">@drawable/ic_action_help_dark</item>
-        <item name="ic_action_mail_dark">@drawable/ic_action_mail_dark</item>
-        <item name="addPatient">@drawable/ic_add_patient_light</item>
-        <item name="icActionLock">@drawable/ic_password_light</item>
-        <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="cardColor">@color/primary_white</item>
-        <item name="icLocation">@drawable/ic_location_dark</item>
         <!--        <item name="defaultNavigationDrawerStyle">@style/navigationDrawerStyle</item>-->
         <item name="colorNavigationItem">@color/menu_item_color_state</item>
         <item name="bottomNavigationBackground">@color/bottom_navigation_background</item>
         <item name="colorNavigationItemSelected">@color/primary_white</item>
         <item name="onDarkBackgroundColor">@color/dark_smoke</item>
-        <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
     <style name="AppBaseTheme.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
@@ -148,65 +78,30 @@
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="colorAccent">@color/primary_blue</item>
-        <item name="colorPrimary">@color/primary_white</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
-        <item name="bottomSheetBackground">@color/primary_white</item>
+        <item name="primaryDrawableColor">#99000000</item>
         <item name="toolbarTitleTextColor">@color/primary_black</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color_light</item>
         <item name="primaryTextColor">@color/primary_black</item>
         <item name="secondaryTextColor">@color/secondary_text_light</item>
-        <item name="oppositeTextColor">@color/primary_white</item>
         <item name="tabBackgroundColor">@color/tab_background_color_light</item>
         <item name="drawerBackgroundColor">@color/drawer_background_light</item>
         <item name="themeColor">@color/theme_color_light</item>
-        <item name="listMultiSelectorBlue">@drawable/list_multi_selector_blue_light</item>
         <item name="syncTextBackgroundColor">@color/sync_text_background_light</item>
         <item name="loginDividerBackgroundColor">@color/login_divider_background_light</item>
         <item name="loginInfoDividerBackgroundColor">@color/login_info_divider_background_light
         </item>
         <item name="selectableHintText">@color/selectable_hint_text_light</item>
-        <item name="loginLayoutBackground">@drawable/login_layout_background_light</item>
-        <item name="icLabels">@drawable/ic_labels_light</item>
-        <item name="icRefresh">@drawable/ic_refresh_light</item>
-        <item name="icActionAccount">@drawable/ic_action_account_circle_light</item>
         <item name="dataTipColor">@color/primary_black</item>
-        <item name="icDownload">@drawable/ic_action_download</item>
-        <item name="NoSHRCardIcon">@drawable/ic_action_no_shr_card_light</item>
-        <item name="icAdd">@drawable/ic_action_add_light</item>
-        <item name="icSearch">@drawable/ic_search_light</item>
-        <item name="listSelectorBlue">@drawable/list_selector_blue_light</item>
-        <item name="icCancel">@drawable/ic_action_cancel_image_view</item>
-        <item name="icSend">@drawable/ic_accept</item>
-        <item name="cohortGroupIcon">@drawable/ic_action_cohorts_light</item>
         <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
-        <item name="icNavigation">@drawable/navigation_dark</item>
-        <item name="icActionPerson">@drawable/ic_action_arrow_person_light</item>
-        <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_dark</item>
-        <item name="ic_action_lock_dark">@drawable/ic_action_lock_light</item>
-        <item name="icActionArrowDown">@drawable/ic_action_arrow_down_light</item>
-        <item name="icActionArrowUp">@drawable/ic_action_arrow_up_light</item>
-        <item name="icEdit">@drawable/edit_dark</item>
         <item name="menu_inactive_text_color">@color/primary_black</item>
-        <item name="ic_action_home_dark">@drawable/ic_action_home_light</item>
-        <item name="bottom_navigation_selected_icon">
-            @drawable/bottom_navigation_selected_icon_dark
-        </item>
-        <item name="ic_action_settings">@drawable/ic_action_settings_light</item>
-        <item name="ic_action_help">@drawable/ic_action_help_light</item>
-        <item name="icActionLock">@drawable/ic_password_dark</item>
-        <item name="ic_action_mail_dark">@drawable/ic_action_mail_light</item>
-        <item name="addPatient">@drawable/ic_add_patient_light</item>
-        <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_light</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="icLocation">@drawable/ic_location_dark</item>
         <item name="cardColor">@color/primary_white</item>
         <!--        <item name="defaultNavigationDrawerStyle">@style/navigationDrawerStyle</item>-->
         <item name="colorNavigationItem">@color/menu_item_color_state</item>
         <item name="colorNavigationItemSelected">@color/primary_white</item>
-        <item name="bottomNavigationBackground">@color/primary_white</item>
+        <item name="bottomNavigationBackground">@color/bottom_navigation_background_light</item>
         <item name="onDarkBackgroundColor">@color/primary_black</item>
-        <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
     <style name="AppBaseTheme.Light" parent="Theme.MaterialComponents.Bridge">
@@ -214,65 +109,30 @@
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="colorAccent">@color/primary_blue</item>
-        <item name="colorPrimary">@color/primary_white</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
-        <item name="bottomSheetBackground">@color/primary_white</item>
+        <item name="primaryDrawableColor">#99000000</item>
         <item name="toolbarTitleTextColor">@color/primary_black</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color_light</item>
         <item name="primaryTextColor">@color/primary_black</item>
         <item name="secondaryTextColor">@color/secondary_text_light</item>
-        <item name="oppositeTextColor">@color/primary_white</item>
         <item name="tabBackgroundColor">@color/tab_background_color_light</item>
         <item name="drawerBackgroundColor">@color/drawer_background_light</item>
         <item name="themeColor">@color/theme_color_light</item>
-        <item name="listMultiSelectorBlue">@drawable/list_multi_selector_blue_light</item>
         <item name="syncTextBackgroundColor">@color/sync_text_background_light</item>
         <item name="loginDividerBackgroundColor">@color/login_divider_background_light</item>
         <item name="loginInfoDividerBackgroundColor">@color/login_info_divider_background_light
         </item>
         <item name="selectableHintText">@color/selectable_hint_text_light</item>
-        <item name="loginLayoutBackground">@drawable/login_layout_background_light</item>
-        <item name="icLabels">@drawable/ic_labels_light</item>
-        <item name="icRefresh">@drawable/ic_refresh_light</item>
         <item name="dataTipColor">@color/primary_black</item>
-        <item name="cohortGroupIcon">@drawable/ic_action_cohorts_light</item>
-        <item name="icDownload">@drawable/ic_action_download</item>
-        <item name="icActionAccount">@drawable/ic_action_account_circle_light</item>
-        <item name="icAdd">@drawable/ic_action_add_light</item>
-        <item name="NoSHRCardIcon">@drawable/ic_action_no_shr_card_light</item>
-        <item name="icSearch">@drawable/ic_search_light</item>
-        <item name="listSelectorBlue">@drawable/list_selector_blue_light</item>
-        <item name="icCancel">@drawable/ic_action_cancel_image_view</item>
-        <item name="icActionPerson">@drawable/ic_action_arrow_person_light</item>
-        <item name="icSend">@drawable/ic_accept</item>
-        <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_light</item>
         <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
-        <item name="icNavigation">@drawable/navigation_dark</item>
-        <item name="ic_action_lock_dark">@drawable/ic_action_lock_light</item>
-        <item name="icActionArrowDown">@drawable/ic_action_arrow_down_light</item>
-        <item name="icActionArrowUp">@drawable/ic_action_arrow_up_light</item>
-        <item name="icEdit">@drawable/edit_dark</item>
-        <item name="icActionLock">@drawable/ic_password_dark</item>
         <item name="menu_inactive_text_color">@color/primary_black</item>
-        <item name="bottom_navigation_selected_icon">
-            @drawable/bottom_navigation_selected_icon_dark
-        </item>
-        <item name="ic_action_home_dark">@drawable/ic_action_home_light</item>
-        <item name="ic_action_settings">@drawable/ic_action_settings_light</item>
-        <item name="ic_action_help">@drawable/ic_action_help_light</item>
-        <item name="ic_action_mail_dark">@drawable/ic_action_mail_light</item>
-        <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_light</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="addPatient">@drawable/ic_add_patient_light</item>
-        <item name="icLocation">@drawable/ic_location_light</item>
         <item name="cardColor">@color/primary_white</item>
         <!--        <item name="defaultNavigationDrawerStyle">@style/navigationDrawerStyle</item>-->
         <item name="colorNavigationItem">@color/menu_item_color_state</item>
         <item name="colorNavigationItemSelected">@color/primary_white</item>
-        <item name="bottomNavigationBackground">@color/primary_white</item>
+        <item name="bottomNavigationBackground">@color/bottom_navigation_background_light</item>
         <item name="onDarkBackgroundColor">@color/primary_black</item>
-        <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
 
@@ -282,61 +142,29 @@
         <item name="android:textColorSecondary">@color/primary_white</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="colorAccent">@color/primary_blue</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
-        <item name="bottomSheetBackground">@color/dark_bottom_sheet_background</item>
+        <item name="primaryDrawableColor">#CCFFFFFF</item>
         <item name="toolbarTitleTextColor">@color/primary_white</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
         <item name="primaryTextColor">@color/primary_white</item>
         <item name="secondaryTextColor">@color/secondary_text</item>
-        <item name="oppositeTextColor">@color/primary_black</item>
         <item name="tabBackgroundColor">@color/tab_background_color_dark</item>
         <item name="drawerBackgroundColor">@color/drawer_background</item>
         <item name="themeColor">@color/theme_color</item>
-        <item name="listMultiSelectorBlue">@drawable/list_multi_selector_blue</item>
         <item name="syncTextBackgroundColor">@color/sync_text_background</item>
         <item name="loginDividerBackgroundColor">@color/login_divider_background</item>
         <item name="loginInfoDividerBackgroundColor">@color/login_info_divider_background</item>
         <item name="selectableHintText">@color/selectable_hint_text</item>
-        <item name="loginLayoutBackground">@drawable/login_layout_background</item>
-        <item name="icLabels">@drawable/ic_labels</item>
-        <item name="icRefresh">@drawable/ic_refresh_dark</item>
         <item name="dataTipColor">#e8e8e8</item>
-        <item name="icActionAccount">@drawable/ic_action_account_circle_light</item>
-        <item name="icDownload">@drawable/ic_action_download</item>
-        <item name="NoSHRCardIcon">@drawable/ic_action_no_shr_card_dark</item>
-        <item name="icAdd">@drawable/ic_action_add</item>
-        <item name="icSearch">@drawable/ic_search</item>
-        <item name="icActionLock">@drawable/ic_password_light</item>
-        <item name="listSelectorBlue">@drawable/list_selector_blue</item>
-        <item name="icCancel">@drawable/ic_action_close_dark</item>
-        <item name="icSend">@drawable/ic_accept</item>
-        <item name="ic_action_lock_dark">@drawable/ic_action_lock_dark</item>
-        <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_dark</item>
         <item name="android:alertDialogTheme">@style/alertDialogTheme</item>
-        <item name="icNavigation">@drawable/navigation_light</item>
-        <item name="icEdit">@drawable/edit_light</item>
         <item name="menu_inactive_text_color">@color/primary_white</item>
-        <item name="bottom_navigation_selected_icon">
-            @drawable/bottom_navigation_selected_icon_light
-        </item>
-        <item name="ic_action_home_dark">@drawable/ic_action_home_dark</item>
-        <item name="ic_action_settings">@drawable/ic_action_settings_dark</item>
-        <item name="ic_action_help">@drawable/ic_action_help_dark</item>
-        <item name="cohortGroupIcon">@drawable/ic_action_cohorts_dark</item>
-        <item name="ic_action_mail_dark">@drawable/ic_action_mail_dark</item>
-        <item name="icActionPerson">@drawable/ic_action_arrow_person_dark</item>
-        <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_dark</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="addPatient">@drawable/ic_add_patient_light</item>
         <item name="cardColor">@color/primary_white</item>
-        <item name="icLocation">@drawable/ic_location_dark</item>
         <!--        <item name="defaultNavigationDrawerStyle">@style/navigationDrawerStyle</item>-->
         <item name="colorNavigationItem">@color/menu_item_color_state</item>
         <item name="colorNavigationItemSelected">@color/primary_white</item>
         <item name="onDarkBackgroundColor">@color/dark_smoke</item>
         <item name="bottomNavigationBackground">@color/bottom_navigation_background</item>
-        <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
     <!-- Application theme. -->
@@ -345,62 +173,30 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:textColorSecondary">@color/primary_black</item>
-        <item name="colorAccent">@color/primary_blue</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
+        <item name="primaryDrawableColor">#99000000</item>
         <item name="toolbarTitleTextColor">@color/primary_black</item>
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color_light</item>
         <item name="primaryTextColor">@color/primary_black</item>
         <item name="secondaryTextColor">#777777</item>
-        <item name="oppositeTextColor">@color/primary_white</item>
         <item name="tabBackgroundColor">@color/tab_background_color_light</item>
         <item name="drawerBackgroundColor">@color/drawer_background_light</item>
         <item name="themeColor">@color/theme_color_light</item>
-        <item name="listMultiSelectorBlue">@drawable/list_multi_selector_blue_light</item>
         <item name="syncTextBackgroundColor">@color/sync_text_background_light</item>
         <item name="loginDividerBackgroundColor">@color/login_divider_background_light</item>
         <item name="loginInfoDividerBackgroundColor">@color/login_info_divider_background_light
         </item>
         <item name="selectableHintText">@color/selectable_hint_text_light</item>
-        <item name="loginLayoutBackground">@drawable/login_layout_background_light</item>
-        <item name="icLabels">@drawable/ic_labels_light</item>
-        <item name="icRefresh">@drawable/ic_refresh_light</item>
         <item name="dataTipColor">@color/primary_black</item>
-        <item name="icActionAccount">@drawable/ic_action_account_circle_light</item>
-        <item name="icDownload">@drawable/ic_action_download</item>
-        <item name="icAdd">@drawable/ic_action_add_light</item>
-        <item name="icSearch">@drawable/ic_search_light</item>
-        <item name="icActionLock">@drawable/ic_password_dark</item>
-        <item name="NoSHRCardIcon">@drawable/ic_action_no_shr_card_light</item>
-        <item name="listSelectorBlue">@drawable/list_selector_blue_light</item>
-        <item name="icCancel">@drawable/ic_action_cancel_image_view</item>
-        <item name="icSend">@drawable/ic_accept</item>
-        <item name="ic_action_arrow_person_dark">@drawable/ic_action_arrow_person_light</item>
         <item name="android:alertDialogTheme">@style/alertDialogThemeLight</item>
-        <item name="ic_action_lock_dark">@drawable/ic_action_lock_light</item>
-        <item name="icNavigation">@drawable/navigation_dark</item>
-        <item name="icEdit">@drawable/edit_dark</item>
         <item name="menu_inactive_text_color">@color/primary_black</item>
-        <item name="bottom_navigation_selected_icon">
-            @drawable/bottom_navigation_selected_icon_dark
-        </item>
-        <item name="ic_action_home_dark">@drawable/ic_action_home_dark</item>
-        <item name="ic_action_settings">@drawable/ic_action_settings_light</item>
-        <item name="icActionPerson">@drawable/ic_action_arrow_person_light</item>
-        <item name="ic_action_help">@drawable/ic_action_help_light</item>
-        <item name="cohortGroupIcon">@drawable/ic_action_cohorts_light</item>
-        <item name="ic_action_mail_dark">@drawable/ic_action_mail_light</item>
-        <item name="ic_action_power_setting_dark">@drawable/ic_action_power_setting_light</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="addPatient">@drawable/ic_add_patient_light</item>
         <item name="cardColor">@color/card_background</item>
-        <item name="icLocation">@drawable/ic_location_light</item>
-        <item name="bottomSheetBackground">@color/dark_bottom_sheet_background</item>
         <!--        <item name="defaultNavigationDrawerStyle">@style/navigationDrawerStyle</item>-->
         <item name="colorNavigationItem">@color/menu_item_color_state</item>
         <item name="colorNavigationItemSelected">@color/primary_white</item>
-        <item name="bottomNavigationBackground">@color/primary_white</item>
+        <item name="bottomNavigationBackground">@color/bottom_navigation_background_light</item>
         <item name="onDarkBackgroundColor">@color/primary_black</item>
-        <item name="drawableNavigationItemBackground">@drawable/menu_background_color_state</item>
     </style>
 
     <style name="DialogNoTitleBar" parent="android:style/Theme.Dialog">

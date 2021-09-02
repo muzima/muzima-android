@@ -57,7 +57,7 @@
     <style name="Widget.Custom.NavigationView" parent="Widget.Design.NavigationView">
         <item name="itemIconTint">?attr/colorNavigationItem</item>
         <item name="itemTextColor">?attr/colorNavigationItem</item>
-        <item name="itemBackground">?attr/drawableNavigationItemBackground</item>
+        <item name="itemBackground">@drawable/menu_background_color_state</item>
     </style>
 
     <style name="PreferencesTheme.Dark" parent="AppBaseTheme">
@@ -534,7 +534,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">?attr/loginLayoutBackground</item>
+        <item name="android:background">@drawable/login_layout_background</item>
     </style>
 
     <style name="LoginInfoLayoutDivider">
@@ -687,7 +687,7 @@
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:background">?attr/listMultiSelectorBlue</item>
+        <item name="android:background">@drawable/list_multi_selector_blue</item>
         <item name="android:textColor">?attr/selectableHintText</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
@@ -712,7 +712,7 @@
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:background">?attr/listSelectorBlue</item>
+        <item name="android:background">@drawable/list_selector_blue</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
 

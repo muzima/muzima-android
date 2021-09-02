@@ -1,5 +1,18 @@
-<vector android:height="24dp" android:viewportHeight="96"
-    android:viewportWidth="96" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
+<vector android:height="24dp"
+    android:viewportHeight="96"
+    android:viewportWidth="96"
+    android:width="24dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <path android:fillColor="#512da8"
         android:pathData="M29,20C41.2049,20 55.0965,21.834 67,19C62.4712,9.2819 54.2942,11 45,11C41.7823,11 37.3532,10.2588 34.4699,11.9884C31.722,13.6368 30.1127,17.1709 29,20z" android:strokeColor="#00000000"/>
     <path android:fillColor="#8667c4"

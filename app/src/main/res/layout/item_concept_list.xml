@@ -11,14 +11,14 @@
 <com.muzima.view.custom.CheckedRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                               android:layout_width="match_parent"
                                               android:layout_height="wrap_content"
-                                              android:background="?attr/listMultiSelectorBlue"
+                                              android:background="@drawable/list_multi_selector_blue"
                                               android:checkable="true">
 
     <com.muzima.view.custom.CheckedLinearLayout
         android:id="@+id/concept_name_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/listMultiSelectorBlue"
+        android:background="@drawable/list_multi_selector_blue"
         android:orientation="horizontal">
 
         <CheckedTextView

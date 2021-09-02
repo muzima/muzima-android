@@ -123,6 +123,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         themeUtils.onCreate(MainDashboardActivity.this);
+        languageUtil.onCreate(MainDashboardActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         loadBottomNavigation();

@@ -4,7 +4,7 @@
     <item
         android:id="@+id/menu_shr"
         android:title="@string/SHR_card_text"
-        android:icon="?attr/NoSHRCardIcon"
+        android:icon="@drawable/ic_action_no_shr_card"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/menu_relationship"
@@ -14,7 +14,7 @@
 
     <item android:id="@+id/menu_location_item"
         android:title="@string/title_gps_location"
-        android:icon="?attr/icLocation"
+        android:icon="@drawable/ic_location"
         app:showAsAction="ifRoom"/>
 
 </menu>

@@ -522,7 +522,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">?attr/loginLayoutBackground</item>
+        <item name="android:background">@drawable/login_layout_background</item>
     </style>
 
     <style name="LoginInfoLayoutDivider">
@@ -655,7 +655,7 @@
         <item name="android:paddingLeft">22.5dp</item>
         <item name="android:paddingRight">22.5dp</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:background">?attr/listMultiSelectorBlue</item>
+        <item name="android:background">@drawable/list_multi_selector_blue</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textSize">35sp</item>
@@ -669,7 +669,7 @@
         <item name="android:paddingLeft">22.5dp</item>
         <item name="android:paddingRight">22.5dp</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:background">?attr/listMultiSelectorBlue</item>
+        <item name="android:background">@drawable/list_multi_selector_blue</item>
         <item name="android:textColor">?attr/selectableHintText</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:listDivider">@color/hint_text_grey</item>

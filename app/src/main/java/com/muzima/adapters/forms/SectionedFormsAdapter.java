@@ -17,8 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
-import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
-import com.emilsjolander.components.stickylistheaders.StickyListHeadersSectionIndexerAdapterWrapper;
 import com.muzima.R;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
@@ -40,7 +38,7 @@ import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
  * Responsible to list down the forms in the order of the Patient details. Here you can identify forms by the patient name.
  * @param <T> T is of the type FormsWithData.
  */
-public abstract class SectionedFormsAdapter<T extends FormWithData> extends FormsAdapter<T> implements StickyListHeadersAdapter, SectionIndexer {
+public abstract class SectionedFormsAdapter<T extends FormWithData> extends FormsAdapter<T> implements  SectionIndexer {
 
     private List<Patient> patients;
     private ListView listView;
@@ -60,7 +58,6 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         return R.layout.item_forms_list_selectable;
     }
 
-    @Override
     public View getHeaderView(int position, View convertView, ViewGroup parent) {
         if(!isEmpty()) {
             HeaderViewHolder holder;
@@ -95,7 +92,6 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         this.listView = listView;
     }
 
-    @Override
     public long getHeaderId(int position) {
         int section = 0;
         if (!patients.isEmpty() && !isEmpty()) {
@@ -160,9 +156,6 @@ public abstract class SectionedFormsAdapter<T extends FormWithData> extends Form
         setNotifyOnChange(false);
         clear();
         addAll(forms);
-
-        StickyListHeadersSectionIndexerAdapterWrapper adapter = (StickyListHeadersSectionIndexerAdapterWrapper) listView.getAdapter();
-        adapter.notifyDataSetChanged();
     }
 
     List<Patient> getPatients() {

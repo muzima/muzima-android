@@ -15,10 +15,6 @@
 		<item>@string/general_medium</item>
 		<item>@string/general_large</item>
 	</string-array>
-	<string-array name="landing_pages">
-		<item>@string/general_dashboard</item>
-		<item>@string/general_client_list</item>
-	</string-array>
 	<string-array name="app_language_entries">
 		<item>@string/language_english</item>
 		<item>@string/language_french</item>
