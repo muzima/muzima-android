@@ -139,7 +139,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:drawableStart="?attr/icSearch"
+                        android:drawableStart="@drawable/ic_search"
                         android:gravity="center"
                         android:onClick="searchServer"
                         android:text="@string/title_search_server" />

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ Copyright (c) The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center. All Rights Reserved.
@@ -9,7 +8,6 @@
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
-
 <shape
         xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient android:startColor="@color/primary_blue" android:endColor="@color/primary_blue" />

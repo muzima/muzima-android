@@ -21,12 +21,10 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
-import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.ClientSummaryActivity;
-import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.ArrayList;
 import java.util.List;

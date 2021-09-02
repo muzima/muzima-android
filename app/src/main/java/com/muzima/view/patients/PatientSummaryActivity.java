@@ -225,10 +225,10 @@ public class PatientSummaryActivity extends BaseActivity {
 
         if(isSHREnabled) {
             if (isRegisteredOnSHR) {
-                SHRCardMenuItem.setIcon(R.drawable.ic_action_no_shr_card_light);
+                SHRCardMenuItem.setIcon(R.drawable.ic_action_no_shr_card);
             } else {
                 SHRCardMenuItem.setVisible(true);
-                SHRCardMenuItem.setIcon(R.drawable.ic_action_no_shr_card_light);
+                SHRCardMenuItem.setIcon(R.drawable.ic_action_no_shr_card);
             }
         } else {
             SHRCardMenuItem.setVisible(false);

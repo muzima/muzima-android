@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="144dp"
+    android:height="144dp"
+    android:viewportWidth="144"
+    android:viewportHeight="144">
+    <path android:fillColor="#000000"
+        android:pathData="M19,19L19,125L125,125L125,19L19,19z" android:strokeColor="#00000000"/>
+    <path android:fillColor="#fdfdfd"
+        android:pathData="M67,22C78.427,36.186 93.278,52.143 84.084,72C79.239,82.463 68.135,88.658 63.417,99C61.438,103.338 62,108.353 62,113C64.964,110.827 66.005,107.477 67,104L65,105C66.955,99.268 69.695,94.3 75.001,90.995C82.351,86.415 91.367,86.59 99,82C99,89.306 97.793,94.28 95,101C103.524,94.996 110.661,86.392 117.999,79C120.178,76.805 124.548,73.583 123.654,70C122.537,65.52 116.14,61.14 113,58L83,28C77.976,22.978 73.928,17.098 67,22z"   android:strokeColor="#00000000"/>
+    <path android:fillColor="#fdfdfd"
+        android:pathData="M64,25L31,58C28.015,60.985 20.207,66.366 20.207,71C20.207,75.101 26.383,79.383 29,82C38.282,91.283 47.262,102.436 58,110C55.339,98.366 51.695,85.903 55.209,74C58.284,63.586 66.382,55.364 69,45C55.054,60.993 49.363,78.135 52,99C41.034,85.656 40.119,69.13 49.885,55C54.951,47.671 67.952,34.693 64,25z" android:strokeColor="#00000000"/>
+    <path android:fillColor="#fdfdfd"
+        android:pathData="M90,105C86.224,107.373 82.451,109.036 78,109.701C74.072,110.287 69.288,109.81 66.492,113.279C63.425,117.082 68.491,123.779 73,122.654C74.982,122.16 76.583,120.326 78,118.98C81.923,115.254 88.706,110.339 90,105z" android:strokeColor="#00000000"/>
+    <path android:fillColor="#ffffff"
+        android:pathData="M68,103C69.457,102.897 69.897,101.457 71,100C68.876,100.899 68.899,100.876 68,103z"  android:strokeColor="#00000000"/>
+</vector>

@@ -61,10 +61,10 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cohort_pager);
         themeUtils.onCreate(this);
         languageUtil.onCreate(this);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cohort_pager);
         loadBottomNavigation();
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);

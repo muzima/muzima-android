@@ -74,21 +74,12 @@ public class ThemeUtils {
         return (lightMode != getPreferenceLightMode(context));
     }
 
-    private static Drawable getIcon(Context context, int iconIdForLightMode, int iconIdForNightMode) {
-        boolean lightMode = getPreferenceLightMode(context);
-        if (lightMode) {
-            return context.getResources().getDrawable(iconIdForLightMode);
-        } else {
-            return context.getResources().getDrawable(iconIdForNightMode);
-        }
-    }
-
     public static Drawable getIconWarning(Context context) {
-        return getIcon(context, R.drawable.ic_warning_light, R.drawable.ic_warning);
+        return context.getResources().getDrawable(R.drawable.ic_warning);
     }
 
     public static Drawable getIconRefresh(Context context) {
-        return getIcon(context, R.drawable.ic_refresh_light, R.drawable.ic_refresh);
+        return context.getResources().getDrawable(R.drawable.ic_refresh);
     }
 
     public static Drawable getDrawableFromThemeAttributes(Activity context, int attribute) {
