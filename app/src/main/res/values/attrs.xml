@@ -26,7 +26,6 @@
     <attr name="menu_inactive_text_color" format="reference"/>
     <attr name="toolbarTitleTextColor" format="reference"/>
     <attr name="cardColor" format="reference"/>
-    <attr name="bottomSheetBackground" format="reference"/>
     <attr name="colorNavigationItem" format="color" />
     <attr name="colorNavigationItemSelected" format="color" />
     <attr name="defaultNavigationDrawerStyle" format="reference"/>

@@ -70,4 +70,5 @@
     <color name="primary_blue_opaque">#80137EFE</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="tag_color">#51FFFFFF</color>
+    <color name="bottom_navigation_background_light">#CCFFFFFF</color>
 </resources>
