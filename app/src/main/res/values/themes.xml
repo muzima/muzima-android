@@ -23,7 +23,6 @@
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
         <item name="primaryTextColor">@color/primary_white</item>
         <item name="secondaryTextColor">@color/secondary_text</item>
-        <item name="oppositeTextColor">@color/primary_black</item>
         <item name="tabBackgroundColor">@color/tab_background_color_dark</item>
         <item name="drawerBackgroundColor">@color/drawer_background</item>
         <item name="syncTextBackgroundColor">@color/sync_text_background</item>
@@ -55,7 +54,6 @@
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
         <item name="primaryTextColor">@color/primary_white</item>
         <item name="secondaryTextColor">@color/secondary_text</item>
-        <item name="oppositeTextColor">@color/primary_black</item>
         <item name="tabBackgroundColor">@color/tab_background_color_dark</item>
         <item name="drawerBackgroundColor">@color/drawer_background</item>
         <item name="syncTextBackgroundColor">@color/sync_text_background</item>
@@ -86,7 +84,6 @@
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color_light</item>
         <item name="primaryTextColor">@color/primary_black</item>
         <item name="secondaryTextColor">@color/secondary_text_light</item>
-        <item name="oppositeTextColor">@color/primary_white</item>
         <item name="tabBackgroundColor">@color/tab_background_color_light</item>
         <item name="drawerBackgroundColor">@color/drawer_background_light</item>
         <item name="themeColor">@color/theme_color_light</item>
@@ -118,7 +115,6 @@
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color_light</item>
         <item name="primaryTextColor">@color/primary_black</item>
         <item name="secondaryTextColor">@color/secondary_text_light</item>
-        <item name="oppositeTextColor">@color/primary_white</item>
         <item name="tabBackgroundColor">@color/tab_background_color_light</item>
         <item name="drawerBackgroundColor">@color/drawer_background_light</item>
         <item name="themeColor">@color/theme_color_light</item>
@@ -152,7 +148,6 @@
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color</item>
         <item name="primaryTextColor">@color/primary_white</item>
         <item name="secondaryTextColor">@color/secondary_text</item>
-        <item name="oppositeTextColor">@color/primary_black</item>
         <item name="tabBackgroundColor">@color/tab_background_color_dark</item>
         <item name="drawerBackgroundColor">@color/drawer_background</item>
         <item name="themeColor">@color/theme_color</item>
@@ -184,7 +179,6 @@
         <item name="dashBoardBaseTextColor">@color/dashboard_base_text_color_light</item>
         <item name="primaryTextColor">@color/primary_black</item>
         <item name="secondaryTextColor">#777777</item>
-        <item name="oppositeTextColor">@color/primary_white</item>
         <item name="tabBackgroundColor">@color/tab_background_color_light</item>
         <item name="drawerBackgroundColor">@color/drawer_background_light</item>
         <item name="themeColor">@color/theme_color_light</item>

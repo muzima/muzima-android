@@ -14,7 +14,6 @@
     <attr name="primaryTextColor" format="reference|color"/>
     <attr name="primaryDrawableColor" format="reference|color"/>
     <attr name="secondaryTextColor" format="color"/>
-    <attr name="oppositeTextColor" format="color"/>
     <attr name="tabBackgroundColor" format="color"/>
     <attr name="drawerBackgroundColor" format="color"/>
     <attr name="syncTextBackgroundColor" format="color"/>
