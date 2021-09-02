@@ -25,7 +25,7 @@ import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.PatientComparator;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.CheckedRelativeLayout;
+import com.muzima.view.custom.CheckedRelativeLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

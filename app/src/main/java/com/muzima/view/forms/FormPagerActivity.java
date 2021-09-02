@@ -46,7 +46,7 @@ import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
-import com.muzima.view.custom.FormsPager;
+import com.muzima.adapters.forms.NewFormsPagerAdapter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -84,7 +84,7 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
 
-        FormsPager formsPager = new FormsPager(getSupportFragmentManager() , tabLayout.getTabCount());
+        NewFormsPagerAdapter formsPager = new NewFormsPagerAdapter(getSupportFragmentManager() , tabLayout.getTabCount(), this);
         viewPager.setAdapter(formsPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 

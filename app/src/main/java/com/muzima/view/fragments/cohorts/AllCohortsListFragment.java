@@ -12,41 +12,40 @@ package com.muzima.view.fragments.cohorts;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.cohort.CohortRecyclerViewAdapter;
-import com.muzima.api.model.Cohort;
-import com.muzima.model.cohort.CohortItem;
+import com.muzima.adapters.RecyclerAdapter;
+import com.muzima.adapters.cohort.CohortsAdapter;
 import com.muzima.model.events.CohortSearchEvent;
-import com.muzima.model.events.CohortsActionModeEvent;
+import com.muzima.model.events.CohortsDownloadedEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
-import com.muzima.tasks.CohortSearchTask;
-import com.muzima.tasks.LoadAllCohortsTask;
-
+import com.muzima.utils.Constants;
+import com.muzima.utils.NetworkUtils;
+import com.muzima.view.custom.MuzimaRecyclerView;
+import com.muzima.view.patients.SyncPatientDataIntent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Locale;
 
-public class AllCohortsListFragment extends Fragment implements CohortRecyclerViewAdapter.OnCohortClickedListener {
+public class AllCohortsListFragment extends Fragment implements CohortsAdapter.OnCohortClickedListener, RecyclerAdapter.BackgroundListQueryTaskListener {
+    private ActionMode actionMode;
+    private boolean actionModeActive = false;
     private ProgressBar progressBar;
-    private RecyclerView cohortListRecyclerView;
-    private CohortRecyclerViewAdapter recyclerViewAdapter;
-    private List<CohortItem> allCohortsList = new ArrayList<>();
+    private CohortsAdapter cohortsAdapter;
+    private boolean cohortsSyncInProgress;
+    private MenuItem loadingMenuItem;
 
     @Nullable
     @Override
@@ -56,8 +55,16 @@ public class AllCohortsListFragment extends Fragment implements CohortRecyclerVi
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        initializeResources(view);
-        loadData();
+        MuzimaRecyclerView cohortRecyclerView = view.findViewById(R.id.cohorts_list_recycler_view);
+        progressBar = view.findViewById(R.id.progress_bar);
+        cohortsAdapter = new CohortsAdapter(requireActivity().getApplicationContext(), this, Constants.COHORT_LIST_TYPE.ALL);
+        cohortsAdapter.setBackgroundListQueryTaskListener(this);
+        cohortRecyclerView.setAdapter(cohortsAdapter);
+        cohortRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
+        cohortsAdapter.reloadData();
+        cohortRecyclerView.setNoDataLayout(view.findViewById(R.id.no_data_layout),
+                getString(R.string.info_no_cohort_download),
+                getString(R.string.hint_cohort_sync));
     }
 
     @Override
@@ -73,80 +80,98 @@ public class AllCohortsListFragment extends Fragment implements CohortRecyclerVi
     @Subscribe
     public void cohortSearchEvent(CohortSearchEvent event) {
         if (event.getPage() == 0)
-            searchCohorts(event.getSearchTerm());
-    }
-
-    private void searchCohorts(String searchTerm) {
-        if (getActivity() == null) return;
-        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
-                .execute(new CohortSearchTask(getActivity().getApplicationContext(), searchTerm, new CohortSearchTask.CohortSearchCallback() {
-                    @Override
-                    public void onCohortSearchFinished(final List<Cohort> cohortList) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                renderCohortsList(cohortList);
-                            }
-                        });
-                    }
-                }));
-    }
-
-    private void renderCohortsList(final List<Cohort> cohorts) {
-        allCohortsList.clear();
-        for (Cohort cohort : cohorts) {
-            allCohortsList.add(new CohortItem(cohort));
-        }
-        recyclerViewAdapter.notifyDataSetChanged();
-        progressBar.setVisibility(View.GONE);
-        cohortListRecyclerView.setVisibility(View.VISIBLE);
-    }
-
-    private void loadData() {
-        cohortListRecyclerView.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
-        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
-                .execute(new LoadAllCohortsTask(getActivity().getApplicationContext(), new LoadAllCohortsTask.OnAllCohortsLoadedCallback() {
-                    @Override
-                    public void onCohortsLoaded(final List<Cohort> cohorts) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                allCohortsList.clear();
-                                for (Cohort cohort : cohorts) {
-                                    allCohortsList.add(new CohortItem(cohort, false));
-                                }
-                                recyclerViewAdapter.notifyDataSetChanged();
-                                progressBar.setVisibility(View.GONE);
-                                cohortListRecyclerView.setVisibility(View.VISIBLE);
-                            }
-                        });
-                    }
-                }));
-    }
-
-    private void initializeResources(View view) {
-        cohortListRecyclerView = view.findViewById(R.id.cohorts_list_recycler_view);
-        progressBar = view.findViewById(R.id.progress_bar);
-        recyclerViewAdapter = new CohortRecyclerViewAdapter(getActivity().getApplicationContext(), allCohortsList, this);
-        cohortListRecyclerView.setAdapter(recyclerViewAdapter);
-        cohortListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+            cohortsAdapter.getFilter().filter(event.getSearchTerm());
     }
 
     @Override
-    public void onCohortClicked(int position) {
-        if (allCohortsList.isEmpty() || position < 0) return;
-        CohortItem selectedCohortItem = allCohortsList.get(position);
-        selectedCohortItem.setSelected(!selectedCohortItem.isSelected());
-        recyclerViewAdapter.notifyDataSetChanged();
-        EventBus.getDefault().post(new CohortsActionModeEvent(allCohortsList));
+    public void onCohortClicked(boolean isChecked) {
+        if (!actionModeActive && isChecked) {
+            actionMode = requireActivity().startActionMode(new AllCohortsListFragment.AllCohortsActionModeCallback());
+            actionModeActive = true;
+        }
+        int numOfSelectedCohorts = cohortsAdapter.numberOfCohorts();
+        if (numOfSelectedCohorts == 0 && actionModeActive) {
+            actionMode.finish();
+        }
+        Log.d(getClass().getSimpleName(), "isnull:" + (actionMode == null));
+        actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", numOfSelectedCohorts, getResources().getString(R.string.general_selected)));
     }
 
     @Subscribe
-    public void actionModeClearedEvent(DestroyActionModeEvent event) {
-        for (CohortItem cohortItem : allCohortsList) {
-            cohortItem.setSelected(false);
-        }
-        recyclerViewAdapter.notifyDataSetChanged();
+    public void onCohortDownloadFinish(CohortsDownloadedEvent event) {
+        cohortsSyncInProgress = false;
+        cohortsAdapter.reloadData();
+        endActionMode();
     }
+
+    @Subscribe
+    public void onTabSwitched(DestroyActionModeEvent event) {
+        endActionMode();
+    }
+
+    final class AllCohortsActionModeCallback implements ActionMode.Callback {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            requireActivity().getMenuInflater().inflate(R.menu.menu_cohort_actions, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            loadingMenuItem = menu.findItem(R.id.menu_downloading_action);
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            if (menuItem.getItemId() == R.id.menu_download_action) {
+                loadingMenuItem.setActionView(new ProgressBar(requireActivity()));
+                loadingMenuItem.setVisible(true);
+                menuItem.setVisible(false);
+                if (cohortsSyncInProgress) {
+                    Toast.makeText(getActivity(), R.string.error_sync_not_allowed, Toast.LENGTH_SHORT).show();
+                    endActionMode();
+                    return false;
+                }
+
+                if (!NetworkUtils.isConnectedToNetwork(requireActivity())) {
+                    Toast.makeText(getActivity(), R.string.error_local_connection_unavailable, Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
+                syncPatientsAndObservationsInBackgroundService();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            actionModeActive = false;
+            cohortsAdapter.clearSelectedCohorts();
+        }
+    }
+
+    public void endActionMode() {
+        if (this.actionMode != null) {
+            this.actionMode.finish();
+        }
+    }
+
+    private void syncPatientsAndObservationsInBackgroundService() {
+        cohortsSyncInProgress = true;
+        new SyncPatientDataIntent(getActivity(), cohortsAdapter.getSelectedCohortsArray()).start();
+    }
+
+    @Override
+    public void onQueryTaskStarted() {}
+
+    @Override
+    public void onQueryTaskFinish() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onQueryTaskCancelled() {}
 }

@@ -28,7 +28,8 @@ import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.fragments.OnboardScreenActivity;
+import com.muzima.view.initialwizard.OnboardScreenActivity;
+import com.muzima.view.initialwizard.TermsAndPolicyActivity;
 
 public class BaseFragmentActivity extends AppCompatActivity {
     private static final String TAG = "BaseFragmentActivity";

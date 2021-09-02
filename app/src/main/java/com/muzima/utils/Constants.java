@@ -48,7 +48,6 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS = "json-individual-obs";
     public static final String FORM_JSON_DISCRIMINATOR_RELATIONSHIP = "json-relationship";
     public static final String FORM_JSON_DISCRIMINATOR_PERSON_UPDATE = "json-person-demographics-update";
-    public static final String EMPTY_STRING = "";
 
     private static final String APP_EXTERNAL_DIR_ROOT = Environment.getExternalStorageDirectory().getPath() + "/muzima";
     private static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
@@ -71,10 +70,7 @@ public class Constants {
         public static final int ALL_FORMS_VIEW = 2;
     }
 
-    ;
-
     public static class MuzimaGPSLocationConstants {
-
         public static final int LOCATION_ACCESS_PERMISSION_REQUEST_CODE = 9111;
         public static final int LOCATION_SERVICES_SWITCH_REQUEST_CODE = 9122;
     }
@@ -486,28 +482,34 @@ public class Constants {
         }
     }
 
-    public class ACTION_MODE_EVENT {
+    public static class ACTION_MODE_EVENT {
         public static final int COHORTS_DOWNLOAD_ACTION = 1211;
         public static final int FORMS_DOWNLOAD_ACTION = 1221;
     }
 
-    public class FORM_TYPE {
+    public static class FORM_TYPE {
         public static final String INCOMPLETE_FORMS_KEY = "incomplete_forms_key";
         public static final String COMPLETE_FORMS_KEY = "complete_forms_key";
     }
 
-    public class FORM_FILTERS {
+    public static class FORM_FILTERS {
         public static final int FORM_FILTER_STATUS = 1;
     }
 
-    public class FORM_SORT_STRATEGY {
+    public static class FORM_SORT_STRATEGY {
         public static final int SORT_BY_NAME = 1;
         public static final int SORT_BY_STATUS = 0;
     }
 
-    public class OBSERVATIONS_FILTER_CATEGORY {
+    public static class OBSERVATIONS_FILTER_CATEGORY {
         public static final int BY_TYPE = 1;
         public static final int BY_ABSTRACT = 2;
         public static final int BY_ENCOUNTER = 3;
+    }
+
+    public static final class COHORT_LIST_TYPE {
+        public static final int ALL = 0;
+        public static final int DOWNLOADED = 1;
+        public static final int ONLINE = 2;
     }
 }

@@ -11,7 +11,7 @@ import com.muzima.R;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseFragmentActivity;
-import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
+import com.muzima.view.initialwizard.SetupMethodPreferenceWizardActivity;
 
 public class SplashActivity extends BaseFragmentActivity {
 

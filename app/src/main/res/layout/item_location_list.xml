@@ -8,12 +8,12 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
-<com.muzima.view.CheckedRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                       android:layout_height="wrap_content"
-                                       android:checkable="true"
-                                       android:background="?attr/listMultiSelectorBlue"
-                                       android:layout_width="match_parent">
-<com.muzima.view.CheckedLinearLayout
+<com.muzima.view.custom.CheckedRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                              android:layout_height="wrap_content"
+                                              android:checkable="true"
+                                              android:background="?attr/listMultiSelectorBlue"
+                                              android:layout_width="match_parent">
+<com.muzima.view.custom.CheckedLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="100"
@@ -29,5 +29,5 @@
             style="@style/ListViewSelectableText">
     </CheckedTextView>
 
-</com.muzima.view.CheckedLinearLayout>
-</com.muzima.view.CheckedRelativeLayout>
+</com.muzima.view.custom.CheckedLinearLayout>
+</com.muzima.view.custom.CheckedRelativeLayout>

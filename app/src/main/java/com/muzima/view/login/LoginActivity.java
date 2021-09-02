@@ -16,7 +16,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -39,7 +38,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.model.MinimumSupportedAppVersion;
-import com.muzima.controller.FCMTokenContoller;
 import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
@@ -59,10 +57,8 @@ import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
-import com.muzima.view.HelpActivity;
-import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
-
-import java.io.IOException;
+import com.muzima.view.help.HelpActivity;
+import com.muzima.view.initialwizard.SetupMethodPreferenceWizardActivity;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
@@ -85,9 +81,8 @@ public class LoginActivity extends Activity {
     private ValueAnimator flipFromLoginToAuthAnimator;
     private ValueAnimator flipFromAuthToLoginAnimator;
     private boolean isUpdatePasswordChecked;
-    private ThemeUtils themeUtils = new ThemeUtils(R.style.LoginTheme_Light, R.style.LoginTheme_Dark);
+    private final ThemeUtils themeUtils = new ThemeUtils(R.style.LoginTheme_Light, R.style.LoginTheme_Dark);
     private final LanguageUtil languageUtil = new LanguageUtil();
-    private boolean initialSetup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +98,6 @@ public class LoginActivity extends Activity {
         initAnimators();
 
         boolean isFirstLaunch = getIntent().getBooleanExtra(LoginActivity.isFirstLaunch, true);
-        initialSetup = isFirstLaunch;
         String serverURL = getServerURL();
         if (!isFirstLaunch && !StringUtils.isEmpty(serverURL)) {
             removeServerUrlAsInput();
@@ -346,7 +340,7 @@ public class LoginActivity extends Activity {
             }
         }
     }
-    
+
     private class BackgroundAuthenticationTask extends MuzimaAsyncTask<Credentials, Void, BackgroundAuthenticationTask.Result> {
         boolean isTaskRunning = false;
         @Override
@@ -478,33 +472,31 @@ public class LoginActivity extends Activity {
 
     private class DownloadMuzimaAppVersionCodeBackGroundTask extends MuzimaAsyncTask<String, Void,String > {
         @Override
-        protected void onPreExecute() {
-
-        }
+        protected void onPreExecute() {}
 
         @Override
         public String doInBackground(String... params){
             String serverUrl = params[0];
-//            MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
-//            try {
-//                if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
-//                    MinimumSupportedAppVersion localMinimumSupportedAppVersion = minimumSupportedAppVersionController.getMinimumSupportedAppVersion();
-//                    MinimumSupportedAppVersion downloadedMinimumSupportedAppVersion = minimumSupportedAppVersionController.downloadMinimumSupportedAppVersion();
-//                    if(downloadedMinimumSupportedAppVersion != null) {
-//                        if (localMinimumSupportedAppVersion.getVersion() != null) {
-//                            minimumSupportedAppVersionController.updateMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
-//                        } else {
-//                            minimumSupportedAppVersionController.saveMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
-//                        }
-//                    }
-//                }
-//            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionDownloadException e) {
-//                Log.e(getClass().getSimpleName(),"Encountered an exception while downloading supported app version ",e);
-//            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionFetchException e) {
-//                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
-//            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionSaveException e) {
-//                Log.e(getClass().getSimpleName(),"Encountered an exception while saving supported app version ",e);
-//            }
+            MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
+            try {
+                if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
+                    MinimumSupportedAppVersion localMinimumSupportedAppVersion = minimumSupportedAppVersionController.getMinimumSupportedAppVersion();
+                    MinimumSupportedAppVersion downloadedMinimumSupportedAppVersion = minimumSupportedAppVersionController.downloadMinimumSupportedAppVersion();
+                    if(downloadedMinimumSupportedAppVersion != null) {
+                        if (localMinimumSupportedAppVersion.getVersion() != null) {
+                            minimumSupportedAppVersionController.updateMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
+                        } else {
+                            minimumSupportedAppVersionController.saveMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
+                        }
+                    }
+                }
+            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionDownloadException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while downloading supported app version ",e);
+            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionFetchException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
+            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionSaveException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while saving supported app version ",e);
+            }
             return serverUrl;
         }
 
@@ -536,9 +528,7 @@ public class LoginActivity extends Activity {
         }
 
         @Override
-        protected void onBackgroundError(Exception e) {
-
-        }
+        protected void onBackgroundError(Exception e) {}
 
         private void startNextActivity(){
             Intent intent;
@@ -587,6 +577,5 @@ public class LoginActivity extends Activity {
                 }
             };
         }
-
     }
 }

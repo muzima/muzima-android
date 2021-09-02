@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.tags.TagsAdapter;
@@ -20,11 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecyclerViewAdapter.ViewHolder> {
-    private Context context;
-    private List<FormItem> formList;
+public class FormsRecyclerViewAdapter extends Adapter<FormsRecyclerViewAdapter.ViewHolder> {
+    private final Context context;
+    private final List<FormItem> formList;
     private List<FormItem> itemsCopy = new ArrayList<>();
-    private OnFormClickedListener onFormClickedListener;
+    private final OnFormClickedListener onFormClickedListener;
 
     public FormsRecyclerViewAdapter(Context context, List<FormItem> formList, OnFormClickedListener onFormClickedListener) {
         this.context = context;
@@ -76,7 +77,7 @@ public class FormsRecyclerViewAdapter extends RecyclerView.Adapter<FormsRecycler
         return formList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final View container;
         private final TextView titleTextView;
         private final TextView descriptionTextView;

@@ -27,7 +27,7 @@ import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.adapters.forms.FormsWithDataAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.tasks.MuzimaAsyncTask;
-import com.muzima.view.MuzimaListFragment;
+import com.muzima.view.fragments.MuzimaListFragment;
 
 import java.util.List;
 

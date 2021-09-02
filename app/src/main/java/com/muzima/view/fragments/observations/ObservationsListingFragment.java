@@ -5,13 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.observations.ObsVerticalListConceptsRecyclerView;
@@ -22,7 +19,6 @@ import com.muzima.controller.ObservationController;
 import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import com.muzima.model.events.ReloadObservationsDataEvent;
-
 import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.MuzimaRecyclerView;
 import org.greenrobot.eventbus.EventBus;
@@ -48,18 +44,18 @@ public class ObservationsListingFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_observations_listings_view, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_observations_list, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         initializeResources(view);
         loadData();
     }
 
     private void initializeResources(@NotNull View view) {
-        conceptsListRecyclerView = view.findViewById(R.id.fragment_observations_list_concepts_recycler_view);
+        conceptsListRecyclerView = view.findViewById(R.id.observations_list_recycler_view);
         conceptsListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         adapter = new ObsVerticalListConceptsRecyclerView(getActivity().getApplicationContext(), obsConceptWrapperList, isSingleElementInputEnabled, new ObsVerticalListConceptsRecyclerView.ConceptInputLabelClickedListener() {
             @Override
