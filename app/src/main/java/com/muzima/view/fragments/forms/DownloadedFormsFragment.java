@@ -1,24 +1,30 @@
 package com.muzima.view.fragments.forms;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsRecyclerViewAdapter;
 import com.muzima.api.model.Form;
+import com.muzima.controller.FormController;
 import com.muzima.model.FormItem;
 import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.model.events.FormSearchEvent;
 import com.muzima.tasks.LoadDownloadedFormsTask;
 import com.muzima.utils.ViewUtil;
+import com.muzima.view.custom.MuzimaRecyclerView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -26,12 +32,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DownloadedFormsFragment extends Fragment implements FormsRecyclerViewAdapter.OnFormClickedListener {
-    private RecyclerView formsRecyclerView;
+    private MuzimaRecyclerView formsRecyclerView;
     private ProgressBar progressBar;
     private FormsRecyclerViewAdapter recyclerViewAdapter;
     private View filterStrategyContainer;
     private List<FormItem> formList = new ArrayList<>();
     private List<Form> selectedForms = new ArrayList<>();
+    ActionMode actionMode;
+    boolean actionModeActive;
+    FormController formController;
+
+    public static DownloadedFormsFragment newInstance(FormController formController) {
+        DownloadedFormsFragment f = new DownloadedFormsFragment();
+        f.formController = formController;
+        return f;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        if (actionModeActive) {
+            actionMode = requireActivity().startActionMode(new DownloadedFormsFragment.DeleteFormsActionModeCallback());
+            actionMode.setTitle(String.valueOf(selectedForms.size()));
+        }
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
@@ -104,6 +128,9 @@ public class DownloadedFormsFragment extends Fragment implements FormsRecyclerVi
         recyclerViewAdapter = new FormsRecyclerViewAdapter(getActivity().getApplicationContext(), formList, this);
         formsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         formsRecyclerView.setAdapter(recyclerViewAdapter);
+        formsRecyclerView.setNoDataLayout(view.findViewById(R.id.no_data_layout),
+                getString(R.string.info_forms_unavailable),
+                getString(R.string.hint_form_download));
         filterStrategyContainer.setVisibility(View.GONE);
     }
 
@@ -111,12 +138,105 @@ public class DownloadedFormsFragment extends Fragment implements FormsRecyclerVi
     //TODO: This needs to delete
     @Override
     public void onFormClicked(int position) {
-//        FormItem form = formList.get(position);
-//        form.setSelected(!form.isSelected());
-//        recyclerViewAdapter.notifyDataSetChanged();
-//        if (form.isSelected())
-//            selectedForms.add(form.getForm());
-//        else
-//            selectedForms.remove(form.getForm());
+        FormItem form = formList.get(position);
+        form.setSelected(!form.isSelected());
+        recyclerViewAdapter.notifyDataSetChanged();
+        if (form.isSelected())
+            selectedForms.add(form.getForm());
+        else
+            selectedForms.remove(form.getForm());
+
+        if (!actionModeActive) {
+            actionMode = getActivity().startActionMode(new DownloadedFormsFragment.DeleteFormsActionModeCallback());
+            actionModeActive = true;
+        }
+        int numOfSelectedForms = selectedForms.size();
+        if (numOfSelectedForms == 0 && actionModeActive) {
+            actionMode.finish();
+        }
+        actionMode.setTitle(String.valueOf(numOfSelectedForms));
+    }
+
+    final class DeleteFormsActionModeCallback implements ActionMode.Callback {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            getActivity().getMenuInflater().inflate(R.menu.actionmode_menu_delete, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.menu_delete:
+                    List<String> selectedFormsUUIDs = new ArrayList<>();
+                    for (Form selectedForm : selectedForms) {
+                        selectedFormsUUIDs.add(selectedForm.getUuid());
+                    }
+
+                    try {
+                        List<String> formTemplatesWithAssociatedFormData =
+                                formTemplatesWithAssociatedFormData(selectedFormsUUIDs);
+                        if (formTemplatesWithAssociatedFormData.isEmpty()) {
+                            formController.deleteFormTemplatesByUUID(selectedFormsUUIDs);
+                            recyclerViewAdapter.notifyDataSetChanged();
+                            endActionMode();
+                            Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_delete_success), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(),
+                                    getActivity().getString(R.string.warning_forms_complete_and_sync,getCommaSeparatedFormNames(selectedForms, formTemplatesWithAssociatedFormData)),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (FormController.FormDeleteException e) {
+                        Log.e(getClass().getSimpleName(), "Error while deleting forms", e);
+                    }
+            }
+            return false;
+        }
+
+        private List<String> formTemplatesWithAssociatedFormData(List<String> selectedFormsUUIDs) {
+            List<String> formsWithAssociatedData = new ArrayList<>();
+            for (String selectedFormsUUID : selectedFormsUUIDs) {
+                try {
+                    if (!formController.getNonUploadedFormData(selectedFormsUUID).isEmpty()) {
+                        formsWithAssociatedData.add(selectedFormsUUID);
+                    }
+                } catch (FormController.FormDataFetchException e) {
+                    Log.e(getClass().getSimpleName(), "Error while fetching FormData", e);
+                }
+            }
+            return formsWithAssociatedData;
+        }
+
+        private String getCommaSeparatedFormNames(List<Form> selectedForms, List<String> formUUIDs) {
+            StringBuilder commaSeparatedFormNames = new StringBuilder();
+            for (Form selectedForm : selectedForms) {
+                if (formUUIDs.contains(selectedForm.getUuid())) {
+                    commaSeparatedFormNames.append(selectedForm.getName()).append(", ");
+                }
+            }
+            return commaSeparatedFormNames.toString();
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            actionModeActive = false;
+            selectedForms.clear();
+            for (FormItem formItem : formList) {
+                formItem.setSelected(false);
+            }
+            recyclerViewAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void endActionMode() {
+        if (actionMode != null) {
+            actionMode.finish();
+        }
     }
 }

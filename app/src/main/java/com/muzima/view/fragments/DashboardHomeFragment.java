@@ -44,7 +44,7 @@ import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
-import com.muzima.view.ClientSummaryActivity;
+import com.muzima.view.patients.ClientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.CompletedFormsListActivity;
 import com.muzima.view.forms.FormsActivity;

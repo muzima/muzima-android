@@ -472,8 +472,8 @@
     <string name="info_form_upload_success">Formulaires téléchargés avec succès</string>
     <string name="info_forms_downloaded">%d Formulaires téléchargés</string>
     <string name="info_forms_unavailable">Aucun formulaire disponible</string>
-    <string name="info_incomplete_form_unvailable">Pas de formulaires incomplets</string>
-    <string name="info_initial_setup_progress">Configuration initiale en cours d\'exécution. Patientez s\'il vous plaît</string>
+    <string name="info_incomplete_form_unavailable">Pas de formulaires incomplets</string>
+    <string name="info_initial_setup_progress">Configuration initiale en cours d\'exécution. Patientez s\'il vous plaît…</string>
     <string name="info_last_sync_unavailable">Pas encore synchronisé</string>
     <string name="info_location_delete_success">%d emplacements supprimés avec succès</string>
     <string name="info_location_download">Téléchargement en cours des Emplacements</string>

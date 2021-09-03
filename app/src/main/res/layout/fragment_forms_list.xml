@@ -38,10 +38,11 @@
             <ImageView
                 android:layout_toEndOf="@+id/forms_sort_by_status"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_action_arrow_down"
+                app:srcCompat="@drawable/ic_action_arrow_down"
                 app:tint="?attr/onDarkBackgroundColor"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/forms_general_sort_by"/>
 
         </RelativeLayout>
 
@@ -50,11 +51,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.muzima.view.custom.MuzimaRecyclerView
             android:id="@+id/forms_list_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <include layout="@layout/recycler_no_data_view"/>
     </LinearLayout>
-
 </RelativeLayout>

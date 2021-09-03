@@ -394,7 +394,7 @@
     <string name="info_disclaimer">
         <![CDATA[
         <p>
-        mUzima é distribuído sob os termos da Licença Pública de Mozilla, v. 2.0 (MPL 2.0). Uma cópia da licença MPL 2.0 
+        mUzima é distribuído sob os termos da Licença Pública de Mozilla, v. 2.0 (MPL 2.0). Uma cópia da licença MPL 2.0
         pode ser encontrada em http://mozilla.org/MPL/2.0/.
         </p><p>
         mUzima também é distribuído sob os termos da seguinte Garantia Adicional de Renúncia e Limitação de Responsabilidade.
@@ -471,8 +471,8 @@
     <string name="info_form_upload_success">Formulários carregados com sucesso</string>
     <string name="info_forms_downloaded">Baixou %d formulários</string>
     <string name="info_forms_unavailable">Nenhum formulário disponível</string>
-    <string name="info_incomplete_form_unvailable">Nenhum formulário imcompleto</string>
-    <string name="info_initial_setup_progress">Correndo a configuração inicial. Por favor espere</string>
+    <string name="info_incomplete_form_unavailable">Nenhum formulário imcompleto</string>
+    <string name="info_initial_setup_progress">Correndo a configuração inicial. Por favor espere…</string>
     <string name="info_last_sync_unavailable">Não sincronizado ainda</string>
     <string name="info_location_delete_success">%d locais apagados com sucesso</string>
     <string name="info_location_download">Baixando locais</string>

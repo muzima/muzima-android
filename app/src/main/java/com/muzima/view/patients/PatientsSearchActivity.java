@@ -65,12 +65,10 @@ import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.ClientSummaryActivity;
 import com.muzima.view.MainDashboardActivity;
 
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.FormsActivity;
-import com.muzima.view.forms.HTMLFormWebViewActivity;
 
 import java.util.ArrayList;
 import java.util.HashSet;

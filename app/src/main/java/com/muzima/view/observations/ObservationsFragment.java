@@ -29,7 +29,7 @@ import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.ClientSummaryActivity;
+import com.muzima.view.patients.ClientSummaryActivity;
 import com.muzima.view.custom.PagerSlidingTabStrip;
 
 import java.util.Calendar;

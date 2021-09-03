@@ -526,8 +526,8 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="info_form_upload_success">Forms uploaded successfully</string>
     <string name="info_forms_downloaded">Downloaded %d forms</string>
     <string name="info_forms_unavailable">No forms available</string>
-    <string name="info_incomplete_form_unvailable">No incomplete forms</string>
-    <string name="info_initial_setup_progress">Initial setup running. Please wait</string>
+    <string name="info_incomplete_form_unavailable">No incomplete forms</string>
+    <string name="info_initial_setup_progress">Initial setup running. Please wait…</string>
     <string name="info_last_sync_unavailable">Not synced yet</string>
     <string name="info_location_delete_success">%d locations deleted successfully</string>
     <string name="info_location_download">Downloading Locations</string>
@@ -871,7 +871,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="general_add_single_element">Add single element</string>
     <string name="info_no_client_available">No clients available locally on this device.</string>
     <string name="general_hello_greeting">Hello</string>
-    <string name="initial_setup_running_please_wait">Initial setup running. Please wait…</string>
     <string name="general_setup_completed_message">Setup complete</string>
     <string name="general_filter_by">Filtered by</string>
     <string name="general_all_cohorts">All Cohorts</string>
@@ -884,7 +883,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="gender_female_symbol">F</string>
     <string name="gender_male_symbole">M</string>
     <string name="general_filtered_list">Filtered List</string>
-    <string name="general_no_forms_available">No forms available</string>
     <string name="general_security_description">mUzima provides security features including password login, encryption, secure data transmission, timed user logouts.</string>
     <string name="general_security">Security</string>
     <string name="general_multiple_cases_description">mUzima is easily customizable to support any clinical use cases, both within and outside of clinical facilities.</string>

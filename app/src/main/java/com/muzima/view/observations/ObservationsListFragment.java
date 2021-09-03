@@ -24,7 +24,7 @@ import com.muzima.adapters.observations.ObservationsAdapter;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
-import com.muzima.view.MuzimaListFragment;
+import com.muzima.view.fragments.MuzimaListFragment;
 
 public abstract class ObservationsListFragment extends MuzimaListFragment implements ListAdapter.BackgroundListQueryTaskListener{
 

@@ -10,7 +10,10 @@
 
 package com.muzima.view.cohort;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,45 +22,45 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.annotation.RequiresApi;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.cohort.CohortsPagerAdapter;
 import com.muzima.model.cohort.CohortItem;
 import com.muzima.model.events.CohortSearchEvent;
-import com.muzima.model.events.CohortsActionModeEvent;
+import com.muzima.model.events.CohortsDownloadedEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
-import com.muzima.tasks.DownloadCohortsTask;
-import com.muzima.tasks.DownloadFormsTask;
-import com.muzima.utils.Constants;
+import com.muzima.utils.Constants.DataSyncServiceConstants;
+import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
-import com.muzima.view.custom.CohortsPager;
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
+import static com.muzima.view.BroadcastListenerActivity.MESSAGE_SENT_ACTION;
+import static com.muzima.view.BroadcastListenerActivity.PROGRESS_UPDATE_ACTION;
 
 public class CohortPagerActivity extends ActivityWithBottomNavigation {
     private ViewPager viewPager;
     private EditText searchCohorts;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
-    private ActionMode.Callback actionModeCallback;
-    private ActionMode actionMode;
-    private List<CohortItem> selectedCohorts = new ArrayList<>();
-    private int selectedCohortsCount = 0;
-    private int selectionDifference;
-    private MenuItem loadingMenuItem;
+
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            CohortPagerActivity.this.onReceive(context, intent);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,7 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
 
-        CohortsPager cohortsPager = new CohortsPager(getSupportFragmentManager(), tabLayout.getTabCount());
+        CohortsPagerAdapter cohortsPager = new CohortsPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(cohortsPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
@@ -80,9 +83,6 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
                 viewPager.setCurrentItem(tab.getPosition());
                 searchCohorts.setText(StringUtils.EMPTY);
                 EventBus.getDefault().post(new DestroyActionModeEvent());
-                if (actionMode != null) {
-                    actionMode.finish();
-                }
             }
 
             @Override
@@ -129,6 +129,19 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(MESSAGE_SENT_ACTION));
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(PROGRESS_UPDATE_ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         try {
@@ -138,74 +151,37 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
         }
     }
 
-    @Subscribe
-    public void onCohortDownloadActionModeEvent(CohortsActionModeEvent actionModeEvent) {
-        selectedCohorts = actionModeEvent.getSelectedCohorts();
-        initActionMode(Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION);
-    }
+    protected void onReceive(Context context, Intent intent) {
+        int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
+        int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, 0);
 
-    private void initActionMode(final int action) {
-        selectedCohortsCount = 0;
-        actionModeCallback = new ActionMode.Callback() {
+        if (syncStatus != SyncStatusConstants.SUCCESS)
+            EventBus.getDefault().post(new CohortsDownloadedEvent(false));
+        else {
+            String msg = StringUtils.EMPTY;
 
-            @Override
-            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-                getMenuInflater().inflate(R.menu.menu_cohort_actions, menu);
-                return true;
+            switch (syncType) {
+                case DataSyncServiceConstants.SYNC_COHORTS_METADATA:
+                    msg = getString(R.string.info_new_cohort_download, downloadCount);
+                    break;
+                case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA:
+                    int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
+                    msg = getString(R.string.info_cohort_new_patient_download, downloadCount, downloadCountSec) + getString(R.string.info_patient_data_download);
+                    break;
+                case DataSyncServiceConstants.SYNC_OBSERVATIONS:
+                    msg = getString(R.string.info_new_observation_download, downloadCount);
+                    break;
+                case DataSyncServiceConstants.SYNC_ENCOUNTERS:
+                    msg = getString(R.string.info_new_encounter_download, downloadCount);
+                    EventBus.getDefault().post(new CohortsDownloadedEvent(true));
+                    break;
             }
 
-            @Override
-            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                loadingMenuItem = menu.findItem(R.id.menu_downloading_action);
-                return true;
-            }
+            if (StringUtils.isEmpty(msg))
+                msg = getString(R.string.info_download_complete, syncStatus) + " Sync type = " + intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
 
-            @Override
-            public boolean onActionItemClicked(final ActionMode actionMode, MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.menu_download_action) {
-                    loadingMenuItem.setActionView(new ProgressBar(CohortPagerActivity.this));
-                    loadingMenuItem.setVisible(true);
-                    menuItem.setVisible(false);
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
-                    if (action == Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION) {
-                        ((MuzimaApplication) getApplicationContext()).getExecutorService()
-                                .execute(new DownloadCohortsTask(getApplicationContext(), selectedCohorts, new DownloadCohortsTask.CohortDownloadCallback() {
-                                    @Override
-                                    public void callbackDownload() {
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                actionMode.finish();
-                                                loadingMenuItem.setVisible(false);
-                                                EventBus.getDefault().post(new DestroyActionModeEvent());
-                                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_finish), Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-                                    }
-                                }));
-                    }
-                }
-                return true;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode actionMode) {
-                if (selectionDifference == selectedCohortsCount)
-                    EventBus.getDefault().post(new DestroyActionModeEvent());
-                else
-                    selectionDifference = selectedCohortsCount;
-            }
-        };
-
-        for (CohortItem selectedCohort : selectedCohorts) {
-            if (selectedCohort.isSelected()) selectedCohortsCount = selectedCohortsCount + 1;
-        }
-
-        actionMode = startActionMode(actionModeCallback);
-
-        if (action == Constants.ACTION_MODE_EVENT.COHORTS_DOWNLOAD_ACTION) {
-            if (selectedCohortsCount < 1) actionMode.finish();
-            actionMode.setTitle(String.format(Locale.getDefault(), "%d %s", selectedCohortsCount, getResources().getString(R.string.general_selected)));
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         }
     }
 

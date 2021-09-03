@@ -35,7 +35,7 @@ public class IncompletePatientsFormsListFragment extends FormsListFragment imple
     public void onCreate(Bundle savedInstanceState) {
         listAdapter = new PatientIncompleteFormsAdapter(getActivity(), R.layout.item_forms_list_selectable, formController, patient.getUuid());
         ((PatientIncompleteFormsAdapter)listAdapter).setMuzimaClickListener(this);
-        noDataMsg = getActivity().getResources().getString(R.string.info_incomplete_form_unvailable);
+        noDataMsg = getActivity().getResources().getString(R.string.info_incomplete_form_unavailable);
         noDataTip = getActivity().getResources().getString(R.string.hint_incomplete_form_unavailable);
 
         if (actionModeActive) {

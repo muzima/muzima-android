@@ -243,7 +243,6 @@ public class CohortController {
 
     public List<Cohort> getSyncedCohorts() throws CohortFetchException {
         try {
-
             List<Cohort> cohorts = cohortService.getAllCohorts();
             List<Cohort> syncedCohorts = new ArrayList<>();
             for (Cohort cohort : cohorts) {
@@ -252,6 +251,21 @@ public class CohortController {
                 }
             }
             return syncedCohorts;
+        } catch (IOException e) {
+            throw new CohortFetchException(e);
+        }
+    }
+
+    public List<Cohort> getUnSyncedCohorts() throws CohortFetchException {
+        try {
+            List<Cohort> cohorts = cohortService.getAllCohorts();
+            List<Cohort> unSyncedCohorts = new ArrayList<>();
+            for (Cohort cohort : cohorts) {
+                if (!isDownloaded(cohort)) {
+                    unSyncedCohorts.add(cohort);
+                }
+            }
+            return unSyncedCohorts;
         } catch (IOException e) {
             throw new CohortFetchException(e);
         }
