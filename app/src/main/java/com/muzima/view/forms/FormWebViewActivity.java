@@ -285,7 +285,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private void restartWebViewActivity() {
-        startActivity(new Intent(this, FormsActivity.class));
+        startActivity(new Intent(this, FormDataActivity.class));
     }
 
     private boolean isFormComplete() {

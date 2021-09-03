@@ -24,16 +24,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 //import org.robolectric.shadows.ShadowLooper;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.TimeUnit;
 
-import static com.muzima.adapters.forms.CompleteFormsAdapter.BackgroundQueryTask;
-import static java.util.Arrays.asList;
+import static com.muzima.adapters.forms.CompleteFormsWithDataAdapter.BackgroundQueryTask;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -43,7 +40,7 @@ import static org.mockito.Mockito.when;
 @RunWith(CustomTestRunner.class)
 @Config(manifest= Config.NONE)
 public class CompleteFormsAdapterTest {
-    private CompleteFormsAdapter formsAdapter;
+    private CompleteFormsWithDataAdapter formsAdapter;
     private FormController formController;
     private Context context;
 
@@ -51,7 +48,7 @@ public class CompleteFormsAdapterTest {
     public void setUp() {
         formController = mock(FormController.class);
         context = mock(Context.class);
-        formsAdapter = new CompleteFormsAdapter(context, 0, formController){
+        formsAdapter = new CompleteFormsWithDataAdapter(context, 0, formController){
             @Override
             public void addAll(@NonNull Collection<? extends CompleteFormWithPatientData> collection) {
 

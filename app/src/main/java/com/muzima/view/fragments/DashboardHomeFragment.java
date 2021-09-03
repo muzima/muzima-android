@@ -46,9 +46,7 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.patients.ClientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
-import com.muzima.view.forms.CompletedFormsListActivity;
-import com.muzima.view.forms.FormsActivity;
-import com.muzima.view.forms.IncompleteFormsListActivity;
+import com.muzima.view.forms.FormDataActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientsSearchActivity;
 
@@ -344,11 +342,11 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     }
 
     private void launchFormDataList(boolean incompleteForms) {
-        Intent intent = new Intent(getActivity(), FormsActivity.class);
+        Intent intent = new Intent(getActivity(), FormDataActivity.class);
         if (incompleteForms) {
-            intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, TAB_INCOMPLETE);
+            intent.putExtra(FormDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_INCOMPLETE);
         } else {
-            intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, TAB_COMPLETE);
+            intent.putExtra(FormDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_COMPLETE);
         }
         startActivity(intent);
     }

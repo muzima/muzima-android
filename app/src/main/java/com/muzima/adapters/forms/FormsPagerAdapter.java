@@ -16,9 +16,7 @@ import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.utils.LanguageUtil;
-import com.muzima.view.forms.AllAvailableFormsListFragment;
 import com.muzima.view.forms.CompleteFormsListFragment;
-import com.muzima.view.forms.DownloadedFormsListFragment;
 import com.muzima.view.forms.IncompleteFormsListFragment;
 
 /**
@@ -27,7 +25,6 @@ import com.muzima.view.forms.IncompleteFormsListFragment;
 public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAdapter.TagsChangedListener {
     public static final int TAB_INCOMPLETE = 0;
     public static final int TAB_COMPLETE = 1;
-    AllAvailableFormsListFragment allAvailableFormsListFragment;
 
     public FormsPagerAdapter(Context context, FragmentManager fm) {
         super(context, fm);
@@ -55,13 +52,8 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
         pagers = new PagerView[2];
         FormController formController = ((MuzimaApplication) context.getApplicationContext()).getFormController();
 
-        allAvailableFormsListFragment = AllAvailableFormsListFragment.newInstance(formController);
-        DownloadedFormsListFragment downloadedFormsListFragment = DownloadedFormsListFragment.newInstance(formController);
         CompleteFormsListFragment completeFormsListFragment = CompleteFormsListFragment.newInstance(formController);
         IncompleteFormsListFragment incompleteFormsListFragment = IncompleteFormsListFragment.newInstance(formController);
-
-        allAvailableFormsListFragment.setTemplateDownloadCompleteListener(downloadedFormsListFragment);
-        downloadedFormsListFragment.setAllAvailableFormsCompleteListener(allAvailableFormsListFragment);
 
         LanguageUtil languageUtil = new LanguageUtil();
         Context localizedContext = languageUtil.getLocalizedContext(context);

@@ -18,18 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsAdapter;
-import com.muzima.adapters.forms.FormsWithDataAdapter;
 import com.muzima.controller.FormController;
-import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.view.fragments.MuzimaListFragment;
-
-import java.util.List;
 
 import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
 
@@ -38,8 +30,6 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
     FormController formController;
     private FrameLayout progressBarContainer;
     private LinearLayout noDataView;
-    ActionMode actionMode;
-    boolean actionModeActive;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,10 +55,6 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
         return inflater.inflate(R.layout.layout_list, container, false);
     }
 
-    public void tagsChanged() {
-        reloadData();
-    }
-
     @Override
     public void onQueryTaskStarted() {
         list.setVisibility(View.INVISIBLE);
@@ -90,68 +76,5 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition){}
-
-    public void setRunningBackgroundQueryTask(MuzimaAsyncTask<?, ?, ?> backgroundQueryTask){
-        FormsAdapter formsAdapter = ((FormsAdapter)listAdapter);
-        if(formsAdapter!= null) formsAdapter.setRunningBackgroundQueryTask(backgroundQueryTask);
-    }
-
-    public boolean isFormDownloadBackgroundTaskRunning() {
-        FormsAdapter formsAdapter = ((FormsAdapter)listAdapter);
-        if(formsAdapter != null) {
-            return formsAdapter.isFormDownloadBackgroundTaskRunning();
-        }
-        return false;
-    }
-
-    final class DeleteFormsActionModeCallback implements ActionMode.Callback {
-
-        @Override
-        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            getActivity().getMenuInflater().inflate(R.menu.actionmode_menu_delete, menu);
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-            switch (menuItem.getItemId()) {
-                case R.id.menu_delete:
-                    List<String> selectedFormsUUIDs = ((FormsWithDataAdapter) listAdapter).getSelectedFormsUuid();
-                    try {
-                        formController.deleteCompleteAndIncompleteEncounterFormData(selectedFormsUUIDs);
-                        onCompleteOfFormDelete();
-                        ((FormsWithDataAdapter) listAdapter).clearSelectedFormsUuid();
-                    } catch (FormController.FormDataDeleteException e) {
-                        Log.e(getClass().getSimpleName(),""+e.getMessage());
-                    }
-            }
-            return false;
-        }
-
-        private void onCompleteOfFormDelete() {
-            endActionMode();
-            unselectAllItems();
-            reloadData();
-            Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_delete_success), Toast.LENGTH_SHORT).show();
-        }
-
-        private void endActionMode() {
-            if (actionMode != null) {
-                actionMode.finish();
-            }
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode actionMode) {
-            actionModeActive = false;
-            ((FormsWithDataAdapter) listAdapter).clearSelectedFormsUuid();
-            unselectAllItems(list);
-        }
-    }
 
 }

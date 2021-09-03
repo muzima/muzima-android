@@ -59,7 +59,6 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
-import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
@@ -68,7 +67,7 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
 
 import com.muzima.view.barcode.BarcodeCaptureActivity;
-import com.muzima.view.forms.FormsActivity;
+import com.muzima.view.forms.FormDataActivity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -541,8 +540,8 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     }
 
     private void launchCompleteFormsActivity() {
-        Intent intent = new Intent(getApplicationContext(), FormsActivity.class);
-        intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, 3);
+        Intent intent = new Intent(getApplicationContext(), FormDataActivity.class);
+        intent.putExtra(FormDataActivity.KEY_FORMS_TAB_TO_OPEN, 3);
         startActivity(intent);
     }
 

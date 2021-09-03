@@ -12,17 +12,13 @@ package com.muzima.view.forms;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.muzima.R;
-import com.muzima.adapters.forms.SectionedFormsAdapter;
+import com.muzima.adapters.forms.FormsWithDataAdapter;
 import com.muzima.api.model.FormData;
 import com.muzima.controller.FormController;
 import com.muzima.utils.ThemeUtils;
@@ -32,16 +28,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFragment{
+public abstract class FormsWithDataListFragment extends FormsListFragment{
     ActionMode actionMode;
     boolean actionModeActive;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        ((SectionedFormsAdapter)listAdapter).setListView(list);
-        return view;
-    }
 
     final class DeleteFormsActionModeCallback implements ActionMode.Callback {
 
@@ -60,7 +49,7 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_delete:
-                    List<String> selectedFormsUUIDs = ((SectionedFormsAdapter) listAdapter).getSelectedFormsUuid();
+                    List<String> selectedFormsUUIDs = ((FormsWithDataAdapter) listAdapter).getSelectedFormsUuid();
                     try {
                         Map<String,List<FormData>> groupedFormData = formController.getFormDataGroupedByPatient(selectedFormsUUIDs);
                         final Map<String,List<FormData>> groupedFormDataWithRegistrationData =
@@ -110,7 +99,7 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
         private void onCompleteOfFormDelete() {
             endActionMode();
             reloadData();
-            ((SectionedFormsAdapter) listAdapter).clearSelectedFormsUuid();
+            ((FormsWithDataAdapter) listAdapter).clearSelectedFormsUuid();
             listAdapter.notifyDataSetChanged();
             unselectAllItems();
             Toast.makeText(getActivity(), R.string.info_form_delete_success, Toast.LENGTH_SHORT).show();
@@ -123,13 +112,13 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
                     uuids.add(formData.getUuid());
                 }
             }
-            int selectedFormsSize = ((SectionedFormsAdapter) listAdapter).getSelectedFormsUuid().size();
+            int selectedFormsSize = ((FormsWithDataAdapter) listAdapter).getSelectedFormsUuid().size();
             int remnantFormsSize = uuids.size();
             int deletedFormsCount = selectedFormsSize - remnantFormsSize;
             if(deletedFormsCount > 0) {
                 Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_data_delete, deletedFormsCount), Toast.LENGTH_SHORT).show();
                 reloadData();
-                ((SectionedFormsAdapter) listAdapter).retainFromSelectedFormsUuid(uuids);
+                ((FormsWithDataAdapter) listAdapter).retainFromSelectedFormsUuid(uuids);
                 actionMode.setTitle(String.valueOf(remnantFormsSize));
             }
         }
@@ -143,7 +132,7 @@ public abstract class FormsFragmentWithSectionedListAdapter extends FormsListFra
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
-            ((SectionedFormsAdapter) listAdapter).clearSelectedFormsUuid();
+            ((FormsWithDataAdapter) listAdapter).clearSelectedFormsUuid();
             unselectAllItems(list);
         }
     }

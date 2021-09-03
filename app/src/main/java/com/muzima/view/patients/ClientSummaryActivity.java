@@ -55,7 +55,7 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.adapters.patients.ClientSummaryPagerAdapter;
 import com.muzima.view.MainDashboardActivity;
-import com.muzima.view.forms.FormsActivity;
+import com.muzima.view.forms.FormDataActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -382,15 +382,15 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
         switch (category) {
             case COMPLETE_FORMS:
                 MuzimaPreferences.setFormsActivityActionModePreference(getApplicationContext(), Constants.FORMS_LAUNCH_MODE.COMPLETE_FORMS_VIEW);
-                Intent completeFormsIntent = new Intent(getApplicationContext(), FormsActivity.class);
-                completeFormsIntent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, 1);
+                Intent completeFormsIntent = new Intent(getApplicationContext(), FormDataActivity.class);
+                completeFormsIntent.putExtra(FormDataActivity.KEY_FORMS_TAB_TO_OPEN, 1);
                 startActivity(completeFormsIntent);
                 finish();
                 break;
             case INCOMPLETE_FORMS:
                 MuzimaPreferences.setFormsActivityActionModePreference(getApplicationContext(), Constants.FORMS_LAUNCH_MODE.INCOMPLETE_FORMS_VIEW);
-                Intent intent = new Intent(getApplicationContext(), FormsActivity.class);
-                intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, 1);
+                Intent intent = new Intent(getApplicationContext(), FormDataActivity.class);
+                intent.putExtra(FormDataActivity.KEY_FORMS_TAB_TO_OPEN, 1);
                 startActivity(intent);
                 finish();
                 break;
@@ -442,7 +442,7 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == FormsActivity.FORM_VIEW_ACTIVITY_RESULT) {
+        if (requestCode == FormDataActivity.FORM_VIEW_ACTIVITY_RESULT) {
             loadFormsCountData();
         }
     }
