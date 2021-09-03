@@ -37,7 +37,6 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.HelpActivity;
 
 import java.util.ArrayList;
 import java.util.List;

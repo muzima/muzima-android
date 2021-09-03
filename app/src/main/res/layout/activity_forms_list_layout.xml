@@ -50,7 +50,7 @@
         <TextView
             android:textSize="36sp"
             android:gravity="center_horizontal"
-            android:text="@string/general_no_forms_available"
+            android:text="@string/info_forms_unavailable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

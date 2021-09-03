@@ -21,7 +21,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.reports.ReportsAdapter;
 import com.muzima.controller.PatientReportController;
-import com.muzima.view.MuzimaListFragment;
+import com.muzima.view.fragments.MuzimaListFragment;
 
 public abstract class PatientReportListFragment extends MuzimaListFragment implements ListAdapter.BackgroundListQueryTaskListener{
 

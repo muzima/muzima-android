@@ -23,7 +23,7 @@ import com.muzima.R;
 import com.muzima.adapters.reports.AllPatientReportsAdapter;
 import com.muzima.controller.PatientReportController;
 import com.muzima.utils.NetworkUtils;
-import com.muzima.view.CheckedLinearLayout;
+import com.muzima.view.custom.CheckedLinearLayout;
 
 public class AllPatientReportListFragment extends PatientReportListFragment {
     private ActionMode actionMode;

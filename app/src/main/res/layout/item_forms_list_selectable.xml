@@ -8,17 +8,17 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
-<com.muzima.view.CheckedRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:checkable="true"
-    android:paddingTop="8dp"
-    android:paddingEnd="16dp"
-    android:paddingStart="16dp"
-    android:paddingBottom="12dp">
+<com.muzima.view.custom.CheckedRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                              xmlns:app="http://schemas.android.com/apk/res-auto"
+                                              android:layout_width="match_parent"
+                                              android:layout_height="wrap_content"
+                                              android:checkable="true"
+                                              android:paddingTop="8dp"
+                                              android:paddingEnd="16dp"
+                                              android:paddingStart="16dp"
+                                              android:paddingBottom="12dp">
 
-    <com.muzima.view.CheckedRelativeLayout
+    <com.muzima.view.custom.CheckedRelativeLayout
         android:id="@+id/tags_scroller"
         android:layout_alignParentTop="true"
         android:layout_width="wrap_content"
@@ -33,9 +33,9 @@
             android:layout_alignParentStart="true"
             android:gravity="center_vertical"
             android:orientation="horizontal" />
-    </com.muzima.view.CheckedRelativeLayout>
+    </com.muzima.view.custom.CheckedRelativeLayout>
 
-    <com.muzima.view.CheckedLinearLayout
+    <com.muzima.view.custom.CheckedLinearLayout
         android:id="@+id/form_name_layout"
         android:layout_below="@+id/tags_scroller"
         android:layout_width="match_parent"
@@ -60,7 +60,7 @@
             android:layout_marginEnd="12dp"
             app:srcCompat="@drawable/ic_downloaded" />
 
-    </com.muzima.view.CheckedLinearLayout>
+    </com.muzima.view.custom.CheckedLinearLayout>
 
 
     <CheckedTextView
@@ -84,4 +84,4 @@
         android:gravity="left"
         android:paddingTop="12dp" />
 
-</com.muzima.view.CheckedRelativeLayout>
+</com.muzima.view.custom.CheckedRelativeLayout>

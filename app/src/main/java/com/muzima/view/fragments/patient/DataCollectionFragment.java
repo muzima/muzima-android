@@ -6,15 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.muzima.R;
 import com.muzima.adapters.patients.DataCollectionViewPagerAdapter;
-import com.muzima.adapters.patients.HistoricalDataViewPagerAdapter;
-import com.muzima.utils.ThemeUtils;
-import com.muzima.view.ClientSummaryActivity;
 
 public class DataCollectionFragment extends Fragment {
 

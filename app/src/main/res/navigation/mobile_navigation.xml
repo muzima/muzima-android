@@ -26,16 +26,16 @@
 
     <activity
             android:id="@+id/nav_help"
-            android:name="com.muzima.view.HelpActivity"
+            android:name="com.muzima.view.help.HelpActivity"
             tools:layout="@layout/activity_help_new"/>
 
     <activity
             android:id="@+id/nav_feedback"
-            android:name="com.muzima.view.FeedbackActivity"
+            android:name="com.muzima.view.help.FeedbackActivity"
             tools:layout="@layout/activity_interactive_feedback"/>
 
     <activity
             android:id="@+id/nav_contact"
-            android:name="com.muzima.view.InteractiveHelpActivity"
+            android:name="com.muzima.view.help.InteractiveHelpActivity"
             tools:layout="@layout/activity_interactive_help"/>
 </navigation>

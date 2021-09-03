@@ -16,6 +16,7 @@
             android:id="@+id/item_single_obs_value_text_view"
             android:fontFamily="@font/montserrat_regular"
             android:layout_gravity="center_horizontal"
+            android:textSize="16sp"
             android:gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -24,6 +25,7 @@
             android:id="@+id/item_single_obs_date_text_view"
             android:fontFamily="@font/roboto_regular"
             android:layout_gravity="center_horizontal"
+            android:textSize="12sp"
             android:gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

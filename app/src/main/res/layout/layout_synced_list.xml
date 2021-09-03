@@ -9,10 +9,10 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
-<com.muzima.view.CheckedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<com.muzima.view.custom.CheckedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical">
 
     <include layout="@layout/layout_list"
             android:layout_width="match_parent"
@@ -27,4 +27,4 @@
             android:gravity="center"
             android:textColor="?attr/primaryTextColor"
             android:background="?attr/syncTextBackgroundColor"/>
-</com.muzima.view.CheckedLinearLayout>
+</com.muzima.view.custom.CheckedLinearLayout>
