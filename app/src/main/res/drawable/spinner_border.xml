@@ -18,8 +18,9 @@
                     <padding android:bottom="5dp" android:left="5dp" android:right="3dp" android:top="5dp"/>
                 </shape>
             </item>
-            <item>
-                <bitmap android:gravity="bottom|right" android:src="@drawable/ic_arrow_down"/>
+            <item android:right="5dp"
+                android:drawable="@drawable/ic_arrow_down"
+                android:gravity="right|center_vertical">
             </item>
         </layer-list>
     </item>

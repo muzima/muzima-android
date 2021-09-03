@@ -12,7 +12,6 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/empty_view"
-            android:tint="@color/secondary_text_light"
             android:contentDescription="@string/info_forms_unavailable"/>
 
     <TextView
