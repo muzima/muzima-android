@@ -45,7 +45,6 @@ public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extend
         if (forms==null) {
             Toast.makeText(adapterWeakReference.get().getContext(), adapterWeakReference.get().getContext().getString(R.string.error_form_load), Toast.LENGTH_SHORT).show();
         }
-
         changeDataSet(forms);
         notifyListener();
     }
@@ -53,6 +52,8 @@ public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extend
     protected void notifyListener() {
         if (adapterWeakReference.get() != null) {
             FormsAdapter formsAdapter = adapterWeakReference.get();
+            formsAdapter.notifyDataSetChanged();
+
             BackgroundListQueryTaskListener backgroundListQueryTaskListener = formsAdapter.getBackgroundListQueryTaskListener();
             if (backgroundListQueryTaskListener != null) {
                 backgroundListQueryTaskListener.onQueryTaskFinish();

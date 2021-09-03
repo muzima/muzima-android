@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,12 +41,12 @@ import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.FormUtils;
 import com.muzima.utils.MuzimaPreferences;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.patients.ClientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
-import com.muzima.view.forms.CompletedFormsListActivity;
-import com.muzima.view.forms.IncompleteFormsListActivity;
+import com.muzima.view.forms.FormsWithDataActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientsSearchActivity;
 
@@ -53,6 +56,10 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
+import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
+import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 public class DashboardHomeFragment extends Fragment implements ListAdapter.BackgroundListQueryTaskListener,
         AdapterView.OnItemClickListener{
@@ -90,8 +97,12 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         initializeResources(view);
         setupListView(view);
         setupNoDataView();
-        setUpFormsCount();
         return view;
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        setUpFormsCount();
     }
 
     private void setupListView(View view) {
@@ -171,7 +182,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         searchPatientEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchPatientsSearchView();
+                launchPatientsSearchActivity(StringUtils.EMPTY);
             }
         });
 
@@ -222,15 +233,12 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
             applyFormsCount(incompleteFormsTextView, incompleteForms);
             applyFormsCount(completeFormsTextView, completeForms);
         } catch (FormController.FormFetchException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);
         }
     }
 
     private void applyFormsCount(TextView textView, long count) {
-        if (count < 10)
-            textView.setText(String.format(Locale.getDefault(), "%d", count));
-        else
-            textView.setText(String.valueOf(count));
+        textView.setText(String.valueOf(count));
     }
 
     private void showRegistrationFormsMissingAlert() {
@@ -249,12 +257,11 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         dialog.show();
     }
 
-    private void launchPatientsSearchView() {
+    private void launchPatientsSearchActivity(String searchString) {
         patientSearchAdapter.cancelBackgroundTask();
-        Intent intent = new Intent(getActivity().getApplicationContext(), PatientsSearchActivity.class);
-        intent.putExtra(PatientsSearchActivity.QUICK_SEARCH, true);
+        Intent intent = new Intent(getActivity(), PatientsSearchActivity.class);
+        intent.putExtra(PatientsSearchActivity.SEARCH_STRING, searchString);
         startActivity(intent);
-        getActivity().finish();
     }
 
     // Confirmation dialog for confirming if the patient have an existing ID
@@ -272,7 +279,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         return new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                launchPatientsSearchView();
+                launchPatientsSearchActivity(StringUtils.EMPTY);
             }
         };
     }
@@ -311,15 +318,37 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         Toast.makeText(getActivity().getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
+        switch (requestCode) {
+            case SMARTCARD_READ_REQUEST_CODE:
+                break;
+            case RC_BARCODE_CAPTURE:
+                if (resultCode == CommonStatusCodes.SUCCESS) {
+                    if (dataIntent != null) {
+                        Barcode barcode = dataIntent.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                        launchPatientsSearchActivity(barcode.displayValue);
+                    } else {
+                        Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null");
+                    }
+                } else {
+                    Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null "+CommonStatusCodes.getStatusCodeString(resultCode));
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, dataIntent);
+        }
+    }
+
     private void launchFormDataList(boolean incompleteForms) {
-        Intent intent;
+        Intent intent = new Intent(getActivity(), FormsWithDataActivity.class);
         if (incompleteForms) {
-            intent = new Intent(getActivity().getApplicationContext(), IncompleteFormsListActivity.class);
+            intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_INCOMPLETE);
         } else {
-            intent = new Intent(getActivity().getApplicationContext(), CompletedFormsListActivity.class);
+            intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_COMPLETE);
         }
         startActivity(intent);
-        getActivity().finish();
     }
 
     private void closeBottomSheet() {

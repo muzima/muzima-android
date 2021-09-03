@@ -18,13 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import com.muzima.R;
-import com.muzima.adapters.forms.CompleteFormsAdapter;
+import com.muzima.adapters.forms.CompleteFormsWithDataAdapter;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.utils.Constants;
 
-public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAdapter implements FormsAdapter.MuzimaClickListener{
+public class CompleteFormsListFragment extends FormsWithDataListFragment implements FormsAdapter.MuzimaClickListener{
 
     public static CompleteFormsListFragment newInstance(FormController formController) {
         CompleteFormsListFragment f = new CompleteFormsListFragment();
@@ -61,14 +61,14 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        listAdapter = new CompleteFormsAdapter(getActivity(), R.layout.item_forms_list, formController);
-        ((CompleteFormsAdapter)listAdapter).setMuzimaClickListener(this);
+        listAdapter = new CompleteFormsWithDataAdapter(getActivity(), R.layout.item_form_with_data_layout, formController);
+        ((CompleteFormsWithDataAdapter)listAdapter).setMuzimaClickListener(this);
         noDataMsg = getActivity().getResources().getString(R.string.info_complete_form_unavailable);
         noDataTip = getActivity().getResources().getString(R.string.hint_complete_form_unavailable);
 
         if (actionModeActive) {
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
-            actionMode.setTitle(String.valueOf(((CompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size()));
+            actionMode.setTitle(String.valueOf(((CompleteFormsWithDataAdapter)listAdapter).getSelectedFormsUuid().size()));
         }
         super.onCreate(savedInstanceState);
     }
@@ -92,7 +92,7 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
         }
-        int numOfSelectedForms = ((CompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size();
+        int numOfSelectedForms = ((CompleteFormsWithDataAdapter)listAdapter).getSelectedFormsUuid().size();
         if (numOfSelectedForms == 0 && actionModeActive) {
             actionMode.finish();
         }
@@ -106,7 +106,7 @@ public class CompleteFormsListFragment extends FormsFragmentWithSectionedListAda
             if(!completeFormWithPatientData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS)
                     && !completeFormWithPatientData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION)) {
                 FormViewIntent intent = new FormViewIntent(getActivity(), (CompleteFormWithPatientData) listAdapter.getItem(position));
-                getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
+                getActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
             }
         }
     }
