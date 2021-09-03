@@ -35,13 +35,15 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
     private View obsDetailsDialog;
     final EncounterController encounterController;
     final ObservationController observationController;
+    private boolean isSingleElementInput;
 
-    public ObsHorizontalViewAdapter(List<Observation> observationList, ObservationClickedListener observationClickedListener,
+    public ObsHorizontalViewAdapter(List<Observation> observationList, boolean isSingleElementInput, ObservationClickedListener observationClickedListener,
                                     EncounterController encounterController, ObservationController observationController) {
         this.observationList = observationList;
         this.observationClickedListener = observationClickedListener;
         this.encounterController = encounterController;
         this.observationController = observationController;
+        this.isSingleElementInput = isSingleElementInput;
     }
 
     @NotNull
@@ -59,6 +61,10 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
 
         if (observation.getConcept().isDatetime()) {
             holder.valueTextView.setText(DateUtils.convertDateToStdString(observation.getValueDatetime()));
+        }
+
+        if(observation.getConcept().isCoded()){
+            holder.valueTextView.setText(observation.getValueCoded().getName());
         }
 
         if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded()) {
@@ -83,14 +89,15 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
             this.valueTextView = view.findViewById(R.id.item_single_obs_value_text_view);
             this.dateTextView = view.findViewById(R.id.item_single_obs_date_text_view);
             this.observationClickedListener = clickedListener;
-            container.setOnClickListener(this);
+            if(!isSingleElementInput) {
+                container.setOnClickListener(this);
+            }
         }
 
         @Override
         public void onClick(View v) {
             Observation obs = observationList.get(getAdapterPosition());
             displayObservationDetailsDialog(obs, v);
-
             this.observationClickedListener.onObservationClicked(getAdapterPosition());
         }
     }
