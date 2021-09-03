@@ -183,7 +183,7 @@ class HTMLFormDataStore {
                 Date encounterDate = getEncounterDateFromForm(jsonPayload);
                 formData.setEncounterDate(encounterDate);
                 formController.saveFormData(formData);
-                formWebViewActivity.setResult(FormDataActivity.RESULT_OK);
+                formWebViewActivity.setResult(FormsWithDataActivity.RESULT_OK);
                 if (status.equals("complete")) {
                     JSONObject jsonObject = new JSONObject(jsonPayload);
                     JSONObject jsonObjectInner = jsonObject.getJSONObject("patient");

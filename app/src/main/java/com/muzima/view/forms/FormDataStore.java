@@ -59,7 +59,7 @@ class FormDataStore {
             }
             parseForm(xmlData, status);
             formController.saveFormData(formData);
-            formWebViewActivity.setResult(FormDataActivity.RESULT_OK);
+            formWebViewActivity.setResult(FormsWithDataActivity.RESULT_OK);
             formWebViewActivity.finish();
         } catch (FormController.FormDataSaveException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_save), Toast.LENGTH_SHORT).show();

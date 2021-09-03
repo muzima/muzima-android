@@ -44,6 +44,7 @@ public abstract class FormsListFragment extends MuzimaListFragment implements Ba
         if (listAdapter != null) {
             list.setAdapter(listAdapter);
             list.setOnItemClickListener(this);
+
             ((FormsAdapter)listAdapter).setBackgroundListQueryTaskListener(this);
         }
         list.setEmptyView(formsLayout.findViewById(R.id.no_data_layout));

@@ -145,7 +145,7 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/general_clients" />
         <activity
-            android:name=".view.forms.FormDataActivity"
+            android:name=".view.forms.FormsWithDataActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_forms"
             android:parentActivityName=".view.MainDashboardActivity">
@@ -154,23 +154,23 @@
             android:name=".view.forms.FormWebViewActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_form"
-            android:parentActivityName=".view.forms.FormDataActivity"
+            android:parentActivityName=".view.forms.FormsWithDataActivity"
             android:windowSoftInputMode="adjustResize">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.forms.FormDataActivity" />
+                android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
             android:name=".view.forms.HTMLFormWebViewActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_form"
-            android:parentActivityName=".view.forms.FormDataActivity"
+            android:parentActivityName=".view.forms.FormsWithDataActivity"
             android:theme="@style/DialogNoTitleBar"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.forms.FormDataActivity" />
+                android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
             android:name=".view.patients.PatientSummaryActivity"
@@ -224,10 +224,10 @@
         <activity
             android:name=".utils.imaging.ImagingIntent"
             android:label="@string/title_activity_image"
-            android:parentActivityName=".view.forms.FormDataActivity">
+            android:parentActivityName=".view.forms.FormsWithDataActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.forms.FormDataActivity" />
+                android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
             android:name=".view.reports.PatientReportActivity"
@@ -251,21 +251,21 @@
             android:name=".utils.audio.AudioIntent"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_audio"
-            android:parentActivityName=".view.forms.FormDataActivity"
+            android:parentActivityName=".view.forms.FormsWithDataActivity"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.forms.FormDataActivity" />
+                android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
             android:name=".utils.video.VideoIntent"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_video"
-            android:parentActivityName=".view.forms.FormDataActivity"
+            android:parentActivityName=".view.forms.FormsWithDataActivity"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.forms.FormDataActivity" />
+                android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
             android:name=".view.notifications.NotificationActivity"

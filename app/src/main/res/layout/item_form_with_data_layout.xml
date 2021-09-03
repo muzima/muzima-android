@@ -9,7 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <com.muzima.view.custom.CheckedRelativeLayout
         android:layout_toStartOf="@+id/item_form_end_container"
         android:layout_alignParentStart="true"
         android:orientation="horizontal"
@@ -40,9 +40,9 @@
             android:textColor="?attr/primaryTextColor"
             android:textSize="12sp" />
 
-    </RelativeLayout>
+    </com.muzima.view.custom.CheckedRelativeLayout>
 
-    <RelativeLayout
+    <com.muzima.view.custom.CheckedRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -60,9 +60,9 @@
             android:textColor="?attr/primaryTextColor"
             android:textSize="16sp" />
 
-    </RelativeLayout>
+    </com.muzima.view.custom.CheckedRelativeLayout>
 
-    <RelativeLayout
+    <com.muzima.view.custom.CheckedRelativeLayout
         android:id="@+id/item_form_end_container"
         android:layout_alignParentEnd="true"
         android:orientation="horizontal"
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:layout_alignParentEnd="true"/>
-    </RelativeLayout>
+    </com.muzima.view.custom.CheckedRelativeLayout>
 
     <View
         android:layout_marginTop="12dp"

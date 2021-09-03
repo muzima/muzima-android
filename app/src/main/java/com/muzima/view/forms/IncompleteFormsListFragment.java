@@ -32,7 +32,6 @@ public class IncompleteFormsListFragment extends FormsWithDataListFragment imple
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        System.out.println("HEREB");
         listAdapter = new IncompleteFormsWithDataAdapter(getActivity(), R.layout.item_form_with_data_layout, formController);
         ((IncompleteFormsWithDataAdapter)listAdapter).setMuzimaClickListener(this);
         noDataMsg = getActivity().getResources().getString(R.string.info_incomplete_form_unavailable);
@@ -57,7 +56,7 @@ public class IncompleteFormsListFragment extends FormsWithDataListFragment imple
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         FormViewIntent intent = new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position));
-        getActivity().startActivityForResult(intent, FormDataActivity.FORM_VIEW_ACTIVITY_RESULT);
+        getActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 
     @Override
@@ -85,6 +84,6 @@ public class IncompleteFormsListFragment extends FormsWithDataListFragment imple
             formWithData.setPatient(null);
         }
         FormViewIntent intent = new FormViewIntent(getActivity(),formWithData );
-        getActivity().startActivityForResult(intent, FormDataActivity.FORM_VIEW_ACTIVITY_RESULT);
+        getActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 }

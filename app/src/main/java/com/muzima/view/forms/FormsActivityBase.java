@@ -47,7 +47,6 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
         if (tabToOpen == -1) {
             tabToOpen = 0;
         }
-
         PagerSlidingTabStrip pagerTabsLayout = findViewById(R.id.pager_indicator);
         pagerTabsLayout.setTextColor(pagerTabsLayout.getIndicatorTextColor());
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));

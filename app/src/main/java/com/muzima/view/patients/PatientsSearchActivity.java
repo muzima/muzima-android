@@ -67,7 +67,7 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
 
 import com.muzima.view.barcode.BarcodeCaptureActivity;
-import com.muzima.view.forms.FormDataActivity;
+import com.muzima.view.forms.FormsWithDataActivity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -540,8 +540,8 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     }
 
     private void launchCompleteFormsActivity() {
-        Intent intent = new Intent(getApplicationContext(), FormDataActivity.class);
-        intent.putExtra(FormDataActivity.KEY_FORMS_TAB_TO_OPEN, 3);
+        Intent intent = new Intent(getApplicationContext(), FormsWithDataActivity.class);
+        intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, 3);
         startActivity(intent);
     }
 

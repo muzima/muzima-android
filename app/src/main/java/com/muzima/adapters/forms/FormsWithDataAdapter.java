@@ -109,9 +109,6 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
 
         if (!isEmpty()) {
             FormWithData formWithData = getItem(position);
-
-            System.out.println(formWithData.getPatient().getDisplayName());
-            System.out.println(("IS NULLLLLLLLLLLLLLLLLL: "+(holder.clientName == null)));
             holder.formName.setText(formWithData.getName());
             holder.clientName.setText(formWithData.getPatient().getDisplayName());
             holder.clientId.setText(formWithData.getPatient().getIdentifier());
@@ -122,16 +119,13 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
                 holder.encounterDate.setText(dateFormat.format(formWithData.getEncounterDate()));
             }
 
-            //holder.lastEditedTime.setVisibility(View.GONE);
-
-            setClickListenersOnView(position, convertView);
-
             if (formWithData.getLastModifiedDate() != null) {
                 dateFormat = new SimpleDateFormat(STANDARD_DATE_LOCALE_FORMAT);
                 String formSaveTime = dateFormat.format(formWithData.getLastModifiedDate());
                 holder.lastEditedTime.setText(formSaveTime);
             }
-            //holder.lastEditedTime.setVisibility(View.VISIBLE);
+
+            setClickListenersOnView(position, convertView);
         }
 
         return convertView;

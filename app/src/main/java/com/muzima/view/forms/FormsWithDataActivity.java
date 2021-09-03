@@ -49,7 +49,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
 
-public class FormDataActivity extends FormsActivityBase {
+public class FormsWithDataActivity extends FormsActivityBase {
 
     private DrawerLayout mainLayout;
     private TagsListAdapter tagsListAdapter;

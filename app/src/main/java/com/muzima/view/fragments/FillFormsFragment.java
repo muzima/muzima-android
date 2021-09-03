@@ -20,7 +20,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.model.DownloadedForm;
 import com.muzima.tasks.FormsLoaderService;
 import com.muzima.view.forms.FormViewIntent;
-import com.muzima.view.forms.FormDataActivity;
+import com.muzima.view.forms.FormsWithDataActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +81,6 @@ public class FillFormsFragment extends Fragment implements FormsLoaderService.Fo
         DownloadedForm form = forms.get(position);
         Intent intent = new FormViewIntent(getActivity(), form, patient , false);
         intent.putExtra(INDEX_PATIENT, patient);
-        getActivity().startActivityForResult(intent, FormDataActivity.FORM_VIEW_ACTIVITY_RESULT);
+        getActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 }

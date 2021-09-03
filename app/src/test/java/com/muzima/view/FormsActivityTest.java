@@ -14,7 +14,7 @@ package com.muzima.view;
 import android.widget.ListView;
 
 import com.muzima.testSupport.CustomTestRunner;
-import com.muzima.view.forms.FormDataActivity;
+import com.muzima.view.forms.FormsWithDataActivity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +24,7 @@ import org.robolectric.annotation.Config;
 @RunWith(CustomTestRunner.class)
 @Config(manifest = Config.NONE)
 public class FormsActivityTest {
-    private FormDataActivity activity;
+    private FormsWithDataActivity activity;
     private ListView formsListView;
 
     @Before

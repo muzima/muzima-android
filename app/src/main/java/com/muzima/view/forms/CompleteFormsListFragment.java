@@ -61,7 +61,6 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        System.out.println("HEREA: "+R.layout.item_form_with_data_layout);
         listAdapter = new CompleteFormsWithDataAdapter(getActivity(), R.layout.item_form_with_data_layout, formController);
         ((CompleteFormsWithDataAdapter)listAdapter).setMuzimaClickListener(this);
         noDataMsg = getActivity().getResources().getString(R.string.info_complete_form_unavailable);
@@ -107,7 +106,7 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
             if(!completeFormWithPatientData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS)
                     && !completeFormWithPatientData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION)) {
                 FormViewIntent intent = new FormViewIntent(getActivity(), (CompleteFormWithPatientData) listAdapter.getItem(position));
-                getActivity().startActivityForResult(intent, FormDataActivity.FORM_VIEW_ACTIVITY_RESULT);
+                getActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
             }
         }
     }
