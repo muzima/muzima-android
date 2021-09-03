@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
@@ -184,7 +183,7 @@ class HTMLFormDataStore {
                 Date encounterDate = getEncounterDateFromForm(jsonPayload);
                 formData.setEncounterDate(encounterDate);
                 formController.saveFormData(formData);
-                formWebViewActivity.setResult(FormsActivity.RESULT_OK);
+                formWebViewActivity.setResult(FormsWithDataActivity.RESULT_OK);
                 if (status.equals("complete")) {
                     JSONObject jsonObject = new JSONObject(jsonPayload);
                     JSONObject jsonObjectInner = jsonObject.getJSONObject("patient");

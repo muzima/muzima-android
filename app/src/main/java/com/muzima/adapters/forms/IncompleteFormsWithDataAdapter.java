@@ -21,9 +21,9 @@ import java.util.List;
 /**
  * Responsible to display all the incomplete forms.
  */
-public class IncompleteFormsAdapter extends SectionedFormsAdapter<IncompleteFormWithPatientData> {
+public class IncompleteFormsWithDataAdapter extends FormsWithDataAdapter<IncompleteFormWithPatientData> {
 
-    public IncompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
+    public IncompleteFormsWithDataAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
     }
 
@@ -60,7 +60,7 @@ public class IncompleteFormsAdapter extends SectionedFormsAdapter<IncompleteForm
         @Override
         protected void onPostExecute(List<IncompleteFormWithPatientData> forms) {
             if (adapterWeakReference.get() != null) {
-                SectionedFormsAdapter formsAdapter = (SectionedFormsAdapter) adapterWeakReference.get();
+                FormsWithDataAdapter formsAdapter = (FormsWithDataAdapter) adapterWeakReference.get();
                 if (forms != null && !forms.isEmpty()) {
                     formsAdapter.setPatients(formsAdapter.buildPatientsList(forms));
                     formsAdapter.sortFormsByPatientName(forms);

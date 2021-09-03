@@ -60,7 +60,6 @@ import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.SHRObservationsDataActivity;
 import com.muzima.view.encounters.EncountersActivity;
-import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
 import com.muzima.view.observations.ObservationsFragment;
 import com.muzima.view.relationship.RelationshipsListActivity;
@@ -390,9 +389,9 @@ public class PatientSummaryActivity extends BaseActivity {
     }
 
     public void showForms(View v) {
-        Intent intent = new Intent(this, PatientFormsActivity.class);
-        intent.putExtra(PATIENT, patient);
-        startActivity(intent);
+//        Intent intent = new Intent(this, PatientFormsActivity.class);
+//        intent.putExtra(PATIENT, patient);
+//        startActivity(intent);
     }
 
     public void showNotifications(View v) {

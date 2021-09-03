@@ -22,10 +22,10 @@ import java.util.List;
 /**
  * Responsible to list down all the completed forms in the Device.
  */
-public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWithPatientData> {
+public class CompleteFormsWithDataAdapter extends FormsWithDataAdapter<CompleteFormWithPatientData> {
     public Context context;
 
-    public CompleteFormsAdapter(Context context, int textViewResourceId, FormController formController) {
+    public CompleteFormsWithDataAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
         this.context = context;
     }
@@ -65,7 +65,7 @@ public class CompleteFormsAdapter extends SectionedFormsAdapter<CompleteFormWith
         protected void onPostExecute(List<CompleteFormWithPatientData> forms) {
             if (adapterWeakReference.get() != null) {
                 // Forms have to be displayed in sorted fashion by Patient. And forms' don't have a direct relationship with patient.
-                SectionedFormsAdapter formsAdapter = (SectionedFormsAdapter) adapterWeakReference.get();
+                FormsWithDataAdapter formsAdapter = (FormsWithDataAdapter) adapterWeakReference.get();
                 if (forms != null && !forms.isEmpty()) {
                     formsAdapter.setPatients(formsAdapter.buildPatientsList(forms));
                     formsAdapter.sortFormsByPatientName(forms);
