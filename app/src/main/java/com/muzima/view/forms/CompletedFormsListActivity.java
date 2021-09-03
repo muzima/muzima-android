@@ -27,7 +27,7 @@ import com.muzima.view.MainDashboardActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//ToDo: Remove this file and related components
 public class CompletedFormsListActivity extends AppCompatActivity implements FormsRecyclerViewAdapter.OnFormClickedListener {
     public static final String FILTER_FORM_KEY = "form_filter_key";
     private MaterialToolbar toolbar;

@@ -15,6 +15,7 @@ import com.muzima.model.CompleteFormWithPatientData;
 
 import java.util.List;
 
+//ToDo: Remove this file and related components
 public class CompletedFormsWithDataAdapter extends RecyclerView.Adapter<CompletedFormsWithDataAdapter.ViewHolder> {
     private static final String TAG = "FormsRecyclerViewAdapte";
     private Context context;

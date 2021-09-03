@@ -43,10 +43,11 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
 
     void initPagerIndicator() {
         Intent intent = getIntent();
-        int tabToOpen = -1;
+        int tabToOpen = getIntent().getIntExtra(KEY_FORMS_TAB_TO_OPEN,-1);
         if (tabToOpen == -1) {
             tabToOpen = 0;
         }
+
         PagerSlidingTabStrip pagerTabsLayout = findViewById(R.id.pager_indicator);
         pagerTabsLayout.setTextColor(pagerTabsLayout.getIndicatorTextColor());
         pagerTabsLayout.setTextSize((int) getResources().getDimension(R.dimen.pager_indicator_text_size));

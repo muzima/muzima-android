@@ -47,6 +47,7 @@ import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.ClientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.CompletedFormsListActivity;
+import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.IncompleteFormsListActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientsSearchActivity;
@@ -58,6 +59,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
+import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 public class DashboardHomeFragment extends Fragment implements ListAdapter.BackgroundListQueryTaskListener,
@@ -96,8 +99,12 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         initializeResources(view);
         setupListView(view);
         setupNoDataView();
-        setUpFormsCount();
         return view;
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        setUpFormsCount();
     }
 
     private void setupListView(View view) {
@@ -228,15 +235,12 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
             applyFormsCount(incompleteFormsTextView, incompleteForms);
             applyFormsCount(completeFormsTextView, completeForms);
         } catch (FormController.FormFetchException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);
         }
     }
 
     private void applyFormsCount(TextView textView, long count) {
-        if (count < 10)
-            textView.setText(String.format(Locale.getDefault(), "%d", count));
-        else
-            textView.setText(String.valueOf(count));
+        textView.setText(String.valueOf(count));
     }
 
     private void showRegistrationFormsMissingAlert() {
@@ -257,10 +261,9 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
 
     private void launchPatientsSearchActivity(String searchString) {
         patientSearchAdapter.cancelBackgroundTask();
-        Intent intent = new Intent(getActivity().getApplicationContext(), PatientsSearchActivity.class);
+        Intent intent = new Intent(getActivity(), PatientsSearchActivity.class);
         intent.putExtra(PatientsSearchActivity.SEARCH_STRING, searchString);
         startActivity(intent);
-        getActivity().finish();
     }
 
     // Confirmation dialog for confirming if the patient have an existing ID
@@ -341,14 +344,13 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     }
 
     private void launchFormDataList(boolean incompleteForms) {
-        Intent intent;
+        Intent intent = new Intent(getActivity(), FormsActivity.class);
         if (incompleteForms) {
-            intent = new Intent(getActivity().getApplicationContext(), IncompleteFormsListActivity.class);
+            intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, TAB_INCOMPLETE);
         } else {
-            intent = new Intent(getActivity().getApplicationContext(), CompletedFormsListActivity.class);
+            intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, TAB_COMPLETE);
         }
         startActivity(intent);
-        getActivity().finish();
     }
 
     private void closeBottomSheet() {

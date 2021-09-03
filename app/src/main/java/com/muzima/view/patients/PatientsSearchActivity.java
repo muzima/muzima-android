@@ -536,17 +536,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        patientAdapter.cancelBackgroundTask();
-        if (getCallingActivity() == null) {
-            launchDashboardActivity();
-        } else {
-            super.onBackPressed();
-            finish();
-        }
-    }
-
     private void launchDashboardActivity() {
         Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
         startActivity(intent);

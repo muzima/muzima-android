@@ -11,7 +11,6 @@
 package com.muzima.view.forms;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -77,8 +76,7 @@ public class FormsActivity extends FormsActivityBase {
         initPager();
         initDrawer();
         initPagerIndicator();
-        setTitle(R.string.general_forms);
-        logEvent("VIEW_ALL_FORMS");
+        logEvent("VIEW_FORM_DATA_LIST");
     }
 
     private void initToolbar() {
@@ -87,7 +85,7 @@ public class FormsActivity extends FormsActivityBase {
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(getResources().getString(R.string.info_complete_form));
+            getSupportActionBar().setTitle(getResources().getString(R.string.general_forms));
         }
     }
 
@@ -105,17 +103,6 @@ public class FormsActivity extends FormsActivityBase {
             formController.resetTagColors();
         }
         super.onDestroy();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(((FormsPagerAdapter) formsPagerAdapter).isFormDownloadBackgroundTaskRunning()) {
-            showWarningDialog();
-        }else{
-            Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
 
     @Override
@@ -342,12 +329,12 @@ public class FormsActivity extends FormsActivityBase {
             return;
         }
         switch (position) {
-            case FormsPagerAdapter.TAB_All:
-                showButtons(true, true, false);
-                ((FormsPagerAdapter) formsPagerAdapter).unselectList();
+            case FormsPagerAdapter.TAB_INCOMPLETE:
+                showButtons(true, false, false);
+                //((FormsPagerAdapter) formsPagerAdapter).unselectList();
                 break;
             case FormsPagerAdapter.TAB_COMPLETE:
-                showButtons(false, false, true);
+                showButtons(true, false, true);
                 break;
             default:
                 showButtons(false, false, false);
@@ -360,32 +347,4 @@ public class FormsActivity extends FormsActivityBase {
         menubarLoadButton.setVisible(menuLoadButton);
         menuUpload.setVisible(menuUploadButton);
     }
-
-    private void showWarningDialog(){
-        new AlertDialog.Builder(this)
-                .setIcon(getResources().getDrawable(R.drawable.ic_warning))
-                .setTitle(R.string.general_caution)
-                .setMessage(R.string.warning_cancel_form_download)
-                .setPositiveButton(R.string.general_yes, dialogYesClickListener())
-                .setNegativeButton(R.string.general_no, null)
-                .show();
-    }
-
-    private Dialog.OnClickListener dialogYesClickListener() {
-        return new Dialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                handleBackPressed();
-            }
-        };
-    }
-
-    public void handleBackPressed(){
-        super.onBackPressed();
-        ((FormsPagerAdapter) formsPagerAdapter).cancelBackgroundQueryTasks();
-        Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
 }
