@@ -18,12 +18,12 @@
             android:enabled="true"
             android:checked="true"
             android:checkable="true"
-            android:icon="?attr/icActionAccount"/>
+            android:icon="@drawable/ic_action_account_circle"/>
 
         <item
             android:id="@+id/nav_settings"
             android:title="@string/general_settings"
-            android:icon="?attr/ic_action_settings"/>
+            android:icon="@drawable/ic_action_settings"/>
     </group>
 
     <group
@@ -31,21 +31,21 @@
         <item
             android:id="@+id/nav_help"
             android:title="@string/help_general"
-            android:icon="?attr/ic_action_help"/>
+            android:icon="@drawable/ic_action_help"/>
 
         <item
             android:id="@+id/nav_feedback"
             android:title="@string/general_feedback"
-            android:icon="?attr/ic_action_mail_dark"/>
+            android:icon="@drawable/ic_action_feedback"/>
 
         <item
             android:id="@+id/nav_contact"
             android:title="@string/contact_us"
-            android:icon="?attr/ic_action_settings"/>
+            android:icon="@drawable/ic_action_mail"/>
 
         <item
             android:id="@+id/nav_logout"
             android:title="@string/general_logout"
-            android:icon="?attr/ic_action_power_setting_dark"/>
+            android:icon="@drawable/ic_action_power_setting"/>
     </group>
 </menu>

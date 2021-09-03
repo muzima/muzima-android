@@ -69,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:drawableLeft="?attr/icSearch"
+                    android:drawableLeft="@drawable/ic_search"
                     android:backgroundTint="@color/primary_blue"
                     android:gravity="center"
                     android:text="@string/title_search_server" />
@@ -84,7 +84,7 @@
             android:layout_margin="16dp"
             android:visibility="gone"
             android:scaleType="fitCenter"
-            android:src="?attr/icSearch" />
+            android:src="@drawable/ic_search" />
 
         <include layout="@layout/progress_bar" />
     </FrameLayout>

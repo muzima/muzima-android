@@ -20,7 +20,7 @@
             style="@style/ListHeader"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
-            android:background="?attr/listMultiSelectorBlue">
+            android:background="@drawable/list_multi_selector_blue">
     </TextView>
 
 </LinearLayout>

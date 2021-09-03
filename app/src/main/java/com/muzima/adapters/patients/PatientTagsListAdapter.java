@@ -3,7 +3,7 @@ package com.muzima.adapters.patients;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.AsyncTask;
+
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -89,7 +89,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
     }
 
     private void markItemUnselected(com.muzima.adapters.patients.PatientTagsListAdapter.ViewHolder holder, Resources resources) {
-        holder.icon.setImageDrawable(resources.getDrawable(R.drawable.ic_action_close_dark));
+        holder.icon.setImageDrawable(resources.getDrawable(R.drawable.ic_action_close));
         int drawerColor = resources.getColor(R.color.drawer_background);
         holder.indicator.setBackgroundColor(drawerColor);
     }

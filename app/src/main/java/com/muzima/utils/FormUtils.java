@@ -16,8 +16,6 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.collections.AvailableForms;
-import com.muzima.view.observations.ObservationsFragment;
-import com.muzima.view.patients.PatientSummaryActivity;
 
 import org.json.JSONException;
 

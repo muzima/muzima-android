@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
@@ -5,18 +15,18 @@
     android:viewportHeight="24"
     android:tint="?attr/colorControlNormal">
   <path
-      android:fillColor="@android:color/white"
+      android:fillColor="?attr/primaryDrawableColor"
       android:pathData="M17,19.22H5V7h7V5H5C3.9,5 3,5.9 3,7v12c0,1.1 0.9,2 2,2h12c1.1,0 2,-0.9 2,-2v-7h-2V19.22z"/>
   <path
-      android:fillColor="@android:color/white"
+      android:fillColor="?attr/primaryDrawableColor"
       android:pathData="M19,2h-2v3h-3c0.01,0.01 0,2 0,2h3v2.99c0.01,0.01 2,0 2,0V7h3V5h-3V2z"/>
   <path
-      android:fillColor="@android:color/white"
+      android:fillColor="?attr/primaryDrawableColor"
       android:pathData="M7,9h8v2h-8z"/>
   <path
-      android:fillColor="@android:color/white"
+      android:fillColor="?attr/primaryDrawableColor"
       android:pathData="M7,12l0,2l8,0l0,-2l-3,0z"/>
   <path
-      android:fillColor="@android:color/white"
+      android:fillColor="?attr/primaryDrawableColor"
       android:pathData="M7,15h8v2h-8z"/>
 </vector>

@@ -12,7 +12,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:background="?attr/listMultiSelectorBlue"
+              android:background="@drawable/list_multi_selector_blue"
               android:layout_marginBottom="3dp"
               android:layout_marginTop="3dp"
               android:orientation="vertical">

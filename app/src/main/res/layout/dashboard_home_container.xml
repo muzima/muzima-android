@@ -70,7 +70,7 @@
                         android:layout_centerVertical="true"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:src="?attr/icSearch" />
+                        android:src="@drawable/ic_search" />
 
                 </RelativeLayout>
 
@@ -183,7 +183,7 @@
                 android:layout_height="26dp"
                 android:layout_width="26dp"
                 android:layout_marginStart="2dp"
-                android:src="?attr/icActionArrowDown" />
+                android:src="@drawable/ic_action_arrow_down" />
 
         </LinearLayout>
 
@@ -244,7 +244,7 @@
                         android:layout_marginTop="30dp" />
 
                     <Button
-                        android:drawableLeft="?attr/icSearch"
+                        android:drawableLeft="@drawable/ic_search"
                         android:gravity="center"
                         android:backgroundTint="@color/primary_blue"
                         android:id="@+id/search_server_btn"
