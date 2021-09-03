@@ -467,8 +467,8 @@
     <string name="info_form_upload_success">Fomu zimefanikiwa kupakiwaa</string>
     <string name="info_forms_downloaded">Fomu %d zimepakuliwa</string>
     <string name="info_forms_unavailable">Hakuna fomu zinazopatikanwa</string>
-    <string name="info_incomplete_form_unvailable">Hakuna fomu ambazo hazijakamilika</string>
-    <string name="info_initial_setup_progress">Utaratibu wa mwanzo uko kazini. Tafadhali subiri.</string>
+    <string name="info_incomplete_form_unavailable">Hakuna fomu ambazo hazijakamilika</string>
+    <string name="info_initial_setup_progress">Utaratibu wa mwanzo uko kazini. Tafadhali subiri…</string>
     <string name="info_last_sync_unavailable">Bado haijalandanishwa</string>
     <string name="info_location_delete_success">Sehemu %d zimefanikiwa kufutwa</string>
     <string name="info_location_download">Sehemu zinapakuliwa</string>

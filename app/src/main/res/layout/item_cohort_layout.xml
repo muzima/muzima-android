@@ -20,12 +20,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/item_cohort_tags_list_view"
-                android:layout_marginTop="4dp"
-                android:scrollbars="none"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/item_cohort_tags_list_view"-->
+<!--                android:layout_marginTop="4dp"-->
+<!--                android:scrollbars="none"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"/>-->
 
             <TextView
                 android:id="@+id/item_cohort_name_text_view"
@@ -46,7 +46,7 @@
                 android:textStyle="italic"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:fontFamily="@font/roboto_regular"
+                android:fontFamily="@font/roboto_italic"
                 android:textColor="?attr/primaryTextColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

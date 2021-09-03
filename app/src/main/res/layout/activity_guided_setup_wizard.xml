@@ -109,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_regular"
-                android:text="@string/initial_setup_running_please_wait" />
+                android:text="@string/info_initial_setup_progress" />
 
             <ProgressBar
                 android:id="@+id/secondary_progress_bar"

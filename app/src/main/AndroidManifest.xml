@@ -98,7 +98,7 @@
             android:parentActivityName=".view.preferences.SettingsActivity">
         </activity>
         <activity
-            android:name=".view.HelpActivity"
+            android:name=".view.help.HelpActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_help"
             android:parentActivityName=".view.MainDashboardActivity">
@@ -107,7 +107,7 @@
                 android:value="com.muzima.view.MainDashboardActivity" />
         </activity>
         <activity
-            android:name=".view.InteractiveHelpActivity"
+            android:name=".view.help.InteractiveHelpActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/ask_help"
             android:parentActivityName=".view.MainDashboardActivity">
@@ -116,7 +116,7 @@
                 android:value="com.muzima.view.MainDashboardActivity" />
         </activity>
         <activity
-            android:name=".view.FeedbackActivity"
+            android:name=".view.help.FeedbackActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_feedback"
             android:parentActivityName=".view.MainDashboardActivity">
@@ -125,13 +125,13 @@
                 android:value="com.muzima.view.MainDashboardActivity" />
         </activity>
         <activity
-            android:name=".view.WebViewActivity"
+            android:name=".view.help.WebViewActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_help"
             android:parentActivityName=".view.BaseActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.WebViewActivity" />
+                android:value="com.muzima.view.help.WebViewActivity" />
         </activity>
         <activity
             android:name=".view.patients.PatientsSearchActivity"
@@ -336,14 +336,14 @@
 
         <!-- Wizard Activities Start -->
         <activity
-            android:name=".view.setupconfiguration.SetupMethodPreferenceWizardActivity"
+            android:name=".view.initialwizard.SetupMethodPreferenceWizardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_setup_method"
             android:screenOrientation="portrait"
             android:theme="@style/WizardTheme.Dark"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".view.setupconfiguration.GuidedConfigurationWizardActivity"
+            android:name=".view.initialwizard.GuidedConfigurationWizardActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_guided_setup_wizard"
             android:theme="@style/WizardTheme.Dark" />
@@ -385,23 +385,23 @@
         <activity android:name=".view.barcode.BarcodeCaptureActivity" />
 
         <activity
-            android:name=".view.YouTubeVideoViewActivity"
+            android:name=".view.help.YouTubeVideoViewActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_help"
-            android:parentActivityName=".view.HelpActivity">
+            android:parentActivityName=".view.help.HelpActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.HelpActivity" />
+                android:value="com.muzima.view.help.HelpActivity" />
         </activity>
         <activity
-            android:name=".view.VideoWebViewActivity"
+            android:name=".view.help.VideoWebViewActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
             android:label="@string/general_help"
-            android:parentActivityName=".view.HelpActivity">
+            android:parentActivityName=".view.help.HelpActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.HelpActivity" />
+                android:value="com.muzima.view.help.HelpActivity" />
         </activity>
         <activity
             android:name=".view.relationship.RelationshipFormsActivity"
@@ -425,12 +425,19 @@
             android:parentActivityName=".view.patients.PatientSummaryActivity"
             android:theme="@style/DialogNoTitleBar" />
 
-        <activity android:name=".view.fragments.OnboardScreenActivity" />
-        <activity android:name=".view.TermsAndPolicyActivity" />
+        <activity android:name=".view.initialwizard.OnboardScreenActivity" />
+        <activity android:name=".view.initialwizard.TermsAndPolicyActivity" />
         <activity android:name=".view.MainDashboardActivity"
                   android:configChanges="orientation|screenSize"
                   android:theme="@style/LoginTheme.Dark"/>
-        <activity android:name=".view.ClientSummaryActivity" />
+        <activity android:name=".view.patients.ClientSummaryActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_client_summary"
+            android:parentActivityName=".view.MainDashboardActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".view.MainDashboardActivity" />
+        </activity>
         <activity android:name=".view.forms.IncompleteFormsListActivity" />
         <activity android:name=".view.forms.CompletedFormsListActivity" />
         <activity android:name=".view.cohort.CohortPagerActivity"

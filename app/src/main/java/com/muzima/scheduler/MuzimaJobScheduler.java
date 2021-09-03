@@ -22,7 +22,7 @@ import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.view.forms.SyncFormIntent;
 import com.muzima.view.reports.SyncAllPatientReports;
-import com.muzima.view.setupconfiguration.SyncSetupConfigurationTemplates;
+import com.muzima.view.initialwizard.SyncSetupConfigurationTemplates;
 
 @SuppressLint("NewApi")
 public class MuzimaJobScheduler extends JobService {

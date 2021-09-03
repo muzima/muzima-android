@@ -464,8 +464,8 @@
     <string name="info_form_upload_success">ફોર્મ્સ સફળતાપૂર્વક અપલોડ થયા</string>
     <string name="info_forms_downloaded">%d ફોર્મ્સ ડાઉનલોડ કર્યા</string>
     <string name="info_forms_unavailable">કોઈ ફોર્મ ઉપલબ્ધ નથી</string>
-    <string name="info_incomplete_form_unvailable">કોઈ અપૂર્ણ ફોર્મ્સ નથી</string>
-    <string name="info_initial_setup_progress">પ્રારંભિક સેટઅપ ચાલી રહ્યું છે. કૃપા કરી રાહ જુવો</string>
+    <string name="info_incomplete_form_unavailable">કોઈ અપૂર્ણ ફોર્મ્સ નથી</string>
+    <string name="info_initial_setup_progress">પ્રારંભિક સેટઅપ ચાલી રહ્યું છે. કૃપા કરી રાહ જુવો…</string>
     <string name="info_last_sync_unavailable">હજી સમન્વયિત થયેલું નથી</string>
     <string name="info_location_delete_success">%d સ્થાનો સફળતાપૂર્વક કાઢી નાખ્યા</string>
     <string name="info_location_download">સ્થાનો ડાઉનલોડ કરી રહ્યાં છે</string>

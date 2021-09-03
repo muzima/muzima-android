@@ -15,8 +15,6 @@ import androidx.fragment.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
-import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
@@ -24,8 +22,7 @@ import com.muzima.api.model.Observation;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
-import com.muzima.view.ClientSummaryActivity;
-
+import com.muzima.view.patients.ClientSummaryActivity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,7 +137,5 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
             }
             return text;
         }
-
-
     }
 }

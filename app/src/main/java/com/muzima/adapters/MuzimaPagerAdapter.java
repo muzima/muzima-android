@@ -14,7 +14,7 @@ import android.content.Context;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import com.muzima.view.MuzimaListFragment;
+import com.muzima.view.fragments.MuzimaListFragment;
 
 public abstract class MuzimaPagerAdapter extends FragmentPagerAdapter{
     protected PagerView[] pagers;

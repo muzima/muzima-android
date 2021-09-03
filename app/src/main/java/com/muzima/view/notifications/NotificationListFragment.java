@@ -26,7 +26,7 @@ import com.muzima.adapters.notification.NotificationAdapter;
 import com.muzima.adapters.providers.ProvidersAdapter;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ProviderController;
-import com.muzima.view.MuzimaListFragment;
+import com.muzima.view.fragments.MuzimaListFragment;
 
 public abstract class NotificationListFragment extends MuzimaListFragment implements ListAdapter.BackgroundListQueryTaskListener{
 

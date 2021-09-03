@@ -463,8 +463,8 @@
     <string name="info_form_upload_success">फॉर्म सफलतापूर्वक अपलोड किए गए</string>
     <string name="info_forms_downloaded">%d फॉर्म डाउनलोड किए गए</string>
     <string name="info_forms_unavailable">कोई फॉर्म उपलब्ध नहीं है</string>
-    <string name="info_incomplete_form_unvailable">कोई अपूर्ण फॉर्म नहीं</string>
-    <string name="info_initial_setup_progress">प्रारंभिक सेटअप चल रहा है। कृपया प्रतीक्षा कीजिये</string>
+    <string name="info_incomplete_form_unavailable">कोई अपूर्ण फॉर्म नहीं</string>
+    <string name="info_initial_setup_progress">प्रारंभिक सेटअप चल रहा है। कृपया प्रतीक्षा कीजिये…</string>
     <string name="info_last_sync_unavailable">अभी तक समन्वयित नहीं किया गया है</string>
     <string name="info_location_delete_success">%d स्थान सफलतापूर्वक हटा दिए गए</string>
     <string name="info_location_download">स्थान डाउनलोड करना</string>
