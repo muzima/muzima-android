@@ -29,44 +29,41 @@ import com.google.android.material.tabs.TabLayout;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.ClientDynamicObsFormsAdapter;
-import com.muzima.adapters.forms.FormSummaryCardsAdapter;
+import com.muzima.adapters.patients.ClientSummaryPagerAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.SingleObsForm;
 import com.muzima.model.SummaryCard;
-import com.muzima.model.enums.CardsSummaryCategory;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import com.muzima.model.events.CloseSingleFormEvent;
 import com.muzima.model.events.ReloadObservationsDataEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
-import com.muzima.tasks.FormsCountService;
-import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.FormUtils;
 import com.muzima.utils.LanguageUtil;
-import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
-import com.muzima.adapters.patients.ClientSummaryPagerAdapter;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.FormsWithDataActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
+import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 
-public class PatientSummaryActivity extends AppCompatActivity implements FormSummaryCardsAdapter.OnCardClickedListener, FormsCountService.FormsCountServiceCallback, ClientDynamicObsFormsAdapter.DatePickerClickedListener {
+public class PatientSummaryActivity extends AppCompatActivity implements ClientDynamicObsFormsAdapter.DatePickerClickedListener {
     private static final String TAG = "PatientSummaryActivity";
     public static final String PATIENT = "patient";
     public static final String PATIENT_UUID = "patient_uuid";
@@ -81,6 +78,10 @@ public class PatientSummaryActivity extends AppCompatActivity implements FormSum
     private TextView gpsAddressTextView;
     private TextView ageTextView;
     private TextView bottomSheetConceptTitleTextView;
+    private TextView incompleteFormsCountView;
+    private TextView completeFormsCountView;
+    private View incompleteFormsView;
+    private View completeFormsView;
     private TextView incompleteForms;
     private TextView completeForms;
     private View childContainerView;
@@ -108,7 +109,7 @@ public class PatientSummaryActivity extends AppCompatActivity implements FormSum
         setContentView(R.layout.activity_main_client_summary);
         initializeResources();
         loadPatientData();
-        loadFormsCountData();
+        loadFormsCount();
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
@@ -205,17 +206,6 @@ public class PatientSummaryActivity extends AppCompatActivity implements FormSum
         }
     }
 
-    @Override
-    public void onFormsCountLoaded(final long completeFormsCount, final long incompleteFormsCount) {
-        incompleteForms.setText(String.format(Locale.getDefault(), "%d", incompleteFormsCount));
-        completeForms.setText(String.format(Locale.getDefault(),"%d", incompleteFormsCount));
-    }
-
-    private void loadFormsCountData() {
-        ((MuzimaApplication) getApplicationContext()).getExecutorService()
-                .execute(new FormsCountService(patient.getUuid(), getApplicationContext(), this));
-    }
-
     private void loadPatientData() {
         try {
             patientUuid = getIntent().getStringExtra(PATIENT_UUID);
@@ -280,14 +270,30 @@ public class PatientSummaryActivity extends AppCompatActivity implements FormSum
         clientDynamicObsFormsAdapter = new ClientDynamicObsFormsAdapter(getApplicationContext(), singleObsFormsList, this);
         singleObsFormsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         singleObsFormsRecyclerView.setAdapter(clientDynamicObsFormsAdapter);
-        incompleteForms = findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
-        completeForms = findViewById(R.id.dashboard_forms_complete_forms_count_view);
+        incompleteFormsCountView = findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
+        completeFormsCountView = findViewById(R.id.dashboard_forms_complete_forms_count_view);
+        incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
+        completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        incompleteFormsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchFormDataList(true);
+            }
+        });
+
+        completeFormsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchFormDataList(false);
+            }
+        });
 
         cancelBottomSheetActionView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -370,53 +376,22 @@ public class PatientSummaryActivity extends AppCompatActivity implements FormSum
         return true;
     }
 
+    private void loadFormsCount() {
+        try {
+            long incompleteForms = ((MuzimaApplication) getApplicationContext()).getFormController().countCompleteFormsForPatient(patientUuid);
+            long completeForms = ((MuzimaApplication) getApplicationContext()).getFormController().countIncompleteFormsForPatient(patientUuid);
+            incompleteFormsCountView.setText(String.valueOf(incompleteForms));
+            completeFormsCountView.setText(String.valueOf(completeForms));
+        } catch (FormController.FormFetchException e) {
+            Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);
+        }
+    }
+
     @Subscribe
     public void closeSingleFormEvent(CloseSingleFormEvent event) {
         int position = event.getPosition();
         singleObsFormsList.remove(position);
         clientDynamicObsFormsAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onCardClicked(int position) {
-        SummaryCard header = formsSummaries.get(position);
-        CardsSummaryCategory category = header.getCategory();
-        switch (category) {
-            case COMPLETE_FORMS:
-                MuzimaPreferences.setFormsActivityActionModePreference(getApplicationContext(), Constants.FORMS_LAUNCH_MODE.COMPLETE_FORMS_VIEW);
-                Intent completeFormsIntent = new Intent(getApplicationContext(), FormsWithDataActivity.class);
-                completeFormsIntent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, 1);
-                startActivity(completeFormsIntent);
-                finish();
-                break;
-            case INCOMPLETE_FORMS:
-                MuzimaPreferences.setFormsActivityActionModePreference(getApplicationContext(), Constants.FORMS_LAUNCH_MODE.INCOMPLETE_FORMS_VIEW);
-                Intent intent = new Intent(getApplicationContext(), FormsWithDataActivity.class);
-                intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, 1);
-                startActivity(intent);
-                finish();
-                break;
-            case EMERGENCY_CONTACT:
-                break;
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (getIntent().getStringExtra(CALLING_ACTIVITY) != null && getIntent().getStringExtra(CALLING_ACTIVITY).equalsIgnoreCase(PatientsSearchActivity.class.getSimpleName())) {
-            Intent intent = new Intent(getApplicationContext(), PatientsSearchActivity.class);
-            startActivity(intent);
-            finish();
-        } else if (getIntent().getStringExtra(CALLING_ACTIVITY) != null && getIntent().getStringExtra(CALLING_ACTIVITY).equalsIgnoreCase(MainDashboardActivity.class.getSimpleName())) {
-            Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            //ToDo: Discuss whether we should just navigate back to the dashboard irrespective of the type of calling activity
-            Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -445,7 +420,18 @@ public class PatientSummaryActivity extends AppCompatActivity implements FormSum
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT) {
-            loadFormsCountData();
+            loadFormsCount();
         }
+    }
+
+
+    private void launchFormDataList(boolean isIncompleteFormsData) {
+        Intent intent = new Intent(this, FormsWithDataActivity.class);
+        if (isIncompleteFormsData) {
+            intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_INCOMPLETE);
+        } else {
+            intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_COMPLETE);
+        }
+        startActivity(intent);
     }
 }

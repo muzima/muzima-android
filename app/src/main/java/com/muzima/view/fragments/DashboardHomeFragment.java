@@ -102,7 +102,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     @Override
     public void onResume(){
         super.onResume();
-        setUpFormsCount();
+        loadFormsCount();
     }
 
     private void setupListView(View view) {
@@ -225,20 +225,15 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     }
 
 
-    private void setUpFormsCount() {
+    private void loadFormsCount() {
         try {
             long incompleteForms = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().countAllIncompleteForms();
             long completeForms = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().countAllCompleteForms();
             incompleteFormsTextView.setText(String.valueOf(incompleteForms));
-            applyFormsCount(incompleteFormsTextView, incompleteForms);
-            applyFormsCount(completeFormsTextView, completeForms);
+            completeFormsTextView.setText(String.valueOf(completeForms));
         } catch (FormController.FormFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);
         }
-    }
-
-    private void applyFormsCount(TextView textView, long count) {
-        textView.setText(String.valueOf(count));
     }
 
     private void showRegistrationFormsMissingAlert() {
@@ -341,9 +336,9 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         }
     }
 
-    private void launchFormDataList(boolean incompleteForms) {
+    private void launchFormDataList(boolean isIncompleteFormsData) {
         Intent intent = new Intent(getActivity(), FormsWithDataActivity.class);
-        if (incompleteForms) {
+        if (isIncompleteFormsData) {
             intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_INCOMPLETE);
         } else {
             intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_COMPLETE);
