@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/item_single_obs_container"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+    <LinearLayout
+            android:id="@+id/value_container"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/observation_value"
+                android:fontFamily="@font/montserrat_regular"
+                android:layout_gravity="center_horizontal"
+                android:textSize="16sp"
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <ImageView
+                android:id="@+id/observation_complex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/complex_obs"
+                android:src="@android:drawable/ic_menu_gallery"
+                android:visibility="gone"/>
+
+        <LinearLayout
+                android:id="@+id/date_container"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="UseCompoundDrawables">
+
+            <TextView
+                    android:id="@+id/item_single_obs_date_text_view"
+                    android:fontFamily="@font/roboto_regular"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12sp"
+                    android:gravity="center_horizontal"
+                    android:drawablePadding="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <ImageView
+                    android:id="@+id/shr_card_obs_image_view"
+                    android:contentDescription="@string/SHR_card_text"
+                    app:srcCompat="@drawable/ic_action_no_shr_card"
+                    android:visibility="gone"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginStart="3dp"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View android:layout_width="2dp"
+          android:layout_height="match_parent"
+          android:layout_marginStart="8dp"
+          android:background="@color/hint_text_grey_opaque"/>
+</LinearLayout>
+

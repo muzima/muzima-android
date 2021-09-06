@@ -35,7 +35,7 @@ public class ObsVerticalListConceptsRecyclerView extends Adapter<ObsVerticalList
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_obs_vertical_list_item, parent, false), conceptInputLabelClickedListener);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_observation_by_concept_list_2, parent, false), conceptInputLabelClickedListener);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ObsVerticalListConceptsRecyclerView extends Adapter<ObsVerticalList
             public void onObservationClicked(int position) {
                 EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(conceptWrapperList.get(position)));
             }
-        }, null, null);
+        }, null, null, false);
         holder.obsHorizontalListRecyclerView.setAdapter(observationsListAdapter);
     }
 
@@ -67,8 +67,8 @@ public class ObsVerticalListConceptsRecyclerView extends Adapter<ObsVerticalList
 
         public ViewHolder(@NonNull View itemView, ConceptInputLabelClickedListener conceptInputLabelClickedListener) {
             super(itemView);
-            this.titleTextView = itemView.findViewById(R.id.item_obs_vertical_list_title_text_view);
-            this.obsHorizontalListRecyclerView = itemView.findViewById(R.id.item_obs_vertical_list_obs_horizontal_recycler_view);
+            this.titleTextView = itemView.findViewById(R.id.obs_concept);
+            this.obsHorizontalListRecyclerView = itemView.findViewById(R.id.obs_list);
             this.conceptInputLabelClickedListener = conceptInputLabelClickedListener;
             this.titleTextView.setOnClickListener(this);
         }

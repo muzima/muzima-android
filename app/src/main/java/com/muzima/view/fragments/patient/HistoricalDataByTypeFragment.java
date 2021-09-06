@@ -25,12 +25,12 @@ public class HistoricalDataByTypeFragment extends Fragment implements Observatio
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_observations_list, container, false);
+        return inflater.inflate(R.layout.fragment_historical_data_list, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        MuzimaRecyclerView obsByTypeRecyclerView = view.findViewById(R.id.observations_list_recycler_view);
+        MuzimaRecyclerView obsByTypeRecyclerView = view.findViewById(R.id.recycler_list);
         obsByTypeRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
         observationsByTypeAdapter = new ObservationsByTypeAdapter(requireActivity().getApplicationContext(), patientUuid,

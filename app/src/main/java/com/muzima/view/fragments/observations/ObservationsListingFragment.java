@@ -55,7 +55,7 @@ public class ObservationsListingFragment extends Fragment {
     }
 
     private void initializeResources(@NotNull View view) {
-        conceptsListRecyclerView = view.findViewById(R.id.observations_list_recycler_view);
+        conceptsListRecyclerView = view.findViewById(R.id.recycler_list);
         conceptsListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         adapter = new ObsVerticalListConceptsRecyclerView(getActivity().getApplicationContext(), obsConceptWrapperList, isSingleElementInputEnabled, new ObsVerticalListConceptsRecyclerView.ConceptInputLabelClickedListener() {
             @Override

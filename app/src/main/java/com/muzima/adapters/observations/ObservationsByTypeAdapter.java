@@ -18,7 +18,6 @@ import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.utils.BackgroundTaskHelper;
-import com.muzima.utils.Constants;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationAdapte
     protected Context context;
     private final String patientUuid;
     private final boolean inputRendering;
-    private List<Integer> shrConcepts;
     private List<ConceptWithObservations> conceptWithObservationsList;
     private final ConceptInputLabelClickedListener conceptInputLabelClickedListener;
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
@@ -39,15 +37,11 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationAdapte
     final ObservationController observationController;
     private final Boolean isShrData;
 
-    public ObservationsByTypeAdapter(Context context,
-                                     String patientUuid,
-                                     Boolean isShrData,
-                                     boolean inputRendering,
+    public ObservationsByTypeAdapter(Context context, String patientUuid, Boolean isShrData, boolean inputRendering,
                                      ConceptInputLabelClickedListener conceptInputLabelClickedListener) {
         this.context = context;
         this.patientUuid = patientUuid;
         this.isShrData = isShrData;
-        loadComposedShrConceptId();
         this.inputRendering = inputRendering;
         this.conceptInputLabelClickedListener = conceptInputLabelClickedListener;
         MuzimaApplication app = (MuzimaApplication) context.getApplicationContext();
@@ -60,7 +54,7 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_obs_vertical_list_item, parent, false), conceptInputLabelClickedListener);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_observation_by_concept_list_2, parent, false), conceptInputLabelClickedListener);
     }
 
     @Override
@@ -81,7 +75,7 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationAdapte
             public void onObservationClicked(int position) {
 //                EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(conceptWithObservationsList.get(position)));
             }
-        }, encounterController, observationController);
+        }, encounterController, observationController, isShrData);
         holder.obsHorizontalListRecyclerView.setAdapter(observationsListAdapter);
     }
 
@@ -134,18 +128,6 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationAdapte
         this.backgroundQueryTask = backgroundQueryTask;
     }
 
-    private void loadComposedShrConceptId() {
-        List<Integer> conceptIds = new ArrayList<>();
-        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_RESULT.concept_id);
-        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_TYPE.concept_id);
-        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_STRATEGY.concept_id);
-        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.VACCINE.concept_id);
-        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.SEQUENCE.concept_id);
-        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.GROUP.concept_id);
-
-        shrConcepts = conceptIds;
-    }
-
     public static class ViewHolder extends RecyclerAdapter.ViewHolder implements View.OnClickListener{
         private final TextView titleTextView;
         private final RecyclerView obsHorizontalListRecyclerView;
@@ -153,8 +135,8 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationAdapte
 
         public ViewHolder(@NonNull View itemView, ConceptInputLabelClickedListener conceptInputLabelClickedListener) {
             super(itemView);
-            this.titleTextView = itemView.findViewById(R.id.item_obs_vertical_list_title_text_view);
-            this.obsHorizontalListRecyclerView = itemView.findViewById(R.id.item_obs_vertical_list_obs_horizontal_recycler_view);
+            this.titleTextView = itemView.findViewById(R.id.obs_concept);
+            this.obsHorizontalListRecyclerView = itemView.findViewById(R.id.obs_list);
             this.conceptInputLabelClickedListener = conceptInputLabelClickedListener;
             this.titleTextView.setOnClickListener(this);
         }
