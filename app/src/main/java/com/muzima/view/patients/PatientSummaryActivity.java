@@ -461,8 +461,8 @@ public class PatientSummaryActivity extends BaseActivity {
 
             try {
                 patientSummaryActivityMetadata.recommendedForms = formController.getRecommendedFormsCount();
-                patientSummaryActivityMetadata.completeForms = formController.getCompleteFormsCountForPatient(patient.getUuid());
-                patientSummaryActivityMetadata.incompleteForms = formController.getIncompleteFormsCountForPatient(patient.getUuid());
+                patientSummaryActivityMetadata.completeForms = formController.countCompleteFormsForPatient(patient.getUuid());
+                patientSummaryActivityMetadata.incompleteForms = formController.countIncompleteFormsForPatient(patient.getUuid());
                 patientSummaryActivityMetadata.observations = observationController.getObservationsCountByPatient(patient.getUuid());
                 patientSummaryActivityMetadata.encounters = encounterController.getEncountersCountByPatient(patient.getUuid());
                 patientSummaryActivityMetadata.reports = reportController.getPatientReportCountByPatientUuid(patient.getUuid());

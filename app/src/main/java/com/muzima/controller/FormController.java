@@ -582,11 +582,11 @@ public class FormController {
         return getAllCompleteFormsWithPatientData(null).size();
     }
 
-    public int getCompleteFormsCountForPatient(String patientId) throws FormFetchException {
+    public int countCompleteFormsForPatient(String patientId) throws FormFetchException {
         return getAllCompleteFormsForPatientUuid(patientId).size();
     }
 
-    public int getIncompleteFormsCountForPatient(String patientId) throws FormFetchException {
+    public int countIncompleteFormsForPatient(String patientId) throws FormFetchException {
         return getAllIncompleteFormsForPatientUuid(patientId).size();
     }
 
