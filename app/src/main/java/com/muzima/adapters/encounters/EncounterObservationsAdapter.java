@@ -60,14 +60,12 @@ public class EncounterObservationsAdapter extends RecyclerAdapter<EncountersByPa
     private void bindViews(@NotNull ViewHolder holder, int position) {
         Observation observation = observationList.get(position);
         holder.setObservation(observation);
-
     }
 
     @Override
     public int getItemCount() {
         return observationList.size();
     }
-
 
     @Override
     public void reloadData() {
@@ -88,15 +86,14 @@ public class EncounterObservationsAdapter extends RecyclerAdapter<EncountersByPa
         public ViewHolder(@NonNull View view) {
             super(view);
             this.conceptQuestion = view.findViewById(R.id.observationHeader);
-            this.observationDate = view.findViewById(R.id.observationValue);
-            this.observationValue = view.findViewById(R.id.observationDate);
+            this.observationDate = view.findViewById(R.id.observationDate);
+            this.observationValue = view.findViewById(R.id.observationValue);
             this.observationComplex = view.findViewById(R.id.observationComplex);
             this.divider = view.findViewById(R.id.divider);
         }
 
         void setObservation(Observation observation) {
             int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
-
             String observationConceptType = observation.getConcept().getConceptType().getName();
 
             if (StringUtils.equals(observationConceptType, "Complex")){
@@ -123,25 +120,22 @@ public class EncounterObservationsAdapter extends RecyclerAdapter<EncountersByPa
     private class BackgroundQueryTask extends MuzimaAsyncTask<String, Void, List<Observation>> {
         @Override
         protected void onPreExecute() {
-            if (backgroundListQueryTaskListener != null) {
+            if (backgroundListQueryTaskListener != null)
                 backgroundListQueryTaskListener.onQueryTaskStarted();
-            }
         }
 
         @Override
         protected List<Observation> doInBackground(String... params) {
             List<Observation> observations = null;
+            try {
+                observations = new ArrayList<>();
+                Encounters encounterWithObservations = observationController.getObservationsByEncounterUuid(encounterUuid);
 
-             try {
-                 observations= new ArrayList<>();
-                 Encounters encounterWithObservations  = observationController.getObservationsByEncounterUuid(encounterUuid);
-
-                 for(EncounterWithObservations encounterWithObs:encounterWithObservations){
-                     observations.addAll(encounterWithObs.getObservations());
-                 }
-
-             }catch(ObservationController.LoadObservationException e){
-                Log.e(this.getClass().getSimpleName(),"Could not get Observations", e);
+                for (EncounterWithObservations encounterWithObs : encounterWithObservations) {
+                    observations.addAll(encounterWithObs.getObservations());
+                }
+            } catch (ObservationController.LoadObservationException e) {
+                Log.e(this.getClass().getSimpleName(), "Could not get Observations", e);
             }
             return observations;
         }

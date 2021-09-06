@@ -9,8 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Concept;
+import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import org.greenrobot.eventbus.EventBus;
@@ -25,12 +29,17 @@ public class ObsVerticalListConceptsRecyclerView extends Adapter<ObsVerticalList
     private List<ObsConceptWrapper> conceptWrapperList;
     private boolean inputRendering;
     private ConceptInputLabelClickedListener conceptInputLabelClickedListener;
+    final EncounterController encounterController;
+    final ObservationController observationController;
 
     public ObsVerticalListConceptsRecyclerView(Context context, List<ObsConceptWrapper> conceptWrapperList, boolean inputRendering, ConceptInputLabelClickedListener conceptInputLabelClickedListener) {
         this.context = context;
         this.conceptWrapperList = conceptWrapperList;
         this.inputRendering = inputRendering;
         this.conceptInputLabelClickedListener = conceptInputLabelClickedListener;
+        MuzimaApplication app = (MuzimaApplication) context.getApplicationContext();
+        this.encounterController = app.getEncounterController();
+        this.observationController = app.getObservationController();
     }
 
     @NonNull
@@ -52,7 +61,7 @@ public class ObsVerticalListConceptsRecyclerView extends Adapter<ObsVerticalList
             public void onObservationClicked(int position) {
                 EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(conceptWrapperList.get(position)));
             }
-        }, null, null, false, false);
+        }, encounterController, observationController, false, inputRendering);
         holder.obsHorizontalListRecyclerView.setAdapter(observationsListAdapter);
     }
 

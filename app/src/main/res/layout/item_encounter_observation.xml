@@ -41,4 +41,9 @@
               android:textSize="14sp"
               android:layout_weight=".5"
               style="@style/ObservationDate"/>
+
+    <View android:id="@+id/border"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/hint_text_grey_opaque"/>
 </LinearLayout>
