@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
-import com.muzima.adapters.encounters.EncounterObservationsAdapter2;
+import com.muzima.adapters.encounters.EncounterObservationsAdapter;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.DateUtils;
@@ -29,7 +29,7 @@ import com.muzima.view.custom.MuzimaRecyclerView;
 public class EncounterSummaryActivity  extends BroadcastListenerActivity implements RecyclerAdapter.BackgroundListQueryTaskListener {
     public static final String ENCOUNTER="encounter";
     private Encounter encounter;
-    private EncounterObservationsAdapter2 encounterObservationsAdapter;
+    private EncounterObservationsAdapter encounterObservationsAdapter;
     private LinearLayout noDataView;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
@@ -99,7 +99,7 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
 
     private void setUpEncounterObservations(){
         MuzimaRecyclerView encounterObservationsView = findViewById(R.id.encounter_observations_list);
-        encounterObservationsAdapter = new EncounterObservationsAdapter2(this,
+        encounterObservationsAdapter = new EncounterObservationsAdapter(this,
                 ((MuzimaApplication) getApplicationContext()).getObservationController(),encounter.getUuid());
         encounterObservationsAdapter.setBackgroundListQueryTaskListener(this);
         encounterObservationsView.setLayoutManager(new LinearLayoutManager(this));

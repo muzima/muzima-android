@@ -11,16 +11,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
-import com.muzima.adapters.encounters.EncountersByPatientAdapter2;
+import com.muzima.adapters.encounters.EncountersByPatientAdapter;
 import com.muzima.api.model.Encounter;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.MuzimaRecyclerView;
 import com.muzima.view.encounters.EncounterSummaryActivity;
 
-public class HistoricalDataByEncounterFragment extends Fragment implements EncountersByPatientAdapter2.EncounterClickedListener, RecyclerAdapter.BackgroundListQueryTaskListener {
+public class HistoricalDataByEncounterFragment extends Fragment implements EncountersByPatientAdapter.EncounterClickedListener, RecyclerAdapter.BackgroundListQueryTaskListener {
     private final String patientUuid;
-    private EncountersByPatientAdapter2 encountersByPatientAdapter;
-    private MuzimaRecyclerView encounterRecyclerView;
+    private EncountersByPatientAdapter encountersByPatientAdapter;
 
     public HistoricalDataByEncounterFragment(String patientUuid) {
         this.patientUuid = patientUuid;
@@ -34,10 +33,9 @@ public class HistoricalDataByEncounterFragment extends Fragment implements Encou
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        encounterRecyclerView = view.findViewById(R.id.recycler_list);
+        MuzimaRecyclerView encounterRecyclerView = view.findViewById(R.id.recycler_list);
         encounterRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-
-        encountersByPatientAdapter = new EncountersByPatientAdapter2(requireActivity().getApplicationContext(), patientUuid, this);
+        encountersByPatientAdapter = new EncountersByPatientAdapter(requireActivity().getApplicationContext(), patientUuid, this);
         encountersByPatientAdapter.setBackgroundListQueryTaskListener(this);
         encounterRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
         encounterRecyclerView.setAdapter(encountersByPatientAdapter);
@@ -49,7 +47,6 @@ public class HistoricalDataByEncounterFragment extends Fragment implements Encou
 
     @Override
     public void onEncounterClicked(int position) {
-        System.out.println("Ngaguthwo");
         Encounter encounter = encountersByPatientAdapter.getItem(position);
         Intent intent = new Intent(requireActivity(), EncounterSummaryActivity.class);
         intent.putExtra(EncounterSummaryActivity.ENCOUNTER, encounter);

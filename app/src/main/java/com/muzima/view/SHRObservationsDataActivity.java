@@ -29,7 +29,7 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.custom.PagerSlidingTabStrip;
-import com.muzima.view.patients.PatientSummaryActivity;
+import com.muzima.view.patients.ClientSummaryActivity;
 
 import java.util.List;
 
@@ -96,7 +96,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
      * Set up the {@link androidx.appcompat.app.ActionBar}.
      */
     private void setupActionBar() {
-        patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
+        patient = (Patient) getIntent().getSerializableExtra(ClientSummaryActivity.PATIENT);
         getSupportActionBar().setTitle(patient.getSummary());
     }
 

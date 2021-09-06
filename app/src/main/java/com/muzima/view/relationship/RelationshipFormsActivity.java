@@ -28,7 +28,7 @@ import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.forms.FormViewIntent;
-import com.muzima.view.patients.PatientSummaryActivity;
+import com.muzima.view.patients.ClientSummaryActivity;
 
 import java.util.UUID;
 
@@ -105,7 +105,7 @@ public class RelationshipFormsActivity extends AppCompatActivity {
         startActivity(intent);
 
         Intent resultIntent = new Intent();
-        resultIntent.putExtra(PatientSummaryActivity.PATIENT, patient);
+        resultIntent.putExtra(ClientSummaryActivity.PATIENT, patient);
         setResult(0, resultIntent);
         finish();
     }

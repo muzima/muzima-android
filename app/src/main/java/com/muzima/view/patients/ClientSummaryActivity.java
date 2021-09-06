@@ -71,6 +71,8 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     public static final String PATIENT = "patient";
     public static final String PATIENT_UUID = "patient_uuid";
     public static final String CALLING_ACTIVITY = "calling_activity_key";
+    public static final boolean DEFAULT_SHR_STATUS = false;
+    private static final boolean DEFAULT_RELATIONSHIP_STATUS = false;
     private Toolbar toolbar;
     private TextView patientNameTextView;
     private ImageView patientGenderImageView;

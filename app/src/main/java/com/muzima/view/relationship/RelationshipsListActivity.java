@@ -56,7 +56,8 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.PersonDemographicsUpdateFormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
-import com.muzima.view.patients.PatientSummaryActivity;
+import com.muzima.view.patients.ClientSummaryActivity;
+import com.muzima.view.patients.ClientSummaryActivity;
 import es.dmoral.toasty.Toasty;
 import org.json.JSONException;
 
@@ -100,7 +101,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_relationships);
-        patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
+        patient = (Patient) getIntent().getSerializableExtra(ClientSummaryActivity.PATIENT);
         addRelationshipView = findViewById(R.id.add_relationship);
         autoCompletePersonTextView = findViewById(R.id.search_related_person);
         textViewInfo = findViewById(R.id.info);
@@ -226,9 +227,9 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                             relatedPerson = patientController.getPatientByUuid(relationship.getPersonA().getUuid());
 
                         if (relatedPerson != null) {
-                            Intent intent = new Intent(RelationshipsListActivity.this, PatientSummaryActivity.class);
+                            Intent intent = new Intent(RelationshipsListActivity.this, ClientSummaryActivity.class);
 
-                            intent.putExtra(PatientSummaryActivity.PATIENT, relatedPerson);
+                            intent.putExtra(ClientSummaryActivity.PATIENT, relatedPerson);
                             startActivity(intent);
                         } else {
                             // We pick the right related person and create them as a patient
@@ -280,7 +281,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         pat.setGender(selectedRelatedPerson.getGender());
         pat.setNames(selectedRelatedPerson.getNames());
 
-        intent.putExtra(PatientSummaryActivity.PATIENT, pat);
+        intent.putExtra(ClientSummaryActivity.PATIENT, pat);
         intent.putExtra(INDEX_PATIENT, patient);
         startActivity(intent);
     }
@@ -523,8 +524,8 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             // create person form
 
             if (resultCode == 0 && data != null) {
-                if (data.hasExtra(PatientSummaryActivity.PATIENT)) {
-                    Patient patient = (Patient) data.getSerializableExtra(PatientSummaryActivity.PATIENT);
+                if (data.hasExtra(ClientSummaryActivity.PATIENT)) {
+                    Patient patient = (Patient) data.getSerializableExtra(ClientSummaryActivity.PATIENT);
                     PersonController personController = ((MuzimaApplication) getApplicationContext()).getPersonController();
 
                     try {

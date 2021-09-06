@@ -789,7 +789,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
 
     private boolean isSHRSettingEnabled() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
-        return preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key), PatientSummaryActivity.DEFAULT_SHR_STATUS);
+        return preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key), ClientSummaryActivity.DEFAULT_SHR_STATUS);
     }
 
     private boolean isGeoMappingFeatureEnabled() {

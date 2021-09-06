@@ -196,9 +196,9 @@ public class PatientsLocationMapActivity extends BroadcastListenerActivity {
         webView.post(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(PatientsLocationMapActivity.this, PatientSummaryActivity.class);
+                Intent intent = new Intent(PatientsLocationMapActivity.this, ClientSummaryActivity.class);
                 Patient patient = getSelectedPatient();
-                intent.putExtra(PatientSummaryActivity.PATIENT, patient);
+                intent.putExtra(ClientSummaryActivity.PATIENT, patient);
                 startActivity(intent);
             }
         });

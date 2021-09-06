@@ -43,7 +43,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.MuzimaApplication;
 import com.muzima.utils.IndividualObsJsonMapper;
 import com.muzima.view.observations.ObservationsFragment;
-import com.muzima.view.patients.PatientSummaryActivity;
+import com.muzima.view.patients.ClientSummaryActivity;
 
 import org.json.JSONException;
 
@@ -172,7 +172,7 @@ public class CustomObsEntryDialog extends Dialog {
 
                             Toast.makeText(getContext( ), concept.getName( ) + " observation saved successfully.", Toast.LENGTH_SHORT).show( );
                             Intent intent = new Intent(context, ObservationsFragment.class);
-                            intent.putExtra(PatientSummaryActivity.PATIENT,patient);
+                            intent.putExtra(ClientSummaryActivity.PATIENT,patient);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             context.startActivity(intent);
                             cancel( );

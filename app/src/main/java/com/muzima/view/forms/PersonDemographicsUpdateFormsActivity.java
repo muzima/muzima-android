@@ -18,7 +18,7 @@ import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.patients.PatientSummaryActivity;
+import com.muzima.view.patients.ClientSummaryActivity;
 
 import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 
@@ -42,7 +42,7 @@ public class PersonDemographicsUpdateFormsActivity extends AppCompatActivity {
             person.setGender(selectedRelatedPerson.getGender());
             person.setNames(selectedRelatedPerson.getNames());
         } else {
-            person = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
+            person = (Patient) getIntent().getSerializableExtra(ClientSummaryActivity.PATIENT);
         }
 
         setContentView(R.layout.activity_relationship_form_list);
@@ -95,7 +95,7 @@ public class PersonDemographicsUpdateFormsActivity extends AppCompatActivity {
         startActivity(intent);
 
         Intent resultIntent = new Intent();
-        resultIntent.putExtra(PatientSummaryActivity.PATIENT, person);
+        resultIntent.putExtra(ClientSummaryActivity.PATIENT, person);
         setResult(0, resultIntent);
         finish();
     }

@@ -173,48 +173,21 @@
                 android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
-            android:name=".view.patients.PatientSummaryActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_client_summary"
-            android:parentActivityName=".view.patients.PatientsSearchActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientsSearchActivity" />
-        </activity>
-        <activity
             android:name=".view.notifications.PatientNotificationActivity"
             android:label="@string/title_activity_client_summary"
-            android:parentActivityName=".view.patients.PatientSummaryActivity">
+            android:parentActivityName=".view.patients.ClientSummaryActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientSummaryActivity" />
-        </activity>
-        <!--        <activity-->
-        <!--                android:name=".view.observations.ObservationsFragment"-->
-        <!--                android:configChanges="orientation|screenSize"-->
-        <!--                android:label="@string/title_activity_client_observations"-->
-        <!--                android:parentActivityName=".view.patients.PatientSummaryActivity">-->
-        <!--            <meta-data-->
-        <!--                    android:name="android.support.PARENT_ACTIVITY"-->
-        <!--                    android:value="com.muzima.view.patients.PatientSummaryActivity"/>-->
-        <!--        </activity>-->
-        <activity
-            android:name=".view.encounters.EncountersActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_client_encounters"
-            android:parentActivityName=".view.patients.PatientSummaryActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientSummaryActivity" />
+                android:value="com.muzima.view.patients.ClientSummaryActivity" />
         </activity>
         <activity
             android:name=".view.encounters.EncounterSummaryActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_observations"
-            android:parentActivityName=".view.patients.PatientSummaryActivity">
+            android:parentActivityName=".view.patients.ClientSummaryActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.encounters.EncountersActivity" />
+                android:value="com.muzima.view.patients.ClientSummaryActivity" />
         </activity>
         <activity
             android:name=".view.forms.RegistrationFormsActivity"
@@ -233,10 +206,10 @@
             android:name=".view.reports.PatientReportActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_client_reports"
-            android:parentActivityName=".view.patients.PatientSummaryActivity">
+            android:parentActivityName=".view.patients.ClientSummaryActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientSummaryActivity" />
+                android:value="com.muzima.view.patients.ClientSummaryActivity" />
         </activity>
         <activity
             android:name=".view.reports.PatientReportWebActivity"
@@ -271,31 +244,31 @@
             android:name=".view.notifications.NotificationActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_notification"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName=".view.patients.ClientSummaryActivity"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientSummaryActivity" />
+                android:value="com.muzima.view.patients.ClientSummaryActivity" />
         </activity>
         <activity
             android:name=".view.relationship.RelationshipsListActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_relationships"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName=".view.patients.ClientSummaryActivity"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientSummaryActivity" />
+                android:value="com.muzima.view.patients.ClientSummaryActivity" />
         </activity>
         <activity
             android:name=".view.patients.PatientLocationMapActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_client_location"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName=".view.patients.ClientSummaryActivity"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientSummaryActivity" />
+                android:value="com.muzima.view.patients.ClientSummaryActivity" />
         </activity>
         <activity
             android:name=".view.patients.PatientsLocationMapActivity"
@@ -399,21 +372,21 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/select_a_relationship_form_text"
             android:noHistory="true"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName=".view.patients.ClientSummaryActivity"
             android:theme="@style/DialogNoTitleBar" />
 
         <activity
             android:name=".view.forms.EncounterMiniFormActivity"
             android:configChanges="orientation|screenSize"
             android:noHistory="true"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName=".view.patients.ClientSummaryActivity"
             android:theme="@style/DialogNoTitleBar" />
         <activity
             android:name=".view.forms.PersonDemographicsUpdateFormsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/select_a_relationship_form_text"
             android:noHistory="true"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName=".view.patients.ClientSummaryActivity"
             android:theme="@style/DialogNoTitleBar" />
 
         <activity android:name=".view.initialwizard.OnboardScreenActivity" />
