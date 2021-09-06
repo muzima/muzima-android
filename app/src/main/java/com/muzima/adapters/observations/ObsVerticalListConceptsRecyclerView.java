@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 import com.muzima.R;
+import com.muzima.api.model.Concept;
 import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import org.greenrobot.eventbus.EventBus;
@@ -46,7 +47,7 @@ public class ObsVerticalListConceptsRecyclerView extends Adapter<ObsVerticalList
         else
             holder.titleTextView.setText(obsConceptWrapper.getConcept().getName());
         holder.obsHorizontalListRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false));
-        ObsHorizontalViewAdapter observationsListAdapter = new ObsHorizontalViewAdapter(obsConceptWrapper.getMatchingConcepts(), new ObsHorizontalViewAdapter.ObservationClickedListener() {
+        ObsHorizontalViewAdapter observationsListAdapter = new ObsHorizontalViewAdapter(obsConceptWrapper.getMatchingObs(),inputRendering, new ObsHorizontalViewAdapter.ObservationClickedListener() {
             @Override
             public void onObservationClicked(int position) {
                 EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(conceptWrapperList.get(position)));

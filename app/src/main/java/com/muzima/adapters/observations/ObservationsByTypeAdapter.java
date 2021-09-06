@@ -76,7 +76,7 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationAdapte
         else
             holder.titleTextView.setText(getConceptDisplay(conceptWithObservations.getConcept()));
         holder.obsHorizontalListRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false));
-        ObsHorizontalViewAdapter observationsListAdapter = new ObsHorizontalViewAdapter(conceptWithObservations.getObservations(), new ObsHorizontalViewAdapter.ObservationClickedListener() {
+        ObsHorizontalViewAdapter observationsListAdapter = new ObsHorizontalViewAdapter(conceptWithObservations.getObservations(),false, new ObsHorizontalViewAdapter.ObservationClickedListener() {
             @Override
             public void onObservationClicked(int position) {
 //                EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(conceptWithObservationsList.get(position)));
