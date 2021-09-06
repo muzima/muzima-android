@@ -34,7 +34,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
-                    android:gravity="left"/>
+                    android:gravity="start"/>
             <TextView
                     android:id="@+id/encounterDate"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -42,7 +42,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
-                    android:gravity="right"/>
+                    android:gravity="end"/>
         </LinearLayout>
         <LinearLayout
                 android:layout_width="fill_parent"
@@ -58,7 +58,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="?attr/secondaryTextColor"/>
             <TextView
@@ -66,37 +66,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="?attr/secondaryTextColor"/>
         </LinearLayout>
-
-
-
     </LinearLayout>
     <View style="@style/DividerLine"/>
-    <LinearLayout
-            android:id="@+id/no_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:paddingRight="16dp"
-            android:visibility="gone">
 
-        <TextView
-                android:id="@+id/no_data_msg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:textSize="20sp">
-        </TextView>
-
-    </LinearLayout>
-
-    <ListView
+    <com.muzima.view.custom.MuzimaRecyclerView
             android:id="@+id/encounter_observations_list"
-            style="@style/MuzimaSelectableListView">
-    </ListView>
+            android:layout_width="fill_parent"
+            style="@style/MuzimaSelectableListView"/>
 
+    <include layout="@layout/recycler_no_data_view"/>
 </LinearLayout>

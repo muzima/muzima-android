@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationAdapter.ViewHolder> {
+public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTypeAdapter.ViewHolder> {
     protected Context context;
     private final String patientUuid;
     private final boolean inputRendering;
@@ -75,7 +75,7 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationAdapte
             public void onObservationClicked(int position) {
 //                EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(conceptWithObservationsList.get(position)));
             }
-        }, encounterController, observationController, isShrData);
+        }, encounterController, observationController, isShrData, inputRendering);
         holder.obsHorizontalListRecyclerView.setAdapter(observationsListAdapter);
     }
 

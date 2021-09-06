@@ -32,9 +32,9 @@ public class GuidedSetupCardsViewPagerAdapter extends FragmentStatePagerAdapter 
             case 0:
                 return new GuidedSetupImageCardFragment(R.drawable.security, context.getResources().getString(R.string.general_security), context.getResources().getString(R.string.general_security_description));
             case 1:
-                return new GuidedSetupImageCardFragment(R.drawable.multiple_use_cases, context.getResources().getString(R.string.general_multiple_use_cases), context.getResources().getString(R.string.general_multiple_cases_description));
+                return new GuidedSetupImageCardFragment(R.drawable.multiple_use_cases_icon, context.getResources().getString(R.string.general_multiple_use_cases), context.getResources().getString(R.string.general_multiple_cases_description));
             case 2:
-                return new GuidedSetupImageCardFragment(R.drawable.openmrs_compatibility, context.getResources().getString(R.string.general_openmrs_compatibility), context.getResources().getString(R.string.general_openmrs_compatibility_description));
+                return new GuidedSetupImageCardFragment(R.drawable.openmrs_logo, context.getResources().getString(R.string.general_openmrs_compatibility), context.getResources().getString(R.string.general_openmrs_compatibility_description));
             case 3:
                 return new GuidedSetupImageCardFragment(R.drawable.data_collection_tools, context.getResources().getString(R.string.general_data_collection_tools), context.getResources().getString(R.string.general_data_collection_tools_description));
             case 4:

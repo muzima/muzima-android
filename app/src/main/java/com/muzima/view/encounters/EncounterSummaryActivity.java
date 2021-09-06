@@ -10,26 +10,27 @@
 package com.muzima.view.encounters;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.ListAdapter;
-import com.muzima.adapters.encounters.EncounterObservationsAdapter;
+import com.muzima.adapters.RecyclerAdapter;
+import com.muzima.adapters.encounters.EncounterObservationsAdapter2;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.patients.PatientSummaryActivity;
+import com.muzima.view.custom.MuzimaRecyclerView;
 
-public class EncounterSummaryActivity  extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
+public class EncounterSummaryActivity  extends BroadcastListenerActivity implements RecyclerAdapter.BackgroundListQueryTaskListener {
     public static final String ENCOUNTER="encounter";
     private Encounter encounter;
-    private EncounterObservationsAdapter encounterObservationsAdapter;
-    private View noDataView;
+    private EncounterObservationsAdapter2 encounterObservationsAdapter;
+    private LinearLayout noDataView;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
 
@@ -41,9 +42,8 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
         setContentView(R.layout.activity_encounter_summary);
 
         Bundle intentExtras = getIntent().getExtras();
-        if (intentExtras != null) {
+        if (intentExtras != null)
             encounter = (Encounter) intentExtras.getSerializable(ENCOUNTER);
-        }
 
         setupActionBar();
         setupEncounterMetadata();
@@ -64,8 +64,9 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     }
 
     private void setupActionBar() {
-        Patient patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
-        getSupportActionBar().setTitle(patient.getSummary());
+        Patient patient = encounter.getPatient();
+        if (patient != null && getSupportActionBar() != null)
+            getSupportActionBar().setTitle(patient.getSummary());
     }
 
     private void setupEncounterMetadata(){
@@ -83,12 +84,10 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     }
 
     private void setupNoDataView() {
-
         noDataView = findViewById(R.id.no_data_layout);
 
         TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
         noDataMsgTextView.setText(getResources().getText(R.string.info_observation_unavailable));
-
     }
 
     private void setupStillLoadingView(){
@@ -99,12 +98,13 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     }
 
     private void setUpEncounterObservations(){
-        ListView encounterObservationsLayout = findViewById(R.id.encounter_observations_list);
-        encounterObservationsAdapter = new EncounterObservationsAdapter(EncounterSummaryActivity.this,R.layout.item_encounter_observation,
-                ((MuzimaApplication) getApplicationContext()).getObservationController(),encounter);
+        MuzimaRecyclerView encounterObservationsView = findViewById(R.id.encounter_observations_list);
+        encounterObservationsAdapter = new EncounterObservationsAdapter2(this,
+                ((MuzimaApplication) getApplicationContext()).getObservationController(),encounter.getUuid());
         encounterObservationsAdapter.setBackgroundListQueryTaskListener(this);
-        encounterObservationsLayout.setEmptyView(noDataView);
-        encounterObservationsLayout.setAdapter(encounterObservationsAdapter);
+        encounterObservationsView.setLayoutManager(new LinearLayoutManager(this));
+        encounterObservationsView.setAdapter(encounterObservationsAdapter);
+        encounterObservationsView.setNoDataLayout(noDataView, StringUtils.EMPTY, StringUtils.EMPTY);
         encounterObservationsAdapter.reloadData();
     }
 
@@ -112,16 +112,8 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     public void onQueryTaskStarted(){}
 
     @Override
-    public void onQueryTaskFinish(){
-        if(encounterObservationsAdapter.isEmpty()){
-            setupNoDataView();
-        }
-    }
+    public void onQueryTaskFinish(){}
 
     @Override
     public void onQueryTaskCancelled(){}
-
-    @Override
-    public void onQueryTaskCancelled(Object errorDefinition){}
-
 }

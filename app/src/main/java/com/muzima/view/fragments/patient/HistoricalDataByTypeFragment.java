@@ -25,7 +25,7 @@ public class HistoricalDataByTypeFragment extends Fragment implements Observatio
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_historical_data_list, container, false);
+        return inflater.inflate(R.layout.fragment_list, container, false);
     }
 
     @Override

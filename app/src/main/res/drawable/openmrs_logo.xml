@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~  this code in a for-profit venture,please contact the copyright holder.
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="24dp"
+    android:viewportHeight="200"
+    android:viewportWidth="200"
+    android:width="24dp">
+    <path android:fillColor="#f26522"
+        android:pathData="M54,55C59.082,51.526 63.574,47.31 69,44.313C85.651,35.114 105.231,33.277 123,40.453C131.449,43.865 137.809,50.533 146,54L146,23C146,19.5 147.093,13.661 144.972,10.638C141.892,6.248 132.852,4.654 128,3.294C110.837,-1.517 91.244,-1.665 74,2.884C68.652,4.295 58.203,6.42 55.028,11.39C52.959,14.627 54,20.33 54,24L54,55z" android:strokeColor="#00000000"/>
+    <path android:fillColor="#5b57a6"
+        android:pathData="M54,146C50.984,139.232 45.544,133.756 42.259,127C34.656,111.361 33.932,93.146 40.453,77C43.866,68.549 50.378,62.128 54,54L23,54C19.5,54 13.661,52.907 10.638,55.028C5.963,58.308 3.896,68.752 2.654,74C-1.45,91.347 -1.573,110.76 3.152,128C4.463,132.782 6.352,141.965 10.638,144.972C13.661,147.093 19.5,146 23,146L54,146z" android:strokeColor="#00000000"/>
+    <path android:fillColor="#009384"
+        android:pathData="M145,54C149.001,60.055 153.904,65.469 157.191,72C165.475,88.461 165.932,107.008 158.985,124C155.704,132.026 149.321,138.144 146,146L177,146C180.473,146 186.365,147.105 189.351,144.972C193.872,141.743 195.82,131.116 197.105,126C201.551,108.299 201.502,88.524 196.279,71C194.951,66.542 193.335,57.874 189.351,55.028C186.365,52.895 180.473,54 177,54L145,54z" android:strokeColor="#00000000"/>
+    <path android:fillColor="#f0a815"
+        android:pathData="M54,146L54,177C54,180.5 52.907,186.339 55.028,189.362C58.035,193.648 67.218,195.537 72,196.848C89.03,201.515 108.904,201.767 126,197.265C131.315,195.866 141.612,194.152 144.972,189.362C147.093,186.339 146,180.5 146,177L146,146C137.803,149.465 131.4,156.152 123,159.547C106.858,166.072 88.635,165.342 73,157.741C66.244,154.456 60.768,149.016 54,146z" android:strokeColor="#00000000"/>
+</vector>

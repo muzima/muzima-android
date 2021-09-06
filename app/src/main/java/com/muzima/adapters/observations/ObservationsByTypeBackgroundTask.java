@@ -52,7 +52,6 @@ class ObservationsByTypeBackgroundTask extends AsyncTask<Void, Concepts, Concept
         if (observationsByTypeAdapter.getBackgroundListQueryTaskListener() != null) {
             observationsByTypeAdapter.getBackgroundListQueryTaskListener().onQueryTaskStarted();
         }
-        observationsByTypeAdapter.clear();
     }
 
     @Override
@@ -71,6 +70,7 @@ class ObservationsByTypeBackgroundTask extends AsyncTask<Void, Concepts, Concept
     @Override
     protected void onPostExecute(Concepts conceptsWithObservations) {
         if (conceptsWithObservations != null) {
+            observationsByTypeAdapter.clear();
             observationsByTypeAdapter.add(conceptsWithObservations);
             observationsByTypeAdapter.notifyDataSetChanged();
         }

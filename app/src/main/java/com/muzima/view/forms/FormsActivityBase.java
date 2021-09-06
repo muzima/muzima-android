@@ -43,7 +43,7 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
 
     void initPagerIndicator() {
         Intent intent = getIntent();
-        int tabToOpen = -1;
+        int tabToOpen = getIntent().getIntExtra(KEY_FORMS_TAB_TO_OPEN,-1);
         if (tabToOpen == -1) {
             tabToOpen = 0;
         }

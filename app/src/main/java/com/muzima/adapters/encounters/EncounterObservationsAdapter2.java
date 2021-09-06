@@ -9,9 +9,7 @@
  */
 package com.muzima.adapters.encounters;
 
-import android.app.Activity;
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +17,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import com.muzima.R;
-import com.muzima.api.model.Encounter;
+import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.observation.EncounterWithObservations;
@@ -28,57 +27,72 @@ import com.muzima.model.observation.Encounters;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class EncounterObservationsAdapter  extends ObservationsAdapter  {
+public class EncounterObservationsAdapter2 extends RecyclerAdapter<EncountersByPatientAdapter2.ViewHolder> {
+    protected Context context;
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private final String encounterUuid;
-    private final Encounter encounter;
-    public EncounterObservationsAdapter(Activity activity, int textViewResourceId, ObservationController observationController, Encounter encounter){
-        super(activity, textViewResourceId, observationController);
-        this.encounter = encounter;
-        encounterUuid = encounter.getUuid();
-    }
-    @Override
-    public void reloadData() {
-        new BackgroundQueryTask().execute(encounterUuid);
+    private final ObservationController observationController;
+    private List<Observation> observationList;
+
+    public EncounterObservationsAdapter2(Context context, ObservationController observationController, String encounterUuid){
+        this.context = context;
+        this.encounterUuid = encounterUuid;
+        this.observationController = observationController;
+        this.observationList = new ArrayList<>();
     }
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent){
-        Observation observation =getItem(position);
-        Context context = getContext();
-        EncounterObservationsViewHolder holder;
-        if(convertView==null){
-            LayoutInflater layoutInflater = LayoutInflater.from(context);
-            convertView = layoutInflater.inflate(R.layout.item_encounter_observation_2,parent,false);
-            holder=new EncounterObservationsViewHolder();
-            holder.conceptQuestion = convertView.findViewById(R.id.observationHeader);
-            holder.observationValue = convertView.findViewById(R.id.observationValue);
-            holder.observationDate = convertView.findViewById(R.id.observationDate);
-            holder.observationComplex = convertView.findViewById(R.id.observationComplex);
-            holder.divider = convertView.findViewById(R.id.divider);
-            convertView.setTag(holder);
-        }else{
-            holder = (EncounterObservationsViewHolder)convertView.getTag();
-        }
+    public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_encounter_observation_2, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
+        bindViews((ViewHolder) holder, position);
+    }
+
+    private void bindViews(@NotNull ViewHolder holder, int position) {
+        Observation observation = observationList.get(position);
         holder.setObservation(observation);
 
-        return convertView;
+    }
+
+    @Override
+    public int getItemCount() {
+        return observationList.size();
+    }
+
+
+    @Override
+    public void reloadData() {
+        new BackgroundQueryTask().execute(encounterUuid);
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 
-    private class EncounterObservationsViewHolder extends ViewHolder {
+    private class ViewHolder extends RecyclerAdapter.ViewHolder {
         TextView conceptQuestion;
         TextView observationDate;
         TextView observationValue;
         ImageView observationComplex;
         View divider;
+
+        public ViewHolder(@NonNull View view) {
+            super(view);
+            this.conceptQuestion = view.findViewById(R.id.observationHeader);
+            this.observationDate = view.findViewById(R.id.observationValue);
+            this.observationValue = view.findViewById(R.id.observationDate);
+            this.observationComplex = view.findViewById(R.id.observationComplex);
+            this.divider = view.findViewById(R.id.divider);
+        }
 
         void setObservation(Observation observation) {
             int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
@@ -120,7 +134,7 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
 
              try {
                  observations= new ArrayList<>();
-                 Encounters encounterWithObservations  = observationController.getObservationsByEncounterUuid(encounter.getUuid());
+                 Encounters encounterWithObservations  = observationController.getObservationsByEncounterUuid(encounterUuid);
 
                  for(EncounterWithObservations encounterWithObs:encounterWithObservations){
                      observations.addAll(encounterWithObs.getObservations());
@@ -135,11 +149,11 @@ public class EncounterObservationsAdapter  extends ObservationsAdapter  {
         @Override
         protected void onPostExecute(List<Observation> observations){
             if(observations==null){
-                Toast.makeText(getContext(), getContext().getString(R.string.error_observation_load), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.error_observation_load), Toast.LENGTH_SHORT).show();
                 return;
             }
-            clear();
-            addAll(observations);
+            observationList.clear();
+            observationList = observations;
             notifyDataSetChanged();
             backgroundListQueryTaskListener.onQueryTaskFinish();
         }

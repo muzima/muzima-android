@@ -33,18 +33,20 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
     private AlertDialog obsDetailsViewDialog;
     final EncounterController encounterController;
     final ObservationController observationController;
+    private final boolean isSingleElementInput;
     private final Boolean isShrData;
     private List<Integer> shrConcepts;
 
     public ObsHorizontalViewAdapter(List<Observation> observationList, ObservationClickedListener observationClickedListener,
                                     EncounterController encounterController, ObservationController observationController,
-                                    boolean isShrData) {
+                                    boolean isShrData, boolean isSingleElementInput) {
         this.observationList = observationList;
         this.observationClickedListener = observationClickedListener;
         this.encounterController = encounterController;
         this.observationController = observationController;
         this.isShrData = isShrData;
         loadComposedShrConceptId();
+        this.isSingleElementInput = isSingleElementInput;
     }
 
     @NotNull
@@ -81,9 +83,15 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
 
             if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded())
                 holder.observationValue.setText(observation.getValueText());
+
+            if (observation.getConcept().isCoded())
+                holder.observationValue.setText(observation.getValueCoded().getName());
+
+            if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded())
+                holder.observationValue.setText(observation.getValueText());
         }
 
-        holder.observationDate.setText(DateUtils.convertDateToHumanReadableString(observation.getObservationDatetime()));
+        holder.observationDate.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
     }
 
     @Override
@@ -106,14 +114,15 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
             this.shrEnabledImage = view.findViewById(R.id.shr_card_obs_image_view);
             this.observationComplexHolder = view.findViewById(R.id.observation_complex);
             this.observationClickedListener = clickedListener;
-            container.setOnClickListener(this);
+            if(!isSingleElementInput) {
+                container.setOnClickListener(this);
+            }
         }
 
         @Override
         public void onClick(View v) {
             Observation obs = observationList.get(getAdapterPosition());
             displayObservationDetailsDialog(obs, v);
-
             this.observationClickedListener.onObservationClicked(getAdapterPosition());
         }
     }

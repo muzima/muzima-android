@@ -17,12 +17,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsAdapter;
-import com.muzima.adapters.forms.IncompleteFormsAdapter;
+import com.muzima.adapters.forms.IncompleteFormsWithDataAdapter;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.StringUtils;
 
-public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListAdapter implements FormsAdapter.MuzimaClickListener{
+public class IncompleteFormsListFragment extends FormsWithDataListFragment implements FormsAdapter.MuzimaClickListener{
 
     public static IncompleteFormsListFragment newInstance(FormController formController) {
         IncompleteFormsListFragment f = new IncompleteFormsListFragment();
@@ -32,14 +32,14 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        listAdapter = new IncompleteFormsAdapter(getActivity(), R.layout.item_forms_list_selectable, formController);
-        ((IncompleteFormsAdapter)listAdapter).setMuzimaClickListener(this);
+        listAdapter = new IncompleteFormsWithDataAdapter(getActivity(), R.layout.item_form_with_data_layout, formController);
+        ((IncompleteFormsWithDataAdapter)listAdapter).setMuzimaClickListener(this);
         noDataMsg = getActivity().getResources().getString(R.string.info_incomplete_form_unavailable);
         noDataTip = getActivity().getResources().getString(R.string.hint_incomplete_form_unavailable);
 
         if (actionModeActive) {
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
-            actionMode.setTitle(String.valueOf(((IncompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size()));
+            actionMode.setTitle(String.valueOf(((IncompleteFormsWithDataAdapter)listAdapter).getSelectedFormsUuid().size()));
         }
 
         super.onCreate(savedInstanceState);
@@ -56,7 +56,7 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         FormViewIntent intent = new FormViewIntent(getActivity(), (FormWithData) listAdapter.getItem(position));
-        getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
+        getActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
         }
-        int numOfSelectedForms = ((IncompleteFormsAdapter)listAdapter).getSelectedFormsUuid().size();
+        int numOfSelectedForms = ((IncompleteFormsWithDataAdapter)listAdapter).getSelectedFormsUuid().size();
         if (numOfSelectedForms == 0 && actionModeActive) {
             actionMode.finish();
         }
@@ -84,6 +84,6 @@ public class IncompleteFormsListFragment extends FormsFragmentWithSectionedListA
             formWithData.setPatient(null);
         }
         FormViewIntent intent = new FormViewIntent(getActivity(),formWithData );
-        getActivity().startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
+        getActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 }

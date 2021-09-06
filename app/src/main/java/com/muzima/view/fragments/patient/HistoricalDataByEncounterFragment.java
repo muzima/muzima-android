@@ -1,5 +1,6 @@
 package com.muzima.view.fragments.patient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +11,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
-import com.muzima.adapters.observations.ObservationsByTypeAdapter;
+import com.muzima.adapters.encounters.EncountersByPatientAdapter2;
+import com.muzima.api.model.Encounter;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.MuzimaRecyclerView;
+import com.muzima.view.encounters.EncounterSummaryActivity;
 
-public class HistoricalDataByEncounterFragment extends Fragment implements ObservationsByTypeAdapter.ConceptInputLabelClickedListener, RecyclerAdapter.BackgroundListQueryTaskListener {
+public class HistoricalDataByEncounterFragment extends Fragment implements EncountersByPatientAdapter2.EncounterClickedListener, RecyclerAdapter.BackgroundListQueryTaskListener {
     private final String patientUuid;
-    private ObservationsByTypeAdapter observationsByTypeAdapter;
+    private EncountersByPatientAdapter2 encountersByPatientAdapter;
+    private MuzimaRecyclerView encounterRecyclerView;
 
     public HistoricalDataByEncounterFragment(String patientUuid) {
         this.patientUuid = patientUuid;
@@ -25,27 +29,32 @@ public class HistoricalDataByEncounterFragment extends Fragment implements Obser
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_historical_data_list, container, false);
+        return inflater.inflate(R.layout.fragment_list, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        MuzimaRecyclerView obsByTypeRecyclerView = view.findViewById(R.id.recycler_list);
-        obsByTypeRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        encounterRecyclerView = view.findViewById(R.id.recycler_list);
+        encounterRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
-        observationsByTypeAdapter = new ObservationsByTypeAdapter(requireActivity().getApplicationContext(), patientUuid,
-                false, false, this);
-        observationsByTypeAdapter.setBackgroundListQueryTaskListener(this);
-        obsByTypeRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
-        obsByTypeRecyclerView.setAdapter(observationsByTypeAdapter);
-        observationsByTypeAdapter.reloadData();
-        obsByTypeRecyclerView.setNoDataLayout(view.findViewById(R.id.no_data_layout),
-                getString(R.string.info_observation_unavailable),
+        encountersByPatientAdapter = new EncountersByPatientAdapter2(requireActivity().getApplicationContext(), patientUuid, this);
+        encountersByPatientAdapter.setBackgroundListQueryTaskListener(this);
+        encounterRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
+        encounterRecyclerView.setAdapter(encountersByPatientAdapter);
+        encountersByPatientAdapter.reloadData();
+        encounterRecyclerView.setNoDataLayout(view.findViewById(R.id.no_data_layout),
+                getString(R.string.info_encounter_unavailable),
                 StringUtils.EMPTY);
     }
 
     @Override
-    public void onConceptInputLabelClicked(int position) {}
+    public void onEncounterClicked(int position) {
+        System.out.println("Ngaguthwo");
+        Encounter encounter = encountersByPatientAdapter.getItem(position);
+        Intent intent = new Intent(requireActivity(), EncounterSummaryActivity.class);
+        intent.putExtra(EncounterSummaryActivity.ENCOUNTER, encounter);
+        startActivity(intent);
+    }
 
     @Override
     public void onQueryTaskStarted() {}
@@ -54,7 +63,5 @@ public class HistoricalDataByEncounterFragment extends Fragment implements Obser
     public void onQueryTaskFinish() {}
 
     @Override
-    public void onQueryTaskCancelled() {
-        observationsByTypeAdapter.cancelBackgroundQueryTask();
-    }
+    public void onQueryTaskCancelled() {}
 }

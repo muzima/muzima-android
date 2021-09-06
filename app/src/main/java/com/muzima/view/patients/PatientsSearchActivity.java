@@ -67,7 +67,7 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
 
 import com.muzima.view.barcode.BarcodeCaptureActivity;
-import com.muzima.view.forms.FormsActivity;
+import com.muzima.view.forms.FormsWithDataActivity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -88,9 +88,9 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     private static final String TAG = "PatientsSearchActivity";
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
-    public static final String QUICK_SEARCH = "quickSearch";
+    public static final String SEARCH_STRING = "searchString";
     private ListView listView;
-    private boolean quickSearch = false;
+    private String initialSearchString;
     private String cohortId = null;
     private PatientsLocalSearchAdapter patientAdapter;
     private FrameLayout progressBarContainer;
@@ -151,7 +151,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         }
 
         if (intentExtras != null) {
-            quickSearch = intentExtras.getBoolean(QUICK_SEARCH);
+            initialSearchString = intentExtras.getString(SEARCH_STRING);
             cohortId = intentExtras.getString(COHORT_ID);
             String title = intentExtras.getString(COHORT_NAME);
             if (title != null)
@@ -258,8 +258,9 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     private void handleShowSearchView() {
         searchMenuItem.setIconified(true);
         searchMenuItem.requestFocus();
-        searchMenuItem.callOnClick();
         searchMenuItem.onActionViewExpanded();
+        searchMenuItem.setQuery(initialSearchString,false);
+
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(searchMenuItem, InputMethodManager.SHOW_IMPLICIT);
     }
@@ -532,17 +533,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        patientAdapter.cancelBackgroundTask();
-        if (getCallingActivity() == null) {
-            launchDashboardActivity();
-        } else {
-            super.onBackPressed();
-            finish();
-        }
-    }
-
     private void launchDashboardActivity() {
         Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
         startActivity(intent);
@@ -550,8 +540,8 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     }
 
     private void launchCompleteFormsActivity() {
-        Intent intent = new Intent(getApplicationContext(), FormsActivity.class);
-        intent.putExtra(FormsActivity.KEY_FORMS_TAB_TO_OPEN, 3);
+        Intent intent = new Intent(getApplicationContext(), FormsWithDataActivity.class);
+        intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, 3);
         startActivity(intent);
     }
 
