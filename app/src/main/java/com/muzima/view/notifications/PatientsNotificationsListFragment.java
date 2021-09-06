@@ -19,7 +19,7 @@ import com.muzima.adapters.notification.PatientNotificationsListAdapter;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.NotificationController;
-import com.muzima.view.patients.ClientSummaryActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 public class PatientsNotificationsListFragment extends NotificationListFragment {
 
@@ -51,8 +51,8 @@ public class PatientsNotificationsListFragment extends NotificationListFragment 
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         Notification notification = (Notification) listAdapter.getItem(position);
         Patient patient = notification.getPatient();
-        Intent intent = new Intent(getActivity(), ClientSummaryActivity.class);
-        intent.putExtra(ClientSummaryActivity.PATIENT, patient);
+        Intent intent = new Intent(getActivity(), PatientSummaryActivity.class);
+        intent.putExtra(PatientSummaryActivity.PATIENT, patient);
         startActivityForResult(intent, 1);
     }
 }

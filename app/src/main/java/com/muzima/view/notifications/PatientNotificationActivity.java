@@ -17,7 +17,7 @@ import com.muzima.adapters.MuzimaPagerAdapter;
 import com.muzima.adapters.notification.PatientNotificationPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.patients.ClientSummaryActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 public class PatientNotificationActivity extends NotificationActivityBase {
     private Patient patient;
@@ -29,7 +29,7 @@ public class PatientNotificationActivity extends NotificationActivityBase {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
         Intent intent = getIntent();
-        patient = (Patient) intent.getSerializableExtra(ClientSummaryActivity.PATIENT);
+        patient = (Patient) intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
         initPager();
         initPagerIndicator();
         getSupportActionBar().setTitle(patient.getSummary());

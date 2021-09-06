@@ -194,8 +194,8 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
                 try {
                     PatientController patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
                     Patient patient = patientController.getPatientByUuid(patientUUIDs[0]);
-                    intent = new Intent(this, ClientSummaryActivity.class);
-                    intent.putExtra(ClientSummaryActivity.PATIENT, patient);
+                    intent = new Intent(this, PatientSummaryActivity.class);
+                    intent.putExtra(PatientSummaryActivity.PATIENT, patient);
                     startActivity(intent);
                 } catch (PatientController.PatientLoadException e) {
                     Log.e(PatientRemoteSearchListActivity.class.getName(), "Could not load downloaded patient " + e.getMessage());

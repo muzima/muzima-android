@@ -9,7 +9,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
-import com.muzima.view.patients.ClientSummaryActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.relationship.RelationshipFormsActivity;
 
 import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
@@ -58,7 +58,7 @@ public class RelationshipComponent {
             } else {
                 Patient patient = ((MuzimaApplication) activity.getApplicationContext()).getPatientController().getPatientByUuid(personUuid);
                 if(patient != null){
-                    intent.putExtra(ClientSummaryActivity.PATIENT, patient);
+                    intent.putExtra(PatientSummaryActivity.PATIENT, patient);
                     activity.startActivityForResult(intent, UPDATE_RELATIONSHIP_PERSON_REQUEST_CODE);
                 } else {
                     Log.e("RelationshipComponent","Could not load person");
@@ -71,8 +71,8 @@ public class RelationshipComponent {
 
     public static CreateRelationshipPersonResult parseActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == CREATE_RELATIONSHIP_PERSON_REQUEST_CODE || requestCode == UPDATE_RELATIONSHIP_PERSON_REQUEST_CODE) {
-            if(intent.hasExtra(ClientSummaryActivity.PATIENT)) {
-                Patient patient = (Patient) intent.getSerializableExtra(ClientSummaryActivity.PATIENT);
+            if(intent.hasExtra(PatientSummaryActivity.PATIENT)) {
+                Patient patient = (Patient) intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
                 return new CreateRelationshipPersonResult(patient.getUuid());
             }
         }

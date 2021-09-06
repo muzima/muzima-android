@@ -32,7 +32,7 @@ import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.MainDashboardActivity;
-import com.muzima.view.patients.ClientSummaryActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.UUID;
 
@@ -53,7 +53,7 @@ public class RegistrationFormsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_form_list);
 
-        patient = (Patient) getIntent().getSerializableExtra(ClientSummaryActivity.PATIENT);
+        patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         indexPatient = (Patient) getIntent().getSerializableExtra(INDEX_PATIENT);
         toolbar = findViewById(R.id.registration_forms_toolbar);
         setSupportActionBar(toolbar);

@@ -44,7 +44,7 @@ import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
-import com.muzima.view.patients.ClientSummaryActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.FormsWithDataActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -464,8 +464,8 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         } else {
             patientSearchAdapter.cancelBackgroundTask();
             Patient patient = patientSearchAdapter.getItem(position);
-            Intent intent = new Intent(getActivity().getApplicationContext(), ClientSummaryActivity.class);
-            intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
+            Intent intent = new Intent(getActivity().getApplicationContext(), PatientSummaryActivity.class);
+            intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
             startActivity(intent);
         }
     }

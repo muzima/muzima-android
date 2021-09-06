@@ -29,7 +29,7 @@ import com.muzima.adapters.observations.ObservationsPagerAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.patients.ClientSummaryActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.custom.PagerSlidingTabStrip;
 
 import java.util.Calendar;
@@ -88,7 +88,7 @@ public class ObservationsFragment extends Fragment {
     private void initPager(View view) {
         try {
             viewPager = view.findViewById(R.id.pager);
-            String patientUUid = (String) getActivity().getIntent().getSerializableExtra(ClientSummaryActivity.PATIENT_UUID);
+            String patientUUid = (String) getActivity().getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT_UUID);
             Patient patient = ((MuzimaApplication) getActivity().getApplicationContext()).getPatientController().getPatientByUuid(patientUUid);
             observationsPagerAdapter = new ObservationsPagerAdapter(getActivity().getApplicationContext(), getChildFragmentManager(), IS_SHR_DATA, patient);
             observationsPagerAdapter.initPagerViews();

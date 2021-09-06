@@ -1,284 +1,79 @@
-<!--
-  ~ Copyright (c) The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center. All Rights Reserved.
-  ~
-  ~ This version of the code is licensed under the MPL 2.0 Open Source license
-  ~ with additional health care disclaimer.
-  ~ If the user is an entity intending to commercialize any application that uses
-  ~  this code in a for-profit venture,please contact the copyright holder.
-  -->
-
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/client_summary_view"
-              style="@style/DashboardTableContainer">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:background="?attr/primaryBackgroundColor"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    <RelativeLayout
-            style="@style/PatientDemographicsLayout">
+    <View android:id="@+id/bottom_sheet_child_container"
+          android:visibility="gone"
+          android:background="@color/white_smoke"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"/>
 
-        <TextView
-                android:id="@+id/patientName"
-                style="@style/DashboardMediumTitleText"
-                android:layout_alignParentLeft="true"/>
-
-        <ImageView
-                android:id="@+id/genderImg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:contentDescription="@string/gender_image_content_description"
-                android:paddingTop="20dp"/>
-    </RelativeLayout>
-
-    <LinearLayout
-        style="@style/PatientDemographicsLayout"
-        android:paddingBottom="16dp"
-        android:paddingTop="4dp">
-
-        <TextView
-            android:id="@+id/dob"
-            style="@style/DashboardBaseText"
-            android:layout_width="0dp"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/patientIdentifier"
-            style="@style/DashboardBaseText"
-            android:layout_width="0dp"
-            android:layout_gravity="right"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <View style="@style/DividerLine" />
-
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/primaryBackgroundColor"
+            app:elevation="6dp">
 
         <LinearLayout
-            android:layout_width="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/client_summary_dashboard_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/primaryBackgroundColor"
+                    app:title="@string/title_activity_client_summary"/>
+
+            <include layout="@layout/client_summary_patients_list"/>
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                style="@style/ClientSummaryGridItem"
-                android:layout_width="fill_parent"
-                android:layout_marginTop="10dp"
-                android:baselineAligned="false"
-                android:orientation="vertical">
+        <include android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="2dp"
+                layout="@layout/forms_top_bar_view" />
 
-                <RelativeLayout
-                    style="@style/ClickableGridItem"
-                    android:layout_width="fill_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="100"
-                    android:baselineAligned="false"
-                    android:onClick="showObservations"
-                    android:orientation="horizontal">
+        <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabSelectedTextColor="@color/primary_blue"
+                app:tabMode="fixed"
+                app:tabGravity="fill"
+                app:tabInlineLabel="true"
+                app:tabIndicatorHeight="3dp">
 
-                    <TextView
-                        style="@style/DashboardListItemMediumHeadingText"
-                        android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:text="@string/general_observations" />
+            <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tab_historical_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/general_historical_data"
+                    android:icon="@drawable/baseline_history_24"/>
 
-                    <TextView
-                        android:id="@+id/observationDescription"
-                        style="@style/DashboardItemDescription"
-                        android:layout_alignParentBottom="true"
-                        android:text="@string/number_hashtag_representation" />
-                </RelativeLayout>
-            </LinearLayout>
+            <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tab_data_collection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/general_data_collection"
+                    android:icon="@drawable/baseline_add_24"/>
+        </com.google.android.material.tabs.TabLayout>
 
-            <LinearLayout
-                style="@style/ClientSummaryGridItem"
-                android:layout_width="fill_parent"
-                android:layout_marginTop="10dp"
-                android:baselineAligned="false"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    style="@style/ClickableGridItem"
-                    android:layout_width="fill_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="100"
-                    android:baselineAligned="false"
-                    android:onClick="showEncounters"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/DashboardListItemMediumHeadingText"
-                        android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:text="@string/general_encounters" />
-
-                    <TextView
-                        android:id="@+id/encounterDescription"
-                        style="@style/DashboardItemDescription"
-                        android:layout_alignParentBottom="true"
-                        android:text="@string/number_hashtag_representation" />
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                    style="@style/ClientSummaryGridItem"
-                    android:layout_width="fill_parent"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:baselineAligned="false"
-                    android:orientation="vertical"
-                    android:id="@+id/client_summary_layout">
-                    android:orientation="vertical">
-
-
-                <RelativeLayout
-                        style="@style/ClickableGridItem"
-                        android:layout_width="fill_parent"
-                        android:layout_height="80dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="100"
-                        android:baselineAligned="false"
-                        android:onClick="showReports"
-                        android:orientation="horizontal">
-
-                    <TextView
-                            style="@style/DashboardListItemMediumHeadingText"
-                            android:layout_height="wrap_content"
-                            android:gravity="left"
-                            android:text="@string/general_reports"
-                            android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                    <TextView
-                            android:id="@+id/reportDescription"
-                            style="@style/DashboardItemDescription"
-                            android:layout_alignParentBottom="true"
-                            android:text="##"/>
-
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                style="@style/ClientSummaryGridItem"
-                android:layout_width="fill_parent"
-                android:layout_marginTop="10dp"
-                android:baselineAligned="false"
-                android:orientation="vertical">
-
-
-                <RelativeLayout
-                    style="@style/ClickableGridItem"
-                    android:layout_width="fill_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="100"
-                    android:baselineAligned="false"
-                    android:onClick="showForms"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/DashboardListItemMediumHeadingText"
-                        android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:text="@string/general_forms"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/formDescription"
-                        style="@style/DashboardItemDescription"
-                        android:layout_alignParentBottom="true"
-                        android:text="##" />
-
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                style="@style/ClientSummaryGridItem"
-                android:layout_width="fill_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:baselineAligned="false"
-                android:orientation="vertical">
-
-
-                <RelativeLayout
-                    style="@style/ClickableGridItem"
-                    android:layout_width="fill_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="100"
-                    android:baselineAligned="false"
-                    android:onClick="showNotifications"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/DashboardListItemMediumHeadingText"
-                        android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:text="@string/general_notifications"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                    <TextView
-                        android:id="@+id/notificationDescription"
-                        style="@style/DashboardItemDescription"
-                        android:layout_alignParentBottom="true"
-                        android:text="@string/number_hashtag_representation"/>
-
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                style="@style/ClientSummaryGridItem"
-                android:layout_width="fill_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:baselineAligned="false"
-                android:orientation="vertical"
-                android:id="@+id/SHR_linear_layout">
-
-                <RelativeLayout
-                    style="@style/ClickableGridItem"
-                    android:layout_width="fill_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="100"
-                    android:baselineAligned="false"
-                    android:onClick="showSHRObservations"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/DashboardListItemMediumHeadingText"
-                        android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:text="@string/SHR_data_title_text"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                    <TextView
-                        android:id="@+id/SHR_card_Description"
-                        style="@style/DashboardItemDescription"
-                        android:layout_alignParentBottom="true"
-                        android:text="@string/general_data_sync_required"/>
-
-                    <ImageView
-                        android:id="@+id/sync_status_imageview"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:visibility="gone"
-                        android:contentDescription="@string/card_sync_status_content_description"
-                        android:background="@drawable/grid_buttons"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </RelativeLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-
-    <View style="@style/DividerLine" />
-
+        <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_marginTop="6dp"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"/>
+    </LinearLayout>
 </LinearLayout>

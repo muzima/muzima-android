@@ -66,8 +66,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ClientSummaryActivity extends AppCompatActivity implements FormSummaryCardsAdapter.OnCardClickedListener, FormsCountService.FormsCountServiceCallback, ClientDynamicObsFormsAdapter.DatePickerClickedListener {
-    private static final String TAG = "ClientSummaryActivity";
+public class PatientSummaryActivity extends AppCompatActivity implements FormSummaryCardsAdapter.OnCardClickedListener, FormsCountService.FormsCountServiceCallback, ClientDynamicObsFormsAdapter.DatePickerClickedListener {
+    private static final String TAG = "PatientSummaryActivity";
     public static final String PATIENT = "patient";
     public static final String PATIENT_UUID = "patient_uuid";
     public static final String CALLING_ACTIVITY = "calling_activity_key";
@@ -121,15 +121,15 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-                tab.getIcon().setTint(ContextCompat.getColor(ClientSummaryActivity.this, (R.color.primary_blue)));
+                tab.getIcon().setTint(ContextCompat.getColor(PatientSummaryActivity.this, (R.color.primary_blue)));
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                if (ThemeUtils.getPreferenceLightMode(ClientSummaryActivity.this))
-                    tab.getIcon().setTint(ContextCompat.getColor(ClientSummaryActivity.this, (R.color.primary_black)));
+                if (ThemeUtils.getPreferenceLightMode(PatientSummaryActivity.this))
+                    tab.getIcon().setTint(ContextCompat.getColor(PatientSummaryActivity.this, (R.color.primary_black)));
                 else
-                    tab.getIcon().setTint(ContextCompat.getColor(ClientSummaryActivity.this, (R.color.primary_white)));
+                    tab.getIcon().setTint(ContextCompat.getColor(PatientSummaryActivity.this, (R.color.primary_white)));
             }
 
             @Override
@@ -172,7 +172,7 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     }
 
     private void readSmartCard() {
-        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(ClientSummaryActivity.this);
+        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(PatientSummaryActivity.this);
         SHRIntegrator.initiateCardRead();
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.general_opening_card_reader), Toast.LENGTH_LONG).show();
     }
@@ -422,7 +422,7 @@ public class ClientSummaryActivity extends AppCompatActivity implements FormSumm
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onDatePickerClicked(final int position, EditText dateEditText) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(ClientSummaryActivity.this);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(PatientSummaryActivity.this);
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {

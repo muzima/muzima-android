@@ -25,7 +25,7 @@ import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.custom.PagerSlidingTabStrip;
-import com.muzima.view.patients.ClientSummaryActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 public class PatientReportActivity extends BroadcastListenerActivity {
     private static final int REPORT_VIEW_ACTIVITY_RESULT = 1;
@@ -43,7 +43,7 @@ public class PatientReportActivity extends BroadcastListenerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
         Intent intent = getIntent();
-        patient = (Patient) intent.getSerializableExtra(ClientSummaryActivity.PATIENT);
+        patient = (Patient) intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
         initPager();
         initPagerIndicator();
         getSupportActionBar().setTitle(patient.getSummary());
