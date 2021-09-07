@@ -20,17 +20,22 @@ import android.widget.AdapterView;
 import com.muzima.R;
 import com.muzima.adapters.forms.CompleteFormsWithDataAdapter;
 import com.muzima.adapters.forms.FormsAdapter;
+import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.utils.Constants;
+
+import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_UUID;
 
 public class CompleteFormsListFragment extends FormsWithDataListFragment implements FormsAdapter.MuzimaClickListener{
 
     public static CompleteFormsListFragment newInstance(FormController formController) {
         CompleteFormsListFragment f = new CompleteFormsListFragment();
         f.formController = formController;
+
         return f;
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -61,7 +66,8 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        listAdapter = new CompleteFormsWithDataAdapter(getActivity(), R.layout.item_form_with_data_layout, formController);
+        String filterPatientUuid = getActivity().getIntent().getStringExtra(PATIENT_UUID);
+        listAdapter = new CompleteFormsWithDataAdapter(getActivity(), R.layout.item_form_with_data_layout, filterPatientUuid, formController);
         ((CompleteFormsWithDataAdapter)listAdapter).setMuzimaClickListener(this);
         noDataMsg = getActivity().getResources().getString(R.string.info_complete_form_unavailable);
         noDataTip = getActivity().getResources().getString(R.string.hint_complete_form_unavailable);

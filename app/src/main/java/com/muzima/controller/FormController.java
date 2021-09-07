@@ -427,11 +427,17 @@ public class FormController {
         }
     }
 
-    public IncompleteFormsWithPatientData getAllIncompleteFormsWithPatientData() throws FormFetchException {
+    public IncompleteFormsWithPatientData getAllIncompleteFormsWithPatientData(String filterPatientUuid) throws FormFetchException {
         IncompleteFormsWithPatientData incompleteForms = new IncompleteFormsWithPatientData();
 
         try {
-            List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_INCOMPLETE);
+            List<FormData> allFormData;
+            if(!StringUtils.isEmpty(filterPatientUuid)) {
+                allFormData = formService.getFormDataByPatient(filterPatientUuid, Constants.STATUS_INCOMPLETE);
+            } else {
+                allFormData = formService.getAllFormData(Constants.STATUS_INCOMPLETE);
+            }
+
             for (FormData formData : allFormData) {
                 String patientUuid = formData.getPatientUuid();
                 Patient patient = null;
@@ -466,11 +472,17 @@ public class FormController {
         return incompleteForms;
     }
 
-    public CompleteFormsWithPatientData getAllCompleteFormsWithPatientData(Context context) throws FormFetchException {
+    public CompleteFormsWithPatientData getAllCompleteFormsWithPatientData(Context context, String filterPatientUuid) throws FormFetchException {
         CompleteFormsWithPatientData completeForms = new CompleteFormsWithPatientData();
 
         try {
-            List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_COMPLETE);
+            List<FormData> allFormData;
+            if(!StringUtils.isEmpty(filterPatientUuid)) {
+                allFormData = formService.getFormDataByPatient(filterPatientUuid, Constants.STATUS_COMPLETE);
+            } else {
+                allFormData = formService.getAllFormData(Constants.STATUS_COMPLETE);
+            }
+
             for (FormData formData : allFormData) {
                 Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
                 Form form = formService.getFormByUuid(formData.getTemplateUuid());
@@ -575,19 +587,19 @@ public class FormController {
     }
 
     public int countAllIncompleteForms() throws FormFetchException {
-        return getAllIncompleteFormsWithPatientData().size();
+        return getAllIncompleteFormsWithPatientData(StringUtils.EMPTY).size();
     }
 
     public int countAllCompleteForms() throws FormFetchException {
-        return getAllCompleteFormsWithPatientData(null).size();
+        return getAllCompleteFormsWithPatientData(null,StringUtils.EMPTY).size();
     }
 
-    public int countCompleteFormsForPatient(String patientId) throws FormFetchException {
-        return getAllCompleteFormsForPatientUuid(patientId).size();
+    public int countCompleteFormsForPatient(String patientuuid) throws FormFetchException {
+        return getAllCompleteFormsWithPatientData(null,patientuuid).size();
     }
 
-    public int countIncompleteFormsForPatient(String patientId) throws FormFetchException {
-        return getAllIncompleteFormsForPatientUuid(patientId).size();
+    public int countIncompleteFormsForPatient(String patientuuid) throws FormFetchException {
+        return getAllIncompleteFormsWithPatientData(patientuuid).size();
     }
 
     public AvailableForms getDownloadedRegistrationForms() throws FormFetchException {
@@ -722,8 +734,8 @@ public class FormController {
     }
 
     public boolean isFormWithPatientDataAvailable(Context context) throws FormFetchException {
-        return !(getAllIncompleteFormsWithPatientData().isEmpty() &&
-                getAllCompleteFormsWithPatientData(context).isEmpty());
+        return !(getAllIncompleteFormsWithPatientData(StringUtils.EMPTY).isEmpty() &&
+                getAllCompleteFormsWithPatientData(context,StringUtils.EMPTY).isEmpty());
     }
 
     public static class FormDataProcessException extends Throwable {
