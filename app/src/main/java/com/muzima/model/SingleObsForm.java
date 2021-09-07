@@ -18,6 +18,7 @@ public class SingleObsForm {
     private String inputDataType;
     private String inputValue;
     private int readingCount;
+    private String inputDateValue;
 
     public SingleObsForm() {
     }
@@ -68,5 +69,13 @@ public class SingleObsForm {
 
     public void setReadingCount(int readingCount) {
         this.readingCount = readingCount;
+    }
+
+    public String getInputDateValue() {
+        return inputDateValue;
+    }
+
+    public void setInputDateValue(String inputDateValue) {
+        this.inputDateValue = inputDateValue;
     }
 }

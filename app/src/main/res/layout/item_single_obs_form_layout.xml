@@ -57,6 +57,26 @@
             android:layout_height="wrap_content"
             android:hint="Weight in KG" />
 
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/item_single_obs_form_value_date_text"
+            android:background="@drawable/border_button_gray"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="24dp"
+            android:layout_margin="8dp"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="?attr/primaryTextColor"
+            android:layout_width="0dp"
+            android:maxWidth="160dp"
+            android:layout_height="wrap_content"
+            android:hint="format(dd-mm-yyyy)" />
+
         <RelativeLayout
             android:id="@+id/item_single_obs_form_date_selector_container"
             android:layout_width="0dp"

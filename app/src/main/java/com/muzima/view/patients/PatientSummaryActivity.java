@@ -2,6 +2,7 @@ package com.muzima.view.patients;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textview.MaterialTextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.ClientDynamicObsFormsAdapter;
@@ -52,6 +55,7 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.FormsWithDataActivity;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import java.text.SimpleDateFormat;
@@ -63,7 +67,7 @@ import java.util.Locale;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 
-public class PatientSummaryActivity extends AppCompatActivity implements ClientDynamicObsFormsAdapter.DatePickerClickedListener {
+public class PatientSummaryActivity extends AppCompatActivity implements ClientDynamicObsFormsAdapter.DatePickerClickedListener, ClientDynamicObsFormsAdapter.DateValuePickerClickedListener {
     private static final String TAG = "PatientSummaryActivity";
     public static final String PATIENT = "patient";
     public static final String PATIENT_UUID = "patient_uuid";
@@ -267,7 +271,7 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         childContainerView = findViewById(R.id.bottom_sheet_child_container);
         bottomSheetConceptTitleTextView = findViewById(R.id.cohort_name_text_view);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
-        clientDynamicObsFormsAdapter = new ClientDynamicObsFormsAdapter(getApplicationContext(), singleObsFormsList, this);
+        clientDynamicObsFormsAdapter = new ClientDynamicObsFormsAdapter(getApplicationContext(), singleObsFormsList, this,this);
         singleObsFormsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         singleObsFormsRecyclerView.setAdapter(clientDynamicObsFormsAdapter);
         incompleteFormsCountView = findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
@@ -305,6 +309,7 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         });
 
         saveBottomSheetEntriesActionView.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
                 if (singleObsFormsList.isEmpty()) {
@@ -334,9 +339,9 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    childContainerView.setVisibility(View.GONE);
+//                    childContainerView.setVisibility(View.GONE);
                 } else {
-                    childContainerView.setVisibility(View.VISIBLE);
+//                    childContainerView.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -401,13 +406,33 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                Log.e(TAG, "onDateSet: year, " + year + " month " + month + "day" + day);
                 SingleObsForm form = singleObsFormsList.get(position);
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, day);
                 form.setDate(calendar.getTime());
+                singleObsFormsList.remove(position);
+                singleObsFormsList.add(position, form);
+                clientDynamicObsFormsAdapter.notifyDataSetChanged();
+            }
+        });
+        datePickerDialog.show();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDateValuePickerClicked(final int position, MaterialTextView dateEditText) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(PatientSummaryActivity.this);
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                SingleObsForm form = singleObsFormsList.get(position);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, day);
+                form.setInputDateValue(DateUtils.convertDateToDayMonthYearString(calendar.getTime()));
                 singleObsFormsList.remove(position);
                 singleObsFormsList.add(position, form);
                 clientDynamicObsFormsAdapter.notifyDataSetChanged();
