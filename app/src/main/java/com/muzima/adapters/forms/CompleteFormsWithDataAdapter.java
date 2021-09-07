@@ -12,6 +12,7 @@ package com.muzima.adapters.forms;
 import android.content.Context;
 import android.util.Log;
 
+import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
@@ -24,12 +25,13 @@ import java.util.List;
  */
 public class CompleteFormsWithDataAdapter extends FormsWithDataAdapter<CompleteFormWithPatientData> {
     public Context context;
+    private static String filterPatientUuid;
 
-    public CompleteFormsWithDataAdapter(Context context, int textViewResourceId, FormController formController) {
+    public CompleteFormsWithDataAdapter(Context context, int textViewResourceId, String filterPatientUuid, FormController formController) {
         super(context, textViewResourceId, formController);
         this.context = context;
+        this.filterPatientUuid = filterPatientUuid;
     }
-
     @Override
     public void reloadData() {
         new BackgroundQueryTask(this).execute();
@@ -51,7 +53,7 @@ public class CompleteFormsWithDataAdapter extends FormsWithDataAdapter<CompleteF
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    completeForms = formsAdapter.getFormController().getAllCompleteFormsWithPatientData(formsAdapter.getContext());
+                    completeForms = formsAdapter.getFormController().getAllCompleteFormsWithPatientData(formsAdapter.getContext(),filterPatientUuid);
                     Log.i(getClass().getSimpleName(), "#Complete forms: " + completeForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(getClass().getSimpleName(), "Exception occurred while fetching local forms ", e);

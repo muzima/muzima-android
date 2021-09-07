@@ -20,6 +20,8 @@ import com.muzima.controller.FormController;
 import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.testSupport.CustomTestRunner;
+import com.muzima.utils.StringUtils;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +50,7 @@ public class CompleteFormsAdapterTest {
     public void setUp() {
         formController = mock(FormController.class);
         context = mock(Context.class);
-        formsAdapter = new CompleteFormsWithDataAdapter(context, 0, formController){
+        formsAdapter = new CompleteFormsWithDataAdapter(context, 0, StringUtils.EMPTY,formController){
             @Override
             public void addAll(@NonNull Collection<? extends CompleteFormWithPatientData> collection) {
 
@@ -65,7 +67,7 @@ public class CompleteFormsAdapterTest {
         CompleteFormsWithPatientData completeFormsWithPatientData = new CompleteFormsWithPatientData();
         completeFormsWithPatientData.add(new CompleteFormWithPatientData());
 
-        when(formController.getAllCompleteFormsWithPatientData(context)).thenReturn(completeFormsWithPatientData);
+        when(formController.getAllCompleteFormsWithPatientData(context,StringUtils.EMPTY)).thenReturn(completeFormsWithPatientData);
 
         queryTask.execute();
         Robolectric.flushBackgroundThreadScheduler();

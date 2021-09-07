@@ -383,8 +383,8 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
 
     private void loadFormsCount() {
         try {
-            long incompleteForms = ((MuzimaApplication) getApplicationContext()).getFormController().countCompleteFormsForPatient(patientUuid);
-            long completeForms = ((MuzimaApplication) getApplicationContext()).getFormController().countIncompleteFormsForPatient(patientUuid);
+            long incompleteForms = ((MuzimaApplication) getApplicationContext()).getFormController().countIncompleteFormsForPatient(patientUuid);
+            long completeForms = ((MuzimaApplication) getApplicationContext()).getFormController().countCompleteFormsForPatient(patientUuid);
             incompleteFormsCountView.setText(String.valueOf(incompleteForms));
             completeFormsCountView.setText(String.valueOf(completeForms));
         } catch (FormController.FormFetchException e) {
@@ -452,6 +452,8 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
 
     private void launchFormDataList(boolean isIncompleteFormsData) {
         Intent intent = new Intent(this, FormsWithDataActivity.class);
+
+        intent.putExtra(PATIENT_UUID,patientUuid);
         if (isIncompleteFormsData) {
             intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_INCOMPLETE);
         } else {
