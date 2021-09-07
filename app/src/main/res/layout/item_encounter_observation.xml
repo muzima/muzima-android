@@ -8,20 +8,17 @@
   ~ If the user is an entity intending to commercialize any application that uses
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_height="wrap_content"
-              android:background="@android:color/white"
-              android:orientation="vertical"
-        android:layout_width="fill_parent">
-    <TextView
-            android:id="@+id/observationHeader"
-            style="@style/ObservationGroupByConceptHeader">
-    </TextView>
-    <TextView
-            android:id="@+id/observationValue"
-            style="@style/ObservationValue">
-    </TextView>
+              android:layout_width="fill_parent"
+              android:orientation="vertical">
+
+    <TextView android:id="@+id/observationHeader"
+            android:fontFamily="@font/roboto_regular"
+            style="@style/ObservationGroupByConceptHeader"/>
+    <TextView android:id="@+id/observationValue"
+            android:fontFamily="@font/montserrat_regular"
+            style="@style/ObservationValue"/>
 
     <ImageView
             android:id="@+id/observationComplex"
@@ -32,16 +29,21 @@
             android:src="@android:drawable/ic_menu_gallery"
             android:visibility="gone"/>
 
-    <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            />
+    <View android:id="@+id/divider"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_marginStart="8dp"
+          android:layout_marginEnd="8dp"
+          android:background="@color/hint_text_grey_opaque"/>
 
-    <TextView
-            android:id="@+id/observationDate"
-            style="@style/ObservationDate">
-    </TextView>
+    <TextView android:id="@+id/observationDate"
+              android:fontFamily="@font/roboto_regular"
+              android:textSize="14sp"
+              android:layout_weight=".5"
+              style="@style/ObservationDate"/>
+
+    <View android:id="@+id/border"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/hint_text_grey_opaque"/>
 </LinearLayout>

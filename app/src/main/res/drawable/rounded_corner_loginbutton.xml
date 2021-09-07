@@ -12,13 +12,13 @@
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <corners android:radius="8dp"/>
-            <solid android:color="@color/listitem_state_pressed"/>
+            <solid android:color="@color/list_item_state_pressed"/>
         </shape>
     </item>
     <item android:state_focused="true">
         <shape android:shape="rectangle">
             <corners android:radius="8dp"/>
-            <solid android:color="@color/listitem_state_focused"/>
+            <solid android:color="@color/list_item_state_focused"/>
         </shape>
     </item>
     <item>

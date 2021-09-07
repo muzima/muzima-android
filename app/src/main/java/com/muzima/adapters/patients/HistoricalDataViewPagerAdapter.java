@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.muzima.utils.Constants;
 import com.muzima.view.fragments.observations.ObservationsListingFragment;
+import com.muzima.view.fragments.patient.HistoricalDataByEncounterFragment;
 import com.muzima.view.fragments.patient.HistoricalDataByTypeFragment;
 
 public class HistoricalDataViewPagerAdapter extends FragmentStateAdapter {
@@ -27,7 +28,7 @@ public class HistoricalDataViewPagerAdapter extends FragmentStateAdapter {
             case 0:
                 return new HistoricalDataByTypeFragment(patientUuid);
             case 1:
-                return new ObservationsListingFragment(Constants.OBSERVATIONS_FILTER_CATEGORY.BY_ENCOUNTER, patientUuid,false);
+                return new HistoricalDataByEncounterFragment(patientUuid);
 //            case 2:
 //                return new ObservationsListingFragment(Constants.OBSERVATIONS_FILTER_CATEGORY.BY_ABSTRACT, patientUuid,false);
         }

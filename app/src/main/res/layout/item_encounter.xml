@@ -10,12 +10,12 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="fill_parent"
-                 android:layout_height="wrap_content"
-             android:background="@drawable/list_multi_selector_blue"
-             android:layout_marginBottom="3dp"
-             android:layout_marginTop="3dp"
-             android:orientation="vertical">
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/list_multi_selector_blue"
+              android:layout_marginBottom="3dp"
+              android:layout_marginTop="3dp"
+              android:orientation="vertical">
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -26,7 +26,9 @@
             android:orientation="horizontal">
         <TextView
                 android:id="@+id/encounterFormName"
-                style="@style/EncounterFormName"/>
+                style="@style/EncounterFormName"
+                android:textColor="?attr/primaryTextColor"
+                android:fontFamily="@font/montserrat_regular"/>
         <TextView
                 android:id="@+id/encounterDate"
                 style="@style/EncounterDate"
@@ -39,24 +41,30 @@
             android:layout_marginBottom="3dp"
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
         <TextView
                 android:id="@+id/encounterProvider"
-                style="@style/EncounterProvider"
-                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_weight="0.4"
+                android:textSize="12sp"
+                style="@style/EncounterProvider"
+                android:fontFamily="@font/roboto_regular"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?attr/secondaryTextColor"/>
         <TextView
                 android:id="@+id/encounterLocation"
-                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
-                android:gravity="right"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:gravity="end"
+                android:textSize="12sp"
+                android:fontFamily="@font/roboto_regular"
                 android:textColor="?attr/secondaryTextColor"
                 style="@style/EncounterLocation"/>
     </LinearLayout>
-
-
+    <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider_color"
+            android:layout_marginEnd="14dp"
+            android:layout_marginStart="14dp"/>
 </LinearLayout>

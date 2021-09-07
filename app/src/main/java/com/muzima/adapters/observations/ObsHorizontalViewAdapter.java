@@ -6,71 +6,92 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.muzima.R;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
+import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
-
 import com.muzima.utils.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontalViewAdapter.ViewHolder> {
-    private List<Observation> observationList;
-    private ObservationClickedListener observationClickedListener;
+    private final List<Observation> observationList;
+    private final ObservationClickedListener observationClickedListener;
     private AlertDialog obsDetailsViewDialog;
-    private LayoutInflater layoutInflater;
-    private View obsDetailsDialog;
     final EncounterController encounterController;
     final ObservationController observationController;
-    private boolean isSingleElementInput;
+    private final boolean isSingleElementInput;
+    private final Boolean isShrData;
+    private List<Integer> shrConcepts;
 
-    public ObsHorizontalViewAdapter(List<Observation> observationList, boolean isSingleElementInput, ObservationClickedListener observationClickedListener,
-                                    EncounterController encounterController, ObservationController observationController) {
+    public ObsHorizontalViewAdapter(List<Observation> observationList, ObservationClickedListener observationClickedListener,
+                                    EncounterController encounterController, ObservationController observationController,
+                                    boolean isShrData, boolean isSingleElementInput) {
         this.observationList = observationList;
         this.observationClickedListener = observationClickedListener;
         this.encounterController = encounterController;
         this.observationController = observationController;
+        this.isShrData = isShrData;
+        loadComposedShrConceptId();
         this.isSingleElementInput = isSingleElementInput;
     }
 
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_single_obs_view_layout, parent, false), observationClickedListener);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_observation_by_concept_2, parent, false), observationClickedListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Observation observation = observationList.get(position);
-        if (observation.getConcept().isNumeric()) {
-            holder.valueTextView.setText(String.valueOf(observation.getValueNumeric()));
+
+        if (isShrData) {
+            holder.shrEnabledImage.setVisibility(View.VISIBLE);
+        } else {
+            holder.shrEnabledImage.setVisibility(View.INVISIBLE);
         }
 
-        if (observation.getConcept().isDatetime()) {
-            holder.valueTextView.setText(DateUtils.convertDateToStdString(observation.getValueDatetime()));
+        if (shrConcepts.contains(observation.getConcept().getId())) {
+            holder.shrEnabledImage.setVisibility(View.VISIBLE);
         }
 
-        if(observation.getConcept().isCoded()){
-            holder.valueTextView.setText(observation.getValueCoded().getName());
+        if (StringUtils.equals(observation.getConcept().getConceptType().getName(), "Complex")) {
+            holder.observationValue.setVisibility(View.GONE);
+            holder.observationComplexHolder.setVisibility(View.VISIBLE);
+        } else {
+            holder.observationValue.setVisibility(View.VISIBLE);
+            holder.observationComplexHolder.setVisibility(View.GONE);
+            if (observation.getConcept().isNumeric())
+                holder.observationValue.setText(String.valueOf(observation.getValueNumeric()));
+
+            if (observation.getConcept().isDatetime())
+                holder.observationValue.setText(DateUtils.convertDateToStdString(observation.getValueDatetime()));
+
+            if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded())
+                holder.observationValue.setText(observation.getValueText());
+
+            if (observation.getConcept().isCoded())
+                holder.observationValue.setText(observation.getValueCoded().getName());
+
+            if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded())
+                holder.observationValue.setText(observation.getValueText());
         }
 
-        if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded()) {
-            holder.valueTextView.setText(observation.getValueText());
-        }
-        holder.dateTextView.setText(DateUtils.convertDateToHumanReadableString(observation.getObservationDatetime()));
+        holder.observationDate.setText(DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime()));
     }
 
     @Override
@@ -79,15 +100,19 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final TextView valueTextView;
-        private final TextView dateTextView;
+        private final TextView observationValue;
+        private final TextView observationDate;
+        private final ImageView shrEnabledImage;
+        private final ImageView observationComplexHolder;
         private final ObservationClickedListener observationClickedListener;
 
         public ViewHolder(@NonNull View view, ObservationClickedListener clickedListener) {
             super(view);
             View container = view.findViewById(R.id.item_single_obs_container);
-            this.valueTextView = view.findViewById(R.id.item_single_obs_value_text_view);
-            this.dateTextView = view.findViewById(R.id.item_single_obs_date_text_view);
+            this.observationValue = view.findViewById(R.id.observation_value);
+            this.observationDate = view.findViewById(R.id.item_single_obs_date_text_view);
+            this.shrEnabledImage = view.findViewById(R.id.shr_card_obs_image_view);
+            this.observationComplexHolder = view.findViewById(R.id.observation_complex);
             this.observationClickedListener = clickedListener;
             if(!isSingleElementInput) {
                 container.setOnClickListener(this);
@@ -104,6 +129,18 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
 
     public interface ObservationClickedListener {
         void onObservationClicked(int position);
+    }
+
+    private void loadComposedShrConceptId() {
+        List<Integer> conceptIds = new ArrayList<>();
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_RESULT.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_TYPE.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_STRATEGY.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.VACCINE.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.SEQUENCE.concept_id);
+        conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.GROUP.concept_id);
+
+        shrConcepts = conceptIds;
     }
 
     public void displayObservationDetailsDialog(Observation observation, View view) {
@@ -132,12 +169,12 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
         TextView observationDetailsHeader;
         RelativeLayout providerDetails;
 
-        layoutInflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         AlertDialog.Builder addIndividualObservationsDialogBuilder =
                 new androidx.appcompat.app.AlertDialog.Builder(
                         view.getContext()
                 );
-        obsDetailsDialog = layoutInflater.inflate(R.layout.obs_details_dialog_layout, null);
+        View obsDetailsDialog = layoutInflater.inflate(R.layout.obs_details_dialog_layout, null);
 
         addIndividualObservationsDialogBuilder.setView(obsDetailsDialog);
         addIndividualObservationsDialogBuilder

@@ -9,8 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Concept;
+import com.muzima.controller.ConceptController;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import org.greenrobot.eventbus.EventBus;
@@ -25,18 +29,23 @@ public class ObsVerticalListConceptsRecyclerView extends Adapter<ObsVerticalList
     private List<ObsConceptWrapper> conceptWrapperList;
     private boolean inputRendering;
     private ConceptInputLabelClickedListener conceptInputLabelClickedListener;
+    final EncounterController encounterController;
+    final ObservationController observationController;
 
     public ObsVerticalListConceptsRecyclerView(Context context, List<ObsConceptWrapper> conceptWrapperList, boolean inputRendering, ConceptInputLabelClickedListener conceptInputLabelClickedListener) {
         this.context = context;
         this.conceptWrapperList = conceptWrapperList;
         this.inputRendering = inputRendering;
         this.conceptInputLabelClickedListener = conceptInputLabelClickedListener;
+        MuzimaApplication app = (MuzimaApplication) context.getApplicationContext();
+        this.encounterController = app.getEncounterController();
+        this.observationController = app.getObservationController();
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_obs_vertical_list_item, parent, false), conceptInputLabelClickedListener);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_observation_by_concept_list_2, parent, false), conceptInputLabelClickedListener);
     }
 
     @Override
@@ -47,12 +56,12 @@ public class ObsVerticalListConceptsRecyclerView extends Adapter<ObsVerticalList
         else
             holder.titleTextView.setText(obsConceptWrapper.getConcept().getName());
         holder.obsHorizontalListRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false));
-        ObsHorizontalViewAdapter observationsListAdapter = new ObsHorizontalViewAdapter(obsConceptWrapper.getMatchingObs(),inputRendering, new ObsHorizontalViewAdapter.ObservationClickedListener() {
+        ObsHorizontalViewAdapter observationsListAdapter = new ObsHorizontalViewAdapter(obsConceptWrapper.getMatchingObs(), new ObsHorizontalViewAdapter.ObservationClickedListener() {
             @Override
             public void onObservationClicked(int position) {
                 EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(conceptWrapperList.get(position)));
             }
-        }, null, null);
+        }, encounterController, observationController, false, inputRendering);
         holder.obsHorizontalListRecyclerView.setAdapter(observationsListAdapter);
     }
 
@@ -68,8 +77,8 @@ public class ObsVerticalListConceptsRecyclerView extends Adapter<ObsVerticalList
 
         public ViewHolder(@NonNull View itemView, ConceptInputLabelClickedListener conceptInputLabelClickedListener) {
             super(itemView);
-            this.titleTextView = itemView.findViewById(R.id.item_obs_vertical_list_title_text_view);
-            this.obsHorizontalListRecyclerView = itemView.findViewById(R.id.item_obs_vertical_list_obs_horizontal_recycler_view);
+            this.titleTextView = itemView.findViewById(R.id.obs_concept);
+            this.obsHorizontalListRecyclerView = itemView.findViewById(R.id.obs_list);
             this.conceptInputLabelClickedListener = conceptInputLabelClickedListener;
             this.titleTextView.setOnClickListener(this);
         }

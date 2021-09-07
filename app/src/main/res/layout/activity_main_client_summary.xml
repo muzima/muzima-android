@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/activity_client_summary_dashboard"/>
+    <include layout="@layout/activity_client_summary"/>
 
     <include layout="@layout/activity_client_summary_bottom_sheet_layout"/>
 

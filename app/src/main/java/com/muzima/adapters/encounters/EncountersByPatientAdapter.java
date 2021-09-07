@@ -9,61 +9,60 @@
  */
 package com.muzima.adapters.encounters;
 
-import android.app.Activity;
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.api.model.Encounter;
-import com.muzima.api.model.Patient;
 import com.muzima.controller.EncounterController;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.DateUtils;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class EncountersByPatientAdapter extends EncountersAdapter {
+public class EncountersByPatientAdapter extends RecyclerAdapter<EncountersByPatientAdapter.ViewHolder> {
+    protected Context context;
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private final String patientUuid;
+    private final EncounterClickedListener encounterClickedListener;
+    private List<Encounter> encounterList;
+    final EncounterController encounterController;
 
 
-    public EncountersByPatientAdapter(Activity activity, int textViewResourceId, EncounterController encounterController, Patient patient) {
-        super(activity, textViewResourceId, encounterController);
-        patientUuid = patient.getUuid();
-    }
-
-    @Override
-    public void reloadData() {
-        new BackgroundQueryTask().execute(patientUuid);
+    public EncountersByPatientAdapter(Context context, String patientUuid, EncounterClickedListener encounterClickedListener) {
+        this.context = context;
+        this.patientUuid = patientUuid;
+        this.encounterClickedListener =  encounterClickedListener;
+        encounterList = new ArrayList<>();
+        MuzimaApplication app = (MuzimaApplication) context.getApplicationContext();
+        this.encounterController = app.getEncounterController();
     }
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        Encounter encounter=getItem(position);
-        Context context = getContext();
-        EncountersByPatientViewHolder holder;
-        if (convertView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(context);
-            convertView = layoutInflater.inflate(R.layout.item_encounter, parent, false);
-            convertView.setClickable(false);
-            convertView.setFocusable(false);
-            holder = new EncountersByPatientViewHolder();
-            holder.encounterDate = convertView.findViewById(R.id.encounterDate);
-            holder.encounterFormName = convertView.findViewById(R.id.encounterFormName);
-            holder.encounterLocation = convertView.findViewById(R.id.encounterLocation);
-            holder.encounterProvider = convertView.findViewById(R.id.encounterProvider);
-            convertView.setTag(holder);
-        }else {
-            holder = (EncountersByPatientViewHolder) convertView.getTag();
-        }
+    public ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_encounter, parent, false), encounterClickedListener);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
+        bindViews((EncountersByPatientAdapter.ViewHolder) holder, position);
+    }
+
+    private void bindViews(@NotNull EncountersByPatientAdapter.ViewHolder holder, int position) {
+        Encounter encounter= encounterList.get(position);
+
         String location = encounter.getLocation().getName();
         String providerName = encounter.getProvider().getDisplayName();
         String date = DateUtils.getMonthNameFormattedDate(encounter.getEncounterDatetime());
@@ -74,71 +73,96 @@ public class EncountersByPatientAdapter extends EncountersAdapter {
         holder.encounterProvider.setText(providerName);
         holder.encounterFormName.setText(encounterType);
         holder.encounterDate.setText(date);
+    }
 
-        return convertView;
+    @Override
+    public int getItemCount() {
+        return encounterList.size();
+    }
+
+    public Encounter getItem(int position) {
+        return encounterList.get(position);
+    }
+
+    @Override
+    public void reloadData() {
+        new BackgroundQueryTask().execute(patientUuid);
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
     }
 
-    private class EncountersByPatientViewHolder extends ViewHolder {
+    public static class ViewHolder extends RecyclerAdapter.ViewHolder implements View.OnClickListener{
+        TextView encounterFormName;
         TextView encounterProvider;
         TextView encounterDate;
         TextView encounterLocation;
-        TextView encounterFormName;
+        private final EncounterClickedListener  encounterClickedListener;
+
+        public ViewHolder(@NonNull View view, EncounterClickedListener encounterClickedListener) {
+            super(view);
+            this.encounterFormName = view.findViewById(R.id.encounterFormName);
+            this.encounterProvider = view.findViewById(R.id.encounterProvider);
+            this.encounterDate = view.findViewById(R.id.encounterDate);
+            this.encounterLocation = view.findViewById(R.id.encounterLocation);
+            this.encounterClickedListener = encounterClickedListener;
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            this.encounterClickedListener.onEncounterClicked(getAdapterPosition());
+        }
+    }
+
+    public interface EncounterClickedListener {
+        void onEncounterClicked(int position);
     }
 
     private class BackgroundQueryTask extends MuzimaAsyncTask<String, Void, List<Encounter>> {
         @Override
         protected void onPreExecute() {
-            if (backgroundListQueryTaskListener != null) {
+            if (backgroundListQueryTaskListener != null)
                 backgroundListQueryTaskListener.onQueryTaskStarted();
-            }
         }
 
         @Override
         protected List<Encounter> doInBackground(String... params) {
             List<Encounter> encounters = null;
             try {
-               encounters = encounterController.getEncountersByPatientUuid(patientUuid);
-
-            }catch(EncounterController.FetchEncounterException e){
-                Log.e(this.getClass().getSimpleName(),"Could not get patient encounters",e);
+                encounters = encounterController.getEncountersByPatientUuid(patientUuid);
+                if (encounters != null)
+                    Collections.sort(encounters, encountersDateTimeComparator);
+            } catch (EncounterController.FetchEncounterException e) {
+                Log.e(this.getClass().getSimpleName(), "Could not get patient encounters", e);
             }
 
-            Collections.sort(encounters, encountersDateTimeComparator);
             return encounters;
         }
 
-        private final Comparator<Encounter> encountersDateTimeComparator = new Comparator<Encounter>() {
-            @Override
-            public int compare(Encounter lhs, Encounter rhs) {
-                if (lhs.getEncounterDatetime()==null)
-                    return -1;
-                if (rhs.getEncounterDatetime()==null)
-                    return 1;
-                return -(lhs.getEncounterDatetime()
-                        .compareTo(rhs.getEncounterDatetime()));
-            }
+        private final Comparator<Encounter> encountersDateTimeComparator = (lhs, rhs) -> {
+            if (lhs.getEncounterDatetime()==null)
+                return -1;
+            if (rhs.getEncounterDatetime()==null)
+                return 1;
+            return -(lhs.getEncounterDatetime()
+                    .compareTo(rhs.getEncounterDatetime()));
         };
-
 
         @Override
         protected void onPostExecute(List<Encounter> encounters){
             if(encounters==null){
-                Toast.makeText(getContext(),getContext().getString(R.string.error_encounter_load),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.error_encounter_load),Toast.LENGTH_SHORT).show();
                 return;
             }
-            clear();
-            addAll(encounters);
+            encounterList.clear();
+            encounterList = encounters;
             notifyDataSetChanged();
             backgroundListQueryTaskListener.onQueryTaskFinish();
         }
 
         @Override
-        protected void onBackgroundError(Exception e) {
-
-        }
+        protected void onBackgroundError(Exception e) {}
     }
 }

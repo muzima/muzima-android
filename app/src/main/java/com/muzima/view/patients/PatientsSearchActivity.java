@@ -204,9 +204,9 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
                 try {
                     PatientController patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
                     Patient patient = patientController.getPatientByUuid(patientUUIDs[0]);
-                    intent = new Intent(this, ClientSummaryActivity.class);
-                    intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
-                    intent.putExtra(ClientSummaryActivity.CALLING_ACTIVITY, PatientsSearchActivity.class.getSimpleName());
+                    intent = new Intent(this, PatientSummaryActivity.class);
+                    intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
+                    intent.putExtra(PatientSummaryActivity.CALLING_ACTIVITY, PatientsSearchActivity.class.getSimpleName());
                     startActivity(intent);
                 } catch (PatientController.PatientLoadException e) {
                     Log.e(PatientRemoteSearchListActivity.class.getName(), "Could not load downloaded patient " + e.getMessage());
@@ -416,9 +416,9 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         patientAdapter.cancelBackgroundTask();
         Patient patient = patientAdapter.getItem(position);
-        Intent intent = new Intent(this, ClientSummaryActivity.class);
-        intent.putExtra(ClientSummaryActivity.CALLING_ACTIVITY, PatientsSearchActivity.class.getSimpleName());
-        intent.putExtra(ClientSummaryActivity.PATIENT_UUID, patient.getUuid());
+        Intent intent = new Intent(this, PatientSummaryActivity.class);
+        intent.putExtra(PatientSummaryActivity.CALLING_ACTIVITY, PatientsSearchActivity.class.getSimpleName());
+        intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
         startActivity(intent);
     }
 
@@ -669,9 +669,9 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
                 } catch (KenyaEmrShrMapper.ShrParseException e) {
                     Log.e(getClass().getSimpleName(), "Failed to parse SHR", e);
                 }
-                Intent intent = new Intent(PatientsSearchActivity.this, ClientSummaryActivity.class);
-                intent.putExtra(ClientSummaryActivity.CALLING_ACTIVITY, PatientsSearchActivity.class.getSimpleName());
-                intent.putExtra(ClientSummaryActivity.PATIENT_UUID, SHRToMuzimaMatchingPatient.getUuid());
+                Intent intent = new Intent(PatientsSearchActivity.this, PatientSummaryActivity.class);
+                intent.putExtra(PatientSummaryActivity.CALLING_ACTIVITY, PatientsSearchActivity.class.getSimpleName());
+                intent.putExtra(PatientSummaryActivity.PATIENT_UUID, SHRToMuzimaMatchingPatient.getUuid());
                 startActivity(intent);
             }
         }
@@ -720,8 +720,8 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
                 patientRegistrationProgressDialog.cancel();
             }
 
-            Intent intent = new Intent(PatientsSearchActivity.this, ClientSummaryActivity.class);
-            intent.putExtra(ClientSummaryActivity.PATIENT_UUID, SHRPatient.getUuid());
+            Intent intent = new Intent(PatientsSearchActivity.this, PatientSummaryActivity.class);
+            intent.putExtra(PatientSummaryActivity.PATIENT_UUID, SHRPatient.getUuid());
             startActivity(intent);
             super.onPostExecute(aBoolean);
         }
