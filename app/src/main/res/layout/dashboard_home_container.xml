@@ -138,7 +138,8 @@
                             android:padding="6dp"
                             android:layout_marginEnd="2dp"
                             android:layout_marginStart="2dp"
-                            android:src="@drawable/debit_card" />
+                            android:src="@drawable/debit_card"
+                            android:visibility="gone"/>
 
 
                     </LinearLayout>
