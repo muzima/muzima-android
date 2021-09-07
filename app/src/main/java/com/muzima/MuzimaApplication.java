@@ -208,14 +208,14 @@ public class MuzimaApplication extends MultiDexApplication {
                         muzimaContext.authenticate(username, password, server, false);
                     }
 
-
                     authenticatedUser = muzimaContext.getAuthenticatedUser();
                 }
                 muzimaContext.closeSession();
             }
         } catch (Exception e) {
             muzimaContext.closeSession();
-            throw new RuntimeException(e);
+            logOut();
+            //throw new RuntimeException(e);
         }
         return authenticatedUser;
     }

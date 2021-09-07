@@ -23,8 +23,10 @@ import java.util.List;
  */
 public class IncompleteFormsWithDataAdapter extends FormsWithDataAdapter<IncompleteFormWithPatientData> {
 
-    public IncompleteFormsWithDataAdapter(Context context, int textViewResourceId, FormController formController) {
+    private static String filterPatientUuid;
+    public IncompleteFormsWithDataAdapter(Context context, int textViewResourceId, String filterPatientUuid, FormController formController) {
         super(context, textViewResourceId, formController);
+        this.filterPatientUuid = filterPatientUuid;
     }
 
     @Override
@@ -48,7 +50,7 @@ public class IncompleteFormsWithDataAdapter extends FormsWithDataAdapter<Incompl
             if (adapterWeakReference.get() != null) {
                 try {
                     FormsAdapter formsAdapter = adapterWeakReference.get();
-                    incompleteForms = formsAdapter.getFormController().getAllIncompleteFormsWithPatientData();
+                    incompleteForms = formsAdapter.getFormController().getAllIncompleteFormsWithPatientData(filterPatientUuid);
                     Log.i(getClass().getSimpleName(), "#Incomplete forms: " + incompleteForms.size());
                 } catch (FormController.FormFetchException e) {
                     Log.w(getClass().getSimpleName(), "Exception occurred while fetching local forms ", e);

@@ -37,6 +37,7 @@ import com.muzima.controller.FormController;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.MainDashboardActivity;
 
@@ -47,6 +48,7 @@ import java.util.Set;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_UUID;
 
 
 public class FormsWithDataActivity extends FormsActivityBase {
@@ -60,6 +62,7 @@ public class FormsWithDataActivity extends FormsActivityBase {
     private FormController formController;
     private boolean syncInProgress;
     private TagPreferenceService tagPreferenceService;
+    private String patientUuid;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
 
@@ -72,6 +75,8 @@ public class FormsWithDataActivity extends FormsActivityBase {
         setContentView(mainLayout);
         formController = ((MuzimaApplication) getApplication()).getFormController();
         tagPreferenceService = new TagPreferenceService(this);
+        patientUuid = getIntent().getStringExtra(PATIENT_UUID);
+
         initToolbar();
         initPager();
         initDrawer();
@@ -227,8 +232,8 @@ public class FormsWithDataActivity extends FormsActivityBase {
 
     private boolean hasFormsWithData() {
         try {
-            if (!(formController.getAllIncompleteFormsWithPatientData().isEmpty() &&
-                    formController.getAllCompleteFormsWithPatientData(getApplicationContext()).isEmpty())) {
+            if (!(formController.getAllIncompleteFormsWithPatientData(patientUuid).isEmpty() &&
+                    formController.getAllCompleteFormsWithPatientData(getApplicationContext(),patientUuid).isEmpty())) {
                 return true;
             }
         } catch (FormController.FormFetchException e) {
