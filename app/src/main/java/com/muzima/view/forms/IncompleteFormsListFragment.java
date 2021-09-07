@@ -22,6 +22,8 @@ import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.StringUtils;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_UUID;
 
 public class IncompleteFormsListFragment extends FormsWithDataListFragment implements FormsAdapter.MuzimaClickListener{
@@ -42,7 +44,7 @@ public class IncompleteFormsListFragment extends FormsWithDataListFragment imple
 
         if (actionModeActive) {
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
-            actionMode.setTitle(String.valueOf(((IncompleteFormsWithDataAdapter)listAdapter).getSelectedFormsUuid().size()));
+            actionMode.setTitle(String.valueOf(((IncompleteFormsWithDataAdapter)listAdapter).getSelectedFormsUuids().size()));
         }
 
         super.onCreate(savedInstanceState);
@@ -73,7 +75,7 @@ public class IncompleteFormsListFragment extends FormsWithDataListFragment imple
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
         }
-        int numOfSelectedForms = ((IncompleteFormsWithDataAdapter)listAdapter).getSelectedFormsUuid().size();
+        int numOfSelectedForms = ((IncompleteFormsWithDataAdapter)listAdapter).getSelectedFormsUuids().size();
         if (numOfSelectedForms == 0 && actionModeActive) {
             actionMode.finish();
         }

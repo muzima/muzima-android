@@ -12,10 +12,11 @@ package com.muzima.adapters.forms;
 import android.content.Context;
 import androidx.annotation.NonNull;
 
+import android.content.res.Resources;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.PatientComparator;
+import com.muzima.view.custom.CheckedLinearLayout;
 import com.muzima.view.custom.CheckedRelativeLayout;
 
 import java.text.SimpleDateFormat;
@@ -45,14 +47,14 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
 
     private List<Patient> patients;
     private final PatientComparator patientComparator;
-    private final List<String> selectedFormsUuid;
+    private final List<String> selectedFormsUuids;
     private MuzimaClickListener muzimaClickListener;
 
     FormsWithDataAdapter(Context context, int textViewResourceId, FormController formController) {
         super(context, textViewResourceId, formController);
         patients = new ArrayList<>();
         patientComparator = new PatientComparator();
-        selectedFormsUuid = new ArrayList<>();
+        selectedFormsUuids = new ArrayList<>();
     }
 
     @Override
@@ -158,18 +160,23 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (view instanceof CheckedRelativeLayout) {
-                    CheckedRelativeLayout checkedLinearLayout = (CheckedRelativeLayout) view;
+                if (view instanceof CheckedLinearLayout) {
+                    CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
                     checkedLinearLayout.toggle();
                     boolean selected = checkedLinearLayout.isChecked();
 
                     FormWithData formWithPatientData = getItem(position);
-                    if (selected && !selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
-                        selectedFormsUuid.add(formWithPatientData.getFormDataUuid());
+                    if (selected && !selectedFormsUuids.contains(formWithPatientData.getFormDataUuid())) {
+                        selectedFormsUuids.add(formWithPatientData.getFormDataUuid());
                         checkedLinearLayout.setActivated(true);
-                    } else if (!selected && selectedFormsUuid.contains(formWithPatientData.getFormDataUuid())) {
-                        selectedFormsUuid.remove(formWithPatientData.getFormDataUuid());
+                        checkedLinearLayout.setBackgroundResource(R.color.hint_blue_opaque);
+                    } else if (!selected && selectedFormsUuids.contains(formWithPatientData.getFormDataUuid())) {
+                        selectedFormsUuids.remove(formWithPatientData.getFormDataUuid());
                         checkedLinearLayout.setActivated(false);
+                        TypedValue typedValue = new TypedValue();
+                        Resources.Theme theme = getContext().getTheme();
+                        theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
+                        view.setBackgroundResource(typedValue.resourceId);
                     }
                     muzimaClickListener.onItemLongClick();
                 }
@@ -188,16 +195,16 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
         this.muzimaClickListener = muzimaClickListener;
     }
 
-    public List<String> getSelectedFormsUuid() {
-        return selectedFormsUuid;
+    public List<String> getSelectedFormsUuids() {
+        return selectedFormsUuids;
     }
 
     public void clearSelectedFormsUuid() {
-        selectedFormsUuid.clear();
+        selectedFormsUuids.clear();
     }
 
     public void retainFromSelectedFormsUuid(Collection uuids) {
-        selectedFormsUuid.retainAll(uuids);
+        selectedFormsUuids.retainAll(uuids);
     }
 
     private final Comparator<FormWithData> alphabaticalComparator = new Comparator<FormWithData>() {

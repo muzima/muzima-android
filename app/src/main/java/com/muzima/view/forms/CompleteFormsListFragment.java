@@ -20,10 +20,11 @@ import android.widget.AdapterView;
 import com.muzima.R;
 import com.muzima.adapters.forms.CompleteFormsWithDataAdapter;
 import com.muzima.adapters.forms.FormsAdapter;
-import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.utils.Constants;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_UUID;
 
@@ -74,7 +75,7 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
 
         if (actionModeActive) {
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
-            actionMode.setTitle(String.valueOf(((CompleteFormsWithDataAdapter)listAdapter).getSelectedFormsUuid().size()));
+            actionMode.setTitle(String.valueOf(((CompleteFormsWithDataAdapter)listAdapter).getSelectedFormsUuids().size()));
         }
         super.onCreate(savedInstanceState);
     }
@@ -94,15 +95,19 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
 
     @Override
     public void onItemLongClick() {
-        if (!actionModeActive) {
+        int numOfSelectedForms = ((CompleteFormsWithDataAdapter)listAdapter).getSelectedFormsUuids().size();
+        if (numOfSelectedForms > 0 && !actionModeActive) {
             actionMode = getActivity().startActionMode(new DeleteFormsActionModeCallback());
             actionModeActive = true;
+
         }
-        int numOfSelectedForms = ((CompleteFormsWithDataAdapter)listAdapter).getSelectedFormsUuid().size();
         if (numOfSelectedForms == 0 && actionModeActive) {
             actionMode.finish();
         }
-        actionMode.setTitle(String.valueOf(numOfSelectedForms));
+
+        if(numOfSelectedForms > 0) {
+            actionMode.setTitle(String.valueOf(numOfSelectedForms));
+        }
     }
 
     @Override

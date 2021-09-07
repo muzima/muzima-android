@@ -28,6 +28,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public abstract class FormsWithDataListFragment extends FormsListFragment{
     ActionMode actionMode;
     boolean actionModeActive;
@@ -49,7 +51,7 @@ public abstract class FormsWithDataListFragment extends FormsListFragment{
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_delete:
-                    List<String> selectedFormsUUIDs = ((FormsWithDataAdapter) listAdapter).getSelectedFormsUuid();
+                    List<String> selectedFormsUUIDs = ((FormsWithDataAdapter) listAdapter).getSelectedFormsUuids();
                     try {
                         Map<String,List<FormData>> groupedFormData = formController.getFormDataGroupedByPatient(selectedFormsUUIDs);
                         final Map<String,List<FormData>> groupedFormDataWithRegistrationData =
@@ -112,7 +114,7 @@ public abstract class FormsWithDataListFragment extends FormsListFragment{
                     uuids.add(formData.getUuid());
                 }
             }
-            int selectedFormsSize = ((FormsWithDataAdapter) listAdapter).getSelectedFormsUuid().size();
+            int selectedFormsSize = ((FormsWithDataAdapter) listAdapter).getSelectedFormsUuids().size();
             int remnantFormsSize = uuids.size();
             int deletedFormsCount = selectedFormsSize - remnantFormsSize;
             if(deletedFormsCount > 0) {
@@ -123,7 +125,7 @@ public abstract class FormsWithDataListFragment extends FormsListFragment{
             }
         }
 
-        private void endActionMode() {
+        public void endActionMode() {
             if (actionMode != null) {
                 actionMode.finish();
             }
