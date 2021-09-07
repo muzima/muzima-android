@@ -58,6 +58,7 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
         }else if(form.getConcept().isDatetime()){
             holder.valueEditText.setVisibility(View.GONE);
             holder.valueDateText.setVisibility(View.VISIBLE);
+            holder.valueDateText.setHint(String.format(Locale.getDefault(), "%s %s", form.getConcept().getName(), form.getConcept().getConceptType().getName()));
             holder.valueDateText.setText(form.getInputDateValue());
             holder.valueEditText.setText(form.getInputDateValue());
         } else{
