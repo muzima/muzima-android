@@ -15,7 +15,7 @@
             android:id="@+id/client_relationship"
             android:title=""
             app:showAsAction="always"
-            android:icon="@drawable/relationship_management"/>
+            android:icon="@drawable/ic_relationship"/>
     <item
             android:id="@+id/SHR_client_summary"
             android:title=""

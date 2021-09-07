@@ -2,6 +2,7 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textview.MaterialTextView;
 import com.muzima.R;
 import com.muzima.model.SingleObsForm;
 import com.muzima.model.events.CloseSingleFormEvent;
@@ -28,17 +30,19 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
     private Context context;
     private List<SingleObsForm> singleObsFormList;
     private DatePickerClickedListener datePickerClickedListener;
+    private DateValuePickerClickedListener dateValuePickerClickedListener;
 
-    public ClientDynamicObsFormsAdapter(Context context, List<SingleObsForm> singleObsFormList, DatePickerClickedListener datePickerClickedListener) {
+    public ClientDynamicObsFormsAdapter(Context context, List<SingleObsForm> singleObsFormList, DatePickerClickedListener datePickerClickedListener, DateValuePickerClickedListener dateValuePickerClickedListener) {
         this.context = context;
         this.singleObsFormList = singleObsFormList;
         this.datePickerClickedListener = datePickerClickedListener;
+        this.dateValuePickerClickedListener = dateValuePickerClickedListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_single_obs_form_layout, parent, false), datePickerClickedListener);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_single_obs_form_layout, parent, false), datePickerClickedListener, dateValuePickerClickedListener);
     }
 
     @Override
@@ -46,6 +50,21 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
         final SingleObsForm form = singleObsFormList.get(position);
         holder.readingCountTextView.setText(String.format(Locale.getDefault(), "%s %d", context.getResources().getString(R.string.general_reading), form.getReadingCount()));
         holder.valueEditText.setHint(String.format(Locale.getDefault(), "%s %s", form.getConcept().getName(), form.getConcept().getConceptType().getName()));
+        holder.valueEditText.setText("");
+        if(form.getConcept().isNumeric()) {
+            holder.valueEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            holder.valueEditText.setVisibility(View.VISIBLE);
+            holder.valueDateText.setVisibility(View.GONE);
+        }else if(form.getConcept().isDatetime()){
+            holder.valueEditText.setVisibility(View.GONE);
+            holder.valueDateText.setVisibility(View.VISIBLE);
+            holder.valueDateText.setText(form.getInputDateValue());
+            holder.valueEditText.setText(form.getInputDateValue());
+        } else{
+            holder.valueEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+            holder.valueEditText.setVisibility(View.VISIBLE);
+            holder.valueDateText.setVisibility(View.GONE);
+        }
         holder.valueEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -77,21 +96,32 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
         private TextInputEditText valueEditText;
         private TextView readingCountTextView;
         private View closeEntryView;
+        private MaterialTextView valueDateText;
+        private DateValuePickerClickedListener dateValuePickerClickedListener;
 
-        public ViewHolder(@NonNull View itemView, DatePickerClickedListener datePickerClickedListener) {
+        public ViewHolder(@NonNull View itemView, DatePickerClickedListener datePickerClickedListener, DateValuePickerClickedListener dateValuePickerClickedListener) {
             super(itemView);
             this.dateSelectorView = itemView.findViewById(R.id.item_single_obs_form_date_selector_container);
+            this.valueDateText = itemView.findViewById(R.id.item_single_obs_form_value_date_text);
             this.readingCountTextView = itemView.findViewById(R.id.item_single_obs_form_reading_count_view);
             this.closeEntryView = itemView.findViewById(R.id.item_single_obs_form_close_view);
             this.dateEditText = itemView.findViewById(R.id.item_single_obs_form_date_edit_text);
             this.valueEditText = itemView.findViewById(R.id.item_single_obs_form_value_edit_text);
             this.datePickerClickedListener = datePickerClickedListener;
+            this.dateValuePickerClickedListener = dateValuePickerClickedListener;
             this.dateSelectorView.setOnClickListener(this);
 
             this.closeEntryView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     EventBus.getDefault().post(new CloseSingleFormEvent(getAdapterPosition()));
+                }
+            });
+
+            this.valueDateText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dateValuePickerClickedListener.onDateValuePickerClicked(getAdapterPosition(), valueDateText);
                 }
             });
         }
@@ -104,5 +134,9 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
 
     public interface DatePickerClickedListener {
         void onDatePickerClicked(int position, EditText dateEditText);
+    }
+
+    public interface DateValuePickerClickedListener{
+        void onDateValuePickerClicked(int position, MaterialTextView dateEditText);
     }
 }

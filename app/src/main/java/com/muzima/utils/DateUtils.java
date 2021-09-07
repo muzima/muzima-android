@@ -27,6 +27,7 @@ public class DateUtils {
     private static final String TAG = "DateUtils";
     public static final String SIMPLE_DATE_FORMAT = "yyyy.MM.dd";
     public static final String HUMAN_READABLE_SIMPLE_DATE_FORMAT = "yyy MMM dd";
+    public static final String SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT = "dd-MM-yyyy";
 
     public static String getFormattedDate(Date date) {
         SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
@@ -94,6 +95,15 @@ public class DateUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(HUMAN_READABLE_SIMPLE_DATE_FORMAT, Locale.getDefault());
+        Log.e(TAG, "convertDateToStdString: date " + simpleDateFormat.format(calendar.getTime()));
+        return simpleDateFormat.format(calendar.getTime());
+    }
+
+    public static String convertDateToDayMonthYearString(Date date) {
+        if (date == null) return "Invalid";
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT, Locale.getDefault());
         Log.e(TAG, "convertDateToStdString: date " + simpleDateFormat.format(calendar.getTime()));
         return simpleDateFormat.format(calendar.getTime());
     }
