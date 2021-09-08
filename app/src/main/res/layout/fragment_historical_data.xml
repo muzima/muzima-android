@@ -25,19 +25,19 @@
                 android:id="@+id/by_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/general_by_type_title"/>
+                android:text="@string/info_by_type"/>
 
         <com.google.android.material.tabs.TabItem
                 android:id="@+id/by_encounter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/general_by_encounter_title"/>
+                android:text="@string/info_by_encounter"/>
 
 <!--        <com.google.android.material.tabs.TabItem-->
 <!--                android:id="@+id/by_abstract"-->
 <!--                android:layout_width="wrap_content"-->
 <!--                android:layout_height="wrap_content"-->
-<!--                android:text="@string/general_by_abstract_title"/>-->
+<!--                android:text="@string/info_by_abstract"/>-->
 
     </com.google.android.material.tabs.TabLayout>
     <androidx.viewpager2.widget.ViewPager2

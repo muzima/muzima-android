@@ -219,7 +219,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         });
 
         providerNameTextView.setText(String.format(Locale.getDefault(), "%s, %s",
-                getResources().getString(R.string.general_hello_greeting),
+                getResources().getString(R.string.hello_general),
                 ((MuzimaApplication) getActivity().getApplicationContext()).getAuthenticatedUser().getUsername()));
 
     }

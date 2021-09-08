@@ -652,7 +652,6 @@
     <string name="title_activity_client_observations">Observações do Cliente</string>
     <string name="title_activity_client_reports">Client Reports</string>
     <string name="title_activity_client_summary">Sumário do Cliente</string>
-    <string name="title_activity_cohort_prefix">Prefixos de Coorte</string>
     <string name="title_activity_image">Adicionar Imagem</string>
     <string name="title_activity_video">Adicionar Vídeo</string>
     <string name="title_advanced_setup">Instalação avançada</string>
@@ -713,7 +712,6 @@
     <string name="title_install_barcode_scanner">Instalar o scanner de código de barras</string>
     <string name="title_install_psmart">Instalar o aplicativo P-Smart</string>
     <string name="title_introduction_video">Vídeo introdutório para mUzima</string>
-    <string name="title_landing_page">Página de destino</string>
     <string name="title_light_mode">Ativar o modo de dia</string>
     <string name="title_local_client_search_help_video">Pesquisa de clientes (local)</string>
     <string name="title_location_download">Passo 3: Adicionar Local(s)</string>
@@ -779,4 +777,127 @@
     <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
     <string name="title_qrcode">Código QR</string>
     <string name="info_scan_qrcode">Leia o código QR para alterar o URL do servidor</string>
+    <string name="privacy_policy">O aplicativo mUzima for Health Providers foi desenvolvido como um aplicativo de código-fonte aberto para o usuário final e é fornecido gratuitamente e deve ser usado no estado em que se encontra. Se estiver usando nosso aplicativo para uma organização, você concorda com esta Política de Privacidade em nome dessa organização. Se estiver usando nosso aplicativo para fornecer serviços, software e conteúdo para outra pessoa, você está concordando com esta Política de Privacidade em nome dela.
+
+SE VOCÊ OU A ORGANIZAÇÃO QUE REPRESENTA NÃO CONCORDAR COM ESTA POLÍTICA DE PRIVACIDADE, NÃO DEVE USAR NOSSOS SERVIÇOS.
+
+Coleta e uso de informações
+
+Para uma melhor experiência, ao usar nosso aplicativo, podemos solicitar que você nos forneça algumas informações. As informações que solicitamos serão retidas por nós e usadas conforme descrito nesta política de privacidade.
+
+O aplicativo usa serviços de terceiros que podem coletar informações usadas para identificá-lo. Links para a política de privacidade de provedores de serviços terceirizados usados ​​pelo aplicativo:
+
+Serviços do Google Play https://www.google.com/policies/privacy/
+Firebase Analytics https://firebase.google.com/policies/analytics
+Fabric https://fabric.io/privacy Crashlytics http://try.crashlytics.com/terms/privacy-policy.pdf
+
+
+Dados de registro
+
+Informamos que sempre que você utilizar nosso aplicativo, em caso de erro no aplicativo, coletamos dados e informações (por meio de produtos de terceiros) em seu telefone denominado Log Data. Esses dados de registro podem incluir informações como nome do dispositivo, versão do sistema operacional, configuração do aplicativo ao utilizar nosso aplicativo, hora e data de uso do aplicativo e outras estatísticas, como informações de localização, dependendo de suas configurações.
+
+Biscoitos
+
+Cookies são arquivos com uma pequena quantidade de dados que são comumente usados como identificadores exclusivos anônimos. Eles são enviados para o seu navegador a partir dos sites que você visita e são armazenados na memória interna do seu dispositivo. O app mUzima não usa esses “cookies” explicitamente. No entanto, o aplicativo pode usar código de terceiros e bibliotecas que usam “cookies” para coletar informações e melhorar seus serviços. Você tem a opção de aceitar ou recusar esses cookies e saber quando um cookie está sendo enviado para o seu dispositivo. Se você optar por recusar nossos cookies, pode não ser capaz de usar algumas partes deste Serviço.
+    Dados de localização
+
+Alguns recursos opcionais fornecidos pela mUzima para profissionais de saúde podem exigir o uso de dados de localização. Estes Dados de Localização são puramente para os recursos localizados na implementação e de forma alguma são compartilhados conosco ou com terceiros. O aplicativo pode usar as informações de localização se você conceder permissões ao aplicativo para fazê-lo. Você pode habilitar ou desabilitar os serviços de localização quando você usa nosso aplicativo a qualquer momento, através das configurações do seu dispositivo.
+
+Segurança
+
+Valorizamos sua confiança em nosso aplicativo. Mas lembre-se que nenhum método de transmissão pela internet, ou método de armazenamento eletrônico é 100% seguro e confiável, e não podemos garantir sua segurança absoluta. Esteja ciente de que certas informações pessoais e outras informações fornecidas por você em conexão com o uso do aplicativo podem ser armazenadas em seu dispositivo (mesmo se não coletarmos essas informações). Você é o único responsável por manter a segurança de seu dispositivo contra acesso não autorizado.
+
+Mudanças nesta Política de Privacidade
+
+Podemos atualizar nossa Política de Privacidade de tempos em tempos. Portanto, é recomendável revisar esta página periodicamente para verificar quaisquer alterações. Iremos notificá-lo de quaisquer alterações, publicando a nova Política de Privacidade nesta página. Essas alterações entram em vigor imediatamente após serem publicadas nesta página.
+
+Entre em contato conosco
+
+Se você tiver dúvidas ou sugestões sobre nossa Política de Privacidade, não hesite em nos contatar através de mUzima.mobile@gmail.com
+    </string>
+    <string name="info_for_health_providers">para provedores de saúde</string>
+    <string name="info_license_and_disclaimer">Licença e isenção de responsabilidade</string>
+    <string name="info_agree_to_muzima_license_and_disclaimer">Concordar com a licença e isenção de responsabilidade da mUzima</string>
+    <string name="info_privacy_policy_statement">Declaração de Política de Privacidade</string>
+    <string name="info_agree_to_muzima_privacy_policy_statement">Concordar com a Declaração de Política de Privacidade da mUzima</string>
+    <string name="info_terms_and_conditions">Termos e Condições</string>
+    <string name="info_agree_to_muzima_terms_and_conditions">Aceite os Termos e Condições da mUzima</string>
+    <string name="info_accept_all">Aceitar tudo</string>
+    <string name="error_policy_not_accepted">Aceite as declarações de política para prosseguir</string>
+    <string name="general_home">Casa</string>
+    <string name="contact_us">Entre em contato conosco</string>
+    <string name="info_incomplete_form">Formulários Incompletos</string>
+    <string name="info_complete_form">Formulários Completos</string>
+    <string name="general_search_forms">Formulários de Pesquisa</string>
+    <string name="general_all_forms">Todos os formulários</string>
+    <string name="general_search_cohorts">Coortes de pesquisa</string>
+    <string name="general_search_patient">Paciente de pesquisa</string>
+    <string name="general_or_search_by">Ou pesquise por:</string>
+    <string name="app_sub_title">para provedores de saúde</string>
+    <string name="general_policy_title">Políticas de Uso</string>
+    <string name="general_historical_data">Data histórica</string>
+    <string name="general_data_collection">Coleção de dados</string>
+    <string name="info_emergency_contacts">Contatos de emergência</string>
+    <string name="info_by_type">Por tipo</string>
+    <string name="info_by_abstract">Por Resumo</string>
+    <string name="info_by_encounter">Por encontro</string>
+    <string name="general_add_single_element">Adicionar um único elemento</string>
+    <string name="info_no_client_available">Nenhum cliente disponível localmente neste dispositivo.</string>
+    <string name="general_setup_completed_message">Configuração completa</string>
+    <string name="general_filter_by">Filtrado por</string>
+    <string name="general_all_cohorts">Todas as coortes</string>
+    <string name="general_all_clients">Todos os clientes</string>
+    <string name="general_display_all">Exibir tudo</string>
+    <string name="general_downloaded">Baixado</string>
+    <string name="general_available_online">Disponível</string>
+    <string name="general_selected">Selecionado</string>
+    <string name="general_sort_by_status">Por status</string>
+    <string name="gender_female_symbol">F</string>
+    <string name="gender_male_symbole">M</string>
+    <string name="general_filtered_list">Lista Filtrada</string>
+    <string name="general_security_description">mUzima fornece recursos de segurança, incluindo login com senha, criptografia, transmissão segura de dados, logouts de usuário cronometrados.</string>
+    <string name="general_security">Segurança</string>
+    <string name="general_multiple_cases_description">O mUzima é facilmente personalizável para dar suporte a qualquer caso de uso clínico, tanto dentro quanto fora das instalações clínicas.</string>
+    <string name="general_multiple_use_cases">Casos de uso múltiplo</string>
+    <string name="general_openmrs_compatibility_description">mUzima foi projetado para ser a extensão mHealth do OpenMRS. OpenMRS é implantado nacionalmente em vários países.</string>
+    <string name="general_openmrs_compatibility">Compatibilidade OpenMRS</string>
+    <string name="forms_general_sort_by">Classificar Formulários</string>
+    <string name="general_sort_by_name">Por nome</string>
+    <string name="general_add_reading">Adicionar leitura</string>
+    <string name="general_reading">Lendo</string>
+    <string name="general_update_patient_list_message">Atualizando lista de pacientes ... aguarde</string>
+    <string name="general_patient_list_updated_message">A lista de pacientes foi atualizada</string>
+    <string name="general_launching_map_message">Lançando mapa, por favor aguarde</string>
+    <string name="info_client_local_search_not_found_secondary">Não encontramos nada relacionado à sua pesquisa. Tente pesquisar no servidor</string>
+    <string name="general_data_collection_tools">Ferramentas de coleta de dados</string>
+    <string name="general_works_offline">Funciona offline</string>
+    <string name="general_geomapping">Geomapping</string>
+    <string name="general_clinical_summary">Resumo Clínico</string>
+    <string name="general_relationship_management">Gestão de Relacionamento</string>
+    <string name="general_multiple_themes">Temas Múltiplos</string>
+    <string name="general_historical_data_view">Visualização de dados históricos</string>
+    <string name="general_multiple_languages">Múltiplos idiomas</string>
+    <string name="general_cohort_management">Gestão de Coorte</string>
+    <string name="general_form_management">Gerenciamento de Formulários</string>
+    <string name="general_error_resolutions">Resoluções de erro</string>
+    <string name="general_data_collection_tools_description">O mUzima usa formulários baseados na web fáceis de desenvolver para coletar dados que podem ser facilmente transmitidos e armazenados no OpenMRS.</string>
+    <string name="general_works_offline_description">mUzima funciona perfeitamente nos modos online e offline. Isso permite a coleta de dados e análises, mesmo quando o dispositivo está offline.</string>
+    <string name="general_error_resolutions_description">O mUzima evita a entrada de dados de formulário duplicado no dispositivo móvel e resolve erros no OpenMRS durante o processamento de dados.</string>
+    <string name="general_form_management_description">O mUzima permite fácil download e atualização de novos formulários no aplicativo sem a necessidade de reinstalar ou reiniciar o aplicativo.</string>
+    <string name="general_cohort_management_description">Este recurso permite o gerenciamento de diferentes pacientes ou grupos de clientes em um dispositivo móvel.</string>
+    <string name="general_multiple_languages_description">mUzima fornece suporte de localização pronto para uso em vários idiomas para permitir maior flexibilidade de uso.</string>
+    <string name="general_historical_data_view_description">mUzima tem mecanismos fáceis e eficientes de fácil utilização para recuperar e visualizar dados históricos de pacientes ou clientes.</string>
+    <string name="general_multiple_themes_description">O mUzima é fornecido em dois temas: tema escuro (branco no preto) e tema claro (preto no branco).</string>
+    <string name="general_relationship_management_description">No espaço da saúde, a relação é utilizada para emparelhar / associar duas pessoas cujos cuidados podem estar interligados.</string>
+    <string name="general_clinical_summary_description">O recurso utiliza o Módulo de Relatórios OpenMRS para projetar e gerar relatórios HTML que são renderizados no aplicativo.</string>
+    <string name="general_geomapping_description">Traz a capacidade de capturar e registrar facilmente as coordenadas de GPS do paciente e, em seguida, dar instruções aos CHVs nas visitas subsequentes.</string>
+    <string name="general_registration_form_missing_message">Formulário de registro ausente. Por favor, contate o administrador</string>
+    <string name="title_registration_form">Selecione o formulário de registro</string>
+    <string name="general_card_read_failed_msg">A leitura do cartão falhou.</string>
+    <string name="general_label_sort_by_name">Classificar por nome</string>
+    <string name="general_label_sort_status">Classificar por status</string>
+    <string name="general_enter_value_to_save">Insira o valor para salvar</string>
+    <string name="general_sync_service_already_running">O serviço de sincronização mUzima já está em execução ...</string>
+    <string name="general_opening_card_reader">Abrindo o leitor de cartão</string>
+    <string name="erro_coded_concepts_not_supported">Conceitos codificados inválidos não são suportados</string>
 </resources>
