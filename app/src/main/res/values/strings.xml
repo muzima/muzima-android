@@ -709,7 +709,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="title_activity_client_observations">Client Observations</string>
     <string name="title_activity_client_reports">Client Reports</string>
     <string name="title_activity_client_summary">Client Summary</string>
-    <string name="title_activity_cohort_prefix">Cohort Prefixes</string>
     <string name="title_activity_image">Add Image</string>
     <string name="title_activity_video">Add Video</string>
     <string name="title_advanced_setup">Advanced Setup</string>
@@ -770,7 +769,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="title_install_barcode_scanner">Install Barcode Scanner</string>
     <string name="title_install_psmart">Install P-Smart app</string>
     <string name="title_introduction_video">Video introduction to mUzima</string>
-    <string name="title_landing_page">Landing Page</string>
     <string name="title_light_mode">Enable Day Mode</string>
     <string name="title_local_client_search_help_video">Client search (local)</string>
     <string name="title_location_download">Step 3: Add Location(s)</string>
@@ -870,7 +868,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="info_by_encounter">By Encounter</string>
     <string name="general_add_single_element">Add single element</string>
     <string name="info_no_client_available">No clients available locally on this device.</string>
-    <string name="general_hello_greeting">Hello</string>
     <string name="general_setup_completed_message">Setup complete</string>
     <string name="general_filter_by">Filtered by</string>
     <string name="general_all_cohorts">All Cohorts</string>
@@ -891,7 +888,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="general_openmrs_compatibility">OpenMRS Compatibility</string>
     <string name="forms_general_sort_by">Sort Forms</string>
     <string name="general_sort_by_name">By name</string>
-    <string name="general_sort_status">By status</string>
     <string name="general_add_reading">Add reading</string>
     <string name="general_reading">Reading</string>
     <string name="general_update_patient_list_message">Updating patients list… please wait</string>
@@ -925,9 +921,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="general_card_read_failed_msg">Card read failed.</string>
     <string name="general_label_sort_by_name">Sort by name</string>
     <string name="general_label_sort_status">Sort by status</string>
-    <string name="general_by_type_title">By Type</string>
-    <string name="general_by_abstract_title">By abstract</string>
-    <string name="general_by_encounter_title">By Encounter</string>
     <string name="general_enter_value_to_save">Enter value to save</string>
     <string name="general_sync_service_already_running">mUzima sync service is already running…</string>
     <string name="general_opening_card_reader">Opening Card Reader</string>

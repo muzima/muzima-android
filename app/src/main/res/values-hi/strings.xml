@@ -644,7 +644,6 @@
     <string name="title_activity_client_observations">ग्राहक अवलोकन</string>
     <string name="title_activity_client_reports">ग्राहक रिपोर्ट</string>
     <string name="title_activity_client_summary">ग्राहक सारांश</string>
-    <string name="title_activity_cohort_prefix">कोहार्ट उपसर्गों</string>
     <string name="title_activity_image">छवि जोड़ें</string>
     <string name="title_activity_video">वीडियो जोड़ें</string>
     <string name="title_advanced_setup">उन्नत सेटअप</string>
@@ -705,7 +704,6 @@
     <string name="title_install_barcode_scanner">बारकोड स्कैनर स्थापित करें</string>
     <string name="title_install_psmart">P-Smart ऐप इंस्टॉल करें</string>
     <string name="title_introduction_video">mUzima का वीडियो परिचय</string>
-    <string name="title_landing_page">लैंडिंग पेज</string>
     <string name="title_light_mode">डे मोड सक्षम करें</string>
     <string name="title_local_client_search_help_video">ग्राहक खोज (स्थानीय)</string>
     <string name="title_location_download">चरण 3: स्थान जोड़ें</string>
@@ -771,4 +769,127 @@
     <string name="youTube_player_error">YouTube वीडियो लोड करते समय एक त्रुटि हुई</string>
     <string name="title_qrcode">क्यू आर संहिता</string>
     <string name="info_scan_qrcode">सर्वर url को बदलने के लिए qr कोड को स्कैन करें</string>
+    <string name="privacy_policy">हेल्थ प्रोवाइडर्स ऐप के लिए मुज़िमा एक ओपन सोर्स एंड-यूज़र ऐप के रूप में बनाया गया है और इसे बिना किसी कीमत के प्रदान किया जाता है और इसका उपयोग करने का इरादा है। यदि आप किसी संगठन के लिए हमारे आवेदन का उपयोग कर रहे हैं, तो आप उस संगठन की ओर से इस गोपनीयता नीति से सहमत हैं। यदि आप किसी अन्य के लिए सेवाएं, सॉफ़्टवेयर और सामग्री प्रदान करने के लिए हमारे एप्लिकेशन का उपयोग कर रहे हैं, तो आप उनकी ओर से इस गोपनीयता नीति से सहमत हैं।
+
+यदि आप या आपका प्रतिनिधित्व करने वाला संगठन इस गोपनीयता नीति के लिए बाध्य होने के लिए सहमत नहीं है, तो आपको हमारी सेवाओं का उपयोग नहीं करना चाहिए।
+
+सूचना संग्रह और उपयोग
+
+एक बेहतर अनुभव के लिए, हमारे एप्लिकेशन का उपयोग करते समय, हमें आपसे कुछ जानकारी प्रदान करने की आवश्यकता हो सकती है। हमारे द्वारा अनुरोधित जानकारी हमारे पास रहेगी और इस गोपनीयता नीति में वर्णित अनुसार उपयोग की जाएगी।
+
+ऐप तृतीय-पक्ष सेवाओं का उपयोग करता है जो आपकी पहचान करने के लिए उपयोग की जाने वाली जानकारी एकत्र कर सकती हैं। ऐप द्वारा उपयोग किए जाने वाले तृतीय पक्ष सेवा प्रदाताओं की गोपनीयता नीति के लिंक:
+
+Google Play सेवाएं https://www.google.com/policies/privacy/
+फायरबेस एनालिटिक्स https://firebase.google.com/policies/analytics
+फैब्रिक https://fabric.io/privacy Crashlytics http://try.crashlytics.com/terms/privacy-policy.pdf
+
+
+लॉग डेटा
+
+हम आपको सूचित करना चाहते हैं कि जब भी आप हमारे एप्लिकेशन का उपयोग करते हैं, तो ऐप में किसी त्रुटि के मामले में, हम आपके फ़ोन पर लॉग डेटा नामक डेटा और जानकारी (तृतीय-पक्ष उत्पादों के माध्यम से) एकत्र करते हैं। इस लॉग डेटा में आपकी सेटिंग्स के आधार पर डिवाइस का नाम, ऑपरेटिंग सिस्टम संस्करण, हमारे एप्लिकेशन का उपयोग करते समय ऐप का कॉन्फ़िगरेशन, एप्लिकेशन के आपके उपयोग का समय और तारीख, और अन्य आंकड़े, जैसे स्थान की जानकारी जैसी जानकारी शामिल हो सकती है।
+
+कुकीज़
+
+कुकीज़ छोटी मात्रा में डेटा वाली फाइलें होती हैं जिनका उपयोग आमतौर पर अनाम अद्वितीय पहचानकर्ताओं के रूप में किया जाता है ये आपके ब्राउज़र पर आपके द्वारा देखी जाने वाली वेबसाइटों से भेजी जाती हैं और आपके डिवाइस की आंतरिक मेमोरी में संग्रहीत होती हैं। mUzima ऐप इन "कुकीज़" का स्पष्ट रूप से उपयोग नहीं करता है। हालाँकि, ऐप तीसरे पक्ष के कोड और पुस्तकालयों का उपयोग कर सकता है जो जानकारी एकत्र करने और अपनी सेवाओं को बेहतर बनाने के लिए "कुकीज़" का उपयोग करते हैं। आपके पास इन कुकीज़ को स्वीकार या अस्वीकार करने और यह जानने का विकल्प है कि आपके डिवाइस पर कुकी कब भेजी जा रही है। यदि आप हमारी कुकीज़ को अस्वीकार करना चुनते हैं, तो आप इस सेवा के कुछ हिस्सों का उपयोग करने में सक्षम नहीं हो सकते हैं।
+    जगह की जानकारी
+
+स्वास्थ्य प्रदाताओं के लिए मुज़िमा द्वारा प्रदान की गई कुछ वैकल्पिक सुविधाओं के लिए स्थान डेटा के उपयोग की आवश्यकता हो सकती है। यह स्थान डेटा पूरी तरह से कार्यान्वयन में स्थानीयकृत सुविधाओं के लिए है और किसी भी तरह से हमारे या किसी तीसरे पक्ष के साथ साझा नहीं किया जा रहा है। यदि आप ऐप को ऐसा करने की अनुमति देते हैं तो एप्लिकेशन स्थान की जानकारी का उपयोग कर सकता है। जब आप किसी भी समय हमारे एप्लिकेशन का उपयोग करते हैं, तो आप अपनी डिवाइस सेटिंग के माध्यम से स्थान सेवाओं को सक्षम या अक्षम कर सकते हैं।
+
+सुरक्षा
+
+हम अपने आवेदन में आपके भरोसे को महत्व देते हैं। लेकिन याद रखें कि इंटरनेट पर ट्रांसमिशन का कोई भी तरीका या इलेक्ट्रॉनिक स्टोरेज का तरीका 100% सुरक्षित और विश्वसनीय नहीं है, और हम इसकी पूर्ण सुरक्षा की गारंटी नहीं दे सकते। कृपया ध्यान रखें कि आपके द्वारा एप्लिकेशन के उपयोग के संबंध में आपके द्वारा प्रदान की गई कुछ व्यक्तिगत जानकारी और अन्य जानकारी आपके डिवाइस पर संग्रहीत की जा सकती है (भले ही हम वह जानकारी एकत्र न करें)। अनधिकृत पहुंच से अपने डिवाइस की सुरक्षा बनाए रखने के लिए आप पूरी तरह से जिम्मेदार हैं।
+
+इस गोपनीयता नीति में परिवर्तन
+
+हम समय-समय पर अपनी गोपनीयता नीति को अपडेट कर सकते हैं। इस प्रकार, आपको किसी भी परिवर्तन के लिए समय-समय पर इस पृष्ठ की समीक्षा करने की सलाह दी जाती है। हम इस पेज पर नई गोपनीयता नीति पोस्ट करके आपको किसी भी बदलाव के बारे में सूचित करेंगे। ये परिवर्तन इस पृष्ठ पर पोस्ट किए जाने के तुरंत बाद प्रभावी होते हैं।
+
+संपर्क करें
+
+यदि हमारी गोपनीयता नीति के बारे में आपके कोई प्रश्न या सुझाव हैं, तो हमसे mUzima.mobile@gmail.com के माध्यम से संपर्क करने में संकोच न करें।
+    </string>
+    <string name="info_for_health_providers">स्वास्थ्य प्रदाताओं के लिए</string>
+    <string name="info_license_and_disclaimer">लाइसेंस और अस्वीकरण</string>
+    <string name="info_agree_to_muzima_license_and_disclaimer">मुज़िमा लाइसेंस और अस्वीकरण के लिए सहमत हों</string>
+    <string name="info_privacy_policy_statement">गोपनीयता नीति वक्तव्य</string>
+    <string name="info_agree_to_muzima_privacy_policy_statement">मुज़िमा गोपनीयता नीति वक्तव्य से सहमत हों</string>
+    <string name="info_terms_and_conditions">नियम और शर्तें</string>
+    <string name="info_agree_to_muzima_terms_and_conditions">मुज़िमा नियम और शर्तों से सहमत हों</string>
+    <string name="info_accept_all">सभी स्वीकार करो</string>
+    <string name="error_policy_not_accepted">आगे बढ़ने के लिए नीति विवरण स्वीकार करें</string>
+    <string name="general_home">घर</string>
+    <string name="contact_us">संपर्क करें</string>
+    <string name="info_incomplete_form">अपूर्ण प्रपत्र</string>
+    <string name="info_complete_form">पूर्ण प्रपत्र</string>
+    <string name="general_search_forms">खोज प्रपत्र</string>
+    <string name="general_all_forms">सभी अवस्थाएं</string>
+    <string name="general_search_cohorts">समूह खोजें</string>
+    <string name="general_search_patient">रोगी खोजें</string>
+    <string name="general_or_search_by">या इसके द्वारा खोजें:</string>
+    <string name="app_sub_title">स्वास्थ्य प्रदाताओं के लिए</string>
+    <string name="general_policy_title">उपयोग नीतियां</string>
+    <string name="general_historical_data">ऐतिहासिक डेटा</string>
+    <string name="general_data_collection">आंकड़ा संग्रहण</string>
+    <string name="info_emergency_contacts">आपातकालीन संपर्क</string>
+    <string name="info_by_type">प्रकार से</string>
+    <string name="info_by_abstract">सार द्वारा</string>
+    <string name="info_by_encounter">मुठभेड़ द्वारा</string>
+    <string name="general_add_single_element">एकल तत्व जोड़ें</string>
+    <string name="info_no_client_available">इस डिवाइस पर स्थानीय रूप से कोई क्लाइंट उपलब्ध नहीं है।</string>
+    <string name="general_setup_completed_message">सेटअप पूर्ण</string>
+    <string name="general_filter_by">द्वारा फ़िल्टर किया गया</string>
+    <string name="general_all_cohorts">सभी समूह</string>
+    <string name="general_all_clients">सभी ग्राहक</string>
+    <string name="general_display_all">सभी प्रदर्शित करें</string>
+    <string name="general_downloaded">Baixado</string>
+    <string name="general_available_online">ऑनलाइन मौजूद है</string>
+    <string name="general_selected">गिने चुने</string>
+    <string name="general_sort_by_status">स्थिति के अनुसार</string>
+    <string name="gender_female_symbol">एफ</string>
+    <string name="gender_male_symbole">एम</string>
+    <string name="general_filtered_list">फ़िल्टर की गई सूची</string>
+    <string name="general_security_description">मुज़िमा पासवर्ड लॉगिन, एन्क्रिप्शन, सुरक्षित डेटा ट्रांसमिशन, समयबद्ध उपयोगकर्ता लॉगआउट सहित सुरक्षा सुविधाएँ प्रदान करता है।</string>
+    <string name="general_security">सुरक्षा</string>
+    <string name="general_multiple_cases_description">मुज़िमा नैदानिक ​​सुविधाओं के भीतर और बाहर, किसी भी नैदानिक ​​उपयोग के मामलों का समर्थन करने के लिए आसानी से अनुकूलन योग्य है।</string>
+    <string name="general_multiple_use_cases">एकाधिक उपयोग के मामले</string>
+    <string name="general_openmrs_compatibility_description">mUzima को OpenMRS के mHealth एक्सटेंशन के रूप में डिज़ाइन किया गया था। OpenMRS को कई देशों में राष्ट्रीय स्तर पर तैनात किया गया है।</string>
+    <string name="general_openmrs_compatibility">ओपनएमआरएस संगतता</string>
+    <string name="forms_general_sort_by">प्रपत्रों को क्रमबद्ध करें</string>
+    <string name="general_sort_by_name">नाम से</string>
+    <string name="general_add_reading">पढ़ना जोड़ें</string>
+    <string name="general_reading">अध्ययन</string>
+    <string name="general_update_patient_list_message">रोगियों की सूची अपडेट की जा रही है... कृपया प्रतीक्षा करें</string>
+    <string name="general_patient_list_updated_message">रोगी सूची अपडेट कर दी गई है</string>
+    <string name="general_launching_map_message">नक्शा लॉन्च किया जा रहा है, कृपया प्रतीक्षा करें</string>
+    <string name="info_client_local_search_not_found_secondary">हमें आपकी खोज से संबंधित कुछ भी नहीं मिला। सर्वर खोजने का प्रयास करें</string>
+    <string name="general_data_collection_tools">डेटा संग्रह उपकरण</string>
+    <string name="general_works_offline">ऑफ़लाइन काम करता है</string>
+    <string name="general_geomapping">जियोमैपिंग</string>
+    <string name="general_clinical_summary">नैदानिक ​​​​सारांश</string>
+    <string name="general_relationship_management">संबंध प्रबंधन</string>
+    <string name="general_multiple_themes">एकाधिक थीम</string>
+    <string name="general_historical_data_view">ऐतिहासिक डेटा दृश्य</string>
+    <string name="general_multiple_languages">कई भाषाएं</string>
+    <string name="general_cohort_management">समूह प्रबंधन</string>
+    <string name="general_form_management">प्रपत्र प्रबंधन</string>
+    <string name="general_error_resolutions">त्रुटि समाधान</string>
+    <string name="general_data_collection_tools_description">mUzima डेटा एकत्र करने के लिए आसान-से-विकसित वेब-आधारित रूपों का उपयोग करता है जिसे आसानी से OpenMRS में प्रसारित और संग्रहीत किया जा सकता है।</string>
+    <string name="general_works_offline_description">मुज़िमा ऑनलाइन और ऑफलाइन दोनों मोड में पूरी तरह से काम करता है। यह डिवाइस के ऑफ़लाइन होने पर भी डेटा संग्रह और समीक्षाओं की अनुमति देता है।</string>
+    <string name="general_error_resolutions_description">mUzima मोबाइल डिवाइस पर डुप्लिकेट फॉर्म डेटा प्रविष्टि को रोकता है और डेटा प्रोसेसिंग के दौरान OpenMRS में त्रुटियों का समाधान करता है।</string>
+    <string name="general_form_management_description">mUzima ऐप को फिर से इंस्टॉल करने या फिर से शुरू करने की आवश्यकता के बिना ऐप पर नए फॉर्म को आसानी से डाउनलोड और अपडेट करने में सक्षम बनाता है।</string>
+    <string name="general_cohort_management_description">यह सुविधा मोबाइल डिवाइस पर विभिन्न रोगी या क्लाइंट समूहों के प्रबंधन की अनुमति देती है।</string>
+    <string name="general_multiple_languages_description">मुज़िमा विभिन्न भाषाओं में उपयोग के लिए बॉक्स के बाहर स्थानीयकरण समर्थन प्रदान करता है ताकि उपयोग के और लचीलेपन की अनुमति मिल सके।</string>
+    <string name="general_historical_data_view_description">मुज़िमा में रोगियों या ग्राहकों के ऐतिहासिक डेटा को पुनः प्राप्त करने और देखने के लिए आसान और कुशल उपयोगकर्ता के अनुकूल तंत्र है।</string>
+    <string name="general_multiple_themes_description">मुज़िमा को दो थीम पर शिप किया गया है: डार्क थीम (ब्लैक पर व्हाइट) और लाइट थीम (ब्लैक ऑन व्हाइट)।</string>
+    <string name="general_relationship_management_description">स्वास्थ्य सेवा के क्षेत्र में, एक रिश्ते का उपयोग दो लोगों को जोड़ने/जुड़ाने के लिए किया जाता है जिनकी देखभाल आपस में जुड़ी हो सकती है।</string>
+    <string name="general_clinical_summary_description">यह फीचर ओपनएमआरएस रिपोर्टिंग मॉड्यूल का उपयोग एचटीएमएल रिपोर्ट्स को डिजाइन और जेनरेट करने के लिए करता है, जिन्हें बाद में ऐप पर रेंडर किया जाता है।</string>
+    <string name="general_geomapping_description">रोगी जीपीएस निर्देशांक को आसानी से पकड़ने और रिकॉर्ड करने की क्षमता लाता है, फिर सीएचवी को बाद की यात्राओं पर दिशा देता है।</string>
+    <string name="general_registration_form_missing_message">पंजीकरण फॉर्म गुम। कृपया व्यवस्थापक से संपर्क करें</string>
+    <string name="title_registration_form">पंजीकरण फॉर्म का चयन करें</string>
+    <string name="general_card_read_failed_msg">कार्ड पठन विफल।</string>
+    <string name="general_label_sort_by_name">नाम द्वारा क्रमबद्ध करें</string>
+    <string name="general_label_sort_status">स्थिति के आधार पर छाँटें</string>
+    <string name="general_enter_value_to_save">बचाने के लिए मान दर्ज करें</string>
+    <string name="general_sync_service_already_running">मुज़िमा सिंक सेवा पहले से चल रही है…</string>
+    <string name="general_opening_card_reader">कार्ड रीडर खोलना</string>
+    <string name="erro_coded_concepts_not_supported">अमान्य कोडित अवधारणाएं समर्थित नहीं हैं</string>
 </resources>

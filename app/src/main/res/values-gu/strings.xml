@@ -645,7 +645,6 @@
     <string name="title_activity_client_observations">ગ્રાહક અવલોકનો</string>
     <string name="title_activity_client_reports">ક્લાયંટ રિપોર્ટ્સ</string>
     <string name="title_activity_client_summary">ક્લાયન્ટ સારાંશ</string>
-    <string name="title_activity_cohort_prefix">સમૂહ ઉપસર્ગો</string>
     <string name="title_activity_image">છબી ઉમેરો</string>
     <string name="title_activity_video">વિડિઓ ઉમેરો</string>
     <string name="title_advanced_setup">અદ્યતન સુયોજન</string>
@@ -706,7 +705,6 @@
     <string name="title_install_barcode_scanner">બારકોડ સ્કેનર ઇન્સ્ટોલ કરો</string>
     <string name="title_install_psmart">P-સ્માર્ટ એપ્લિકેશન ઇન્સ્ટોલ કરો </string>
     <string name="title_introduction_video">mUzima વિડિઓ પરિચય</string>
-    <string name="title_landing_page">લેન્ડિંગ પૃષ્ઠ</string>
     <string name="title_light_mode">ડે મોડને સક્ષમ કરો</string>
     <string name="title_local_client_search_help_video">ક્લાયંટ શોધ (સ્થાનિક)</string>
     <string name="title_location_download">પગલું 3: સ્થાન(નો) ઉમેરો</string>
@@ -772,4 +770,127 @@
     <string name="youTube_player_error">YouTube વિડિઓ લોડ કરતી વખતે ભૂલ આવી</string>
     <string name="title_qrcode">ક્યૂઆર કોડ</string>
     <string name="info_scan_qrcode">સર્વર url બદલવા માટે QR કોડ સ્કેન કરો</string>
+    <string name="privacy_policy">મુઝિમા ફોર હેલ્થ પ્રોવાઇડર્સ એપ ઓપન સોર્સ એન્ડ-યુઝર એપ તરીકે બનાવવામાં આવી છે અને તે વિના મૂલ્યે પૂરી પાડવામાં આવે છે અને તે જેમ છે તેમ ઉપયોગ માટે બનાવાયેલ છે. જો તમે અમારી એપ્લિકેશનનો ઉપયોગ કોઈ સંસ્થા માટે કરી રહ્યા છો, તો તમે તે સંસ્થા વતી આ ગોપનીયતા નીતિ સાથે સંમત થાઓ છો. જો તમે અમારી એપ્લિકેશનનો ઉપયોગ કોઈ અન્ય માટે સેવાઓ, સોફ્ટવેર અને સામગ્રી પ્રદાન કરવા માટે કરી રહ્યા છો, તો તમે તેમના વતી આ ગોપનીયતા નીતિ સાથે સંમત થાઓ છો.
+
+જો તમે અથવા ઓર્ગેનાઇઝેશન તમે પ્રતિનિધિ આ ગોપનીયતા નીતિ સાથે જોડાયેલા હોવા માટે સંમત નથી, તો તમારે અમારી સેવાઓનો ઉપયોગ કરવો જોઈએ નહીં.
+
+માહિતી સંગ્રહ અને ઉપયોગ
+
+વધુ સારા અનુભવ માટે, અમારી એપ્લિકેશનનો ઉપયોગ કરતી વખતે, અમે તમને ચોક્કસ માહિતી પ્રદાન કરવાની જરૂર પડી શકે છે. અમે જે માહિતીની વિનંતી કરીએ છીએ તે અમારા દ્વારા જાળવી રાખવામાં આવશે અને આ ગોપનીયતા નીતિમાં વર્ણવ્યા મુજબ તેનો ઉપયોગ કરવામાં આવશે.
+
+એપ્લિકેશન તૃતીય-પક્ષ સેવાઓનો ઉપયોગ કરે છે જે તમને ઓળખવા માટે ઉપયોગમાં લેવાતી માહિતી એકત્રિત કરી શકે છે. એપ્લિકેશન દ્વારા ઉપયોગમાં લેવાતા તૃતીય પક્ષ સેવા પ્રદાતાઓની ગોપનીયતા નીતિની લિંક્સ:
+
+Google Play સેવાઓ https://www.google.com/policies/privacy/
+ફાયરબેઝ એનાલિટિક્સ https://firebase.google.com/policies/analytics
+ફેબ્રિક https://fabric.io/privacy Crashlytics http://try.crashlytics.com/terms/privacy-policy.pdf
+
+
+લોગ ડેટા
+
+અમે તમને જણાવવા માંગીએ છીએ કે જ્યારે પણ તમે અમારી એપ્લિકેશનનો ઉપયોગ કરો છો, ત્યારે એપ્લિકેશનમાં કોઈ ભૂલના કિસ્સામાં, અમે લોગ ડેટા નામના તમારા ફોન પર ડેટા અને માહિતી (તૃતીય-પક્ષ ઉત્પાદનો દ્વારા) એકત્રિત કરીએ છીએ. આ લોગ ડેટામાં ઉપકરણનું નામ, ઓપરેટિંગ સિસ્ટમ વર્ઝન, અમારી એપ્લિકેશનનો ઉપયોગ કરતી વખતે એપ્લિકેશનનું રૂપરેખાંકન, એપ્લિકેશનના તમારા ઉપયોગનો સમય અને તારીખ, અને અન્ય આંકડા, જેમ કે સ્થાન માહિતી, તમારી સેટિંગ્સના આધારે માહિતી શામેલ હોઈ શકે છે.
+
+કૂકીઝ
+
+કૂકીઝ એ નાની માત્રામાં ડેટા ધરાવતી ફાઇલો છે જેનો સામાન્ય રીતે અનામી અનન્ય ઓળખકર્તા તરીકે ઉપયોગ કરવામાં આવે છે આ તમારા બ્રાઉઝર પર તમે મુલાકાત લો છો તે વેબસાઇટ પરથી મોકલવામાં આવે છે અને તમારા ઉપકરણની આંતરિક મેમરી પર સંગ્રહિત થાય છે. મુઝિમા એપ્લિકેશન આ "કૂકીઝ" નો સ્પષ્ટપણે ઉપયોગ કરતી નથી. જો કે, એપ્લિકેશન તૃતીય-પક્ષ કોડ અને પુસ્તકાલયોનો ઉપયોગ કરી શકે છે જે માહિતી એકત્રિત કરવા અને તેમની સેવાઓ સુધારવા માટે "કૂકીઝ" નો ઉપયોગ કરે છે. તમારી પાસે આ કૂકીઝને સ્વીકારવા અથવા નકારવાનો વિકલ્પ છે અને તમારા ઉપકરણ પર કૂકી ક્યારે મોકલવામાં આવી રહી છે તે જાણો. જો તમે અમારી કૂકીઝનો ઇનકાર કરવાનું પસંદ કરો છો, તો તમે આ સેવાના કેટલાક ભાગોનો ઉપયોગ કરી શકશો નહીં.
+    સ્થાન ડેટા
+
+આરોગ્ય પ્રદાતાઓ માટે મુઝિમા દ્વારા પૂરી પાડવામાં આવેલી કેટલીક વૈકલ્પિક સુવિધાઓને સ્થાન ડેટાના ઉપયોગની જરૂર પડી શકે છે. આ લોકેશન ડેટા સંપૂર્ણપણે અમલીકરણમાં સ્થાનિકીકૃત સુવિધાઓ માટે છે અને કોઈપણ રીતે અમારી સાથે અથવા કોઈપણ તૃતીય પક્ષ સાથે શેર કરવામાં આવતો નથી. જો તમે એપ્લિકેશનને આમ કરવાની પરવાનગી આપો છો તો એપ્લિકેશન સ્થાન માહિતીનો ઉપયોગ કરી શકે છે. જ્યારે તમે અમારી એપ્લિકેશનનો ઉપયોગ કરો ત્યારે તમે તમારા ઉપકરણ સેટિંગ્સ દ્વારા સ્થાન સેવાઓને સક્ષમ અથવા અક્ષમ કરી શકો છો.
+
+સુરક્ષા
+
+અમે અમારી અરજીમાં તમારા વિશ્વાસને મહત્વ આપીએ છીએ. પરંતુ યાદ રાખો કે ઇન્ટરનેટ પર ટ્રાન્સમિશનની કોઈ પદ્ધતિ, અથવા ઇલેક્ટ્રોનિક સ્ટોરેજની પદ્ધતિ 100% સુરક્ષિત અને વિશ્વસનીય નથી, અને અમે તેની સંપૂર્ણ સુરક્ષાની બાંહેધરી આપી શકતા નથી. મહેરબાની કરીને ધ્યાન રાખો કે એપ્લિકેશનના તમારા ઉપયોગ સાથે જોડાયેલી કેટલીક વ્યક્તિગત માહિતી અને અન્ય માહિતી તમારા ઉપકરણ પર સંગ્રહિત થઈ શકે છે (ભલે અમે તે માહિતી એકત્રિત ન કરીએ). તમે અનધિકૃત fromક્સેસથી તમારા ઉપકરણની સુરક્ષા જાળવવા માટે સંપૂર્ણપણે જવાબદાર છો.
+
+આ ગોપનીયતા નીતિમાં ફેરફારો
+
+અમે સમય સમય પર અમારી ગોપનીયતા નીતિ અપડેટ કરી શકીએ છીએ. આમ, તમને કોઈપણ ફેરફારો માટે સમયાંતરે આ પૃષ્ઠની સમીક્ષા કરવાની સલાહ આપવામાં આવે છે. અમે તમને આ પૃષ્ઠ પર નવી ગોપનીયતા નીતિ પોસ્ટ કરીને કોઈપણ ફેરફારો વિશે સૂચિત કરીશું. આ ફેરફારો આ પૃષ્ઠ પર પોસ્ટ કર્યા પછી તરત જ અસરકારક છે.
+
+અમારો સંપર્ક કરો
+
+જો તમને અમારી ગોપનીયતા નીતિ વિશે કોઈ પ્રશ્નો અથવા સૂચનો હોય, તો mUzima.mobile@gmail.com દ્વારા અમારો સંપર્ક કરવામાં અચકાશો નહીં
+    </string>
+    <string name="info_for_health_providers">આરોગ્ય પ્રદાતાઓ માટે</string>
+    <string name="info_license_and_disclaimer">લાઇસન્સ અને ડિસક્લેમર</string>
+    <string name="info_agree_to_muzima_license_and_disclaimer">મુઝિમા લાઇસન્સ અને ડિસક્લેમર સાથે સંમત થાઓ</string>
+    <string name="info_privacy_policy_statement">ગોપનીયતા નીતિ નિવેદન</string>
+    <string name="info_agree_to_muzima_privacy_policy_statement">મુઝિમા ગોપનીયતા નીતિ નિવેદન સાથે સંમત થાઓ</string>
+    <string name="info_terms_and_conditions">નિયમો અને શરત</string>
+    <string name="info_agree_to_muzima_terms_and_conditions">મુઝિમાના નિયમો અને શરતો સાથે સંમત થાઓ</string>
+    <string name="info_accept_all">બધા સ્વીકારો</string>
+    <string name="error_policy_not_accepted">આગળ વધવા માટે નીતિ નિવેદનો સ્વીકારો</string>
+    <string name="general_home">ઘર</string>
+    <string name="contact_us">અમારો સંપર્ક કરો</string>
+    <string name="info_incomplete_form">અધૂરા ફોર્મ</string>
+    <string name="info_complete_form">ફોર્મ પૂર્ણ કરો</string>
+    <string name="general_search_forms">ફોર્મ્સ શોધો</string>
+    <string name="general_all_forms">બધા ફોર્મ</string>
+    <string name="general_search_cohorts">સહયોગીઓ શોધો</string>
+    <string name="general_search_patient">દર્દીની શોધ કરો</string>
+    <string name="general_or_search_by">અથવા આના દ્વારા શોધો:</string>
+    <string name="app_sub_title">આરોગ્ય પ્રદાતાઓ માટે</string>
+    <string name="general_policy_title">ઉપયોગ નીતિઓ</string>
+    <string name="general_historical_data">તિહાસિક ડેટા</string>
+    <string name="general_data_collection">માહિતી સંગ્રહ</string>
+    <string name="info_emergency_contacts">કટોકટી સંપર્કો</string>
+    <string name="info_by_type">પ્રકાર દ્વારા</string>
+    <string name="info_by_abstract">અમૂર્ત દ્વારા</string>
+    <string name="info_by_encounter">એન્કાઉન્ટર દ્વારા</string>
+    <string name="general_add_single_element">એક તત્વ ઉમેરો</string>
+    <string name="info_no_client_available">આ ઉપકરણ પર સ્થાનિક રીતે કોઈ ગ્રાહકો ઉપલબ્ધ નથી.</string>
+    <string name="general_setup_completed_message">સેટઅપ પૂર્ણ</string>
+    <string name="general_filter_by">દ્વારા ફિલ્ટર કરેલ</string>
+    <string name="general_all_cohorts">બધા સમૂહ</string>
+    <string name="general_all_clients">બધા ગ્રાહકો</string>
+    <string name="general_display_all">બધા પ્રદર્શિત કરો</string>
+    <string name="general_downloaded">ડાઉનલોડ કરેલ</string>
+    <string name="general_available_online">ઓનલાઇન ઉપલબ્ધ</string>
+    <string name="general_selected">પસંદ કરેલ</string>
+    <string name="general_sort_by_status">સ્થિતિ દ્વારા</string>
+    <string name="gender_female_symbol">એફ</string>
+    <string name="gender_male_symbole">એમ</string>
+    <string name="general_filtered_list">ફિલ્ટર કરેલ સૂચિ</string>
+    <string name="general_security_description">મુઝિમા પાસવર્ડ લોગિન, એન્ક્રિપ્શન, સુરક્ષિત ડેટા ટ્રાન્સમિશન, સમયસર વપરાશકર્તા લોગઆઉટ સહિત સુરક્ષા સુવિધાઓ પ્રદાન કરે છે.</string>
+    <string name="general_security">સુરક્ષા</string>
+    <string name="general_multiple_cases_description">ક્લિનિકલ સુવિધાઓની અંદર અને બહાર, કોઈપણ ક્લિનિકલ ઉપયોગના કેસોને ટેકો આપવા માટે મુઝિમા સરળતાથી કસ્ટમાઇઝ કરી શકાય છે.</string>
+    <string name="general_multiple_use_cases">બહુવિધ ઉપયોગના કેસો</string>
+    <string name="general_openmrs_compatibility_description">મુઝિમાને ઓપનએમઆરએસના mHealth વિસ્તરણ તરીકે ડિઝાઇન કરવામાં આવી હતી. OpenMRS ને ઘણા દેશોમાં રાષ્ટ્રીય સ્તરે તૈનાત કરવામાં આવે છે.</string>
+    <string name="general_openmrs_compatibility">OpenMRS સુસંગતતા</string>
+    <string name="forms_general_sort_by">ફોર્મ્સ સortર્ટ કરો</string>
+    <string name="general_sort_by_name">નામથી</string>
+    <string name="general_add_reading">વાંચન ઉમેરો</string>
+    <string name="general_reading">વાંચન</string>
+    <string name="general_update_patient_list_message">દર્દીઓની સૂચિ અપડેટ કરી રહ્યા છીએ ... કૃપા કરીને રાહ જુઓ</string>
+    <string name="general_patient_list_updated_message">દર્દીઓની યાદી અપડેટ કરવામાં આવી છે</string>
+    <string name="general_launching_map_message">નકશો લોન્ચ કરી રહ્યા છીએ, કૃપા કરીને રાહ જુઓ</string>
+    <string name="info_client_local_search_not_found_secondary">અમે તમારી શોધ સાથે સંબંધિત કંઈપણ શોધી શક્યા નથી. સર્વર શોધવાનો પ્રયાસ કરો</string>
+    <string name="general_data_collection_tools">ડેટા સંગ્રહ સાધનો</string>
+    <string name="general_works_offline">Offફલાઇન કામ કરે છે</string>
+    <string name="general_geomapping">જીઓમેપિંગ</string>
+    <string name="general_clinical_summary">ક્લિનિકલ સારાંશ</string>
+    <string name="general_relationship_management">સંબંધોનું વ્યવસ્થાપન</string>
+    <string name="general_multiple_themes">બહુવિધ થીમ્સ</string>
+    <string name="general_historical_data_view">Histતિહાસિક ડેટા વ્યૂ</string>
+    <string name="general_multiple_languages">બહુવિધ ભાષાઓ</string>
+    <string name="general_cohort_management">સમૂહ વ્યવસ્થાપન</string>
+    <string name="general_form_management">ફોર્મ મેનેજમેન્ટ</string>
+    <string name="general_error_resolutions">ભૂલ ઠરાવો</string>
+    <string name="general_data_collection_tools_description">મુઝિમા ઓપનએમઆરએસમાં સરળતાથી પ્રસારિત અને સંગ્રહિત કરી શકાય તેવો ડેટા એકત્રિત કરવા માટે સરળ રીતે વિકસિત વેબ-આધારિત સ્વરૂપોનો ઉપયોગ કરે છે.</string>
+    <string name="general_works_offline_description">મુઝિમા onlineનલાઇન અને offlineફલાઇન બંને રીતે સંપૂર્ણ રીતે કામ કરે છે. આ ઉપકરણ .ફલાઇન હોય ત્યારે પણ ડેટા સંગ્રહ અને સમીક્ષાઓ માટે પરવાનગી આપે છે.</string>
+    <string name="general_error_resolutions_description">મુઝિમા મોબાઇલ ઉપકરણ પર ડુપ્લિકેટ ફોર્મ ડેટા એન્ટ્રી અટકાવે છે અને ડેટા પ્રોસેસિંગ દરમિયાન ઓપનએમઆરએસમાં ભૂલોનું નિરાકરણ કરે છે.</string>
+    <string name="general_form_management_description">મુઝિમા એપ્લિકેશનને ફરીથી ઇન્સ્ટોલ અથવા પુનartપ્રારંભ કરવાની જરૂરિયાત વિના એપ્લિકેશન પર નવા ફોર્મ્સને સરળતાથી ડાઉનલોડ અને અપડેટ કરે છે.</string>
+    <string name="general_cohort_management_description">આ સુવિધા મોબાઇલ ઉપકરણ પર વિવિધ દર્દી અથવા ક્લાયંટ જૂથોના સંચાલન માટે પરવાનગી આપે છે.</string>
+    <string name="general_multiple_languages_description">મુઝિમા વિવિધ ભાષાઓમાં ઉપયોગ માટે બોક્સની બહાર સ્થાનિકીકરણ સપોર્ટ પૂરો પાડે છે જેથી ઉપયોગની વધુ રાહત મળે.</string>
+    <string name="general_historical_data_view_description">દર્દીઓ અથવા ગ્રાહકો પર historicalતિહાસિક ડેટા મેળવવા અને જોવા માટે mUzima પાસે સરળ અને કાર્યક્ષમ વપરાશકર્તા મૈત્રીપૂર્ણ પદ્ધતિઓ છે.</string>
+    <string name="general_multiple_themes_description">મુઝિમા બે થીમ પર મોકલવામાં આવે છે: ડાર્ક થીમ (વ્હાઇટ ઓન બ્લેક) અને લાઇટ થીમ (વ્હાઇટ ઓન વ્હાઇટ).</string>
+    <string name="general_relationship_management_description">હેલ્થકેર સ્પેસમાં, એક સંબંધનો ઉપયોગ બે લોકોને જોડવા/સાંકળવા માટે કરવામાં આવે છે જેમની સંભાળ એકબીજા સાથે જોડાયેલી હોઈ શકે છે.</string>
+    <string name="general_clinical_summary_description">આ સુવિધા ઓપનએમઆરએસ રિપોર્ટિંગ મોડ્યુલનો ઉપયોગ એચટીએમએલ રિપોર્ટ્સ ડિઝાઇન અને જનરેટ કરવા માટે કરે છે જે પછી એપ પર રેન્ડર કરવામાં આવે છે.</string>
+    <string name="general_geomapping_description">દર્દી જીપીએસ કોઓર્ડિનેટ્સને સરળતાથી કેપ્ચર અને રેકોર્ડ કરવાની ક્ષમતા લાવે છે, પછીની મુલાકાતો પર CHV ને દિશા આપે છે.</string>
+    <string name="general_registration_form_missing_message">નોંધણી ફોર્મ ખૂટે છે. કૃપા કરીને સંચાલકનો સંપર્ક કરો</string>
+    <string name="title_registration_form">નોંધણી ફોર્મ પસંદ કરો</string>
+    <string name="general_card_read_failed_msg">કાર્ડ રીડ નિષ્ફળ.</string>
+    <string name="general_label_sort_by_name">નામ દ્વારા સ Sર્ટ કરો</string>
+    <string name="general_label_sort_status">સ્થિતિ દ્વારા સortર્ટ કરો</string>
+    <string name="general_enter_value_to_save">સાચવવા માટે મૂલ્ય દાખલ કરો</string>
+    <string name="general_sync_service_already_running">મુઝિમા સિંક સેવા પહેલાથી જ ચાલી રહી છે ...</string>
+    <string name="general_opening_card_reader">કાર્ડ રીડર ખોલી રહ્યું છે</string>
+    <string name="erro_coded_concepts_not_supported">અમાન્ય કોડેડ ખ્યાલો આધાર નથી</string>
 </resources>
