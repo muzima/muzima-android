@@ -86,8 +86,6 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
     private TextView completeFormsCountView;
     private View incompleteFormsView;
     private View completeFormsView;
-    private TextView incompleteForms;
-    private TextView completeForms;
     private View childContainerView;
     private View addReadingActionView;
     private View cancelBottomSheetActionView;

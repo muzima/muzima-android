@@ -26,6 +26,7 @@
     <color name="primary_background">@android:color/white</color>
     <color name="tab_indicator_pressed">#6633B5E5</color>
     <color name="tab_indicator">#137EFE</color>
+    <color name="tab_indicator_selected">#85C6BE</color>
     <color name="tab_background_color_dark">#303030</color>
     <color name="tab_background_color_light">#e8e8e8</color>
     <color name="list_item_state_pressed">#6633B5E5</color>

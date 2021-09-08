@@ -33,8 +33,8 @@
             android:layout_alignParentBottom="true"
             android:background="?attr/tabBackgroundColor"
             android:overScrollMode="ifContentScrolls"
-            custom:indicatorColor="@color/tab_indicator"
-            custom:indicatorHeight="5dp"
+            custom:indicatorColor="@color/tab_indicator_selected"
+            custom:indicatorHeight="3dp"
             custom:indicatorTextColor="?attr/primaryTextColor" />
 
         <androidx.viewpager.widget.ViewPager
