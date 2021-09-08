@@ -49,6 +49,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.model.relationship.RelationshipTypeWrap;
+import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.RelationshipJsonMapper;
 import com.muzima.utils.StringUtils;
@@ -57,11 +58,15 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.PersonDemographicsUpdateFormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
+
+import androidx.appcompat.widget.Toolbar;
 import es.dmoral.toasty.Toasty;
 import org.json.JSONException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -75,6 +80,13 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private View createPersonView;
     private View addRelationshipView;
     private View progressBarContainer;
+
+    private TextView patientNameTextView;
+    private ImageView patientGenderImageView;
+    private TextView dobTextView;
+    private TextView identifierTextView;
+    private TextView ageTextView;
+
     private final ThemeUtils themeUtils = new ThemeUtils();
     private ListView lvwPatientRelationships;
     private AutoCompleteTextView autoCompletePersonTextView;
@@ -119,7 +131,8 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         autoCompletePersonTextView.setOnItemClickListener(autoCompleteOnClickListener());
         autoCompletePersonTextView.addTextChangedListener(autoCompleteTextWatcher());
 
-        setupPatientMetadata();
+        setupToolbar();
+        loadPatientData();
         setupStillLoadingView();
         setupPatientRelationships();
         setTitle(R.string.general_relationships);
@@ -128,6 +141,33 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             actionMode = startActionMode(new DeleteRelationshipsActionModeCallback());
             actionMode.setTitle(String.valueOf(getSelectedRelationships().size()));
         }
+    }
+
+    private void setupToolbar(){
+        Toolbar toolbar = findViewById(R.id.relationships_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    private void loadPatientData() {
+        patientNameTextView = findViewById(R.id.name);
+        patientGenderImageView = findViewById(R.id.genderImg);
+        dobTextView = findViewById(R.id.dateOfBirth);
+        identifierTextView = findViewById(R.id.identifier);
+        ageTextView = findViewById(R.id.age_text_label);
+
+        patientNameTextView.setText(patient.getDisplayName());
+        identifierTextView.setText(String.format(Locale.getDefault(), "ID:#%s", patient.getIdentifier()));
+        dobTextView.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate())));
+        patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
+        ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
+    }
+
+    private int getGenderImage(String gender) {
+        return gender.equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female;
     }
 
     private void setupPatientMetadata() {
@@ -150,7 +190,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
 
     private void setupPatientRelationships() {
         lvwPatientRelationships = findViewById(R.id.relationships_list);
-        patientRelationshipsAdapter = new RelationshipsAdapter(this, R.layout.item_relationship, relationshipController,
+        patientRelationshipsAdapter = new RelationshipsAdapter(this, R.layout.item_patients_list_multi_checkable, relationshipController,
                 patient.getUuid(), patientController);
         patientRelationshipsAdapter.setBackgroundListQueryTaskListener(this);
 
@@ -185,8 +225,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.relationship_list, menu);
-
-        super.onCreateOptionsMenu(menu);
         return true;
     }
 
@@ -228,7 +266,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                         if (relatedPerson != null) {
                             Intent intent = new Intent(RelationshipsListActivity.this, PatientSummaryActivity.class);
 
-                            intent.putExtra(PatientSummaryActivity.PATIENT, relatedPerson);
+                            intent.putExtra(PatientSummaryActivity.PATIENT_UUID, relatedPerson.getUuid());
                             startActivity(intent);
                         } else {
                             // We pick the right related person and create them as a patient

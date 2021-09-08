@@ -55,6 +55,7 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.FormsWithDataActivity;
+import com.muzima.view.relationship.RelationshipsListActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -154,6 +155,7 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_client_summary, menu);
         MenuItem shrMenu = menu.findItem(R.id.menu_shr);
+        MenuItem relationshipMenu = menu.findItem(R.id.menu_relationship);
         MenuItem locationMenu = menu.findItem(R.id.menu_location_item);
         locationMenu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -171,6 +173,14 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
                 return true;
             }
         });
+
+        relationshipMenu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                navigateToRelationshipsView();
+                return true;
+            }
+        });
         return true;
     }
 
@@ -184,7 +194,11 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         Intent intent = new Intent(getApplicationContext(), PatientsLocationMapActivity.class);
         startActivity(intent);
     }
-
+    private void navigateToRelationshipsView() {
+        Intent intent = new Intent(this, RelationshipsListActivity.class);
+        intent.putExtra(PATIENT,patient);
+        startActivity(intent);
+    }
     @Override
     public void onUserInteraction() {
         ((MuzimaApplication) getApplication()).restartTimer();

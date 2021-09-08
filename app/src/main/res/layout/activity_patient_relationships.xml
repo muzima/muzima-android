@@ -8,6 +8,7 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/patient_lists_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -15,47 +16,32 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/DashboardTableContainer">
 
-        <RelativeLayout
-            android:id="@+id/patient_demographics_layout"
-            style="@style/PatientDemographicsLayout"
-            android:paddingBottom="5dp">
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/primaryBackgroundColor"
+            app:elevation="6dp">
 
-            <TextView
-                android:id="@+id/patientName"
-                style="@style/DashboardMediumTitleText"
-                android:layout_alignParentStart="true" />
-
-            <ImageView
-                android:id="@+id/genderImg"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:contentDescription="@string/gender_image_content_description"
-                android:paddingTop="20dp" />
-        </RelativeLayout>
+                android:orientation="vertical">
 
-        <LinearLayout
-            style="@style/PatientDemographicsLayout"
-            android:paddingTop="4dp"
-            android:paddingBottom="16dp">
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/relationships_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/primaryBackgroundColor"
+                    app:title="@string/general_relationships"/>
 
-            <TextView
-                android:id="@+id/dob"
-                style="@style/DashboardBaseText"
-                android:layout_width="0dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/patientIdentifier"
-                style="@style/DashboardBaseText"
-                android:layout_width="0dp"
-                android:layout_gravity="right"
-                android:layout_weight="1" />
-        </LinearLayout>
+                <include layout="@layout/client_summary_patients_list"/>
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
 
         <View
             style="@style/DividerLine"
+            android:background="@color/tab_indicator_selected"
             android:layout_marginBottom="10dp" />
 
         <ScrollView
@@ -93,24 +79,39 @@
                     android:text="@string/to_text"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
-                <LinearLayout style="@style/AutocompleteTextArea">
+                <RelativeLayout
+                    android:id="@+id/dashboard_main_patient_search_view"
+                    android:background="@drawable/border_button_gray"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:padding="8dp">
 
                     <AutoCompleteTextView
-                        android:id="@+id/search_related_person"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/textbox_border"
-                        android:completionThreshold="3"
                         android:hint="@string/hint_person_search"
-                        android:paddingTop="3dp"
-                        android:paddingBottom="3dp"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textColor="?attr/primaryTextColor"
+                        android:id="@+id/search_related_person"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:padding="4dp"
+
+                        android:completionThreshold="3"
                         android:singleLine="true"
-                        android:textColor="@color/primary_blue"
-                        android:textColorHint="@color/hint_text_grey"
-                        android:textCursorDrawable="@null"></AutoCompleteTextView>
-                </LinearLayout>
+                        android:textCursorDrawable="@null"
+                        android:backgroundTint="@android:color/transparent"/>
+
+                    <ImageView
+                        android:layout_marginEnd="4dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/ic_search" />
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/search_server_layout"

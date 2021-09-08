@@ -28,10 +28,14 @@ import com.muzima.api.model.Relationship;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.tasks.MuzimaAsyncTask;
+import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class RelationshipsAdapter extends ListAdapter<Relationship> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
@@ -61,14 +65,17 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
-            convertView = layoutInflater.inflate(R.layout.item_relationship, parent, false);
+            convertView = layoutInflater.inflate(R.layout.item_relationships_list_multi_checkable, parent, false);
             convertView.setClickable(false);
             convertView.setFocusable(false);
             holder = new ViewHolder();
-            holder.relatedPerson = convertView.findViewById(R.id.relatedPerson);
+            holder.relatedPerson = convertView.findViewById(R.id.name);
             holder.relationshipType = convertView.findViewById(R.id.relationshipType);
             holder.identifier = convertView.findViewById(R.id.identifier);
             holder.genderImg = convertView.findViewById(R.id.genderImg);
+            holder.dateOfBirth = convertView.findViewById(R.id.dateOfBirth);
+            holder.age = convertView.findViewById(R.id.age_text_label);
+            holder.identifier = convertView.findViewById(R.id.identifier);
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
@@ -77,6 +84,17 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         if (StringUtils.equalsIgnoreCase(patientUuid, relationship.getPersonA().getUuid())) {
             holder.relatedPerson.setText(relationship.getPersonB().getDisplayName());
             holder.relationshipType.setText(relationship.getRelationshipType().getBIsToA());
+
+            Date dob = relationship.getPersonB().getBirthdate();
+            if(dob != null) {
+                holder.dateOfBirth.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy",
+                        Locale.getDefault()).format(dob)));
+                holder.age.setText(String.format(Locale.getDefault(), "%d yrs", DateUtils.calculateAge(dob)));
+            }else{
+                holder.dateOfBirth.setText(String.format(""));
+                holder.age.setText(String.format(""));
+            }
+
             if(relationship.getPersonB().getGender() != null) {
                 int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
                 holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
@@ -94,6 +112,16 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         } else {
             holder.relatedPerson.setText(relationship.getPersonA().getDisplayName());
             holder.relationshipType.setText(relationship.getRelationshipType().getAIsToB());
+
+            Date dob = relationship.getPersonA().getBirthdate();
+            if(dob != null) {
+                holder.dateOfBirth.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy",
+                        Locale.getDefault()).format(dob)));
+                holder.age.setText(String.format(Locale.getDefault(), "%d yrs", DateUtils.calculateAge(dob)));
+            }else{
+                holder.dateOfBirth.setText(String.format(""));
+                holder.age.setText(String.format(""));
+            }
 
             if(relationship.getPersonA().getGender() != null) {
                 int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
@@ -154,18 +182,13 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
     }
 
     class ViewHolder {
-        final LayoutInflater inflater;
-        final List<LinearLayout> viewHolders;
-
-        ViewHolder() {
-            viewHolders = new ArrayList<>();
-            inflater = LayoutInflater.from(getContext());
-        }
+        ImageView genderImg;
+        TextView dateOfBirth;
+        TextView age;
+        TextView identifier;
 
         TextView relatedPerson;
         TextView relationshipType;
-        TextView identifier;
-        ImageView genderImg;
     }
 
     private class BackgroundQueryTask extends MuzimaAsyncTask<String, Void, List<Relationship>> {

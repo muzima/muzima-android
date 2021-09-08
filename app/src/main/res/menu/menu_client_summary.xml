@@ -8,7 +8,7 @@
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/menu_relationship"
-        android:title="@string/general_cohorts"
+        android:title="@string/general_relationships"
         android:icon="@drawable/ic_relationship"
         app:showAsAction="ifRoom"/>
 
