@@ -214,8 +214,7 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         } catch (Exception e) {
             muzimaContext.closeSession();
-            logOut();
-            //throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
         return authenticatedUser;
     }

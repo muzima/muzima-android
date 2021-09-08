@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.muzima.view.custom.CheckedLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_form_layout"
     android:paddingTop="8dp"
@@ -100,4 +100,4 @@
         android:layout_height="1dp"
         android:visibility="gone"/>
 
-</LinearLayout>
+</com.muzima.view.custom.CheckedLinearLayout>

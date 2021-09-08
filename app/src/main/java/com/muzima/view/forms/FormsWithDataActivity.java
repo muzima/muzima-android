@@ -17,11 +17,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.legacy.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -230,6 +232,11 @@ public class FormsWithDataActivity extends FormsActivityBase {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     private boolean hasFormsWithData() {
         try {
             if (!(formController.getAllIncompleteFormsWithPatientData(patientUuid).isEmpty() &&
@@ -335,11 +342,11 @@ public class FormsWithDataActivity extends FormsActivityBase {
         }
         switch (position) {
             case FormsPagerAdapter.TAB_INCOMPLETE:
-                showButtons(true, false, false);
+                showButtons(false, false, false);
                 //((FormsPagerAdapter) formsPagerAdapter).unselectList();
                 break;
             case FormsPagerAdapter.TAB_COMPLETE:
-                showButtons(true, false, true);
+                showButtons(false, false, true);
                 break;
             default:
                 showButtons(false, false, false);
@@ -351,5 +358,17 @@ public class FormsWithDataActivity extends FormsActivityBase {
         tagsButton.setVisible(tagButton);
         menubarLoadButton.setVisible(menuLoadButton);
         menuUpload.setVisible(menuUploadButton);
+    }
+
+    @Override
+    public void onActionModeStarted(ActionMode mode) {
+        getSupportActionBar().hide();
+        super.onActionModeStarted(mode);
+    }
+
+    @Override
+    public void onActionModeFinished(ActionMode mode) {
+        super.onActionModeFinished(mode);
+        getSupportActionBar().show();
     }
 }

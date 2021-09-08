@@ -39,6 +39,7 @@ import com.muzima.model.events.ReloadClientsListEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
+import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.utils.FormUtils;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
@@ -199,6 +200,9 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
                 readSmartCard();
             }
         });
+        if(isSHRFeatureEnabled()) {
+            searchBySmartCard.setVisibility(View.VISIBLE);
+        }
 
         searchByBarCode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,6 +238,13 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         } catch (FormController.FormFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);
         }
+    }
+
+    private boolean isSHRFeatureEnabled(){
+
+        SHRStatusPreferenceService shrStatusPreferenceService
+                = new SHRStatusPreferenceService((MuzimaApplication) getActivity().getApplication());
+        return shrStatusPreferenceService.isSHRStatusSettingEnabled();
     }
 
     private void showRegistrationFormsMissingAlert() {
