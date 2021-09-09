@@ -112,7 +112,6 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         setContentView(R.layout.activity_main_client_summary);
         initializeResources();
         loadPatientData();
-        loadFormsCount();
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
@@ -149,6 +148,12 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadFormsCount();
     }
 
     @Override
@@ -333,6 +338,8 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                     singleObsFormsList.clear();
                     clientDynamicObsFormsAdapter.notifyDataSetChanged();
+
+                    loadFormsCount();
                     EventBus.getDefault().post(new ReloadObservationsDataEvent());
                 }
             }
