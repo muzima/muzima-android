@@ -84,11 +84,13 @@ public class IncompleteFormsListFragment extends FormsWithDataListFragment imple
 
     @Override
     public void onItemClick(int position) {
-        FormWithData formWithData = (FormWithData) listAdapter.getItem(position);
-        if(formWithData.getPatient() != null && StringUtils.isEmpty(formWithData.getPatient().getUuid())) {
-            formWithData.setPatient(null);
+        if(!actionModeActive) {
+            FormWithData formWithData = (FormWithData) listAdapter.getItem(position);
+            if (formWithData.getPatient() != null && StringUtils.isEmpty(formWithData.getPatient().getUuid())) {
+                formWithData.setPatient(null);
+            }
+            FormViewIntent intent = new FormViewIntent(getActivity(), formWithData);
+            getActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
         }
-        FormViewIntent intent = new FormViewIntent(getActivity(),formWithData );
-        getActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 }

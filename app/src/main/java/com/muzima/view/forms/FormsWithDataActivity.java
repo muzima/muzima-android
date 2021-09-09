@@ -25,6 +25,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,22 +35,28 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsPagerAdapter;
 import com.muzima.adapters.forms.TagsListAdapter;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
+import com.muzima.controller.PatientController;
 import com.muzima.service.TagPreferenceService;
+import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.MainDashboardActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import static com.muzima.view.patients.PatientSummaryActivity.PATIENT;
 import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_UUID;
 
 
@@ -77,13 +84,45 @@ public class FormsWithDataActivity extends FormsActivityBase {
         setContentView(mainLayout);
         formController = ((MuzimaApplication) getApplication()).getFormController();
         tagPreferenceService = new TagPreferenceService(this);
+
         patientUuid = getIntent().getStringExtra(PATIENT_UUID);
 
         initToolbar();
+        loadPatientData();
         initPager();
         initDrawer();
         initPagerIndicator();
         logEvent("VIEW_FORM_DATA_LIST");
+    }
+
+    private void loadPatientData() {
+        Patient patient = null;
+        if(!StringUtils.isEmpty(patientUuid)) {
+            try {
+                patient = ((MuzimaApplication)getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
+            } catch (PatientController.PatientLoadException e) {
+                Log.e(getClass().getSimpleName(),"Could not load patient",e);
+            }
+        }
+
+        if(patient!= null) {
+            findViewById(R.id.client_summary_view).setVisibility(View.VISIBLE);
+            TextView patientNameTextView = findViewById(R.id.name);
+            ImageView patientGenderImageView = findViewById(R.id.genderImg);
+            TextView dobTextView = findViewById(R.id.dateOfBirth);
+            TextView identifierTextView = findViewById(R.id.identifier);
+            TextView ageTextView = findViewById(R.id.age_text_label);
+
+            patientNameTextView.setText(patient.getDisplayName());
+            identifierTextView.setText(String.format(Locale.getDefault(), "ID:#%s", patient.getIdentifier()));
+            dobTextView.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate())));
+            patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
+            ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
+        }
+    }
+
+    private int getGenderImage(String gender) {
+        return gender.equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female;
     }
 
     private void initToolbar() {
@@ -119,7 +158,7 @@ public class FormsWithDataActivity extends FormsActivityBase {
         tagsButton = menu.findItem(R.id.menu_tags);
         menuUpload = menu.findItem(R.id.menu_upload);
         onPageChange(formsPager.getCurrentItem());
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
@@ -362,13 +401,11 @@ public class FormsWithDataActivity extends FormsActivityBase {
 
     @Override
     public void onActionModeStarted(ActionMode mode) {
-        getSupportActionBar().hide();
         super.onActionModeStarted(mode);
     }
 
     @Override
     public void onActionModeFinished(ActionMode mode) {
         super.onActionModeFinished(mode);
-        getSupportActionBar().show();
     }
 }

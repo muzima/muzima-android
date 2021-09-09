@@ -13,12 +13,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.util.TypedValue;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +38,6 @@ import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
-import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.adapters.relationships.AutoCompleteRelatedPersonAdapter;
 import com.muzima.adapters.relationships.RelationshipTypesAdapter;
 import com.muzima.adapters.relationships.RelationshipsAdapter;
@@ -170,24 +171,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         return gender.equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female;
     }
 
-    private void setupPatientMetadata() {
-
-        TextView patientName = findViewById(R.id.patientName);
-        patientName.setText(PatientAdapterHelper.getPatientFormattedName(patient));
-
-        ImageView genderIcon = findViewById(R.id.genderImg);
-        if(patient.getGender() != null) {
-            int genderDrawable = patient.getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
-            genderIcon.setImageDrawable(getResources().getDrawable(genderDrawable));
-        }
-
-        TextView dob = findViewById(R.id.dob);
-        dob.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
-
-        TextView patientIdentifier = findViewById(R.id.patientIdentifier);
-        patientIdentifier.setText(patient.getIdentifier());
-    }
-
     private void setupPatientRelationships() {
         lvwPatientRelationships = findViewById(R.id.relationships_list);
         patientRelationshipsAdapter = new RelationshipsAdapter(this, R.layout.item_patients_list_multi_checkable, relationshipController,
@@ -244,11 +227,22 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
 
                 if (actionModeActive) {
                     if (!relationship.getSynced()) {
+                        TypedValue typedValue = new TypedValue();
+                        Resources.Theme theme = getTheme();
+                        theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
+
                         int selectedRelationshipsCount = getSelectedRelationships().size();
-                        if (selectedRelationshipsCount == 0 && actionModeActive)
+                        if (selectedRelationshipsCount == 0 && actionModeActive) {
                             actionMode.finish();
-                        else
+                            view.setBackgroundResource(typedValue.resourceId);
+                        } else {
+                            if(view.isActivated()){
+                                view.setBackgroundResource(R.color.hint_blue_opaque);
+                            } else {
+                                view.setBackgroundResource(typedValue.resourceId);
+                            }
                             actionMode.setTitle(String.valueOf(selectedRelationshipsCount));
+                        }
                     } else {
                         Toasty.warning(RelationshipsListActivity.this, getApplicationContext().getString(R.string.relationship_delete_fail), Toast.LENGTH_SHORT, true).show();
                         lvwPatientRelationships.setItemChecked(position, false);
@@ -289,15 +283,15 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         return new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Relationship relationship = (Relationship) parent.getItemAtPosition(position);
                 if (!actionModeActive) {
-                    Relationship relationship = (Relationship) parent.getItemAtPosition(position);
-
                     if (!relationship.getSynced()) {
                         actionMode = startActionMode(new DeleteRelationshipsActionModeCallback());
                         actionModeActive = true;
 
                         lvwPatientRelationships.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
                         lvwPatientRelationships.setItemChecked(position, true);
+                        view.setBackgroundResource(R.color.hint_blue_opaque);
                         actionMode.setTitle(String.valueOf(getSelectedRelationships().size()));
                     } else {
                         Toasty.warning(RelationshipsListActivity.this, getApplicationContext().getString(R.string.relationship_delete_fail), Toast.LENGTH_SHORT, true).show();
@@ -660,6 +654,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
+            clearSelectedRelationships();
             lvwPatientRelationships.clearChoices();
             patientRelationshipsAdapter.notifyDataSetChanged();
 
@@ -683,4 +678,19 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         }
         return relationships;
     }
+
+    private void clearSelectedRelationships() {
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = getTheme();
+        theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
+
+        SparseBooleanArray checkedItemPositions = lvwPatientRelationships.getCheckedItemPositions();
+        for (int i = 0; i < checkedItemPositions.size(); i++) {
+            if (checkedItemPositions.valueAt(i)) {
+                lvwPatientRelationships.getChildAt(checkedItemPositions.keyAt(i)).setBackgroundResource(typedValue.resourceId);
+            }
+        }
+    }
+
+
 }

@@ -466,6 +466,7 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         Intent intent = new Intent(this, FormsWithDataActivity.class);
 
         intent.putExtra(PATIENT_UUID,patientUuid);
+        intent.putExtra(PATIENT,patient);
         if (isIncompleteFormsData) {
             intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_INCOMPLETE);
         } else {

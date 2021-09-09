@@ -26,8 +26,8 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.PatientComparator;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.CheckedLinearLayout;
-import com.muzima.view.custom.CheckedRelativeLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,15 +46,17 @@ import static com.muzima.utils.Constants.STANDARD_DATE_LOCALE_FORMAT;
 public abstract class FormsWithDataAdapter<T extends FormWithData> extends FormsAdapter<T> {
 
     private List<Patient> patients;
+    private String filterPatientUuid;
     private final PatientComparator patientComparator;
     private final List<String> selectedFormsUuids;
     private MuzimaClickListener muzimaClickListener;
 
-    FormsWithDataAdapter(Context context, int textViewResourceId, FormController formController) {
+    FormsWithDataAdapter(Context context, int textViewResourceId, String filterPatientUuid, FormController formController) {
         super(context, textViewResourceId, formController);
         patients = new ArrayList<>();
         patientComparator = new PatientComparator();
         selectedFormsUuids = new ArrayList<>();
+        this.filterPatientUuid = filterPatientUuid;
     }
 
     @Override
@@ -111,14 +113,21 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
 
         if (!isEmpty()) {
             FormWithData formWithData = getItem(position);
-            holder.formName.setText(formWithData.getName());
-            holder.clientName.setText(formWithData.getPatient().getDisplayName());
-            holder.clientId.setText(formWithData.getPatient().getIdentifier());
-
             SimpleDateFormat dateFormat = new SimpleDateFormat(STANDARD_DATE_FORMAT);
 
-            if(formWithData.getEncounterDate() != null) {
-                holder.encounterDate.setText(dateFormat.format(formWithData.getEncounterDate()));
+            if(StringUtils.isEmpty(filterPatientUuid)) {
+                holder.formName.setText(formWithData.getName());
+                holder.clientName.setText(formWithData.getPatient().getDisplayName());
+                holder.clientId.setText(formWithData.getPatient().getIdentifier());
+
+                if (formWithData.getEncounterDate() != null) {
+                    holder.encounterDate.setText(dateFormat.format(formWithData.getEncounterDate()));
+                }
+            } else {
+                holder.clientName.setText(formWithData.getName());
+                if (formWithData.getEncounterDate() != null) {
+                    holder.formName.setText(dateFormat.format(formWithData.getEncounterDate()));
+                }
             }
 
             if (formWithData.getLastModifiedDate() != null) {
@@ -160,35 +169,43 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (view instanceof CheckedLinearLayout) {
-                    CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
-                    checkedLinearLayout.toggle();
-                    boolean selected = checkedLinearLayout.isChecked();
-
-                    FormWithData formWithPatientData = getItem(position);
-                    if (selected && !selectedFormsUuids.contains(formWithPatientData.getFormDataUuid())) {
-                        selectedFormsUuids.add(formWithPatientData.getFormDataUuid());
-                        checkedLinearLayout.setActivated(true);
-                        checkedLinearLayout.setBackgroundResource(R.color.hint_blue_opaque);
-                    } else if (!selected && selectedFormsUuids.contains(formWithPatientData.getFormDataUuid())) {
-                        selectedFormsUuids.remove(formWithPatientData.getFormDataUuid());
-                        checkedLinearLayout.setActivated(false);
-                        TypedValue typedValue = new TypedValue();
-                        Resources.Theme theme = getContext().getTheme();
-                        theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
-                        view.setBackgroundResource(typedValue.resourceId);
-                    }
-                    muzimaClickListener.onItemLongClick();
-                }
+                selectOrDeselectClickedItem(view,position);
                 return true;
             }
         });
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                muzimaClickListener.onItemClick(position);
+                if(selectedFormsUuids.isEmpty()) {
+                    muzimaClickListener.onItemClick(position);
+                } else {
+                    selectOrDeselectClickedItem(view,position);
+                }
             }
         });
+    }
+
+    private void selectOrDeselectClickedItem(View view, int position){
+        if (view instanceof CheckedLinearLayout) {
+            CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
+            checkedLinearLayout.toggle();
+            boolean selected = checkedLinearLayout.isChecked();
+
+            FormWithData formWithPatientData = getItem(position);
+            if (selected && !selectedFormsUuids.contains(formWithPatientData.getFormDataUuid())) {
+                selectedFormsUuids.add(formWithPatientData.getFormDataUuid());
+                checkedLinearLayout.setActivated(true);
+                checkedLinearLayout.setBackgroundResource(R.color.hint_blue_opaque);
+            } else if (!selected && selectedFormsUuids.contains(formWithPatientData.getFormDataUuid())) {
+                selectedFormsUuids.remove(formWithPatientData.getFormDataUuid());
+                checkedLinearLayout.setActivated(false);
+                TypedValue typedValue = new TypedValue();
+                Resources.Theme theme = getContext().getTheme();
+                theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
+                view.setBackgroundResource(typedValue.resourceId);
+            }
+            muzimaClickListener.onItemLongClick();
+        }
     }
 
     public void setMuzimaClickListener(MuzimaClickListener muzimaClickListener) {

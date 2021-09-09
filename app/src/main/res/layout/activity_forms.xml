@@ -25,7 +25,9 @@
             app:title="@string/general_forms"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"/>
-
+        <include layout="@layout/client_summary_patients_list"
+            android:id="@+id/client_summary_view"
+            android:visibility="gone"/>
         <com.muzima.view.custom.PagerSlidingTabStrip
             android:id="@+id/pager_indicator"
             android:layout_width="match_parent"

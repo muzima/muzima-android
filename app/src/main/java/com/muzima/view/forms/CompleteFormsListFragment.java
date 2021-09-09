@@ -112,12 +112,14 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
 
     @Override
     public void onItemClick(int position) {
-        CompleteFormWithPatientData completeFormWithPatientData = (CompleteFormWithPatientData) listAdapter.getItem(position);
-        if(completeFormWithPatientData.getDiscriminator() != null) {
-            if(!completeFormWithPatientData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS)
-                    && !completeFormWithPatientData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION)) {
-                FormViewIntent intent = new FormViewIntent(getActivity(), (CompleteFormWithPatientData) listAdapter.getItem(position));
-                getActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
+        if(!actionModeActive) {
+            CompleteFormWithPatientData completeFormWithPatientData = (CompleteFormWithPatientData) listAdapter.getItem(position);
+            if (completeFormWithPatientData.getDiscriminator() != null) {
+                if (!completeFormWithPatientData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS)
+                        && !completeFormWithPatientData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION)) {
+                    FormViewIntent intent = new FormViewIntent(getActivity(), (CompleteFormWithPatientData) listAdapter.getItem(position));
+                    getActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
+                }
             }
         }
     }
