@@ -13,12 +13,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.util.TypedValue;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +38,6 @@ import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
-import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.adapters.relationships.AutoCompleteRelatedPersonAdapter;
 import com.muzima.adapters.relationships.RelationshipTypesAdapter;
 import com.muzima.adapters.relationships.RelationshipsAdapter;
@@ -49,6 +50,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.model.relationship.RelationshipTypeWrap;
+import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.RelationshipJsonMapper;
 import com.muzima.utils.StringUtils;
@@ -57,11 +59,15 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.PersonDemographicsUpdateFormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
+
+import androidx.appcompat.widget.Toolbar;
 import es.dmoral.toasty.Toasty;
 import org.json.JSONException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -75,6 +81,13 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private View createPersonView;
     private View addRelationshipView;
     private View progressBarContainer;
+
+    private TextView patientNameTextView;
+    private ImageView patientGenderImageView;
+    private TextView dobTextView;
+    private TextView identifierTextView;
+    private TextView ageTextView;
+
     private final ThemeUtils themeUtils = new ThemeUtils();
     private ListView lvwPatientRelationships;
     private AutoCompleteTextView autoCompletePersonTextView;
@@ -119,7 +132,8 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         autoCompletePersonTextView.setOnItemClickListener(autoCompleteOnClickListener());
         autoCompletePersonTextView.addTextChangedListener(autoCompleteTextWatcher());
 
-        setupPatientMetadata();
+        setupToolbar();
+        loadPatientData();
         setupStillLoadingView();
         setupPatientRelationships();
         setTitle(R.string.general_relationships);
@@ -130,27 +144,36 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         }
     }
 
-    private void setupPatientMetadata() {
-
-        TextView patientName = findViewById(R.id.patientName);
-        patientName.setText(PatientAdapterHelper.getPatientFormattedName(patient));
-
-        ImageView genderIcon = findViewById(R.id.genderImg);
-        if(patient.getGender() != null) {
-            int genderDrawable = patient.getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
-            genderIcon.setImageDrawable(getResources().getDrawable(genderDrawable));
+    private void setupToolbar(){
+        Toolbar toolbar = findViewById(R.id.relationships_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
 
-        TextView dob = findViewById(R.id.dob);
-        dob.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
+    private void loadPatientData() {
+        patientNameTextView = findViewById(R.id.name);
+        patientGenderImageView = findViewById(R.id.genderImg);
+        dobTextView = findViewById(R.id.dateOfBirth);
+        identifierTextView = findViewById(R.id.identifier);
+        ageTextView = findViewById(R.id.age_text_label);
 
-        TextView patientIdentifier = findViewById(R.id.patientIdentifier);
-        patientIdentifier.setText(patient.getIdentifier());
+        patientNameTextView.setText(patient.getDisplayName());
+        identifierTextView.setText(String.format(Locale.getDefault(), "ID:#%s", patient.getIdentifier()));
+        dobTextView.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate())));
+        patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
+        ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
+    }
+
+    private int getGenderImage(String gender) {
+        return gender.equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female;
     }
 
     private void setupPatientRelationships() {
         lvwPatientRelationships = findViewById(R.id.relationships_list);
-        patientRelationshipsAdapter = new RelationshipsAdapter(this, R.layout.item_relationship, relationshipController,
+        patientRelationshipsAdapter = new RelationshipsAdapter(this, R.layout.item_patients_list_multi_checkable, relationshipController,
                 patient.getUuid(), patientController);
         patientRelationshipsAdapter.setBackgroundListQueryTaskListener(this);
 
@@ -185,8 +208,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.relationship_list, menu);
-
-        super.onCreateOptionsMenu(menu);
         return true;
     }
 
@@ -206,11 +227,22 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
 
                 if (actionModeActive) {
                     if (!relationship.getSynced()) {
+                        TypedValue typedValue = new TypedValue();
+                        Resources.Theme theme = getTheme();
+                        theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
+
                         int selectedRelationshipsCount = getSelectedRelationships().size();
-                        if (selectedRelationshipsCount == 0 && actionModeActive)
+                        if (selectedRelationshipsCount == 0 && actionModeActive) {
                             actionMode.finish();
-                        else
+                            view.setBackgroundResource(typedValue.resourceId);
+                        } else {
+                            if(view.isActivated()){
+                                view.setBackgroundResource(R.color.hint_blue_opaque);
+                            } else {
+                                view.setBackgroundResource(typedValue.resourceId);
+                            }
                             actionMode.setTitle(String.valueOf(selectedRelationshipsCount));
+                        }
                     } else {
                         Toasty.warning(RelationshipsListActivity.this, getApplicationContext().getString(R.string.relationship_delete_fail), Toast.LENGTH_SHORT, true).show();
                         lvwPatientRelationships.setItemChecked(position, false);
@@ -228,7 +260,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                         if (relatedPerson != null) {
                             Intent intent = new Intent(RelationshipsListActivity.this, PatientSummaryActivity.class);
 
-                            intent.putExtra(PatientSummaryActivity.PATIENT, relatedPerson);
+                            intent.putExtra(PatientSummaryActivity.PATIENT_UUID, relatedPerson.getUuid());
                             startActivity(intent);
                         } else {
                             // We pick the right related person and create them as a patient
@@ -251,15 +283,15 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         return new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Relationship relationship = (Relationship) parent.getItemAtPosition(position);
                 if (!actionModeActive) {
-                    Relationship relationship = (Relationship) parent.getItemAtPosition(position);
-
                     if (!relationship.getSynced()) {
                         actionMode = startActionMode(new DeleteRelationshipsActionModeCallback());
                         actionModeActive = true;
 
                         lvwPatientRelationships.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
                         lvwPatientRelationships.setItemChecked(position, true);
+                        view.setBackgroundResource(R.color.hint_blue_opaque);
                         actionMode.setTitle(String.valueOf(getSelectedRelationships().size()));
                     } else {
                         Toasty.warning(RelationshipsListActivity.this, getApplicationContext().getString(R.string.relationship_delete_fail), Toast.LENGTH_SHORT, true).show();
@@ -622,6 +654,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
+            clearSelectedRelationships();
             lvwPatientRelationships.clearChoices();
             patientRelationshipsAdapter.notifyDataSetChanged();
 
@@ -645,4 +678,19 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         }
         return relationships;
     }
+
+    private void clearSelectedRelationships() {
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = getTheme();
+        theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
+
+        SparseBooleanArray checkedItemPositions = lvwPatientRelationships.getCheckedItemPositions();
+        for (int i = 0; i < checkedItemPositions.size(); i++) {
+            if (checkedItemPositions.valueAt(i)) {
+                lvwPatientRelationships.getChildAt(checkedItemPositions.keyAt(i)).setBackgroundResource(typedValue.resourceId);
+            }
+        }
+    }
+
+
 }

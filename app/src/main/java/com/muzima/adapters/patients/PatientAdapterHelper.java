@@ -28,10 +28,14 @@ import com.muzima.api.model.PatientTag;
 import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
+import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
@@ -57,6 +61,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
             holder.genderImg = convertView.findViewById(R.id.genderImg);
             holder.name = convertView.findViewById(R.id.name);
             holder.dateOfBirth = convertView.findViewById(R.id.dateOfBirth);
+            holder.age = convertView.findViewById(R.id.age_text_label);
             holder.distanceToClientAddress = convertView.findViewById(R.id.distanceToClientAddress);
             holder.identifier = convertView.findViewById(R.id.identifier);
 //            holder.tagsScroller = convertView.findViewById(R.id.tags_scroller);
@@ -71,6 +76,16 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         }else{
             holder.dateOfBirth.setText(String.format(""));
         }
+        Date dob = patient.getBirthdate();
+        if(dob != null) {
+            holder.dateOfBirth.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy",
+                    Locale.getDefault()).format(dob)));
+            holder.age.setText(String.format(Locale.getDefault(), "%d yrs", DateUtils.calculateAge(dob)));
+        }else{
+            holder.dateOfBirth.setText(String.format(""));
+            holder.age.setText(String.format(""));
+        }
+
         holder.identifier.setText(patient.getIdentifier());
         holder.distanceToClientAddress.setText(getDistanceToClientAddress(patient));
         holder.name.setText(getPatientFullName(patient));
@@ -229,6 +244,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
         ImageView genderImg;
         TextView name;
         TextView dateOfBirth;
+        TextView age;
         TextView identifier;
         TextView distanceToClientAddress;
         List<TextView> tags;

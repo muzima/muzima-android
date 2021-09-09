@@ -10,9 +10,12 @@
 
 package com.muzima.view.fragments;
 
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Checkable;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
@@ -64,12 +67,19 @@ public abstract class MuzimaListFragment extends Fragment implements AdapterView
         if(listView==null){
             return;
         }
+
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = getContext().getTheme();
+        theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
+
         for (int i = listView.getCount() - 1; i >= 0; i--){
-            if(listView.getChildAt(i) instanceof CheckedRelativeLayout){
-                listView.getChildAt(i).setActivated(false);
-                ((CheckedRelativeLayout) listView.getChildAt(i)).setChecked(false);
+            View view = listView.getChildAt(i);
+            if(view instanceof Checkable){
+                view.setActivated(false);
+                ((Checkable) view).setChecked(false);
             }
             listView.setItemChecked(i, false);
+            view.setBackgroundResource(typedValue.resourceId);
         }
     }
 

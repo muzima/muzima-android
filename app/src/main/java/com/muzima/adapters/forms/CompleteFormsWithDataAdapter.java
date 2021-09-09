@@ -28,7 +28,7 @@ public class CompleteFormsWithDataAdapter extends FormsWithDataAdapter<CompleteF
     private static String filterPatientUuid;
 
     public CompleteFormsWithDataAdapter(Context context, int textViewResourceId, String filterPatientUuid, FormController formController) {
-        super(context, textViewResourceId, formController);
+        super(context, textViewResourceId, filterPatientUuid, formController);
         this.context = context;
         this.filterPatientUuid = filterPatientUuid;
     }

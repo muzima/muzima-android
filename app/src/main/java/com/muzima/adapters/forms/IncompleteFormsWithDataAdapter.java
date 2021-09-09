@@ -25,7 +25,7 @@ public class IncompleteFormsWithDataAdapter extends FormsWithDataAdapter<Incompl
 
     private static String filterPatientUuid;
     public IncompleteFormsWithDataAdapter(Context context, int textViewResourceId, String filterPatientUuid, FormController formController) {
-        super(context, textViewResourceId, formController);
+        super(context, textViewResourceId, filterPatientUuid, formController);
         this.filterPatientUuid = filterPatientUuid;
     }
 

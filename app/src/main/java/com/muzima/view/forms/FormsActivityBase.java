@@ -42,7 +42,6 @@ public abstract class FormsActivityBase extends BroadcastListenerActivity {
     protected abstract MuzimaPagerAdapter createFormsPagerAdapter();
 
     void initPagerIndicator() {
-        Intent intent = getIntent();
         int tabToOpen = getIntent().getIntExtra(KEY_FORMS_TAB_TO_OPEN,-1);
         if (tabToOpen == -1) {
             tabToOpen = 0;
