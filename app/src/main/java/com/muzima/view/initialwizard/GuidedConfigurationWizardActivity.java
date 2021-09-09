@@ -48,7 +48,6 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.DefaultEncounterLocationPreferenceService;
-import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.MuzimaAsyncTask;
@@ -58,6 +57,7 @@ import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import com.muzima.utils.Constants.SetupLogConstants;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.MainDashboardActivity;
 
 import net.minidev.json.JSONObject;
 
@@ -160,7 +160,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             public void onClick(View view) {
                 new WizardFinishPreferenceService(GuidedConfigurationWizardActivity.this).finishWizard();
-                Intent intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();
+                Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
                 startActivity(intent);
                 finish();
             }

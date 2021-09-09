@@ -11,7 +11,6 @@
 
 <resources>
     <string translatable="false" name="preference_auto_save_interval">autoSaveIntervalPreference</string>
-    <string translatable="false" name="preference_cohort_prefix">cohortPrefixesPreference</string>
     <string translatable="false" name="preference_duplicate_form_data_key">duplicateFormDataPreference</string>
     <string translatable="false" name="preference_encounter_provider_key">encounterProviderPreference</string>
     <string translatable="false" name="preference_font_size">font_size</string>
@@ -23,7 +22,6 @@
     <string translatable="false" name="preference_wizard_finished">wizardFinished</string>
     <string translatable="false" name="preference_disclaimer">disclaimer</string>
     <string translatable="false" name="preference_require_medical_record_number">requireMedicalRecordNumber</string>
-    <string translatable="false" name="preference_landing_page">landingPage</string>
     <string translatable="false" name="preference_default_encounter_location">defaultEncounterLocation</string>
     <string translatable="false" name="preference_enable_shr_key">Enable SHR</string>
     <string translatable="false" name="preference_enable_gps_key">Enable GPS</string>

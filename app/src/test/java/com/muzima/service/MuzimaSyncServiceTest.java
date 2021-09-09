@@ -82,7 +82,6 @@ public class MuzimaSyncServiceTest {
     private ObservationController observationController;
     private ConceptController conceptController;
     private EncounterController encounterController;
-    private CohortPrefixPreferenceService prefixesPreferenceService;
     private SetupConfigurationController setupConfigurationController;
 
     @Before
@@ -97,7 +96,6 @@ public class MuzimaSyncServiceTest {
         conceptController = mock(ConceptController.class);
         encounterController = mock(EncounterController.class);
         setupConfigurationController = mock(SetupConfigurationController.class);
-        prefixesPreferenceService = mock(CohortPrefixPreferenceService.class);
         ProviderController providerController = mock(ProviderController.class);
         User authenticatedUser = mock(User.class);
         authenticatedUser.setSystemId("12345");
@@ -112,7 +110,6 @@ public class MuzimaSyncServiceTest {
         when(muzimaApplication.getConceptController()).thenReturn(conceptController);
         when(muzimaApplication.getEncounterController()).thenReturn(encounterController);
         when(muzimaApplication.getSetupConfigurationController()).thenReturn(setupConfigurationController);
-        when(muzimaApplication.getCohortPrefixesPreferenceService()).thenReturn(prefixesPreferenceService);
         when(muzimaApplication.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPref);
         when(muzimaApplication.getApplicationContext()).thenReturn(RuntimeEnvironment.application);
         muzimaSyncService = new MuzimaSyncService(muzimaApplication);
@@ -334,8 +331,6 @@ public class MuzimaSyncServiceTest {
         }};
 
         when(cohortController.downloadAllCohorts(null)).thenReturn(cohorts);
-        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        when(prefixesPreferenceService.getCohortPrefixes()).thenReturn(cohortPrefixes);
 
         muzimaSyncService.downloadCohorts();
 
@@ -353,8 +348,6 @@ public class MuzimaSyncServiceTest {
         }};
         int[] result = new int[]{SyncStatusConstants.SUCCESS, 2, 0};
 
-        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
         when(cohortController.downloadAllCohorts(null)).thenReturn(cohorts);
 
         assertThat(muzimaSyncService.downloadCohorts(), is(result));
@@ -362,8 +355,6 @@ public class MuzimaSyncServiceTest {
 
     @Test
     public void downloadCohort_shouldReturnDownloadErrorIfDownloadExceptionOccurs() throws CohortController.CohortDownloadException {
-        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
         doThrow(new CohortController.CohortDownloadException(null)).when(cohortController).downloadAllCohorts(null);
 
         assertThat(muzimaSyncService.downloadCohorts()[0], is(SyncStatusConstants.DOWNLOAD_ERROR));
@@ -371,8 +362,6 @@ public class MuzimaSyncServiceTest {
 
     @Test
     public void downloadCohort_shouldReturnSaveErrorIfSaveExceptionOccurs() throws CohortController.CohortSaveException {
-        when(muzimaApplication.getSharedPreferences(COHORT_PREFIX_PREF, android.content.Context.MODE_PRIVATE)).thenReturn(sharedPref);
-        when(sharedPref.getStringSet(Constants.COHORT_PREFIX_PREF_KEY, new HashSet<String>())).thenReturn(new HashSet<String>());
         doThrow(new CohortController.CohortSaveException(null)).when(cohortController).saveOrUpdateCohorts(new ArrayList<Cohort>());
 
         assertThat(muzimaSyncService.downloadCohorts()[0], is(SyncStatusConstants.SAVE_ERROR));

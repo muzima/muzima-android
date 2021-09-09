@@ -65,7 +65,6 @@ public class ObservationsFragment extends Fragment {
     private void initializeResources(View view) {
         initPager(view);
         initPagerIndicator(view);
-        encounterDateTextView = view.findViewById(R.id.date_value_textview);
 //        logEvent("VIEW_CLIENT_OBS_BY_CONCEPT", "{\"patientuuid\":\"" + patient.getUuid() + "\"}");
     }
 

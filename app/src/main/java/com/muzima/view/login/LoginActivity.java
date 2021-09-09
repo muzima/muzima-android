@@ -43,7 +43,6 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.service.CredentialsPreferenceService;
-import com.muzima.service.LandingPagePreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
@@ -56,6 +55,7 @@ import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.utils.ThemeUtils;
+import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.help.HelpActivity;
 import com.muzima.view.initialwizard.SetupMethodPreferenceWizardActivity;
@@ -534,7 +534,7 @@ public class LoginActivity extends Activity {
             Intent intent;
             if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
                 downloadMissingServerSettings();
-                intent = new LandingPagePreferenceService(getApplicationContext()).getLandingPageActivityLauchIntent();
+                intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
             } else {
                 removeRemnantDataFromPreviousRunOfWizard();
                 intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
