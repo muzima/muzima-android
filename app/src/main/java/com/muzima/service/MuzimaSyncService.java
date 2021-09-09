@@ -85,7 +85,6 @@ public class MuzimaSyncService {
     private final CohortController cohortController;
     private final PatientController patientController;
     private final ObservationController observationController;
-    private final CohortPrefixPreferenceService cohortPrefixPreferenceService;
     private EncounterController encounterController;
     private NotificationController notificationController;
     private LocationController locationController;
@@ -98,7 +97,6 @@ public class MuzimaSyncService {
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
-        cohortPrefixPreferenceService = muzimaApplication.getCohortPrefixesPreferenceService();
         formController = muzimaApplication.getFormController();
         conceptController = muzimaApplication.getConceptController();
         cohortController = muzimaApplication.getCohortController();
@@ -1018,18 +1016,8 @@ public class MuzimaSyncService {
     }
 
     private List<Cohort> downloadCohortsList() throws CohortController.CohortDownloadException {
-        Log.e(TAG, "downloadCohortsList");
-        List<String> cohortPrefixes = cohortPrefixPreferenceService.getCohortPrefixes();
-        Log.e(TAG, "downloadCohortsList: available prefixes for download ");
-        for (String cohortPrefix : cohortPrefixes) {
-            Log.e(TAG, "downloadCohortsList: cohortPrefix " + cohortPrefix);
-        }
         List<Cohort> cohorts;
-        if (cohortPrefixes.isEmpty()) {
-            cohorts = cohortController.downloadAllCohorts(getDefaultLocation());
-        } else {
-            cohorts = cohortController.downloadCohortsByPrefix(cohortPrefixes, getDefaultLocation());
-        }
+        cohorts = cohortController.downloadAllCohorts(getDefaultLocation());
         Log.e(TAG, "downloadCohortsList: downloaded cohorts " + cohorts.size());
         return cohorts;
     }

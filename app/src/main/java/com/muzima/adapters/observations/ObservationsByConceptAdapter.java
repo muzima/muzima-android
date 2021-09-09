@@ -40,7 +40,6 @@ import com.muzima.utils.BackgroundTaskHelper;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.custom.CustomObsEntryDialog;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,7 +62,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     private Boolean isShrData;
     private List<Integer> shrConcepts;
     private MuzimaApplication muzimaApplication;
-    private CustomObsEntryDialog customObsEntryDialog;
     private ProviderController providerController;
     private Patient patient;
 
@@ -88,17 +86,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                 new androidx.appcompat.app.AlertDialog.Builder(
                         parent.getContext()
                 );
-        addNewObservationValuesDialog = layoutInflater.inflate(R.layout.add_individual_obs_dialog_layout, null);
-
-        addIndividualObservationsDialogBuilder.setView(addNewObservationValuesDialog);
-        addIndividualObservationsDialogBuilder
-                .setCancelable(true);
-
-        addIndividualObsDialog = addIndividualObservationsDialogBuilder.create();
-
-        obsDialogAddButton = (Button) addNewObservationValuesDialog.findViewById(R.id.add_new_obs_button);
-
-        customObsEntryDialog = new CustomObsEntryDialog(parent.getContext(),muzimaApplication,patient);
 
         ObservationsByConceptViewHolder holder;
         if (convertView == null) {
@@ -132,22 +119,8 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         Concept conceptAtThisPosition = getItem(position).getConcept();
         rederedConceptsVisualizationMap.put(position, conceptAtThisPosition);
 
-        addNewObservationValuesDialog.findViewById(R.id.add_new_obs_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e(this.getClass().getSimpleName(),"on layout click..");
-            }
-        });
-
         return convertView;
     }
-
-
-    public void addObservation() {
-        addIndividualObsDialog.show();
-        //TODO Develop add obs logic.
-    }
-
 
     @Override
     public void reloadData() {
@@ -245,10 +218,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                 @Override
                 public void onClick(View v) {
                     Concept concept = observation.getConcept();
-                    customObsEntryDialog.setConcept(concept);
-                    customObsEntryDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-                    customObsEntryDialog.setCancelable(false);
-                    customObsEntryDialog.show();
                 }
             });
         }

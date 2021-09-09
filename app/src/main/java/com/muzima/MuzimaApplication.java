@@ -50,7 +50,6 @@ import com.muzima.controller.RelationshipController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
-import com.muzima.service.CohortPrefixPreferenceService;
 import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaGPSLocationService;
@@ -97,7 +96,6 @@ public class MuzimaApplication extends MultiDexApplication {
     private MuzimaSyncService muzimaSyncService;
     private MuzimaGPSLocationService muzimaGPSLocationService;
     private GPSFeaturePreferenceService gpsFeaturePreferenceService;
-    private CohortPrefixPreferenceService prefixesPreferenceService;
     private LocalePreferenceService localePreferenceService;
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController settingsController;
@@ -338,13 +336,6 @@ public class MuzimaApplication extends MultiDexApplication {
             muzimaSyncService = new MuzimaSyncService(this);
         }
         return muzimaSyncService;
-    }
-
-    public CohortPrefixPreferenceService getCohortPrefixesPreferenceService() {
-        if (prefixesPreferenceService == null) {
-            prefixesPreferenceService = new CohortPrefixPreferenceService(this);
-        }
-        return prefixesPreferenceService;
     }
 
     public LocalePreferenceService getLocalePreferenceService() {
