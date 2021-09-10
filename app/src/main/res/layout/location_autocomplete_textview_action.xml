@@ -13,7 +13,7 @@
             android:minWidth="400dp"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
-            android:textColor="@color/primary_blue"
+            android:textColor="?attr/primaryTextColor"
             android:textColorHint="@color/hint_text_grey"
             android:textCursorDrawable="@null"
             android:hint="@string/enter_location_name"

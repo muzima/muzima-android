@@ -47,7 +47,6 @@ public class HelpActivity extends BaseHelpActivity {
     private static final String MUZIMA_SETTINGS = "file:///android_asset/www/help-content/Settings.html";
     private static final String FILL_PATIENT_FORMS = "file:///android_asset/www/help-content/filling-forms-for-a-patient.html";
     private static final String GUIDED_SETUP = "https://youtu.be/aSa4CcGtGdo";
-    private static final String ADVANCED_SETUP = "https://youtu.be/3yFieYJQEbs";
     private static final String COHORTS_DOWNLOAD_ON_DEMAND = "https://youtu.be/CcQZy32O8JQ";
     private static final String CONCEPTS_DOWNLOAD_ON_DEMAND = "https://youtu.be/Q6QIE7z6_O0";
     private static final String FORMS_DOWNLOAD_ON_DEMAND = "https://youtu.be/1cPF58jhLiA";
@@ -105,19 +104,17 @@ public class HelpActivity extends BaseHelpActivity {
                 //video links
                 else if (groupPosition == 1 && childPosition == 0) {
                     startVideoContentDisplayActivity(GUIDED_SETUP, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 1 && childPosition == 1) {
-                    startVideoContentDisplayActivity(ADVANCED_SETUP, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 1 && childPosition == 2) {
+                }  else if (groupPosition == 1 && childPosition == 1) {
                     startVideoContentDisplayActivity(COHORTS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 1 && childPosition == 3) {
+                } else if (groupPosition == 1 && childPosition == 2) {
                     startVideoContentDisplayActivity(CONCEPTS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 1 && childPosition == 4) {
+                } else if (groupPosition == 1 && childPosition == 3) {
                     startVideoContentDisplayActivity(FORMS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 1 && childPosition == 5) {
+                } else if (groupPosition == 1 && childPosition == 4) {
                     startVideoContentDisplayActivity(CLIENT_REGISTRATION, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 1 && childPosition == 6) {
+                } else if (groupPosition == 1 && childPosition == 5) {
                     startVideoContentDisplayActivity(LOCAL_CLIENT_SEARCH, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 1 && childPosition == 7) {
+                } else if (groupPosition == 1 && childPosition == 6) {
                     startVideoContentDisplayActivity(SERVER_CLIENT_SEARCH, (String) listAdapter.getChild(groupPosition, childPosition));
                 }
                 return false;
@@ -168,7 +165,6 @@ public class HelpActivity extends BaseHelpActivity {
 
         List<String> videoLinks = new ArrayList<>();
         videoLinks.add(getString(R.string.title_guided_setup_help_video));
-        videoLinks.add(getString(R.string.title_advanced_setup_help_video));
         videoLinks.add(getString(R.string.title_cohort_download_help_video));
         videoLinks.add(getString(R.string.title_concept_download_help_video));
         videoLinks.add(getString(R.string.title_form_download_help_video));

@@ -16,7 +16,7 @@
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
             android:popupBackground="?attr/primaryBackgroundColor"
-            android:textColor="@color/primary_blue"
+            android:textColor="?attr/primaryTextColor"
             android:textColorHint="@color/hint_text_grey"
             android:textCursorDrawable="@null">
 
