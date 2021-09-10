@@ -9,8 +9,6 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
 --><resources>
     <string name="SHR_card_text">SHR કાર્ડ</string>
-    <string name="SHR_data_title_text">SHR ડેટા</string>
-    <string name="SHR_extracted_data_text">SHR માંથી એક્સટ્રેકટ કરેલ ડેટા</string>
 
     <string name="add_individual_observation_text">વ્યક્તિગત નિરીક્ષણ ઉમેરો</string>
 
@@ -22,8 +20,6 @@
     <string name="autocomplete_server_not_found">સર્વર પર પહોંચી શકાતું નથી! \nકૃપા કરીને તમારા ડિવાઇસને કનેક્ટ કરો અને ફરીથી પ્રયાસ કરો અથવા નવી વ્યક્તિ બનાવો</string>
 
     <string name="captured_date">કેપ્ચર કરેલ તારીખ</string>
-
-    <string name="card_sync_status_content_description">કાર્ડ સિંક્રનાઇઝેશન સ્થિતિ</string>
 
     <string name="change_settings">સેટિંગ્સ બદલો</string>
 
@@ -42,15 +38,12 @@
     <string name="date_general">તારીખ</string>
     <string name="date_temp">8 જૂન</string>
 
-    <string name="default_form_register">નોંધણી ફોર્મ</string>
-
     <string name="downloaded_reports">ડાઉનલોડ કરેલા અહેવાલો</string>
 
     <string name="downloading_cohorts_text">સમૂહને ડાઉનલોડ કરી રહ્યા છીએ</string>
     <string name="downloading_forms">ફોર્મ્સ ડાઉનલોડ કરી રહ્યાં છે</string>
 
     <string name="encounter_date">એન્કાઉન્ટર તારીખ:</string>
-    <string name="encounter_date_dialog_label">એન્કાઉન્ટર તારીખ</string>
     <string name="encounter_details">એન્કાઉન્ટરની વિગતો</string>
     <string name="encounter_location">એન્કાઉન્ટરનું સ્થાન:</string>
     <string name="encounter_type">એન્કાઉન્ટરનો પ્રકાર:</string>
@@ -58,21 +51,16 @@
     <string name="enter_concept_name_text">ખ્યાલનું નામ દાખલ કરો…</string>
     <string name="enter_location_name">સ્થાનનું નામ દાખલ કરો…</string>
     <string name="enter_provider_name_hint">પ્રદાતાનું નામ દાખલ કરો …</string>
-
-    <string name="error_action_allow">જ્યારે સમન્વયન ચાલુ છે ત્યારે ક્રિયાને મંજૂરી નથી</string>
     <string name="error_audio_chose_activity_find">ભૂલ: અવાજ પસંદ કરવા માટેની પ્રવૃત્તિ મળી નથી</string>
     <string name="error_audio_play_activity_find">ભૂલ: અવાજ વગાડવાની પ્રવૃત્તિ મળી નથી</string>
     <string name="error_audio_record_activity_find">ભૂલ: અવાજ રેકોર્ડ કરવા માટેની પ્રવૃત્તિ મળી નથી</string>
     <string name="error_authentication_fail">પ્રમાણીકરણ નિષ્ફળ થયું</string>
     <string name="error_authentication_occur">પ્રમાણીકરણમાં ત્રુટિ આવી</string>
-    <string name="error_client_download">ક્લાયંટને ડાઉનલોડ કરી શક્યાં નથી</string>
     <string name="error_cohort_download">સમૂહ ડાઉનલોડ કરી શક્યાં નથી</string>
     <string name="error_cohort_fetch">સ્થાનિક રેપોમાંથી સમૂહ લાવતી વખતે કંઈક ખોટું થયું</string>
-    <string name="error_cohort_load">સમૂહ લોડ કરી શકાયું નથી</string>
     <string name="error_concept_download">ખ્યાલોને ડાઉનલોડ કરી શક્યાં નથી</string>
     <string name="error_concept_fetch">સ્થાનિક રેપોમાંથી ખ્યાલોને લાવતી વખતે કંઈક ખોટું થયું</string>
     <string name="error_concept_parse">ફોર્મમાં ખ્યાલોને વિશ્લેષણ કરતી વખતે એક ભૂલ આવી</string>
-    <string name="error_connection_data_download">ડેટા ડાઉનલોડ કરતી વખતે કનેક્શનમાં ભૂલ આવી</string>
     <string name="error_credential_invalid">અમાન્ય વપરાશકર્તા નામ, પાસવર્ડ, સર્વર સંયોજન.</string>
     <string name="error_data_download">સર્વરમાંથી ડેટા ડાઉનલોડ કરતી વખતે ભૂલ આવી</string>
     <string name="error_data_save">સ્થાનિક રેપોમાં ડેટા સાચવતી વખતે ભૂલ આવી</string>
@@ -89,7 +77,6 @@
     <string name="error_form_load">ફોર્મ લોડ કરી શકાયા નથી</string>
     <string name="error_form_load_fail">ફોર્મ લોડ કરી શકાયું નથી</string>
     <string name="error_form_location_load">ફોર્મ માટેના સ્થાનોને લોડ કરતી વખતે ભૂલ આવી</string>
-    <string name="error_form_patient_data_exist">પસંદ કરેલા ફોર્મ માટે ફોર્મ ડેટા અસ્તિત્વમાં છે. અપૂર્ણ ડેટા પૂર્ણ કરો અને ફોર્મ્સ ડાઉનલોડ કરતાં પહેલાં સર્વર સાથે સંપૂર્ણ ડેટા સમન્વય કરો.</string>
     <string name="error_form_provider_load">ફોર્મ માટે પ્રદાતા લોડ કરતી વખતે ભૂલ આવી</string>
     <string name="error_form_save">ફોર્મ સાચવતી વખતે ભૂલ આવી</string>
     <string name="error_form_templates_download">ફોર્મ નમૂનાઓ ડાઉનલોડ કરી શક્યાં નથી</string>
@@ -104,15 +91,12 @@
     <string name="error_notification_download">સૂચનાઓ ડાઉનલોડ કરવામાં ભૂલ</string>
     <string name="error_notification_fetch">સ્થાનિક રેપોથી સૂચનાઓ લાવતી વખતે કંઈક ખોટું થયું</string>
     <string name="error_observation_download">નિરીક્ષણો ડાઉનલોડ કરી શક્યાં નથી</string>
-    <string name="error_observation_fetch">સ્થાનિક રેપોમાંથી નિરીક્ષણો લાવતી વખતે કંઈક ખોટું થયું</string>
     <string name="error_observation_form_save">ફોર્મમાં નિરીક્ષણો સાચવતી વખતે ભૂલ આવી</string>
     <string name="error_observation_load">અવલોકનો લોડ કરી શકાયાં નથી</string>
     <string name="error_observation_unavailable">કોઈ નિરીક્ષણો ઉપલબ્ધ નથી</string>
     <string name="error_parse_exception_data_fetch">ડેટા લાવતી વખતે પાર્સ અપવાદ આવ્યો છે</string>
     <string name="error_patient_data_form_exist">ફોર્મ ડેટા અસ્તિત્વમાં છે. અપૂર્ણ ડેટા પૂર્ણ કરો અને ફોર્મ નમૂનાઓનું સમન્વયન કરતા પહેલા સર્વર પર સંપૂર્ણ ડેટા સમન્વયિત કરો.</string>
     <string name="error_patient_download">ક્લાયંટને ડાઉનલોડ કરી શક્યાં નથી</string>
-    <string name="error_patient_encounter_download">ક્લાયંટ માટે એન્કાઉન્ટર ડાઉનલોડ કરી શકાયું નથી</string>
-    <string name="error_patient_fetch">ક્લાયંટને લાવતી વખતે ભૂલ આવી</string>
     <string name="error_patient_repo_fetch">સ્થાનિક રેપોથી ક્લાયન્ટ્સને લાવતી વખતે કંઈક ખોટું થયું</string>
     <string name="error_patient_report_fetch">સ્થાનિક રેપો તરફથી ક્લાયંટના અહેવાલો મેળવવામાં કંઈક ખોટું થયું</string>
     <string name="error_patient_search">ક્લાયંટને શોધતી વખતે કંઈક ખોટું થયું</string>
@@ -123,19 +107,14 @@
     <string name="error_server_connection_unavailable">સર્વર સુધી પહોંચી શકાતું નથી</string>
     <string name="error_server_url_invalid">અમાન્ય સર્વર URL.</string>
     <string name="error_settings_download">સેટિંગ્સ ડાઉનલોડ કરી શકાઈ નથી</string>
-    <string name="error_setup_configuration_download">સેટઅપ કન્ફિગ્રેશન લોડ કરી શકાયા નથી</string>
     <string name="error_setup_configuration_template_download">સેટઅપ કન્ફિગ્રેશન ટેમ્પલેટ ડાઉનલોડ કરી શકાયું નથી</string>
     <string name="error_smartcard_client_not_in_server">સ્માર્ટકાર્ડ ક્લાયંટ સર્વરમાં નથી. શું તમે હમણાં mUzima માં ક્લાયંટને રજીસ્ટર કરવા માંગો છો?</string>
     <string name="error_sync_not_allowed">જ્યારે સમન્વયન ચાલુ છે ત્યારે ક્રિયાને મંજૂરી નથી</string>
     <string name="error_tag_fetch">સ્થાનિક રેપોમાંથી ટેગ્સ લાવતી વખતે કંઈક ખોટું થયું</string>
-    <string name="error_target_application_find">કોઈ લક્ષિત એપ્લિકેશનો નથી</string>
     <string name="error_username_invalid_format">વપરાશકર્તા નામમાં અમાન્ય અક્ષર. આને મંજૂરી નથી: %s</string>
     <string name="error_wizard_interrupted">વિઝાર્ડ વિક્ષેપિત થયો હતો, કૃપા કરીને લોગઆઉટ કરો અને વિઝાર્ડ ફરીથી ચલાવો.</string>
 
     <string name="failure_obtain_smartcard_record">કાર્ડ પર લખવા માટે સ્માર્ટકાર્ડ રેકોર્ડ મેળવી શકાયો નથી.</string>
-    <string name="failure_obtaining_card_serial_number">કાર્ડ સીરીયલ નંબર મેળવી શક્યા નથી</string>
-    <string name="failure_reading_card">કાર્ડ વાંચન નિષ્ફળ થયું</string>
-    <string name="failure_updating_smartcard_record_for_writing">કાર્ડ પર લખતા પહેલા સ્માર્ટકાર્ડ રેકોર્ડને અપડેટ કરી શકાયું નહીં</string>
     <string name="failure_writing_smartcard">સ્માર્ટ કાર્ડ ડેટા લખવામાં નિષ્ફળ.</string>
 
     <string name="feedback_header">કૃપા કરીને અમને તમારી ટિપ્પણીઓ અને પ્રતિસાદ મોકલો</string>
@@ -152,9 +131,7 @@
 
     <string name="general_accept">સ્વીકારો</string>
     <string name="general_add">ઉમેરો</string>
-    <string name="general_agree">સંમત થાઓ</string>
     <string name="general_alert">ચેતવણી!</string>
-    <string name="general_all">તમામ</string>
     <string name="general_application_version">સંસ્કરણ %1$s</string>
     <string name="general_cancel">રદ કરો</string>
     <string name="general_caution">સાવધાન!</string>
@@ -164,33 +141,25 @@
     <string name="general_close">બંધ</string>
     <string name="general_cohorts">સમૂહ</string>
     <string name="general_concepts">ખ્યાલો</string>
-    <string name="general_dashboard">ડેશબોર્ડ</string>
-    <string name="general_data_sync_required">ડેટા સમન્વયન આવશ્યક છે</string>
     <string name="general_date">તારીખ</string>
     <string name="general_days_character">દિ</string>
     <string name="general_delete">કાઢી નાખો</string>
     <string name="general_description_unavailable">કોઈ વર્ણન ઉપલબ્ધ નથી</string>
-    <string name="general_disagree">અસંમત</string>
     <string name="general_done">થઈ ગયું</string>
     <string name="general_download">ડાઉનલોડ કરો</string>
     <string name="general_draft">ડ્રાફ્ટ</string>
-    <string name="general_encounters">એન્કાઉન્ટર્સ</string>
     <string name="general_fail">નિષ્ફળ</string>
     <string name="general_failure">નિષ્ફળતા</string>
     <string name="general_feedback">પ્રતિસાદ</string>
     <string name="general_filling_forms">ફોર્મ ભરવા</string>
     <string name="general_finish">સમાપ્ત</string>
-    <string name="general_finish_text">સમાપ્ત</string>
     <string name="general_form">ફોર્મ</string>
     <string name="general_forms">ફોર્મ્સ</string>
     <string name="general_get_directions">દિશા - નિર્દેશો મેળવો</string>
     <string name="general_help">સહાયતા</string>
     <string name="general_large">મોટું</string>
     <string name="general_load">લોડ કરો</string>
-    <string name="general_loading_encounters">એન્કાઉન્ટર્સ હજી લોડ થઈ રહ્યાં છે</string>
     <string name="general_loading_relationships">સંબંધો હજી લોડ થઈ રહ્યા છે</string>
-    <string name="general_loading_reports">અહેવાલો હજી લોડ થઈ રહ્યા છે</string>
-    <string name="general_location_setting">સ્થાન સેટિંગ્સ</string>
     <string name="general_locations">સ્થાનો</string>
     <string name="general_login">લૉગિન</string>
     <string name="general_logout">લૉગ આઉટ</string>
@@ -199,8 +168,6 @@
     <string name="general_next">આગળ</string>
     <string name="general_no">ના</string>
     <string name="general_not_available_text">ઉપલબ્ધ નથી</string>
-    <string name="general_notice">નોટિસ</string>
-    <string name="general_notices">સૂચનાઓ</string>
     <string name="general_notification">સૂચના</string>
     <string name="general_notifications">સૂચનાઓ</string>
     <string name="general_observations">અવલોકનો</string>
@@ -209,27 +176,19 @@
     <string name="general_password">પાસવર્ડ</string>
     <string name="general_patient_registration">ક્લાયંટ નોંધણી</string>
     <string name="general_person_create">વ્યક્તિ બનાવો</string>
-    <string name="general_previous">અગાઉ</string>
     <string name="general_progress_message">આમાં થોડો સમય લાગી શકે છે</string>
     <string name="general_providers">પ્રદાતાઓ</string>
     <string name="general_relationship">સંબંધ</string>
     <string name="general_relationships">સંબંધો</string>
-    <string name="general_reports">અહેવાલો</string>
-    <string name="general_requirement">જરૂરીયાત</string>
     <string name="general_retry">ફરીથી પ્રયાસ કરો</string>
     <string name="general_save">સાચવો</string>
     <string name="general_saving_forms">ફોર્મ સાચવી રહ્યા છીએ</string>
-    <string name="general_search">શોધો</string>
     <string name="general_searching">શોધી રહ્યું છે…</string>
     <string name="general_server">સર્વર</string>
     <string name="general_settings">સેટિંગ્સ</string>
     <string name="general_skip">અવગણો</string>
     <string name="general_small">નાનું</string>
-    <string name="general_synced">સમન્વયિત</string>
     <string name="general_tags">ટેગ્સ</string>
-    <string name="general_thank_you">આપનો આભાર!</string>
-    <string name="general_unexpected_error_occurred">અનપેક્ષિત ભૂલ આવી</string>
-    <string name="general_update">અપડેટ</string>
     <string name="general_upload">અપલોડ કરો</string>
     <string name="general_username">વપરાશકર્તા નામ</string>
     <string name="general_view_encounter">એન્કાઉન્ટર જુઓ</string>
@@ -239,7 +198,6 @@
 
     <string name="get_more">સર્વરમાંથી વધુ</string>
 
-    <string name="header_cohort_category">કોહર્ટ સેટિંગ્સ</string>
     <string name="header_muzima_category">mUzima સેટિંગ્સ </string>
     <string name="header_openmrs_category">OpenMRS સેટિંગ્સ</string>
     <string name="header_provider_location_category">પ્રદાતા / સ્થાન સેટિંગ્સ</string>
@@ -249,45 +207,21 @@
     <string name="help_center">સહાયતા કેન્દ્ર</string>
     <string name="help_general">સહાયતા!</string>
 
-    <string name="hint_advanced_setup">તમને જે જોઈએ છે તે પસંદ કરવા માટે સ્ટેપ બાઈ સ્ટેપ વિઝાર્ડનો ઉપયોગ કરો</string>
     <string name="hint_audio_caption">કૃપા કરીને ઑડિઓ માટે કેપ્શન દાખલ કરો</string>
     <string name="hint_audio_record">રેકોર્ડ કરો અથવા ઑડિઓ પસંદ કરો</string>
     <string name="hint_authentication_progress">પ્રમાણિત કરી રહ્યું છે…</string>
-    <string name="hint_barcode_scanner_setup">મોબાઇલથી ક્લાયંટને નોંધાવવા માટે તમારે બારકોડ સ્કેનર એપ્લિકેશનની જરૂર છે. કૃપા કરીને તપાસો કે તે તમારા ડિવાઇસમાં ઇન્સ્ટોલ કરેલું છે કે નહીં.</string>
-    <string name="hint_card_blank">વાંચન સફળ પરંતુ કાર્ડ ખાલી દેખાય છે:</string>
     <string name="hint_card_not_empty">કાર્ડ ખાલી નથી. કૃપા કરીને નવું કાર્ડ વાપરો.</string>
     <string name="hint_check_digit_validation_failure">કૃપા કરીને CheckDigit અલ્ગોરિધમ સાથે મેળ ખાતા અંકો દાખલ કરો</string>
     <string name="hint_client_local_search">તમારી શોધમાં ક્લાયંટ આઈડી, અપાયેલ નામ, મધ્ય નામ અને કુટુંબનું નામ શામેલ છે અને ફક્ત ઉપકરણમાં શોધાય છે</string>
     <string name="hint_client_location_update">શું તમે આ ક્લાયંટ માટે ઘરનું સ્થાન અપડેટ કરવા માંગો છો?</string>
     <string name="hint_client_remote_search">તમારી શોધમાં ક્લાયંટ આઈડી, અપાયેલ નામ, મધ્ય નામ અને કુટુંબનું નામ શામેલ છે અને ફક્ત સર્વરમાં શોધાય છે</string>
     <string name="hint_client_search">ક્લાઈન્ટો શોધો</string>
-    <string formatted="false" name="hint_client_summary_encounters">%d એન્કાઉન્ટર્સ</string>
-    <string formatted="false" name="hint_client_summary_forms">%d અપૂર્ણ, %d પૂર્ણ, %d ભલામણ કરેલ</string>
-    <string formatted="false" name="hint_client_summary_notifications">%d નવી સૂચનાઓ, %d કુલ સૂચનાઓ</string>
-    <string formatted="false" name="hint_client_summary_observations">%d અવલોકનો</string>
-    <string formatted="false" name="hint_client_summary_reports">%d અહેવાલો</string>
-    <string name="hint_cohort_download">સૂચિમાંથી એક અથવા વધુ જૂથો પસંદ કરો અને ડાઉનલોડ કરવા માટે \'આગળ\' પર ક્લિક કરો</string>
-    <string name="hint_cohort_filter">સમૂહને ફિલ્ટર કરવા માટે ટાઇપ કરવાનું પ્રારંભ કરો…</string>
-    <string name="hint_cohort_list_download">કૃપા કરીને સર્વરમાંથી ઉપલબ્ધ જૂથોની સૂચિ મેળવવા માટે લોડ દબાવો</string>
-    <string name="hint_cohort_prefix_help">સમૂહ એ ક્લાયંટ્સનો પૂર્વવ્યાખ્યાયિત જૂથ છે, જેના માટે તમે ફોર્મ ભરી શકો છો અને નિરીક્ષણો ડાઉનલોડ કરી શકો છો. અહીં સેટ કરેલા ઉપસર્ગનો ઉપયોગ પછીથી જૂથોને ડાઉનલોડ કરવા માટે કરવામાં આવશે.</string>
-    <string name="hint_cohort_prefix_manage">સમૂહ ઉપસર્ગો તમારા સમૂહ ડાઉનલોડ્સને ફક્ત ઉલ્લેખિત ઉપસર્ગથી પ્રારંભ થતા લોકો માટે જ મર્યાદિત કરે છે</string>
     <string name="hint_cohort_sync">કૃપા કરીને બધા જૂથોની સૂચિમાંથી સમૂહને પસંદ કરો અને સમન્વયનને ક્લિક કરો</string>
-    <string name="hint_cohort_wizard_help">વિઝાર્ડના આ પગલામાં, તમે તમને જોઈતા જૂથોને ડાઉનલોડ કરો. કૃપા કરીને સમૂહને પસંદ કરો અને આગળ ક્લિક કરો.</string>
     <string name="hint_complete_form_unavailable">સંપૂર્ણ ફોર્મ્સ ફક્ત ત્યારે જ ઉપલબ્ધ છે જો તમે કોઈ ફોર્મ સંપૂર્ણ ભરેલ હોય પરંતુ તેને સર્વર સાથે સમન્વયિત ન કર્યું હોય</string>
-    <string name="hint_concept_pref_add">તમે જે નિરીક્ષણ(ણો) ને ડાઉનલોડ કરવા માંગો છો તે ખ્યાલ(લો) ને ઉમેરો.</string>
     <string name="hint_configuration_search">કન્ફિગ્રેશન શોધો</string>
     <string name="hint_consultation_consultant_validation_failure">કન્ફિગ્રેશન શોધો</string>
-    <string name="hint_crash_dialog">mUzima ને બંધ કરવા દબાણ કરતાં એક અનપેક્ષિત ભૂલ આવી. કૃપા કરીને અમને ભૂલ ડેટા મોકલીને આને ઠીક કરવામાં સહાય કરો, બસ ફક્ત બરાબર પર ક્લિક કરો.</string>
-    <string name="hint_crash_dialog_comment_prompt">કૃપા કરીને નીચેની સમસ્યા વિશે તમારી ટિપ્પણી ઉમેરો.</string>
     <string name="hint_create_new_SHR">ક્લાયંટ પાસે SHR નથી. શું તમે નવું SHR બનાવવા અને કાર્ડ પર લખવા માંગો છો?</string>
     <string name="hint_current_or_past_date_validation_failure">કૃપા કરીને આજની અથવા તે પહેલાંની તારીખ દાખલ કરો</string>
-    <string name="hint_custom_concept_help">અહીં તમે ખ્યાલોને વ્યાખ્યાયિત કરો છો જેનો ડેટા પછીના ડાઉનલોડમાં સમાવવામાં આવશે.</string>
-    <string name="hint_custom_location_help">અહીં તમે તે સ્થાનો ડાઉનલોડ કરો છો જે ફોર્મ્સમાં દેખાશે.</string>
-    <string name="hint_custom_provider_help">અહીં તમે પ્રોવાઇડર્સને ડાઉનલોડ કરો જે ફોર્મ્સમાં દેખાશે.</string>
-    <string formatted="false" name="hint_dashboard_clients_description">%d સમન્વયિત</string>
-    <string formatted="false" name="hint_dashboard_cohorts_description">%d સમન્વયિત, %d કુલ</string>
-    <string formatted="false" name="hint_dashboard_forms_description">%d અપૂર્ણ, %d પૂર્ણ</string>
-    <string formatted="false" name="hint_dashboard_notifications_description">%d નવું, %d કુલ</string>
     <string name="hint_default_encounter_location">આ પસંદ કરેલું એન્કાઉન્ટર સ્થાન બધા સ્વરૂપો માટેનું ડિફોલ્ટ એન્કાઉન્ટર સ્થાન હશે</string>
     <string name="hint_default_encounter_provider">લોગ-ઇન થયેલ વપરાશકર્તાનો ઉપયોગ ડિફોલ્ટ એન્કાઉન્ટર પ્રદાતા તરીકે થશે</string>
     <string name="hint_drawer_close">ડ્રોઅર બંધ ટેગ</string>
@@ -300,7 +234,6 @@
     <string name="hint_feedback_prompt">કૃપા કરીને તમારો સંદેશ દાખલ કરો</string>
     <string name="hint_form_auto_save_interval">તે મૂલ્ય જેમાં તમારા સ્વરૂપો આપમેળે સાચવવામાં આવશે</string>
     <string name="hint_form_download">કૃપા કરીને તમામ ફોર્મ્સ સૂચિમાંથી ફોર્મ્સ પસંદ કરો અને ડાઉનલોડ ક્લિક કરો</string>
-    <string name="hint_form_list_download">કૃપા કરીને સર્વરમાંથી ઉપલબ્ધ ફોર્મ્સ મેળવવા માટે લોડ દબાવો</string>
     <string name="hint_form_validation_failure">આ ફોર્મ પર એક અથવા વધુ માન્યતા ચકાસણી નિષ્ફળ થઈ છે. કૃપા કરીને ફોર્મની સમીક્ષા કરો અને ફરીથી સબમિટ કરો</string>
     <string name="hint_future_date_validation_failure">કૃપા કરીને ભવિષ્યમાં કોઈ તારીખ દાખલ કરો</string>
     <string name="hint_gps_location_off">સ્થાન બંધ છે! કૃપા કરીને સેટિંગ્સમાં સ્થાન ચાલુ કરો.</string>
@@ -314,7 +247,6 @@
     <string name="hint_loading_progress">લોડ કરી રહ્યું છે…</string>
     <string name="hint_local_connection_unavailable">કૃપા કરીને તમારા ઉપકરણને કનેક્ટ કરો અને ફરીથી પ્રયાસ કરો</string>
     <string name="hint_location_addresses_not_set">તમામ ઉપલબ્ધ ગ્રાહકો માટે સ્થાન સરનામું સેટ કરવામાં આવ્યું નથી</string>
-    <string name="hint_location_pref_add">તમે ડાઉનલોડ કરવા માંગો છો તે સ્થાન(નો) ઉમેરો.</string>
     <string name="hint_manage_concept">સર્વરથી વધુ ખ્યાલો મેળવો અથવા આ ઉપકરણમાંથી ખ્યાલોને દૂર કરો. કયા અવલોકનોને ડાઉનલોડ કરવું તે ગોઠવવા માટે ખ્યાલોનો ઉપયોગ થાય છે.</string>
     <string name="hint_manage_location">સર્વરથી વધુ સ્થાનો મેળવો અથવા આ ઉપકરણમાંથી સ્થાનોને દૂર કરો</string>
     <string name="hint_manage_provider">સર્વરથી વધુ પ્રદાતાઓ મેળવો અથવા આ ઉપકરણમાંથી પ્રદાતાઓને દૂર કરો</string>
@@ -330,10 +262,7 @@
     <string name="hint_person_search">નામ અથવા ઓળખકર્તા દ્વારા વ્યક્તિને શોધો</string>
     <string name="hint_phone_number_validation_failure">અમાન્ય ફોન નંબર. કૃપા કરીને તપાસો અને ફરીથી દાખલ કરો</string>
     <string name="hint_provider_not_set">તમારી પાસે પ્રદાતા અધિકાર નથી અથવા તમારો પ્રદાતા ડેટા ડાઉનલોડ થયો નથી, કૃપા કરીને ઉમેરો પ્રદાતા વિકલ્પનો ઉપયોગ કરો.</string>
-    <string name="hint_provider_pref_add">તમે ડાઉનલોડ કરવા માંગો છો તે પ્રદાતા ઉમેરો.</string>
     <string name="hint_real_time_sync">ડેટાના રીઅલ ટાઇમ સિંક્રોનાઇઝેશનને સક્ષમ કરો</string>
-    <string name="hint_recommended_forms_unavailable">કૃપા કરીને તમામ સ્વરૂપોની સૂચિમાંથી નોંધણી નોંધણી ફોર્મ્સ પસંદ કરો અને ડાઉનલોડ ક્લિક કરો</string>
-    <string name="hint_registration_form_select">કૃપા કરીને ઓછામાં ઓછું એક નોંધણી ફોર્મ પસંદ કરો!</string>
     <string name="hint_repeating_section_minimum_repeats_validation_failure">ન્યૂનતમ પુનરાવર્તન સંતુષ્ટ નથી. ઓછામાં ઓછી જરૂર છે</string>
     <string name="hint_reports_unavailable">કૃપા કરીને તમામ સ્વરૂપોની સૂચિમાંથી અહેવાલો પસંદ કરો અને ડાઉનલોડ ક્લિક કરો</string>
     <string name="hint_require_medical_record_number">નોંધણી દરમિયાન ક્લાયંટનો તબીબી રેકોર્ડ નંબર આવશ્યક છે</string>
@@ -349,39 +278,26 @@
     <string name="hint_username_prompt">કૃપા કરીને વપરાશકર્તા નામ દાખલ કરો</string>
     <string name="hint_video_caption_prompt">કૃપા કરીને વિડિઓ માટે કેપ્શન દાખલ કરો</string>
     <string name="hint_video_record">વિડિઓ રેકોર્ડ કરો અથવા પસંદ કરો</string>
-    <string name="hint_wizard_form_download">સૂચિમાંથી એક અથવા વધુ ફોર્મ નમૂનાઓ પસંદ કરો અને ડાઉનલોડ કરવા માટે \'આગલું \' પર ક્લિક કરો</string>
     <string name="hint_write_SHR_to_card">શું તમે કાર્ડ પર વહેંચાયેલ આરોગ્ય રેકોર્ડ લખવા માંગો છો?</string>
 
     <string name="how_to_general">કઈ રીતે:</string>
-
-    <string name="inbox_outbox_label_text">##ઇનબોક્સ, ##આઉટબોક્સ</string>
-
-    <string name="incomplete_outbox_text">##અધૂરું, ##આઉટબોક્સ</string>
-
     <string name="individual_obs">વ્યક્તિગત નિરીક્ષણ</string>
     <string name="individual_obs_description">વ્યક્તિગત નિરીક્ષણ</string>
 
     <string name="info_authentication_in_progress">પ્રમાણીકરણ ચાલુ છે …</string>
     <string name="info_background_data_sync_started">પૃષ્ઠભૂમિમાં ડેટાને સમન્વયિત કરી રહ્યાં છે</string>
-    <string name="info_client_demographics_download">ક્લાયંટ ડેમોગ્રાફિક ડાઉનલોડ કરી રહ્યાં છે …</string>
-    <string name="info_client_identifier_change">સર્વર પર ક્લાયંટ આઇડેન્ટિફાયર બદલાઈ ગયું. નવા ઓળખકર્તાનો ઉપયોગ આગળ જતા કરવામાં આવશે.</string>
     <string name="info_client_local_search_not_found">કોઈ પણ ગ્રાહકો સ્થાનિક રીતે તમારી શોધ સાથે મેળ ખાતા નથી. દૂરસ્થ શોધ માટે ઓછામાં ઓછા 3 અક્ષરો દાખલ કરો.</string>
     <string name="info_client_remote_search_not_found">કોઈ ક્લાયંટ સર્વર પર તમારી શોધ સાથે મેળ ખાતા નથી</string>
     <string name="info_cohort_download">સમૂહો ડાઉનલોડ કરી રહ્યા છીએ</string>
     <string name="info_cohort_downloaded">1 સમૂહ ડાઉનલોડ કર્યું</string>
-    <string name="info_cohort_fetch_in_progress">પહેલેથી જ સમૂહ લાવી રહ્યા છીએ, વિનંતીને અવગણી</string>
-    <string name="info_cohort_load">સમૂહ લોડ કરી રહ્યું છે…</string>
     <string formatted="false" name="info_cohort_new_patient_download">%d સમૂહ માટે %d નવા ગ્રાહકો ડાઉનલોડ કર્યા.</string>
     <string name="info_cohort_not_downloaded">કોઈ સમૂહ ડાઉનલોડ થયા નથી</string>
     <string name="info_cohort_patient_download">1 સમૂહ માટે 1 ક્લાયંટ ડાઉનલોડ કર્યું</string>
     <string name="info_cohort_patient_not_download">કોઈ ક્લાયંટ ડાઉનલોડ કર્યાં નથી</string>
     <string formatted="false" name="info_cohort_patients_download">1 સમૂહ માટે %d ક્લાયંટ ડાઉનલોડ કર્યા</string>
-    <string name="info_cohort_prefixes_unavailable">કોઈ સમૂહ ઉપસર્ગો ઉમેર્યા નથી</string>
-    <string name="info_cohort_update">કેટલાક સમૂહ બદલાઈ ગયા છે.</string>
     <string formatted="false" name="info_cohorts_downloaded">%d સમૂહ ડાઉનલોડ કર્યા</string>
     <string formatted="false" name="info_cohorts_patient_download">%d સમૂહ માટે 1 ક્લાયંટ ડાઉનલોડ કર્યું</string>
     <string formatted="false" name="info_cohorts_patients_download">%d સમૂહ માટે %d ક્લાયન્ટ્સ ડાઉનલોડ કર્યા</string>
-    <string name="info_cohorts_unavailable">કોઈ સમૂહ ઉપલબ્ધ નથી</string>
     <string name="info_complete_form_unavailable">કોઈ પૂર્ણ અને બિન સમન્વયિત ફોર્મ્સ નહીં</string>
     <string name="info_concept_delete_success">%d ખ્યાલો સફળતાપૂર્વક કાઢી નાખ્યું!!</string>
     <string name="info_concept_download">વિભાવનાઓ ડાઉનલોડ કરી રહ્યા છીએ</string>
@@ -424,14 +340,11 @@
         ]]>
     </string>
     <string name="info_download_complete">%d સ્થિતિ સાથે ડાઉનલોડ પૂર્ણ</string>
-    <string name="info_downloaded_forms_unavailable">કોઈ ફોર્મ ડાઉનલોડ કરવામાં આવ્યા નથી</string>
     <string name="info_downloaded_image">ડાઉનલોડ કરેલી છબી</string>
     <string name="info_downloaded_reports_unavailable">કોઈ અહેવાલો ડાઉનલોડ કરવામાં આવ્યા નથી</string>
     <string name="info_draft_form_save_success">ડ્રાફ્ટ ફોર્મ સફળતાપૂર્વક સાચવવામાં આવ્યું હતું.</string>
     <string name="info_encounter_download">એન્કાઉન્ટર ડાઉનલોડ કરી રહ્યા છીએ</string>
     <string formatted="false" name="info_encounter_download_progress">%d માંથી %d ક્લાયંટ માટે એન્કાઉન્ટર ડાઉનલોડ કર્યા.</string>
-    <string formatted="false" name="info_encounter_not_downloaded_progress">%d માંથી %d ક્લાયંટ માટે એન્કાઉન્ટર ડાઉનલોડ થયા નથી.</string>
-    <string name="info_encounter_observation_download">નિરીક્ષણો અને એન્કાઉન્ટર ડાઉનલોડ કરી રહ્યાં છે…</string>
     <string name="info_encounter_patient_downloaded">1 ક્લાયંટ માટે 1 એન્કાઉન્ટર ડાઉનલોડ કર્યું</string>
     <string name="info_encounter_patient_not_downloaded">કોઈપણ એન્કાઉન્ટર ડાઉનલોડ કર્યા નથી</string>
     <string formatted="false" name="info_encounter_patients_downloaded">%d ક્લાયંટ માટે 1 એન્કાઉન્ટર ડાઉનલોડ કર્યું</string>
@@ -446,17 +359,14 @@
     <string name="info_form_delete_success">ફોર્મ સફળતાપૂર્વક કાઢી નાખ્યા</string>
     <string name="info_form_download">ફોર્મ્સ ડાઉનલોડ કરી રહ્યાં છે</string>
     <string formatted="false" name="info_form_download_delete">%d ફોર્મ્સ ડાઉનલોડ અને નિવૃત્ત %d ફોર્મ</string>
-    <string name="info_form_download_failure">ફોર્મ નમૂનાઓ ડાઉનલોડ કરવામાં ભૂલ આવી હતી</string>
     <string name="info_form_downloaded">1 ફોર્મ ડાઉનલોડ કર્યું</string>
     <string name="info_form_fetch_in_progress">પહેલેથી જ ફોર્મ્સ લાવવામાં, વિનંતીને અવગણી</string>
-    <string name="info_form_load">ફોર્મ્સ લોડ કરી રહ્યું છે…</string>
     <string name="info_form_metadata_download">મેટાડેટા ફોર્મ્સ ડાઉનલોડ કરી રહ્યું છે</string>
     <string name="info_form_not_downloaded">કોઈ ફોર્મ ડાઉનલોડ કર્યા નથી</string>
     <string formatted="false" name="info_form_template_concept_download">%d ફોર્મ નમૂનાઓ અને %d ખ્યાલો ડાઉનલોડ કર્યા</string>
     <string name="info_form_template_download">ફોર્મ નમૂનાઓ ડાઉનલોડ કરી રહ્યું છે</string>
     <string name="info_form_template_downloaded">1 ફોર્મ ટેમ્પલેટ ડાઉનલોડ કર્યું</string>
     <string name="info_form_template_not_downloaded">કોઈ ફોર્મ ટેમ્પલેટ ડાઉનલોડ કર્યું નથી</string>
-    <string name="info_form_template_recommended">ભલામણ ફોર્મ નમૂનાઓ</string>
     <string name="info_form_template_with_count_download">%d ફોર્મ્સ માટે ફોર્મ નમૂનાઓ ડાઉનલોડ કરી રહ્યાં છે</string>
     <string formatted="false" name="info_form_templates_downloaded">%d ફોર્મ નમૂનાઓ ડાઉનલોડ કર્યા</string>
     <string name="info_form_upload">ફોર્મ્સ અપલોડ કરી રહ્યાં છે</string>
@@ -466,7 +376,6 @@
     <string name="info_forms_unavailable">કોઈ ફોર્મ ઉપલબ્ધ નથી</string>
     <string name="info_incomplete_form_unavailable">કોઈ અપૂર્ણ ફોર્મ્સ નથી</string>
     <string name="info_initial_setup_progress">પ્રારંભિક સેટઅપ ચાલી રહ્યું છે. કૃપા કરી રાહ જુવો…</string>
-    <string name="info_last_sync_unavailable">હજી સમન્વયિત થયેલું નથી</string>
     <string name="info_location_delete_success">%d સ્થાનો સફળતાપૂર્વક કાઢી નાખ્યા</string>
     <string name="info_location_download">સ્થાનો ડાઉનલોડ કરી રહ્યાં છે</string>
     <string name="info_location_downloaded">1 સ્થાન ડાઉનલોડ કર્યું</string>
@@ -498,7 +407,6 @@
     <string name="info_observation_unavailable">કોઈ અવલોકનો ઉપલબ્ધ નથી</string>
     <string formatted="false" name="info_observations_download_progress">%d ના ક્લાયંટ %d માટે અવલોકનો ડાઉનલોડ કર્યા.</string>
     <string name="info_observations_load_in_progress">અવલોકનો હજી લોડ થઈ રહ્યાં છે</string>
-    <string formatted="false" name="info_observations_not_downloaded_progress">%d માંથી ક્લાયંટ %d માટેનાં અવલોકનો ડાઉનલોડ થયાં નથી.</string>
     <string formatted="false" name="info_observations_patient_downloaded">%d ગ્રાહકો માટે 1 અવલોકન ડાઉનલોડ કર્યું</string>
     <string formatted="false" name="info_observations_patients_downloaded">%d ગ્રાહકો માટે %d અવલોકનો ડાઉનલોડ કર્યા</string>
     <string name="info_patient_data_download">ક્લાયંટનો ડેટા ડાઉનલોડ કરી રહ્યાં છે</string>
@@ -511,7 +419,6 @@
     <string name="info_provider_delete_success">%d પ્રદાતાઓ સફળતાપૂર્વક કાઢી નાખ્યા</string>
     <string name="info_provider_download">પ્રદાતાઓ ડાઉનલોડ કરી રહ્યાં છે</string>
     <string name="info_provider_downloaded">1 પ્રદાતા ડાઉનલોડ કર્યા</string>
-    <string name="info_provider_load">પ્રદાતાઓ લોડ કરી રહ્યું છે…</string>
     <string name="info_provider_not_downloaded">કોઈપણ પ્રદાતાઓને ડાઉનલોડ કર્યા નથી</string>
     <string name="info_provider_unavailable">હજી સુધી કોઈ પ્રદાતા ઉમેરવામાં આવ્યા નથી</string>
     <string formatted="false" name="info_providers_downloaded">%d પ્રદાતાઓ ડાઉનલોડ કરેલ</string>
@@ -522,7 +429,6 @@
     <string formatted="false" name="info_relationships_download_progress">ક્લાયંટ %d ના %d માટે ડાઉનલોડ કરેલા સંબંધો.</string>
     <string formatted="false" name="info_relationships_not_downloaded_progress">%d માંથી ક્લાયંટ %d માટેના સંબંધો ડાઉનલોડ થયા નથી.</string>
     <string name="info_relationships_unavailable">કોઈ સંબંધ ઉપલબ્ધ નથી</string>
-    <string name="info_scanner_exists">બારકોડ સ્કેનર પહેલાથી ઇન્સ્ટોલ કરેલું છે.</string>
     <string name="info_session_time_out">તમારું સત્ર સમાપ્ત થયું હતું. કૃપા કરીને આગળ વધવા માટે ફરીથી પ્રવેશ કરો.</string>
     <string name="info_setting_download_success">ડાઉનલોડ અને અપડેટ સેટિંગ સફળતાપૂર્વક</string>
     <string name="info_setting_downloaded">1 સેટિંગ ડાઉનલોડ કરી</string>
@@ -541,7 +447,6 @@
     <string name="info_submitted_form_data_status_check">તાજેતરમાં સબમિટ કરેલા ફોર્મ્સની સ્થિતિ તપાસી રહ્યું છે</string>
     <string name="info_submitted_form_data_status_check_failure">તાજેતરમાં સબમિટ કરેલા ફોર્મ્સની સ્થિતિ ચકાસી શક્યાં નથી</string>
     <string name="info_tag_unavailable">કોઈ ટેગ્સ ઉપલબ્ધ નથી</string>
-    <string name="info_update_available">અપડેટ ઉપલબ્ધ છે</string>
     <string name="info_update_person_demographics">વ્યક્તિ વસ્તી વિષયક અપડેટ કરો</string>
     <string name="info_url_validate">પગલું 1: URL ની માન્યતા ચકાસણી</string>
     <string name="info_video_chose_activity_unavailable">ભૂલ: વિડિઓ પસંદ કરવા માટેની એપ્લિકેશન મળી નથી</string>
@@ -568,11 +473,8 @@
     <string formatted="false" name="menu_SHR_data_sync">SHR ડેટા (%d) સમન્વયન </string>
     <string name="menu_all_data_sync">બધા ડેટાને સમન્વયિત કરો</string>
     <string name="menu_form_back_to_draft">ડ્રાફ્ટ પર પરત</string>
-    <string name="menu_form_data_sync">ફોર્મ ડેટા સમન્વયિત કરો</string>
 
-    <string name="message_feedback_halt">તમારો સંદેશ મોકલવામાં આવશે નહીં.</string>
     <string name="message_feedback_sent">તમારા સંદેશ માટે તમારો આભાર. \n તમારો પ્રતિસાદ અમારા માટે મહત્વપૂર્ણ છે.</string>
-    <string name="message_help_halt">કદાચ આવતી વખતે.</string>
     <string name="message_help_sent">સંપર્ક બદલ આભાર. \n અમારી સપોર્ટ ટીમ તમારી વિનંતીની તપાસ કરશે. \n અમે શક્ય તેટલી વહેલી તકે તમારી પાસે પાછા આવીશું.</string>
     <string name="message_missing_form_encounter_details_error">પ્રદાન કરવું જરૂરી છે</string>
 
@@ -584,14 +486,9 @@
     <string name="no_description_general">કોઈ વર્ણન નથી</string>
     <string name="no_email_client">આ ઉપકરણ પર કોઈ ઇમેઇલ ક્લાયંટ ઇન્સ્ટોલ કરેલું નથી. \n કૃપા કરીને એક સ્થાપિત કરો અને પછી તમારો પ્રતિસાદ મૂકો.</string>
 
-    <string name="null_encounter_date_error">ફોર્મ સાચવતી વખતે ભૂલ આવી. એન્કાઉન્ટરની તારીખ પ્રદાન કરવી આવશ્યક છે</string>
-    <string name="null_encounter_location_error">ફોર્મ સાચવતી વખતે ભૂલ આવી. એન્કાઉન્ટર સ્થાન પ્રદાન કરવું આવશ્યક છે</string>
-    <string name="null_encounter_provider_error">ફોર્મ સાચવતી વખતે ભૂલ આવી. એન્કાઉન્ટર પ્રદાતા પ્રદાન કરવું આવશ્યક છે</string>
-
     <string name="number_hashtag_representation">##</string>
 
     <string name="observation_details">અવલોકન વિગતો</string>
-    <string name="observation_text_dialog">અવલોકન:</string>
     <string name="observation_value">અવલોકન મૂલ્ય:</string>
 
     <string name="patient_SHR_search_dialog_title">ક્લાયંટ SHR શોધ</string>
@@ -611,7 +508,6 @@
 
     <string name="reply_hint_text">તમારો જવાબ મોકલો</string>
 
-    <string name="sample_date_rep">21 માર્ચ 2018</string>
     <string name="sample_date_text">21/02/2018</string>
 
     <string name="scan_card_id_title">કાર્ડ આઈડી સ્કેન કરો</string>
@@ -634,15 +530,10 @@
 
     <string name="success_writing_smartcard">સ્માર્ટ કાર્ડ ડેટા સફળતાપૂર્વક લખાયો હતો.</string>
 
-    <string name="synced_label_text">## સમન્વયિત</string>
-    <string name="synced_total_label_text">## સમન્વયિત, ## કુલ</string>
-
     <string name="tagging_forms">લેબલ કરવના ફોર્મ્સ</string>
 
     <string name="title_about_dashboard_help_html">ડેશબોર્ડ વિશે</string>
     <string name="title_activity_audio">અવાજ ઉમેરો</string>
-    <string name="title_activity_client_encounters">ક્લાયન્ટ એન્કાઉન્ટર્સ</string>
-    <string name="title_activity_client_observations">ગ્રાહક અવલોકનો</string>
     <string name="title_activity_client_reports">ક્લાયંટ રિપોર્ટ્સ</string>
     <string name="title_activity_client_summary">ક્લાયન્ટ સારાંશ</string>
     <string name="title_activity_image">છબી ઉમેરો</string>
@@ -654,29 +545,17 @@
     <string name="title_audio_caption">અવાજ શીર્ષક</string>
     <string name="title_audio_choose">અવાજ પસંદ કરો</string>
     <string name="title_audio_record">અવાજ રેકોર્ડ કરો</string>
-    <string name="title_barcode_scanner_check">બારકોડ સ્કેનર તપાસો</string>
-    <string name="title_barcode_scanner_setup">પગલું 6: બારકોડ સ્કેનર માટે તપાસો</string>
     <string name="title_client_location">ક્લાયંટ સ્થાન</string>
     <string name="title_client_location_update">ક્લાયંટનું સ્થાન અપડેટ કરો</string>
     <string name="title_client_notifications">ક્લાયંટ સૂચનાઓ</string>
     <string name="title_client_registration_help_video">ક્લાયંટ નોંધણી</string>
-    <string name="title_client_scan">ક્લાઈન્ટો બારકોડ સ્કેન કરો</string>
     <string name="title_clients_locations">ક્લાયંટ સ્થાનો</string>
-    <string name="title_cohort_download">પગલું 1: સમૂહ(હો) ડાઉનલોડ કરો</string>
     <string name="title_cohort_download_help_video">સમૂહો ડાઉનલોડ કરો (માંગ પર)</string>
-    <string name="title_cohort_prefix_help">સમૂહ ઉપસર્ગ વ્યાખ્યાયિત કરવામાં મદદ</string>
-    <string name="title_cohort_prefix_manage">સમૂહ ઉપસર્ગો મેનેજ કરો</string>
-    <string name="title_cohort_wizard_help">સમૂહ સહાય ડાઉનલોડ કરો</string>
-    <string name="title_concept_download">પગલું 5: ખ્યાલ ઉમેરો</string>
     <string name="title_concept_download_help_video">ખ્યાલો ડાઉનલોડ કરો (માંગ પર)</string>
-    <string name="title_concept_help">ખ્યાલમાં સહાયતા</string>
-    <string name="title_crash_dialog">mUzima ક્રેશ થયું છે…</string>
     <string name="title_data_reset">પગલું 3: ડેટા ફરીથી સેટ કરવા</string>
     <string name="title_data_synchronize">પગલું 2: સ્થાનિક ડેટાને સિંક્રનાઇઝ કરવા</string>
     <string name="title_default_encounter_location">ડિફૉલ્ટ એન્કાઉન્ટર સ્થાન</string>
     <string name="title_default_encounter_provider">ડિફૉલ્ટ એન્કાઉન્ટર પ્રદાતા</string>
-    <string name="title_define_custom_concept">કસ્ટમ ખ્યાલ વ્યાખ્યાયિત કરો</string>
-    <string name="title_disclaimer">લાઇસન્સિંગ, વોરંટીની અસ્વીકરણ અને જવાબદારીની મર્યાદા</string>
     <string name="title_duplicate_form_data_warning">ડુપ્લિકેટ ફોર્મ ડેટા ચેતવણી</string>
     <string name="title_enable_gps">GPS સક્ષમ કરો</string>
     <string name="title_enable_gps_location">સ્થાન અને ઇન્ટરનેટ કનેક્ટિવિટી સક્ષમ કરો.</string>
@@ -686,10 +565,7 @@
     <string name="title_form_auto_save_interval">સ્વચાલિત ફોર્મ સેવ અંતરાલ (મિનિટ)</string>
     <string name="title_form_data_complete">ફોર્મ ડેટા પૂર્ણ કરો</string>
     <string name="title_form_data_incomplete">અપૂર્ણ ફોર્મ ડેટા</string>
-    <string name="title_form_download">પગલું 2: ફોર્મ ટેમ્પલેટ ડાઉનલોડ કરો</string>
     <string name="title_form_download_help_video">ફોર્મ્સ ડાઉનલોડ કરો (માંગ પર)</string>
-    <string name="title_form_template_all">બધા ફોર્મ નમૂનાઓ</string>
-    <string name="title_form_template_downloaded">ડાઉનલોડ ફોર્મ નમૂનાઓ</string>
     <string name="title_general_notifications">સામાન્ય સૂચનાઓ</string>
     <string name="title_gps_location">GPS સ્થાન</string>
     <string name="title_guided_setup">માર્ગદર્શિત સેટઅપ (ભલામણ કરેલ)</string>
@@ -707,7 +583,6 @@
     <string name="title_introduction_video">mUzima વિડિઓ પરિચય</string>
     <string name="title_light_mode">ડે મોડને સક્ષમ કરો</string>
     <string name="title_local_client_search_help_video">ક્લાયંટ શોધ (સ્થાનિક)</string>
-    <string name="title_location_download">પગલું 3: સ્થાન(નો) ઉમેરો</string>
     <string name="title_location_help">સ્થાન માટે સહાયતા</string>
     <string name="title_logo">mUzima લોગો</string>
     <string name="title_logout_confirm">પુષ્ટિ!</string>
@@ -721,7 +596,6 @@
     <string name="title_observations_by_concepts">ડેટા પ્રકાર દ્વારા</string>
     <string name="title_observations_by_encounters">તારીખ દ્વારા</string>
     <string name="title_pick_location">સ્થાન પસંદ કરો</string>
-    <string name="title_provider_download">પગલું 4: પ્રદાતા ઉમેરો</string>
     <string name="title_provider_help">પ્રદાતાઓ સહાય</string>
     <string name="title_provider_not_set">પ્રદાતા તરીકે સેટ કરવામાં અસમર્થ</string>
     <string name="title_provider_reports">પ્રદાતા અહેવાલો</string>
@@ -742,14 +616,10 @@
     <string name="to_text">પ્રતિ</string>
 
     <string name="type_a_message_hint">એક સંદેશ લખો</string>
-    <string name="type_cohort_name_hint">સમૂહ નામ લખો…</string>
 
     <string name="video_links_general_text">વિડિઓ લિંક્સ:</string>
 
     <string name="warning_auto_save_interval">સ્વચાલિત સાચવવાનો અંતરાલ: સ્વચાલિત સાચવો અંતરાલ સેટ કરી શકાયો નથી. \nકૃપા કરીને 1 અને 120 ની વચ્ચેનું મૂલ્ય દાખલ કરો.</string>
-    <string name="warning_cancel_form_download">આનાથી ફોર્મ ડાઉનલોડ રદ થશે. શું તમે ખરેખર ફોર્મ ડાઉનલોડને રદ કરવા માંગો છો?</string>
-    <string name="warning_cohort_prefix_exists">સમૂહ ઉપસર્ગ અસ્તિત્વમાં છે</string>
-    <string name="warning_empty_cohort_prefix">તમે ખાલી સમૂહ ઉપસર્ગ ઉમેરી શકતા નથી</string>
     <string name="warning_form_close">ફોર્મ બંધ થાય છે: આ તમારા બધા ફેરફારોને કાઢી નાખશે. શું તમે ખરેખર આ કરવા માંગો છો? </string>
     <string name="warning_form_data_already_exists">આ ફોર્મ ડેટા આ ક્લાયંટ માટે સમાન એન્કાઉન્ટર તારીખ સાથે પહેલાથી અસ્તિત્વમાં છે.</string>
     <string name="warning_forms_complete_and_sync">%s તેની સાથે કેટલાક સંકળાયેલ સ્વરૂપો ધરાવે છે. કૃપા કરીને નવું સંસ્કરણ ડાઉનલોડ કરતા પહેલાં તે ફોર્મ્સને પૂર્ણ અને સમન્વયિત કરો.</string>
@@ -767,7 +637,6 @@
     <string name="write_SHR_to_card_text">SHR ને કાર્ડ પર લખો</string>
     <string name="write_shr_to_card_general">SHR ને કાર્ડ પર લખો</string>
 
-    <string name="youTube_player_error">YouTube વિડિઓ લોડ કરતી વખતે ભૂલ આવી</string>
     <string name="title_qrcode">ક્યૂઆર કોડ</string>
     <string name="info_scan_qrcode">સર્વર url બદલવા માટે QR કોડ સ્કેન કરો</string>
     <string name="privacy_policy">મુઝિમા ફોર હેલ્થ પ્રોવાઇડર્સ એપ ઓપન સોર્સ એન્ડ-યુઝર એપ તરીકે બનાવવામાં આવી છે અને તે વિના મૂલ્યે પૂરી પાડવામાં આવે છે અને તે જેમ છે તેમ ઉપયોગ માટે બનાવાયેલ છે. જો તમે અમારી એપ્લિકેશનનો ઉપયોગ કોઈ સંસ્થા માટે કરી રહ્યા છો, તો તમે તે સંસ્થા વતી આ ગોપનીયતા નીતિ સાથે સંમત થાઓ છો. જો તમે અમારી એપ્લિકેશનનો ઉપયોગ કોઈ અન્ય માટે સેવાઓ, સોફ્ટવેર અને સામગ્રી પ્રદાન કરવા માટે કરી રહ્યા છો, તો તમે તેમના વતી આ ગોપનીયતા નીતિ સાથે સંમત થાઓ છો.
@@ -822,7 +691,6 @@ Google Play સેવાઓ https://www.google.com/policies/privacy/
     <string name="info_incomplete_form">અધૂરા ફોર્મ</string>
     <string name="info_complete_form">ફોર્મ પૂર્ણ કરો</string>
     <string name="general_search_forms">ફોર્મ્સ શોધો</string>
-    <string name="general_all_forms">બધા ફોર્મ</string>
     <string name="general_search_cohorts">સહયોગીઓ શોધો</string>
     <string name="general_search_patient">દર્દીની શોધ કરો</string>
     <string name="general_or_search_by">અથવા આના દ્વારા શોધો:</string>
@@ -830,7 +698,6 @@ Google Play સેવાઓ https://www.google.com/policies/privacy/
     <string name="general_policy_title">ઉપયોગ નીતિઓ</string>
     <string name="general_historical_data">તિહાસિક ડેટા</string>
     <string name="general_data_collection">માહિતી સંગ્રહ</string>
-    <string name="info_emergency_contacts">કટોકટી સંપર્કો</string>
     <string name="info_by_type">પ્રકાર દ્વારા</string>
     <string name="info_by_abstract">અમૂર્ત દ્વારા</string>
     <string name="info_by_encounter">એન્કાઉન્ટર દ્વારા</string>
@@ -838,15 +705,12 @@ Google Play સેવાઓ https://www.google.com/policies/privacy/
     <string name="info_no_client_available">આ ઉપકરણ પર સ્થાનિક રીતે કોઈ ગ્રાહકો ઉપલબ્ધ નથી.</string>
     <string name="general_setup_completed_message">સેટઅપ પૂર્ણ</string>
     <string name="general_filter_by">દ્વારા ફિલ્ટર કરેલ</string>
-    <string name="general_all_cohorts">બધા સમૂહ</string>
     <string name="general_all_clients">બધા ગ્રાહકો</string>
     <string name="general_display_all">બધા પ્રદર્શિત કરો</string>
     <string name="general_downloaded">ડાઉનલોડ કરેલ</string>
     <string name="general_available_online">ઓનલાઇન ઉપલબ્ધ</string>
     <string name="general_selected">પસંદ કરેલ</string>
     <string name="general_sort_by_status">સ્થિતિ દ્વારા</string>
-    <string name="gender_female_symbol">એફ</string>
-    <string name="gender_male_symbole">એમ</string>
     <string name="general_filtered_list">ફિલ્ટર કરેલ સૂચિ</string>
     <string name="general_security_description">મુઝિમા પાસવર્ડ લોગિન, એન્ક્રિપ્શન, સુરક્ષિત ડેટા ટ્રાન્સમિશન, સમયસર વપરાશકર્તા લોગઆઉટ સહિત સુરક્ષા સુવિધાઓ પ્રદાન કરે છે.</string>
     <string name="general_security">સુરક્ષા</string>
@@ -858,8 +722,6 @@ Google Play સેવાઓ https://www.google.com/policies/privacy/
     <string name="general_sort_by_name">નામથી</string>
     <string name="general_add_reading">વાંચન ઉમેરો</string>
     <string name="general_reading">વાંચન</string>
-    <string name="general_update_patient_list_message">દર્દીઓની સૂચિ અપડેટ કરી રહ્યા છીએ ... કૃપા કરીને રાહ જુઓ</string>
-    <string name="general_patient_list_updated_message">દર્દીઓની યાદી અપડેટ કરવામાં આવી છે</string>
     <string name="general_launching_map_message">નકશો લોન્ચ કરી રહ્યા છીએ, કૃપા કરીને રાહ જુઓ</string>
     <string name="info_client_local_search_not_found_secondary">અમે તમારી શોધ સાથે સંબંધિત કંઈપણ શોધી શક્યા નથી. સર્વર શોધવાનો પ્રયાસ કરો</string>
     <string name="general_data_collection_tools">ડેટા સંગ્રહ સાધનો</string>

@@ -545,27 +545,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
         @Override
         protected void onPostExecute(HomeActivityMetadata homeActivityMetadata) {
-//            ImageView cortUpdateAvailable = (ImageView) findViewById(R.id.pendingUpdateImg);
-//            if (homeActivityMetadata.isCohortUpdateAvailable) {
-//                cortUpdateAvailable.setVisibility(View.VISIBLE);
-//            } else {
-//                cortUpdateAvailable.setVisibility(View.GONE);
-//            }
-//
-//            TextView patientDescriptionView = findViewById(R.id.patientDescription);
-//            patientDescriptionView.setText(getString(R.string.hint_dashboard_clients_description,
-//                    homeActivityMetadata.syncedPatients));
-//
-//            TextView formsDescription = findViewById(R.id.formDescription);
-//            formsDescription.setText(getString(R.string.hint_dashboard_forms_description,
-//                    homeActivityMetadata.incompleteForms, homeActivityMetadata.completeAndUnsyncedForms));
-//
-//            TextView notificationsDescription = findViewById(R.id.notificationDescription);
-//            notificationsDescription.setText(getString(R.string.hint_dashboard_notifications_description,
-//                    homeActivityMetadata.newNotifications, homeActivityMetadata.totalNotifications));
-
-//            TextView currentUser = findViewById(R.id.currentUser);
-//            currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
         }
 
         @Override

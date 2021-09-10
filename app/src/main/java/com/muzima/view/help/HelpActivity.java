@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
 import com.muzima.R;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,12 +35,6 @@ public class HelpActivity extends BaseHelpActivity {
     public static final String YOUTUBE_INITIALIZATION_FAILURE = "INITIALIZATION_FAILURE";
     public static final String VIDEO_PATH = "VIDEO_PATH";
     public static final String VIDEO_TITLE = "VIDEO_TITLE";
-    public static final String HELP_TYPE = "HELP_TYPE";
-    public static final int COHORT_WIZARD_HELP = 1;
-    public static final int COHORT_PREFIX_HELP = 2;
-    public static final int CUSTOM_CONCEPT_HELP = 3;
-    public static final int CUSTOM_LOCATION_HELP = 4;
-    public static final int CUSTOM_PROVIDER_HELP = 5;
     private static final String MUZIMA_INITAL_SETUP_GUIDE = "file:///android_asset/www/help-content/mUzima_initial_setup.html";
     private static final String ABOUT_DASHBOARD_FORM = "file:///android_asset/www/help-content/About-dashboard.html";
     private static final String MUZIMA_SETTINGS = "file:///android_asset/www/help-content/Settings.html";
@@ -53,8 +46,6 @@ public class HelpActivity extends BaseHelpActivity {
     private static final String CLIENT_REGISTRATION = "https://youtu.be/fmjhF-juq4k";
     private static final String LOCAL_CLIENT_SEARCH = "https://youtu.be/630daM1wxGE";
     private static final String SERVER_CLIENT_SEARCH = "https://youtu.be/C1xDs8wWjNM";
-    private TextView helpContentView;
-    private View scrollView;
 
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
