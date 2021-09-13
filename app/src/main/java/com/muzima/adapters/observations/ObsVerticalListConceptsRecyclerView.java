@@ -59,7 +59,11 @@ public class ObsVerticalListConceptsRecyclerView extends Adapter<ObsVerticalList
         ObsHorizontalViewAdapter observationsListAdapter = new ObsHorizontalViewAdapter(obsConceptWrapper.getMatchingObs(), new ObsHorizontalViewAdapter.ObservationClickedListener() {
             @Override
             public void onObservationClicked(int position) {
-                EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(conceptWrapperList.get(position)));
+                  for(ObsConceptWrapper conceptWrapper : conceptWrapperList){
+                      if(conceptWrapper.getConcept().getId() == position){
+                          EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(conceptWrapper));
+                      }
+                  }
             }
         }, encounterController, observationController, false, inputRendering);
         holder.obsHorizontalListRecyclerView.setAdapter(observationsListAdapter);

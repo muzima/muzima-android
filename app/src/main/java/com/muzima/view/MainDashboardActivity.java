@@ -73,6 +73,7 @@ import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
+import com.muzima.view.login.LoginActivity;
 import com.muzima.view.patients.PatientsLocationMapActivity;
 import org.apache.lucene.queryParser.ParseException;
 import org.greenrobot.eventbus.EventBus;
@@ -545,27 +546,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
         @Override
         protected void onPostExecute(HomeActivityMetadata homeActivityMetadata) {
-//            ImageView cortUpdateAvailable = (ImageView) findViewById(R.id.pendingUpdateImg);
-//            if (homeActivityMetadata.isCohortUpdateAvailable) {
-//                cortUpdateAvailable.setVisibility(View.VISIBLE);
-//            } else {
-//                cortUpdateAvailable.setVisibility(View.GONE);
-//            }
-//
-//            TextView patientDescriptionView = findViewById(R.id.patientDescription);
-//            patientDescriptionView.setText(getString(R.string.hint_dashboard_clients_description,
-//                    homeActivityMetadata.syncedPatients));
-//
-//            TextView formsDescription = findViewById(R.id.formDescription);
-//            formsDescription.setText(getString(R.string.hint_dashboard_forms_description,
-//                    homeActivityMetadata.incompleteForms, homeActivityMetadata.completeAndUnsyncedForms));
-//
-//            TextView notificationsDescription = findViewById(R.id.notificationDescription);
-//            notificationsDescription.setText(getString(R.string.hint_dashboard_notifications_description,
-//                    homeActivityMetadata.newNotifications, homeActivityMetadata.totalNotifications));
-
-//            TextView currentUser = findViewById(R.id.currentUser);
-//            currentUser.setText(getResources().getString(R.string.general_welcome) + " " + credentials.getUserName());
         }
 
         @Override
@@ -604,10 +584,18 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ((MuzimaApplication) getApplication()).logOut();
-                finish();
-                System.exit(0);
+                launchLoginActivity();
             }
         };
+    }
+
+    private void launchLoginActivity() {
+        Intent intent = new Intent(getApplication(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(LoginActivity.isFirstLaunch, false);
+        intent.putExtra(LoginActivity.sessionTimeOut, false);
+        getApplication().startActivity(intent);
     }
 
     @Override

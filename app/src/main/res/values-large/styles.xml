@@ -117,26 +117,10 @@
         <item name="android:textColor">@color/primary_white</item>
     </style>
 
-    <style name="SelectableSummaryHeader">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">3dp</item>
-        <item name="android:textSize">30sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/selectable_summary_header</item>
-    </style>
-
     <style name="DashboardBaseText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">?attr/dashBoardBaseTextColor</item>
-    </style>
-
-    <style name="DashboardItemDescription">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/primary_black</item>
-        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="DashboardTitleText" parent="DashboardBaseText">
@@ -155,26 +139,6 @@
 
     </style>
 
-    <style name="DashboardListItemPrimaryText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">0dip</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:textSize">30sp</item>
-    </style>
-
-    <style name="DashboardListItemMediumHeadingText" parent="DashboardListItemPrimaryText">
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-    </style>
-
-    <style name="RegisterText" parent="DashboardBaseText">
-        <item name="android:layout_marginStart">8dp</item>
-        <item name="android:textColor">#DDDDDD</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-    </style>
-
     <style name="ClickableSummaryItem">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -187,20 +151,6 @@
         <item name="android:background">@drawable/list_selector</item>
     </style>
 
-    <style name="ClickableGridItem">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:background">@drawable/grid_buttons</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_marginStart">5dp</item>
-        <item name="android:layout_marginEnd">5dp</item>
-        <item name="android:paddingLeft">5dp</item>
-        <item name="android:paddingRight">5dp</item>
-        <item name="android:paddingTop">4dp</item>
-        <item name="android:paddingBottom">4dp</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:clickable">true</item>
-    </style>
-
     <style name="NotClickableSummaryItem">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -210,15 +160,6 @@
         <item name="android:paddingBottom">4dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="SummaryItemRow">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">2dp</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
-        <item name="android:orientation">horizontal</item>
     </style>
 
     <style name="AutocompleteTextArea">
@@ -240,40 +181,10 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="DashboardRefreshBar">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">left</item>
-        <item name="android:background">#222222</item>
-        <item name="android:orientation">horizontal</item>
-    </style>
-
     <style name="DividerLine">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/primary_blue</item>
-    </style>
-
-    <style name="DividerLineMargin">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">#555555</item>
-        <item name="android:orientation">horizontal</item>
-    </style>
-
-    <style name="DashboardTextButton">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">@dimen/dashboardButtonHeight</item>
-        <item name="android:layout_weight">.5</item>
-        <item name="android:layout_margin">1dp</item>
-        <item name="android:padding">5dp</item>
-        <item name="android:background">#555555</item>
-        <item name="android:textColor">#eeeeee</item>
-        <item name="android:drawablePadding">6dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="ListHeader">
@@ -296,52 +207,12 @@
         <item name="android:textSize">15sp</item>
     </style>
 
-    <style name="ListSelectableDescription">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">2dp</item>
-        <item name="android:paddingBottom">5dp</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">@drawable/list_multi_selector_blue</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-    </style>
-
     <style name="PatientDemographicsLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
-    </style>
-
-    <style name="ListSectionHeader">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:paddingTop">4dp</item>
-        <item name="android:paddingBottom">4dp</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:background">@color/list_section_header_background</item>
-    </style>
-
-    <style name="ListSectionHeaderLeftText">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="ListSectionHeaderRightText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">right</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="FormSaveDateTime">
@@ -482,14 +353,6 @@
         <item name="android:padding">0dp</item>
     </style>
 
-    <style name="LoginActivityLogo">
-        <item name="android:layout_width">90dp</item>
-        <item name="android:layout_height">90dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:scaleType">fitCenter</item>
-    </style>
-
     <style name="LoginActivityHeader">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -520,12 +383,6 @@
         <item name="android:gravity">center</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">@drawable/login_layout_background</item>
-    </style>
-
-    <style name="LoginInfoLayoutDivider">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">?attr/loginInfoDividerBackgroundColor</item>
     </style>
 
     <style name="LoginLandscapeLeftLayout">
@@ -582,24 +439,9 @@
         <item name="android:text">A Button</item>
     </style>
 
-    <style name="Button.Previous">
-        <item name="android:background">@drawable/previous_button_selector</item>
-        <item name="android:text">@string/general_previous</item>
-    </style>
-
-    <style name="Button.InactiveNext">
-        <item name="android:background">@drawable/previous_button_selector</item>
-        <item name="android:text">@string/general_next</item>
-    </style>
-
     <style name="Button.Next">
         <item name="android:background">@drawable/next_button_selector</item>
         <item name="android:text">@string/general_next</item>
-    </style>
-
-    <style name="Button.Finish">
-        <item name="android:background">@drawable/next_button_selector</item>
-        <item name="android:text">@string/general_finish</item>
     </style>
 
     <style name="LoginAuthenticatingButton">
@@ -657,20 +499,6 @@
         <item name="android:textSize">30sp</item>
     </style>
 
-    <style name="ListViewSelectableDescription">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
-        <item name="android:paddingLeft">15dp</item>
-        <item name="android:paddingRight">15dp</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:background">@drawable/list_multi_selector_blue</item>
-        <item name="android:textColor">?attr/selectableHintText</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-        <item name="android:listDivider">@color/hint_text_grey</item>
-    </style>
-
     <style name="ListViewText">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -682,18 +510,6 @@
         <item name="android:textColor">?attr/primaryTextColor</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textSize">25sp</item>
-    </style>
-
-    <style name="ListViewSingleSelectText">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
-        <item name="android:paddingLeft">15dp</item>
-        <item name="android:paddingRight">15dp</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:background">@drawable/list_selector_blue</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
 
     <style name="CaptionEditText">
@@ -722,30 +538,8 @@
         <item name="android:textColor">?attr/primaryTextColor</item>
     </style>
 
-    <style name="DisclaimerHead">
-        <item name="android:textSize">30sp</item>
-    </style>
-
-    <style name="DisclaimerBody">
-        <item name="android:textSize">17sp</item>
-    </style>
-
     <style name="SetUpLogList">
         <item name="android:textSize">25sp</item>
-    </style>
-
-    <style name="SetupActionFinalResult">
-        <item name="android:textSize">25sp</item>
-    </style>
-
-    <style name="ClickableGridItemHeight">
-        <item name="android:layout_height">150dp</item>
-        <item name="android:layout_marginBottom">15dp</item>
-        <item name="android:layout_marginTop">15dp</item>
-    </style>
-
-    <style name="ClientSummaryGridItem">
-        <item name="android:layout_height">150dp</item>
     </style>
 
     <style name="NoDataMsg">
@@ -796,9 +590,5 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_weight">1</item>
-    </style>
-
-    <style name="ListMultiSelectableLayout">
-        <item name="android:background">@drawable/list_multi_selector_blue</item>
     </style>
 </resources>
