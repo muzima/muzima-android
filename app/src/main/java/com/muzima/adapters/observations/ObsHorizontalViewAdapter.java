@@ -114,16 +114,19 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
             this.shrEnabledImage = view.findViewById(R.id.shr_card_obs_image_view);
             this.observationComplexHolder = view.findViewById(R.id.observation_complex);
             this.observationClickedListener = clickedListener;
-            if(!isSingleElementInput) {
-                container.setOnClickListener(this);
-            }
+            container.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             Observation obs = observationList.get(getAdapterPosition());
-            displayObservationDetailsDialog(obs, v);
-            this.observationClickedListener.onObservationClicked(getAdapterPosition());
+            if(!isSingleElementInput) {
+                displayObservationDetailsDialog(obs, v);
+                this.observationClickedListener.onObservationClicked(getAdapterPosition());
+            }else{
+                this.observationClickedListener.onObservationClicked(obs.getConcept().getId());
+            }
+
         }
     }
 

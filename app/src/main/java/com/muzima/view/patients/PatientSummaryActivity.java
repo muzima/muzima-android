@@ -396,6 +396,7 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
                 startActivity(intent);
                 finish();
             }
+            onBackPressed();
         }
         return true;
     }
@@ -414,8 +415,10 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
     @Subscribe
     public void closeSingleFormEvent(CloseSingleFormEvent event) {
         int position = event.getPosition();
-        singleObsFormsList.remove(position);
-        clientDynamicObsFormsAdapter.notifyDataSetChanged();
+        if(singleObsFormsList.size() != 1) {
+            singleObsFormsList.remove(position);
+            clientDynamicObsFormsAdapter.notifyDataSetChanged();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
