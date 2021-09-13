@@ -12,7 +12,10 @@ package com.muzima.adapters.relationships;
 import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
+
+import android.content.res.Resources;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,10 +37,15 @@ import java.util.List;
 public class RelationshipTypesAdapter extends ListAdapter<RelationshipTypeWrap> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private final RelationshipController relationshipController;
+    private int selectedItem;
 
     public RelationshipTypesAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController) {
         super(activity, textViewResourceId);
         this.relationshipController = relationshipController;
+    }
+
+    public void setSelectedItem(int selectedItem) {
+        this.selectedItem = selectedItem;
     }
 
     @Override
@@ -45,10 +53,22 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipTypeWrap> 
         new BackgroundQueryTask().execute();
     }
 
+
     @Override
-    public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
-        return getCustomView(position, convertView, parent);
+    public View getDropDownView(int position, View convertView, ViewGroup parent)
+    {
+        View view = getCustomView(position, convertView, parent);
+        if (position == selectedItem) {
+            view.setBackgroundResource(R.color.hint_blue_opaque);
+        } else {
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = getContext().getTheme();
+            theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
+            view.setBackgroundResource(typedValue.resourceId);
+        }
+        return view;
     }
+
 
     @NonNull
     @Override
