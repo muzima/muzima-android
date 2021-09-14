@@ -86,7 +86,7 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
 
     @Override
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.layout_list_with_sections, container, false);
+        return inflater.inflate(R.layout.layout_list, container, false);
     }
 
     public void onFormUploadFinish() {
