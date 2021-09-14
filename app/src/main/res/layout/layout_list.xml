@@ -18,26 +18,7 @@
             android:choiceMode="multipleChoice">
     </ListView>
 
-    <LinearLayout
-            android:id="@+id/no_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:visibility="gone">
-
-        <TextView
-                android:id="@+id/no_data_msg"
-                style="@style/NoDataMsg">
-        </TextView>
-
-        <TextView
-                android:id="@+id/no_data_tip"
-                style="@style/NoDataTip">
-        </TextView>
-    </LinearLayout>
+    <include layout="@layout/recycler_no_data_view"/>
 
     <include layout="@layout/progress_bar"/>
 
