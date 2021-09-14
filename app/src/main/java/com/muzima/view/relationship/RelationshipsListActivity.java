@@ -76,6 +76,7 @@ import static com.muzima.utils.DateUtils.getFormattedDate;
 public class RelationshipsListActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     private Patient patient;
     private RelationshipsAdapter patientRelationshipsAdapter;
+    private RelationshipTypesAdapter relationshipTypesAdapter;
     private View noDataView;
     private View searchServerView;
     private View createPersonView;
@@ -479,7 +480,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
 
     private void createRelationshipView() {
 
-        RelationshipTypesAdapter relationshipTypesAdapter = new RelationshipTypesAdapter(this, R.layout.item_relationship,
+        relationshipTypesAdapter = new RelationshipTypesAdapter(this, R.layout.item_simple_spinner,
                 relationshipController);
 
         relationshipType.setAdapter(relationshipTypesAdapter);
@@ -513,6 +514,17 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         }
 
         RelationshipTypeWrap relationshipTypeWrap = ((RelationshipTypeWrap) relationshipType.getSelectedItem());
+        relationshipType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                relationshipTypesAdapter.setSelectedItem(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
         Relationship newRelationship;
         if (StringUtils.equals(relationshipTypeWrap.getSide(), "A"))

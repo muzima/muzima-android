@@ -10,8 +10,12 @@
 package com.muzima.view.encounters;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -19,6 +23,7 @@ import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.adapters.encounters.EncounterObservationsAdapter;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.PatientController;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
@@ -45,7 +50,7 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
         if (intentExtras != null)
             encounter = (Encounter) intentExtras.getSerializable(ENCOUNTER);
 
-        setupActionBar();
+        setupToolbar();
         setupEncounterMetadata();
         setupStillLoadingView();
         setUpEncounterObservations();
@@ -57,16 +62,32 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return true;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
         languageUtil.onResume(this);
     }
 
-    private void setupActionBar() {
-        Patient patient = encounter.getPatient();
-        if (patient != null && getSupportActionBar() != null)
-            getSupportActionBar().setTitle(patient.getSummary());
+    private void setupToolbar(){
+        Toolbar toolbar = findViewById(R.id.encounters_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            try {
+                Patient patient = ((MuzimaApplication) getApplicationContext()).getPatientController().getPatientByUuid(encounter.getPatient().getUuid());
+                if (patient != null)
+                    getSupportActionBar().setTitle(patient.getSummary());
+            } catch (PatientController.PatientLoadException e) {
+                Log.e(getClass().getSimpleName(), "Could not load patient details",e);
+            }
+        }
     }
 
     private void setupEncounterMetadata(){

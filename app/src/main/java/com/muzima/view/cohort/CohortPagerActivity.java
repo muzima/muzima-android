@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.Toolbar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
@@ -68,6 +69,7 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cohort_pager);
+        setupToolbar();
         loadBottomNavigation();
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
@@ -191,17 +193,20 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
     }
 
     @Override
-    public void onBackPressed() {
-        startActivity(new Intent(this, MainDashboardActivity.class));
-        finish();
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
         }
         return false;
+    }
+
+    private void setupToolbar(){
+        Toolbar toolbar = findViewById(R.id.cohort_pager_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 }
