@@ -514,17 +514,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         }
 
         RelationshipTypeWrap relationshipTypeWrap = ((RelationshipTypeWrap) relationshipType.getSelectedItem());
-        relationshipType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                relationshipTypesAdapter.setSelectedItem(i);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
 
         Relationship newRelationship;
         if (StringUtils.equals(relationshipTypeWrap.getSide(), "A"))
