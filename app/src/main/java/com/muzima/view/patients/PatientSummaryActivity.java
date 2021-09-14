@@ -230,6 +230,7 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
     private void loadPatientData() {
         try {
             patientUuid = getIntent().getStringExtra(PATIENT_UUID);
+
             patient = ((MuzimaApplication) getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
             patientNameTextView.setText(patient.getDisplayName());
             identifierTextView.setText(String.format(Locale.getDefault(), "ID:#%s", patient.getIdentifier()));

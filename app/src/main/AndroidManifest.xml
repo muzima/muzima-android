@@ -78,7 +78,7 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/general_settings"
             android:parentActivityName=".view.MainDashboardActivity"
-            android:theme="@style/PreferencesTheme.Dark" />
+            android:launchMode="singleTask" />
         <activity
             android:name=".view.preferences.ProviderPreferenceActivity"
             android:configChanges="orientation|screenSize"
@@ -403,11 +403,11 @@
                     android:value=".view.MainDashboardActivity" />
         </activity>
         <activity android:name=".view.cohort.CohortPagerActivity"
-                  android:configChanges="orientation|screenSize"
-                  android:theme="@style/AppTheme"/>
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"/>
         <activity android:name=".view.forms.FormPagerActivity"
-                  android:configChanges="orientation|screenSize"
-                  android:theme="@style/AppTheme"/>
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"/>
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

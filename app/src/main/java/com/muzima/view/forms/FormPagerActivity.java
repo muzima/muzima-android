@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
@@ -44,7 +45,6 @@ import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
 import com.muzima.adapters.forms.NewFormsPagerAdapter;
 import org.greenrobot.eventbus.EventBus;
@@ -53,6 +53,8 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static androidx.core.view.WindowCompat.FEATURE_ACTION_BAR;
 
 public class FormPagerActivity extends ActivityWithBottomNavigation {
     private ViewPager viewPager;
@@ -79,6 +81,7 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_pager);
+        setupToolbar();
         loadBottomNavigation();
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
@@ -180,6 +183,15 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
 
         formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         setTitle(StringUtils.EMPTY);
+    }
+
+    private void setupToolbar(){
+        Toolbar toolbar = findViewById(R.id.form_pager_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
@@ -288,11 +300,6 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
         return R.id.action_forms;
     }
 
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(this, MainDashboardActivity.class));
-        finish();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

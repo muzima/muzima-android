@@ -62,7 +62,6 @@ public abstract class ActivityWithBottomNavigation extends BaseActivity implemen
             } else if (itemId == R.id.action_forms) {
                 startActivity(new Intent(this, FormPagerActivity.class));
             }
-            finish();
         });
         return true;
     }
