@@ -28,32 +28,44 @@
            parent="@style/Widget.AppCompat.ActionBar">
     </style>
 
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
+    <!-- Application theme. This is a Dark default theme for the app -->
+    <style name="AppTheme" parent="AppBaseTheme"/>
+
+    <!-- Application theme. This is the Light Mode of the App-->
+    <style name="AppTheme.Light" parent="AppBaseTheme.Light"/>
+
+    <!-- Application theme. This is a Dark default theme for the app -->
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="android:windowActionBar">false</item>
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme.Dark" parent="AppBaseTheme.NoActionBar">
-        <item name="windowActionModeOverlay">true</item>
+    <style name="AppTheme.Light.NoActionBar" parent="AppTheme.Light">
+        <item name="android:windowActionBar">false</item>
     </style>
 
-    <!-- Application theme. -->
-    <style name="AppTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
-    </style>
+<!--    &lt;!&ndash; Application theme. &ndash;&gt;-->
+<!--    <style name="AppTheme.Dark" parent="AppBaseTheme.NoActionBar">-->
+<!--        <item name="windowActionModeOverlay">true</item>-->
+<!--    </style>-->
 
-    <style name="LoginTheme.Dark" parent="AppThemeNoActionBar.Dark">
-    </style>
+<!--    &lt;!&ndash; Application theme. &ndash;&gt;-->
+<!--    <style name="AppTheme.Light" parent="AppBaseTheme.Light.NoActionBar">-->
+<!--    </style>-->
+
+<!--    <style name="LoginTheme.Dark" parent="AppThemeNoActionBar.Dark">-->
+<!--    </style>-->
 
 
-    <style name="LoginTheme.Light" parent="AppThemeNoActionBar.Light">
-    </style>
+<!--    <style name="LoginTheme.Light" parent="AppThemeNoActionBar.Light">-->
+<!--    </style>-->
 
-    <!-- Application theme. -->
-    <style name="WizardTheme.Dark" parent="AppThemeNoActionBar.Dark">
-    </style>
+<!--    &lt;!&ndash; Application theme. &ndash;&gt;-->
+<!--    <style name="WizardTheme.Dark" parent="AppThemeNoActionBar.Dark">-->
+<!--    </style>-->
 
-    <style name="WizardTheme.Light" parent="AppThemeNoActionBar.Light">
-    </style>
+<!--    <style name="WizardTheme.Light" parent="AppThemeNoActionBar.Light">-->
+<!--    </style>-->
 
     <style name="Widget.Custom.NavigationView" parent="Widget.Design.NavigationView">
         <item name="itemIconTint">?attr/colorNavigationItem</item>

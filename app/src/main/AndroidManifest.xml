@@ -41,7 +41,7 @@
         android:icon="@drawable/ic_launcher_logo"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:theme="@style/AppTheme.Dark"
+        android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
         <uses-library
