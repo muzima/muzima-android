@@ -5,7 +5,7 @@
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
  * If the user is an entity intending to commercialize any application that uses
- *  this code in a for-profit venture,please contact the copyright holder.
+ * this code in a for-profit venture, please contact the copyright holder.
  */
 
 package com.muzima.controller;
@@ -32,9 +32,9 @@ import static com.muzima.util.Constants.UUID_SEPARATOR;
 import static java.util.Arrays.asList;
 
 public class PatientReportController {
-    
+
     private static final String TAG = "PatientReportController";
-    
+
     private PatientReportService patientReportService;
     private final LastSyncTimeService lastSyncTimeService;
     private final SntpService sntpService;
@@ -58,7 +58,7 @@ public class PatientReportController {
             throw new PatientReportException(e);
         }
     }
-    
+
     public List<PatientReport> getPatientReportsByPatientUuid(String patientUuid) throws PatientReportException {
         try {
             return patientReportService.getPatientReportByPatientUuid(patientUuid);
@@ -67,7 +67,7 @@ public class PatientReportController {
             throw new PatientReportException(e);
         }
     }
-    
+
     public PatientReport getPatientReportByUuid(String uuid) throws PatientReportFetchException {
         try {
             return patientReportService.getPatientReportByUuid(uuid);
@@ -161,7 +161,7 @@ public class PatientReportController {
             throw new PatientReportSaveException(e);
         }
     }
-    
+
     public void saveOrUpdatePatientReports(List<PatientReport> patientReports) throws PatientReportSaveException {
         try {
             for (PatientReport patientReport : patientReports) {
@@ -176,7 +176,7 @@ public class PatientReportController {
             throw new PatientReportSaveException(e);
         }
     }
-    
+
     public void deletePatientReport(PatientReport patientReport) throws PatientReportDeleteException {
         try {
             patientReportService.deletePatientReport(patientReport);
@@ -229,25 +229,25 @@ public class PatientReportController {
             super(throwable);
         }
     }
-    
+
     public static class PatientReportException extends Throwable {
         public PatientReportException(Throwable throwable) {
             super(throwable);
         }
     }
-    
+
     public static class PatientReportDownloadException extends Throwable {
         public PatientReportDownloadException(Throwable throwable) {
             super(throwable);
         }
     }
-    
+
     public static class PatientReportSaveException extends Throwable {
         public PatientReportSaveException(Throwable throwable) {
             super(throwable);
         }
     }
-    
+
     public static class PatientReportDeleteException extends Throwable {
         public PatientReportDeleteException(Throwable throwable) {
             super(throwable);

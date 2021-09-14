@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ * this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
@@ -5,10 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.muzima.R;
 import com.muzima.model.CohortFilter;
 import com.muzima.utils.MuzimaPreferences;
@@ -16,9 +24,9 @@ import com.muzima.utils.MuzimaPreferences;
 import java.util.List;
 
 public class CohortFilterAdapter extends RecyclerView.Adapter<CohortFilterAdapter.ViewHolder> {
-    private Context context;
-    private List<CohortFilter> cohortList;
-    private CohortFilterClickedListener filterClickedListener;
+    private final Context context;
+    private final List<CohortFilter> cohortList;
+    private final CohortFilterClickedListener filterClickedListener;
 
     public CohortFilterAdapter(Context context, List<CohortFilter> cohortList, CohortFilterClickedListener filterClickedListener) {
         this.context = context;
@@ -63,7 +71,7 @@ public class CohortFilterAdapter extends RecyclerView.Adapter<CohortFilterAdapte
         return cohortList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final View container;
         private final CheckBox checkBox;
         private final CohortFilterClickedListener cohortFilterClickedListener;

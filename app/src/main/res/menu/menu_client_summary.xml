@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~ this code in a for-profit venture, please contact the copyright holder.
+  -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/menu_shr"
-        android:title="@string/SHR_card_text"
-        android:icon="@drawable/ic_action_no_shr_card"
-        app:showAsAction="ifRoom"/>
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/menu_shr"
+          android:title="@string/SHR_card_text"
+          android:icon="@drawable/ic_action_no_shr_card"
+          app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/menu_relationship"
-        android:title="@string/general_relationships"
-        android:icon="@drawable/ic_relationship"
-        app:showAsAction="ifRoom"/>
+          android:title="@string/general_relationships"
+          android:icon="@drawable/ic_relationship"
+          app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/menu_location_item"
-        android:title="@string/title_gps_location"
-        android:icon="@drawable/ic_location"
-        app:showAsAction="ifRoom"/>
-
+          android:title="@string/title_gps_location"
+          android:icon="@drawable/ic_location"
+          app:showAsAction="ifRoom"/>
 </menu>

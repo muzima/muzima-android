@@ -1,133 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~ this code in a for-profit venture, please contact the copyright holder.
+  -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="82dp">
+        android:layout_height="match_parent">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:paddingBottom="82dp">
 
         <ListView
-            android:id="@+id/chat_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/message_editText"
-            android:layout_below="@+id/conversation_thread_toolbar"
-            android:divider="@android:color/transparent"
-            android:transcriptMode="alwaysScroll"
-            android:stackFromBottom="true"
-            android:dividerHeight="10dp" />
+                android:id="@+id/chat_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/message_editText"
+                android:layout_below="@+id/conversation_thread_toolbar"
+                android:divider="@android:color/transparent"
+                android:transcriptMode="alwaysScroll"
+                android:stackFromBottom="true"
+                android:dividerHeight="10dp"/>
 
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nested_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-
-
-            <!--<LinearLayout-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
-
-            <!--<ImageButton-->
-            <!--android:id="@+id/attach_image_button"-->
-            <!--android:contentDescription="@string/attach_image_desc_text"-->
-            <!--android:src="@drawable/ic_action_image_attach"-->
-            <!--android:background="@android:color/white"-->
-            <!--android:layout_marginStart="18dp"-->
-            <!--android:layout_marginBottom="6dp"-->
-            <!--android:layout_width="32dp"-->
-            <!--android:layout_height="32dp" />-->
-
-            <!--<ImageButton-->
-            <!--android:id="@+id/take_photo_button"-->
-            <!--android:contentDescription="@string/attach_photo_via_camera_text"-->
-            <!--android:src="@drawable/ic_action_camera_attach"-->
-            <!--android:background="@android:color/white"-->
-            <!--android:layout_marginStart="30dp"-->
-            <!--android:layout_width="32dp"-->
-            <!--android:layout_height="32dp" />-->
-
-            <!--<ImageButton-->
-            <!--android:id="@+id/attach_video_button"-->
-            <!--android:contentDescription="@string/attach_video_using_camera"-->
-            <!--android:src="@drawable/ic_action_camera_video_attach"-->
-            <!--android:background="@android:color/white"-->
-            <!--android:layout_marginStart="30dp"-->
-            <!--android:layout_width="32dp"-->
-            <!--android:layout_height="32dp" />-->
-
-            <!--<ImageButton-->
-            <!--android:id="@+id/attach_file_button"-->
-            <!--android:contentDescription="@string/attach_files_desc_text"-->
-            <!--android:layout_width="32dp"-->
-            <!--android:layout_height="32dp"-->
-            <!--android:layout_marginStart="30dp"-->
-            <!--android:background="@android:color/white"-->
-            <!--android:src="@drawable/ic_action_file_attach" />-->
-
-
-            <!--</LinearLayout>-->
-        <LinearLayout
+            android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+
+        <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<ImageButton-->
+        <!--android:id="@+id/attach_image_button"-->
+        <!--android:contentDescription="@string/attach_image_desc_text"-->
+        <!--android:src="@drawable/ic_action_image_attach"-->
+        <!--android:background="@android:color/white"-->
+        <!--android:layout_marginStart="18dp"-->
+        <!--android:layout_marginBottom="6dp"-->
+        <!--android:layout_width="32dp"-->
+        <!--android:layout_height="32dp" />-->
+
+        <!--<ImageButton-->
+        <!--android:id="@+id/take_photo_button"-->
+        <!--android:contentDescription="@string/attach_photo_via_camera_text"-->
+        <!--android:src="@drawable/ic_action_camera_attach"-->
+        <!--android:background="@android:color/white"-->
+        <!--android:layout_marginStart="30dp"-->
+        <!--android:layout_width="32dp"-->
+        <!--android:layout_height="32dp" />-->
+
+        <!--<ImageButton-->
+        <!--android:id="@+id/attach_video_button"-->
+        <!--android:contentDescription="@string/attach_video_using_camera"-->
+        <!--android:src="@drawable/ic_action_camera_video_attach"-->
+        <!--android:background="@android:color/white"-->
+        <!--android:layout_marginStart="30dp"-->
+        <!--android:layout_width="32dp"-->
+        <!--android:layout_height="32dp" />-->
+
+        <!--<ImageButton-->
+        <!--android:id="@+id/attach_file_button"-->
+        <!--android:contentDescription="@string/attach_files_desc_text"-->
+        <!--android:layout_width="32dp"-->
+        <!--android:layout_height="32dp"-->
+        <!--android:layout_marginStart="30dp"-->
+        <!--android:background="@android:color/white"-->
+        <!--android:src="@drawable/ic_action_file_attach" />-->
+
+
+        <!--</LinearLayout>-->
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal">
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/type_message_editText"
-                    android:layout_width="300dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minHeight="60dp"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/curved_button_white"
-                    android:gravity="left"
-                    android:hint="@string/type_a_message_hint"
-                    android:padding="4dp"
-                    android:scrollY="60dp"
-                    android:scrollHorizontally="true"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
-                    android:scrollbars="vertical"
-                    android:textColor="@android:color/black"
-                    android:textColorHint="@color/hint_text_grey"/>
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                    <EditText
+                            android:id="@+id/type_message_editText"
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:minHeight="60dp"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/curved_button_white"
+                            android:gravity="left"
+                            android:hint="@string/type_a_message_hint"
+                            android:padding="4dp"
+                            android:scrollY="60dp"
+                            android:scrollHorizontally="true"
+                            android:scrollbarAlwaysDrawVerticalTrack="true"
+                            android:scrollbars="vertical"
+                            android:textColor="@android:color/black"
+                            android:textColorHint="@color/hint_text_grey"/>
+
+                </LinearLayout>
 
             </RelativeLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/send_message_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_accept"
-            app:fabSize="mini" />
+                android:id="@+id/send_message_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_accept"
+                app:fabSize="mini"/>
     </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
