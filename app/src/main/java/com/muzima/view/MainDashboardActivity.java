@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ * this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.view;
 
 import android.app.AlertDialog;
@@ -8,9 +18,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,10 +28,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentContainerView;
@@ -34,7 +40,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -42,19 +47,16 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortFilterAdapter;
 import com.muzima.api.model.Cohort;
-import com.muzima.api.model.Form;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.model.User;
-import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.CohortFilter;
-import com.muzima.model.cohort.CohortItem;
 import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CloseBottomSheetEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
@@ -90,33 +92,23 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private static final int RC_BARCODE_CAPTURE = 9001;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private ViewPager viewPager;
     private TextView headerTitleTextView;
-    private ActionBarDrawerToggle drawerToggle;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
     private MenuItem menuLocation;
     private MenuItem menuRefresh;
-    private ActionMode.Callback actionModeCallback;
-    private ActionMode actionMode;
     private Credentials credentials;
     private BackgroundQueryTask mBackgroundQueryTask;
-    private MenuItem loadingMenuItem;
     private BottomSheetBehavior cohortFilterBottomSheetBehavior;
     private View cohortFilterBottomSheetView;
     private View closeBottomSheet;
     private CohortFilterAdapter cohortFilterAdapter;
     private RecyclerView filterOptionsRecyclerView;
-    private List<CohortItem> selectedCohorts = new ArrayList<>();
-    private List<Form> selectedForms = new ArrayList<>();
     private List<CohortFilter> cohortList = new ArrayList<>();
     private List<CohortFilter> selectedCohortFilters = new ArrayList<>();
-    private int selectedCohortsCount = 0;
-    private SmartCardRecordService smartCardService;
     private SmartCardRecord smartCardRecord;
     private Patient SHRPatient;
     private Patient SHRToMuzimaMatchingPatient;
-    private int selectionDifference;
 
     private AppBarConfiguration mAppBarConfiguration;
     private NavController navController;

@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~ this code in a for-profit venture, please contact the copyright holder.
+  -->
 <com.muzima.view.custom.CheckedLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_form_layout"
@@ -20,7 +29,7 @@
             android:id="@+id/last_edited_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="left"
+            android:gravity="start"
             android:layout_marginBottom="6dp"
             android:ellipsize="end"
             android:fontFamily="@font/roboto_italic"
@@ -32,14 +41,13 @@
             android:id="@+id/client_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_alignParentEnd="true"
             android:ellipsize="end"
             android:fontFamily="@font/roboto_italic"
             android:maxLines="1"
             android:textColor="?attr/primaryTextColor"
             android:textSize="12sp" />
-
     </com.muzima.view.custom.CheckedRelativeLayout>
 
     <com.muzima.view.custom.CheckedRelativeLayout
@@ -59,7 +67,6 @@
             android:maxLines="1"
             android:textColor="?attr/primaryTextColor"
             android:textSize="16sp" />
-
     </com.muzima.view.custom.CheckedRelativeLayout>
 
     <com.muzima.view.custom.CheckedRelativeLayout
@@ -78,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_marginBottom="6dp"
             android:layout_height="wrap_content"
-            android:gravity="left"/>
+            android:gravity="start"/>
 
         <TextView
             android:id="@+id/encounter_date"
@@ -89,7 +96,7 @@
             android:layout_width="wrap_content"
             android:textColor="?attr/primaryTextColor"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_alignParentEnd="true"/>
     </com.muzima.view.custom.CheckedRelativeLayout>
 
@@ -99,5 +106,4 @@
         android:background="@color/white_smoke_transparent"
         android:layout_height="1dp"
         android:visibility="gone"/>
-
 </com.muzima.view.custom.CheckedLinearLayout>

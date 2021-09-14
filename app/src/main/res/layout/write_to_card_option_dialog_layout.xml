@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~ this code in a for-profit venture, please contact the copyright holder.
+  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:background="?attr/themeColor"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
-	
+
 	<LinearLayout
 			android:orientation="horizontal"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
-		
+
 		<ImageView
 				android:contentDescription="@string/SHR_card_text"
 				android:layout_marginTop="8dp"
 				android:src="@drawable/ic_action_no_shr_card"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content" />
-		
+
 		<TextView
 				android:textColor="?attr/primaryTextColor"
 				android:textSize="14sp"
@@ -25,16 +34,16 @@
 				android:text="@string/write_shr_to_card_general"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content" />
-	
+
 	</LinearLayout>
-	
+
 	<View
 			android:layout_marginBottom="8dp"
 			android:layout_marginTop="8dp"
 			android:background="@android:color/holo_blue_bright"
 			android:layout_width="match_parent"
 			android:layout_height="1dp"/>
-	
+
 	<TextView
 			android:id="@+id/patent_dialog_message_textview"
 			android:textColor="?attr/primaryTextColor"
@@ -43,20 +52,20 @@
 			android:layout_marginStart="16dp"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content" />
-	
+
 	<RelativeLayout
 			android:layout_marginTop="1dp"
 			android:layout_below="@+id/patent_dialog_message_textview"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
-		
+
 		<LinearLayout
 				android:layout_margin="4dp"
 				android:orientation="horizontal"
 				android:layout_alignParentEnd="true"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
-			
+
 			<Button
 					android:id="@+id/yes_SHR_search_dialog"
 					android:background="?attr/themeColor"
@@ -64,7 +73,7 @@
 					android:textColor="?attr/primaryTextColor"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content" />
-			
+
 			<Button
 					android:id="@+id/no_SHR_search_dialog"
 					android:background="?attr/themeColor"
