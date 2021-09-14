@@ -8,9 +8,10 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -22,7 +23,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/forms_activity_toolbar"
-            app:title="@string/general_forms"
+            tools:title="@string/general_forms"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"/>
         <include layout="@layout/client_summary_patients_list"
@@ -35,9 +36,9 @@
             android:layout_alignParentBottom="true"
             android:background="?attr/tabBackgroundColor"
             android:overScrollMode="ifContentScrolls"
-            custom:indicatorColor="@color/tab_indicator_selected"
-            custom:indicatorHeight="3dp"
-            custom:indicatorTextColor="?attr/primaryTextColor" />
+            app:indicatorColor="@color/tab_indicator_selected"
+            app:indicatorHeight="3dp"
+            app:indicatorTextColor="?attr/primaryTextColor" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager"
