@@ -139,18 +139,6 @@
 
     </style>
 
-    <style name="ClickableSummaryItem">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">15dp</item>
-        <item name="android:paddingRight">15dp</item>
-        <item name="android:paddingTop">4dp</item>
-        <item name="android:paddingBottom">4dp</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/list_selector</item>
-    </style>
-
     <style name="NotClickableSummaryItem">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
