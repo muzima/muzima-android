@@ -5,7 +5,7 @@
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
  * If the user is an entity intending to commercialize any application that uses
- *  this code in a for-profit venture,please contact the copyright holder.
+ * this code in a for-profit venture, please contact the copyright holder.
  */
 
 package com.muzima.utils.imaging;
@@ -51,7 +51,7 @@ public class ImagingIntent extends BaseActivity {
     private static final int RC_HANDLE_CAMERA_AND_STORAGE_PERM = 2;
     private static final int RC_HANDLE_STORAGE_PERM = 3;
 
-    
+
     public static final String KEY_IMAGE_PATH = "imagePath";
     public static final String KEY_IMAGE_CAPTION = "imageCaption";
     public static final String KEY_SECTION_NAME = "sectionName";
@@ -63,7 +63,7 @@ public class ImagingIntent extends BaseActivity {
 //    private View mCaptionContainer;
     private View mImageAcceptContainer;
     private View mImageCaptureContainer;
-    
+
     private String mSectionName;
     private String mBinaryName;
     private String mBinaryDescription;
@@ -181,7 +181,7 @@ public class ImagingIntent extends BaseActivity {
             Toast.makeText(getApplicationContext(), getString(R.string.error_image_chose_activity_unavailable), Toast.LENGTH_SHORT).show();
         }
     }
-    
+
     @Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -312,7 +312,7 @@ public class ImagingIntent extends BaseActivity {
                 File chosenImage = new File(destImagePath);
                 if (MediaUtils.folderExists(IMAGE_FOLDER))
                 	MediaUtils.copyFile(source, chosenImage);
-                
+
                 if (chosenImage.exists()) {
                 	mBinaryName = chosenImage.getName();
                     refreshImageView();
@@ -322,7 +322,7 @@ public class ImagingIntent extends BaseActivity {
                 break;
         }
     }
-    
+
     private void resizeImageView() {
         int width, height;
         Display display = getWindowManager().getDefaultDisplay();

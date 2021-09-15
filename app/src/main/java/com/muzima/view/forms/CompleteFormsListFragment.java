@@ -5,7 +5,7 @@
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
  * If the user is an entity intending to commercialize any application that uses
- *  this code in a for-profit venture,please contact the copyright holder.
+ * this code in a for-profit venture, please contact the copyright holder.
  */
 
 package com.muzima.view.forms;
@@ -86,7 +86,7 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
 
     @Override
     protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.layout_list_with_sections, container, false);
+        return inflater.inflate(R.layout.layout_list, container, false);
     }
 
     public void onFormUploadFinish() {

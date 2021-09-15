@@ -5,7 +5,7 @@
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
   ~ If the user is an entity intending to commercialize any application that uses
-  ~  this code in a for-profit venture,please contact the copyright holder.
+  ~ this code in a for-profit venture, please contact the copyright holder.
 -->
 <resources>
     <!--
@@ -134,7 +134,6 @@
         <item name="bottomNavigationBackground">@color/bottom_navigation_background_light</item>
         <item name="onDarkBackgroundColor">@color/primary_black</item>
     </style>
-
 
     <!-- Application theme. -->
     <style name="AppThemeNoActionBar.Dark" parent="Theme.MaterialComponents.NoActionBar.Bridge">
