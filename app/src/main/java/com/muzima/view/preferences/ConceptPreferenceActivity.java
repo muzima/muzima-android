@@ -12,6 +12,7 @@ package com.muzima.view.preferences;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -56,8 +57,9 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
-
+        int themecolor = themeUtils.getThemeColor(this);
         ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(themecolor));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);

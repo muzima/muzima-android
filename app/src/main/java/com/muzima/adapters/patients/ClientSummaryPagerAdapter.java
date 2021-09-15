@@ -31,9 +31,9 @@ public class ClientSummaryPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if (position == 1)
-            return new DataCollectionFragment(patientUuid);
+            return new HistoricalDataFragment(patientUuid);
 
-        return new HistoricalDataFragment(patientUuid);
+        return new DataCollectionFragment(patientUuid);
     }
 
     @Override

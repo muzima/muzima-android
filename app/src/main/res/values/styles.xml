@@ -277,8 +277,7 @@
 
     <style name="ObservationValue">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:layout_weight">.6</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">8dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">20sp</item>
@@ -295,8 +294,7 @@
 
     <style name="ObservationDate">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:layout_weight">.4</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingTop">8dp</item>
@@ -429,7 +427,7 @@
     <style name="LoginButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="android:textColor">@color/primary_white</item>
     </style>
 
     <style name="Button">
@@ -457,7 +455,7 @@
     <style name="LoginAuthenticatingButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="android:textColor">@color/primary_white</item>
         <item name="android:gravity">center</item>
         <item name="android:singleLine">true</item>
         <item name="android:paddingTop">10dp</item>
