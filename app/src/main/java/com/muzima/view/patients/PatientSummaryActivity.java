@@ -223,7 +223,6 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
             selectedBottomSheetConcept = conceptWrapper.getConcept();
             addReadingActionView.callOnClick();
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
         }
     }
 
@@ -350,7 +349,14 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
             @Override
             public void onClick(View view) {
                 SingleObsForm form = new SingleObsForm(selectedBottomSheetConcept, new Date(), selectedBottomSheetConcept.getConceptType().getName(), "", singleObsFormsList.size() + 1);
-                singleObsFormsList.add(form);
+                if(singleObsFormsList.size() > 0){
+                    if(singleObsFormsList.get(0).getConcept().getId() == selectedBottomSheetConcept.getId()){
+                        singleObsFormsList.add(form);
+                    }
+                }else {
+                    bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
+                    singleObsFormsList.add(form);
+                }
                 clientDynamicObsFormsAdapter.notifyDataSetChanged();
             }
         });
