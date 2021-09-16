@@ -17,16 +17,15 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupExpandListener;
+import androidx.appcompat.widget.Toolbar;
 import com.muzima.R;
+import com.muzima.adapters.ExpandableListAdapter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.ExpandableListView.OnGroupExpandListener;
-
-import androidx.appcompat.widget.Toolbar;
-import com.muzima.adapters.ExpandableListAdapter;
-import com.muzima.view.MainDashboardActivity;
 
 public class HelpActivity extends BaseHelpActivity {
 
@@ -124,16 +123,11 @@ public class HelpActivity extends BaseHelpActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (android.R.id.home == item.getItemId()){
-            launchDashboard();
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
-        return false;
-    }
-
-    private void launchDashboard() {
-        Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
-        startActivity(intent);
-        finish();
+        return super.onOptionsItemSelected(item);
     }
 
     /*
@@ -211,10 +205,5 @@ public class HelpActivity extends BaseHelpActivity {
         Intent playVideoIntent = new Intent(Intent.ACTION_VIEW);
         playVideoIntent.setData(Uri.parse(videoUrl));
         startActivity(playVideoIntent);
-    }
-
-    @Override
-    public void onBackPressed() {
-       launchDashboard();
     }
 }

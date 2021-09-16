@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * AsyncTask Class that ochestrate a background non ui thread that loads
+ * AsyncTask Class that orchestrate a background non ui thread that loads
  * Observation data by concept from local storage.
  *
  * @see AsyncTask
@@ -33,14 +33,16 @@ class ObservationsByTypeBackgroundTask extends AsyncTask<Void, Concepts, Concept
 
     private final ConceptAction conceptAction;
     private final ObservationsByTypeAdapter observationsByTypeAdapter;
-    private Boolean isSHRData = false;
+    private final Boolean isSHRData;
+    private final Boolean isAddSingleElement;
     private List<Integer> SHRConcepts = new ArrayList<>();
 
     public ObservationsByTypeBackgroundTask(ObservationsByTypeAdapter observationsByTypeAdapter,
-                                            ConceptAction conceptAction, boolean isSHRData) {
+                                            ConceptAction conceptAction, boolean isSHRData, boolean isAddSingleElement) {
         this.observationsByTypeAdapter = observationsByTypeAdapter;
         this.conceptAction = conceptAction;
         this.isSHRData = isSHRData;
+        this.isAddSingleElement = isAddSingleElement;
 
         if (isSHRData) {
             loadComposedSHRConceptId();
@@ -57,11 +59,14 @@ class ObservationsByTypeBackgroundTask extends AsyncTask<Void, Concepts, Concept
     @Override
     protected Concepts doInBackground(Void... params) {
         Concepts conceptsWithObservations;
-        if (isSHRData) {
-            conceptsWithObservations = getSHRConceptWithObservations();
-        } else {
-            conceptsWithObservations = getNonSHRConceptWithObservations();
-        }
+
+        if (!isAddSingleElement) {
+            if (isSHRData)
+                conceptsWithObservations = getSHRConceptWithObservations();
+            else
+                conceptsWithObservations = getNonSHRConceptWithObservations();
+        } else
+            conceptsWithObservations = getAddableConcepts();
 
         return conceptsWithObservations;
     }
@@ -89,13 +94,12 @@ class ObservationsByTypeBackgroundTask extends AsyncTask<Void, Concepts, Concept
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.SEQUENCE.concept_id);
         conceptIds.add(Constants.Shr.KenyaEmr.CONCEPTS.IMMUNIZATION.GROUP.concept_id);
 
-
         SHRConcepts = conceptIds;
     }
 
     private Concepts getNonSHRConceptWithObservations() {
         Concepts conceptsWithObservations = null;
-        Concepts temp = null;
+        Concepts temp;
         try {
             List<Concept> concepts = conceptAction.getConcepts();
             for (Concept concept : concepts) {
@@ -133,6 +137,38 @@ class ObservationsByTypeBackgroundTask extends AsyncTask<Void, Concepts, Concept
                             conceptsWithObservations = temp;
                         } else {
                             conceptsWithObservations.addAll(temp);
+                        }
+                    }
+                }
+            }
+        } catch (ObservationController.LoadObservationException e) {
+            Log.w("Observations", String.format("Exception while loading observations for %s.", conceptAction), e);
+        }
+        return conceptsWithObservations;
+    }
+
+    private Concepts getAddableConcepts() {
+        Concepts conceptsWithObservations = null;
+        Concepts temp;
+        try {
+            List<Concept> concepts = conceptAction.getConcepts();
+            for (Concept concept : concepts) {
+                if (!concept.getConceptType().getName().equals(Concept.CODED_TYPE)) {
+                    temp = conceptAction.get(concept);
+                    if (temp != null) {
+                        if (temp.size() > 0) {
+                            temp.sortByDate();
+                            if (conceptsWithObservations == null)
+                                conceptsWithObservations = temp;
+                            else
+                                conceptsWithObservations.addAll(temp);
+                        } else {
+                            if (conceptsWithObservations == null)
+                                conceptsWithObservations = new Concepts();
+
+                            ConceptWithObservations cwo = new ConceptWithObservations();
+                            cwo.setConcept(concept);
+                            conceptsWithObservations.add(cwo);
                         }
                     }
                 }

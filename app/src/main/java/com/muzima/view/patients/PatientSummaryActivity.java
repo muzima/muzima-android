@@ -13,7 +13,6 @@ package com.muzima.view.patients;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
@@ -22,7 +21,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,7 +35,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
@@ -48,16 +45,14 @@ import com.muzima.adapters.patients.ClientSummaryPagerAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
-import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
-import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.SingleObsForm;
-import com.muzima.model.SummaryCard;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import com.muzima.model.events.CloseSingleFormEvent;
 import com.muzima.model.events.ReloadObservationsDataEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
+import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.FormUtils;
@@ -68,7 +63,6 @@ import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.FormsWithDataActivity;
 import com.muzima.view.relationship.RelationshipsListActivity;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import java.text.SimpleDateFormat;
@@ -77,6 +71,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 
@@ -87,7 +82,6 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
     public static final String CALLING_ACTIVITY = "calling_activity_key";
     public static final boolean DEFAULT_SHR_STATUS = false;
     private static final boolean DEFAULT_RELATIONSHIP_STATUS = false;
-    private Toolbar toolbar;
     private TextView patientNameTextView;
     private ImageView patientGenderImageView;
     private TextView dobTextView;
@@ -97,23 +91,13 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
     private TextView bottomSheetConceptTitleTextView;
     private TextView incompleteFormsCountView;
     private TextView completeFormsCountView;
-    private View incompleteFormsView;
-    private View completeFormsView;
-    private View childContainerView;
-    private View addReadingActionView;
-    private View cancelBottomSheetActionView;
-    private View saveBottomSheetEntriesActionView;
-    private BottomSheetBehavior bottomSheetBehavior;
-    private RecyclerView singleObsFormsRecyclerView;
-    private View bottomSheetView;
     private String patientUuid;
     private Patient patient;
     private Concept selectedBottomSheetConcept;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
     private ClientDynamicObsFormsAdapter clientDynamicObsFormsAdapter;
-    private List<SummaryCard> formsSummaries = new ArrayList<>();
-    private List<SingleObsForm> singleObsFormsList = new ArrayList<>();
+    private final List<SingleObsForm> singleObsFormsList = new ArrayList<>();
     private ViewPager2 viewPager;
 
     @Override
@@ -121,7 +105,7 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         themeUtils.onCreate(this);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_client_summary);
+        setContentView(R.layout.activity_client_summary);
         initializeResources();
         loadPatientData();
 
@@ -224,7 +208,7 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
 
     @Subscribe
     public void clientSummaryObservationSelectedEvent(ClientSummaryObservationSelectedEvent event) {
-        ObsConceptWrapper conceptWrapper = event.getConceptWrapper();
+        ConceptWithObservations conceptWrapper = event.getConceptWithObservations();
         if (conceptWrapper.getConcept().isCoded() || conceptWrapper.getConcept().isSet() || conceptWrapper.getConcept().isPrecise()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true)
@@ -242,9 +226,9 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         dialog.setContentView(view);
 
         bottomSheetConceptTitleTextView = view.findViewById(R.id.cohort_name_text_view);
-        addReadingActionView = view.findViewById(R.id.general_add_reading_button);
-        cancelBottomSheetActionView = view.findViewById(R.id.close_summary_bottom_sheet_view);
-        saveBottomSheetEntriesActionView = view.findViewById(R.id.client_summary_save_action_bottom_sheet);
+        View addReadingActionView = view.findViewById(R.id.general_add_reading_button);
+        View cancelBottomSheetActionView = view.findViewById(R.id.close_summary_bottom_sheet_view);
+        View saveBottomSheetEntriesActionView = view.findViewById(R.id.client_summary_save_action_bottom_sheet);
         clientDynamicObsFormsAdapter = new ClientDynamicObsFormsAdapter(getApplicationContext(), singleObsFormsList, this,this);
         RecyclerView singleObsFormsRecyclerViews = view.findViewById(R.id.client_summary_single_obs_form_recycler_view);
         singleObsFormsRecyclerViews.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -357,7 +341,7 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
     }
 
     private void initializeResources() {
-        toolbar = findViewById(R.id.client_summary_dashboard_toolbar);
+        Toolbar toolbar = findViewById(R.id.client_summary_dashboard_toolbar);
         patientNameTextView = findViewById(R.id.name);
         patientGenderImageView = findViewById(R.id.genderImg);
         dobTextView = findViewById(R.id.dateOfBirth);
@@ -366,8 +350,8 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         gpsAddressTextView = findViewById(R.id.distanceToClientAddress);
         incompleteFormsCountView = findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
         completeFormsCountView = findViewById(R.id.dashboard_forms_complete_forms_count_view);
-        incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
-        completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
+        View incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
+        View completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {

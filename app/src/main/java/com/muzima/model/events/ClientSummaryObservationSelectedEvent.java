@@ -10,20 +10,20 @@
 
 package com.muzima.model.events;
 
-import com.muzima.model.ObsConceptWrapper;
+import com.muzima.model.observation.ConceptWithObservations;
 
 public class ClientSummaryObservationSelectedEvent {
-    private ObsConceptWrapper conceptWrapper;
+    private ConceptWithObservations conceptWithObservations;
 
-    public ClientSummaryObservationSelectedEvent(ObsConceptWrapper conceptWrapper) {
-        this.conceptWrapper = conceptWrapper;
+    public ClientSummaryObservationSelectedEvent(ConceptWithObservations conceptWithObservations) {
+        this.conceptWithObservations = conceptWithObservations;
     }
 
-    public ObsConceptWrapper getConceptWrapper() {
-        return conceptWrapper;
+    public ConceptWithObservations getConceptWithObservations() {
+        return conceptWithObservations;
     }
 
-    public void setConceptWrapper(ObsConceptWrapper conceptWrapper) {
-        this.conceptWrapper = conceptWrapper;
+    public void setConceptWithObservations(ConceptWithObservations conceptWithObservations) {
+        this.conceptWithObservations = conceptWithObservations;
     }
 }
