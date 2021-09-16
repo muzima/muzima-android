@@ -82,7 +82,6 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        System.out.println("On item click.....................");
     }
 
     @Override
