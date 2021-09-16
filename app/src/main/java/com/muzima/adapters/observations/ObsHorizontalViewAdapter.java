@@ -131,13 +131,10 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
         @Override
         public void onClick(View v) {
             Observation obs = observationList.get(getAdapterPosition());
-            if(!isSingleElementInput) {
+            if(!isSingleElementInput)
                 displayObservationDetailsDialog(obs, v);
-                this.observationClickedListener.onObservationClicked(getAdapterPosition());
-            }else{
+            else
                 this.observationClickedListener.onObservationClicked(obs.getConcept().getId());
-            }
-
         }
     }
 

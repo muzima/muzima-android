@@ -15,6 +15,4 @@
 
     <include layout="@layout/activity_client_summary"/>
 
-    <include layout="@layout/activity_client_summary_bottom_sheet_layout"/>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

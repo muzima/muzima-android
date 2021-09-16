@@ -18,7 +18,7 @@
             android:enabled="true"
             android:checked="true"
             android:checkable="true"
-            android:icon="@drawable/ic_action_account_circle"/>
+            android:icon="@drawable/ic_action_home"/>
 
         <item
             android:id="@+id/nav_settings"

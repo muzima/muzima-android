@@ -8,14 +8,16 @@
   ~ If the user is an entity intending to commercialize any application that uses
   ~ this code in a for-profit venture, please contact the copyright holder.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/item_form_layout"
-              android:paddingTop="8dp"
-              android:orientation="vertical"
-              android:paddingEnd="16dp"
-              android:paddingStart="24dp"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_form_layout"
+    android:paddingTop="8dp"
+    android:orientation="vertical"
+    android:paddingEnd="16dp"
+    android:paddingStart="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/activatedBackgroundIndicator">
 
     <RelativeLayout
             android:id="@+id/metadata_container"

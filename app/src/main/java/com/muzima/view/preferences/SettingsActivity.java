@@ -12,12 +12,16 @@ package com.muzima.view.preferences;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -76,8 +80,10 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
+        int themecolor = themeUtils.getThemeColor(this);
         if (getDelegate().getSupportActionBar() != null)
             getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getDelegate().getSupportActionBar().setBackgroundDrawable(new ColorDrawable(themecolor));
     }
 
     private AppCompatDelegate getDelegate() {
@@ -89,9 +95,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(DefaultMenuDropDownHelper.DEFAULT_MENU, menu);
-        MenuItem menuSettings = menu.findItem(R.id.action_settings);
-        if (menuSettings != null) menuSettings.setVisible(false);
         return true;
     }
 
@@ -102,9 +105,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 launchDashboard();
                 return true;
         }
-        DefaultMenuDropDownHelper dropDownHelper = new DefaultMenuDropDownHelper(this);
-        boolean result = dropDownHelper.onOptionsItemSelected(item);
-        return result || super.onOptionsItemSelected(item);
+        return false;
     }
 
     private void launchDashboard() {
@@ -146,5 +147,12 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     public void onBackPressed() {
         launchDashboard();
+    }
+
+    public int getThemeColor() {
+        System.out.print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+        String lightModePreferenceKey = getResources().getString(R.string.preference_light_mode);
+        System.out.print("+++++++++++++++++++++++++++++++++++++++++++++ "+lightModePreferenceKey);
+        return 1;
     }
 }

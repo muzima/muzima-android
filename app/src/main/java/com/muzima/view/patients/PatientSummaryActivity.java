@@ -12,6 +12,8 @@ package com.muzima.view.patients;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
@@ -35,6 +37,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.muzima.MuzimaApplication;
@@ -228,12 +231,83 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
                     .setMessage("This data type is not support, consult admin.")
                     .show();
         } else {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             selectedBottomSheetConcept = conceptWrapper.getConcept();
-            addReadingActionView.callOnClick();
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
+            openDialog();
         }
+    }
+
+    private void openDialog() {
+        View view = getLayoutInflater().inflate(R.layout.activity_client_summary_bottom_sheet_dialog, null);
+        Dialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(view);
+
+        bottomSheetConceptTitleTextView = view.findViewById(R.id.cohort_name_text_view);
+        addReadingActionView = view.findViewById(R.id.general_add_reading_button);
+        cancelBottomSheetActionView = view.findViewById(R.id.close_summary_bottom_sheet_view);
+        saveBottomSheetEntriesActionView = view.findViewById(R.id.client_summary_save_action_bottom_sheet);
+        clientDynamicObsFormsAdapter = new ClientDynamicObsFormsAdapter(getApplicationContext(), singleObsFormsList, this,this);
+        RecyclerView singleObsFormsRecyclerViews = view.findViewById(R.id.client_summary_single_obs_form_recycler_view);
+        singleObsFormsRecyclerViews.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        singleObsFormsRecyclerViews.setAdapter(clientDynamicObsFormsAdapter);
+
+        SingleObsForm form = new SingleObsForm(selectedBottomSheetConcept, new Date(), selectedBottomSheetConcept.getConceptType().getName(), "", singleObsFormsList.size() + 1);
+        if(singleObsFormsList.size() > 0){
+            if(singleObsFormsList.get(0).getConcept().getId() == selectedBottomSheetConcept.getId()){
+                singleObsFormsList.add(form);
+            }
+        }else {
+            bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
+            singleObsFormsList.add(form);
+        }
+        clientDynamicObsFormsAdapter.notifyDataSetChanged();
+
+
+        cancelBottomSheetActionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                singleObsFormsList.clear();
+                clientDynamicObsFormsAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+                EventBus.getDefault().post(new ReloadObservationsDataEvent());
+            }
+        });
+
+        addReadingActionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SingleObsForm form = new SingleObsForm(selectedBottomSheetConcept, new Date(), selectedBottomSheetConcept.getConceptType().getName(), "", singleObsFormsList.size() + 1);
+                if(singleObsFormsList.size() > 0){
+                    if(singleObsFormsList.get(0).getConcept().getId() == selectedBottomSheetConcept.getId()){
+                        singleObsFormsList.add(form);
+                    }
+                }else {
+                    bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
+                    singleObsFormsList.add(form);
+                }
+                clientDynamicObsFormsAdapter.notifyDataSetChanged();
+            }
+        });
+
+        saveBottomSheetEntriesActionView.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                if (singleObsFormsList.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.general_enter_value_to_save), Toast.LENGTH_LONG).show();
+                } else {
+                    for (SingleObsForm form : singleObsFormsList) {
+                        FormUtils.handleSaveIndividualObsData(getApplicationContext(), patient, form.getDate(), selectedBottomSheetConcept, form.getInputValue());
+                    }
+                    singleObsFormsList.clear();
+                    clientDynamicObsFormsAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                    loadFormsCount();
+                    EventBus.getDefault().post(new ReloadObservationsDataEvent());
+                }
+            }
+        });
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     private void loadPatientData() {
@@ -290,17 +364,6 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         identifierTextView = findViewById(R.id.identifier);
         ageTextView = findViewById(R.id.age_text_label);
         gpsAddressTextView = findViewById(R.id.distanceToClientAddress);
-        addReadingActionView = findViewById(R.id.general_add_reading_button);
-        cancelBottomSheetActionView = findViewById(R.id.close_summary_bottom_sheet_view);
-        saveBottomSheetEntriesActionView = findViewById(R.id.client_summary_save_action_bottom_sheet);
-        bottomSheetView = findViewById(R.id.client_summary_dynamic_form_bottom_sheet_container);
-        singleObsFormsRecyclerView = findViewById(R.id.client_summary_single_obs_form_recycler_view);
-        childContainerView = findViewById(R.id.bottom_sheet_child_container);
-        bottomSheetConceptTitleTextView = findViewById(R.id.cohort_name_text_view);
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
-        clientDynamicObsFormsAdapter = new ClientDynamicObsFormsAdapter(getApplicationContext(), singleObsFormsList, this,this);
-        singleObsFormsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        singleObsFormsRecyclerView.setAdapter(clientDynamicObsFormsAdapter);
         incompleteFormsCountView = findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
         completeFormsCountView = findViewById(R.id.dashboard_forms_complete_forms_count_view);
         incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
@@ -325,73 +388,6 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
                 launchFormDataList(false);
             }
         });
-
-        cancelBottomSheetActionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                singleObsFormsList.clear();
-                clientDynamicObsFormsAdapter.notifyDataSetChanged();
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
-        });
-
-        saveBottomSheetEntriesActionView.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View view) {
-                if (singleObsFormsList.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.general_enter_value_to_save), Toast.LENGTH_LONG).show();
-                } else {
-                    for (SingleObsForm form : singleObsFormsList) {
-                        FormUtils.handleSaveIndividualObsData(getApplicationContext(), patient, form.getDate(), selectedBottomSheetConcept, form.getInputValue());
-                    }
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                    singleObsFormsList.clear();
-                    clientDynamicObsFormsAdapter.notifyDataSetChanged();
-
-                    loadFormsCount();
-                    EventBus.getDefault().post(new ReloadObservationsDataEvent());
-                }
-            }
-        });
-
-        addReadingActionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SingleObsForm form = new SingleObsForm(selectedBottomSheetConcept, new Date(), selectedBottomSheetConcept.getConceptType().getName(), "", singleObsFormsList.size() + 1);
-                singleObsFormsList.add(form);
-                clientDynamicObsFormsAdapter.notifyDataSetChanged();
-            }
-        });
-
-        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-//                    childContainerView.setVisibility(View.GONE);
-                } else {
-//                    childContainerView.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });
-
-        //todo remove
-        try {
-            List<Concept> conceptList = ((MuzimaApplication) getApplicationContext()).getConceptController().getConcepts();
-            if (!conceptList.isEmpty())
-                selectedBottomSheetConcept = conceptList.get(0);
-            if (selectedBottomSheetConcept != null)
-                bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
-        } catch (ConceptController.ConceptFetchException ex) {
-            ex.printStackTrace();
-        }
-
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     @Override
