@@ -13,7 +13,6 @@ package com.muzima.view.patients;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
@@ -47,10 +46,8 @@ import com.muzima.adapters.patients.ClientSummaryPagerAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
-import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
-import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.SingleObsForm;
 import com.muzima.model.SummaryCard;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
@@ -68,15 +65,16 @@ import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.FormsWithDataActivity;
 import com.muzima.view.relationship.RelationshipsListActivity;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 

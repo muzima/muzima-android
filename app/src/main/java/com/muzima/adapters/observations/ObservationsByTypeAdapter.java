@@ -27,6 +27,7 @@ import com.muzima.api.model.Encounter;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
+import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.utils.BackgroundTaskHelper;
@@ -86,7 +87,11 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
         ObsHorizontalViewAdapter observationsListAdapter = new ObsHorizontalViewAdapter(conceptWithObservations.getObservations(), new ObsHorizontalViewAdapter.ObservationClickedListener() {
             @Override
             public void onObservationClicked(int position) {
-                EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(conceptWithObservationsList.get(position)));
+                for(ConceptWithObservations concept : conceptWithObservationsList){
+                    if(concept.getConcept().getId() == position){
+                        EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(concept));
+                    }
+                }
             }
         }, encounterController, observationController, isShrData, isAddSingleElement);
         holder.obsHorizontalListRecyclerView.setAdapter(observationsListAdapter);
