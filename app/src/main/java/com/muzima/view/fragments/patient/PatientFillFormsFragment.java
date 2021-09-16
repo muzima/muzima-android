@@ -8,7 +8,7 @@
  * this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.fragments;
+package com.muzima.view.fragments.patient;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +27,9 @@ import com.muzima.R;
 import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
+import com.muzima.model.AvailableForm;
 import com.muzima.model.DownloadedForm;
+import com.muzima.model.collections.AvailableForms;
 import com.muzima.tasks.FormsLoaderService;
 import com.muzima.view.forms.FormViewIntent;
 import com.muzima.view.forms.FormsWithDataActivity;
@@ -37,15 +39,14 @@ import java.util.List;
 
 import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 
-public class FillFormsFragment extends Fragment implements FormsLoaderService.FormsLoadedCallback, ClientSummaryFormsAdapter.OnFormClickedListener {
+public class PatientFillFormsFragment extends Fragment implements FormsLoaderService.FormsLoadedCallback, ClientSummaryFormsAdapter.OnFormClickedListener {
 
-    private RecyclerView formsRecyclerView;
     private ClientSummaryFormsAdapter formsAdapter;
     private Patient patient;
-    private String patientUuid;
-    private List<DownloadedForm> forms = new ArrayList<>();
+    private final String patientUuid;
+    private List<AvailableForm> forms = new ArrayList<>();
 
-    public FillFormsFragment(String patientUuid) {
+    public PatientFillFormsFragment(String patientUuid) {
         this.patientUuid = patientUuid;
     }
 
@@ -59,25 +60,25 @@ public class FillFormsFragment extends Fragment implements FormsLoaderService.Fo
     }
 
     private void loadData() {
-        ((MuzimaApplication) getActivity().getApplicationContext()).getExecutorService()
-                .execute(new FormsLoaderService(getActivity().getApplicationContext(), this));
+        ((MuzimaApplication) requireActivity().getApplicationContext()).getExecutorService()
+                .execute(new FormsLoaderService(requireActivity().getApplicationContext(), this));
     }
 
     private void initializeResources(View view) {
-        formsRecyclerView = view.findViewById(R.id.fragment_fill_forms_recycler_view);
+        RecyclerView formsRecyclerView = view.findViewById(R.id.fragment_fill_forms_recycler_view);
         formsAdapter = new ClientSummaryFormsAdapter(forms, this);
         formsRecyclerView.setAdapter(formsAdapter);
-        formsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        formsRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
         try {
-            patient = ((MuzimaApplication) getActivity().getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
+            patient = ((MuzimaApplication) requireActivity().getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
         }catch (PatientController.PatientLoadException ex){
             ex.printStackTrace();
         }
     }
 
     @Override
-    public void onFormsLoaded(final List<DownloadedForm> formList) {
-        getActivity().runOnUiThread(new Runnable() {
+    public void onFormsLoaded(final AvailableForms formList) {
+        requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 forms.addAll(formList);
@@ -88,9 +89,9 @@ public class FillFormsFragment extends Fragment implements FormsLoaderService.Fo
 
     @Override
     public void onFormClickedListener(int position) {
-        DownloadedForm form = forms.get(position);
+        AvailableForm form = forms.get(position);
         Intent intent = new FormViewIntent(getActivity(), form, patient , false);
         intent.putExtra(INDEX_PATIENT, patient);
-        getActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
+        requireActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 }

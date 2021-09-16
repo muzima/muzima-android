@@ -14,21 +14,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.muzima.R;
-import com.muzima.model.DownloadedForm;
+import com.muzima.model.AvailableForm;
 
 import java.util.List;
 
 public class ClientSummaryFormsAdapter extends RecyclerView.Adapter<ClientSummaryFormsAdapter.ViewHolder> {
 
-    private List<DownloadedForm> forms;
-    private OnFormClickedListener formClickedListener;
+    private final List<AvailableForm> forms;
+    private final OnFormClickedListener formClickedListener;
 
-    public ClientSummaryFormsAdapter(List<DownloadedForm> forms, OnFormClickedListener formClickedListener) {
+    public ClientSummaryFormsAdapter(List<AvailableForm> forms, OnFormClickedListener formClickedListener) {
         this.forms = forms;
         this.formClickedListener = formClickedListener;
     }
@@ -42,7 +40,7 @@ public class ClientSummaryFormsAdapter extends RecyclerView.Adapter<ClientSummar
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DownloadedForm form = forms.get(position);
+        AvailableForm form = forms.get(position);
         holder.formNameTextView.setText(form.getName());
         holder.formDescriptionTextView.setText(form.getDescription());
     }
@@ -52,20 +50,18 @@ public class ClientSummaryFormsAdapter extends RecyclerView.Adapter<ClientSummar
         return forms.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private View container;
-        private TextView formNameTextView;
-        private RecyclerView formTagRecyclerView;
-        private TextView formDescriptionTextView;
-        private OnFormClickedListener formClickedListener;
+        private final TextView formNameTextView;
+        private final TextView formDescriptionTextView;
+        private final OnFormClickedListener formClickedListener;
 
         public ViewHolder(@NonNull View itemView, OnFormClickedListener formClickedListener) {
             super(itemView);
 
-            container = itemView.findViewById(R.id.item_form_layout);
+            View container = itemView.findViewById(R.id.item_form_layout);
             formNameTextView = itemView.findViewById(R.id.item_form_name_text_view);
-            formTagRecyclerView = itemView.findViewById(R.id.item_form_tags_list_view);
+//            RecyclerView formTagRecyclerView = itemView.findViewById(R.id.item_form_tags_list_view);
             formDescriptionTextView = itemView.findViewById(R.id.item_form_description_text_view);
 
             this.formClickedListener = formClickedListener;

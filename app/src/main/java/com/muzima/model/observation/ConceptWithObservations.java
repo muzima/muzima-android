@@ -34,7 +34,7 @@ public class ConceptWithObservations {
         return concept;
     }
 
-    private void setConcept(Concept concept) {
+    public void setConcept(Concept concept) {
         this.concept = concept;
     }
 
