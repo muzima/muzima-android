@@ -17,6 +17,7 @@
         <item name="android:textColorSecondary">@color/primary_white</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="activatedBackgroundIndicator">@drawable/activated_background_indicator</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
         <item name="primaryDrawableColor">#CCFFFFFF</item>
         <item name="toolbarTitleTextColor">@color/primary_white</item>
@@ -48,6 +49,7 @@
         <item name="android:textColorSecondary">@color/primary_white</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="activatedBackgroundIndicator">@drawable/activated_background_indicator</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
         <item name="primaryDrawableColor">#CCFFFFFF</item>
         <item name="toolbarTitleTextColor">@color/primary_white</item>
@@ -78,6 +80,7 @@
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="activatedBackgroundIndicator">@drawable/activated_background_indicator</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
         <item name="primaryDrawableColor">#99000000</item>
         <item name="toolbarTitleTextColor">@color/primary_black</item>
@@ -109,6 +112,7 @@
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="activatedBackgroundIndicator">@drawable/activated_background_indicator</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
         <item name="primaryDrawableColor">#99000000</item>
         <item name="toolbarTitleTextColor">@color/primary_black</item>
@@ -141,6 +145,7 @@
         <item name="android:textColorSecondary">@color/primary_white</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="activatedBackgroundIndicator">@drawable/activated_background_indicator</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
         <item name="primaryDrawableColor">#CCFFFFFF</item>
         <item name="toolbarTitleTextColor">@color/primary_white</item>
@@ -171,6 +176,7 @@
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="activatedBackgroundIndicator">@drawable/activated_background_indicator</item>
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
         <item name="primaryDrawableColor">#99000000</item>
