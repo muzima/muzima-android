@@ -99,13 +99,10 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
     private TextView completeFormsCountView;
     private View incompleteFormsView;
     private View completeFormsView;
-    private View childContainerView;
     private View addReadingActionView;
     private View cancelBottomSheetActionView;
     private View saveBottomSheetEntriesActionView;
-    private BottomSheetBehavior bottomSheetBehavior;
     private RecyclerView singleObsFormsRecyclerView;
-    private View bottomSheetView;
     private String patientUuid;
     private Patient patient;
     private Concept selectedBottomSheetConcept;
@@ -246,9 +243,9 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         cancelBottomSheetActionView = view.findViewById(R.id.close_summary_bottom_sheet_view);
         saveBottomSheetEntriesActionView = view.findViewById(R.id.client_summary_save_action_bottom_sheet);
         clientDynamicObsFormsAdapter = new ClientDynamicObsFormsAdapter(getApplicationContext(), singleObsFormsList, this,this);
-        RecyclerView singleObsFormsRecyclerViews = view.findViewById(R.id.client_summary_single_obs_form_recycler_view);
-        singleObsFormsRecyclerViews.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        singleObsFormsRecyclerViews.setAdapter(clientDynamicObsFormsAdapter);
+        singleObsFormsRecyclerView = view.findViewById(R.id.client_summary_single_obs_form_recycler_view);
+        singleObsFormsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        singleObsFormsRecyclerView.setAdapter(clientDynamicObsFormsAdapter);
 
         SingleObsForm form = new SingleObsForm(selectedBottomSheetConcept, new Date(), selectedBottomSheetConcept.getConceptType().getName(), "", singleObsFormsList.size() + 1);
         if(singleObsFormsList.size() > 0){
