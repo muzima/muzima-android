@@ -37,7 +37,7 @@
             android:layout_alignParentBottom="true"
             android:background="?attr/tabBackgroundColor"
             android:overScrollMode="ifContentScrolls"
-            app:indicatorColor="@color/tab_indicator_selected"
+            app:indicatorColor="@color/primary_blue"
             app:indicatorHeight="3dp"
             app:indicatorTextColor="?attr/primaryTextColor" />
 
