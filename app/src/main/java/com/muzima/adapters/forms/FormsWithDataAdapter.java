@@ -12,8 +12,7 @@ package com.muzima.adapters.forms;
 import android.content.Context;
 import androidx.annotation.NonNull;
 
-import android.content.res.Resources;
-import android.util.TypedValue;
+import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +21,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.muzima.R;
-import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.PatientComparator;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.custom.CheckedLinearLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,7 +42,6 @@ import static com.muzima.utils.Constants.STANDARD_DATE_LOCALE_FORMAT;
  */
 public abstract class FormsWithDataAdapter<T extends FormWithData> extends FormsAdapter<T> {
 
-    private List<Patient> patients;
     private String filterPatientUuid;
     private final PatientComparator patientComparator;
     private final List<String> selectedFormsUuids;
@@ -53,7 +49,6 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
 
     FormsWithDataAdapter(Context context, int textViewResourceId, String filterPatientUuid, FormController formController) {
         super(context, textViewResourceId, formController);
-        patients = new ArrayList<>();
         patientComparator = new PatientComparator();
         selectedFormsUuids = new ArrayList<>();
         this.filterPatientUuid = filterPatientUuid;
@@ -64,28 +59,11 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
         return R.layout.item_form_with_data_layout;
     }
 
-    public long getHeaderId(int position) {
-        int section = 0;
-        if (!patients.isEmpty() && !isEmpty()) {
-            section = patients.indexOf(getItem(position).getPatient());
-        }
-        return section;
-    }
-
     void sortFormsByPatientName(List<T> forms) {
-        Collections.sort(patients, patientComparator);
         Collections.sort(forms, alphabaticalComparator);
         setNotifyOnChange(false);
         clear();
         addAll(forms);
-    }
-
-    List<Patient> getPatients() {
-        return patients;
-    }
-
-    void setPatients(List<Patient> patients) {
-        this.patients = patients;
     }
 
     @NonNull
@@ -176,7 +154,9 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(selectedFormsUuids.isEmpty()) {
+                    setActivationBackgroundColor(view);
                     muzimaClickListener.onItemClick(position);
                 } else {
                     selectOrDeselectClickedItem(view,position);
@@ -186,26 +166,23 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
     }
 
     private void selectOrDeselectClickedItem(View view, int position){
-        if (view instanceof CheckedLinearLayout) {
-            CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
-            checkedLinearLayout.toggle();
-            boolean selected = checkedLinearLayout.isChecked();
-
-            FormWithData formWithPatientData = getItem(position);
-            if (selected && !selectedFormsUuids.contains(formWithPatientData.getFormDataUuid())) {
-                selectedFormsUuids.add(formWithPatientData.getFormDataUuid());
-                checkedLinearLayout.setActivated(true);
-                checkedLinearLayout.setBackgroundResource(R.color.hint_blue_opaque);
-            } else if (!selected && selectedFormsUuids.contains(formWithPatientData.getFormDataUuid())) {
-                selectedFormsUuids.remove(formWithPatientData.getFormDataUuid());
-                checkedLinearLayout.setActivated(false);
-                TypedValue typedValue = new TypedValue();
-                Resources.Theme theme = getContext().getTheme();
-                theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
-                view.setBackgroundResource(typedValue.resourceId);
-            }
-            muzimaClickListener.onItemLongClick();
+        FormWithData formWithPatientData = getItem(position);
+        if ( !selectedFormsUuids.contains(formWithPatientData.getFormDataUuid())) {
+            selectedFormsUuids.add(formWithPatientData.getFormDataUuid());
+            view.setActivated(true);
+            setActivationBackgroundColor(view);
+        } else if ( selectedFormsUuids.contains(formWithPatientData.getFormDataUuid())) {
+            selectedFormsUuids.remove(formWithPatientData.getFormDataUuid());
+            view.setActivated(false);
         }
+        muzimaClickListener.onItemLongClick();
+    }
+
+    private void setActivationBackgroundColor(View view){
+        int[] attrs = new int[]{R.attr.activatedBackgroundIndicator};
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs);
+        int backgroundResource = typedArray.getResourceId(0, 0);
+        view.setBackgroundResource(backgroundResource);
     }
 
     public void setMuzimaClickListener(MuzimaClickListener muzimaClickListener) {
@@ -230,15 +207,4 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
             return patientComparator.compare(lhs.getPatient(), rhs.getPatient());
         }
     };
-
-    List<Patient> buildPatientsList(List<T> forms) {
-        List<Patient> result = new ArrayList<>();
-        for (FormWithData form : forms) {
-            Patient patient = form.getPatient();
-            if (patient != null && !result.contains(patient)) {
-                result.add(patient);
-            }
-        }
-        return result;
-    }
 }

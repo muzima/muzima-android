@@ -27,7 +27,6 @@ import com.muzima.api.model.Person;
 import com.muzima.api.model.Provider;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.NotificationController;
-import com.muzima.controller.ProviderController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.ThemeUtils;
@@ -144,27 +143,6 @@ public class NotificationActivity extends BaseActivity {
             }
         } catch (EncounterController.FetchEncounterException e) {
             Log.e(getClass().getSimpleName(), "Error getting encounter data " + e.getMessage(), e);
-        }
-    }
-
-    private class LoggedProviderFetchBackgrounudTask extends AsyncTask<Void,Void,Provider>{
-
-
-        @Override
-        protected Provider doInBackground(Void... voids) {
-            try {
-                return ((MuzimaApplication)getApplicationContext()).getProviderController().getLoggedInProvider(
-                        ((MuzimaApplication)getApplicationContext()).getAuthenticatedUser().getSystemId());
-            } catch (ProviderController.ProviderLoadException e) {
-                Log.e(getClass().getSimpleName(),"Provider fetch error"+e.getMessage());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Provider provider) {
-            super.onPostExecute(provider);
-            loggedInProvider = provider;
         }
     }
 }
