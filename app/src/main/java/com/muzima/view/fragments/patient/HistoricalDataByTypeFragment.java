@@ -24,6 +24,7 @@ import com.muzima.adapters.observations.ObservationsByTypeAdapter;
 import com.muzima.model.events.ReloadObservationsDataEvent;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.MuzimaRecyclerView;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 public class HistoricalDataByTypeFragment extends Fragment implements ObservationsByTypeAdapter.ConceptInputLabelClickedListener, RecyclerAdapter.BackgroundListQueryTaskListener {
@@ -56,9 +57,20 @@ public class HistoricalDataByTypeFragment extends Fragment implements Observatio
                 StringUtils.EMPTY);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Subscribe
     public void onReloadDataEvent(ReloadObservationsDataEvent event) {
         observationsByTypeAdapter.reloadData();
+        observationsByTypeAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -85,7 +85,6 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
     public static final String CALLING_ACTIVITY = "calling_activity_key";
     public static final boolean DEFAULT_SHR_STATUS = false;
     private static final boolean DEFAULT_RELATIONSHIP_STATUS = false;
-    private Toolbar toolbar;
     private TextView patientNameTextView;
     private ImageView patientGenderImageView;
     private TextView dobTextView;
@@ -95,23 +94,13 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
     private TextView bottomSheetConceptTitleTextView;
     private TextView incompleteFormsCountView;
     private TextView completeFormsCountView;
-    private View incompleteFormsView;
-    private View completeFormsView;
-    private View childContainerView;
-    private View addReadingActionView;
-    private View cancelBottomSheetActionView;
-    private View saveBottomSheetEntriesActionView;
-    private BottomSheetBehavior bottomSheetBehavior;
-    private RecyclerView singleObsFormsRecyclerView;
-    private View bottomSheetView;
     private String patientUuid;
     private Patient patient;
     private Concept selectedBottomSheetConcept;
     private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
     private ClientDynamicObsFormsAdapter clientDynamicObsFormsAdapter;
-    private List<SummaryCard> formsSummaries = new ArrayList<>();
-    private List<SingleObsForm> singleObsFormsList = new ArrayList<>();
+    private final List<SingleObsForm> singleObsFormsList = new ArrayList<>();
     private ViewPager2 viewPager;
 
     @Override
@@ -119,7 +108,7 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         themeUtils.onCreate(this);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_client_summary);
+        setContentView(R.layout.activity_client_summary);
         initializeResources();
         loadPatientData();
 
@@ -240,9 +229,9 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         dialog.setContentView(view);
 
         bottomSheetConceptTitleTextView = view.findViewById(R.id.cohort_name_text_view);
-        addReadingActionView = view.findViewById(R.id.general_add_reading_button);
-        cancelBottomSheetActionView = view.findViewById(R.id.close_summary_bottom_sheet_view);
-        saveBottomSheetEntriesActionView = view.findViewById(R.id.client_summary_save_action_bottom_sheet);
+        View addReadingActionView = view.findViewById(R.id.general_add_reading_button);
+        View cancelBottomSheetActionView = view.findViewById(R.id.close_summary_bottom_sheet_view);
+        View saveBottomSheetEntriesActionView = view.findViewById(R.id.client_summary_save_action_bottom_sheet);
         clientDynamicObsFormsAdapter = new ClientDynamicObsFormsAdapter(getApplicationContext(), singleObsFormsList, this,this);
         RecyclerView singleObsFormsRecyclerViews = view.findViewById(R.id.client_summary_single_obs_form_recycler_view);
         singleObsFormsRecyclerViews.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -355,7 +344,7 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
     }
 
     private void initializeResources() {
-        toolbar = findViewById(R.id.client_summary_dashboard_toolbar);
+        Toolbar toolbar = findViewById(R.id.client_summary_dashboard_toolbar);
         patientNameTextView = findViewById(R.id.name);
         patientGenderImageView = findViewById(R.id.genderImg);
         dobTextView = findViewById(R.id.dateOfBirth);
@@ -364,8 +353,8 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         gpsAddressTextView = findViewById(R.id.distanceToClientAddress);
         incompleteFormsCountView = findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
         completeFormsCountView = findViewById(R.id.dashboard_forms_complete_forms_count_view);
-        incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
-        completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
+        View incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
+        View completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
