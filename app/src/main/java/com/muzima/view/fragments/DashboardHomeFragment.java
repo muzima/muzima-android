@@ -44,7 +44,6 @@ import com.muzima.model.CohortFilter;
 import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CloseBottomSheetEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
-import com.muzima.model.events.ReloadClientsListEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
@@ -54,6 +53,7 @@ import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
+import com.muzima.view.patients.PatientRemoteSearchListActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.FormsWithDataActivity;
@@ -67,6 +67,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static android.view.View.VISIBLE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
@@ -91,8 +92,6 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     private View noDataView;
     private FloatingActionButton fabSearchButton;
     private FrameLayout progressBarContainer;
-    private TextView noDataTipTextView;
-    private TextView noDataMsgTextView;
     private ProgressBar progressBar;
     private AppBarLayout appBarLayout;
     private TextView filterLabelTextView;
@@ -106,7 +105,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         View view = inflater.inflate(R.layout.fragment_dashboard_home, container, false);
         initializeResources(view);
         setupListView(view);
-        setupNoDataView();
+        setupNoDataView(view);
         return view;
     }
     @Override
@@ -127,9 +126,6 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     }
 
     private void initializeResources(View view) {
-        noDataView = view.findViewById(R.id.no_data_layout);
-        noDataTipTextView = view.findViewById(R.id.no_data_tip);
-        noDataMsgTextView = view.findViewById(R.id.no_data_msg);
         incompleteFormsTextView = view.findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
         completeFormsTextView = view.findViewById(R.id.dashboard_forms_complete_forms_count_view);
         searchPatientEditText = view.findViewById(R.id.dashboard_main_patient_search_view);
@@ -247,6 +243,12 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         } catch (FormController.FormFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);
         }
+    }
+
+    private void setupNoDataView(View view) {
+        noDataView = view.findViewById(R.id.no_data_layout);
+        TextView noDataMsgTextView = view.findViewById(R.id.no_data_msg);
+        noDataMsgTextView.setText(getResources().getText(R.string.info_no_client_available));
     }
 
     private boolean isSHRFeatureEnabled(){
@@ -407,18 +409,15 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         if (filters.size() > 0) {
             for (CohortFilter filter : filters) {
 
-                if (filter.getCohort() != null && !event.isNoSelectionEvent()) {
+                if (filter.getCohort() != null && !cohortUuidList.contains(filter.getCohort().getUuid())) {
                     cohortUuidList.add(filter.getCohort().getUuid());
+                    patientSearchAdapter.filterByCohorts(cohortUuidList);
                 }
             }
+        } else {
+            patientSearchAdapter.filterByCohorts(cohortUuidList);
         }
 
-        patientSearchAdapter.filterByCohorts(cohortUuidList);
-    }
-
-    @Subscribe
-    public void onClientsListReloadEvent(ReloadClientsListEvent event){
-        loadAllPatients();
     }
 
     private void updateCohortFilterLabel(CohortFilterActionEvent event) {
@@ -441,10 +440,6 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         }
     }
 
-    private void setupNoDataView() {
-        noDataMsgTextView.setText(getResources().getText(R.string.info_no_client_available));
-    }
-
     private MuzimaGPSLocation getCurrentGPSLocation() {
         MuzimaGPSLocationService muzimaLocationService = ((MuzimaApplication) getActivity().getApplicationContext())
                 .getMuzimaGPSLocationService();
@@ -454,21 +449,28 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     @Override
     public void onQueryTaskStarted() {
         filterProgressBar.setVisibility(View.VISIBLE);
+        noDataView.setVisibility(View.GONE);
     }
 
     @Override
     public void onQueryTaskFinish() {
         filterProgressBar.setVisibility(View.GONE);
+        if(patientSearchAdapter.isEmpty())
+            noDataView.setVisibility(VISIBLE);
     }
 
     @Override
     public void onQueryTaskCancelled() {
         filterProgressBar.setVisibility(View.GONE);
+        if(patientSearchAdapter.isEmpty())
+            noDataView.setVisibility(VISIBLE);
     }
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
         filterProgressBar.setVisibility(View.GONE);
+        if(patientSearchAdapter.isEmpty())
+            noDataView.setVisibility(VISIBLE);
     }
 
     @Override

@@ -150,9 +150,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     }
 
     public int getThemeColor() {
-        System.out.print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
         String lightModePreferenceKey = getResources().getString(R.string.preference_light_mode);
-        System.out.print("+++++++++++++++++++++++++++++++++++++++++++++ "+lightModePreferenceKey);
         return 1;
     }
 }

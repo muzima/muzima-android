@@ -554,6 +554,11 @@
         <item name="font">@font/roboto_regular</item>
     </style>
 
+    <style name="NoDataView">
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+    </style>
+
     <style name="NoDataMsg">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/primary_white</item>

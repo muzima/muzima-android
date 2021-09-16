@@ -207,14 +207,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         loadCohorts(true);
     }
 
-    public void hideProgressbar() {
-        menuRefresh.setActionView(null);
-    }
-
-    public void showProgressBar() {
-        menuRefresh.setActionView(R.layout.refresh_menuitem);
-    }
-
     private void initializeResources() {
         Toolbar toolbar = findViewById(R.id.dashboard_toolbar);
         setSupportActionBar(toolbar);
@@ -279,7 +271,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    EventBus.getDefault().post(new CohortFilterActionEvent(selectedCohortFilters, false));
+                    EventBus.getDefault().post(new CohortFilterActionEvent(selectedCohortFilters));
                 }
                 EventBus.getDefault().post(new BottomSheetToggleEvent(newState));
             }

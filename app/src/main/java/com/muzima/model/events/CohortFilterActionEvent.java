@@ -16,11 +16,9 @@ import java.util.List;
 
 public class CohortFilterActionEvent {
     private List<CohortFilter> filters;
-    private boolean noSelectionEvent;
 
-    public CohortFilterActionEvent(List<CohortFilter> filters, boolean noSelectionEvent) {
+    public CohortFilterActionEvent(List<CohortFilter> filters) {
         this.filters = filters;
-        this.noSelectionEvent = noSelectionEvent;
     }
 
     public List<CohortFilter> getFilters() {
@@ -29,13 +27,5 @@ public class CohortFilterActionEvent {
 
     public void setFilters(List<CohortFilter> filters) {
         this.filters = filters;
-    }
-
-    public boolean isNoSelectionEvent() {
-        return noSelectionEvent;
-    }
-
-    public void setNoSelectionEvent(boolean noSelectionEvent) {
-        this.noSelectionEvent = noSelectionEvent;
     }
 }
