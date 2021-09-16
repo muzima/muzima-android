@@ -12,7 +12,6 @@ package com.muzima.view.patients;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
@@ -21,7 +20,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -56,6 +54,7 @@ import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import com.muzima.model.events.CloseSingleFormEvent;
 import com.muzima.model.events.ReloadObservationsDataEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
+import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.FormUtils;
@@ -222,7 +221,7 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
 
     @Subscribe
     public void clientSummaryObservationSelectedEvent(ClientSummaryObservationSelectedEvent event) {
-        ObsConceptWrapper conceptWrapper = event.getConceptWrapper();
+        ConceptWithObservations conceptWrapper = event.getConceptWithObservations();
         if (conceptWrapper.getConcept().isCoded() || conceptWrapper.getConcept().isSet() || conceptWrapper.getConcept().isPrecise()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true)

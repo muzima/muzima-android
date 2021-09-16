@@ -52,7 +52,7 @@ public class VideoWebViewActivity extends BaseHelpActivity {
 
     private void setVideoHelpContent() {
         setTitle(getIntent().getStringExtra(VIDEO_TITLE));
-        webView = (WebView) findViewById(R.id.videoWebView);
+        webView = findViewById(R.id.videoWebView);
         webView.setWebChromeClient(new WebChromeClient(){});
         webView.setWebViewClient(new videoWebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);

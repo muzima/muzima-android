@@ -23,6 +23,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.Encounter;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
@@ -37,7 +38,7 @@ import java.util.Locale;
 public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTypeAdapter.ViewHolder> {
     protected Context context;
     private final String patientUuid;
-    private final boolean inputRendering;
+    private final boolean isAddSingleElement;
     private List<ConceptWithObservations> conceptWithObservationsList;
     private final ConceptInputLabelClickedListener conceptInputLabelClickedListener;
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
@@ -47,12 +48,12 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
     final ObservationController observationController;
     private final Boolean isShrData;
 
-    public ObservationsByTypeAdapter(Context context, String patientUuid, Boolean isShrData, boolean inputRendering,
+    public ObservationsByTypeAdapter(Context context, String patientUuid, Boolean isShrData, boolean isAddSingleElement,
                                      ConceptInputLabelClickedListener conceptInputLabelClickedListener) {
         this.context = context;
         this.patientUuid = patientUuid;
         this.isShrData = isShrData;
-        this.inputRendering = inputRendering;
+        this.isAddSingleElement = isAddSingleElement;
         this.conceptInputLabelClickedListener = conceptInputLabelClickedListener;
         MuzimaApplication app = (MuzimaApplication) context.getApplicationContext();
         this.encounterController = app.getEncounterController();
@@ -75,7 +76,7 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
     private void bindViews(@NotNull ViewHolder holder, int position) {
         ConceptWithObservations conceptWithObservations = conceptWithObservationsList.get(position);
 
-        if (inputRendering)
+        if (isAddSingleElement)
             holder.titleTextView.setText(String.format(Locale.getDefault(), "+ %s", getConceptDisplay(conceptWithObservations.getConcept())));
         else
             holder.titleTextView.setText(getConceptDisplay(conceptWithObservations.getConcept()));
@@ -85,7 +86,7 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
             public void onObservationClicked(int position) {
 //                EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(conceptWithObservationsList.get(position)));
             }
-        }, encounterController, observationController, isShrData, inputRendering);
+        }, encounterController, observationController, isShrData, isAddSingleElement);
         holder.obsHorizontalListRecyclerView.setAdapter(observationsListAdapter);
     }
 
@@ -102,11 +103,15 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
         return conceptWithObservationsList.size();
     }
 
+    public ConceptWithObservations getItem(int position) {
+        return conceptWithObservationsList.get(position);
+    }
+
     @Override
     public void reloadData() {
         cancelBackgroundQueryTask();
         AsyncTask<Void, ?, ?> backgroundQueryTask = new ObservationsByTypeBackgroundTask(this,
-                new ConceptsByPatient(conceptController, observationController, patientUuid), isShrData);
+                new ConceptsByPatient(conceptController, observationController, patientUuid), isShrData, isAddSingleElement);
         BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }

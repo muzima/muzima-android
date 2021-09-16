@@ -423,7 +423,6 @@ public class LoginActivity extends Activity {
             new DownloadMuzimaAppVersionCodeBackGroundTask().execute(result.credentials.getServerUrl());
         }
 
-
         protected class Result {
             final Credentials credentials;
             final int status;

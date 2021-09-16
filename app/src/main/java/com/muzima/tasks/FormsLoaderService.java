@@ -15,6 +15,7 @@ import android.content.Context;
 import com.muzima.MuzimaApplication;
 import com.muzima.controller.FormController;
 import com.muzima.model.DownloadedForm;
+import com.muzima.model.collections.AvailableForms;
 
 import java.util.List;
 
@@ -31,8 +32,8 @@ public class FormsLoaderService implements Runnable {
     @Override
     public void run() {
         try {
-            List<DownloadedForm> formsList = ((MuzimaApplication) context.getApplicationContext()).getFormController()
-                    .getAllDownloadedForms();
+            AvailableForms formsList = ((MuzimaApplication) context.getApplicationContext()).getFormController()
+                    .getRecommendedForms();
             callback.onFormsLoaded(formsList);
         }catch (FormController.FormFetchException ex){
             ex.printStackTrace();
@@ -40,6 +41,6 @@ public class FormsLoaderService implements Runnable {
     }
 
     public interface FormsLoadedCallback {
-        void onFormsLoaded(List<DownloadedForm> formList);
+        void onFormsLoaded(AvailableForms availableForms);
     }
 }

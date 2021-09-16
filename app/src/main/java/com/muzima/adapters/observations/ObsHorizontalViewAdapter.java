@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontalViewAdapter.ViewHolder> {
     private final List<Observation> observationList;
@@ -228,10 +229,10 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
         }
 
         conceptNameTextView.setText(observation.getConcept().getName());
-        String conceptDescription = observation.getConcept().getUnit();
+        String conceptUnits = observation.getConcept().getUnit();
 
-        if (conceptDescription != null || conceptDescription != "") {
-            conceptDescriptionTextView.setText("Unit Name: " + conceptDescription);
+        if (!StringUtils.isEmpty(conceptUnits)) {
+            conceptDescriptionTextView.setText("Unit Name: " + conceptUnits);
         }
 
         Encounter encounter = observation.getEncounter();
@@ -279,12 +280,9 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
             Log.e(getClass().getSimpleName(), "An IOException was encountered while fetching encounter ",e);
         }
 
-        dismissDialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                obsDetailsViewDialog.dismiss();
-                obsDetailsViewDialog.cancel();
-            }
+        dismissDialogButton.setOnClickListener(v -> {
+            obsDetailsViewDialog.dismiss();
+            obsDetailsViewDialog.cancel();
         });
     }
 }

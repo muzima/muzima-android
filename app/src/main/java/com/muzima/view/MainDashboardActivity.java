@@ -291,7 +291,8 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         });
 
         cohortFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        headerTitleTextView.setText(((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getUsername());
+        if (((MuzimaApplication) getApplicationContext()).getAuthenticatedUser() != null)
+            headerTitleTextView.setText(((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getUsername());
         setTitle(StringUtils.EMPTY);
     }
 
