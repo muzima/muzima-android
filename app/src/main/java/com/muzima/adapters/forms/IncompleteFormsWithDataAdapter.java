@@ -64,7 +64,6 @@ public class IncompleteFormsWithDataAdapter extends FormsWithDataAdapter<Incompl
             if (adapterWeakReference.get() != null) {
                 FormsWithDataAdapter formsAdapter = (FormsWithDataAdapter) adapterWeakReference.get();
                 if (forms != null && !forms.isEmpty()) {
-                    formsAdapter.setPatients(formsAdapter.buildPatientsList(forms));
                     formsAdapter.sortFormsByPatientName(forms);
                     notifyListener();
                 } else {

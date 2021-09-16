@@ -146,25 +146,4 @@ public class NotificationActivity extends BaseActivity {
             Log.e(getClass().getSimpleName(), "Error getting encounter data " + e.getMessage(), e);
         }
     }
-
-    private class LoggedProviderFetchBackgrounudTask extends AsyncTask<Void,Void,Provider>{
-
-
-        @Override
-        protected Provider doInBackground(Void... voids) {
-            try {
-                return ((MuzimaApplication)getApplicationContext()).getProviderController().getLoggedInProvider(
-                        ((MuzimaApplication)getApplicationContext()).getAuthenticatedUser().getSystemId());
-            } catch (ProviderController.ProviderLoadException e) {
-                Log.e(getClass().getSimpleName(),"Provider fetch error"+e.getMessage());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Provider provider) {
-            super.onPostExecute(provider);
-            loggedInProvider = provider;
-        }
-    }
 }

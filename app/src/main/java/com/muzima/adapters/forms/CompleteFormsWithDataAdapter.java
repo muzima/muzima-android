@@ -69,7 +69,6 @@ public class CompleteFormsWithDataAdapter extends FormsWithDataAdapter<CompleteF
                 // Forms have to be displayed in sorted fashion by Patient. And forms' don't have a direct relationship with patient.
                 FormsWithDataAdapter formsAdapter = (FormsWithDataAdapter) adapterWeakReference.get();
                 if (forms != null && !forms.isEmpty()) {
-                    formsAdapter.setPatients(formsAdapter.buildPatientsList(forms));
                     formsAdapter.sortFormsByPatientName(forms);
                     notifyListener();
                 } else {

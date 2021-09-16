@@ -140,7 +140,7 @@ public class FormsWithDataActivity extends FormsActivityBase {
         super.onResume();
         themeUtils.onResume(this);
         languageUtil.onResume(this);
-        tagsListAdapter.reloadData();
+        //tagsListAdapter.reloadData();
     }
 
     @Override
@@ -187,7 +187,7 @@ public class FormsWithDataActivity extends FormsActivityBase {
                 hideProgressbar();
                 syncInProgress = false;
                 if (syncStatus == SyncStatusConstants.SUCCESS) {
-                    tagsListAdapter.reloadData();
+                    //tagsListAdapter.reloadData();
                     ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadFinish();
                 }
                 break;
@@ -320,10 +320,12 @@ public class FormsWithDataActivity extends FormsActivityBase {
         initSelectedTags();
         ListView tagsDrawerList = findViewById(R.id.tags_list);
         tagsDrawerList.setEmptyView(findViewById(R.id.tags_no_data_msg));
-        tagsListAdapter = new TagsListAdapter(this, R.layout.item_tags_list, formController);
-        tagsDrawerList.setAdapter(tagsListAdapter);
-        tagsDrawerList.setOnItemClickListener(tagsListAdapter);
-        tagsListAdapter.setTagsChangedListener((FormsPagerAdapter) formsPagerAdapter);
+
+        //ToDo: Reactivate when working on form tags
+//        tagsListAdapter = new TagsListAdapter(this, R.layout.item_tags_list, formController);
+//        tagsDrawerList.setAdapter(tagsListAdapter);
+//        tagsDrawerList.setOnItemClickListener(tagsListAdapter);
+//        tagsListAdapter.setTagsChangedListener((FormsPagerAdapter) formsPagerAdapter);
         ActionBarDrawerToggle actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
                 R.drawable.ic_labels, R.string.hint_drawer_open, R.string.hint_drawer_close) {
 
@@ -349,8 +351,6 @@ public class FormsWithDataActivity extends FormsActivityBase {
         };
         mainLayout.setDrawerListener(actionbarDrawerToggle);
         mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
-        TextView tagsNoDataMsg = findViewById(R.id.tags_no_data_msg);
     }
 
     private void initSelectedTags() {

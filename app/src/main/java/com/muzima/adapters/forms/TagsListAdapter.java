@@ -108,7 +108,7 @@ public class TagsListAdapter extends ListAdapter<Tag> implements AdapterView.OnI
 
     @Override
     public void reloadData() {
-        new BackgroundQueryTask().execute();
+        //new BackgroundQueryTask().execute();
     }
 
     @Override

@@ -30,7 +30,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortsPagerAdapter;
-import com.muzima.model.cohort.CohortItem;
 import com.muzima.model.events.CohortSearchEvent;
 import com.muzima.model.events.CohortsDownloadedEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
@@ -40,12 +39,8 @@ import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;;
 
 import static com.muzima.view.BroadcastListenerActivity.MESSAGE_SENT_ACTION;
 import static com.muzima.view.BroadcastListenerActivity.PROGRESS_UPDATE_ACTION;
