@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~ this code in a for-profit venture, please contact the copyright holder.
+  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/no_data_layout"
@@ -8,18 +17,15 @@
               android:orientation="vertical"
               android:visibility="gone">
 
-    <ImageView
-            android:id="@+id/no_data_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:srcCompat="@drawable/empty_view"
-            android:contentDescription="@string/info_forms_unavailable"/>
+    <ImageView android:id="@+id/no_data_image"
+               android:layout_width="50dp"
+               android:layout_height="50dp"
+               app:srcCompat="@drawable/empty_view"
+               android:contentDescription="@string/info_forms_unavailable"/>
 
-    <TextView
-            android:id="@+id/no_data_msg"
-            style="@style/NoDataMsg"/>
+    <TextView android:id="@+id/no_data_msg"
+              style="@style/NoDataMsg"/>
 
-    <TextView
-            android:id="@+id/no_data_tip"
-            style="@style/NoDataTip"/>
+    <TextView android:id="@+id/no_data_tip"
+              style="@style/NoDataTip"/>
 </LinearLayout>

@@ -1,28 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~ this code in a for-profit venture, please contact the copyright holder.
+  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center">
 
     <LinearLayout style="@style/AutocompleteTextArea">
 
         <AutoCompleteTextView
-            android:id="@+id/concept_add_concept"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minWidth="400dp"
-            android:background="?attr/primaryBackgroundColor"
-            android:hint="@string/enter_concept_name_text"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:popupBackground="?attr/primaryBackgroundColor"
-            android:textColor="?attr/primaryTextColor"
-            android:textColorHint="@color/hint_text_grey"
-            android:textCursorDrawable="@null">
+                android:id="@+id/concept_add_concept"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minWidth="400dp"
+                android:background="?attr/primaryBackgroundColor"
+                android:hint="@string/enter_concept_name_text"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:popupBackground="?attr/primaryBackgroundColor"
+                android:textColor="?attr/primaryTextColor"
+                android:textColorHint="@color/hint_text_grey"
+                android:textCursorDrawable="@null">
 
-            <requestFocus />
+            <requestFocus/>
         </AutoCompleteTextView>
 
     </LinearLayout>
-
 </LinearLayout>

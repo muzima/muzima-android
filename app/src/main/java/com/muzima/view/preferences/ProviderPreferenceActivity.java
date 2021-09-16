@@ -5,12 +5,13 @@
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
  * If the user is an entity intending to commercialize any application that uses
- *  this code in a for-profit venture,please contact the copyright holder.
+ * this code in a for-profit venture, please contact the copyright holder.
  */
 package com.muzima.view.preferences;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -58,6 +59,8 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
         ActionBar actionBar = getSupportActionBar();
+        int themecolor = themeUtils.getThemeColor(this);
+        actionBar.setBackgroundDrawable(new ColorDrawable(themecolor));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);

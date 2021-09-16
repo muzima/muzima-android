@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ Copyright (c) The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center. All Rights Reserved.
@@ -7,7 +6,7 @@
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
   ~ If the user is an entity intending to commercialize any application that uses
-  ~  this code in a for-profit venture,please contact the copyright holder.
+  ~ this code in a for-profit venture, please contact the copyright holder.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_patient_container"
@@ -49,7 +48,6 @@
             <TextView
                 android:id="@+id/identifier"
                 style="@style/ListDescription"
-                android:text="ident"
                 android:fontFamily="@font/roboto_regular"
                 android:textColor="?attr/primaryTextColor"
                 android:layout_width="wrap_content"
@@ -82,7 +80,6 @@
                     <TextView
                         android:id="@+id/name"
                         style="@style/ListHeader"
-                        android:text="Patient name"
                         android:fontFamily="@font/montserrat_regular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -114,7 +111,7 @@
                             android:fontFamily="@font/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_marginStart="12dp"
-                            android:gravity="right"
+                            android:gravity="end"
                             android:textStyle="italic"
                             android:visibility="gone"/>
 
@@ -136,10 +133,7 @@
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
-
-
 </RelativeLayout>
 
 

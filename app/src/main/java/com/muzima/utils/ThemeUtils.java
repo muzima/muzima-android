@@ -5,7 +5,7 @@
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
  * If the user is an entity intending to commercialize any application that uses
- *  this code in a for-profit venture,please contact the copyright holder.
+ * this code in a for-profit venture, please contact the copyright holder.
  */
 
 package com.muzima.utils;
@@ -14,9 +14,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
+
+import androidx.annotation.ColorInt;
 
 import com.muzima.R;
 
@@ -94,5 +98,13 @@ public class ThemeUtils {
     private int getThemeResource(Activity context) {
         if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(context)) return R.style.AppTheme_Light;
         else return R.style.AppTheme_Dark;
+    }
+
+    public int getThemeColor(Activity context){
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
+        @ColorInt int color = typedValue.data;
+        return color;
     }
 }

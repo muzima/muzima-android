@@ -5,7 +5,7 @@
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
  * If the user is an entity intending to commercialize any application that uses
- *  this code in a for-profit venture,please contact the copyright holder.
+ * this code in a for-profit venture, please contact the copyright holder.
  */
 
 package com.muzima.utils.audio;
@@ -41,7 +41,7 @@ public class AudioIntent extends Activity {
     public static final String KEY_SECTION_NAME = "sectionName";
 
     private final int AUDIO_CHOOSE = 2;
-	
+
     private String AUDIO_FOLDER;
     private boolean isNewAudio;
 
@@ -63,7 +63,7 @@ public class AudioIntent extends Activity {
 	    languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio);
-        
+
         Intent i = getIntent();
         String audioPath = i.getStringExtra(KEY_AUDIO_PATH);
         mBinaryDescription  = i.getStringExtra(KEY_AUDIO_CAPTION);
@@ -102,25 +102,25 @@ public class AudioIntent extends Activity {
                 }
             }
         }
-        
+
         mNoAudioMessage = findViewById(R.id.noAudioMessage);
         mAudioPreview = findViewById(R.id.audioPreview);
         mAudioCaption = findViewById(R.id.audioCaption);
         mAudioThumbnail = findViewById(R.id.audioThumbnail);
         mAudioAcceptContainer = findViewById(R.id.audioAcceptContainer);
         mAudioRecordContainer = findViewById(R.id.audioRecordContainer);
-        
+
         refreshAudioView();
 	}
-	
+
 	public void acceptAudio(View view) {
     	String caption = mAudioCaption.getText().toString();
-    	
+
     	if (caption == null || caption.length() < 1){
     		Toast.makeText(getApplicationContext(),getString(R.string.hint_audio_caption), Toast.LENGTH_SHORT).show();
     		return;
     	}
-    	
+
     	String audioUri = AUDIO_FOLDER + File.separator  + mBinaryName;
 
         if (mBinaryName != null) {
@@ -132,16 +132,16 @@ public class AudioIntent extends Activity {
         }
         finish();
 	}
-	
+
 	public void rejectAudio(View view) {
-		if (isNewAudio) 
+		if (isNewAudio)
 			deleteMedia();
-			
+
 		mBinaryName=null;
-		
+
 		refreshAudioView();
 	}
-	
+
 	public void recordAudio(View view) {
 		isNewAudio = true;
 		Intent i = new Intent(Audio.Media.RECORD_SOUND_ACTION);
@@ -152,7 +152,7 @@ public class AudioIntent extends Activity {
             startActivityForResult(i, AUDIO_CAPTURE);
 		} catch (ActivityNotFoundException e) {
 			Toast.makeText(this,getString(R.string.error_audio_record_activity_find), Toast.LENGTH_SHORT).show();
-		}		
+		}
 	}
 
     public void chooseAudio(View view) {
@@ -169,7 +169,7 @@ public class AudioIntent extends Activity {
 			Toast.makeText(this,getString(R.string.error_audio_chose_activity_find), Toast.LENGTH_SHORT).show();
 		}
 	}
-	
+
 	public void playAudio(View view) {
 		Intent i = new Intent("android.intent.action.VIEW");
 		File f = new File(AUDIO_FOLDER + File.separator + mBinaryName);
@@ -180,21 +180,21 @@ public class AudioIntent extends Activity {
 			Toast.makeText(AudioIntent.this,getString(R.string.error_audio_play_activity_find), Toast.LENGTH_SHORT).show();
 		}
 	}
-	
+
 	private void refreshAudioView() {
 		if (mBinaryName != null) {
 			// show preview with thumbnail view
             mAudioPreview.setVisibility(View.VISIBLE);
-            
+
             // show accept view
             mAudioAcceptContainer.setVisibility(View.VISIBLE);
 
             // show caption view
             mAudioCaption.setVisibility(View.VISIBLE);
-            
+
             //hide record view
             mAudioRecordContainer.setVisibility(View.GONE);
-            
+
             //hide no message view
             mNoAudioMessage.setVisibility(View.GONE);
 
@@ -202,19 +202,19 @@ public class AudioIntent extends Activity {
                 mAudioCaption.setText(mBinaryDescription);
 		} else {
 			mAudioThumbnail.setImageBitmap(null);
-			
+
 			// hide preview with thumbnail view
             mAudioPreview.setVisibility(View.GONE);
-            
+
             // hide accept view
             mAudioAcceptContainer.setVisibility(View.GONE);
 
             // hide caption view
             mAudioCaption.setVisibility(View.GONE);
-            
+
             //show record view
             mAudioRecordContainer.setVisibility(View.VISIBLE);
-            
+
             //show no message view
             mNoAudioMessage.setVisibility(View.VISIBLE);
 		}
@@ -259,7 +259,7 @@ public class AudioIntent extends Activity {
             refreshAudioView();
         }
 	}
-	
+
     @Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);

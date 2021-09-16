@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center. All Rights Reserved.
@@ -5,7 +6,7 @@
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
   ~ If the user is an entity intending to commercialize any application that uses
-  ~  this code in a for-profit venture,please contact the copyright holder.
+  ~ this code in a for-profit venture, please contact the copyright holder.
   -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,8 +14,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/DashboardTableContainer">
+    <LinearLayout style="@style/DashboardTableContainer">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -37,7 +37,6 @@
                 <include layout="@layout/client_summary_patients_list"/>
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
-
 
         <View
             style="@style/DividerLine"
@@ -110,7 +109,6 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:src="@drawable/ic_search" />
-
                 </RelativeLayout>
 
                 <LinearLayout

@@ -6,7 +6,7 @@
   ~ This version of the code is licensed under the MPL 2.0 Open Source license
   ~ with additional health care disclaimer.
   ~ If the user is an entity intending to commercialize any application that uses
-  ~  this code in a for-profit venture,please contact the copyright holder.
+  ~ this code in a for-profit venture, please contact the copyright holder.
   -->
 
 <resources>
@@ -47,7 +47,7 @@
     <color name="divider_color">#48A1A0A0</color>
     <color name="hint_text_grey_opaque">#7CA1A0A0</color>
     <color name="hint_blue_opaque">#61137EFE</color>
-    <color name="white_smoke_transparent">#54FFFFFF</color>
+    <color name="white_smoke_transparent">#54787777</color>
     <color name="white">#fff</color>
     <color name="light_blue">#5EA4F4</color>
     <color name="bottom_navigation_background">#CD2B2A2A</color>
