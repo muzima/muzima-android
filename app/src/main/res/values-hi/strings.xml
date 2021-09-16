@@ -707,14 +707,14 @@ Google Play सेवाएं https://www.google.com/policies/privacy/
     <string name="general_filter_by">द्वारा फ़िल्टर किया गया</string>
     <string name="general_all_clients">सभी ग्राहक</string>
     <string name="general_display_all">सभी प्रदर्शित करें</string>
-    <string name="general_downloaded">Baixado</string>
+    <string name="general_downloaded">डाउनलोड</string>
     <string name="general_available_online">ऑनलाइन मौजूद है</string>
     <string name="general_selected">गिने चुने</string>
     <string name="general_sort_by_status">स्थिति के अनुसार</string>
     <string name="general_filtered_list">फ़िल्टर की गई सूची</string>
     <string name="general_security_description">मुज़िमा पासवर्ड लॉगिन, एन्क्रिप्शन, सुरक्षित डेटा ट्रांसमिशन, समयबद्ध उपयोगकर्ता लॉगआउट सहित सुरक्षा सुविधाएँ प्रदान करता है।</string>
     <string name="general_security">सुरक्षा</string>
-    <string name="general_multiple_cases_description">मुज़िमा नैदानिक ​​सुविधाओं के भीतर और बाहर, किसी भी नैदानिक ​​उपयोग के मामलों का समर्थन करने के लिए आसानी से अनुकूलन योग्य है।</string>
+    <string name="general_multiple_cases_description">मुज़िमा नैदानिक सुविधाओं के भीतर और बाहर, किसी भी नैदानिक उपयोग के मामलों का समर्थन करने के लिए आसानी से अनुकूलन योग्य है।</string>
     <string name="general_multiple_use_cases">एकाधिक उपयोग के मामले</string>
     <string name="general_openmrs_compatibility_description">mUzima को OpenMRS के mHealth एक्सटेंशन के रूप में डिज़ाइन किया गया था। OpenMRS को कई देशों में राष्ट्रीय स्तर पर तैनात किया गया है।</string>
     <string name="general_openmrs_compatibility">ओपनएमआरएस संगतता</string>
@@ -727,7 +727,7 @@ Google Play सेवाएं https://www.google.com/policies/privacy/
     <string name="general_data_collection_tools">डेटा संग्रह उपकरण</string>
     <string name="general_works_offline">ऑफ़लाइन काम करता है</string>
     <string name="general_geomapping">जियोमैपिंग</string>
-    <string name="general_clinical_summary">नैदानिक ​​​​सारांश</string>
+    <string name="general_clinical_summary">नैदानिक सारांश</string>
     <string name="general_relationship_management">संबंध प्रबंधन</string>
     <string name="general_multiple_themes">एकाधिक थीम</string>
     <string name="general_historical_data_view">ऐतिहासिक डेटा दृश्य</string>
