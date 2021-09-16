@@ -17,16 +17,16 @@
     <include layout="@layout/dashboard_home_container"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_search"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="6dp"
-            android:layout_gravity="end|bottom"
-            app:fabSize="auto"
-            app:backgroundTint="@color/fab_tint_color"
-            android:src="@drawable/ic_add_patient"/>
+        android:id="@+id/fab_search"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="6dp"
+        android:layout_gravity="end|bottom"
+        app:fabSize="auto"
+        app:backgroundTint="@color/fab_tint_color"
+        android:src="@drawable/ic_add_patient_white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

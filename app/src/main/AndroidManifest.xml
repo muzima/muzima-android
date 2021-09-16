@@ -71,35 +71,41 @@
         <activity
             android:name=".view.login.LoginActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/LoginTheme.Dark" />
         <activity
             android:name=".view.preferences.SettingsActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_settings"
             android:parentActivityName=".view.MainDashboardActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".view.preferences.ProviderPreferenceActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_providers"
             android:parentActivityName=".view.preferences.SettingsActivity">
         </activity>
         <activity
             android:name=".view.preferences.ConceptPreferenceActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_concepts"
             android:parentActivityName=".view.preferences.SettingsActivity">
         </activity>
         <activity
             android:name=".view.preferences.LocationPreferenceActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_locations"
             android:parentActivityName=".view.preferences.SettingsActivity">
         </activity>
         <activity
             android:name=".view.help.HelpActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_help"
             android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
@@ -109,6 +115,7 @@
         <activity
             android:name=".view.help.InteractiveHelpActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/ask_help"
             android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
@@ -118,6 +125,7 @@
         <activity
             android:name=".view.help.FeedbackActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_feedback"
             android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
@@ -127,6 +135,7 @@
         <activity
             android:name=".view.help.WebViewActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_help"
             android:parentActivityName=".view.BaseActivity">
             <meta-data
@@ -136,6 +145,7 @@
         <activity
             android:name=".view.patients.PatientsSearchActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_clients"
             android:parentActivityName=".view.MainDashboardActivity"
             android:windowSoftInputMode="adjustResize">
@@ -143,16 +153,19 @@
         <activity
             android:name=".view.patients.PatientRemoteSearchListActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_clients" />
         <activity
             android:name=".view.forms.FormsWithDataActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_forms"
             android:parentActivityName=".view.MainDashboardActivity">
         </activity>
         <activity
             android:name=".view.forms.FormWebViewActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_form"
             android:parentActivityName=".view.forms.FormsWithDataActivity"
             android:windowSoftInputMode="adjustResize">
@@ -164,6 +177,7 @@
         <activity
             android:name=".view.forms.HTMLFormWebViewActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_form"
             android:parentActivityName=".view.forms.FormsWithDataActivity"
             android:theme="@style/DialogNoTitleBar"
@@ -174,6 +188,8 @@
         </activity>
         <activity
             android:name=".view.notifications.PatientNotificationActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_client_summary"
             android:parentActivityName=".view.patients.PatientSummaryActivity">
             <meta-data
@@ -183,6 +199,7 @@
         <activity
             android:name=".view.encounters.EncounterSummaryActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_observations"
             android:parentActivityName=".view.patients.PatientSummaryActivity">
             <meta-data
@@ -192,10 +209,13 @@
         <activity
             android:name=".view.forms.RegistrationFormsActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="Select Registration Form"
             android:noHistory="true" />
         <activity
             android:name=".utils.imaging.ImagingIntent"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_image"
             android:parentActivityName=".view.forms.FormsWithDataActivity">
             <meta-data
@@ -205,6 +225,7 @@
         <activity
             android:name=".view.reports.PatientReportActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_client_reports"
             android:parentActivityName=".view.patients.PatientSummaryActivity">
             <meta-data
@@ -214,6 +235,7 @@
         <activity
             android:name=".view.reports.PatientReportWebActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_client_reports"
             android:parentActivityName=".view.reports.PatientReportActivity">
             <meta-data
@@ -223,6 +245,7 @@
         <activity
             android:name=".utils.audio.AudioIntent"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_audio"
             android:parentActivityName=".view.forms.FormsWithDataActivity"
             android:windowSoftInputMode="adjustResize">
@@ -233,6 +256,7 @@
         <activity
             android:name=".utils.video.VideoIntent"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_video"
             android:parentActivityName=".view.forms.FormsWithDataActivity"
             android:windowSoftInputMode="adjustResize">
@@ -243,6 +267,7 @@
         <activity
             android:name=".view.notifications.NotificationActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_notification"
             android:parentActivityName=".view.patients.PatientSummaryActivity"
             android:windowSoftInputMode="adjustResize">
@@ -253,6 +278,7 @@
         <activity
             android:name=".view.relationship.RelationshipsListActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_relationships"
             android:parentActivityName=".view.patients.PatientSummaryActivity"
             android:windowSoftInputMode="adjustResize">
@@ -263,6 +289,7 @@
         <activity
             android:name=".view.patients.PatientLocationMapActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/title_client_location"
             android:parentActivityName=".view.patients.PatientSummaryActivity"
             android:windowSoftInputMode="adjustResize">
@@ -273,6 +300,7 @@
         <activity
             android:name=".view.patients.PatientsLocationMapActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/title_clients_locations"
             android:parentActivityName=".view.patients.PatientsSearchActivity"
             android:windowSoftInputMode="adjustResize">
@@ -283,6 +311,7 @@
         <activity
             android:name=".view.maps.GPSLocationPickerActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/title_pick_location"
             android:parentActivityName=".view.patients.PatientsSearchActivity"
             android:windowSoftInputMode="adjustResize">
@@ -294,6 +323,7 @@
         <activity
             android:name=".view.notifications.NotificationsListActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_notifications"
             android:parentActivityName=".view.MainDashboardActivity">
         </activity>
@@ -309,6 +339,7 @@
         <activity
             android:name=".view.initialwizard.GuidedConfigurationWizardActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/title_guided_setup_wizard"
             android:theme="@style/WizardTheme.Dark" />
         <!-- Wizard Activities End -->
@@ -316,12 +347,14 @@
         <activity
             android:name=".view.reports.ProviderReportViewActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/title_provider_reports"
             android:parentActivityName=".view.MainDashboardActivity">
         </activity>
         <activity
             android:name=".view.reports.ProviderReportListActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/title_provider_reports"
             android:parentActivityName=".view.MainDashboardActivity">
         </activity>
@@ -351,6 +384,7 @@
         <activity
             android:name=".view.help.YouTubeVideoViewActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/general_help"
             android:parentActivityName=".view.help.HelpActivity">
             <meta-data
@@ -360,6 +394,7 @@
         <activity
             android:name=".view.help.VideoWebViewActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
             android:label="@string/general_help"
             android:parentActivityName=".view.help.HelpActivity">
@@ -370,6 +405,7 @@
         <activity
             android:name=".view.relationship.RelationshipFormsActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/select_a_relationship_form_text"
             android:noHistory="true"
             android:parentActivityName=".view.patients.PatientSummaryActivity"
@@ -378,12 +414,14 @@
         <activity
             android:name=".view.forms.EncounterMiniFormActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:noHistory="true"
             android:parentActivityName=".view.patients.PatientSummaryActivity"
             android:theme="@style/DialogNoTitleBar" />
         <activity
             android:name=".view.forms.PersonDemographicsUpdateFormsActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/select_a_relationship_form_text"
             android:noHistory="true"
             android:parentActivityName=".view.patients.PatientSummaryActivity"
@@ -393,9 +431,10 @@
         <activity android:name=".view.initialwizard.TermsAndPolicyActivity" />
         <activity android:name=".view.MainDashboardActivity"
                   android:configChanges="orientation|screenSize"
-                  android:theme="@style/LoginTheme.Dark"/>
+                  android:screenOrientation="portrait"/>
         <activity android:name=".view.patients.PatientSummaryActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_client_summary"
             android:parentActivityName=".view.MainDashboardActivity">
             <meta-data
@@ -404,9 +443,11 @@
         </activity>
         <activity android:name=".view.cohort.CohortPagerActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:launchMode="singleTask"/>
         <activity android:name=".view.forms.FormPagerActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:launchMode="singleTask"/>
 
         <meta-data
