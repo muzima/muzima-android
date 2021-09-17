@@ -148,9 +148,4 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     public void onBackPressed() {
         launchDashboard();
     }
-
-    public int getThemeColor() {
-        String lightModePreferenceKey = getResources().getString(R.string.preference_light_mode);
-        return 1;
-    }
 }
