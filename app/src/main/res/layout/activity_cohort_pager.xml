@@ -67,7 +67,8 @@
             app:tabSelectedTextColor="@color/primary_blue"
             app:tabMode="fixed"
             app:tabGravity="fill"
-            app:tabIndicatorHeight="3dp">
+            app:tabIndicatorHeight="3dp"
+            app:tabIndicatorColor="@color/primary_blue">
 
         <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_all"

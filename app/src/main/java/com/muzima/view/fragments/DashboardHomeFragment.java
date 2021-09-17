@@ -95,6 +95,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     private ProgressBar filterProgressBar;
     private boolean bottomSheetFilterVisible;
     private PatientsLocalSearchAdapter patientSearchAdapter;
+    private CohortFilterActionEvent latestCohortFilterActionEvent;
 
     @Nullable
     @Override
@@ -109,6 +110,11 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     public void onResume(){
         super.onResume();
         loadFormsCount();
+        if(latestCohortFilterActionEvent != null){
+            cohortFilterEvent(latestCohortFilterActionEvent);
+        } else if(patientSearchAdapter != null){
+            patientSearchAdapter.reloadData();
+        }
     }
 
     private void setupListView(View view) {
@@ -393,6 +399,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
 
     @Subscribe
     public void cohortFilterEvent(final CohortFilterActionEvent event) {
+        latestCohortFilterActionEvent = event;
         bottomSheetFilterVisible = false;
         updateCohortFilterLabel(event);
 
