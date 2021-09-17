@@ -11,6 +11,7 @@ package com.muzima.view.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,8 +45,8 @@ import com.muzima.model.CohortFilter;
 import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CloseBottomSheetEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
-import com.muzima.model.events.ReloadClientsListEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
+import com.muzima.model.events.UploadedFormDataEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.SHRStatusPreferenceService;
@@ -67,6 +68,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static android.view.View.VISIBLE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
@@ -80,25 +82,20 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     private View completeFormsView;
     private View searchPatientEditText;
     private View searchByBarCode;
-    private View searchByFingerprint;
-    private View searchByServer;
     private View searchBySmartCard;
-    private View fragmentContentContainer;
     private View filterActionView;
     private View childContainer;
     private TextView providerNameTextView;
     private ListView listView;
     private View noDataView;
     private FloatingActionButton fabSearchButton;
-    private FrameLayout progressBarContainer;
-    private TextView noDataTipTextView;
-    private TextView noDataMsgTextView;
     private ProgressBar progressBar;
     private AppBarLayout appBarLayout;
     private TextView filterLabelTextView;
     private ProgressBar filterProgressBar;
     private boolean bottomSheetFilterVisible;
     private PatientsLocalSearchAdapter patientSearchAdapter;
+    private CohortFilterActionEvent latestCohortFilterActionEvent;
 
     @Nullable
     @Override
@@ -106,13 +103,18 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         View view = inflater.inflate(R.layout.fragment_dashboard_home, container, false);
         initializeResources(view);
         setupListView(view);
-        setupNoDataView();
+        setupNoDataView(view);
         return view;
     }
     @Override
     public void onResume(){
         super.onResume();
         loadFormsCount();
+        if(latestCohortFilterActionEvent != null){
+            cohortFilterEvent(latestCohortFilterActionEvent);
+        } else if(patientSearchAdapter != null){
+            patientSearchAdapter.reloadData();
+        }
     }
 
     private void setupListView(View view) {
@@ -127,22 +129,15 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     }
 
     private void initializeResources(View view) {
-        noDataView = view.findViewById(R.id.no_data_layout);
-        noDataTipTextView = view.findViewById(R.id.no_data_tip);
-        noDataMsgTextView = view.findViewById(R.id.no_data_msg);
         incompleteFormsTextView = view.findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
         completeFormsTextView = view.findViewById(R.id.dashboard_forms_complete_forms_count_view);
         searchPatientEditText = view.findViewById(R.id.dashboard_main_patient_search_view);
         searchByBarCode = view.findViewById(R.id.search_barcode_view);
-        searchByFingerprint = view.findViewById(R.id.search_fingerprint);
-        searchByServer = view.findViewById(R.id.search_server_view);
         searchBySmartCard = view.findViewById(R.id.search_smart_card_view);
         filterActionView = view.findViewById(R.id.favourite_list_container);
-        progressBarContainer = view.findViewById(R.id.progressbarContainer);
         fabSearchButton = view.findViewById(R.id.fab_search);
         progressBar = view.findViewById(R.id.patient_loader_progress_bar);
         providerNameTextView = view.findViewById(R.id.dashboard_home_welcome_message_text_view);
-        fragmentContentContainer = view.findViewById(R.id.dashboard_home_fragment_container);
         filterLabelTextView = view.findViewById(R.id.dashboard_home_filter_text_view);
         childContainer = view.findViewById(R.id.dashboard_home_fragment_child_container);
         appBarLayout = view.findViewById(R.id.dashboard_home_app_bar);
@@ -247,6 +242,12 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         } catch (FormController.FormFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);
         }
+    }
+
+    private void setupNoDataView(View view) {
+        noDataView = view.findViewById(R.id.no_data_layout);
+        TextView noDataMsgTextView = view.findViewById(R.id.no_data_msg);
+        noDataMsgTextView.setText(getResources().getText(R.string.info_no_client_available));
     }
 
     private boolean isSHRFeatureEnabled(){
@@ -398,6 +399,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
 
     @Subscribe
     public void cohortFilterEvent(final CohortFilterActionEvent event) {
+        latestCohortFilterActionEvent = event;
         bottomSheetFilterVisible = false;
         updateCohortFilterLabel(event);
 
@@ -407,18 +409,20 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         if (filters.size() > 0) {
             for (CohortFilter filter : filters) {
 
-                if (filter.getCohort() != null && !event.isNoSelectionEvent()) {
+                if (filter.getCohort() != null && !cohortUuidList.contains(filter.getCohort().getUuid())) {
                     cohortUuidList.add(filter.getCohort().getUuid());
+                    patientSearchAdapter.filterByCohorts(cohortUuidList);
                 }
             }
+        } else {
+            patientSearchAdapter.filterByCohorts(cohortUuidList);
         }
 
-        patientSearchAdapter.filterByCohorts(cohortUuidList);
     }
 
     @Subscribe
-    public void onClientsListReloadEvent(ReloadClientsListEvent event){
-        loadAllPatients();
+    public void uploadedFormDataEvent(final UploadedFormDataEvent event){
+        loadFormsCount();
     }
 
     private void updateCohortFilterLabel(CohortFilterActionEvent event) {
@@ -441,10 +445,6 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         }
     }
 
-    private void setupNoDataView() {
-        noDataMsgTextView.setText(getResources().getText(R.string.info_no_client_available));
-    }
-
     private MuzimaGPSLocation getCurrentGPSLocation() {
         MuzimaGPSLocationService muzimaLocationService = ((MuzimaApplication) getActivity().getApplicationContext())
                 .getMuzimaGPSLocationService();
@@ -454,21 +454,28 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     @Override
     public void onQueryTaskStarted() {
         filterProgressBar.setVisibility(View.VISIBLE);
+        noDataView.setVisibility(View.GONE);
     }
 
     @Override
     public void onQueryTaskFinish() {
         filterProgressBar.setVisibility(View.GONE);
+        if(patientSearchAdapter.isEmpty())
+            noDataView.setVisibility(VISIBLE);
     }
 
     @Override
     public void onQueryTaskCancelled() {
         filterProgressBar.setVisibility(View.GONE);
+        if(patientSearchAdapter.isEmpty())
+            noDataView.setVisibility(VISIBLE);
     }
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
         filterProgressBar.setVisibility(View.GONE);
+        if(patientSearchAdapter.isEmpty())
+            noDataView.setVisibility(VISIBLE);
     }
 
     @Override

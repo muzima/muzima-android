@@ -178,6 +178,7 @@ public class DataSyncService extends IntentService {
                     int[] result = muzimaSyncService.uploadAllCompletedForms();
                     broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS);
                     prepareBroadcastMsgForFormUpload(broadcastIntent, result, getString(R.string.info_real_time_upload_success));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_SETTINGS:

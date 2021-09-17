@@ -10,7 +10,7 @@
   -->
 <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/primaryBackgroundColor"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
     tools:ignore="MissingPrefix"
@@ -131,7 +131,7 @@
 
                         <ImageView
                             android:background="@drawable/border_button_sharp_gray"
-                            android:id="@+id/search_server_view"
+                            android:id="@+id/search_fhir"
                             android:layout_height="34dp"
                             android:layout_width="34dp"
                             android:padding="6dp"
@@ -220,28 +220,6 @@
                     android:layout_height="wrap_content"/>
 
                 <LinearLayout
-                    android:gravity="center"
-                    android:id="@+id/no_data_layout"
-                    android:layout_below="@id/list"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:paddingRight="16dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:gravity="center_horizontal"
-                        android:id="@+id/no_data_msg"
-                        style="@style/NoDataMsg"
-                    />
-
-                    <TextView
-                        android:id="@+id/no_data_tip"
-                        style="@style/NoDataTip"
-                    />
-                </LinearLayout>
-
-                <LinearLayout
                     android:gravity="center_horizontal"
                     android:id="@+id/search_server_layout"
                     android:layout_below="@id/no_data_layout"
@@ -268,6 +246,8 @@
 
             <include layout="@layout/progress_bar" />
         </FrameLayout>
+
+        <include layout="@layout/recycler_no_data_view"/>
 
     </LinearLayout>
 

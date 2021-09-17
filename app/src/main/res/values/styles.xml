@@ -508,7 +508,8 @@
         <item name="android:paddingBottom">5dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="font">@font/montserrat_black</item>
+        <item name="android:textSize">16dp</item>
     </style>
 
     <style name="ListViewText">
@@ -552,6 +553,11 @@
     <style name="SetUpLogList">
         <item name="android:textSize">14sp</item>
         <item name="font">@font/roboto_regular</item>
+    </style>
+
+    <style name="NoDataView">
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
     </style>
 
     <style name="NoDataMsg">

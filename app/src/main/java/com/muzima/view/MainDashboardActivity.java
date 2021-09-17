@@ -12,6 +12,7 @@ package com.muzima.view;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,22 +51,17 @@ import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.SmartCardRecord;
-import com.muzima.api.model.User;
-import com.muzima.controller.CohortController;
-import com.muzima.controller.FormController;
-import com.muzima.controller.NotificationController;
-import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.CohortFilter;
 import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CloseBottomSheetEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
+import com.muzima.model.events.UploadedFormDataEvent;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.LoadDownloadedCohortsTask;
-import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
@@ -77,7 +73,6 @@ import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.patients.PatientsLocationMapActivity;
-import org.apache.lucene.queryParser.ParseException;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -85,7 +80,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.muzima.utils.Constants.NotificationStatusConstants.NOTIFICATION_UNREAD;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 public class MainDashboardActivity extends ActivityWithBottomNavigation implements CohortFilterAdapter.CohortFilterClickedListener {
@@ -98,7 +92,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private MenuItem menuLocation;
     private MenuItem menuRefresh;
     private Credentials credentials;
-    private BackgroundQueryTask mBackgroundQueryTask;
     private BottomSheetBehavior cohortFilterBottomSheetBehavior;
     private View cohortFilterBottomSheetView;
     private View closeBottomSheet;
@@ -207,14 +200,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         loadCohorts(true);
     }
 
-    public void hideProgressbar() {
-        menuRefresh.setActionView(null);
-    }
-
-    public void showProgressBar() {
-        menuRefresh.setActionView(R.layout.refresh_menuitem);
-    }
-
     private void initializeResources() {
         Toolbar toolbar = findViewById(R.id.dashboard_toolbar);
         setSupportActionBar(toolbar);
@@ -279,7 +264,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    EventBus.getDefault().post(new CohortFilterActionEvent(selectedCohortFilters, false));
+                    EventBus.getDefault().post(new CohortFilterActionEvent(selectedCohortFilters));
                 }
                 EventBus.getDefault().post(new BottomSheetToggleEvent(newState));
             }
@@ -455,13 +440,8 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         themeUtils.onResume(this);
         languageUtil.onResume(this);
         showIncompleteWizardWarning();
-        executeBackgroundTask();
     }
 
-    private void executeBackgroundTask() {
-        mBackgroundQueryTask = new BackgroundQueryTask();
-        mBackgroundQueryTask.execute();
-    }
 
     private void showIncompleteWizardWarning() {
         if (!new WizardFinishPreferenceService(this).isWizardFinished()) {
@@ -478,75 +458,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         return settings.getBoolean(disclaimerKey, false);
     }
 
-    private static class HomeActivityMetadata {
-        int totalCohorts;
-        int syncedCohorts;
-        int syncedPatients;
-        int incompleteForms;
-        int completeAndUnsyncedForms;
-        int newNotifications;
-        int totalNotifications;
-        boolean isCohortUpdateAvailable;
-    }
-
-    class BackgroundQueryTask extends MuzimaAsyncTask<Void, Void, HomeActivityMetadata> {
-
-        @Override
-        protected void onPreExecute() {
-
-        }
-
-        @Override
-        protected HomeActivityMetadata doInBackground(Void... voids) {
-            MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
-            HomeActivityMetadata homeActivityMetadata = new HomeActivityMetadata();
-            CohortController cohortController = muzimaApplication.getCohortController();
-            PatientController patientController = muzimaApplication.getPatientController();
-            FormController formController = muzimaApplication.getFormController();
-            NotificationController notificationController = muzimaApplication.getNotificationController();
-            try {
-                homeActivityMetadata.totalCohorts = cohortController.countAllCohorts();
-                homeActivityMetadata.syncedCohorts = cohortController.countSyncedCohorts();
-                homeActivityMetadata.isCohortUpdateAvailable = cohortController.isUpdateAvailable();
-                homeActivityMetadata.syncedPatients = patientController.countAllPatients();
-                homeActivityMetadata.incompleteForms = formController.countAllIncompleteForms();
-                homeActivityMetadata.completeAndUnsyncedForms = formController.countAllCompleteForms();
-
-                // Notifications
-                User authenticatedUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser();
-                if (authenticatedUser != null) {
-                    homeActivityMetadata.newNotifications = notificationController
-                            .getAllNotificationsByReceiverCount(authenticatedUser.getPerson().getUuid(), NOTIFICATION_UNREAD);
-                    homeActivityMetadata.totalNotifications = notificationController
-                            .getAllNotificationsByReceiverCount(authenticatedUser.getPerson().getUuid(), null);
-                } else {
-                    homeActivityMetadata.newNotifications = 0;
-                    homeActivityMetadata.totalNotifications = 0;
-                }
-            } catch (CohortController.CohortFetchException e) {
-                Log.w(getClass().getSimpleName(), "CohortFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
-            } catch (PatientController.PatientLoadException e) {
-                Log.w(getClass().getSimpleName(), "PatientLoadException occurred while fetching metadata in MainActivityBackgroundTask", e);
-            } catch (FormController.FormFetchException e) {
-                Log.w(getClass().getSimpleName(), "FormFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
-            } catch (NotificationController.NotificationFetchException e) {
-                Log.w(getClass().getSimpleName(), "NotificationFetchException occurred while fetching metadata in MainActivityBackgroundTask", e);
-            } catch (ParseException e) {
-                Log.w(getClass().getSimpleName(), "ParseException occurred while fetching metadata in MainActivityBackgroundTask", e);
-            }
-            return homeActivityMetadata;
-        }
-
-        @Override
-        protected void onPostExecute(HomeActivityMetadata homeActivityMetadata) {
-        }
-
-        @Override
-        protected void onBackgroundError(Exception e) {
-
-        }
-    }
-
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -558,6 +469,22 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
             showExitAlertDialog();
         else
             super.onBackPressed();
+    }
+
+    @Override
+    protected void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+        int syncStatus = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
+        switch (syncType) {
+            case Constants.DataSyncServiceConstants.SYNC_UPLOAD_FORMS:
+            case Constants.DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
+                if (syncStatus == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    EventBus.getDefault().post(new UploadedFormDataEvent());
+                }
+                break;
+        }
     }
 
     private void showExitAlertDialog() {

@@ -57,14 +57,24 @@ public class PersonRegistrationUtils {
         }
 
         PersonName personName = new PersonName();
-        personName.setFamilyName(personJsonObject.getString("patient.family_name"));
-        personName.setGivenName(personJsonObject.getString("patient.given_name"));
 
-        String middleNameJSONString = "patient.middle_name";
-        String middleName = "";
-        if (personJsonObject.has(middleNameJSONString))
-            middleName = personJsonObject.getString(middleNameJSONString);
-        personName.setMiddleName(middleName);
+        String familyNameKey = "patient.family_name";
+        if(personJsonObject.has(familyNameKey))
+            personName.setFamilyName(personJsonObject.getString(familyNameKey));
+        else
+            personName.setFamilyName(StringUtils.EMPTY);
+
+        String givenNameKey = "patient.given_name";
+        if(personJsonObject.has(givenNameKey))
+            personName.setGivenName(personJsonObject.getString(givenNameKey));
+        else
+            personName.setGivenName(StringUtils.EMPTY);
+
+        String middleNameKey = "patient.middle_name";
+        if (personJsonObject.has(middleNameKey))
+            personName.setMiddleName(personJsonObject.getString(middleNameKey));
+        else
+            personName.setMiddleName(StringUtils.EMPTY);
 
         return personName;
     }

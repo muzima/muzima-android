@@ -13,14 +13,15 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_multi_selector_blue"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="?attr/activatedBackgroundIndicator"
         android:checkable="true">
 
     <com.muzima.view.custom.CheckedLinearLayout
             android:id="@+id/concept_name_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/list_multi_selector_blue"
             android:orientation="horizontal">
 
         <CheckedTextView
