@@ -11,6 +11,7 @@ package com.muzima.view.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CloseBottomSheetEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
+import com.muzima.model.events.UploadedFormDataEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.SHRStatusPreferenceService;
@@ -53,7 +55,6 @@ import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
-import com.muzima.view.patients.PatientRemoteSearchListActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.FormsWithDataActivity;
@@ -81,17 +82,13 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     private View completeFormsView;
     private View searchPatientEditText;
     private View searchByBarCode;
-    private View searchByFingerprint;
-    private View searchByServer;
     private View searchBySmartCard;
-    private View fragmentContentContainer;
     private View filterActionView;
     private View childContainer;
     private TextView providerNameTextView;
     private ListView listView;
     private View noDataView;
     private FloatingActionButton fabSearchButton;
-    private FrameLayout progressBarContainer;
     private ProgressBar progressBar;
     private AppBarLayout appBarLayout;
     private TextView filterLabelTextView;
@@ -130,15 +127,11 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         completeFormsTextView = view.findViewById(R.id.dashboard_forms_complete_forms_count_view);
         searchPatientEditText = view.findViewById(R.id.dashboard_main_patient_search_view);
         searchByBarCode = view.findViewById(R.id.search_barcode_view);
-        searchByFingerprint = view.findViewById(R.id.search_fingerprint);
-        searchByServer = view.findViewById(R.id.search_server_view);
         searchBySmartCard = view.findViewById(R.id.search_smart_card_view);
         filterActionView = view.findViewById(R.id.favourite_list_container);
-        progressBarContainer = view.findViewById(R.id.progressbarContainer);
         fabSearchButton = view.findViewById(R.id.fab_search);
         progressBar = view.findViewById(R.id.patient_loader_progress_bar);
         providerNameTextView = view.findViewById(R.id.dashboard_home_welcome_message_text_view);
-        fragmentContentContainer = view.findViewById(R.id.dashboard_home_fragment_container);
         filterLabelTextView = view.findViewById(R.id.dashboard_home_filter_text_view);
         childContainer = view.findViewById(R.id.dashboard_home_fragment_child_container);
         appBarLayout = view.findViewById(R.id.dashboard_home_app_bar);
@@ -418,6 +411,11 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
             patientSearchAdapter.filterByCohorts(cohortUuidList);
         }
 
+    }
+
+    @Subscribe
+    public void uploadedFormDataEvent(final UploadedFormDataEvent event){
+        loadFormsCount();
     }
 
     private void updateCohortFilterLabel(CohortFilterActionEvent event) {

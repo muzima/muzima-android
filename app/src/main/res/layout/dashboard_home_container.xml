@@ -131,7 +131,7 @@
 
                         <ImageView
                             android:background="@drawable/border_button_sharp_gray"
-                            android:id="@+id/search_server_view"
+                            android:id="@+id/search_fhir"
                             android:layout_height="34dp"
                             android:layout_width="34dp"
                             android:padding="6dp"
