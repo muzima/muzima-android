@@ -15,7 +15,8 @@
               android:layout_height="match_parent"
               android:gravity="center"
               android:orientation="vertical"
-              android:visibility="gone">
+              android:visibility="gone"
+              style="@style/NoDataView">
 
     <ImageView android:id="@+id/no_data_image"
                android:layout_width="50dp"

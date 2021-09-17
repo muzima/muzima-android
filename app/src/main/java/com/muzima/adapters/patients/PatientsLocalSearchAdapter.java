@@ -134,7 +134,10 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
 
                         if (patientCount <= pageSize) {
                             temp = patientController.getPatients(cohortUuid);
-                            patients.addAll(temp);
+                            if(patients == null)
+                                patients = temp;
+                            else
+                                patients.addAll(temp);
                             publishProgress(temp);
                         } else {
                             int pages = new Double(Math.ceil((float) patientCount / pageSize)).intValue();
