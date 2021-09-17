@@ -59,6 +59,7 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
@@ -98,7 +99,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     private String searchString;
     private LinearLayout searchServerLayout;
     private SearchView searchMenuItem;
-    private boolean intentBarcodeResults = false;
 
     private PatientController patientController;
     private MuzimaApplication muzimaApplication;
@@ -228,6 +228,13 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         searchMenuItem = (SearchView) menu.findItem(R.id.search).getActionView();
         searchMenuItem.setMinimumWidth(toolbar.getWidth());
         searchMenuItem.setQueryHint(getString(R.string.hint_client_search));
+        searchMenuItem.setIconifiedByDefault(true);
+        searchMenuItem.setIconified(false);
+
+        searchMenuItem.setQuery(initialSearchString,false);
+        activateRemoteAfterThreeCharacterEntered(initialSearchString);
+        patientAdapter.search(initialSearchString);
+
         searchMenuItem.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -244,25 +251,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         });
 
         searchMenuItem.setEnabled(true);
-        handleShowSearchView();
 
-        searchMenuItem.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                handleShowSearchView();
-                return true;
-            }
-        });
-    }
-
-    private void handleShowSearchView() {
-        searchMenuItem.setIconified(true);
-        searchMenuItem.requestFocus();
-        searchMenuItem.onActionViewExpanded();
-        searchMenuItem.setQuery(initialSearchString,false);
-
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(searchMenuItem, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private void activateRemoteAfterThreeCharacterEntered(String searchString) {
@@ -289,9 +278,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
             invalidateOptionsMenu();
             preparedServerSearchNegativeResultHandlerDialog();
         }
-        if (!intentBarcodeResults)
-            patientAdapter.reloadData();
-        tagsListAdapter.reloadData();
+//        tagsListAdapter.reloadData();
     }
 
 
@@ -379,7 +366,8 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         listView = findViewById(R.id.list);
         listView.setDividerHeight(0);
         patientAdapter = new PatientsLocalSearchAdapter(this, R.layout.layout_list,
-                ((MuzimaApplication) getApplicationContext()).getPatientController(), new ArrayList<String>(){{add(cohortId);}}, getCurrentGPSLocation());
+                ((MuzimaApplication) getApplicationContext()).getPatientController(), new ArrayList<String>(){{add(cohortId);}},
+                getCurrentGPSLocation());
 
         patientAdapter.setBackgroundListQueryTaskListener(this);
         listView.setAdapter(patientAdapter);
@@ -562,6 +550,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         @Override
         protected void onPostExecute(Void val) {
             super.onPostExecute(val);
+
             patientAdapter.reloadData();
             patientAdapter.notifyDataSetChanged();
         }
