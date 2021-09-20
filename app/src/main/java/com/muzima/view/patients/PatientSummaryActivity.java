@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -415,17 +416,15 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
     @Override
     public void onDatePickerClicked(final int position, EditText dateEditText) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(PatientSummaryActivity.this);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                SingleObsForm form = singleObsFormsList.get(position);
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, day);
-                form.setDate(calendar.getTime());
-                singleObsFormsList.remove(position);
-                singleObsFormsList.add(position, form);
+                singleObsFormsList.get(position).setDate(calendar.getTime());
                 clientDynamicObsFormsAdapter.notifyDataSetChanged();
             }
         });
@@ -439,14 +438,11 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                SingleObsForm form = singleObsFormsList.get(position);
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, day);
-                form.setInputDateValue(DateUtils.convertDateToDayMonthYearString(calendar.getTime()));
-                singleObsFormsList.remove(position);
-                singleObsFormsList.add(position, form);
+                singleObsFormsList.get(position).setInputDateValue(DateUtils.convertDateToDayMonthYearString(calendar.getTime()));
                 clientDynamicObsFormsAdapter.notifyDataSetChanged();
             }
         });

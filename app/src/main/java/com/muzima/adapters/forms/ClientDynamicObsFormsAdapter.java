@@ -60,7 +60,6 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
         final SingleObsForm form = singleObsFormList.get(position);
         holder.readingCountTextView.setText(String.format(Locale.getDefault(), "%s %d", context.getResources().getString(R.string.general_reading), form.getReadingCount()));
         holder.valueEditText.setHint(String.format(Locale.getDefault(), "%s %s", form.getConcept().getName(), form.getConcept().getConceptType().getName()));
-        holder.valueEditText.setText("");
         if(form.getConcept().isNumeric()) {
             holder.valueEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
             holder.valueEditText.setVisibility(View.VISIBLE);
