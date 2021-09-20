@@ -91,7 +91,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     public static final String COHORT_NAME = "cohortName";
     public static final String SEARCH_STRING = "searchString";
     private ListView listView;
-    private String initialSearchString;
     private String cohortId = null;
     private PatientsLocalSearchAdapter patientAdapter;
     private FrameLayout progressBarContainer;
@@ -151,7 +150,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         }
 
         if (intentExtras != null) {
-            initialSearchString = intentExtras.getString(SEARCH_STRING);
+            searchString = intentExtras.getString(SEARCH_STRING);
             cohortId = intentExtras.getString(COHORT_ID);
             String title = intentExtras.getString(COHORT_NAME);
             if (title != null)
@@ -228,12 +227,11 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         searchMenuItem = (SearchView) menu.findItem(R.id.search).getActionView();
         searchMenuItem.setMinimumWidth(toolbar.getWidth());
         searchMenuItem.setQueryHint(getString(R.string.hint_client_search));
-        searchMenuItem.setIconifiedByDefault(true);
-        searchMenuItem.setIconified(false);
+        searchMenuItem.setIconifiedByDefault(false);
 
-        searchMenuItem.setQuery(initialSearchString,false);
-        activateRemoteAfterThreeCharacterEntered(initialSearchString);
-        patientAdapter.search(initialSearchString);
+        searchMenuItem.setQuery(searchString,false);
+        activateRemoteAfterThreeCharacterEntered(searchString);
+        patientAdapter.search(searchString);
 
         searchMenuItem.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
