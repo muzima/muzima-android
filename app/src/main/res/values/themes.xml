@@ -13,6 +13,7 @@
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme.NoActionBar" parent="Theme.MaterialComponents.NoActionBar.Bridge">
+        <item name="android:statusBarColor">@color/primary_black</item>
         <item name="android:windowBackground">@color/primary_black</item>
         <item name="android:textColorSecondary">@color/primary_white</item>
         <item name="android:windowActionBar">false</item>
@@ -45,6 +46,7 @@
 
 
     <style name="AppBaseTheme" parent="Theme.MaterialComponents.Bridge">
+        <item name="android:statusBarColor">@color/primary_black</item>
         <item name="android:windowBackground">@color/primary_black</item>
         <item name="android:textColorSecondary">@color/primary_white</item>
         <item name="android:windowActionBar">false</item>
@@ -76,6 +78,7 @@
     </style>
 
     <style name="AppBaseTheme.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <item name="android:statusBarColor">@color/dark_blue</item>
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="android:windowActionBar">false</item>
@@ -108,6 +111,7 @@
     </style>
 
     <style name="AppBaseTheme.Light" parent="Theme.MaterialComponents.Bridge">
+        <item name="android:statusBarColor">@color/dark_blue</item>
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="android:windowActionBar">false</item>
