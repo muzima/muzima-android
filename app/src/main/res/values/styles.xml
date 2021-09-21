@@ -43,18 +43,20 @@
     <style name="AppTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
     </style>
 
-    <style name="LoginTheme.Dark" parent="AppThemeNoActionBar.Dark">
+    <style name="LoginTheme.Dark" parent="AppBaseTheme.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
 
-    <style name="LoginTheme.Light" parent="AppThemeNoActionBar.Light">
+    <style name="LoginTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <!-- Application theme. -->
-    <style name="WizardTheme.Dark" parent="AppThemeNoActionBar.Dark">
+    <style name="WizardTheme.Dark" parent="AppBaseTheme.NoActionBar">
     </style>
 
-    <style name="WizardTheme.Light" parent="AppThemeNoActionBar.Light">
+    <style name="WizardTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
     </style>
 
     <style name="Widget.Custom.NavigationView" parent="Widget.Design.NavigationView">
@@ -450,6 +452,7 @@
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
@@ -562,7 +565,7 @@
 
     <style name="NoDataMsg">
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/primary_white</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -571,7 +574,7 @@
 
     <style name="NoDataTip">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/primary_white</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
