@@ -86,7 +86,6 @@ public class DateUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(SIMPLE_DATE_FORMAT, Locale.getDefault());
-        Log.e(TAG, "convertDateToStdString: date " + simpleDateFormat.format(calendar.getTime()));
         return simpleDateFormat.format(calendar.getTime());
     }
 
@@ -95,7 +94,6 @@ public class DateUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(HUMAN_READABLE_SIMPLE_DATE_FORMAT, Locale.getDefault());
-        Log.e(TAG, "convertDateToStdString: date " + simpleDateFormat.format(calendar.getTime()));
         return simpleDateFormat.format(calendar.getTime());
     }
 
@@ -104,7 +102,6 @@ public class DateUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT, Locale.getDefault());
-        Log.e(TAG, "convertDateToStdString: date " + simpleDateFormat.format(calendar.getTime()));
         return simpleDateFormat.format(calendar.getTime());
     }
 }
