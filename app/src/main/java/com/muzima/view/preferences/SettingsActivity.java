@@ -81,9 +81,10 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      */
     private void setupActionBar() {
         int themecolor = themeUtils.getThemeColor(this);
-        if (getDelegate().getSupportActionBar() != null)
+        if (getDelegate().getSupportActionBar() != null) {
             getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getDelegate().getSupportActionBar().setBackgroundDrawable(new ColorDrawable(themecolor));
+        }
     }
 
     private AppCompatDelegate getDelegate() {

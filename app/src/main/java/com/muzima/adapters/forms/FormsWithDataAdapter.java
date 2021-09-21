@@ -95,8 +95,10 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
 
             if(StringUtils.isEmpty(filterPatientUuid)) {
                 holder.formName.setText(formWithData.getName());
-                holder.clientName.setText(formWithData.getPatient().getDisplayName());
-                holder.clientId.setText(formWithData.getPatient().getIdentifier());
+                if(formWithData.getPatient() != null) {
+                    holder.clientName.setText(formWithData.getPatient().getDisplayName());
+                    holder.clientId.setText(formWithData.getPatient().getIdentifier());
+                }
 
                 if (formWithData.getEncounterDate() != null) {
                     holder.encounterDate.setText(dateFormat.format(formWithData.getEncounterDate()));
