@@ -99,6 +99,11 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
         return singleObsFormList.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private DatePickerClickedListener datePickerClickedListener;
         private View dateSelectorView;
