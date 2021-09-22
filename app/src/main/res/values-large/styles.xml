@@ -76,7 +76,7 @@
         <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="alertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="alertDialogTheme" parent="Theme.MaterialComponents.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
@@ -84,7 +84,7 @@
         <item name="android:colorAccent">@color/primary_blue</item>
     </style>
 
-    <style name="alertDialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="alertDialogThemeLight" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
         <item name="android:textColor">?attr/primaryTextColor</item>

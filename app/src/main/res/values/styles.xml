@@ -45,6 +45,7 @@
 
     <style name="LoginTheme.Dark" parent="AppBaseTheme.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
+
     </style>
 
 
@@ -96,7 +97,7 @@
         <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="alertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="alertDialogTheme" parent="Theme.MaterialComponents.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
@@ -104,7 +105,7 @@
         <item name="android:colorAccent">@color/primary_blue</item>
     </style>
 
-    <style name="alertDialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="alertDialogThemeLight" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
@@ -451,7 +452,7 @@
         <item name="android:text">@string/general_finish</item>
     </style>
 
-    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>

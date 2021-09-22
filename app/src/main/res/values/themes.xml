@@ -78,7 +78,7 @@
     </style>
 
     <style name="AppBaseTheme.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
-        <item name="android:statusBarColor">@color/dark_blue</item>
+        <item name="android:statusBarColor">@color/dark_primary_blue</item>
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="android:windowActionBar">false</item>
@@ -111,7 +111,7 @@
     </style>
 
     <style name="AppBaseTheme.Light" parent="Theme.MaterialComponents.Bridge">
-        <item name="android:statusBarColor">@color/dark_blue</item>
+        <item name="android:statusBarColor">@color/dark_primary_blue</item>
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="android:textColorSecondary">@color/primary_black</item>
         <item name="android:windowActionBar">false</item>
