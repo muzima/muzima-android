@@ -773,4 +773,6 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="erro_coded_concepts_not_supported">Invalid coded concepts are not support</string>
     <string name="title_qrcode">QR code</string>
     <string name="info_scan_qrcode">Scan QR code to change server URL</string>
+    <string name="delete_individual_obs">Deleting individual obs</string>
+    <string name="warning_individual_form_data_delete">You are about to delete individual observation. Are you sure?</string>
 </resources>

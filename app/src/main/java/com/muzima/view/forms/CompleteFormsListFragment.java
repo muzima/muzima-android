@@ -10,7 +10,9 @@
 
 package com.muzima.view.forms;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -38,6 +40,7 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.CustomColor;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,8 +50,10 @@ import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_UUID;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class CompleteFormsListFragment extends FormsWithDataListFragment implements FormsAdapter.MuzimaClickListener{
     public static CompleteFormsListFragment newInstance(FormController formController, ObservationController observationController) {
@@ -151,6 +156,8 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
         AlertDialog obsDetailsViewDialog;
         try {
             FormData formData = formController.getFormDataByUuid(formWithData.getFormDataUuid());
+            List<FormData> formDataList = new ArrayList<>();
+            formDataList.add(formData);
             String jsonPayload = formData.getJsonPayload();
             org.json.JSONObject responseJSON = new org.json.JSONObject(jsonPayload);
             org.json.JSONObject encounterObject = responseJSON.getJSONObject("encounter");
@@ -177,6 +184,7 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
             TextView obsValueTextView;
             TextView dateTextView;
             Button dismissDialogButton;
+            Button deleteObsButton;
 
             TextView encounterDetailsHeader;
             TextView providerDetailsHeader;
@@ -213,6 +221,7 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
             conceptDetailsHeader = obsDetailsDialog.findViewById(R.id.obs_details_third_header);
             observationDetailsHeader = obsDetailsDialog.findViewById(R.id.obs_details_fourth_header);
             dateTextView = obsDetailsDialog.findViewById(R.id.observation_description_value_textview);
+            deleteObsButton = obsDetailsDialog.findViewById(R.id.delete_dialog_button);
 
             List<TextView> obsDetailsHeaderTextViews = Arrays.asList(encounterDetailsHeader,providerDetailsHeader,conceptDetailsHeader,observationDetailsHeader);
             dateTextView.setText(observation.getObservationDatetime().toString().substring(0,19));
@@ -247,6 +256,13 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
                 obsDetailsViewDialog.dismiss();
                 obsDetailsViewDialog.cancel();
             });
+
+            deleteObsButton.setOnClickListener( v -> {
+                showWarningDialog(formDataList);
+                obsDetailsViewDialog.dismiss();
+                obsDetailsViewDialog.cancel();
+            });
+
         } catch (FormController.FormDataFetchException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -254,5 +270,31 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void showWarningDialog(List<FormData> formDataList) {
+        new android.app.AlertDialog.Builder(getContext())
+                .setCancelable(true)
+                .setIcon(ThemeUtils.getIconWarning(getContext()))
+                .setTitle(getResources().getString(R.string.delete_individual_obs))
+                .setMessage(getResources().getString(R.string.warning_individual_form_data_delete))
+                .setPositiveButton(getString(R.string.general_yes), DeleteObs(formDataList))
+                .setNegativeButton(getString(R.string.general_no), null)
+                .create()
+                .show();
+    }
+
+    private Dialog.OnClickListener DeleteObs(List<FormData> formDataList) {
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    formController.deleteEncounterFormDataAndRelatedPatientData(formDataList);
+                } catch (FormController.FormDataDeleteException e) {
+                    e.printStackTrace();
+                }
+                reloadData();
+            }
+        };
     }
 }

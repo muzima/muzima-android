@@ -25,6 +25,16 @@
 	<RelativeLayout android:layout_width="match_parent"
 	                android:layout_height="wrap_content">
 		<Button
+			android:id="@+id/delete_dialog_button"
+			android:layout_width="wrap_content"
+			android:background="@drawable/rounded_corner_loginbutton"
+			android:text="@string/general_delete"
+			android:layout_alignParentStart="true"
+			android:backgroundTint="#EC0A0A"
+			android:layout_margin="8dp"
+			android:textAlignment="center"
+			android:layout_height="wrap_content"/>
+		<Button
 				android:id="@+id/dismiss_dialog_button"
 				android:layout_width="wrap_content"
 				android:background="@drawable/rounded_corner_loginbutton"

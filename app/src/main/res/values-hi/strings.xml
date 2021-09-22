@@ -755,4 +755,6 @@ Google Play सेवाएं https://www.google.com/policies/privacy/
     <string name="general_sync_service_already_running">मुज़िमा सिंक सेवा पहले से चल रही है…</string>
     <string name="general_opening_card_reader">कार्ड रीडर खोलना</string>
     <string name="erro_coded_concepts_not_supported">अमान्य कोडित अवधारणाएं समर्थित नहीं हैं</string>
+    <string name="delete_individual_obs">व्यक्तिगत टिप्पणियों को हटाना</string>
+    <string name="warning_individual_form_data_delete">आप व्यक्तिगत अवलोकन को हटाने वाले हैं। क्या आपको यकीन है?</string>
 </resources>

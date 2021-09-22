@@ -1092,7 +1092,7 @@ public class FormController {
         return remnantData;
     }
 
-    private void deleteEncounterFormDataAndRelatedPatientData(List<FormData> formDataList) throws FormDataDeleteException {
+    public void deleteEncounterFormDataAndRelatedPatientData(List<FormData> formDataList) throws FormDataDeleteException {
         try {
             for (FormData formData : formDataList) {
                 if(formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS)){
