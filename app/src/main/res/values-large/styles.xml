@@ -16,14 +16,6 @@
         <item name="android:textSize">25sp</item>
     </style>
 
-    <style name="actionbarStyle.Light"
-           parent="@style/Widget.AppCompat.Light.ActionBar">
-    </style>
-
-    <style name="actionbarStyle"
-        parent="@style/Widget.AppCompat.ActionBar">
-    </style>
-
     <style name="DashboardWrapper">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
