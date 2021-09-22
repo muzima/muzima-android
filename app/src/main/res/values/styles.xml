@@ -31,11 +31,11 @@
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
+    <style name="AppTheme" parent="AppBaseTheme.NoActionBar">
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme.Dark" parent="AppBaseTheme.NoActionBar">
+    <style name="AppTheme.Dark" parent="AppTheme">
         <item name="windowActionModeOverlay">true</item>
     </style>
 
@@ -43,21 +43,21 @@
     <style name="AppTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
     </style>
 
-    <style name="LoginTheme.Dark" parent="AppBaseTheme.NoActionBar">
+    <style name="LoginTheme.Dark" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
 
     </style>
 
 
-    <style name="LoginTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
+    <style name="LoginTheme.Light" parent="AppTheme.Light">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <!-- Application theme. -->
-    <style name="WizardTheme.Dark" parent="AppBaseTheme.NoActionBar">
+    <style name="WizardTheme.Dark" parent="AppTheme">
     </style>
 
-    <style name="WizardTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
+    <style name="WizardTheme.Light" parent="AppTheme.Light">
     </style>
 
     <style name="Widget.Custom.NavigationView" parent="Widget.Design.NavigationView">
@@ -66,14 +66,14 @@
         <item name="itemBackground">@drawable/menu_background_color_state</item>
     </style>
 
-    <style name="PreferencesTheme.Dark" parent="AppBaseTheme">
+    <style name="PreferencesTheme.Dark" parent="AppTheme">
         <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
         <item name="android:textColorPrimary">@color/preference_primary_color</item>
         <item name="android:textColorSecondary">@color/preference_secondary_color</item>
     </style>
 
 
-    <style name="PreferencesTheme.Light" parent="AppBaseTheme.Light">
+    <style name="PreferencesTheme.Light" parent="AppTheme.Light">
         <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
         <item name="android:textColorPrimary">@color/preference_primary_color_light</item>
         <item name="android:textColorSecondary">@color/preference_secondary_color_light</item>
