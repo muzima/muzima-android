@@ -79,7 +79,9 @@ public abstract class MuzimaListFragment extends Fragment implements AdapterView
                 ((Checkable) view).setChecked(false);
             }
             listView.setItemChecked(i, false);
-            view.setBackgroundResource(typedValue.resourceId);
+            if(view != null) {
+                view.setBackgroundResource(typedValue.resourceId);
+            }
         }
     }
 

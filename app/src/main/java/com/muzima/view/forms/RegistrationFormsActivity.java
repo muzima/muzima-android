@@ -26,6 +26,7 @@ import com.muzima.R;
 import com.muzima.adapters.forms.RegistrationFormsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.utils.LanguageUtil;
@@ -63,6 +64,7 @@ public class RegistrationFormsActivity extends BaseActivity {
         }
 
         FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
+        ObservationController observationController = ((MuzimaApplication) getApplicationContext()).getObservationController();
         AvailableForms availableForms = getRegistrationForms(formController);
         if (availableForms.isEmpty()){
             showRegistrationFormsMissingAlert();
@@ -70,7 +72,7 @@ public class RegistrationFormsActivity extends BaseActivity {
             if (isOnlyOneRegistrationForm(availableForms)) {
                 startWebViewActivity(availableForms.get(0));
             } else {
-                prepareRegistrationAdapter(formController, availableForms);
+                prepareRegistrationAdapter(formController, availableForms, observationController);
             }
         }
         logEvent("VIEW_REGISTRATION_FORMS");
@@ -105,9 +107,9 @@ public class RegistrationFormsActivity extends BaseActivity {
         };
     }
 
-    private void prepareRegistrationAdapter(FormController formController, AvailableForms availableForms) {
+    private void prepareRegistrationAdapter(FormController formController, AvailableForms availableForms, ObservationController observationController) {
         registrationFormsAdapter = new RegistrationFormsAdapter(this, R.layout.item_forms_list,
-                formController, availableForms);
+                formController, availableForms, observationController);
         ListView list = findViewById(R.id.list);
         list.setOnItemClickListener(startRegistrationOnClick());
         list.setAdapter(registrationFormsAdapter);

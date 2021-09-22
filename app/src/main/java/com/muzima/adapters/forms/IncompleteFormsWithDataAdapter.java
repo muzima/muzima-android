@@ -12,6 +12,7 @@ package com.muzima.adapters.forms;
 import android.content.Context;
 import android.util.Log;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.IncompleteFormWithPatientData;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
@@ -24,8 +25,8 @@ import java.util.List;
 public class IncompleteFormsWithDataAdapter extends FormsWithDataAdapter<IncompleteFormWithPatientData> {
 
     private static String filterPatientUuid;
-    public IncompleteFormsWithDataAdapter(Context context, int textViewResourceId, String filterPatientUuid, FormController formController) {
-        super(context, textViewResourceId, filterPatientUuid, formController);
+    public IncompleteFormsWithDataAdapter(Context context, int textViewResourceId, String filterPatientUuid, FormController formController, ObservationController observationController) {
+        super(context, textViewResourceId, filterPatientUuid, formController, observationController);
         this.filterPatientUuid = filterPatientUuid;
     }
 

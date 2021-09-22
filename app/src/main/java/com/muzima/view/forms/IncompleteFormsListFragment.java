@@ -19,6 +19,7 @@ import com.muzima.R;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.adapters.forms.IncompleteFormsWithDataAdapter;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.StringUtils;
 
@@ -28,16 +29,17 @@ import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_UUID;
 
 public class IncompleteFormsListFragment extends FormsWithDataListFragment implements FormsAdapter.MuzimaClickListener{
 
-    public static IncompleteFormsListFragment newInstance(FormController formController) {
+    public static IncompleteFormsListFragment newInstance(FormController formController, ObservationController observationController) {
         IncompleteFormsListFragment f = new IncompleteFormsListFragment();
         f.formController = formController;
+        f.observationController = observationController;
         return f;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         String filterPatientUuid = getActivity().getIntent().getStringExtra(PATIENT_UUID);
-        listAdapter = new IncompleteFormsWithDataAdapter(getActivity(), R.layout.item_form_with_data_layout,filterPatientUuid,formController);
+        listAdapter = new IncompleteFormsWithDataAdapter(getActivity(), R.layout.item_form_with_data_layout,filterPatientUuid,formController, observationController);
         ((IncompleteFormsWithDataAdapter)listAdapter).setMuzimaClickListener(this);
         noDataMsg = getActivity().getResources().getString(R.string.info_incomplete_form_unavailable);
         noDataTip = getActivity().getResources().getString(R.string.hint_incomplete_form_unavailable);
@@ -83,7 +85,7 @@ public class IncompleteFormsListFragment extends FormsWithDataListFragment imple
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(int position, View view) {
         if(!actionModeActive) {
             FormWithData formWithData = (FormWithData) listAdapter.getItem(position);
             if (formWithData.getPatient() != null && StringUtils.isEmpty(formWithData.getPatient().getUuid())) {

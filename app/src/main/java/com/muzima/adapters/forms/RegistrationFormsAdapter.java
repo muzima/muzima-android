@@ -11,6 +11,7 @@ package com.muzima.adapters.forms;
 
 import android.content.Context;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
@@ -22,8 +23,8 @@ public class RegistrationFormsAdapter extends FormsAdapter<AvailableForm> {
     private final AvailableForms availableForms;
 
 
-    public RegistrationFormsAdapter(Context context, int textViewResourceId, FormController formController, AvailableForms availableForms) {
-        super(context, textViewResourceId, formController);
+    public RegistrationFormsAdapter(Context context, int textViewResourceId, FormController formController, AvailableForms availableForms, ObservationController observationController) {
+        super(context, textViewResourceId, formController, observationController);
         this.availableForms = availableForms;
     }
 

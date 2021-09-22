@@ -14,6 +14,7 @@ import android.content.Context;
 import android.util.Log;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
@@ -22,8 +23,8 @@ import java.util.List;
 
 public class AvailableReportsAdapter extends FormsAdapter<AvailableForm> {
 
-    public AvailableReportsAdapter(Context context, int textViewResourceId, FormController formController) {
-        super(context, textViewResourceId, formController);
+    public AvailableReportsAdapter(Context context, int textViewResourceId, FormController formController, ObservationController observationController) {
+        super(context, textViewResourceId, formController, observationController);
     }
 
     @Override

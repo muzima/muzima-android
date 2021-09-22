@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
@@ -27,8 +28,8 @@ public class CompleteFormsWithDataAdapter extends FormsWithDataAdapter<CompleteF
     public Context context;
     private static String filterPatientUuid;
 
-    public CompleteFormsWithDataAdapter(Context context, int textViewResourceId, String filterPatientUuid, FormController formController) {
-        super(context, textViewResourceId, filterPatientUuid, formController);
+    public CompleteFormsWithDataAdapter(Context context, int textViewResourceId, String filterPatientUuid, FormController formController, ObservationController observationController) {
+        super(context, textViewResourceId, filterPatientUuid, formController, observationController);
         this.context = context;
         this.filterPatientUuid = filterPatientUuid;
     }

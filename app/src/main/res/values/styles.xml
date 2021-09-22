@@ -15,21 +15,6 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="ThemeOverlay.AppCompat.navTheme">
-        <!-- Color of text and icon when SELECTED -->
-        <item name="colorPrimary">@color/primary_black</item>
-        <!-- Background color when SELECTED -->
-        <item name="colorControlHighlight">@color/primary_white</item>
-    </style>
-
-    <style name="actionbarStyle.Light"
-           parent="@style/Widget.AppCompat.Light.ActionBar">
-    </style>
-
-    <style name="actionbarStyle"
-           parent="@style/Widget.AppCompat.ActionBar">
-    </style>
-
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
     </style>

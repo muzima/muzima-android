@@ -323,24 +323,6 @@ public class MuzimaSyncServiceTest {
     }
 
     @Test
-    public void downloadCohort_shouldDownloadOnlyPrefixedCohortsWhenPrefixesAreAvailableAndReplaceOldCohorts() throws CohortController.CohortDownloadException, CohortController.CohortDeleteException, CohortController.CohortSaveException {
-        List<Cohort> cohorts = new ArrayList<>();
-        List<String> cohortPrefixes = new ArrayList<String>() {{
-            add("Pref1");
-            add("Pref2");
-        }};
-
-        when(cohortController.downloadAllCohorts(null)).thenReturn(cohorts);
-
-        muzimaSyncService.downloadCohorts();
-
-        verify(cohortController).downloadCohortsByPrefix(cohortPrefixes,null);
-        verify(cohortController).saveOrUpdateCohorts(cohorts);
-        verify(cohortController).deleteCohorts(new ArrayList<Cohort>());
-        verifyNoMoreInteractions(cohortController);
-    }
-
-    @Test
     public void downloadCohort_shouldReturnSuccessStatusAndDownloadCountIfSuccessful() throws CohortController.CohortDownloadException {
         List<Cohort> cohorts = new ArrayList<Cohort>() {{
             add(new Cohort());

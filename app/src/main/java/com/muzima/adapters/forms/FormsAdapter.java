@@ -25,6 +25,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.BaseForm;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.StringUtils;
@@ -38,13 +39,15 @@ import java.util.List;
  */
 public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
     final FormController formController;
+    final ObservationController observationController;
     protected BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private MuzimaAsyncTask<?, ?, ?> backgroundQueryTask;
     private Context context;
 
-    protected FormsAdapter(Context context, int textViewResourceId, FormController formController) {
+    protected FormsAdapter(Context context, int textViewResourceId, FormController formController, ObservationController observationController) {
         super(context, textViewResourceId);
         this.formController = formController;
+        this.observationController = observationController;
         this.context = context;
     }
 
@@ -168,7 +171,7 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
 
         void onItemLongClick();
 
-        void onItemClick(int position);
+        void onItemClick(int position, View view);
     }
 
 }

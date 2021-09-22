@@ -14,6 +14,7 @@ import android.content.Context;
 
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.tasks.FormsAdapterBackgroundQueryTask;
@@ -22,8 +23,8 @@ public class RelationshipFormsAdapter extends FormsAdapter<AvailableForm> {
     private final AvailableForms availableForms;
 
 
-    public RelationshipFormsAdapter(Context context, int textViewResourceId, FormController formController, AvailableForms availableForms) {
-        super(context, textViewResourceId, formController);
+    public RelationshipFormsAdapter(Context context, int textViewResourceId, FormController formController, AvailableForms availableForms, ObservationController observationController) {
+        super(context, textViewResourceId, formController, observationController);
         this.availableForms = availableForms;
     }
 
