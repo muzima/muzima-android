@@ -59,7 +59,7 @@ import static androidx.core.view.WindowCompat.FEATURE_ACTION_BAR;
 public class FormPagerActivity extends ActivityWithBottomNavigation {
     private ViewPager viewPager;
     private EditText searchForms;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private final LanguageUtil languageUtil = new LanguageUtil();
     private ActionMode.Callback actionModeCallback;
     private ActionMode actionMode;

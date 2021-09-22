@@ -35,7 +35,7 @@ public class NotificationsListActivity extends NotificationActivityBase {
     private static final String NOTIFICATIONS = "Notifications";
     private MenuItem menubarSyncButton;
     private boolean notificationsSyncInProgress;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

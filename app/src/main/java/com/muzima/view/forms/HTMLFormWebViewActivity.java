@@ -123,7 +123,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private String autoSaveIntervalPreference;
     private boolean encounterProviderPreference;
     private final Handler handler = new Handler();
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private boolean isFormReload;
     private EncounterMiniFormCreatorComponent encounterMiniFormCreatorComponent;
     private Patient indexPatient;

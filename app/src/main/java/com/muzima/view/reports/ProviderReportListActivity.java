@@ -35,7 +35,7 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
     private View noDataView;
     private FrameLayout progressBarContainer;
     private AvailableReportsAdapter reportsAdapter;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

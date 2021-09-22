@@ -95,7 +95,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private Map<String, String> videoResultMap;
     private String sectionName;
     private FormController formController;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override

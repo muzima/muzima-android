@@ -35,7 +35,7 @@ import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIE
 public class PersonDemographicsUpdateFormsActivity extends AppCompatActivity {
     public static final String PERSON = "person";
     private RelationshipFormsAdapter relationshipFormsAdapter;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private Patient person;
 
     @Override

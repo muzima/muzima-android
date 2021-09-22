@@ -43,7 +43,7 @@ public class ObservationsFragment extends Fragment {
     private static final Calendar today = Calendar.getInstance();
     private TextView encounterDateTextView;
     private final Boolean IS_SHR_DATA = false;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

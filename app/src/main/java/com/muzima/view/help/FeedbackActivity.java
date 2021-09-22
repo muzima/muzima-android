@@ -36,7 +36,7 @@ public class FeedbackActivity extends BaseActivity {
 
     private static final String EMAIL_TO = "help@muzima.org";
     private static final String SUBJECT = "Feedback";
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

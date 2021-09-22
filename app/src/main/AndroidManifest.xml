@@ -431,7 +431,8 @@
         <activity android:name=".view.initialwizard.TermsAndPolicyActivity" />
         <activity android:name=".view.MainDashboardActivity"
                   android:configChanges="orientation|screenSize"
-                  android:screenOrientation="portrait"/>
+                  android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".view.patients.PatientSummaryActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"

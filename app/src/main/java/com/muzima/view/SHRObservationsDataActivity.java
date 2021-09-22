@@ -54,7 +54,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     private ObservationsPagerAdapter observationsPagerAdapter;
     private Patient patient;
     private AlertDialog writeSHRDataOptionDialog;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override

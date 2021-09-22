@@ -40,7 +40,7 @@ import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIE
 
 public class RegistrationFormsActivity extends BaseActivity {
     private RegistrationFormsAdapter registrationFormsAdapter;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private Patient patient;
     private Patient indexPatient;
     private MaterialToolbar toolbar;

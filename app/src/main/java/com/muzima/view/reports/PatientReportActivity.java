@@ -32,7 +32,7 @@ public class PatientReportActivity extends BroadcastListenerActivity {
     private Patient patient;
     private MenuItem menubarLoadButton;
     private boolean syncInProgress;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     private ViewPager viewPager;
     private PatientReportPagerAdapter patientReportPagerAdapter;

@@ -54,7 +54,7 @@ public class VideoIntent extends Activity {
     private String mSectionName;
     private String mBinaryName;
     private String mBinaryDescription;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(true);
 	private final LanguageUtil languageUtil = new LanguageUtil();
 
 	public void onCreate(Bundle savedInstanceState) {

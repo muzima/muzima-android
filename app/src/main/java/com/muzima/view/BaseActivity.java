@@ -24,7 +24,9 @@ import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 
-public class BaseActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class BaseActivity extends AppCompatActivity {
 
     private DefaultMenuDropDownHelper dropDownHelper;
     private final LanguageUtil languageUtil = new LanguageUtil();

@@ -50,7 +50,7 @@ public class PatientsLocationMapActivity extends BroadcastListenerActivity {
     private WebView webView;
 
     private String selectedPatientUuid;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

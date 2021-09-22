@@ -52,7 +52,7 @@ public class ConversationActivity extends BaseActivity {
     private EditText composeEditText;
     private Provider provider;
     private List<Notification> patientSentMessages;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

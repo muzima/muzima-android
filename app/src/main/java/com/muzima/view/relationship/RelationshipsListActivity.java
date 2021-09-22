@@ -89,7 +89,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private TextView identifierTextView;
     private TextView ageTextView;
 
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private ListView lvwPatientRelationships;
     private AutoCompleteTextView autoCompletePersonTextView;
     private AutoCompleteRelatedPersonAdapter autoCompleteRelatedPersonAdapterAdapter;

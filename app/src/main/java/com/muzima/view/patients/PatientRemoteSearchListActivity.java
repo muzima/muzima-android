@@ -57,7 +57,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     private ActionMode actionMode;
 
     private boolean actionModeActive = false;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private final LanguageUtil languageUtil = new LanguageUtil();
 
 

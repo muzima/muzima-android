@@ -22,13 +22,13 @@
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay">
 
-        <com.google.android.material.appbar.MaterialToolbar
+        <androidx.appcompat.widget.Toolbar
                 android:id="@+id/dashboard_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/primaryBackgroundColor"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:navigationIcon="@drawable/ic_action_home"/>
+                app:menu="@menu/menu_dashboard_home"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/nav_content"/>

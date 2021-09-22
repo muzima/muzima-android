@@ -44,7 +44,7 @@ public class NotificationActivity extends BaseActivity {
     private Encounter notificationEncounter;
     private Patient notificationPatient;
     private Provider loggedInProvider;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

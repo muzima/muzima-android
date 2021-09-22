@@ -21,7 +21,7 @@ import com.muzima.view.patients.PatientSummaryActivity;
 
 public class PatientNotificationActivity extends NotificationActivityBase {
     private Patient patient;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

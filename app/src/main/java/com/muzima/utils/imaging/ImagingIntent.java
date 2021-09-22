@@ -67,7 +67,7 @@ public class ImagingIntent extends BaseActivity {
     private String mSectionName;
     private String mBinaryName;
     private String mBinaryDescription;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(true);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

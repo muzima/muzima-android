@@ -30,9 +30,16 @@ public class ThemeUtils {
     private int darkThemeId;
     private boolean lightMode;
 
-    public ThemeUtils() {
-        lightThemeId = R.style.AppTheme_Light;
-        darkThemeId = R.style.AppTheme_Dark;
+    public ThemeUtils(boolean hideActionBar) {
+        if(hideActionBar){
+            System.out.println("Setting hidden Actionbar: "+hideActionBar);
+            lightThemeId = R.style.AppTheme_Light_NoActionBar;
+            darkThemeId = R.style.AppTheme_NoActionBar;
+        } else {
+            System.out.println("Setting shown Actionbar: "+hideActionBar);
+            lightThemeId = R.style.AppTheme_Light;
+            darkThemeId = R.style.AppTheme_Dark;
+        }
     }
 
     public ThemeUtils(int lightThemeId, int darkThemeId) {
@@ -41,7 +48,6 @@ public class ThemeUtils {
     }
 
     public void onCreate(Activity activity) {
-        setLightMode(activity);
         setThemeForActivity(activity);
     }
 
@@ -55,16 +61,14 @@ public class ThemeUtils {
         }
     }
 
-    private void setLightMode(Activity activity) {
-        lightMode = getPreferenceLightMode(activity);
-    }
-
     private void setThemeForActivity(Activity activity) {
+        lightMode = getPreferenceLightMode(activity);
         if (lightMode) {
             activity.setTheme(lightThemeId);
         } else {
             activity.setTheme(darkThemeId);
         }
+        System.out.println("Theme is: "+lightMode+" => "+activity.getTheme().getResources()+" For activity : "+activity.getClass().getSimpleName());
     }
 
     public static boolean getPreferenceLightMode(Context context) {
@@ -84,20 +88,6 @@ public class ThemeUtils {
 
     public static Drawable getIconRefresh(Context context) {
         return context.getResources().getDrawable(R.drawable.ic_refresh);
-    }
-
-    public static Drawable getDrawableFromThemeAttributes(Activity context, int attribute) {
-        int[] attrs = new int[]{attribute};
-        context.setTheme( new ThemeUtils().getThemeResource(context));
-        TypedArray ta = context.obtainStyledAttributes(attrs);
-        Drawable drawableFromTheme = ta.getDrawable(0);
-        ta.recycle();
-        return drawableFromTheme;
-    }
-
-    private int getThemeResource(Activity context) {
-        if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(context)) return R.style.AppTheme_Light;
-        else return R.style.AppTheme_Dark;
     }
 
     public int getThemeColor(Activity context){

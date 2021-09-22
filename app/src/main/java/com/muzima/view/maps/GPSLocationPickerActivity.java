@@ -53,7 +53,7 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
     private String latitude;
     private String longitude;
     private int defaultZoomLevel;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private MuzimaGPSLocationService gpsLocationService;
     private final LanguageUtil languageUtil = new LanguageUtil();
 

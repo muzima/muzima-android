@@ -38,7 +38,7 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
     public Provider provider;
     private MuzimaProgressDialog progressDialog;
     private FormTemplate reportTemplate;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

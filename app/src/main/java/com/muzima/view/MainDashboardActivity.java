@@ -27,7 +27,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +42,10 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -89,7 +92,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private TextView headerTitleTextView;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(true);
     private final LanguageUtil languageUtil = new LanguageUtil();
     private MenuItem menuLocation;
     private MenuItem menuRefresh;
@@ -118,32 +121,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), false);
         initializeResources();
         loadCohorts(false);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dashboard_home, menu);
-        menuLocation = menu.findItem(R.id.menu_location);
-        menuRefresh = menu.findItem(R.id.menu_load);
-        menuLocation.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.general_launching_map_message), Toast.LENGTH_SHORT).show();
-                navigateToClientsLocationMap();
-                return true;
-            }
-        });
-
-        menuRefresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
-                new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
-                return true;
-            }
-        });
-        return true;
     }
 
     private void loadCohorts(final boolean showFilter) {
@@ -204,12 +181,23 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
     private void initializeResources() {
         Toolbar toolbar = findViewById(R.id.dashboard_toolbar);
-        ////setSupportActionBar(toolbar);
-        ActionBar supportActionBar = getActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(false);
-            supportActionBar.setDisplayShowTitleEnabled(false);
-        }
+        //setSupportActionBar(toolbar);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch(item.getItemId()){
+                    case R.id.menu_location:
+                        navigateToClientsLocationMap();
+                        break;
+                    case R.id.menu_load:
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
+                        new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
+                }
+
+                return true;
+            }
+        });
         drawerLayout = findViewById(R.id.main_dashboard_drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         cohortFilterBottomSheetView = findViewById(R.id.dashboard_home_bottom_view_container);
@@ -244,7 +232,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                 .setOpenableLayout(drawerLayout)
                 .build();
         navigationView.post(() -> {
-            NavHostFragment navHostFragment = (NavHostFragment) getFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
             if (navHostFragment != null) {
                 navController = navHostFragment.getNavController();
                 NavigationUI.setupWithNavController(toolbar, navController, mAppBarConfiguration);

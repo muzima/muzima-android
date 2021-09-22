@@ -36,7 +36,7 @@ public class InteractiveHelpActivity extends BaseActivity {
     private Button cancelButton;
     private EditText helpText;
     private Spinner options;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

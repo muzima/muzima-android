@@ -28,7 +28,7 @@ public class EncounterMiniFormActivity extends AppCompatActivity {
     public static final String FORM_UUID = "formUuid";
     public static final String PATIENT_UUID = "patientUuid";
 
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(true);
     private final LanguageUtil languageUtil = new LanguageUtil();
     private Patient patient;
     private AvailableForm form;

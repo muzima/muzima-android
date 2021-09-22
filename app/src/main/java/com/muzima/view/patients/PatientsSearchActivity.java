@@ -122,7 +122,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     private ProgressDialog patientRegistrationProgressDialog;
 
     private static final boolean DEFAULT_SHR_STATUS = false;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private boolean isSHREnabled;
     private boolean searchViewClosed;
     private DrawerLayout mainLayout;

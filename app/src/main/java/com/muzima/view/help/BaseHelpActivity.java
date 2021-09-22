@@ -19,7 +19,7 @@ import com.muzima.view.BaseActivity;
 
 public class BaseHelpActivity extends BaseActivity {
 
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

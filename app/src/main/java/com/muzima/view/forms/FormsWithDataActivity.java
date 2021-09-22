@@ -72,7 +72,7 @@ public class FormsWithDataActivity extends FormsActivityBase {
     private boolean syncInProgress;
     private TagPreferenceService tagPreferenceService;
     private String patientUuid;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override

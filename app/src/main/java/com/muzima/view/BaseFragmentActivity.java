@@ -30,9 +30,10 @@ import com.muzima.utils.StringUtils;
 import com.muzima.view.initialwizard.OnboardScreenActivity;
 import com.muzima.view.initialwizard.TermsAndPolicyActivity;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
-public class BaseFragmentActivity extends FragmentActivity {
+public class BaseFragmentActivity extends AppCompatActivity {
     private static final String TAG = "BaseFragmentActivity";
     private DefaultMenuDropDownHelper dropDownHelper;
 

@@ -57,7 +57,7 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
     private Patient patient;
     Button getDirectionsButton;
     WebView webView;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

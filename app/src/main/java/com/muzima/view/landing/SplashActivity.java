@@ -25,7 +25,7 @@ import com.muzima.view.initialwizard.SetupMethodPreferenceWizardActivity;
 
 public class SplashActivity extends BaseFragmentActivity {
 
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(true);
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         themeUtils.onCreate(this);

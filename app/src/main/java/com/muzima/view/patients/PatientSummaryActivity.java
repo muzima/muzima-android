@@ -97,7 +97,7 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
     private String patientUuid;
     private Patient patient;
     private Concept selectedBottomSheetConcept;
-    private final ThemeUtils themeUtils = new ThemeUtils();
+    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private final LanguageUtil languageUtil = new LanguageUtil();
     private ClientDynamicObsFormsAdapter clientDynamicObsFormsAdapter;
     private final List<SingleObsForm> singleObsFormsList = new ArrayList<>();
@@ -344,7 +344,6 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
     }
 
     private void initializeResources() {
-        Toolbar toolbar = findViewById(R.id.client_summary_dashboard_toolbar);
         patientNameTextView = findViewById(R.id.name);
         patientGenderImageView = findViewById(R.id.genderImg);
         dobTextView = findViewById(R.id.dateOfBirth);
@@ -356,11 +355,6 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
         View incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
         View completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
 
-        //setSupportActionBar(toolbar);
-        if (getActionBar() != null) {
-            getActionBar().setDisplayShowHomeEnabled(true);
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
 
         incompleteFormsView.setOnClickListener(new View.OnClickListener() {
             @Override
