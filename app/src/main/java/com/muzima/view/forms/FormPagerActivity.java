@@ -187,10 +187,10 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
 
     private void setupToolbar(){
         Toolbar toolbar = findViewById(R.id.form_pager_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //setSupportActionBar(toolbar);
+        if (getActionBar() != null) {
+            getActionBar().setDisplayShowHomeEnabled(true);
+            getActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 

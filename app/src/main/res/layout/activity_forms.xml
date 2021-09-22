@@ -22,12 +22,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/forms_activity_toolbar"
-            tools:title="@string/general_forms"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"/>
-
         <include layout="@layout/client_summary_patients_list"
             android:id="@+id/client_summary_view"
             android:visibility="gone"/>

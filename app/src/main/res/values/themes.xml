@@ -12,12 +12,10 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme.NoActionBar" parent="Theme.MaterialComponents.NoActionBar.Bridge">
+    <style name="AppBaseTheme" parent="Theme.MaterialComponents">
         <item name="android:statusBarColor">@color/primary_black</item>
         <item name="android:windowBackground">@color/primary_black</item>
         <item name="android:textColorSecondary">@color/primary_white</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
         <item name="activatedBackgroundIndicator">@drawable/activated_background_indicator</item>
         <item name="primaryBackgroundColor">@color/primary_black</item>
         <item name="primaryDrawableColor">#CCFFFFFF</item>
@@ -44,12 +42,12 @@
         <item name="onDarkBackgroundColor">@color/dark_smoke</item>
     </style>
 
-    <style name="AppBaseTheme.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+    <style name="AppBaseTheme.Light" parent="Theme.MaterialComponents.Light">
         <item name="android:statusBarColor">@color/dark_primary_blue</item>
         <item name="android:windowBackground">@color/primary_white</item>
         <item name="android:textColorSecondary">@color/primary_black</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
+<!--        <item name="android:windowActionBar">false</item>-->
+<!--        <item name="android:windowNoTitle">true</item>-->
         <item name="activatedBackgroundIndicator">@drawable/activated_background_indicator</item>
         <item name="primaryBackgroundColor">@color/primary_white</item>
         <item name="primaryDrawableColor">#99000000</item>

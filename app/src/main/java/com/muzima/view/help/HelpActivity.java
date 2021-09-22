@@ -114,10 +114,10 @@ public class HelpActivity extends BaseHelpActivity {
     }
 
     private void initToolbar() {
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //setSupportActionBar(toolbar);
+        if (getActionBar() != null){
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActionBar().setDisplayShowHomeEnabled(true);
         }
     }
 

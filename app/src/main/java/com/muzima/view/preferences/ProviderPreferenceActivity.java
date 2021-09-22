@@ -9,6 +9,7 @@
  */
 package com.muzima.view.preferences;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -28,8 +29,6 @@ import android.view.Menu;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import android.view.MenuItem;
-
-import androidx.appcompat.app.ActionBar;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -58,7 +57,7 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         int themecolor = themeUtils.getThemeColor(this);
         actionBar.setBackgroundDrawable(new ColorDrawable(themecolor));
         actionBar.setDisplayHomeAsUpEnabled(true);

@@ -10,9 +10,8 @@
 
 package com.muzima.view.forms;
 
+import android.app.ActionBar;
 import android.os.Build;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -34,6 +33,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -155,9 +155,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             }
         }
 
-        toolbar = findViewById(R.id.form_web_view_toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
+        //toolbar = findViewById(R.id.form_web_view_toolbar);
+        //setSupportActionBar(toolbar);
+        ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);

@@ -10,9 +10,8 @@
 
 package com.muzima.view;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,7 +30,9 @@ import com.muzima.utils.StringUtils;
 import com.muzima.view.initialwizard.OnboardScreenActivity;
 import com.muzima.view.initialwizard.TermsAndPolicyActivity;
 
-public class BaseFragmentActivity extends AppCompatActivity {
+import androidx.fragment.app.FragmentActivity;
+
+public class BaseFragmentActivity extends FragmentActivity {
     private static final String TAG = "BaseFragmentActivity";
     private DefaultMenuDropDownHelper dropDownHelper;
 
@@ -43,7 +44,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
     }
 
     private void setActionBar() {
-        ActionBar supportActionBar = getSupportActionBar();
+        ActionBar supportActionBar = getActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setDisplayShowTitleEnabled(true);

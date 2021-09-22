@@ -61,6 +61,8 @@ import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
+import com.muzima.view.BaseActivity;
+import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.FormsWithDataActivity;
 import com.muzima.view.relationship.RelationshipsListActivity;
@@ -76,7 +78,7 @@ import java.util.Locale;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 
-public class PatientSummaryActivity extends AppCompatActivity implements ClientDynamicObsFormsAdapter.DatePickerClickedListener, ClientDynamicObsFormsAdapter.DateValuePickerClickedListener {
+public class PatientSummaryActivity extends BroadcastListenerActivity implements ClientDynamicObsFormsAdapter.DatePickerClickedListener, ClientDynamicObsFormsAdapter.DateValuePickerClickedListener {
     private static final String TAG = "PatientSummaryActivity";
     public static final String PATIENT = "patient";
     public static final String PATIENT_UUID = "patient_uuid";
@@ -354,10 +356,10 @@ public class PatientSummaryActivity extends AppCompatActivity implements ClientD
         View incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
         View completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
 
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //setSupportActionBar(toolbar);
+        if (getActionBar() != null) {
+            getActionBar().setDisplayShowHomeEnabled(true);
+            getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         incompleteFormsView.setOnClickListener(new View.OnClickListener() {

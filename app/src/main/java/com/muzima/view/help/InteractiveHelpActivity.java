@@ -44,10 +44,10 @@ public class InteractiveHelpActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interactive_help);
         Toolbar toolbar = findViewById(R.id.help_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //setSupportActionBar(toolbar);
+        if (getActionBar() != null){
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActionBar().setDisplayShowHomeEnabled(true);
         }
         initViews();
         setupListeners();

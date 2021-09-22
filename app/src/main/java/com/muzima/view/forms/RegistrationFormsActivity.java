@@ -56,10 +56,10 @@ public class RegistrationFormsActivity extends BaseActivity {
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         indexPatient = (Patient) getIntent().getSerializableExtra(INDEX_PATIENT);
         toolbar = findViewById(R.id.registration_forms_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        ////setSupportActionBar(toolbar);
+        if (getActionBar() != null){
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActionBar().setDisplayShowHomeEnabled(true);
         }
 
         FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();

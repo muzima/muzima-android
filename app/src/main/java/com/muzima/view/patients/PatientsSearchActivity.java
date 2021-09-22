@@ -143,10 +143,10 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
 
         muzimaApplication = (MuzimaApplication) getApplicationContext();
         toolbar = findViewById(R.id.patient_list_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //setSupportActionBar(toolbar);
+        if (getActionBar() != null) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActionBar().setDisplayShowHomeEnabled(true);
         }
 
         if (intentExtras != null) {
@@ -803,7 +803,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
              */
             public void onDrawerClosed(View view) {
                 String title = getResources().getString(R.string.general_client_list);
-                getSupportActionBar().setTitle(title);
+                getActionBar().setTitle(title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
@@ -813,7 +813,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
              */
             public void onDrawerOpened(View drawerView) {
                 String title = getResources().getString(R.string.general_tags);
-                getSupportActionBar().setTitle(title);
+                getActionBar().setTitle(title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }

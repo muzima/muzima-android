@@ -62,11 +62,11 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
         nextButton = findViewById(R.id.policy_next_button);
         toolbar = findViewById(R.id.policy_and_terms_toolbar);
 
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getActionBar() != null) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActionBar().setDisplayShowHomeEnabled(true);
         }
 
         privacyPolicyCheckbox.setOnClickListener(new View.OnClickListener() {

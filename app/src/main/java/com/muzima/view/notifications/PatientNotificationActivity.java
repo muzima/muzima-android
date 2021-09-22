@@ -32,7 +32,7 @@ public class PatientNotificationActivity extends NotificationActivityBase {
         patient = (Patient) intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
         initPager();
         initPagerIndicator();
-        getSupportActionBar().setTitle(patient.getSummary());
+        getActionBar().setTitle(patient.getSummary());
         logEvent("VIEW_PATIENT_NOTIFICATIONS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
     }
 

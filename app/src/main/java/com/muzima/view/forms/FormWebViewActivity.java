@@ -10,7 +10,7 @@
 
 package com.muzima.view.forms;
 
-import androidx.appcompat.app.ActionBar;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -104,7 +104,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);

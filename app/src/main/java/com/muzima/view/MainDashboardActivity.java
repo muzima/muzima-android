@@ -10,6 +10,7 @@
 
 package com.muzima.view;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -26,10 +27,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -202,7 +204,12 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
     private void initializeResources() {
         Toolbar toolbar = findViewById(R.id.dashboard_toolbar);
-        setSupportActionBar(toolbar);
+        ////setSupportActionBar(toolbar);
+        ActionBar supportActionBar = getActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
+            supportActionBar.setDisplayShowTitleEnabled(false);
+        }
         drawerLayout = findViewById(R.id.main_dashboard_drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         cohortFilterBottomSheetView = findViewById(R.id.dashboard_home_bottom_view_container);
@@ -237,7 +244,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                 .setOpenableLayout(drawerLayout)
                 .build();
         navigationView.post(() -> {
-            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            NavHostFragment navHostFragment = (NavHostFragment) getFragmentManager().findFragmentById(R.id.nav_host_fragment);
             if (navHostFragment != null) {
                 navController = navHostFragment.getNavController();
                 NavigationUI.setupWithNavController(toolbar, navController, mAppBarConfiguration);
@@ -282,9 +289,9 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
+    public boolean onNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onNavigateUp();
     }
 
     @Override

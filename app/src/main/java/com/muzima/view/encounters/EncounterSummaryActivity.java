@@ -76,15 +76,15 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
 
     private void setupToolbar(){
         Toolbar toolbar = findViewById(R.id.encounters_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //setSupportActionBar(toolbar);
+        if (getActionBar() != null) {
+            getActionBar().setDisplayShowHomeEnabled(true);
+            getActionBar().setDisplayHomeAsUpEnabled(true);
 
             try {
                 Patient patient = ((MuzimaApplication) getApplicationContext()).getPatientController().getPatientByUuid(encounter.getPatient().getUuid());
                 if (patient != null)
-                    getSupportActionBar().setTitle(patient.getSummary());
+                    getActionBar().setTitle(patient.getSummary());
             } catch (PatientController.PatientLoadException e) {
                 Log.e(getClass().getSimpleName(), "Could not load patient details",e);
             }

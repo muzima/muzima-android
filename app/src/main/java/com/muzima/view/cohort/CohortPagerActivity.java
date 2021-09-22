@@ -64,7 +64,6 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cohort_pager);
-        setupToolbar();
         loadBottomNavigation();
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
@@ -194,14 +193,5 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
             return true;
         }
         return false;
-    }
-
-    private void setupToolbar(){
-        Toolbar toolbar = findViewById(R.id.cohort_pager_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
     }
 }

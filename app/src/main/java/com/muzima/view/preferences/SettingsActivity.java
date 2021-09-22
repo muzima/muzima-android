@@ -58,7 +58,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         setTitle(R.string.general_settings);
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsPreferenceFragment()).commit();
-        setupActionBar();
+        //setupActionBar();
         logEvent("VIEW_SETTINGS");
     }
 
@@ -79,13 +79,13 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     /**
      * Set up the {@link android.app.ActionBar}.
      */
-    private void setupActionBar() {
-        int themecolor = themeUtils.getThemeColor(this);
-        if (getDelegate().getSupportActionBar() != null) {
-            getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getDelegate().getSupportActionBar().setBackgroundDrawable(new ColorDrawable(themecolor));
-        }
-    }
+//    private void setupActionBar() {
+//        int themecolor = themeUtils.getThemeColor(this);
+//        if (getDelegate().getActionBar() != null) {
+//            getDelegate().getActionBar().setDisplayHomeAsUpEnabled(true);
+//            getDelegate().getActionBar().setBackgroundDrawable(new ColorDrawable(themecolor));
+//        }
+//    }
 
     private AppCompatDelegate getDelegate() {
         if (delegate == null) {

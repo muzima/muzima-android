@@ -106,7 +106,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
      */
     private void setupActionBar() {
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
-        getSupportActionBar().setTitle(patient.getSummary());
+        getActionBar().setTitle(patient.getSummary());
     }
 
     @Override

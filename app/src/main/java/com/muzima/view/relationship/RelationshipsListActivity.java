@@ -147,10 +147,10 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
 
     private void setupToolbar(){
         Toolbar toolbar = findViewById(R.id.relationships_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //setSupportActionBar(toolbar);
+        if (getActionBar() != null) {
+            getActionBar().setDisplayShowHomeEnabled(true);
+            getActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 

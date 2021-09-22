@@ -62,7 +62,7 @@ public class ConversationActivity extends BaseActivity {
 
         Bundle data = getIntent().getExtras();
         provider = (Provider) data.get("provider");
-        getSupportActionBar().setTitle(provider.getName());
+        getActionBar().setTitle(provider.getName());
 
         ListView chatListView = findViewById(R.id.chat_list_view);
         adapter = new MessageThreadAdapter(chats, this, provider);

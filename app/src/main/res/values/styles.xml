@@ -23,23 +23,32 @@
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme.NoActionBar">
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <!-- Application theme. -->
     <style name="AppTheme.Dark" parent="AppTheme">
-        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
+    <style name="AppTheme.Light" parent="AppBaseTheme.Light">
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="AppTheme.Light.NoActionBar" parent="AppTheme.Light">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="LoginTheme.Dark" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
-
     </style>
-
 
     <style name="LoginTheme.Light" parent="AppTheme.Light">
         <item name="android:windowTranslucentStatus">true</item>
