@@ -39,7 +39,6 @@ import com.muzima.view.preferences.settings.SettingsPreferenceFragment;
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private AppCompatDelegate delegate;
-    private final ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
@@ -50,7 +49,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
         languageUtil.onCreate(this);
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
@@ -58,14 +57,13 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         setTitle(R.string.general_settings);
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsPreferenceFragment()).commit();
-        //setupActionBar();
+        setupActionBar();
         logEvent("VIEW_SETTINGS");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
     }
@@ -79,13 +77,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     /**
      * Set up the {@link android.app.ActionBar}.
      */
-//    private void setupActionBar() {
-//        int themecolor = themeUtils.getThemeColor(this);
-//        if (getDelegate().getActionBar() != null) {
-//            getDelegate().getActionBar().setDisplayHomeAsUpEnabled(true);
-//            getDelegate().getActionBar().setBackgroundDrawable(new ColorDrawable(themecolor));
-//        }
-//    }
+    private void setupActionBar() {
+        if (getDelegate().getSupportActionBar() != null) {
+            getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
 
     private AppCompatDelegate getDelegate() {
         if (delegate == null) {
@@ -120,7 +116,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         String lightModePreferenceKey = getResources().getString(R.string.preference_light_mode);
         String localePreferenceKey = getResources().getString(R.string.preference_app_language);
         if (key.equals(lightModePreferenceKey) || key.equals(localePreferenceKey)) {
-            onResume();
+            ThemeUtils.getInstance().onResume(this);
         }
     }
 

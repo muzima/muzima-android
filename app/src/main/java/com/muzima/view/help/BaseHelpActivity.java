@@ -19,11 +19,10 @@ import com.muzima.view.BaseActivity;
 
 public class BaseHelpActivity extends BaseActivity {
 
-    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         super.onCreate(savedInstanceState);
     }
 
@@ -38,7 +37,6 @@ public class BaseHelpActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
     }
 
     @Override

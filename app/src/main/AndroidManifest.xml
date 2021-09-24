@@ -213,7 +213,7 @@
             android:label="Select Registration Form"
             android:noHistory="true" />
         <activity
-            android:name=".utils.imaging.ImagingIntent"
+            android:name=".utils.imaging.ImagingIntentActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_image"
@@ -243,7 +243,7 @@
                 android:value="com.muzima.view.reports.PatientReportActivity" />
         </activity>
         <activity
-            android:name=".utils.audio.AudioIntent"
+            android:name=".utils.audio.AudioIntentActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_audio"
@@ -254,7 +254,7 @@
                 android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
-            android:name=".utils.video.VideoIntent"
+            android:name=".utils.video.VideoIntentActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_video"
@@ -334,14 +334,12 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_setup_method"
             android:screenOrientation="portrait"
-            android:theme="@style/WizardTheme.Dark"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".view.initialwizard.GuidedConfigurationWizardActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/title_guided_setup_wizard"
-            android:theme="@style/WizardTheme.Dark" />
+            android:label="@string/title_guided_setup_wizard" />
         <!-- Wizard Activities End -->
 
         <activity
@@ -428,7 +426,8 @@
             android:theme="@style/DialogNoTitleBar" />
 
         <activity android:name=".view.initialwizard.OnboardScreenActivity" />
-        <activity android:name=".view.initialwizard.TermsAndPolicyActivity" />
+        <activity android:name=".view.initialwizard.TermsAndPolicyActivity"
+            android:label="@string/general_policy_title"/>
         <activity android:name=".view.MainDashboardActivity"
                   android:configChanges="orientation|screenSize"
                   android:screenOrientation="portrait"
@@ -445,10 +444,12 @@
         <activity android:name=".view.cohort.CohortPagerActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
+            android:label="@string/general_cohorts"
             android:launchMode="singleTask"/>
         <activity android:name=".view.forms.FormPagerActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
+            android:label="@string/general_forms"
             android:launchMode="singleTask"/>
 
         <meta-data

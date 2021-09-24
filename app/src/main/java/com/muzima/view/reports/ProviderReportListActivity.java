@@ -35,11 +35,10 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
     private View noDataView;
     private FrameLayout progressBarContainer;
     private AvailableReportsAdapter reportsAdapter;
-    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_list);
         progressBarContainer = findViewById(R.id.progressbarContainer);
@@ -83,7 +82,6 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
     protected void onResume() {
         super.onResume();
         reportsAdapter.reloadData();
-        themeUtils.onResume(this);
     }
 
     @Override

@@ -37,12 +37,11 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     private Encounter encounter;
     private EncounterObservationsAdapter encounterObservationsAdapter;
     private LinearLayout noDataView;
-    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encounter_summary);
@@ -70,21 +69,15 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
     }
 
     private void setupToolbar(){
-        Toolbar toolbar = findViewById(R.id.encounters_toolbar);
-        //setSupportActionBar(toolbar);
-        if (getActionBar() != null) {
-            getActionBar().setDisplayShowHomeEnabled(true);
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-
+        if (getSupportActionBar() != null) {
             try {
                 Patient patient = ((MuzimaApplication) getApplicationContext()).getPatientController().getPatientByUuid(encounter.getPatient().getUuid());
                 if (patient != null)
-                    getActionBar().setTitle(patient.getSummary());
+                    getSupportActionBar().setTitle(patient.getSummary());
             } catch (PatientController.PatientLoadException e) {
                 Log.e(getClass().getSimpleName(), "Could not load patient details",e);
             }

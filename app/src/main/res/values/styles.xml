@@ -25,8 +25,10 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
-    <style name="AppTheme.NoActionBar" parent="AppTheme">
+    <style name="AppTheme.NoActionBar" parent="AppBaseTheme.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -41,24 +43,17 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
-    <style name="AppTheme.Light.NoActionBar" parent="AppTheme.Light">
+    <style name="AppTheme.Light.NoActionBar" parent="AppBaseTheme.Light.NoActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    <style name="LoginTheme.Dark" parent="AppTheme">
+    <style name="LoginTheme.Dark" parent="AppTheme.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="LoginTheme.Light" parent="AppTheme.Light">
+    <style name="LoginTheme.Light" parent="AppTheme.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <!-- Application theme. -->
-    <style name="WizardTheme.Dark" parent="AppTheme">
-    </style>
-
-    <style name="WizardTheme.Light" parent="AppTheme.Light">
     </style>
 
     <style name="Widget.Custom.NavigationView" parent="Widget.Design.NavigationView">
@@ -66,23 +61,6 @@
         <item name="itemTextColor">?attr/colorNavigationItem</item>
         <item name="itemBackground">@drawable/menu_background_color_state</item>
     </style>
-
-    <style name="PreferencesTheme.Dark" parent="AppTheme">
-        <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
-        <item name="android:textColorPrimary">@color/preference_primary_color</item>
-        <item name="android:textColorSecondary">@color/preference_secondary_color</item>
-    </style>
-
-
-    <style name="PreferencesTheme.Light" parent="AppTheme.Light">
-        <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
-        <item name="android:textColorPrimary">@color/preference_primary_color_light</item>
-        <item name="android:textColorSecondary">@color/preference_secondary_color_light</item>
-    </style>
-
-    <style name="preferenceCategoryStyle">
-    </style>
-
 
     <style name="DashboardWrapper">
         <item name="android:layout_width">match_parent</item>

@@ -39,7 +39,6 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
     private View termsAndConditionsContentTextView;
     private TextView acceptAllButton;
     private Button nextButton;
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,14 +59,7 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
         termsAndConditionsContentTextView = findViewById(R.id.terms_and_conditions_container_text_view);
         acceptAllButton = findViewById(R.id.policy_accept_all_button);
         nextButton = findViewById(R.id.policy_next_button);
-        toolbar = findViewById(R.id.policy_and_terms_toolbar);
 
-        //setSupportActionBar(toolbar);
-
-        if (getActionBar() != null) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-            getActionBar().setDisplayShowHomeEnabled(true);
-        }
 
         privacyPolicyCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override

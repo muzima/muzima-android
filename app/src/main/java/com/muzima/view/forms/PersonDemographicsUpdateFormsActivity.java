@@ -35,12 +35,11 @@ import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIE
 public class PersonDemographicsUpdateFormsActivity extends AppCompatActivity {
     public static final String PERSON = "person";
     private RelationshipFormsAdapter relationshipFormsAdapter;
-    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private Patient person;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         super.onCreate(savedInstanceState);
 
         Person selectedRelatedPerson = (Person) getIntent().getSerializableExtra(PERSON);

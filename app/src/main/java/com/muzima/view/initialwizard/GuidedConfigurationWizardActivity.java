@@ -86,10 +86,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private ImageView thirdDotView;
     private GuidedSetupCardsViewPagerAdapter guidedSetupCardsViewPagerAdapter;
     private int pageCount;
-    private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     public void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guided_setup_wizard);
         initializeResources();

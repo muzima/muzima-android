@@ -32,8 +32,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.Locale;
 
-import static android.view.View.GONE;
-
 public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel> {
     private Context context;
 
@@ -93,7 +91,7 @@ public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel
                 //setupActionResult.setText(String.format("%s: ", (getContext().getString(R.string.general_fail)).toUpperCase()));
                 statusImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_close));
             } else if (!StringUtils.isEmpty(text) && StringUtils.equals(text, Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG)) {
-                if (ThemeUtils.getPreferenceLightMode(context.getApplicationContext()))
+                if (ThemeUtils.getInstance().isLightModeSettingEnabled(context.getApplicationContext()))
                     setupActionResult.setTextColor(ContextCompat.getColor(getContext(), R.color.primary_blue));
                 else
                     setupActionResult.setTextColor(ContextCompat.getColor(getContext(), R.color.primary_white));

@@ -123,7 +123,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private String autoSaveIntervalPreference;
     private boolean encounterProviderPreference;
     private final Handler handler = new Handler();
-    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private boolean isFormReload;
     private EncounterMiniFormCreatorComponent encounterMiniFormCreatorComponent;
     private Patient indexPatient;
@@ -131,7 +130,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
 
@@ -154,13 +153,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 getWindow().setLayout(width, height);
             }
         }
-
-        //toolbar = findViewById(R.id.form_web_view_toolbar);
-        //setSupportActionBar(toolbar);
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         setTitle(R.string.general_form);
         progressDialog = new MuzimaProgressDialog(this);
@@ -289,7 +281,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             webView.loadUrl("javascript:document.populateRelationshipPerson('" + sectionName + "', " + jsonMap + ")");
         }
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
     }
 

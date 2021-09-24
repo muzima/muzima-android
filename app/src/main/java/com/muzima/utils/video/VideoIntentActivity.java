@@ -35,7 +35,7 @@ import java.io.File;
 
 import static com.muzima.utils.Constants.APP_VIDEO_DIR;
 
-public class VideoIntent extends Activity {
+public class VideoIntentActivity extends Activity {
 
 	public static final String KEY_VIDEO_PATH = "videoPath";
     public static final String KEY_VIDEO_CAPTION = "videoCaption";
@@ -54,11 +54,10 @@ public class VideoIntent extends Activity {
     private String mSectionName;
     private String mBinaryName;
     private String mBinaryDescription;
-    private final ThemeUtils themeUtils = new ThemeUtils(true);
 	private final LanguageUtil languageUtil = new LanguageUtil();
 
 	public void onCreate(Bundle savedInstanceState) {
-	    themeUtils.onCreate(this);
+		ThemeUtils.getInstance().onCreate(this,false);
 	    languageUtil.onCreate(this);
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_video);
@@ -174,7 +173,7 @@ public class VideoIntent extends Activity {
 		try {
 			startActivity(i);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(VideoIntent.this,getString(R.string.info_video_play_activity_unavailable), Toast.LENGTH_SHORT).show();
+			Toast.makeText(VideoIntentActivity.this,getString(R.string.info_video_play_activity_unavailable), Toast.LENGTH_SHORT).show();
 		}
 	}
 

@@ -158,8 +158,8 @@ public class AllPatientReportListFragment extends PatientReportListFragment {
     }
 
     private void downloadSelectedReportdInBackgroundService() {
-        ((PatientReportActivity) getActivity()).showProgressBar();
-        new DownloadPatientReportsIntent(getActivity(), ((AllPatientReportsAdapter) listAdapter).getSelectedPatientReportsArray()).start();
+//        ((PatientReportActivity) getActivity()).showProgressBar();
+//        new DownloadPatientReportsIntent(getActivity(), ((AllPatientReportsAdapter) listAdapter).getSelectedPatientReportsArray()).start();
     }
 
     public interface OnPatientReportsDownloadListener {

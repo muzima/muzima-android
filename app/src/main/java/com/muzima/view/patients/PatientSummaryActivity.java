@@ -29,15 +29,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -61,7 +58,6 @@ import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
-import com.muzima.view.BaseActivity;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.FormsWithDataActivity;
@@ -97,7 +93,6 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
     private String patientUuid;
     private Patient patient;
     private Concept selectedBottomSheetConcept;
-    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private final LanguageUtil languageUtil = new LanguageUtil();
     private ClientDynamicObsFormsAdapter clientDynamicObsFormsAdapter;
     private final List<SingleObsForm> singleObsFormsList = new ArrayList<>();
@@ -105,7 +100,7 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_summary);
@@ -118,25 +113,6 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
         ClientSummaryPagerAdapter clientSummaryPager = new ClientSummaryPagerAdapter(this, tabLayout.getTabCount(), patientUuid);
         viewPager.setAdapter(clientSummaryPager);
         viewPager.setUserInputEnabled(false);
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-                tab.getIcon().setTint(ContextCompat.getColor(PatientSummaryActivity.this, (R.color.primary_blue)));
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                if (ThemeUtils.getPreferenceLightMode(PatientSummaryActivity.this))
-                    tab.getIcon().setTint(ContextCompat.getColor(PatientSummaryActivity.this, (R.color.primary_black)));
-                else
-                    tab.getIcon().setTint(ContextCompat.getColor(PatientSummaryActivity.this, (R.color.primary_white)));
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
-        });
     }
 
     @Override

@@ -57,13 +57,12 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     private ActionMode actionMode;
 
     private boolean actionModeActive = false;
-    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private final LanguageUtil languageUtil = new LanguageUtil();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_remote_search_list);
@@ -84,7 +83,6 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
     }
 

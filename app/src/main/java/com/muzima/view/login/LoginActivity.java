@@ -24,6 +24,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -81,14 +82,16 @@ public class LoginActivity extends Activity {
     private ValueAnimator flipFromLoginToAuthAnimator;
     private ValueAnimator flipFromAuthToLoginAnimator;
     private boolean isUpdatePasswordChecked;
-    private final ThemeUtils themeUtils = new ThemeUtils(R.style.LoginTheme_Light, R.style.LoginTheme_Dark);
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
+        setStatusBarAsTransparent();
+
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
+
         ((MuzimaApplication) getApplication()).cancelTimer();
         setContentView(R.layout.activity_login);
         showSessionTimeOutPopUpIfNeeded();
@@ -114,6 +117,10 @@ public class LoginActivity extends Activity {
         versionText.setText(getApplicationVersion());
         usernameText.requestFocus();
         initializeGPSDataCollection();
+    }
+
+    private void setStatusBarAsTransparent(){
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
     private void showSessionTimeOutPopUpIfNeeded() {
@@ -165,7 +172,6 @@ public class LoginActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onCreate(this);
         setupStatusView();
     }

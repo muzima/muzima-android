@@ -21,44 +21,25 @@
             android:layout_height="fill_parent"
             android:orientation="vertical">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/primaryBackgroundColor"
-            app:elevation="6dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/form_pager_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/primaryBackgroundColor"
-                    app:title="@string/general_forms"/>
-            </LinearLayout>
-        </com.google.android.material.appbar.AppBarLayout>
-
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/border_button_gray"
+                android:layout_marginEnd="12dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginEnd="12dp"
-                android:padding="4dp"
-                android:background="@drawable/border_button_gray">
+                android:padding="8dp">
 
             <EditText
                     android:id="@+id/search_forms"
+                    android:hint="@string/general_search_forms"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:background="@null"
                     android:fontFamily="@font/montserrat_regular"
-                    android:hint="@string/general_search_forms"
-                    android:padding="6dp"
+                    android:padding="4dp"
+                    android:textSize="14sp"
                     android:autofillHints="@string/general_search_forms"
                     android:inputType="text"/>
 
@@ -102,10 +83,12 @@
 
         </com.google.android.material.tabs.TabLayout>
         <RelativeLayout
-                android:background="@drawable/border_button_gray"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+            <View android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/onDarkBackgroundColor"/>
 
             <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager"

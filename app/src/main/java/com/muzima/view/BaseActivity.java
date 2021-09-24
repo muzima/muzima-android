@@ -12,7 +12,6 @@ package com.muzima.view;
 
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -90,7 +89,7 @@ public class BaseActivity extends AppCompatActivity {
                     syncSHRMenuItem.setVisible(false);
                 }
             } catch (SmartCardController.SmartCardRecordFetchException e) {
-                Log.e(BaseFragmentActivity.class.getSimpleName(), "Error fetching smartcard records");
+                Log.e(getClass().getSimpleName(), "Error fetching smartcard records");
             }
         }
         return true;

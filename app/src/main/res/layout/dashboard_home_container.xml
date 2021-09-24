@@ -64,11 +64,11 @@
                     android:padding="8dp">
 
                     <TextView
+                        android:id="@+id/dashboard_forms_search_edit_text"
                         android:text="@string/general_search_patient"
                         android:textSize="14sp"
                         android:fontFamily="@font/montserrat_regular"
                         android:textColor="?attr/primaryTextColor"
-                        android:id="@+id/dashboard_forms_search_edit_text"
                         android:layout_centerVertical="true"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"

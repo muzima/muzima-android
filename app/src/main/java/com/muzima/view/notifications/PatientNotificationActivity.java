@@ -21,11 +21,10 @@ import com.muzima.view.patients.PatientSummaryActivity;
 
 public class PatientNotificationActivity extends NotificationActivityBase {
     private Patient patient;
-    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
         Intent intent = getIntent();
@@ -34,12 +33,6 @@ public class PatientNotificationActivity extends NotificationActivityBase {
         initPagerIndicator();
         getActionBar().setTitle(patient.getSummary());
         logEvent("VIEW_PATIENT_NOTIFICATIONS","{\"patientuuid\":\""+patient.getUuid()+"\"}");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        themeUtils.onResume(this);
     }
 
     @Override

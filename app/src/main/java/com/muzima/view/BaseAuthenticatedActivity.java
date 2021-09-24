@@ -11,7 +11,6 @@
 package com.muzima.view;
 
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,25 +26,27 @@ import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.view.initialwizard.OnboardScreenActivity;
 import com.muzima.view.initialwizard.TermsAndPolicyActivity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 
-public class BaseFragmentActivity extends AppCompatActivity {
+
+public class BaseAuthenticatedActivity extends AppCompatActivity {
     private static final String TAG = "BaseFragmentActivity";
     private DefaultMenuDropDownHelper dropDownHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setActionBar();
+        setupActionBar();
         dropDownHelper = new DefaultMenuDropDownHelper(this);
     }
 
-    private void setActionBar() {
-        ActionBar supportActionBar = getActionBar();
+    private void setupActionBar() {
+        ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setDisplayShowTitleEnabled(true);
@@ -61,10 +62,10 @@ public class BaseFragmentActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(TAG, "onResume: BaseFragmentActivity");
-        Log.e(TAG, "onResume: BaseFragmentActivity setCurrentActivity " + this.getClass().getSimpleName());
+        checkDisclaimerOrCredentials();
+        ThemeUtils.getInstance().onResume(this);
+        Log.i(TAG, "onResume: BaseAuthenticatedActivity setCurrentActivity " + this.getClass().getSimpleName());
         ((MuzimaApplication) getApplication()).setCurrentActivity(this);
-        boolean isActivityPropagated = checkDisclaimerOrCredentials();
 
     }
 
@@ -108,7 +109,7 @@ public class BaseFragmentActivity extends AppCompatActivity {
                     syncSHRMenuItem.setVisible(false);
                 }
             } catch (SmartCardController.SmartCardRecordFetchException e) {
-                Log.e(BaseFragmentActivity.class.getSimpleName(), "Error fetching smartcard records");
+                Log.e(BaseAuthenticatedActivity.class.getSimpleName(), "Error fetching smartcard records");
             }
         }
         return true;

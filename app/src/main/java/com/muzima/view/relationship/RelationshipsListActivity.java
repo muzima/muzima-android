@@ -89,7 +89,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private TextView identifierTextView;
     private TextView ageTextView;
 
-    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private ListView lvwPatientRelationships;
     private AutoCompleteTextView autoCompletePersonTextView;
     private AutoCompleteRelatedPersonAdapter autoCompleteRelatedPersonAdapterAdapter;
@@ -110,7 +109,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_relationships);
@@ -133,7 +132,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         autoCompletePersonTextView.setOnItemClickListener(autoCompleteOnClickListener());
         autoCompletePersonTextView.addTextChangedListener(autoCompleteTextWatcher());
 
-        setupToolbar();
         loadPatientData();
         setupStillLoadingView();
         setupPatientRelationships();
@@ -142,15 +140,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         if (actionModeActive) {
             actionMode = startActionMode(new DeleteRelationshipsActionModeCallback());
             actionMode.setTitle(String.valueOf(getSelectedRelationships().size()));
-        }
-    }
-
-    private void setupToolbar(){
-        Toolbar toolbar = findViewById(R.id.relationships_toolbar);
-        //setSupportActionBar(toolbar);
-        if (getActionBar() != null) {
-            getActionBar().setDisplayShowHomeEnabled(true);
-            getActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -201,7 +190,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
         patientRelationshipsAdapter.reloadData();
     }

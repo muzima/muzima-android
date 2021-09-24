@@ -92,10 +92,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private TextView headerTitleTextView;
-    private final ThemeUtils themeUtils = new ThemeUtils(true);
     private final LanguageUtil languageUtil = new LanguageUtil();
-    private MenuItem menuLocation;
-    private MenuItem menuRefresh;
     private Credentials credentials;
     private BottomSheetBehavior cohortFilterBottomSheetBehavior;
     private View cohortFilterBottomSheetView;
@@ -113,7 +110,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        themeUtils.onCreate(MainDashboardActivity.this);
+        ThemeUtils.getInstance().onCreate(MainDashboardActivity.this,false);
         languageUtil.onCreate(MainDashboardActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -181,7 +178,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
     private void initializeResources() {
         Toolbar toolbar = findViewById(R.id.dashboard_toolbar);
-        //setSupportActionBar(toolbar);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -274,6 +270,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         if (((MuzimaApplication) getApplicationContext()).getAuthenticatedUser() != null)
             headerTitleTextView.setText(((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getUsername());
         setTitle(StringUtils.EMPTY);
+
     }
 
     @Override
@@ -432,7 +429,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
         showIncompleteWizardWarning();
     }
@@ -485,7 +481,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private void showExitAlertDialog() {
         new AlertDialog.Builder(MainDashboardActivity.this)
                 .setCancelable(true)
-                .setIcon(themeUtils.getIconWarning(this))
+                .setIcon(ThemeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
                 .setMessage(getResources().getString(R.string.warning_logout_confirm))
                 .setPositiveButton(getString(R.string.general_yes), exitApplication())

@@ -72,12 +72,11 @@ public class FormsWithDataActivity extends FormsActivityBase {
     private boolean syncInProgress;
     private TagPreferenceService tagPreferenceService;
     private String patientUuid;
-    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_forms, null);
@@ -127,7 +126,6 @@ public class FormsWithDataActivity extends FormsActivityBase {
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
         //tagsListAdapter.reloadData();
     }

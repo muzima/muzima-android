@@ -34,7 +34,7 @@ import java.io.File;
 
 import static com.muzima.utils.Constants.APP_AUDIO_DIR;
 
-public class AudioIntent extends Activity {
+public class AudioIntentActivity extends Activity {
 
 	public static final String KEY_AUDIO_PATH = "audioPath";
     public static final String KEY_AUDIO_CAPTION = "audioCaption";
@@ -55,11 +55,10 @@ public class AudioIntent extends Activity {
     private String mSectionName;
     private String mBinaryName;
     private String mBinaryDescription;
-    private final ThemeUtils themeUtils = new ThemeUtils(true);
     private final LanguageUtil languageUtil = new LanguageUtil();
 
 	public void onCreate(Bundle savedInstanceState) {
-	    themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
 	    languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio);
@@ -177,7 +176,7 @@ public class AudioIntent extends Activity {
 		try {
 			startActivity(i);
 		} catch (ActivityNotFoundException e) {
-			Toast.makeText(AudioIntent.this,getString(R.string.error_audio_play_activity_find), Toast.LENGTH_SHORT).show();
+			Toast.makeText(AudioIntentActivity.this,getString(R.string.error_audio_play_activity_find), Toast.LENGTH_SHORT).show();
 		}
 	}
 

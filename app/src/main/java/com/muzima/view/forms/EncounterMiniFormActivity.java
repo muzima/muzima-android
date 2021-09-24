@@ -28,7 +28,6 @@ public class EncounterMiniFormActivity extends AppCompatActivity {
     public static final String FORM_UUID = "formUuid";
     public static final String PATIENT_UUID = "patientUuid";
 
-    private final ThemeUtils themeUtils = new ThemeUtils(true);
     private final LanguageUtil languageUtil = new LanguageUtil();
     private Patient patient;
     private AvailableForm form;
@@ -38,7 +37,7 @@ public class EncounterMiniFormActivity extends AppCompatActivity {
     private String patientUuid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_relationship_form_list);

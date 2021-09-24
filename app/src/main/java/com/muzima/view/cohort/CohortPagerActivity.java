@@ -48,7 +48,6 @@ import static com.muzima.view.BroadcastListenerActivity.PROGRESS_UPDATE_ACTION;
 public class CohortPagerActivity extends ActivityWithBottomNavigation {
     private ViewPager viewPager;
     private EditText searchCohorts;
-    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -60,7 +59,7 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cohort_pager);

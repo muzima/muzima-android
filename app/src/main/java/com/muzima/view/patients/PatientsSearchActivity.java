@@ -122,7 +122,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     private ProgressDialog patientRegistrationProgressDialog;
 
     private static final boolean DEFAULT_SHR_STATUS = false;
-    private final ThemeUtils themeUtils = new ThemeUtils(false);
     private boolean isSHREnabled;
     private boolean searchViewClosed;
     private DrawerLayout mainLayout;
@@ -132,7 +131,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_patient_list, null);
@@ -142,12 +141,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         setTitle(R.string.general_clients);
 
         muzimaApplication = (MuzimaApplication) getApplicationContext();
-        toolbar = findViewById(R.id.patient_list_toolbar);
-        //setSupportActionBar(toolbar);
-        if (getActionBar() != null) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-            getActionBar().setDisplayShowHomeEnabled(true);
-        }
 
         if (intentExtras != null) {
             searchString = intentExtras.getString(SEARCH_STRING);
@@ -270,7 +263,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
         if (isSHRSettingEnabled()) {
             invalidateOptionsMenu();

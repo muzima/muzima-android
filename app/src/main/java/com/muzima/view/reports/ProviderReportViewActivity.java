@@ -38,11 +38,10 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
     public Provider provider;
     private MuzimaProgressDialog progressDialog;
     private FormTemplate reportTemplate;
-    private final ThemeUtils themeUtils = new ThemeUtils(false);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
@@ -60,7 +59,6 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
     }
 
     private void setupWebView() {

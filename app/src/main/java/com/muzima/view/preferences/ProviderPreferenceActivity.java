@@ -9,7 +9,6 @@
  */
 package com.muzima.view.preferences;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -42,31 +41,31 @@ import com.muzima.view.BroadcastListenerActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
+
 public class ProviderPreferenceActivity extends BroadcastListenerActivity {
     private SelectedProviderAdapter selectedProviderAdapter;
     private ListView selectedProviderListView;
     private AutoCompleteTextView autoCompleteProvidersTextView;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
-    private ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
-        ActionBar actionBar = getActionBar();
-        int themecolor = themeUtils.getThemeColor(this);
-        actionBar.setBackgroundDrawable(new ColorDrawable(themecolor));
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
+
         LayoutInflater inflator = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.provider_autocomplete_textview_action, null);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(v);
+
         selectedProviderListView = findViewById(R.id.provider_preference_list);
         final MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
         selectedProviderAdapter = new SelectedProviderAdapter(this, R.layout.item_provider_list,
@@ -148,7 +147,6 @@ public class ProviderPreferenceActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         selectedProviderAdapter.reloadData();
     }
 
