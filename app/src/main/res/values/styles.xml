@@ -15,13 +15,6 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
-    <style name="ThemeOverlay.AppCompat.navTheme">
-        <!-- Color of text and icon when SELECTED -->
-        <item name="colorPrimary">@color/primary_black</item>
-        <!-- Background color when SELECTED -->
-        <item name="colorControlHighlight">@color/primary_white</item>
-    </style>
-
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="windowActionModeOverlay">true</item>
@@ -35,10 +28,6 @@
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme.Dark" parent="AppTheme">
-    </style>
-
-    <!-- Application theme. -->
     <style name="AppTheme.Light" parent="AppBaseTheme.Light">
         <item name="windowActionModeOverlay">true</item>
     </style>
@@ -46,14 +35,6 @@
     <style name="AppTheme.Light.NoActionBar" parent="AppBaseTheme.Light.NoActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-    </style>
-
-    <style name="LoginTheme.Dark" parent="AppTheme.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <style name="LoginTheme.Light" parent="AppTheme.Light.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="Widget.Custom.NavigationView" parent="Widget.Design.NavigationView">

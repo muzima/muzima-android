@@ -1073,6 +1073,7 @@ public class FormController {
     public Map<String, List<FormData>> deleteFormDataWithNoRelatedCompleteRegistrationFormDataInGroup(
             Map<String, List<FormData>> groupedFormData) throws FormDataDeleteException {
         Map<String, List<FormData>> remnantData = new HashMap<>();
+        Log.e(getClass().getSimpleName(),"deleting individual Obs");
         for (String patientUuid : groupedFormData.keySet()) {
             List<FormData> formDataList = groupedFormData.get(patientUuid);
             boolean hasRegistration = false;
@@ -1091,21 +1092,33 @@ public class FormController {
         return remnantData;
     }
 
-    private void deleteEncounterFormDataAndRelatedPatientData(List<FormData> formDataList) throws FormDataDeleteException {
+    public void deleteEncounterFormDataAndRelatedPatientData(List<FormData> formDataList) throws FormDataDeleteException {
         try {
             for (FormData formData : formDataList) {
-                if (isCompleteFormData(formData) || isArchivedFormData(formData)) {
-                    List<Encounter> encounters = encounterService.getEncountersByFormDataUuid(formData.getUuid());
-                    for (Encounter encounter : encounters) {
-                        List<Observation> observations = observationService.getObservationsByEncounter(encounter.getUuid());
-                        observationService.deleteObservations(observations);
+                if(formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS)){
+                    String jsonPayload = formData.getJsonPayload();
+                    org.json.JSONObject responseJSON = new org.json.JSONObject(jsonPayload);
+                    org.json.JSONObject encounterObject = responseJSON.getJSONObject("encounter");
+                    String encounterUuid = encounterObject.getString("encounter.encounter_uuid");
+                    List<Observation> observations = observationService.getObservationsByEncounter(encounterUuid);
+                    observationService.deleteObservations(observations);
+                    formService.deleteFormData(formData);
+                }else {
+                    if (isCompleteFormData(formData) || isArchivedFormData(formData)) {
+                        List<Encounter> encounters = encounterService.getEncountersByFormDataUuid(formData.getUuid());
+                        for (Encounter encounter : encounters) {
+                            List<Observation> observations = observationService.getObservationsByEncounter(encounter.getUuid());
+                            observationService.deleteObservations(observations);
+                        }
+                        encounterService.deleteEncounters(encounters);
                     }
-                    encounterService.deleteEncounters(encounters);
+                    formService.deleteFormData(formData);
                 }
-                formService.deleteFormData(formData);
             }
         } catch (IOException e) {
             throw new FormDataDeleteException(e);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

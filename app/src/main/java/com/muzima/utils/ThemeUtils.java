@@ -24,12 +24,9 @@ public class ThemeUtils {
     private int lightThemeId;
     private int darkThemeId;
     private boolean lightMode;
-    private boolean hideActionBar;
     private static ThemeUtils themeUtils;
 
     private ThemeUtils() {
-        lightThemeId = R.style.AppTheme_Light;
-        darkThemeId = R.style.AppTheme_Dark;
     }
 
     public static ThemeUtils getInstance(){
@@ -37,11 +34,6 @@ public class ThemeUtils {
             themeUtils = new ThemeUtils();
         }
         return themeUtils;
-    }
-
-    private ThemeUtils(int lightThemeId, int darkThemeId) {
-        this.lightThemeId = lightThemeId;
-        this.darkThemeId = darkThemeId;
     }
 
     public void onCreate(Activity activity, boolean showActionBar) {
@@ -52,7 +44,7 @@ public class ThemeUtils {
     private void setThemeResourceIdentifiers(boolean showActionBar) {
         if(showActionBar){
             lightThemeId = R.style.AppTheme_Light;
-            darkThemeId = R.style.AppTheme_Dark;
+            darkThemeId = R.style.AppTheme;
         } else {
             lightThemeId = R.style.AppTheme_Light_NoActionBar;
             darkThemeId = R.style.AppTheme_NoActionBar;

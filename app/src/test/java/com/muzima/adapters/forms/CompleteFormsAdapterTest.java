@@ -17,6 +17,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PersonName;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.testSupport.CustomTestRunner;
@@ -44,13 +45,15 @@ import static org.mockito.Mockito.when;
 public class CompleteFormsAdapterTest {
     private CompleteFormsWithDataAdapter formsAdapter;
     private FormController formController;
+    private ObservationController observationController;
     private Context context;
 
     @Before
     public void setUp() {
         formController = mock(FormController.class);
+        observationController = mock(ObservationController.class);
         context = mock(Context.class);
-        formsAdapter = new CompleteFormsWithDataAdapter(context, 0, StringUtils.EMPTY,formController){
+        formsAdapter = new CompleteFormsWithDataAdapter(context, 0, StringUtils.EMPTY,formController, observationController){
             @Override
             public void addAll(@NonNull Collection<? extends CompleteFormWithPatientData> collection) {
 

@@ -104,6 +104,13 @@ public class ObservationController {
         return observationService.countObservationsByPatient(patientUuid);
     }
 
+    public List<Observation> getObservationByEncounterUuid(String encounterUuid) throws IOException {
+        return observationService.getObservationsByEncounter(encounterUuid);
+    }
+    public Concept getConceptForObs(String conceptUuid) throws IOException {
+        return conceptService.getConceptByUuid(conceptUuid);
+    }
+
     private void inflateConcepts(List<Observation> observationsByPatient) throws IOException {
         Map<String, Concept> conceptCache = new HashMap<>();
 

@@ -24,6 +24,7 @@ import com.muzima.R;
 import com.muzima.adapters.relationships.RelationshipFormsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.utils.ThemeUtils;
@@ -51,11 +52,12 @@ public class RelationshipFormsActivity extends AppCompatActivity {
         getWindow().setLayout(width, height);
 
         FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
+        ObservationController observationController = ((MuzimaApplication) getApplicationContext()).getObservationController();
         AvailableForms availableForms = getRelationshipForms(formController);
         if (isOnlyOneRelationshipFormAvailable(availableForms)) {
             startWebViewActivity(availableForms.get(0));
         } else {
-            prepareRelationshipAdapter(formController, availableForms);
+            prepareRelationshipAdapter(formController, availableForms, observationController);
         }
     }
 
@@ -64,9 +66,9 @@ public class RelationshipFormsActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private void prepareRelationshipAdapter(FormController formController, AvailableForms availableForms) {
+    private void prepareRelationshipAdapter(FormController formController, AvailableForms availableForms, ObservationController observationController) {
         relationshipFormsAdapter = new RelationshipFormsAdapter(this, R.layout.item_forms_list,
-                formController, availableForms);
+                formController, availableForms, observationController);
         ListView list = findViewById(R.id.list);
         list.setOnItemClickListener(startRelationshipOnClick());
         list.setAdapter(relationshipFormsAdapter);

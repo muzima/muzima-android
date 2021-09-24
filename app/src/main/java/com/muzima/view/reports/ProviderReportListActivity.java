@@ -50,7 +50,7 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
 
     private void setupListView() {
         reportsAdapter = new AvailableReportsAdapter(this, R.layout.item_forms_list,
-                ((MuzimaApplication)getApplicationContext()).getFormController());
+                ((MuzimaApplication)getApplicationContext()).getFormController(), ((MuzimaApplication)getApplicationContext()).getObservationController());
         reportsAdapter.setBackgroundListQueryTaskListener(this);
         listView = findViewById(R.id.list);
         listView.setAdapter(reportsAdapter);

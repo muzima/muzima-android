@@ -14,7 +14,10 @@ import androidx.fragment.app.FragmentManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
+import com.muzima.api.model.Observation;
+import com.muzima.api.service.ObservationService;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.view.forms.CompleteFormsListFragment;
 import com.muzima.view.forms.IncompleteFormsListFragment;
@@ -51,9 +54,9 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
     public void initPagerViews() {
         pagers = new PagerView[2];
         FormController formController = ((MuzimaApplication) context.getApplicationContext()).getFormController();
-
-        CompleteFormsListFragment completeFormsListFragment = CompleteFormsListFragment.newInstance(formController);
-        IncompleteFormsListFragment incompleteFormsListFragment = IncompleteFormsListFragment.newInstance(formController);
+        ObservationController observationController = ((MuzimaApplication) context.getApplicationContext()).getObservationController();
+        CompleteFormsListFragment completeFormsListFragment = CompleteFormsListFragment.newInstance(formController, observationController);
+        IncompleteFormsListFragment incompleteFormsListFragment = IncompleteFormsListFragment.newInstance(formController, observationController);
 
         LanguageUtil languageUtil = new LanguageUtil();
         Context localizedContext = languageUtil.getLocalizedContext(context);
