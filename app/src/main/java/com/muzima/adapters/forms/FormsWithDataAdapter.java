@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.muzima.R;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.PatientComparator;
 import com.muzima.utils.StringUtils;
@@ -47,8 +48,8 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
     private final List<String> selectedFormsUuids;
     private MuzimaClickListener muzimaClickListener;
 
-    FormsWithDataAdapter(Context context, int textViewResourceId, String filterPatientUuid, FormController formController) {
-        super(context, textViewResourceId, formController);
+    FormsWithDataAdapter(Context context, int textViewResourceId, String filterPatientUuid, FormController formController, ObservationController observationController) {
+        super(context, textViewResourceId, formController,observationController);
         patientComparator = new PatientComparator();
         selectedFormsUuids = new ArrayList<>();
         this.filterPatientUuid = filterPatientUuid;
@@ -159,7 +160,7 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
 
                 if(selectedFormsUuids.isEmpty()) {
                     setActivationBackgroundColor(view);
-                    muzimaClickListener.onItemClick(position);
+                    muzimaClickListener.onItemClick(position, view);
                 } else {
                     selectOrDeselectClickedItem(view,position);
                 }

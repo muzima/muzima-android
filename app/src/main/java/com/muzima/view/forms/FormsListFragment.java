@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import com.muzima.R;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.view.fragments.MuzimaListFragment;
 
 import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
@@ -28,6 +29,7 @@ import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
 public abstract class FormsListFragment extends MuzimaListFragment implements BackgroundListQueryTaskListener{
 
     FormController formController;
+    ObservationController observationController;
     private FrameLayout progressBarContainer;
     private LinearLayout noDataView;
 

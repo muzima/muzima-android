@@ -763,4 +763,6 @@ Se você tiver dúvidas ou sugestões sobre nossa Política de Privacidade, não
     <string name="general_sync_service_already_running">O serviço de sincronização mUzima já está em execução ...</string>
     <string name="general_opening_card_reader">Abrindo o leitor de cartão</string>
     <string name="erro_coded_concepts_not_supported">Conceitos codificados inválidos não são suportados</string>
+    <string name="delete_individual_obs">Excluindo obs individuais</string>
+    <string name="warning_individual_form_data_delete">Você está prestes a excluir observações individuais. Tem certeza?</string>
 </resources>

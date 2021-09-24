@@ -765,4 +765,6 @@ Si vous avez des questions ou des suggestions concernant notre politique de conf
     <string name="general_sync_service_already_running">Le service de synchronisation mUzima est déjà en cours d\'exécution…</string>
     <string name="general_opening_card_reader">Lecteur de carte d\'ouverture</string>
     <string name="erro_coded_concepts_not_supported">Les concepts codés non valides ne sont pas pris en charge</string>
+    <string name="delete_individual_obs">Supprimer des obs individuels</string>
+ <string name="warning_individual_form_data_delete">Vous êtes sur le point de supprimer une observation individuelle. Es-tu sûr?</string>
 </resources>

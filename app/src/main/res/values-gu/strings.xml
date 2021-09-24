@@ -756,4 +756,6 @@ Google Play સેવાઓ https://www.google.com/policies/privacy/
     <string name="general_sync_service_already_running">મુઝિમા સિંક સેવા પહેલાથી જ ચાલી રહી છે ...</string>
     <string name="general_opening_card_reader">કાર્ડ રીડર ખોલી રહ્યું છે</string>
     <string name="erro_coded_concepts_not_supported">અમાન્ય કોડેડ ખ્યાલો આધાર નથી</string>
+    <string name="delete_individual_obs">વ્યક્તિગત અવલોકનો કાી નાખો</string>
+    <string name="warning_individual_form_data_delete">તમે વ્યક્તિગત નિરીક્ષણ કા deleteી નાખવાના છો. શું તમને ખાતરી છે?</string>
 </resources>

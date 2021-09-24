@@ -759,4 +759,6 @@ Ikiwa una maswali yoyote au maoni juu ya Sera yetu ya Faragha, usisite kuwasilia
     <string name="general_sync_service_already_running">huduma ya usawazishaji wa MUzima tayari inaendelea…</string>
     <string name="general_opening_card_reader">Kufungua Kisomaji cha Kadi</string>
     <string name="erro_coded_concepts_not_supported">Dhana batili za misimbo haziungi mkono</string>
+    <string name="delete_individual_obs">Kufuta uchunguzi wa kibinafsi</string>
+    <string name="warning_individual_form_data_delete">Uko karibu kufuta uchunguzi wa kibinafsi. Una uhakika?</string>
 </resources>
