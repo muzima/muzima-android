@@ -591,6 +591,7 @@ public class FormControllerTest {
         String uuid = "uuid";
         incompleteFormToDelete.setUuid(uuid);
         incompleteFormToDelete.setStatus(Constants.STATUS_INCOMPLETE);
+        incompleteFormToDelete.setDiscriminator(Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER);
         when(formController.getFormDataByUuids(Collections.singletonList(anyString()))).thenReturn(Collections.singletonList(incompleteFormToDelete));
 
         formController.deleteCompleteAndIncompleteEncounterFormData(Collections.singletonList(uuid));
@@ -603,6 +604,7 @@ public class FormControllerTest {
         String uuid = "uuid";
         completeFormToDelete.setUuid(uuid);
         completeFormToDelete.setStatus(Constants.STATUS_COMPLETE);
+        completeFormToDelete.setDiscriminator(Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER);
         when(formController.getFormDataByUuids(Collections.singletonList(anyString()))).thenReturn(Collections.singletonList(completeFormToDelete));
 
         formController.deleteCompleteAndIncompleteEncounterFormData(Collections.singletonList(uuid));
