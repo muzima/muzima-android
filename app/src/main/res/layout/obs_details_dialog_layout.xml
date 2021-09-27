@@ -33,6 +33,7 @@
 			android:backgroundTint="#EC0A0A"
 			android:layout_margin="8dp"
 			android:textAlignment="center"
+			android:visibility="gone"
 			android:layout_height="wrap_content"/>
 		<Button
 				android:id="@+id/dismiss_dialog_button"

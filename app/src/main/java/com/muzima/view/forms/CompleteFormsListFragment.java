@@ -222,6 +222,7 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
             observationDetailsHeader = obsDetailsDialog.findViewById(R.id.obs_details_fourth_header);
             dateTextView = obsDetailsDialog.findViewById(R.id.observation_description_value_textview);
             deleteObsButton = obsDetailsDialog.findViewById(R.id.delete_dialog_button);
+            deleteObsButton.setVisibility(View.VISIBLE);
 
             List<TextView> obsDetailsHeaderTextViews = Arrays.asList(encounterDetailsHeader,providerDetailsHeader,conceptDetailsHeader,observationDetailsHeader);
             dateTextView.setText(observation.getObservationDatetime().toString().substring(0,19));
