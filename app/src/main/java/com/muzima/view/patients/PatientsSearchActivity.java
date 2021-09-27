@@ -22,6 +22,7 @@ import android.preference.PreferenceManager;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.legacy.app.ActionBarDrawerToggle;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -218,8 +219,8 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
 
     private void setUpSearchFeatureMenuItems(Menu menu) {
         searchMenuItem = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchMenuItem.setMinimumWidth(toolbar.getWidth());
-        searchMenuItem.setQueryHint(getString(R.string.hint_client_search));
+        searchMenuItem.setMaxWidth(Integer.MAX_VALUE);
+        searchMenuItem.setQueryHint(getString(R.string.general_search_patient));
         searchMenuItem.setIconifiedByDefault(false);
 
         searchMenuItem.setQuery(searchString,false);
