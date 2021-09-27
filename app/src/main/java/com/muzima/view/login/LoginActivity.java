@@ -56,6 +56,7 @@ import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.utils.ThemeUtils;
+import com.muzima.view.BaseActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.help.HelpActivity;
@@ -63,8 +64,8 @@ import com.muzima.view.initialwizard.SetupMethodPreferenceWizardActivity;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
-//This class shouldn't extend BaseActivity. Since it is independent of the application's context
-public class LoginActivity extends Activity {
+//This class shouldn't extend BaseAuthenticatedActivity. Since it is independent of the application's context
+public class LoginActivity extends BaseActivity {
     public static final String isFirstLaunch = "isFirstLaunch";
     public static final String sessionTimeOut = "SessionTimeOut";
     MuzimaGPSLocationService gpsLocationService;
@@ -87,7 +88,6 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,false);
-        setStatusBarAsTransparent();
 
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
@@ -117,10 +117,6 @@ public class LoginActivity extends Activity {
         versionText.setText(getApplicationVersion());
         usernameText.requestFocus();
         initializeGPSDataCollection();
-    }
-
-    private void setStatusBarAsTransparent(){
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
     private void showSessionTimeOutPopUpIfNeeded() {
