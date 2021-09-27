@@ -10,24 +10,17 @@
 
 package com.muzima.view;
 
-
-import android.app.ActionBar;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
-import com.muzima.controller.SmartCardController;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
 
-    private DefaultMenuDropDownHelper dropDownHelper;
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
@@ -35,11 +28,10 @@ public class BaseActivity extends AppCompatActivity {
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setupActionBar();
-        dropDownHelper = new DefaultMenuDropDownHelper(this);
     }
 
     private void setupActionBar() {
-        ActionBar supportActionBar = getActionBar();
+        ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setDisplayShowTitleEnabled(true);
@@ -57,42 +49,6 @@ public class BaseActivity extends AppCompatActivity {
         super.onResume();
         languageUtil.onResume(this);
         ((MuzimaApplication) getApplication()).setCurrentActivity(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.dashboard, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        boolean result = dropDownHelper.onOptionsItemSelected(item);
-        return result || super.onOptionsItemSelected(item);
-    }
-
-    void removeSettingsMenu(Menu menu) {
-        dropDownHelper.removeSettingsMenu(menu);
-    }
-
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu){
-        MenuItem syncSHRMenuItem = menu.findItem(R.id.menu_SHR_data_sync);
-        if(syncSHRMenuItem != null) {
-            try {
-                int count = ((MuzimaApplication)getApplicationContext()).getSmartCardController().getSmartCardRecordWithNonUploadedData().size();
-                if(count > 0){
-                    syncSHRMenuItem.setVisible(true);
-                    syncSHRMenuItem.setTitle(getString(R.string.menu_SHR_data_sync, count));
-                } else {
-                    syncSHRMenuItem.setVisible(false);
-                }
-            } catch (SmartCardController.SmartCardRecordFetchException e) {
-                Log.e(getClass().getSimpleName(), "Error fetching smartcard records");
-            }
-        }
-        return true;
     }
     protected void logEvent(String tag, String details){
         if(StringUtils.isEmpty(details)){

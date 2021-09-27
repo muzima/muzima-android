@@ -29,20 +29,19 @@ import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.initialwizard.OnboardScreenActivity;
 import com.muzima.view.initialwizard.TermsAndPolicyActivity;
+import com.muzima.view.login.LoginActivity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 
 public class BaseAuthenticatedActivity extends AppCompatActivity {
-    private static final String TAG = "BaseFragmentActivity";
-    private DefaultMenuDropDownHelper dropDownHelper;
+    private static final String TAG = "BaseAuthenticatedActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
-        dropDownHelper = new DefaultMenuDropDownHelper(this);
     }
 
     private void setupActionBar() {
@@ -84,45 +83,10 @@ public class BaseAuthenticatedActivity extends AppCompatActivity {
             finish();
             return true;
         } else if (new Credentials(this).isEmpty()) {
-            dropDownHelper.launchLoginActivity(false);
+            launchLoginActivity(false);
             return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(DefaultMenuDropDownHelper.DEFAULT_MENU, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem syncSHRMenuItem = menu.findItem(R.id.menu_SHR_data_sync);
-        if (syncSHRMenuItem != null) {
-            try {
-                int count = ((MuzimaApplication) getApplicationContext()).getSmartCardController().getSmartCardRecordWithNonUploadedData().size();
-                if (count > 0) {
-                    syncSHRMenuItem.setVisible(true);
-                    syncSHRMenuItem.setTitle(getString(R.string.menu_SHR_data_sync, count));
-                } else {
-                    syncSHRMenuItem.setVisible(false);
-                }
-            } catch (SmartCardController.SmartCardRecordFetchException e) {
-                Log.e(BaseAuthenticatedActivity.class.getSimpleName(), "Error fetching smartcard records");
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        boolean result = dropDownHelper.onOptionsItemSelected(item);
-        return result || super.onOptionsItemSelected(item);
-    }
-
-    protected void removeSettingsMenu(Menu menu) {
-        dropDownHelper.removeSettingsMenu(menu);
     }
 
     public void logEvent(String tag, String details) {
@@ -131,6 +95,15 @@ public class BaseAuthenticatedActivity extends AppCompatActivity {
         }
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
         MuzimaLoggerService.log(muzimaApplication, tag, details);
+    }
+
+    public void launchLoginActivity(boolean isFirstLaunch) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra(LoginActivity.isFirstLaunch, isFirstLaunch);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     protected void logEvent(String tag) {

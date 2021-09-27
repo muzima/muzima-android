@@ -130,13 +130,6 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        removeSettingsMenu(menu);
-        return true;
-    }
-
-    @Override
     protected void onDestroy() {
         keyboardWatcher.destroy();
         super.onDestroy();

@@ -31,7 +31,6 @@ import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.DefaultMenuDropDownHelper;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.settings.SettingsPreferenceFragment;

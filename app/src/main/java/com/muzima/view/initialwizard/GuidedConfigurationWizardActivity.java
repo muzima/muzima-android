@@ -176,13 +176,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         logEvent("VIEW_GUIDED_SETUP_METHOD");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        removeSettingsMenu(menu);
-        return true;
-    }
-
     private void initiateSetupConfiguration() {
         String setupConfigTemplateUuid = getIntent().getStringExtra(SETUP_CONFIG_UUID_INTENT_KEY);
         fetchConfigurationTemplate(setupConfigTemplateUuid);
