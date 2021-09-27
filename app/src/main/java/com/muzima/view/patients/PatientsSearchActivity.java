@@ -221,7 +221,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
 
     private void setUpSearchFeatureMenuItems(Menu menu) {
         searchMenuItem = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchMenuItem.setMaxWidth(Integer.MAX_VALUE);
+        searchMenuItem.setMinimumWidth(toolbar.getWidth());
         searchMenuItem.setQueryHint(getString(R.string.general_search_patient));
         searchMenuItem.setIconifiedByDefault(false);
 
