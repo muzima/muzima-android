@@ -141,6 +141,8 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         setTitle(R.string.general_clients);
 
         muzimaApplication = (MuzimaApplication) getApplicationContext();
+        toolbar = findViewById(R.id.patient_list_toolbar);
+        getSupportActionBar().setCustomView(toolbar);
 
         if (intentExtras != null) {
             searchString = intentExtras.getString(SEARCH_STRING);
