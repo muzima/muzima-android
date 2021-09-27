@@ -16,7 +16,7 @@
     <color name="primary_black">#303030</color>
     <color name="theme_color">#333333</color>
     <color name="fab_tint_color">#0D57AF</color>
-    <color name="dark_primary_blue">#036EEE</color>
+    <color name="darker_primary_blue">#006BFF</color>
     <color name="theme_color_light">#eaeaea</color>
     <color name="secondary_text">#888888</color>
     <color name="secondary_text_light">#777777</color>

@@ -18,13 +18,9 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
     </style>
     <style name="AppTheme.NoActionBar" parent="AppBaseTheme.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
     </style>
 
     <!-- Application theme. -->
@@ -33,8 +29,6 @@
     </style>
 
     <style name="AppTheme.Light.NoActionBar" parent="AppBaseTheme.Light.NoActionBar">
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="Widget.Custom.NavigationView" parent="Widget.Design.NavigationView">
