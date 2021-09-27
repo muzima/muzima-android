@@ -10,6 +10,7 @@
 
 package com.muzima.view;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -26,10 +27,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -41,6 +42,10 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -87,10 +92,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private TextView headerTitleTextView;
-    private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
-    private MenuItem menuLocation;
-    private MenuItem menuRefresh;
     private Credentials credentials;
     private BottomSheetBehavior cohortFilterBottomSheetBehavior;
     private View cohortFilterBottomSheetView;
@@ -108,7 +110,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        themeUtils.onCreate(MainDashboardActivity.this);
+        ThemeUtils.getInstance().onCreate(MainDashboardActivity.this,false);
         languageUtil.onCreate(MainDashboardActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -116,32 +118,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), false);
         initializeResources();
         loadCohorts(false);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dashboard_home, menu);
-        menuLocation = menu.findItem(R.id.menu_location);
-        menuRefresh = menu.findItem(R.id.menu_load);
-        menuLocation.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.general_launching_map_message), Toast.LENGTH_SHORT).show();
-                navigateToClientsLocationMap();
-                return true;
-            }
-        });
-
-        menuRefresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
-                new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
-                return true;
-            }
-        });
-        return true;
     }
 
     private void loadCohorts(final boolean showFilter) {
@@ -202,7 +178,22 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
     private void initializeResources() {
         Toolbar toolbar = findViewById(R.id.dashboard_toolbar);
-        setSupportActionBar(toolbar);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch(item.getItemId()){
+                    case R.id.menu_location:
+                        navigateToClientsLocationMap();
+                        break;
+                    case R.id.menu_load:
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
+                        new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
+                }
+
+                return true;
+            }
+        });
         drawerLayout = findViewById(R.id.main_dashboard_drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         cohortFilterBottomSheetView = findViewById(R.id.dashboard_home_bottom_view_container);
@@ -279,12 +270,13 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         if (((MuzimaApplication) getApplicationContext()).getAuthenticatedUser() != null)
             headerTitleTextView.setText(((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getUsername());
         setTitle(StringUtils.EMPTY);
+
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
+    public boolean onNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onNavigateUp();
     }
 
     @Override
@@ -437,7 +429,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
         showIncompleteWizardWarning();
     }
@@ -490,7 +481,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private void showExitAlertDialog() {
         new AlertDialog.Builder(MainDashboardActivity.this)
                 .setCancelable(true)
-                .setIcon(themeUtils.getIconWarning(this))
+                .setIcon(ThemeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
                 .setMessage(getResources().getString(R.string.warning_logout_confirm))
                 .setPositiveButton(getString(R.string.general_yes), exitApplication())

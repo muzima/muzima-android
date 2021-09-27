@@ -43,12 +43,11 @@ public class ObservationsFragment extends Fragment {
     private static final Calendar today = Calendar.getInstance();
     private TextView encounterDateTextView;
     private final Boolean IS_SHR_DATA = false;
-    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        themeUtils.onCreate(getActivity());
+        ThemeUtils.getInstance().onCreate(getActivity(),true);
     }
 
     @Nullable
@@ -66,12 +65,6 @@ public class ObservationsFragment extends Fragment {
         initPager(view);
         initPagerIndicator(view);
 //        logEvent("VIEW_CLIENT_OBS_BY_CONCEPT", "{\"patientuuid\":\"" + patient.getUuid() + "\"}");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        themeUtils.onResume(getActivity());
     }
 
     private void initPagerIndicator(View view) {

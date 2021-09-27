@@ -57,15 +57,14 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
     private Patient patient;
     Button getDirectionsButton;
     WebView webView;
-    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_location_map);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
-        getSupportActionBar().setTitle(patient.getSummary());
+        getActionBar().setTitle(patient.getSummary());
         initializeHomeLocationMapView();
         initializeMapActionButtons();
 
@@ -297,8 +296,6 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.geomapping, menu);
-
-        super.onCreateOptionsMenu(menu);
         return true;
     }
 
@@ -314,7 +311,6 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
 
     @Override
     protected void onResume(){
-        themeUtils.onCreate(this);
         super.onResume();
     }
 }

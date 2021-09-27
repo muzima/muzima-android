@@ -37,12 +37,11 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     private Encounter encounter;
     private EncounterObservationsAdapter encounterObservationsAdapter;
     private LinearLayout noDataView;
-    private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encounter_summary);
@@ -70,17 +69,11 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
     }
 
     private void setupToolbar(){
-        Toolbar toolbar = findViewById(R.id.encounters_toolbar);
-        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
             try {
                 Patient patient = ((MuzimaApplication) getApplicationContext()).getPatientController().getPatientByUuid(encounter.getPatient().getUuid());
                 if (patient != null)

@@ -13,35 +13,28 @@
            xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.NoActionBar" parent="AppBaseTheme.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme.Dark" parent="AppBaseTheme.NoActionBar">
+    <style name="AppTheme.Light" parent="AppBaseTheme.Light">
         <item name="windowActionModeOverlay">true</item>
     </style>
 
-    <!-- Application theme. -->
-    <style name="AppTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
-    </style>
-
-    <style name="LoginTheme.Dark" parent="AppBaseTheme.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-
-    <style name="LoginTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <!-- Application theme. -->
-    <style name="WizardTheme.Dark" parent="AppBaseTheme.NoActionBar">
-    </style>
-
-    <style name="WizardTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
+    <style name="AppTheme.Light.NoActionBar" parent="AppBaseTheme.Light.NoActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="Widget.Custom.NavigationView" parent="Widget.Design.NavigationView">
@@ -49,23 +42,6 @@
         <item name="itemTextColor">?attr/colorNavigationItem</item>
         <item name="itemBackground">@drawable/menu_background_color_state</item>
     </style>
-
-    <style name="PreferencesTheme.Dark" parent="AppBaseTheme">
-        <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
-        <item name="android:textColorPrimary">@color/preference_primary_color</item>
-        <item name="android:textColorSecondary">@color/preference_secondary_color</item>
-    </style>
-
-
-    <style name="PreferencesTheme.Light" parent="AppBaseTheme.Light">
-        <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
-        <item name="android:textColorPrimary">@color/preference_primary_color_light</item>
-        <item name="android:textColorSecondary">@color/preference_secondary_color_light</item>
-    </style>
-
-    <style name="preferenceCategoryStyle">
-    </style>
-
 
     <style name="DashboardWrapper">
         <item name="android:layout_width">match_parent</item>
@@ -81,7 +57,7 @@
         <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="alertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="alertDialogTheme" parent="Theme.MaterialComponents.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
@@ -89,7 +65,7 @@
         <item name="android:colorAccent">@color/primary_blue</item>
     </style>
 
-    <style name="alertDialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="alertDialogThemeLight" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
@@ -436,7 +412,7 @@
         <item name="android:text">@string/general_finish</item>
     </style>
 
-    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
@@ -619,35 +595,9 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="Base_ToolbarStyle">
-        <item name="android:background">?attr/primaryBackgroundColor</item>
-        <item name="android:theme">@style/Base_ToolbarTheme</item>
-        <item name="titleTextAppearance">@style/CustomTitleTextAppearance</item>
-        <item name="subtitleTextAppearance">@style/CustomSubTitleTextAppearance</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="colorControlNormal">?attr/toolbarTitleTextColor</item>
-    </style>
-
-    <style name="Base_ToolbarTheme">
-        <item name="android:textColorPrimary">?attr/toolbarTitleTextColor</item>
-        <item name="android:textColorSecondary">?attr/toolbarTitleTextColor</item>
-    </style>
-
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">?attr/toolbarTitleTextColor</item>
-    </style>
-
-    <style name="CustomTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">?attr/toolbarTitleTextColor</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="CustomSubTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">?attr/toolbarTitleTextColor</item>
-        <item name="android:textStyle">italic</item>
     </style>
 
     <style name="DialogNoTitleBar" parent="android:style/Theme.Dialog">

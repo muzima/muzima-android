@@ -44,7 +44,7 @@ import com.muzima.view.BaseActivity;
 import java.io.File;
 
 
-public class ImagingIntent extends BaseActivity {
+public class ImagingIntentActivity extends BaseActivity {
 
     private static final int IMAGE_CAPTURE = 1;
     private static final int IMAGE_CHOOSE = 2;
@@ -67,11 +67,10 @@ public class ImagingIntent extends BaseActivity {
     private String mSectionName;
     private String mBinaryName;
     private String mBinaryDescription;
-    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imaging);
         Intent i = getIntent();
@@ -230,7 +229,7 @@ public class ImagingIntent extends BaseActivity {
                         i.setDataAndType(Uri.withAppendedPath(
                             Images.Media.EXTERNAL_CONTENT_URI, id), "image/*");
                         try {
-                            ImagingIntent.this.startActivity(i);
+                            ImagingIntentActivity.this.startActivity(i);
                         } catch (ActivityNotFoundException e) {
                             Toast.makeText(getApplicationContext(),getString(R.string.error_image_view_activity_unavailable), Toast.LENGTH_SHORT).show();
                         }

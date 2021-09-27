@@ -86,10 +86,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private ImageView thirdDotView;
     private GuidedSetupCardsViewPagerAdapter guidedSetupCardsViewPagerAdapter;
     private int pageCount;
-    private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
 
     public void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guided_setup_wizard);
         initializeResources();
@@ -175,13 +174,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         viewPager.setVisibility(View.GONE);
         viewPagerLg.setVisibility(View.VISIBLE);
         logEvent("VIEW_GUIDED_SETUP_METHOD");
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        removeSettingsMenu(menu);
-        return true;
     }
 
     private void initiateSetupConfiguration() {

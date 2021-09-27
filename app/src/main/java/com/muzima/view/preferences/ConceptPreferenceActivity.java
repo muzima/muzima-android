@@ -27,8 +27,6 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import androidx.appcompat.app.ActionBar;
-
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.concept.AutoCompleteConceptAdapter;
@@ -41,6 +39,8 @@ import com.muzima.view.BroadcastListenerActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.ActionBar;
+
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 
@@ -50,23 +50,19 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     private AutoCompleteTextView autoCompleteConceptTextView;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
-    private ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
-        int themecolor = themeUtils.getThemeColor(this);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(themecolor));
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
 
         LayoutInflater inflator = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.concept_autocomplete_textview_action, null);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(v);
 
         selectedConceptListView = findViewById(R.id.concept_preference_list);
@@ -151,7 +147,6 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         selectedConceptAdapter.reloadData();
     }
 

@@ -21,14 +21,6 @@
         android:paddingEnd="12dp"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/policy_and_terms_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/primary_black"
-            android:elevation="14dp"
-            app:title="@string/general_policy_title" />
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

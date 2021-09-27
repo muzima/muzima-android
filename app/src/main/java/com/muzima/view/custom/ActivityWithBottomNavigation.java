@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.muzima.R;
-import com.muzima.view.BaseActivity;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.cohort.CohortPagerActivity;

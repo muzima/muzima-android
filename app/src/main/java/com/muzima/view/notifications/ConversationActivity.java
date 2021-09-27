@@ -52,17 +52,16 @@ public class ConversationActivity extends BaseActivity {
     private EditText composeEditText;
     private Provider provider;
     private List<Notification> patientSentMessages;
-    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.conversation_thread_activity_layout);
 
         Bundle data = getIntent().getExtras();
         provider = (Provider) data.get("provider");
-        getSupportActionBar().setTitle(provider.getName());
+        getActionBar().setTitle(provider.getName());
 
         ListView chatListView = findViewById(R.id.chat_list_view);
         adapter = new MessageThreadAdapter(chats, this, provider);
@@ -147,12 +146,6 @@ public class ConversationActivity extends BaseActivity {
         composeEditText.setVerticalScrollBarEnabled(true);
         composeEditText.setMovementMethod(new ScrollingMovementMethod());
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        themeUtils.onResume(this);
     }
 
     private com.muzima.api.model.Notification createNotificationFromMessage(String messageItem) {

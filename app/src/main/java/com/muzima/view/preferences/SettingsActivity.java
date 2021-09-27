@@ -31,7 +31,6 @@ import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.DefaultMenuDropDownHelper;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.settings.SettingsPreferenceFragment;
@@ -39,7 +38,6 @@ import com.muzima.view.preferences.settings.SettingsPreferenceFragment;
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private AppCompatDelegate delegate;
-    private final ThemeUtils themeUtils = new ThemeUtils(R.style.PreferencesTheme_Light, R.style.PreferencesTheme_Dark);
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
@@ -50,7 +48,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
         languageUtil.onCreate(this);
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
@@ -65,7 +63,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
     }
@@ -80,10 +77,8 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
      * Set up the {@link android.app.ActionBar}.
      */
     private void setupActionBar() {
-        int themecolor = themeUtils.getThemeColor(this);
         if (getDelegate().getSupportActionBar() != null) {
             getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getDelegate().getSupportActionBar().setBackgroundDrawable(new ColorDrawable(themecolor));
         }
     }
 
@@ -120,7 +115,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         String lightModePreferenceKey = getResources().getString(R.string.preference_light_mode);
         String localePreferenceKey = getResources().getString(R.string.preference_app_language);
         if (key.equals(lightModePreferenceKey) || key.equals(localePreferenceKey)) {
-            onResume();
+            ThemeUtils.getInstance().onResume(this);
         }
     }
 

@@ -39,13 +39,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/client_summary_dashboard_toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        android:background="?attr/primaryBackgroundColor"
-                        app:title="@string/title_activity_client_summary"/>
-
                 <include layout="@layout/client_summary_patients_list"/>
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -68,7 +61,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:tabSelectedTextColor="@color/primary_blue"
-                app:tabIndicatorColor="@color/primary_blue"
+                    app:tabIndicatorColor="@color/primary_blue"
+                    app:tabIconTint="@color/tab_icon_color"
                     app:tabMode="fixed"
                     app:tabGravity="fill"
                     app:tabInlineLabel="true"

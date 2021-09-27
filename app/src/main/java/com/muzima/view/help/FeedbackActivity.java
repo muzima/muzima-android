@@ -36,19 +36,12 @@ public class FeedbackActivity extends BaseActivity {
 
     private static final String EMAIL_TO = "help@muzima.org";
     private static final String SUBJECT = "Feedback";
-    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interactive_feedback);
-        Toolbar toolbar = findViewById(R.id.help_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
         initViews();
         setupListeners();
         logEvent("VIEW_FEEDBACK_PAGE");
@@ -57,7 +50,6 @@ public class FeedbackActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
     }
 
     @Override

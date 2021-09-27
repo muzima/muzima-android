@@ -54,12 +54,11 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     private ObservationsPagerAdapter observationsPagerAdapter;
     private Patient patient;
     private AlertDialog writeSHRDataOptionDialog;
-    private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shr__observations__data_);
@@ -75,7 +74,6 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
         if (!isSHREnabled()){
             onBackPressed();
@@ -96,9 +94,9 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
         viewPager = findViewById(R.id.pager);
 
         Boolean isSHRData = true;
-        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), isSHRData, patient);
-        observationsPagerAdapter.initPagerViews();
-        viewPager.setAdapter(observationsPagerAdapter);
+//        observationsPagerAdapter = new ObservationsPagerAdapter(getApplicationContext(), getSupportFragmentManager(), isSHRData, patient);
+//        observationsPagerAdapter.initPagerViews();
+//        viewPager.setAdapter(observationsPagerAdapter);
     }
 
     /**
@@ -106,7 +104,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
      */
     private void setupActionBar() {
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
-        getSupportActionBar().setTitle(patient.getSummary());
+        getActionBar().setTitle(patient.getSummary());
     }
 
     @Override
@@ -159,6 +157,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
+        super.onActivityResult(requestCode, resultCode, dataIntent);
         switch (requestCode) {
             case SMARTCARD_READ_REQUEST_CODE:
                 SmartCardIntentResult cardReadIntentResult = null;

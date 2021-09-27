@@ -48,7 +48,6 @@ import static com.muzima.view.BroadcastListenerActivity.PROGRESS_UPDATE_ACTION;
 public class CohortPagerActivity extends ActivityWithBottomNavigation {
     private ViewPager viewPager;
     private EditText searchCohorts;
-    private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -60,11 +59,10 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cohort_pager);
-        setupToolbar();
         loadBottomNavigation();
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
@@ -194,14 +192,5 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
             return true;
         }
         return false;
-    }
-
-    private void setupToolbar(){
-        Toolbar toolbar = findViewById(R.id.cohort_pager_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
     }
 }

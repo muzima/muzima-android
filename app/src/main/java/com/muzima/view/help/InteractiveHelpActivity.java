@@ -36,19 +36,12 @@ public class InteractiveHelpActivity extends BaseActivity {
     private Button cancelButton;
     private EditText helpText;
     private Spinner options;
-    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interactive_help);
-        Toolbar toolbar = findViewById(R.id.help_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
         initViews();
         setupListeners();
     }
@@ -56,7 +49,6 @@ public class InteractiveHelpActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
     }
 
     @Override

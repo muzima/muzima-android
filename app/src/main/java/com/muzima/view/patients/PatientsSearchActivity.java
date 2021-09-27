@@ -122,7 +122,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     private ProgressDialog patientRegistrationProgressDialog;
 
     private static final boolean DEFAULT_SHR_STATUS = false;
-    private final ThemeUtils themeUtils = new ThemeUtils();
     private boolean isSHREnabled;
     private boolean searchViewClosed;
     private DrawerLayout mainLayout;
@@ -132,7 +131,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_patient_list, null);
@@ -142,12 +141,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         setTitle(R.string.general_clients);
 
         muzimaApplication = (MuzimaApplication) getApplicationContext();
-        toolbar = findViewById(R.id.patient_list_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
 
         if (intentExtras != null) {
             searchString = intentExtras.getString(SEARCH_STRING);
@@ -270,7 +263,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
         if (isSHRSettingEnabled()) {
             invalidateOptionsMenu();
@@ -803,7 +795,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
              */
             public void onDrawerClosed(View view) {
                 String title = getResources().getString(R.string.general_client_list);
-                getSupportActionBar().setTitle(title);
+                getActionBar().setTitle(title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
@@ -813,7 +805,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
              */
             public void onDrawerOpened(View drawerView) {
                 String title = getResources().getString(R.string.general_tags);
-                getSupportActionBar().setTitle(title);
+                getActionBar().setTitle(title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }

@@ -35,11 +35,10 @@ public class NotificationsListActivity extends NotificationActivityBase {
     private static final String NOTIFICATIONS = "Notifications";
     private MenuItem menubarSyncButton;
     private boolean notificationsSyncInProgress;
-    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
         initPager();
@@ -52,7 +51,6 @@ public class NotificationsListActivity extends NotificationActivityBase {
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
     }
 
     @Override

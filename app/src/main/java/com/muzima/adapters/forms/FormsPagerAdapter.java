@@ -67,10 +67,4 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
     public void endActionMode() {
     }
 
-    public void unselectList() {
-    }
-
-    public void cancelBackgroundQueryTasks(){
-    }
-
 }

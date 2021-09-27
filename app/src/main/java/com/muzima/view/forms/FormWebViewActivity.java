@@ -10,7 +10,7 @@
 
 package com.muzima.view.forms;
 
-import androidx.appcompat.app.ActionBar;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -95,16 +95,15 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private Map<String, String> videoResultMap;
     private String sectionName;
     private FormController formController;
-    private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         formController = ((MuzimaApplication) this.getApplicationContext()).getFormController();
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -190,7 +189,6 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
         }
 
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
     }
 
@@ -268,7 +266,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(FormWebViewActivity.this);
             builder
                     .setCancelable(true)
-                    .setIcon(themeUtils.getIconWarning(this))
+                    .setIcon(ThemeUtils.getIconWarning(this))
                     .setTitle(getResources().getString(R.string.general_caution))
                     .setMessage(getResources().getString(R.string.warning_form_close))
                     .setPositiveButton(R.string.general_yes, positiveClickListener())

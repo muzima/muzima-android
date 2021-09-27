@@ -72,12 +72,11 @@ public class FormsWithDataActivity extends FormsActivityBase {
     private boolean syncInProgress;
     private TagPreferenceService tagPreferenceService;
     private String patientUuid;
-    private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_forms, null);
@@ -87,7 +86,6 @@ public class FormsWithDataActivity extends FormsActivityBase {
 
         patientUuid = getIntent().getStringExtra(PATIENT_UUID);
 
-        initToolbar();
         loadPatientData();
         initPager();
         initDrawer();
@@ -125,20 +123,9 @@ public class FormsWithDataActivity extends FormsActivityBase {
         return gender.equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female;
     }
 
-    private void initToolbar() {
-        toolbar = findViewById(R.id.forms_activity_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(getResources().getString(R.string.general_forms));
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
         //tagsListAdapter.reloadData();
     }
@@ -334,7 +321,7 @@ public class FormsWithDataActivity extends FormsActivityBase {
              */
             public void onDrawerClosed(View view) {
                 String title = getResources().getString(R.string.general_forms);
-                getSupportActionBar().setTitle(title);
+                getActionBar().setTitle(title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
@@ -344,7 +331,7 @@ public class FormsWithDataActivity extends FormsActivityBase {
              */
             public void onDrawerOpened(View drawerView) {
                 String title = getResources().getString(R.string.general_tags);
-                getSupportActionBar().setTitle(title);
+                getActionBar().setTitle(title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                 mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }

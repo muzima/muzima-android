@@ -14,13 +14,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
-import android.util.TypedValue;
-
-import androidx.annotation.ColorInt;
 
 import com.muzima.R;
 
@@ -29,20 +24,40 @@ public class ThemeUtils {
     private int lightThemeId;
     private int darkThemeId;
     private boolean lightMode;
+    private static ThemeUtils themeUtils;
 
-    public ThemeUtils() {
-        lightThemeId = R.style.AppTheme_Light;
-        darkThemeId = R.style.AppTheme_Dark;
+    private ThemeUtils() {
     }
 
-    public ThemeUtils(int lightThemeId, int darkThemeId) {
-        this.lightThemeId = lightThemeId;
-        this.darkThemeId = darkThemeId;
+    public static ThemeUtils getInstance(){
+        if (themeUtils == null){
+            themeUtils = new ThemeUtils();
+        }
+        return themeUtils;
     }
 
-    public void onCreate(Activity activity) {
-        setLightMode(activity);
+    public void onCreate(Activity activity, boolean showActionBar) {
+        setThemeResourceIdentifiers(showActionBar);
         setThemeForActivity(activity);
+    }
+
+    private void setThemeResourceIdentifiers(boolean showActionBar) {
+        if(showActionBar){
+            lightThemeId = R.style.AppTheme_Light;
+            darkThemeId = R.style.AppTheme;
+        } else {
+            lightThemeId = R.style.AppTheme_Light_NoActionBar;
+            darkThemeId = R.style.AppTheme_NoActionBar;
+        }
+    }
+
+    private void setThemeForActivity(Activity activity) {
+        lightMode = isLightModeSettingEnabled(activity);
+        if (lightMode) {
+            activity.setTheme(lightThemeId);
+        } else {
+            activity.setTheme(darkThemeId);
+        }
     }
 
     public void onResume(Activity activity) {
@@ -55,19 +70,7 @@ public class ThemeUtils {
         }
     }
 
-    private void setLightMode(Activity activity) {
-        lightMode = getPreferenceLightMode(activity);
-    }
-
-    private void setThemeForActivity(Activity activity) {
-        if (lightMode) {
-            activity.setTheme(lightThemeId);
-        } else {
-            activity.setTheme(darkThemeId);
-        }
-    }
-
-    public static boolean getPreferenceLightMode(Context context) {
+    public boolean isLightModeSettingEnabled(Context context) {
         //check if night mode enabled or not
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String lightModeKey = context.getResources().getString(R.string.preference_light_mode);
@@ -75,7 +78,7 @@ public class ThemeUtils {
     }
 
     public boolean isLightModeChanged(Context context) {
-        return (lightMode != getPreferenceLightMode(context));
+        return (lightMode != isLightModeSettingEnabled(context));
     }
 
     public static Drawable getIconWarning(Context context) {
@@ -84,27 +87,5 @@ public class ThemeUtils {
 
     public static Drawable getIconRefresh(Context context) {
         return context.getResources().getDrawable(R.drawable.ic_refresh);
-    }
-
-    public static Drawable getDrawableFromThemeAttributes(Activity context, int attribute) {
-        int[] attrs = new int[]{attribute};
-        context.setTheme( new ThemeUtils().getThemeResource(context));
-        TypedArray ta = context.obtainStyledAttributes(attrs);
-        Drawable drawableFromTheme = ta.getDrawable(0);
-        ta.recycle();
-        return drawableFromTheme;
-    }
-
-    private int getThemeResource(Activity context) {
-        if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(context)) return R.style.AppTheme_Light;
-        else return R.style.AppTheme_Dark;
-    }
-
-    public int getThemeColor(Activity context){
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
-        @ColorInt int color = typedValue.data;
-        return color;
     }
 }

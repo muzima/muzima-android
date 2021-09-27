@@ -37,11 +37,10 @@ import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIE
 
 public class RelationshipFormsActivity extends AppCompatActivity {
     private RelationshipFormsAdapter relationshipFormsAdapter;
-    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_relationship_form_list);

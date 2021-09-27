@@ -44,11 +44,10 @@ public class NotificationActivity extends BaseActivity {
     private Encounter notificationEncounter;
     private Patient notificationPatient;
     private Provider loggedInProvider;
-    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
@@ -85,7 +84,6 @@ public class NotificationActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
     }
 
     private void displayNotification()  {

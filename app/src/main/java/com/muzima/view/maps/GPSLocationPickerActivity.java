@@ -53,7 +53,6 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
     private String latitude;
     private String longitude;
     private int defaultZoomLevel;
-    private final ThemeUtils themeUtils = new ThemeUtils();
     private MuzimaGPSLocationService gpsLocationService;
     private final LanguageUtil languageUtil = new LanguageUtil();
 
@@ -61,7 +60,7 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_location_picker);
@@ -79,15 +78,16 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        themeUtils.onResume(this);
+
         languageUtil.onResume(this);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == REQUEST_LOCATION){
-            if(resultCode != Activity.RESULT_OK){
-                Toast.makeText(this,"Could not obtain the current GPS location.",Toast.LENGTH_LONG).show();
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_LOCATION) {
+            if (resultCode != Activity.RESULT_OK) {
+                Toast.makeText(this, "Could not obtain the current GPS location.", Toast.LENGTH_LONG).show();
                 latitude = "0.5117";
                 longitude = "35.282614";
             } else {
@@ -96,7 +96,6 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
 
             initializeLocationPickerActionButtons();
             initializeLocationPickerMapView();
-
         }
     }
 

@@ -10,9 +10,8 @@
 
 package com.muzima.view.forms;
 
+import android.app.ActionBar;
 import android.os.Build;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -34,6 +33,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -123,7 +123,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private String autoSaveIntervalPreference;
     private boolean encounterProviderPreference;
     private final Handler handler = new Handler();
-    private final ThemeUtils themeUtils = new ThemeUtils();
     private boolean isFormReload;
     private EncounterMiniFormCreatorComponent encounterMiniFormCreatorComponent;
     private Patient indexPatient;
@@ -131,7 +130,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
 
@@ -154,13 +153,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 getWindow().setLayout(width, height);
             }
         }
-
-        toolbar = findViewById(R.id.form_web_view_toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         setTitle(R.string.general_form);
         progressDialog = new MuzimaProgressDialog(this);
@@ -289,7 +281,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             webView.loadUrl("javascript:document.populateRelationshipPerson('" + sectionName + "', " + jsonMap + ")");
         }
         super.onResume();
-        themeUtils.onResume(this);
         languageUtil.onResume(this);
     }
 

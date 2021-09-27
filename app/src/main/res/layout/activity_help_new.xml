@@ -16,14 +16,6 @@
     android:orientation="vertical"
     tools:context="com.muzima.view.MainDashboardActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/help_toolbar"
-        app:title="@string/help_general"
-        android:theme="@style/Base_ToolbarStyle"
-        android:elevation="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"/>
-
     <ExpandableListView
         android:id="@+id/lvExp"
         android:layout_width="fill_parent"

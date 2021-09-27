@@ -58,8 +58,6 @@ public class HelpActivity extends BaseHelpActivity {
         setContentView(R.layout.activity_help_new);
 
         expListView = findViewById(R.id.lvExp);
-        toolbar = findViewById(R.id.help_toolbar);
-        initToolbar();
         prepareListData();
 
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
@@ -111,14 +109,6 @@ public class HelpActivity extends BaseHelpActivity {
             }
         });
         logEvent("VIEW_HELP");
-    }
-
-    private void initToolbar() {
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
     }
 
     @Override

@@ -59,7 +59,6 @@ import static androidx.core.view.WindowCompat.FEATURE_ACTION_BAR;
 public class FormPagerActivity extends ActivityWithBottomNavigation {
     private ViewPager viewPager;
     private EditText searchForms;
-    private final ThemeUtils themeUtils = new ThemeUtils();
     private final LanguageUtil languageUtil = new LanguageUtil();
     private ActionMode.Callback actionModeCallback;
     private ActionMode actionMode;
@@ -77,11 +76,10 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_pager);
-        setupToolbar();
         loadBottomNavigation();
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
@@ -183,15 +181,6 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
 
         formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         setTitle(StringUtils.EMPTY);
-    }
-
-    private void setupToolbar(){
-        Toolbar toolbar = findViewById(R.id.form_pager_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     @Override

@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,6 +33,7 @@ import com.muzima.model.collections.AvailableForms;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BaseActivity;
+import com.muzima.view.BaseAuthenticatedActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 
@@ -39,29 +41,22 @@ import java.util.UUID;
 
 import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 
-public class RegistrationFormsActivity extends BaseActivity {
+public class RegistrationFormsActivity extends BaseAuthenticatedActivity {
     private RegistrationFormsAdapter registrationFormsAdapter;
-    private final ThemeUtils themeUtils = new ThemeUtils();
     private Patient patient;
     private Patient indexPatient;
-    private MaterialToolbar toolbar;
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_form_list);
 
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         indexPatient = (Patient) getIntent().getSerializableExtra(INDEX_PATIENT);
-        toolbar = findViewById(R.id.registration_forms_toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
+
 
         FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
         ObservationController observationController = ((MuzimaApplication) getApplicationContext()).getObservationController();
@@ -79,11 +74,7 @@ public class RegistrationFormsActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
-            startActivity( new Intent(getApplicationContext(), MainDashboardActivity.class));
-            finish();
-        }
+    public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
 

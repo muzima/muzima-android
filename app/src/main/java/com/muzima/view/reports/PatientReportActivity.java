@@ -32,28 +32,26 @@ public class PatientReportActivity extends BroadcastListenerActivity {
     private Patient patient;
     private MenuItem menubarLoadButton;
     private boolean syncInProgress;
-    private final ThemeUtils themeUtils = new ThemeUtils();
 
     private ViewPager viewPager;
     private PatientReportPagerAdapter patientReportPagerAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_with_pager);
         Intent intent = getIntent();
         patient = (Patient) intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
         initPager();
         initPagerIndicator();
-        getSupportActionBar().setTitle(patient.getSummary());
+        getActionBar().setTitle(patient.getSummary());
         logEvent("VIEW_CLIENT_DOWNLOADED_REPORTS", "{\"patientuuid\":\""+patient.getUuid()+"\"}");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        themeUtils.onResume(this);
     }
 
     @Override
@@ -111,16 +109,17 @@ public class PatientReportActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REPORT_VIEW_ACTIVITY_RESULT){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REPORT_VIEW_ACTIVITY_RESULT) {
             patientReportPagerAdapter.reloadData();
         }
     }
 
     private void initPager() {
         viewPager = findViewById(R.id.pager);
-        patientReportPagerAdapter = new PatientReportPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patient.getUuid());;
-        patientReportPagerAdapter.initPagerViews();
-        viewPager.setAdapter(patientReportPagerAdapter);
+//        patientReportPagerAdapter = new PatientReportPagerAdapter(getApplicationContext(), getSupportFragmentManager(), patient.getUuid());;
+//        patientReportPagerAdapter.initPagerViews();
+//        viewPager.setAdapter(patientReportPagerAdapter);
     }
 
 

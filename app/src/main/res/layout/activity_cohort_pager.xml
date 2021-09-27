@@ -15,24 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/cohort_pager_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/primaryBackgroundColor"
-            app:title="@string/general_cohorts"/>
-    </LinearLayout>
 
     <RelativeLayout
             android:background="@drawable/border_button_gray"
-            android:layout_marginEnd="18dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
             android:padding="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -90,10 +78,12 @@
 
     </com.google.android.material.tabs.TabLayout>
     <RelativeLayout
-            android:background="@drawable/border_button_gray"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/onDarkBackgroundColor"/>
 
         <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager"

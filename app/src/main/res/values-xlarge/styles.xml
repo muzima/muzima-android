@@ -17,53 +17,6 @@
         <item name="android:textSize">30sp</item>
     </style>
 
-    <style name="actionbarStyle.Light"
-           parent="@style/Widget.AppCompat.Light.ActionBar">
-    </style>
-
-    <style name="actionbarStyle"
-        parent="@style/Widget.AppCompat.ActionBar">
-    </style>
-
-    <!-- Application theme. -->
-    <style name="AppTheme.Dark" parent="AppBaseTheme.NoActionBar">
-    </style>
-
-    <!-- Application theme. -->
-    <style name="AppTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
-    </style>
-
-    <style name="LoginTheme.Dark" parent="AppBaseTheme.NoActionBar">
-    </style>
-
-
-    <style name="LoginTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
-    </style>
-
-    <!-- Application theme. -->
-    <style name="WizardTheme.Dark" parent="AppBaseTheme.NoActionBar">
-    </style>
-
-    <style name="WizardTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
-    </style>
-
-
-    <style name="PreferencesTheme.Dark" parent="AppBaseTheme.NoActionBar">
-        <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
-        <item name="android:textColorPrimary">@color/preference_primary_color</item>
-        <item name="android:textColorSecondary">@color/preference_secondary_color</item>
-    </style>
-
-
-    <style name="PreferencesTheme.Light" parent="AppBaseTheme.Light.NoActionBar">
-        <item name="android:preferenceCategoryStyle">@style/preferenceCategoryStyle</item>
-        <item name="android:textColorPrimary">@color/preference_primary_color_light</item>
-        <item name="android:textColorSecondary">@color/preference_secondary_color_light</item>
-    </style>
-
-    <style name="preferenceCategoryStyle">
-    </style>
-
     <style name="DashboardWrapper">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -78,7 +31,7 @@
         <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="alertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="alertDialogTheme" parent="Theme.MaterialComponents.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
         <item name="android:textColor">?attr/primaryTextColor</item>
@@ -86,7 +39,7 @@
         <item name="android:colorAccent">@color/primary_blue</item>
     </style>
 
-    <style name="alertDialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="alertDialogThemeLight" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/alertTitleTextStyle</item>
         <item name="android:background">?attr/drawerBackgroundColor</item>
         <item name="android:textColor">?attr/primaryTextColor</item>

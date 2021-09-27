@@ -63,11 +63,10 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
     private TextInputEditText configSetupFilter;
     private ImageButton imageButton;
     private SetupConfigurationRecyclerViewAdapter setupConfigurationAdapter;
-    private final ThemeUtils themeUtils = new ThemeUtils(R.style.WizardTheme_Light, R.style.WizardTheme_Dark);
     private List<SetupConfiguration> setupConfigurationList = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,false);
         super.onCreate(savedInstanceState);
         initializeResources();
         loadConfigList();
@@ -128,13 +127,6 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         activeNextButton.setVisibility(View.VISIBLE);
         setupConfigurationAdapter.setSelectedConfigurationUuid(setupConfigurationList.get(position).getUuid());
         setupConfigurationAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        removeSettingsMenu(menu);
-        return true;
     }
 
     @Override

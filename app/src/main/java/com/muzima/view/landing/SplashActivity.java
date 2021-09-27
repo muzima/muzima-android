@@ -19,16 +19,13 @@ import androidx.annotation.Nullable;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.service.WizardFinishPreferenceService;
-import com.muzima.utils.ThemeUtils;
-import com.muzima.view.BaseFragmentActivity;
+import com.muzima.view.BaseAuthenticatedActivity;
 import com.muzima.view.initialwizard.SetupMethodPreferenceWizardActivity;
 
-public class SplashActivity extends BaseFragmentActivity {
+public class SplashActivity extends BaseAuthenticatedActivity {
 
-    private final ThemeUtils themeUtils = new ThemeUtils();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         handleInitializeTimer();

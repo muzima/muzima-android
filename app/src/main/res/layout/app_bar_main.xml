@@ -27,7 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/primaryBackgroundColor"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:menu="@menu/menu_dashboard_home"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/nav_content"/>

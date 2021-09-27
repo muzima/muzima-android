@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.JavascriptInterface;
@@ -50,11 +51,10 @@ public class PatientsLocationMapActivity extends BroadcastListenerActivity {
     private WebView webView;
 
     private String selectedPatientUuid;
-    private final ThemeUtils themeUtils = new ThemeUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patients_location_map);
         initializeHomeLocationMapView();
@@ -242,7 +242,12 @@ public class PatientsLocationMapActivity extends BroadcastListenerActivity {
 
     @Override
     protected void onResume(){
-        themeUtils.onCreate(this);
+        ThemeUtils.getInstance().onCreate(this,true);
         super.onResume();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
     }
 }
