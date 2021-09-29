@@ -1339,9 +1339,6 @@ $(document).ready(function () {
     };
 
     var obsDatetimeArray = null;
-    var obsValueTextArray = null;
-    var obsValueCodedArray = null;
-    var obsValueUuidArray = null;
     var setObsDatetimeArray = function ($form) {
         obsDatetimeArray = {};
         var obsDatetimeElements = $form.find('*[data-obsdatetimefor]').filter(':visible');
@@ -1359,6 +1356,7 @@ $(document).ready(function () {
         return '';
     }
 
+    var obsValueTextArray = null;
     var setObsValueTextArray = function ($form) {
         obsValueTextArray = {};
         var obsValueTextElements = $form.find('*[data-obsvaluetextfor]').filter(':visible');
@@ -1377,6 +1375,7 @@ $(document).ready(function () {
         return '';
     }
 
+    var obsValueCodedArray = null;
     var setObsValueCodedArray = function ($form) {
         obsValueCodedArray = {};
         var obsValueCodedElements = $form.find('*[data-obsvaluecodedfor]').filter(':visible');
@@ -1401,6 +1400,7 @@ $(document).ready(function () {
        return '';
     }
 
+    var obsValueUuidArray = null;
     var setObsValueUuidArray = function ($form) {
         obsValueUuidArray = {};
         var obsValueUuidElements = $form.find('*[data-obsvalueuuidfor]').filter(':visible');
