@@ -398,6 +398,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
 
     @Subscribe
     public void cohortFilterEvent(final CohortFilterActionEvent event) {
+
         latestCohortFilterActionEvent = event;
         bottomSheetFilterVisible = false;
         updateCohortFilterLabel(event);
@@ -407,16 +408,12 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         List<String> cohortUuidList = new ArrayList<>();
         if (filters.size() > 0) {
             for (CohortFilter filter : filters) {
-
                 if (filter.getCohort() != null && !cohortUuidList.contains(filter.getCohort().getUuid())) {
                     cohortUuidList.add(filter.getCohort().getUuid());
-                    patientSearchAdapter.filterByCohorts(cohortUuidList);
                 }
             }
-        } else {
-            patientSearchAdapter.filterByCohorts(cohortUuidList);
         }
-
+        patientSearchAdapter.filterByCohorts(cohortUuidList);
     }
 
     @Subscribe

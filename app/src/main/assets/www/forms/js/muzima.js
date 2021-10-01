@@ -1110,6 +1110,8 @@ $(document).ready(function () {
         setObsValueTextArray(this);
         setObsValueCodedArray(this);
         setObsValueUuidArray(this);
+        setObsCommentArray(this);
+        setFormUuidToAddObsForArray(this);
         var jsonResult = $.extend({}, serializeNonConceptElements(this), serializeNestedNonConceptElements(this),
             serializeConcepts(this), serializeNestedConcepts(this));
         var completeObject = {};
@@ -1243,12 +1245,14 @@ $(document).ready(function () {
     var jsonifyConcepts = function ($allConcepts, codeIndexPatientObsIfAvailable) {
         var o = {};
         $.each($allConcepts, function (i, element) {
+            var obs_datetime = getObsDatetime(element);
+            var obs_valuetext = getObsValueText(element);
+            var obs_valuecoded = getObsValueCoded(element);
+            var obs_valueuuid = getObsValueUuid(element);
+            var obs_comment = getObsComment(element);
+            var obs_formuuidtoaddobsfor = getFormUuidToAddObsFor(element);
             if ($(element).is(':checkbox') || $(element).is(':radio')) {
                 if ($(element).is(':checked')) {
-                    var obs_datetime = getObsDatetime(element);
-                    var obs_valuetext = getObsValueText(element);
-                    var obs_valuecoded = getObsValueCoded(element);
-                    var obs_valueuuid = getObsValueUuid(element);
                     if (obs_datetime != '') {
                         var v = {};
                         var obs_value = $(element).val();
@@ -1257,7 +1261,7 @@ $(document).ready(function () {
                             v = pushIntoArray(v, 'obs_datetime', obs_datetime);
                             o = pushIntoArray(o, $(element).attr('data-concept'), v);
                         }
-                    } else if (obs_valuetext != '' || obs_valuecoded != '' || obs_valueuuid != ''){
+                    } else if (obs_valuetext != '' || obs_valuecoded != '' || obs_valueuuid != '' || obs_comment != '' || obs_formuuidtoaddobsfor != ''){
                          var v = {};
                          var obs_value = $(element).val();
                          if (JSON.stringify(obs_value) != '{}' && obs_value != "") {
@@ -1265,6 +1269,8 @@ $(document).ready(function () {
                              v = pushIntoArray(v, 'obs_valuetext', obs_valuetext);
                              v = pushIntoArray(v, 'obs_valuecoded', obs_valuecoded);
                              v = pushIntoArray(v, 'obs_valueuuid', obs_valueuuid);
+                             v = pushIntoArray(v, 'obs_comment', obs_comment);
+                             v = pushIntoArray(v, 'obs_formuuidtoaddobsfor', obs_formuuidtoaddobsfor);
                              o = pushIntoArray(o, $(element).attr('data-concept'), v);
                          }
                     } else if ($(element).hasClass('is-index-obs')) {
@@ -1274,10 +1280,6 @@ $(document).ready(function () {
                     }
                 }
             } else {
-                var obs_datetime = getObsDatetime(element);
-                var obs_valuetext = getObsValueText(element);
-                var obs_valuecoded = getObsValueCoded(element);
-                var obs_valueuuid = getObsValueUuid(element);
                 if (obs_datetime != '') {
                     var v = {};
                     var obs_value = $(element).val();
@@ -1286,16 +1288,18 @@ $(document).ready(function () {
                         v = pushIntoArray(v, 'obs_datetime', obs_datetime);
                         o = pushIntoArray(o, $(element).attr('data-concept'), v);
                     }
-                }else if(obs_valuetext != '' || obs_valuecoded != '' || obs_valueuuid != ''){
+                } else if (obs_valuetext != '' || obs_valuecoded != '' || obs_valueuuid != '' || obs_comment != '' || obs_formuuidtoaddobsfor != ''){
                      var v = {};
                      var obs_value = $(element).val();
                      if (JSON.stringify(obs_value) != '{}' && obs_value != "") {
-                        v = pushIntoArray(v, 'obs_value', obs_value);
-                        v = pushIntoArray(v, 'obs_valuetext', obs_valuetext);
-                        v = pushIntoArray(v, 'obs_valuecoded', obs_valuecoded);
-                        v = pushIntoArray(v, 'obs_valueuuid', obs_valueuuid);
-                        o = pushIntoArray(o, $(element).attr('data-concept'), v);
-                    }
+                         v = pushIntoArray(v, 'obs_value', obs_value);
+                         v = pushIntoArray(v, 'obs_valuetext', obs_valuetext);
+                         v = pushIntoArray(v, 'obs_valuecoded', obs_valuecoded);
+                         v = pushIntoArray(v, 'obs_valueuuid', obs_valueuuid);
+                         v = pushIntoArray(v, 'obs_comment', obs_comment);
+                         v = pushIntoArray(v, 'obs_formuuidtoaddobsfor', obs_formuuidtoaddobsfor);
+                         o = pushIntoArray(o, $(element).attr('data-concept'), v);
+                     }
                 } else if ($(element).hasClass('is-index-obs') && codeIndexPatientObsIfAvailable == true){
                     o = pushIntoArray(o, 'index_obs.'+$(element).attr('data-concept'), $(element).val());
                 } else {
@@ -1335,9 +1339,6 @@ $(document).ready(function () {
     };
 
     var obsDatetimeArray = null;
-    var obsValueTextArray = null;
-    var obsValueCodedArray = null;
-    var obsValueUuidArray = null;
     var setObsDatetimeArray = function ($form) {
         obsDatetimeArray = {};
         var obsDatetimeElements = $form.find('*[data-obsdatetimefor]').filter(':visible');
@@ -1355,6 +1356,7 @@ $(document).ready(function () {
         return '';
     }
 
+    var obsValueTextArray = null;
     var setObsValueTextArray = function ($form) {
         obsValueTextArray = {};
         var obsValueTextElements = $form.find('*[data-obsvaluetextfor]').filter(':visible');
@@ -1373,6 +1375,7 @@ $(document).ready(function () {
         return '';
     }
 
+    var obsValueCodedArray = null;
     var setObsValueCodedArray = function ($form) {
         obsValueCodedArray = {};
         var obsValueCodedElements = $form.find('*[data-obsvaluecodedfor]').filter(':visible');
@@ -1397,6 +1400,7 @@ $(document).ready(function () {
        return '';
     }
 
+    var obsValueUuidArray = null;
     var setObsValueUuidArray = function ($form) {
         obsValueUuidArray = {};
         var obsValueUuidElements = $form.find('*[data-obsvalueuuidfor]').filter(':visible');
@@ -1413,6 +1417,42 @@ $(document).ready(function () {
             }
        }
        return '';
+    }
+
+    var obsCommentArray = null;
+    var setObsCommentArray = function ($form) {
+        obsCommentArray = {};
+        var obsCommentElements = $form.find('*[data-obscommentfor]');
+        $.each(obsCommentElements, function (i, element) {
+            pushIntoArray(obsCommentArray, $(element).attr('data-obscommentfor'), $(element).val());
+        });
+    };
+    var getObsComment = function (element) {
+        if (obsCommentArray !== null) {
+            var elementName = $(element).attr('name');
+            if (obsCommentArray[elementName] !== undefined) {
+                return obsCommentArray[elementName];
+            }
+        }
+        return '';
+    }
+
+    var formUuidToAddObsForArray = null;
+    var setFormUuidToAddObsForArray = function ($form) {
+        formUuidToAddObsForArray = {};
+        var formUuidToAddObsForElements = $form.find('*[data-obsformuuidtoaddobsfor]');
+        $.each(formUuidToAddObsForElements, function (i, element) {
+            pushIntoArray(formUuidToAddObsForArray, $(element).attr('data-obsformuuidtoaddobsfor'), $(element).val());
+        });
+    };
+    var getFormUuidToAddObsFor = function (element) {
+        if (formUuidToAddObsForArray !== null) {
+            var elementName = $(element).attr('name');
+            if (formUuidToAddObsForArray[elementName] !== undefined) {
+                return formUuidToAddObsForArray[elementName];
+            }
+        }
+        return '';
     }
 
     var pushIntoArray = function (object, key, value) {
