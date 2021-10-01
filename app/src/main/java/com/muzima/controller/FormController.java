@@ -1092,6 +1092,7 @@ public class FormController {
                 }
                 formService.deleteFormData(formData);
             }
+            muzimaApplication.getPatientController().deletePatientsPendingDeletion();
         } catch (IOException e) {
             throw new FormDataDeleteException(e);
         }
