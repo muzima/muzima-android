@@ -1422,7 +1422,7 @@ $(document).ready(function () {
     var obsCommentArray = null;
     var setObsCommentArray = function ($form) {
         obsCommentArray = {};
-        var obsCommentElements = $form.find('*[data-obscommentfor]').filter(':visible');
+        var obsCommentElements = $form.find('*[data-obscommentfor]');
         $.each(obsCommentElements, function (i, element) {
             pushIntoArray(obsCommentArray, $(element).attr('data-obscommentfor'), $(element).val());
         });
@@ -1440,7 +1440,7 @@ $(document).ready(function () {
     var formUuidToAddObsForArray = null;
     var setFormUuidToAddObsForArray = function ($form) {
         formUuidToAddObsForArray = {};
-        var formUuidToAddObsForElements = $form.find('*[data-obsformuuidtoaddobsfor]').filter(':visible');
+        var formUuidToAddObsForElements = $form.find('*[data-obsformuuidtoaddobsfor]');
         $.each(formUuidToAddObsForElements, function (i, element) {
             pushIntoArray(formUuidToAddObsForArray, $(element).attr('data-obsformuuidtoaddobsfor'), $(element).val());
         });
