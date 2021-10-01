@@ -222,7 +222,7 @@ public class PatientController {
 
     public void deletePatient(Patient localPatient) {
         try {
-            patientService.deletePatient(localPatient);
+            deleteOrMarkAsPendingDeletion(localPatient);
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while deleting local patient : " + localPatient.getUuid(), e);
         }
@@ -230,7 +230,9 @@ public class PatientController {
 
     public void deletePatient(List<Patient> localPatients) throws PatientDeleteException {
         try {
-            patientService.deletePatients(localPatients);
+            for(Patient patient:localPatients){
+                deleteOrMarkAsPendingDeletion(patient);
+            }
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while deleting local patients ", e);
             throw new PatientDeleteException(e);
@@ -379,17 +381,21 @@ public class PatientController {
         for(CohortMember cohortMember:cohortMembers){
             Patient patient = cohortMember.getPatient();
             try {
-                int formCount = getFormDataCount(patient.getUuid());
-                if(formCount == 0 ){
-                    patientService.deletePatient(patient);
-                }else{
-                   Patient pat = patientService.getPatientByUuid(patient.getUuid());
-                   pat.setDeletionStatus(PATIENT_DELETION_PENDING_STATUS);
-                   patientService.updatePatient(pat);
-                }
+                deleteOrMarkAsPendingDeletion(patient);
             } catch (IOException e) {
                 Log.e(getClass().getSimpleName(), "An IOException was encountered : ", e);
             }
+        }
+    }
+
+    public void deleteOrMarkAsPendingDeletion(Patient patient) throws IOException {
+        int formCount = getFormDataCount(patient.getUuid());
+        if(formCount == 0 ){
+            patientService.deletePatient(patient);
+        }else{
+            Patient pat = patientService.getPatientByUuid(patient.getUuid());
+            pat.setDeletionStatus(PATIENT_DELETION_PENDING_STATUS);
+            patientService.updatePatient(pat);
         }
     }
 

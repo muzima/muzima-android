@@ -983,16 +983,24 @@ public class MuzimaSyncService {
     public List<Patient> updatePatientsNotPartOfCohorts() {
         List<Patient> patientsNotInCohorts = patientController.getPatientsNotInCohorts();
         List<Patient> downloadedPatients = new ArrayList<>();
+        ArrayList<Patient> voidedPatients = new ArrayList<>();
         try {
             for (Patient patient : patientsNotInCohorts) {
                 downloadedPatients.add(patientController.downloadPatientByUUID(patient.getUuid()));
             }
             downloadedPatients.removeAll(singleton(null));
+
+            getVoidedPatients(voidedPatients, downloadedPatients);
+            downloadedPatients.removeAll(voidedPatients);
+
             patientController.replacePatients(downloadedPatients);
+            patientController.deletePatient(voidedPatients);
         } catch (PatientController.PatientSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while updating patients from server.", e);
         } catch (PatientController.PatientDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading patients from server.", e);
+        } catch (PatientController.PatientDeleteException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while deleting voided patients.", e);
         }
         return downloadedPatients;
     }

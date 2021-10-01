@@ -23,6 +23,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.FormData;
+import com.muzima.api.model.Patient;
 import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;
 
@@ -219,6 +220,13 @@ public class DataSyncService extends IntentService {
 
         //Sync cohort updates
         result = muzimaSyncService.downloadPatientsForCohortsWithUpdatesAvailable();
+        List<Patient> updatedPatients = muzimaSyncService.updatePatientsNotPartOfCohorts();
+
+        if(updatedPatients.size()>0){
+            result[1]+=updatedPatients.size();
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+        }
+
         if (isSuccess(result)) {
             msg = getString(R.string.info_cohorts_patients_download, result[1], result[2]);
         } else {
