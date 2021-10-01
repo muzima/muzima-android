@@ -570,11 +570,6 @@
         <item name="android:layout_weight">1</item>
     </style>
 
-    <style name="TabLayoutStyle" parent="Base.Widget.Design.TabLayout">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
     <style name="bottom_nav_active_text">
         <item name="android:textColor">#137EFE</item>
         <item name="android:textSize">16sp</item>
@@ -582,10 +577,6 @@
 
     <style name="bottom_nav_inactive_text">
         <item name="android:textColor">?attr/menu_inactive_text_color</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="TabLayoutTextStyle">
         <item name="android:textSize">14sp</item>
     </style>
 

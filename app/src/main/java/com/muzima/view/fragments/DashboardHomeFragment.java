@@ -179,7 +179,6 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
                     EventBus.getDefault().post(new ShowCohortFilterEvent());
                     bottomSheetFilterVisible = true;
                     childContainer.setBackgroundColor(getResources().getColor(R.color.hint_text_grey_opaque));
-                    fabSearchButton.hide();
                 }
             }
         });
