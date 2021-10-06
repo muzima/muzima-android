@@ -239,7 +239,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
             public boolean onQueryTextChange(String s) {
                 searchString = s;
                 activateRemoteAfterThreeCharacterEntered(s);
-                patientAdapter.search(s.trim());
+                patientAdapter.search(s);
                 return true;
             }
         });
@@ -249,7 +249,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     }
 
     private void activateRemoteAfterThreeCharacterEntered(String searchString) {
-        if (searchString.trim().length() < 3)
+        if (StringUtils.isEmpty(searchString) || searchString.trim().length() < 3)
             searchServerLayout.setVisibility(View.INVISIBLE);
         else
             searchServerLayout.setVisibility(View.VISIBLE);

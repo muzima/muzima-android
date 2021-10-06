@@ -149,8 +149,11 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         dobTextView = findViewById(R.id.dateOfBirth);
         identifierTextView = findViewById(R.id.identifier);
         ageTextView = findViewById(R.id.age_text_label);
-
-        patientNameTextView.setText(patient.getDisplayName());
+        if(patient != null) {
+            patientNameTextView.setText(patient.getDisplayName());
+        }else{
+            patientNameTextView.setText("");
+        }
         identifierTextView.setText(String.format(Locale.getDefault(), "ID:#%s", patient.getIdentifier()));
         dobTextView.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate())));
         patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
