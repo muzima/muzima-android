@@ -544,9 +544,13 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     private void resetEncounterProviderPreference() {
         if(encounterProviderPreference.isChecked()){
-            String loggedInUserSystemId = ((MuzimaApplication) getActivity().getApplication()).getAuthenticatedUser().getSystemId();
-            if (((MuzimaApplication) getActivity().getApplication()).getProviderController().getProviderBySystemId(loggedInUserSystemId) == null){
+            if(((MuzimaApplication) getActivity().getApplication()).getAuthenticatedUser() == null){
                 encounterProviderPreference.setChecked(false);
+            }else {
+                String loggedInUserSystemId = ((MuzimaApplication) getActivity().getApplication()).getAuthenticatedUser().getSystemId();
+                if (((MuzimaApplication) getActivity().getApplication()).getProviderController().getProviderBySystemId(loggedInUserSystemId) == null) {
+                    encounterProviderPreference.setChecked(false);
+                }
             }
         }
     }
