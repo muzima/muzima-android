@@ -12,6 +12,7 @@ package com.muzima.view.patients;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -172,6 +173,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         } else if (getCheckedItemCount(listView) == 0) {
             actionMode.finish();
         }
+        setActivationBackgroundColor(view);
         actionMode.setTitle(valueOf(getCheckedItemCount(listView)));
     }
 
@@ -179,7 +181,12 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         return listView.getCheckedItemCount();
     }
 
-
+    private void setActivationBackgroundColor(View view){
+        int[] attrs = new int[]{R.attr.activatedBackgroundIndicator};
+        TypedArray typedArray = obtainStyledAttributes(attrs);
+        int backgroundResource = typedArray.getResourceId(0, 0);
+        view.setBackgroundResource(backgroundResource);
+    }
     @Override
     protected void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);

@@ -226,6 +226,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         searchMenuItem.setIconifiedByDefault(false);
 
         searchMenuItem.setQuery(searchString,false);
+        searchMenuItem.requestFocus();
         activateRemoteAfterThreeCharacterEntered(searchString);
         patientAdapter.search(searchString);
 
