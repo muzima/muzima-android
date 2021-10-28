@@ -195,7 +195,7 @@
                 android:layout_marginStart="42dp"
                 android:paddingEnd="6dp"
                 android:fontFamily="@font/roboto_regular"
-                android:text="@string/info_disclaimer"/>
+                android:text="@string/info_terms_and_conditions_text"/>
 
         </ScrollView>
 

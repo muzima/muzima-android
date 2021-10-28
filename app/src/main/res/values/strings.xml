@@ -335,54 +335,51 @@
     <string name="info_concepts_downloaded" formatted="false">Downloaded %d concepts</string>
     <string name="info_convert_person_to_patient">Convert person to patient</string>
     <string name="info_data_sync_cancelled">mUzima data sync was cancelled.</string>
-    <string name="privacy_policy">mUzima for Health Providers app is built as an Open Source end-user app and is provided at no cost and is intended for use as is. If you’re using our application for an organization, you’re agreeing to this Privacy Policy on behalf of that organization. If you’re using our application to provide services, software, and content for some else, you’re agreeing to this Privacy Policy on their behalf.
+    <string name="privacy_policy">
+mUzima is a mobile application that enables health professionals collect, manage and use healthcare data as an extension to the OpenMRS medical record system. The app is built as an open source end user application, which is provided at no cost, and is intended for use as is. If you\'re using the application for an organization, you\'re agreeing to this Privacy Policy on behalf of that organization. If you\'re using the application to provide services, software and content for someone else, you\'re agreeing to this Privacy Policy on their behalf.
+\nIF YOU OR THE ORGANIZATION YOU REPRESENT DOES NOT AGREE TO BE BOUND TO THIS PRIVACY POLICY, YOU SHOULD NOT USE THE MOBILE APPLICATION.
 
-IF YOU OR THE ORGANIZATION YOU REPRESENT DON’T AGREE TO BE BOUND TO THIS PRIVACY POLICY, YOU SHOULD NOT USE OUR SERVICES.
+\n\nThird party services
+\nThe application uses third-party services that may collect information used to identify you. The third party service providers used by the app are:
+\nGoogle Play Services: The mUzima mobile application is built to run on the Android Operating system and is primarily distributed via theGoogle playstore. For this reason, your use of the mUzima mobile application is bound by the Google privacy policy with the use of Google services on the Android platform, that is available here:  https://www.google.com/policies/privacy/
+\nFirebase Crashlytics and analytics: In case of an error in the app, such as the application crashing, we collect data and information (through third-party products) on your phone called Crashlytics data. This Crashlytics data may include information such as device name, operating system version, the configuration of the app when utilizing our application, as well as the time and date of your use of the application. Other data that could be collected depending on your settings  include location information. The use of the mUzima mobile application is therefore bound by the Firebase privacy policy available here: https://firebase.google.com/support/privacy.
 
-Information Collection and Use
+\n\nCookies
+\nCookies are files with a small amount of data that are commonly used as anonymous unique identifiers. These are sent to your browser from the websites that you visit and are stored on your device\'s internal memory.
 
-For a better experience, while using our application, we may require you to provide us with certain information. The information that we request will be retained by us and used as described in this privacy policy.
+\n\nmUzima app does not use these \"cookies\" explicitly. However, the app may use third party code and libraries that use \"cookies\" to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse the cookies, you may not be able to use some portions of this Service.
 
-The app does use third-party services that may collect information used to identify you. Links to the privacy policy of third party service providers used by the app:
+\n\nLocation Data
+\nmUzima mobile application comes with optional features that may need access to the precise or approximate location of the device. The features are:
+\nRecording patient address:
+\nGPS addresses of patients may be stored as part of information stored in the secure OpenMRS medical record system. mUzima provides the ability to set the address of a patient record, so as to update the record in the OpenMRS medical record system.
+\nNavigating to the patient’s address:
+\nmUzima provides the Geomapping feature to enable the user/provider to get directions (via Google maps app on Android device) to the patient\'s GPS location as indicated by the medical record.
 
-Google Play Services https://www.google.com/policies/privacy/
-Firebase Analytics https://firebase.google.com/policies/analytics
-Fabric https://fabric.io/privacy Crashlytics http://try.crashlytics.com/terms/privacy-policy.pdf
+\n\nThe GPS location information collected via the mobile application is purely for the features localized within the implementation and will in no way be shared with mUzima or any third party. The application may use the location information if you grant it the permissions to do so. You can enable or disable location services when you use our application at any time, through your device settings. Your implementation administrator can enable or disable the optional features that need location data via the application settings.
+\nA link to a video that demonstrates the mUzima’s GPS features can be found here:
+\nhttps://drive.google.com/file/d/1CiiP6xodoQ55FMJZwBFdnYEhTbP1_jM4/view?usp=sharing.
 
+\n\nSecurity
+\nWe value your trust in our application. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and we cannot guarantee its absolute security.
 
-Log Data
+\nPlease be aware that certain Personal Information and other information provided by you in connection with your use of the application may be stored on your device (even if we do not collect that information). You are solely responsible for maintaining the security of your device from unauthorized access.
 
-We want to inform you that whenever you use our application, in case of an error in the app, we collect data and information (through third-party products) on your phone called Log Data. This Log Data may include information such as device name, operating system version, the configuration of the app when utilizing our application, the time and date of your use of the application, and other statistics, such as location information, depending on your settings.
+\n\nChanges to This Privacy Policy
+\nWe may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted on this page.
 
-Cookies
-
-Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers These are sent to your browser from the websites that you visit and are stored on your device’s internal memory. mUzima app does not use these “cookies” explicitly. However, the app may use third-party code and libraries that use “cookies” to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service.
-
-Location Data
-
-Some optional features provided by mUzima for Health Providers may require the use of location data. This Location Data is purely for the features localized in the implementation and in no way being shared with us or any third party. The application may use the location information if you give the app permissions to do so. You can enable or disable location services when you use our application at any time, through your device settings.
-
-Security
-
-We value your trust in our application. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and we cannot guarantee its absolute security. Please be aware that certain Personal Information and other information provided by you in connection with your use of the application may be stored on your device (even if we do not collect that information). You are solely responsible for maintaining the security of your device from unauthorized access.
-
-Changes to This Privacy Policy
-
-We may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted on this page.
-
-Contact Us
-
-If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us through mUzima.mobile@gmail.com
+\n\nContact Us
+\nIf you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us through mUzima.mobile@gmail.com
     </string>
     <string name="info_disclaimer">
         mUzima is distributed under the terms of the Mozilla Public License, v. 2.0 (MPL 2.0). A copy of the MPL 2.0 license can be found at http://mozilla.org/MPL/2.0/.
-mUzima is also distributed under the terms of the following Additional Disclaimer of Warranty and Limitation of Liability.
-Additional Disclaimer of Warranty and Limitation of Liability
-In the United States, or any other jurisdictions where they may apply, the following additional disclaimer of warranty and limitation of liability are hereby incorporated into the terms and conditions of MPL 2.0:
-1. No warranties of any kind whatsoever are made as to the results that You will obtain from relying upon the covered code (or any information or content obtained by way of the covered code), including but not limited to compliance with privacy laws or regulations or clinical care industry standards and protocols. Use of the covered code is not a substitute for a health care provider’s standard practice or professional judgment. Any decision with regard to the appropriateness of treatment, or the validity or reliability of information or content made available by the covered code, is the sole responsibility of the health care provider. Consequently, it is incumbent upon each health care provider to verify all medical history and treatment plans with each patient.
-2. Under no circumstances and under no legal theory, whether tort (including negligence), contract, or otherwise, shall any Contributor, or anyone who distributes Covered Software as permitted by the license, be liable to You for any indirect, special, incidental, consequential damages of any character including, without limitation, damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other damages or losses, of any nature whatsoever (direct or otherwise) on account of or associated with the use or inability to use the covered content (including, without limitation, the use of information or content made available by the covered code, all documentation associated therewith, and the failure of the covered code to comply with privacy laws and regulations or clinical care industry standards and protocols), even if such party shall have been informed of the possibility of such damages.
-3. mUzima is copyrighted to The Trustees of Indiana University, Moi University, and Vanderbilt University Medical Center.
-4. If the user of this application is an entity intending to commercialize or make a profit out of any application that uses this code in a for-profit venture, the user is required to contact the copyright holder through mUzima.mobile@gmail.com
+\nmUzima is also distributed under the terms of the following Additional Disclaimer of Warranty and Limitation of Liability.
+\nAdditional Disclaimer of Warranty and Limitation of Liability
+\nIn the United States, or any other jurisdictions where they may apply, the following additional disclaimer of warranty and limitation of liability are hereby incorporated into the terms and conditions of MPL 2.0:
+\n1. No warranties of any kind whatsoever are made as to the results that You will obtain from relying upon the covered code (or any information or content obtained by way of the covered code), including but not limited to compliance with privacy laws or regulations or clinical care industry standards and protocols. Use of the covered code is not a substitute for a health care provider’s standard practice or professional judgment. Any decision with regard to the appropriateness of treatment, or the validity or reliability of information or content made available by the covered code, is the sole responsibility of the health care provider. Consequently, it is incumbent upon each health care provider to verify all medical history and treatment plans with each patient.
+\n2. Under no circumstances and under no legal theory, whether tort (including negligence), contract, or otherwise, shall any Contributor, or anyone who distributes Covered Software as permitted by the license, be liable to You for any indirect, special, incidental, consequential damages of any character including, without limitation, damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other damages or losses, of any nature whatsoever (direct or otherwise) on account of or associated with the use or inability to use the covered content (including, without limitation, the use of information or content made available by the covered code, all documentation associated therewith, and the failure of the covered code to comply with privacy laws and regulations or clinical care industry standards and protocols), even if such party shall have been informed of the possibility of such damages.
+\n3. mUzima is copyrighted to The Trustees of Indiana University, Moi University, and Vanderbilt University Medical Center.
+\n4. If the user of this application is an entity intending to commercialize or make a profit out of any application that uses this code in a for-profit venture, the user is required to contact the copyright holder through mUzima.mobile@gmail.com
 
     </string>
     <string name="info_download_complete">Download complete with status %d</string>
@@ -775,4 +772,42 @@ In the United States, or any other jurisdictions where they may apply, the follo
     <string name="info_scan_qrcode">Scan QR code to change server URL</string>
     <string name="delete_individual_obs">Deleting individual obs</string>
     <string name="warning_individual_form_data_delete">You are about to delete individual observation. Are you sure?</string>
+    <string name="info_terms_and_conditions_text">
+        mUzima for Health Providers app (the \"Application\") is built as an Open Source end-user app and is provided by Moi University and Vanderbilt University Medical Center (collectively, \"We,\" \"Us\" or \"Our\") at no cost and is intended for use as is. If you (\"You\",\"Your\") are using our application for an organization, you\’re agreeing to these Terms and Conditions on behalf of that organization. If you\’re using our application to provide services for someone else, you\’re agreeing to these Terms and conditions on their behalf. Your use of the application is also subject to the PRIVACY POLICY (\"Privacy Policy\") and any applicable open source or other third party terms referenced below (the \"Third Party Terms\").  If You do not agree to these Terms, the Privacy Policy and the Third Party Terms (collectively \"Agreement\"), You should not use the application thereof in any manner.
+
+  \n\nIF YOU ARE AN INDIVIDUAL REPRESENTING AN ENTITY, YOU ACKNOWLEDGE THAT YOU HAVE THE APPROPRIATE AUTHORITY TO ACCEPT THIS AGREEMENT ON BEHALF OF SUCH ENTITY.
+
+\n\nIF YOU OR THE ORGANIZATION YOU REPRESENT DON’T AGREE TO BE BOUND TO THIS TERMS AND CONDITIONS, PRIVACY POLICY AND THIRD PARTY TERMS, YOU SHOULD NOT USE THIS APPLICATION.
+
+\n\n1. Intellectual property
+\nThe application and its content, features and functionality are and will remain the exclusive property of Moi University and Vanderbilt University Medical Center. The application is protected by copyright, trademark, and other laws of and foreign countries. Our trademarks may not be used in connection with any product or service without our prior written consent. All such rights are reserved.
+
+\n\nYou should not use this application for commercial and profit making purposes without obtaining a written consent from us.
+
+\n\n2. Third Party Terms.
+\nYou acknowledge that the Platform may contain software or content elements that are available royalty-free or are otherwise available from the public domain or a third party, and are not owned or licensed by Us (\"Third Party Elements\"), and may be subject to Third Party Terms such as an end user license agreement or open source license. Except as may be provided in any applicable Third Party Terms, such Third Party Elements, if any, are included \"as is,\" without permission to use, reproduce, distribute or prepare derivative works from such Third Party Elements, and We make no representation or warranty that such acts will not infringe any rights of such owners or any third party.  To the extent of an inconsistency or conflict between this Agreement and any Third Party Terms, the Third Party Terms shall control for purposes of the applicable Third Party Element(s).
+
+\n\n3. Disclaimer; Limitation of Liability.
+\nThis application is distributed under the terms of the Mozilla Public License, v. 2.0 (MPL 2.0) (http://mozilla.org/MPL/2.0/). The following additional disclaimer of warranty and limitation of liability are hereby incorporated into the terms and conditions of MPL 2.0:
+\nNO WARRANTIES OF ANY KIND WHATSOEVER ARE MADE AS TO THE RESULTS THAT YOU WILL OBTAIN FROM RELYING UPON THE COVERED APPLICATION (OR ANY INFORMATION OR CONTENT OBTAINED BY WAY OF THE COVERED CODE), INCLUDING BUT NOT LIMITED TO COMPLIANCE WITH PRIVACY LAWS OR REGULATIONS OR CLINICAL CARE INDUSTRY STANDARDS AND PROTOCOLS. USE OF THE COVERED APPLICATION IS NOT A SUBSTITUTE FOR A HEALTH CARE PROVIDER’S STANDARD PRACTICE OR PROFESSIONAL JUDGMENT. ANY DECISION WITH REGARD TO THE APPROPRIATENESS OF TREATMENT, OR THE VALIDITY OR RELIABILITY OF INFORMATION OR CONTENT MADE AVAILABLE BY THE COVERED CODE, IS THE SOLE RESPONSIBILITY OF THE HEALTH CARE PROVIDER. CONSEQUENTLY, IT IS INCUMBENT UPON EACH HEALTH CARE PROVIDER TO VERIFY ALL MEDICAL HISTORY AND TREATMENT PLANS WITH EACH PATIENT.
+
+\n\nUNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY, WHETHER TORT (INCLUDING NEGLIGENCE), CONTRACT, OR OTHERWISE, SHALL ANY CONTRIBUTOR, OR ANYONE WHO DISTRIBUTES COVERED SOFTWARE AS PERMITTED BY THE LICENSE, BE LIABLE TO YOU FOR ANY INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL DAMAGES OF ANY CHARACTER INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF GOODWILL, WORK STOPPAGE, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER DAMAGES OR LOSSES, OF ANY NATURE WHATSOEVER (DIRECT OR OTHERWISE) ON ACCOUNT OF OR ASSOCIATED WITH THE USE OR INABILITY TO USE THE COVERED CONTENT (INCLUDING, WITHOUT LIMITATION, THE USE OF INFORMATION OR CONTENT MADE AVAILABLE BY THE COVERED CODE, ALL DOCUMENTATION ASSOCIATED THEREWITH, AND THE FAILURE OF THE COVERED CODE TO COMPLY WITH PRIVACY LAWS AND REGULATIONS OR CLINICAL CARE INDUSTRY STANDARDS AND PROTOCOLS), EVEN IF SUCH PARTY SHALL HAVE BEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+\n\n4. Revision of Terms.
+\nThese Terms constitute the entire agreement between You and Us with respect to the application (except as otherwise expressly provided herein) superseding all other prior agreements that might exist. We may revise the Terms at any time by posting the revised Terms through the application or otherwise notifying you. All revised Terms are automatically effective as soon as they are posted or provided. Your continued use of the application constitutes your agreement to be bound by the revised Terms.
+
+\n\n5. General Provisions.
+\nYou may not assign or transfer Your rights or obligations under these Terms without Our prior written consent. Any other assignment or transfer by You is void. You may not use Our name, logo, or trademark in any manner, including without limitation in any advertising, promotional material, press release, publication, public statement, or announcement, or through any form of other media, written or oral, without Our prior written consent. If any provision of this Agreement is held invalid or unenforceable, such provision shall, to that extent, be deemed omitted, and the balance of this Agreement will be enforceable in accordance with its own terms. These Terms are governed by the laws of the State of Tennessee, USA without regard to principles of conflicts of laws, and the state and federal courts sitting in Nashville, Tennessee, USA shall have proper and exclusive jurisdiction and venue over any disputes arising from or relating to these Terms or the Platform. The Uniform Computer Information Transactions Act, the United Nations Convention on the International Sale of Goods, or any implementation, replacement or similar legislation or standard, shall not apply.
+
+\n\n6. Severability
+\nIf a provision of these terms and conditions is determined by any court or other competent authority to be unlawful and/unenforceable, the other provisions will continue in effect
+
+\n\nIf any unlawful and/or unenforceable provision of these Terms and conditions would be lawful or enforceable by deleting part of it, that part will be deemed to be deleted, and the rest of the provision will continue in effect
+
+\n\n7. Governing Law.
+\nThese Terms are governed by the laws of the State of Tennessee, USA without regard to principles of conflicts of laws, and the state and federal courts sitting in Nashville, Tennessee, USA shall have proper and exclusive jurisdiction and venue over any disputes arising from or relating to this agreement.
+
+\n\n8. Contact Details
+\nIf you have any question or any concerns about the terms, please reach us on mUzimamobile@gmail.com
+</string>
 </resources>
