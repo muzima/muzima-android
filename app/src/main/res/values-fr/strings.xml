@@ -649,43 +649,42 @@
 
     <string name="title_qrcode">QR code</string>
     <string name="info_scan_qrcode">Scanner le code QR pour changer l\'URL du serveur</string>
-    <string name="privacy_policy">L\'application mUzima pour les fournisseurs de soins de santé est conçue comme une application d\'utilisateur final Open Source et est fournie gratuitement et est destinée à être utilisée telle quelle. Si vous utilisez notre application pour une organisation, vous acceptez cette politique de confidentialité au nom de cette organisation. Si vous utilisez notre application pour fournir des services, des logiciels et du contenu à d\'autres, vous acceptez cette politique de confidentialité en leur nom.
+    <string name="privacy_policy">
+     mUzima est une application mobile qui permet aux professionnels de la santé de collecter, gérer et utiliser les données de santé comme une extension du système de dossier médical OpenMRS. L\'application est conçue comme une application d\'utilisateur final open source, fournie gratuitement et destinée à être utilisée telle quelle. Si vous utilisez l\'application pour une organisation, vous acceptez cette politique de confidentialité au nom de cette organisation. Si vous utilisez l\'application pour fournir des services, des logiciels et du contenu à quelqu\'un d\'autre, vous acceptez cette politique de confidentialité en son nom.
+\nSI VOUS OU L\'ORGANISATION QUE VOUS REPRÉSENTEZ N\'ACCEPTEZ PAS D\'ÊTRE LIÉ À CETTE POLITIQUE DE CONFIDENTIALITÉ, VOUS NE DEVEZ PAS UTILISER L\'APPLICATION MOBILE.
 
-SI VOUS OU L\'ORGANISATION QUE VOUS REPRÉSENTEZ N\'ACCEPTEZ PAS D\'ÊTRE LIÉ À CETTE POLITIQUE DE CONFIDENTIALITÉ, VOUS NE DEVEZ PAS UTILISER NOS SERVICES.
+\n\nServices tiers
+\nL\'application utilise des services tiers susceptibles de collecter des informations permettant de vous identifier. Les fournisseurs de services tiers utilisés par l\'application sont:
+\nServices Google Play : L\'application mobile mUzima est conçue pour fonctionner sur le système d\'exploitation Android et est principalement distribuée via le Google Playstore. Pour cette raison, votre utilisation de l\'application mobile mUzima est liée par la politique de confidentialité de Google avec l\'utilisation des services Google sur la plate-forme Android, disponible ici : https://www.google.com/policies/privacy/
+\nFirebase Crashlytics et analyses: en cas d\'erreur dans l\'application, telle que le plantage de l\'application, nous collectons des données et des informations (via des produits tiers) sur votre téléphone, appelées données Crashlytics. Ces données Crashlytics peuvent inclure des informations telles que le nom de l\'appareil, la version du système d\'exploitation, la configuration de l\'application lors de l\'utilisation de notre application, ainsi que l\'heure et la date de votre utilisation de l\'application. D\'autres données qui pourraient être collectées en fonction de vos paramètres incluent les informations de localisation. L\'utilisation de l\'application mobile mUzima est donc soumise à la politique de confidentialité de Firebase disponible ici : https://firebase.google.com/support/privacy.
 
-Collecte et utilisation des informations
+\n\nBiscuits
+\nLes cookies sont des fichiers contenant une petite quantité de données qui sont couramment utilisés comme identifiants uniques anonymes. Ceux-ci sont envoyés à votre navigateur à partir des sites Web que vous visitez et sont stockés dans la mémoire interne de votre appareil.
 
-Pour une meilleure expérience, lors de l\'utilisation de notre application, nous pouvons vous demander de nous fournir certaines informations. Les informations que nous demandons seront conservées par nous et utilisées comme décrit dans cette politique de confidentialité.
+\n\nL\'application mUzima n\'utilise pas explicitement ces \"cookies\". Cependant, l\'application peut utiliser du code et des bibliothèques tiers qui utilisent des \"cookies\" pour collecter des informations et améliorer leurs services. Vous avez la possibilité d\'accepter ou de refuser ces cookies et de savoir quand un cookie est envoyé à votre appareil. Si vous choisissez de refuser les cookies, vous ne pourrez peut-être pas utiliser certaines parties de ce service.
 
-L\'application utilise des services tiers qui peuvent collecter des informations utilisées pour vous identifier. Liens vers la politique de confidentialité des fournisseurs de services tiers utilisés par l\'application :
+\n\nDonnées de localisation
+\nL\'application mobile mUzima est livrée avec des fonctionnalités optionnelles qui peuvent nécessiter l\'accès à l\'emplacement précis ou approximatif de l\'appareil. Les fonctionnalités sont :
+\nEnregistrement de l\'adresse du patient:
+\nLes adresses GPS des patients peuvent être stockées dans le cadre des informations stockées dans le système de dossier médical sécurisé OpenMRS. mUzima offre la possibilité de définir l\'adresse d\'un dossier patient, afin de mettre à jour le dossier dans le système de dossier médical OpenMRS.
+\nNavigation vers l\'adresse du patient :
+\nmUzima fournit la fonction Geomapping pour permettre à l\'utilisateur/fournisseur d\'obtenir des directions (via l\'application Google Maps sur l\'appareil Android) jusqu\'à la position GPS du patient, comme indiqué par le dossier médical.
 
-Services Google Play https://www.google.com/policies/privacy/
-Firebase Analytics https://firebase.google.com/policies/analytics
-Tissu https://fabric.io/privacy Crashlytics http://try.crashlytics.com/terms/privacy-policy.pdf
+\n\nLes informations de localisation GPS collectées via l\'application mobile sont uniquement destinées aux fonctionnalités localisées dans la mise en œuvre et ne seront en aucun cas partagées avec mUzima ou un tiers. L\'application peut utiliser les informations de localisation si vous lui accordez les autorisations nécessaires. Vous pouvez activer ou désactiver les services de localisation lorsque vous utilisez notre application à tout moment, via les paramètres de votre appareil. Votre administrateur d\'implémentation peut activer ou désactiver les fonctionnalités facultatives qui nécessitent des données de localisation via les paramètres de l\'application.
 
+\n\nUn lien vers une vidéo qui démontre les fonctionnalités GPS du mUzima peut être trouvé ici :
+\nhttps://drive.google.com/file/d/1CiiP6xodoQ55FMJZwBFdnYEhTbP1_jM4/view?usp=sharing.
 
-Données de journal
+\n\nSécurité
+\nNous apprécions votre confiance dans notre application. Mais rappelez-vous qu\'aucune méthode de transmission sur Internet ou méthode de stockage électronique n\'est sûre et fiable à 100 %, et nous ne pouvons garantir sa sécurité absolue.
 
-Nous souhaitons vous informer que chaque fois que vous utilisez notre application, en cas d\'erreur dans l\'application, nous collectons des données et des informations (via des produits tiers) sur votre téléphone appelées Log Data. Ces données de journal peuvent inclure des informations telles que le nom de l\'appareil, la version du système d\'exploitation, la configuration de l\'application lors de l\'utilisation de notre application, l\'heure et la date de votre utilisation de l\'application et d\'autres statistiques, telles que les informations de localisation, en fonction de vos paramètres.
+\n\nVeuillez noter que certaines informations personnelles et autres informations fournies par vous dans le cadre de votre utilisation de l\'application peuvent être stockées sur votre appareil (même si nous ne collectons pas ces informations). Vous êtes seul responsable du maintien de la sécurité de votre appareil contre les accès non autorisés.
 
-Biscuits
+\n\nModifications de cette politique de confidentialité
+\nNous pouvons mettre à jour notre politique de confidentialité de temps à autre. Ainsi, il vous est conseillé de consulter cette page périodiquement pour tout changement. Nous vous informerons de tout changement en publiant la nouvelle politique de confidentialité sur cette page. Ces modifications entrent en vigueur immédiatement après leur publication sur cette page.
 
-Les cookies sont des fichiers contenant une petite quantité de données qui sont couramment utilisés comme identifiants uniques anonymes. Ils sont envoyés à votre navigateur à partir des sites Web que vous visitez et sont stockés dans la mémoire interne de votre appareil. L\'application mUzima n\'utilise pas explicitement ces « cookies ». Cependant, l\'application peut utiliser du code et des bibliothèques tiers qui utilisent des « cookies » pour collecter des informations et améliorer leurs services. Vous avez la possibilité d\'accepter ou de refuser ces cookies et de savoir quand un cookie est envoyé à votre appareil. Si vous choisissez de refuser nos cookies, vous ne pourrez peut-être pas utiliser certaines parties de ce service.
-    Données de localisation
-
-Certaines fonctionnalités optionnelles fournies par mUzima pour les prestataires de santé peuvent nécessiter l\'utilisation de données de localisation. Ces données de localisation sont uniquement destinées aux fonctionnalités localisées dans la mise en œuvre et ne sont en aucun cas partagées avec nous ou un tiers. L\'application peut utiliser les informations de localisation si vous autorisez l\'application à le faire. Vous pouvez activer ou désactiver les services de localisation lorsque vous utilisez notre application à tout moment, via les paramètres de votre appareil.
-
-Sécurité
-
-Nous apprécions votre confiance dans notre application. Mais rappelez-vous qu\'aucune méthode de transmission sur Internet ou méthode de stockage électronique n\'est sûre et fiable à 100 %, et nous ne pouvons garantir sa sécurité absolue. Veuillez noter que certaines informations personnelles et autres informations fournies par vous dans le cadre de votre utilisation de l\'application peuvent être stockées sur votre appareil (même si nous ne collectons pas ces informations). Vous êtes seul responsable du maintien de la sécurité de votre appareil contre les accès non autorisés.
-
-Modifications de cette politique de confidentialité
-
-Nous pouvons mettre à jour notre politique de confidentialité de temps à autre. Ainsi, il vous est conseillé de consulter cette page périodiquement pour tout changement. Nous vous informerons de tout changement en publiant la nouvelle politique de confidentialité sur cette page. Ces modifications entrent en vigueur immédiatement après leur publication sur cette page.
-
-Nous contacter
-
-Si vous avez des questions ou des suggestions concernant notre politique de confidentialité, n\'hésitez pas à nous contacter via mUzima.mobile@gmail.com
+\n\nNous contacter
+\nSi vous avez des questions ou des suggestions concernant notre politique de confidentialité, n\'hésitez pas à nous contacter via mUzima.mobile@gmail.com
     </string>
     <string name="info_for_health_providers">pour les prestataires de santé</string>
     <string name="info_license_and_disclaimer">Licence et avis de non-responsabilité</string>
@@ -767,4 +766,42 @@ Si vous avez des questions ou des suggestions concernant notre politique de conf
     <string name="erro_coded_concepts_not_supported">Les concepts codés non valides ne sont pas pris en charge</string>
     <string name="delete_individual_obs">Supprimer des obs individuels</string>
  <string name="warning_individual_form_data_delete">Vous êtes sur le point de supprimer une observation individuelle. Es-tu sûr?</string>
+ <string name="info_terms_and_conditions_text">
+  L\'application mUzima pour les fournisseurs de soins de santé (l\'\"Application\") est conçue comme une application d\'utilisateur final Open Source et est fournie gratuitement par l\'Université Moi et le Centre médical de l\'Université Vanderbilt (collectivement, \"Nous\", \"Nous\" ou \"Notre" et est destiné à être utilisé tel quel. Si vous (\"Vous\", \"Votre\") utilisez notre application pour une organisation, vous acceptez les présentes Conditions générales au nom de cette organisation. Si vous utilisez notre application pour fournir des services à quelqu\'un d\'autre, vous acceptez ces conditions générales en son nom. Votre utilisation de l\'application est également soumise à la POLITIQUE DE CONFIDENTIALITÉ (\"Politique de confidentialité\") et à tout open source applicable ou à d\'autres conditions tierces référencées ci-dessous (les \"Conditions tierces\"). Si vous n\'acceptez pas ces conditions, la politique de confidentialité et les conditions de tiers (collectivement \"l\'accord\"), vous ne devez en aucun cas utiliser leur application.
+
+  \n\nSI VOUS ÊTES UN PARTICULIER REPRÉSENTANT UNE ENTITÉ, VOUS RECONNAISSEZ AVOIR L\'AUTORITÉ APPROPRIÉE POUR ACCEPTER CET ACCORD AU NOM DE CETTE ENTITÉ.
+
+\n\nSI VOUS OU L\'ORGANISATION QUE VOUS REPRÉSENTEZ N\'ACCEPTEZ PAS D\'ÊTRE LIÉ PAR LES PRÉSENTES CONDITIONS GÉNÉRALES, LA POLITIQUE DE CONFIDENTIALITÉ ET LES CONDITIONS DE TIERS, VOUS NE DEVEZ PAS UTILISER CETTE APPLICATION.
+
+\n\n1. Propriété intellectuelle
+\nL\'application et son contenu, ses caractéristiques et ses fonctionnalités sont et resteront la propriété exclusive de l\'Université Moi et du Centre médical de l\'Université Vanderbilt. L\'application est protégée par le droit d\'auteur, la marque de commerce et d\'autres lois de pays étrangers. Nos marques de commerce ne peuvent être utilisées en relation avec un produit ou un service sans notre consentement écrit préalable. Tous droits réservés.
+
+\n\nVous ne devez pas utiliser cette application à des fins commerciales et lucratives sans obtenir notre consentement écrit.
+
+ \n\n2. Conditions de tiers.
+\nVous reconnaissez que la plate-forme peut contenir des logiciels ou des éléments de contenu qui sont disponibles sans redevance ou sont autrement disponibles dans le domaine public ou un tiers, et ne sont pas détenus ou sous licence par nous (\"éléments tiers\"), et peuvent faire l\'objet aux conditions de tiers telles qu\'un contrat de licence d\'utilisateur final ou une licence open source. Sauf indication contraire dans les Conditions tierces applicables, ces Éléments tiers, le cas échéant, sont inclus \"tels quels\", sans autorisation d\'utiliser, de reproduire, de distribuer ou de préparer des œuvres dérivées de ces Éléments tiers, et Nous ne faisons aucune déclaration ou la garantie que de tels actes n\'enfreindront aucun droit de ces propriétaires ou de tout tiers. En cas d\'incohérence ou de conflit entre le présent Contrat et les Conditions tierces, les Conditions tierces prévaudront aux fins du ou des Éléments tiers applicables.
+
+\n\n3. Avis de non-responsabilité; Limitation de responsabilité.
+\nCette application est distribuée sous les termes de la licence publique Mozilla, v. 2.0 (MPL 2.0) (http://mozilla.org/MPL/2.0/). L\'exclusion de garantie supplémentaire et la limitation de responsabilité suivantes sont par la présente incorporées dans les termes et conditions de MPL 2.0:
+\nAUCUNE GARANTIE D\'AUCUNE SORTE N\'EST DONNÉE QUANT AUX RÉSULTATS QUE VOUS OBTENIREZ EN VOUS CONFIANT À L\'APPLICATION COUVERT (OU À TOUTE INFORMATION OU CONTENU OBTENU AU MOYEN DU CODE COUVERT), Y COMPRIS, MAIS SANS S\'Y LIMITER, LE RESPECT DES LOIS OU DES RÈGLEMENTS SUR LA CONFIDENTIALITÉ OU NORMES ET PROTOCOLES DE L\'INDUSTRIE DES SOINS. L\'UTILISATION DE L\'APPLICATION COUVERT NE REMPLACE PAS LA PRATIQUE STANDARD OU LE JUGEMENT PROFESSIONNEL D\'UN PRESTATAIRE DE SOINS DE SANTÉ. TOUTE DÉCISION CONCERNANT L\'ADÉQUATION DU TRAITEMENT OU LA VALIDITÉ OU LA FIABILITÉ DES INFORMATIONS OU DU CONTENU MIS À DISPOSITION PAR LE CODE COUVERT EST LA SEULE RESPONSABILITÉ DU FOURNISSEUR DE SOINS DE SANTÉ. PAR CONSÉQUENT, IL INCOMBE À CHAQUE FOURNISSEUR DE SOINS DE SANTÉ DE VÉRIFIER TOUS LES ANTÉCÉDENTS MÉDICAUX ET LES PLANS DE TRAITEMENT AVEC CHAQUE PATIENT.
+
+\n\nEN AUCUNE CIRCONSTANCE ET SOUS AUCUNE THÉORIE JURIDIQUE, QU\'IL SOIT DÉLIT (Y COMPRIS LA NÉGLIGENCE), CONTRAT OU AUTRE, UN CONTRIBUTEUR OU TOUTE PERSONNE QUI DISTRIBUE LE LOGICIEL COUVERT COMME PERMIS PAR LA LICENCE, NE SERA RESPONSABLE ENVERS VOUS DE TOUTE CONSÉQUENCE INDIRECTE, SPÉCIALE, ACCESSOIRE, DOMMAGES DE TOUT CARACTÈRE, Y COMPRIS, SANS LIMITATION, LES DOMMAGES POUR PERTE DE BONNE VOLONTÉ, ARRÊT DE TRAVAIL, PANNE OU DYSFONCTIONNEMENT D\'ORDINATEUR, OU TOUS AUTRES DOMMAGES OU PERTES, DE QUELQUE NATURE QUE CE SOIT (DIRECT OU AUTRE) EN RAISON DE OU ASSOCIÉ À L\'UTILISATION OU INCAPACITÉ À UTILISER LE CONTENU COUVERT (Y COMPRIS, SANS LIMITATION, L\'UTILISATION D\'INFORMATIONS OU DE CONTENU MIS À DISPOSITION PAR LE CODE COUVERT, TOUTE LA DOCUMENTATION ASSOCIÉE À CELUI-CI, ET LE DÉFAUT DU CODE COUVERT À SE CONFORMER AUX LOIS ET RÈGLEMENTS SUR LA CONFIDENTIALITÉ OU AUX RÈGLES DE L\'INDUSTRIE DES SOINS CLINIQUES PROTOCOLES), MÊME SI CETTE PARTIE A ÉTÉ INFORMÉE DE LA POSSIBILITÉ DE TELS DOMMAGES.
+
+\n\n4. Révision des conditions.
+\nCes conditions constituent l\'intégralité de l\'accord entre vous et nous en ce qui concerne l\'application (sauf disposition contraire expresse des présentes) et remplacent tous les autres accords antérieurs qui pourraient exister. Nous pouvons réviser les Conditions à tout moment en publiant les Conditions révisées via l\'application ou en vous en informant autrement. Toutes les conditions révisées entrent automatiquement en vigueur dès qu\'elles sont publiées ou fournies. Votre utilisation continue de l\'application constitue votre accord à être lié par les Conditions révisées.
+
+\n\n5. Dispositions générales.
+\nVous ne pouvez pas céder ou transférer Vos droits ou obligations en vertu des présentes Conditions sans Notre consentement écrit préalable. Toute autre cession ou transfert de votre part est nul. Vous ne pouvez pas utiliser Notre nom, logo ou marque de quelque manière que ce soit, y compris, sans limitation, dans toute publicité, matériel promotionnel, communiqué de presse, publication, déclaration publique ou annonce, ou par tout autre moyen, écrit ou oral, sans Notre consentement écrit préalable. Si une disposition du présent Accord est jugée invalide ou inapplicable, cette disposition sera, dans cette mesure, réputée omise, et le reste du présent Accord sera exécutoire conformément à ses propres conditions. Les présentes Conditions sont régies par les lois de l\'État du Tennessee, États-Unis, sans égard aux principes de conflits de lois, et les tribunaux d\'État et fédéraux siégeant à Nashville, Tennessee, États-Unis auront la compétence et le lieu appropriés et exclusifs pour tout litige découlant de ou relatives aux présentes Conditions ou à la Plateforme. L\'Uniform Computer Information Transactions Act, la Convention des Nations Unies sur la vente internationale de marchandises, ou toute mise en œuvre, remplacement ou législation ou norme similaire, ne s\'appliquera pas.
+
+\n\n6. Divisibilité
+\nSi une disposition de ces termes et conditions est jugée illégale et/inapplicable par un tribunal ou une autre autorité compétente, les autres dispositions resteront en vigueur.
+
+\n\nSi une disposition illégale et/ou inapplicable de ces conditions générales était légale ou exécutoire en supprimant une partie de celle-ci, cette partie sera réputée être supprimée et le reste de la disposition restera en vigueur.
+
+\n\n7. Droit applicable.
+\nLes présentes Conditions sont régies par les lois de l\'État du Tennessee, États-Unis, sans égard aux principes de conflits de lois, et les tribunaux d\'État et fédéraux siégeant à Nashville, Tennessee, États-Unis auront la compétence et le lieu appropriés et exclusifs pour tout litige découlant de ou relatives à cet accord.
+
+\n\n8. Coordonnées
+\nSi vous avez des questions ou des préoccupations concernant les conditions, veuillez nous contacter sur mUzima.mobile@gmail.com
+ </string>
 </resources>

@@ -643,43 +643,42 @@
 
     <string name="title_qrcode">Nambari ya QR</string>
     <string name="info_scan_qrcode">Changanua nambari ya qr ili kubadilisha url ya seva</string>
-    <string name="privacy_policy">Programu ya mUzima kwa Watoa Huduma ya Afya imejengwa kama programu ya Watumiaji wa Mwisho wa Chanzo wazi na hutolewa bila malipo na imekusudiwa kutumiwa kama ilivyo. Ikiwa unatumia maombi yetu kwa shirika, unakubali Sera hii ya Faragha kwa niaba ya shirika hilo. Ikiwa unatumia programu yetu kutoa huduma, programu, na yaliyomo kwa mtu mwingine, unakubali Sera hii ya Faragha kwa niaba yao.
+    <string name="privacy_policy">
+        mUzima ni programu ya simu inayowawezesha wataalamu wa afya kukusanya, kudhibiti na kutumia data ya huduma ya afya kama kiendelezi cha mfumo wa rekodi ya matibabu ya OpenMRS. Programu imeundwa kama programu huria ya mtumiaji wa mwisho, ambayo hutolewa bila gharama, na imekusudiwa kutumika kama ilivyo. Ikiwa unatumia ombi la shirika, unakubali Sera hii ya Faragha kwa niaba ya shirika hilo. Ikiwa unatumia programu kutoa huduma, programu na maudhui kwa ajili ya mtu mwingine, unakubali Sera hii ya Faragha kwa niaba yake.
+\nIWAPO WEWE AU SHIRIKA UNALOWAKILISHA HATUKUBALI KUFUNGWA NA SERA HII YA FARAGHA, HUTUMIA MAOMBI YA SIMU.
 
-IKIWA WEWE AU SHIRIKA UNALOWAKILISHA HUKUBALI KUFUNGWA KWA Sera hii ya Faragha, HUPASWI KUTUMIA HUDUMA ZETU.
+\n\nHuduma za mtu wa tatu
+\nProgramu hutumia huduma za watu wengine ambazo zinaweza kukusanya taarifa zinazotumiwa kukutambua. Watoa huduma wengine wanaotumiwa na programu ni:
+\nHuduma za Google Play: Programu ya simu ya mUzima imeundwa kuendeshwa kwenye Mfumo wa Uendeshaji wa Android na kimsingi inasambazwa kupitia Google playstore. Kwa sababu hii, utumiaji wako wa programu ya simu ya mUzima unafungwa na sera ya faragha ya Google na matumizi ya huduma za Google kwenye jukwaa la Android, ambalo linapatikana hapa: https://www.google.com/policies/privacy/
+\nFirebase Crashlytics na uchanganuzi: Kukitokea hitilafu katika programu, kama vile programu kuacha kufanya kazi, tunakusanya data na maelezo (kupitia bidhaa za watu wengine) kwenye simu yako inayoitwa data ya Crashlytics. Data hii ya Crashlytics inaweza kujumuisha maelezo kama vile jina la kifaa, toleo la mfumo wa uendeshaji, usanidi wa programu unapotumia programu yetu, pamoja na saa na tarehe ya matumizi yako ya programu. Data nyingine ambayo inaweza kukusanywa kulingana na mipangilio yako ni pamoja na maelezo ya eneo. Kwa hivyo matumizi ya programu ya simu ya mUzima yanaambatana na sera ya faragha ya Firebase inayopatikana hapa: https://firebase.google.com/support/privacy.
 
-Ukusanyaji wa Habari na Matumizi
+\n\nVidakuzi
+\nVidakuzi ni faili zilizo na kiasi kidogo cha data ambazo hutumiwa kama vitambulishi vya kipekee visivyojulikana. Hizi hutumwa kwa kivinjari chako kutoka kwa tovuti unazotembelea na kuhifadhiwa kwenye kumbukumbu ya ndani ya kifaa chako.
 
-Kwa uzoefu bora, wakati wa kutumia programu yetu, tunaweza kukuhitaji utupe habari fulani. Habari ambayo tunaomba itahifadhiwa na sisi na itatumiwa kama ilivyoelezewa katika sera hii ya faragha.
+\n\nprogramu ya mUzima haitumii \"vidakuzi\" hivi kwa uwazi. Hata hivyo, programu inaweza kutumia msimbo wa watu wengine na maktaba zinazotumia \"vidakuzi\" kukusanya maelezo na kuboresha huduma zao. Una chaguo la kukubali au kukataa vidakuzi hivi na kujua wakati kidakuzi kinatumwa kwenye kifaa chako. Ukichagua kukataa vidakuzi, huenda usiweze kutumia baadhi ya sehemu za Huduma hii.
 
-Programu hutumia huduma za mtu wa tatu ambazo zinaweza kukusanya habari inayotumika kukutambulisha. Viunga vya sera ya faragha ya watoa huduma wa tatu inayotumiwa na programu:
+\n\nData ya Mahali
+\nProgramu ya simu ya mUzima inakuja na vipengele vya hiari ambavyo vinaweza kuhitaji ufikiaji wa eneo sahihi au la kukadiria la kifaa. Vipengele ni:
+\nKurekodi anwani ya mgonjwa:
+\nAnwani za GPS za wagonjwa zinaweza kuhifadhiwa kama sehemu ya taarifa iliyohifadhiwa katika mfumo salama wa rekodi za matibabu wa OpenMRS. mUzima hutoa uwezo wa kuweka anwani ya rekodi ya mgonjwa, ili kusasisha rekodi katika mfumo wa rekodi ya matibabu ya OpenMRS.
+\nKuelekeza kwenye anwani ya mgonjwa:
+\nmUzima hutoa kipengele cha Geomapping ili kumwezesha mtumiaji/mtoa huduma kupata maelekezo (kupitia programu ya ramani za Google kwenye kifaa cha Android) hadi eneo la GPS la mgonjwa kama inavyoonyeshwa na rekodi ya matibabu.
 
-Huduma za Google Play https://www.google.com/policies/privacy/
-Takwimu za Firebase https://firebase.google.com/policies/analytics
-Kitambaa https://fabric.io/privacy Crashlytics http://try.crashlytics.com/terms/privacy-policy.pdf
+\n\nTaarifa ya eneo la GPS iliyokusanywa kupitia programu ya simu ni ya vipengele vilivyojanibishwa ndani ya utekelezaji na haitashirikiwa kwa njia yoyote na mUzima au mtu mwingine yeyote. Programu inaweza kutumia maelezo ya eneo ikiwa utaipatia ruhusa kufanya hivyo. Unaweza kuwezesha au kuzima huduma za eneo unapotumia programu yetu wakati wowote, kupitia mipangilio ya kifaa chako. Msimamizi wako wa utekelezaji anaweza kuwezesha au kuzima vipengele vya hiari vinavyohitaji data ya eneo kupitia mipangilio ya programu.
 
+\n\nKiungo cha video kinachoonyesha vipengele vya GPS vya mUzima kinaweza kupatikana hapa:
+\nhttps://drive.google.com/file/d/1CiiP6xodoQ55FMJZwBFdnYEhTbP1_jM4/view?usp=sharing.
 
-Takwimu za Ingia
+\n\nUsalama
+\nTunathamini imani yako katika maombi yetu. Lakini kumbuka kuwa hakuna njia ya uwasilishaji kupitia mtandao, au njia ya uhifadhi wa kielektroniki ambayo ni salama na ya kuaminika kwa 100%, na hatuwezi kuhakikisha usalama wake kamili.
 
-Tunataka kukujulisha kuwa wakati wowote unapotumia programu yetu, ikiwa kuna kosa katika programu, tunakusanya data na habari (kupitia bidhaa za mtu wa tatu) kwenye simu yako inayoitwa Log Data. Takwimu hizi za Kumbukumbu zinaweza kujumuisha habari kama jina la kifaa, toleo la mfumo wa uendeshaji, usanidi wa programu wakati wa kutumia programu yetu, wakati na tarehe ya matumizi yako ya programu, na takwimu zingine, kama habari ya eneo, kulingana na mipangilio yako.
+\n\nTafadhali fahamu kwamba Taarifa fulani za Kibinafsi na taarifa nyingine ulizotoa kuhusiana na matumizi yako ya programu zinaweza kuhifadhiwa kwenye kifaa chako (hata kama hatukusanyi taarifa hizo). Una jukumu la kudumisha usalama wa kifaa chako dhidi ya ufikiaji usioidhinishwa.
 
-Vidakuzi
+\n\nMabadiliko ya Sera hii ya Faragha
+\nTunaweza kusasisha Sera yetu ya Faragha mara kwa mara. Kwa hivyo, unashauriwa kukagua ukurasa huu mara kwa mara kwa mabadiliko yoyote. Tutakuarifu kuhusu mabadiliko yoyote kwa kuchapisha Sera mpya ya Faragha kwenye ukurasa huu. Mabadiliko haya yanafaa mara tu baada ya kuchapishwa kwenye ukurasa huu.
 
-Vidakuzi ni faili zilizo na idadi ndogo ya data ambazo hutumiwa kama vitambulisho vya kipekee visivyojulikana Hizi zinatumwa kwa kivinjari chako kutoka kwa wavuti ambazo unatembelea na zinahifadhiwa kwenye kumbukumbu ya ndani ya kifaa chako. Programu ya mUzima haitumii "kuki" hizi waziwazi. Walakini, programu inaweza kutumia msimbo wa mtu wa tatu na maktaba ambayo hutumia "kuki" kukusanya habari na kuboresha huduma zao. Una chaguo la kukubali au kukataa kuki hizi na ujue kuki inapotumwa kwenye kifaa chako. Ikiwa unachagua kukataa kuki zetu, huenda usiweze kutumia sehemu kadhaa za Huduma hii.
-    Takwimu za Mahali
-
-Vipengele vingine vya hiari vilivyotolewa na mUzima kwa Watoa Huduma za Afya vinaweza kuhitaji utumiaji wa data ya eneo. Takwimu hii ya Mahali ni kwa ajili ya huduma zilizowekwa ndani katika utekelezaji na kwa njia yoyote haitashirikiwa nasi au mtu mwingine yeyote. Programu inaweza kutumia maelezo ya eneo ikiwa utapeana ruhusa za programu kufanya hivyo. Unaweza kuwezesha au kulemaza huduma za eneo wakati unatumia programu yetu wakati wowote, kupitia mipangilio ya kifaa chako.
-
-Usalama
-
-Tunathamini uaminifu wako katika maombi yetu. Lakini kumbuka kuwa hakuna njia ya usafirishaji kwenye wavuti, au njia ya uhifadhi wa elektroniki iko salama na ya kuaminika kwa 100%, na hatuwezi kuhakikisha usalama wake kabisa. Tafadhali fahamu kuwa habari zingine za kibinafsi na habari zingine zilizotolewa na wewe kuhusiana na matumizi yako ya programu zinaweza kuhifadhiwa kwenye kifaa chako (hata ikiwa hatukusanyi habari hiyo). Unawajibika peke yako kudumisha usalama wa kifaa chako kutoka kwa ufikiaji usioruhusiwa.
-
-Mabadiliko ya Sera hii ya Faragha
-
-Tunaweza kusasisha Sera yetu ya Faragha mara kwa mara. Kwa hivyo, unashauriwa kukagua ukurasa huu mara kwa mara kwa mabadiliko yoyote. Tutakujulisha mabadiliko yoyote kwa kuchapisha Sera mpya ya Faragha kwenye ukurasa huu. Mabadiliko haya yanafaa mara tu baada ya kuchapishwa kwenye ukurasa huu.
-
-Wasiliana nasi
-
-Ikiwa una maswali yoyote au maoni juu ya Sera yetu ya Faragha, usisite kuwasiliana nasi kupitia mUzima.mobile@gmail.com
+\n\nWasiliana nasi
+\nIkiwa una maswali au mapendekezo kuhusu Sera yetu ya Faragha, usisite kuwasiliana nasi kupitia mUzima.mobile@gmail.com
     </string>
     <string name="info_for_health_providers">kwa watoa huduma wa afya</string>
     <string name="info_license_and_disclaimer">Leseni na Kanusho</string>
@@ -761,4 +760,42 @@ Ikiwa una maswali yoyote au maoni juu ya Sera yetu ya Faragha, usisite kuwasilia
     <string name="erro_coded_concepts_not_supported">Dhana batili za misimbo haziungi mkono</string>
     <string name="delete_individual_obs">Kufuta uchunguzi wa kibinafsi</string>
     <string name="warning_individual_form_data_delete">Uko karibu kufuta uchunguzi wa kibinafsi. Una uhakika?</string>
+    <string name="info_terms_and_conditions_text">
+        programu ya mUzima kwa Watoa Huduma za Afya (\"Maombi\") imeundwa kama programu ya mtumiaji wa Open Source na inatolewa na Chuo Kikuu cha Moi na Kituo cha Matibabu cha Chuo Kikuu cha Vanderbilt (kwa pamoja, \"Sisi,\" \"Sisi\" au \"Yetu\") bila malipo. na imekusudiwa kutumika kama ilivyo. Ikiwa (\"Wewe\", \"Wako\") unatumia maombi yetu kwa shirika, unakubali Sheria na Masharti haya kwa niaba ya shirika hilo. Ikiwa unatumia maombi yetu kutoa huduma kwa mtu mwingine, unakubali Sheria na Masharti haya kwa niaba yao. Matumizi yako ya ombi pia yanategemea SERA YA FARAGHA (\"Sera ya Faragha\") na chanzo chochote cha wazi kinachotumika au masharti mengine yanayorejelewa hapa chini (\"Sheria na Masharti ya Watu Wengine\"). Iwapo hukubaliani na Masharti haya, Sera ya Faragha na Masharti ya Watu Wengine (kwa pamoja \"Mkataba\"), Hupaswi kutumia maombi yake kwa namna yoyote.
+
+\n\nIKIWA WEWE NI MTU UNAYEWAKILISHA HURU, UNAKUBALI KUWA UNA MAMLAKA INAYOFAA YA KUKUBALI MAKUBALIANO HAYA KWA NIABA YA HUSIKA HILO.
+
+\n\nIWAPO WEWE AU SHIRIKA UNALOWAKILISHA HAMKUBALI KUFUNGWA NA SHERIA NA MASHARTI HAYA, SERA YA FARAGHA NA MASHARTI YA MTU WA TATU, HUTUMIA OMBI HILI.
+
+\n\n1. Miliki
+\nProgramu na maudhui yake, vipengele na utendakazi ni na itasalia kuwa mali ya kipekee ya Chuo Kikuu cha Moi na Kituo cha Matibabu cha Chuo Kikuu cha Vanderbilt. Maombi yanalindwa na hakimiliki, alama ya biashara, na sheria zingine za na nchi za nje. Alama zetu za biashara haziwezi kutumika kuhusiana na bidhaa au huduma yoyote bila kibali chetu cha maandishi. Haki zote kama hizo zimehifadhiwa.
+
+\n\nHupaswi kutumia programu hii kwa madhumuni ya kibiashara na kupata faida bila kupata kibali cha maandishi kutoka kwetu.
+
+\n\n2. Masharti ya Mtu wa Tatu.
+\nUnakubali kwamba Jukwaa linaweza kuwa na programu au vipengele vya maudhui ambavyo vinapatikana bila malipo ya mrabaha au vinapatikana kwa njia nyingine kutoka kwa umma au mtu mwingine, na havimilikiwi au kupewa leseni na Sisi (\"Vipengele vya Watu Wengine\"), na vinaweza kuhusika. kwa Masharti ya Wahusika Wengine kama vile makubaliano ya leseni ya mtumiaji wa mwisho au leseni ya chanzo huria. Isipokuwa kama inavyoweza kutolewa katika Sheria na Masharti yoyote yanayotumika ya Mtu wa Tatu, Vipengee vya Mtu wa Tatu, kama vipo, vimejumuishwa \"kama vilivyo,\" bila ruhusa ya kutumia, kuzalisha, kusambaza au kuandaa kazi zinazotokana na Vipengele hivyo vya Watu Wengine, na Hatuwakilishi. au udhamini kwamba vitendo kama hivyo havitakiuka haki zozote za wamiliki hao au wahusika wengine. Kwa kiwango cha kutofautiana au mgongano kati ya Makubaliano haya na Sheria na Masharti ya Watu Wengine, Sheria na Masharti ya Watu Wengine yatadhibiti kwa madhumuni ya Kipengele cha Watu Wengine.
+
+\n\n3. Kanusho; Ukomo wa Dhima.
+\nMaombi haya yanasambazwa chini ya masharti ya Leseni ya Umma ya Mozilla, v. 2.0 (MPL 2.0) (http://mozilla.org/MPL/2.0/). Kanusho la ziada lifuatalo la udhamini na kizuizi cha dhima zinajumuishwa katika sheria na masharti ya MPL 2.0:
+\nHAKUNA DHAMANA YA AINA YOYOTE YOYOTE INAYOFANYIKA KUHUSU MATOKEO UTAKAYOPATA KWA KUTEGEMEA MAOMBI YANAYOHUSISHWA (AU TAARIFA YOYOTE AU MAUDHUI YANAYOPATIKANA KWA NJIA YA MSIMBO ULIOHUSISHWA), PAMOJA NA LAKINI HAINA KIKOMO CHA UTII WA UTII. VIWANGO NA PROTOKALI ZA KIWANDA CHA HUDUMA. MATUMIZI YA MAOMBI YANAYOHIMIDIWA SI MBADALA YA MAZOEZI YA KAWAIDA YA MTOA HUDUMA YA AFYA AU HUKUMU YA KITAALAM. UAMUZI WOWOTE KUHUSIANA NA USAHIHI WA TIBA, AU UHAKIKA AU UHAKIKA WA HABARI AU MAUDHUI UNAYOFANYIKA KUPATIKANA NA MSIMBO ULIOHUSIWA, NDIO WAJIBU PEKEE WA MTOA HUDUMA YA AFYA. KWA HIYO, NI WAJIBU KWA KILA MTOA HUDUMA YA AFYA KUTHIBITISHA HISTORIA YOTE YA MATIBABU NA MIPANGO YA MATIBABU PAMOJA NA KILA MGONJWA.
+
+\n\nCHINI YA HALI HAKUNA NA CHINI YA NADHARIA YOYOTE KISHERIA, IWE TORRT (pamoja na UZEMBE), MKATABA, AU VINGINEVYO, ATATAKIWA MCHANGIAJI YEYOTE, AU MTU YEYOTE ANAYESAMBAZA PROGRAMU ILIYOHIRIWA KADRI INAYORUHUSIWA NA LESENI, ATAWAJIBIKA KWAKO, KWA AJILI YOYOTE, KWA AJILI YAKO. HASARA ZA TABIA YOYOTE IKIWEMO, BILA KIKOMO, HASARA KWA UPOTEVU WA NIA NZURI, KUKOMESHA KAZI, KUSHINDWA KWA KOMPYUTA AU UBOVU, AU WOWOTE NA HASARA ZOZOTE ZOTE, ZA ASILI YOYOTE YOYOTE ( MOJA KWA MOJA) AU NYINGINEZO. KUTOWEZA KUTUMIA YALIYOHUSIKA (PAMOJA, BILA KIKOMO, MATUMIZI YA HABARI AU MAUDHUI YANAYOPATIKANA KWA MSIMBO ULIOPITA, HATI ZOTE ZINAZOHUSISHWA HAPO, NA KUSHINDWA KWA KANUNI HIYO HUSIKA KUZINGATIA UTEKELEZAJI NA USIMAMIZI NA USIMAMIZI. PROTOCOLS), HATA KAMA CHAMA HICHO KITAELEZWA KUHUSU UWEZEKANO WA UHARIBIFU HUO.
+
+\n\n4. Marekebisho ya Masharti.
+\nMasharti haya yanajumuisha makubaliano yote kati yako na Sisi kuhusiana na ombi (isipokuwa kama ilivyoelezwa vinginevyo hapa) kuchukua nafasi ya makubaliano mengine yote ya awali ambayo yanaweza kuwepo. Tunaweza kurekebisha Sheria na Masharti wakati wowote kwa kuchapisha Sheria na Masharti yaliyorekebishwa kupitia programu au kukujulisha vinginevyo. Masharti yote yaliyorekebishwa yataanza kutumika kiotomatiki pindi tu yanapochapishwa au kutolewa. Kuendelea kutumia ombi kunajumuisha makubaliano yako ya kuambatana na Masharti yaliyorekebishwa.
+
+\n\n5. Masharti ya Jumla.
+\nHuwezi kukabidhi au kuhamisha haki au wajibu Wako chini ya Masharti haya bila ridhaa Yetu ya maandishi ya awali. Kazi nyingine yoyote au kuhamisha na Wewe ni batili. Huruhusiwi kutumia jina, nembo, au chapa ya biashara kwa namna yoyote ile, ikijumuisha bila kikomo katika utangazaji wowote, nyenzo za utangazaji, taarifa kwa vyombo vya habari, uchapishaji, taarifa ya umma, au tangazo, au kupitia aina yoyote ya vyombo vya habari, kwa maandishi au kwa mdomo, bila Yetu. idhini iliyoandikwa kabla. Ikiwa kifungu chochote cha Makubaliano haya kinashikiliwa kuwa batili au hakitekelezeki, kifungu kama hicho, kwa kiwango hicho, kitachukuliwa kuwa kimeachwa, na salio la Makubaliano haya litatekelezwa kwa mujibu wa masharti yake yenyewe. Masharti haya yanasimamiwa na sheria za Jimbo la Tennessee, Marekani bila kuzingatia kanuni za migongano ya sheria, na mahakama za serikali na shirikisho zinazoketi Nashville, Tennessee, Marekani zitakuwa na mamlaka na mahali panapofaa kuhusu migogoro yoyote inayotokana na au. yanayohusiana na Masharti haya au Jukwaa. Sheria ya Miamala ya Taarifa za Kompyuta Sawa, Mkataba wa Umoja wa Mataifa wa Uuzaji wa Kimataifa wa Bidhaa, au utekelezaji wowote, uingizwaji au sheria au viwango sawa na hivyo, havitatumika.
+
+\n\n6. Severability
+\nIwapo kipengele cha sheria na masharti haya kitaamuliwa na mahakama yoyote au mamlaka nyingine husika kuwa ni kinyume cha sheria na/kutotekelezeka, masharti mengine yataendelea kutekelezwa.
+
+\n\nIkiwa kifungu chochote kisicho halali na/au kisichoweza kutekelezeka cha Sheria na Masharti haya kitakuwa halali au kutekelezeka kwa kufuta sehemu yake, sehemu hiyo itachukuliwa kuwa imefutwa, na kifungu kingine kitaendelea kutumika.
+
+\n\n7. Sheria ya Utawala.
+\nMasharti haya yanasimamiwa na sheria za Jimbo la Tennessee, Marekani bila kuzingatia kanuni za migongano ya sheria, na mahakama za serikali na shirikisho zinazoketi Nashville, Tennessee, Marekani zitakuwa na mamlaka na mahali panapofaa kuhusu migogoro yoyote inayotokana na au. kuhusiana na mkataba huu.
+
+\n\n8. Maelezo ya Mawasiliano
+\nIkiwa una swali au wasiwasi wowote kuhusu sheria na masharti, tafadhali wasiliana nasi kwa mUzima.mobile@gmail.com
+    </string>
 </resources>
