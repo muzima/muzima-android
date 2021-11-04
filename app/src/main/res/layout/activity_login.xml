@@ -12,6 +12,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/LoginActivityLayout"
+    android:id="@+id/login_scroll_view"
     android:scrollbarSize="0dp">
 
     <LinearLayout
@@ -147,7 +148,8 @@
             android:onClick="onUpdatePasswordCheckboxClicked"
             android:text="@string/hint_password_change" />
 
-        <FrameLayout style="@style/LoginButtonLayout">
+        <FrameLayout style="@style/LoginButtonLayout"
+            android:id="@+id/login_frame_layout">
 
             <Button
                 android:id="@+id/login"

@@ -20,6 +20,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -29,6 +30,8 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,6 +81,8 @@ public class LoginActivity extends BaseActivity {
     private BackgroundAuthenticationTask backgroundAuthenticationTask;
     private Button authenticatingText;
     private TextView helpText;
+    private ScrollView loginScrollView;
+    private FrameLayout loginFrameLayout;
     private static final int RC_BARCODE_CAPTURE = 9001;
 
     private ValueAnimator flipFromLoginToAuthAnimator;
@@ -241,6 +246,14 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
+        usernameText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                focusOnLoginView();
+                return false;
+            }
+        });
+
         serverUrlText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -260,6 +273,17 @@ public class LoginActivity extends BaseActivity {
         });
 
     }
+
+
+    private void focusOnLoginView(){
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                loginScrollView.smoothScrollTo(0, loginFrameLayout.getTop());
+            }
+        });
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -295,6 +319,8 @@ public class LoginActivity extends BaseActivity {
         authenticatingText = findViewById(R.id.authenticatingText);
         versionText = findViewById(R.id.version);
         helpText = findViewById(R.id.helpText);
+        loginScrollView = findViewById(R.id.login_scroll_view);
+        loginFrameLayout = findViewById(R.id.login_frame_layout);
     }
 
     public void onUpdatePasswordCheckboxClicked(View view) {
