@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_SETTINGS;
+import static com.muzima.util.Constants.ServerSettings.BARCODE_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.CLINICAL_SUMMARY_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GEOMAPPING_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
@@ -344,6 +345,19 @@ public class MuzimaSettingController {
                 Log.e(getClass().getSimpleName(), "muzima notification Feature setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "muzima notification Feature setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isBarcodeEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(BARCODE_FEATURE_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "muzima Barcode setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "muzima Barcode setting is missing on this server");
         }
         return false;
     }

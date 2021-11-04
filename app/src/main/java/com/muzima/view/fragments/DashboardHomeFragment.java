@@ -24,6 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.CohortFilter;
 import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CloseBottomSheetEvent;
@@ -97,6 +99,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     private boolean bottomSheetFilterVisible;
     private PatientsLocalSearchAdapter patientSearchAdapter;
     private CohortFilterActionEvent latestCohortFilterActionEvent;
+    private RelativeLayout patientSearchBy;
 
     @Nullable
     @Override
@@ -145,9 +148,17 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         incompleteFormsView = view.findViewById(R.id.dashboard_forms_incomplete_forms_view);
         completeFormsView = view.findViewById(R.id.dashboard_forms_complete_forms_view);
         filterProgressBar = view.findViewById(R.id.patient_list_filtering_progress_bar);
+        patientSearchBy = view.findViewById(R.id.patient_search_by);
 
         filterProgressBar.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
+
+        if(isSHRFeatureEnabled() || isBarcodeSearchEnabled()) {
+            patientSearchBy.setVisibility(View.VISIBLE);
+        }else{
+            patientSearchBy.setVisibility(View.GONE);
+        }
+
 
         incompleteFormsView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -502,5 +513,10 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
             intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
             startActivity(intent);
         }
+    }
+
+    private boolean isBarcodeSearchEnabled(){
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSettingController();
+        return muzimaSettingController.isBarcodeEnabled();
     }
 }
