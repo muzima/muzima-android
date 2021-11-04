@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -51,6 +52,7 @@ import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.SmartCardRecord;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.CohortFilter;
 import com.muzima.model.events.BottomSheetToggleEvent;
@@ -189,6 +191,13 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                 return true;
             }
         });
+        ActionMenuItemView locationMenu = findViewById(R.id.menu_location);
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+        boolean isGeomappingEnabled = muzimaSettingController.isGeoMappingEnabled();
+
+        if(!isGeomappingEnabled)
+            locationMenu.setVisibility(View.GONE);
+
         drawerLayout = findViewById(R.id.main_dashboard_drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         cohortFilterBottomSheetView = findViewById(R.id.dashboard_home_bottom_view_container);

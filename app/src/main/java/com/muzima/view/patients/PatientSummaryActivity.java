@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.muzima.MuzimaApplication;
@@ -44,6 +46,7 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.controller.FormController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.SingleObsForm;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
@@ -97,6 +100,9 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
     private ClientDynamicObsFormsAdapter clientDynamicObsFormsAdapter;
     private final List<SingleObsForm> singleObsFormsList = new ArrayList<>();
     private ViewPager2 viewPager;
+    private View incompleteFormsView;
+    private View completeFormsView;
+    private boolean isSingleElementEnabled;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,7 +116,7 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
 
-        ClientSummaryPagerAdapter clientSummaryPager = new ClientSummaryPagerAdapter(this, tabLayout.getTabCount(), patientUuid);
+        ClientSummaryPagerAdapter clientSummaryPager = new ClientSummaryPagerAdapter(this, tabLayout.getTabCount(), patientUuid, isSingleElementEnabled);
         viewPager.setAdapter(clientSummaryPager);
         viewPager.setUserInputEnabled(false);
 
@@ -154,6 +160,21 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
         MenuItem shrMenu = menu.findItem(R.id.menu_shr);
         MenuItem relationshipMenu = menu.findItem(R.id.menu_relationship);
         MenuItem locationMenu = menu.findItem(R.id.menu_location_item);
+
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+        boolean isSHRSettingEnabled = muzimaSettingController.isSHREnabled();
+        boolean isRelationshipEnabled = muzimaSettingController.isRelationshipEnabled();
+        boolean isGeomappingEnabled = muzimaSettingController.isGeoMappingEnabled();
+
+        if(!isSHRSettingEnabled)
+            shrMenu.setVisible(false);
+
+        if(!isRelationshipEnabled)
+            relationshipMenu.setVisible(false);
+
+        if(!isGeomappingEnabled)
+            locationMenu.setVisible(false);
+
         locationMenu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -345,9 +366,18 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
         gpsAddressTextView = findViewById(R.id.distanceToClientAddress);
         incompleteFormsCountView = findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
         completeFormsCountView = findViewById(R.id.dashboard_forms_complete_forms_count_view);
-        View incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
-        View completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
+        incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
+        completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
 
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+        isSingleElementEnabled = muzimaSettingController.isSingleElementEntryEnabled();
+
+        if(isSingleElementEnabled){
+            tabLayout.getTabAt(0).setText(R.string.general_data_collection);
+        }else{
+            tabLayout.getTabAt(0).setText(R.string.general_filling_forms);
+        }
 
         incompleteFormsView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -386,6 +416,24 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
             long incompleteForms = ((MuzimaApplication) getApplicationContext()).getFormController().countIncompleteFormsForPatient(patientUuid);
             long completeForms = ((MuzimaApplication) getApplicationContext()).getFormController().countCompleteFormsForPatient(patientUuid);
             incompleteFormsCountView.setText(String.valueOf(incompleteForms));
+
+            if(incompleteForms == 0){
+                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.green));
+            }else if(incompleteForms>0 && incompleteForms<=5){
+                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.yellow));
+            }else{
+                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.red));
+            }
+
+            incompleteFormsCountView.setText(String.valueOf(incompleteForms));
+
+            if(completeForms == 0){
+                completeFormsView.setBackgroundColor(getResources().getColor(R.color.green));
+            }else if(completeForms>0 && completeForms<=5){
+                completeFormsView.setBackgroundColor(getResources().getColor(R.color.yellow));
+            }else{
+                completeFormsView.setBackgroundColor(getResources().getColor(R.color.red));
+            }
             completeFormsCountView.setText(String.valueOf(completeForms));
         } catch (FormController.FormFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);

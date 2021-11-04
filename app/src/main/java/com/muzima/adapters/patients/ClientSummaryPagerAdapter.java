@@ -16,15 +16,18 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.muzima.view.fragments.patient.DataCollectionFragment;
 import com.muzima.view.fragments.patient.HistoricalDataFragment;
+import com.muzima.view.fragments.patient.PatientFillFormsFragment;
 
 public class ClientSummaryPagerAdapter extends FragmentStateAdapter {
     private final String patientUuid;
     private final Integer totalTabs;
+    private final boolean isSingleElementEnabled;
 
-    public ClientSummaryPagerAdapter(@NonNull FragmentActivity fa, Integer totalTabs, String patientUuid) {
+    public ClientSummaryPagerAdapter(@NonNull FragmentActivity fa, Integer totalTabs, String patientUuid, boolean isSingleElementEnabled) {
         super(fa);
         this.totalTabs = totalTabs;
         this.patientUuid = patientUuid;
+        this.isSingleElementEnabled = isSingleElementEnabled;
     }
 
     @NonNull
@@ -33,7 +36,11 @@ public class ClientSummaryPagerAdapter extends FragmentStateAdapter {
         if (position == 1)
             return new HistoricalDataFragment(patientUuid);
 
-        return new DataCollectionFragment(patientUuid);
+        if(isSingleElementEnabled)
+            return new DataCollectionFragment(patientUuid);
+        else
+            return new PatientFillFormsFragment(patientUuid);
+
     }
 
     @Override
