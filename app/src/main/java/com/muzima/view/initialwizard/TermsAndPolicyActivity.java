@@ -107,45 +107,59 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
         licenseExpandView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                licenseContentTextView.setVisibility(View.VISIBLE);
                 privacyPolicyContentTextView.setVisibility(View.GONE);
                 termsAndConditionsContentTextView.setVisibility(View.GONE);
+                expandPrivacyPolicyView.setBackgroundResource(R.drawable.ic_action_arrow_down);
+                expandTermsAndConditionsView.setBackgroundResource(R.drawable.ic_action_arrow_down);
 
-                licenseExpandView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_arrow_up));
-                expandPrivacyPolicyView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_arrow_down));
-                expandTermsAndConditionsView.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_arrow_down));
+                if(licenseContentTextView.getVisibility() == View.GONE) {
+                    licenseContentTextView.setVisibility(View.VISIBLE);
+                    licenseExpandView.setBackgroundResource(R.drawable.ic_action_arrow_up);
+                } else {
+                    licenseContentTextView.setVisibility(View.GONE);
+                    licenseExpandView.setBackgroundResource(R.drawable.ic_action_arrow_down);
+                }
+
             }
         });
 
         expandPrivacyPolicyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                privacyPolicyContentTextView.setVisibility(View.VISIBLE);
-                licenseContentTextView.setVisibility(View.GONE);
                 termsAndConditionsContentTextView.setVisibility(View.GONE);
+                licenseContentTextView.setVisibility(View.GONE);
 
-                expandPrivacyPolicyView.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_action_arrow_up));
-                licenseExpandView.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_action_arrow_down));
-                expandTermsAndConditionsView.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_action_arrow_down));
+                expandTermsAndConditionsView.setBackgroundResource(R.drawable.ic_action_arrow_down);
+                licenseExpandView.setBackgroundResource(R.drawable.ic_action_arrow_down);
+
+                if(privacyPolicyContentTextView.getVisibility() == View.GONE) {
+                    privacyPolicyContentTextView.setVisibility(View.VISIBLE);
+                    expandPrivacyPolicyView.setBackgroundResource(R.drawable.ic_action_arrow_up);
+                } else {
+                    privacyPolicyContentTextView.setVisibility(View.GONE);
+                    expandPrivacyPolicyView.setBackgroundResource(R.drawable.ic_action_arrow_down);
+                }
+
             }
         });
 
         expandTermsAndConditionsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                termsAndConditionsContentTextView.setVisibility(View.VISIBLE);
                 privacyPolicyContentTextView.setVisibility(View.GONE);
                 licenseContentTextView.setVisibility(View.GONE);
+                expandPrivacyPolicyView.setBackgroundResource(R.drawable.ic_action_arrow_down);
+                licenseExpandView.setBackgroundResource(R.drawable.ic_action_arrow_down);
 
-                expandTermsAndConditionsView.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_action_arrow_up));
-                expandPrivacyPolicyView.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_action_arrow_down));
-                licenseExpandView.setImageDrawable(getResources()
-                        .getDrawable(R.drawable.ic_action_arrow_down));
+                if(termsAndConditionsContentTextView.getVisibility() == View.GONE){
+                    termsAndConditionsContentTextView.setVisibility(View.VISIBLE);
+
+                    expandTermsAndConditionsView.setBackgroundResource(R.drawable.ic_action_arrow_up);
+                } else {
+                    termsAndConditionsContentTextView.setVisibility(View.GONE);
+
+                    expandTermsAndConditionsView.setBackgroundResource(R.drawable.ic_action_arrow_down);
+                }
             }
         });
 
