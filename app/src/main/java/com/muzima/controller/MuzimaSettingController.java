@@ -40,6 +40,7 @@ import static com.muzima.util.Constants.ServerSettings.RELATIONSHIP_FEATURE_ENAB
 import static com.muzima.util.Constants.ServerSettings.NOTIFICATION_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEMOGRAPHICS_UPDATE_MANUAL_REVIEW_REQUIRED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.SINGLE_ELEMENT_ENTRY_FEATURE_ENABLED_SETTING;
 
 public class MuzimaSettingController {
     private final MuzimaSettingService settingService;
@@ -361,6 +362,20 @@ public class MuzimaSettingController {
         }
         return false;
     }
+
+    public Boolean isSingleElementEntryEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(SINGLE_ELEMENT_ENTRY_FEATURE_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "muzima single element entry setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "muzima single element entry setting is missing on this server");
+        }
+        return false;
+    }
+
 
     public static class MuzimaSettingFetchException extends Throwable {
         MuzimaSettingFetchException(Throwable throwable) {

@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.muzima.MuzimaApplication;
@@ -45,6 +46,7 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.controller.FormController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.SingleObsForm;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
@@ -100,6 +102,7 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
     private ViewPager2 viewPager;
     private View incompleteFormsView;
     private View completeFormsView;
+    private boolean isSingleElementEnabled;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,7 +116,7 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
 
-        ClientSummaryPagerAdapter clientSummaryPager = new ClientSummaryPagerAdapter(this, tabLayout.getTabCount(), patientUuid);
+        ClientSummaryPagerAdapter clientSummaryPager = new ClientSummaryPagerAdapter(this, tabLayout.getTabCount(), patientUuid, isSingleElementEnabled);
         viewPager.setAdapter(clientSummaryPager);
         viewPager.setUserInputEnabled(false);
 
@@ -350,6 +353,16 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
         completeFormsCountView = findViewById(R.id.dashboard_forms_complete_forms_count_view);
         incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
         completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();;
+        isSingleElementEnabled = muzimaSettingController.isSingleElementEntryEnabled();
+
+        if(isSingleElementEnabled){
+            tabLayout.getTabAt(0).setText(R.string.general_data_collection);
+        }else{
+            tabLayout.getTabAt(0).setText(R.string.general_filling_forms);
+        }
 
         incompleteFormsView.setOnClickListener(new View.OnClickListener() {
             @Override
