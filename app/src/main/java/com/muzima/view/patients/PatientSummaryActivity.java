@@ -160,6 +160,21 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
         MenuItem shrMenu = menu.findItem(R.id.menu_shr);
         MenuItem relationshipMenu = menu.findItem(R.id.menu_relationship);
         MenuItem locationMenu = menu.findItem(R.id.menu_location_item);
+
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+        boolean isSHRSettingEnabled = muzimaSettingController.isSHREnabled();
+        boolean isRelationshipEnabled = muzimaSettingController.isRelationshipEnabled();
+        boolean isGeomappingEnabled = muzimaSettingController.isGeoMappingEnabled();
+
+        if(!isSHRSettingEnabled)
+            shrMenu.setVisible(false);
+
+        if(!isRelationshipEnabled)
+            relationshipMenu.setVisible(false);
+
+        if(!isGeomappingEnabled)
+            locationMenu.setVisible(false);
+
         locationMenu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -355,7 +370,7 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
         completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
         TabLayout tabLayout = findViewById(R.id.tabLayout);
 
-        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();;
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
         isSingleElementEnabled = muzimaSettingController.isSingleElementEntryEnabled();
 
         if(isSingleElementEnabled){
