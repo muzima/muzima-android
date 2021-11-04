@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -97,6 +98,8 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
     private ClientDynamicObsFormsAdapter clientDynamicObsFormsAdapter;
     private final List<SingleObsForm> singleObsFormsList = new ArrayList<>();
     private ViewPager2 viewPager;
+    private View incompleteFormsView;
+    private View completeFormsView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -345,9 +348,8 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
         gpsAddressTextView = findViewById(R.id.distanceToClientAddress);
         incompleteFormsCountView = findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
         completeFormsCountView = findViewById(R.id.dashboard_forms_complete_forms_count_view);
-        View incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
-        View completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
-
+        incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
+        completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
 
         incompleteFormsView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -386,6 +388,24 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
             long incompleteForms = ((MuzimaApplication) getApplicationContext()).getFormController().countIncompleteFormsForPatient(patientUuid);
             long completeForms = ((MuzimaApplication) getApplicationContext()).getFormController().countCompleteFormsForPatient(patientUuid);
             incompleteFormsCountView.setText(String.valueOf(incompleteForms));
+
+            if(incompleteForms == 0){
+                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.green));
+            }else if(incompleteForms>0 && incompleteForms<=5){
+                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.yellow));
+            }else{
+                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.red));
+            }
+
+            incompleteFormsCountView.setText(String.valueOf(incompleteForms));
+
+            if(completeForms == 0){
+                completeFormsView.setBackgroundColor(getResources().getColor(R.color.green));
+            }else if(completeForms>0 && completeForms<=5){
+                completeFormsView.setBackgroundColor(getResources().getColor(R.color.yellow));
+            }else{
+                completeFormsView.setBackgroundColor(getResources().getColor(R.color.red));
+            }
             completeFormsCountView.setText(String.valueOf(completeForms));
         } catch (FormController.FormFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);

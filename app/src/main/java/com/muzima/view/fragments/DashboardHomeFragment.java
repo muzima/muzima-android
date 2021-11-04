@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -237,7 +238,22 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         try {
             long incompleteForms = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().countAllIncompleteForms();
             long completeForms = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().countAllCompleteForms();
+            if(incompleteForms == 0){
+                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.green));
+            }else if(incompleteForms>0 && incompleteForms<=5){
+                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.yellow));
+            }else{
+                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.red));
+            }
             incompleteFormsTextView.setText(String.valueOf(incompleteForms));
+
+            if(completeForms == 0){
+                completeFormsView.setBackgroundColor(getResources().getColor(R.color.green));
+            }else if(completeForms>0 && completeForms<=5){
+                completeFormsView.setBackgroundColor(getResources().getColor(R.color.yellow));
+            }else{
+                completeFormsView.setBackgroundColor(getResources().getColor(R.color.red));
+            }
             completeFormsTextView.setText(String.valueOf(completeForms));
         } catch (FormController.FormFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);
