@@ -418,21 +418,21 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
             incompleteFormsCountView.setText(String.valueOf(incompleteForms));
 
             if(incompleteForms == 0){
-                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.green));
+                incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_green));
             }else if(incompleteForms>0 && incompleteForms<=5){
-                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.yellow));
+                incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_orange));
             }else{
-                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.red));
+                incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_red));
             }
 
             incompleteFormsCountView.setText(String.valueOf(incompleteForms));
 
             if(completeForms == 0){
-                completeFormsView.setBackgroundColor(getResources().getColor(R.color.green));
+                completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_green));
             }else if(completeForms>0 && completeForms<=5){
-                completeFormsView.setBackgroundColor(getResources().getColor(R.color.yellow));
+                completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_orange));
             }else{
-                completeFormsView.setBackgroundColor(getResources().getColor(R.color.red));
+                completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_red));
             }
             completeFormsCountView.setText(String.valueOf(completeForms));
         } catch (FormController.FormFetchException e) {

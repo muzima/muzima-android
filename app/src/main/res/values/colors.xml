@@ -61,4 +61,5 @@
     <color name="yellow">#B3FFFF00</color>
     <color name="green">#4D00FF00</color>
     <color name="red">#B3FF0000</color>
+    <color name="orange">#FFA500</color>
 </resources>
