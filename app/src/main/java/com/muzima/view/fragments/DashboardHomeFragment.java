@@ -159,6 +159,10 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
             patientSearchBy.setVisibility(View.GONE);
         }
 
+        if(isBarcodeSearchEnabled()){
+            searchByBarCode.setVisibility(VISIBLE);
+        }
+
 
         incompleteFormsView.setOnClickListener(new View.OnClickListener() {
             @Override
