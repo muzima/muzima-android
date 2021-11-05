@@ -1,17 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) The Trustees of Indiana University, Moi University
-  ~ and Vanderbilt University Medical Center.
-  ~
-  ~ This version of the code is licensed under the MPL 2.0 Open Source license
-  ~ with additional health care disclaimer.
-  ~ If the user is an entity intending to commercialize any application that uses
-  ~ this code in a for-profit venture, please contact the copyright holder.
-  -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:height="24dp"
-    android:width="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    <path android:fillColor="#DC2E8C" android:pathData="M12,4A6,6 0 0,1 18,10C18,12.97 15.84,15.44 13,15.92V18H15V20H13V22H11V20H9V18H11V15.92C8.16,15.44 6,12.97 6,10A6,6 0 0,1 12,4M12,6A4,4 0 0,0 8,10A4,4 0 0,0 12,14A4,4 0 0,0 16,10A4,4 0 0,0 12,6Z" />
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+  <path
+      android:pathData="M22.3179,5.0864C18.5599,7.2561 21.924,13.0833 25.6821,10.9136C29.4401,8.7439 26.076,2.9167 22.3179,5.0864z"
+      android:fillColor="#DC2E8C"
+      android:strokeColor="#ffffff"/>
+
+  <path
+      android:pathData="M15,32L21,32L21,44L27,44L27,32L33,32C31.707,28.0262 29.416,14.6358 24,14.6358C18.584,14.6358 16.293,28.0262 15,32z"
+      android:fillColor="#DC2E8C"
+      android:strokeColor="#ffffff"/>
 </vector>

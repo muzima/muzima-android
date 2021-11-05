@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -146,7 +147,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         childContainer = view.findViewById(R.id.dashboard_home_fragment_child_container);
         appBarLayout = view.findViewById(R.id.dashboard_home_app_bar);
         incompleteFormsView = view.findViewById(R.id.dashboard_forms_incomplete_forms_view);
-        completeFormsView = view.findViewById(R.id.dashboard_forms_complete_forms_view);
+        completeFormsView =   view.findViewById(R.id.dashboard_forms_complete_forms_view);
         filterProgressBar = view.findViewById(R.id.patient_list_filtering_progress_bar);
         patientSearchBy = view.findViewById(R.id.patient_search_by);
 
@@ -254,20 +255,20 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
             long incompleteForms = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().countAllIncompleteForms();
             long completeForms = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().countAllCompleteForms();
             if(incompleteForms == 0){
-                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.green));
+                incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_green));
             }else if(incompleteForms>0 && incompleteForms<=5){
-                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.yellow));
+                incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_orange));
             }else{
-                incompleteFormsView.setBackgroundColor(getResources().getColor(R.color.red));
+                incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_red));
             }
             incompleteFormsTextView.setText(String.valueOf(incompleteForms));
 
             if(completeForms == 0){
-                completeFormsView.setBackgroundColor(getResources().getColor(R.color.green));
+                completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_green));
             }else if(completeForms>0 && completeForms<=5){
-                completeFormsView.setBackgroundColor(getResources().getColor(R.color.yellow));
+                completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_orange));
             }else{
-                completeFormsView.setBackgroundColor(getResources().getColor(R.color.red));
+                completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_red));
             }
             completeFormsTextView.setText(String.valueOf(completeForms));
         } catch (FormController.FormFetchException e) {
