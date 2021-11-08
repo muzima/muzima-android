@@ -18,11 +18,13 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Tag;
+import com.muzima.api.service.CohortService;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PatientService;
 import com.muzima.api.service.EncounterService;
+import com.muzima.api.service.PatientTagService;
 import com.muzima.api.service.SetupConfigurationService;
 import com.muzima.builder.FormBuilder;
 import com.muzima.builder.FormTemplateBuilder;
@@ -72,12 +74,17 @@ public class FormControllerTest {
     private SntpService sntpService;
     private Date mockDate;
     private MuzimaApplication muzimaApplication;
+    private PatientController patientController;
+    private PatientTagService patientTagService;
+    private CohortService cohortService;
 
     @Before
     public void setup() throws IOException {
         muzimaApplication = mock(MuzimaApplication.class);
         formService = mock(FormService.class);
         patientService = mock(PatientService.class);
+        cohortService = mock(CohortService.class);
+        patientTagService = mock(PatientTagService.class);
         lastSyncTimeService = mock(LastSyncTimeService.class);
         sntpService = mock(SntpService.class);
         ObservationService observationService = mock(ObservationService.class);
@@ -95,6 +102,9 @@ public class FormControllerTest {
         when(context.getSetupConfigurationService()).thenReturn(setupConfigurationService);
 
         formController = new FormController(muzimaApplication);
+        patientController = new PatientController(patientService,cohortService,formService,patientTagService);
+
+        when(muzimaApplication.getPatientController()).thenReturn(patientController);
         LastSyncTime lastSyncTime = mock(LastSyncTime.class);
         mockDate = mock(Date.class);
     }
