@@ -41,6 +41,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
+        <com.muzima.view.custom.CheckedRelativeLayout
+            android:id="@+id/tags_scroller"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_height="wrap_content"
+            android:clickable="true">
+
+            <LinearLayout
+                android:id="@+id/menu_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"/>
+        </com.muzima.view.custom.CheckedRelativeLayout>
+
         <RelativeLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
