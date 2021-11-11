@@ -97,7 +97,7 @@
     <string name="error_observation_load">Imeshindikana kupakia uchunguzi wa daktari</string>
     <string name="error_observation_unavailable">Hakuna uchunguzi wa daktari uliopatikana</string>
     <string name="error_parse_exception_data_fetch">Tatizo la kiuchanganuzi limetokea wakati wa kuchukua data</string>
-    <string name="error_patient_data_form_exist">Tayari kuna data kwa fomu iliyochaguliwa/zilizochaguliwa. Malizia fomu ambazo hazijakamilika kisha landanisha na seva kwanza kabla ya kulandanisha kutoka kwenye violezo vya.</string>
+    <string name="error_patient_data_form_exist">Kuna data ya fomu. Maliza data ambayo Haijakamilika na uisawazishe kwa Seva kwanza kabla ya kusawazisha violezo vya fomu.</string>
     <string name="error_patient_download">Imeshindikana kupakua wateja.</string>
     <string name="error_patient_repo_fetch">Tatizo limetokea wakati wa kuchukua taarifa za mteja kutoka katika hifadhi ya kifaa</string>
     <string name="error_patient_report_fetch">Kuna kitu kilienda vibaya wakati wa kupata ripoti za mteja kutoka kwa uhifahdi</string>
@@ -692,7 +692,7 @@
     <string name="general_home">Nyumbani</string>
     <string name="contact_us">Wasiliana nasi</string>
     <string name="info_incomplete_form">Fomu ambazo hazijakamilika</string>
-    <string name="info_complete_form">Fomu zilizokamilika</string>
+    <string name="info_complete_form">Fomu ambazo hazijasawazishwa</string>
     <string name="general_search_forms">Tafuta Fomu</string>
     <string name="general_search_cohorts">Tafuta Makundi</string>
     <string name="general_search_patient">Tafuta Mgonjwa</string>
