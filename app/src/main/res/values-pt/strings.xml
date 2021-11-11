@@ -97,7 +97,7 @@
     <string name="error_observation_load">Observações não puderam ser carregados</string>
     <string name="error_observation_unavailable">Nenhuma observação disponível</string>
     <string name="error_parse_exception_data_fetch">Excepção de análise foi laçanda enquanto buscava os dados</string>
-    <string name="error_patient_data_form_exist">Existe dados do formulário. Finalize os dados incompletos e sincronize os dados completos para o servidor antes de sincronizar os modelos do formulário.</string>
+    <string name="error_patient_data_form_exist">Existe dados do formulário. Finalize os dados incompletos e sincronize os dados o servidor antes de sincronizar os modelos do formulário.</string>
     <string name="error_patient_download">Não poderá baixar clientes</string>
     <string name="error_patient_repo_fetch">Algo deu errado enquanto buscava clientes do repositório local</string>
     <string name="error_patient_report_fetch">Ocorreu um erro ao obter relatórios de clientes de um repositório local</string>
@@ -219,7 +219,7 @@
     <string name="hint_client_remote_search">Sua pesquisa inclui ID do cliente, primeiro nome, nome do meio e apelido e pesquisado no servidor</string>
     <string name="hint_client_search">Pesquisar clientes</string>
     <string name="hint_cohort_sync">Por favor seleccione coortes a partir da lista de todas as coortes e clique em sincronizar</string>
-    <string name="hint_complete_form_unavailable">Formulários completos estão disponíveis somente se preencheu um formulário completamente mas não sincronizou com o servidor</string>
+    <string name="hint_complete_form_unavailable">Os formulários não sincronizados estarão disponíveis apenas se você tiver preenchido um formulário completamente, mas não o sincronizou com o servidor</string>
     <string name="hint_configuration_search">Pesquisar uma configuração</string>
     <string name="hint_consultation_consultant_validation_failure">Por favor forneça um consultor a partir da lista de possíveis consultores</string>
     <string name="hint_create_new_SHR">O cliente não possui um SHR. Você quer criar novos SHR e gravar no cartão?</string>
@@ -571,7 +571,7 @@
     <string name="title_fill_patient_forms_help">Preencher formulários para um cliente</string>
     <string name="title_font_size">Tamanho da fonte</string>
     <string name="title_form_auto_save_interval">Intervalo (mins) de gravação automática de formulário</string>
-    <string name="title_form_data_complete">Formulário de Dados Completo</string>
+    <string name="title_form_data_complete">Dados de formulário não sincronizados</string>
     <string name="title_form_data_incomplete">Formulário de Dados Imcompleto</string>
     <string name="title_form_download_help_video">Descarregamento de formulários (sob demanda)</string>
     <string name="title_general_notifications">Notificações Gerais</string>
@@ -695,7 +695,7 @@
     <string name="error_policy_not_accepted">Aceite as declarações de política para prosseguir</string>
     <string name="general_home">Casa</string>
     <string name="contact_us">Entre em contato conosco</string>
-    <string name="info_incomplete_form">Formulários Incompletos</string>
+    <string name="info_incomplete_form">Formulários não sincronizados</string>
     <string name="info_complete_form">Formulários Completos</string>
     <string name="general_search_forms">Formulários de Pesquisa</string>
     <string name="general_search_cohorts">Coortes de pesquisa</string>

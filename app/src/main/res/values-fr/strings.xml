@@ -96,7 +96,7 @@
     <string name="error_observation_load">Echec du chargement des observations</string>
     <string name="error_observation_unavailable">Observations non disponibles</string>
     <string name="error_parse_exception_data_fetch">abandon de l\'amalyse exceptionnelle lors de la récupération des données</string>
-    <string name="error_patient_data_form_exist">données de formulaire existantes. Terminer les données incomplètes et synchroniser les données complètes dans le serveur d\'abord avant de synchroniser les modeles des formulaire.</string>
+    <string name="error_patient_data_form_exist">données de formulaire existantes. Terminer les données incomplètes et synchroniser les données dans le serveur d\'abord avant de synchroniser les modeles des formulaire.</string>
     <string name="error_patient_download">Impossible de télécharger les données des clients</string>
     <string name="error_patient_repo_fetch">Quelque chose a mal tourné lors de l\'extraction des données des clients du repositoire local</string>
     <string name="error_patient_report_fetch">Une erreur s\'est produite lors de l\'extraction des rapports de client du référentiel local.</string>
@@ -218,8 +218,7 @@
     <string name="hint_client_remote_search">Votre recherche comprend le numéro identificateur du client, prenom et le nom de famille. prénom et recherche sur le serveur</string>
     <string name="hint_client_search">Rechercher les données des clients</string>
     <string name="hint_cohort_sync">S\'il vous plaît sélectionner les cohortes de la liste de tous les cohortes et cliquez sur synchroniser</string>
-    <string name="hint_complete_form_unavailable">les formulaires completés sont disponibles si vous avez rempli un formulaire complètement, mais quand ils n\'ont pas été synchronisé avec le serveur</string>
-    <string name="hint_configuration_search">Rechercher une configuration</string>
+    <string name="hint_complete_form_unavailable">Les formulaires non synchronisés sont disponibles si vous avez rempli un formulaire complètement, mais lorsqu\'ils n\'ont pas été synchronisés avec le serveur</string>
     <string name="hint_consultation_consultant_validation_failure">Fournissaient s\'il vous plait un consultant de la liste des consultants potentiels</string>
     <string name="hint_create_new_SHR">Le client n\'a pas de SHR. Voulez-vous créer un nouveau SHR et écrire sur la carte?</string>
     <string name="hint_current_or_past_date_validation_failure">S\'il vous plait entrez une date inferieur ou égal à aujaud\'hui</string>
@@ -573,7 +572,7 @@
     <string name="title_fill_patient_forms_help">Remplissez les formulaires pour un client</string>
     <string name="title_font_size">Taille de police</string>
     <string name="title_form_auto_save_interval">Intervalle de sauvegarde de formulaire automatique (minutes)</string>
-    <string name="title_form_data_complete">Compléter les formulaire de données</string>
+    <string name="title_form_data_complete">Données de formulaire non synchronisées</string>
     <string name="title_form_data_incomplete">Données de formulaire incomplètes</string>
     <string name="title_form_download_help_video">Téléchargement de formulaires (sur demande)</string>
     <string name="title_general_notifications">Notifications générales</string>
@@ -698,7 +697,7 @@
     <string name="general_home">Domicile</string>
     <string name="contact_us">Nous contacter</string>
     <string name="info_incomplete_form">Formulaires incomplets</string>
-    <string name="info_complete_form">Remplir des formulaires</string>
+    <string name="info_complete_form">Formulaires non synchronisés</string>
     <string name="general_search_forms">Formulaires de recherche</string>
     <string name="general_search_cohorts">Rechercher des cohortes</string>
     <string name="general_search_patient">Rechercher un patient</string>

@@ -98,7 +98,7 @@
     <string name="error_observation_unavailable">No observations Available</string>
     <string name="error_parse_exception_data_fetch">Parse exception has been thrown while fetching data</string>
     <string name="error_patient_data_form_exist">There is existing form data.
-        Finish Incomplete data and sync Complete data to Server first before syncing form templates.
+        Finish Incomplete data and sync it to the Server first before syncing form templates.
     </string>
     <string name="error_patient_download">Could not download clients</string>
     <string name="error_patient_repo_fetch">Something went wrong while fetching clients from local repo</string>
@@ -224,7 +224,7 @@
         name and searched on the server</string>
     <string name="hint_client_search">Search clients</string>
     <string name="hint_cohort_sync">Please select cohorts from all cohorts list and click sync</string>
-    <string name="hint_complete_form_unavailable">Complete forms are available only if you have filled a form completely
+    <string name="hint_complete_form_unavailable">Unsynced forms are available only if you have filled a form completely
         but have not synced it with the server
     </string>
     <string name="hint_configuration_search">Search a program</string>
@@ -609,7 +609,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="title_fill_patient_forms_help">Fill out forms for a client</string>
     <string name="title_font_size">Font size</string>
     <string name="title_form_auto_save_interval">Automatic form save interval (mins)</string>
-    <string name="title_form_data_complete">Complete Form Data</string>
+    <string name="title_form_data_complete">Unsynced Form Data</string>
     <string name="title_form_data_incomplete">Incomplete Form Data</string>
     <string name="title_form_download_help_video">Forms download (on demand)</string>
     <string name="title_general_notifications">General Notifications</string>
@@ -702,7 +702,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_home">Home</string>
     <string name="contact_us">Contact Us</string>
     <string name="info_incomplete_form">Incomplete Forms</string>
-    <string name="info_complete_form">Complete Forms</string>
+    <string name="info_complete_form">Unsynced Forms</string>
     <string name="general_search_forms">Search Forms</string>
     <string name="general_search_cohorts">Search Cohorts</string>
     <string name="general_search_patient">Search Patient</string>
