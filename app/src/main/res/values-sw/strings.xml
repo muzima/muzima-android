@@ -219,7 +219,7 @@
     <string name="hint_client_remote_search">Utafutaji wako umehusisha namabari ya mteja, jina la kupewa, jina la kati na jina la familia na umefanyika katika seva.</string>
     <string name="hint_client_search">Tafuta wateja</string>
     <string name="hint_cohort_sync">Tafadhali chagua vikundi kutoka katika orodha ya vikundi vyote kisha bofya kitufe cha kulandanisha.</string>
-    <string name="hint_complete_form_unavailable">Fomu zilizokamilika huwepo pale ambapo umejaza fomu kikamilifu bila kulandanisha katika seva.</string>
+    <string name="hint_complete_form_unavailable">Fomu ambazo hazijasawazishwa zinapatikana tu ikiwa umejaza fomu kabisa lakini hujaisawazisha na seva.</string>
     <string name="hint_configuration_search">Tafuta usanidi</string>
     <string name="hint_consultation_consultant_validation_failure">Tafadhali weka mshauri kutoka kwenye orodha ya washauri wapatikanao.</string>
     <string name="hint_create_new_SHR">Mteja hana SHR. Je, unataka kujenga SHR mpya na kuandika kadi?</string>
@@ -567,7 +567,7 @@
     <string name="title_fill_patient_forms_help">Jaza fomu za mteja</string>
     <string name="title_font_size">Ukubwa wa fonti</string>
     <string name="title_form_auto_save_interval">Muda wa kungoja kuhifadhi fomu kiotomatiki(dakika)</string>
-    <string name="title_form_data_complete">Fomu ya data iliyokamilika</string>
+    <string name="title_form_data_complete">Data ya fomu ambayo haijasawazishwa</string>
     <string name="title_form_data_incomplete">Fomu ya data isiyokamilika</string>
     <string name="title_form_download_help_video">Upakuaji wa fomu (kwa mahitaji)</string>
     <string name="title_general_notifications">Taarifa za Ujumla</string>

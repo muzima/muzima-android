@@ -96,7 +96,7 @@
     <string name="error_observation_load">અવલોકનો લોડ કરી શકાયાં નથી</string>
     <string name="error_observation_unavailable">કોઈ નિરીક્ષણો ઉપલબ્ધ નથી</string>
     <string name="error_parse_exception_data_fetch">ડેટા લાવતી વખતે પાર્સ અપવાદ આવ્યો છે</string>
-    <string name="error_patient_data_form_exist">ફોર્મ ડેટા અસ્તિત્વમાં છે. અપૂર્ણ ડેટા પૂર્ણ કરો અને ફોર્મ નમૂનાઓનું સમન્વયન કરતા પહેલા સર્વર પર સંપૂર્ણ ડેટા સમન્વયિત કરો.</string>
+    <string name="error_patient_data_form_exist">ફોર્મ ડેટા અસ્તિત્વમાં છે. ફોર્મ નમૂનાઓ સમન્વયિત કરતા પહેલા અપૂર્ણ ડેટાને પૂર્ણ કરો અને તેને સર્વર સાથે સમન્વયિત કરો.</string>
     <string name="error_patient_download">ક્લાયંટને ડાઉનલોડ કરી શક્યાં નથી</string>
     <string name="error_patient_repo_fetch">સ્થાનિક રેપોથી ક્લાયન્ટ્સને લાવતી વખતે કંઈક ખોટું થયું</string>
     <string name="error_patient_report_fetch">સ્થાનિક રેપો તરફથી ક્લાયંટના અહેવાલો મેળવવામાં કંઈક ખોટું થયું</string>
@@ -218,7 +218,7 @@
     <string name="hint_client_remote_search">તમારી શોધમાં ક્લાયંટ આઈડી, અપાયેલ નામ, મધ્ય નામ અને કુટુંબનું નામ શામેલ છે અને ફક્ત સર્વરમાં શોધાય છે</string>
     <string name="hint_client_search">ક્લાઈન્ટો શોધો</string>
     <string name="hint_cohort_sync">કૃપા કરીને બધા જૂથોની સૂચિમાંથી સમૂહને પસંદ કરો અને સમન્વયનને ક્લિક કરો</string>
-    <string name="hint_complete_form_unavailable">સંપૂર્ણ ફોર્મ્સ ફક્ત ત્યારે જ ઉપલબ્ધ છે જો તમે કોઈ ફોર્મ સંપૂર્ણ ભરેલ હોય પરંતુ તેને સર્વર સાથે સમન્વયિત ન કર્યું હોય</string>
+    <string name="hint_complete_form_unavailable">જો તમે ફોર્મ સંપૂર્ણપણે ભર્યું હોય પરંતુ તેને સર્વર સાથે સમન્વયિત ન કર્યું હોય તો જ અનસિંક્ડ ફોર્મ્સ ઉપલબ્ધ છે.</string>
     <string name="hint_configuration_search">કન્ફિગ્રેશન શોધો</string>
     <string name="hint_consultation_consultant_validation_failure">કન્ફિગ્રેશન શોધો</string>
     <string name="hint_create_new_SHR">ક્લાયંટ પાસે SHR નથી. શું તમે નવું SHR બનાવવા અને કાર્ડ પર લખવા માંગો છો?</string>
@@ -564,7 +564,7 @@
     <string name="title_fill_patient_forms_help">ક્લાયંટ માટે ફોર્મ ભરો</string>
     <string name="title_font_size">ફૉન્ટ સાઇઝ</string>
     <string name="title_form_auto_save_interval">સ્વચાલિત ફોર્મ સેવ અંતરાલ (મિનિટ)</string>
-    <string name="title_form_data_complete">ફોર્મ ડેટા પૂર્ણ કરો</string>
+    <string name="title_form_data_complete">અનસિંક કરેલ ફોર્મ ડેટા</string>
     <string name="title_form_data_incomplete">અપૂર્ણ ફોર્મ ડેટા</string>
     <string name="title_form_download_help_video">ફોર્મ્સ ડાઉનલોડ કરો (માંગ પર)</string>
     <string name="title_general_notifications">સામાન્ય સૂચનાઓ</string>
@@ -689,7 +689,7 @@
     <string name="general_home">ઘર</string>
     <string name="contact_us">અમારો સંપર્ક કરો</string>
     <string name="info_incomplete_form">અધૂરા ફોર્મ</string>
-    <string name="info_complete_form">ફોર્મ પૂર્ણ કરો</string>
+    <string name="info_complete_form">સમન્વયિત ન કરેલા સ્વરૂપો</string>
     <string name="general_search_forms">ફોર્મ્સ શોધો</string>
     <string name="general_search_cohorts">સહયોગીઓ શોધો</string>
     <string name="general_search_patient">દર્દીની શોધ કરો</string>
