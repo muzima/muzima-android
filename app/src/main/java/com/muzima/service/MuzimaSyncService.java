@@ -1281,6 +1281,8 @@ public class MuzimaSyncService {
                 new SHRStatusPreferenceService(muzimaApplication).updateSHRStatusPreference();
             } else if (MuzimaSettingUtils.isPatientIdentifierAutogenerationSetting(muzimaSetting)) {
                 new RequireMedicalRecordNumberPreferenceService(muzimaApplication).updateRequireMedicalRecordNumberPreference();
+            } else if (MuzimaSettingUtils.isOnlineOnlyModeSetting(muzimaSetting)) {
+                new OnlineOnlyModePreferenceService(muzimaApplication).updateOnlineOnlyModePreferenceValue();
             }
         }
     }

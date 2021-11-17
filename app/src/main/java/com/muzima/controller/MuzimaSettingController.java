@@ -35,6 +35,7 @@ import static com.muzima.util.Constants.ServerSettings.BARCODE_FEATURE_ENABLED_S
 import static com.muzima.util.Constants.ServerSettings.CLINICAL_SUMMARY_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GEOMAPPING_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.ONLINE_ONLY_MODE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.RELATIONSHIP_FEATURE_ENABLED;
 import static com.muzima.util.Constants.ServerSettings.NOTIFICATION_FEATURE_ENABLED_SETTING;
@@ -372,6 +373,19 @@ public class MuzimaSettingController {
                 Log.e(getClass().getSimpleName(), "muzima single element entry setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "muzima single element entry setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isOnlineOnlyModeEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(ONLINE_ONLY_MODE_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "muzima online only mode setting is missing");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "There was an error while loading muzima online only mode setting",e);
         }
         return false;
     }

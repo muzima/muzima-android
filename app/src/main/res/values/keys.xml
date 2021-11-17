@@ -28,4 +28,5 @@
     <string translatable="false" name="preference_light_mode">lightMode</string>
     <string translatable="false" name="preference_app_language">appLanguage</string>
     <string translatable="false" name="preference_app_token">appToken</string>
+    <string translatable="false" name="preference_online_only_mode">OnlineOnlyModePreference</string>
 </resources>
