@@ -336,6 +336,19 @@ public class CohortController {
             throw new CohortUpdateException(e);
         }
     }
+    public void setSyncStatus(List<String> cohortUuids, int status) throws CohortUpdateException {
+        try {
+            for (String cohortUuid : cohortUuids) {
+                Cohort cohort = cohortService.getCohortByUuid(cohortUuid);
+                if (cohort != null) {
+                    cohort.setSyncStatus(status);
+                    cohortService.updateCohort(cohort);
+                }
+            }
+        } catch (IOException e) {
+            throw new CohortUpdateException(e);
+        }
+    }
 
     public int countSyncedCohorts() throws CohortFetchException {
         return getSyncedCohorts().size();
