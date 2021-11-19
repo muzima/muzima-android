@@ -461,7 +461,7 @@ public class MuzimaApplication extends MultiDexApplication {
         evictAuthenticatedUser();
     }
 
-    private void deleteAllPatientsData(){
+    public void deleteAllPatientsData(){
         List<Concept> allConcepts = new ArrayList<>();
         try {
             allConcepts = getConceptController().getConcepts();
@@ -480,7 +480,14 @@ public class MuzimaApplication extends MultiDexApplication {
             List<Cohort> syncedCohorts = getCohortController().getSyncedCohorts();
             if (syncedCohorts.size() > 0) {
                 List<String> cohortUuids = new ArrayList<>();
-                syncedCohorts.forEach((cohort) -> cohortUuids.add(cohort.getUuid()));
+                syncedCohorts.forEach((cohort) -> {
+                    try {
+                        getCohortController().deleteAllCohortMembers(cohort.getUuid());
+                    } catch (CohortController.CohortReplaceException e) {
+                        Log.e(getClass().getSimpleName(),"Could not delete cohort members",e);
+                    }
+                    cohortUuids.add(cohort.getUuid());
+                });
                 getCohortController().setSyncStatus(cohortUuids, 0);
             }
         } catch (CohortController.CohortUpdateException e) {

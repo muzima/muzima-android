@@ -86,6 +86,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private ImageView thirdDotView;
     private GuidedSetupCardsViewPagerAdapter guidedSetupCardsViewPagerAdapter;
     private int pageCount;
+    private boolean isOnlineOnlyModeEnabled;
 
     public void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,false);
@@ -232,6 +233,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadSettingsLog.setSetupActionResult(resultDescription);
                 downloadSettingsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
+                updateOnlineOnlyModeSettingValue();
                 downloadLocations();
             }
 
@@ -280,7 +282,12 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadCohortsLog.setSetupActionResult(resultDescription);
                 downloadCohortsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
-                downloadAndSavePatients();
+
+                if(isOnlineOnlyModeEnabled) {
+                    downloadForms();
+                } else {
+                    downloadAndSavePatients();
+                }
             }
 
             @Override
@@ -539,7 +546,11 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     resultDescription = getString(R.string.error_location_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
-                checkIfCohortWithFilterByLocationExists();
+                if(!isOnlineOnlyModeEnabled){
+                    checkIfCohortWithFilterByLocationExists();
+                } else {
+                    downloadProviders();
+                }
                 downloadLocationsLog.setSetupActionResult(resultDescription);
                 downloadLocationsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
@@ -648,8 +659,10 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadConceptsLog.setSetupActionResult(resultDescription);
                 downloadConceptsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
-                downloadEncounters();
-                downloadObservations();
+                if(!isOnlineOnlyModeEnabled) {
+                    downloadEncounters();
+                    downloadObservations();
+                }
             }
 
             @Override
@@ -904,7 +917,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private synchronized void evaluateFinishStatus() {
-        int TOTAL_WIZARD_STEPS = 10;
+        int TOTAL_WIZARD_STEPS = isOnlineOnlyModeEnabled ? 7 : 10;
         if (wizardLevel == (TOTAL_WIZARD_STEPS)) {
             if (wizardcompletedSuccessfully) {
                 initialSetupStatusTextView.setText(getString(R.string.info_setup_complete_success));
@@ -912,7 +925,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 initialSetupStatusTextView.setText(getString(R.string.info_setup_complete_fail));
                 initialSetupStatusTextView.setTextColor(Color.RED);
             }
-            mainProgressbar.setProgress(10);
+            mainProgressbar.setProgress(TOTAL_WIZARD_STEPS);
             finishSetupButton.setVisibility(View.VISIBLE);
             setupLogsContainer.setVisibility(View.VISIBLE);
             viewPager.setVisibility(View.VISIBLE);
@@ -938,5 +951,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
+    }
+
+    private void updateOnlineOnlyModeSettingValue(){
+        isOnlineOnlyModeEnabled = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isOnlineOnlyModeEnabled();
     }
 }
