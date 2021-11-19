@@ -176,6 +176,10 @@ public class LoginActivity extends BaseActivity {
         languageUtil.onCreate(this);
         setupStatusView();
         getOnlineOnlyModePreference();
+
+        if(isOnlineModeEnabled){
+            removeChangedPasswordRecentlyCheckbox();
+        }
     }
 
     private void setupStatusView() {
@@ -397,6 +401,10 @@ public class LoginActivity extends BaseActivity {
         protected void onPostExecute(Result result) {
             MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
             if (result.status == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
+                if(isOnlineModeEnabled){
+                    muzimaApplication.deleteAllPatientsData();
+                }
+
                 MuzimaLoggerService.scheduleLogSync(muzimaApplication);
                 MuzimaLoggerService.log(muzimaApplication,"LOGIN_SUCCESS",
                         result.credentials.getUserName(),MuzimaLoggerService.getAndParseGPSLocationForLogging(muzimaApplication), "{}");
