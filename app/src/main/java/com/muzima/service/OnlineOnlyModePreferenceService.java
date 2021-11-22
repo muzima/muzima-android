@@ -25,8 +25,13 @@ public class OnlineOnlyModePreferenceService extends PreferenceService{
     }
 
     public void updateOnlineOnlyModePreferenceValue(){
-        boolean isOnlineOnlyMode = application.getMuzimaSettingController().isOnlineOnlyModeEnabled();
+        boolean onlineOnlyModeEnabled = application.getMuzimaSettingController().isOnlineOnlyModeEnabled();
         String key = context.getResources().getString(R.string.preference_online_only_mode);
-        settings.edit().putBoolean(key,isOnlineOnlyMode).apply();
+        settings.edit().putBoolean(key,onlineOnlyModeEnabled).apply();
+
+        if(onlineOnlyModeEnabled){
+            key = context.getResources().getString(R.string.preference_real_time_sync);
+            settings.edit().putBoolean(key,true).apply();
+        }
     }
 }
