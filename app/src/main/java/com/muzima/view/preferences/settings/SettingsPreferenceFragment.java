@@ -38,7 +38,6 @@ import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.service.OnlineOnlyModePreferenceService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
 import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.tasks.MuzimaAsyncTask;
@@ -278,8 +277,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                         builder
                                 .setCancelable(true)
                                 .setIcon(getIconWarning())
-                                .setTitle("Real time sync not changed")
-                                .setMessage("Real time sync is always ON in Online Mode.")
+                                .setTitle(R.string.title_real_time_sync_setting_unchanged)
+                                .setMessage(R.string.hint_real_time_sync_always_on)
                                 .setPositiveButton(getResources().getText(R.string.general_ok), null).create().show();
                         return false;
                     } else {
