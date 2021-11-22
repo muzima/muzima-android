@@ -380,8 +380,9 @@ public class MuzimaSettingController {
     public Boolean isOnlineOnlyModeEnabled() {
         try {
             MuzimaSetting muzimaSetting = getSettingByProperty(ONLINE_ONLY_MODE_ENABLED_SETTING);
-            if (muzimaSetting != null)
+            if (muzimaSetting != null) {
                 return muzimaSetting.getValueBoolean();
+            }
             else
                 Log.e(getClass().getSimpleName(), "muzima online only mode setting is missing");
         } catch (MuzimaSettingFetchException e) {

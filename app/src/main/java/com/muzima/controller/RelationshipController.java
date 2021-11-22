@@ -267,6 +267,14 @@ public class RelationshipController {
             throw new DeleteRelationshipException(e);
         }
     }
+    public void  deleteAllRelationships() throws DeleteRelationshipException {
+        try {
+            List<Relationship> relationships = relationshipService.getAllRelationships();
+            relationshipService.deleteRelationships(relationships);
+        } catch (IOException e) {
+            throw new DeleteRelationshipException(e);
+        }
+    }
 
     /********************************************************************************************************
      *                               METHODS FOR PERSONS

@@ -160,6 +160,14 @@ public class EncounterController {
         return encounterService.getEncounterByUuid(encounterUuid);
     }
 
+    public List<Encounter> getAllEncounters() throws FetchEncounterException {
+        try {
+            return encounterService.getAllEncounters();
+        } catch (IOException e) {
+            throw new FetchEncounterException(e);
+        }
+    }
+
     public void deleteEncounters(List<Encounter> encounters) throws DeleteEncounterException {
         try {
             encounterService.deleteEncounters(encounters);
