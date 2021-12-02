@@ -54,6 +54,24 @@ public class PersonController {
         }
     }
 
+    public List<Person> getAllPersons() throws PersonLoadException {
+        try {
+            return personService.getAllPersons();
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while fetching persons : ", e);
+            throw new PersonLoadException(e);
+        }
+    }
+
+    public void deletePersons(List<Person> persons) throws PersonDeleteException {
+        try {
+            personService.deletePersons(persons);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while deleting persons : ", e);
+            throw new PersonDeleteException(e);
+        }
+    }
+
     /********************************************************************************************************
      *                               METHODS FOR EXCEPTION HANDLING
      *********************************************************************************************************/
@@ -67,6 +85,12 @@ public class PersonController {
     public static class PersonLoadException extends Throwable {
         public PersonLoadException(Throwable e) {
             super(e);
+        }
+    }
+
+    public static class PersonDeleteException extends Throwable {
+        public PersonDeleteException(Throwable throwable) {
+            super(throwable);
         }
     }
 }

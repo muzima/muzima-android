@@ -11,7 +11,6 @@
 package com.muzima.view.login;
 
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -25,7 +24,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -51,6 +49,7 @@ import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.OnlineOnlyModePreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.util.Constants;
@@ -88,6 +87,7 @@ public class LoginActivity extends BaseActivity {
     private ValueAnimator flipFromLoginToAuthAnimator;
     private ValueAnimator flipFromAuthToLoginAnimator;
     private boolean isUpdatePasswordChecked;
+    private boolean isOnlineModeEnabled;
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
@@ -175,6 +175,11 @@ public class LoginActivity extends BaseActivity {
         super.onResume();
         languageUtil.onCreate(this);
         setupStatusView();
+        getOnlineOnlyModePreference();
+
+        if(isOnlineModeEnabled){
+            removeChangedPasswordRecentlyCheckbox();
+        }
     }
 
     private void setupStatusView() {
@@ -327,6 +332,11 @@ public class LoginActivity extends BaseActivity {
         isUpdatePasswordChecked = ((CheckBox) view).isChecked();
     }
 
+    public void getOnlineOnlyModePreference() {
+        OnlineOnlyModePreferenceService onlineOnlyModePreferenceService = new OnlineOnlyModePreferenceService((MuzimaApplication) getApplicationContext());
+        isOnlineModeEnabled = onlineOnlyModePreferenceService.getOnlineOnlyModePreferenceValue();
+    }
+
     private void removeRemnantDataFromPreviousRunOfWizard() {
         if (!new WizardFinishPreferenceService(this).isWizardFinished()) {
             try {
@@ -383,7 +393,7 @@ public class LoginActivity extends BaseActivity {
         protected Result doInBackground(Credentials... params) {
             Credentials credentials = params[0];
             MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
-            int authenticationStatus = muzimaSyncService.authenticate(credentials.getCredentialsArray(), isUpdatePasswordChecked);
+            int authenticationStatus = muzimaSyncService.authenticate(credentials.getCredentialsArray(), isOnlineModeEnabled || isUpdatePasswordChecked);
             return new Result(credentials, authenticationStatus);
         }
 
@@ -391,6 +401,10 @@ public class LoginActivity extends BaseActivity {
         protected void onPostExecute(Result result) {
             MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
             if (result.status == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
+                if(isOnlineModeEnabled){
+                    muzimaApplication.deleteAllPatientsData();
+                }
+
                 MuzimaLoggerService.scheduleLogSync(muzimaApplication);
                 MuzimaLoggerService.log(muzimaApplication,"LOGIN_SUCCESS",
                         result.credentials.getUserName(),MuzimaLoggerService.getAndParseGPSLocationForLogging(muzimaApplication), "{}");

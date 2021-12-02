@@ -58,6 +58,7 @@ import java.util.Map;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
+//ToDO: android.preference.PreferenceFragment was depreciated in API 29 - the current target SDK version. There's need to migrate to androidx.preference
 public class SettingsPreferenceFragment extends PreferenceFragment  implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final Integer SESSION_TIMEOUT_MINIMUM = 0;
@@ -253,7 +254,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         realTimeSyncPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (realTimeSyncPreference.isChecked()) {
+                if (realTimeSyncPreference.isChecked() &&
+                !((MuzimaApplication) getActivity().getApplication()).getMuzimaSettingController().isOnlineOnlyModeEnabled()) {
                     MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getActivity().getApplicationContext());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(0,false);
@@ -262,6 +264,28 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                     }
                 }
                 return false;
+            }
+        });
+
+        realTimeSyncPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                if (o.equals(Boolean.FALSE)) {
+                    if (((MuzimaApplication) getActivity().getApplication()).getMuzimaSettingController().isOnlineOnlyModeEnabled()) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder
+                                .setCancelable(true)
+                                .setIcon(getIconWarning())
+                                .setTitle(R.string.title_real_time_sync_setting_unchanged)
+                                .setMessage(R.string.hint_real_time_sync_always_on)
+                                .setPositiveButton(getResources().getText(R.string.general_ok), null).create().show();
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+                return true;
             }
         });
 

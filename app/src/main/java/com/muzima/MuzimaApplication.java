@@ -15,6 +15,7 @@ import android.app.ActivityManager;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
@@ -23,6 +24,11 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
+import com.muzima.api.model.Cohort;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.Encounter;
+import com.muzima.api.model.Person;
+import com.muzima.api.model.Provider;
 import com.muzima.api.model.User;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
@@ -65,6 +71,7 @@ import com.muzima.view.preferences.MuzimaTimer;
 import java.io.File;
 import java.io.IOException;
 import java.security.Security;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -446,10 +453,108 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         saveBeforeExit();
+
+        if(muzimaContext != null && getMuzimaSettingController().isOnlineOnlyModeEnabled()){
+            deleteAllPatientsData();
+        }
+
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String passwordKey = getResources().getString(R.string.preference_password);
         settings.edit().putString(passwordKey, StringUtils.EMPTY).commit();
         evictAuthenticatedUser();
+    }
+
+    public void deleteAllPatientsData(){
+        List<Concept> allConcepts = new ArrayList<>();
+        try {
+            allConcepts = getConceptController().getConcepts();
+        } catch (ConceptController.ConceptFetchException e){
+            Log.e(getClass().getSimpleName(),"Could not fetch concepts",e);
+        }
+        if(!allConcepts.isEmpty()) {
+            try {
+                getObservationController().deleteAllObservations(allConcepts);
+            } catch (ObservationController.DeleteObservationException e){
+                Log.e(getClass().getSimpleName(),"Could not delete observations",e);
+            }
+        }
+
+        try {
+            List<Encounter> encounters = getEncounterController().getAllEncounters();
+            getEncounterController().deleteEncounters(encounters);
+        } catch (EncounterController.DeleteEncounterException e) {
+            Log.e(getClass().getSimpleName(),"Could not fetch encounters to be deleted",e);
+        } catch (EncounterController.FetchEncounterException e) {
+            Log.e(getClass().getSimpleName(),"Could not delete encounters",e);
+        }
+
+        try {
+            List<Cohort> syncedCohorts = getCohortController().getSyncedCohorts();
+            if (syncedCohorts.size() > 0) {
+                List<String> cohortUuids = new ArrayList<>();
+                syncedCohorts.forEach((cohort) -> {
+                    try {
+                        getCohortController().deleteAllCohortMembers(cohort.getUuid());
+                    } catch (CohortController.CohortReplaceException e) {
+                        Log.e(getClass().getSimpleName(),"Could not delete cohort members",e);
+                    }
+                    cohortUuids.add(cohort.getUuid());
+                });
+                getCohortController().setSyncStatus(cohortUuids, 0);
+            }
+        } catch (CohortController.CohortUpdateException e) {
+            Log.e(getClass().getSimpleName(),"Could not update cohorts",e);
+        } catch (CohortController.CohortFetchException e) {
+            Log.e(getClass().getSimpleName(),"Could not fetch synced cohorts",e);
+        }
+
+        try {
+            getPatientController().deleteAllPatients();
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(),"Could not delete patients",e);
+        }
+
+        try {
+            getRelationshipController().deleteAllRelationships();
+        } catch (RelationshipController.DeleteRelationshipException e) {
+            Log.e(getClass().getSimpleName(),"Could not delete relationships",e);
+        }
+
+        try{
+            List<Provider> providers = getProviderController().getAllProviders();
+            List<Person> nonPatientPersons = new ArrayList<>();
+
+            for (Provider provider : providers){
+                nonPatientPersons.add(provider.getPerson());
+            }
+
+            User authenticated = getAuthenticatedUser();
+
+            if(authenticated != null &&  authenticated.getPerson() != null)
+                nonPatientPersons.add(authenticated.getPerson());
+
+            List<Person> availablePersons = getPersonController().getAllPersons();
+            for(Person person : availablePersons){
+                if(nonPatientPersons.contains(person)){
+                    availablePersons.remove(person);
+                }
+            }
+            getPersonController().deletePersons(availablePersons);
+
+
+        } catch (PersonController.PersonLoadException e) {
+            Log.e(getClass().getSimpleName(),"Could not load persons for deletion",e);
+        } catch (ProviderController.ProviderLoadException e) {
+            Log.e(getClass().getSimpleName(),"Could not load providers",e);
+        } catch (PersonController.PersonDeleteException e) {
+            Log.e(getClass().getSimpleName(),"Could not delete persons",e);
+        }
+
+        try {
+            muzimaContext.getLastSyncTimeService().deleteAllPatientDataLastSyncTime();
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(),"Could not delete lastSyncTime",e);
+        }
     }
 
     public void cancelTimer() {

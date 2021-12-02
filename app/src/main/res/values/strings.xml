@@ -810,4 +810,6 @@ mUzima is a mobile application that enables health professionals collect, manage
 \n\n8. Contact Details
 \nIf you have any question or any concerns about the terms, please reach us on mUzimamobile@gmail.com
 </string>
+    <string name="title_real_time_sync_setting_unchanged">Real time sync not changed</string>
+    <string name="hint_real_time_sync_always_on">Real time sync is always ON in Online Mode.</string>
 </resources>

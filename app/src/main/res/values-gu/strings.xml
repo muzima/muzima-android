@@ -795,4 +795,6 @@
 \n\n8. સંપર્ક વિગતો
 \nજો તમને શરતો વિશે કોઈ પ્રશ્ન અથવા કોઈ ચિંતા હોય, તો કૃપા કરીને mUzima.mobile@gmail.com પર અમારો સંપર્ક કરો
     </string>
+    <string name="title_real_time_sync_setting_unchanged">રીઅલ-ટાઇમ સિંક બદલાયો નથી</string>
+    <string name="hint_real_time_sync_always_on">ઑનલાઇન મોડમાં રીઅલ ટાઇમ સિંક હંમેશા ચાલુ હોય છે.</string>
 </resources>

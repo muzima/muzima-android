@@ -798,4 +798,6 @@
 \n\n8. Maelezo ya Mawasiliano
 \nIkiwa una swali au wasiwasi wowote kuhusu sheria na masharti, tafadhali wasiliana nasi kwa mUzima.mobile@gmail.com
     </string>
+    <string name="title_real_time_sync_setting_unchanged">Usawazishaji wa wakati halisi haujabadilishwa</string>
+    <string name="hint_real_time_sync_always_on">Usawazishaji wa wakati halisi UMEWEZESHWA katika hali ya Mtandaoni.</string>
 </resources>
