@@ -32,9 +32,11 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.PatientController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.DefaultEncounterLocationPreferenceService;
@@ -218,6 +220,8 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
                     if (resultForPatients[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                         muzimaSyncService.downloadRelationshipsForPatientsByCohortUUIDs(uuids.toArray(new String[uuids.size()]));
+
+
                     }
 
                     return resultForPatients;
@@ -519,6 +523,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 onQueryTaskFinish();
                 downloadEncounters();
                 downloadObservations();
+
             }
         }.execute();
     }
@@ -627,11 +632,29 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     resultDescription = getString(R.string.error_observation_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
+
+                updatePatientTags();
+
                 downloadObservationsLog.setSetupActionResult(resultDescription);
                 downloadObservationsLog.setSetupActionResultStatus(resultStatus);
+
                 onQueryTaskFinish();
             }
         }.execute();
+    }
+
+    private void updatePatientTags(){
+        try {
+            List<Patient> patients = ((MuzimaApplication) getApplicationContext()).getPatientController().getAllPatients();
+            List<String> patientUuids = new ArrayList<>();
+
+            for(Patient patient:patients){
+                patientUuids.add(patient.getUuid());
+            }
+            ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService().updatePatientTags(patientUuids);
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Could not load patients to update tags", e);
+        }
     }
 
     private List<String> extractConceptsUuids() {

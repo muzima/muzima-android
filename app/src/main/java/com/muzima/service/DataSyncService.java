@@ -246,6 +246,8 @@ public class DataSyncService extends IntentService {
         muzimaSyncService.downloadRelationshipsTypes();
         int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByPatientUUIDs(patientUUIDList);
         broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
+
+        muzimaSyncService.updatePatientTags(patientUUIDList);
     }
 
     private void downloadPatientsWithObsAndEncounters(Intent broadcastIntent, String[] patientUUIDs) {
@@ -264,6 +266,8 @@ public class DataSyncService extends IntentService {
 
             int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByPatientUUIDs(patientUUIDList);
             broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
+
+            muzimaSyncService.updatePatientTags(patientUUIDList);
         }
     }
 

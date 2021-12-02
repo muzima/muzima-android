@@ -68,12 +68,14 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -190,19 +192,43 @@ class HTMLFormDataStore {
                     Log.e(getClass().getSimpleName(),jsonObjectInner.toString());
                     if(jsonObjectInner.has("patient.tagName") && jsonObjectInner.has("patient.tagUuid")) {
                         Log.e(getClass().getSimpleName(),"Form Has both tag fields");
-                        List<PatientTag> tags = new ArrayList<PatientTag>();
-                        Patient patient = patientController.getPatientByUuid(patientUuid);
-                        for (PatientTag tag : patient.getTags()) {
-                            tags.add(tag);
+
+
+                        List<PatientTag> existingTags = new ArrayList<>();
+
+                        try {
+                            existingTags = patientController.getAllTags();
+                        } catch (PatientController.PatientLoadException e) {
+                            e.printStackTrace();
                         }
 
-                        PatientTag tag = new PatientTag();
-                        tag.setName(jsonObjectInner.getString("patient.tagName"));
-                        tag.setUuid(jsonObjectInner.getString("patient.tagUuid"));
+                        List<PatientTag> tags = new ArrayList<PatientTag>();
+                        Patient patient = patientController.getPatientByUuid(patientUuid);
+
+                        if(patient.getTags() != null) {
+                            tags = new ArrayList<>(Arrays.asList(patient.getTags()));
+                        }
+
+                        String tagName = jsonObjectInner.getString("patient.tagName");
+                        PatientTag tag = null;
+                        for(PatientTag existingTag : existingTags){
+                            if(StringUtils.equals(existingTag.getName(),tagName)){
+                                tag = existingTag;
+                            }
+                        }
+
+                        if(tag == null) {
+                            tag = new PatientTag();
+                            tag.setName(tagName);
+                            tag.setUuid(jsonObjectInner.getString("patient.tagUuid"));
+                            existingTags.add(tag);
+                            patientController.savePatientTags(tag);
+                        }
+
                         tags.add(tag);
+
                         patient.setTags(tags.toArray(new PatientTag[tags.size()]));
                         patientController.updatePatient(patient);
-                        patientController.savePatientTags(tag);
                     }
                 }
                 if (!keepFormOpen) {
