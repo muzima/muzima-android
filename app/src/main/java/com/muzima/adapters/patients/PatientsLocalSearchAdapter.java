@@ -16,13 +16,16 @@ import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.CheckedLinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
@@ -32,21 +35,69 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
     private final String cohortId;
     private AsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+    private View.OnClickListener onClickListener;
+
+    private PatientListClickListener patientListClickListener;
+    private List<String> selectedPatientsUuids;
 
     public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
                                       PatientController patientController, String cohortId, MuzimaGPSLocation currentLocation) {
         super(context, textViewResourceId);
-        Context context1 = context;
         this.patientController = patientController;
         this.cohortId = cohortId;
         this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId, patientController);
         patientAdapterHelper.setCurrentLocation(currentLocation);
+        selectedPatientsUuids = new ArrayList<>();
+    }
+
+    public void setPatientListLongClickListener(PatientListClickListener patientListClickListener) {
+        this.patientListClickListener = patientListClickListener;
+    }
+
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        return patientAdapterHelper.createPatientRow(getItem(position), convertView, parent, getContext());
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
+        convertView = patientAdapterHelper.createPatientRow(getItem(position), convertView, parent, getContext());
+
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                toggleSelection(view, position);
+                patientListClickListener.onItemLongClick();
+                return true;
+            }
+        });
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                patientListClickListener.onItemClick(view, position);
+            }
+        });
+        return convertView;
+    }
+
+    public void toggleSelection(View view, int position){
+        CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
+        checkedLinearLayout.toggle();
+        boolean selected = checkedLinearLayout.isChecked();
+
+        Patient clickedPatient = getItem(position);
+        if (selected && !selectedPatientsUuids.contains(clickedPatient.getUuid())) {
+            selectedPatientsUuids.add(clickedPatient.getUuid());
+            checkedLinearLayout.setActivated(true);
+        } else if (!selected && selectedPatientsUuids.contains(clickedPatient.getUuid())) {
+            selectedPatientsUuids.remove(clickedPatient.getUuid());
+            checkedLinearLayout.setActivated(false);
+        }
+    }
+
+    public List<String> getSelectedPatientsUuids() {
+        return selectedPatientsUuids;
     }
 
     @Override
@@ -174,5 +225,11 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                 patientAdapterHelper.onProgressUpdate(patientList, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
             }
         }
+    }
+
+    public interface PatientListClickListener {
+
+        void onItemLongClick();
+        void onItemClick(View view, int position);
     }
 }

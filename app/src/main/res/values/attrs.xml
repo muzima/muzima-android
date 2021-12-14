@@ -27,6 +27,7 @@
     <attr name="icRefresh" format="reference"/>
     <attr name="icActionUpload" format="reference"/>
     <attr name="icLabels" format="reference"/>
+    <attr name="icAssign" format="reference"/>
     <attr name="icDiscard" format="reference"/>
     <attr name="icDownload" format="reference"/>
     <attr name="icReplyNotification" format="reference"/>

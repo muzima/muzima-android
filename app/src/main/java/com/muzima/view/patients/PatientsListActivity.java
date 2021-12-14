@@ -25,6 +25,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.legacy.app.ActionBarDrawerToggle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -90,8 +91,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class PatientsListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
-        ListAdapter.BackgroundListQueryTaskListener {
+public class PatientsListActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener,
+        PatientsLocalSearchAdapter.PatientListClickListener {
 
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
@@ -108,6 +109,9 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private SearchView searchView;
     private MenuItem searchMenuItem;
     private boolean intentBarcodeResults = false;
+
+    ActionMode actionMode;
+    boolean actionModeActive;
 
     private PatientController patientController;
     private MuzimaApplication muzimaApplication;
@@ -514,7 +518,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         patientAdapter.setBackgroundListQueryTaskListener(this);
         listView.setAdapter(patientAdapter);
-        listView.setOnItemClickListener(this);
+        patientAdapter.setPatientListLongClickListener(this);
     }
 
     private MuzimaGPSLocation getCurrentGPSLocation() {
@@ -544,13 +548,37 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+    public void onItemClick(View view, int position) {
         patientAdapter.cancelBackgroundTask();
         Patient patient = patientAdapter.getItem(position);
-        Intent intent = new Intent(this, PatientSummaryActivity.class);
 
-        intent.putExtra(PatientSummaryActivity.PATIENT, patient);
-        startActivity(intent);
+        if(actionModeActive){
+            patientAdapter.toggleSelection(view, position);
+            int numOfSelectedPatients = patientAdapter.getSelectedPatientsUuids().size();
+            if (numOfSelectedPatients == 0 && actionModeActive) {
+                actionMode.finish();
+            }
+            actionMode.setTitle(String.valueOf(numOfSelectedPatients));
+        } else {
+            Intent intent = new Intent(this, PatientSummaryActivity.class);
+
+            intent.putExtra(PatientSummaryActivity.PATIENT, patient);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onItemLongClick() {
+        if (!actionModeActive) {
+            actionMode = startActionMode(new MultiplePatientsSelectionActionModeCallback());
+            actionModeActive = true;
+        }
+        int numOfSelectedPatients = patientAdapter.getSelectedPatientsUuids().size();
+        if (numOfSelectedPatients == 0 && actionModeActive) {
+            actionMode.finish();
+        }
+        actionMode.setTitle(String.valueOf(numOfSelectedPatients));
     }
 
     @Override
@@ -1011,5 +1039,37 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             newSelectedTags.add(selectedTag.getName());
         }
         tagPreferenceService.savePatientSelectedTags(newSelectedTags);
+    }
+
+    final class MultiplePatientsSelectionActionModeCallback  implements ActionMode.Callback{
+
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            getMenuInflater().inflate(R.menu.actionmode_menu_assign, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.menu_assign:
+                //Launch index assignment form and avail selected patient UUIDs to the form.
+                    // The uuid of the form shall be specified by a server side setting
+                    // The form shall load details of the patient whose UUIDs were selected (by use of repeating section if multiple forms were selected)
+                    // The structure of the form should enable the app to generate a paylod with full assignment details,
+                    // and the server side module should be able to process the payload
+            }
+            return true;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            actionModeActive = false;
+        }
     }
 }

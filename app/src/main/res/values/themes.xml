@@ -33,6 +33,7 @@
         <item name="listMultiSelectorBlue">@drawable/list_multi_selector_blue</item>
         <item name="loginLayoutBackground">@drawable/login_layout_background</item>
         <item name="icLabels">@drawable/ic_labels</item>
+        <item name="icAssign">@drawable/ic_checkbox_marked_circle_plus_outline</item>
         <item name="icRefresh">@drawable/ic_refresh</item>
         <item name="icActionUpload">@drawable/ic_action_upload</item>
         <item name="dataTipColor">#e8e8e8</item>
@@ -73,6 +74,7 @@
         <item name="selectableHintText">@color/selectable_hint_text_light</item>
         <item name="loginLayoutBackground">@drawable/login_layout_background_light</item>
         <item name="icLabels">@drawable/ic_labels_light</item>
+        <item name="icAssign">@drawable/ic_checkbox_marked_circle_plus_outline_light</item>
         <item name="icRefresh">@drawable/ic_refresh_light</item>
         <item name="icActionUpload">@drawable/ic_action_upload_light</item>
         <item name="dataTipColor">@color/primary_black</item>
@@ -114,6 +116,7 @@
         <item name="loginLayoutBackground">@drawable/login_layout_background</item>
         <item name="icLabels">@drawable/ic_labels</item>
         <item name="icRefresh">@drawable/ic_refresh</item>
+        <item name="icAssign">@drawable/ic_checkbox_marked_circle_plus_outline</item>
         <item name="icActionUpload">@drawable/ic_action_upload</item>
         <item name="dataTipColor">#e8e8e8</item>
         <item name="icDiscard">@drawable/ic_action_discard</item>
@@ -152,6 +155,7 @@
         <item name="selectableHintText">@color/selectable_hint_text_light</item>
         <item name="loginLayoutBackground">@drawable/login_layout_background_light</item>
         <item name="icLabels">@drawable/ic_labels_light</item>
+        <item name="icAssign">@drawable/ic_checkbox_marked_circle_plus_outline_light</item>
         <item name="icRefresh">@drawable/ic_refresh_light</item>
         <item name="icActionUpload">@drawable/ic_action_upload_light</item>
         <item name="dataTipColor">@color/primary_black</item>

@@ -1412,7 +1412,7 @@ public class MuzimaSyncService {
                     tags.add(addressTag);
                 }
 
-                //create Assigned tag if patient has obs with concept ID 1912
+                //create Assigned tag if patient has obs with concept ID 1912. Needs further discussion to decide how old the tag should be
                 List<Observation> assignmentObs = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,1912);
                 if(assignmentObs.size() > 0){
                     PatientTag assignmentTag = new PatientTag();
@@ -1428,13 +1428,13 @@ public class MuzimaSyncService {
             } catch (RelationshipController.RetrieveRelationshipException e) {
                 Log.e(getClass().getSimpleName(),"Error retrieving relationships", e);
             } catch (PatientController.PatientSaveException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(), "Could not save patient with updated tags", e);
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(), "Could not load recordqs", e);
             } catch (PatientController.PatientLoadException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(), "Could not load patient record to update update tags", e);
             } catch (ObservationController.LoadObservationException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(), "Could not load observations to create tags tags", e);
             }
         }
     }
