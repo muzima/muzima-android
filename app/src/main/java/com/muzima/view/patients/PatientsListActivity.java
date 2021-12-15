@@ -29,6 +29,7 @@ import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.JavascriptInterface;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -44,13 +45,17 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientTagsListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
+import com.muzima.api.model.Form;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientTag;
 import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
+import com.muzima.model.AvailableForm;
+import com.muzima.model.BaseForm;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.service.MuzimaGPSLocationService;
@@ -67,6 +72,7 @@ import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainActivity;
+import com.muzima.view.forms.FormViewIntent;
 import com.muzima.view.forms.FormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 
@@ -85,6 +91,9 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_REA
 
 import com.muzima.api.model.SmartCardRecord;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -94,6 +103,7 @@ import java.util.UUID;
 public class PatientsListActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener,
         PatientsLocalSearchAdapter.PatientListClickListener {
 
+    public static final String SELECTED_PATIENT_UUIDS_KEY = "selectedPatientUuids";
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     private static final String QUICK_SEARCH = "quickSearch";
@@ -1059,12 +1069,36 @@ public class PatientsListActivity extends BroadcastListenerActivity implements L
             switch (menuItem.getItemId()) {
                 case R.id.menu_assign:
                 //Launch index assignment form and avail selected patient UUIDs to the form.
-                    // The uuid of the form shall be specified by a server side setting
-                    // The form shall load details of the patient whose UUIDs were selected (by use of repeating section if multiple forms were selected)
-                    // The structure of the form should enable the app to generate a paylod with full assignment details,
-                    // and the server side module should be able to process the payload
+                    try {
+                        // The uuid of the form shall be specified by a server side setting
+                        // The form shall load details of the patient whose UUIDs were selected (by use of repeating section if multiple forms were selected)
+                        // The structure of the form should enable the app to generate a paylod with full assignment details,
+                        // and the server side module should be able to process the payload
+
+                        String formUuid = "b4b3e8dc-fda9-4027-bef9-0e892e3c0dbd";
+                        AvailableForm assignmentForm = ((MuzimaApplication) getApplicationContext()).getFormController().getAvailableFormByFormUuid(formUuid);
+                        String patientUuid = patientAdapter.getSelectedPatientsUuids().get(0);
+                        Patient patient = patientController.getPatientByUuid(patientUuid);
+                        FormViewIntent intent = new FormViewIntent(PatientsListActivity.this, assignmentForm, patient, false);
+                        intent.putExtra(FormViewIntent.FORM_COMPLETION_STATUS_INTENT, FormViewIntent.FORM_COMPLETION_STATUS_RECOMMENDED);
+                        intent.putExtra(SELECTED_PATIENT_UUIDS_KEY,getSelectedPatientsUuids());
+                        startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
+                    } catch (FormController.FormFetchException e) {
+                        Log.e(getClass().getSimpleName(), "Could not open form",e);
+                    } catch (PatientController.PatientLoadException e) {
+                        Log.e(getClass().getSimpleName(), "Could not load patient",e);
+                    }
+
             }
             return true;
+        }
+
+        private String getSelectedPatientsUuids(){
+            JSONArray jsonArray = new JSONArray();
+            for (String uuid : patientAdapter.getSelectedPatientsUuids()){
+                jsonArray.put(uuid);
+            }
+            return jsonArray.toString();
         }
 
         @Override

@@ -100,6 +100,7 @@ class HTMLFormDataStore {
     private final CohortController cohortController;
     private final PatientController patientController;
     private final PersonController personController;
+    private String selectedPatientsUuids;
 
     public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormData formData, boolean isFormReload, MuzimaApplication application) {
         this.formWebViewActivity = formWebViewActivity;
@@ -116,6 +117,7 @@ class HTMLFormDataStore {
         this.patientController = application.getPatientController();
         this.personController = application.getPersonController();
         this.application = application;
+
         logFormStartEvent(isFormReload);
     }
 
@@ -1052,5 +1054,14 @@ class HTMLFormDataStore {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
         String applicationLanguage = preferences.getString(formWebViewActivity.getResources().getString(R.string.preference_app_language), formWebViewActivity.getResources().getString(R.string.language_english));
         return applicationLanguage;
+    }
+
+    public void setSelectedPatientsUuids(String selectedPatientsUuids) {
+        this.selectedPatientsUuids = selectedPatientsUuids;
+    }
+
+    @JavascriptInterface
+    public String getSelectedPatientsUuids(){
+        return selectedPatientsUuids;
     }
 }
