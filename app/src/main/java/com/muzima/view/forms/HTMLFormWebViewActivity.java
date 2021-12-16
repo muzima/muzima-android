@@ -71,6 +71,7 @@ import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.controller.FormController.FormFetchException;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
+import static com.muzima.view.patients.PatientsListActivity.SELECTED_PATIENT_UUIDS_KEY;
 import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 import static java.text.MessageFormat.format;
 
@@ -533,14 +534,25 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
         webView.addJavascriptInterface(encounterMiniFormCreatorComponent, ENCOUNTER_MINI_FORM_CREATOR);
 
-        webView.addJavascriptInterface(new HTMLFormDataStore(this, formData, isFormReload,
-                (MuzimaApplication) getApplicationContext()), HTML_DATA_STORE);
+        HTMLFormDataStore htmlFormDataStore = new HTMLFormDataStore(this, formData, isFormReload,
+                (MuzimaApplication) getApplicationContext());
+        htmlFormDataStore.setSelectedPatientsUuids(getSelectedFormUuidsFromIntent());
+        webView.addJavascriptInterface(htmlFormDataStore, HTML_DATA_STORE);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {
             webView.setOnTouchListener(createCompleteFormListenerToDisableInput());
         }
         webView.loadDataWithBaseURL("file:///android_asset/www/forms/", prePopulateData(),
                 "text/html", "UTF-8", "");
+    }
+
+    private String getSelectedFormUuidsFromIntent(){
+        String selectedFormUuids = getIntent().getStringExtra(SELECTED_PATIENT_UUIDS_KEY);
+        if (selectedFormUuids == null){
+            return "[]";
+        } else {
+            return selectedFormUuids;
+        }
     }
 
     private String prePopulateData() {
