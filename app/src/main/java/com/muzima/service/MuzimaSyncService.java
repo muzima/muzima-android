@@ -1416,7 +1416,7 @@ public class MuzimaSyncService {
                 List<Observation> assignmentObs = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,1912);
                 if(assignmentObs.size() > 0){
                     PatientTag assignmentTag = new PatientTag();
-                    assignmentTag.setName("✔");
+                    assignmentTag.setName("AL");
                     assignmentTag.setUuid("IndexCaseAssignmentTagUuid");
                     tags.add(assignmentTag);
                     patientController.savePatientTags(assignmentTag);
