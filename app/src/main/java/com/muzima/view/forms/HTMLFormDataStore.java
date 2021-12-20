@@ -1128,13 +1128,13 @@ class HTMLFormDataStore {
             }
             if ((jsonObjectInner.has("patient.tagName"))) {
                 jsonObjectInner.remove("patient.tagName");
-                jsonObjectInner.put("patient.tagName", "AL");
+                jsonObjectInner.put("patient.tagName", jsonObjectInner.getString("patient.tagName"));
                 jsonObject.put("patient", jsonObjectInner);
                 jsonPayload = jsonObject.toString();
             }
             if ((jsonObjectInner.has("patient.tagUuid"))) {
                 jsonObjectInner.remove("patient.tagUuid");
-                jsonObjectInner.put("patient.tagUuid", "f45392bb-2eed-4e0a-8896-7010a04d728a");
+                jsonObjectInner.put("patient.tagUuid", jsonObjectInner.getString("patient.tagUuid"));
                 jsonObject.put("patient", jsonObjectInner);
                 jsonPayload = jsonObject.toString();
             }
