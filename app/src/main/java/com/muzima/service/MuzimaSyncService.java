@@ -1420,7 +1420,12 @@ public class MuzimaSyncService {
                     assignmentTag.setUuid("IndexCaseAssignmentTagUuid");
                     tags.add(assignmentTag);
                     patientController.savePatientTags(assignmentTag);
-
+                }else{
+                    PatientTag assignmentTag = new PatientTag();
+                    assignmentTag.setName("AA");
+                    assignmentTag.setUuid("patientNotAllocatedTagUuid");
+                    tags.add(assignmentTag);
+                    patientController.savePatientTags(assignmentTag);
                 }
 
                 patient.setTags(tags.toArray(new PatientTag[tags.size()]));

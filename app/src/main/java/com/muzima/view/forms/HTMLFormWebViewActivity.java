@@ -496,7 +496,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         if (isGenericRegistrationForm() || isDemographicsUpdateForm() || isPersonRegistrationForm() || isPersonUpdateForm()) {
             formData.setJsonPayload(new GenericPatientRegistrationJSONMapper().map(((MuzimaApplication) getApplicationContext()),patient, formData, encounterProviderPreference, indexPatient));
         } else {
-            formData.setJsonPayload(new HTMLPatientJSONMapper().map(((MuzimaApplication) getApplicationContext()), patient, formData, encounterProviderPreference));
+            formData.setJsonPayload(new HTMLPatientJSONMapper().map(((MuzimaApplication) getApplicationContext()), patient, formData, encounterProviderPreference, getSelectedFormUuidsFromIntent()));
         }
     }
 
