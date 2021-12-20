@@ -139,7 +139,6 @@ class HTMLFormDataStore {
         }else{
             List<Patient> patients = getPatientsFromCommaSeparatedString(selectedPatients);
             for (Patient patient : patients) {
-                setSelectedPatientsUuids("");
                 String separatePatientJsonPayload = setPatientInfoToThePayload(patient, jsonPayload);
                 final String patientUuid = patient.getUuid();
                 final MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
@@ -237,6 +236,14 @@ class HTMLFormDataStore {
                         if (patient.getTags() != null) {
                             tags = new ArrayList<>(Arrays.asList(patient.getTags()));
                         }
+
+                        //Remove AA patient tag to be replaced by the AL/NA tags
+                        for(PatientTag patientTag : tags){
+                            if(patientTag.getName().equals("AA")){
+                                tags.remove(patientTag);
+                            }
+                        }
+
 
                         String tagName = jsonObjectInner.getString("patient.tagName");
                         PatientTag tag = null;

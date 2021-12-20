@@ -18,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import com.google.android.material.snackbar.Snackbar;
@@ -1088,7 +1089,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements L
                     } catch (PatientController.PatientLoadException e) {
                         Log.e(getClass().getSimpleName(), "Could not load patient",e);
                     }
-
+                    endActionMode();
             }
             return true;
         }
@@ -1104,6 +1105,12 @@ public class PatientsListActivity extends BroadcastListenerActivity implements L
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
+        }
+    }
+
+    public void endActionMode() {
+        if (this.actionMode != null) {
+            this.actionMode.finish();
         }
     }
 }
