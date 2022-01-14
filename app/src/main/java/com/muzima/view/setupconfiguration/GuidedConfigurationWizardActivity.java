@@ -36,6 +36,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.SetupActionLogModel;
@@ -633,7 +634,10 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
 
-                updatePatientTags();
+                MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
+                if(muzimaSettingController.isPatientTagGenerationEnabled()) {
+                    updatePatientTags();
+                }
 
                 downloadObservationsLog.setSetupActionResult(resultDescription);
                 downloadObservationsLog.setSetupActionResultStatus(resultStatus);
