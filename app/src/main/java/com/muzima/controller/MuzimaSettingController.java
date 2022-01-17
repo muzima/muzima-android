@@ -28,6 +28,7 @@ import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGE
 import static com.muzima.util.Constants.ServerSettings.RELATIONSHIP_FEATURE_ENABLED;
 import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEMOGRAPHICS_UPDATE_MANUAL_REVIEW_REQUIRED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.TAG_GENERATION_ENABLED_SETTING;
 
 public class MuzimaSettingController {
     private final MuzimaSettingService settingService;
@@ -320,6 +321,19 @@ public class MuzimaSettingController {
             }
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not fetch muzima Geomapping Feature setting",e);
+        }
+        return false;
+    }
+
+    public Boolean isPatientTagGenerationEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(TAG_GENERATION_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Tag generation setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Tag generation setting is missing on this server");
         }
         return false;
     }
