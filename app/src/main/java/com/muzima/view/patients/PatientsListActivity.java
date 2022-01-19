@@ -47,12 +47,15 @@ import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientTagsListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Form;
+import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientTag;
 import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.model.AvailableForm;
@@ -65,6 +68,7 @@ import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Fonts;
 import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
@@ -84,6 +88,7 @@ import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.muzima.util.Constants.ServerSettings.PATIENT_ASSIGNMENT_FORM_UUID_SETTING;
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
@@ -1070,26 +1075,48 @@ public class PatientsListActivity extends BroadcastListenerActivity implements L
             switch (menuItem.getItemId()) {
                 case R.id.menu_assign:
                 //Launch index assignment form and avail selected patient UUIDs to the form.
+                    boolean formUuidSettingAndFormAvailable = false;
                     try {
                         // The uuid of the form shall be specified by a server side setting
                         // The form shall load details of the patient whose UUIDs were selected (by use of repeating section if multiple forms were selected)
                         // The structure of the form should enable the app to generate a paylod with full assignment details,
                         // and the server side module should be able to process the payload
 
-                        String formUuid = "b4b3e8dc-fda9-4027-bef9-0e892e3c0dbd";
-                        AvailableForm assignmentForm = ((MuzimaApplication) getApplicationContext()).getFormController().getAvailableFormByFormUuid(formUuid);
-                        String patientUuid = patientAdapter.getSelectedPatientsUuids().get(0);
-                        Patient patient = patientController.getPatientByUuid(patientUuid);
-                        FormViewIntent intent = new FormViewIntent(PatientsListActivity.this, assignmentForm, patient, false);
-                        intent.putExtra(FormViewIntent.FORM_COMPLETION_STATUS_INTENT, FormViewIntent.FORM_COMPLETION_STATUS_RECOMMENDED);
-                        intent.putExtra(SELECTED_PATIENT_UUIDS_KEY,getSelectedPatientsUuids());
-                        startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
+                        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
+                        MuzimaSetting formUuidSetting = muzimaSettingController.getSettingByProperty(PATIENT_ASSIGNMENT_FORM_UUID_SETTING);
+
+
+                        if(formUuidSetting==null || StringUtils.isEmpty(formUuidSetting.getValueString())) {
+                            Toast.makeText(getApplicationContext(),R.string.assignment_form_uuid_missing_warning, Toast.LENGTH_LONG).show();
+                        }else {
+                            FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
+                            String formUuid = formUuidSetting.getValueString();
+                            AvailableForm assignmentForm = ((MuzimaApplication) getApplicationContext()).getFormController().getAvailableFormByFormUuid(formUuid);
+                            String patientUuid = patientAdapter.getSelectedPatientsUuids().get(0);
+                            Patient patient = patientController.getPatientByUuid(patientUuid);
+
+                            FormTemplate formTemplate = formController.getFormTemplateByUuid(assignmentForm.getFormUuid());
+                            if(formTemplate == null){
+                                Toast.makeText(getApplicationContext(),R.string.assignment_form_not_downloaded_warning, Toast.LENGTH_LONG).show();
+                            }else {
+                                formUuidSettingAndFormAvailable = true;
+                                FormViewIntent intent = new FormViewIntent(PatientsListActivity.this, assignmentForm, patient, false);
+                                intent.putExtra(FormViewIntent.FORM_COMPLETION_STATUS_INTENT, FormViewIntent.FORM_COMPLETION_STATUS_RECOMMENDED);
+                                intent.putExtra(SELECTED_PATIENT_UUIDS_KEY, getSelectedPatientsUuids());
+                                startActivityForResult(intent, FormsActivity.FORM_VIEW_ACTIVITY_RESULT);
+                            }
+                        }
                     } catch (FormController.FormFetchException e) {
                         Log.e(getClass().getSimpleName(), "Could not open form",e);
                     } catch (PatientController.PatientLoadException e) {
                         Log.e(getClass().getSimpleName(), "Could not load patient",e);
+                    } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+                        Toast.makeText(getApplicationContext(),R.string.assignment_form_uuid_missing_warning, Toast.LENGTH_LONG).show();
+                        Log.e(getClass().getSimpleName(), "Could not get setting",e);
                     }
-                    endActionMode();
+                    if(formUuidSettingAndFormAvailable) {
+                        endActionMode();
+                    }
             }
             return true;
         }

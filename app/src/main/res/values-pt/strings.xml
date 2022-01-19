@@ -778,4 +778,6 @@
 
     <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
     <string name="title_privacy_policy">Política de Privacidade</string>
+    <string name="assignment_form_uuid_missing_warning">Desculpe, o formulário de atribuição não foi definido. Entre em contato com o administrador.</string>
+    <string name="assignment_form_not_downloaded_warning">Parece que o formulário de atribuição não foi baixado, confirme se foi baixado ou entre em contato com o administrador.</string>
 </resources>

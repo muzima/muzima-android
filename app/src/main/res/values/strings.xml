@@ -833,4 +833,6 @@
 
     <string name="youTube_player_error">An error occurred while loading YouTube video</string>
     <string name="title_privacy_policy">Privacy Policy</string>
+    <string name="assignment_form_uuid_missing_warning">Sorry, assignment form has not been set. Please contact administrator.</string>
+    <string name="assignment_form_not_downloaded_warning">Seems like the assignment form is not downloaded, please confirm it is downloaded or contact administrator.</string>
 </resources>
