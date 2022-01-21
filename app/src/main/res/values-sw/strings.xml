@@ -800,4 +800,7 @@
     </string>
     <string name="title_real_time_sync_setting_unchanged">Usawazishaji wa wakati halisi haujabadilishwa</string>
     <string name="hint_real_time_sync_always_on">Usawazishaji wa wakati halisi UMEWEZESHWA katika hali ya Mtandaoni.</string>
+    <string name="online_mode_switch">Badili hadi hali ya mtandaoni</string>
+    <string name="online_mode_switch_warning">Umebadilishwa kutoka hali ya nje ya mtandao hadi hali ya mtandaoni. Ukiwa kwenye hali ya mtandaoni, data yote ya mgonjwa itafutwa kutoka kwa kifaa chako ukiondoka kwenye akaunti au ukiondoka kwenye akaunti kiotomatiki.</string>
+    <string name="general_online_mode">Hali ya Mtandaoni</string>
 </resources>

@@ -805,4 +805,7 @@
  </string>
     <string name="title_real_time_sync_setting_unchanged">Synchronisation en temps réel non modifiée</string>
  <string name="hint_real_time_sync_always_on">La synchronisation en temps réel est toujours activée en mode en ligne.</string>
+    <string name="online_mode_switch">Passer en mode en ligne</string>
+ <string name="online_mode_switch_warning">Vous êtes passé du mode hors ligne au mode en ligne. En mode en ligne, toutes les données du patient seront supprimées de votre appareil lorsque vous vous déconnectez ou que vous êtes automatiquement déconnecté.</string>
+    <string name="general_online_mode">Mode en ligne</string>
 </resources>

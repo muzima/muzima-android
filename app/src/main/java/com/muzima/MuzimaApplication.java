@@ -368,7 +368,7 @@ public class MuzimaApplication extends MultiDexApplication {
         if (settingsController == null) {
             try {
                 settingsController = new MuzimaSettingController(muzimaContext.getMuzimaSettingService(),
-                        muzimaContext.getLastSyncTimeService(), getSntpService(), muzimaContext.getSetupConfigurationService());
+                        muzimaContext.getLastSyncTimeService(), getSntpService(), muzimaContext.getSetupConfigurationService(), this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

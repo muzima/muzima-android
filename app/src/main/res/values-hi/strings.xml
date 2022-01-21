@@ -796,4 +796,7 @@
     </string>
     <string name="title_real_time_sync_setting_unchanged">रीयल-टाइम सिंक नहीं बदला</string>
     <string name="hint_real_time_sync_always_on">ऑनलाइन मोड में रीयल टाइम सिंक हमेशा चालू रहता है।</string>
+    <string name="online_mode_switch">ऑनलाइन मोड में स्विच करें</string>
+    <string name="online_mode_switch_warning">आपको ऑफलाइन मोड से ऑनलाइन मोड में स्विच कर दिया गया है। ऑनलाइन मोड पर रहते हुए, जब आप लॉग आउट करते हैं या आप स्वतः लॉग आउट होते हैं, तो सभी रोगी डेटा आपके डिवाइस से हटा दिए जाएंगे।</string>
+    <string name="general_online_mode">ऑनलाइन मोड</string>
 </resources>

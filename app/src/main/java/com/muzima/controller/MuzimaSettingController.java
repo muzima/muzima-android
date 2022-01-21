@@ -10,8 +10,21 @@
 
 package com.muzima.controller;
 
-import android.util.Log;
+import static android.content.DialogInterface.BUTTON_POSITIVE;
 
+import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.WindowManager;
+
+import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfigurationTemplate;
@@ -20,6 +33,10 @@ import com.muzima.api.service.MuzimaSettingService;
 
 import com.muzima.api.service.SetupConfigurationService;
 import com.muzima.service.SntpService;
+import com.muzima.utils.ThemeUtils;
+import com.muzima.view.MainDashboardActivity;
+import com.muzima.view.barcode.BarcodeCaptureActivity;
+
 import org.apache.lucene.queryParser.ParseException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,13 +65,15 @@ public class MuzimaSettingController {
     private final LastSyncTimeService lastSyncTimeService;
     private final SntpService sntpService;
     private final SetupConfigurationService setupConfigurationService;
+    private final MuzimaApplication muzimaApplication;
 
     public MuzimaSettingController(MuzimaSettingService settingService, LastSyncTimeService lastSyncTimeService,
-                                   SntpService sntpService, SetupConfigurationService setupConfigurationService) {
+                                   SntpService sntpService, SetupConfigurationService setupConfigurationService, MuzimaApplication muzimaApplication) {
         this.settingService = settingService;
         this.lastSyncTimeService = lastSyncTimeService;
         this.sntpService = sntpService;
         this.setupConfigurationService = setupConfigurationService;
+        this.muzimaApplication = muzimaApplication;
     }
 
     public MuzimaSetting getSettingByProperty(String property) throws MuzimaSettingFetchException {
@@ -182,12 +201,37 @@ public class MuzimaSettingController {
         try {
             if (settingService.getSettingByProperty(setting.getProperty()) != null) {
                 settingService.updateSetting(setting);
+                if(setting.getProperty().equals(ONLINE_ONLY_MODE_ENABLED_SETTING)){
+                    updateTheme();
+                    if(!setting.getValueBoolean()) {
+                        ActivityManager am = (ActivityManager) muzimaApplication.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+                        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+                        Intent intent = new Intent();
+                        intent.setComponent(cn);
+                        muzimaApplication.getApplicationContext().startActivity(intent);
+                    }else {
+                        Intent intent;
+                        intent = new Intent(muzimaApplication, MainDashboardActivity.class);
+                        intent.putExtra("OnlineMode", setting.getValueBoolean());
+                        muzimaApplication.startActivity(intent);
+                    }
+                }
             } else {
                 settingService.saveSetting(setting);
             }
         } catch (IOException | NullPointerException | ParseException e) {
             throw new MuzimaSettingSaveException(e);
         }
+    }
+
+    public void updateTheme(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+        String lightModeKey = muzimaApplication.getApplicationContext().getResources().getString(R.string.preference_light_mode);
+        boolean isLightThemeEnabled = preferences.getBoolean(lightModeKey, false);
+
+        preferences.edit()
+                .putBoolean(lightModeKey, !isLightThemeEnabled)
+                .apply();
     }
 
     public List<MuzimaSetting> downloadChangedSettingsSinceLastSync() throws MuzimaSettingDownloadException {

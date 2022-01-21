@@ -797,4 +797,7 @@
     </string>
     <string name="title_real_time_sync_setting_unchanged">રીઅલ-ટાઇમ સિંક બદલાયો નથી</string>
     <string name="hint_real_time_sync_always_on">ઑનલાઇન મોડમાં રીઅલ ટાઇમ સિંક હંમેશા ચાલુ હોય છે.</string>
+    <string name="online_mode_switch">ઑનલાઇન મોડ પર સ્વિચ કરો</string>
+    <string name="online_mode_switch_warning">તમને ઑફલાઇન મોડમાંથી ઑનલાઇન મોડ પર સ્વિચ કરવામાં આવ્યા છે. ઓનલાઈન મોડ પર હોવા પર, જ્યારે તમે લોગ આઉટ કરશો અથવા તમે ઓટો લોગ આઉટ થશો ત્યારે તમારા ઉપકરણમાંથી દર્દીનો તમામ ડેટા કાઢી નાખવામાં આવશે.</string>
+    <string name="general_online_mode">ઓનલાઈન મોડ</string>
 </resources>

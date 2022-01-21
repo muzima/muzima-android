@@ -812,4 +812,7 @@ mUzima is a mobile application that enables health professionals collect, manage
 </string>
     <string name="title_real_time_sync_setting_unchanged">Real time sync not changed</string>
     <string name="hint_real_time_sync_always_on">Real time sync is always ON in Online Mode.</string>
+    <string name="general_online_mode">Online Mode</string>
+    <string name="online_mode_switch">Switch to online mode</string>
+    <string name="online_mode_switch_warning">You have been switched from the offline mode to online mode. While on online mode, all patient data will be deleted from your device when you log out or you are auto logged out.</string>
 </resources>

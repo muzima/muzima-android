@@ -10,6 +10,8 @@
 
 package com.muzima.view;
 
+import static android.content.DialogInterface.BUTTON_POSITIVE;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -21,6 +23,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,7 +76,9 @@ import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
+import com.muzima.view.forms.HTMLFormWebViewActivity;
 import com.muzima.view.login.LoginActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.patients.PatientsLocationMapActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -104,6 +109,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
     private AppBarConfiguration mAppBarConfiguration;
     private NavController navController;
+    private boolean isChangedToOnlineMode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,6 +121,25 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), false);
         initializeResources();
         loadCohorts(false);
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("OnlineMode")) {
+            isChangedToOnlineMode = (boolean) intent.getSerializableExtra("OnlineMode");
+            showDialog();
+        }
+    }
+
+    public void showDialog(){
+        if(isChangedToOnlineMode) {
+            new AlertDialog.Builder(this)
+                    .setCancelable(true)
+                    .setIcon(ThemeUtils.getIconWarning(this))
+                    .setTitle(getResources().getString(R.string.online_mode_switch))
+                    .setMessage(getResources().getString(R.string.online_mode_switch_warning))
+                    .setPositiveButton(getString(R.string.general_ok), null)
+                    .create()
+                    .show();
+        }
     }
 
     private void loadCohorts(final boolean showFilter) {
