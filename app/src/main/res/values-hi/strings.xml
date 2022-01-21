@@ -799,4 +799,5 @@
     <string name="online_mode_switch">ऑनलाइन मोड में स्विच करें</string>
     <string name="online_mode_switch_warning">आपको ऑफलाइन मोड से ऑनलाइन मोड में स्विच कर दिया गया है। ऑनलाइन मोड पर रहते हुए, जब आप लॉग आउट करते हैं या आप स्वतः लॉग आउट होते हैं, तो सभी रोगी डेटा आपके डिवाइस से हटा दिए जाएंगे।</string>
     <string name="general_online_mode">ऑनलाइन मोड</string>
+    <string name="warning_logout_confirm_with_form_deletion">क्या आप वाकई लॉग आउट करना चाहते हैं और मुज़िमा ऐप से बाहर निकलना चाहते हैं? सभी पूर्ण और अपूर्ण प्रपत्र हटा दिए जाएंगे</string>
 </resources>

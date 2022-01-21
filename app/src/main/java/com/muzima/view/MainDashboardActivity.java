@@ -52,9 +52,11 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortFilterAdapter;
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.SmartCardRecord;
+import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.CohortFilter;
@@ -508,11 +510,30 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     }
 
     private void showExitAlertDialog() {
+
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+        boolean isOnlineOnlyModeEnabled = muzimaSettingController.isOnlineOnlyModeEnabled();
+
+        FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
+        int incompleteForms = 0;
+        int completeForms = 0;
+        try {
+            incompleteForms = formController.countAllIncompleteForms();
+            completeForms = formController.countAllCompleteForms();
+        } catch (FormController.FormFetchException e) {
+            Log.e(getClass().getSimpleName(),"Not able to fetch forms");
+        }
+
+        String message = getResources().getString(R.string.warning_logout_confirm);
+        if(isOnlineOnlyModeEnabled && (incompleteForms>0 || completeForms>0)){
+            message = getResources().getString(R.string.warning_logout_confirm_with_form_deletion);
+        }
+
         new AlertDialog.Builder(MainDashboardActivity.this)
                 .setCancelable(true)
                 .setIcon(ThemeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
-                .setMessage(getResources().getString(R.string.warning_logout_confirm))
+                .setMessage(message)
                 .setPositiveButton(getString(R.string.general_yes), exitApplication())
                 .setNegativeButton(getString(R.string.general_no), null)
                 .create()

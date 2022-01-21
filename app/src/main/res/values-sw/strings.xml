@@ -803,4 +803,5 @@
     <string name="online_mode_switch">Badili hadi hali ya mtandaoni</string>
     <string name="online_mode_switch_warning">Umebadilishwa kutoka hali ya nje ya mtandao hadi hali ya mtandaoni. Ukiwa kwenye hali ya mtandaoni, data yote ya mgonjwa itafutwa kutoka kwa kifaa chako ukiondoka kwenye akaunti au ukiondoka kwenye akaunti kiotomatiki.</string>
     <string name="general_online_mode">Hali ya Mtandaoni</string>
+    <string name="warning_logout_confirm_with_form_deletion">Je, una uhakika unataka kutoka na kuondoka kwenye programu ya mUzima? Fomu zote zilizojazwa na ambazo hazijakamilika zitafutwa</string>
 </resources>

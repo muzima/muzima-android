@@ -800,4 +800,5 @@
     <string name="online_mode_switch">ઑનલાઇન મોડ પર સ્વિચ કરો</string>
     <string name="online_mode_switch_warning">તમને ઑફલાઇન મોડમાંથી ઑનલાઇન મોડ પર સ્વિચ કરવામાં આવ્યા છે. ઓનલાઈન મોડ પર હોવા પર, જ્યારે તમે લોગ આઉટ કરશો અથવા તમે ઓટો લોગ આઉટ થશો ત્યારે તમારા ઉપકરણમાંથી દર્દીનો તમામ ડેટા કાઢી નાખવામાં આવશે.</string>
     <string name="general_online_mode">ઓનલાઈન મોડ</string>
+    <string name="warning_logout_confirm_with_form_deletion">શું તમે ખરેખર લૉગ આઉટ કરવા અને mUzima ઍપમાંથી બહાર નીકળવા માંગો છો? તમામ પૂર્ણ અને અપૂર્ણ ફોર્મ કાઢી નાખવામાં આવશે</string>
 </resources>

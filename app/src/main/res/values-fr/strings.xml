@@ -808,4 +808,5 @@
     <string name="online_mode_switch">Passer en mode en ligne</string>
  <string name="online_mode_switch_warning">Vous êtes passé du mode hors ligne au mode en ligne. En mode en ligne, toutes les données du patient seront supprimées de votre appareil lorsque vous vous déconnectez ou que vous êtes automatiquement déconnecté.</string>
     <string name="general_online_mode">Mode en ligne</string>
+    <string name="warning_logout_confirm_with_form_deletion">Voulez-vous vraiment vous déconnecter et quitter l\'application mUzima ? Tous les formulaires complets et incomplets seront supprimés</string>
 </resources>
