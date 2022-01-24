@@ -771,4 +771,6 @@
 
     <string name="youTube_player_error">YouTube વિડિઓ લોડ કરતી વખતે ભૂલ આવી</string>
     <string name="title_privacy_policy">ગોપનીયતા નીતિ</string>
+    <string name="assignment_form_uuid_missing_warning">માફ કરશો, સોંપણી ફોર્મ સેટ કરવામાં આવ્યું નથી. કૃપા કરીને વ્યવસ્થાપકનો સંપર્ક કરો.</string>
+    <string name="assignment_form_not_downloaded_warning">એવું લાગે છે કે અસાઇનમેન્ટ ફોર્મ ડાઉનલોડ થયું નથી, કૃપા કરીને ખાતરી કરો કે તે ડાઉનલોડ થયું છે અથવા એડમિનિસ્ટ્રેટરનો સંપર્ક કરો.</string>
 </resources>

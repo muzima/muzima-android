@@ -779,4 +779,6 @@
 
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
     <string name="title_privacy_policy">Politique de confidentialité</string>
+    <string name="assignment_form_uuid_missing_warning">Désolé, le formulaire de devoir n\'a pas été défini. Veuillez contacter l\'administrateur.</string>
+    <string name="assignment_form_not_downloaded_warning">Il semble que le formulaire de devoir n\'est pas téléchargé, veuillez confirmer qu\'il est téléchargé ou contacter l\'administrateur.</string>
 </resources>

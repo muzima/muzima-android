@@ -774,4 +774,6 @@
 
     <string name="youTube_player_error">Hitilafu ilitokea wakati wa kupakia video ya YouTube</string>
     <string name="title_privacy_policy">Sera ya faragha</string>
+    <string name="assignment_form_uuid_missing_warning">Samahani, fomu ya mgawo haijawekwa. Tafadhali wasiliana na msimamizi.</string>
+    <string name="assignment_form_not_downloaded_warning">Inaonekana kama fomu ya mgawo haijapakuliwa, tafadhali thibitisha kuwa imepakuliwa au wasiliana na msimamizi.</string>
 </resources>
