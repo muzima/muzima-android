@@ -450,4 +450,11 @@ public class Constants {
         }
     }
 
+    public static class FGH{
+        public static class Concepts {
+            public static final int HEALTHWORKER_ASSIGNMENT_CONCEPT_ID = 1912;
+            public static final int INDEX_CASE_TESTING_CONSENT_CONCEPT_ID = 21155;
+        }
+    }
+
 }
