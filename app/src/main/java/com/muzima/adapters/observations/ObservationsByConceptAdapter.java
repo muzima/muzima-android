@@ -32,6 +32,7 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.Provider;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
@@ -48,6 +49,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
 
 
 public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWithObservations> {
@@ -67,6 +70,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
     private CustomObsEntryDialog customObsEntryDialog;
     private ProviderController providerController;
     private Patient patient;
+    private boolean shouldReplaceProviderIdWithNames;
 
     public ObservationsByConceptAdapter(FragmentActivity activity, int itemCohortsList,
                                         ConceptController conceptController,
@@ -77,6 +81,7 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         this.muzimaApplication = (MuzimaApplication) getContext().getApplicationContext();
         this.providerController = muzimaApplication.getProviderController();
         this.patient = patient;
+        shouldReplaceProviderIdWithNames = muzimaApplication.getMuzimaSettingController().isPatientTagGenerationEnabled();
     }
 
     @Override
@@ -212,9 +217,18 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             } else {
                 observationValue.setVisibility(View.VISIBLE);
                 observationComplexHolder.setVisibility(View.GONE);
-                observationValue.setText(observation.getValueAsString());
                 observationValue.setTypeface(Fonts.roboto_medium(getContext()));
                 observationValue.setTextColor(conceptColor);
+                if(shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID){
+                    Provider provider = muzimaApplication.getProviderController().getProviderBySystemId(observation.getValueAsString());
+                    if(provider != null){
+                        observationValue.setText(provider.getName());
+                    } else {
+                        observationValue.setText(observation.getValueAsString());
+                    }
+                } else {
+                    observationValue.setText(observation.getValueAsString());
+                }
             }
 
             //Disabling Individual obs for coded concepts until MUZIMA-620 is worked on
