@@ -45,6 +45,8 @@ public class HelpActivity extends BaseHelpActivity {
     private static final String CLIENT_REGISTRATION = "https://youtu.be/fmjhF-juq4k";
     private static final String LOCAL_CLIENT_SEARCH = "https://youtu.be/630daM1wxGE";
     private static final String SERVER_CLIENT_SEARCH = "https://youtu.be/C1xDs8wWjNM";
+    private static final String PRIVACY_POLICY_URL = "https://www.muzima.org/privacy-policy";
+    private static final String TERMS_AND_CONDITIONS = "https://www.muzima.org/terms-and-conditions/";
 
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
@@ -88,6 +90,10 @@ public class HelpActivity extends BaseHelpActivity {
                     startHelpContentDisplayActivity(MUZIMA_SETTINGS, (String) listAdapter.getChild(groupPosition, childPosition));
                 } else if (groupPosition == 0 && childPosition == 3) {
                     startHelpContentDisplayActivity(FILL_PATIENT_FORMS, (String) listAdapter.getChild(groupPosition, childPosition));
+                } else if (groupPosition == 0 && childPosition == 4) {
+                    startHelpContentDisplayActivity(PRIVACY_POLICY_URL, (String) listAdapter.getChild(groupPosition, childPosition));
+                } else if (groupPosition == 0 && childPosition == 5) {
+                    startHelpContentDisplayActivity(PRIVACY_POLICY_URL, (String) listAdapter.getChild(groupPosition, childPosition));
                 }
                 //video links
                 else if (groupPosition == 1 && childPosition == 0) {
@@ -137,6 +143,7 @@ public class HelpActivity extends BaseHelpActivity {
         howTo.add(getString(R.string.title_about_dashboard_help_html));
         howTo.add(getString(R.string.title_settings_help_html));
         howTo.add(getString(R.string.title_fill_patient_forms_help));
+        howTo.add(getString(R.string.title_privacy_policy));
 
         List<String> videoLinks = new ArrayList<>();
         videoLinks.add(getString(R.string.title_guided_setup_help_video));

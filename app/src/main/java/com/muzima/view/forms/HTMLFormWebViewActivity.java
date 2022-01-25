@@ -75,6 +75,7 @@ import static com.muzima.controller.FormController.FormFetchException;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static com.muzima.view.forms.BarCodeComponent.RC_BARCODE_CAPTURE;
+import static com.muzima.view.fragments.DashboardHomeFragment.SELECTED_PATIENT_UUIDS_KEY;
 import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 import static java.text.MessageFormat.format;
 
@@ -502,7 +503,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         if (isGenericRegistrationForm() || isDemographicsUpdateForm() || isPersonRegistrationForm() || isPersonUpdateForm()) {
             formData.setJsonPayload(new GenericPatientRegistrationJSONMapper().map(((MuzimaApplication) getApplicationContext()),patient, formData, encounterProviderPreference, indexPatient));
         } else {
-            formData.setJsonPayload(new HTMLPatientJSONMapper().map(((MuzimaApplication) getApplicationContext()), patient, formData, encounterProviderPreference));
+            formData.setJsonPayload(new HTMLPatientJSONMapper().map(((MuzimaApplication) getApplicationContext()), patient, formData, encounterProviderPreference, getSelectedFormUuidsFromIntent()));
         }
     }
 
@@ -542,12 +543,27 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
         webView.addJavascriptInterface(new HTMLFormDataStore(this, formData, isFormReload,
                 (MuzimaApplication) getApplicationContext()), HTML_DATA_STORE);
+
+        HTMLFormDataStore htmlFormDataStore = new HTMLFormDataStore(this, formData, isFormReload,
+                (MuzimaApplication) getApplicationContext());
+        htmlFormDataStore.setSelectedPatientsUuids(getSelectedFormUuidsFromIntent());
+        webView.addJavascriptInterface(htmlFormDataStore, HTML_DATA_STORE);
+
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {
             webView.setOnTouchListener(createCompleteFormListenerToDisableInput());
         }
         webView.loadDataWithBaseURL("file:///android_asset/www/forms/", prePopulateData(),
                 "text/html", "UTF-8", "");
+    }
+
+    private String getSelectedFormUuidsFromIntent(){
+        String selectedFormUuids = getIntent().getStringExtra(SELECTED_PATIENT_UUIDS_KEY);
+        if (selectedFormUuids == null){
+            return "[]";
+        } else {
+            return selectedFormUuids;
+        }
     }
 
     private String prePopulateData() {

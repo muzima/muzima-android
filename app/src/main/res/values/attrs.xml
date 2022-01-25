@@ -32,6 +32,7 @@
     <attr name="defaultNavigationDrawerStyle" format="reference"/>
     <attr name="bottomNavigationBackground" format="reference"/>
     <attr name="onDarkBackgroundColor" format="reference"/>
+    <attr name="icAssign" format="reference"/>
 
     <declare-styleable name="PagerSlidingTabStrip">
         <attr name="indicatorTextColor" format="color"/>

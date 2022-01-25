@@ -40,6 +40,7 @@
         <item name="colorNavigationItemSelected">@color/primary_white</item>
         <item name="onDarkBackgroundColor">@color/dark_smoke</item>
         <item name="colorPrimary">@color/primary_black</item>
+        <item name="icAssign">@drawable/ic_checkbox_marked_circle_plus_outline</item>
     </style>
     <style name="AppBaseTheme.NoActionBar" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <item name="android:statusBarColor">@color/primary_black</item>
@@ -69,6 +70,7 @@
         <item name="colorNavigationItemSelected">@color/primary_white</item>
         <item name="onDarkBackgroundColor">@color/dark_smoke</item>
         <item name="colorPrimary">@color/primary_black</item>
+        <item name="icAssign">@drawable/ic_checkbox_marked_circle_plus_outline_light</item>
     </style>
 
     <style name="AppBaseTheme.Light" parent="Theme.MaterialComponents.Light.Bridge">
@@ -100,6 +102,7 @@
         <item name="bottomNavigationBackground">@color/bottom_navigation_background_light</item>
         <item name="onDarkBackgroundColor">@color/primary_black</item>
         <item name="colorPrimary">@color/primary_white</item>
+        <item name="icAssign">@drawable/ic_checkbox_marked_circle_plus_outline</item>
     </style>
     <style name="AppBaseTheme.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="android:statusBarColor">@color/darker_primary_blue</item>
@@ -130,5 +133,6 @@
         <item name="bottomNavigationBackground">@color/bottom_navigation_background_light</item>
         <item name="onDarkBackgroundColor">@color/primary_black</item>
         <item name="colorPrimary">@color/primary_white</item>
+        <item name="icAssign">@drawable/ic_checkbox_marked_circle_plus_outline_light</item>
     </style>
 </resources>

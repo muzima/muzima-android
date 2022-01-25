@@ -22,6 +22,7 @@ import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.User;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
@@ -31,6 +32,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class HTMLPatientJSONMapper {
     private Patient patient;
     private MuzimaApplication muzimaApplication;
 
-    public String map(MuzimaApplication muzimaApplication,Patient patient, FormData formData, boolean isLoggedInUserIsDefaultProvider) {
+    public String map(MuzimaApplication muzimaApplication,Patient patient, FormData formData, boolean isLoggedInUserIsDefaultProvider, String selectedPatientUUids) {
         JSONObject prepopulateJSON = new JSONObject();
         JSONObject patientDetails = new JSONObject();
         JSONObject encounterDetails = new JSONObject();
@@ -126,10 +128,34 @@ public class HTMLPatientJSONMapper {
                 patientDetails.put("patient.personaddress",addressesJSONArray);
             }
 
+            if(!selectedPatientUUids.isEmpty() && !selectedPatientUUids.equals("[]")) {
+                List<Patient> patients = new ArrayList<>();
+                JSONArray selectedPatientJSONArray = new JSONArray();
+                selectedPatientUUids = selectedPatientUUids.replace("[", "");
+                selectedPatientUUids = selectedPatientUUids.replace("]", "");
+                selectedPatientUUids = selectedPatientUUids.replaceAll("\"", "");
+                List<String> patientUuidList = Arrays.asList(selectedPatientUUids.split(","));
+                for (String patientUuid : patientUuidList) {
+                    PatientController patientController = muzimaApplication.getPatientController();
+                    Patient patient1 = patientController.getPatientByUuid(patientUuid);
+
+                    JSONObject selectedPatientJSONObject = new JSONObject();
+                    selectedPatientJSONObject.put("names", patient1.getDisplayName()+" ("+patient1.getIdentifier()+")");
+                    selectedPatientJSONObject.put("uuid", patient1.getUuid());
+                    selectedPatientJSONObject.put("gender", patient1.getGender());
+                    selectedPatientJSONObject.put("dob", patient1.getBirthdate());
+                    selectedPatientJSONObject.put("nid", patient1.getIdentifier());
+                    selectedPatientJSONArray.put(selectedPatientJSONObject);
+                }
+                patientDetails.put("patient.selectedPatients", selectedPatientJSONArray);
+            }
+
             prepopulateJSON.put("patient", patientDetails);
             prepopulateJSON.put("encounter", encounterDetails);
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "Could not populate patient registration data to JSON", e);
+        } catch (PatientController.PatientLoadException e) {
+            e.printStackTrace();
         }
         return prepopulateJSON.toString();
     }

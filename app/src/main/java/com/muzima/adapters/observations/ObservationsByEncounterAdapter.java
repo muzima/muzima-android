@@ -23,9 +23,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
+import com.muzima.api.model.Provider;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
@@ -37,15 +40,21 @@ import com.muzima.utils.StringUtils;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
+
 public class ObservationsByEncounterAdapter extends ObservationsAdapter<EncounterWithObservations> {
 
     private Boolean isSHRData = false;
+    private boolean shouldReplaceProviderIdWithNames;
+    private MuzimaApplication muzimaApplication;
 
     public ObservationsByEncounterAdapter(FragmentActivity activity, int item_observation_list,
                                           EncounterController encounterController, ConceptController conceptController,
                                           ObservationController observationController,Boolean isSHRData) {
         super(activity,item_observation_list,encounterController, conceptController,observationController);
         this.isSHRData = isSHRData;
+        this.muzimaApplication = (MuzimaApplication) getContext().getApplicationContext();
+        shouldReplaceProviderIdWithNames = muzimaApplication.getMuzimaSettingController().isPatientTagGenerationEnabled();
     }
 
     @NonNull
@@ -125,7 +134,16 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
             } else {
                 observationValue.setVisibility(View.VISIBLE);
                 observationComplexHolder.setVisibility(View.GONE);
-                observationValue.setText(observation.getValueAsString());
+                if(shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID){
+                    Provider provider = muzimaApplication.getProviderController().getProviderBySystemId(observation.getValueAsString());
+                    if(provider != null){
+                        observationValue.setText(provider.getName());
+                    } else {
+                        observationValue.setText(observation.getValueAsString());
+                    }
+                } else {
+                    observationValue.setText(observation.getValueAsString());
+                }
                 observationValue.setTextColor(conceptColor);
             }
 

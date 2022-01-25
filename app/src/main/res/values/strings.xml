@@ -816,4 +816,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="online_mode_switch">Switch to online mode</string>
     <string name="online_mode_switch_warning">You have been switched from the offline mode to online mode. While on online mode, all patient data will be deleted from your device when you log out or you are auto logged out.</string>
     <string name="warning_logout_confirm_with_form_deletion">Are you sure you want to log out and exit mUzima app? All Complete and incomplete forms will be deleted</string>
+    <string name="title_privacy_policy">Privacy Policy</string>
+    <string name="assignment_form_uuid_missing_warning">Sorry, assignment form has not been set. Please contact administrator.</string>
+    <string name="assignment_form_not_downloaded_warning">Seems like the assignment form is not downloaded, please confirm it is downloaded or contact administrator.</string>
 </resources>

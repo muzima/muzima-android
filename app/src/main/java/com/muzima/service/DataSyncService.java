@@ -24,6 +24,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;
 
@@ -251,6 +252,10 @@ public class DataSyncService extends IntentService {
         muzimaSyncService.downloadRelationshipsTypes();
         int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByPatientUUIDs(patientUUIDList);
         broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
+        if(muzimaSettingController.isPatientTagGenerationEnabled()) {
+            muzimaSyncService.updatePatientTags(patientUUIDList);
+        }
     }
 
     private void downloadPatientsWithObsAndEncounters(Intent broadcastIntent, String[] patientUUIDs) {
@@ -269,6 +274,10 @@ public class DataSyncService extends IntentService {
 
             int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByPatientUUIDs(patientUUIDList);
             broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
+            MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
+            if(muzimaSettingController.isPatientTagGenerationEnabled()) {
+                muzimaSyncService.updatePatientTags(patientUUIDList);
+            }
         }
     }
 
