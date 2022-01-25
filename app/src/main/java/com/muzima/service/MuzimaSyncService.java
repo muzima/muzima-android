@@ -65,9 +65,11 @@ import org.apache.lucene.queryParser.ParseException;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -78,6 +80,8 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
+import static com.muzima.utils.Constants.FGH.Concepts.INDEX_CASE_TESTING_CONSENT_CONCEPT_ID;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
 
@@ -1412,16 +1416,33 @@ public class MuzimaSyncService {
                     tags.add(addressTag);
                 }
 
-                //create Assigned tag if patient has obs with concept ID 1912. Needs further discussion to decide how old the tag should be
-                List<Observation> assignmentObs = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,1912);
-                if(assignmentObs.size() > 0){
-                    PatientTag assignmentTag = new PatientTag();
-                    assignmentTag.setName("AL");
-                    assignmentTag.setUuid("IndexCaseAssignmentTagUuid");
-                    tags.add(assignmentTag);
-                    patientController.savePatientTags(assignmentTag);
-                }else{
-                    PatientTag assignmentTag = new PatientTag();
+                List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
+                List<Observation> consentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,INDEX_CASE_TESTING_CONSENT_CONCEPT_ID);
+                PatientTag assignmentTag = null;
+                if(consentObsList.size() > 0 && assignmentObsList.size()>0){
+                    for(Observation consentObs:consentObsList ) {
+                        Date now = new Date();
+                        long consentDaysPassed = (now.getTime() - consentObs.getObservationDatetime().getTime())/(24 * 60 * 60 * 1000);
+                        if(consentDaysPassed >= 0 && consentDaysPassed <= 30) {
+                            for(Observation assignmentObs:assignmentObsList) {
+                                if(assignmentObs.getObservationDatetime().after(consentObs.getObservationDatetime())) {
+                                    assignmentTag = new PatientTag();
+                                    assignmentTag.setName("AL");
+                                    assignmentTag.setUuid("IndexCaseAssignmentTagUuid");
+                                    tags.add(assignmentTag);
+                                    patientController.savePatientTags(assignmentTag);
+                                    break;
+                                }
+                            }
+                        }
+                        if(assignmentTag != null){
+                            break;
+                        }
+                    }
+                }
+
+                if(assignmentTag == null){
+                    assignmentTag = new PatientTag();
                     assignmentTag.setName("AA");
                     assignmentTag.setUuid("patientNotAllocatedTagUuid");
                     tags.add(assignmentTag);
