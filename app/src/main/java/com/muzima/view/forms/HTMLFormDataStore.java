@@ -11,6 +11,7 @@
 package com.muzima.view.forms;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -62,6 +63,7 @@ import net.minidev.json.JSONValue;
 import org.json.JSONException;
 
 import com.muzima.controller.EncounterController;
+import com.muzima.view.MainDashboardActivity;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -133,6 +135,7 @@ class HTMLFormDataStore {
     @JavascriptInterface
     public void saveHTML(String jsonPayload, final String status, boolean keepFormOpen) {
         String selectedPatients = getSelectedPatientsUuids();
+        final MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
         if (selectedPatients.equals("[]") || selectedPatients.equals("")) {
             processForm(jsonPayload, status, keepFormOpen, formData);
         }else{
@@ -140,7 +143,6 @@ class HTMLFormDataStore {
             for (Patient patient : patients) {
                 String separatePatientJsonPayload = setPatientInfoToThePayload(patient, jsonPayload);
                 final String patientUuid = patient.getUuid();
-                final MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
                 FormData formDatas = new FormData() {{
                     setUuid(UUID.randomUUID().toString());
                     setPatientUuid(patientUuid);
@@ -150,9 +152,11 @@ class HTMLFormDataStore {
                     setTemplateUuid(formData.getTemplateUuid());
                     setDiscriminator(formData.getDiscriminator());
                 }};
-
                 processForm(separatePatientJsonPayload, STATUS_COMPLETE,false, formDatas);
             }
+
+            Intent intent = new Intent(applicationContext, MainDashboardActivity.class);
+            applicationContext.getApplicationContext().startActivity(intent);
         }
     }
 

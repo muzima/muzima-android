@@ -549,7 +549,7 @@ public class MuzimaSyncService {
             long endDownloadCohortData = System.currentTimeMillis();
             Log.i(getClass().getSimpleName(), "Cohort data download successful with " + cohortDataList.size() + " cohorts");
             ArrayList<Patient> voidedPatients = new ArrayList<>();
-            List<Patient> cohortPatients;
+            List<Patient> cohortPatients = new ArrayList<>();
             for (CohortData cohortData : cohortDataList) {
                 cohortController.addCohortMembers(cohortData.getCohortMembers());
                 cohortPatients = cohortData.getPatients();
@@ -570,6 +570,19 @@ public class MuzimaSyncService {
             result[1] = patientCount;
             result[2] = cohortDataList.size();
             result[3] = voidedPatients.size();
+
+            MuzimaSettingController muzimaSettingController = muzimaApplication.getMuzimaSettingController();
+            Log.e(getClass().getSimpleName(),"PPPPPPPPPPPPPPP "+muzimaSettingController.isPatientTagGenerationEnabled());
+            if(muzimaSettingController.isPatientTagGenerationEnabled()) {
+                List<String> patientUuids = new ArrayList<>();
+                if(cohortPatients.size()>0) {
+                    for (Patient patient : cohortPatients) {
+                        patientUuids.add(patient.getUuid());
+                    }
+                }
+                if(patientUuids.size()>0)
+                    updatePatientTags(patientUuids);
+            }
 
             //update memberships
             downloadRemovedCohortMembershipData(cohortUuids);
@@ -1388,6 +1401,7 @@ public class MuzimaSyncService {
     }
 
     public void updatePatientTags(List<String> patientUuidList){
+        Log.e(getClass().getSimpleName(),"Generating Patient Tags");
         List<PatientTag> existingTags = new ArrayList<>();
 
         try {

@@ -145,6 +145,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
                 ((MuzimaApplication) getActivity().getApplicationContext()).getPatientController(), null, getCurrentGPSLocation());
 
         patientSearchAdapter.setBackgroundListQueryTaskListener(this);
+//        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setAdapter(patientSearchAdapter);
         patientSearchAdapter.setPatientListLongClickListener(this);
     }
@@ -637,6 +638,9 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
+            listView.clearChoices();
+            patientSearchAdapter.resetSelectedPatientsUuids();
+            patientSearchAdapter.notifyDataSetChanged();
         }
     }
 

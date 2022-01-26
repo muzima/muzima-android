@@ -12,9 +12,16 @@ package com.muzima.adapters.patients;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+
+import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
@@ -39,6 +46,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
 
     private PatientListClickListener patientListClickListener;
     private List<String> selectedPatientsUuids;
+    private Context context;
 
     public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
                                       PatientController patientController,
@@ -54,6 +62,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
         this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId, patientController);
         patientAdapterHelper.setCurrentLocation(currentLocation);
         selectedPatientsUuids = new ArrayList<>();
+        this.context = context;
     }
 
     public void setPatientListLongClickListener(PatientListClickListener patientListClickListener) {
@@ -104,6 +113,10 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
 
     public List<String> getSelectedPatientsUuids() {
         return selectedPatientsUuids;
+    }
+
+    public void resetSelectedPatientsUuids() {
+         selectedPatientsUuids = new ArrayList<>();
     }
 
     @Override
@@ -262,6 +275,16 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
         protected void onBackgroundError(Exception e) {
             Log.e(getClass().getSimpleName(), "Error while running background task",e);
         }
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     public interface PatientListClickListener {
