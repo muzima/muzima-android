@@ -812,4 +812,7 @@
     <string name="title_privacy_policy">Politique de confidentialité</string>
     <string name="assignment_form_uuid_missing_warning">Désolé, le formulaire de devoir n\'a pas été défini. Veuillez contacter l\'administrateur.</string>
     <string name="assignment_form_not_downloaded_warning">Il semble que le formulaire de devoir n\'est pas téléchargé, veuillez confirmer qu\'il est téléchargé ou contacter l\'administrateur.</string>
+    <string name="title_auto_logout">Déconnexion automatique</string>
+ <string name="message_auto_logout">Vous serez automatiquement déconnecté dans %d secondes</string>
+ <string name="general_reset">Réinitialiser</string>
 </resources>

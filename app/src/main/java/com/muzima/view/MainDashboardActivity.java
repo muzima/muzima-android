@@ -19,6 +19,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
@@ -112,6 +113,12 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private AppBarConfiguration mAppBarConfiguration;
     private NavController navController;
     private boolean isChangedToOnlineMode;
+    private boolean isAlmostAutoLoggedOut;
+    private static final long INTERVAL = 1000L;
+    private long timeRemaining;
+    private boolean isTimerReset = false;
+
+    private CountDownTimer mCountDownTimer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,6 +136,12 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
             isChangedToOnlineMode = (boolean) intent.getSerializableExtra("OnlineMode");
             showDialog();
         }
+
+        if (intent.hasExtra("AutoLogOutTimer")) {
+            timeRemaining = (long) intent.getSerializableExtra("RemainingTime");
+            isAlmostAutoLoggedOut = (boolean) intent.getSerializableExtra("AutoLogOutTimer");
+            showLogOutDialog();
+        }
     }
 
     public void showDialog(){
@@ -142,6 +155,43 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                     .create()
                     .show();
         }
+    }
+
+    public void showLogOutDialog(){
+        int remainingtime = (int) ((int)Math.round(timeRemaining*0.001 * 10d) / 10d);
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(R.string.title_auto_logout);
+        alertDialog.setMessage(getString(R.string.message_auto_logout, remainingtime));
+        alertDialog.setButton(BUTTON_POSITIVE, getString(R.string.general_reset), positiveClickListener());
+        alertDialog.show();
+        mCountDownTimer = new CountDownTimer(timeRemaining, INTERVAL) {
+            @Override
+            public void onTick(long l) {
+                int remainingtime = (int) ((int)Math.round(l*0.001 * 10d) / 10d);
+                alertDialog.setMessage(getString(R.string.message_auto_logout, remainingtime));
+            }
+
+            @Override
+            public void onFinish() {
+                if(!isTimerReset) {
+                    ((MuzimaApplication) getApplication()).logOut();
+                    launchLoginActivity();
+                }
+            }
+        };
+        mCountDownTimer.start();
+    }
+
+    private Dialog.OnClickListener positiveClickListener() {
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                isTimerReset = true;
+                ((MuzimaApplication) getApplicationContext()).restartTimer();
+                dialog.dismiss();
+            }
+
+        };
     }
 
     private void loadCohorts(final boolean showFilter) {

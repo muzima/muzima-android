@@ -819,4 +819,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="title_privacy_policy">Privacy Policy</string>
     <string name="assignment_form_uuid_missing_warning">Sorry, assignment form has not been set. Please contact administrator.</string>
     <string name="assignment_form_not_downloaded_warning">Seems like the assignment form is not downloaded, please confirm it is downloaded or contact administrator.</string>
+    <string name="title_auto_logout">Auto Logout</string>
+    <string name="message_auto_logout">You will be auto logged off in %d sec</string>
+    <string name="general_reset">Reset</string>
 </resources>

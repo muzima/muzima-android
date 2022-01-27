@@ -807,4 +807,7 @@
     <string name="title_privacy_policy">Sera ya faragha</string>
     <string name="assignment_form_uuid_missing_warning">Samahani, fomu ya mgawo haijawekwa. Tafadhali wasiliana na msimamizi.</string>
     <string name="assignment_form_not_downloaded_warning">Inaonekana kama fomu ya mgawo haijapakuliwa, tafadhali thibitisha kuwa imepakuliwa au wasiliana na msimamizi.</string>
+    <string name="title_auto_logout">Ondoka kiotomatiki</string>
+    <string name="message_auto_logout">Utaondolewa kiotomatiki baada ya sekunde %d</string>
+    <string name="general_reset">Weka upya</string>
 </resources>
