@@ -455,6 +455,11 @@ public class Constants {
             public static final int HEALTHWORKER_ASSIGNMENT_CONCEPT_ID = 1912;
             public static final int INDEX_CASE_TESTING_CONSENT_CONCEPT_ID = 21155;
         }
+        public static class TagsUuids {
+            public static final String HAS_SEXUAL_PARTNER_TAG_UUID = "6ff70505-4b1c-4b9e-b76f-fd73a5df450b";
+            public static final String ALREADY_ASSIGNED_TAG_UUID = "0dd1f739-f428-4e4e-b658-828e231c3cef";
+            public static final String AWAITING_ASSIGNMENT_TAG_UUID = "d334310f-5f04-4ecb-a09f-79ca7fc3dcbb";
+        }
     }
 
 }

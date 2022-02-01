@@ -54,6 +54,8 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
             holder.indicator = convertView.findViewById(R.id.tag_indicator);
             holder.name = convertView
                     .findViewById(R.id.tag_name);
+            holder.description = convertView
+                    .findViewById(R.id.tag_description);
             holder.tagColorIndicator = convertView
                     .findViewById(R.id.tag_color_indicator);
             holder.icon = convertView.findViewById(R.id.tag_icon);
@@ -83,6 +85,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
         }
         holder.tagColorIndicator.setBackgroundColor(tagColor);
         holder.name.setText(getItem(position).getName());
+        holder.description.setText(getItem(position).getDescription());
         return convertView;
     }
 
@@ -124,6 +127,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
     private static class ViewHolder {
         View indicator;
         TextView name;
+        TextView description;
         FrameLayout tagColorIndicator;
         ImageView icon;
     }

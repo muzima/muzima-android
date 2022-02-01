@@ -82,6 +82,9 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
 import static com.muzima.utils.Constants.FGH.Concepts.INDEX_CASE_TESTING_CONSENT_CONCEPT_ID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.ALREADY_ASSIGNED_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.AWAITING_ASSIGNMENT_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
 
@@ -1352,7 +1355,7 @@ public class MuzimaSyncService {
                         //Create tag for patient if not exists
                         boolean hasSexualPartnerTag = false;
                         for (PatientTag tag : patient.getTags()) {
-                            if(StringUtils.equals(tag.getUuid(),("6ff70505-4b1c-4b9e-b76f-fd73a5df450b"))) {
+                            if(StringUtils.equals(tag.getUuid(),HAS_SEXUAL_PARTNER_TAG_UUID)) {
                                 hasSexualPartnerTag = true;
                             }
                             tags.add(tag);
@@ -1361,7 +1364,8 @@ public class MuzimaSyncService {
                         if(!hasSexualPartnerTag) {
                             sexualPartnerTag = new PatientTag();
                             sexualPartnerTag.setName("P");
-                            sexualPartnerTag.setUuid("6ff70505-4b1c-4b9e-b76f-fd73a5df450b");
+                            sexualPartnerTag.setDescription("Has sexual partner");
+                            sexualPartnerTag.setUuid(HAS_SEXUAL_PARTNER_TAG_UUID);
                             tags.add(sexualPartnerTag);
                             patientController.savePatientTags(sexualPartnerTag);
                         }
@@ -1408,6 +1412,7 @@ public class MuzimaSyncService {
                     if(addressTag == null) {
                         addressTag = new PatientTag();
                         addressTag.setName(addressTagName);
+                        addressTag.setDescription(address5);
                         addressTag.setUuid(UUID.randomUUID().toString());
                         existingTags.add(addressTag);
                         patientController.savePatientTags(addressTag);
@@ -1428,7 +1433,8 @@ public class MuzimaSyncService {
                                 if(assignmentObs.getObservationDatetime().after(consentObs.getObservationDatetime())) {
                                     assignmentTag = new PatientTag();
                                     assignmentTag.setName("AL");
-                                    assignmentTag.setUuid("IndexCaseAssignmentTagUuid");
+                                    assignmentTag.setDescription("Already Assigned");
+                                    assignmentTag.setUuid(ALREADY_ASSIGNED_TAG_UUID);
                                     tags.add(assignmentTag);
                                     patientController.savePatientTags(assignmentTag);
                                     break;
@@ -1444,7 +1450,8 @@ public class MuzimaSyncService {
                 if(assignmentTag == null){
                     assignmentTag = new PatientTag();
                     assignmentTag.setName("AA");
-                    assignmentTag.setUuid("patientNotAllocatedTagUuid");
+                    assignmentTag.setDescription("Awaiting Assignment");
+                    assignmentTag.setUuid(AWAITING_ASSIGNMENT_TAG_UUID);
                     tags.add(assignmentTag);
                     patientController.savePatientTags(assignmentTag);
                 }

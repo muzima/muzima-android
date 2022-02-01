@@ -85,6 +85,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.widget.Toast;
 
 import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
+import static android.view.MenuItem.SHOW_AS_ACTION_NEVER;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -260,6 +261,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements L
         setUpGeoMappingFeatureMenuItems(menu);
         setUpSHRFeatureMenuItems(menu);
         setUpSearchFeatureMenuItems(menu);
+
+        if(((MuzimaApplication)getApplicationContext()).getMuzimaSettingController().isPatientTagGenerationEnabled()){
+            MenuItem menuHelp = menu.findItem(R.id.menu_tags);
+            if (menuHelp != null) menuHelp.setShowAsAction(SHOW_AS_ACTION_ALWAYS);
+        }
         super.onCreateOptionsMenu(menu);
         return true;
     }
