@@ -11,54 +11,38 @@
     <string name="SHR_card_text">SHR કાર્ડ</string>
     <string name="SHR_data_title_text">SHR ડેટા</string>
     <string name="SHR_extracted_data_text">SHR માંથી એક્સટ્રેકટ કરેલ ડેટા</string>
-
     <string name="add_individual_observation_text">વ્યક્તિગત નિરીક્ષણ ઉમેરો</string>
-
     <string name="app_name">mUzima</string>
     <string name="app_title">આરોગ્ય પ્રદાતાઓ માટે mUzima</string>
-
     <string name="ask_help">મદદ માગવી</string>
-
+    <string name="assignment_form_not_downloaded_warning">એવું લાગે છે કે અસાઇનમેન્ટ ફોર્મ ડાઉનલોડ થયું નથી, કૃપા કરીને ખાતરી કરો કે તે ડાઉનલોડ થયું છે અથવા એડમિનિસ્ટ્રેટરનો સંપર્ક કરો.</string>
+    <string name="assignment_form_uuid_missing_warning">માફ કરશો, સોંપણી ફોર્મ સેટ કરવામાં આવ્યું નથી. કૃપા કરીને વ્યવસ્થાપકનો સંપર્ક કરો.</string>
     <string name="autocomplete_server_not_found">સર્વર પર પહોંચી શકાતું નથી! \nકૃપા કરીને તમારા ડિવાઇસને કનેક્ટ કરો અને ફરીથી પ્રયાસ કરો અથવા નવી વ્યક્તિ બનાવો</string>
-
     <string name="captured_date">કેપ્ચર કરેલ તારીખ</string>
-
     <string name="card_sync_status_content_description">કાર્ડ સિંક્રનાઇઝેશન સ્થિતિ</string>
-
     <string name="change_settings">સેટિંગ્સ બદલો</string>
-
     <string name="client_registration_question_text">શું તમે mUzima માં ક્લાયંટને નોંધાવવા માંગો છો?</string>
-
     <string name="complex_obs">જટિલ અવલોકનો</string>
-
     <string name="concept_description">ખ્યાલનું વર્ણન</string>
     <string name="concept_details">ખ્યાલની વિગતો</string>
     <string name="concept_name">ખ્યાલનું નામ:</string>
-
     <string name="confirm_create_patient_from_person">આ વ્યક્તિની ક્લાયંટ તરીકે નોંધણી કરવામાં આવ. શું તમે ખરેખર આ કરવા માંગો છો?</string>
     <string name="confirm_duplicate_form_data_save">ડુપ્લિકેટ ફોર્મ ડેટા સાચવો</string>
     <string name="confirm_patient_id_exists">શું ક્લાયંટ પહેલેથી જ આઈડી ધરાવે છે?</string>
-
     <string name="date_general">તારીખ</string>
     <string name="date_temp">8 જૂન</string>
-
     <string name="default_form_register">નોંધણી ફોર્મ</string>
-
     <string name="downloaded_reports">ડાઉનલોડ કરેલા અહેવાલો</string>
-
     <string name="downloading_cohorts_text">સમૂહને ડાઉનલોડ કરી રહ્યા છીએ</string>
     <string name="downloading_forms">ફોર્મ્સ ડાઉનલોડ કરી રહ્યાં છે</string>
-
     <string name="encounter_date">એન્કાઉન્ટર તારીખ:</string>
     <string name="encounter_date_dialog_label">એન્કાઉન્ટર તારીખ</string>
     <string name="encounter_details">એન્કાઉન્ટરની વિગતો</string>
     <string name="encounter_location">એન્કાઉન્ટરનું સ્થાન:</string>
     <string name="encounter_type">એન્કાઉન્ટરનો પ્રકાર:</string>
-
     <string name="enter_concept_name_text">ખ્યાલનું નામ દાખલ કરો…</string>
     <string name="enter_location_name">સ્થાનનું નામ દાખલ કરો…</string>
     <string name="enter_provider_name_hint">પ્રદાતાનું નામ દાખલ કરો …</string>
-
     <string name="error_action_allow">જ્યારે સમન્વયન ચાલુ છે ત્યારે ક્રિયાને મંજૂરી નથી</string>
     <string name="error_audio_chose_activity_find">ભૂલ: અવાજ પસંદ કરવા માટેની પ્રવૃત્તિ મળી નથી</string>
     <string name="error_audio_play_activity_find">ભૂલ: અવાજ વગાડવાની પ્રવૃત્તિ મળી નથી</string>
@@ -131,31 +115,27 @@
     <string name="error_target_application_find">કોઈ લક્ષિત એપ્લિકેશનો નથી</string>
     <string name="error_username_invalid_format">વપરાશકર્તા નામમાં અમાન્ય અક્ષર. આને મંજૂરી નથી: %s</string>
     <string name="error_wizard_interrupted">વિઝાર્ડ વિક્ષેપિત થયો હતો, કૃપા કરીને લોગઆઉટ કરો અને વિઝાર્ડ ફરીથી ચલાવો.</string>
-
     <string name="failure_obtain_smartcard_record">કાર્ડ પર લખવા માટે સ્માર્ટકાર્ડ રેકોર્ડ મેળવી શકાયો નથી.</string>
     <string name="failure_obtaining_card_serial_number">કાર્ડ સીરીયલ નંબર મેળવી શક્યા નથી</string>
     <string name="failure_reading_card">કાર્ડ વાંચન નિષ્ફળ થયું</string>
     <string name="failure_updating_smartcard_record_for_writing">કાર્ડ પર લખતા પહેલા સ્માર્ટકાર્ડ રેકોર્ડને અપડેટ કરી શકાયું નહીં</string>
     <string name="failure_writing_smartcard">સ્માર્ટ કાર્ડ ડેટા લખવામાં નિષ્ફળ.</string>
-
     <string name="feedback_header">કૃપા કરીને અમને તમારી ટિપ્પણીઓ અને પ્રતિસાદ મોકલો</string>
     <string name="feedback_hint">તમારા મનમાં શું છે?</string>
     <string name="feedback_rating_question">mUzima એપ્લિકેશનનો ઉપયોગ કેટલો સરળ છે?</string>
-
     <string name="fill_out_forms_for_a_patient_general">દર્દી માટે ફોર્મ ભરો</string>
-
     <string name="form_encounter_date">એન્કાઉન્ટરની તારીખ</string>
     <string name="form_encounter_location">એન્કાઉન્ટરનું સ્થાન</string>
     <string name="form_encounter_provider">એન્કાઉન્ટર પ્રદાતા</string>
-
     <string name="gender_image_content_description">લિંગ છબી</string>
-
     <string name="general_accept">સ્વીકારો</string>
     <string name="general_add">ઉમેરો</string>
     <string name="general_agree">સંમત થાઓ</string>
     <string name="general_alert">ચેતવણી!</string>
     <string name="general_all">તમામ</string>
+    <string name="general_already_assigned">પહેલેથી જ સોંપેલ</string>
     <string name="general_application_version">સંસ્કરણ %1$s</string>
+    <string name="general_awaiting_assignment">સોંપણીની રાહ જોઈ રહ્યા છીએ</string>
     <string name="general_cancel">રદ કરો</string>
     <string name="general_caution">સાવધાન!</string>
     <string name="general_client_list">ક્લાયંટ સૂચિ</string>
@@ -184,6 +164,7 @@
     <string name="general_form">ફોર્મ</string>
     <string name="general_forms">ફોર્મ્સ</string>
     <string name="general_get_directions">દિશા - નિર્દેશો મેળવો</string>
+    <string name="general_has_sexual_partner">જાતીય ભાગીદાર છે</string>
     <string name="general_help">સહાયતા</string>
     <string name="general_large">મોટું</string>
     <string name="general_load">લોડ કરો</string>
@@ -236,19 +217,14 @@
     <string name="general_welcome">સ્વાગત છે</string>
     <string name="general_years_character">व</string>
     <string name="general_yes">હા</string>
-
     <string name="get_more">સર્વરમાંથી વધુ</string>
-
     <string name="header_cohort_category">કોહર્ટ સેટિંગ્સ</string>
     <string name="header_muzima_category">mUzima સેટિંગ્સ </string>
     <string name="header_openmrs_category">OpenMRS સેટિંગ્સ</string>
     <string name="header_provider_location_category">પ્રદાતા / સ્થાન સેટિંગ્સ</string>
-
     <string name="hello_general">નમસ્તે</string>
-
     <string name="help_center">સહાયતા કેન્દ્ર</string>
     <string name="help_general">સહાયતા!</string>
-
     <string name="hint_advanced_setup">તમને જે જોઈએ છે તે પસંદ કરવા માટે સ્ટેપ બાઈ સ્ટેપ વિઝાર્ડનો ઉપયોગ કરો</string>
     <string name="hint_audio_caption">કૃપા કરીને ઑડિઓ માટે કેપ્શન દાખલ કરો</string>
     <string name="hint_audio_record">રેકોર્ડ કરો અથવા ઑડિઓ પસંદ કરો</string>
@@ -351,16 +327,11 @@
     <string name="hint_video_record">વિડિઓ રેકોર્ડ કરો અથવા પસંદ કરો</string>
     <string name="hint_wizard_form_download">સૂચિમાંથી એક અથવા વધુ ફોર્મ નમૂનાઓ પસંદ કરો અને ડાઉનલોડ કરવા માટે \'આગલું \' પર ક્લિક કરો</string>
     <string name="hint_write_SHR_to_card">શું તમે કાર્ડ પર વહેંચાયેલ આરોગ્ય રેકોર્ડ લખવા માંગો છો?</string>
-
     <string name="how_to_general">કઈ રીતે:</string>
-
     <string name="inbox_outbox_label_text">##ઇનબોક્સ, ##આઉટબોક્સ</string>
-
     <string name="incomplete_outbox_text">##અધૂરું, ##આઉટબોક્સ</string>
-
     <string name="individual_obs">વ્યક્તિગત નિરીક્ષણ</string>
     <string name="individual_obs_description">વ્યક્તિગત નિરીક્ષણ</string>
-
     <string name="info_authentication_in_progress">પ્રમાણીકરણ ચાલુ છે …</string>
     <string name="info_background_data_sync_started">પૃષ્ઠભૂમિમાં ડેટાને સમન્વયિત કરી રહ્યાં છે</string>
     <string name="info_client_demographics_download">ક્લાયંટ ડેમોગ્રાફિક ડાઉનલોડ કરી રહ્યાં છે …</string>
@@ -547,98 +518,68 @@
     <string name="info_video_chose_activity_unavailable">ભૂલ: વિડિઓ પસંદ કરવા માટેની એપ્લિકેશન મળી નથી</string>
     <string name="info_video_play_activity_unavailable">ભૂલ: વિડિઓ ચલાવવા માટેની એપ્લિકેશન મળી નથી</string>
     <string name="info_video_record_activity_unavailable">ભૂલ: વિડિઓ રેકોર્ડ કરવા માટેની એપ્લિકેશન મળી નથી</string>
-
     <string name="initial_setup_for_muzima_general">mUzima માટે પ્રારંભિક સુયોજન</string>
-
     <string name="interactive_help_choose">વિકલ્પ પસંદ કરો:</string>
     <string name="interactive_help_header">કૃપા કરી અમને કહો કે અમે તમને કેવી રીતે મદદ કરી શકીએ</string>
     <string name="interactive_help_hint">તમારો સંદેશ લખો</string>
-
     <string name="introduction_to_muzima_general_text">mUzima નો પરિચય</string>
-
     <string name="june_8_sample_date">8 જૂન</string>
-
     <string name="language_english">અંગ્રેજી</string>
     <string name="language_french">ફ્રેન્ચ</string>
     <string name="language_gujarati">ગુજરાતી</string>
     <string name="language_hindi">હિન્દી</string>
     <string name="language_portuguese">પોર્ટુગીઝ</string>
     <string name="language_swahili">સ્વાહિલી</string>
-
     <string formatted="false" name="menu_SHR_data_sync">SHR ડેટા (%d) સમન્વયન </string>
     <string name="menu_all_data_sync">બધા ડેટાને સમન્વયિત કરો</string>
     <string name="menu_form_back_to_draft">ડ્રાફ્ટ પર પરત</string>
     <string name="menu_form_data_sync">ફોર્મ ડેટા સમન્વયિત કરો</string>
-
     <string name="message_feedback_halt">તમારો સંદેશ મોકલવામાં આવશે નહીં.</string>
     <string name="message_feedback_sent">તમારા સંદેશ માટે તમારો આભાર. \n તમારો પ્રતિસાદ અમારા માટે મહત્વપૂર્ણ છે.</string>
     <string name="message_help_halt">કદાચ આવતી વખતે.</string>
     <string name="message_help_sent">સંપર્ક બદલ આભાર. \n અમારી સપોર્ટ ટીમ તમારી વિનંતીની તપાસ કરશે. \n અમે શક્ય તેટલી વહેલી તકે તમારી પાસે પાછા આવીશું.</string>
     <string name="message_missing_form_encounter_details_error">પ્રદાન કરવું જરૂરી છે</string>
-
     <string name="muzima_training_manual_general">mUzima તાલીમ મેન્યુઅલ</string>
-
     <string name="new_messages_number_text"># નવા સંદેશા</string>
-
     <string name="no_default_encounter_location">કોઈ એન્કાઉન્ટર સ્થાન ડિફોલ્ટ નથી</string>
     <string name="no_description_general">કોઈ વર્ણન નથી</string>
     <string name="no_email_client">આ ઉપકરણ પર કોઈ ઇમેઇલ ક્લાયંટ ઇન્સ્ટોલ કરેલું નથી. \n કૃપા કરીને એક સ્થાપિત કરો અને પછી તમારો પ્રતિસાદ મૂકો.</string>
-
     <string name="null_encounter_date_error">ફોર્મ સાચવતી વખતે ભૂલ આવી. એન્કાઉન્ટરની તારીખ પ્રદાન કરવી આવશ્યક છે</string>
     <string name="null_encounter_location_error">ફોર્મ સાચવતી વખતે ભૂલ આવી. એન્કાઉન્ટર સ્થાન પ્રદાન કરવું આવશ્યક છે</string>
     <string name="null_encounter_provider_error">ફોર્મ સાચવતી વખતે ભૂલ આવી. એન્કાઉન્ટર પ્રદાતા પ્રદાન કરવું આવશ્યક છે</string>
-
     <string name="number_hashtag_representation">##</string>
-
     <string name="observation_details">અવલોકન વિગતો</string>
     <string name="observation_text_dialog">અવલોકન:</string>
     <string name="observation_value">અવલોકન મૂલ્ય:</string>
-
     <string name="patient_SHR_search_dialog_title">ક્લાયંટ SHR શોધ</string>
     <string name="patient_SHR_search_title_text">ક્લાયંટ SHR શોધ</string>
-
     <string name="provider_details">પ્રદાતા વિગતો</string>
     <string name="provider_identifier">પ્રદાતા ઓળખકર્તા:</string>
     <string name="provider_name">પ્રદાતાનું નામ:</string>
     <string name="provider_name_general">પ્રદાતા નામ</string>
     <string name="provider_reports_general">પ્રદાતા અહેવાલો</string>
-
     <string name="registering_patient_message_title_text">mUzima માં ક્લાયંટની નોંધણી કરી રહ્યાં છે …</string>
-
     <string name="relationship_create_success">સંબંધ સફળતાપૂર્વક બનાવવામાં આવ્યો</string>
     <string name="relationship_delete_fail">સંબંધ કાઢી શકતા નથી તે સર્વર પર પહેલેથી જ સાચવેલ છે. એડમિનિસ્ટ્રેટરનો સંપર્ક કરો</string>
     <string name="relationship_to_self_error">ગ્રાહક તેની સાથે / તેણીનો સંબંધ રાખી શકતો નથી</string>
-
     <string name="reply_hint_text">તમારો જવાબ મોકલો</string>
-
     <string name="sample_date_rep">21 માર્ચ 2018</string>
     <string name="sample_date_text">21/02/2018</string>
-
     <string name="scan_card_id_title">કાર્ડ આઈડી સ્કેન કરો</string>
-
     <string name="search_patient_on_server_option_title_text">ગ્રાહક સ્થાનિક રીતે ઉપલબ્ધ નથી, શું તમે સર્વર શોધવા માંગો છો?</string>
-
     <string name="select_a_registration_form_text">નોંધણી ફોર્મ પસંદ કરો</string>
     <string name="select_a_relationship_form_text">ફોર્મ પસંદ કરો</string>
     <string name="select_default_encounter_location">તમારું ડિફૉલ્ટ એન્કાઉન્ટર સ્થાન પસંદ કરો</string>
-
     <string name="send_feedback">પ્રતિસાદ મોકલ</string>
     <string name="send_general_text">મોકલો</string>
-
     <string name="server_side_setup_general">સર્વર બાજુ સેટઅપ</string>
-
     <string name="setting_up_muzima_general_text">mUzima સેટઅપ કરી રહ્યા છીએ </string>
-
     <string name="shr_registration">SHR નોંધણી</string>
     <string name="shr_registration_description">SHR નોંધણી ડેટા</string>
-
     <string name="success_writing_smartcard">સ્માર્ટ કાર્ડ ડેટા સફળતાપૂર્વક લખાયો હતો.</string>
-
     <string name="synced_label_text">## સમન્વયિત</string>
     <string name="synced_total_label_text">## સમન્વયિત, ## કુલ</string>
-
     <string name="tagging_forms">લેબલ કરવના ફોર્મ્સ</string>
-
     <string name="title_about_dashboard_help_html">ડેશબોર્ડ વિશે</string>
     <string name="title_activity_audio">અવાજ ઉમેરો</string>
     <string name="title_activity_client_encounters">ક્લાયન્ટ એન્કાઉન્ટર્સ</string>
@@ -723,6 +664,7 @@
     <string name="title_observations_by_concepts">ડેટા પ્રકાર દ્વારા</string>
     <string name="title_observations_by_encounters">તારીખ દ્વારા</string>
     <string name="title_pick_location">સ્થાન પસંદ કરો</string>
+    <string name="title_privacy_policy">ગોપનીયતા નીતિ</string>
     <string name="title_provider_download">પગલું 4: પ્રદાતા ઉમેરો</string>
     <string name="title_provider_help">પ્રદાતાઓ સહાય</string>
     <string name="title_provider_not_set">પ્રદાતા તરીકે સેટ કરવામાં અસમર્થ</string>
@@ -740,14 +682,10 @@
     <string name="title_video_caption">વિડિઓ શીર્ષક</string>
     <string name="title_video_choose">વિડિઓ પસંદ કરો</string>
     <string name="title_video_record">વિડિઓ રેકોર્ડ કરો</string>
-
     <string name="to_text">પ્રતિ</string>
-
     <string name="type_a_message_hint">એક સંદેશ લખો</string>
     <string name="type_cohort_name_hint">સમૂહ નામ લખો…</string>
-
     <string name="video_links_general_text">વિડિઓ લિંક્સ:</string>
-
     <string name="warning_auto_save_interval">સ્વચાલિત સાચવવાનો અંતરાલ: સ્વચાલિત સાચવો અંતરાલ સેટ કરી શકાયો નથી. \nકૃપા કરીને 1 અને 120 ની વચ્ચેનું મૂલ્ય દાખલ કરો.</string>
     <string name="warning_cancel_form_download">આનાથી ફોર્મ ડાઉનલોડ રદ થશે. શું તમે ખરેખર ફોર્મ ડાઉનલોડને રદ કરવા માંગો છો?</string>
     <string name="warning_cohort_prefix_exists">સમૂહ ઉપસર્ગ અસ્તિત્વમાં છે</string>
@@ -765,12 +703,7 @@
     <string name="warning_session_timeout">સત્ર સમયસમાપ્તિ: સત્ર સમયસમાપ્તિ સેટ કરી શકાયું નથી. કૃપા કરીને 1 અને 500 ની વચ્ચેનું મૂલ્ય દાખલ કરો.</string>
     <string name="warning_setting_download_failure">સેટિંગને ડાઉનલોડ અથવા અપડેટ કરી શક્યા નથી</string>
     <string name="warning_switch_server">સર્વર બદલી: આ તમારા ઉપકરણ પરના બધા mUzima ડેટાને સાફ કરશે, કોઈપણ અપૂર્ણ સ્વરૂપો સહિત. શું તમે ખરેખર આ સેટિંગ બદલવા માંગો છો?</string>
-
     <string name="write_SHR_to_card_text">SHR ને કાર્ડ પર લખો</string>
     <string name="write_shr_to_card_general">SHR ને કાર્ડ પર લખો</string>
-
     <string name="youTube_player_error">YouTube વિડિઓ લોડ કરતી વખતે ભૂલ આવી</string>
-    <string name="title_privacy_policy">ગોપનીયતા નીતિ</string>
-    <string name="assignment_form_uuid_missing_warning">માફ કરશો, સોંપણી ફોર્મ સેટ કરવામાં આવ્યું નથી. કૃપા કરીને વ્યવસ્થાપકનો સંપર્ક કરો.</string>
-    <string name="assignment_form_not_downloaded_warning">એવું લાગે છે કે અસાઇનમેન્ટ ફોર્મ ડાઉનલોડ થયું નથી, કૃપા કરીને ખાતરી કરો કે તે ડાઉનલોડ થયું છે અથવા એડમિનિસ્ટ્રેટરનો સંપર્ક કરો.</string>
 </resources>
