@@ -19,6 +19,8 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.PatientTag;
 import com.muzima.controller.PatientController;
+import com.muzima.utils.Constants;
+import com.muzima.utils.StringUtils;
 
 import java.util.List;
 
@@ -63,7 +65,8 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
         }
 
         holder = (com.muzima.adapters.patients.PatientTagsListAdapter.ViewHolder) convertView.getTag();
-        int tagColor = patientController.getTagColor(getItem(position).getUuid());
+        PatientTag patientTag = getItem(position);
+        int tagColor = patientController.getTagColor(patientTag.getUuid());
         if (position == 0) {
             tagColor = Color.parseColor("#333333");
         }
@@ -77,15 +80,24 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
                 markItemUnselected(holder, resources);
             }
         } else {
-            if (selectedTags.contains(getItem(position))) {
+            if (selectedTags.contains(patientTag)) {
                 markItemSelected(holder, tagColor, resources);
             } else {
                 markItemUnselected(holder, resources);
             }
         }
         holder.tagColorIndicator.setBackgroundColor(tagColor);
-        holder.name.setText(getItem(position).getName());
-        holder.description.setText(getItem(position).getDescription());
+        holder.name.setText(patientTag.getName());
+
+        if(Constants.FGH.TagsUuids.ALREADY_ASSIGNED_TAG_UUID.equals(patientTag.getUuid())){
+            holder.description.setText(getContext().getString(R.string.general_already_assigned));
+        } else if(Constants.FGH.TagsUuids.AWAITING_ASSIGNMENT_TAG_UUID.equals(patientTag.getUuid())){
+            holder.description.setText(getContext().getString(R.string.general_awaiting_assignment));
+        } else if(Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID.equals(patientTag.getUuid())){
+            holder.description.setText(getContext().getString(R.string.general_has_sexual_partner));
+        } else if(patientTag.getDescription() != null){
+            holder.description.setText(patientTag.getDescription());
+        }
         return convertView;
     }
 
@@ -168,7 +180,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
 
         private PatientTag getAllTagsElement() {
             PatientTag tag = new PatientTag();
-            tag.setName("All");
+            tag.setName(getContext().getString(R.string.general_all));
             return tag;
         }
     }

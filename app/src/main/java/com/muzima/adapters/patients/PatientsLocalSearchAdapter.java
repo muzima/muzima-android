@@ -102,6 +102,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
 
     @Override
     public void reloadData() {
+        selectedPatientsUuids.clear();
         cancelBackgroundTask();
         backgroundQueryTask = new BackgroundQueryTask().execute(cohortId);
     }

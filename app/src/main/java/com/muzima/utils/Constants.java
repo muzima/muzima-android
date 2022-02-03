@@ -457,7 +457,7 @@ public class Constants {
         }
         public static class TagsUuids {
             public static final String HAS_SEXUAL_PARTNER_TAG_UUID = "6ff70505-4b1c-4b9e-b76f-fd73a5df450b";
-            public static final String ALREADY_ASSIGNED_TAG_UUID = "0dd1f739-f428-4e4e-b658-828e231c3cef";
+            public static final String ALREADY_ASSIGNED_TAG_UUID = "e7e26b4e-b3fd-11eb-8374-d0577bb73cd4";
             public static final String AWAITING_ASSIGNMENT_TAG_UUID = "d334310f-5f04-4ecb-a09f-79ca7fc3dcbb";
         }
     }

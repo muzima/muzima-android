@@ -1364,7 +1364,7 @@ public class MuzimaSyncService {
                         if(!hasSexualPartnerTag) {
                             sexualPartnerTag = new PatientTag();
                             sexualPartnerTag.setName("P");
-                            sexualPartnerTag.setDescription("Has sexual partner");
+                            sexualPartnerTag.setDescription(muzimaApplication.getString(R.string.general_has_sexual_partner));
                             sexualPartnerTag.setUuid(HAS_SEXUAL_PARTNER_TAG_UUID);
                             tags.add(sexualPartnerTag);
                             patientController.savePatientTags(sexualPartnerTag);
@@ -1433,7 +1433,7 @@ public class MuzimaSyncService {
                                 if(assignmentObs.getObservationDatetime().after(consentObs.getObservationDatetime())) {
                                     assignmentTag = new PatientTag();
                                     assignmentTag.setName("AL");
-                                    assignmentTag.setDescription("Already Assigned");
+                                    assignmentTag.setDescription(muzimaApplication.getString(R.string.general_already_assigned));
                                     assignmentTag.setUuid(ALREADY_ASSIGNED_TAG_UUID);
                                     tags.add(assignmentTag);
                                     patientController.savePatientTags(assignmentTag);
@@ -1450,7 +1450,7 @@ public class MuzimaSyncService {
                 if(assignmentTag == null){
                     assignmentTag = new PatientTag();
                     assignmentTag.setName("AA");
-                    assignmentTag.setDescription("Awaiting Assignment");
+                    assignmentTag.setDescription(muzimaApplication.getString(R.string.general_awaiting_assignment));
                     assignmentTag.setUuid(AWAITING_ASSIGNMENT_TAG_UUID);
                     tags.add(assignmentTag);
                     patientController.savePatientTags(assignmentTag);

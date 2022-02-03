@@ -138,7 +138,8 @@ class HTMLFormDataStore {
             processForm(jsonPayload, status, keepFormOpen, formData);
         }else{
             List<Patient> patients = getPatientsFromCommaSeparatedString(selectedPatients);
-            for (Patient patient : patients) {
+            for (int i=0; i<patients.size(); i++) {
+                Patient patient = patients.get(i);
                 String separatePatientJsonPayload = setPatientInfoToThePayload(patient, jsonPayload);
                 final String patientUuid = patient.getUuid();
                 final MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
@@ -152,7 +153,10 @@ class HTMLFormDataStore {
                     setDiscriminator(formData.getDiscriminator());
                 }};
 
-                processForm(separatePatientJsonPayload, STATUS_COMPLETE,false, formDatas);
+                if(i == (patients.size()-1))
+                    processForm(separatePatientJsonPayload, STATUS_COMPLETE,false, formDatas);
+                else
+                    processForm(separatePatientJsonPayload, STATUS_COMPLETE,true, formDatas);
             }
         }
     }
@@ -257,6 +261,9 @@ class HTMLFormDataStore {
                             tag = new PatientTag();
                             tag.setName(tagName);
                             tag.setUuid(jsonObjectInner.getString("patient.tagUuid"));
+                            if(jsonObjectInner.has("patient.tagDescription")) {
+                                tag.setDescription(jsonObjectInner.getString("patient.tagDescription"));
+                            }
                             existingTags.add(tag);
                             patientController.savePatientTags(tag);
                         }
