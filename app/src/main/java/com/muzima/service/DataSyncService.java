@@ -284,6 +284,11 @@ public class DataSyncService extends IntentService {
 
         int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(savedCohortIds, true);
         broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
+
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
+        if(muzimaSettingController.isPatientTagGenerationEnabled()) {
+            muzimaSyncService.updatePatientTags(muzimaSyncService.getUuidsForPatientsInCohorts(savedCohortIds));
+        }
     }
 
     private void downloadPatientsInCohorts(Intent broadcastIntent, String[] cohortIds) {

@@ -980,6 +980,17 @@ public class MuzimaSyncService {
         return uuids;
     }
 
+    public List<String> getUuidsForPatientsInCohorts(String[] savedCohortIds) {
+        List<String> uuids = new ArrayList<>();
+        try {
+            List<Patient> patients = patientController.getPatientsForCohorts(savedCohortIds);
+            uuids = getPatientUuids(patients);
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(TAG, "Cannot retrieve patients from local storage", e);
+        }
+        return uuids;
+    }
+
     private void checkChangeInPatientId(Patient localPatient, Patient patientFromServer) {
         String patientIdentifier = patientFromServer.getIdentifier();
         String localPatientIdentifier = localPatient.getIdentifier();
@@ -1345,24 +1356,29 @@ public class MuzimaSyncService {
                     tags = new ArrayList<>(Arrays.asList(patient.getTags()));
                 }
 
-                PatientTag sexualPartnerTag = null;
                 PatientTag addressTag = null;
+                PatientTag assignmentTag = null;
+                boolean hasSexualPartnerTag = false;
+                boolean hasAssignmentTag = false;
+                boolean hasAwaitingAssignmentTag = false;
+                for (PatientTag tag : patient.getTags()) {
+                    if(StringUtils.equals(tag.getUuid(),HAS_SEXUAL_PARTNER_TAG_UUID)) {
+                        hasSexualPartnerTag = true;
+                    } else if(StringUtils.equals(tag.getUuid(),ALREADY_ASSIGNED_TAG_UUID)) {
+                        hasAssignmentTag = true;
+                        assignmentTag = tag;
+                    } else if(StringUtils.equals(tag.getUuid(),AWAITING_ASSIGNMENT_TAG_UUID)) {
+                        hasAwaitingAssignmentTag = true;
+                    }
+                    tags.add(tag);
+                }
 
                 //Create tag if patient has a sexual partner
-                List<Relationship> relationships = relationshipController.getRelationshipsForPerson(patientUuid);
-                for(Relationship relationship:relationships){
-                    if(StringUtils.equals(relationship.getRelationshipType().getUuid(),"2f7d5778-0c80-11eb-b335-9f16b42e3b00")){
-                        //Create tag for patient if not exists
-                        boolean hasSexualPartnerTag = false;
-                        for (PatientTag tag : patient.getTags()) {
-                            if(StringUtils.equals(tag.getUuid(),HAS_SEXUAL_PARTNER_TAG_UUID)) {
-                                hasSexualPartnerTag = true;
-                            }
-                            tags.add(tag);
-                        }
-
-                        if(!hasSexualPartnerTag) {
-                            sexualPartnerTag = new PatientTag();
+                if(!hasSexualPartnerTag) {
+                    List<Relationship> relationships = relationshipController.getRelationshipsForPerson(patientUuid);
+                    for (Relationship relationship : relationships) {
+                        if (StringUtils.equals(relationship.getRelationshipType().getUuid(), "2f7d5778-0c80-11eb-b335-9f16b42e3b00")) {
+                            PatientTag sexualPartnerTag = new PatientTag();
                             sexualPartnerTag.setName("P");
                             sexualPartnerTag.setDescription(muzimaApplication.getString(R.string.general_has_sexual_partner));
                             sexualPartnerTag.setUuid(HAS_SEXUAL_PARTNER_TAG_UUID);
@@ -1421,33 +1437,36 @@ public class MuzimaSyncService {
                     tags.add(addressTag);
                 }
 
-                List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
-                List<Observation> consentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,INDEX_CASE_TESTING_CONSENT_CONCEPT_ID);
-                PatientTag assignmentTag = null;
-                if(consentObsList.size() > 0 && assignmentObsList.size()>0){
-                    for(Observation consentObs:consentObsList ) {
-                        Date now = new Date();
-                        long consentDaysPassed = (now.getTime() - consentObs.getObservationDatetime().getTime())/(24 * 60 * 60 * 1000);
-                        if(consentDaysPassed >= 0 && consentDaysPassed <= 30) {
-                            for(Observation assignmentObs:assignmentObsList) {
-                                if(assignmentObs.getObservationDatetime().after(consentObs.getObservationDatetime())) {
-                                    assignmentTag = new PatientTag();
-                                    assignmentTag.setName("AL");
-                                    assignmentTag.setDescription(muzimaApplication.getString(R.string.general_already_assigned));
-                                    assignmentTag.setUuid(ALREADY_ASSIGNED_TAG_UUID);
-                                    tags.add(assignmentTag);
-                                    patientController.savePatientTags(assignmentTag);
-                                    break;
+                if(!hasAssignmentTag) {
+                    List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
+                    List<Observation> consentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, INDEX_CASE_TESTING_CONSENT_CONCEPT_ID);
+
+                    if (consentObsList.size() > 0 && assignmentObsList.size() > 0) {
+                        for (Observation consentObs : consentObsList) {
+                            Date now = new Date();
+                            long consentDaysPassed = (now.getTime() - consentObs.getObservationDatetime().getTime()) / (24 * 60 * 60 * 1000);
+                            if (consentDaysPassed >= 0 && consentDaysPassed <= 30) {
+                                for (Observation assignmentObs : assignmentObsList) {
+                                    if (assignmentObs.getObservationDatetime().after(consentObs.getObservationDatetime())) {
+                                        assignmentTag = new PatientTag();
+                                        assignmentTag.setName("AL");
+                                        assignmentTag.setDescription(muzimaApplication.getString(R.string.general_already_assigned));
+                                        assignmentTag.setUuid(ALREADY_ASSIGNED_TAG_UUID);
+                                        tags.add(assignmentTag);
+                                        patientController.savePatientTags(assignmentTag);
+                                        break;
+
+                                    }
                                 }
                             }
-                        }
-                        if(assignmentTag != null){
-                            break;
+                            if (assignmentTag != null) {
+                                break;
+                            }
                         }
                     }
                 }
 
-                if(assignmentTag == null){
+                if(!hasAwaitingAssignmentTag && assignmentTag == null){
                     assignmentTag = new PatientTag();
                     assignmentTag.setName("AA");
                     assignmentTag.setDescription(muzimaApplication.getString(R.string.general_awaiting_assignment));
