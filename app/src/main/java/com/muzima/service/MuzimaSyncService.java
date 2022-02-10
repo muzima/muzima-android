@@ -41,6 +41,7 @@ import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
 import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
+import com.muzima.api.model.Tag;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -1358,6 +1359,7 @@ public class MuzimaSyncService {
 
                 PatientTag addressTag = null;
                 PatientTag assignmentTag = null;
+                PatientTag awaitingAssignmentTag = null;
                 boolean hasSexualPartnerTag = false;
                 boolean hasAssignmentTag = false;
                 boolean hasAwaitingAssignmentTag = false;
@@ -1370,7 +1372,6 @@ public class MuzimaSyncService {
                     } else if(StringUtils.equals(tag.getUuid(),AWAITING_ASSIGNMENT_TAG_UUID)) {
                         hasAwaitingAssignmentTag = true;
                     }
-                    tags.add(tag);
                 }
 
                 //Create tag if patient has a sexual partner
@@ -1384,6 +1385,41 @@ public class MuzimaSyncService {
                             sexualPartnerTag.setUuid(HAS_SEXUAL_PARTNER_TAG_UUID);
                             tags.add(sexualPartnerTag);
                             patientController.savePatientTags(sexualPartnerTag);
+
+                            //update for the related patient as well
+                            try {
+                                Patient relatedPatient = null;
+                                if (relationship.getPersonA() != null && !StringUtils.equals(patientUuid, relationship.getPersonA().getUuid())) {
+                                    relatedPatient = patientController.getPatientByUuid(relationship.getPersonA().getUuid());
+                                } else if (relationship.getPersonB() != null) {
+                                    relatedPatient = patientController.getPatientByUuid(relationship.getPersonB().getUuid());
+                                }
+
+                                if(relatedPatient != null) {
+                                    boolean relatedPatientHasSexualPartnerTag = false;
+                                    for (PatientTag tag : relatedPatient.getTags()) {
+                                        if(StringUtils.equals(tag.getUuid(),HAS_SEXUAL_PARTNER_TAG_UUID)) {
+                                            relatedPatientHasSexualPartnerTag = true;
+                                        }
+                                    }
+                                    if(!relatedPatientHasSexualPartnerTag){
+                                        PatientTag relatedSexualPartnerTag = new PatientTag();
+                                        relatedSexualPartnerTag.setName("P");
+                                        relatedSexualPartnerTag.setDescription(muzimaApplication.getString(R.string.general_has_sexual_partner));
+                                        relatedSexualPartnerTag.setUuid(HAS_SEXUAL_PARTNER_TAG_UUID);
+                                        List<PatientTag> relatedPatientTags = new ArrayList<>(Arrays.asList(relatedPatient.getTags()));
+
+
+                                        relatedPatientTags.add(relatedSexualPartnerTag);
+                                        patientController.savePatientTags(relatedSexualPartnerTag);
+
+                                        relatedPatient.setTags(tags.toArray(new PatientTag[relatedPatientTags.size()]));
+                                        patientController.updatePatient(relatedPatient);
+                                    }
+                                }
+                            } catch (PatientController.PatientLoadException e){
+                                Log.e(getClass().getSimpleName(),"Could not update related patient",e);
+                            }
                         }
                     }
                 }

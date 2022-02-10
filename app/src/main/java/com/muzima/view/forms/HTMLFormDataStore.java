@@ -63,6 +63,7 @@ import net.minidev.json.JSONValue;
 import org.json.JSONException;
 
 import com.muzima.controller.EncounterController;
+import com.muzima.view.patients.UpdatePatientTagsIntent;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -168,7 +169,7 @@ class HTMLFormDataStore {
         formData.setJsonPayload(jsonPayload);
         formData.setStatus(status);
 
-        String patientUuid = formData.getPatientUuid();
+        final String patientUuid = formData.getPatientUuid();
         boolean encounterDetailsValidityStatus = true;
         try {
             if (status.equals("complete")) {
@@ -180,6 +181,7 @@ class HTMLFormDataStore {
                     Patient newPatient = formController.createNewPatient(application, formData);
                     formData.setPatientUuid(newPatient.getUuid());
                     formWebViewActivity.startPatientSummaryView(newPatient);
+                    initiatePatientTagsUpdate(new ArrayList<String>(){{add(patientUuid);}});
                 }
                 if (formData.getDiscriminator() != null && (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP))) {
                     formData.setDiscriminator(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS);
@@ -202,6 +204,9 @@ class HTMLFormDataStore {
                     } else {
                         formController.updatePatient(application, formData);
                         parseObsFromCompletedForm(jsonPayload, status, false);
+
+                        //update tags
+                        initiatePatientTagsUpdate(new ArrayList<String>(){{add(patientUuid);}});
                     }
                 } else if (status.equals("complete") && formData.getDiscriminator() != null &&
                         formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE)) {
@@ -209,6 +214,7 @@ class HTMLFormDataStore {
                     if (updatedPatient != null) {
                         parseObsFromCompletedForm(jsonPayload, status, false);
                         formWebViewActivity.startPatientSummaryView(updatedPatient);
+                        initiatePatientTagsUpdate(new ArrayList<String>(){{add(patientUuid);}});
                     }
                 } else {
                     parseObsFromCompletedForm(jsonPayload, status, false);
@@ -309,6 +315,11 @@ class HTMLFormDataStore {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_data_processing), Toast.LENGTH_SHORT).show();
             Log.e(getClass().getSimpleName(), "Exception occurred while processing form data", e);
         }
+    }
+
+    private void initiatePatientTagsUpdate(List<String> patientUuidList){
+        UpdatePatientTagsIntent updatePatientTagsIntent = new UpdatePatientTagsIntent(application,patientUuidList);
+        updatePatientTagsIntent.start();
     }
 
     @JavascriptInterface
