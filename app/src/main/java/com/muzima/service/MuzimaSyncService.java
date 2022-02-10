@@ -1413,7 +1413,7 @@ public class MuzimaSyncService {
                                         relatedPatientTags.add(relatedSexualPartnerTag);
                                         patientController.savePatientTags(relatedSexualPartnerTag);
 
-                                        relatedPatient.setTags(tags.toArray(new PatientTag[relatedPatientTags.size()]));
+                                        relatedPatient.setTags(relatedPatientTags.toArray(new PatientTag[relatedPatientTags.size()]));
                                         patientController.updatePatient(relatedPatient);
                                     }
                                 }
