@@ -108,6 +108,10 @@ public class DataSyncService extends IntentService {
                     downloadObservationsAndEncounters(broadcastIntent, cohortIds);
                 }
                 break;
+            case Constants.DataSyncServiceConstants.UPDATE_PATIENT_TAGS:
+                String[] patientUuids = intent.getStringArrayExtra(DataSyncServiceConstants.PATIENT_UUIDS);
+                muzimaSyncService.updatePatientTags(asList(patientUuids));
+                break;
             case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_ONLY:
                 String[] cohortIdsToDownload = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
                 updateNotificationMsg(getString(R.string.info_patient_download));

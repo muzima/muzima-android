@@ -79,6 +79,7 @@ public class Constants {
         public static final String DELETED_COUNT_PRIMARY = "deleted_count_primary";
         public static final String FORM_IDS = "formIds";
         public static final String COHORT_IDS = "cohortIds";
+        public static final String PATIENT_UUIDS = "patientUuids";
         public static final String PATIENT_UUID_FOR_DOWNLOAD = "patientUUIDForDownload";
 
         public static final int SYNC_FORMS = 0;
@@ -102,6 +103,7 @@ public class Constants {
         public static final int SYNC_RELATIONSHIPS = 18;
         public static final int SYNC_ALL_PATIENT_REPORT_HEADERS_AND_REPORTS=19;
         public static final int SYNC_SETUP_CONFIGURATION_TEMPLATES=20;
+        public static final int UPDATE_PATIENT_TAGS = 21;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;

@@ -384,24 +384,29 @@ public class PatientController {
         }
 
         boolean isAlTagsNeeded = tagsUuid.contains(ALREADY_ASSIGNED_TAG_UUID);
-        if(isAlTagsNeeded && tagsUuid.size() > 1){
+        if(isAlTagsNeeded){
             tagsUuid.remove(ALREADY_ASSIGNED_TAG_UUID);
         }
 
         boolean isAaTagsNeeded = tagsUuid.contains(AWAITING_ASSIGNMENT_TAG_UUID);
-        if(isAaTagsNeeded && tagsUuid.size() > 1){
+        if(isAaTagsNeeded){
             tagsUuid.remove(AWAITING_ASSIGNMENT_TAG_UUID);
         }
 
         List<Patient> filteredPatients = new ArrayList<>();
         for (Patient patient : patients) {
             PatientTag[] patientTags = patient.getTags();
-            for (PatientTag patientTag : patientTags) {
-                if (tagsUuid.contains(patientTag.getUuid())) {
-                    filteredPatients.add(patient);
-                    break;
+            if (tagsUuid.isEmpty()) {
+                filteredPatients.add(patient);
+            } else {
+                for (PatientTag patientTag : patientTags) {
+                    if (tagsUuid.contains(patientTag.getUuid())) {
+                        filteredPatients.add(patient);
+                        break;
+                    }
                 }
             }
+
             if(isPartnerTagNeeded && filteredPatients.contains(patient)){
                 boolean hasPartnerTag = false;
                 for (PatientTag patientTag : patientTags) {
@@ -414,6 +419,7 @@ public class PatientController {
                     filteredPatients.remove(patient);
                 }
             }
+
             if((isAlTagsNeeded || isAaTagsNeeded) && filteredPatients.contains(patient)){
                 boolean hasAlAaTag = false;
                 for (PatientTag patientTag : patientTags) {
