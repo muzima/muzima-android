@@ -108,6 +108,10 @@ public class DataSyncService extends IntentService {
                     downloadObservationsAndEncounters(broadcastIntent, cohortIds);
                 }
                 break;
+            case Constants.DataSyncServiceConstants.UPDATE_PATIENT_TAGS:
+                String[] patientUuids = intent.getStringArrayExtra(DataSyncServiceConstants.PATIENT_UUIDS);
+                muzimaSyncService.updatePatientTags(asList(patientUuids));
+                break;
             case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_ONLY:
                 String[] cohortIdsToDownload = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
                 updateNotificationMsg(getString(R.string.info_patient_download));
@@ -284,6 +288,11 @@ public class DataSyncService extends IntentService {
 
         int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(savedCohortIds, true);
         broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
+
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
+        if(muzimaSettingController.isPatientTagGenerationEnabled()) {
+            muzimaSyncService.updatePatientTags(muzimaSyncService.getUuidsForPatientsInCohorts(savedCohortIds));
+        }
     }
 
     private void downloadPatientsInCohorts(Intent broadcastIntent, String[] cohortIds) {
