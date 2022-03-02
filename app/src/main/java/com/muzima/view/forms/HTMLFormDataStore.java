@@ -22,6 +22,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.ConceptName;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
@@ -52,6 +53,7 @@ import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
+import com.muzima.utils.ConceptUtils;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
@@ -80,6 +82,7 @@ import java.util.UUID;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
@@ -730,7 +733,7 @@ class HTMLFormDataStore {
             String conceptUuid = obs.getConcept().getUuid();
             for (Concept concept : concepts) {
                 if (concept.getUuid().equals(conceptUuid)) {
-                    conceptName = concept.getName();
+                    conceptName = getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),getApplicationLanguage());
                 }
             }
             final String dateFormat = STANDARD_DATE_FORMAT;
@@ -767,7 +770,7 @@ class HTMLFormDataStore {
             if(obs.getValueCoded() != null) {
                 codedConcept.put("uuid",obs.getValueCoded().getUuid());
                 codedConcept.put("id",obs.getValueCoded().getId());
-                codedConcept.put("name",obs.getValueCoded().getName());
+                codedConcept.put("name",getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(),getApplicationLanguage()));;
                 json.put("valueCoded",codedConcept);
             }else{
                 json.put("valueCoded", obs.getValueCoded());
