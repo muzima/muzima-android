@@ -222,16 +222,6 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
             } else {
                 observationValue.setVisibility(View.VISIBLE);
                 observationComplexHolder.setVisibility(View.GONE);
-
-                if(isConceptCoded) {
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
-                    String applicationLanguage = preferences.getString(muzimaApplication.getResources().getString(R.string.preference_app_language), muzimaApplication.getResources().getString(R.string.language_english));
-
-                    observationValue.setText(getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage));
-                }else{
-                    observationValue.setText(observation.getValueAsString());
-                }
-
                 observationValue.setTypeface(Fonts.roboto_medium(getContext()));
                 observationValue.setTextColor(conceptColor);
                 if(shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID){
@@ -242,7 +232,14 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                         observationValue.setText(observation.getValueAsString());
                     }
                 } else {
-                    observationValue.setText(observation.getValueAsString());
+                    if(isConceptCoded) {
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+                        String applicationLanguage = preferences.getString(muzimaApplication.getResources().getString(R.string.preference_app_language), muzimaApplication.getResources().getString(R.string.language_english));
+
+                        observationValue.setText(getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage));
+                    }else{
+                        observationValue.setText(observation.getValueAsString());
+                    }
                 }
             }
 
