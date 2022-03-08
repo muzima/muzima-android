@@ -16,7 +16,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -42,9 +45,13 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
+import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.PatientController;
+import com.muzima.model.AvailableForm;
 import com.muzima.model.CohortFilter;
 import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CloseBottomSheetEvent;
@@ -59,6 +66,8 @@ import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
+import com.muzima.view.MainDashboardActivity;
+import com.muzima.view.forms.FormViewIntent;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.FormsWithDataActivity;
@@ -67,6 +76,7 @@ import com.muzima.view.patients.PatientsSearchActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,9 +86,10 @@ import static android.view.View.VISIBLE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
+import static com.muzima.util.Constants.ServerSettings.PATIENT_ASSIGNMENT_FORM_UUID_SETTING;
 
 public class DashboardHomeFragment extends Fragment implements ListAdapter.BackgroundListQueryTaskListener,
-        AdapterView.OnItemClickListener{
+        PatientsLocalSearchAdapter.PatientListClickListener {
     private static final int RC_BARCODE_CAPTURE = 9001;
     private TextView incompleteFormsTextView;
     private TextView completeFormsTextView;
@@ -101,6 +112,11 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     private PatientsLocalSearchAdapter patientSearchAdapter;
     private CohortFilterActionEvent latestCohortFilterActionEvent;
     private RelativeLayout patientSearchBy;
+
+    public static final String SELECTED_PATIENT_UUIDS_KEY = "selectedPatientUuids";
+
+    ActionMode actionMode;
+    boolean actionModeActive;
 
     @Nullable
     @Override
@@ -129,8 +145,9 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
                 ((MuzimaApplication) getActivity().getApplicationContext()).getPatientController(), null, getCurrentGPSLocation());
 
         patientSearchAdapter.setBackgroundListQueryTaskListener(this);
+//        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setAdapter(patientSearchAdapter);
-        listView.setOnItemClickListener(this);
+        patientSearchAdapter.setPatientListLongClickListener(this);
     }
 
     private void initializeResources(View view) {
@@ -508,20 +525,128 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+    public void onItemClick(View view, int position) {
         if (bottomSheetFilterVisible) {
             closeBottomSheet();
         } else {
             patientSearchAdapter.cancelBackgroundTask();
             Patient patient = patientSearchAdapter.getItem(position);
-            Intent intent = new Intent(getActivity().getApplicationContext(), PatientSummaryActivity.class);
-            intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
-            startActivity(intent);
+                if(actionModeActive){
+                patientSearchAdapter.toggleSelection(view, position);
+                int numOfSelectedPatients = patientSearchAdapter.getSelectedPatientsUuids().size();
+                if (numOfSelectedPatients == 0 && actionModeActive) {
+                    actionMode.finish();
+                }
+                actionMode.setTitle(String.valueOf(numOfSelectedPatients));
+            } else {
+                    Intent intent = new Intent(getActivity().getApplicationContext(), PatientSummaryActivity.class);
+                    intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
+                    startActivity(intent);
+            }
         }
     }
 
     private boolean isBarcodeSearchEnabled(){
         MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSettingController();
         return muzimaSettingController.isBarcodeEnabled();
+    }
+
+    @Override
+    public void onItemLongClick() {
+        if (!actionModeActive) {
+            actionMode = getActivity().startActionMode(new MultiplePatientsSelectionActionModeCallback());
+            actionModeActive = true;
+        }
+        int numOfSelectedPatients = patientSearchAdapter.getSelectedPatientsUuids().size();
+        if (numOfSelectedPatients == 0 && actionModeActive) {
+            actionMode.finish();
+        }
+        actionMode.setTitle(String.valueOf(numOfSelectedPatients));
+    }
+
+    final class MultiplePatientsSelectionActionModeCallback  implements ActionMode.Callback{
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            getActivity().getMenuInflater().inflate(R.menu.actionmode_menu_assign, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.menu_assign:
+                    //Launch index assignment form and avail selected patient UUIDs to the form.
+                    boolean formUuidSettingAndFormAvailable = false;
+                    try {
+                        // The uuid of the form shall be specified by a server side setting
+                        // The form shall load details of the patient whose UUIDs were selected (by use of repeating section if multiple forms were selected)
+                        // The structure of the form should enable the app to generate a paylod with full assignment details,
+                        // and the server side module should be able to process the payload
+
+                        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getActivity().getApplication()).getMuzimaSettingController();
+                        MuzimaSetting formUuidSetting = muzimaSettingController.getSettingByProperty(PATIENT_ASSIGNMENT_FORM_UUID_SETTING);
+
+
+                        if(formUuidSetting==null || StringUtils.isEmpty(formUuidSetting.getValueString())) {
+                            Toast.makeText(getActivity().getApplicationContext(),R.string.assignment_form_uuid_missing_warning, Toast.LENGTH_LONG).show();
+                        }else {
+                            FormController formController = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController();
+                            String formUuid = formUuidSetting.getValueString();
+                            AvailableForm assignmentForm = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().getAvailableFormByFormUuid(formUuid);
+                            String patientUuid = patientSearchAdapter.getSelectedPatientsUuids().get(0);
+                            Patient patient = ((MuzimaApplication) getActivity().getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
+
+                            FormTemplate formTemplate = formController.getFormTemplateByUuid(assignmentForm.getFormUuid());
+                            if(formTemplate == null){
+                                Toast.makeText(((MuzimaApplication) getActivity().getApplicationContext()),R.string.assignment_form_not_downloaded_warning, Toast.LENGTH_LONG).show();
+                            }else {
+                                formUuidSettingAndFormAvailable = true;
+                                FormViewIntent intent = new FormViewIntent(getActivity(), assignmentForm, patient, false);
+                                intent.putExtra(FormViewIntent.FORM_COMPLETION_STATUS_INTENT, FormViewIntent.FORM_COMPLETION_STATUS_RECOMMENDED);
+                                intent.putExtra(SELECTED_PATIENT_UUIDS_KEY, getSelectedPatientsUuids());
+                                startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
+                            }
+                        }
+                    } catch (FormController.FormFetchException e) {
+                        Log.e(getClass().getSimpleName(), "Could not open form",e);
+                    } catch (PatientController.PatientLoadException e) {
+                        Log.e(getClass().getSimpleName(), "Could not load patient",e);
+                    } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+                        Toast.makeText(getActivity().getApplicationContext(),R.string.assignment_form_uuid_missing_warning, Toast.LENGTH_LONG).show();
+                        Log.e(getClass().getSimpleName(), "Could not get setting",e);
+                    }
+                    if(formUuidSettingAndFormAvailable) {
+                        endActionMode();
+                    }
+            }
+            return true;
+        }
+
+        private String getSelectedPatientsUuids(){
+            JSONArray jsonArray = new JSONArray();
+            for (String uuid : patientSearchAdapter.getSelectedPatientsUuids()){
+                jsonArray.put(uuid);
+            }
+            return jsonArray.toString();
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            actionModeActive = false;
+            listView.clearChoices();
+            patientSearchAdapter.resetSelectedPatientsUuids();
+            patientSearchAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void endActionMode() {
+        if (this.actionMode != null) {
+            this.actionMode.finish();
+        }
     }
 }

@@ -10,8 +10,16 @@
 
 package com.muzima.controller;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfigurationTemplate;
@@ -20,6 +28,8 @@ import com.muzima.api.service.MuzimaSettingService;
 
 import com.muzima.api.service.SetupConfigurationService;
 import com.muzima.service.SntpService;
+import com.muzima.view.MainDashboardActivity;
+
 import org.apache.lucene.queryParser.ParseException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,18 +53,23 @@ import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTI
 import static com.muzima.util.Constants.ServerSettings.DEMOGRAPHICS_UPDATE_MANUAL_REVIEW_REQUIRED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.SINGLE_ELEMENT_ENTRY_FEATURE_ENABLED_SETTING;
 
+import static com.muzima.util.Constants.ServerSettings.TAG_GENERATION_ENABLED_SETTING;
+
 public class MuzimaSettingController {
     private final MuzimaSettingService settingService;
     private final LastSyncTimeService lastSyncTimeService;
     private final SntpService sntpService;
     private final SetupConfigurationService setupConfigurationService;
+    private final MuzimaApplication muzimaApplication;
+
 
     public MuzimaSettingController(MuzimaSettingService settingService, LastSyncTimeService lastSyncTimeService,
-                                   SntpService sntpService, SetupConfigurationService setupConfigurationService) {
+                                   SntpService sntpService, SetupConfigurationService setupConfigurationService, MuzimaApplication muzimaApplication) {
         this.settingService = settingService;
         this.lastSyncTimeService = lastSyncTimeService;
         this.sntpService = sntpService;
         this.setupConfigurationService = setupConfigurationService;
+        this.muzimaApplication = muzimaApplication;
     }
 
     public MuzimaSetting getSettingByProperty(String property) throws MuzimaSettingFetchException {
@@ -182,12 +197,37 @@ public class MuzimaSettingController {
         try {
             if (settingService.getSettingByProperty(setting.getProperty()) != null) {
                 settingService.updateSetting(setting);
+                if(setting.getProperty().equals(ONLINE_ONLY_MODE_ENABLED_SETTING)){
+                    updateTheme();
+                    if(!setting.getValueBoolean()) {
+                        ActivityManager am = (ActivityManager) muzimaApplication.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+                        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+                        Intent intent = new Intent();
+                        intent.setComponent(cn);
+                        muzimaApplication.getApplicationContext().startActivity(intent);
+                    }else {
+                        Intent intent;
+                        intent = new Intent(muzimaApplication, MainDashboardActivity.class);
+                        intent.putExtra("OnlineMode", setting.getValueBoolean());
+                        muzimaApplication.startActivity(intent);
+                    }
+                }
             } else {
                 settingService.saveSetting(setting);
             }
         } catch (IOException | NullPointerException | ParseException e) {
             throw new MuzimaSettingSaveException(e);
         }
+    }
+
+    public void updateTheme(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+        String lightModeKey = muzimaApplication.getApplicationContext().getResources().getString(R.string.preference_light_mode);
+        boolean isLightThemeEnabled = preferences.getBoolean(lightModeKey, false);
+
+        preferences.edit()
+                .putBoolean(lightModeKey, !isLightThemeEnabled)
+                .apply();
     }
 
     public List<MuzimaSetting> downloadChangedSettingsSinceLastSync() throws MuzimaSettingDownloadException {
@@ -391,6 +431,18 @@ public class MuzimaSettingController {
         return false;
     }
 
+    public Boolean isPatientTagGenerationEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(TAG_GENERATION_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Tag generation setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Tag generation setting is missing on this server");
+        }
+        return false;
+    }
 
     public static class MuzimaSettingFetchException extends Throwable {
         MuzimaSettingFetchException(Throwable throwable) {

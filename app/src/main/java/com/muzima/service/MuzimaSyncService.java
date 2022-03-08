@@ -33,6 +33,8 @@ import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientReport;
 import com.muzima.api.model.PatientReportHeader;
+import com.muzima.api.model.PatientTag;
+import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Relationship;
@@ -64,10 +66,13 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -76,6 +81,9 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
+
+import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
+import static com.muzima.utils.Constants.FGH.Concepts.INDEX_CASE_TESTING_CONSENT_CONCEPT_ID;
 
 public class MuzimaSyncService {
     private static final String TAG = "MuzimaSyncService";
@@ -541,7 +549,7 @@ public class MuzimaSyncService {
             long endDownloadCohortData = System.currentTimeMillis();
             Log.i(getClass().getSimpleName(), "Cohort data download successful with " + cohortDataList.size() + " cohorts");
             ArrayList<Patient> voidedPatients = new ArrayList<>();
-            List<Patient> cohortPatients;
+            List<Patient> cohortPatients = new ArrayList<>();
             for (CohortData cohortData : cohortDataList) {
                 cohortController.addCohortMembers(cohortData.getCohortMembers());
                 cohortPatients = cohortData.getPatients();
@@ -562,6 +570,19 @@ public class MuzimaSyncService {
             result[1] = patientCount;
             result[2] = cohortDataList.size();
             result[3] = voidedPatients.size();
+
+            MuzimaSettingController muzimaSettingController = muzimaApplication.getMuzimaSettingController();
+            Log.e(getClass().getSimpleName(),"PPPPPPPPPPPPPPP "+muzimaSettingController.isPatientTagGenerationEnabled());
+            if(muzimaSettingController.isPatientTagGenerationEnabled()) {
+                List<String> patientUuids = new ArrayList<>();
+                if(cohortPatients.size()>0) {
+                    for (Patient patient : cohortPatients) {
+                        patientUuids.add(patient.getUuid());
+                    }
+                }
+                if(patientUuids.size()>0)
+                    updatePatientTags(patientUuids);
+            }
 
             //update memberships
             downloadRemovedCohortMembershipData(cohortUuids);
@@ -1377,5 +1398,146 @@ public class MuzimaSyncService {
         android.content.Context context = muzimaApplication.getApplicationContext();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString("defaultEncounterLocation", null);
+    }
+
+    public void updatePatientTags(List<String> patientUuidList){
+        Log.e(getClass().getSimpleName(),"Generating Patient Tags");
+        List<PatientTag> existingTags = new ArrayList<>();
+
+        try {
+            existingTags = patientController.getAllTags();
+        } catch (PatientController.PatientLoadException e) {
+            e.printStackTrace();
+        }
+
+        for(String patientUuid:patientUuidList){
+            try {
+                Patient patient = patientController.getPatientByUuid(patientUuid);
+                List<PatientTag> tags = new ArrayList<>();
+                if(patient.getTags() != null) {
+                    tags = new ArrayList<>(Arrays.asList(patient.getTags()));
+                }
+
+                PatientTag sexualPartnerTag = null;
+                PatientTag addressTag = null;
+
+                //Create tag if patient has a sexual partner
+                List<Relationship> relationships = relationshipController.getRelationshipsForPerson(patientUuid);
+                for(Relationship relationship:relationships){
+                    if(StringUtils.equals(relationship.getRelationshipType().getUuid(),"2f7d5778-0c80-11eb-b335-9f16b42e3b00")){
+                        //Create tag for patient if not exists
+                        boolean hasSexualPartnerTag = false;
+                        for (PatientTag tag : patient.getTags()) {
+                            if(StringUtils.equals(tag.getUuid(),("6ff70505-4b1c-4b9e-b76f-fd73a5df450b"))) {
+                                hasSexualPartnerTag = true;
+                            }
+                            tags.add(tag);
+                        }
+
+                        if(!hasSexualPartnerTag) {
+                            sexualPartnerTag = new PatientTag();
+                            sexualPartnerTag.setName("P");
+                            sexualPartnerTag.setUuid("6ff70505-4b1c-4b9e-b76f-fd73a5df450b");
+                            tags.add(sexualPartnerTag);
+                            patientController.savePatientTags(sexualPartnerTag);
+                        }
+                    }
+                }
+
+                //Create tag if the patient has address field for Bairro.
+                List<String> tagNames = new ArrayList<>();
+
+                for(PatientTag tag:existingTags){
+                    tagNames.add(tag.getName());
+                }
+
+                PersonAddress personAddress = patient.getPreferredAddress();
+                String address5 = null;
+
+                if(personAddress != null){
+                    address5 = personAddress.getAddress5();
+                }
+
+                if(personAddress == null){
+                    for(PersonAddress address:patient.getAddresses()){
+                        if(!StringUtils.isEmpty(address.getAddress5())) {
+                            address5 = address.getAddress5();
+                            break;
+                        }
+                    }
+                }
+
+                if(!StringUtils.isEmpty(address5)){
+                    String addressTagName = null;
+                    if(address5.length() > 3) {
+                        addressTagName = address5.substring(0, 3);
+                    } else {
+                        addressTagName = address5;
+                    }
+
+                    for(PatientTag existingTag : existingTags){
+                        if(StringUtils.equals(existingTag.getName(),addressTagName)){
+                            addressTag = existingTag;
+                        }
+                    }
+
+                    if(addressTag == null) {
+                        addressTag = new PatientTag();
+                        addressTag.setName(addressTagName);
+                        addressTag.setUuid(UUID.randomUUID().toString());
+                        existingTags.add(addressTag);
+                        patientController.savePatientTags(addressTag);
+                    }
+
+                    tags.add(addressTag);
+                }
+
+                List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
+                List<Observation> consentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,INDEX_CASE_TESTING_CONSENT_CONCEPT_ID);
+                PatientTag assignmentTag = null;
+                if(consentObsList.size() > 0 && assignmentObsList.size()>0){
+                    for(Observation consentObs:consentObsList ) {
+                        Date now = new Date();
+                        long consentDaysPassed = (now.getTime() - consentObs.getObservationDatetime().getTime())/(24 * 60 * 60 * 1000);
+                        if(consentDaysPassed >= 0 && consentDaysPassed <= 30) {
+                            for(Observation assignmentObs:assignmentObsList) {
+                                if(assignmentObs.getObservationDatetime().after(consentObs.getObservationDatetime())) {
+                                    assignmentTag = new PatientTag();
+                                    assignmentTag.setName("AL");
+                                    assignmentTag.setUuid("IndexCaseAssignmentTagUuid");
+                                    tags.add(assignmentTag);
+                                    patientController.savePatientTags(assignmentTag);
+                                    break;
+                                }
+                            }
+                        }
+                        if(assignmentTag != null){
+                            break;
+                        }
+                    }
+                }
+
+                if(assignmentTag == null){
+                    assignmentTag = new PatientTag();
+                    assignmentTag.setName("AA");
+                    assignmentTag.setUuid("patientNotAllocatedTagUuid");
+                    tags.add(assignmentTag);
+                    patientController.savePatientTags(assignmentTag);
+                }
+
+                patient.setTags(tags.toArray(new PatientTag[tags.size()]));
+                patientController.updatePatient(patient);
+            } catch (RelationshipController.RetrieveRelationshipException e) {
+                Log.e(getClass().getSimpleName(),"Error retrieving relationships", e);
+            } catch (PatientController.PatientSaveException e) {
+                Log.e(getClass().getSimpleName(), "Could not save patient with updated tags", e);
+            } catch (IOException e) {
+                Log.e(getClass().getSimpleName(), "Could not load recordqs", e);
+            } catch (PatientController.PatientLoadException e) {
+                Log.e(getClass().getSimpleName(), "Could not load patient record to update update tags", e);
+            } catch (ObservationController.LoadObservationException e) {
+                Log.e(getClass().getSimpleName(), "Could not load observations to create tags tags", e);
+            }
+        }
     }
 }

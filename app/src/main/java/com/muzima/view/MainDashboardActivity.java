@@ -10,6 +10,8 @@
 
 package com.muzima.view;
 
+import static android.content.DialogInterface.BUTTON_POSITIVE;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -17,10 +19,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,9 +53,11 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortFilterAdapter;
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.SmartCardRecord;
+import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.CohortFilter;
@@ -73,7 +79,9 @@ import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
+import com.muzima.view.forms.HTMLFormWebViewActivity;
 import com.muzima.view.login.LoginActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.patients.PatientsLocationMapActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -104,6 +112,13 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
     private AppBarConfiguration mAppBarConfiguration;
     private NavController navController;
+    private boolean isChangedToOnlineMode;
+    private boolean isAlmostAutoLoggedOut;
+    private static final long INTERVAL = 1000L;
+    private long timeRemaining;
+    private boolean isTimerReset = false;
+
+    private CountDownTimer mCountDownTimer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,6 +130,68 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), false);
         initializeResources();
         loadCohorts(false);
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("OnlineMode")) {
+            isChangedToOnlineMode = (boolean) intent.getSerializableExtra("OnlineMode");
+            showDialog();
+        }
+
+        if (intent.hasExtra("AutoLogOutTimer")) {
+            timeRemaining = (long) intent.getSerializableExtra("RemainingTime");
+            isAlmostAutoLoggedOut = (boolean) intent.getSerializableExtra("AutoLogOutTimer");
+            showLogOutDialog();
+        }
+    }
+
+    public void showDialog(){
+        if(isChangedToOnlineMode) {
+            new AlertDialog.Builder(this)
+                    .setCancelable(true)
+                    .setIcon(ThemeUtils.getIconWarning(this))
+                    .setTitle(getResources().getString(R.string.online_mode_switch))
+                    .setMessage(getResources().getString(R.string.online_mode_switch_warning))
+                    .setPositiveButton(getString(R.string.general_ok), null)
+                    .create()
+                    .show();
+        }
+    }
+
+    public void showLogOutDialog(){
+        int remainingtime = (int) ((int)Math.round(timeRemaining*0.001 * 10d) / 10d);
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(R.string.title_auto_logout);
+        alertDialog.setMessage(getString(R.string.message_auto_logout, remainingtime));
+        alertDialog.setButton(BUTTON_POSITIVE, getString(R.string.general_reset), positiveClickListener());
+        alertDialog.show();
+        mCountDownTimer = new CountDownTimer(timeRemaining, INTERVAL) {
+            @Override
+            public void onTick(long l) {
+                int remainingtime = (int) ((int)Math.round(l*0.001 * 10d) / 10d);
+                alertDialog.setMessage(getString(R.string.message_auto_logout, remainingtime));
+            }
+
+            @Override
+            public void onFinish() {
+                if(!isTimerReset) {
+                    ((MuzimaApplication) getApplication()).logOut();
+                    launchLoginActivity();
+                }
+            }
+        };
+        mCountDownTimer.start();
+    }
+
+    private Dialog.OnClickListener positiveClickListener() {
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                isTimerReset = true;
+                ((MuzimaApplication) getApplicationContext()).restartTimer();
+                dialog.dismiss();
+            }
+
+        };
     }
 
     private void loadCohorts(final boolean showFilter) {
@@ -483,11 +560,30 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     }
 
     private void showExitAlertDialog() {
+
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+        boolean isOnlineOnlyModeEnabled = muzimaSettingController.isOnlineOnlyModeEnabled();
+
+        FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
+        int incompleteForms = 0;
+        int completeForms = 0;
+        try {
+            incompleteForms = formController.countAllIncompleteForms();
+            completeForms = formController.countAllCompleteForms();
+        } catch (FormController.FormFetchException e) {
+            Log.e(getClass().getSimpleName(),"Not able to fetch forms");
+        }
+
+        String message = getResources().getString(R.string.warning_logout_confirm);
+        if(isOnlineOnlyModeEnabled && (incompleteForms>0 || completeForms>0)){
+            message = getResources().getString(R.string.warning_logout_confirm_with_form_deletion);
+        }
+
         new AlertDialog.Builder(MainDashboardActivity.this)
                 .setCancelable(true)
                 .setIcon(ThemeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.title_logout_confirm))
-                .setMessage(getResources().getString(R.string.warning_logout_confirm))
+                .setMessage(message)
                 .setPositiveButton(getString(R.string.general_yes), exitApplication())
                 .setNegativeButton(getString(R.string.general_no), null)
                 .create()

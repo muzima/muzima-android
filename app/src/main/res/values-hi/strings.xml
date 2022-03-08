@@ -796,4 +796,14 @@
     </string>
     <string name="title_real_time_sync_setting_unchanged">रीयल-टाइम सिंक नहीं बदला</string>
     <string name="hint_real_time_sync_always_on">ऑनलाइन मोड में रीयल टाइम सिंक हमेशा चालू रहता है।</string>
+    <string name="online_mode_switch">ऑनलाइन मोड में स्विच करें</string>
+    <string name="online_mode_switch_warning">आपको ऑफलाइन मोड से ऑनलाइन मोड में स्विच कर दिया गया है। ऑनलाइन मोड पर रहते हुए, जब आप लॉग आउट करते हैं या आप स्वतः लॉग आउट होते हैं, तो सभी रोगी डेटा आपके डिवाइस से हटा दिए जाएंगे।</string>
+    <string name="general_online_mode">ऑनलाइन मोड</string>
+    <string name="warning_logout_confirm_with_form_deletion">क्या आप वाकई लॉग आउट करना चाहते हैं और मुज़िमा ऐप से बाहर निकलना चाहते हैं? सभी पूर्ण और अपूर्ण प्रपत्र हटा दिए जाएंगे</string>
+    <string name="title_privacy_policy">गोपनीयता नीति</string>
+    <string name="assignment_form_uuid_missing_warning">क्षमा करें, असाइनमेंट फॉर्म सेट नहीं किया गया है। कृपया व्यवस्थापक से संपर्क करें।</string>
+    <string name="assignment_form_not_downloaded_warning">ऐसा लगता है कि असाइनमेंट फ़ॉर्म डाउनलोड नहीं हुआ है, कृपया पुष्टि करें कि यह डाउनलोड हो गया है या व्यवस्थापक से संपर्क करें।</string>
+    <string name="title_auto_logout">ऑटो लॉगआउट</string>
+    <string name="message_auto_logout">आप %d सेकंड में स्वतः लॉग ऑफ हो जाएंगे</string>
+    <string name="general_reset">रीसेट</string>
 </resources>

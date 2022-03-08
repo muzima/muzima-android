@@ -166,7 +166,7 @@ public class KenyaEmrShrMapper {
                 setDiscriminator(FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION);
             }};
 
-            formData.setJsonPayload(new HTMLPatientJSONMapper().map(muzimaApplication, patient, formData, true));
+            formData.setJsonPayload(new HTMLPatientJSONMapper().map(muzimaApplication, patient, formData, true, StringUtils.EMPTY));
             muzimaApplication.getFormController().saveFormData(formData);
         } catch (Throwable E){
             Log.e("Kenya EMR Shr", "Could not create and save registration payload");
@@ -195,7 +195,7 @@ public class KenyaEmrShrMapper {
                     setDiscriminator(FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE);
                 }};
 
-                JSONObject formDataJSON = new JSONObject(new HTMLPatientJSONMapper().map(muzimaApplication, patient, formData, true));
+                JSONObject formDataJSON = new JSONObject(new HTMLPatientJSONMapper().map(muzimaApplication, patient, formData, true, StringUtils.EMPTY));
                 JSONObject demographicsUpdateJson = new JSONObject();
 
                 JSONObject newIdentifierJson = new JSONObject();

@@ -804,4 +804,14 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     </string>
     <string name="title_real_time_sync_setting_unchanged">Sincronização em tempo real não alterada</string>
     <string name="hint_real_time_sync_always_on">A sincronização em tempo real está sempre ATIVADA no modo online.</string>
+    <string name="online_mode_switch">Mudar para o modo online</string>
+    <string name="online_mode_switch_warning">Você foi alternado do modo offline para o modo online. Enquanto estiver no modo online, todos os dados do paciente serão excluídos do seu dispositivo quando você sair ou for desconectado automaticamente.</string>
+    <string name="general_online_mode">Modo online</string>
+    <string name="warning_logout_confirm_with_form_deletion">Tem certeza de que deseja sair e sair do aplicativo mUzima? Todos os formulários completos e incompletos serão excluídos</string>
+    <string name="title_privacy_policy">Política de Privacidade</string>
+    <string name="assignment_form_uuid_missing_warning">Desculpe, o formulário de atribuição não foi definido. Entre em contato com o administrador.</string>
+    <string name="assignment_form_not_downloaded_warning">Parece que o formulário de atribuição não foi baixado, confirme se foi baixado ou entre em contato com o administrador.</string>
+    <string name="title_auto_logout">Logout automático</string>
+    <string name="message_auto_logout">Você será desconectado automaticamente em %d segundos</string>
+    <string name="general_reset">Redefinir</string>
 </resources>

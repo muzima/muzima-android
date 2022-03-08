@@ -27,6 +27,7 @@ import com.muzima.api.context.ContextFactory;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Encounter;
+import com.muzima.api.model.FormData;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.User;
@@ -85,6 +86,8 @@ import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
 import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
+import static com.muzima.utils.Constants.STATUS_COMPLETE;
+import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
 public class MuzimaApplication extends MultiDexApplication {
@@ -368,7 +371,7 @@ public class MuzimaApplication extends MultiDexApplication {
         if (settingsController == null) {
             try {
                 settingsController = new MuzimaSettingController(muzimaContext.getMuzimaSettingService(),
-                        muzimaContext.getLastSyncTimeService(), getSntpService(), muzimaContext.getSetupConfigurationService());
+                        muzimaContext.getLastSyncTimeService(), getSntpService(), muzimaContext.getSetupConfigurationService(), this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -541,6 +544,15 @@ public class MuzimaApplication extends MultiDexApplication {
             }
             getPersonController().deletePersons(availablePersons);
 
+            List<FormData> formDataList = new ArrayList<>();
+            List<FormData> incompleteForms = getFormController().getAllFormData(STATUS_INCOMPLETE);
+            List<FormData> completeForms = getFormController().getAllFormData(STATUS_COMPLETE);
+            if(incompleteForms.size()>0)
+                formDataList.addAll(incompleteForms);
+            if(completeForms.size()>0)
+                formDataList.addAll(completeForms);
+
+            getFormController().deleteCompleteAndIncompleteFormData(formDataList);
 
         } catch (PersonController.PersonLoadException e) {
             Log.e(getClass().getSimpleName(),"Could not load persons for deletion",e);
@@ -548,6 +560,10 @@ public class MuzimaApplication extends MultiDexApplication {
             Log.e(getClass().getSimpleName(),"Could not load providers",e);
         } catch (PersonController.PersonDeleteException e) {
             Log.e(getClass().getSimpleName(),"Could not delete persons",e);
+        } catch (FormController.FormDataDeleteException e) {
+            Log.e(getClass().getSimpleName(),"Could not delete complete and incomplete forms",e);
+        } catch (FormController.FormDataFetchException e) {
+            Log.e(getClass().getSimpleName(),"Could not fetch complete and incomplete forms",e);
         }
 
         try {

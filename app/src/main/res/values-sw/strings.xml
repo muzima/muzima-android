@@ -800,4 +800,14 @@
     </string>
     <string name="title_real_time_sync_setting_unchanged">Usawazishaji wa wakati halisi haujabadilishwa</string>
     <string name="hint_real_time_sync_always_on">Usawazishaji wa wakati halisi UMEWEZESHWA katika hali ya Mtandaoni.</string>
+    <string name="online_mode_switch">Badili hadi hali ya mtandaoni</string>
+    <string name="online_mode_switch_warning">Umebadilishwa kutoka hali ya nje ya mtandao hadi hali ya mtandaoni. Ukiwa kwenye hali ya mtandaoni, data yote ya mgonjwa itafutwa kutoka kwa kifaa chako ukiondoka kwenye akaunti au ukiondoka kwenye akaunti kiotomatiki.</string>
+    <string name="general_online_mode">Hali ya Mtandaoni</string>
+    <string name="warning_logout_confirm_with_form_deletion">Je, una uhakika unataka kutoka na kuondoka kwenye programu ya mUzima? Fomu zote zilizojazwa na ambazo hazijakamilika zitafutwa</string>
+    <string name="title_privacy_policy">Sera ya faragha</string>
+    <string name="assignment_form_uuid_missing_warning">Samahani, fomu ya mgawo haijawekwa. Tafadhali wasiliana na msimamizi.</string>
+    <string name="assignment_form_not_downloaded_warning">Inaonekana kama fomu ya mgawo haijapakuliwa, tafadhali thibitisha kuwa imepakuliwa au wasiliana na msimamizi.</string>
+    <string name="title_auto_logout">Ondoka kiotomatiki</string>
+    <string name="message_auto_logout">Utaondolewa kiotomatiki baada ya sekunde %d</string>
+    <string name="general_reset">Weka upya</string>
 </resources>

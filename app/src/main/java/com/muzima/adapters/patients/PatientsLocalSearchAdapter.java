@@ -12,9 +12,16 @@ package com.muzima.adapters.patients;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+
+import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
@@ -22,6 +29,7 @@ import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.custom.CheckedLinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +41,12 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
     private final List<String> cohortUuids;
     private MuzimaAsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+
+    private View.OnClickListener onClickListener;
+
+    private PatientListClickListener patientListClickListener;
+    private List<String> selectedPatientsUuids;
+    private Context context;
 
     public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
                                       PatientController patientController,
@@ -47,12 +61,62 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
         }
         this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId, patientController);
         patientAdapterHelper.setCurrentLocation(currentLocation);
+        selectedPatientsUuids = new ArrayList<>();
+        this.context = context;
+    }
+
+    public void setPatientListLongClickListener(PatientListClickListener patientListClickListener) {
+        this.patientListClickListener = patientListClickListener;
+    }
+
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        return patientAdapterHelper.createPatientRow(getItem(position), convertView, parent, getContext());
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
+        convertView = patientAdapterHelper.createPatientRow(getItem(position), convertView, parent, getContext());
+
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                toggleSelection(view, position);
+                patientListClickListener.onItemLongClick();
+                return true;
+            }
+        });
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                patientListClickListener.onItemClick(view, position);
+            }
+        });
+        return convertView;
+    }
+
+    public void toggleSelection(View view, int position){
+        CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
+        checkedLinearLayout.toggle();
+        boolean selected = checkedLinearLayout.isChecked();
+
+        Patient clickedPatient = getItem(position);
+        if (selected && !selectedPatientsUuids.contains(clickedPatient.getUuid())) {
+            selectedPatientsUuids.add(clickedPatient.getUuid());
+            checkedLinearLayout.setActivated(true);
+        } else if (!selected && selectedPatientsUuids.contains(clickedPatient.getUuid())) {
+            selectedPatientsUuids.remove(clickedPatient.getUuid());
+            checkedLinearLayout.setActivated(false);
+        }
+    }
+
+    public List<String> getSelectedPatientsUuids() {
+        return selectedPatientsUuids;
+    }
+
+    public void resetSelectedPatientsUuids() {
+         selectedPatientsUuids = new ArrayList<>();
     }
 
     @Override
@@ -211,5 +275,21 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
         protected void onBackgroundError(Exception e) {
             Log.e(getClass().getSimpleName(), "Error while running background task",e);
         }
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    public interface PatientListClickListener {
+
+        void onItemLongClick();
+        void onItemClick(View view, int position);
     }
 }

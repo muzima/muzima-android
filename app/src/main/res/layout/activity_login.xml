@@ -171,6 +171,14 @@
         </FrameLayout>
 
         <TextView
+            android:id="@+id/online_mode"
+            style="@style/Versiontext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_regular" />
+
+        <TextView
             android:id="@+id/version"
             style="@style/Versiontext"
             android:layout_width="wrap_content"

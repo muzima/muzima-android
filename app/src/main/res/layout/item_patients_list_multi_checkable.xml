@@ -8,13 +8,16 @@
   ~ If the user is an entity intending to commercialize any application that uses
   ~ this code in a for-profit venture, please contact the copyright holder.
   -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.muzima.view.custom.CheckedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/item_patient_container"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
                 android:layout_width="match_parent"
+                android:background="@drawable/activated_background_indicator"
                 android:layout_height="wrap_content">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <ImageView
             android:id="@+id/genderImg"
             android:layout_width="36dp"
@@ -152,5 +155,6 @@
           android:layout_marginEnd="12dp"
           android:background="@color/white_smoke_transparent"/>
 </RelativeLayout>
+</com.muzima.view.custom.CheckedLinearLayout>
 
 

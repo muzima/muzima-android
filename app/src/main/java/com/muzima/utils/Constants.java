@@ -512,4 +512,11 @@ public class Constants {
         public static final int DOWNLOADED = 1;
         public static final int ONLINE = 2;
     }
+
+    public static class FGH{
+        public static class Concepts {
+            public static final int HEALTHWORKER_ASSIGNMENT_CONCEPT_ID = 1912;
+            public static final int INDEX_CASE_TESTING_CONSENT_CONCEPT_ID = 21155;
+        }
+    }
 }

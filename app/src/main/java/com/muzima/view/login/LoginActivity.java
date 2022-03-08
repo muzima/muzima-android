@@ -82,6 +82,7 @@ public class LoginActivity extends BaseActivity {
     private TextView helpText;
     private ScrollView loginScrollView;
     private FrameLayout loginFrameLayout;
+    private TextView onlineModeText;
     private static final int RC_BARCODE_CAPTURE = 9001;
 
     private ValueAnimator flipFromLoginToAuthAnimator;
@@ -104,6 +105,7 @@ public class LoginActivity extends BaseActivity {
         initViews();
         setupListeners();
         initAnimators();
+        getOnlineOnlyModePreference();
 
         boolean isFirstLaunch = getIntent().getBooleanExtra(LoginActivity.isFirstLaunch, true);
         String serverURL = getServerURL();
@@ -120,6 +122,7 @@ public class LoginActivity extends BaseActivity {
         //Hack to get it to use default font space.
         passwordText.setTypeface(Typeface.DEFAULT);
         versionText.setText(getApplicationVersion());
+        onlineModeText.setText(isOnlineModeEnabled ? getResources().getString(R.string.general_online_mode) : "");
         usernameText.requestFocus();
         initializeGPSDataCollection();
     }
@@ -175,7 +178,6 @@ public class LoginActivity extends BaseActivity {
         super.onResume();
         languageUtil.onCreate(this);
         setupStatusView();
-        getOnlineOnlyModePreference();
 
         if(isOnlineModeEnabled){
             removeChangedPasswordRecentlyCheckbox();
@@ -326,6 +328,7 @@ public class LoginActivity extends BaseActivity {
         helpText = findViewById(R.id.helpText);
         loginScrollView = findViewById(R.id.login_scroll_view);
         loginFrameLayout = findViewById(R.id.login_frame_layout);
+        onlineModeText = findViewById(R.id.online_mode);
     }
 
     public void onUpdatePasswordCheckboxClicked(View view) {

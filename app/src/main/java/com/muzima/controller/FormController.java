@@ -733,6 +733,10 @@ public class FormController {
         }
     }
 
+    public void deleteCompleteAndIncompleteFormData(List<FormData> formDataList) throws FormDataDeleteException {
+        deleteEncounterFormDataAndRelatedPatientData(formDataList);
+    }
+
     public boolean isFormWithPatientDataAvailable(Context context) throws FormFetchException {
         return !(getAllIncompleteFormsWithPatientData(StringUtils.EMPTY).isEmpty() &&
                 getAllCompleteFormsWithPatientData(context,StringUtils.EMPTY).isEmpty());

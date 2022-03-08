@@ -797,4 +797,14 @@
     </string>
     <string name="title_real_time_sync_setting_unchanged">રીઅલ-ટાઇમ સિંક બદલાયો નથી</string>
     <string name="hint_real_time_sync_always_on">ઑનલાઇન મોડમાં રીઅલ ટાઇમ સિંક હંમેશા ચાલુ હોય છે.</string>
+    <string name="online_mode_switch">ઑનલાઇન મોડ પર સ્વિચ કરો</string>
+    <string name="online_mode_switch_warning">તમને ઑફલાઇન મોડમાંથી ઑનલાઇન મોડ પર સ્વિચ કરવામાં આવ્યા છે. ઓનલાઈન મોડ પર હોવા પર, જ્યારે તમે લોગ આઉટ કરશો અથવા તમે ઓટો લોગ આઉટ થશો ત્યારે તમારા ઉપકરણમાંથી દર્દીનો તમામ ડેટા કાઢી નાખવામાં આવશે.</string>
+    <string name="general_online_mode">ઓનલાઈન મોડ</string>
+    <string name="warning_logout_confirm_with_form_deletion">શું તમે ખરેખર લૉગ આઉટ કરવા અને mUzima ઍપમાંથી બહાર નીકળવા માંગો છો? તમામ પૂર્ણ અને અપૂર્ણ ફોર્મ કાઢી નાખવામાં આવશે</string>
+    <string name="title_privacy_policy">ગોપનીયતા નીતિ</string>
+    <string name="assignment_form_uuid_missing_warning">માફ કરશો, સોંપણી ફોર્મ સેટ કરવામાં આવ્યું નથી. કૃપા કરીને વ્યવસ્થાપકનો સંપર્ક કરો.</string>
+    <string name="assignment_form_not_downloaded_warning">એવું લાગે છે કે અસાઇનમેન્ટ ફોર્મ ડાઉનલોડ થયું નથી, કૃપા કરીને ખાતરી કરો કે તે ડાઉનલોડ થયું છે અથવા એડમિનિસ્ટ્રેટરનો સંપર્ક કરો.</string>
+    <string name="title_auto_logout">ઓટો લોગઆઉટ</string>
+    <string name="message_auto_logout">તમે %d સેકન્ડમાં ઓટો લોગ ઓફ થઈ જશો</string>
+    <string name="general_reset">રીસેટ કરો</string>
 </resources>

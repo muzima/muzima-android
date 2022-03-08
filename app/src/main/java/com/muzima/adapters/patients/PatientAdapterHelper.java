@@ -240,6 +240,16 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
     public void reloadData() {
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     private class ViewHolder {
         ImageView genderImg;
         TextView name;
