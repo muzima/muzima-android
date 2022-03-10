@@ -10,11 +10,19 @@
 
 package com.muzima.adapters.observations;
 
+import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
+
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import androidx.fragment.app.FragmentActivity;
+
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
@@ -36,6 +44,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
     final ObservationController observationController;
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private AsyncTask<?, ?, ?> backgroundQueryTask;
+    private Activity activity;
 
     public BackgroundListQueryTaskListener getBackgroundListQueryTaskListener() {
         return backgroundListQueryTaskListener;
@@ -49,6 +58,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         this.encounterController = encounterController;
         this.conceptController = conceptController;
         this.observationController = observationController;
+        this.activity = fragmentActivity;
         Patient patient = (Patient) fragmentActivity.getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         patientUuid = patient.getUuid();
     }
@@ -134,13 +144,14 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
         }
 
         String getConceptDisplay(Concept concept) {
-            String text = concept.getName();
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+            String applicationLanguage = preferences.getString(activity.getResources().getString(R.string.preference_app_language), activity.getResources().getString(R.string.language_english));
+
+            String text = getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),applicationLanguage);
             if (concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)) {
                 text += " (" + concept.getUnit() + ")";
             }
             return text;
         }
-
-
     }
 }
