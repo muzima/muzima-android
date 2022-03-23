@@ -155,10 +155,8 @@ class HTMLFormDataStore {
                     setTemplateUuid(formData.getTemplateUuid());
                     setDiscriminator(formData.getDiscriminator());
                 }};
-                if(i == (patients.size()-1))
-                    processForm(separatePatientJsonPayload, STATUS_COMPLETE,false, formDatas);
-                else
-                    processForm(separatePatientJsonPayload, STATUS_COMPLETE,true, formDatas);
+
+                processForm(separatePatientJsonPayload, STATUS_COMPLETE,false, formDatas);
             }
 
             Intent intent = new Intent(applicationContext, MainDashboardActivity.class);
@@ -1146,18 +1144,6 @@ class HTMLFormDataStore {
             if ((jsonObjectInner.has("patient.uuid"))) {
                 jsonObjectInner.remove("patient.uuid");
                 jsonObjectInner.put("patient.uuid", patient.getUuid());
-                jsonObject.put("patient", jsonObjectInner);
-                jsonPayload = jsonObject.toString();
-            }
-            if ((jsonObjectInner.has("patient.tagName"))) {
-                jsonObjectInner.remove("patient.tagName");
-                jsonObjectInner.put("patient.tagName", jsonObjectInner.getString("patient.tagName"));
-                jsonObject.put("patient", jsonObjectInner);
-                jsonPayload = jsonObject.toString();
-            }
-            if ((jsonObjectInner.has("patient.tagUuid"))) {
-                jsonObjectInner.remove("patient.tagUuid");
-                jsonObjectInner.put("patient.tagUuid", jsonObjectInner.getString("patient.tagUuid"));
                 jsonObject.put("patient", jsonObjectInner);
                 jsonPayload = jsonObject.toString();
             }

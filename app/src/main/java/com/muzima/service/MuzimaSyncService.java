@@ -575,7 +575,6 @@ public class MuzimaSyncService {
             result[3] = voidedPatients.size();
 
             MuzimaSettingController muzimaSettingController = muzimaApplication.getMuzimaSettingController();
-            Log.e(getClass().getSimpleName(),"PPPPPPPPPPPPPPP "+muzimaSettingController.isPatientTagGenerationEnabled());
             if(muzimaSettingController.isPatientTagGenerationEnabled()) {
                 List<String> patientUuids = new ArrayList<>();
                 if(cohortPatients.size()>0) {
@@ -1447,7 +1446,6 @@ public class MuzimaSyncService {
                     } else if(StringUtils.equals(tag.getUuid(),AWAITING_ASSIGNMENT_TAG_UUID)) {
                         hasAwaitingAssignmentTag = true;
                     }
-                    tags.add(tag);
                 }
 
                 //Create tag if patient has a sexual partner
@@ -1544,9 +1542,9 @@ public class MuzimaSyncService {
                         addressTag.setUuid(UUID.randomUUID().toString());
                         existingTags.add(addressTag);
                         patientController.savePatientTags(addressTag);
-                    }
 
-                    tags.add(addressTag);
+                        tags.add(addressTag);
+                    }
                 }
 
                 if(!hasAssignmentTag) {
@@ -1578,7 +1576,7 @@ public class MuzimaSyncService {
                     }
                 }
 
-                if(!hasAwaitingAssignmentTag && assignmentTag == null){
+                if(!hasAssignmentTag && !hasAwaitingAssignmentTag && assignmentTag == null){
                     assignmentTag = new PatientTag();
                     assignmentTag.setName("AA");
                     assignmentTag.setDescription(muzimaApplication.getString(R.string.general_awaiting_assignment));
