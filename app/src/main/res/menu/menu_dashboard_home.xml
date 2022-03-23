@@ -19,6 +19,13 @@
         custom:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/menu_tags"
+        android:icon="@drawable/ic_labels"
+        android:orderInCategory="10"
+        android:title="@string/general_tags"
+        custom:showAsAction="ifRoom"  />
+
+    <item
         android:id="@+id/menu_load"
         android:icon="@drawable/ic_refresh"
         android:orderInCategory="10"

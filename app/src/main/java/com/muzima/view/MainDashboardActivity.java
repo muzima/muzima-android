@@ -11,6 +11,8 @@
 package com.muzima.view;
 
 import static android.content.DialogInterface.BUTTON_POSITIVE;
+import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
+import static android.view.MenuItem.SHOW_AS_ACTION_NEVER;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -26,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +39,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.legacy.app.ActionBarDrawerToggle;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -52,13 +56,17 @@ import com.google.android.material.snackbar.Snackbar;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortFilterAdapter;
+import com.muzima.adapters.patients.PatientTagsListAdapter;
+import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.CohortFilter;
 import com.muzima.model.events.BottomSheetToggleEvent;
@@ -68,6 +76,7 @@ import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.events.UploadedFormDataEvent;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.RealTimeFormUploader;
+import com.muzima.service.TagPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.LoadDownloadedCohortsTask;
 import com.muzima.utils.Constants;
@@ -119,17 +128,24 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private boolean isTimerReset = false;
 
     private CountDownTimer mCountDownTimer;
+    private DrawerLayout mainLayout;
+    private TagPreferenceService tagPreferenceService;
+    private PatientTagsListAdapter tagsListAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(MainDashboardActivity.this,false);
         languageUtil.onCreate(MainDashboardActivity.this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_main, null);
+        setContentView(mainLayout);
         loadBottomNavigation();
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), false);
         initializeResources();
         loadCohorts(false);
+
+        tagPreferenceService = new TagPreferenceService(this);
+        initDrawer();
 
         Intent intent = getIntent();
         if (intent.hasExtra("OnlineMode")) {
@@ -260,6 +276,15 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                     case R.id.menu_location:
                         navigateToClientsLocationMap();
                         break;
+
+                    case R.id.menu_tags:
+                        if (mainLayout.isDrawerOpen(GravityCompat.END)) {
+                            mainLayout.closeDrawer(GravityCompat.END);
+                        } else {
+                            mainLayout.openDrawer(GravityCompat.END);
+                        }
+                        return true;
+
                     case R.id.menu_load:
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
                         new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
@@ -269,11 +294,19 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
             }
         });
         ActionMenuItemView locationMenu = findViewById(R.id.menu_location);
+        ActionMenuItemView tagsMenu = findViewById(R.id.menu_tags);
+
         MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
         boolean isGeomappingEnabled = muzimaSettingController.isGeoMappingEnabled();
+        boolean isTagGenerationEnabled = muzimaSettingController.isPatientTagGenerationEnabled();
 
         if(!isGeomappingEnabled)
             locationMenu.setVisibility(View.GONE);
+
+        if(!isTagGenerationEnabled){
+            tagsMenu.setVisibility(View.GONE);
+        }
+
 
         drawerLayout = findViewById(R.id.main_dashboard_drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
@@ -512,6 +545,14 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         super.onResume();
         languageUtil.onResume(this);
         showIncompleteWizardWarning();
+        tagsListAdapter.reloadData();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        showIncompleteWizardWarning();
+        tagsListAdapter.reloadData();
     }
 
 
@@ -612,5 +653,58 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     @Override
     protected int getBottomNavigationMenuItemId() {
         return R.id.action_home;
+    }
+
+    private void initDrawer() {
+        initSelectedTags();
+        ListView tagsDrawerList = findViewById(R.id.tags_list);
+        tagsDrawerList.setEmptyView(findViewById(R.id.tags_no_data_msg));
+        tagsListAdapter = new PatientTagsListAdapter(this, R.layout.item_tags_list, ((MuzimaApplication) getApplicationContext()).getPatientController());
+        tagsDrawerList.setAdapter(tagsListAdapter);
+        tagsDrawerList.setOnItemClickListener(tagsListAdapter);
+        ActionBarDrawerToggle actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
+                R.drawable.ic_labels, R.string.hint_drawer_open, R.string.hint_drawer_close) {
+
+            /**
+             * Called when a drawer has settled in a completely closed state.
+             */
+            public void onDrawerClosed(View view) {
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                EventBus.getDefault().post(new CohortFilterActionEvent(selectedCohortFilters));
+            }
+
+            /**
+             * Called when a drawer has settled in a completely open state.
+             */
+            public void onDrawerOpened(View drawerView) {
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
+        };
+        mainLayout.setDrawerListener(actionbarDrawerToggle);
+        mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+        TextView tagsNoDataMsg = findViewById(R.id.tags_no_data_msg);
+    }
+
+    private void initSelectedTags() {
+        List<String> selectedTagsInPref = tagPreferenceService.getPatientSelectedTags();
+        List<PatientTag> allTags = null;
+        try {
+            allTags = ((MuzimaApplication) getApplicationContext()).getPatientController().getAllTags();
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Error occurred while get all tags from local repository", e);
+        }
+        List<PatientTag> selectedTags = new ArrayList<>();
+
+        if (selectedTagsInPref != null) {
+            for (PatientTag tag : allTags) {
+                if (selectedTagsInPref.contains(tag.getName())) {
+                    selectedTags.add(tag);
+                }
+            }
+        }
+        ((MuzimaApplication) getApplicationContext()).getPatientController().setSelectedTags(selectedTags);
     }
 }

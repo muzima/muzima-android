@@ -163,45 +163,53 @@
 	<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
+        <RelativeLayout
+			android:layout_width="match_parent"
+			android:id="@+id/concept_name_layout"
+			android:layout_height="wrap_content">
+			<TextView
+					android:id="@+id/concept_name_textview"
+					android:text="@string/concept_name"
+					android:padding="8dp"
+					android:layout_alignParentTop="true"
+					android:textColor="@android:color/black"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
 
-		<TextView
-				android:id="@+id/concept_name_textview"
-				android:text="@string/concept_name"
-				android:padding="8dp"
-				android:layout_alignParentTop="true"
-				android:textColor="@android:color/black"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
+			<TextView
+					android:id="@+id/concept_name_value_textview"
+					android:textColor="@android:color/black"
+					android:text=""
+					android:padding="8dp"
+					android:layout_marginEnd="16dp"
+					android:layout_alignParentEnd="true"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_toRightOf="@id/concept_name_textview"/>
+		</RelativeLayout>
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/concept_name_layout">
+			<TextView
+					android:id="@+id/concept_description_textview"
+					android:text="@string/concept_description"
+					android:padding="8dp"
+					android:textColor="@android:color/black"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
 
-		<TextView
-				android:id="@+id/concept_name_value_textview"
-				android:textColor="@android:color/black"
-				android:text=""
-				android:padding="8dp"
-				android:layout_marginEnd="16dp"
-				android:layout_alignParentEnd="true"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
-
-		<TextView
-				android:id="@+id/concept_description_textview"
-				android:text="@string/concept_description"
-				android:padding="8dp"
-				android:layout_below="@+id/concept_name_textview"
-				android:textColor="@android:color/black"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
-
-		<TextView
-				android:id="@+id/concept_description_value_textview"
-				android:text="@string/no_description_general"
-				android:padding="8dp"
-				android:layout_marginEnd="16dp"
-				android:layout_alignParentEnd="true"
-				android:textColor="@android:color/black"
-				android:layout_below="@+id/concept_name_value_textview"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
+			<TextView
+					android:id="@+id/concept_description_value_textview"
+					android:text="@string/no_description_general"
+					android:padding="8dp"
+					android:layout_marginEnd="16dp"
+					android:layout_alignParentEnd="true"
+					android:textColor="@android:color/black"
+				    android:layout_toRightOf="@id/concept_description_textview"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+		</RelativeLayout>
 
 	</RelativeLayout>
 

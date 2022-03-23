@@ -9,7 +9,12 @@
  */
 package com.muzima.adapters.encounters;
 
+import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
+import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
+
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +23,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.api.model.Observation;
+import com.muzima.api.model.Provider;
 import com.muzima.controller.ObservationController;
+import com.muzima.controller.ProviderController;
 import com.muzima.model.observation.EncounterWithObservations;
 import com.muzima.model.observation.Encounters;
 import com.muzima.tasks.MuzimaAsyncTask;
@@ -38,11 +47,15 @@ public class EncounterObservationsAdapter extends RecyclerAdapter<EncountersByPa
     private final String encounterUuid;
     private final ObservationController observationController;
     private List<Observation> observationList;
+    private boolean shouldReplaceProviderIdWithNames;
+    private ProviderController providerController;
 
-    public EncounterObservationsAdapter(Context context, ObservationController observationController, String encounterUuid){
+    public EncounterObservationsAdapter(Context context, MuzimaApplication muzimaApplication, String encounterUuid){
         this.context = context;
         this.encounterUuid = encounterUuid;
-        this.observationController = observationController;
+        this.observationController = muzimaApplication.getObservationController();
+        this.providerController = muzimaApplication.getProviderController();
+        this.shouldReplaceProviderIdWithNames = muzimaApplication.getMuzimaSettingController().isPatientTagGenerationEnabled();
         this.observationList = new ArrayList<>();
     }
 
@@ -96,6 +109,10 @@ public class EncounterObservationsAdapter extends RecyclerAdapter<EncountersByPa
             int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
             String observationConceptType = observation.getConcept().getConceptType().getName();
 
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+
+
             if (StringUtils.equals(observationConceptType, "Complex")){
                 observationValue.setVisibility(View.GONE);
                 observationComplex.setVisibility(View.VISIBLE);
@@ -104,7 +121,21 @@ public class EncounterObservationsAdapter extends RecyclerAdapter<EncountersByPa
                 observationComplex.setVisibility(View.GONE);
 
                 observationValue.setTextColor(conceptColor);
-                observationValue.setText(observation.getValueAsString());
+
+                if(observation.getConcept().isCoded()){
+                    observationValue.setText(getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage));
+                }else {
+                    if (shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID) {
+                        Provider provider = providerController.getProviderBySystemId(observation.getValueAsString());
+                        if (provider != null) {
+                            observationValue.setText(provider.getName());
+                        } else {
+                            observationValue.setText(observation.getValueAsString());
+                        }
+                    } else {
+                        observationValue.setText(observation.getValueAsString());
+                    }
+                }
             }
 
             divider.setBackgroundColor(conceptColor);
@@ -113,7 +144,7 @@ public class EncounterObservationsAdapter extends RecyclerAdapter<EncountersByPa
             observationDate.setTextColor(conceptColor);
 
             conceptQuestion.setBackgroundColor(conceptColor);
-            conceptQuestion.setText(observation.getConcept().getName());
+            conceptQuestion.setText(getConceptNameFromConceptNamesByLocale(observation.getConcept().getConceptNames(),applicationLanguage));
         }
     }
 

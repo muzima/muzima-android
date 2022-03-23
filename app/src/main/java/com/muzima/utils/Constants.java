@@ -86,6 +86,7 @@ public class Constants {
         public static final String FORM_IDS = "formIds";
         public static final String COHORT_IDS = "cohortIds";
         public static final String PATIENT_UUID_FOR_DOWNLOAD = "patientUUIDForDownload";
+        public static final String PATIENT_UUIDS = "patientUuids";
 
         public static final int SYNC_FORMS = 0;
         public static final int SYNC_TEMPLATES = 1;
@@ -108,6 +109,7 @@ public class Constants {
         public static final int SYNC_RELATIONSHIPS = 18;
         public static final int SYNC_ALL_PATIENT_REPORT_HEADERS_AND_REPORTS = 19;
         public static final int SYNC_SETUP_CONFIGURATION_TEMPLATES = 20;
+        public static final int UPDATE_PATIENT_TAGS = 21;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;
@@ -517,6 +519,12 @@ public class Constants {
         public static class Concepts {
             public static final int HEALTHWORKER_ASSIGNMENT_CONCEPT_ID = 1912;
             public static final int INDEX_CASE_TESTING_CONSENT_CONCEPT_ID = 21155;
+        }
+
+        public static class TagsUuids {
+            public static final String HAS_SEXUAL_PARTNER_TAG_UUID = "6ff70505-4b1c-4b9e-b76f-fd73a5df450b";
+            public static final String ALREADY_ASSIGNED_TAG_UUID = "e7e26b4e-b3fd-11eb-8374-d0577bb73cd4";
+            public static final String AWAITING_ASSIGNMENT_TAG_UUID = "d334310f-5f04-4ecb-a09f-79ca7fc3dcbb";
         }
     }
 }

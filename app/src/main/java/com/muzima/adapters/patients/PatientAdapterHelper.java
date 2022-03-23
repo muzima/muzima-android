@@ -126,12 +126,7 @@ public class PatientAdapterHelper extends ListAdapter<Patient> {
                 }
                 textView = holder.tags.get(i);
                 textView.setBackgroundColor(patientController.getTagColor(tags[i].getUuid()));
-                List<PatientTag> selectedTags = patientController.getSelectedTags();
-                if (selectedTags.isEmpty() || selectedTags.contains(tags[i])) {
-                    textView.setText(tags[i].getName());
-                } else {
-                    textView.setText(StringUtils.EMPTY);
-                }
+                textView.setText(tags[i].getName());
             }
 
             //remove existing extra tags which are present because of recycled list view

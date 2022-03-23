@@ -807,4 +807,8 @@
     <string name="title_auto_logout">ઓટો લોગઆઉટ</string>
     <string name="message_auto_logout">તમે %d સેકન્ડમાં ઓટો લોગ ઓફ થઈ જશો</string>
     <string name="general_reset">રીસેટ કરો</string>
+    <string name="general_already_assigned">પહેલેથી જ સોંપેલ</string>
+    <string name="general_awaiting_assignment">સોંપણીની રાહ જોઈ રહ્યા છીએ</string>
+    <string name="general_has_sexual_partner">જાતીય ભાગીદાર છે</string>
+    <string name="general_all">તમામ</string>
 </resources>

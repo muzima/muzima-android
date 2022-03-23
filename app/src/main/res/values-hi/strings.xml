@@ -806,4 +806,8 @@
     <string name="title_auto_logout">ऑटो लॉगआउट</string>
     <string name="message_auto_logout">आप %d सेकंड में स्वतः लॉग ऑफ हो जाएंगे</string>
     <string name="general_reset">रीसेट</string>
+    <string name="general_already_assigned">पहले से ही असाइन किया गया</string>
+    <string name="general_awaiting_assignment">असाइनमेंट की प्रतीक्षा में</string>
+    <string name="general_has_sexual_partner">यौन साथी है</string>
+    <string name="general_all">सभी</string>
 </resources>

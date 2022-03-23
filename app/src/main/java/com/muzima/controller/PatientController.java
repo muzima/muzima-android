@@ -37,6 +37,10 @@ import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 
+import static com.muzima.utils.Constants.FGH.TagsUuids.ALREADY_ASSIGNED_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.AWAITING_ASSIGNMENT_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID;
+
 public class PatientController {
 
     private final PatientService patientService;
@@ -45,6 +49,7 @@ public class PatientController {
     private List<PatientTag> selectedTags;
     private FormService formService;
     private PatientTagService patientTagService;
+
 
     public PatientController(PatientService patientService, CohortService cohortService, FormService formService,PatientTagService patientTagService) {
         this.patientService = patientService;
@@ -374,13 +379,59 @@ public class PatientController {
         if (tagsUuid == null || tagsUuid.isEmpty()) {
             return patients;
         }
+        boolean isPartnerTagNeeded = tagsUuid.contains(HAS_SEXUAL_PARTNER_TAG_UUID);
+        if(isPartnerTagNeeded && tagsUuid.size() > 1) {
+            tagsUuid.remove(HAS_SEXUAL_PARTNER_TAG_UUID);
+        }
+
+        boolean isAlTagsNeeded = tagsUuid.contains(ALREADY_ASSIGNED_TAG_UUID);
+        if(isAlTagsNeeded){
+            tagsUuid.remove(ALREADY_ASSIGNED_TAG_UUID);
+        }
+
+        boolean isAaTagsNeeded = tagsUuid.contains(AWAITING_ASSIGNMENT_TAG_UUID);
+        if(isAaTagsNeeded){
+            tagsUuid.remove(AWAITING_ASSIGNMENT_TAG_UUID);
+        }
+
         List<Patient> filteredPatients = new ArrayList<>();
         for (Patient patient : patients) {
             PatientTag[] patientTags = patient.getTags();
-            for (PatientTag patientTag : patientTags) {
-                if (tagsUuid.contains(patientTag.getUuid())) {
-                    filteredPatients.add(patient);
-                    break;
+            if (tagsUuid.isEmpty()) {
+                filteredPatients.add(patient);
+            } else {
+                for (PatientTag patientTag : patientTags) {
+                    if (tagsUuid.contains(patientTag.getUuid())) {
+                        filteredPatients.add(patient);
+                        break;
+                    }
+                }
+            }
+
+            if(isPartnerTagNeeded && filteredPatients.contains(patient)){
+                boolean hasPartnerTag = false;
+                for (PatientTag patientTag : patientTags) {
+                    if(HAS_SEXUAL_PARTNER_TAG_UUID.equals(patientTag.getUuid())){
+                        hasPartnerTag = true;
+                        break;
+                    }
+                }
+                if(!hasPartnerTag){
+                    filteredPatients.remove(patient);
+                }
+            }
+            if((isAlTagsNeeded || isAaTagsNeeded) && filteredPatients.contains(patient)){
+                boolean hasAlAaTag = false;
+                for (PatientTag patientTag : patientTags) {
+
+                    if(isAlTagsNeeded && ALREADY_ASSIGNED_TAG_UUID.equals(patientTag.getUuid()) ||
+                            isAaTagsNeeded && AWAITING_ASSIGNMENT_TAG_UUID.equals(patientTag.getUuid())){
+                        hasAlAaTag = true;
+                        break;
+                    }
+                }
+                if(!hasAlAaTag){
+                    filteredPatients.remove(patient);
                 }
             }
         }
