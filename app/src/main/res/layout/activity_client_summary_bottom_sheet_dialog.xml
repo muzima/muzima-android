@@ -53,40 +53,34 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_marginTop="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:weightSum="100">
 
         <TextView
             android:id="@+id/general_add_reading_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="50"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/border_button_gray"
             android:paddingTop="9dp"
             android:paddingBottom="9dp"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
+            android:paddingStart="6dp"
+            android:paddingEnd="4dp"
             android:fontFamily="@font/roboto_medium"
             android:gravity="center_vertical"
-            android:drawablePadding="12dp"
+            android:drawablePadding="6dp"
             android:drawableStart="@drawable/ic_action_add_blue"
             android:textAllCaps="true"
             android:text="@string/general_add_reading"
             android:textColor="@color/primary_blue"
             android:textSize="14sp" />
-
-        <LinearLayout
-            android:gravity="center_vertical"
-            android:layout_marginEnd="12dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/close_summary_bottom_sheet_view"
@@ -97,7 +91,8 @@
                 android:fontFamily="@font/roboto_medium"
                 android:layout_marginEnd="6dp"
                 android:layout_marginStart="6dp"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="25"
                 android:layout_height="wrap_content"/>
 
             <Button
@@ -106,11 +101,10 @@
                 android:fontFamily="@font/roboto_medium"
                 android:layout_marginStart="8dp"
                 android:backgroundTint="@color/primary_blue"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="25"
                 android:layout_height="wrap_content"/>
 
-        </LinearLayout>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

@@ -156,7 +156,10 @@ class HTMLFormDataStore {
                     setDiscriminator(formData.getDiscriminator());
                 }};
 
-                processForm(separatePatientJsonPayload, STATUS_COMPLETE,false, formDatas);
+                if(i == (patients.size()-1))
+                    processForm(separatePatientJsonPayload, STATUS_COMPLETE,false, formDatas);
+                else
+                    processForm(separatePatientJsonPayload, STATUS_COMPLETE,true, formDatas);
             }
 
             Intent intent = new Intent(applicationContext, MainDashboardActivity.class);
@@ -249,10 +252,15 @@ class HTMLFormDataStore {
                         }
 
                         //Remove AA patient tag to be replaced by the AL/NA tags
+                        PatientTag AATag = null;
                         for(PatientTag patientTag : tags){
                             if(patientTag.getName().equals("AA")){
-                                tags.remove(patientTag);
+                                AATag = patientTag;
                             }
+                        }
+
+                        if(AATag != null){
+                            tags.remove(AATag);
                         }
 
 
