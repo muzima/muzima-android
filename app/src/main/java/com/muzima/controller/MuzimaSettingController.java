@@ -15,6 +15,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -204,11 +205,17 @@ public class MuzimaSettingController {
                         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
                         Intent intent = new Intent();
                         intent.setComponent(cn);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        }
                         muzimaApplication.getApplicationContext().startActivity(intent);
                     }else {
                         Intent intent;
                         intent = new Intent(muzimaApplication, MainDashboardActivity.class);
                         intent.putExtra("OnlineMode", setting.getValueBoolean());
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        }
                         muzimaApplication.startActivity(intent);
                     }
                 }
