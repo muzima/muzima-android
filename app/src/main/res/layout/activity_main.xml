@@ -24,6 +24,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+    <!-- The navigation drawer -->
+    <FrameLayout
+        android:id="@+id/tags_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:background="?attr/drawerBackgroundColor">
+
+        <ListView
+            android:id="@+id/tags_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@drawable/tags_list_divider"
+            android:dividerHeight="2dp" />
+
+
+        <TextView
+            android:id="@+id/tags_no_data_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/info_tag_unavailable"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+
     <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigation_view"
             android:layout_width="wrap_content"
@@ -34,5 +62,6 @@
             style="@style/Widget.Custom.NavigationView"
             app:headerLayout="@layout/dashboard_header"
             app:menu="@menu/dashboard_drawer_menu"/>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

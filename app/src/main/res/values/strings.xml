@@ -822,4 +822,8 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="title_auto_logout">Auto Logout</string>
     <string name="message_auto_logout">You will be auto logged off in %d sec</string>
     <string name="general_reset">Reset</string>
+    <string name="general_already_assigned">Already Assigned</string>
+    <string name="general_awaiting_assignment">Awaiting Assignment</string>
+    <string name="general_has_sexual_partner">Has sexual partner</string>
+    <string name="general_all">All</string>
 </resources>

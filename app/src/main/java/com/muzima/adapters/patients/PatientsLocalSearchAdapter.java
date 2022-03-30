@@ -121,6 +121,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
 
     @Override
     public void reloadData() {
+        selectedPatientsUuids.clear();
         cancelBackgroundTask();
         if(!cohortUuids.isEmpty() ) {
             backgroundQueryTask = new BackgroundQueryTask();

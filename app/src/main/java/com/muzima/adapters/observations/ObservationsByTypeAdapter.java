@@ -10,8 +10,12 @@
 
 package com.muzima.adapters.observations;
 
+import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +31,7 @@ import com.muzima.api.model.Encounter;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
+import com.muzima.controller.ProviderController;
 import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import com.muzima.model.observation.ConceptWithObservations;
@@ -49,7 +54,9 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
     final ConceptController conceptController;
     final EncounterController encounterController;
     final ObservationController observationController;
+    final ProviderController providerController;
     private final Boolean isShrData;
+    private final Boolean shouldReplaceProviderIdWithNames;
 
     public ObservationsByTypeAdapter(Context context, String patientUuid, Boolean isShrData, boolean isAddSingleElement,
                                      ConceptInputLabelClickedListener conceptInputLabelClickedListener) {
@@ -62,6 +69,8 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
         this.encounterController = app.getEncounterController();
         this.conceptController = app.getConceptController();
         this.observationController = app.getObservationController();
+        this.providerController = app.getProviderController();
+        this.shouldReplaceProviderIdWithNames = app.getMuzimaSettingController().isPatientTagGenerationEnabled();
         conceptWithObservationsList = new ArrayList<>();
     }
 
@@ -77,6 +86,9 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
     }
 
     private void bindViews(@NotNull ViewHolder holder, int position) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+
         ConceptWithObservations conceptWithObservations = conceptWithObservationsList.get(position);
 
         if (isAddSingleElement)
@@ -93,12 +105,15 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
                     }
                 }
             }
-        }, encounterController, observationController, isShrData, isAddSingleElement);
+        }, encounterController, observationController, isShrData, isAddSingleElement, applicationLanguage, providerController, shouldReplaceProviderIdWithNames);
         holder.obsHorizontalListRecyclerView.setAdapter(observationsListAdapter);
     }
 
     String getConceptDisplay(Concept concept) {
-        String text = concept.getName();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+
+        String text = getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),applicationLanguage);
         if (concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)) {
             text += " (" + concept.getUnit() + ")";
         }

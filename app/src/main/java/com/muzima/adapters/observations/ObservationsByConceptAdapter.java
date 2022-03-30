@@ -11,9 +11,12 @@
 package com.muzima.adapters.observations;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +51,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
 
 
@@ -193,11 +197,18 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
                     Provider provider = muzimaApplication.getProviderController().getProviderBySystemId(observation.getValueAsString());
                     if(provider != null){
                         observationValue.setText(provider.getName());
-                    } else {
+                    }else {
                         observationValue.setText(observation.getValueAsString());
                     }
                 } else {
-                    observationValue.setText(observation.getValueAsString());
+                    if(isConceptCoded) {
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+                        String applicationLanguage = preferences.getString(muzimaApplication.getResources().getString(R.string.preference_app_language), muzimaApplication.getResources().getString(R.string.language_english));
+
+                        observationValue.setText(getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage));
+                    }else{
+                        observationValue.setText(observation.getValueAsString());
+                    }
                 }
                 observationValue.setTextColor(conceptColor);
             }
@@ -265,6 +276,8 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         String observationConceptType = observation.getConcept().getConceptType().getName();
         String encounterDate = DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime());
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+        String applicationLanguage = preferences.getString(muzimaApplication.getResources().getString(R.string.preference_app_language), muzimaApplication.getResources().getString(R.string.language_english));
         /**
          * Prepare add obs dialog
          */
@@ -327,11 +340,16 @@ public class ObservationsByConceptAdapter extends ObservationsAdapter<ConceptWit
         if (StringUtils.equals(observationConceptType, "Complex")) {
             obsValueTextView.setText("Complex Obs");
         } else {
-            String observationValue = observation.getValueAsString();
-            obsValueTextView.setText(observationValue);
+            if(observation.getConcept().isCoded()) {
+                String observationValue = getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage);
+                obsValueTextView.setText(observationValue);
+            }else{
+                String observationValue = observation.getValueAsString();
+                obsValueTextView.setText(observationValue);
+            }
         }
 
-        conceptNameTextView.setText(observation.getConcept().getName());
+        conceptNameTextView.setText(getConceptNameFromConceptNamesByLocale(observation.getConcept().getConceptNames(),applicationLanguage));
         String conceptDescription = observation.getConcept().getUnit();
 
         if (conceptDescription != null || conceptDescription != "") {

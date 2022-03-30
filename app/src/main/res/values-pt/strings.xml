@@ -814,4 +814,8 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="title_auto_logout">Logout automático</string>
     <string name="message_auto_logout">Você será desconectado automaticamente em %d segundos</string>
     <string name="general_reset">Redefinir</string>
+    <string name="general_already_assigned">Já atribuído</string>
+    <string name="general_awaiting_assignment">Aguardando Atribuição</string>
+    <string name="general_has_sexual_partner">Tem parceiro sexual</string>
+    <string name="general_all">Todos</string>
 </resources>

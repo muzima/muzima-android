@@ -187,6 +187,7 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard_home, menu);
         menu.findItem(R.id.menu_location).setVisible(false);
+        menu.findItem(R.id.menu_tags).setVisible(false);
         MenuItem menuRefresh = menu.findItem(R.id.menu_load);
         menuRefresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

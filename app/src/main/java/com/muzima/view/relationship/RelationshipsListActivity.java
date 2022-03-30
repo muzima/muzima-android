@@ -59,6 +59,7 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.PersonDemographicsUpdateFormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
+import com.muzima.view.patients.UpdatePatientTagsIntent;
 
 import androidx.appcompat.widget.Toolbar;
 import es.dmoral.toasty.Toasty;
@@ -155,9 +156,11 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             patientNameTextView.setText("");
         }
         identifierTextView.setText(String.format(Locale.getDefault(), "ID:#%s", patient.getIdentifier()));
-        dobTextView.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate())));
+        if(patient.getBirthdate() != null) {
+            dobTextView.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate())));
+            ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
+        }
         patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
-        ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
     }
 
     private int getGenderImage(String gender) {
@@ -529,6 +532,11 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                 relationshipController.saveRelationship(newRelationship);
                 patientRelationshipsAdapter.reloadData();
                 closeNewRelationshipWindow();
+
+                List<String> relatedPatientsuuids = new ArrayList<>();
+                relatedPatientsuuids.add(patient.getUuid());
+                initiatePatientTagsUpdate(relatedPatientsuuids);
+
                 Toasty.success(this, getString(R.string.relationship_create_success), Toast.LENGTH_LONG, true).show();
             } catch (RelationshipController.SaveRelationshipException e) {
                 Log.e(getClass().getSimpleName(), "Error saving new relationship");
@@ -538,6 +546,11 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                 Log.e("", "Error While Saving Form Data" + e);
             }
         }
+    }
+
+    private void initiatePatientTagsUpdate(List<String> patientUuidList){
+        UpdatePatientTagsIntent updatePatientTagsIntent = new UpdatePatientTagsIntent(getApplicationContext(),patientUuidList);
+        updatePatientTagsIntent.start();
     }
 
     @Override

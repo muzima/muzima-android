@@ -115,7 +115,7 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
     private void setUpEncounterObservations(){
         MuzimaRecyclerView encounterObservationsView = findViewById(R.id.encounter_observations_list);
         encounterObservationsAdapter = new EncounterObservationsAdapter(this,
-                ((MuzimaApplication) getApplicationContext()).getObservationController(),encounter.getUuid());
+                ((MuzimaApplication) getApplicationContext()),encounter.getUuid());
         encounterObservationsAdapter.setBackgroundListQueryTaskListener(this);
         encounterObservationsView.setLayoutManager(new LinearLayoutManager(this));
         encounterObservationsView.setAdapter(encounterObservationsAdapter);

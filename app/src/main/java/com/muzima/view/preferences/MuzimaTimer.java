@@ -49,7 +49,6 @@ public class MuzimaTimer extends CountDownTimer {
 
     @Override
     public void onTick(long l) {
-        Log.e(getClass().getSimpleName(),"Remaining time in seconds = "+l*0.001);
         if(l*0.001<=30) {
             Intent intent;
             intent = new Intent(muzimaApplication, MainDashboardActivity.class);

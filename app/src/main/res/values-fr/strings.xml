@@ -815,4 +815,8 @@
     <string name="title_auto_logout">Déconnexion automatique</string>
  <string name="message_auto_logout">Vous serez automatiquement déconnecté dans %d secondes</string>
  <string name="general_reset">Réinitialiser</string>
+ <string name="general_already_assigned">Déjà attribué</string>
+ <string name="general_awaiting_assignment">En attente d\'affectation</string>
+ <string name="general_has_sexual_partner">A un partenaire sexuel</string>
+ <string name="general_all">Tout</string>
 </resources>

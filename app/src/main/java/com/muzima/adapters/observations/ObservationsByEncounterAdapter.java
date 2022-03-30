@@ -11,10 +11,13 @@
 package com.muzima.adapters.observations;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.appcompat.app.AlertDialog;
+
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +43,7 @@ import com.muzima.utils.StringUtils;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
 
 public class ObservationsByEncounterAdapter extends ObservationsAdapter<EncounterWithObservations> {
@@ -142,7 +146,15 @@ public class ObservationsByEncounterAdapter extends ObservationsAdapter<Encounte
                         observationValue.setText(observation.getValueAsString());
                     }
                 } else {
-                    observationValue.setText(observation.getValueAsString());
+                    boolean isConceptCoded = observation.getConcept().isCoded();
+                    if(isConceptCoded) {
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
+                        String applicationLanguage = preferences.getString(muzimaApplication.getResources().getString(R.string.preference_app_language), muzimaApplication.getResources().getString(R.string.language_english));
+
+                        observationValue.setText(getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage));
+                    }else{
+                        observationValue.setText(observation.getValueAsString());
+                    }
                 }
                 observationValue.setTextColor(conceptColor);
             }

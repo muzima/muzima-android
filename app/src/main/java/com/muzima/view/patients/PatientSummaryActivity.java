@@ -14,9 +14,11 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -76,6 +78,7 @@ import java.util.Locale;
 
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
+import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 
 public class PatientSummaryActivity extends BroadcastListenerActivity implements ClientDynamicObsFormsAdapter.DatePickerClickedListener, ClientDynamicObsFormsAdapter.DateValuePickerClickedListener {
     private static final String TAG = "PatientSummaryActivity";
@@ -112,6 +115,7 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
         setContentView(R.layout.activity_client_summary);
         initializeResources();
         loadPatientData();
+        setTitle(R.string.title_activity_client_summary);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
@@ -242,6 +246,10 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
         Dialog dialog = new BottomSheetDialog(this);
         dialog.setContentView(view);
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        String applicationLanguage = preferences.getString(this.getResources().getString(R.string.preference_app_language), this.getResources().getString(R.string.language_english));
+
+
         bottomSheetConceptTitleTextView = view.findViewById(R.id.cohort_name_text_view);
         View addReadingActionView = view.findViewById(R.id.general_add_reading_button);
         View cancelBottomSheetActionView = view.findViewById(R.id.close_summary_bottom_sheet_view);
@@ -257,7 +265,7 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
                 singleObsFormsList.add(form);
             }
         }else {
-            bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
+            bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", getConceptNameFromConceptNamesByLocale(selectedBottomSheetConcept.getConceptNames(),applicationLanguage), selectedBottomSheetConcept.getConceptType().getName()));
             singleObsFormsList.add(form);
         }
         clientDynamicObsFormsAdapter.notifyDataSetChanged();
@@ -318,9 +326,12 @@ public class PatientSummaryActivity extends BroadcastListenerActivity implements
             patient = ((MuzimaApplication) getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
             patientNameTextView.setText(patient.getDisplayName());
             identifierTextView.setText(String.format(Locale.getDefault(), "ID:#%s", patient.getIdentifier()));
-            dobTextView.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate())));
+            if (patient.getBirthdate() != null)
+                dobTextView.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate())));
+
             patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
-            ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
+            if (patient.getBirthdate() != null)
+                ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
             gpsAddressTextView.setText(getDistanceToClientAddress(patient));
         } catch (PatientController.PatientLoadException e) {
             e.printStackTrace();
