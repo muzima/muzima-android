@@ -251,10 +251,15 @@ class HTMLFormDataStore {
                         }
 
                         //Remove AA patient tag to be replaced by the AL/NA tags
+                        PatientTag AATag = null;
                         for(PatientTag patientTag : tags){
                             if(patientTag.getName().equals("AA")){
-                                tags.remove(patientTag);
+                                AATag = patientTag;
                             }
+                        }
+
+                        if(AATag != null){
+                            tags.remove(AATag);
                         }
 
 
@@ -1144,18 +1149,6 @@ class HTMLFormDataStore {
             if ((jsonObjectInner.has("patient.uuid"))) {
                 jsonObjectInner.remove("patient.uuid");
                 jsonObjectInner.put("patient.uuid", patient.getUuid());
-                jsonObject.put("patient", jsonObjectInner);
-                jsonPayload = jsonObject.toString();
-            }
-            if ((jsonObjectInner.has("patient.tagName"))) {
-                jsonObjectInner.remove("patient.tagName");
-                jsonObjectInner.put("patient.tagName", jsonObjectInner.getString("patient.tagName"));
-                jsonObject.put("patient", jsonObjectInner);
-                jsonPayload = jsonObject.toString();
-            }
-            if ((jsonObjectInner.has("patient.tagUuid"))) {
-                jsonObjectInner.remove("patient.tagUuid");
-                jsonObjectInner.put("patient.tagUuid", jsonObjectInner.getString("patient.tagUuid"));
                 jsonObject.put("patient", jsonObjectInner);
                 jsonPayload = jsonObject.toString();
             }
