@@ -11,6 +11,7 @@
 package com.muzima.view.preferences;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.util.Log;
 
@@ -54,6 +55,9 @@ public class MuzimaTimer extends CountDownTimer {
             intent = new Intent(muzimaApplication, MainDashboardActivity.class);
             intent.putExtra("AutoLogOutTimer", true);
             intent.putExtra("RemainingTime", l);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
             muzimaApplication.startActivity(intent);
         }
     }
