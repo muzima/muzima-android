@@ -67,6 +67,7 @@ import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.MainDashboardActivity;
+import com.muzima.view.custom.CheckedLinearLayout;
 import com.muzima.view.forms.FormViewIntent;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
@@ -532,7 +533,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
             patientSearchAdapter.cancelBackgroundTask();
             Patient patient = patientSearchAdapter.getItem(position);
                 if(actionModeActive){
-                patientSearchAdapter.toggleSelection(view, position);
+                patientSearchAdapter.toggleSelection(patient,(CheckedLinearLayout) view);
                 int numOfSelectedPatients = patientSearchAdapter.getSelectedPatientsUuids().size();
                 if (numOfSelectedPatients == 0 && actionModeActive) {
                     actionMode.finish();

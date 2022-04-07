@@ -34,13 +34,11 @@ import com.muzima.view.custom.CheckedLinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements MuzimaAsyncTask.OnProgressListener<List<Patient>>{
+public class PatientsLocalSearchAdapter extends PatientAdapterHelper {
     private static final String SEARCH = "search";
-    private final PatientAdapterHelper patientAdapterHelper;
     private final PatientController patientController;
     private final List<String> cohortUuids;
     private MuzimaAsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
-    private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
     private View.OnClickListener onClickListener;
 
@@ -48,75 +46,22 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
     private List<String> selectedPatientsUuids;
     private Context context;
 
-    public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
-                                      PatientController patientController,
+    public PatientsLocalSearchAdapter(Context context, PatientController patientController,
                                       List<String> cohortUuids,
-                                      MuzimaGPSLocation currentLocation) {
-        super(context, textViewResourceId);
+                                      MuzimaGPSLocation currentLocation,PatientListClickListener patientListClickListener) {
+        super(context,patientController,patientListClickListener);
         this.patientController = patientController;
         if (cohortUuids != null){
             this.cohortUuids = cohortUuids;
         } else {
             this.cohortUuids = new ArrayList<>();
         }
-        this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId, patientController);
-        patientAdapterHelper.setCurrentLocation(currentLocation);
-        selectedPatientsUuids = new ArrayList<>();
+        setCurrentLocation(currentLocation);
         this.context = context;
-    }
-
-    public void setPatientListLongClickListener(PatientListClickListener patientListClickListener) {
-        this.patientListClickListener = patientListClickListener;
     }
 
     public void setOnClickListener(View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
-    }
-
-    @NonNull
-    @Override
-    public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
-        convertView = patientAdapterHelper.createPatientRow(getItem(position), convertView, parent, getContext());
-
-        convertView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                toggleSelection(view, position);
-                patientListClickListener.onItemLongClick();
-                return true;
-            }
-        });
-
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                patientListClickListener.onItemClick(view, position);
-            }
-        });
-        return convertView;
-    }
-
-    public void toggleSelection(View view, int position){
-        CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
-        checkedLinearLayout.toggle();
-        boolean selected = checkedLinearLayout.isChecked();
-
-        Patient clickedPatient = getItem(position);
-        if (selected && !selectedPatientsUuids.contains(clickedPatient.getUuid())) {
-            selectedPatientsUuids.add(clickedPatient.getUuid());
-            checkedLinearLayout.setActivated(true);
-        } else if (!selected && selectedPatientsUuids.contains(clickedPatient.getUuid())) {
-            selectedPatientsUuids.remove(clickedPatient.getUuid());
-            checkedLinearLayout.setActivated(false);
-        }
-    }
-
-    public List<String> getSelectedPatientsUuids() {
-        return selectedPatientsUuids;
-    }
-
-    public void resetSelectedPatientsUuids() {
-         selectedPatientsUuids = new ArrayList<>();
     }
 
     @Override
@@ -149,9 +94,6 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
         reloadData();
     }
 
-    public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
-        this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
-    }
 
     public void cancelBackgroundTask(){
         if(backgroundQueryTask != null){
@@ -161,7 +103,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
 
     @Override
     public void onProgress(List<Patient> patients) {
-        patientAdapterHelper.onProgressUpdate(patients, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
+        onProgressUpdate(patients);
     }
 
 
@@ -169,7 +111,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
 
         @Override
         protected void onPreExecute() {
-            patientAdapterHelper.onPreExecute(backgroundListQueryTaskListener);
+            onPreExecute(backgroundListQueryTaskListener);
             PatientsLocalSearchAdapter.this.clear();
             setOnProgressListener(PatientsLocalSearchAdapter.this);
         }
@@ -286,11 +228,5 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> implements 
     @Override
     public int getItemViewType(int position) {
         return position;
-    }
-
-    public interface PatientListClickListener {
-
-        void onItemLongClick();
-        void onItemClick(View view, int position);
     }
 }

@@ -68,7 +68,7 @@ public class PatientsRemoteSearchAdapter extends ListAdapter<Patient> {
         @Override
         protected void onPostExecute(Object patientsObject) {
             List<Patient> patients = (List<Patient>)patientsObject;
-            patientAdapterHelper.onPostExecute(patients, PatientsRemoteSearchAdapter.this, backgroundListQueryTaskListener);
+            patientAdapterHelper.onPostExecute(patients,  backgroundListQueryTaskListener);
         }
 
         @Override
