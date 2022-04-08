@@ -86,7 +86,6 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
 
     private void setUpListView(String searchString) {
         recyclerView = findViewById(R.id.remote_search_list);
-        //recyclerView.setEmptyView(findViewById(R.id.no_data_layout));
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         patientAdapter = new PatientsRemoteSearchAdapter(this,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), searchString);
@@ -248,8 +247,6 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
-            //for (int i = 0; i < recyclerView.getChildCount(); i++)
-                //recyclerView.setItemChecked(i, false);
         }
     }
 

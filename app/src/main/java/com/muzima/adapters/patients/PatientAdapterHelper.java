@@ -30,7 +30,6 @@ import com.muzima.model.patient.PatientItem;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.CheckedLinearLayout;
-;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

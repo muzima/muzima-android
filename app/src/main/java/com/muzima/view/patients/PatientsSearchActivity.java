@@ -399,9 +399,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
 
 
     @Override
-    public void onItemLongClick(View view, int position) {
-
-    }
+    public void onItemLongClick(View view, int position) {}
 
     @Override
     public void onItemClick(View view, int position) {
