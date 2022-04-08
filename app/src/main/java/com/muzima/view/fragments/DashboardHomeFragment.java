@@ -22,10 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,8 +29,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -43,7 +40,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.RecyclerAdapter;
+import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.MuzimaSetting;
@@ -66,8 +64,6 @@ import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
-import com.muzima.view.MainDashboardActivity;
-import com.muzima.view.custom.CheckedLinearLayout;
 import com.muzima.view.forms.FormViewIntent;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
@@ -89,8 +85,8 @@ import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_ASSIGNMENT_FORM_UUID_SETTING;
 
-public class DashboardHomeFragment extends Fragment implements ListAdapter.BackgroundListQueryTaskListener,
-        PatientsLocalSearchAdapter.PatientListClickListener {
+public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.BackgroundListQueryTaskListener,
+        PatientAdapterHelper.PatientListClickListener {
     private static final int RC_BARCODE_CAPTURE = 9001;
     private TextView incompleteFormsTextView;
     private TextView completeFormsTextView;
@@ -102,7 +98,7 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     private View filterActionView;
     private View childContainer;
     private TextView providerNameTextView;
-    private ListView listView;
+    private RecyclerView recyclerView;
     private View noDataView;
     private FloatingActionButton fabSearchButton;
     private ProgressBar progressBar;
@@ -140,15 +136,15 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     }
 
     private void setupListView(View view) {
-        listView = view.findViewById(R.id.list);
-        listView.setDividerHeight(0);
-        patientSearchAdapter = new PatientsLocalSearchAdapter(getActivity(), R.layout.layout_list,
-                ((MuzimaApplication) getActivity().getApplicationContext()).getPatientController(), null, getCurrentGPSLocation());
+        recyclerView = view.findViewById(R.id.list);
+        Context context = getActivity().getApplicationContext();
+        patientSearchAdapter = new PatientsLocalSearchAdapter(context,
+                ((MuzimaApplication) context).getPatientController(), null, getCurrentGPSLocation());
 
         patientSearchAdapter.setBackgroundListQueryTaskListener(this);
-//        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        listView.setAdapter(patientSearchAdapter);
-        patientSearchAdapter.setPatientListLongClickListener(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
+        recyclerView.setAdapter(patientSearchAdapter);
+        patientSearchAdapter.setPatientListClickListener(this);
     }
 
     private void initializeResources(View view) {
@@ -498,6 +494,11 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         return muzimaLocationService.getLastKnownGPSLocation();
     }
 
+    private boolean isBarcodeSearchEnabled(){
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSettingController();
+        return muzimaSettingController.isBarcodeEnabled();
+    }
+
     @Override
     public void onQueryTaskStarted() {
         filterProgressBar.setVisibility(View.VISIBLE);
@@ -507,8 +508,13 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
     @Override
     public void onQueryTaskFinish() {
         filterProgressBar.setVisibility(View.GONE);
-        if(patientSearchAdapter.isEmpty())
+        if(patientSearchAdapter.isEmpty()) {
             noDataView.setVisibility(VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(VISIBLE);
+            noDataView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -531,29 +537,25 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
             closeBottomSheet();
         } else {
             patientSearchAdapter.cancelBackgroundTask();
-            Patient patient = patientSearchAdapter.getItem(position);
-                if(actionModeActive){
-                patientSearchAdapter.toggleSelection(patient,(CheckedLinearLayout) view);
+            Patient patient = patientSearchAdapter.getPatient(position);
+            if(actionModeActive){
+                patientSearchAdapter.toggleSelection(view,position);
                 int numOfSelectedPatients = patientSearchAdapter.getSelectedPatientsUuids().size();
                 if (numOfSelectedPatients == 0 && actionModeActive) {
                     actionMode.finish();
                 }
                 actionMode.setTitle(String.valueOf(numOfSelectedPatients));
-            } else {
-                    Intent intent = new Intent(getActivity().getApplicationContext(), PatientSummaryActivity.class);
-                    intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
-                    startActivity(intent);
+            } else if (patient != null){
+                Intent intent = new Intent(getActivity().getApplicationContext(), PatientSummaryActivity.class);
+                intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
+                startActivity(intent);
             }
         }
     }
 
-    private boolean isBarcodeSearchEnabled(){
-        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSettingController();
-        return muzimaSettingController.isBarcodeEnabled();
-    }
-
     @Override
-    public void onItemLongClick() {
+    public void onItemLongClick(View view, int position) {
+        patientSearchAdapter.toggleSelection(view,position);
         if (!actionModeActive) {
             actionMode = getActivity().startActionMode(new MultiplePatientsSelectionActionModeCallback());
             actionModeActive = true;
@@ -639,7 +641,6 @@ public class DashboardHomeFragment extends Fragment implements ListAdapter.Backg
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
-            listView.clearChoices();
             patientSearchAdapter.resetSelectedPatientsUuids();
             patientSearchAdapter.notifyDataSetChanged();
         }

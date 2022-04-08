@@ -11,45 +11,28 @@
 package com.muzima.adapters.patients;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-
-import com.muzima.R;
-import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.custom.CheckedLinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientsLocalSearchAdapter extends PatientAdapterHelper {
+public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements MuzimaAsyncTask.OnProgressListener {
     private static final String SEARCH = "search";
     private final PatientController patientController;
     private final List<String> cohortUuids;
     private MuzimaAsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
 
-    private View.OnClickListener onClickListener;
-
-    private PatientListClickListener patientListClickListener;
-    private List<String> selectedPatientsUuids;
-    private Context context;
 
     public PatientsLocalSearchAdapter(Context context, PatientController patientController,
                                       List<String> cohortUuids,
-                                      MuzimaGPSLocation currentLocation,PatientListClickListener patientListClickListener) {
-        super(context,patientController,patientListClickListener);
+                                      MuzimaGPSLocation currentLocation) {
+        super(context,patientController);
         this.patientController = patientController;
         if (cohortUuids != null){
             this.cohortUuids = cohortUuids;
@@ -57,16 +40,10 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper {
             this.cohortUuids = new ArrayList<>();
         }
         setCurrentLocation(currentLocation);
-        this.context = context;
-    }
-
-    public void setOnClickListener(View.OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
     }
 
     @Override
     public void reloadData() {
-        selectedPatientsUuids.clear();
         cancelBackgroundTask();
         if(!cohortUuids.isEmpty() ) {
             backgroundQueryTask = new BackgroundQueryTask();
@@ -102,17 +79,19 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper {
     }
 
     @Override
-    public void onProgress(List<Patient> patients) {
-        onProgressUpdate(patients);
+    public void onProgress(Object o) {
+        try {
+            onProgressUpdate((List<Patient>) o);
+        } catch (ClassCastException e){
+            Log.e(getClass().getSimpleName(),"Argument is not a patient list",e);
+        }
     }
-
 
     private class BackgroundQueryTask extends MuzimaAsyncTask<String, List<Patient>, List<Patient>> {
 
         @Override
         protected void onPreExecute() {
-            onPreExecute(backgroundListQueryTaskListener);
-            PatientsLocalSearchAdapter.this.clear();
+            onPreExecuteUpdate();
             setOnProgressListener(PatientsLocalSearchAdapter.this);
         }
 
@@ -211,7 +190,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper {
 
         @Override
         protected void onPostExecute(List<Patient> patients) {
-            patientAdapterHelper.onPostExecute(patients, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
+            onPostExecuteUpdate(patients);
         }
 
         @Override

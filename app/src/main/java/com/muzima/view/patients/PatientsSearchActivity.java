@@ -28,7 +28,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -39,10 +38,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.RecyclerAdapter;
+import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.adapters.patients.PatientTagsListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
@@ -84,14 +87,14 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
-public class PatientsSearchActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
-        ListAdapter.BackgroundListQueryTaskListener {
+public class PatientsSearchActivity extends BroadcastListenerActivity implements PatientAdapterHelper.PatientListClickListener,
+        RecyclerAdapter.BackgroundListQueryTaskListener {
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "PatientsSearchActivity";
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     public static final String SEARCH_STRING = "searchString";
-    private ListView listView;
+    private RecyclerView recyclerView;
     private String cohortId = null;
     private PatientsLocalSearchAdapter patientAdapter;
     private FrameLayout progressBarContainer;
@@ -357,15 +360,15 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     }
 
     private void setupListView(String cohortId) {
-        listView = findViewById(R.id.list);
-        listView.setDividerHeight(0);
-        patientAdapter = new PatientsLocalSearchAdapter(this, R.layout.layout_list,
+        recyclerView = findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        patientAdapter = new PatientsLocalSearchAdapter(this,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), new ArrayList<String>(){{add(cohortId);}},
                 getCurrentGPSLocation());
 
         patientAdapter.setBackgroundListQueryTaskListener(this);
-        listView.setAdapter(patientAdapter);
-        listView.setOnItemClickListener(this);
+        patientAdapter.setPatientListClickListener(this);
+        recyclerView.setAdapter(patientAdapter);
     }
 
     private MuzimaGPSLocation getCurrentGPSLocation() {
@@ -394,28 +397,40 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         }
     }
 
+
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+    public void onItemLongClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
         patientAdapter.cancelBackgroundTask();
-        Patient patient = patientAdapter.getItem(position);
-        Intent intent = new Intent(this, PatientSummaryActivity.class);
-        intent.putExtra(PatientSummaryActivity.CALLING_ACTIVITY, PatientsSearchActivity.class.getSimpleName());
-        intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
-        startActivity(intent);
+        Patient patient = patientAdapter.getPatient(position);
+        if(patient != null) {
+            Intent intent = new Intent(this, PatientSummaryActivity.class);
+            intent.putExtra(PatientSummaryActivity.CALLING_ACTIVITY, PatientsSearchActivity.class.getSimpleName());
+            intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
+            startActivity(intent);
+        }
     }
 
     @Override
     public void onQueryTaskStarted() {
-        listView.setVisibility(INVISIBLE);
+        recyclerView.setVisibility(INVISIBLE);
         noDataView.setVisibility(INVISIBLE);
-        listView.setEmptyView(progressBarContainer);
         progressBarContainer.setVisibility(VISIBLE);
     }
 
     @Override
     public void onQueryTaskFinish() {
-        listView.setVisibility(VISIBLE);
-        listView.setEmptyView(noDataView);
+        if(patientAdapter.isEmpty()) {
+            noDataView.setVisibility(VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(VISIBLE);
+            noDataView.setVisibility(View.GONE);
+        }
         progressBarContainer.setVisibility(INVISIBLE);
     }
 

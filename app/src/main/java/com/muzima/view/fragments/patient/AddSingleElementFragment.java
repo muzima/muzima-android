@@ -96,4 +96,7 @@ public class AddSingleElementFragment extends Fragment implements ObservationsBy
     public void onQueryTaskCancelled() {
         observationsByTypeAdapter.cancelBackgroundQueryTask();
     }
+
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition) {}
 }

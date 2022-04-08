@@ -86,4 +86,7 @@ public class HistoricalDataByTypeFragment extends Fragment implements Observatio
     public void onQueryTaskCancelled() {
         observationsByTypeAdapter.cancelBackgroundQueryTask();
     }
+
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition) {}
 }

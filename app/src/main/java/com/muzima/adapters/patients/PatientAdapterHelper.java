@@ -27,11 +27,10 @@ import com.muzima.api.model.PatientTag;
 import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.model.patient.PatientItem;
-import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.CheckedLinearLayout;
-
+;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,7 +41,7 @@ import androidx.annotation.NonNull;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 
-public class PatientAdapterHelper extends RecyclerAdapter<PatientAdapterHelper.ViewHolder> {
+public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapterHelper.ViewHolder> {
     private PatientController patientController;
     private MuzimaGPSLocation currentLocation;
     private Context context;
@@ -51,12 +50,15 @@ public class PatientAdapterHelper extends RecyclerAdapter<PatientAdapterHelper.V
     private PatientListClickListener patientListClickListener;
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
 
-    public PatientAdapterHelper(Context context, PatientController patientController,PatientListClickListener patientListClickListener) {
+    public PatientAdapterHelper(Context context, PatientController patientController) {
         this.patientController = patientController;
         this.context = context;
         patientList = new ArrayList<>();
         selectedPatientsUuids = new ArrayList<>();
-        this.patientListClickListener = patientListClickListener;
+    }
+
+    protected Context getContext(){
+        return context;
     }
 
     public void setCurrentLocation(MuzimaGPSLocation currentLocation) {
@@ -65,6 +67,14 @@ public class PatientAdapterHelper extends RecyclerAdapter<PatientAdapterHelper.V
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
+    }
+
+    protected BackgroundListQueryTaskListener getBackgroundListQueryTaskListener() {
+        return backgroundListQueryTaskListener;
+    }
+
+    public void setPatientListClickListener(PatientListClickListener patientListClickListener) {
+        this.patientListClickListener = patientListClickListener;
     }
 
     @NonNull
@@ -110,16 +120,19 @@ public class PatientAdapterHelper extends RecyclerAdapter<PatientAdapterHelper.V
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                patientListClickListener.onItemClick(view,position);
+                if(patientListClickListener != null) {
+                    patientListClickListener.onItemClick(view, position);
+                }
             }
         });
 
         holder.container.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                toggleSelection(patient, (CheckedLinearLayout) view);
-                patientListClickListener.onItemLongClick(view,position);
-                return false;
+                if(patientListClickListener != null) {
+                    patientListClickListener.onItemLongClick(view, position);
+                }
+                return true;
             }
         });
     }
@@ -128,16 +141,19 @@ public class PatientAdapterHelper extends RecyclerAdapter<PatientAdapterHelper.V
         if(selectedPatientsUuids.contains(patient.getUuid())){
             //highlight
             view.setActivated(true);
+            view.setChecked(true);
         } else {
             //render as not highlighted
             view.setActivated(false);
+            view.setChecked(false);
         }
     }
 
-    public void toggleSelection(Patient patient, CheckedLinearLayout view){
-        CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
+    public void toggleSelection(View view, int position){
+        CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout)view;
         checkedLinearLayout.toggle();
         boolean selected = checkedLinearLayout.isChecked();
+        Patient patient = patientList.get(position).getPatient();
 
         if (selected && !selectedPatientsUuids.contains(patient.getUuid())) {
             selectedPatientsUuids.add(patient.getUuid());
@@ -157,15 +173,25 @@ public class PatientAdapterHelper extends RecyclerAdapter<PatientAdapterHelper.V
     }
 
     @Override
-    public void reloadData() {
-    }
+    public abstract  void reloadData();
 
     @Override
     public int getItemCount() {
         return patientList.size();
     }
 
-    public
+    public Patient getPatient(int position){
+        PatientItem item = patientList.get(position);
+
+        if(item != null){
+            return item.getPatient();
+        }
+        return null;
+    }
+
+    public boolean isEmpty(){
+        return patientList.isEmpty();
+    }
 
     private String getDistanceToClientAddress(Patient patient){
         PersonAddress personAddress = patient.getPreferredAddress();
@@ -221,13 +247,14 @@ public class PatientAdapterHelper extends RecyclerAdapter<PatientAdapterHelper.V
         return textView;
     }
 
-    protected void onPreExecute(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
+    protected void onPreExecuteUpdate() {
+        patientList.clear();
         if (backgroundListQueryTaskListener != null) {
             backgroundListQueryTaskListener.onQueryTaskStarted();
         }
     }
 
-    protected void onPostExecute(List<Patient> patients, BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
+    protected void onPostExecuteUpdate(List<Patient> patients) {
         if (patients == null) {
             Toast.makeText(context, context.getString(R.string.error_patient_repo_fetch), Toast.LENGTH_SHORT).show();
             return;
@@ -258,16 +285,6 @@ public class PatientAdapterHelper extends RecyclerAdapter<PatientAdapterHelper.V
             backgroundListQueryTaskListener.onQueryTaskFinish();
         }
 
-    }
-
-    public void onAuthenticationError(int searchResutStatus, BackgroundListQueryTaskListener backgroundListQueryTaskListener){
-        backgroundListQueryTaskListener.onQueryTaskCancelled(searchResutStatus);
-    }
-
-    public void onNetworkError(SERVER_CONNECTIVITY_STATUS networkStatus, BackgroundListQueryTaskListener backgroundListQueryTaskListener){
-        if (backgroundListQueryTaskListener != null) {
-            backgroundListQueryTaskListener.onQueryTaskCancelled(networkStatus);
-        }
     }
 
     public static String getPatientFormattedName(Patient patient) {
