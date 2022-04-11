@@ -174,4 +174,7 @@ public class AllCohortsListFragment extends Fragment implements CohortsAdapter.O
 
     @Override
     public void onQueryTaskCancelled() {}
+
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition) {}
 }

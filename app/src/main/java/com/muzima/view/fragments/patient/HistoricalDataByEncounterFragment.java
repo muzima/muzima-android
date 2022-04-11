@@ -71,4 +71,7 @@ public class HistoricalDataByEncounterFragment extends Fragment implements Encou
 
     @Override
     public void onQueryTaskCancelled() {}
+
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition) {}
 }

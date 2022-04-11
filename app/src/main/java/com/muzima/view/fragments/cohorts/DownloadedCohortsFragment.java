@@ -87,4 +87,7 @@ public class DownloadedCohortsFragment extends Fragment implements CohortsAdapte
 
     @Override
     public void onQueryTaskCancelled() {}
+
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition) {}
 }

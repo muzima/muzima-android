@@ -131,4 +131,7 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
 
     @Override
     public void onQueryTaskCancelled(){}
+
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition) {}
 }
