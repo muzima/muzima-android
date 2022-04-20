@@ -16,7 +16,8 @@
               android:background="?attr/listMultiSelectorBlue"
               android:layout_marginBottom="3dp"
               android:layout_marginTop="3dp"
-              android:orientation="horizontal">
+              android:orientation="horizontal"
+              android:id="@+id/item_patient_container">
 
     <ImageView
             android:id="@+id/genderImg"
@@ -41,7 +42,7 @@
             android:layout_marginEnd="7dp"
             android:orientation="horizontal">
 
-            <CheckedTextView
+            <TextView
                 android:id="@+id/name"
                 style="@style/ListHeader"
                 android:layout_width="0dp"
@@ -72,14 +73,14 @@
                 android:layout_marginEnd="7dp"
                 android:orientation="horizontal">
 
-            <CheckedTextView
+            <TextView
                     android:id="@+id/dateOfBirth"
                     style="@style/ListDescription"
                     android:layout_width="0dp"
                     android:layout_weight=".4"
                     android:background="?attr/listMultiSelectorBlue"/>
 
-            <CheckedTextView
+            <TextView
                     android:id="@+id/distanceToClientAddress"
                     style="@style/ListDescription"
                     android:gravity="right"
@@ -87,7 +88,7 @@
                     android:layout_weight=".2"
                     android:background="?attr/listMultiSelectorBlue"/>
 
-            <CheckedTextView
+            <TextView
                     android:id="@+id/identifier"
                     style="@style/ListDescription"
                     android:gravity="right"

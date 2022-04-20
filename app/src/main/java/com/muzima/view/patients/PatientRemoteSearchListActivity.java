@@ -25,7 +25,8 @@ import android.view.ActionMode;
 import android.view.Menu;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.RecyclerAdapter;
+import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
@@ -39,6 +40,9 @@ import com.muzima.view.forms.RegistrationFormsActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
@@ -46,10 +50,10 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 import static java.lang.String.valueOf;
 
-public class PatientRemoteSearchListActivity extends BroadcastListenerActivity implements AdapterView.OnItemClickListener,
-        ListAdapter.BackgroundListQueryTaskListener {
+public class PatientRemoteSearchListActivity extends BroadcastListenerActivity implements PatientAdapterHelper.PatientListClickListener,
+        RecyclerAdapter.BackgroundListQueryTaskListener {
     private PatientsRemoteSearchAdapter patientAdapter;
-    private ListView listView;
+    private RecyclerView recyclerView;
     private String searchString;
     private FrameLayout progressBarContainer;
     private Button createPatientBtn;
@@ -90,19 +94,18 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     }
 
     private void setUpListView(String searchString) {
-        listView = findViewById(R.id.remote_search_list);
-        listView.setEmptyView(findViewById(R.id.no_data_layout));
+        recyclerView = findViewById(R.id.remote_search_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         patientAdapter = new PatientsRemoteSearchAdapter(this,
-                R.layout.activity_patient_remote_search_list,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), searchString);
         patientAdapter.setBackgroundListQueryTaskListener(this);
-        listView.setAdapter(patientAdapter);
-        listView.setOnItemClickListener(this);
+        patientAdapter.setPatientListClickListener(this);
+        recyclerView.setAdapter(patientAdapter);
     }
 
     @Override
     public void onQueryTaskStarted() {
-        listView.setVisibility(INVISIBLE);
+        recyclerView.setVisibility(INVISIBLE);
         noDataView.setVisibility(INVISIBLE);
         progressBarContainer.setVisibility(VISIBLE);
     }
@@ -132,8 +135,14 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
 
     @Override
     public void onQueryTaskFinish() {
-        listView.setVisibility(VISIBLE);
         progressBarContainer.setVisibility(INVISIBLE);
+        if(patientAdapter.isEmpty()) {
+            noDataView.setVisibility(VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(VISIBLE);
+            noDataView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -171,20 +180,26 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        if (!actionModeActive && getCheckedItemCount(listView) > 0) {
-            actionMode = this.startActionMode(new DownloadPatientMode());
+    public void onItemLongClick(View view, int position) {
+        onItemClick(view,position);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        patientAdapter.toggleSelection(view,position);
+        if (!actionModeActive) {
+            actionMode = startActionMode(new DownloadPatientMode());
             actionModeActive = true;
-        } else if (getCheckedItemCount(listView) == 0) {
+        }
+        int numOfSelectedPatients = patientAdapter.getSelectedPatientsUuids().size();
+        if (numOfSelectedPatients == 0 && actionModeActive) {
             actionMode.finish();
         }
-        actionMode.setTitle(valueOf(getCheckedItemCount(listView)));
-    }
 
-    private int getCheckedItemCount(ListView listView) {
-        return listView.getCheckedItemCount();
+        if(actionMode != null){
+            actionMode.setTitle(String.valueOf(numOfSelectedPatients));
+        }
     }
-
 
     @Override
     protected void onReceive(Context context, Intent intent) {
@@ -243,19 +258,11 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
-            for (int i = 0; i < listView.getChildCount(); i++)
-                listView.setItemChecked(i, false);
         }
     }
 
     private String[] getSelectedPatientsUuid() {
-        List<String> patientUUIDs = new ArrayList<>();
-        SparseBooleanArray checkedItemPositions = listView.getCheckedItemPositions();
-        for (int i = 0; i < checkedItemPositions.size(); i++) {
-            if (checkedItemPositions.valueAt(i)) {
-                patientUUIDs.add(((Patient) listView.getItemAtPosition(checkedItemPositions.keyAt(i))).getUuid());
-            }
-        }
+        List<String> patientUUIDs = patientAdapter.getSelectedPatientsUuids();
         return patientUUIDs.toArray(new String[patientUUIDs.size()]);
     }
 }

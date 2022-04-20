@@ -18,7 +18,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import com.google.android.material.snackbar.Snackbar;
@@ -30,8 +29,6 @@ import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.JavascriptInterface;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -40,13 +37,15 @@ import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.RecyclerAdapter;
+import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.adapters.patients.PatientTagsListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
-import com.muzima.api.model.Form;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
@@ -59,7 +58,6 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.model.AvailableForm;
-import com.muzima.model.BaseForm;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.service.MuzimaGPSLocationService;
@@ -85,7 +83,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.widget.Toast;
 
 import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
-import static android.view.MenuItem.SHOW_AS_ACTION_NEVER;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -99,7 +96,6 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_REA
 import com.muzima.api.model.SmartCardRecord;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -107,14 +103,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class PatientsListActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener,
-        PatientsLocalSearchAdapter.PatientListClickListener {
+public class PatientsListActivity extends BroadcastListenerActivity implements PatientAdapterHelper.PatientListClickListener,
+        RecyclerAdapter.BackgroundListQueryTaskListener {
 
     public static final String SELECTED_PATIENT_UUIDS_KEY = "selectedPatientUuids";
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     private static final String QUICK_SEARCH = "quickSearch";
-    private ListView listView;
+    private RecyclerView recyclerView;
     private boolean quickSearch = false;
     private String cohortId = null;
     private PatientsLocalSearchAdapter patientAdapter;
@@ -534,13 +530,16 @@ public class PatientsListActivity extends BroadcastListenerActivity implements L
     }
 
     private void setupListView(String cohortId) {
-        listView = findViewById(R.id.list);
-        patientAdapter = new PatientsLocalSearchAdapter(this, R.layout.layout_list,
-                ((MuzimaApplication) getApplicationContext()).getPatientController(), cohortId, getCurrentGPSLocation());
+
+        recyclerView = findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        patientAdapter = new PatientsLocalSearchAdapter(this,
+                ((MuzimaApplication) getApplicationContext()).getPatientController(), new ArrayList<String>(){{add(cohortId);}},
+                getCurrentGPSLocation());
 
         patientAdapter.setBackgroundListQueryTaskListener(this);
-        listView.setAdapter(patientAdapter);
-        patientAdapter.setPatientListLongClickListener(this);
+        patientAdapter.setPatientListClickListener(this);
+        recyclerView.setAdapter(patientAdapter);
     }
 
     private MuzimaGPSLocation getCurrentGPSLocation() {
@@ -573,7 +572,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements L
 
     public void onItemClick(View view, int position) {
         patientAdapter.cancelBackgroundTask();
-        Patient patient = patientAdapter.getItem(position);
+        Patient patient = patientAdapter.getPatient(position);
 
         if(actionModeActive){
             patientAdapter.toggleSelection(view, position);
@@ -582,7 +581,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements L
                 actionMode.finish();
             }
             actionMode.setTitle(String.valueOf(numOfSelectedPatients));
-        } else {
+        } else if (patient != null){
             Intent intent = new Intent(this, PatientSummaryActivity.class);
 
             intent.putExtra(PatientSummaryActivity.PATIENT, patient);
@@ -591,7 +590,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements L
     }
 
     @Override
-    public void onItemLongClick() {
+    public void onItemLongClick(View view, int position) {
+        patientAdapter.toggleSelection(view,position);
         if (!actionModeActive) {
             actionMode = startActionMode(new MultiplePatientsSelectionActionModeCallback());
             actionModeActive = true;
@@ -605,17 +605,21 @@ public class PatientsListActivity extends BroadcastListenerActivity implements L
 
     @Override
     public void onQueryTaskStarted() {
-        listView.setVisibility(INVISIBLE);
+        recyclerView.setVisibility(INVISIBLE);
         noDataView.setVisibility(INVISIBLE);
-        listView.setEmptyView(progressBarContainer);
         progressBarContainer.setVisibility(VISIBLE);
     }
 
     @Override
     public void onQueryTaskFinish() {
-        listView.setVisibility(VISIBLE);
-        listView.setEmptyView(noDataView);
         progressBarContainer.setVisibility(INVISIBLE);
+        if(patientAdapter.isEmpty()) {
+            noDataView.setVisibility(VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(VISIBLE);
+            noDataView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -1138,6 +1142,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements L
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
+            patientAdapter.resetSelectedPatientsUuids();
+            patientAdapter.notifyDataSetChanged();
         }
     }
 

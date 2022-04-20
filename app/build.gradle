@@ -41,7 +41,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 300
-        versionName "2.8.0-FGH"
+        versionName "2.8.1-FGH"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [versionCode: defaultConfig.versionCode, versionName: defaultConfig.versionName]
 
@@ -53,6 +53,10 @@ android {
     packagingOptions {
         pickFirst 'META-INF/LICENSE'
         pickFirst 'META-INF/DEPENDENCIES'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {

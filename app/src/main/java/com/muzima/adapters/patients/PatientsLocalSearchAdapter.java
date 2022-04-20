@@ -5,106 +5,53 @@
  * This version of the code is licensed under the MPL 2.0 Open Source license
  * with additional health care disclaimer.
  * If the user is an entity intending to commercialize any application that uses
- *  this code in a for-profit venture,please contact the copyright holder.
+ * this code in a for-profit venture, please contact the copyright holder.
  */
 
 package com.muzima.adapters.patients;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import androidx.annotation.NonNull;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.CheckedLinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
+public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements MuzimaAsyncTask.OnProgressListener {
     private static final String SEARCH = "search";
-    private final PatientAdapterHelper patientAdapterHelper;
     private final PatientController patientController;
-    private final String cohortId;
-    private AsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
-    private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
-    private View.OnClickListener onClickListener;
+    private final List<String> cohortUuids;
+    private MuzimaAsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
 
-    private PatientListClickListener patientListClickListener;
-    private List<String> selectedPatientsUuids;
 
-    public PatientsLocalSearchAdapter(Context context, int textViewResourceId,
-                                      PatientController patientController, String cohortId, MuzimaGPSLocation currentLocation) {
-        super(context, textViewResourceId);
+    public PatientsLocalSearchAdapter(Context context, PatientController patientController,
+                                      List<String> cohortUuids,
+                                      MuzimaGPSLocation currentLocation) {
+        super(context,patientController);
         this.patientController = patientController;
-        this.cohortId = cohortId;
-        this.patientAdapterHelper = new PatientAdapterHelper(context, textViewResourceId, patientController);
-        patientAdapterHelper.setCurrentLocation(currentLocation);
-        selectedPatientsUuids = new ArrayList<>();
-    }
-
-    public void setPatientListLongClickListener(PatientListClickListener patientListClickListener) {
-        this.patientListClickListener = patientListClickListener;
-    }
-
-    public void setOnClickListener(View.OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
-    }
-
-    @NonNull
-    @Override
-    public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
-        convertView = patientAdapterHelper.createPatientRow(getItem(position), convertView, parent, getContext());
-
-        convertView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                toggleSelection(view, position);
-                patientListClickListener.onItemLongClick();
-                return true;
-            }
-        });
-
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                patientListClickListener.onItemClick(view, position);
-            }
-        });
-        return convertView;
-    }
-
-    public void toggleSelection(View view, int position){
-        CheckedLinearLayout checkedLinearLayout = (CheckedLinearLayout) view;
-        checkedLinearLayout.toggle();
-        boolean selected = checkedLinearLayout.isChecked();
-
-        Patient clickedPatient = getItem(position);
-        if (selected && !selectedPatientsUuids.contains(clickedPatient.getUuid())) {
-            selectedPatientsUuids.add(clickedPatient.getUuid());
-            checkedLinearLayout.setActivated(true);
-        } else if (!selected && selectedPatientsUuids.contains(clickedPatient.getUuid())) {
-            selectedPatientsUuids.remove(clickedPatient.getUuid());
-            checkedLinearLayout.setActivated(false);
+        if (cohortUuids != null){
+            this.cohortUuids = cohortUuids;
+        } else {
+            this.cohortUuids = new ArrayList<>();
         }
-    }
-
-    public List<String> getSelectedPatientsUuids() {
-        return selectedPatientsUuids;
+        setCurrentLocation(currentLocation);
     }
 
     @Override
     public void reloadData() {
-        selectedPatientsUuids.clear();
         cancelBackgroundTask();
-        backgroundQueryTask = new BackgroundQueryTask().execute(cohortId);
+        if(!cohortUuids.isEmpty() ) {
+            backgroundQueryTask = new BackgroundQueryTask();
+            backgroundQueryTask.execute(cohortUuids.toArray(new String[cohortUuids.size()]));
+        } else {
+            backgroundQueryTask = new BackgroundQueryTask();
+            backgroundQueryTask.execute(StringUtils.EMPTY);
+        }
     }
 
     public void search(String text) {
@@ -112,27 +59,40 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
         if(StringUtils.isEmpty(text)) {
             reloadData();
         } else {
-            backgroundQueryTask = new BackgroundQueryTask().execute(text, SEARCH);
+            backgroundQueryTask = new BackgroundQueryTask();
+            backgroundQueryTask.execute(text, SEARCH);
         }
     }
 
-    public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
-        this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
+    public void filterByCohorts(List<String> cohortUuids) {
+        cancelBackgroundTask();
+        this.cohortUuids.clear();
+        this.cohortUuids.addAll(cohortUuids);
+        reloadData();
     }
+
 
     public void cancelBackgroundTask(){
         if(backgroundQueryTask != null){
-            backgroundQueryTask.cancel(true);
+            backgroundQueryTask.cancel();
         }
     }
 
+    @Override
+    public void onProgress(Object o) {
+        try {
+            onProgressUpdate((List<Patient>) o);
+        } catch (ClassCastException e){
+            Log.e(getClass().getSimpleName(),"Argument is not a patient list",e);
+        }
+    }
 
-    private class BackgroundQueryTask extends AsyncTask<String, List<Patient>, List<Patient>> {
+    private class BackgroundQueryTask extends MuzimaAsyncTask<String, List<Patient>, List<Patient>> {
 
         @Override
         protected void onPreExecute() {
-            patientAdapterHelper.onPreExecute(backgroundListQueryTaskListener);
-            PatientsLocalSearchAdapter.this.clear();
+            onPreExecuteUpdate();
+            setOnProgressListener(PatientsLocalSearchAdapter.this);
         }
 
         @Override
@@ -142,35 +102,48 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
 
             if (isSearch(params)) {
                 try {
-                    return patientController.searchPatientLocally(params[0], cohortId);
+                    if(cohortUuids.size() == 1)
+                        return patientController.searchPatientLocally(params[0], cohortUuids.get(0));
+                    else
+                        return patientController.searchPatientLocally(params[0],null);
                 } catch (PatientController.PatientLoadException e) {
                     Log.w(getClass().getSimpleName(), String.format("Exception occurred while searching patients for %s search string." , params[0]), e);
                 }
             }
 
-            String cohortUuid = params[0];
             try {
                 int pageSize = Constants.PATIENT_LOAD_PAGE_SIZE;
-                if (cohortUuid != null) {
-                    int patientCount = patientController.countPatients(cohortUuid);
-                    if(patientCount <= pageSize){
-                        patients = patientController.getPatients(cohortUuid);
-                    } else {
-                        int pages = new Double(Math.ceil((float)patientCount / pageSize)).intValue();
+                if (!cohortUuids.isEmpty()) {
+                    for(String cohortUuid :cohortUuids) {
+                        int patientCount = patientController.countPatients(cohortUuid);
                         List<Patient> temp = null;
-                        for (int page = 1; page <= pages; page++) {
-                            if(!isCancelled()) {
-                                if (patients == null) {
-                                    patients = patientController.getPatients(cohortUuid, page, pageSize);
-                                    if (patients != null) {
-                                        publishProgress(patients);
+
+                        if (patientCount <= pageSize) {
+                            temp = patientController.getPatients(cohortUuid);
+                            if(patients == null)
+                                patients = temp;
+                            else
+                                patients.addAll(temp);
+                            publishProgress(temp);
+                        } else {
+                            int pages = new Double(Math.ceil((float) patientCount / pageSize)).intValue();
+
+                            for (int page = 1; page <= pages; page++) {
+                                if (!isCancelled()) {
+                                    if (patients == null) {
+                                        patients = patientController.getPatients(cohortUuid, page, pageSize);
+                                        if (patients != null) {
+                                            publishProgress(patients);
+                                        }
+                                    } else {
+                                        temp = patientController.getPatients(cohortUuid, page, pageSize);
+                                        if (temp != null) {
+                                            patients.addAll(temp);
+                                            publishProgress(temp);
+                                        }
                                     }
                                 } else {
-                                    temp = patientController.getPatients(cohortUuid, page, pageSize);
-                                    if (temp != null) {
-                                        patients.addAll(temp);
-                                        publishProgress(temp);
-                                    }
+                                    break;
                                 }
                             }
                         }
@@ -204,7 +177,7 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
                     }
                 }
             } catch (PatientController.PatientLoadException e) {
-                Log.w(getClass().getSimpleName(), "Exception occurred while fetching patients", e);
+                Log.e(getClass().getSimpleName(), "Exception occurred while fetching patients", e);
             }
             List<String> tags = patientController.getSelectedTagUuids();
             filteredPatients = patientController.filterPatientByTags(patients,tags);
@@ -217,20 +190,22 @@ public class PatientsLocalSearchAdapter extends ListAdapter<Patient> {
 
         @Override
         protected void onPostExecute(List<Patient> patients) {
-            patientAdapterHelper.onPostExecute(patients, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
+            onPostExecuteUpdate(patients);
         }
-        @SafeVarargs
+
         @Override
-        protected final void onProgressUpdate(List<Patient>... patients) {
-            for (List<Patient> patientList : patients) {
-                patientAdapterHelper.onProgressUpdate(patientList, PatientsLocalSearchAdapter.this, backgroundListQueryTaskListener);
-            }
+        protected void onBackgroundError(Exception e) {
+            Log.e(getClass().getSimpleName(), "Error while running background task",e);
         }
     }
 
-    public interface PatientListClickListener {
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
-        void onItemLongClick();
-        void onItemClick(View view, int position);
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 }
