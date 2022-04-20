@@ -9,6 +9,7 @@
  */
 package com.muzima.view.encounters;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -31,6 +32,7 @@ import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.custom.MuzimaRecyclerView;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 public class EncounterSummaryActivity  extends BroadcastListenerActivity implements RecyclerAdapter.BackgroundListQueryTaskListener {
     public static final String ENCOUNTER="encounter";
@@ -121,6 +123,25 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
         encounterObservationsView.setAdapter(encounterObservationsAdapter);
         encounterObservationsView.setNoDataLayout(noDataView, StringUtils.EMPTY, StringUtils.EMPTY);
         encounterObservationsAdapter.reloadData();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Patient patient = null;
+                try {
+                    patient = ((MuzimaApplication) getApplicationContext()).getPatientController().getPatientByUuid(encounter.getPatient().getUuid());
+                } catch (PatientController.PatientLoadException e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(this.getApplicationContext(), PatientSummaryActivity.class);
+                if(patient != null)
+                    intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
+                startActivity(intent);
+                return true;
+        }
+        return false;
     }
 
     @Override
