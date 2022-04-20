@@ -1,9 +1,19 @@
+/*
+ * Copyright (c) The Trustees of Indiana University, Moi University
+ * and Vanderbilt University Medical Center. All Rights Reserved.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ * this code in a for-profit venture, please contact the copyright holder.
+ */
+
 package com.muzima.adapters.patients;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.AsyncTask;
+
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +29,10 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.PatientTag;
 import com.muzima.controller.PatientController;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.Constants;
-import com.muzima.utils.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,8 +46,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
     public PatientTagsListAdapter(Context context, int textViewResourceId,PatientController patientController) {
         super(context, textViewResourceId);
         this.patientController = patientController;
-        patientsLocalSearchAdapter = new PatientsLocalSearchAdapter(context,
-                R.layout.layout_list, patientController, "", null);
+        patientsLocalSearchAdapter = new PatientsLocalSearchAdapter(context, patientController, null, null);
     }
 
     public void onTagsChanged() {
@@ -74,13 +84,13 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
         Resources resources = getContext().getResources();
         List<PatientTag> selectedTags = patientController.getSelectedTags();
         if (selectedTags.isEmpty()) {
-            if (position == 0) {
+            if (selectedTags.contains(patientTag)) {
                 markItemSelected(holder, tagColor, resources);
             } else {
                 markItemUnselected(holder, resources);
             }
         } else {
-            if (selectedTags.contains(patientTag)) {
+            if (selectedTags.contains(getItem(position))) {
                 markItemSelected(holder, tagColor, resources);
             } else {
                 markItemUnselected(holder, resources);
@@ -147,7 +157,12 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
     /**
      * Responsible to fetch all the tags that are available in the DB.
      */
-    private class BackgroundQueryTask extends AsyncTask<Void, Void, List<PatientTag>> {
+    private class BackgroundQueryTask extends MuzimaAsyncTask<Void, Void, List<PatientTag>> {
+        @Override
+        protected void onPreExecute() {
+
+        }
+
         @Override
         protected List<PatientTag> doInBackground(Void... voids) {
             List<PatientTag> allTags = null;
@@ -176,6 +191,11 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
                 add(tag);
             }
             notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
 
         private PatientTag getAllTagsElement() {
