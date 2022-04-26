@@ -110,7 +110,7 @@
                     android:hint="@string/general_username"
                     android:inputType="textShortMessage"
                     android:nextFocusDown="@+id/password"
-                    android:text="" />
+                    android:text="admin" />
 
             </LinearLayout>
 
@@ -132,7 +132,7 @@
                     android:hint="@string/general_password"
                     android:inputType="textPassword"
                     android:nextFocusDown="@+id/login"
-                    android:text=""
+                    android:text="test"
                     android:drawableStart="@drawable/ic_password"/>
 
             </LinearLayout>

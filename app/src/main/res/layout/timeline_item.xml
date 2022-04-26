@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~ this code in a for-profit venture, please contact the copyright holder.
+  -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/item_single_obs_container"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="2dp"
+              android:layout_marginRight="10dp"
+              android:layout_marginBottom="5dp"
+              android:backgroundTint="@color/primary_white"
+              app:cardCornerRadius="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/value_container"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/concept_image"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/security"
+            app:civ_border_color="#cccccc"
+            app:civ_border_width="4dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"/>
+
+        <ImageView
+            android:id="@+id/observation_complex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/complex_obs"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/concept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:text="bbbbbbbbbbbb"
+            android:textColor="@color/primary_black"
+            android:textSize="10sp"
+            android:layout_toRightOf="@+id/concept_image" />
+
+        <TextView
+            android:id="@+id/observation_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="2dp"
+            android:text="dddddddd"
+            android:textColor="@color/primary_black"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:layout_below="@id/concept"
+            android:layout_toRightOf="@+id/concept_image"/>
+
+        <TextView
+            android:id="@+id/item_single_obs_date_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="ddddddd"
+            android:textColor="@color/primary_black"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:layout_below="@id/observation_value"
+            android:layout_toRightOf="@+id/concept_image"/>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
+

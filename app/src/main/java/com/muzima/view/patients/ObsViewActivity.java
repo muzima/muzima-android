@@ -13,34 +13,26 @@ package com.muzima.view.patients;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
+import com.muzima.adapters.observations.ObsViewAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
-import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
-import com.muzima.model.AvailableForm;
-import com.muzima.model.collections.AvailableForms;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
-import com.muzima.tasks.FormsLoaderService;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
@@ -48,83 +40,79 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.custom.ActivityWithPatientSummaryBottomNavigation;
-import com.muzima.view.forms.FormViewIntent;
-import com.muzima.view.forms.FormsWithDataActivity;
-import com.muzima.view.fragments.patient.ChronologicalObsViewFragment;
 import com.muzima.view.relationship.RelationshipsListActivity;
-import org.greenrobot.eventbus.EventBus;
+
+
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
-import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
-import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
-import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
-
-public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavigation implements ClientSummaryFormsAdapter.OnFormClickedListener, FormsLoaderService.FormsLoadedCallback {
+public class ObsViewActivity extends ActivityWithPatientSummaryBottomNavigation {
     private static final String TAG = "PatientSummaryActivity";
     public static final String PATIENT = "patient";
     public static final String PATIENT_UUID = "patient_uuid";
     public static final String CALLING_ACTIVITY = "calling_activity_key";
-    public static final boolean DEFAULT_SHR_STATUS = false;
-    private static final boolean DEFAULT_RELATIONSHIP_STATUS = false;
     private TextView patientNameTextView;
     private ImageView patientGenderImageView;
     private TextView dobTextView;
     private TextView identifierTextView;
     private TextView gpsAddressTextView;
     private TextView ageTextView;
-    private TextView incompleteFormsCountView;
-    private TextView completeFormsCountView;
     private String patientUuid;
     private Patient patient;
     private final LanguageUtil languageUtil = new LanguageUtil();
-    private View incompleteFormsView;
-    private View completeFormsView;
-    private ClientSummaryFormsAdapter formsAdapter;
-    private List<AvailableForm> forms = new ArrayList<>();
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_client_summary);
+        setContentView(R.layout.activity_obs_view);
         initializeResources();
         loadPatientData();
-        loadData();
-        loadChronologicalObsView();
         setTitle(R.string.title_activity_client_summary);
+
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        viewPager = findViewById(R.id.viewPager);
+
+        ObsViewAdapter obsViewAdapter = new ObsViewAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), patientUuid);
+        viewPager.setAdapter(obsViewAdapter);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         loadBottomNavigation(patientUuid);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        try {
-            EventBus.getDefault().register(this);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    }
+
+    @Override
+    protected int getBottomNavigationMenuItemId() {
+        return R.id.action_historical_data;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadFormsCount();
     }
 
-    private void loadData() {
-        ((MuzimaApplication) this.getApplicationContext()).getExecutorService()
-                .execute(new FormsLoaderService(this.getApplicationContext(), this));
-    }
-
-    private void loadChronologicalObsView(){
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.chronological_fragment, new ChronologicalObsViewFragment(patientUuid)).commit();
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_client_summary, menu);
@@ -174,7 +162,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     }
 
     private void readSmartCard() {
-        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(PatientSummaryActivity.this);
+        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(ObsViewActivity.this);
         SHRIntegrator.initiateCardRead();
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.general_opening_card_reader), Toast.LENGTH_LONG).show();
     }
@@ -193,6 +181,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         ((MuzimaApplication) getApplication()).restartTimer();
         super.onUserInteraction();
     }
+
 
     private void loadPatientData() {
         try {
@@ -250,35 +239,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         identifierTextView = findViewById(R.id.identifier);
         ageTextView = findViewById(R.id.age_text_label);
         gpsAddressTextView = findViewById(R.id.distanceToClientAddress);
-        incompleteFormsCountView = findViewById(R.id.dashboard_forms_incomplete_forms_count_view);
-        completeFormsCountView = findViewById(R.id.dashboard_forms_complete_forms_count_view);
-        incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
-        completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
-
-        incompleteFormsView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchFormDataList(true);
-            }
-        });
-
-        completeFormsView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchFormDataList(false);
-            }
-        });
-
-        RecyclerView formsRecyclerView = findViewById(R.id.fragment_fill_forms_recycler_view);
-        formsAdapter = new ClientSummaryFormsAdapter(forms, this);
-        formsRecyclerView.setAdapter(formsAdapter);
-        formsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        try {
-            patient = ((MuzimaApplication) getApplication().getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
-        }catch (PatientController.PatientLoadException ex){
-            ex.printStackTrace();
-        }
     }
 
     @Override
@@ -296,80 +256,5 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             onBackPressed();
         }
         return true;
-    }
-
-    private void loadFormsCount() {
-        try {
-            long incompleteForms = ((MuzimaApplication) getApplicationContext()).getFormController().countIncompleteFormsForPatient(patientUuid);
-            long completeForms = ((MuzimaApplication) getApplicationContext()).getFormController().countCompleteFormsForPatient(patientUuid);
-            incompleteFormsCountView.setText(String.valueOf(incompleteForms));
-
-            if(incompleteForms == 0){
-                incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_green));
-            }else if(incompleteForms>0 && incompleteForms<=5){
-                incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_orange));
-            }else{
-                incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_red));
-            }
-
-            incompleteFormsCountView.setText(String.valueOf(incompleteForms));
-
-            if(completeForms == 0){
-                completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_green));
-            }else if(completeForms>0 && completeForms<=5){
-                completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_orange));
-            }else{
-                completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_red));
-            }
-            completeFormsCountView.setText(String.valueOf(completeForms));
-        } catch (FormController.FormFetchException e) {
-            Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT) {
-            loadFormsCount();
-        }
-    }
-
-
-    private void launchFormDataList(boolean isIncompleteFormsData) {
-        Intent intent = new Intent(this, FormsWithDataActivity.class);
-
-        intent.putExtra(PATIENT_UUID,patientUuid);
-        intent.putExtra(PATIENT,patient);
-        if (isIncompleteFormsData) {
-            intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_INCOMPLETE);
-        } else {
-            intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_COMPLETE);
-        }
-        startActivity(intent);
-    }
-
-    @Override
-    public void onFormsLoaded(final AvailableForms formList) {
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                forms.addAll(formList);
-                formsAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-
-    @Override
-    public void onFormClickedListener(int position) {
-        AvailableForm form = forms.get(position);
-        Intent intent = new FormViewIntent(this, form, patient , false);
-        intent.putExtra(INDEX_PATIENT, patient);
-        this.startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
-    }
-
-    @Override
-    protected int getBottomNavigationMenuItemId() {
-        return R.id.action_cohorts;
     }
 }

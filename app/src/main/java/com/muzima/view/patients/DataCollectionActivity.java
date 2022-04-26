@@ -10,59 +10,78 @@
 
 package com.muzima.view.patients;
 
+import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
+import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
+import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
+
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textview.MaterialTextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
+import com.muzima.adapters.forms.ClientDynamicObsFormsAdapter;
+import com.muzima.adapters.patients.DataCollectionAdapter;
+import com.muzima.api.model.Concept;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
-import com.muzima.model.AvailableForm;
-import com.muzima.model.collections.AvailableForms;
+import com.muzima.model.SingleObsForm;
+import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
+import com.muzima.model.events.CloseSingleFormEvent;
+import com.muzima.model.events.ReloadObservationsDataEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
+import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.service.MuzimaGPSLocationService;
-import com.muzima.tasks.FormsLoaderService;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.FormUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.custom.ActivityWithPatientSummaryBottomNavigation;
-import com.muzima.view.forms.FormViewIntent;
 import com.muzima.view.forms.FormsWithDataActivity;
-import com.muzima.view.fragments.patient.ChronologicalObsViewFragment;
 import com.muzima.view.relationship.RelationshipsListActivity;
+
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
-import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
-import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
-
-public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavigation implements ClientSummaryFormsAdapter.OnFormClickedListener, FormsLoaderService.FormsLoadedCallback {
+public class DataCollectionActivity extends ActivityWithPatientSummaryBottomNavigation implements ClientDynamicObsFormsAdapter.DatePickerClickedListener, ClientDynamicObsFormsAdapter.DateValuePickerClickedListener {
     private static final String TAG = "PatientSummaryActivity";
     public static final String PATIENT = "patient";
     public static final String PATIENT_UUID = "patient_uuid";
@@ -75,27 +94,59 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private TextView identifierTextView;
     private TextView gpsAddressTextView;
     private TextView ageTextView;
+    private TextView bottomSheetConceptTitleTextView;
     private TextView incompleteFormsCountView;
     private TextView completeFormsCountView;
     private String patientUuid;
     private Patient patient;
+    private Concept selectedBottomSheetConcept;
     private final LanguageUtil languageUtil = new LanguageUtil();
+    private ClientDynamicObsFormsAdapter clientDynamicObsFormsAdapter;
+    private final List<SingleObsForm> singleObsFormsList = new ArrayList<>();
+    private ViewPager viewPager;
     private View incompleteFormsView;
     private View completeFormsView;
-    private ClientSummaryFormsAdapter formsAdapter;
-    private List<AvailableForm> forms = new ArrayList<>();
+    private boolean isSingleElementEnabled;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_client_summary);
+        setContentView(R.layout.activity_data_collection);
         initializeResources();
         loadPatientData();
-        loadData();
-        loadChronologicalObsView();
         setTitle(R.string.title_activity_client_summary);
+
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        viewPager = findViewById(R.id.viewPager);
+
+        isSingleElementEnabled = getIsSingleElementEnabled();
+
+        if(!isSingleElementEnabled){
+            tabLayout.setVisibility(View.GONE);
+        }
+
+        DataCollectionAdapter dataCollectionAdapter = new DataCollectionAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), patientUuid, isSingleElementEnabled);
+        viewPager.setAdapter(dataCollectionAdapter);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         loadBottomNavigation(patientUuid);
     }
 
@@ -110,21 +161,16 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     }
 
     @Override
+    protected int getBottomNavigationMenuItemId() {
+        return R.id.action_data_collection;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         loadFormsCount();
     }
 
-    private void loadData() {
-        ((MuzimaApplication) this.getApplicationContext()).getExecutorService()
-                .execute(new FormsLoaderService(this.getApplicationContext(), this));
-    }
-
-    private void loadChronologicalObsView(){
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.chronological_fragment, new ChronologicalObsViewFragment(patientUuid)).commit();
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_client_summary, menu);
@@ -174,7 +220,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     }
 
     private void readSmartCard() {
-        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(PatientSummaryActivity.this);
+        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(DataCollectionActivity.this);
         SHRIntegrator.initiateCardRead();
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.general_opening_card_reader), Toast.LENGTH_LONG).show();
     }
@@ -192,6 +238,98 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     public void onUserInteraction() {
         ((MuzimaApplication) getApplication()).restartTimer();
         super.onUserInteraction();
+    }
+
+    @Subscribe
+    public void clientSummaryObservationSelectedEvent(ClientSummaryObservationSelectedEvent event) {
+        ConceptWithObservations conceptWrapper = event.getConceptWithObservations();
+        if (conceptWrapper.getConcept().isCoded() || conceptWrapper.getConcept().isSet() || conceptWrapper.getConcept().isPrecise()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(true)
+                    .setMessage("This data type is not support, consult admin.")
+                    .show();
+        } else {
+            selectedBottomSheetConcept = conceptWrapper.getConcept();
+            openDialog();
+        }
+    }
+
+    private void openDialog() {
+        View view = getLayoutInflater().inflate(R.layout.activity_client_summary_bottom_sheet_dialog, null);
+        Dialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(view);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        String applicationLanguage = preferences.getString(this.getResources().getString(R.string.preference_app_language), this.getResources().getString(R.string.language_english));
+
+
+        bottomSheetConceptTitleTextView = view.findViewById(R.id.cohort_name_text_view);
+        View addReadingActionView = view.findViewById(R.id.general_add_reading_button);
+        View cancelBottomSheetActionView = view.findViewById(R.id.close_summary_bottom_sheet_view);
+        View saveBottomSheetEntriesActionView = view.findViewById(R.id.client_summary_save_action_bottom_sheet);
+        clientDynamicObsFormsAdapter = new ClientDynamicObsFormsAdapter(getApplicationContext(), singleObsFormsList, this,this);
+        RecyclerView singleObsFormsRecyclerViews = view.findViewById(R.id.client_summary_single_obs_form_recycler_view);
+        singleObsFormsRecyclerViews.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        singleObsFormsRecyclerViews.setAdapter(clientDynamicObsFormsAdapter);
+
+        SingleObsForm form = new SingleObsForm(selectedBottomSheetConcept, new Date(), selectedBottomSheetConcept.getConceptType().getName(), "", singleObsFormsList.size() + 1);
+        if(singleObsFormsList.size() > 0){
+            if(singleObsFormsList.get(0).getConcept().getId() == selectedBottomSheetConcept.getId()){
+                singleObsFormsList.add(form);
+            }
+        }else {
+            bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", getConceptNameFromConceptNamesByLocale(selectedBottomSheetConcept.getConceptNames(),applicationLanguage), selectedBottomSheetConcept.getConceptType().getName()));
+            singleObsFormsList.add(form);
+        }
+        clientDynamicObsFormsAdapter.notifyDataSetChanged();
+
+
+        cancelBottomSheetActionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                singleObsFormsList.clear();
+                clientDynamicObsFormsAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+                EventBus.getDefault().post(new ReloadObservationsDataEvent());
+            }
+        });
+
+        addReadingActionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SingleObsForm form = new SingleObsForm(selectedBottomSheetConcept, new Date(), selectedBottomSheetConcept.getConceptType().getName(), "", singleObsFormsList.size() + 1);
+                if(singleObsFormsList.size() > 0){
+                    if(singleObsFormsList.get(0).getConcept().getId() == selectedBottomSheetConcept.getId()){
+                        singleObsFormsList.add(form);
+                    }
+                }else {
+                    bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
+                    singleObsFormsList.add(form);
+                }
+                clientDynamicObsFormsAdapter.notifyDataSetChanged();
+            }
+        });
+
+        saveBottomSheetEntriesActionView.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                if (singleObsFormsList.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.general_enter_value_to_save), Toast.LENGTH_LONG).show();
+                } else {
+                    for (SingleObsForm form : singleObsFormsList) {
+                        FormUtils.handleSaveIndividualObsData(getApplicationContext(), patient, form.getDate(), selectedBottomSheetConcept, form.getInputValue());
+                    }
+                    singleObsFormsList.clear();
+                    clientDynamicObsFormsAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                    loadFormsCount();
+                    EventBus.getDefault().post(new ReloadObservationsDataEvent());
+                }
+            }
+        });
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     private void loadPatientData() {
@@ -254,7 +392,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         completeFormsCountView = findViewById(R.id.dashboard_forms_complete_forms_count_view);
         incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
         completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
 
         incompleteFormsView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -269,16 +406,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 launchFormDataList(false);
             }
         });
-
-        RecyclerView formsRecyclerView = findViewById(R.id.fragment_fill_forms_recycler_view);
-        formsAdapter = new ClientSummaryFormsAdapter(forms, this);
-        formsRecyclerView.setAdapter(formsAdapter);
-        formsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        try {
-            patient = ((MuzimaApplication) getApplication().getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
-        }catch (PatientController.PatientLoadException ex){
-            ex.printStackTrace();
-        }
     }
 
     @Override
@@ -327,6 +454,52 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         }
     }
 
+    @Subscribe
+    public void closeSingleFormEvent(CloseSingleFormEvent event) {
+        int position = event.getPosition();
+        if(singleObsFormsList.size() != 1) {
+            singleObsFormsList.remove(position);
+            clientDynamicObsFormsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDatePickerClicked(final int position, EditText dateEditText) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(DataCollectionActivity.this);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, day);
+                singleObsFormsList.get(position).setDate(calendar.getTime());
+                clientDynamicObsFormsAdapter.notifyDataSetChanged();
+            }
+        });
+        datePickerDialog.show();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDateValuePickerClicked(final int position, MaterialTextView dateEditText) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(DataCollectionActivity.this);
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, day);
+                singleObsFormsList.get(position).setInputDateValue(DateUtils.convertDateToDayMonthYearString(calendar.getTime()));
+                clientDynamicObsFormsAdapter.notifyDataSetChanged();
+            }
+        });
+        datePickerDialog.show();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -349,27 +522,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         startActivity(intent);
     }
 
-    @Override
-    public void onFormsLoaded(final AvailableForms formList) {
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                forms.addAll(formList);
-                formsAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-
-    @Override
-    public void onFormClickedListener(int position) {
-        AvailableForm form = forms.get(position);
-        Intent intent = new FormViewIntent(this, form, patient , false);
-        intent.putExtra(INDEX_PATIENT, patient);
-        this.startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
-    }
-
-    @Override
-    protected int getBottomNavigationMenuItemId() {
-        return R.id.action_cohorts;
+    private boolean getIsSingleElementEnabled(){
+        return ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isSingleElementEntryEnabled();
     }
 }

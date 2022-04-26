@@ -47,7 +47,7 @@
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:tabSelectedTextColor="@color/primary_blue"
                 app:tabIndicatorColor="@color/primary_blue"
                 android:paddingTop="6dp"
@@ -58,40 +58,53 @@
                      android:layout_marginHorizontal="2dp"
                      layout="@layout/forms_top_bar_view"/>
 
-            <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabLayout"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabSelectedTextColor="@color/primary_blue"
-                    app:tabIndicatorColor="@color/primary_blue"
-                    app:tabIconTint="@color/tab_icon_color"
-                    app:tabMode="fixed"
-                    app:tabGravity="fill"
-                    app:tabInlineLabel="true"
-                    app:tabIndicatorHeight="3dp">
-
-                <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tab_data_collection"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/general_data_collection"
-                        android:icon="@drawable/baseline_add_24"/>
-
-                <com.google.android.material.tabs.TabItem
-                        android:id="@+id/tab_historical_data"
-                        android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/general_historical_data"
-                        android:icon="@drawable/baseline_history_24"/>
+                        android:textSize="18dp"
+                        android:fontFamily="@font/montserrat_bold" />
 
-            </com.google.android.material.tabs.TabLayout>
+                    <FrameLayout
+                        android:name="com.muzima.view.fragments.patient.ChronologicalObsViewFragment"
+                        android:id="@+id/chronological_fragment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
 
-            <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/viewPager"
-                    android:layout_marginTop="6dp"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="250dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/general_data_collection"
+                        android:textSize="18dp"
+                        android:fontFamily="@font/montserrat_bold" />
+
+                    <include layout="@layout/fragment_fill_forms"/>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp">
+        <include
+            layout="@layout/item_patient_summary_bottom_navigation"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

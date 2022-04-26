@@ -21,18 +21,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.api.model.Concept;
-import com.muzima.api.model.Encounter;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
-import com.muzima.model.ObsConceptWrapper;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.utils.BackgroundTaskHelper;
@@ -91,10 +90,13 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
 
         ConceptWithObservations conceptWithObservations = conceptWithObservationsList.get(position);
 
-        if (isAddSingleElement)
-            holder.titleTextView.setText(String.format(Locale.getDefault(), "+ %s", getConceptDisplay(conceptWithObservations.getConcept())));
-        else
+        int conceptColor = observationController.getConceptColor(conceptWithObservations.getConcept().getUuid());
+        holder.observationHeaderLayout.setBackgroundColor(conceptColor);
+        if (isAddSingleElement) {
             holder.titleTextView.setText(getConceptDisplay(conceptWithObservations.getConcept()));
+        } else {
+            holder.titleTextView.setText(getConceptDisplay(conceptWithObservations.getConcept()));
+        }
         holder.obsHorizontalListRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false));
         ObsHorizontalViewAdapter observationsListAdapter = new ObsHorizontalViewAdapter(conceptWithObservations.getObservations(), new ObsHorizontalViewAdapter.ObservationClickedListener() {
             @Override
@@ -105,7 +107,7 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
                     }
                 }
             }
-        }, encounterController, observationController, isShrData, isAddSingleElement, applicationLanguage, providerController, shouldReplaceProviderIdWithNames);
+        }, encounterController, observationController, isShrData, isAddSingleElement, applicationLanguage, providerController, shouldReplaceProviderIdWithNames, conceptColor);
         holder.obsHorizontalListRecyclerView.setAdapter(observationsListAdapter);
     }
 
@@ -169,10 +171,13 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
         private final TextView titleTextView;
         private final RecyclerView obsHorizontalListRecyclerView;
         private final ConceptInputLabelClickedListener conceptInputLabelClickedListener;
+        private final CardView observationHeaderLayout;
+
 
         public ViewHolder(@NonNull View itemView, ConceptInputLabelClickedListener conceptInputLabelClickedListener) {
             super(itemView);
             this.titleTextView = itemView.findViewById(R.id.obs_concept);
+            this.observationHeaderLayout = itemView.findViewById(R.id.value_container_cardview);
             this.obsHorizontalListRecyclerView = itemView.findViewById(R.id.obs_list);
             this.conceptInputLabelClickedListener = conceptInputLabelClickedListener;
             this.titleTextView.setOnClickListener(this);

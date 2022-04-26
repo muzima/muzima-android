@@ -41,7 +41,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontalViewAdapter.ViewHolder> {
     private final List<Observation> observationList;
@@ -55,11 +54,12 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
     private List<Integer> shrConcepts;
     private final String applicationLanguage;
     private final Boolean shouldReplaceProviderIdWithNames;
+    private final int conceptColor;
 
     public ObsHorizontalViewAdapter(List<Observation> observationList, ObservationClickedListener observationClickedListener,
                                     EncounterController encounterController, ObservationController observationController,
                                     boolean isShrData, boolean isSingleElementInput, String applicationLanguage, ProviderController providerController,
-                                    boolean shouldReplaceProviderIdWithNames) {
+                                    boolean shouldReplaceProviderIdWithNames, int conceptColor) {
         this.observationList = observationList;
         this.observationClickedListener = observationClickedListener;
         this.encounterController = encounterController;
@@ -69,6 +69,7 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
         this.isSingleElementInput = isSingleElementInput;
         this.applicationLanguage = applicationLanguage;
         this.providerController = providerController;
+        this.conceptColor = conceptColor;
         this.shouldReplaceProviderIdWithNames = shouldReplaceProviderIdWithNames;
     }
 
@@ -82,6 +83,7 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Observation observation = observationList.get(position);
 
+        holder.observationContainer.setBackgroundColor(conceptColor);
         if (isShrData) {
             holder.shrEnabledImage.setVisibility(View.VISIBLE);
         } else {
@@ -136,10 +138,12 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
         private final ImageView shrEnabledImage;
         private final ImageView observationComplexHolder;
         private final ObservationClickedListener observationClickedListener;
+        private final View observationContainer;
 
         public ViewHolder(@NonNull View view, ObservationClickedListener clickedListener) {
             super(view);
             View container = view.findViewById(R.id.item_single_obs_container);
+            this.observationContainer = view.findViewById(R.id.value_container);
             this.observationValue = view.findViewById(R.id.observation_value);
             this.observationDate = view.findViewById(R.id.item_single_obs_date_text_view);
             this.shrEnabledImage = view.findViewById(R.id.shr_card_obs_image_view);
