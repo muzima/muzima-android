@@ -12,13 +12,17 @@ package com.muzima.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.muzima.utils.Constants.*;
 
 public class DateUtils {
+    public static final String SIMPLE_DATE_FORMAT = "yyyy.MM.dd";
+
     public static String getFormattedDate(Date date){
         SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
         return formattedDate.format(date);
@@ -63,5 +67,18 @@ public class DateUtils {
     public static Date parseDateByPattern(String dateAsString, String pattern) throws ParseException {
         SimpleDateFormat dateFormatter = new SimpleDateFormat(pattern);
         return dateFormatter.parse(dateAsString);
+    }
+
+    public static String getTime(Date date) {
+        SimpleDateFormat formattedDate = new SimpleDateFormat("HH:ss");
+        return formattedDate.format(date);
+    }
+
+    public static String convertDateToStdString(Date date) {
+        if (date == null) return "Invalid";
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(SIMPLE_DATE_FORMAT, Locale.getDefault());
+        return simpleDateFormat.format(calendar.getTime());
     }
 }
