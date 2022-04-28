@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.muzima.view.fragments.patient.ChronologicalObsViewFragment;
+import com.muzima.view.fragments.patient.TabularObsViewFragment;
 
 public class ObsViewAdapter extends FragmentPagerAdapter {
     private final String patientUuid;
@@ -20,9 +21,9 @@ public class ObsViewAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-//        if (position == 1)
-//                return new TabularObsViewFragment(patientUuid);
-//            else
+        if (position == 1)
+                return new TabularObsViewFragment(patientUuid);
+            else
                 return new ChronologicalObsViewFragment(patientUuid);
     }
 
