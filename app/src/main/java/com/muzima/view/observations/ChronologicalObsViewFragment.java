@@ -29,6 +29,12 @@ public class ChronologicalObsViewFragment extends ObservationsListFragment imple
 
     }
 
+    public ChronologicalObsViewFragment(ObservationController observationController,
+                                        Patient patient) {
+        this.patient = patient;
+        this.observationController = observationController;
+    }
+
     public static ChronologicalObsViewFragment newInstance(ObservationController observationController,
                                                            Patient patient) {
 
