@@ -52,17 +52,20 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="100"
         android:layout_marginTop="20dp"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="0dp"
+            android:layout_weight="60"
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:onClick="showObservations"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/grid_buttons"
+                android:onClick="showObservations">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,13 +89,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="0dp"
+            android:layout_weight="40"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:onClick="showForms"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/grid_buttons"
+                android:onClick="showForms">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
