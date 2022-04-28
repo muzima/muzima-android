@@ -125,6 +125,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.chronological_fragment, new ChronologicalObsViewFragment(patientUuid)).commit();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_client_summary, menu);
@@ -371,5 +372,17 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     @Override
     protected int getBottomNavigationMenuItemId() {
         return R.id.action_cohorts;
+    }
+
+    public void loadForms(View v) {
+        Intent intent = new Intent(this, DataCollectionActivity.class);
+        intent.putExtra(PATIENT_UUID, patientUuid);
+        startActivity(intent);
+    }
+
+    public void loadObservation(View v) {
+        Intent intent = new Intent(this, ObsViewActivity.class);
+        intent.putExtra(PATIENT_UUID, patientUuid);
+        startActivity(intent);
     }
 }

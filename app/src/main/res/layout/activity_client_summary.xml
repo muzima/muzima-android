@@ -60,18 +60,34 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="100"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="50"
                     android:orientation="vertical">
-                    <TextView
+
+                    <RelativeLayout
                         android:layout_width="match_parent"
+                        android:onClick="loadObservation"
                         android:layout_height="wrap_content"
-                        android:text="@string/general_historical_data"
-                        android:textSize="18dp"
-                        android:fontFamily="@font/montserrat_bold" />
+                        android:layout_marginTop="10dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/general_historical_data"
+                            android:textSize="18dp"
+                            android:fontFamily="@font/montserrat_bold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_icon_right" />
+                    </RelativeLayout>
 
                     <FrameLayout
                         android:name="com.muzima.view.fragments.patient.ChronologicalObsViewFragment"
@@ -82,14 +98,30 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="50"
+                    android:layout_marginBottom="70dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical">
-                    <TextView
+
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/general_data_collection"
-                        android:textSize="18dp"
-                        android:fontFamily="@font/montserrat_bold" />
+                        android:onClick="loadForms"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/general_data_collection"
+                            android:textSize="18dp"
+                            android:fontFamily="@font/montserrat_bold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_icon_right" />
+                    </RelativeLayout>
 
                     <include layout="@layout/fragment_fill_forms"/>
                 </LinearLayout>

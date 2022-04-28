@@ -46,7 +46,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_checkbox_marked_circle_plus_outline"
+        android:src="@drawable/checkbox_blank_circle_outline"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/value_container_cardview"
         app:layout_constraintTop_toTopOf="parent"
@@ -55,7 +55,7 @@
     <View
         android:layout_width="4dp"
         android:layout_height="0dp"
-        android:background="#cccccc"
+        android:background="@drawable/dotted_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="@+id/imageView4"

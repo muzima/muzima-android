@@ -71,7 +71,7 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Observation observation = observationList.get(position);
 
-        holder.concept.setText(observation.getConcept().getName());
+        holder.concept.setText(getConceptNameFromConceptNamesByLocale(observation.getConcept().getConceptNames(),applicationLanguage));
         if (StringUtils.equals(observation.getConcept().getConceptType().getName(), "Complex")) {
             holder.observationValue.setVisibility(View.GONE);
             holder.observationComplexHolder.setVisibility(View.VISIBLE);
