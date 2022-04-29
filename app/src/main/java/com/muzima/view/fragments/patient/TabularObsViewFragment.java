@@ -1,5 +1,6 @@
 package com.muzima.view.fragments.patient;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,41 +9,34 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
+import com.muzima.view.custom.TableFixHeaders;
+import com.muzima.adapters.observations.BaseTableAdapter;
 import com.muzima.adapters.observations.ObservationGroupAdapter;
-import com.muzima.utils.StringUtils;
-import com.muzima.view.custom.MuzimaRecyclerView;
 
 public class TabularObsViewFragment extends Fragment implements RecyclerAdapter.BackgroundListQueryTaskListener {
     private final String patientUuid;
-    private ObservationGroupAdapter observationGroupAdapter;
+    private com.muzima.adapters.observations.ObservationGroupAdapter observationGroupAdapter;
+    private final Context context;
 
-    public TabularObsViewFragment(String patientUuid) {
+    public TabularObsViewFragment(String patientUuid, Context context) {
         this.patientUuid = patientUuid;
+        this.context = context;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_list, container, false);
+        return inflater.inflate(R.layout.table, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        MuzimaRecyclerView conceptsListRecyclerView = view.findViewById(R.id.recycler_list);
-        conceptsListRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-
-        observationGroupAdapter = new ObservationGroupAdapter(requireActivity().getApplicationContext(), patientUuid);
-        observationGroupAdapter.setBackgroundListQueryTaskListener(this);
-        conceptsListRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
-        conceptsListRecyclerView.setAdapter(observationGroupAdapter);
-        observationGroupAdapter.reloadData();
-        conceptsListRecyclerView.setNoDataLayout(view.findViewById(R.id.no_data_layout),
-                getString(R.string.info_observation_unavailable),
-                StringUtils.EMPTY);
+        TableFixHeaders tableFixHeaders = view.findViewById(R.id.table);
+        BaseTableAdapter baseTableAdapter = new ObservationGroupAdapter(context, patientUuid);
+        tableFixHeaders.setAdapter(baseTableAdapter);
     }
 
     @Override
@@ -58,9 +52,7 @@ public class TabularObsViewFragment extends Fragment implements RecyclerAdapter.
     public void onQueryTaskFinish() {}
 
     @Override
-    public void onQueryTaskCancelled() {
-        observationGroupAdapter.cancelBackgroundQueryTask();
-    }
+    public void onQueryTaskCancelled() {}
 
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {}

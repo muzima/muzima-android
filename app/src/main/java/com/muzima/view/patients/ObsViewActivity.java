@@ -75,7 +75,7 @@ public class ObsViewActivity extends ActivityWithPatientSummaryBottomNavigation 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
 
-        ObsViewAdapter obsViewAdapter = new ObsViewAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), patientUuid);
+        ObsViewAdapter obsViewAdapter = new ObsViewAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), patientUuid, this);
         viewPager.setAdapter(obsViewAdapter);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
