@@ -13,6 +13,7 @@ package com.muzima.adapters.observations;
 import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.FontManager;
 import com.muzima.utils.StringUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -46,11 +48,12 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
     private final String applicationLanguage;
     private final Boolean shouldReplaceProviderIdWithNames;
     private final String patientUuid;
+    private final Context context;
 
     public ObsVerticalViewAdapter(String date,
                                   EncounterController encounterController, ObservationController observationController,
                                   String applicationLanguage, ProviderController providerController,
-                                  boolean shouldReplaceProviderIdWithNames, String patientUuid) {
+                                  boolean shouldReplaceProviderIdWithNames, String patientUuid, Context context) {
         this.date = date;
         this.encounterController = encounterController;
         this.observationController = observationController;
@@ -59,6 +62,7 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
         this.shouldReplaceProviderIdWithNames = shouldReplaceProviderIdWithNames;
         this.patientUuid = patientUuid;
         observationList = getObservationForDate(date);
+        this.context = context;
     }
 
     @NotNull
@@ -72,6 +76,12 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
         Observation observation = observationList.get(position);
 
         holder.concept.setText(getConceptNameFromConceptNamesByLocale(observation.getConcept().getConceptNames(),applicationLanguage));
+        holder.conceptIcon.setTypeface(FontManager.getTypeface(context,FontManager.FONTAWESOME));
+        //Todo: load icon set in concept
+        //https://fontawesome.com/v5/cheatsheet/free/brands
+        //https://fontawesome.com/download //brand
+        holder.conceptIcon.setText("accessible-icon");
+
         if (StringUtils.equals(observation.getConcept().getConceptType().getName(), "Complex")) {
             holder.observationValue.setVisibility(View.GONE);
             holder.observationComplexHolder.setVisibility(View.VISIBLE);
@@ -116,12 +126,14 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
         private final ImageView observationComplexHolder;
         private final View observationContainer;
         private final TextView concept;
+        private final TextView conceptIcon;
 
         public ViewHolder(@NonNull View view) {
             super(view);
             View container = view.findViewById(R.id.item_single_obs_container);
             this.observationContainer = view.findViewById(R.id.value_container);
             this.observationValue = view.findViewById(R.id.observation_value);
+            this.conceptIcon = view.findViewById(R.id.concept_icon);
             this.observationDate = view.findViewById(R.id.item_single_obs_date_text_view);
             this.observationComplexHolder = view.findViewById(R.id.observation_complex);
             this.concept = view.findViewById(R.id.concept);

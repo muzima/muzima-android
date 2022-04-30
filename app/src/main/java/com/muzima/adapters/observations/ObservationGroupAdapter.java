@@ -220,7 +220,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     public int getHeight(int row) {
         final int height;
         if (row == -1) {
-            height = 60;
+            height = 30;
         } else if (isGroup(row)) {
             height = 25;
         } else {

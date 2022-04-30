@@ -81,7 +81,7 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationsByType
         }
 
         holder.obsHorizontalListRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        ObsVerticalViewAdapter observationsListAdapter = new ObsVerticalViewAdapter(date, encounterController, observationController,  applicationLanguage, providerController, shouldReplaceProviderIdWithNames, patientUuid);
+        ObsVerticalViewAdapter observationsListAdapter = new ObsVerticalViewAdapter(date, encounterController, observationController,  applicationLanguage, providerController, shouldReplaceProviderIdWithNames, patientUuid, context);
 
         holder.obsHorizontalListRecyclerView.setAdapter(observationsListAdapter);
     }

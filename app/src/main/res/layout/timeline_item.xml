@@ -27,15 +27,15 @@
         android:paddingBottom="10dp"
         android:layout_height="wrap_content">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/concept_image"
+    <TextView
+            android:id="@+id/concept_icon"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/security"
-            app:civ_border_color="#cccccc"
-            app:civ_border_width="4dp"
+            android:textColor="@color/hint_text_grey"
+            android:text=""
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:textSize="45sp"/>
 
         <ImageView
             android:id="@+id/observation_complex"
@@ -56,7 +56,7 @@
             android:text="bbbbbbbbbbbb"
             android:textColor="@color/primary_black"
             android:textSize="10sp"
-            android:layout_toRightOf="@+id/concept_image" />
+            android:layout_toRightOf="@+id/concept_icon" />
 
         <TextView
             android:id="@+id/observation_value"
@@ -72,7 +72,7 @@
             android:textSize="10sp"
             android:textStyle="bold"
             android:layout_below="@id/concept"
-            android:layout_toRightOf="@+id/concept_image"/>
+            android:layout_toRightOf="@+id/concept_icon"/>
 
         <TextView
             android:id="@+id/item_single_obs_date_text_view"
@@ -87,7 +87,7 @@
             android:textSize="10sp"
             android:textStyle="bold"
             android:layout_below="@id/observation_value"
-            android:layout_toRightOf="@+id/concept_image"/>
+            android:layout_toRightOf="@+id/concept_icon"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
 

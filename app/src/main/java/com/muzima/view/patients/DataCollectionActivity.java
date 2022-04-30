@@ -130,6 +130,9 @@ public class DataCollectionActivity extends ActivityWithPatientSummaryBottomNavi
         DataCollectionAdapter dataCollectionAdapter = new DataCollectionAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), patientUuid, isSingleElementEnabled);
         viewPager.setAdapter(dataCollectionAdapter);
 
+        viewPager.addOnPageChangeListener(new
+                TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

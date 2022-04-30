@@ -42,7 +42,6 @@ import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.custom.ActivityWithPatientSummaryBottomNavigation;
 import com.muzima.view.relationship.RelationshipsListActivity;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -77,6 +76,9 @@ public class ObsViewActivity extends ActivityWithPatientSummaryBottomNavigation 
 
         ObsViewAdapter obsViewAdapter = new ObsViewAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), patientUuid, this);
         viewPager.setAdapter(obsViewAdapter);
+
+        viewPager.addOnPageChangeListener(new
+                TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
