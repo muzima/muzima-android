@@ -11,10 +11,13 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
+import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.ObsData;
 import com.muzima.model.ObsGroups;
+import com.muzima.util.JsonUtils;
 import com.muzima.utils.StringUtils;
 
 import java.text.SimpleDateFormat;
@@ -34,6 +37,9 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private List<String> h;
     private String headers[];
+    List<ObsGroups> obsGroups = new ArrayList<>();
+    List<String> groups = new ArrayList<>();
+    MuzimaApplication app;
 
     public List<String> getHeaders() {
         List<String> dates = new ArrayList();
@@ -69,7 +75,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     private final float density;
 
     public ObservationGroupAdapter(Context context, String patientUuid) {
-        MuzimaApplication app = (MuzimaApplication) context.getApplicationContext();
+        this.app = (MuzimaApplication) context.getApplicationContext();
         layoutInflater = LayoutInflater.from(context);
         this.patientUuid = patientUuid;
         this.conceptController = app.getConceptController();
@@ -78,50 +84,139 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         h = getHeaders();
         headers = h.toArray(new String[0]);
 
-        obsGroup = new ObsGroups[] {
-                //TODO: Add groups from serverSide
-                new ObsGroups("Others"),
-        };
+        List<String> conceptUuids = new ArrayList<>();
+
+        String json = "";
+        try {
+            SetupConfigurationTemplate activeSetupConfig = app.getSetupConfigurationController().getActiveSetupConfigurationTemplate();
+            json = activeSetupConfig.getConfigJson();
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+            e.printStackTrace();
+        }
+
+        List<Object> objects = JsonUtils.readAsObjectList(json, "$['config']['configConceptGroups']");
+        if (objects != null) {
+            for (Object object : objects) {
+                net.minidev.json.JSONObject configConceptGroups = (net.minidev.json.JSONObject) object;
+
+                net.minidev.json.JSONObject jsonObject = configConceptGroups;
+                List<Object> concepts = JsonUtils.readAsObjectList(configConceptGroups.toJSONString(), "concepts");
+                Object group = jsonObject.get("name");
+                obsGroups.add(new ObsGroups(group.toString()));
+                groups.add(group.toString());
+                for (Object concept : concepts) {
+                    net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
+                    String conceptUuid = concept1.get("uuid").toString();
+                    conceptUuids.add(conceptUuid);
+                }
+            }
+        }
+
+        try {
+            concepts = conceptController.getConcepts();
+            boolean isOtherGroupAdded = false;
+            for(Concept concept : concepts){
+                if(!conceptUuids.contains(concept.getUuid())){
+                    if(!isOtherGroupAdded){
+                        obsGroups.add(new ObsGroups(app.getString(R.string.general_other)));
+                        groups.add(app.getString(R.string.general_other));
+                        break;
+                    }
+                }
+            }
+        } catch (ConceptController.ConceptFetchException e) {
+            e.printStackTrace();
+        }
+
+        obsGroup = obsGroups.toArray(new ObsGroups[0]);
 
 
         density = context.getResources().getDisplayMetrics().density;
-        getObservationByConcept();
+        getObservationByConcept(objects);
     }
 
 
-    public void getObservationByConcept(){
+    public void getObservationByConcept(List<Object> objects){
         try {
-            concepts = conceptController.getConcepts();
-            for(Concept concept : concepts){
-                List<String> conceptRow = new ArrayList<>();
-                List<Observation> observations  = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,concept.getId());
-                for(String dateString : h) {
-                    if(dateString.isEmpty()){
-                        conceptRow.add(concept.getName());
-                    } else {
-                        String value = "";
-                        for (Observation observation : observations) {
-                            if (dateString.equals(dateFormat.format(observation.getObservationDatetime()))) {
-                                if(concept.isNumeric()) {
-                                    value = String.valueOf(observation.getValueNumeric());
-                                } else if (concept.isCoded()){
-                                    value = observation.getValueCoded().getName();
-                                } else if (concept.isDatetime()){
-                                    value = dateFormat.format(observation.getValueDatetime());
+            List<String> conceptUuids = new ArrayList<>();
+            if (objects != null) {
+                for (Object object : objects) {
+                    net.minidev.json.JSONObject configConceptGroups = (net.minidev.json.JSONObject) object;
+
+                    net.minidev.json.JSONObject jsonObject = configConceptGroups;
+                    List<Object> concepts = JsonUtils.readAsObjectList(configConceptGroups.toJSONString(), "concepts");
+                    for (Object conceptObject : concepts) {
+                        net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) conceptObject;
+                        String conceptUuid = concept1.get("uuid").toString();
+                        Concept concept = conceptController.getConceptByUuid(conceptUuid);
+                        conceptUuids.add(conceptUuid);
+                        if (concept != null){
+                            List<String> conceptRow = new ArrayList<>();
+                            List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, concept.getId());
+                            for (String dateString : h) {
+                                if (dateString.isEmpty()) {
+                                    conceptRow.add(concept.getName());
                                 } else {
-                                    value = observation.getValueText();
+                                    String value = "";
+                                    for (Observation observation : observations) {
+                                        if (dateString.equals(dateFormat.format(observation.getObservationDatetime()))) {
+                                            if (concept.isNumeric()) {
+                                                value = String.valueOf(observation.getValueNumeric());
+                                            } else if (concept.isCoded()) {
+                                                value = observation.getValueCoded().getName();
+                                            } else if (concept.isDatetime()) {
+                                                value = dateFormat.format(observation.getValueDatetime());
+                                            } else {
+                                                value = observation.getValueText();
+                                            }
+                                        }
+                                    }
+                                    if (!StringUtils.isEmpty(value)) {
+                                        conceptRow.add(value);
+                                    } else {
+                                        conceptRow.add("");
+                                    }
                                 }
                             }
-                        }
-                        if (!StringUtils.isEmpty(value)) {
-                            conceptRow.add(value);
-                        } else {
-                            conceptRow.add("");
+                            obsGroup[groups.indexOf(jsonObject.get("name"))].list.add(new ObsData(conceptRow.toArray(new String[0])));
                         }
                     }
                 }
-                //TODO: Have correct index for the Concept group
-                obsGroup[0].list.add(new ObsData(conceptRow.toArray(new String[0])));
+            }
+
+
+            concepts = conceptController.getConcepts();
+            for(Concept concept : concepts) {
+                if(!conceptUuids.contains(concept.getUuid())){
+                    List<String> conceptRow = new ArrayList<>();
+                    List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, concept.getId());
+                    for (String dateString : h) {
+                        if (dateString.isEmpty()) {
+                            conceptRow.add(concept.getName());
+                        } else {
+                            String value = "";
+                            for (Observation observation : observations) {
+                                if (dateString.equals(dateFormat.format(observation.getObservationDatetime()))) {
+                                    if (concept.isNumeric()) {
+                                        value = String.valueOf(observation.getValueNumeric());
+                                    } else if (concept.isCoded()) {
+                                        value = observation.getValueCoded().getName();
+                                    } else if (concept.isDatetime()) {
+                                        value = dateFormat.format(observation.getValueDatetime());
+                                    } else {
+                                        value = observation.getValueText();
+                                    }
+                                }
+                            }
+                            if (!StringUtils.isEmpty(value)) {
+                                conceptRow.add(value);
+                            } else {
+                                conceptRow.add("");
+                            }
+                        }
+                    }
+                    obsGroup[groups.indexOf(app.getString(R.string.general_other))].list.add(new ObsData(conceptRow.toArray(new String[0])));
+                }
             }
         } catch (ConceptController.ConceptFetchException | ObservationController.LoadObservationException e) {
             e.printStackTrace();
