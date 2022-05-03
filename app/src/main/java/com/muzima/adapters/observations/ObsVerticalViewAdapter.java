@@ -14,6 +14,7 @@ import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLoca
 import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.muzima.api.model.Provider;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
+import com.muzima.model.ConceptIcons;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.FontManager;
 import com.muzima.utils.StringUtils;
@@ -49,11 +51,12 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
     private final Boolean shouldReplaceProviderIdWithNames;
     private final String patientUuid;
     private final Context context;
+    private final List<ConceptIcons> conceptIcons;
 
     public ObsVerticalViewAdapter(String date,
                                   EncounterController encounterController, ObservationController observationController,
                                   String applicationLanguage, ProviderController providerController,
-                                  boolean shouldReplaceProviderIdWithNames, String patientUuid, Context context) {
+                                  boolean shouldReplaceProviderIdWithNames, String patientUuid, Context context, List<ConceptIcons> conceptIcons) {
         this.date = date;
         this.encounterController = encounterController;
         this.observationController = observationController;
@@ -63,6 +66,7 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
         this.patientUuid = patientUuid;
         observationList = getObservationForDate(date);
         this.context = context;
+        this.conceptIcons = conceptIcons;
     }
 
     @NotNull
@@ -80,7 +84,9 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
         //Todo: load icon set in concept
         //https://fontawesome.com/v5/cheatsheet/free/brands
         //https://fontawesome.com/download //brand
-        holder.conceptIcon.setText("accessible-icon");
+        String icon = getConceptIcon(observation.getConcept().getUuid());
+        Log.e(getClass().getSimpleName(),"PPPPPPPPP "+icon);
+        holder.conceptIcon.setText(icon);
 
         if (StringUtils.equals(observation.getConcept().getConceptType().getName(), "Complex")) {
             holder.observationValue.setVisibility(View.GONE);
@@ -154,5 +160,15 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
             e.printStackTrace();
         }
         return observationList;
+    }
+
+    public String getConceptIcon(String conceptUuid){
+        String icon = "";
+        for(ConceptIcons conceptIcon : conceptIcons){
+            if(conceptUuid.equals(conceptIcon.getConceptUuid())){
+                icon = conceptIcon.getIcon();
+            }
+        }
+        return icon;
     }
 }

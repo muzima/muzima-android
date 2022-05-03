@@ -1,6 +1,11 @@
 package com.muzima.adapters.observations;
 
+import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
+import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
+
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +16,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
+import com.muzima.api.model.Provider;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
@@ -40,6 +46,8 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     List<ObsGroups> obsGroups = new ArrayList<>();
     List<String> groups = new ArrayList<>();
     MuzimaApplication app;
+    private  Context context;
+    private boolean shouldReplaceProviderIdWithNames;
 
     public List<String> getHeaders() {
         List<String> dates = new ArrayList();
@@ -80,6 +88,8 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         this.patientUuid = patientUuid;
         this.conceptController = app.getConceptController();
         this.observationController = app.getObservationController();
+        this.context = context;
+        shouldReplaceProviderIdWithNames = app.getMuzimaSettingController().isPatientTagGenerationEnabled();
 
         h = getHeaders();
         headers = h.toArray(new String[0]);
@@ -138,6 +148,9 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
 
     public void getObservationByConcept(List<Object> objects){
         try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+
             List<String> conceptUuids = new ArrayList<>();
             if (objects != null) {
                 for (Object object : objects) {
@@ -155,19 +168,28 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                             List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, concept.getId());
                             for (String dateString : h) {
                                 if (dateString.isEmpty()) {
-                                    conceptRow.add(concept.getName());
+                                    conceptRow.add(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),applicationLanguage));
                                 } else {
                                     String value = "";
                                     for (Observation observation : observations) {
                                         if (dateString.equals(dateFormat.format(observation.getObservationDatetime()))) {
-                                            if (concept.isNumeric()) {
-                                                value = String.valueOf(observation.getValueNumeric());
-                                            } else if (concept.isCoded()) {
-                                                value = observation.getValueCoded().getName();
-                                            } else if (concept.isDatetime()) {
-                                                value = dateFormat.format(observation.getValueDatetime());
-                                            } else {
-                                                value = observation.getValueText();
+                                            if(shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID){
+                                                Provider provider = app.getProviderController().getProviderBySystemId(observation.getValueText());
+                                                if(provider != null){
+                                                    value = provider.getName();
+                                                } else {
+                                                    value = observation.getValueText();
+                                                }
+                                            }else {
+                                                if (concept.isNumeric()) {
+                                                    value = String.valueOf(observation.getValueNumeric());
+                                                } else if (concept.isCoded()) {
+                                                    value = getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
+                                                } else if (concept.isDatetime()) {
+                                                    value = dateFormat.format(observation.getValueDatetime());
+                                                } else {
+                                                    value = observation.getValueText();
+                                                }
                                             }
                                         }
                                     }
@@ -197,14 +219,23 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                             String value = "";
                             for (Observation observation : observations) {
                                 if (dateString.equals(dateFormat.format(observation.getObservationDatetime()))) {
-                                    if (concept.isNumeric()) {
-                                        value = String.valueOf(observation.getValueNumeric());
-                                    } else if (concept.isCoded()) {
-                                        value = observation.getValueCoded().getName();
-                                    } else if (concept.isDatetime()) {
-                                        value = dateFormat.format(observation.getValueDatetime());
-                                    } else {
-                                        value = observation.getValueText();
+                                    if(shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID){
+                                        Provider provider = app.getProviderController().getProviderBySystemId(observation.getValueText());
+                                        if(provider != null){
+                                            value = provider.getName();
+                                        } else {
+                                            value = observation.getValueText();
+                                        }
+                                    }else {
+                                        if (concept.isNumeric()) {
+                                            value = String.valueOf(observation.getValueNumeric());
+                                        } else if (concept.isCoded()) {
+                                            value = getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
+                                        } else if (concept.isDatetime()) {
+                                            value = dateFormat.format(observation.getValueDatetime());
+                                        } else {
+                                            value = observation.getValueText();
+                                        }
                                     }
                                 }
                             }
