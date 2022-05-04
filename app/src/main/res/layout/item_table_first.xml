@@ -12,9 +12,4 @@
         android:gravity="center_vertical|left"
         android:paddingLeft="10dip" />
 
-    <View
-        android:layout_width="1.5dip"
-        android:layout_height="match_parent"
-        android:background="@drawable/separator_table_first" />
-
 </LinearLayout>

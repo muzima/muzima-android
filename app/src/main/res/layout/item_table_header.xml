@@ -10,8 +10,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="5dp"
+        android:textSize="18sp"
         android:text="Hello"
-        android:textColor="@android:color/black" />
+        android:textColor="@color/white" />
 
     <View
         android:layout_width="1.5dp"

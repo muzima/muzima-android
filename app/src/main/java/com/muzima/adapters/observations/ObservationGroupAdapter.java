@@ -48,6 +48,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     MuzimaApplication app;
     private  Context context;
     private boolean shouldReplaceProviderIdWithNames;
+    int groupNumber = 0;
 
     public List<String> getHeaders() {
         List<String> dates = new ArrayList();
@@ -310,7 +311,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
 
         convertView = layoutInflater.inflate(R.layout.item_table_first, parent, false);
 
-        convertView.setBackgroundResource(row % 2 == 0 ? R.drawable.bg_table_color1 : R.drawable.bg_table_color2);
+        convertView.setBackgroundResource(groupNumber % 2 == 0 ? R.drawable.bg_table_color1 : R.drawable.bg_table_color2);
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(getDevice(row).data[column + 1]);
         return convertView;
     }
@@ -318,8 +319,9 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     private View getBody(int row, int column, View convertView, ViewGroup parent) {
         convertView = layoutInflater.inflate(R.layout.item_table, parent, false);
 
-        convertView.setBackgroundResource(row % 2 == 0 ? R.drawable.bg_table_color1 : R.drawable.bg_table_color2);
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(getDevice(row).data[column + 1]);
+        ((TextView) convertView.findViewById(android.R.id.text1)).setBackgroundResource(groupNumber % 2 == 0 ? R.drawable.table_border1 : R.drawable.table_border2);
+
         return convertView;
     }
 
@@ -330,10 +332,13 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         final String string;
         if (column == -1) {
             string = getGroup(row).name;
+            groupNumber++;
         } else {
             string = "";
         }
+
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(string);
+        convertView.setBackgroundResource(groupNumber % 2 == 0 ? R.drawable.bg_table_color1 : R.drawable.bg_table_color2);
         return convertView;
     }
 
@@ -346,9 +351,9 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     public int getHeight(int row) {
         final int height;
         if (row == -1) {
-            height = 30;
+            height = 40;
         } else if (isGroup(row)) {
-            height = 25;
+            height = 40;
         } else {
             height = 60;
         }

@@ -782,7 +782,6 @@ public class TableFixHeaders extends ViewGroup {
 
         final Integer row = (Integer) child.getTag(R.id.tag_row);
         final Integer column = (Integer) child.getTag(R.id.tag_column);
-// row == null => Shadow view
         if (row == null || (row == -1 && column == -1)) {
             ret = super.drawChild(canvas, child, drawingTime);
         } else {

@@ -11,9 +11,4 @@
         android:layout_weight="1"
         android:gravity="center" />
 
-    <View
-        android:layout_width="1dip"
-        android:layout_height="match_parent"
-        android:background="@drawable/separator_table" />
-
 </LinearLayout>
