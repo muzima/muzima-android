@@ -30,7 +30,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ObservationGroupAdapter extends BaseTableAdapter {
 
@@ -48,7 +50,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     MuzimaApplication app;
     private  Context context;
     private boolean shouldReplaceProviderIdWithNames;
-    int groupNumber = 0;
+    Map<String, Integer> map = new HashMap<String, Integer>( );
 
     public List<String> getHeaders() {
         List<String> dates = new ArrayList();
@@ -201,6 +203,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                                     }
                                 }
                             }
+                            map.put(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),applicationLanguage), groups.indexOf(jsonObject.get("name")));
                             obsGroup[groups.indexOf(jsonObject.get("name"))].list.add(new ObsData(conceptRow.toArray(new String[0])));
                         }
                     }
@@ -310,8 +313,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     private View getFirstBody(int row, int column, View convertView, ViewGroup parent) {
 
         convertView = layoutInflater.inflate(R.layout.item_table_first, parent, false);
-
-        convertView.setBackgroundResource(groupNumber % 2 == 0 ? R.drawable.bg_table_color1 : R.drawable.bg_table_color2);
+        convertView.setBackgroundResource(map.get(getDevice(row).data[0]) % 2 == 0 ? R.drawable.bg_table_color1 : R.drawable.bg_table_color2);
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(getDevice(row).data[column + 1]);
         return convertView;
     }
@@ -320,7 +322,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         convertView = layoutInflater.inflate(R.layout.item_table, parent, false);
 
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(getDevice(row).data[column + 1]);
-        ((TextView) convertView.findViewById(android.R.id.text1)).setBackgroundResource(groupNumber % 2 == 0 ? R.drawable.table_border1 : R.drawable.table_border2);
+        ((TextView) convertView.findViewById(android.R.id.text1)).setBackgroundResource(map.get(getDevice(row).data[0]) % 2 == 0 ? R.drawable.table_border1 : R.drawable.table_border2);
 
         return convertView;
     }
@@ -332,13 +334,12 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         final String string;
         if (column == -1) {
             string = getGroup(row).name;
-            groupNumber++;
         } else {
             string = "";
         }
 
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(string);
-        convertView.setBackgroundResource(groupNumber % 2 == 0 ? R.drawable.bg_table_color1 : R.drawable.bg_table_color2);
+        convertView.setBackgroundResource(groups.indexOf(getGroup(row).name) % 2 == 0 ? R.drawable.bg_table_color1 : R.drawable.bg_table_color2);
         return convertView;
     }
 
