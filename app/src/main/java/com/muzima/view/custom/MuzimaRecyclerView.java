@@ -72,11 +72,11 @@ public class MuzimaRecyclerView extends RecyclerView {
     }
 
     public void setNoDataLayout(LinearLayout noDataLayout, String noDataMsg, String noDataTip) {
-//        this.noDataLayout = noDataLayout;
-//        TextView noDataMsgTextView = this.noDataLayout.findViewById(R.id.no_data_msg);
-//        noDataMsgTextView.setText(noDataMsg);
-//        TextView noDataTipTextView = this.noDataLayout.findViewById(R.id.no_data_tip);
-//        noDataTipTextView.setText(noDataTip);
-//        checkNoData();
+        this.noDataLayout = noDataLayout;
+        TextView noDataMsgTextView = this.noDataLayout.findViewById(R.id.no_data_msg);
+        noDataMsgTextView.setText(noDataMsg);
+        TextView noDataTipTextView = this.noDataLayout.findViewById(R.id.no_data_tip);
+        noDataTipTextView.setText(noDataTip);
+        checkNoData();
     }
 }
