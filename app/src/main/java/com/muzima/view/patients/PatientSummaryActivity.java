@@ -48,6 +48,7 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.custom.ActivityWithPatientSummaryBottomNavigation;
+import com.muzima.view.custom.MuzimaRecyclerView;
 import com.muzima.view.forms.FormViewIntent;
 import com.muzima.view.forms.FormsWithDataActivity;
 import com.muzima.view.fragments.patient.ChronologicalObsViewFragment;
@@ -271,10 +272,14 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             }
         });
 
-        RecyclerView formsRecyclerView = findViewById(R.id.fragment_fill_forms_recycler_view);
+        MuzimaRecyclerView formsListRecyclerView = findViewById(R.id.recycler_list);
+        formsListRecyclerView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+
         formsAdapter = new ClientSummaryFormsAdapter(forms, this);
-        formsRecyclerView.setAdapter(formsAdapter);
-        formsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        formsListRecyclerView.setAdapter(formsAdapter);
+        formsListRecyclerView.setNoDataLayout(findViewById(R.id.no_data_layout),
+                getString(R.string.info_forms_unavailable),
+                StringUtils.EMPTY);
         try {
             patient = ((MuzimaApplication) getApplication().getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
         }catch (PatientController.PatientLoadException ex){

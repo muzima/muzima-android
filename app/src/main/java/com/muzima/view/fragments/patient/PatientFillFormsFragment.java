@@ -31,6 +31,8 @@ import com.muzima.model.AvailableForm;
 import com.muzima.model.DownloadedForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.tasks.FormsLoaderService;
+import com.muzima.utils.StringUtils;
+import com.muzima.view.custom.MuzimaRecyclerView;
 import com.muzima.view.forms.FormViewIntent;
 import com.muzima.view.forms.FormsWithDataActivity;
 
@@ -53,7 +55,7 @@ public class PatientFillFormsFragment extends Fragment implements FormsLoaderSer
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_fill_forms, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
         initializeResources(view);
         loadData();
         return view;
@@ -65,10 +67,14 @@ public class PatientFillFormsFragment extends Fragment implements FormsLoaderSer
     }
 
     private void initializeResources(View view) {
-        RecyclerView formsRecyclerView = view.findViewById(R.id.fragment_fill_forms_recycler_view);
+        MuzimaRecyclerView formsRecyclerView = view.findViewById(R.id.recycler_list);
+        formsRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+
         formsAdapter = new ClientSummaryFormsAdapter(forms, this);
         formsRecyclerView.setAdapter(formsAdapter);
-        formsRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
+        formsRecyclerView.setNoDataLayout(view.findViewById(R.id.no_data_layout),
+                getString(R.string.info_forms_unavailable),
+                StringUtils.EMPTY);
         try {
             patient = ((MuzimaApplication) requireActivity().getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
         }catch (PatientController.PatientLoadException ex){

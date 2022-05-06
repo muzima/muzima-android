@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -342,14 +344,16 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     public void showWarningDialog() {
-        new AlertDialog.Builder(HTMLFormWebViewActivity.this)
-                .setCancelable(true)
-                .setIcon(ThemeUtils.getIconWarning(this))
-                .setTitle(getResources().getString(R.string.title_duplicate_form_data_warning))
-                .setMessage(getResources().getString(R.string.warning_form_data_already_exists))
-                .setNegativeButton(getString(R.string.general_ok), null)
-                .create()
-                .show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setIcon(ThemeUtils.getIconWarning(this));
+        builder.setTitle(getResources().getString(R.string.title_duplicate_form_data_warning));
+        builder.setMessage(getResources().getString(R.string.warning_form_data_already_exists));
+        builder.setNegativeButton(getString(R.string.general_ok), null);
+        AlertDialog dialog = builder.show();
+        //Center text massage
+        TextView messageView = dialog.findViewById(android.R.id.message);
+        messageView.setGravity(Gravity.CENTER);
     }
 
     private Dialog.OnClickListener duplicateFormDataClickListener(final String saveType) {

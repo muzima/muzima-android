@@ -250,6 +250,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                             }
                         }
                     }
+                    map.put(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),applicationLanguage), groups.indexOf(app.getString(R.string.general_other)));
                     obsGroup[groups.indexOf(app.getString(R.string.general_other))].list.add(new ObsData(conceptRow.toArray(new String[0])));
                 }
             }
@@ -314,6 +315,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
 
         convertView = layoutInflater.inflate(R.layout.item_table_first, parent, false);
         convertView.setBackgroundResource(map.get(getDevice(row).data[0]) % 2 == 0 ? R.drawable.bg_table_color1 : R.drawable.bg_table_color2);
+
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(getDevice(row).data[column + 1]);
         return convertView;
     }
