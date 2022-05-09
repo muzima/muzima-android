@@ -150,23 +150,15 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationsByType
             e.printStackTrace();
         }
 
-        List<Object> objects = JsonUtils.readAsObjectList(json, "$['config']['configConceptGroups']");
-        if (objects != null) {
-            for (Object object : objects) {
-                net.minidev.json.JSONObject configConceptGroups = (net.minidev.json.JSONObject) object;
-
-                net.minidev.json.JSONObject jsonObject = configConceptGroups;
-                List<Object> concepts = JsonUtils.readAsObjectList(configConceptGroups.toJSONString(), "concepts");
-                for (Object concept : concepts) {
-                    ConceptIcons conceptIcon = new ConceptIcons();
-                    net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
-                    String conceptUuid = concept1.get("uuid").toString();
-                    String icon = concept1.get("icon").toString();
-                    conceptIcon.setConceptUuid(conceptUuid);
-                    conceptIcon.setIcon(icon);
-                    conceptIcons.add(conceptIcon);
-                }
-            }
+        List<Object> concepts = JsonUtils.readAsObjectList(json, "$['config']['concepts']");
+        for (Object concept : concepts) {
+            ConceptIcons conceptIcon = new ConceptIcons();
+            net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
+            String conceptUuid = concept1.get("uuid").toString();
+            String icon = concept1.get("icon").toString();
+            conceptIcon.setConceptUuid(conceptUuid);
+            conceptIcon.setIcon(icon);
+            conceptIcons.add(conceptIcon);
         }
 
         return conceptIcons;

@@ -85,7 +85,6 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
         //https://fontawesome.com/v5/cheatsheet/free/brands
         //https://fontawesome.com/download //brand
         String icon = getConceptIcon(observation.getConcept().getUuid());
-        Log.e(getClass().getSimpleName(),"PPPPPPPPP "+icon);
         holder.conceptIcon.setText(icon);
 
         if (StringUtils.equals(observation.getConcept().getConceptType().getName(), "Complex")) {
