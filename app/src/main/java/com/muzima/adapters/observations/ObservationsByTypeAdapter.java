@@ -180,7 +180,7 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
             this.observationHeaderLayout = itemView.findViewById(R.id.value_container_cardview);
             this.obsHorizontalListRecyclerView = itemView.findViewById(R.id.obs_list);
             this.conceptInputLabelClickedListener = conceptInputLabelClickedListener;
-            this.titleTextView.setOnClickListener(this);
+            this.observationHeaderLayout.setOnClickListener(this);
         }
 
         @Override
