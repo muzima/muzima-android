@@ -211,7 +211,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
             gpsAddressTextView.setText(getDistanceToClientAddress(patient));
         } catch (PatientController.PatientLoadException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading patients "+e);
         }
     }
 
@@ -234,7 +234,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 return String.format("%.02f", results[0] / 1000) + " km";
             }
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Number format exception "+e);
         }
         return "";
     }
@@ -283,7 +283,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         try {
             patient = ((MuzimaApplication) getApplication().getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
         }catch (PatientController.PatientLoadException ex){
-            ex.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading patients "+ex);
         }
     }
 

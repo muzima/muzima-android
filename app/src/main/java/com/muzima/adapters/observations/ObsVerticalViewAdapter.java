@@ -81,9 +81,6 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
 
         holder.concept.setText(getConceptNameFromConceptNamesByLocale(observation.getConcept().getConceptNames(),applicationLanguage));
         holder.conceptIcon.setTypeface(FontManager.getTypeface(context,FontManager.FONTAWESOME));
-        //Todo: load icon set in concept
-        //https://fontawesome.com/v5/cheatsheet/free/brands
-        //https://fontawesome.com/download //brand
         String icon = getConceptIcon(observation.getConcept().getUuid());
         holder.conceptIcon.setText(icon);
 
@@ -156,7 +153,7 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
                 }
             }
         } catch (ObservationController.LoadObservationException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations "+e);
         }
         return observationList;
     }

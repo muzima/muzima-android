@@ -2,6 +2,7 @@ package com.muzima.view.fragments.patient;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,16 +10,24 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
+import com.muzima.adapters.observations.ObservationByDateAdapter;
+import com.muzima.controller.ObservationController;
+import com.muzima.model.observation.Concepts;
+import com.muzima.utils.StringUtils;
+import com.muzima.view.custom.MuzimaRecyclerView;
 import com.muzima.view.custom.TableFixHeaders;
 import com.muzima.adapters.observations.BaseTableAdapter;
 import com.muzima.adapters.observations.ObservationGroupAdapter;
 
 public class TabularObsViewFragment extends Fragment implements RecyclerAdapter.BackgroundListQueryTaskListener {
     private final String patientUuid;
-    private com.muzima.adapters.observations.ObservationGroupAdapter observationGroupAdapter;
+    private ObservationGroupAdapter observationGroupAdapter;
+    private ObservationByDateAdapter observationByDateAdapter;
     private final Context context;
 
     public TabularObsViewFragment(String patientUuid, Context context) {
@@ -34,6 +43,17 @@ public class TabularObsViewFragment extends Fragment implements RecyclerAdapter.
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Concepts concepts = new Concepts();
+        try {
+            concepts = ((MuzimaApplication) context.getApplicationContext()).getObservationController().getConceptWithObservations(patientUuid);
+        } catch (ObservationController.LoadObservationException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations "+e);
+        }
+        if (concepts.size() == 0) {
+            view.findViewById(R.id.no_data_layout).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.table).setVisibility(View.GONE);
+        }
+
         TableFixHeaders tableFixHeaders = view.findViewById(R.id.table);
         BaseTableAdapter baseTableAdapter = new ObservationGroupAdapter(context, patientUuid);
         tableFixHeaders.setAdapter(baseTableAdapter);

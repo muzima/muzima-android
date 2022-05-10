@@ -38,7 +38,7 @@
     <string name="date_temp">June 8</string>
 
     <string name="default_auto_save_interval" translatable="false">2</string>
-    <string name="default_server" translatable="false">https://test.muzima.org</string>
+    <string name="default_server" translatable="false">https://demo2.muzima.org</string>
 
     <string name="downloaded_reports">Downloaded Reports</string>
 

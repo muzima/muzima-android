@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,7 +148,7 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationsByType
             SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
             json = activeSetupConfig.getConfigJson();
         } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Exception encountered while fetching setup configs "+e);
         }
 
         List<Object> concepts = JsonUtils.readAsObjectList(json, "$['config']['concepts']");
