@@ -11,6 +11,7 @@
 package com.muzima.adapters.observations;
 
 import android.content.Context;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.widget.SearchView;
 
@@ -22,14 +23,14 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.utils.LanguageUtil;
-import com.muzima.view.observations.ObservationByEncountersFragment;
+import com.muzima.view.observations.ChronologicalObsViewFragment;
 import com.muzima.view.observations.ObservationsByConceptFragment;
 import com.muzima.view.observations.ObservationsListFragment;
 
 public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements SearchView.OnQueryTextListener {
 
-    private static final int TAB_BY_DATE = 0;
-    private static final int TAB_BY_ENCOUNTERS = 1;
+    private static final int TAB_BY_DATE = 1;
+    private static final int TAB_BY_ENCOUNTERS = 0;
     private ObservationsListFragment observationByConceptListFragment;
     ObservationsListFragment observationByEncountersFragment;
     private Boolean isShrData;
@@ -50,7 +51,7 @@ public class ObservationsPagerAdapter extends MuzimaPagerAdapter implements Sear
 
         observationByConceptListFragment =
                 ObservationsByConceptFragment.newInstance(conceptController, observationController,isShrData,patient);
-        observationByEncountersFragment = ObservationByEncountersFragment.newInstance(encounterController, observationController,isShrData, patient);
+        observationByEncountersFragment = ChronologicalObsViewFragment.newInstance(observationController, patient);
 
         LanguageUtil languageUtil = new LanguageUtil();
         Context localizedContext = languageUtil.getLocalizedContext(context);

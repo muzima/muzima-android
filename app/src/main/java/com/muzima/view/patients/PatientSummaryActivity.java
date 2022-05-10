@@ -27,12 +27,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
 import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Patient;
@@ -45,13 +45,13 @@ import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientReportController;
 import com.muzima.controller.SmartCardController;
+import com.muzima.model.AvailableForm;
 import com.muzima.model.shr.kenyaemr.Addendum.Identifier;
 import com.muzima.model.shr.kenyaemr.Addendum.WriteResponse;
 import com.muzima.model.shr.kenyaemr.InternalPatientId;
 import com.muzima.model.shr.kenyaemr.KenyaEmrSHRModel;
 import com.muzima.service.JSONInputOutputToDisk;
 import com.muzima.utils.Constants;
-import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.LocationUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
@@ -61,25 +61,35 @@ import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.SHRObservationsDataActivity;
 import com.muzima.view.encounters.EncountersActivity;
+import com.muzima.view.forms.FormViewIntent;
 import com.muzima.view.forms.PatientFormsActivity;
 import com.muzima.view.notifications.PatientNotificationActivity;
+import com.muzima.view.observations.ChronologicalObsViewFragment;
 import com.muzima.view.observations.ObservationsActivity;
 import com.muzima.view.relationship.RelationshipsListActivity;
 import com.muzima.view.reports.PatientReportActivity;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_WRITE_REQUEST_CODE;
+import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 
-public class PatientSummaryActivity extends BaseActivity {
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class PatientSummaryActivity extends BaseActivity implements ClientSummaryFormsAdapter.OnFormClickedListener{
     private static final String TAG = "PatientSummaryActivity";
     public static final String PATIENT = "patient";
     public static final boolean DEFAULT_SHR_STATUS = false;
     private static final boolean DEFAULT_RELATIONSHIP_STATUS = false;
+    public static final int FORM_VIEW_ACTIVITY_RESULT = 1;
 
     private AlertDialog writeSHRDataOptionDialog;
 
@@ -100,12 +110,14 @@ public class PatientSummaryActivity extends BaseActivity {
     private final ThemeUtils themeUtils = new ThemeUtils();
     private boolean isSHREnabled;
     private boolean isRelationshipEnabled;
+    private List<AvailableForm> forms = new ArrayList<>();
+    private ClientSummaryFormsAdapter formsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_client_summary);
+        setContentView(R.layout.activity_client_summary_overview);
         muzimaApplication = (MuzimaApplication) getApplicationContext( );
 
         setSHREnabled();
@@ -146,6 +158,20 @@ public class PatientSummaryActivity extends BaseActivity {
         } else {
             prepareNonSHRWriteToCardOptionDialog(getApplicationContext( ));
         }
+
+
+        try {
+            forms = muzimaApplication.getFormController().getRecommendedForms();
+        } catch (FormController.FormFetchException e) {
+            e.printStackTrace();
+        }
+        RecyclerView formsRecyclerView = findViewById(R.id.fragment_fill_forms_recycler_view);
+
+        formsAdapter = new ClientSummaryFormsAdapter(forms, this);
+        formsRecyclerView.setAdapter(formsAdapter);
+        formsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        loadChronologicalObsView();
     }
 
     private void notifyOfIdChange() {
@@ -215,6 +241,13 @@ public class PatientSummaryActivity extends BaseActivity {
 
         TextView patientIdentifier = findViewById(R.id.patientIdentifier);
         patientIdentifier.setText(patient.getIdentifier());
+    }
+
+    private void loadChronologicalObsView(){
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        ChronologicalObsViewFragment chronologicalObsViewFragment = ChronologicalObsViewFragment.newInstance(muzimaApplication.getObservationController(), patient);
+        transaction.replace(R.id.chronological_fragment, chronologicalObsViewFragment).commit();
     }
 
     @Override
@@ -442,6 +475,15 @@ public class PatientSummaryActivity extends BaseActivity {
         imageView.setImageResource(R.drawable.ic_action_shr_synced);
     }
 
+    @Override
+    public void onFormClickedListener(int position) {
+        AvailableForm form = forms.get(position);
+        Intent intent = new FormViewIntent(this, form, patient , false);
+        intent.putExtra(INDEX_PATIENT, patient);
+        this.startActivityForResult(intent, FORM_VIEW_ACTIVITY_RESULT);
+    }
+
+
     private static class PatientSummaryActivityMetadata {
         int recommendedForms;
         int incompleteForms;
@@ -495,23 +537,7 @@ public class PatientSummaryActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(PatientSummaryActivityMetadata patientSummaryActivityMetadata) {
-            TextView formsDescription = (TextView) findViewById(R.id.formDescription);
-            formsDescription.setText(getString(R.string.hint_client_summary_forms, patientSummaryActivityMetadata.incompleteForms,
-                    patientSummaryActivityMetadata.completeForms,
-                    patientSummaryActivityMetadata.recommendedForms));
 
-            TextView notificationsDescription = (TextView) findViewById(R.id.notificationDescription);
-            notificationsDescription.setText(getString(R.string.hint_client_summary_notifications, patientSummaryActivityMetadata.newNotifications,
-                    patientSummaryActivityMetadata.totalNotifications));
-
-            TextView observationDescription = (TextView) findViewById(R.id.observationDescription);
-            observationDescription.setText(getString(R.string.hint_client_summary_observations, patientSummaryActivityMetadata.observations));
-
-            TextView encounterDescription = (TextView) findViewById(R.id.encounterDescription);
-            encounterDescription.setText(getString(R.string.hint_client_summary_encounters, patientSummaryActivityMetadata.encounters));
-
-            TextView reportDescription = (TextView) findViewById(R.id.reportDescription);
-            reportDescription.setText(getString(R.string.hint_client_summary_reports, patientSummaryActivityMetadata.reports));
         }
     }
 
@@ -806,22 +832,22 @@ public class PatientSummaryActivity extends BaseActivity {
     }
 
     private void setSHRLayoutVisibility(){
-        LinearLayout SHRLinearLayout=(LinearLayout)findViewById(R.id.SHR_linear_layout);
-        if(isSHREnabled) {
-            SHRLinearLayout.setVisibility(LinearLayout.VISIBLE);
-        } else {
-            SHRLinearLayout.setVisibility(LinearLayout.GONE);
-        }
+//        LinearLayout SHRLinearLayout=(LinearLayout)findViewById(R.id.SHR_linear_layout);
+//        if(isSHREnabled) {
+//            SHRLinearLayout.setVisibility(LinearLayout.VISIBLE);
+//        } else {
+//            SHRLinearLayout.setVisibility(LinearLayout.GONE);
+//        }
     }
 
     private void setClinicalSummaryVisibility(){
-        LinearLayout clinicalSummaryLinearLayout = findViewById(R.id.client_summary_layout);
-        boolean isClinicalSummaryEnabled = muzimaApplication.getMuzimaSettingController().isClinicalSummaryEnabled();
-        if(isClinicalSummaryEnabled){
-            clinicalSummaryLinearLayout.setVisibility(LinearLayout.VISIBLE);
-        }else{
-            clinicalSummaryLinearLayout.setVisibility(LinearLayout.GONE);
-        }
+//        LinearLayout clinicalSummaryLinearLayout = findViewById(R.id.client_summary_layout);
+//        boolean isClinicalSummaryEnabled = muzimaApplication.getMuzimaSettingController().isClinicalSummaryEnabled();
+//        if(isClinicalSummaryEnabled){
+//            clinicalSummaryLinearLayout.setVisibility(LinearLayout.VISIBLE);
+//        }else{
+//            clinicalSummaryLinearLayout.setVisibility(LinearLayout.GONE);
+//        }
     }
 
     private void setRelationshipEnabled(){
