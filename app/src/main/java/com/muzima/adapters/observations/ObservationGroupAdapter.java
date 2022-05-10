@@ -43,6 +43,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     private final String patientUuid;
     private final ConceptController conceptController;
     private final ObservationController observationController;
+    boolean isGroupingEnabled;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private List<String> h;
     private String headers[];
@@ -52,6 +53,8 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     private  Context context;
     private boolean shouldReplaceProviderIdWithNames;
     Map<String, Integer> map = new HashMap<String, Integer>( );
+    Map<String, String> conceptGroupMap = new HashMap<String, String>( );
+
 
     public List<String> getHeaders() {
         List<String> dates = new ArrayList();
@@ -99,56 +102,65 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         headers = h.toArray(new String[0]);
 
         List<String> conceptUuids = new ArrayList<>();
+        List<Object> objects = null;
 
         String json = "";
         try {
             SetupConfigurationTemplate activeSetupConfig = app.getSetupConfigurationController().getActiveSetupConfigurationTemplate();
             json = activeSetupConfig.getConfigJson();
-        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
-            e.printStackTrace();
-        }
 
-        List<Object> objects = null;
+            isGroupingEnabled = JsonUtils.readAsBoolean(json, "$['config']['requireConceptGroups']");
+            if(isGroupingEnabled) {
+                objects = JsonUtils.readAsObjectList(json, "$['config']['configConceptGroups']");
+                if (objects != null) {
+                    for (Object object : objects) {
+                        net.minidev.json.JSONObject configConceptGroups = (net.minidev.json.JSONObject) object;
 
-        boolean isGroupingEnabled = JsonUtils.readAsBoolean(json, "$['config']['requireConceptGroups']");
-        if(isGroupingEnabled) {
-            objects = JsonUtils.readAsObjectList(json, "$['config']['configConceptGroups']");
-            if (objects != null) {
-                for (Object object : objects) {
-                    net.minidev.json.JSONObject configConceptGroups = (net.minidev.json.JSONObject) object;
+                        net.minidev.json.JSONObject jsonObject = configConceptGroups;
+                        List<Object> concepts = JsonUtils.readAsObjectList(configConceptGroups.toJSONString(), "concepts");
+                        Object group = jsonObject.get("name");
+                        for (Object concept : concepts) {
+                            net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
+                            String conceptUuid = concept1.get("uuid").toString();
+                            conceptUuids.add(conceptUuid);
 
-                    net.minidev.json.JSONObject jsonObject = configConceptGroups;
-                    List<Object> concepts = JsonUtils.readAsObjectList(configConceptGroups.toJSONString(), "concepts");
-                    Object group = jsonObject.get("name");
-                    obsGroups.add(new ObsGroups(group.toString()));
-                    groups.add(group.toString());
-                    for (Object concept : concepts) {
-                        net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
-                        String conceptUuid = concept1.get("uuid").toString();
-                        conceptUuids.add(conceptUuid);
+                            Concept cpt = conceptController.getConceptByUuid(conceptUuid);
+                            if (cpt != null) {
+                                List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, cpt.getId());
+                                if (observations.size() > 0) {
+                                    if(!groups.contains(group.toString())) {
+                                        obsGroups.add(new ObsGroups(group.toString()));
+                                        groups.add(group.toString());
+                                    }
+                                    conceptGroupMap.put(conceptUuid,group.toString());
+                                }
+                            }
+                        }
                     }
                 }
             }
-        }
 
-        try {
             concepts = conceptController.getConcepts();
             boolean isOtherGroupAdded = false;
             for(Concept concept : concepts){
                 if(!conceptUuids.contains(concept.getUuid())){
                     if(!isOtherGroupAdded){
-                        obsGroups.add(new ObsGroups(app.getString(R.string.general_other)));
-                        groups.add(app.getString(R.string.general_other));
-                        break;
+                        if (concept != null) {
+                            List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, concept.getId());
+                            if (observations.size() > 0) {
+                                obsGroups.add(new ObsGroups(app.getString(R.string.general_other)));
+                                groups.add(app.getString(R.string.general_other));
+                                break;
+                            }
+                        }
                     }
                 }
             }
-        } catch (ConceptController.ConceptFetchException e) {
-            e.printStackTrace();
+        } catch (ConceptController.ConceptFetchException | ObservationController.LoadObservationException | SetupConfigurationController.SetupConfigurationFetchException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations or fetching concepts "+e);
         }
 
         obsGroup = obsGroups.toArray(new ObsGroups[0]);
-
 
         density = context.getResources().getDisplayMetrics().density;
         getObservationByConcept(objects);
@@ -371,7 +383,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
             else
                 height = 40;
         } else if (isGroup(row)) {
-            if(groups.size() == 1) {
+            if(!isGroupingEnabled) {
                 height = 0;
             }else{
                 height = 40;
