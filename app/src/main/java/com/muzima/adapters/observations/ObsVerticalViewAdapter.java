@@ -13,6 +13,7 @@ package com.muzima.adapters.observations;
 import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,9 @@ import com.muzima.api.model.Provider;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
+import com.muzima.model.ConceptIcons;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.FontManager;
 import com.muzima.utils.StringUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,11 +46,14 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
     private final String applicationLanguage;
     private final Boolean shouldReplaceProviderIdWithNames;
     private final String patientUuid;
+    private final List<ConceptIcons> conceptIcons;
+    private final Context context;
 
     public ObsVerticalViewAdapter(String date,
                                   EncounterController encounterController, ObservationController observationController,
                                   String applicationLanguage, ProviderController providerController,
-                                  boolean shouldReplaceProviderIdWithNames, String patientUuid) {
+                                  boolean shouldReplaceProviderIdWithNames, String patientUuid,
+                                  List<ConceptIcons> conceptIcons, Context context) {
         this.date = date;
         this.encounterController = encounterController;
         this.observationController = observationController;
@@ -55,6 +61,8 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
         this.providerController = providerController;
         this.shouldReplaceProviderIdWithNames = shouldReplaceProviderIdWithNames;
         this.patientUuid = patientUuid;
+        this.conceptIcons = conceptIcons;
+        this.context = context;
         observationList = getObservationForDate(date);
     }
 
@@ -67,6 +75,9 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Observation observation = observationList.get(position);
+        String icon = getConceptIcon(observation.getConcept().getUuid());
+        holder.conceptIcon.setTypeface(FontManager.getTypeface(context, FontManager.FONTAWESOME));
+        holder.conceptIcon.setText(StringUtils.isEmpty(icon) ? "edit" : icon);
 
         holder.concept.setText(getConceptNameFromConceptNamesByLocale(observation.getConcept().getConceptNames(), applicationLanguage));
         if (StringUtils.equals(observation.getConcept().getConceptType().getName(), "Complex")) {
@@ -113,6 +124,7 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
         private final ImageView observationComplexHolder;
         private final View observationContainer;
         private final TextView concept;
+        private final TextView conceptIcon;
 
         public ViewHolder(@NonNull View view) {
             super(view);
@@ -121,6 +133,7 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
             this.observationValue = view.findViewById(R.id.observation_value);
             this.observationDate = view.findViewById(R.id.item_single_obs_date_text_view);
             this.observationComplexHolder = view.findViewById(R.id.observation_complex);
+            this.conceptIcon = view.findViewById(R.id.concept_icon);
             this.concept = view.findViewById(R.id.concept);
         }
     }
@@ -139,5 +152,15 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
             e.printStackTrace();
         }
         return observationList;
+    }
+
+    public String getConceptIcon(String conceptUuid){
+        String icon = "";
+        for(ConceptIcons conceptIcon : conceptIcons){
+            if(conceptUuid.equals(conceptIcon.getConceptUuid())){
+                icon = conceptIcon.getIcon();
+            }
+        }
+        return icon;
     }
 }
