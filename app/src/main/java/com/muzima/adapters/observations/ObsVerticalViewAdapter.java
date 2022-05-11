@@ -82,7 +82,7 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
         holder.concept.setText(getConceptNameFromConceptNamesByLocale(observation.getConcept().getConceptNames(),applicationLanguage));
         holder.conceptIcon.setTypeface(FontManager.getTypeface(context,FontManager.FONTAWESOME));
         String icon = getConceptIcon(observation.getConcept().getUuid());
-        holder.conceptIcon.setText(icon);
+        holder.conceptIcon.setText(StringUtils.isEmpty(icon) ? "edit" : icon);
 
         if (StringUtils.equals(observation.getConcept().getConceptType().getName(), "Complex")) {
             holder.observationValue.setVisibility(View.GONE);

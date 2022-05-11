@@ -154,9 +154,12 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationsByType
         List<Object> concepts = JsonUtils.readAsObjectList(json, "$['config']['concepts']");
         for (Object concept : concepts) {
             ConceptIcons conceptIcon = new ConceptIcons();
+            String icon = "";
             net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
             String conceptUuid = concept1.get("uuid").toString();
-            String icon = concept1.get("icon").toString();
+            if(concept1.get("icon") != null) {
+                icon = concept1.get("icon").toString();
+            }
             conceptIcon.setConceptUuid(conceptUuid);
             conceptIcon.setIcon(icon);
             conceptIcons.add(conceptIcon);
