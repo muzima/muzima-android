@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,8 +52,9 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     MuzimaApplication app;
     private  Context context;
     private boolean shouldReplaceProviderIdWithNames;
-    Map<String, Integer> map = new HashMap<String, Integer>( );
-    Map<String, String> conceptGroupMap = new HashMap<String, String>( );
+    Map<String, Integer> map = new LinkedHashMap<>( );
+    Map<String, String> conceptGroupMap = new LinkedHashMap<>();
+    Map<String, List<Observation>> conceptsObservations = new LinkedHashMap<>();
 
 
     public List<String> getHeaders() {
@@ -132,6 +133,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                                         obsGroups.add(new ObsGroups(group.toString()));
                                         groups.add(group.toString());
                                     }
+                                    conceptsObservations.put(conceptUuid,observations);
                                     conceptGroupMap.put(conceptUuid,group.toString());
                                 }
                             }
@@ -148,10 +150,14 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                         if (concept != null) {
                             List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, concept.getId());
                             if (observations.size() > 0) {
-                                obsGroups.add(new ObsGroups(app.getString(R.string.general_other)));
-                                groups.add(app.getString(R.string.general_other));
-                                break;
+                                if(!groups.contains(app.getString(R.string.general_other))) {
+                                    obsGroups.add(new ObsGroups(app.getString(R.string.general_other)));
+                                    groups.add(app.getString(R.string.general_other));
+                                }
+                                conceptGroupMap.put(concept.getUuid(),app.getString(R.string.general_other));
+                                conceptsObservations.put(concept.getUuid(),observations);
                             }
+
                         }
                     }
                 }
@@ -163,85 +169,28 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         obsGroup = obsGroups.toArray(new ObsGroups[0]);
 
         density = context.getResources().getDisplayMetrics().density;
-        getObservationByConcept(objects);
+        getObservationByConcept();
     }
 
 
-    public void getObservationByConcept(List<Object> objects){
+    public void getObservationByConcept(){
         try {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
             String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
 
             List<String> conceptUuids = new ArrayList<>();
-            if (objects != null) {
-                for (Object object : objects) {
-                    net.minidev.json.JSONObject configConceptGroups = (net.minidev.json.JSONObject) object;
 
-                    net.minidev.json.JSONObject jsonObject = configConceptGroups;
-                    List<Object> concepts = JsonUtils.readAsObjectList(configConceptGroups.toJSONString(), "concepts");
-                    for (Object conceptObject : concepts) {
-                        net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) conceptObject;
-                        String conceptUuid = concept1.get("uuid").toString();
-                        Concept concept = conceptController.getConceptByUuid(conceptUuid);
-                        conceptUuids.add(conceptUuid);
-                        if (concept != null) {
-                            List<String> conceptRow = new ArrayList<>();
-                            List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, concept.getId());
-                            if (observations.size() > 0) {
-                                conceptWithObservations.add(concept);
-                                for (String dateString : h) {
-                                    if (dateString.isEmpty()) {
-                                        conceptRow.add(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage));
-                                    } else {
-                                        String value = "";
-                                        for (Observation observation : observations) {
-                                            if (dateString.equals(dateFormat.format(observation.getObservationDatetime()))) {
-                                                if (shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID) {
-                                                    Provider provider = app.getProviderController().getProviderBySystemId(observation.getValueText());
-                                                    if (provider != null) {
-                                                        value = provider.getName();
-                                                    } else {
-                                                        value = observation.getValueText();
-                                                    }
-                                                } else {
-                                                    if (concept.isNumeric()) {
-                                                        value = String.valueOf(observation.getValueNumeric());
-                                                    } else if (concept.isCoded()) {
-                                                        value = getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
-                                                    } else if (concept.isDatetime()) {
-                                                        value = dateFormat.format(observation.getValueDatetime());
-                                                    } else {
-                                                        value = observation.getValueText();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if (!StringUtils.isEmpty(value)) {
-                                            conceptRow.add(value);
-                                        } else {
-                                            conceptRow.add("");
-                                        }
-                                    }
-                                }
-                                map.put(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage), groups.indexOf(jsonObject.get("name")));
-                                obsGroup[groups.indexOf(jsonObject.get("name"))].list.add(new ObsData(conceptRow.toArray(new String[0])));
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            concepts = conceptController.getConcepts();
-            for(Concept concept : concepts) {
-                if(!conceptUuids.contains(concept.getUuid())){
+            for (Map.Entry<String,List<Observation>> pair : conceptsObservations.entrySet()){
+                Concept concept = conceptController.getConceptByUuid(pair.getKey());
+                conceptUuids.add(pair.getKey());
+                if (concept != null) {
                     List<String> conceptRow = new ArrayList<>();
-                    List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, concept.getId());
+                    List<Observation> observations = pair.getValue();
                     if (observations.size() > 0) {
                         conceptWithObservations.add(concept);
                         for (String dateString : h) {
                             if (dateString.isEmpty()) {
-                                conceptRow.add(concept.getName());
+                                conceptRow.add(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage));
                             } else {
                                 String value = "";
                                 for (Observation observation : observations) {
@@ -273,13 +222,14 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                                 }
                             }
                         }
-                        map.put(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage), groups.indexOf(app.getString(R.string.general_other)));
-                        obsGroup[groups.indexOf(app.getString(R.string.general_other))].list.add(new ObsData(conceptRow.toArray(new String[0])));
+                        map.put(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage), groups.indexOf(conceptGroupMap.get(pair.getKey())));
+                        obsGroup[groups.indexOf(conceptGroupMap.get(pair.getKey()))].list.add(new ObsData(conceptRow.toArray(new String[0])));
                     }
                 }
+
             }
-        } catch (ConceptController.ConceptFetchException | ObservationController.LoadObservationException e) {
-            Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations or fetching concepts "+e);
+        } catch (ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while fetching concepts "+e);
         }
     }
 

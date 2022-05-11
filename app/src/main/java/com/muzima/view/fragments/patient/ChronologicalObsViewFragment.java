@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,8 @@ import com.muzima.view.custom.MuzimaRecyclerView;
 public class ChronologicalObsViewFragment extends Fragment implements RecyclerAdapter.BackgroundListQueryTaskListener {
     private final String patientUuid;
     private ObservationByDateAdapter observationByDateAdapter;
+    MuzimaRecyclerView conceptsListRecyclerView;
+    LinearLayout noDataLayout;
 
     public ChronologicalObsViewFragment(String patientUuid) {
         this.patientUuid = patientUuid;
@@ -32,7 +35,8 @@ public class ChronologicalObsViewFragment extends Fragment implements RecyclerAd
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        MuzimaRecyclerView conceptsListRecyclerView = view.findViewById(R.id.recycler_list);
+        noDataLayout = view.findViewById(R.id.no_data_layout);
+        conceptsListRecyclerView = view.findViewById(R.id.recycler_list);
         conceptsListRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
         observationByDateAdapter = new ObservationByDateAdapter(requireActivity().getApplicationContext(), patientUuid);
@@ -40,9 +44,6 @@ public class ChronologicalObsViewFragment extends Fragment implements RecyclerAd
         conceptsListRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
         conceptsListRecyclerView.setAdapter(observationByDateAdapter);
         observationByDateAdapter.reloadData();
-        conceptsListRecyclerView.setNoDataLayout(view.findViewById(R.id.no_data_layout),
-                getString(R.string.info_observation_unavailable),
-                StringUtils.EMPTY);
     }
 
     @Override
@@ -52,10 +53,18 @@ public class ChronologicalObsViewFragment extends Fragment implements RecyclerAd
 
 
     @Override
-    public void onQueryTaskStarted() {}
+    public void onQueryTaskStarted() {
+        conceptsListRecyclerView.setNoDataLayout(noDataLayout,
+                getString(R.string.info_observation_load),
+                StringUtils.EMPTY);
+    }
 
     @Override
-    public void onQueryTaskFinish() {}
+    public void onQueryTaskFinish() {
+        conceptsListRecyclerView.setNoDataLayout(noDataLayout,
+                getString(R.string.info_observation_unavailable),
+                StringUtils.EMPTY);
+    }
 
     @Override
     public void onQueryTaskCancelled() {

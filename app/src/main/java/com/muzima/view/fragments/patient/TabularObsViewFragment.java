@@ -24,6 +24,8 @@ import com.muzima.view.custom.TableFixHeaders;
 import com.muzima.adapters.observations.BaseTableAdapter;
 import com.muzima.adapters.observations.ObservationGroupAdapter;
 
+import java.io.IOException;
+
 public class TabularObsViewFragment extends Fragment implements RecyclerAdapter.BackgroundListQueryTaskListener {
     private final String patientUuid;
     private ObservationGroupAdapter observationGroupAdapter;
@@ -43,13 +45,13 @@ public class TabularObsViewFragment extends Fragment implements RecyclerAdapter.
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Concepts concepts = new Concepts();
+        int obsCount = 0;
         try {
-            concepts = ((MuzimaApplication) context.getApplicationContext()).getObservationController().getConceptWithObservations(patientUuid);
-        } catch (ObservationController.LoadObservationException e) {
+            obsCount = ((MuzimaApplication) context.getApplicationContext()).getObservationController().getObservationsCountByPatient(patientUuid);
+        } catch (IOException e) {
             Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations "+e);
         }
-        if (concepts.size() == 0) {
+        if (obsCount == 0) {
             view.findViewById(R.id.no_data_layout).setVisibility(View.VISIBLE);
             view.findViewById(R.id.table).setVisibility(View.GONE);
         }
