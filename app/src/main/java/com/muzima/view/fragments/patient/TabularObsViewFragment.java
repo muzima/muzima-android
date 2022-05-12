@@ -6,20 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.adapters.observations.ObservationByDateAdapter;
-import com.muzima.controller.ObservationController;
-import com.muzima.model.observation.Concepts;
-import com.muzima.utils.StringUtils;
-import com.muzima.view.custom.MuzimaRecyclerView;
+import com.muzima.controller.ConceptController;
 import com.muzima.view.custom.TableFixHeaders;
 import com.muzima.adapters.observations.BaseTableAdapter;
 import com.muzima.adapters.observations.ObservationGroupAdapter;
@@ -46,13 +43,21 @@ public class TabularObsViewFragment extends Fragment implements RecyclerAdapter.
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         int obsCount = 0;
+        int conceptCount = 0;
         try {
             obsCount = ((MuzimaApplication) context.getApplicationContext()).getObservationController().getObservationsCountByPatient(patientUuid);
-        } catch (IOException e) {
+            conceptCount = ((MuzimaApplication) context.getApplicationContext()).getConceptController().getConcepts().size();
+        } catch (IOException | ConceptController.ConceptFetchException e) {
             Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations "+e);
         }
         if (obsCount == 0) {
             view.findViewById(R.id.no_data_layout).setVisibility(View.VISIBLE);
+            TextView noDataTip = view.findViewById(R.id.no_data_tip);
+            if(conceptCount == 0){
+                noDataTip.setText(R.string.info_no_observation_and_concept_data_tip);
+            }else{
+                noDataTip.setText(R.string.info_no_observation_for_concept_data_tip);
+            }
             view.findViewById(R.id.table).setVisibility(View.GONE);
         }
 

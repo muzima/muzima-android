@@ -11,18 +11,23 @@
 package com.muzima.view.fragments.patient;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.adapters.observations.ObservationsByTypeAdapter;
 import com.muzima.api.model.Concept;
+import com.muzima.controller.ConceptController;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import com.muzima.model.events.ReloadObservationsDataEvent;
 import com.muzima.model.observation.ConceptWithObservations;
@@ -30,6 +35,8 @@ import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.MuzimaRecyclerView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.List;
 
 public class AddSingleElementFragment extends Fragment implements ObservationsByTypeAdapter.ConceptInputLabelClickedListener, RecyclerAdapter.BackgroundListQueryTaskListener {
     private final String patientUuid;
@@ -56,9 +63,26 @@ public class AddSingleElementFragment extends Fragment implements ObservationsBy
         conceptsListRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
         conceptsListRecyclerView.setAdapter(observationsByTypeAdapter);
         observationsByTypeAdapter.reloadData();
+
+        String noDataTip = StringUtils.EMPTY;
+        try {
+            MuzimaApplication muzimaApplication = (MuzimaApplication) requireActivity().getApplicationContext();
+            List<Concept> concepts;
+            concepts = muzimaApplication.getConceptController().getConcepts();
+            if(concepts.size()>0){
+                noDataTip = getString(R.string.info_no_observation_for_concept_data_tip);
+            }else{
+                noDataTip = getString(R.string.info_no_observation_and_concept_data_tip);
+            }
+        } catch (ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception while fetching concepts "+e);
+        }
+
         conceptsListRecyclerView.setNoDataLayout(view.findViewById(R.id.no_data_layout),
                 getString(R.string.info_observation_unavailable),
-                StringUtils.EMPTY);
+                noDataTip);
+
+
     }
 
     @Override
