@@ -826,4 +826,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_awaiting_assignment">Awaiting Assignment</string>
     <string name="general_has_sexual_partner">Has sexual partner</string>
     <string name="general_all">All</string>
+    <string name="info_no_forms_data_tip">No forms configured for data entry. Contact your administrator to add forms</string>
+    <string name="info_no_observation_for_concept_data_tip">No historical data exists for the configured concepts</string>
+    <string name="info_no_observation_and_concept_data_tip">No concepts configured. Contact your administrator to add concepts.</string>
 </resources>

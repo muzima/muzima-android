@@ -15,7 +15,6 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
         android:paddingTop="6dp"
         app:elevation="4dp"
         android:background="?attr/bottomNavigationBackground"

@@ -22,6 +22,7 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="12dp"
             android:layout_marginStart="12dp"
+            android:layout_marginBottom="76dp"
             android:orientation="vertical">
 
         <View android:id="@+id/bottom_sheet_child_container"
@@ -65,8 +66,8 @@
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:id="@+id/historical_data"
                     android:layout_height="0dp"
-                    android:layout_weight="50"
                     android:orientation="vertical">
 
                     <RelativeLayout
@@ -98,15 +99,15 @@
 
                 <View android:layout_below="@+id/patient_details_container"
                     android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_height="1dp"
                     android:fontFamily="@font/montserrat_bold"
                     android:background="?attr/primaryTextColor"/>
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:id="@+id/data_collection"
                     android:layout_height="0dp"
-                    android:layout_weight="50"
-                    android:layout_marginBottom="70dp"
-                    android:layout_marginTop="10dp"
                     android:orientation="vertical">
 
                     <RelativeLayout
@@ -136,7 +137,7 @@
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="2dp">
         <include
             layout="@layout/item_patient_summary_bottom_navigation"

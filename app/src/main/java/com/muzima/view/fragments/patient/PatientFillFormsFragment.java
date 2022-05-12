@@ -74,7 +74,7 @@ public class PatientFillFormsFragment extends Fragment implements FormsLoaderSer
         formsRecyclerView.setAdapter(formsAdapter);
         formsRecyclerView.setNoDataLayout(view.findViewById(R.id.no_data_layout),
                 getString(R.string.info_forms_unavailable),
-                StringUtils.EMPTY);
+                getString(R.string.info_no_forms_data_tip));
         try {
             patient = ((MuzimaApplication) requireActivity().getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
         }catch (PatientController.PatientLoadException ex){

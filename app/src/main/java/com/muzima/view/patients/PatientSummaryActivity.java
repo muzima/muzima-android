@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -31,10 +32,13 @@ import com.google.android.material.tabs.TabLayout;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
+import com.muzima.api.model.Form;
+import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
@@ -94,6 +98,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         setContentView(R.layout.activity_client_summary);
         initializeResources();
         loadPatientData();
+        initializeView();
         loadData();
         loadChronologicalObsView();
         setTitle(R.string.title_activity_client_summary);
@@ -279,11 +284,65 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         formsListRecyclerView.setAdapter(formsAdapter);
         formsListRecyclerView.setNoDataLayout(findViewById(R.id.no_data_layout),
                 getString(R.string.info_forms_unavailable),
-                StringUtils.EMPTY);
+                getString(R.string.info_no_forms_data_tip));
+    }
+
+    public void initializeView(){
+        LinearLayout historicalData = findViewById(R.id.historical_data);
+        LinearLayout dataCollection = findViewById(R.id.data_collection);
+
+        List<Observation> observations = new ArrayList<>();
+        AvailableForms forms = new AvailableForms();
+
         try {
-            patient = ((MuzimaApplication) getApplication().getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
-        }catch (PatientController.PatientLoadException ex){
+            observations = ((MuzimaApplication) getApplication().getApplicationContext()).getObservationController().getObservationsByPatient(patientUuid);
+            forms = ((MuzimaApplication) getApplication().getApplicationContext()).getFormController().getRecommendedForms();
+        }catch (ObservationController.LoadObservationException | FormController.FormFetchException ex){
             Log.e(getClass().getSimpleName(),"Exception encountered while loading patients "+ex);
+        }
+
+        if((forms.size() == 0 && observations.size() == 0) || (forms.size() > 0 && observations.size() > 0)){
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    50
+            );
+            historicalData.setLayoutParams(param);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    50
+            );
+            dataCollection.setLayoutParams(params);
+        }else if(observations.size() > 0){
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    60
+            );
+            historicalData.setLayoutParams(param);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    40
+            );
+            dataCollection.setLayoutParams(params);
+        }else{
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    40
+            );
+            historicalData.setLayoutParams(param);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    60
+            );
+            dataCollection.setLayoutParams(params);
         }
     }
 
