@@ -1,6 +1,7 @@
 package com.muzima.view.observations;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.adapters.observations.ObservationByDateAdapter;
+import com.muzima.api.model.Concept;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.MuzimaRecyclerView;
+
+import java.util.List;
 
 public class ChronologicalObsViewFragment extends ObservationsListFragment implements RecyclerAdapter.BackgroundListQueryTaskListener {
     private String patientUuid;
@@ -89,9 +95,23 @@ public class ChronologicalObsViewFragment extends ObservationsListFragment imple
 
     @Override
     public void onQueryTaskFinish() {
+        MuzimaApplication muzimaApplication = (MuzimaApplication) requireActivity().getApplicationContext();
+        String noDataTip = StringUtils.EMPTY;
+        try {
+            List<Concept> concepts;
+            concepts = muzimaApplication.getConceptController().getConcepts();
+            if(concepts.size()>0){
+                noDataTip = getString(R.string.info_no_observation_for_concept_data_tip);
+            }else{
+                noDataTip = getString(R.string.info_no_observation_and_concept_data_tip);
+            }
+        } catch (ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception while fetching concepts "+e);
+        }
+
         conceptsListRecyclerView.setNoDataLayout(noDataLayout,
                 getString(R.string.info_observation_unavailable),
-                StringUtils.EMPTY);
+                noDataTip);
     }
 
     @Override

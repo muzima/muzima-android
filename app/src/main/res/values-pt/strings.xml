@@ -713,4 +713,8 @@
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
     <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
+
+    <string name="info_no_forms_data_tip">Nenhum formulário configurado para entrada de dados. Entre em contato com seu administrador para adicionar formulários</string>
+    <string name="info_no_observation_for_concept_data_tip">Não existem dados históricos para os conceitos configurados</string>
+    <string name="info_no_observation_and_concept_data_tip">Nenhum conceito configurado. Entre em contato com seu administrador para adicionar conceitos.</string>
 </resources>

@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +36,7 @@ import com.muzima.R;
 import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
 import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.model.User;
@@ -46,6 +48,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientReportController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.model.AvailableForm;
+import com.muzima.model.collections.AvailableForms;
 import com.muzima.model.shr.kenyaemr.Addendum.Identifier;
 import com.muzima.model.shr.kenyaemr.Addendum.WriteResponse;
 import com.muzima.model.shr.kenyaemr.InternalPatientId;
@@ -60,6 +63,7 @@ import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.SHRObservationsDataActivity;
+import com.muzima.view.custom.MuzimaRecyclerView;
 import com.muzima.view.encounters.EncountersActivity;
 import com.muzima.view.forms.FormViewIntent;
 import com.muzima.view.forms.PatientFormsActivity;
@@ -144,6 +148,7 @@ public class PatientSummaryActivity extends BaseActivity implements ClientSummar
 
         setupPatientMetadata( );
         notifyOfIdChange( );
+        initializeView();
 
         try {
             SmartCardRecordService smartCardRecordService = muzimaApplication.getMuzimaContext( ).getSmartCardRecordService( );
@@ -165,13 +170,76 @@ public class PatientSummaryActivity extends BaseActivity implements ClientSummar
         } catch (FormController.FormFetchException e) {
             e.printStackTrace();
         }
-        RecyclerView formsRecyclerView = findViewById(R.id.fragment_fill_forms_recycler_view);
+
+        MuzimaRecyclerView formsListRecyclerView = findViewById(R.id.recycler_list);
+        formsListRecyclerView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
         formsAdapter = new ClientSummaryFormsAdapter(forms, this);
-        formsRecyclerView.setAdapter(formsAdapter);
-        formsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        formsListRecyclerView.setAdapter(formsAdapter);
+        formsListRecyclerView.setNoDataLayout(findViewById(R.id.no_data_layout),
+                getString(R.string.info_forms_unavailable),
+                getString(R.string.info_no_forms_data_tip));
 
         loadChronologicalObsView();
+    }
+
+    public void initializeView(){
+        LinearLayout historicalData = findViewById(R.id.historical_data);
+        LinearLayout dataCollection = findViewById(R.id.data_collection);
+
+        List<Observation> observations = new ArrayList<>();
+        AvailableForms forms = new AvailableForms();
+
+        try {
+            observations = ((MuzimaApplication) getApplication().getApplicationContext()).getObservationController().getObservationsByPatient(patient.getUuid());
+            forms = ((MuzimaApplication) getApplication().getApplicationContext()).getFormController().getRecommendedForms();
+        }catch (ObservationController.LoadObservationException | FormController.FormFetchException ex){
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading patients "+ex);
+        }
+
+        if((forms.size() == 0 && observations.size() == 0) || (forms.size() > 0 && observations.size() > 0)){
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    50
+            );
+            historicalData.setLayoutParams(param);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    50
+            );
+            dataCollection.setLayoutParams(params);
+        }else if(observations.size() > 0){
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    70
+            );
+            historicalData.setLayoutParams(param);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    30
+            );
+            dataCollection.setLayoutParams(params);
+        }else{
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    30
+            );
+            historicalData.setLayoutParams(param);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    0,
+                    70
+            );
+            dataCollection.setLayoutParams(params);
+        }
     }
 
     private void notifyOfIdChange() {
