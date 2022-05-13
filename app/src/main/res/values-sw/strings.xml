@@ -814,4 +814,7 @@
     <string name="general_awaiting_assignment">Inasubiri Mgawo</string>
     <string name="general_has_sexual_partner">Ana mpenzi wa ngono</string>
     <string name="general_all">Vyote</string>
+    <string name="info_no_forms_data_tip">Hakuna fomu zilizosanidiwa kwa ajili ya kuingiza data. Wasiliana na msimamizi wako ili kuongeza fomu</string>
+    <string name="info_no_observation_for_concept_data_tip">Hakuna data ya kihistoria iliyopo kwa dhana zilizosanidiwa</string>
+    <string name="info_no_observation_and_concept_data_tip">Hakuna dhana zilizosanidiwa. Wasiliana na msimamizi wako ili kuongeza dhana.</string>
 </resources>

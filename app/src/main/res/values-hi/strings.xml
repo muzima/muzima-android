@@ -810,4 +810,7 @@
     <string name="general_awaiting_assignment">असाइनमेंट की प्रतीक्षा में</string>
     <string name="general_has_sexual_partner">यौन साथी है</string>
     <string name="general_all">सभी</string>
+    <string name="info_no_forms_data_tip">डेटा प्रविष्टि के लिए कोई प्रपत्र कॉन्फ़िगर नहीं किया गया है। डेटा प्रविष्टि प्रपत्र जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
+    <string name="info_no_observation_for_concept_data_tip">कॉन्फ़िगर की गई अवधारणाओं के लिए कोई ऐतिहासिक डेटा मौजूद नहीं है</string>
+    <string name="info_no_observation_and_concept_data_tip">कोई अवधारणा कॉन्फ़िगर नहीं की गई है। अवधारणाओं को जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें।</string>
 </resources>

@@ -329,6 +329,22 @@
             android:parentActivityName=".view.MainDashboardActivity">
         </activity>
 
+        <activity
+            android:name=".view.patients.DataCollectionActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/general_notifications"
+            android:parentActivityName=".view.patients.PatientSummaryActivity">
+        </activity>
+
+        <activity
+            android:name=".view.patients.ObsViewActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/general_notifications"
+            android:parentActivityName=".view.patients.PatientSummaryActivity">
+        </activity>
+
         <!-- Wizard Activities Start -->
         <activity
             android:name=".view.initialwizard.SetupMethodPreferenceWizardActivity"

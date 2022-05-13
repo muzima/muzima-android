@@ -13,7 +13,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:id="@+id/item_single_obs_container"
               android:orientation="horizontal"
-              android:padding="8dp"
+              android:padding="2dp"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content">
 
@@ -21,6 +21,7 @@
             android:id="@+id/value_container"
             android:orientation="vertical"
             android:layout_width="wrap_content"
+            android:padding="2dp"
             android:layout_height="wrap_content">
 
         <TextView
@@ -69,11 +70,5 @@
                     android:layout_height="12dp"/>
         </LinearLayout>
     </LinearLayout>
-
-    <View android:id="@+id/divider"
-          android:layout_width="2dp"
-          android:layout_height="match_parent"
-          android:layout_marginStart="8dp"
-          android:background="@color/hint_text_grey_opaque"/>
 </LinearLayout>
 

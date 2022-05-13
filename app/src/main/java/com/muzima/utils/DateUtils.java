@@ -104,4 +104,9 @@ public class DateUtils {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT, Locale.getDefault());
         return simpleDateFormat.format(calendar.getTime());
     }
+
+    public static String getTime(Date date) {
+        SimpleDateFormat formattedDate = new SimpleDateFormat("HH:ss");
+        return formattedDate.format(date);
+    }
 }

@@ -57,7 +57,7 @@
 
                 <RelativeLayout
                     android:id="@+id/dashboard_main_patient_search_view"
-                    android:background="@drawable/border_button_gray"
+                    android:background="@drawable/border_button_blue"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:layout_marginTop="12dp"

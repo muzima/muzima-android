@@ -818,4 +818,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_awaiting_assignment">Aguardando Atribuição</string>
     <string name="general_has_sexual_partner">Tem parceiro sexual</string>
     <string name="general_all">Todos</string>
+    <string name="info_no_forms_data_tip">Nenhum formulário configurado para entrada de dados. Entre em contato com seu administrador para adicionar formulários</string>
+    <string name="info_no_observation_for_concept_data_tip">Não existem dados históricos para os conceitos configurados</string>
+    <string name="info_no_observation_and_concept_data_tip">Nenhum conceito configurado. Entre em contato com seu administrador para adicionar conceitos.</string>
 </resources>

@@ -10,9 +10,13 @@
 
 package com.muzima.view.custom;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.muzima.R;
@@ -56,6 +60,12 @@ public abstract class ActivityWithBottomNavigation extends BroadcastListenerActi
         navigationView.post(() -> {
             int itemId = item.getItemId();
             if (itemId == R.id.action_home) {
+                // Check if no view has focus:
+                View view = this.getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
                 startActivity(new Intent(this, MainDashboardActivity.class));
             } else if (itemId == R.id.action_cohorts) {
                 startActivity(new Intent(this, CohortPagerActivity.class));
