@@ -113,9 +113,11 @@ public class FormsWithDataActivity extends FormsActivityBase {
 
             patientNameTextView.setText(patient.getDisplayName());
             identifierTextView.setText(String.format(Locale.getDefault(), "ID:#%s", patient.getIdentifier()));
-            dobTextView.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate())));
+            if(patient.getBirthdate() != null) {
+                dobTextView.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate())));
+                ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
+            }
             patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
-            ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
         }
     }
 
