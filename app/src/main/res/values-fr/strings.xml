@@ -714,4 +714,7 @@
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
+    <string name="info_no_forms_data_tip">Aucun formulaire configuré pour la saisie de données. Contactez votre administrateur pour ajouter des formulaires de saisie de données</string>
+    <string name="info_no_observation_for_concept_data_tip">Aucune donnée historique n\'existe pour les concepts configurés</string>
+    <string name="info_no_observation_and_concept_data_tip">Aucun concept configuré. Contactez votre administrateur pour ajouter des concepts.</string>
 </resources>

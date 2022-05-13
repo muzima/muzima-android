@@ -59,7 +59,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="60"
+            android:id="@+id/historical_data"
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -90,7 +90,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="40"
+            android:id="@+id/data_collection"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
             <RelativeLayout
@@ -112,7 +112,7 @@
                     android:src="@drawable/ic_icon_right" />
             </RelativeLayout>
 
-            <include layout="@layout/fragment_fill_forms"/>
+            <include layout="@layout/fragment_list"/>
         </LinearLayout>
     </LinearLayout>
 

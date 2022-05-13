@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
+import com.muzima.controller.SetupConfigurationController;
+import com.muzima.model.ConceptIcons;
+import com.muzima.util.JsonUtils;
 import com.muzima.utils.BackgroundTaskHelper;
 import com.muzima.utils.DateUtils;
 
@@ -39,7 +44,10 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationByDateA
     final EncounterController encounterController;
     final ObservationController observationController;
     final ProviderController providerController;
+    final SetupConfigurationController setupConfigurationController;
     private final Boolean shouldReplaceProviderIdWithNames;
+    private final List<ConceptIcons> conceptIcons;
+
 
     public ObservationByDateAdapter(Context context, String patientUuid) {
         this.context = context;
@@ -49,8 +57,10 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationByDateA
         this.conceptController = app.getConceptController();
         this.observationController = app.getObservationController();
         this.providerController = app.getProviderController();
+        this.setupConfigurationController = app.getSetupConfigurationController();
         this.shouldReplaceProviderIdWithNames = app.getMuzimaSettingController().isPatientTagGenerationEnabled();
         dates = new ArrayList<>();
+        this.conceptIcons = getConceptIcons();
     }
 
     @NonNull
@@ -79,7 +89,7 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationByDateA
         }
 
         holder.obsHorizontalListRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        ObsVerticalViewAdapter observationsListAdapter = new ObsVerticalViewAdapter(date, encounterController, observationController,  applicationLanguage, providerController, shouldReplaceProviderIdWithNames, patientUuid);
+        ObsVerticalViewAdapter observationsListAdapter = new ObsVerticalViewAdapter(date, encounterController, observationController,  applicationLanguage, providerController, shouldReplaceProviderIdWithNames, patientUuid, conceptIcons, context);
 
         holder.obsHorizontalListRecyclerView.setAdapter(observationsListAdapter);
     }
@@ -126,6 +136,33 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationByDateA
 
     void setRunningBackgroundQueryTask(AsyncTask<?, ?, ?> backgroundQueryTask) {
         this.backgroundQueryTask = backgroundQueryTask;
+    }
+
+    public List<ConceptIcons> getConceptIcons(){
+        String json = "";
+        List<ConceptIcons> conceptIcons = new ArrayList<>();
+        try {
+            SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+            json = activeSetupConfig.getConfigJson();
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while fetching setup configs "+e);
+        }
+
+        List<Object> concepts = JsonUtils.readAsObjectList(json, "$['config']['concepts']");
+        for (Object concept : concepts) {
+            ConceptIcons conceptIcon = new ConceptIcons();
+            String icon = "";
+            net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
+            String conceptUuid = concept1.get("uuid").toString();
+            if(concept1.get("icon") != null) {
+                icon = concept1.get("icon").toString();
+            }
+            conceptIcon.setConceptUuid(conceptUuid);
+            conceptIcon.setIcon(icon);
+            conceptIcons.add(conceptIcon);
+        }
+
+        return conceptIcons;
     }
 
     public static class ViewHolder extends RecyclerAdapter.ViewHolder {

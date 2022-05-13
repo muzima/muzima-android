@@ -709,4 +709,7 @@
     <string name="write_SHR_to_card_text">Andika SHR kwenye kadi</string>
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
     <string name="youTube_player_error">Hitilafu ilitokea wakati wa kupakia video ya YouTube</string>
+    <string name="info_no_forms_data_tip">Hakuna fomu zilizosanidiwa kwa ajili ya kuingiza data. Wasiliana na msimamizi wako ili kuongeza fomu</string>
+    <string name="info_no_observation_for_concept_data_tip">Hakuna data ya kihistoria iliyopo kwa dhana zilizosanidiwa</string>
+    <string name="info_no_observation_and_concept_data_tip">Hakuna dhana zilizosanidiwa. Wasiliana na msimamizi wako ili kuongeza dhana.</string>
 </resources>
