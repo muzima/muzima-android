@@ -291,11 +291,6 @@ public class DataSyncService extends IntentService {
     private void downloadPatientsInCohorts(Intent broadcastIntent, String[] cohortIds) {
         int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(cohortIds);
         broadCastMessageForPatientsInCohorts(broadcastIntent, resultForPatients);
-
-        if (isSuccess(resultForPatients)) {
-            int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByCohortUUIDs(cohortIds);
-            broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
-        }
     }
 
     private void consolidatePatients(){

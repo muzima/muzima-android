@@ -316,10 +316,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 if (!uuids.isEmpty()) {
                     int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(uuids.toArray(new String[uuids.size()]));
 
-                    if (resultForPatients[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
-                        muzimaSyncService.downloadRelationshipsForPatientsByCohortUUIDs(uuids.toArray(new String[uuids.size()]));
-                    }
-
                     return resultForPatients;
                 }
                 return null;
