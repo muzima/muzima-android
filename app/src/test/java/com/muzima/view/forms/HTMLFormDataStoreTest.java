@@ -105,6 +105,7 @@ public class HTMLFormDataStoreTest {
         setupConfigurationTemplate.setUuid("dummySetupConfig");
         when(setupConfigurationController.getActiveSetupConfigurationTemplate()).thenReturn(setupConfigurationTemplate);
 
+        htmlFormDataStore.setSelectedPatientsUuids("[]");
         String jsonPayLoad = readFile();
         htmlFormDataStore.saveHTML(jsonPayLoad, Constants.STATUS_INCOMPLETE);
         verify(htmlFormObservationCreator, times(0)).createAndPersistObservations(jsonPayLoad,formData.getUuid());

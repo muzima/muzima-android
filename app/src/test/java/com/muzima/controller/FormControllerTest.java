@@ -102,7 +102,7 @@ public class FormControllerTest {
         when(context.getSetupConfigurationService()).thenReturn(setupConfigurationService);
 
         formController = new FormController(muzimaApplication);
-        patientController = new PatientController(patientService,cohortService,formService,patientTagService);
+        patientController = new PatientController(patientService,cohortService,formService,patientTagService,observationService);
 
         when(muzimaApplication.getPatientController()).thenReturn(patientController);
         LastSyncTime lastSyncTime = mock(LastSyncTime.class);

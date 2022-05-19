@@ -28,6 +28,7 @@ import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
@@ -83,6 +84,7 @@ public class MuzimaSyncServiceTest {
     private ConceptController conceptController;
     private EncounterController encounterController;
     private SetupConfigurationController setupConfigurationController;
+    private MuzimaSettingController muzimaSettingController;
 
     @Before
     public void setUp() {
@@ -97,6 +99,7 @@ public class MuzimaSyncServiceTest {
         encounterController = mock(EncounterController.class);
         setupConfigurationController = mock(SetupConfigurationController.class);
         ProviderController providerController = mock(ProviderController.class);
+        muzimaSettingController = mock(MuzimaSettingController.class);
         User authenticatedUser = mock(User.class);
         authenticatedUser.setSystemId("12345");
 
@@ -112,6 +115,7 @@ public class MuzimaSyncServiceTest {
         when(muzimaApplication.getSetupConfigurationController()).thenReturn(setupConfigurationController);
         when(muzimaApplication.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPref);
         when(muzimaApplication.getApplicationContext()).thenReturn(RuntimeEnvironment.application);
+        when(muzimaApplication.getMuzimaSettingController()).thenReturn(muzimaSettingController);
         muzimaSyncService = new MuzimaSyncService(muzimaApplication);
     }
 
