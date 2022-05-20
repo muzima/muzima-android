@@ -92,7 +92,7 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
     private int[] downloadObservationAndEncounter() {
         MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
 
-        int[] results = new int[3];
+        int[] results = new int[4];
         if(muzimaSyncService.authenticate(credentials.getCredentialsArray()) == SyncStatusConstants.AUTHENTICATION_SUCCESS){
 
             String[] cohortsUuidDownloaded = getDownloadedCohortUuids();
@@ -106,8 +106,12 @@ public class ConceptListActivity extends ConceptPreferenceActivity {
 
             int[] downloadEncountersResult = muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(cohortsUuidDownloaded, true);
 
+            //Download obs for persons as well
+            int[] downloadObsForPersonsResult = muzimaSyncService.downloadObservationsForAllPersons( true);
+
             results[1] = downloadObservationsResult[0];
             results[2] = downloadEncountersResult[0];
+            results[3] = downloadObsForPersonsResult[0];
         }
         return results;
     }

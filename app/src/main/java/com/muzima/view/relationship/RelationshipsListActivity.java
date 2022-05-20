@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import android.text.Editable;
@@ -95,6 +96,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     public static final String INDEX_PATIENT = "indexPatient";
 
     private boolean isSearching = false;
+    private boolean wasServerSearch = false;
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
@@ -144,8 +146,10 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             genderIcon.setImageDrawable(getResources().getDrawable(genderDrawable));
         }
 
-        TextView dob = findViewById(R.id.dob);
-        dob.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
+        if(patient.getBirthdate() != null) {
+            TextView dob = findViewById(R.id.dob);
+            dob.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
+        }
 
         TextView patientIdentifier = findViewById(R.id.patientIdentifier);
         patientIdentifier.setText(patient.getIdentifier());
@@ -354,6 +358,18 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
                 closeSoftKeyboard();
                 selectedPerson = (Person) parent.getItemAtPosition(position);
+                if(wasServerSearch) {
+                    new AsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService()
+                                    .downloadObservationsForPatientsByPatientUUIDs(new ArrayList<String>() {{
+                                        add(selectedPerson.getUuid());
+                                    }}, true);
+                            return null;
+                        }
+                    }.execute();
+                }
                 createPersonView.setVisibility(View.GONE);
                 saveButton.setVisibility(View.VISIBLE);
             }
@@ -386,6 +402,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         isSearching = false;
 
         if (autoCompleteRelatedPersonAdapterAdapter.getSearchRemote()) {
+            wasServerSearch = true;
             autoCompleteRelatedPersonAdapterAdapter.setSearchRemote(false);
             searchServerView.setVisibility(View.GONE);
             if (count < 1) {
@@ -398,6 +415,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             }
         } else {
             // local search
+            wasServerSearch = false;
             if (count < 1) {
                 searchServerView.setVisibility(View.VISIBLE);
             } else {

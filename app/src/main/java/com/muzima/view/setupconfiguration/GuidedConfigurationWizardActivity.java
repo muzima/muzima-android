@@ -599,9 +599,12 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 List<String> uuids = extractCohortsUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                    return muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(
-                            uuids.toArray(new String[uuids.size()]), false);
 
+                    String[] cohortUuids = uuids.toArray(new String[uuids.size()]);
+                    int[] resultForPatientObs = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(
+                            cohortUuids, false);
+                    muzimaSyncService.downloadObservationsForAllPersons(false);
+                    return resultForPatientObs;
                 }
                 return null;
             }
