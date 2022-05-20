@@ -1383,8 +1383,11 @@ public class MuzimaSyncService {
                             sexualPartnerTag.setName("P");
                             sexualPartnerTag.setDescription(muzimaApplication.getString(R.string.general_has_sexual_partner));
                             sexualPartnerTag.setUuid(HAS_SEXUAL_PARTNER_TAG_UUID);
-                            tags.add(sexualPartnerTag);
-                            patientController.savePatientTags(sexualPartnerTag);
+                            if(!hasSexualPartnerTag) {
+                                hasSexualPartnerTag = true;
+                                tags.add(sexualPartnerTag);
+                                patientController.savePatientTags(sexualPartnerTag);
+                            }
 
                             //update for the related patient as well
                             try {
