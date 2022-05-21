@@ -656,7 +656,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadConceptsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
                 if(!isOnlineOnlyModeEnabled) {
-//                    downloadEncounters();
                     downloadObservations();
                 }
             }
@@ -683,8 +682,14 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 List<String> uuids = extractCohortsUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                    return muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(
-                            uuids.toArray(new String[uuids.size()]), false);
+
+                    String[] cohortUuidsArray = uuids.toArray(new String[uuids.size()]);
+                    int[] resultForPatientObs = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(
+                            cohortUuidsArray, false);
+                    if(((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isRelationshipEnabled()) {
+                        muzimaSyncService.downloadObservationsForAllPersons(false);
+                    }
+                    return resultForPatientObs;
 
                 }
                 return null;
