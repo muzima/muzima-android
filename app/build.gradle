@@ -42,7 +42,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 25
-        versionName "3.0.2-SNAPSHOT"
+        versionName "3.0.3-SNAPSHOT"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [versionCode: defaultConfig.versionCode, versionName: defaultConfig.versionName]
 
