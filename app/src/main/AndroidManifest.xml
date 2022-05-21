@@ -178,7 +178,6 @@
         <activity
             android:name=".view.forms.HTMLFormWebViewActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
             android:label="@string/general_form"
             android:parentActivityName=".view.forms.FormsWithDataActivity"
             android:theme="@style/DialogNoTitleBar"
@@ -420,7 +419,6 @@
         <activity
             android:name=".view.relationship.RelationshipFormsActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
             android:label="@string/select_a_relationship_form_text"
             android:noHistory="true"
             android:parentActivityName=".view.patients.PatientSummaryActivity"
@@ -429,14 +427,12 @@
         <activity
             android:name=".view.forms.EncounterMiniFormActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
             android:noHistory="true"
             android:parentActivityName=".view.patients.PatientSummaryActivity"
             android:theme="@style/DialogNoTitleBar" />
         <activity
             android:name=".view.forms.PersonDemographicsUpdateFormsActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
             android:label="@string/select_a_relationship_form_text"
             android:noHistory="true"
             android:parentActivityName=".view.patients.PatientSummaryActivity"

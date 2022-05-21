@@ -13,6 +13,7 @@ package com.muzima.controller;
 import android.util.Log;
 
 import com.muzima.api.model.CohortMember;
+import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientIdentifierType;
@@ -20,6 +21,7 @@ import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.PersonAttributeType;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.FormService;
+import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PatientService;
 import com.muzima.api.service.PatientTagService;
 import com.muzima.utils.CustomColor;
@@ -49,15 +51,17 @@ public class PatientController {
     private List<PatientTag> selectedTags;
     private FormService formService;
     private PatientTagService patientTagService;
+    private ObservationService observationService;
 
 
-    public PatientController(PatientService patientService, CohortService cohortService, FormService formService,PatientTagService patientTagService) {
+    public PatientController(PatientService patientService, CohortService cohortService, FormService formService, PatientTagService patientTagService, ObservationService observationService) {
         this.patientService = patientService;
         this.cohortService = cohortService;
         tagColors = new HashMap<>();
         selectedTags = new ArrayList<>();
         this.formService = formService;
-        this.patientTagService= patientTagService;
+        this.patientTagService = patientTagService;
+        this.observationService = observationService;
     }
 
     public void replacePatients(List<Patient> patients) throws PatientSaveException {
@@ -453,6 +457,10 @@ public class PatientController {
         int formCount = getFormDataCount(patient.getUuid());
         if(formCount == 0 ){
             patientService.deletePatient(patient);
+            List<Observation> observations = observationService.getObservationsByPatient(patient);
+            if(observations.size()>0) {
+                observationService.deleteObservations(observations);
+            }
         }else{
             Patient pat = patientService.getPatientByUuid(patient.getUuid());
             pat.setDeletionStatus(PATIENT_DELETION_PENDING_STATUS);
@@ -467,6 +475,10 @@ public class PatientController {
                 int formCount = getFormDataCount(patient.getUuid());
                 if(formCount == 0){
                     patientService.deletePatient(patient);
+                    List<Observation> observations = observationService.getObservationsByPatient(patient);
+                    if(observations.size()>0) {
+                        observationService.deleteObservations(observations);
+                    }
                 }
             }
         } catch (IOException e) {

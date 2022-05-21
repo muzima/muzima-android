@@ -316,10 +316,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 if (!uuids.isEmpty()) {
                     int[] resultForPatients = muzimaSyncService.downloadPatientsForCohorts(uuids.toArray(new String[uuids.size()]));
 
-                    if (resultForPatients[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
-                        muzimaSyncService.downloadRelationshipsForPatientsByCohortUUIDs(uuids.toArray(new String[uuids.size()]));
-                    }
-
                     return resultForPatients;
                 }
                 return null;
@@ -660,69 +656,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadConceptsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
                 if(!isOnlineOnlyModeEnabled) {
-                    downloadEncounters();
+//                    downloadEncounters();
                     downloadObservations();
                 }
-            }
-
-            @Override
-            protected void onBackgroundError(Exception e) {
-
-            }
-        }.execute();
-    }
-
-    private void downloadEncounters() {
-        final SetupActionLogModel downloadEncountersLog = new SetupActionLogModel();
-        addSetupActionLog(downloadEncountersLog);
-        new MuzimaAsyncTask<Void, Void, int[]>() {
-            @Override
-            protected void onPreExecute() {
-                downloadEncountersLog.setSetupAction(getString(R.string.info_encounter_download));
-                onQueryTaskStarted();
-            }
-
-            @Override
-            protected int[] doInBackground(Void... voids) {
-                List<String> uuids = extractCohortsUuids();
-                if (!uuids.isEmpty()) {
-                    MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                    return muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(uuids.toArray(new String[uuids.size()]), false);
-
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(int[] result) {
-                String resultDescription = null;
-                String resultStatus = null;
-                if (result == null) {
-                    resultDescription = getString(R.string.info_encounter_patient_not_downloaded);
-                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == SyncStatusConstants.SUCCESS) {
-                    int downloadedEncounters = result[1];
-                    int patients = result[3];
-                    if (downloadedEncounters == 1 && patients == 1) {
-                        resultDescription = getString(R.string.info_encounter_patient_downloaded);
-                    } else if (downloadedEncounters == 1) {
-                        resultDescription = getString(R.string.info_encounter_patients_downloaded, patients);
-                    } else if (patients == 1) {
-                        resultDescription = getString(R.string.info_encounters_patient_downloaded, downloadedEncounters);
-                    } else if (downloadedEncounters == 0) {
-                        resultDescription = getString(R.string.info_encounter_patient_not_downloaded);
-                    } else {
-                        resultDescription = getString(R.string.info_encounters_patients_downloaded, downloadedEncounters, patients);
-                    }
-                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else {
-                    wizardcompletedSuccessfully = false;
-                    resultDescription = getString(R.string.error_encounter_download);
-                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
-                }
-                downloadEncountersLog.setSetupActionResult(resultDescription);
-                downloadEncountersLog.setSetupActionResultStatus(resultStatus);
-                onQueryTaskFinish();
             }
 
             @Override
@@ -917,7 +853,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private synchronized void evaluateFinishStatus() {
-        int TOTAL_WIZARD_STEPS = isOnlineOnlyModeEnabled ? 7 : 10;
+        int TOTAL_WIZARD_STEPS = isOnlineOnlyModeEnabled ? 7 : 9;
         if (wizardLevel == (TOTAL_WIZARD_STEPS)) {
             if (wizardcompletedSuccessfully) {
                 initialSetupStatusTextView.setText(getString(R.string.info_setup_complete_success));
@@ -955,5 +891,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private void updateOnlineOnlyModeSettingValue(){
         isOnlineOnlyModeEnabled = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isOnlineOnlyModeEnabled();
+        mainProgressbar.setMax(isOnlineOnlyModeEnabled ? 7 : 9);
     }
 }
