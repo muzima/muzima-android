@@ -604,6 +604,10 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     int[] resultForPatientObs = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(
                             cohortUuids, false);
                     muzimaSyncService.downloadObservationsForAllPersons(false);
+
+                    if(((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isRelationshipEnabled()){
+                        muzimaSyncService.downloadObservationsForAllPersons(false);
+                    }
                     return resultForPatientObs;
                 }
                 return null;

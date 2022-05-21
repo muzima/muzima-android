@@ -460,11 +460,13 @@ class HTMLFormDataStore {
         JSONObject patientJsonObject = new JSONObject();
         try {
             Patient patient = patientController.downloadPatientByUUID(uuid);
-            application.getMuzimaSyncService().downloadObservationsForPatientsByPatientUUIDs(new ArrayList<String>() {{
-                add(uuid);
-            }}, true);
             if (patient != null) {
                 patientController.savePatient(patient);
+
+                application.getMuzimaSyncService().downloadObservationsForPatientsByPatientUUIDs(new ArrayList<String>() {{
+                    add(uuid);
+                }}, true);
+
                 patientJsonObject.put("uuid", patient.getUuid());
                 patientJsonObject.put("name", patient.getDisplayName());
                 patientJsonObject.put("identifier", patient.getIdentifier());
