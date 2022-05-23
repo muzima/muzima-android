@@ -184,13 +184,15 @@ public class AllAvailableFormsListFragment extends FormsListFragment {
 
     private void updateSyncTime() {
         try {
-            LastSyncTimeService lastSyncTimeService = ((MuzimaApplication) this.mActivity.getApplicationContext()).getMuzimaContext().getLastSyncTimeService();//((MuzimaApplication)getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
-            Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
-            String lastSyncedMsg = mActivity.getString(R.string.info_last_sync_unavailable);
-            if (lastSyncedTime != null) {
-                lastSyncedMsg = getString(R.string.hint_last_synced, DateUtils.getFormattedStandardDisplayDateTime(lastSyncedTime));
+            if(mActivity != null) {
+                LastSyncTimeService lastSyncTimeService = ((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
+                Date lastSyncedTime = lastSyncTimeService.getLastSyncTimeFor(APIName.DOWNLOAD_FORMS);
+                String lastSyncedMsg = mActivity.getString(R.string.info_last_sync_unavailable);
+                if (lastSyncedTime != null) {
+                    lastSyncedMsg = getString(R.string.hint_last_synced, DateUtils.getFormattedStandardDisplayDateTime(lastSyncedTime));
+                }
+                syncText.setText(lastSyncedMsg);
             }
-            syncText.setText(lastSyncedMsg);
         } catch (IOException e) {
             Log.i(getClass().getSimpleName(), "Error getting forms last sync time");
         }

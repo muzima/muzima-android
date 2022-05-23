@@ -28,6 +28,14 @@ public class PersonController {
         this.personService = personService;
     }
 
+    public List<Person> getAllPersons() throws PersonLoadException {
+        try {
+            return personService.getAllPersons();
+        } catch (IOException e) {
+            throw new PersonLoadException(e);
+        }
+    }
+
     public Person getPersonByUuid(String uuid) throws PersonLoadException {
         try {
             Person person =  personService.getPersonByUuid(uuid);

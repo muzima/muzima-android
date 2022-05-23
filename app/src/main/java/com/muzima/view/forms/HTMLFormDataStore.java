@@ -462,6 +462,11 @@ class HTMLFormDataStore {
             Patient patient = patientController.downloadPatientByUUID(uuid);
             if (patient != null) {
                 patientController.savePatient(patient);
+
+                application.getMuzimaSyncService().downloadObservationsForPatientsByPatientUUIDs(new ArrayList<String>() {{
+                    add(uuid);
+                }}, true);
+
                 patientJsonObject.put("uuid", patient.getUuid());
                 patientJsonObject.put("name", patient.getDisplayName());
                 patientJsonObject.put("identifier", patient.getIdentifier());

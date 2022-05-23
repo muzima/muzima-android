@@ -253,6 +253,11 @@ public class DataSyncService extends IntentService {
         broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
 
         MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
+
+        if(muzimaSettingController.isRelationshipEnabled()){
+            muzimaSyncService.downloadObservationsForAllPersons(true);
+        }
+
         if(muzimaSettingController.isPatientTagGenerationEnabled()) {
             muzimaSyncService.updatePatientTags(patientUUIDList);
         }
@@ -276,6 +281,11 @@ public class DataSyncService extends IntentService {
             broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
 
             MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
+
+            if(muzimaSettingController.isRelationshipEnabled()){
+                muzimaSyncService.downloadObservationsForAllPersons(true);
+            }
+
             if(muzimaSettingController.isPatientTagGenerationEnabled()) {
                 muzimaSyncService.updatePatientTags(patientUUIDList);
             }
@@ -290,6 +300,11 @@ public class DataSyncService extends IntentService {
         broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
 
         MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
+
+        if(muzimaSettingController.isRelationshipEnabled()){
+            muzimaSyncService.downloadObservationsForAllPersons(true);
+        }
+
         if(muzimaSettingController.isPatientTagGenerationEnabled()) {
             muzimaSyncService.updatePatientTags(muzimaSyncService.getUuidsForPatientsInCohorts(savedCohortIds));
         }
