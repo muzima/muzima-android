@@ -252,7 +252,13 @@ public class DataSyncService extends IntentService {
         muzimaSyncService.downloadRelationshipsTypes();
         int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByPatientUUIDs(patientUUIDList);
         broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
+
         MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
+
+        if(muzimaSettingController.isRelationshipEnabled()){
+            muzimaSyncService.downloadObservationsForAllPersons(true);
+        }
+
         if(muzimaSettingController.isPatientTagGenerationEnabled()) {
             muzimaSyncService.updatePatientTags(patientUUIDList);
         }
@@ -272,6 +278,11 @@ public class DataSyncService extends IntentService {
             int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByPatientUUIDs(patientUUIDList);
             broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
             MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
+
+            if(muzimaSettingController.isRelationshipEnabled()){
+                muzimaSyncService.downloadObservationsForAllPersons(true);
+            }
+
             if(muzimaSettingController.isPatientTagGenerationEnabled()) {
                 muzimaSyncService.updatePatientTags(patientUUIDList);
             }
@@ -283,6 +294,11 @@ public class DataSyncService extends IntentService {
         broadCastMessageForObservationDownload(broadcastIntent, resultForObservations);
 
         MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
+
+        if(muzimaSettingController.isRelationshipEnabled()){
+            muzimaSyncService.downloadObservationsForAllPersons(true);
+        }
+
         if(muzimaSettingController.isPatientTagGenerationEnabled()) {
             muzimaSyncService.updatePatientTags(muzimaSyncService.getUuidsForPatientsInCohorts(savedCohortIds));
         }

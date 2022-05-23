@@ -50,6 +50,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.model.relationship.RelationshipTypeWrap;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.RelationshipJsonMapper;
@@ -106,6 +107,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     public static final String INDEX_PATIENT = "indexPatient";
 
     private boolean isSearching = false;
+    private boolean wasServerSearch = false;
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
@@ -376,6 +378,29 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
                 closeSoftKeyboard();
                 selectedPerson = (Person) parent.getItemAtPosition(position);
+
+                if(wasServerSearch) {
+                    new MuzimaAsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected void onPreExecute() {}
+
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService()
+                                    .downloadObservationsForPatientsByPatientUUIDs(new ArrayList<String>() {{
+                                        add(selectedPerson.getUuid());
+                                    }}, true);
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void unused) {}
+
+                        @Override
+                        protected void onBackgroundError(Exception e) {}
+                    }.execute();
+                }
+
                 createPersonView.setVisibility(View.GONE);
                 saveButton.setVisibility(View.VISIBLE);
             }
@@ -408,6 +433,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         isSearching = false;
 
         if (autoCompleteRelatedPersonAdapterAdapter.getSearchRemote()) {
+            wasServerSearch = true;
             autoCompleteRelatedPersonAdapterAdapter.setSearchRemote(false);
             searchServerView.setVisibility(View.GONE);
             if (count < 1) {
@@ -420,6 +446,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             }
         } else {
             // local search
+            wasServerSearch = false;
             if (count < 1) {
                 searchServerView.setVisibility(View.VISIBLE);
             } else {

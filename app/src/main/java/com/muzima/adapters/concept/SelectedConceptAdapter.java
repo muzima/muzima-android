@@ -11,7 +11,6 @@ package com.muzima.adapters.concept;
 
 import androidx.annotation.NonNull;
 
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

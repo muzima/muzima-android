@@ -34,6 +34,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientReport;
 import com.muzima.api.model.PatientReportHeader;
 import com.muzima.api.model.PatientTag;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.MuzimaSetting;
@@ -51,6 +52,7 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.controller.SetupConfigurationController;
@@ -104,6 +106,7 @@ public class MuzimaSyncService {
     private MuzimaSettingController settingsController;
     private PatientReportController patientReportController;
     private RelationshipController relationshipController;
+    private PersonController personController;
     private Logger logger;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
@@ -121,6 +124,7 @@ public class MuzimaSyncService {
         settingsController = muzimaApplication.getMuzimaSettingController();
         patientReportController = muzimaApplication.getPatientReportController();
         relationshipController = muzimaApplication.getRelationshipController();
+        personController = muzimaApplication.getPersonController();
     }
 
     public int authenticate(String[] credentials) {
@@ -657,6 +661,27 @@ public class MuzimaSyncService {
             }
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while loading patients.", e);
+            result[0] = SyncStatusConstants.LOAD_ERROR;
+        }
+        return result;
+    }
+
+    public int[] downloadObservationsForAllPersons(boolean replaceExistingObservation) {
+        int[] result = new int[4];
+        List<Person> persons;
+        try {
+            persons = personController.getAllPersons();
+
+            List<String> personUuidList = new ArrayList();
+            for (Person person: persons) {
+                personUuidList.add(person.getUuid());
+            }
+            result = downloadObservationsForPatientsByPatientUUIDs(personUuidList, replaceExistingObservation);
+            if (result[0] != SUCCESS) {
+                updateProgressDialog(muzimaApplication.getString(R.string.error_encounter_observation_download));
+            }
+        } catch (PersonController.PersonLoadException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while loading persons.", e);
             result[0] = SyncStatusConstants.LOAD_ERROR;
         }
         return result;

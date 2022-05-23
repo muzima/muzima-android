@@ -463,6 +463,11 @@ class HTMLFormDataStore {
             Patient patient = patientController.downloadPatientByUUID(uuid);
             if (patient != null) {
                 patientController.savePatient(patient);
+
+                application.getMuzimaSyncService().downloadObservationsForPatientsByPatientUUIDs(new ArrayList<String>() {{
+                    add(uuid);
+                }}, true);
+
                 patientJsonObject.put("uuid", patient.getUuid());
                 patientJsonObject.put("name", patient.getDisplayName());
                 patientJsonObject.put("identifier", patient.getIdentifier());
@@ -679,7 +684,7 @@ class HTMLFormDataStore {
         try {
             observations = observationController.getObservationsByPatient(patientuuid);
         } catch (Exception | ObservationController.LoadObservationException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while loading encounters", e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
         return createObsJsonArray(observations);
     }
