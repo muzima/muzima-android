@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,20 +46,24 @@
             <LinearLayout
                 android:id="@+id/menu_tags"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"/>
-
-            <TextView
-                    android:id="@+id/identifier"
-                    style="@style/ListDescription"
-                    android:fontFamily="@font/roboto_regular"
-                    android:textColor="?attr/primaryTextColor"
-                    android:layout_width="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="12dp"
-                    android:gravity="center_vertical"/>
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                        android:id="@+id/identifier"
+                        style="@style/ListDescription"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="?attr/primaryTextColor"
+                        android:layout_width="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center_vertical"/>
+            </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
                 android:id="@+id/item_patient_details"
