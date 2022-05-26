@@ -524,6 +524,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 onQueryTaskFinish();
                 downloadEncounters();
                 downloadObservations();
+                downloadReportDatasets();
 
             }
         }.execute();
@@ -648,6 +649,52 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
                 downloadObservationsLog.setSetupActionResult(resultDescription);
                 downloadObservationsLog.setSetupActionResultStatus(resultStatus);
+
+                onQueryTaskFinish();
+            }
+        }.execute();
+    }
+
+    private void downloadReportDatasets() {
+        final SetupActionLogModel downloadReportDatasetLog = new SetupActionLogModel();
+        addSetupActionLog(downloadReportDatasetLog);
+        new AsyncTask<Void, Void, int[]>() {
+            @Override
+            protected void onPreExecute() {
+                downloadReportDatasetLog.setSetupAction(getString(R.string.info_report_dataset_download_in_progress));
+                onQueryTaskStarted();
+            }
+
+            @Override
+            protected int[] doInBackground(Void... voids) {
+                MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                int[] resultForReportDataset = muzimaSyncService.downloadReportDatasets();
+                return resultForReportDataset;
+            }
+
+            @Override
+            protected void onPostExecute(int[] result) {
+                String resultDescription = null;
+                String resultStatus = null;
+                if (result == null) {
+                    resultDescription = getString(R.string.info_report_datasets_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    int downloadedReportDatasets = result[1];
+                    if (downloadedReportDatasets == 0) {
+                        resultDescription = getString(R.string.info_report_datasets_not_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_report_dataset_downloaded, downloadedReportDatasets);
+                    }
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else {
+                    wizardcompletedSuccessfully = false;
+                    resultDescription = getString(R.string.error_report_dataset_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                }
+
+                downloadReportDatasetLog.setSetupActionResult(resultDescription);
+                downloadReportDatasetLog.setSetupActionResultStatus(resultStatus);
 
                 onQueryTaskFinish();
             }
