@@ -31,6 +31,7 @@ import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PersonService;
 import com.muzima.api.service.ProviderService;
 import com.muzima.api.service.RelationshipService;
+import com.muzima.api.service.ReportDatasetService;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -46,6 +47,7 @@ import com.muzima.controller.PatientReportController;
 import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.RelationshipController;
+import com.muzima.controller.ReportDatasetController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
@@ -98,6 +100,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private RelationshipController relationshipController;
     private PersonController personController;
     private MinimumSupportedAppVersionController minimumSupportedAppVersionController;
+    private ReportDatasetController reportDatasetController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -490,5 +493,16 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return minimumSupportedAppVersionController;
+    }
+
+    public ReportDatasetController getReportDatasetController() {
+        if(reportDatasetController == null){
+            try {
+                reportDatasetController = new ReportDatasetController(muzimaContext.getReportDatasetService());
+            } catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        return reportDatasetController;
     }
 }

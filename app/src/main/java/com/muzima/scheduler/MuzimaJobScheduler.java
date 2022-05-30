@@ -22,6 +22,7 @@ import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.view.forms.SyncFormIntent;
 import com.muzima.view.reports.SyncAllPatientReports;
+import com.muzima.view.reports.SyncReportDatasets;
 import com.muzima.view.setupconfiguration.SyncSetupConfigurationTemplates;
 
 @SuppressLint("NewApi")
@@ -101,6 +102,7 @@ public class MuzimaJobScheduler extends JobService {
                 new SyncAllPatientReportsBackgroundTask().execute();
             }
             new FormMetaDataSyncBackgroundTask().execute();
+            new SyncReportDatasetsBackgroundTask().execute();
         }
     }
 
@@ -211,4 +213,16 @@ public class MuzimaJobScheduler extends JobService {
         }
     }
 
+    private class SyncReportDatasetsBackgroundTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            new SyncReportDatasets(getApplicationContext()).start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
 }
