@@ -498,7 +498,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public ReportDatasetController getReportDatasetController() {
         if(reportDatasetController == null){
             try {
-                reportDatasetController = new ReportDatasetController(muzimaContext.getReportDatasetService());
+                reportDatasetController = new ReportDatasetController(muzimaContext.getReportDatasetService(), muzimaContext.getLastSyncTimeService(), getSntpService());
             } catch (IOException e){
                 throw new RuntimeException(e);
             }
