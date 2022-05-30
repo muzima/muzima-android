@@ -62,7 +62,6 @@ import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.patients.UpdatePatientTagsIntent;
 
-import androidx.appcompat.widget.Toolbar;
 import es.dmoral.toasty.Toasty;
 import org.json.JSONException;
 
@@ -73,7 +72,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.muzima.utils.DateUtils.getFormattedDate;
 
 public class RelationshipsListActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     private Patient patient;
@@ -212,6 +210,13 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_add_relationship) {
             createRelationshipView();
+        }
+        else if (item.getItemId() == android.R.id.home) {
+                Intent intent = new Intent(this.getApplicationContext(), PatientSummaryActivity.class);
+                if(patient != null)
+                    intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -723,6 +728,5 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             }
         }
     }
-
 
 }
