@@ -1187,10 +1187,10 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] downloadReportDatasets(){
+    public int[] downloadReportDatasets(List<Integer> datasetDefinitionIds){
         int[] result = new int[2];
         try {
-            List<ReportDataset> reportDatasets = reportDatasetController.downloadReportDatasets();
+            List<ReportDataset> reportDatasets = reportDatasetController.downloadReportDatasets(datasetDefinitionIds);
             reportDatasetController.saveReportDatasets(reportDatasets);
             result[0] = SUCCESS;
             result[1] = reportDatasets.size();
@@ -1201,6 +1201,27 @@ public class MuzimaSyncService {
 
         return result;
     }
+
+
+    public int[] downloadReportDatasetsForDownloadedReports(){
+        int[] result = new int[2];
+        List<Integer> datasetDefinitionIds = new ArrayList<>();
+        try {
+            List<ReportDataset> reportDatasets = reportDatasetController.getReportDatasets();
+            if(reportDatasets != null && reportDatasets.size()>0){
+                for(ReportDataset reportDataset : reportDatasets){
+                    datasetDefinitionIds.add(reportDataset.getDatasetDefinitionId());
+                }
+                downloadReportDatasets(datasetDefinitionIds);
+            }
+        } catch (ReportDatasetController.ReportDatasetFetchException e) {
+            Log.e(getClass().getSimpleName(), "Error while fetching report datasets"+e);
+        }
+
+        return result;
+    }
+
+        
 
     public int[] downloadPatientReportsByUuid(String[] reportUuids) {
         int[] result = new int[2];
