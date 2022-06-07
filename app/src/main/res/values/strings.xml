@@ -829,4 +829,10 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="info_no_forms_data_tip">No forms configured for data entry. Contact your administrator to add forms</string>
     <string name="info_no_observation_for_concept_data_tip">No historical data exists for the configured concepts</string>
     <string name="info_no_observation_and_concept_data_tip">No concepts configured. Contact your administrator to add concepts.</string>
+    <string name="general_reports">Reports</string>
+    <string name="error_report_dataset_load">An error occurred while loading report dataset for the form</string>
+    <string name="info_report_dataset_download_in_progress">Downloading Report Datasets</string>
+    <string formatted="false" name="info_report_dataset_downloaded">Downloaded %d Report Datasets</string>
+    <string name="info_report_datasets_not_downloaded">Did not download any Report Datasets</string>
+    <string name="error_report_dataset_download">Could not download report datasets</string>
 </resources>

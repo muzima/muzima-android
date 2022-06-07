@@ -54,6 +54,7 @@ import com.muzima.controller.PatientReportController;
 import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.RelationshipController;
+import com.muzima.controller.ReportDatasetController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
@@ -115,6 +116,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private PersonController personController;
     private MinimumSupportedAppVersionController minimumSupportedAppVersionController;
     private FCMTokenContoller fcmTokenContoller;
+    private ReportDatasetController reportDatasetController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -638,4 +640,16 @@ public class MuzimaApplication extends MultiDexApplication {
         }
         return fcmTokenContoller;
     }
+
+    public ReportDatasetController getReportDatasetController() {
+        if(reportDatasetController == null){
+            try {
+                reportDatasetController = new ReportDatasetController(muzimaContext.getReportDatasetService(), muzimaContext.getLastSyncTimeService(), getSntpService());
+            } catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+        return reportDatasetController;
+    }
+
 }

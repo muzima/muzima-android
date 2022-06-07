@@ -20,4 +20,7 @@
     <item android:id="@+id/action_forms"
           android:title="@string/general_forms"
           android:icon="@drawable/description"/>
+    <item android:id="@+id/action_reports"
+        android:title="@string/general_reports"
+        android:icon="@drawable/report"/>
 </menu>

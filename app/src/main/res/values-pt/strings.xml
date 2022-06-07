@@ -821,4 +821,10 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="info_no_forms_data_tip">Nenhum formulário configurado para entrada de dados. Entre em contato com seu administrador para adicionar formulários</string>
     <string name="info_no_observation_for_concept_data_tip">Não existem dados históricos para os conceitos configurados</string>
     <string name="info_no_observation_and_concept_data_tip">Nenhum conceito configurado. Entre em contato com seu administrador para adicionar conceitos.</string>
+    <string name="error_report_dataset_load">Ocorreu um erro ao carregar o conjunto de dados do relatório para o formulário</string>
+    <string name="info_report_dataset_download_in_progress">Fazendo download de conjuntos de dados de relatórios</string>
+    <string name="info_report_dataset_downloaded">Conjuntos de dados de relatório %d baixados</string>
+    <string name="info_report_datasets_not_downloaded">Não fez download de nenhum conjunto de dados de relatório</string>
+    <string name="error_report_dataset_download">Não foi possível fazer download dos conjuntos de dados do relatório</string>
+    <string name="general_reports">Relatórios</string>
 </resources>

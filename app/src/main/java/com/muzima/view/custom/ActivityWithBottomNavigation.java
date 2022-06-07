@@ -24,6 +24,7 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.cohort.CohortPagerActivity;
 import com.muzima.view.forms.FormPagerActivity;
+import com.muzima.view.reports.ProviderReportListActivity;
 
 public abstract class ActivityWithBottomNavigation extends BroadcastListenerActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -71,6 +72,8 @@ public abstract class ActivityWithBottomNavigation extends BroadcastListenerActi
                 startActivity(new Intent(this, CohortPagerActivity.class));
             } else if (itemId == R.id.action_forms) {
                 startActivity(new Intent(this, FormPagerActivity.class));
+            } else if (itemId == R.id.action_reports) {
+                startActivity(new Intent(this, ProviderReportListActivity.class));
             }
         });
         return true;
