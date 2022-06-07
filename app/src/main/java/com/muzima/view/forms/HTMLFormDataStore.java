@@ -35,7 +35,6 @@ import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
-import com.muzima.api.model.ReportDataset;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
@@ -47,7 +46,6 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.RelationshipController;
-import com.muzima.controller.ReportDatasetController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.location.MuzimaGPSLocation;
@@ -106,7 +104,6 @@ class HTMLFormDataStore {
     private final CohortController cohortController;
     private final PatientController patientController;
     private final PersonController personController;
-    private final ReportDatasetController reportDatasetController;
     private String selectedPatientsUuids;
 
     public HTMLFormDataStore(HTMLFormWebViewActivity formWebViewActivity, FormData formData, boolean isFormReload, MuzimaApplication application) {
@@ -123,7 +120,6 @@ class HTMLFormDataStore {
         this.cohortController = application.getCohortController();
         this.patientController = application.getPatientController();
         this.personController = application.getPersonController();
-        this.reportDatasetController = application.getReportDatasetController();
         this.application = application;
 
         logFormStartEvent(isFormReload);
@@ -1192,18 +1188,6 @@ class HTMLFormDataStore {
         }
 
         return jsonPayload;
-    }
-
-    @JavascriptInterface
-    public String getReportDatasetByDatasetDefinitionId(int datasetDefinitionId) {
-        ReportDataset reportDataset = new ReportDataset();
-        try {
-            reportDataset = reportDatasetController.getReportDatasetByDatasetDefinitionId(datasetDefinitionId);
-        } catch (ReportDatasetController.ReportDatasetFetchException e) {
-            Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_report_dataset_load), Toast.LENGTH_SHORT).show();
-            Log.e(getClass().getSimpleName(), "Exception occurred while loading report dataset", e);
-        }
-        return JSONValue.toJSONString(reportDataset);
     }
 
 }
