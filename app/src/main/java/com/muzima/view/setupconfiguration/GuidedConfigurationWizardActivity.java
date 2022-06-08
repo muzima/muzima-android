@@ -667,8 +667,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
             @Override
             protected int[] doInBackground(Void... voids) {
+                List<Integer> datasetDefinitionIds = extractDatasetDefinitionIds();
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                int[] resultForReportDataset = muzimaSyncService.downloadReportDatasets();
+                int[] resultForReportDataset = muzimaSyncService.downloadReportDatasets(datasetDefinitionIds);
                 return resultForReportDataset;
             }
 
@@ -773,6 +774,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
         }
         return cohortUuids;
+    }
+
+    private List<Integer> extractDatasetDefinitionIds() {
+        List<Integer> datasetIds = new ArrayList<>();
+        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['datasets']");
+        if (objects != null) {
+            for (Object object : objects) {
+                JSONObject dataset = (JSONObject) object;
+                datasetIds.add((Integer) dataset.get("id"));
+            }
+        }
+        return datasetIds;
     }
 
     public void checkIfCohortWithFilterByLocationExists() {

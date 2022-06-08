@@ -11,6 +11,7 @@ import com.muzima.service.SntpService;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,14 +27,18 @@ public class ReportDatasetController {
         this.sntpService = sntpService;
     }
 
-    public List<ReportDataset> downloadReportDatasets() throws ReportDatasetDownloadException{
+    public List<ReportDataset> downloadReportDatasets(List<Integer> datasetDefinitionIds) throws ReportDatasetDownloadException{
         try {
             LastSyncTime lastSyncTime = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_REPORT_DATASETS);
             Date lastSyncDate = null;
             if(lastSyncTime != null){
                 lastSyncDate = lastSyncTime.getLastSyncDate();
             }
-            List<ReportDataset> reportDatasets =  reportDatasetService.downloadReportDatasets(lastSyncDate);
+            List<ReportDataset> reportDatasets = new ArrayList<>();
+            for(Integer datasetDefinitionId : datasetDefinitionIds){
+                ReportDataset reportDataset = reportDatasetService.downloadReportDatasetByDefinitionIdAndLastSyncDate(lastSyncDate, datasetDefinitionId);
+                reportDatasets.add(reportDataset);
+            }
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_REPORT_DATASETS, sntpService.getTimePerDeviceTimeZone());
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return reportDatasets;
@@ -61,6 +66,14 @@ public class ReportDatasetController {
     public  ReportDataset getReportDatasetByDatasetDefinitionId(int datasetDefinitionId) throws ReportDatasetFetchException{
         try {
             return reportDatasetService.getReportDatasetByDatasetDefinitionId(datasetDefinitionId);
+        } catch (IOException | ParseException e) {
+            throw new ReportDatasetController.ReportDatasetFetchException(e);
+        }
+    }
+
+    public  List<ReportDataset> getReportDatasets() throws ReportDatasetFetchException{
+        try {
+            return reportDatasetService.getReportDatasets();
         } catch (IOException | ParseException e) {
             throw new ReportDatasetController.ReportDatasetFetchException(e);
         }
