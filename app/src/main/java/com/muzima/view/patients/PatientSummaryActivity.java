@@ -357,6 +357,10 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
                 startActivity(intent);
                 finish();
+            } else if (getIntent().getStringExtra(CALLING_ACTIVITY) != null && getIntent().getStringExtra(CALLING_ACTIVITY).equalsIgnoreCase(RelationshipsListActivity.class.getSimpleName())) {
+                Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+                startActivity(intent);
+                finish();
             }
             onBackPressed();
         }
