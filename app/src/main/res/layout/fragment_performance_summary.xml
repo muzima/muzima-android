@@ -81,11 +81,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Your Statistics"
-            android:textColor="@color/primary_blue"
-            android:textSize="15sp"/>
+            android:textColor="#6A0DAD"
+            android:textSize="14sp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/summary_statistic_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Performance Comparison"
+            android:textColor="#6A0DAD"
+            android:textSize="14sp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/performance_comparison"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

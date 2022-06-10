@@ -13,14 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.muzima.R;
+import com.muzima.adapters.reports.PerformanceComparisonAdapter;
 import com.muzima.adapters.reports.SummaryStatisticAdapter;
 
 public class PerformanceReportFragment extends Fragment {
     private SummaryStatisticAdapter summaryStatisticAdapter;
+    private PerformanceComparisonAdapter performanceComparisonAdapter;
     public PerformanceReportFragment() {}
-    public static PerformanceReportFragment newInstance(SummaryStatisticAdapter summaryStatisticAdapter) {
+    public static PerformanceReportFragment newInstance(SummaryStatisticAdapter summaryStatisticAdapter, PerformanceComparisonAdapter performanceComparisonAdapter) {
         PerformanceReportFragment fragment = new PerformanceReportFragment();
         fragment.summaryStatisticAdapter = summaryStatisticAdapter;
+        fragment.performanceComparisonAdapter = performanceComparisonAdapter;
         return fragment;
     }
 
@@ -35,6 +38,11 @@ public class PerformanceReportFragment extends Fragment {
         RecyclerView summaryView = (RecyclerView) view.findViewById(R.id.summary_statistic_1);
         summaryView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
         summaryView.setAdapter(summaryStatisticAdapter);
+        summaryStatisticAdapter.notifyDataSetChanged();
+
+        RecyclerView performanceComparisonView = (RecyclerView) view.findViewById(R.id.performance_comparison);
+        performanceComparisonView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
+        performanceComparisonView.setAdapter(performanceComparisonAdapter);
         summaryStatisticAdapter.notifyDataSetChanged();
     }
 }

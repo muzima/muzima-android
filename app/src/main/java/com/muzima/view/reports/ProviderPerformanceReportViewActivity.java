@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.reports.PerformanceComparisonAdapter;
 import com.muzima.adapters.reports.SummaryStatisticAdapter;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Provider;
@@ -99,8 +100,11 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
             }
         }
         SummaryStatisticAdapter summaryStatisticAdapter = new SummaryStatisticAdapter(achievementStatistics, getApplicationContext());
+        PerformanceComparisonAdapter performanceComparisonAdapter = new PerformanceComparisonAdapter(achievementStatistics, getApplicationContext());
 
-        Fragment fragment = PerformanceReportFragment.newInstance(summaryStatisticAdapter);
+
+
+        Fragment fragment = PerformanceReportFragment.newInstance(summaryStatisticAdapter, performanceComparisonAdapter);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.report_framelayout,fragment);
         transaction.addToBackStack(null);
