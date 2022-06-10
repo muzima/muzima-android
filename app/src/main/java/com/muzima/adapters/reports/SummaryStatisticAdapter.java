@@ -34,19 +34,19 @@ public class SummaryStatisticAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        SummaryStatisticAdapter.ViewHolder vh = (SummaryStatisticAdapter.ViewHolder)holder;
+        SummaryStatisticAdapter.ViewHolder viewHolder = (SummaryStatisticAdapter.ViewHolder)holder;
         ProviderAchievementStatistic statistic = achievementStatistics.get(position);
-        vh.summaryStatisticTitle.setText(statistic.getStatisticTitle());
-        vh.summaryStatisticHint.setText(statistic.getStatisticHint());
+        viewHolder.summaryStatisticTitle.setText(statistic.getStatisticTitle());
+        viewHolder.summaryStatisticHint.setText(statistic.getStatisticHint());
 
-        int achievementRate = statistic.getAchievement()*100/statistic.getExpectedAchievement();
-        vh.summaryStatisticProgressText.setText(achievementRate+"%");
+        int achievementRate = statistic.getExpectedAchievement() == 0? 0 : statistic.getAchievement()*100/statistic.getExpectedAchievement();
+        viewHolder.summaryStatisticProgressText.setText(achievementRate+"%");
 
-        vh.summaryStatisticProgress.setProgress(achievementRate);
-        vh.summaryStatisticProgress.setSecondaryProgress(100);
+        viewHolder.summaryStatisticProgress.setProgress(achievementRate);
+        viewHolder.summaryStatisticProgress.setSecondaryProgress(100);
 
         Drawable drawable = context.getResources().getDrawable(R.drawable.circular_progress);
-        vh.summaryStatisticProgress.setProgressDrawable(drawable);
+        viewHolder.summaryStatisticProgress.setProgressDrawable(drawable);
     }
 
     @Override

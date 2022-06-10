@@ -23,6 +23,7 @@ import com.muzima.controller.FormController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.ProviderAchievementStatistic;
 import com.muzima.util.JsonUtils;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
@@ -65,6 +66,11 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
 
     private void createPerformanceView(){
 
+        //get dataset
+        String dataset = "{\"dataset\": [{\"providerSystemId\": \"admin\",\"providerName\": \"Super User\",\"patientsAllocated\": 40,\"patientsVisited\": 20,\"patientsReturned\": 5},\n" +
+                "{\"providerSystemId\": \"3-4\",\"providerName\": \"James Mwai\",\"patientsAllocated\": 30,\"patiensVisited\": 180,\"patientsReturned\": 8}]}";
+        JSONArray datasetJsonArray = parseDataset(dataset);
+        JSONObject providerDataset = getDatasetForProvider(datasetJsonArray,"admin");
         //Set up summary statistics 1
         String reportDefinition = reportTemplate.getHtml();
         JSONArray summaryStatistic1 = (JSONArray) JsonUtils.readAsObject(reportDefinition,"summaryStatistic1");
@@ -74,9 +80,15 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
         for (int i=0; i<arrLength; i++){
             try {
                 final JSONObject statistic = (JSONObject)summaryStatistic1.get(i);
+                String achievementKey = (String)statistic.get("achievementKey");
+                String expectedAchievementKey = (String) statistic.get("expectedAchievementKey");
                 achievementStatistics.add(new ProviderAchievementStatistic(){{
-                    setAchievement(45);
-                    setExpectedAchievement(60);
+                    if(providerDataset != null && providerDataset.containsKey(achievementKey)) {
+                        setAchievement((Integer) providerDataset.get(achievementKey));
+                    }
+                    if(providerDataset != null && providerDataset.containsKey(expectedAchievementKey)) {
+                        setExpectedAchievement((Integer) providerDataset.get(expectedAchievementKey));
+                    }
                     setStatisticTitle(statistic.get("title").toString());
                     setStatisticHint(statistic.get("hint").toString());
                 }});
@@ -84,7 +96,6 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
 
             } catch (Exception e) {
                 Log.e(getClass().getSimpleName(), "Could not parse details of summary statistic",e);
-
             }
         }
         SummaryStatisticAdapter summaryStatisticAdapter = new SummaryStatisticAdapter(achievementStatistics, getApplicationContext());
@@ -95,6 +106,22 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
         transaction.addToBackStack(null);
         transaction.commit();
 
+    }
+
+    private JSONObject getDatasetForProvider(JSONArray dataset, String providerSystemId){
+        int objLength =dataset.size();
+
+        for (int i=0; i<objLength; i++){
+            JSONObject jsonObject = (JSONObject)dataset.get(i);
+            if(jsonObject.containsKey("providerSystemId") && StringUtils.equals(jsonObject.get("providerSystemId").toString(),providerSystemId)){
+                return jsonObject;
+            }
+        }
+        return null;
+    }
+
+    private JSONArray parseDataset(String dataset){
+         return (JSONArray)JsonUtils.readAsObject(dataset,"dataset");
     }
 
     @Override
