@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.reports.LeaderboardAdapter;
 import com.muzima.adapters.reports.PerformanceComparisonAdapter;
 import com.muzima.adapters.reports.SummaryStatisticAdapter;
 import com.muzima.api.model.FormTemplate;
@@ -69,7 +70,7 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
 
         //get dataset
         String dataset = "{\"dataset\": [{\"providerSystemId\": \"admin\",\"providerName\": \"Super User\",\"patientsAllocated\": 40,\"patientsVisited\": 20,\"patientsReturned\": 5},\n" +
-                "{\"providerSystemId\": \"3-4\",\"providerName\": \"James Mwai\",\"patientsAllocated\": 30,\"patiensVisited\": 180,\"patientsReturned\": 8}]}";
+                "{\"providerSystemId\": \"3-4\",\"providerName\": \"James Mwai\",\"patientsAllocated\": 30,\"patientsVisited\": 7,\"patientsReturned\": 1}]}";
         JSONArray datasetJsonArray = parseDataset(dataset);
         JSONObject providerDataset = getDatasetForProvider(datasetJsonArray,"admin");
         //Set up summary statistics 1
@@ -77,6 +78,7 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
         JSONArray summaryStatistic1 = (JSONArray) JsonUtils.readAsObject(reportDefinition,"summaryStatistic1");
         int arrLength = summaryStatistic1.size();
         List<ProviderAchievementStatistic> achievementStatistics = new ArrayList<>();
+        List<ProviderAchievementStatistic> leaderboardAchievementStatistics = new ArrayList<>();
 
         for (int i=0; i<arrLength; i++){
             try {
@@ -86,25 +88,31 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
                 achievementStatistics.add(new ProviderAchievementStatistic(){{
                     if(providerDataset != null && providerDataset.containsKey(achievementKey)) {
                         setAchievement((Integer) providerDataset.get(achievementKey));
+
                     }
                     if(providerDataset != null && providerDataset.containsKey(expectedAchievementKey)) {
                         setExpectedAchievement((Integer) providerDataset.get(expectedAchievementKey));
                     }
+
+                    setAchievementGroupAverage(getAchievementAverage(datasetJsonArray,achievementKey, expectedAchievementKey));
                     setStatisticTitle(statistic.get("title").toString());
                     setStatisticHint(statistic.get("hint").toString());
+                    setProviderId(providerDataset.get("providerName").toString());
                 }});
 
-
+                if(statistic.containsKey("leaderboardStatisticKey")){
+                    leaderboardAchievementStatistics = createLeaderboardStatistics(datasetJsonArray, statistic.get("leaderboardStatisticKey").toString());
+                }
             } catch (Exception e) {
                 Log.e(getClass().getSimpleName(), "Could not parse details of summary statistic",e);
             }
         }
         SummaryStatisticAdapter summaryStatisticAdapter = new SummaryStatisticAdapter(achievementStatistics, getApplicationContext());
         PerformanceComparisonAdapter performanceComparisonAdapter = new PerformanceComparisonAdapter(achievementStatistics, getApplicationContext());
+        LeaderboardAdapter leaderboardAdapter = new LeaderboardAdapter(leaderboardAchievementStatistics, getApplicationContext());
 
 
-
-        Fragment fragment = PerformanceReportFragment.newInstance(summaryStatisticAdapter, performanceComparisonAdapter);
+        Fragment fragment = PerformanceReportFragment.newInstance(summaryStatisticAdapter, performanceComparisonAdapter, leaderboardAdapter);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.report_framelayout,fragment);
         transaction.addToBackStack(null);
@@ -112,9 +120,12 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
 
     }
 
+    private JSONArray parseDataset(String dataset){
+        return (JSONArray)JsonUtils.readAsObject(dataset,"dataset");
+    }
+
     private JSONObject getDatasetForProvider(JSONArray dataset, String providerSystemId){
         int objLength =dataset.size();
-
         for (int i=0; i<objLength; i++){
             JSONObject jsonObject = (JSONObject)dataset.get(i);
             if(jsonObject.containsKey("providerSystemId") && StringUtils.equals(jsonObject.get("providerSystemId").toString(),providerSystemId)){
@@ -124,8 +135,29 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
         return null;
     }
 
-    private JSONArray parseDataset(String dataset){
-         return (JSONArray)JsonUtils.readAsObject(dataset,"dataset");
+    private float getAchievementAverage(JSONArray dataset, String achievementKey, String expectedAchievementKey){
+        int objLength =dataset.size();
+        int total = 0;
+        int expectedTotal = 0;
+        for (int i=0; i<objLength; i++){
+            JSONObject jsonObject = (JSONObject)dataset.get(i);
+            total += (Integer)jsonObject.get(achievementKey);
+            expectedTotal += (Integer)jsonObject.get(expectedAchievementKey);
+        }
+        return total*100/expectedTotal;
+    }
+
+    private List<ProviderAchievementStatistic> createLeaderboardStatistics(JSONArray dataset, String learboardKey){
+        List<ProviderAchievementStatistic> leaderboardStatistics = new ArrayList<>();
+        int objLength =dataset.size();
+        for (int i=0; i<objLength; i++) {
+            final JSONObject statistic = (JSONObject) dataset.get(i);
+            leaderboardStatistics.add(new ProviderAchievementStatistic() {{
+                setProviderId(statistic.get("providerName").toString());
+                setAchievement((Integer) statistic.get(learboardKey));
+            }});
+        }
+        return leaderboardStatistics;
     }
 
     @Override

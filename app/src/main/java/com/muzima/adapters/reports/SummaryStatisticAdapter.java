@@ -47,6 +47,7 @@ public class SummaryStatisticAdapter extends RecyclerView.Adapter {
 
         Drawable drawable = context.getResources().getDrawable(R.drawable.circular_progress);
         viewHolder.summaryStatisticProgress.setProgressDrawable(drawable);
+        //viewHolder.summaryStatisticProgress.setProgressTintBlendMode(Mode.C);
     }
 
     @Override

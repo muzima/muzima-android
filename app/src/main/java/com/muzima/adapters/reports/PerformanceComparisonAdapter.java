@@ -15,7 +15,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PerformanceComparisonAdapter extends RecyclerView.Adapter{
+public class PerformanceComparisonAdapter extends RecyclerView.Adapter<PerformanceComparisonAdapter.ViewHolder>{
     private List<ProviderAchievementStatistic> achievementStatistics;
     private Context context;
 
@@ -25,14 +25,13 @@ public class PerformanceComparisonAdapter extends RecyclerView.Adapter{
     }
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PerformanceComparisonAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new PerformanceComparisonAdapter.ViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_report_performance_comparison, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        PerformanceComparisonAdapter.ViewHolder viewHolder = (PerformanceComparisonAdapter.ViewHolder)holder;
+    public void onBindViewHolder(@NonNull PerformanceComparisonAdapter.ViewHolder viewHolder, int position) {
         ProviderAchievementStatistic statistic = achievementStatistics.get(position);
         viewHolder.summaryStatisticTitle.setText(statistic.getStatisticTitle());
 
@@ -40,9 +39,14 @@ public class PerformanceComparisonAdapter extends RecyclerView.Adapter{
 
         viewHolder.summaryStatisticProgress.setProgress(achievementRate);
         viewHolder.summaryStatisticProgress.setSecondaryProgress(100);
-//
-//        Drawable drawable = context.getResources().getDrawable(R.drawable.circular_progress);
-//        viewHolder.summaryStatisticProgress.setProgressDrawable(drawable);
+        viewHolder.summaryStatisticProgress.post(new Runnable() {
+            @Override
+            public void run() {
+                int progressWidth = viewHolder.summaryStatisticProgress.getMeasuredWidth();
+                int youPerformanceWidth = viewHolder.youPerformance.getMeasuredWidth();
+                viewHolder.avgPerformance.setX(progressWidth*statistic.getAchievementGroupAverage()/100 - youPerformanceWidth/4);
+                viewHolder.youPerformance.setX(progressWidth*achievementRate/100 - youPerformanceWidth/4);
+            }});
     }
 
     @Override
@@ -53,10 +57,15 @@ public class PerformanceComparisonAdapter extends RecyclerView.Adapter{
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public final ProgressBar summaryStatisticProgress;
         public final TextView summaryStatisticTitle;
+        public final View youPerformance;
+        public final View avgPerformance;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             summaryStatisticProgress = itemView.findViewById(R.id.summary_statistic_progress);
             summaryStatisticTitle = itemView.findViewById(R.id.summary_statistic_title);
+            youPerformance = itemView.findViewById(R.id.you_performance);
+            avgPerformance = itemView.findViewById(R.id.avg_performance);
         }
     }
 }

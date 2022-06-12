@@ -13,17 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.muzima.R;
+import com.muzima.adapters.reports.LeaderboardAdapter;
 import com.muzima.adapters.reports.PerformanceComparisonAdapter;
 import com.muzima.adapters.reports.SummaryStatisticAdapter;
 
 public class PerformanceReportFragment extends Fragment {
     private SummaryStatisticAdapter summaryStatisticAdapter;
     private PerformanceComparisonAdapter performanceComparisonAdapter;
+    private LeaderboardAdapter leaderboardAdapter;
     public PerformanceReportFragment() {}
-    public static PerformanceReportFragment newInstance(SummaryStatisticAdapter summaryStatisticAdapter, PerformanceComparisonAdapter performanceComparisonAdapter) {
+    public static PerformanceReportFragment newInstance(SummaryStatisticAdapter summaryStatisticAdapter,
+              PerformanceComparisonAdapter performanceComparisonAdapter, LeaderboardAdapter leaderboardAdapter) {
         PerformanceReportFragment fragment = new PerformanceReportFragment();
         fragment.summaryStatisticAdapter = summaryStatisticAdapter;
         fragment.performanceComparisonAdapter = performanceComparisonAdapter;
+        fragment.leaderboardAdapter = leaderboardAdapter;
         return fragment;
     }
 
@@ -44,5 +48,10 @@ public class PerformanceReportFragment extends Fragment {
         performanceComparisonView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
         performanceComparisonView.setAdapter(performanceComparisonAdapter);
         summaryStatisticAdapter.notifyDataSetChanged();
+
+        RecyclerView leaderboardView = (RecyclerView) view.findViewById(R.id.leaderboard);
+        leaderboardView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
+        leaderboardView.setAdapter(leaderboardAdapter);
+        leaderboardAdapter.notifyDataSetChanged();
     }
 }

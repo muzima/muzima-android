@@ -1,17 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item >
-        <rotate
-            android:fromDegrees="45"
-            android:toDegrees="45"
-            android:pivotX="-40%"
-            android:pivotY="87%" >
-            <shape
-                android:shape="rectangle"  >
-                <stroke android:color="@android:color/transparent" android:width="10dp"/>
-                <solid
-                    android:color="#000000"  />
-            </shape>
-        </rotate>
-    </item>
-</layer-list>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24.0"
+    android:viewportHeight="24.0">
+    <path
+        android:pathData="M0,12l0,12 11.5,-5.7c6.3,-3.2 11.5,-6 11.5,-6.3 0,-0.3 -5.2,-3.1 -11.5,-6.3l-11.5,-5.7 0,12z"
+        android:strokeColor="#99000000"
+        android:fillColor="#990000"/>
+</vector>

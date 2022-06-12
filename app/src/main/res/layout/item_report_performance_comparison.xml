@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,19 +15,23 @@
             android:textColor="@color/primary_black"
             android:textSize="15sp"
             android:text="patients contacted"/>
-        <TextView
+        <LinearLayout
+            android:id="@+id/you_performance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/primary_black"
-            android:text="YOU"/>
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/progress_seeker_triangle"
-            android:rotation="180"/>
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="5dp">
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_black"
+                android:textSize="12sp"
+                android:text="YOU"/>
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                app:srcCompat="@drawable/progress_seeker_triangle"
+                android:rotation="90"/>
+        </LinearLayout>
         <ProgressBar
             android:id="@+id/summary_statistic_progress"
             style="?android:attr/progressBarStyleHorizontal"
@@ -35,15 +40,22 @@
             android:indeterminate="false"
             android:layout_gravity="center"
             android:layout_centerInParent="true"/>
-        </FrameLayout>
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/progress_seeker_triangle"/>
-        <TextView
+        <LinearLayout
+            android:id="@+id/avg_performance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/primary_black"
-            android:text="AVG"/>
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:rotation="270"
+                app:srcCompat="@drawable/progress_seeker_triangle"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_black"
+                android:textSize="12sp"
+                android:text="AVG"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
