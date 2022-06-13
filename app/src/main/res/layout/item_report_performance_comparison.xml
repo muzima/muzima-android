@@ -39,7 +39,8 @@
             android:layout_height="5dp"
             android:indeterminate="false"
             android:layout_gravity="center"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:secondaryProgressTint="#999999"/>
         <LinearLayout
             android:id="@+id/avg_performance"
             android:layout_width="wrap_content"

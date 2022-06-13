@@ -1,6 +1,8 @@
 package com.muzima.adapters.reports;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,19 +11,24 @@ import android.widget.TextView;
 
 import com.muzima.R;
 import com.muzima.model.ProviderReportStatistic;
+import com.muzima.utils.StringUtils;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.ViewHolder>{
-    private List<ProviderReportStatistic> achievementStatistics;
+    private List<ProviderReportStatistic> reportStatistics;
+    private LeaderboardItemClickListener leaderboardItemClickListener;
     private Context context;
 
-   public LeaderboardAdapter(List<ProviderReportStatistic> achievementStatistics, Context context){
-        this.achievementStatistics = achievementStatistics;
+   public LeaderboardAdapter(List<ProviderReportStatistic> reportStatistics,
+                             LeaderboardItemClickListener leaderboardItemClickListener, Context context){
+        this.reportStatistics = reportStatistics;
+        this.leaderboardItemClickListener = leaderboardItemClickListener;
         this.context = context;
     }
     @NonNull
@@ -33,32 +40,54 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull LeaderboardAdapter.ViewHolder holder, int position) {
-       ProviderReportStatistic statistic = achievementStatistics.get(position);
-        holder.rankTextView.setText(String.format(Locale.getDefault(), "%d", position));
+       ProviderReportStatistic statistic = reportStatistics.get(position);
+        holder.rankTextView.setText(String.format(Locale.getDefault(), "%d", position+1));
 
-        holder.usernameTextView.setText(statistic.getProviderName());
-        holder.pointsTextView.setText(String.format(Locale.getDefault(),"%d ",statistic.getAchievement()));
+        if(!StringUtils.isEmpty(statistic.getProviderName())) {
+            String providerName = statistic.getProviderName().trim();
+            holder.usernameTextView.setText(providerName);
+            holder.avatarTextView.setText(""+providerName.charAt(0));
+        }
 
+        holder.avatarImageView.setImageTintList(ColorStateList.valueOf(statistic.getLeaderboardColor()));
+
+        holder.pointsTextView.setText(String.format(Locale.getDefault(),"%d ",statistic.getScore()));
+        holder.container.setOnClickListener(view -> leaderboardItemClickListener.onLeaderboardItemClick(view, holder.getAdapterPosition()));
+    }
+
+    public ProviderReportStatistic getReportStatistic(int position){
+        if(position < 0 || position >= getItemCount()){
+            return null;
+        }
+       return reportStatistics.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return achievementStatistics.size();
+        return reportStatistics.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView accountAvatarImageView;
+        private final TextView avatarTextView;
+        private final ImageView avatarImageView;
         private final TextView usernameTextView;
         private final TextView rankTextView;
         private final TextView pointsTextView;
+        private final View container;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            accountAvatarImageView = itemView.findViewById(R.id.avatar_view);
+            avatarImageView = itemView.findViewById(R.id.avatar_image_view);
+            avatarTextView = itemView.findViewById(R.id.avatar_text_view);
             usernameTextView = itemView.findViewById(R.id.name_text_view);
             rankTextView = itemView.findViewById(R.id.item_leaderboard_main_position_text_view);
             pointsTextView = itemView.findViewById(R.id.points_text_view);
+            container = itemView.findViewById(R.id.leaderboard_item_container);
         }
+    }
+
+    public interface LeaderboardItemClickListener{
+        void onLeaderboardItemClick(View view, int position);
     }
 }

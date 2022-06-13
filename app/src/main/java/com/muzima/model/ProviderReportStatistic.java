@@ -1,14 +1,17 @@
 package com.muzima.model;
 
-public class ProviderReportStatistic {
+public class ProviderReportStatistic implements Comparable{
     private int achievement;
     private String achievementId;
     private float achievementGroupAverage;
     private int expectedAchievement;
+    private int score;
     private String providerId;
     private String providerName;
     private String statisticTitle;
     private String statisticHint;
+    private String summaryColorCode;
+    private int leaderboardColor;
 
     public int getAchievement() {
         return achievement;
@@ -42,6 +45,14 @@ public class ProviderReportStatistic {
         this.expectedAchievement = expectedAchievement;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public String getProviderId() {
         return providerId;
     }
@@ -72,5 +83,26 @@ public class ProviderReportStatistic {
 
     public void setStatisticHint(String statisticHint) {
         this.statisticHint = statisticHint;
+    }
+
+    public String getSummaryColorCode() {
+        return summaryColorCode;
+    }
+
+    public void setSummaryColorCode(String summaryColorCode) {
+        this.summaryColorCode = summaryColorCode;
+    }
+
+    public int getLeaderboardColor() {
+        return leaderboardColor;
+    }
+
+    public void setLeaderboardColor(int leaderboardColor) {
+        this.leaderboardColor = leaderboardColor;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return ((Integer)getScore()).compareTo((((ProviderReportStatistic)o).getScore()));
     }
 }

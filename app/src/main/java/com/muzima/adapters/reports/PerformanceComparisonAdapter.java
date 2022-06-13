@@ -1,6 +1,8 @@
 package com.muzima.adapters.reports;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +49,7 @@ public class PerformanceComparisonAdapter extends RecyclerView.Adapter<Performan
                 viewHolder.avgPerformance.setX(progressWidth*statistic.getAchievementGroupAverage()/100 - youPerformanceWidth/4);
                 viewHolder.youPerformance.setX(progressWidth*achievementRate/100 - youPerformanceWidth/4);
             }});
+        viewHolder.summaryStatisticProgress.setProgressTintList(ColorStateList.valueOf(Color.parseColor(statistic.getSummaryColorCode())));
     }
 
     @Override

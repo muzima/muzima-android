@@ -1,6 +1,8 @@
 package com.muzima.adapters.reports;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,12 +48,20 @@ public class SummaryStatisticAdapter extends RecyclerView.Adapter {
 
         Drawable drawable = context.getResources().getDrawable(R.drawable.circular_progress);
         viewHolder.summaryStatisticProgress.setProgressDrawable(drawable);
-        //viewHolder.summaryStatisticProgress.setProgressTintBlendMode(Mode.C);
+        viewHolder.summaryStatisticProgress.setProgressTintList(ColorStateList.valueOf(Color.parseColor(statistic.getSummaryColorCode())));
+
     }
 
     @Override
     public int getItemCount() {
         return achievementStatistics.size();
+    }
+
+    public ProviderReportStatistic getReportStatistic(int position){
+        if(position < 0 || position >= getItemCount()){
+            return null;
+        }
+        return achievementStatistics.get(position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{

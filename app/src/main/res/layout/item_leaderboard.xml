@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_main_leaderboard_container_view"
+    android:id="@+id/leaderboard_item_container"
     android:layout_marginEnd="24dp"
     android:layout_marginStart="24dp"
     android:layout_width="match_parent"
@@ -28,17 +28,33 @@
             android:textSize="13sp"
             android:visibility="visible"/>
 
-        <ImageView
-            android:id="@+id/avatar_view"
-            android:layout_toEndOf="@+id/item_leaderboard_main_position_text_view"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_action_add_client_light"
-            android:contentDescription="Avatar desc"/>
+            android:layout_toEndOf="@+id/item_leaderboard_main_position_text_view"
+            android:id="@+id/avatar_container">
+            <TextView
+                android:id="@+id/avatar_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="1dp"
+                android:layout_centerInParent="true"
+                android:textSize="18sp"
+                android:textColor="@color/primary_black"
+                android:text="S"/>
+            <ImageView
+                android:id="@+id/avatar_image_view"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:elevation="0dp"
+                android:src="@drawable/circle"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
 
         <LinearLayout
-            android:layout_toEndOf="@id/avatar_view"
+            android:layout_toEndOf="@id/avatar_container"
             android:orientation="vertical"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
