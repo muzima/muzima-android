@@ -155,7 +155,8 @@
             android:name=".view.patients.PatientRemoteSearchListActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/general_clients" />
+            android:label="@string/general_clients"
+            android:parentActivityName=".view.patients.PatientsSearchActivity"/>
         <activity
             android:name=".view.forms.FormsWithDataActivity"
             android:configChanges="orientation|screenSize"
