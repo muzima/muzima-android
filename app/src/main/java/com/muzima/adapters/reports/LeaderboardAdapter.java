@@ -5,25 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.muzima.R;
-import com.muzima.model.ProviderAchievementStatistic;
+import com.muzima.model.ProviderReportStatistic;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.ViewHolder>{
-    private List<ProviderAchievementStatistic> achievementStatistics;
+    private List<ProviderReportStatistic> achievementStatistics;
     private Context context;
 
-   public LeaderboardAdapter(List<ProviderAchievementStatistic> achievementStatistics, Context context){
+   public LeaderboardAdapter(List<ProviderReportStatistic> achievementStatistics, Context context){
         this.achievementStatistics = achievementStatistics;
         this.context = context;
     }
@@ -36,10 +33,10 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull LeaderboardAdapter.ViewHolder holder, int position) {
-       ProviderAchievementStatistic statistic = achievementStatistics.get(position);
+       ProviderReportStatistic statistic = achievementStatistics.get(position);
         holder.rankTextView.setText(String.format(Locale.getDefault(), "%d", position));
 
-        holder.usernameTextView.setText(statistic.getProviderId());
+        holder.usernameTextView.setText(statistic.getProviderName());
         holder.pointsTextView.setText(String.format(Locale.getDefault(),"%d ",statistic.getAchievement()));
 
     }

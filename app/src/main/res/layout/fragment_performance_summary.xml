@@ -112,12 +112,13 @@
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="10dp">
         <TextView
+            android:id="@+id/leaderboard_section_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Leaderboard"
@@ -126,8 +127,9 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/leaderboard"
+            android:layout_below="@+id/leaderboard_section_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

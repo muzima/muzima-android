@@ -1,7 +1,6 @@
 package com.muzima.adapters.reports;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.muzima.R;
-import com.muzima.model.ProviderAchievementStatistic;
+import com.muzima.model.ProviderReportStatistic;
 
 import java.util.List;
 
@@ -18,10 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SummaryStatisticAdapter extends RecyclerView.Adapter {
-    private List<ProviderAchievementStatistic> achievementStatistics;
+    private List<ProviderReportStatistic> achievementStatistics;
     private Context context;
 
-    public SummaryStatisticAdapter(List<ProviderAchievementStatistic> achievementStatistics, Context context){
+    public SummaryStatisticAdapter(List<ProviderReportStatistic> achievementStatistics, Context context){
         this.achievementStatistics = achievementStatistics;
         this.context = context;
     }
@@ -35,7 +34,7 @@ public class SummaryStatisticAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         SummaryStatisticAdapter.ViewHolder viewHolder = (SummaryStatisticAdapter.ViewHolder)holder;
-        ProviderAchievementStatistic statistic = achievementStatistics.get(position);
+        ProviderReportStatistic statistic = achievementStatistics.get(position);
         viewHolder.summaryStatisticTitle.setText(statistic.getStatisticTitle());
         viewHolder.summaryStatisticHint.setText(statistic.getStatisticHint());
 

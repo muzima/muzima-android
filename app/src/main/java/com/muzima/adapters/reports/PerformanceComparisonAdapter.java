@@ -8,7 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.muzima.R;
-import com.muzima.model.ProviderAchievementStatistic;
+import com.muzima.model.ProviderReportStatistic;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class PerformanceComparisonAdapter extends RecyclerView.Adapter<PerformanceComparisonAdapter.ViewHolder>{
-    private List<ProviderAchievementStatistic> achievementStatistics;
+    private List<ProviderReportStatistic> achievementStatistics;
     private Context context;
 
-   public PerformanceComparisonAdapter(List<ProviderAchievementStatistic> achievementStatistics, Context context){
+   public PerformanceComparisonAdapter(List<ProviderReportStatistic> achievementStatistics, Context context){
         this.achievementStatistics = achievementStatistics;
         this.context = context;
     }
@@ -32,7 +32,7 @@ public class PerformanceComparisonAdapter extends RecyclerView.Adapter<Performan
 
     @Override
     public void onBindViewHolder(@NonNull PerformanceComparisonAdapter.ViewHolder viewHolder, int position) {
-        ProviderAchievementStatistic statistic = achievementStatistics.get(position);
+        ProviderReportStatistic statistic = achievementStatistics.get(position);
         viewHolder.summaryStatisticTitle.setText(statistic.getStatisticTitle());
 
         int achievementRate = statistic.getExpectedAchievement() == 0? 0 : statistic.getAchievement()*100/statistic.getExpectedAchievement();

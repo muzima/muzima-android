@@ -1,10 +1,12 @@
 package com.muzima.model;
 
-public class ProviderAchievementStatistic {
+public class ProviderReportStatistic {
     private int achievement;
+    private String achievementId;
     private float achievementGroupAverage;
     private int expectedAchievement;
     private String providerId;
+    private String providerName;
     private String statisticTitle;
     private String statisticHint;
 
@@ -14,6 +16,14 @@ public class ProviderAchievementStatistic {
 
     public void setAchievement(int achievement) {
         this.achievement = achievement;
+    }
+
+    public String getAchievementId() {
+        return achievementId;
+    }
+
+    public void setAchievementId(String achievementId) {
+        this.achievementId = achievementId;
     }
 
     public float getAchievementGroupAverage() {
@@ -38,6 +48,14 @@ public class ProviderAchievementStatistic {
 
     public void setProviderId(String providerId) {
         this.providerId = providerId;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
     }
 
     public String getStatisticTitle() {
