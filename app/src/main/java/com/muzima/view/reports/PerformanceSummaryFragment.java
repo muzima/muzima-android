@@ -58,11 +58,11 @@ public class PerformanceSummaryFragment extends Fragment {
             if(StringUtils.equals(statistic.getProviderId(), loggedInUserSystemId)) {
                 greeting1.setText(getString(R.string.hello_general) + statistic.getProviderName());
                 greeting1.setVisibility(View.VISIBLE);
-                greeting2.setText("Your performance between XXX and YYY");
+                greeting2.setText("Your performance between XXX and YYY"); //ToDo: To be translated once the text is clarified/dates fitted in
                 statisticsSummaryTitle.setText(R.string.general_your_statistics);
             } else {
                 greeting1.setVisibility(View.GONE);
-                greeting2.setText("Performance summary for "+statistic.getProviderName()+" between XXX and YYY");
+                greeting2.setText("Performance summary for "+statistic.getProviderName()+" between XXX and YYY"); //ToDo: To be translated once the text is clarified/dates fitted in
                 statisticsSummaryTitle.setText(R.string.general_their_statistics);
             }
             ImageView avatar = view.findViewById(R.id.main_avatar_image_view);
@@ -90,12 +90,7 @@ public class PerformanceSummaryFragment extends Fragment {
         leaderboardAdapter.notifyDataSetChanged();
 
         View leaderboardTitleBar = view.findViewById(R.id.leaderboard_section_title_bar);
-        leaderboardTitleBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                leaderBoardTitleClickListener.onLeaderboardSectionTitleClicked();
-            }
-        });
+        leaderboardTitleBar.setOnClickListener(view1 -> leaderBoardTitleClickListener.onLeaderboardSectionTitleClicked());
     }
 
     public interface LeaderBoardTitleClickListener{

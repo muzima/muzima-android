@@ -15,48 +15,52 @@
             android:textColor="@color/primary_black"
             android:textSize="15sp"
             android:text="patients contacted"/>
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/you_performance"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/summary_statistic_reference"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/primary_black"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 android:text="YOU"/>
             <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_below="@+id/summary_statistic_reference"
+                android:layout_centerHorizontal="true"
                 app:srcCompat="@drawable/progress_seeker_triangle"
                 android:rotation="90"/>
-        </LinearLayout>
+        </RelativeLayout>
         <ProgressBar
             android:id="@+id/summary_statistic_progress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="3dp"
             android:indeterminate="false"
             android:layout_gravity="center"
             android:layout_centerInParent="true"
             android:secondaryProgressTint="#999999"/>
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/avg_performance"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
             <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:id="@+id/avg_seeker"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_centerHorizontal="true"
                 android:rotation="270"
                 app:srcCompat="@drawable/progress_seeker_triangle"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/avg_seeker"
                 android:textColor="@color/primary_black"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 android:text="AVG"/>
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.model.ProviderReportStatistic;
 import com.muzima.utils.StringUtils;
@@ -24,12 +25,14 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     private List<ProviderReportStatistic> reportStatistics;
     private LeaderboardItemClickListener leaderboardItemClickListener;
     private Context context;
+    private String loggedInUserSystemId;
 
    public LeaderboardAdapter(List<ProviderReportStatistic> reportStatistics,
                              LeaderboardItemClickListener leaderboardItemClickListener, Context context){
         this.reportStatistics = reportStatistics;
         this.leaderboardItemClickListener = leaderboardItemClickListener;
         this.context = context;
+        loggedInUserSystemId = ((MuzimaApplication)context.getApplicationContext()).getAuthenticatedUser().getSystemId();
     }
     @NonNull
     @Override
@@ -53,6 +56,10 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
         holder.pointsTextView.setText(String.format(Locale.getDefault(),"%d ",statistic.getScore()));
         holder.container.setOnClickListener(view -> leaderboardItemClickListener.onLeaderboardItemClick(view, holder.getAdapterPosition()));
+
+        if(StringUtils.equals(loggedInUserSystemId,statistic.getProviderId())){
+            holder.container.setBackgroundColor(Color.parseColor("#F6F0FA"));
+        }
     }
 
     public ProviderReportStatistic getReportStatistic(int position){

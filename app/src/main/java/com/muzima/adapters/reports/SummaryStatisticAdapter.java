@@ -19,11 +19,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SummaryStatisticAdapter extends RecyclerView.Adapter {
-    private List<ProviderReportStatistic> achievementStatistics;
+    private List<ProviderReportStatistic> individualProviderStatistics;
     private Context context;
 
-    public SummaryStatisticAdapter(List<ProviderReportStatistic> achievementStatistics, Context context){
-        this.achievementStatistics = achievementStatistics;
+    public SummaryStatisticAdapter(List<ProviderReportStatistic> individualProviderStatistics, Context context){
+        this.individualProviderStatistics = individualProviderStatistics;
         this.context = context;
     }
     @NonNull
@@ -36,7 +36,7 @@ public class SummaryStatisticAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         SummaryStatisticAdapter.ViewHolder viewHolder = (SummaryStatisticAdapter.ViewHolder)holder;
-        ProviderReportStatistic statistic = achievementStatistics.get(position);
+        ProviderReportStatistic statistic = individualProviderStatistics.get(position);
         viewHolder.summaryStatisticTitle.setText(statistic.getStatisticTitle());
         viewHolder.summaryStatisticHint.setText(statistic.getStatisticHint());
 
@@ -54,14 +54,14 @@ public class SummaryStatisticAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return achievementStatistics.size();
+        return individualProviderStatistics.size();
     }
 
     public ProviderReportStatistic getReportStatistic(int position){
         if(position < 0 || position >= getItemCount()){
             return null;
         }
-        return achievementStatistics.get(position);
+        return individualProviderStatistics.get(position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{

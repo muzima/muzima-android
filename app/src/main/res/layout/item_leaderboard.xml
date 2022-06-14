@@ -83,9 +83,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_marginStart="38dp"
-        android:layout_marginEnd="12dp"
         android:layout_height="2dp"
-        android:background="@color/hint_text_grey"/>
+        android:background="#AAAAAA"/>
 </LinearLayout>
 
