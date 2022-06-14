@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <ProgressBar
+            android:id="@+id/summary_statistic_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="50"
+            android:secondaryProgress="100"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circular_progress" />
+
+        <TextView
+            android:id="@+id/summary_statistic_progress_text"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="25%"
+            android:layout_centerInParent="true"
+            android:textColor="@color/primary_black"
+            android:textSize="15sp" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/summary_statistic_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_black"
+            android:textSize="15sp"
+            android:text="16 out of 32 patients contacted"/>
+        <TextView
+            android:id="@+id/summary_statistic_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/hint_text_grey"
+            android:textSize="15sp"
+            android:text="Plan your week to contact all assigned patients"/>
+    </LinearLayout>
+</LinearLayout>

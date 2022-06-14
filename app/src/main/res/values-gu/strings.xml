@@ -714,4 +714,8 @@
     <string name="info_report_dataset_downloaded">%d રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કર્યા</string>
     <string name="info_report_datasets_not_downloaded">કોઈપણ રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કર્યા નથી</string>
     <string name="error_report_dataset_download">રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કરી શકાયા નથી</string>
+    <string name="general_leaderboard">લીડરબોર્ડ</string>
+    <string name="general_performance_comparison">પ્રદર્શન સરખામણી</string>
+    <string name="general_your_statistics">તમારા આંકડા</string>
+    <string name="general_their_statistics">તેમના આંકડા</string>
 </resources>
