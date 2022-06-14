@@ -64,12 +64,17 @@ public class ProviderReportListActivity extends BroadcastListenerActivity implem
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        //reportsAdapter.cancelBackgroundTask();
         AvailableForm report = reportsAdapter.getItem(position);
-        Intent intent = new Intent(this, ProviderReportViewActivity.class);
+        Intent intent = null;
+        if(report.isProviderReport()) {
+            intent = new Intent(this, ProviderReportViewActivity.class);
+            intent.putExtra(ProviderReportViewActivity.REPORT, report);
+        } else if(report.isProviderPerformanceReport()){
+            intent = new Intent(this, ProviderPerformanceReportViewActivity.class);
+            intent.putExtra(ProviderPerformanceReportViewActivity.REPORT, report);
+        }
 
-        intent.putExtra(ProviderReportViewActivity.REPORT, report);
-        startActivity(intent);
+        if(intent != null) startActivity(intent);
     }
 
     @Override

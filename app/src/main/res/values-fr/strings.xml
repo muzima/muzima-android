@@ -722,4 +722,8 @@
     <string name="info_report_dataset_downloaded">%d ensembles de données de rapport téléchargés</string>
     <string name="info_report_datasets_not_downloaded">N\'a téléchargé aucun ensemble de données de rapport</string>
     <string name="error_report_dataset_download">Impossible de télécharger les ensembles de données du rapport</string>
+    <string name="general_leaderboard">Classement</string>
+    <string name="general_performance_comparison">Comparaison des performances</string>
+    <string name="general_your_statistics">Vos statistiques</string>
+    <string name="general_their_statistics">Leurs statistiques</string>
 </resources>
