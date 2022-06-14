@@ -823,4 +823,8 @@
     <string name="info_report_datasets_not_downloaded">Haikupakua Hifadhidata zozote za Ripoti</string>
     <string name="error_report_dataset_download">Haikuweza kupakua seti za data za ripoti</string>
     <string name="general_reports">Ripoti</string>
+    <string name="general_leaderboard">Ubao wa wanaoongoza</string>
+    <string name="general_performance_comparison">Ulinganisho wa Utendaji</string>
+    <string name="general_your_statistics">Takwimu zako</string>
+    <string name="general_their_statistics">Takwimu zake</string>
 </resources>

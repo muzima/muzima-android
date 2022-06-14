@@ -827,4 +827,8 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="info_report_datasets_not_downloaded">Não fez download de nenhum conjunto de dados de relatório</string>
     <string name="error_report_dataset_download">Não foi possível fazer download dos conjuntos de dados do relatório</string>
     <string name="general_reports">Relatórios</string>
+    <string name="general_leaderboard">Entre os melhores</string>
+    <string name="general_performance_comparison">Comparação de desempenho</string>
+    <string name="general_your_statistics">Suas estatísticas</string>
+    <string name="general_their_statistics">Suas estatísticas</string>
 </resources>

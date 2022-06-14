@@ -345,6 +345,13 @@
             android:parentActivityName=".view.patients.PatientSummaryActivity">
         </activity>
 
+        <activity
+            android:name=".view.reports.ProviderPerformanceReportViewActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_provider_reports"
+            android:parentActivityName=".view.reports.ProviderReportListActivity">
+        </activity>
+
         <!-- Wizard Activities Start -->
         <activity
             android:name=".view.initialwizard.SetupMethodPreferenceWizardActivity"

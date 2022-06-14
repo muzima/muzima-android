@@ -835,4 +835,8 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string formatted="false" name="info_report_dataset_downloaded">Downloaded %d Report Datasets</string>
     <string name="info_report_datasets_not_downloaded">Did not download any Report Datasets</string>
     <string name="error_report_dataset_download">Could not download report datasets</string>
+    <string name="general_leaderboard">Leaderboard</string>
+    <string name="general_performance_comparison">Performance Comparison</string>
+    <string name="general_your_statistics">Your Statistics</string>
+    <string name="general_their_statistics">Their Statistics</string>
 </resources>

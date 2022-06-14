@@ -41,7 +41,7 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ThemeUtils.getInstance().onCreate(this,false);
+        ThemeUtils.getInstance().onCreate(this,true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);

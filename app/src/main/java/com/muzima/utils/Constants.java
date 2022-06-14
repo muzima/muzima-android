@@ -45,6 +45,7 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE = "json-SHR-demographics-update";
 
     public static final String FORM_DISCRIMINATOR_PROVIDER_REPORT = "provider-report";
+    public static final String FORM_DISCRIMINATOR_PROVIDER_PERFORMANCE_REPORT = "provider-performance-report";
     public static final String FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS = "json-individual-obs";
     public static final String FORM_JSON_DISCRIMINATOR_RELATIONSHIP = "json-relationship";
     public static final String FORM_JSON_DISCRIMINATOR_PERSON_UPDATE = "json-person-demographics-update";
