@@ -100,9 +100,10 @@
         android:orientation="vertical"
         android:layout_margin="10dp">
         <TextView
+            android:id="@+id/statistics_summary_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Your Statistics"
+            android:text="@string/general_your_statistics"
             android:textColor="#6A0DAD"
             android:textSize="14sp"/>
 
@@ -120,7 +121,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Performance Comparison"
+            android:text="@string/general_performance_comparison"
             android:textColor="#6A0DAD"
             android:textSize="14sp"/>
 
@@ -144,7 +145,7 @@
                 android:id="@+id/leaderboard_section_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Leaderboard"
+                android:text="@string/general_leaderboard"
                 android:textColor="#6A0DAD"
                 android:textSize="14sp"/>
             <ImageView

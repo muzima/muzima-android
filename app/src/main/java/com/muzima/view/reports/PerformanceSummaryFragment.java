@@ -52,15 +52,18 @@ public class PerformanceSummaryFragment extends Fragment {
             ProviderReportStatistic statistic = summaryStatisticAdapter.getReportStatistic(0);
             TextView greeting1 = view.findViewById(R.id.greeting1);
             TextView greeting2 = view.findViewById(R.id.greeting2);
+            TextView statisticsSummaryTitle = view.findViewById(R.id.statistics_summary_title);
             String loggedInUserSystemId = ((MuzimaApplication)getContext().getApplicationContext()).getAuthenticatedUser().getSystemId();
 
             if(StringUtils.equals(statistic.getProviderId(), loggedInUserSystemId)) {
-                greeting1.setText("Hello " + statistic.getProviderName());
+                greeting1.setText(getString(R.string.hello_general) + statistic.getProviderName());
                 greeting1.setVisibility(View.VISIBLE);
                 greeting2.setText("Your performance between XXX and YYY");
+                statisticsSummaryTitle.setText(R.string.general_your_statistics);
             } else {
                 greeting1.setVisibility(View.GONE);
                 greeting2.setText("Performance summary for "+statistic.getProviderName()+" between XXX and YYY");
+                statisticsSummaryTitle.setText(R.string.general_their_statistics);
             }
             ImageView avatar = view.findViewById(R.id.main_avatar_image_view);
             avatar.setImageTintList(ColorStateList.valueOf(statistic.getLeaderboardColor()));
