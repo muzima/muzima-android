@@ -36,6 +36,8 @@ import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
+import net.minidev.json.parser.ParseException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -121,9 +123,9 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
                         datasetMap.put(datasetId,datasetJsonArray);
                     } else {
                         // ToDo: delete this dummy dataset stub
-                         String dataset = "{\"dataset\": [{\"providerSystemId\": \"admin\",\"providerName\": \"Super User\",\"patientsAllocated\": 40,\"patientsVisited\": 20,\"patientsReturned\": 5}," +
+                         String dataset = "[{\"providerSystemId\": \"admin\",\"providerName\": \"Super User\",\"patientsAllocated\": 40,\"patientsVisited\": 20,\"patientsReturned\": 5}," +
                          "{\"providerSystemId\": \"3-4\",\"providerName\": \"James Mwai\",\"patientsAllocated\": 30,\"patientsVisited\": 7,\"patientsReturned\": 1}," +
-                         "{\"providerSystemId\": \"4-10\",\"providerName\": \"Agwero Chaplin\",\"patientsAllocated\": 20,\"patientsVisited\": 19,\"patientsReturned\": 1}]}";
+                         "{\"providerSystemId\": \"4-10\",\"providerName\": \"Agwero Chaplin\",\"patientsAllocated\": 20,\"patientsVisited\": 19,\"patientsReturned\": 1}]";
                         datasetJsonArray = parseDataset(dataset);
                         datasetMap.put(datasetId,datasetJsonArray);
                     }
@@ -252,7 +254,14 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
     }
 
     private JSONArray parseDataset(String dataset){
-        return (JSONArray)JsonUtils.readAsObject(dataset,"dataset");
+        JSONArray jsonArray = new JSONArray();
+        JSONParser jp = new JSONParser(JSONParser.MODE_PERMISSIVE);
+        try {
+            jsonArray = (JSONArray) jp.parse(dataset);
+        } catch (ParseException e) {
+            Log.e(getClass().getSimpleName(), "Parse Exception while parsing dataset "+e);
+        }
+        return jsonArray;
     }
 
     private float getAchievementAverage(JSONArray dataset, String achievementKey, String expectedAchievementKey){
