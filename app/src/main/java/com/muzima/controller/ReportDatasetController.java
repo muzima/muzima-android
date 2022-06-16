@@ -2,6 +2,8 @@ package com.muzima.controller;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_REPORT_DATASETS;
 
+import android.util.Log;
+
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.ReportDataset;
 import com.muzima.api.service.LastSyncTimeService;
@@ -37,7 +39,9 @@ public class ReportDatasetController {
             List<ReportDataset> reportDatasets = new ArrayList<>();
             for(Integer datasetDefinitionId : datasetDefinitionIds){
                 ReportDataset reportDataset = reportDatasetService.downloadReportDatasetByDefinitionIdAndLastSyncDate(lastSyncDate, datasetDefinitionId);
-                reportDatasets.add(reportDataset);
+                if(reportDataset != null) {
+                    reportDatasets.add(reportDataset);
+                }
             }
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_REPORT_DATASETS, sntpService.getTimePerDeviceTimeZone());
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
@@ -49,7 +53,9 @@ public class ReportDatasetController {
 
     public void saveReportDatasets(List<ReportDataset> reportDatasets) throws  ReportDatasetSaveException{
         try {
-              reportDatasetService.saveReportDatasets(reportDatasets);
+            if(reportDatasets.size()>0) {
+                reportDatasetService.saveReportDatasets(reportDatasets);
+            }
         } catch (IOException e) {
             throw new ReportDatasetSaveException(e);
         }
