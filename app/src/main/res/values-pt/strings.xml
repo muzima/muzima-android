@@ -21,14 +21,14 @@
     <string name="captured_date">Data Capturada:</string>
     <string name="card_sync_status_content_description">Status de sincronização do cartão</string>
     <string name="change_settings">Mudar configurações</string>
-    <string name="client_registration_question_text">Você gostaria de registrar o cliente no mUzima?</string>
+    <string name="client_registration_question_text">Você gostaria de registrar o utente no mUzima?</string>
     <string name="complex_obs">Complexo Obs</string>
     <string name="concept_description">Conceito Descrição</string>
     <string name="concept_details">Detalhes do conceito</string>
     <string name="concept_name">Nome do conceito:</string>
-    <string name="confirm_create_patient_from_person">Isso registrará essa pessoa como cliente. Tem certeza de que gostaria de fazer isso?</string>
+    <string name="confirm_create_patient_from_person">Isso registrará essa pessoa como Utente. Tem certeza de que gostaria de fazer isso?</string>
     <string name="confirm_duplicate_form_data_save">Guardar Dados do Formulãrio Duplicado</string>
-    <string name="confirm_patient_id_exists">O cliente já tem o Identificador?</string>
+    <string name="confirm_patient_id_exists">O utente já tem o Identificador?</string>
     <string name="date_general">Encontro</string>
     <string name="date_temp">8 de junho</string>
     <string name="default_form_register">Formulário de Registos</string>
@@ -49,7 +49,7 @@
     <string name="error_audio_record_activity_find">Erro: Actividade para gravar áudio não encontrado</string>
     <string name="error_authentication_fail">Falha na autenticação</string>
     <string name="error_authentication_occur">Ocorreu um erro na autenticação</string>
-    <string name="error_client_download">Não poderá baixar os clientes</string>
+    <string name="error_client_download">Não poderá baixar os utentes</string>
     <string name="error_cohort_download">Não poderá baixar coortes</string>
     <string name="error_cohort_fetch">Algo deu errado enquanto buscava coortes para o repositório local</string>
     <string name="error_cohort_load">Não poderá carregar coortes</string>
@@ -63,7 +63,7 @@
     <string name="error_empty_message_text">Não é possível enviar uma mensagem vazia.</string>
     <string name="error_encounter_download">Não poderá baixar visitas</string>
     <string name="error_encounter_load">Visitas não poderão ser carregados</string>
-    <string name="error_encounter_observation_download">Não poderá baixar observações para os clientes</string>
+    <string name="error_encounter_observation_download">Não poderá baixar observações para os utentes</string>
     <string name="error_exception_data_load">Uma excepção de carregamento foi lançada ao carregar os dados</string>
     <string name="error_exception_data_upload">Uma excepção foi lançada ao carregar os dados</string>
     <string name="error_form_data_delete">Não poderá apagar alguns dados do formulário</string>
@@ -94,12 +94,12 @@
     <string name="error_observation_unavailable">Nenhuma observação disponível</string>
     <string name="error_parse_exception_data_fetch">Excepção de análise foi laçanda enquanto buscava os dados</string>
     <string name="error_patient_data_form_exist">Existe dados do formulário. Finalize os dados incompletos e sincronize os dados completos para o servidor antes de sincronizar os modelos do formulário.</string>
-    <string name="error_patient_download">Não poderá baixar clientes</string>
-    <string name="error_patient_encounter_download">Não poderá baixar visitas para os clientes</string>
-    <string name="error_patient_fetch">Ocorreu um erro enquanto buscava o cliente</string>
-    <string name="error_patient_repo_fetch">Algo deu errado enquanto buscava clientes do repositório local</string>
-    <string name="error_patient_report_fetch">Ocorreu um erro ao obter relatórios de clientes de um repositório local</string>
-    <string name="error_patient_search">Algo deu errado enquanto procurava cliente(s)</string>
+    <string name="error_patient_download">Não poderá baixar utentes</string>
+    <string name="error_patient_encounter_download">Não poderá baixar visitas para os utentes</string>
+    <string name="error_patient_fetch">Ocorreu um erro enquanto buscava o utente</string>
+    <string name="error_patient_repo_fetch">Algo deu errado enquanto buscava utentes do repositório local</string>
+    <string name="error_patient_report_fetch">Ocorreu um erro ao obter relatórios de utentes de um repositório local</string>
+    <string name="error_patient_search">Algo deu errado enquanto procurava utente(s)</string>
     <string name="error_provider_download">Não poderá baixar provedores</string>
     <string name="error_provider_fetch">Algo deu errado enquanto buscava provedores do repositório local</string>
     <string name="error_relationship_load">Não foi possível carregar os relacionamentos</string>
@@ -109,7 +109,7 @@
     <string name="error_settings_download">Não foi possível baixar as configurações</string>
     <string name="error_setup_configuration_download">Configurações de instalação não puderam ser carregadas</string>
     <string name="error_setup_configuration_template_download">Não poderá baixar o modelo de configuração</string>
-    <string name="error_smartcard_client_not_in_server">Cliente de cartão inteligente não no servidor. Registre o cliente no mUzima agora?</string>
+    <string name="error_smartcard_client_not_in_server">utente de cartão inteligente não no servidor. Registre o utente no mUzima agora?</string>
     <string name="error_sync_not_allowed">Acção não permitida enquanto a sincronização está em progresso</string>
     <string name="error_tag_fetch">Algo deu errado enquanto buscava etiquetas do repositório local</string>
     <string name="error_target_application_find">Nenhum aplicativo alvo</string>
@@ -123,7 +123,7 @@
     <string name="feedback_header">Por favor envie-nos seus comentários e feedback</string>
     <string name="feedback_hint">O que você está pensando?</string>
     <string name="feedback_rating_question">Como é fácil usar o aplicativo mUzima?</string>
-    <string name="fill_out_forms_for_a_patient_general">Preencha formulários para um paciente</string>
+    <string name="fill_out_forms_for_a_patient_general">Preencha formulários para um utente</string>
     <string name="form_encounter_date">Data da Consulta:</string>
     <string name="form_encounter_location">Localização da Consulta</string>
     <string name="form_encounter_provider">Provedor da Consulta</string>
@@ -138,9 +138,9 @@
     <string name="general_awaiting_assignment">Aguardando Atribuição</string>
     <string name="general_cancel">Cancelar</string>
     <string name="general_caution">Cuidado!</string>
-    <string name="general_client_list">Lista de clientes</string>
-    <string name="general_client_register">Registar cliente</string>
-    <string name="general_clients">Clientes</string>
+    <string name="general_client_list">Lista de utentes</string>
+    <string name="general_client_register">Registar utente</string>
+    <string name="general_clients">Utentes</string>
     <string name="general_close">Fechar</string>
     <string name="general_cohorts">Coortes</string>
     <string name="general_concepts">Conceitos</string>
@@ -188,7 +188,7 @@
     <string name="general_ok">Ok</string>
     <string name="general_other">De outros</string>
     <string name="general_password">Senha</string>
-    <string name="general_patient_registration">Registro do Cliente</string>
+    <string name="general_patient_registration">Registro do utente</string>
     <string name="general_person_create">Criar Pessoa</string>
     <string name="general_previous">Anterior</string>
     <string name="general_progress_message">Isso pode demorar um pouco</string>
@@ -229,14 +229,14 @@
     <string name="hint_audio_caption">Por favor introduza uma legenda para o áudio</string>
     <string name="hint_audio_record">Gravar ou escolher áudio</string>
     <string name="hint_authentication_progress">Autenticando…</string>
-    <string name="hint_barcode_scanner_setup">Precisa de aplicativo de scanner de código de barra para registar os clientes a partir do telefone. Por favor verifique se isto está instalado no dispositivo ou não.</string>
+    <string name="hint_barcode_scanner_setup">Precisa de aplicativo de scanner de código de barra para registar os utentes a partir do telefone. Por favor verifique se isto está instalado no dispositivo ou não.</string>
     <string name="hint_card_blank">Leia com sucesso, mas o cartão parece estar em branco:</string>
     <string name="hint_card_not_empty">O cartão não está vazio. Por favor, use um novo cartão.</string>
     <string name="hint_check_digit_validation_failure">Por favor introduza os dígitos que correspondem ao algoritmo de verificação de dígitos</string>
-    <string name="hint_client_local_search">Sua pesquisa inclui ID do cliente, primeiro nome, nome do meio e apélido e pesquisado somente no dispositivo</string>
-    <string name="hint_client_location_update">Deseja atualizar a localização da residência deste cliente?</string>
-    <string name="hint_client_remote_search">Sua pesquisa inclui ID do cliente, primeiro nome, nome do meio e apelido e pesquisado no servidor</string>
-    <string name="hint_client_search">Pesquisar clientes</string>
+    <string name="hint_client_local_search">Sua pesquisa inclui ID do utente, primeiro nome, nome do meio e apélido e pesquisado somente no dispositivo</string>
+    <string name="hint_client_location_update">Deseja atualizar a localização da residência deste utente?</string>
+    <string name="hint_client_remote_search">Sua pesquisa inclui ID do utente, primeiro nome, nome do meio e apelido e pesquisado no servidor</string>
+    <string name="hint_client_search">Pesquisar utentes</string>
     <string formatted="false" name="hint_client_summary_encounters">%d Encontros</string>
     <string formatted="false" name="hint_client_summary_forms">%d Incompleto, %d Completo, %d Recomendado</string>
     <string formatted="false" name="hint_client_summary_notifications">%d Novas Notificações, %d Todos de notificações</string>
@@ -245,7 +245,7 @@
     <string name="hint_cohort_download">Seleccione uma ou mais coortes a partir da lista e clique no \'Próximo\' para baixar</string>
     <string name="hint_cohort_filter">Comece a digitar para filtrar as coortes…</string>
     <string name="hint_cohort_list_download">Por favor pressione no carregar para buscar lista de coortes disponíveis no servidor</string>
-    <string name="hint_cohort_prefix_help">Uma coorte é um grupo pré-definido de clientes para o qual você pode preencher os formulários e baixar observações. O(s) préfixo(s) definidos aqui serão usados para baixar coortes mais tarde.</string>
+    <string name="hint_cohort_prefix_help">Uma coorte é um grupo pré-definido de utentes para o qual você pode preencher os formulários e baixar observações. O(s) préfixo(s) definidos aqui serão usados para baixar coortes mais tarde.</string>
     <string name="hint_cohort_prefix_manage">Prefixos de Coorte restringe o descarregamento de coorte para somente  aqueles que começam com um préfixo específico.</string>
     <string name="hint_cohort_sync">Por favor seleccione coortes a partir da lista de todas as coortes e clique em sincronizar</string>
     <string name="hint_cohort_wizard_help">Neste passo do wizard, se baixa as coortes que precisa. Por favor, seleccione as coortes e clique em próximo.</string>
@@ -255,7 +255,7 @@
     <string name="hint_consultation_consultant_validation_failure">Por favor forneça um consultor a partir da lista de possíveis consultores</string>
     <string name="hint_crash_dialog">Ocorreu um erro inesperado, forçando mUzima a parar. Por favor ajude-nos a reparar isto, enviando para nós dados do erro,para isso clique no OK</string>
     <string name="hint_crash_dialog_comment_prompt">Por favor adicione os seus comentários sobre o problema abaixo</string>
-    <string name="hint_create_new_SHR">O cliente não possui um SHR. Você quer criar novos SHR e gravar no cartão?</string>
+    <string name="hint_create_new_SHR">O utente não possui um SHR. Você quer criar novos SHR e gravar no cartão?</string>
     <string name="hint_current_or_past_date_validation_failure">Por favor introduza uma data anterior ou igual a hoje</string>
     <string name="hint_custom_concept_help">Aqui se define conceitos em que os dados serão incluídos no descarregamento mais tarde</string>
     <string name="hint_custom_location_help">Aqui se baixa locais que serão mostrados nos formulários</string>
@@ -268,7 +268,7 @@
     <string name="hint_default_encounter_provider">O utilizador logado será utilizado como provedor de consulta padrão</string>
     <string name="hint_drawer_close">Fechar caixa de etiquetas</string>
     <string name="hint_drawer_open">Abrir caixa de etiquetas</string>
-    <string name="hint_duplicate_form_data_warning">Avisar o utilizador quando o formulário de dados para o mesmo cliente com a mesma data de visita está sendo guardado.</string>
+    <string name="hint_duplicate_form_data_warning">Avisar o utilizador quando o formulário de dados para o mesmo utente com a mesma data de visita está sendo guardado.</string>
     <string name="hint_enable_GPS">Ativar o recurso de coleta de dados do GPS</string>
     <string name="hint_enable_shr">Ativar recurso de cartão inteligente</string>
     <string name="hint_encounter_location_validation_failure">Por favor forneça um local a partir da lista dos possíveis locais</string>
@@ -289,7 +289,7 @@
     <string name="hint_light_mode">Ativar tema claro</string>
     <string name="hint_loading_progress">Carregando…</string>
     <string name="hint_local_connection_unavailable">Por favor conecte o dispositivo e tente de novo</string>
-    <string name="hint_location_addresses_not_set">O endereço do local não foi definido para todos os clientes disponíveis</string>
+    <string name="hint_location_addresses_not_set">O endereço do local não foi definido para todos os utentes disponíveis</string>
     <string name="hint_location_pref_add">Adicione o local que quer baixar</string>
     <string name="hint_manage_concept">Obtenha mais conceitos a partir do servidor ou remova os conceitos a partir deste dispositivo. Conceitos são usados para configurar quais observações para baixar.</string>
     <string name="hint_manage_location">Obtenha mais locais a partir do servidor ou remova os locais a partir deste dispositivo</string>
@@ -312,13 +312,13 @@
     <string name="hint_registration_form_select">Por favor seleccione pelo menos um formulário de registo!</string>
     <string name="hint_repeating_section_minimum_repeats_validation_failure">Repetições minimas não satisfeita. Precisa uma pelo menos</string>
     <string name="hint_reports_unavailable">Por favor, selecione relatórios de todas as listas de formulários e clique em download</string>
-    <string name="hint_require_medical_record_number">Exigir o número de registro médico do cliente durante o registro</string>
+    <string name="hint_require_medical_record_number">Exigir o número de registro médico do utente durante o registro</string>
     <string name="hint_server_connection_unavailable">Por favor contacte o administrador do servidor para verificar a conectividade</string>
     <string name="hint_server_password_prompt">Introduza a senha do OpenMRS</string>
     <string name="hint_server_url">URL do Servidor</string>
     <string name="hint_server_url_prompt">Por favor introduza a URL do servidor</string>
     <string name="hint_session_timeout">Se inactivo para este tempo, mUzima irá automaticamente sair</string>
-    <string name="hint_set_client_location">O local de residência deste cliente não foi definido. Deseja configurá-lo agora?</string>
+    <string name="hint_set_client_location">O local de residência deste utente não foi definido. Deseja configurá-lo agora?</string>
     <string name="hint_set_default_encounter_location_for_SHR">Por favor, defina localização encontro padrão, de modo a permitir a escrita de novo cartão</string>
     <string name="hint_setting_refresh">Deseja voltar a baixar essa configuração do servidor?</string>
     <string name="hint_switch_location_on">Por favor, ative a localização nas configurações.</string>
@@ -334,24 +334,24 @@
     <string name="individual_obs_description">Obs Individual</string>
     <string name="info_authentication_in_progress">Autenticação em progresso…</string>
     <string name="info_background_data_sync_started">Sincronizando dados em segundo plano</string>
-    <string name="info_client_demographics_download">Baixando demográfico de clientes…</string>
-    <string name="info_client_identifier_change">Identificador do cliente mudou no servidor. O novo identificador será usado daqui para frente.</string>
-    <string name="info_client_local_search_not_found">Nenhum cliente corresponde à sua pesquisa localmente. Introduza pelo menos 3 caracteres para a pesquisa remota.</string>
-    <string name="info_client_remote_search_not_found">Nenhum cliente corresponde à sua pesquisa no servidor</string>
+    <string name="info_client_demographics_download">Baixando demográfico de utentes…</string>
+    <string name="info_client_identifier_change">Identificador do utente mudou no servidor. O novo identificador será usado daqui para frente.</string>
+    <string name="info_client_local_search_not_found">Nenhum utente corresponde à sua pesquisa localmente. Introduza pelo menos 3 caracteres para a pesquisa remota.</string>
+    <string name="info_client_remote_search_not_found">Nenhum utente corresponde à sua pesquisa no servidor</string>
     <string name="info_cohort_download">Baixando Coortes</string>
     <string name="info_cohort_downloaded">Baixou 1 coorte</string>
     <string name="info_cohort_fetch_in_progress">Já está buscando as coortes, ignorou o pedido</string>
     <string name="info_cohort_load">Carregando Coortes…</string>
-    <string formatted="false" name="info_cohort_new_patient_download">Baixou %d novos clientes para %d coortes</string>
+    <string formatted="false" name="info_cohort_new_patient_download">Baixou %d novos utentes para %d coortes</string>
     <string name="info_cohort_not_downloaded">Nenhuma coorte baixada</string>
-    <string name="info_cohort_patient_download">Baixou 1 cliente para 1 coorte</string>
-    <string name="info_cohort_patient_not_download">Nenhum cliente foi baixado</string>
-    <string formatted="false" name="info_cohort_patients_download">Baixou %d clientes para 1 coorte</string>
+    <string name="info_cohort_patient_download">Baixou 1 utente para 1 coorte</string>
+    <string name="info_cohort_patient_not_download">Nenhum utente foi baixado</string>
+    <string formatted="false" name="info_cohort_patients_download">Baixou %d utentes para 1 coorte</string>
     <string name="info_cohort_prefixes_unavailable">Nenhum Prefixo de Coorte Adicionado</string>
     <string name="info_cohort_update">Algumas coortes mudaram.</string>
     <string formatted="false" name="info_cohorts_downloaded">Baixou %d provedores coortes</string>
-    <string formatted="false" name="info_cohorts_patient_download">Baixou 1 cliente para %d coortes</string>
-    <string formatted="false" name="info_cohorts_patients_download">Baixou %d clientes para %d coortes</string>
+    <string formatted="false" name="info_cohorts_patient_download">Baixou 1 utente para %d coortes</string>
+    <string formatted="false" name="info_cohorts_patients_download">Baixou %d utentes para %d coortes</string>
     <string name="info_cohorts_unavailable">Nenhuma Coorte Disponível</string>
     <string name="info_complete_form_unavailable">Nenhum formulário completado e não sincronizado</string>
     <string name="info_concept_delete_success">%d conceitos apagados com sucesso</string>
@@ -360,7 +360,7 @@
     <string name="info_concept_not_downloaded">Não baixou nenhum conceito</string>
     <string name="info_concept_unavailable">Nenhum conceito adicionado ainda</string>
     <string formatted="false" name="info_concepts_downloaded">Baixou %d conceitos</string>
-    <string name="info_convert_person_to_patient">Converter pessoa em paciente</string>
+    <string name="info_convert_person_to_patient">Converter pessoa em Utente</string>
     <string name="info_data_sync_cancelled">A sincronização de dados do mUzima foi cancelada.</string>
     <string name="info_disclaimer">
         <![CDATA[
@@ -380,7 +380,7 @@
         cuidados de saúde. Qualquer decisão relativa à adequação do tratamento, ou a validade ou fiabilidade das informações
         ou conteúdos disponibilizados pelo código fechado é a única responsabilidade do provedor de cuidados de saúde.
         Consequentemente, incumbe a cada provedor de cuidados de saúde para verificar toda a história médica e planos de
-        tratamento com cada cliente.
+        tratamento com cada utente.
         </p><p>
         2. Sob nenhuma circunstância e sob nenhuma teoria legal, se o delito (incluindo negligência), contracto ou caso
         contrário, qualquer Colaborador ou qualquer pessoa que distribuir o Software Fechado conforme permitido pela
@@ -407,15 +407,15 @@
     <string name="info_downloaded_reports_unavailable">Nenhum relatório foi baixado</string>
     <string name="info_draft_form_save_success">Racunho do formulário foi guardado com sucesso</string>
     <string name="info_encounter_download">Baixando visitas</string>
-    <string formatted="false" name="info_encounter_download_progress">Visitas baixadas para clientes %d de %d</string>
-    <string formatted="false" name="info_encounter_not_downloaded_progress">Visitas para cliente %d de %d não baixou</string>
+    <string formatted="false" name="info_encounter_download_progress">Visitas baixadas para utentes %d de %d</string>
+    <string formatted="false" name="info_encounter_not_downloaded_progress">Visitas para utente %d de %d não baixou</string>
     <string name="info_encounter_observation_download">Baixando observações e visitas…</string>
-    <string name="info_encounter_patient_downloaded">Baixou 1 visita para 1 cliente</string>
+    <string name="info_encounter_patient_downloaded">Baixou 1 visita para 1 utente</string>
     <string name="info_encounter_patient_not_downloaded">Não baixou nenhuma visita</string>
-    <string formatted="false" name="info_encounter_patients_downloaded">Baixou 1 vista para %d clientes</string>
+    <string formatted="false" name="info_encounter_patients_downloaded">Baixou 1 vista para %d utentes</string>
     <string name="info_encounter_unavailable">Nenhuma visita disponível</string>
-    <string formatted="false" name="info_encounters_patient_downloaded">Baixou %d visitas para 1 cliente</string>
-    <string formatted="false" name="info_encounters_patients_downloaded">Baixou %d visitas para %d clientes</string>
+    <string formatted="false" name="info_encounters_patient_downloaded">Baixou %d visitas para 1 utente</string>
+    <string formatted="false" name="info_encounters_patients_downloaded">Baixou %d visitas para %d utentes</string>
     <string formatted="false" name="info_form_data_delete">Apagado %d formulários</string>
     <string name="info_form_data_save_success">Dados do formulário completado foi guardado com sucessso</string>
     <string name="info_form_data_upload_fail">Falha para sincronizar dados do formulário com o servidor corrente. Pretende continuar?</string>
@@ -460,8 +460,8 @@
     <string name="info_new_notification">Nova Notificação</string>
     <string name="info_new_observation_download">Baixou %d novas observações</string>
     <string formatted="false" name="info_new_observation_download_delete">Baixou %d novas observações e retirou %d observações</string>
-    <string name="info_new_patient_download">Baixou %d novos clientes</string>
-    <string name="info_no_client_available_locally">Nenhum cliente disponível localmente. Digite pelo menos três caracteres para pesquisa remota ou registre novos clientes</string>
+    <string name="info_new_patient_download">Baixou %d novos utentes</string>
+    <string name="info_no_client_available_locally">Nenhum utente disponível localmente. Digite pelo menos três caracteres para pesquisa remota ou registre novos utentes</string>
     <string name="info_no_cohort_download">Nenhuma coorte foi sincronizada</string>
     <string formatted="false" name="info_notification_download">Baixou %d notificações</string>
     <string name="info_notification_download_in_progress">Baixando notificações</string>
@@ -469,22 +469,22 @@
     <string name="info_observation_download">Baixando observações</string>
     <string name="info_observation_in_progress">Observações ainda estão a carregar</string>
     <string name="info_observation_load">Observações estão a carregar</string>
-    <string name="info_observation_patient_downloaded">Baixou 1 observação para 1 cliente</string>
+    <string name="info_observation_patient_downloaded">Baixou 1 observação para 1 utente</string>
     <string name="info_observation_patient_not_downloaded">Não baixou nenhuma observação</string>
-    <string formatted="false" name="info_observation_patients_downloaded">Baixou %d observações para 1 cliente</string>
+    <string formatted="false" name="info_observation_patients_downloaded">Baixou %d observações para 1 utente</string>
     <string name="info_observation_search">Pesquisar observações</string>
     <string name="info_observation_unavailable">Nenhuma observação disponível</string>
-    <string formatted="false" name="info_observations_download_progress">Observações baixadas para cliente %d de %d.</string>
+    <string formatted="false" name="info_observations_download_progress">Observações baixadas para utente %d de %d.</string>
     <string name="info_observations_load_in_progress">Observações ainda estão a carregar</string>
-    <string formatted="false" name="info_observations_not_downloaded_progress">Observações para cliente %d para %d não baixadas.</string>
-    <string formatted="false" name="info_observations_patient_downloaded">Baixou 1 observação para %d clientes</string>
-    <string formatted="false" name="info_observations_patients_downloaded">Baixou %d observações para %d clientes</string>
-    <string name="info_patient_data_download">Bainxando dados dos clientes</string>
-    <string name="info_patient_download">Baixando Clientes</string>
-    <string name="info_patient_reports_download_in_progress">Baixar relatórios de clientes</string>
+    <string formatted="false" name="info_observations_not_downloaded_progress">Observações para utente %d para %d não baixadas.</string>
+    <string formatted="false" name="info_observations_patient_downloaded">Baixou 1 observação para %d utentes</string>
+    <string formatted="false" name="info_observations_patients_downloaded">Baixou %d observações para %d utentes</string>
+    <string name="info_patient_data_download">Bainxando dados dos utentes</string>
+    <string name="info_patient_download">Baixando utentes</string>
+    <string name="info_patient_reports_download_in_progress">Baixar relatórios de utentes</string>
     <string formatted="false" name="info_patient_reports_downloaded">%d Relatórios baixados</string>
     <string name="info_patient_reports_fetch_in_progress">Já buscando relatórios, ignorou a solicitação</string>
-    <string name="info_patient_reports_unavailable">Não há relatórios de clientes disponíveis</string>
+    <string name="info_patient_reports_unavailable">Não há relatórios de utentes disponíveis</string>
     <string name="info_person_creation_failure">Não foi possível criar o registro da pessoa</string>
     <string name="info_provider_delete_success">%d Provedores apagados com sucesso</string>
     <string name="info_provider_download">Baixando Provedores…</string>
@@ -496,9 +496,9 @@
     <string name="info_real_time_upload">mUzima está carregando os dados</string>
     <string name="info_real_time_upload_success">mUzima carregou os dados com sucesso</string>
     <string name="info_relationships_delete_success">%d Relacionamentos excluídos com sucesso</string>
-    <string formatted="false" name="info_relationships_download">Foram baixados %d relacionamentos para %d cliente (s).</string>
-    <string formatted="false" name="info_relationships_download_progress">Relacionamentos baixados para o cliente %d de %d.</string>
-    <string formatted="false" name="info_relationships_not_downloaded_progress">Relacionamentos para o cliente %d de %d não baixados.</string>
+    <string formatted="false" name="info_relationships_download">Foram baixados %d relacionamentos para %d utente (s).</string>
+    <string formatted="false" name="info_relationships_download_progress">Relacionamentos baixados para o utente %d de %d.</string>
+    <string formatted="false" name="info_relationships_not_downloaded_progress">Relacionamentos para o utente %d de %d não baixados.</string>
     <string name="info_relationships_unavailable">Nenhum relacionamento disponível</string>
     <string name="info_scanner_exists">Código de barra já está instalado.</string>
     <string name="info_session_time_out">A sessão expirou. Por favor entra de novo para proceder.</string>
@@ -550,7 +550,7 @@
     <string name="new_messages_number_text"># novas mensagens</string>
     <string name="no_default_encounter_location">Nenhum local de encontro padrão</string>
     <string name="no_description_general">Nenhuma descrição</string>
-    <string name="no_email_client">Nenhum cliente de email instalado neste dispositivo. \nPor favor, instale um e depois deixe seu feedback.</string>
+    <string name="no_email_client">Nenhum utente de email instalado neste dispositivo. \nPor favor, instale um e depois deixe seu feedback.</string>
     <string name="null_encounter_date_error">Ocorreu um erro ao salvar o formulário. A data da consulta deve ser indicada</string>
     <string name="null_encounter_location_error">Ocorreu um erro ao salvar o formulário. A localização do encontro deve ser fornecida</string>
     <string name="null_encounter_provider_error">Ocorreu um erro ao salvar o formulário. Provedor de encontro deve ser fornecido</string>
@@ -558,22 +558,22 @@
     <string name="observation_details">Detalhes de Observação</string>
     <string name="observation_text_dialog">Observação:</string>
     <string name="observation_value">Valor de Observação:</string>
-    <string name="patient_SHR_search_dialog_title">Pesquisa SHR Paciente</string>
-    <string name="patient_SHR_search_title_text">Pesquisa SHR Paciente</string>
+    <string name="patient_SHR_search_dialog_title">Pesquisa SHR Utente</string>
+    <string name="patient_SHR_search_title_text">Pesquisa SHR Utente</string>
     <string name="provider_details">Detalhes do provedor</string>
     <string name="provider_identifier">Identificador de Provedor:</string>
     <string name="provider_name">Nome do provedor:</string>
     <string name="provider_name_general">Nome do provedor</string>
     <string name="provider_reports_general">Relatórios de fornecedores</string>
-    <string name="registering_patient_message_title_text">Registrando cliente em mUzima …</string>
+    <string name="registering_patient_message_title_text">Registrando utente em mUzima …</string>
     <string name="relationship_create_success">Relacionamento criado com sucesso</string>
     <string name="relationship_delete_fail">Não é possível excluir o relacionamento, pois ele já está salvo no servidor. Entre em contato com o administrador</string>
-    <string name="relationship_to_self_error">O cliente não pode se relacionar consigo mesmo</string>
+    <string name="relationship_to_self_error">O utente não pode se relacionar consigo mesmo</string>
     <string name="reply_hint_text">envie sua resposta</string>
     <string name="sample_date_rep">21 de março de 2018</string>
     <string name="sample_date_text">21/02/2018</string>
     <string name="scan_card_id_title">ID do cartão de digitalização</string>
-    <string name="search_patient_on_server_option_title_text">Cliente não está disponível localmente, gostaria de pesquisar no servidor?</string>
+    <string name="search_patient_on_server_option_title_text">utente não está disponível localmente, gostaria de pesquisar no servidor?</string>
     <string name="select_a_registration_form_text">Selecione um formulário de inscrição</string>
     <string name="select_a_relationship_form_text">Selecione um formulário</string>
     <string name="select_default_encounter_location">Escolha seu local de consulta padrão</string>
@@ -589,10 +589,10 @@
     <string name="tagging_forms">Formulários de marcação</string>
     <string name="title_about_dashboard_help_html">Sobre o Painel de Controle</string>
     <string name="title_activity_audio">Adicionar Audio</string>
-    <string name="title_activity_client_encounters">Visitas do Cliente</string>
-    <string name="title_activity_client_observations">Observações do Cliente</string>
+    <string name="title_activity_client_encounters">Visitas do utente</string>
+    <string name="title_activity_client_observations">Observações do utente</string>
     <string name="title_activity_client_reports">Client Reports</string>
-    <string name="title_activity_client_summary">Sumário do Cliente</string>
+    <string name="title_activity_client_summary">Sumário do utente</string>
     <string name="title_activity_cohort_prefix">Prefixos de Coorte</string>
     <string name="title_activity_image">Adicionar Imagem</string>
     <string name="title_activity_video">Adicionar Vídeo</string>
@@ -605,12 +605,12 @@
     <string name="title_audio_record">Gravar Áudio</string>
     <string name="title_barcode_scanner_check">Verificar o Código de Barra</string>
     <string name="title_barcode_scanner_setup">Passo 6: Verificar o scaner de código de barra</string>
-    <string name="title_client_location">Localização dos Clientes</string>
-    <string name="title_client_location_update">Atualizar localização do cliente</string>
-    <string name="title_client_notifications">Notificações do Cliente</string>
-    <string name="title_client_registration_help_video">Registro de cliente</string>
-    <string name="title_client_scan">Examinar código de barras Clientes de digitalização</string>
-    <string name="title_clients_locations">Localizações dos Clientes</string>
+    <string name="title_client_location">Localização dos utentes</string>
+    <string name="title_client_location_update">Atualizar localização do utente</string>
+    <string name="title_client_notifications">Notificações do utente</string>
+    <string name="title_client_registration_help_video">Registro de utente</string>
+    <string name="title_client_scan">Examinar código de barras utentes de digitalização</string>
+    <string name="title_clients_locations">Localizações dos utentes</string>
     <string name="title_cohort_download">Passo 1: Baixar Coorte(s)</string>
     <string name="title_cohort_download_help_video">Descarregamento de Coortes (sob demanda)</string>
     <string name="title_cohort_prefix_help">Definir Prefixo(s) de Ajuda de Coortes</string>
@@ -630,7 +630,7 @@
     <string name="title_enable_gps">Ativar GPS</string>
     <string name="title_enable_gps_location">Ativar localização e conectividade de Internet.</string>
     <string name="title_enable_shr">Ativar SHR</string>
-    <string name="title_fill_patient_forms_help">Preencher formulários para um cliente</string>
+    <string name="title_fill_patient_forms_help">Preencher formulários para um utente</string>
     <string name="title_font_size">Tamanho da fonte</string>
     <string name="title_form_auto_save_interval">Intervalo (mins) de gravação automática de formulário</string>
     <string name="title_form_data_complete">Formulário de Dados Completo</string>
@@ -656,7 +656,7 @@
     <string name="title_introduction_video">Vídeo introdutório para mUzima</string>
     <string name="title_landing_page">Página de destino</string>
     <string name="title_light_mode">Ativar o modo de dia</string>
-    <string name="title_local_client_search_help_video">Pesquisa de clientes (local)</string>
+    <string name="title_local_client_search_help_video">Pesquisa de utentes (local)</string>
     <string name="title_location_download">Passo 3: Adicionar Local(s)</string>
     <string name="title_location_help">Ajuda com Locais</string>
     <string name="title_logo">mUzima Logotipo</string>
@@ -679,10 +679,10 @@
     <string name="title_real_time_sync">Sincronização em tempo real</string>
     <string name="title_require_medical_record_number">Exigir número de registro médico</string>
     <string name="title_search_server">Pesquisa do servidor</string>
-    <string name="title_server_client_search_help_video">Pesquisa de clientes (contra servidor)</string>
+    <string name="title_server_client_search_help_video">Pesquisa de utentes (contra servidor)</string>
     <string name="title_server_side_setup">Instalação do lado do servidor</string>
     <string name="title_session_timeout">Sessão expirou (mins)</string>
-    <string name="title_set_client_location">Definir local do cliente</string>
+    <string name="title_set_client_location">Definir local do utente</string>
     <string name="title_setting_refresh">Configuração de Atualização</string>
     <string name="title_settings_help_html">Configurações do mUzima</string>
     <string name="title_setup_method">Método de instalação</string>
@@ -698,14 +698,14 @@
     <string name="warning_cohort_prefix_exists">Prefixo de coorte existe</string>
     <string name="warning_empty_cohort_prefix">Não pode adicionar um prefixo para coorte vazia</string>
     <string name="warning_form_close">Formulário de fechamento: Isto irá descartar todas suas alterações. Tem certeza que quer fazer isto?</string>
-    <string name="warning_form_data_already_exists">Estes dados do formulário já existem para estes clientes com mesma data de visita</string>
+    <string name="warning_form_data_already_exists">Estes dados do formulário já existem para estes utentes com mesma data de visita</string>
     <string name="warning_forms_complete_and_sync">%s contém alguns formulários associados com isto. Por favor complete e sincroniza estes formulários antes de baixar uma nova versão.</string>
     <string name="warning_incompatible_module">Seu aplicativo atual do mUzima não é compatível com o servidor. Entre em contato com seu administrador.</string>
     <string name="warning_invalid_url_provided">O URL que você forneceu é inválido</string>
     <string name="warning_logout_confirm">Tem certeza que quer sair e fechar o aplicativo mUzima?</string>
-    <string name="warning_registration_form_data_delete">Está para apagar dados de registo. Isto irá apagar o registo do cliente no dispositivo. Tem certeza?</string>
+    <string name="warning_registration_form_data_delete">Está para apagar dados de registo. Isto irá apagar o registo do utente no dispositivo. Tem certeza?</string>
     <string name="warning_related_person_missing">Por favor, escolha uma pessoa relacionada</string>
-    <string name="warning_relationship_exists">O cliente já possui relacionamento %s:%s com %s</string>
+    <string name="warning_relationship_exists">O utente já possui relacionamento %s:%s com %s</string>
     <string name="warning_relationship_type_missing">Por favor, escolha um tipo de relacionamento</string>
     <string name="warning_session_timeout">Sessão expirou: não foi possível definir o tempo limite da sessão. Por favor insira um valor entre 1 e 500.</string>
     <string name="warning_setting_download_failure">Não foi possível baixar ou atualizar a configuração</string>
