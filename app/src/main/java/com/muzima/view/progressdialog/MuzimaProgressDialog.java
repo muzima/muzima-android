@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 import com.muzima.R;
 
@@ -54,8 +55,14 @@ public class MuzimaProgressDialog {
 
     @JavascriptInterface
     public void dismiss() {
-        if (dialog.isShowing()) {
-            dialog.dismiss();
+        try {
+            if ((dialog != null) && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        } catch (final IllegalArgumentException e) {
+            Log.e(getClass().getSimpleName(),"An Illegal Argument Exception  occurred while dismissing the dialog "+e);
+        } catch (final Exception e) {
+            Log.e(getClass().getSimpleName(),"An Exception  occurred while dismissing the dialog "+e);
         }
     }
 }

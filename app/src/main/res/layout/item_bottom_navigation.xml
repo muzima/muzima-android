@@ -22,4 +22,5 @@
         app:itemIconTint="@drawable/bottom_navigation_selected_icon"
         app:itemTextAppearanceActive="@style/bottom_nav_active_text"
         app:itemTextAppearanceInactive="@style/bottom_nav_inactive_text"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:menu="@menu/bottom_navigation_menu"
+        app:labelVisibilityMode="labeled"/>

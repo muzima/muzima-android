@@ -45,6 +45,7 @@ public class Constants {
     public static final String FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE = "json-SHR-demographics-update";
 
     public static final String FORM_DISCRIMINATOR_PROVIDER_REPORT = "provider-report";
+    public static final String FORM_DISCRIMINATOR_PROVIDER_PERFORMANCE_REPORT = "provider-performance-report";
     public static final String FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS = "json-individual-obs";
     public static final String FORM_JSON_DISCRIMINATOR_RELATIONSHIP = "json-relationship";
     public static final String FORM_JSON_DISCRIMINATOR_PERSON_UPDATE = "json-person-demographics-update";
@@ -110,6 +111,7 @@ public class Constants {
         public static final int SYNC_ALL_PATIENT_REPORT_HEADERS_AND_REPORTS = 19;
         public static final int SYNC_SETUP_CONFIGURATION_TEMPLATES = 20;
         public static final int UPDATE_PATIENT_TAGS = 21;
+        public static final int SYNC_REPORT_DATASETS = 22;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;

@@ -60,7 +60,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeUtils.getInstance().onCreate(this,false);
+        ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_remote_search_list);
@@ -247,6 +247,8 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
+            patientAdapter.resetSelectedPatientsUuids();
+            patientAdapter.notifyDataSetChanged();
         }
     }
 

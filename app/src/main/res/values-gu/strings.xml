@@ -814,4 +814,14 @@
     <string name="info_no_forms_data_tip">ડેટા એન્ટ્રી માટે કોઈ ફોર્મ ગોઠવેલ નથી. ડેટા એન્ટ્રી ફોર્મ ઉમેરવા માટે તમારા વ્યવસ્થાપકનો સંપર્ક કરો</string>
     <string name="info_no_observation_for_concept_data_tip">રૂપરેખાંકિત ખ્યાલો માટે કોઈ ઐતિહાસિક ડેટા અસ્તિત્વમાં નથી</string>
     <string name="info_no_observation_and_concept_data_tip">કોઈ વિભાવનાઓ ગોઠવેલ નથી. ખ્યાલો ઉમેરવા માટે તમારા વ્યવસ્થાપકનો સંપર્ક કરો.</string>
+    <string name="error_report_dataset_load">ફોર્મ માટે રિપોર્ટ ડેટાસેટ લોડ કરતી વખતે એક ભૂલ આવી</string>
+    <string name="info_report_dataset_download_in_progress">રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કરી રહ્યાં છીએ</string>
+    <string name="info_report_dataset_downloaded">%d રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કર્યા</string>
+    <string name="info_report_datasets_not_downloaded">કોઈપણ રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કર્યા નથી</string>
+    <string name="error_report_dataset_download">રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કરી શકાયા નથી</string>
+    <string name="general_reports">અહેવાલો</string>
+    <string name="general_leaderboard">લીડરબોર્ડ</string>
+    <string name="general_performance_comparison">પ્રદર્શન સરખામણી</string>
+    <string name="general_your_statistics">તમારા આંકડા</string>
+    <string name="general_their_statistics">તેમના આંકડા</string>
 </resources>

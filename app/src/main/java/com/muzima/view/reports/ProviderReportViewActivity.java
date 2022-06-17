@@ -25,7 +25,7 @@ import com.muzima.api.model.Provider;
 import com.muzima.model.AvailableForm;
 import com.muzima.controller.FormController;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.utils.javascriptinterface.FormDataJavascriptInterface;
+import com.muzima.utils.javascriptinterface.ProviderReportJavascriptInterface;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
@@ -41,7 +41,7 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ThemeUtils.getInstance().onCreate(this,false);
+        ThemeUtils.getInstance().onCreate(this,true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
@@ -72,8 +72,8 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
         webView.getSettings( ).setDomStorageEnabled(true);
         webView.getSettings( ).setBuiltInZoomControls(true);
 
-        webView.addJavascriptInterface(new FormDataJavascriptInterface((MuzimaApplication) getApplicationContext()),
-                "formDataInterface");
+        webView.addJavascriptInterface(new ProviderReportJavascriptInterface(this),
+                "providerReportInterface");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
         webView.loadDataWithBaseURL("file:///android_asset/www/forms/", prePopulateData( ),

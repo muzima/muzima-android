@@ -61,7 +61,6 @@
             android:layout_marginTop="6dp"
             android:layout_marginEnd="12dp"
             android:fontFamily="@font/roboto_regular"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
             android:textSize="14sp" />
 
     </LinearLayout>

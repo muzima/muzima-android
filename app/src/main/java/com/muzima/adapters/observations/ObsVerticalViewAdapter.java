@@ -145,11 +145,15 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
     public List<Observation> getObservationForDate(String date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         observationList = new ArrayList<>();
+        List<String> observationUuids = new ArrayList<>();
         try {
             List<Observation> observations = observationController.getObservationsByPatient(patientUuid);
             for (Observation observation : observations){
-                if (date.equals(dateFormat.format(observation.getObservationDatetime()))) {
-                    observationList.add(observation);
+                if(!observationUuids.contains(observation.getUuid())) {
+                    if (date.equals(dateFormat.format(observation.getObservationDatetime()))) {
+                        observationUuids.add(observation.getUuid());
+                        observationList.add(observation);
+                    }
                 }
             }
         } catch (ObservationController.LoadObservationException e) {

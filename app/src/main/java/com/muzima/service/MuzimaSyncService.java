@@ -40,6 +40,7 @@ import com.muzima.api.model.Provider;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
+import com.muzima.api.model.ReportDataset;
 import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.CohortController;
@@ -55,6 +56,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.RelationshipController;
+import com.muzima.controller.ReportDatasetController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
@@ -107,6 +109,7 @@ public class MuzimaSyncService {
     private PatientReportController patientReportController;
     private RelationshipController relationshipController;
     private PersonController personController;
+    private ReportDatasetController reportDatasetController;
     private Logger logger;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
@@ -125,6 +128,7 @@ public class MuzimaSyncService {
         patientReportController = muzimaApplication.getPatientReportController();
         relationshipController = muzimaApplication.getRelationshipController();
         personController = muzimaApplication.getPersonController();
+        reportDatasetController = muzimaApplication.getReportDatasetController();
     }
 
     public int authenticate(String[] credentials) {
@@ -1630,5 +1634,39 @@ public class MuzimaSyncService {
                 Log.e(getClass().getSimpleName(), "Could not load observations to create tags tags", e);
             }
         }
+    }
+
+    public int[] downloadReportDatasets(List<Integer> datasetDefinitionIds){
+        int[] result = new int[2];
+        try {
+            List<ReportDataset> reportDatasets = reportDatasetController.downloadReportDatasets(datasetDefinitionIds);
+            reportDatasetController.saveReportDatasets(reportDatasets);
+            result[0] = SUCCESS;
+            result[1] = reportDatasets.size();
+
+        } catch (ReportDatasetController.ReportDatasetDownloadException | ReportDatasetController.ReportDatasetSaveException e) {
+            Log.e(TAG, "Encountered Load Exception while getting report datasets", e);
+        }
+
+        return result;
+    }
+
+
+    public int[] downloadReportDatasetsForDownloadedReports(){
+        int[] result = new int[2];
+        List<Integer> datasetDefinitionIds = new ArrayList<>();
+        try {
+            List<ReportDataset> reportDatasets = reportDatasetController.getReportDatasets();
+            if(reportDatasets != null && reportDatasets.size()>0){
+                for(ReportDataset reportDataset : reportDatasets){
+                    datasetDefinitionIds.add(reportDataset.getDatasetDefinitionId());
+                }
+                downloadReportDatasets(datasetDefinitionIds);
+            }
+        } catch (ReportDatasetController.ReportDatasetFetchException e) {
+            Log.e(getClass().getSimpleName(), "Error while fetching report datasets"+e);
+        }
+
+        return result;
     }
 }

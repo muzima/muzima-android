@@ -9,6 +9,8 @@
  */
 package com.muzima.view.relationship;
 
+import static com.muzima.view.patients.PatientSummaryActivity.CALLING_ACTIVITY;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -213,6 +215,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         }
         else if (item.getItemId() == android.R.id.home) {
                 Intent intent = new Intent(this.getApplicationContext(), PatientSummaryActivity.class);
+                intent.putExtra(CALLING_ACTIVITY, RelationshipsListActivity.class.getSimpleName());
                 if(patient != null)
                     intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
                 startActivity(intent);
@@ -724,7 +727,8 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         SparseBooleanArray checkedItemPositions = lvwPatientRelationships.getCheckedItemPositions();
         for (int i = 0; i < checkedItemPositions.size(); i++) {
             if (checkedItemPositions.valueAt(i)) {
-                lvwPatientRelationships.getChildAt(checkedItemPositions.keyAt(i)).setBackgroundResource(typedValue.resourceId);
+                if(lvwPatientRelationships.getChildAt(checkedItemPositions.keyAt(i)) != null)
+                    lvwPatientRelationships.getChildAt(checkedItemPositions.keyAt(i)).setBackgroundResource(typedValue.resourceId);
             }
         }
     }
