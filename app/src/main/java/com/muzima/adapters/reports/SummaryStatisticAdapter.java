@@ -37,7 +37,7 @@ public class SummaryStatisticAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder)holder;
         ProviderReportStatistic statistic = individualProviderStatistics.get(position);
-        viewHolder.summaryStatisticTitle.setText(statistic.getStatisticTitle());
+        viewHolder.summaryStatisticTitle.setText(statistic.getStatisticTitle()+" ("+statistic.getAchievement()+"/"+statistic.getExpectedAchievement()+")");
         viewHolder.summaryStatisticHint.setText(statistic.getStatisticHint());
 
         int achievementRate = statistic.getExpectedAchievement() == 0? 0 : statistic.getAchievement()*100/statistic.getExpectedAchievement();
