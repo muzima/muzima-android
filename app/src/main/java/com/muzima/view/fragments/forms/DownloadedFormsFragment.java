@@ -194,7 +194,7 @@ public class DownloadedFormsFragment extends Fragment implements FormsRecyclerVi
                                 formTemplatesWithAssociatedFormData(selectedFormsUUIDs);
                         if (formTemplatesWithAssociatedFormData.isEmpty()) {
                             formController.deleteFormTemplatesByUUID(selectedFormsUUIDs);
-                            recyclerViewAdapter.notifyDataSetChanged();
+                            loadData(null);
                             endActionMode();
                             Toast.makeText(getActivity(), getActivity().getString(R.string.info_form_delete_success), Toast.LENGTH_SHORT).show();
                         } else {
