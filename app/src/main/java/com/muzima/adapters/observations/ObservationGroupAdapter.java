@@ -208,7 +208,8 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                                             } else if (concept.isCoded()) {
                                                 value = getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
                                             } else if (concept.isDatetime()) {
-                                                value = dateFormat.format(observation.getValueDatetime());
+                                                if(observation.getValueDatetime() != null)
+                                                    value = dateFormat.format(observation.getValueDatetime());
                                             } else {
                                                 value = observation.getValueText();
                                             }
