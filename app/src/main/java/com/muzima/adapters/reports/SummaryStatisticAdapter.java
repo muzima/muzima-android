@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class SummaryStatisticAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         SummaryStatisticAdapter.ViewHolder viewHolder = (SummaryStatisticAdapter.ViewHolder)holder;
         ProviderReportStatistic statistic = individualProviderStatistics.get(position);
-        viewHolder.summaryStatisticTitle.setText(statistic.getStatisticTitle());
+        viewHolder.summaryStatisticTitle.setText(statistic.getStatisticTitle()+" ("+statistic.getAchievement()+"/"+statistic.getExpectedAchievement()+")");
         viewHolder.summaryStatisticHint.setText(statistic.getStatisticHint());
 
         int achievementRate = statistic.getExpectedAchievement() == 0? 0 : statistic.getAchievement()*100/statistic.getExpectedAchievement();
@@ -48,7 +49,9 @@ public class SummaryStatisticAdapter extends RecyclerView.Adapter {
 
         Drawable drawable = context.getResources().getDrawable(R.drawable.circular_progress);
         viewHolder.summaryStatisticProgress.setProgressDrawable(drawable);
-        viewHolder.summaryStatisticProgress.setProgressTintList(ColorStateList.valueOf(Color.parseColor(statistic.getSummaryColorCode())));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            viewHolder.summaryStatisticProgress.setProgressTintList(ColorStateList.valueOf(Color.parseColor(statistic.getSummaryColorCode())));
+        }
 
     }
 
