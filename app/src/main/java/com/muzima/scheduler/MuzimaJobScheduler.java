@@ -9,21 +9,40 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import android.widget.Toast;
+
+import androidx.fragment.app.FragmentActivity;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.Form;
 import com.muzima.api.model.Person;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.model.User;
 import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.SetupConfigurationController;
+import com.muzima.model.CompleteFormWithPatientData;
+import com.muzima.model.ConceptIcons;
+import com.muzima.model.DownloadedForm;
+import com.muzima.model.IncompleteFormWithPatientData;
+import com.muzima.model.collections.CompleteFormsWithPatientData;
+import com.muzima.model.collections.DownloadedForms;
+import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.util.JsonUtils;
 import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
 import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.view.forms.SyncFormIntent;
+import com.muzima.view.forms.SyncFormTemplateIntent;
 import com.muzima.view.reports.SyncAllPatientReports;
 import com.muzima.view.reports.SyncReportDatasets;
 import com.muzima.view.setupconfiguration.SyncSetupConfigurationTemplates;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @SuppressLint("NewApi")
 public class MuzimaJobScheduler extends JobService {
@@ -210,6 +229,7 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            new FormTemplateSyncBackgroundTask().execute();
         }
     }
 
@@ -217,6 +237,111 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected Void doInBackground(Void... voids) {
             new SyncReportDatasets(getApplicationContext()).start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class FormTemplateSyncBackgroundTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Context context = getApplicationContext();
+                //Get forms in the config
+                String configJson = "";
+                List<String> formUuids = new ArrayList<>();
+
+                SetupConfigurationTemplate activeSetupConfig = ((MuzimaApplication) context).getSetupConfigurationController().getActiveSetupConfigurationTemplate();
+                configJson = activeSetupConfig.getConfigJson();
+                List<Object> forms = JsonUtils.readAsObjectList(configJson, "$['config']['forms']");
+                for (Object form : forms) {
+                    net.minidev.json.JSONObject form1 = (net.minidev.json.JSONObject) form;
+                    String formUuid = form1.get("uuid").toString();
+                    formUuids.add(formUuid);
+                }
+
+                DownloadedForms downloadedForms = ((MuzimaApplication) context).getFormController().getAllDownloadedForms();
+                List<String> formTemplatesToDeleteUuids = new ArrayList<>();
+                List<String> downloadedFormUuids = new ArrayList<>();
+                List<String>  formTemplateToDownload= new ArrayList<>();
+
+                //Get forms previously downloaded but not in the updated config
+                for(DownloadedForm downloadedForm: downloadedForms){
+                    if(!formUuids.contains(downloadedForm.getFormUuid())){
+                        formTemplatesToDeleteUuids.add(downloadedForm.getFormUuid());
+                    }
+                    downloadedFormUuids.add(downloadedForm.getFormUuid());
+                }
+
+                //Get Added forms to updated config
+                for(String formUuid : formUuids){
+                    if(!downloadedFormUuids.contains(formUuid)){
+                        formTemplateToDownload.add(formUuid);
+                    }
+                }
+
+                //Get Forms with Updates
+                List<Form> allForms = ((MuzimaApplication) context).getFormController().getAllAvailableForms();
+                for (Form form : allForms) {
+                    if (form.isUpdateAvailable() && formUuids.contains(form.getUuid())) {
+                        formTemplateToDownload.add(form.getUuid());
+                    }
+                }
+
+                boolean isFormWithPatientDataAvailable = ((MuzimaApplication) context).getFormController().isFormWithPatientDataAvailable(context);
+
+                if(!isFormWithPatientDataAvailable){
+                    String[] formsToDownload = formTemplateToDownload.stream().toArray(String[]::new);
+
+                    if(formTemplatesToDeleteUuids.size()>0)
+                        ((MuzimaApplication) context).getFormController().deleteFormTemplatesByUUID(formTemplatesToDeleteUuids);
+
+                    if(formTemplateToDownload.size()>0)
+                        new SyncFormTemplateIntent(context, formsToDownload).start();
+                }else{
+                    List<String> formsWithPatientData = new ArrayList<>();
+
+                    CompleteFormsWithPatientData completeFormsWithPatientData = ((MuzimaApplication) context).getFormController().getAllCompleteFormsWithPatientData(context);
+                    IncompleteFormsWithPatientData incompleteFormsWithPatientData = ((MuzimaApplication) context).getFormController().getAllIncompleteFormsWithPatientData();
+
+                    for(CompleteFormWithPatientData completeFormWithPatientData : completeFormsWithPatientData){
+                        formsWithPatientData.add(completeFormWithPatientData.getFormUuid());
+                    }
+
+                    for(IncompleteFormWithPatientData inCompleteFormWithPatientData : incompleteFormsWithPatientData){
+                        formsWithPatientData.add(inCompleteFormWithPatientData.getFormUuid());
+                    }
+
+                    for(String formTemplateToDeleteUuid : formTemplatesToDeleteUuids) {
+                        if (!formsWithPatientData.contains(formTemplateToDeleteUuid)) {
+                            //Delete form template
+                            ((MuzimaApplication) context).getFormController().deleteFormTemplatesByUUID(Collections.singletonList(formTemplateToDeleteUuid));
+                        }
+                    }
+
+                    List<String> formsToDownloadUuids = new ArrayList<>();
+                    for(String formTemplateUuidToDownload : formTemplateToDownload) {
+                        if (!formsWithPatientData.contains(formTemplateUuidToDownload)) {
+                            formsToDownloadUuids.add(formTemplateUuidToDownload);
+
+                        }
+                    }
+                    if(formsToDownloadUuids.size()>0){
+                        //Download Templates
+                        new SyncFormTemplateIntent(context, formsToDownloadUuids.stream().toArray(String[]::new)).start();
+                    }
+                }
+            } catch (FormController.FormFetchException e){
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not fetch downloaded forms ",e);
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e){
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get the active config ",e);
+            } catch (FormController.FormDeleteException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not delete form templates ",e);
+            }
             return null;
         }
 
