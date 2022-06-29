@@ -14,10 +14,12 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.model.User;
+import com.muzima.controller.CohortController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.SetupConfigurationController;
@@ -36,6 +38,7 @@ import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.view.forms.SyncFormIntent;
 import com.muzima.view.forms.SyncFormTemplateIntent;
+import com.muzima.view.patients.SyncPatientDataIntent;
 import com.muzima.view.reports.SyncAllPatientReports;
 import com.muzima.view.reports.SyncReportDatasets;
 import com.muzima.view.setupconfiguration.SyncSetupConfigurationTemplates;
@@ -112,16 +115,18 @@ public class MuzimaJobScheduler extends JobService {
         if (parameters == null) {
             Log.e(getClass().getSimpleName(), "Parameters for job is null");
         } else {
+            new SyncSetupConfigTemplatesBackgroundTask().execute();
             new CohortsAndPatientFullDataSyncBackgroundTask().execute();
             new FormDataUploadBackgroundTask().execute();
             new ProcessedTemporaryFormDataCleanUpBackgroundTask().execute();
-            new SyncSetupConfigTemplatesBackgroundTask().execute();
             new SyncSettinsBackgroundTask().execute();
             if(muzimaSettingController.isClinicalSummaryEnabled()) {
                 new SyncAllPatientReportsBackgroundTask().execute();
             }
             new FormMetaDataSyncBackgroundTask().execute();
             new SyncReportDatasetsBackgroundTask().execute();
+            new FormTemplateSyncBackgroundTask().execute();
+            new DownloadAndDeleteCohortsBasedOnConfigChangesBackgroundTask().execute();
         }
     }
 
@@ -229,7 +234,6 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            new FormTemplateSyncBackgroundTask().execute();
         }
     }
 
@@ -350,4 +354,71 @@ public class MuzimaJobScheduler extends JobService {
             super.onPostExecute(aVoid);
         }
     }
+
+    private class DownloadAndDeleteCohortsBasedOnConfigChangesBackgroundTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Context context = getApplicationContext();
+                //Get cohorts in the config
+                String configJson = "";
+                List<String> cohortUuids = new ArrayList<>();
+
+                SetupConfigurationTemplate activeSetupConfig = ((MuzimaApplication) context).getSetupConfigurationController().getActiveSetupConfigurationTemplate();
+                configJson = activeSetupConfig.getConfigJson();
+                List<Object> cohorts = JsonUtils.readAsObjectList(configJson, "$['config']['cohorts']");
+                for (Object cohort : cohorts) {
+                    net.minidev.json.JSONObject cohort1 = (net.minidev.json.JSONObject) cohort;
+                    String cohortUuid = cohort1.get("uuid").toString();
+                    cohortUuids.add(cohortUuid);
+                }
+
+                List<Cohort> syncedCohorts = ((MuzimaApplication) context).getCohortController().getSyncedCohorts();
+                List<String> cohortsToSetAsUnsyncedUuids = new ArrayList<>();
+                List<String> downloadedCohortUuids = new ArrayList<>();
+                List<String> cohortsToDownload= new ArrayList<>();
+
+                //Get cohorts previously downloaded but not in the updated config
+                for(Cohort cohort: syncedCohorts){
+                    if(!cohortUuids.contains(cohort.getUuid())){
+                        cohortsToSetAsUnsyncedUuids.add(cohort.getUuid());
+                    }
+                    downloadedCohortUuids.add(cohort.getUuid());
+                }
+
+                //Get Added cohorts to updated config
+                for(String cohortUuid : cohortUuids){
+                    if(!downloadedCohortUuids.contains(cohortUuid)){
+                        cohortsToDownload.add(cohortUuid);
+                    }
+                }
+
+                if(cohortsToSetAsUnsyncedUuids.size()>0) {
+                    ((MuzimaApplication) context).getCohortController().setSyncStatus(cohortsToSetAsUnsyncedUuids.stream().toArray(String[]::new), 0);
+                    ((MuzimaApplication) context).getCohortController().deletePatientsNotBelongingToAnotherCohortByCohortUuids(cohortsToSetAsUnsyncedUuids);
+                    ((MuzimaApplication) context).getCohortController().deleteAllCohortMembersByCohortUuids(cohortsToSetAsUnsyncedUuids);
+
+                }
+
+                if(cohortsToDownload.size()>0)
+                    new SyncPatientDataIntent(context, cohortsToDownload.stream().toArray(String[]::new)).start();
+
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e){
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get the active config ",e);
+            } catch (CohortController.CohortFetchException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not be able to fetch cohort ",e);
+            } catch (CohortController.CohortUpdateException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not able to update cohort ",e);
+            } catch (CohortController.CohortReplaceException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not able to replace cohort ",e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
 }
