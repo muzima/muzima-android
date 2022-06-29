@@ -52,10 +52,8 @@ public class HelpActivity extends BaseHelpActivity {
     private static final String CLIENT_REGISTRATION = "https://youtu.be/fmjhF-juq4k";
     private static final String LOCAL_CLIENT_SEARCH = "https://youtu.be/630daM1wxGE";
     private static final String SERVER_CLIENT_SEARCH = "https://youtu.be/C1xDs8wWjNM";
-    private static final String PRIVACY_POLICY_URL = "https://www.muzima.org/privacy-policy";
-    private static final String TERMS_AND_CONDITIONS = "https://www.muzima.org/terms-and-conditions";
-    private TextView helpContentView;
-    private View scrollView;
+    private static final String PRIVACY_POLICY_URL = "file:///android_asset/www/help-content/privacy_policy.html";
+    private static final String TERMS_AND_CONDITIONS = "file:///android_asset/www/help-content/terms_and_conditions.html";
 
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
