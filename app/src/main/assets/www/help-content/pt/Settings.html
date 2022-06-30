@@ -12,109 +12,106 @@
 </head>
 	
 <body class="col-md-8 col-md-offset-2">
-	<h2 class="text-center"> mUzima Settings </h2>
-<p>On the mUzima dashboard page tap on the 3 dots on the righthand cornerand tap on settings
+<h2 class="text-center"> Configurações do mUzima </h2>
+<p>Na página do painel do mUzima, toque nos 3 pontos no canto direito e toque em configurações
     :</p>
-<!--<div class="padded_div_images">
-    <img src="../../help-content/images/settings-icon.jpeg" width="250" height="350">
-</div>-->	
 
-<p> <Strong>Appearance of the settings page
-	:</Strong></p>
-	<div class="padded_div_images">
+<p> <Strong>Aparência da página de configurações
+    :</Strong></p>
+<div class="padded_div_images">
     <img src="../../help-content/images/settings-page.jpeg" width="250" height="350">
 </div>
 
-<p> <Strong>Operations under settings
-	:</Strong></p>
+<p> <Strong>Operações em configurações
+    :</Strong></p>
 
 <div id="listContainer">
-            <ul id="expList">
+    <ul>
+        <li>
+            Configurações do servidor
+            <ul>
                 <li>
-                    Server Settings
+                    Isso identifica o URL ao qual o aplicativo mUzima está vinculado e extrai dados. Para alterar a URL do servidor, toque no link do servidor disponível e você poderá fazer as alterações necessárias. O nome de usuário e a senha só podem ser alterados do lado do servidor. Depois de alterar o URL, toque em OK.
+                </li>
+            </ul>
+        </li>
+        <li>
+            configurações do mUzima
+            <ul>
+                <li>Tempo limite
+                    <ul>
+                        <span>Tempo limite refere-se ao tempo de inatividade após o qual o Aplicativo será desconectado automaticamente. Este é um recurso de segurança que visa proteger as informações do paciente.</span>
+                    </ul>
+                </li>
+
+                <li>Intervalo de salvamento automático do formulário
+                    <ul>
+                        <span>Este é o intervalo de tempo que leva para que os formulários sejam salvos automaticamente sem a necessidade de o provedor salvar conscientemente. </span>
+                    </ul>
+                </li>
+
+                <li>Sincronização em tempo real
+                    <ul>
+                        <span>Permite o upload automático de formulários de pacientes preenchidos</span>
+                    </ul>
+                </li>
+
+                <li>Aviso de dados de formulário duplicados
+                    <ul>
+                        <span>Assim que a caixa de verificação estiver marcada, o usuário será avisado caso uma duplicata de um formulário para o mesmo paciente esteja sendo preenchida.</span>
+                    </ul>
+                </li>
+
+                <li>Tamanho da fonte
+                    <ul>
+                        <span>Aqui o usuário pode ajustar o tamanho da fonte para o mais adequado, escolhendo entre as fontes pequenas, médias ou grandes. Este tamanho de fonte se aplica a formulários.</span>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            Configurações de provedor/local
+            <ul>
+                <li>Provedor de encontro padrão
+                    <ul>
+                        <span>Depois que esta caixa de seleção estiver marcada, o usuário conectado será o provedor por padrão.</span>
+                    </ul>
+                </li>
+                <li>
+                    Adicionar provedor(es)
                     <ul>
                         <li>
-                            This identifies the URL to which the mUzima App is linked and draws data from. To change server URL, tap on the available server link and you'll be enabled to make the necessary changes. The User name and password can only be changed from the server side. After changing the URL, tap on Okay.
+                            <span>Nesta seção, o usuário pode adicionar provedores</span>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    mUzima settings
-					<ul>
-					<li>Time Out
-					<ul>
-					<span>Time out refers to the time of inactivity after which the Aplication will automatically log out. This is a security feature that is aimed at safeguarding patient information.</span>
-					</ul>
-					</li>
-					
-					<li>Automatic form save interval
-					<ul>
-					<span>This is the time interval it takes for the forms to save automatically without the need of the provider consciously saving. </span>
-					</ul>
-					</li>
-					
-					<li>Real time sync
-					<ul>
-					<span>Allows for automatic upload of completed patient forms</span>
-					</ul>
-					</li>
-					
-					<li>Duplicate form data warning
-					<ul>
-					<span>Once the chaeck box is checked, the user will be warned in case a duplicate of a form for the same patient is being filled.</span>
-					</ul>
-					</li>
-					
-					<li>Font size
-					<ul>
-					<span>Here the user can adjust the font size to one that is most suitable by choosing among the small, medium or large fonts. This font size applies to forms.</span>
-					</ul>
-					</li>
-					</ul>
-                </li>
-                <li>
-                    Provider/Location settings
-                    <ul>
-                        <li>Default encounter provider
-					<ul>
-					<span>Once this checkbox is checked, the logged in user will be the provider by default.</span>
-					</ul>
-					</li>
-                        <li>
-                            Add provider(s)
-                            <ul>
-                                <li>
-                                    <span>Under this section, the user can add providers</span>
-                                </li>
-                            </ul>
-                        </li>
-						<li>
-                            Add location(s)
-                            <ul>
-                                <li>
-                                    <span>Under this section, the user can add Locations</span>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-				<li>
-                    Cohort Settings
+                    Adicionar locais
                     <ul>
                         <li>
-                            Add cohort prefixes
-                        </li>
-                        <li>
-                            Add concept(s)
-                            <ul>
-                                <li>
-                                    <span>The user can download more concepts as need may arise</span>
-                                </li>
-                            </ul>
+                            <span>Nesta seção, o usuário pode adicionar locais</span>
                         </li>
                     </ul>
                 </li>
             </ul>
-        </div>	
+        </li>
+        <li>
+            Configurações de coorte
+            <ul>
+                <li>
+                    Adicionar prefixos de coorte
+                </li>
+                <li>
+                    Adicionar conceito(s)
+                    <ul>
+                        <li>
+                            <span>O usuário pode baixar mais conceitos conforme a necessidade</span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
 </body>
 </html>
