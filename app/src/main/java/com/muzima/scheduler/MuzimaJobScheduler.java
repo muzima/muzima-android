@@ -1,5 +1,7 @@
 package com.muzima.scheduler;
 
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+
 import android.annotation.SuppressLint;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
@@ -10,29 +12,44 @@ import android.util.Log;
 
 import android.widget.Toast;
 
-import androidx.fragment.app.FragmentActivity;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.Concept;
 import com.muzima.api.model.Form;
+import com.muzima.api.model.Location;
+import com.muzima.api.model.MuzimaSetting;
+import com.muzima.api.model.Observation;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
+import com.muzima.api.model.Provider;
+import com.muzima.api.model.ReportDataset;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.model.User;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.ObservationController;
+import com.muzima.controller.PatientController;
+import com.muzima.controller.ProviderController;
+import com.muzima.controller.ReportDatasetController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.CompleteFormWithPatientData;
-import com.muzima.model.ConceptIcons;
 import com.muzima.model.DownloadedForm;
 import com.muzima.model.IncompleteFormWithPatientData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.model.collections.DownloadedForms;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
+import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.JsonUtils;
+import com.muzima.util.MuzimaSettingUtils;
+import com.muzima.utils.Constants;
 import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
 import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.SyncSettingsIntent;
@@ -56,12 +73,14 @@ public class MuzimaJobScheduler extends JobService {
     private Person person;
     private boolean isAuthPerson = false;
     private MuzimaSettingController muzimaSettingController;
+    private SetupConfigurationController setupConfigurationController;
 
     @Override
     public void onCreate() {
         super.onCreate();
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
         muzimaSettingController = muzimaApplication.getMuzimaSettingController();
+        setupConfigurationController = muzimaApplication.getSetupConfigurationController();
         muzimaSynService = muzimaApplication.getMuzimaSyncService();
         authenticatedUser = muzimaApplication.getAuthenticatedUser();
         if (authenticatedUser != null){
@@ -124,9 +143,6 @@ public class MuzimaJobScheduler extends JobService {
                 new SyncAllPatientReportsBackgroundTask().execute();
             }
             new FormMetaDataSyncBackgroundTask().execute();
-            new SyncReportDatasetsBackgroundTask().execute();
-            new FormTemplateSyncBackgroundTask().execute();
-            new DownloadAndDeleteCohortsBasedOnConfigChangesBackgroundTask().execute();
         }
     }
 
@@ -225,22 +241,135 @@ public class MuzimaJobScheduler extends JobService {
     }
 
     private class SyncSetupConfigTemplatesBackgroundTask extends AsyncTask<Void,Void,Void> {
+        Context context = getApplicationContext();
         @Override
         protected Void doInBackground(Void... voids) {
             new SyncSetupConfigurationTemplates(getApplicationContext()).start();
+            try {
+                for (SetupConfigurationTemplate template : setupConfigurationController.getSetupConfigurationTemplates()) {
+                    int[] templateResult = downloadAndSaveUpdatedSetupConfigurationTemplate(template.getUuid());
+                    if (templateResult[0] == SUCCESS) {
+                        List<MuzimaSetting> settings = muzimaSettingController.getSettingsFromSetupConfigurationTemplate(template.getUuid());
+
+                        updateSettingsPreferences(settings);
+                    }
+                }
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+                Log.e(getClass().getSimpleName(),"Exception while fetching setup configs ",e);
+            } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+                Log.e(getClass().getSimpleName(),"Exception while fetching config settings ",e);
+            }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            new SyncReportDatasetsBackgroundTask().execute();
+            new FormTemplateSyncBackgroundTask().execute();
+            new DownloadAndDeleteCohortsBasedOnConfigChangesBackgroundTask().execute();
+            new DownloadAndDeleteLocationBasedOnConfigChangesBackgroundTask().execute();
+            new DownloadAndDeleteProvidersBasedOnConfigChangesBackgroundTask().execute();
+            new DownloadAndDeleteConceptsBasedOnConfigChangesBackgroundTask().execute();
+        }
+
+        public int[] downloadAndSaveUpdatedSetupConfigurationTemplate(String uuid) {
+            int[] result = new int[2];
+            try {
+                SetupConfigurationTemplate setupConfigurationTemplate =
+                        setupConfigurationController.downloadUpdatedSetupConfigurationTemplate(uuid);
+                result[0] = SUCCESS;
+                if (setupConfigurationTemplate != null) {
+                    result[1] = 1;
+                    setupConfigurationController.updateSetupConfigurationTemplate(setupConfigurationTemplate);
+                }
+
+            } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
+                Log.e(getClass().getSimpleName(), "Exception when trying to download setup configs");
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
+            } catch (SetupConfigurationController.SetupConfigurationSaveException e) {
+                Log.e(getClass().getSimpleName(), "Exception when trying to save setup configs");
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
+            }
+            return result;
+        }
+
+        public void updateSettingsPreferences(List<MuzimaSetting> muzimaSettings) {
+            for (MuzimaSetting muzimaSetting : muzimaSettings) {
+                if (MuzimaSettingUtils.isGpsFeatureEnabledSetting(muzimaSetting)) {
+                    ((MuzimaApplication) context).getGPSFeaturePreferenceService().updateGPSDataPreferenceSettings();
+                } else if (MuzimaSettingUtils.isSHRFeatureEnabledSetting(muzimaSetting)) {
+                    new SHRStatusPreferenceService(((MuzimaApplication) context)).updateSHRStatusPreference();
+                } else if (MuzimaSettingUtils.isPatientIdentifierAutogenerationSetting(muzimaSetting)) {
+                    new RequireMedicalRecordNumberPreferenceService(((MuzimaApplication) context)).updateRequireMedicalRecordNumberPreference();
+                }
+            }
         }
     }
 
     private class SyncReportDatasetsBackgroundTask extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... voids) {
-            new SyncReportDatasets(getApplicationContext()).start();
+            Context context = getApplicationContext();
+            ReportDatasetController reportDatasetController = ((MuzimaApplication) context).getReportDatasetController();
+            try {
+                //Get datasets in the config
+                String configJson = "";
+                List<Integer> datasetIds = new ArrayList<>();
+
+                SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+                configJson = activeSetupConfig.getConfigJson();
+                List<Object> datasets = JsonUtils.readAsObjectList(configJson, "$['config']['datasets']");
+                for (Object dataset : datasets) {
+                    net.minidev.json.JSONObject dataset1 = (net.minidev.json.JSONObject) dataset;
+                    Integer datasetId = (Integer)dataset1.get("id");
+                    datasetIds.add(datasetId);
+                }
+
+                List<ReportDataset> reportDatasets = reportDatasetController.getReportDatasets();
+                List<Integer> datasetToDeleteIds = new ArrayList<>();
+                List<Integer> downloadedDatasetIds = new ArrayList<>();
+                List<Integer> datasetToDownload= new ArrayList<>();
+
+                //Get datasets previously downloaded but not in the updated config
+                for(ReportDataset downloadedDataset: reportDatasets){
+                    if(!datasetIds.contains(downloadedDataset.getDatasetDefinitionId())){
+                        datasetToDeleteIds.add(downloadedDataset.getDatasetDefinitionId());
+                    }
+                    downloadedDatasetIds.add(downloadedDataset.getDatasetDefinitionId());
+                }
+
+                //sync the downloaded datasets with changes
+                if(downloadedDatasetIds.size() > 0){
+                    List<ReportDataset> reportDatasetList = reportDatasetController.downloadReportDatasets(downloadedDatasetIds, true);
+                    reportDatasetController.saveReportDatasets(reportDatasetList);
+                }
+
+                //Get Added datasets to updated config
+                for(Integer datasetId : datasetIds){
+                    if(!downloadedDatasetIds.contains(datasetId)){
+                        datasetToDownload.add(datasetId);
+                    }
+                }
+
+                if(datasetToDeleteIds.size() > 0) {
+                    reportDatasetController.deleteReportDatasets(datasetToDeleteIds);
+                }
+
+                if(datasetToDownload.size()>0){
+                    //Download Added datasets
+                    List<ReportDataset> reportDatasetList = reportDatasetController.downloadReportDatasets(downloadedDatasetIds, false);
+                    reportDatasetController.saveReportDatasets(reportDatasetList);
+                }
+            } catch (ReportDatasetController.ReportDatasetSaveException reportDatasetSaveException) {
+            reportDatasetSaveException.printStackTrace();
+            } catch (SetupConfigurationController.SetupConfigurationFetchException setupConfigurationFetchException) {
+                setupConfigurationFetchException.printStackTrace();
+            } catch (ReportDatasetController.ReportDatasetDownloadException reportDatasetDownloadException) {
+                reportDatasetDownloadException.printStackTrace();
+            } catch (ReportDatasetController.ReportDatasetFetchException reportDatasetFetchException) {
+                reportDatasetFetchException.printStackTrace();
+            }
             return null;
         }
 
@@ -255,11 +384,12 @@ public class MuzimaJobScheduler extends JobService {
         protected Void doInBackground(Void... voids) {
             try {
                 Context context = getApplicationContext();
+                FormController formController = ((MuzimaApplication) context).getFormController();
                 //Get forms in the config
                 String configJson = "";
                 List<String> formUuids = new ArrayList<>();
 
-                SetupConfigurationTemplate activeSetupConfig = ((MuzimaApplication) context).getSetupConfigurationController().getActiveSetupConfigurationTemplate();
+                SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
                 configJson = activeSetupConfig.getConfigJson();
                 List<Object> forms = JsonUtils.readAsObjectList(configJson, "$['config']['forms']");
                 for (Object form : forms) {
@@ -268,7 +398,7 @@ public class MuzimaJobScheduler extends JobService {
                     formUuids.add(formUuid);
                 }
 
-                DownloadedForms downloadedForms = ((MuzimaApplication) context).getFormController().getAllDownloadedForms();
+                DownloadedForms downloadedForms = formController.getAllDownloadedForms();
                 List<String> formTemplatesToDeleteUuids = new ArrayList<>();
                 List<String> downloadedFormUuids = new ArrayList<>();
                 List<String>  formTemplateToDownload= new ArrayList<>();
@@ -289,28 +419,28 @@ public class MuzimaJobScheduler extends JobService {
                 }
 
                 //Get Forms with Updates
-                List<Form> allForms = ((MuzimaApplication) context).getFormController().getAllAvailableForms();
+                List<Form> allForms = formController.getAllAvailableForms();
                 for (Form form : allForms) {
                     if (form.isUpdateAvailable() && formUuids.contains(form.getUuid())) {
                         formTemplateToDownload.add(form.getUuid());
                     }
                 }
 
-                boolean isFormWithPatientDataAvailable = ((MuzimaApplication) context).getFormController().isFormWithPatientDataAvailable(context);
+                boolean isFormWithPatientDataAvailable = formController.isFormWithPatientDataAvailable(context);
 
                 if(!isFormWithPatientDataAvailable){
                     String[] formsToDownload = formTemplateToDownload.stream().toArray(String[]::new);
 
                     if(formTemplatesToDeleteUuids.size()>0)
-                        ((MuzimaApplication) context).getFormController().deleteFormTemplatesByUUID(formTemplatesToDeleteUuids);
+                        formController.deleteFormTemplatesByUUID(formTemplatesToDeleteUuids);
 
                     if(formTemplateToDownload.size()>0)
                         new SyncFormTemplateIntent(context, formsToDownload).start();
                 }else{
                     List<String> formsWithPatientData = new ArrayList<>();
 
-                    CompleteFormsWithPatientData completeFormsWithPatientData = ((MuzimaApplication) context).getFormController().getAllCompleteFormsWithPatientData(context);
-                    IncompleteFormsWithPatientData incompleteFormsWithPatientData = ((MuzimaApplication) context).getFormController().getAllIncompleteFormsWithPatientData();
+                    CompleteFormsWithPatientData completeFormsWithPatientData = formController.getAllCompleteFormsWithPatientData(context);
+                    IncompleteFormsWithPatientData incompleteFormsWithPatientData = formController.getAllIncompleteFormsWithPatientData();
 
                     for(CompleteFormWithPatientData completeFormWithPatientData : completeFormsWithPatientData){
                         formsWithPatientData.add(completeFormWithPatientData.getFormUuid());
@@ -323,7 +453,7 @@ public class MuzimaJobScheduler extends JobService {
                     for(String formTemplateToDeleteUuid : formTemplatesToDeleteUuids) {
                         if (!formsWithPatientData.contains(formTemplateToDeleteUuid)) {
                             //Delete form template
-                            ((MuzimaApplication) context).getFormController().deleteFormTemplatesByUUID(Collections.singletonList(formTemplateToDeleteUuid));
+                            formController.deleteFormTemplatesByUUID(Collections.singletonList(formTemplateToDeleteUuid));
                         }
                     }
 
@@ -360,11 +490,12 @@ public class MuzimaJobScheduler extends JobService {
         protected Void doInBackground(Void... voids) {
             try {
                 Context context = getApplicationContext();
+                CohortController cohortController = ((MuzimaApplication) context).getCohortController();
                 //Get cohorts in the config
                 String configJson = "";
                 List<String> cohortUuids = new ArrayList<>();
 
-                SetupConfigurationTemplate activeSetupConfig = ((MuzimaApplication) context).getSetupConfigurationController().getActiveSetupConfigurationTemplate();
+                SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
                 configJson = activeSetupConfig.getConfigJson();
                 List<Object> cohorts = JsonUtils.readAsObjectList(configJson, "$['config']['cohorts']");
                 for (Object cohort : cohorts) {
@@ -373,7 +504,7 @@ public class MuzimaJobScheduler extends JobService {
                     cohortUuids.add(cohortUuid);
                 }
 
-                List<Cohort> syncedCohorts = ((MuzimaApplication) context).getCohortController().getSyncedCohorts();
+                List<Cohort> syncedCohorts = cohortController.getSyncedCohorts();
                 List<String> cohortsToSetAsUnsyncedUuids = new ArrayList<>();
                 List<String> downloadedCohortUuids = new ArrayList<>();
                 List<String> cohortsToDownload= new ArrayList<>();
@@ -394,9 +525,9 @@ public class MuzimaJobScheduler extends JobService {
                 }
 
                 if(cohortsToSetAsUnsyncedUuids.size()>0) {
-                    ((MuzimaApplication) context).getCohortController().setSyncStatus(cohortsToSetAsUnsyncedUuids.stream().toArray(String[]::new), 0);
-                    ((MuzimaApplication) context).getCohortController().deletePatientsNotBelongingToAnotherCohortByCohortUuids(cohortsToSetAsUnsyncedUuids);
-                    ((MuzimaApplication) context).getCohortController().deleteAllCohortMembersByCohortUuids(cohortsToSetAsUnsyncedUuids);
+                    cohortController.setSyncStatus(cohortsToSetAsUnsyncedUuids.stream().toArray(String[]::new), 0);
+                    cohortController.deletePatientsNotBelongingToAnotherCohortByCohortUuids(cohortsToSetAsUnsyncedUuids);
+                    cohortController.deleteAllCohortMembersByCohortUuids(cohortsToSetAsUnsyncedUuids);
 
                 }
 
@@ -421,4 +552,260 @@ public class MuzimaJobScheduler extends JobService {
         }
     }
 
+    private class DownloadAndDeleteLocationBasedOnConfigChangesBackgroundTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Context context = getApplicationContext();
+                LocationController locationController = ((MuzimaApplication) context).getLocationController();
+                //Get locations in the config
+                String configJson = "";
+                List<String> locationUuids = new ArrayList<>();
+
+                SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+                configJson = activeSetupConfig.getConfigJson();
+                List<Object> locations = JsonUtils.readAsObjectList(configJson, "$['config']['locations']");
+                for (Object location : locations) {
+                    net.minidev.json.JSONObject location1 = (net.minidev.json.JSONObject) location;
+                    String locationUuid = location1.get("uuid").toString();
+                    locationUuids.add(locationUuid);
+                }
+
+                List<Location> downloadedLocations = locationController.getAllLocations();
+                List<Location> locationsToBeDeleted = new ArrayList<>();
+                List<String> downloadedLocationUuids = new ArrayList<>();
+                List<String> locationsToDownload= new ArrayList<>();
+
+                //Get locations previously downloaded but not in the updated config
+                for(Location location: downloadedLocations){
+                    if(!locationUuids.contains(location.getUuid())){
+                        locationsToBeDeleted.add(location);
+                    }
+                    downloadedLocationUuids.add(location.getUuid());
+                }
+
+                //Get Added locations to updated config
+                for(String locationUuid : locationUuids){
+                    if(!downloadedLocationUuids.contains(locationUuid)){
+                        locationsToDownload.add(locationUuid);
+                    }
+                }
+
+                if(locationsToBeDeleted.size()>0) {
+                    locationController.deleteLocations(locationsToBeDeleted);
+                }
+
+                if(locationsToDownload.size()>0) {
+                    List<Location> locationList = locationController.downloadLocationsFromServerByUuid(locationsToDownload.stream().toArray(String[]::new));
+                    locationController.saveLocations(locationList);
+                }
+
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e){
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get the active config ",e);
+            } catch (LocationController.LocationLoadException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get locations ",e);
+            } catch (LocationController.LocationDeleteException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not delete locations ",e);
+            } catch (LocationController.LocationDownloadException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not download locations ",e);
+            } catch (LocationController.LocationSaveException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not save locations ",e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class DownloadAndDeleteProvidersBasedOnConfigChangesBackgroundTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Context context = getApplicationContext();
+                ProviderController providerController = ((MuzimaApplication) context).getProviderController();
+                //Get providers in the config
+                String configJson = "";
+                List<String> providerUuids = new ArrayList<>();
+
+                SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+                configJson = activeSetupConfig.getConfigJson();
+                List<Object> providers = JsonUtils.readAsObjectList(configJson, "$['config']['providers']");
+                for (Object provider : providers) {
+                    net.minidev.json.JSONObject provider1 = (net.minidev.json.JSONObject) provider;
+                    String providerUuid = provider1.get("uuid").toString();
+                    providerUuids.add(providerUuid);
+                }
+
+                List<Provider> syncedproviders = providerController.getAllProviders();
+                List<Provider> providersToBeDeleted = new ArrayList<>();
+                List<String> downloadedproviderUuids = new ArrayList<>();
+                List<String> providersToDownload= new ArrayList<>();
+
+                //Get providers previously downloaded but not in the updated config
+                for(Provider provider: syncedproviders){
+                    if(!providerUuids.contains(provider.getUuid())){
+                        providersToBeDeleted.add(provider);
+                    }
+                    downloadedproviderUuids.add(provider.getUuid());
+                }
+
+                //Get Added providers to updated config
+                for(String providerUuid : providerUuids){
+                    if(!downloadedproviderUuids.contains(providerUuid)){
+                        providersToDownload.add(providerUuid);
+                    }
+                }
+
+                if(providersToBeDeleted.size()>0) {
+                    providerController.deleteProviders(providersToBeDeleted);
+                }
+
+                if(providersToDownload.size()>0) {
+                    List<Provider> providerList = providerController.downloadProvidersFromServerByUuid(providersToDownload.stream().toArray(String[]::new));
+                    providerController.saveProviders(providerList);
+                }
+
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e){
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get the active config ",e);
+            } catch (ProviderController.ProviderLoadException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not load providers ",e);
+            } catch (ProviderController.ProviderDeleteException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not delete providers ",e);
+            } catch (ProviderController.ProviderDownloadException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not download providers ",e);
+            } catch (ProviderController.ProviderSaveException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not save providers ",e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class  DownloadAndDeleteConceptsBasedOnConfigChangesBackgroundTask extends AsyncTask<Void,Void,Void>{
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Context context = getApplicationContext();
+                ConceptController conceptController = ((MuzimaApplication) context).getConceptController();
+                ObservationController observationController = ((MuzimaApplication) context).getObservationController();
+                //Get concepts in the config
+                String configJson = "";
+                List<String> conceptUuids = new ArrayList<>();
+
+                SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+                configJson = activeSetupConfig.getConfigJson();
+                List<Object> concepts = JsonUtils.readAsObjectList(configJson, "$['config']['concepts']");
+                for (Object concept : concepts) {
+                    net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
+                    String conceptUuid = concept1.get("uuid").toString();
+                    conceptUuids.add(conceptUuid);
+                }
+
+                List<Concept> downloadedConcepts = conceptController.getConcepts();
+                List<Concept> conceptsToBeDeleted = new ArrayList<>();
+                List<String> downloadedConceptUuids = new ArrayList<>();
+                List<String> conceptsToDownload= new ArrayList<>();
+
+                //Get concepts previously downloaded but not in the updated config
+                for(Concept concept: downloadedConcepts){
+                    if(!conceptUuids.contains(concept.getUuid())){
+                        conceptsToBeDeleted.add(concept);
+                    }
+                    downloadedConceptUuids.add(concept.getUuid());
+                }
+
+                //Get Added concepts to updated config
+                for(String conceptUuid : conceptUuids){
+                    if(!downloadedConceptUuids.contains(conceptUuid)){
+                        conceptsToDownload.add(conceptUuid);
+                    }
+                }
+
+                if(conceptsToBeDeleted.size()>0) {
+                    conceptController.deleteConcepts(conceptsToBeDeleted);
+                    observationController.deleteAllObservations(conceptsToBeDeleted);
+                }
+
+                if(conceptsToDownload.size()>0) {
+                    List<Patient> patients = ((MuzimaApplication) context).getPatientController().getAllPatients();
+                    List<String> patientUuids = new ArrayList<>();
+                    for(Patient patient : patients){
+                        patientUuids.add(patient.getUuid());
+                    }
+                    List<List<String>> slicedPatientUuids = split(patientUuids);
+                    List<List<String>> slicedConceptUuids = split(conceptsToDownload);
+
+                    List<Concept> conceptList = conceptController.downloadConceptsByUuid(conceptsToDownload.stream().toArray(String[]::new));
+                    if(conceptList.size()>0){
+                        List<Observation> observations = new ArrayList<>();
+
+                        conceptController.saveConcepts(conceptList);
+                        for (List<String> slicedPatientUuid : slicedPatientUuids) {
+                            for (List<String> slicedConceptUuid : slicedConceptUuids) {
+                                List<Observation> observationsDownloaded = observationController.downloadObservationsForAddedConceptsByPatientUuidsAndConceptUuids(slicedPatientUuid, slicedConceptUuid,activeSetupConfig.getUuid());
+
+                                if(observationsDownloaded.size() > 0){
+                                    observations.addAll(observationsDownloaded);
+                                }
+                            }
+                        }
+                        if(observations.size() > 0){
+                            observationController.saveObservations(observations);
+                        }
+                    }
+                }
+
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e){
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get the active config ",e);
+            } catch (ConceptController.ConceptFetchException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get concepts ",e);
+            } catch (ConceptController.ConceptDeleteException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not delete concepts ",e);
+            } catch (ObservationController.DeleteObservationException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not delete observations ",e);
+            } catch (ConceptController.ConceptDownloadException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not download concepts ",e);
+            } catch (PatientController.PatientLoadException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not load patients ",e);
+            } catch (ObservationController.DownloadObservationException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not download observations ",e);
+            } catch (ObservationController.SaveObservationException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not save observations ",e);
+            } catch (ConceptController.ConceptSaveException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not save concepts ",e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        private List<List<String>> split(final List<String> strings) {
+            List<List<String>> lists = new ArrayList<>();
+
+            int count = 0;
+            boolean hasElements = !strings.isEmpty();
+            while (hasElements) {
+                int startElement = count * 100;
+                int endElement = ++count * 100;
+                hasElements = strings.size() > endElement;
+                if (hasElements) {
+                    lists.add(strings.subList(startElement, endElement));
+                } else {
+                    lists.add(strings.subList(startElement, strings.size()));
+                }
+            }
+
+            return lists;
+        }
+    }
 }

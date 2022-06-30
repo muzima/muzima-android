@@ -669,7 +669,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected int[] doInBackground(Void... voids) {
                 List<Integer> datasetDefinitionIds = extractDatasetDefinitionIds();
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                int[] resultForReportDataset = muzimaSyncService.downloadReportDatasets(datasetDefinitionIds);
+                int[] resultForReportDataset = muzimaSyncService.downloadReportDatasets(datasetDefinitionIds, false);
                 return resultForReportDataset;
             }
 

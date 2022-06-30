@@ -1187,10 +1187,10 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] downloadReportDatasets(List<Integer> datasetDefinitionIds){
+    public int[] downloadReportDatasets(List<Integer> datasetDefinitionIds, boolean isDeltaSync){
         int[] result = new int[2];
         try {
-            List<ReportDataset> reportDatasets = reportDatasetController.downloadReportDatasets(datasetDefinitionIds);
+            List<ReportDataset> reportDatasets = reportDatasetController.downloadReportDatasets(datasetDefinitionIds, isDeltaSync);
             reportDatasetController.saveReportDatasets(reportDatasets);
             result[0] = SUCCESS;
             result[1] = reportDatasets.size();
@@ -1203,7 +1203,7 @@ public class MuzimaSyncService {
     }
 
 
-    public int[] downloadReportDatasetsForDownloadedReports(){
+    public int[] downloadReportDatasetsForDownloadedReports(boolean isDeltaSync){
         int[] result = new int[2];
         List<Integer> datasetDefinitionIds = new ArrayList<>();
         try {
@@ -1212,7 +1212,7 @@ public class MuzimaSyncService {
                 for(ReportDataset reportDataset : reportDatasets){
                     datasetDefinitionIds.add(reportDataset.getDatasetDefinitionId());
                 }
-                downloadReportDatasets(datasetDefinitionIds);
+                downloadReportDatasets(datasetDefinitionIds, isDeltaSync);
             }
         } catch (ReportDatasetController.ReportDatasetFetchException e) {
             Log.e(getClass().getSimpleName(), "Error while fetching report datasets"+e);
