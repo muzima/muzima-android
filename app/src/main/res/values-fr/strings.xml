@@ -14,7 +14,6 @@
     <string name="add_individual_observation_text">Ajouter une observation individuelle</string>
     <string name="app_name">mUzima</string>
     <string name="app_title">mUzima pour les fournisseurs de soins de santé</string>
-    <string name="app_version">Version de l\'application</string>
     <string name="ask_help">Demander de l\'aide</string>
     <string name="assignment_form_not_downloaded_warning">Il semble que le formulaire de devoir n\'est pas téléchargé, veuillez confirmer qu\'il est téléchargé ou contacter l\'administrateur.</string>
     <string name="assignment_form_uuid_missing_warning">Désolé, le formulaire de devoir n\'a pas été défini. Veuillez contacter l\'administrateur.</string>
@@ -105,8 +104,6 @@
     <string name="error_provider_fetch">Quelque chose a mal tourné lors de l\'extraction des données des fournisseurs du repositoire local</string>
     <string name="error_relationship_load">Les relations n\'ont pas pu être chargées</string>
     <string name="error_relationship_type_load">Les types de relation n\'ont pas pu être chargés</string>
-    <string name="error_report_dataset_download">Impossible de télécharger les ensembles de données du rapport</string>
-    <string name="error_report_dataset_load">Une erreur s\'est produite lors du chargement du jeu de données du rapport pour le formulaire</string>
     <string name="error_server_connection_unavailable">Serveur inaccessible</string>
     <string name="error_server_url_invalid">adresse URL du serveur non valide.</string>
     <string name="error_settings_download">Impossible de télécharger les paramètres</string>
@@ -170,7 +167,6 @@
     <string name="general_has_sexual_partner">A un partenaire sexuel</string>
     <string name="general_help">Aide</string>
     <string name="general_large">Large</string>
-    <string name="general_leaderboard">Classement</string>
     <string name="general_load">Charger</string>
     <string name="general_loading_encounters">Les rencontres sont toujours en cours de chargement</string>
     <string name="general_loading_relationships">Les relations sont toujours en cours de chargement</string>
@@ -193,7 +189,6 @@
     <string name="general_other">Autre</string>
     <string name="general_password">Mot de passe</string>
     <string name="general_patient_registration">Enregistrement du client</string>
-    <string name="general_performance_comparison">Comparaison des performances</string>
     <string name="general_person_create">Créer une personne</string>
     <string name="general_previous">Précedent</string>
     <string name="general_progress_message">Ceci pourra prendre du temps</string>
@@ -214,7 +209,6 @@
     <string name="general_synced">Synchronisé</string>
     <string name="general_tags">Étiquettes</string>
     <string name="general_thank_you">Merci!</string>
-    <string name="general_their_statistics">Leurs statistiques</string>
     <string name="general_unexpected_error_occurred">Une erreur inattendue s\'est produite</string>
     <string name="general_update">Mise à jour</string>
     <string name="general_upload">Télécharger</string>
@@ -223,7 +217,6 @@
     <string name="general_welcome">Bienvenue</string>
     <string name="general_years_character">A</string>
     <string name="general_yes">Oui</string>
-    <string name="general_your_statistics">Vos statistiques</string>
     <string name="get_more">Plus du serveur</string>
     <string name="header_cohort_category">Paramètres de cohorte</string>
     <string name="header_muzima_category">Paramètres de mUzima</string>
@@ -471,9 +464,6 @@
     <string name="info_new_patient_download">%d nouveaux clients Téléchargés</string>
     <string name="info_no_client_available_locally">Pas de clients disponibles localement. Saisissez au moins 3 caractères pour la recherche à distance ou enregistrez de nouveaux clients.</string>
     <string name="info_no_cohort_download">Aucune cohorte n \'a été synchronisé</string>
-    <string name="info_no_forms_data_tip">Aucun formulaire configuré pour la saisie de données. Contactez votre administrateur pour ajouter des formulaires de saisie de données</string>
-    <string name="info_no_observation_and_concept_data_tip">Aucun concept configuré. Contactez votre administrateur pour ajouter des concepts.</string>
-    <string name="info_no_observation_for_concept_data_tip">Aucune donnée historique n\'existe pour les concepts configurés</string>
     <string formatted="false" name="info_notification_download">%d notifications Téléchargées</string>
     <string name="info_notification_download_in_progress">Notifications en cours de téléchargement</string>
     <string name="info_notification_unavailable">Aucune notification disponible</string>
@@ -504,16 +494,13 @@
     <string name="info_provider_not_downloaded">N\'a pas téléchargé aucun fournisseurs</string>
     <string name="info_provider_unavailable">Aucun fournisseur n\'a encore été ajouté</string>
     <string formatted="false" name="info_providers_downloaded">%d fournisseurs téléchargés</string>
-    <string name="info_real_time_upload">mUzima est entrain de télécharger vos données</string>
+    <string name="info_real_time_upload">Muzima est entrain de télécharger vos données</string>
     <string name="info_real_time_upload_success">MUzima a téléchargé vos données avec succès</string>
     <string name="info_relationships_delete_success">%d relations supprimées avec succès</string>
     <string formatted="false" name="info_relationships_download">Téléchargé %d relations pour %d client (s).</string>
     <string formatted="false" name="info_relationships_download_progress">Relations téléchargées pour le client %d sur %d.</string>
     <string formatted="false" name="info_relationships_not_downloaded_progress">Relations pour le client %d sur %d non téléchargées.</string>
     <string name="info_relationships_unavailable">Aucune relation disponible</string>
-    <string name="info_report_dataset_download_in_progress">Téléchargement des ensembles de données de rapport</string>
-    <string name="info_report_dataset_downloaded">%d ensembles de données de rapport téléchargés</string>
-    <string name="info_report_datasets_not_downloaded">N\'a téléchargé aucun ensemble de données de rapport</string>
     <string name="info_scanner_exists">Le scanner de code à barres est déjà installé.</string>
     <string name="info_session_time_out">Votre session a expiré. S\'il vous plaît connecter-vous à nouveau pour continuer.</string>
     <string name="info_setting_download_success">Paramètre téléchargé et mis à jour avec succès</string>
@@ -533,7 +520,6 @@
     <string name="info_submitted_form_data_status_check">Vérification du statut des formulaires récemment soumis.</string>
     <string name="info_submitted_form_data_status_check_failure">Impossible de vérifier l\'état des formulaires récemment soumis.</string>
     <string name="info_tag_unavailable">Aucune etiquette n\'est disponible</string>
-    <string name="info_terms_and_conditions">Termes et conditions</string>
     <string name="info_update_available">Mise à jour disponible</string>
     <string name="info_update_person_demographics">Mettre à jour les données démographiques des personnes</string>
     <string name="info_url_validate">Étape 1: Validation de l\'URL</string>
@@ -603,8 +589,6 @@
     <string name="synced_total_label_text">## Synchronisé, ## Total</string>
     <string name="tagging_forms">Marquage des formulaires</string>
     <string name="title_about_dashboard_help_html">À propos du tableau de bord</string>
-    <string name="title_active_setup_config">Configuration d\'installation active</string>
-    <string name="general_about_muzima">À propos de mUzima</string>
     <string name="title_activity_audio">Ajouter Audio</string>
     <string name="title_activity_client_encounters">Rencontres avec les clients</string>
     <string name="title_activity_client_observations">Observations des clients</string>
@@ -670,14 +654,12 @@
     <string name="title_initial_setup_guide">guide de configuration initiale de mUzima</string>
     <string name="title_install_barcode_scanner">Installer le scanner de codes à barres</string>
     <string name="title_install_psmart">Installer l\'application P-Smart</string>
-    <string name="title_introduction_video">Vidéo d\'introduction à mUzima</string>
+    <string name="title_introduction_video">Vidéo d\'introduction à Muzima</string>
     <string name="title_landing_page">Page d\'atterissage</string>
-    <string name="title_last_logged_in">Date de la dernière connexion</string>
     <string name="title_light_mode">Activer le mode jour</string>
     <string name="title_local_client_search_help_video">Recherche de clients (locale)</string>
     <string name="title_location_download">Étape 3: Ajouter des emplacements</string>
     <string name="title_location_help">aide des emplacements</string>
-    <string name="title_logged_in_user">Utilisateur connecté</string>
     <string name="title_logo">Logo de mUzima</string>
     <string name="title_logout_confirm">Confirmation!</string>
     <string name="title_manage_concept">Gérer les fournisseurs</string>
@@ -732,4 +714,17 @@
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
     <string name="youTube_player_error">Une erreur s\'est produite lors du chargement de la vidéo YouTube</string>
+    <string name="info_no_forms_data_tip">Aucun formulaire configuré pour la saisie de données. Contactez votre administrateur pour ajouter des formulaires de saisie de données</string>
+    <string name="info_no_observation_for_concept_data_tip">Aucune donnée historique n\'existe pour les concepts configurés</string>
+    <string name="info_no_observation_and_concept_data_tip">Aucun concept configuré. Contactez votre administrateur pour ajouter des concepts.</string>
+    <string name="error_report_dataset_load">Une erreur s\'est produite lors du chargement du jeu de données du rapport pour le formulaire</string>
+    <string name="info_report_dataset_download_in_progress">Téléchargement des ensembles de données de rapport</string>
+    <string name="info_report_dataset_downloaded">%d ensembles de données de rapport téléchargés</string>
+    <string name="info_report_datasets_not_downloaded">N\'a téléchargé aucun ensemble de données de rapport</string>
+    <string name="error_report_dataset_download">Impossible de télécharger les ensembles de données du rapport</string>
+    <string name="general_leaderboard">Classement</string>
+    <string name="general_performance_comparison">Comparaison des performances</string>
+    <string name="general_your_statistics">Vos statistiques</string>
+    <string name="general_their_statistics">Leurs statistiques</string>
+    <string name="info_terms_and_conditions">Termes et conditions</string>
 </resources>

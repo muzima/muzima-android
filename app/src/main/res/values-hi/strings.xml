@@ -14,7 +14,6 @@
     <string name="add_individual_observation_text">व्यक्तिगत अवलोकन जोड़ें</string>
     <string name="app_name">mUzima</string>
     <string name="app_title">स्वास्थ्य प्रदाताओं के लिए mUzima</string>
-    <string name="app_version">एप्लिकेशन वेरीज़न</string>
     <string name="ask_help">मदद मांगना</string>
     <string name="assignment_form_not_downloaded_warning">ऐसा लगता है कि असाइनमेंट फ़ॉर्म डाउनलोड नहीं हुआ है, कृपया पुष्टि करें कि यह डाउनलोड हो गया है या व्यवस्थापक से संपर्क करें।</string>
     <string name="assignment_form_uuid_missing_warning">क्षमा करें, असाइनमेंट फॉर्म सेट नहीं किया गया है। कृपया व्यवस्थापक से संपर्क करें।</string>
@@ -105,8 +104,6 @@
     <string name="error_provider_fetch">स्थानीय रेपो से प्रदाताओं को लाने के दौरान कुछ गलत हुआ</string>
     <string name="error_relationship_load">रिश्ते लोड नहीं किए जा सके</string>
     <string name="error_relationship_type_load">संबंध प्रकार लोड नहीं किए जा सके</string>
-    <string name="error_report_dataset_download">रिपोर्ट डेटासेट डाउनलोड नहीं कर सका</string>
-    <string name="error_report_dataset_load">प्रपत्र के लिए रिपोर्ट डेटासेट लोड करते समय एक त्रुटि हुई</string>
     <string name="error_server_connection_unavailable">सर्वर पहुँच से बाहर</string>
     <string name="error_server_url_invalid">अमान्य सर्वर URL</string>
     <string name="error_settings_download">सेटिंग्स डाउनलोड नहीं कर सका</string>
@@ -170,7 +167,6 @@
     <string name="general_has_sexual_partner">यौन साथी है</string>
     <string name="general_help">सहायता</string>
     <string name="general_large">विशाल</string>
-    <string name="general_leaderboard">लीडरबोर्ड</string>
     <string name="general_load">भार</string>
     <string name="general_loading_encounters">मुठभेड़ अभी भी लोड हो रहे हैं</string>
     <string name="general_loading_relationships">रिश्ते अभी भी लोड हो रहे हैं</string>
@@ -193,7 +189,6 @@
     <string name="general_other">अन्य</string>
     <string name="general_password">पासवर्ड</string>
     <string name="general_patient_registration">ग्राहक पंजीकरण</string>
-    <string name="general_performance_comparison">प्रदर्शन तुलना</string>
     <string name="general_person_create">व्यक्ति बनाएँ</string>
     <string name="general_previous">पिछला</string>
     <string name="general_progress_message">इसमें कुछ समय लग सकता है</string>
@@ -214,7 +209,6 @@
     <string name="general_synced">सिंक किया गया</string>
     <string name="general_tags">लेबल</string>
     <string name="general_thank_you">धन्यवाद!</string>
-    <string name="general_their_statistics">उनके आंकड़ेे</string>
     <string name="general_unexpected_error_occurred">अनपेक्षित त्रुटि</string>
     <string name="general_update">अपडेट करें</string>
     <string name="general_upload">अपलोड</string>
@@ -223,7 +217,6 @@
     <string name="general_welcome">स्वागत हे</string>
     <string name="general_years_character">य</string>
     <string name="general_yes">हाँ</string>
-    <string name="general_your_statistics">आपके आंकड़े</string>
     <string name="get_more">सर्वर से अधिक</string>
     <string name="header_cohort_category">जत्था सेटिंग्स</string>
     <string name="header_muzima_category">mUzima सेटिंग्स</string>
@@ -462,9 +455,6 @@
     <string name="info_new_patient_download">%d नए क्लाइंट डाउनलोड किए गए</string>
     <string name="info_no_client_available_locally">कोई भी ग्राहक स्थानीय रूप से उपलब्ध नहीं है। दूरस्थ खोज के लिए कम से कम 3 वर्ण दर्ज करें या नए ग्राहक पंजीकृत करें</string>
     <string name="info_no_cohort_download">कोई भी सहकर्मी समन्‍वयित नहीं किया गया है</string>
-    <string name="info_no_forms_data_tip">डेटा प्रविष्टि के लिए कोई प्रपत्र कॉन्फ़िगर नहीं किया गया है। डेटा प्रविष्टि प्रपत्र जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
-    <string name="info_no_observation_and_concept_data_tip">कोई अवधारणा कॉन्फ़िगर नहीं की गई है। अवधारणाओं को जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें।</string>
-    <string name="info_no_observation_for_concept_data_tip">कॉन्फ़िगर की गई अवधारणाओं के लिए कोई ऐतिहासिक डेटा मौजूद नहीं है</string>
     <string formatted="false" name="info_notification_download">%d अधिसूचनाएँ डाउनलोड की गईं</string>
     <string name="info_notification_download_in_progress">अधिसूचनाएं डाउनलोड कर रहा है</string>
     <string name="info_notification_unavailable">कोई अधिसूचना उपलब्ध नहीं है</string>
@@ -502,9 +492,6 @@
     <string formatted="false" name="info_relationships_download_progress">%d क्लाइंट के लिए %d संबंध डाउनलोड किए गए।</string>
     <string formatted="false" name="info_relationships_not_downloaded_progress">%d क्लाइंट के लिए %d संबंध डाउनलोड नहीं हुए हैं।</string>
     <string name="info_relationships_unavailable">कोई संबंध उपलब्ध नहीं है</string>
-    <string name="info_report_dataset_download_in_progress">रिपोर्ट डेटासेट डाउनलोड करना</string>
-    <string name="info_report_dataset_downloaded">डाउनलोड किया गया %d रिपोर्ट डेटासेट</string>
-    <string name="info_report_datasets_not_downloaded">कोई रिपोर्ट डेटासेट डाउनलोड नहीं किया</string>
     <string name="info_scanner_exists">बारकोड स्कैनर पहले से इंस्टॉल है।</string>
     <string name="info_session_time_out">आपका सत्र समाप्त हो गया था। आगे बढ़ने के लिए कृपया फिर से लॉग इन करें।</string>
     <string name="info_setting_download_success">सेटिंग सफलतापूर्वक डाउनलोड और अपडेट की गई </string>
@@ -524,7 +511,6 @@
     <string name="info_submitted_form_data_status_check">हाल ही में प्रस्तुत फॉर्मों की स्थिति की जाँच कर रहे है</string>
     <string name="info_submitted_form_data_status_check_failure">हाल ही में प्रस्तुत फॉर्मों की स्थिति की जाँच नहीं कर सके</string>
     <string name="info_tag_unavailable">कोई टैग उपलब्ध नहीं है</string>
-    <string name="info_terms_and_conditions">नियम और शर्तें</string>
     <string name="info_update_available">उपलब्ध अद्यतन</string>
     <string name="info_update_person_demographics">व्यक्ति जनसांख्यिकी को अपडेट करें</string>
     <string name="info_url_validate">चरण 1: URL मान्य करना</string>
@@ -594,8 +580,6 @@
     <string name="synced_total_label_text">## सिंक किया गया, ## संपूर्ण</string>
     <string name="tagging_forms">प्रपत्र टैग करना</string>
     <string name="title_about_dashboard_help_html">डैशबोर्ड के बारे में</string>
-    <string name="title_active_setup_config">सक्रिय सेटअप कॉन्फ़िगरेशन</string>
-    <string name="general_about_muzima">mUzima . के बारे में</string>
     <string name="title_activity_audio">ऑडियो जोड़ें</string>
     <string name="title_activity_client_encounters">क्लाइंट एनकाउंटर</string>
     <string name="title_activity_client_observations">ग्राहक अवलोकन</string>
@@ -663,13 +647,11 @@
     <string name="title_install_psmart">P-Smart ऐप इंस्टॉल करें</string>
     <string name="title_introduction_video">mUzima का वीडियो परिचय</string>
     <string name="title_landing_page">लैंडिंग पेज</string>
-    <string name="title_last_logged_in">पिछला लॉग इन</string>
     <string name="title_light_mode">डे मोड सक्षम करें</string>
     <string name="title_local_client_search_help_video">ग्राहक खोज (स्थानीय)</string>
     <string name="title_location_download">चरण 3: स्थान जोड़ें</string>
     <string name="title_location_help">स्थान मदद</string>
-    <string name="title_logged_in_user">लॉग इन यूजर</string>
-    <string name="title_logo">mUzimaLogo</string>
+    <string name="title_logo">MuzimaLogo</string>
     <string name="title_logout_confirm">पुष्टिकरण!</string>
     <string name="title_manage_concept">संकल्पनाओं को प्रबंधित करें</string>
     <string name="title_manage_location">स्थानों को प्रबंधित करें</string>
@@ -723,4 +705,17 @@
     <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
     <string name="youTube_player_error">YouTube वीडियो लोड करते समय एक त्रुटि हुई</string>
+    <string name="info_no_forms_data_tip">डेटा प्रविष्टि के लिए कोई प्रपत्र कॉन्फ़िगर नहीं किया गया है। डेटा प्रविष्टि प्रपत्र जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
+    <string name="info_no_observation_for_concept_data_tip">कॉन्फ़िगर की गई अवधारणाओं के लिए कोई ऐतिहासिक डेटा मौजूद नहीं है</string>
+    <string name="info_no_observation_and_concept_data_tip">कोई अवधारणा कॉन्फ़िगर नहीं की गई है। अवधारणाओं को जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें।</string>
+    <string name="error_report_dataset_load">प्रपत्र के लिए रिपोर्ट डेटासेट लोड करते समय एक त्रुटि हुई</string>
+    <string name="info_report_dataset_download_in_progress">रिपोर्ट डेटासेट डाउनलोड करना</string>
+    <string name="info_report_dataset_downloaded">डाउनलोड किया गया %d रिपोर्ट डेटासेट</string>
+    <string name="info_report_datasets_not_downloaded">कोई रिपोर्ट डेटासेट डाउनलोड नहीं किया</string>
+    <string name="error_report_dataset_download">रिपोर्ट डेटासेट डाउनलोड नहीं कर सका</string>
+    <string name="general_leaderboard">लीडरबोर्ड</string>
+    <string name="general_performance_comparison">प्रदर्शन तुलना</string>
+    <string name="general_your_statistics">आपके आंकड़े</string>
+    <string name="general_their_statistics">उनके आंकड़ेे</string>
+    <string name="info_terms_and_conditions">नियम और शर्तें</string>
 </resources>

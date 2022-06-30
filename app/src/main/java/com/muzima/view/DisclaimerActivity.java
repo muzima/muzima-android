@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.text.util.Linkify;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -22,7 +23,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.utils.HtmlCompat;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.custom.ScrollViewWithDetection;
@@ -45,7 +45,7 @@ public class DisclaimerActivity extends Activity {
 
         String disclaimerText = getResources().getString(R.string.info_disclaimer);
         final TextView disclaimerTextView = findViewById(R.id.disclaimer_text_view);
-        disclaimerTextView.setText(HtmlCompat.fromHtml(disclaimerText));
+        disclaimerTextView.setText(Html.fromHtml(disclaimerText));
         Linkify.addLinks(disclaimerTextView, Linkify.ALL);
 
         final Button nextButton = findViewById(R.id.next);

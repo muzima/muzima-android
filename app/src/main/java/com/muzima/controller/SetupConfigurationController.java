@@ -53,14 +53,6 @@ public class SetupConfigurationController {
         }
     }
 
-    public SetupConfiguration getSetupConfigurations(String uuid) throws SetupConfigurationFetchException{
-        try{
-            return setupConfigurationService.getSetupConfiguration(uuid);
-        }catch (IOException e){
-            throw new SetupConfigurationFetchException(e);
-        }
-    }
-
     public SetupConfigurationTemplate downloadSetupConfigurationTemplate(String uuid) throws SetupConfigurationDownloadException{
         try{
             SetupConfigurationTemplate template = setupConfigurationService.downloadSetupConfigurationTemplateByUuid(uuid);

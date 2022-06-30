@@ -13,7 +13,6 @@ package com.muzima;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -60,11 +59,9 @@ import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
-import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.forms.HTMLFormWebViewActivity;
-import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.MuzimaTimer;
 
 import java.io.File;
@@ -507,20 +504,5 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return reportDatasetController;
-    }
-
-
-    public String getApplicationVersion() {
-        String versionText = "";
-        String versionCode = "";
-        try {
-            versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
-            LanguageUtil languageUtil = new LanguageUtil();
-            android.content.Context localizedContext = languageUtil.getLocalizedContext(this);
-            versionText = localizedContext.getResources().getString(R.string.general_application_version, versionCode);
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e(getClass().getSimpleName(), "Unable to read application version.", e);
-        }
-        return versionText;
     }
 }

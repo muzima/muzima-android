@@ -14,7 +14,6 @@
     <string name="add_individual_observation_text">Ongeza Uchunguzi wa daktari</string>
     <string name="app_name">mUzima</string>
     <string name="app_title">Mfumo wa mUzima kwa watoa huduma za afya</string>
-    <string name="app_version">Toleo la programu</string>
     <string name="ask_help">Kuomba msaada</string>
     <string name="assignment_form_not_downloaded_warning">Inaonekana kama fomu ya mgawo haijapakuliwa, tafadhali thibitisha kuwa imepakuliwa au wasiliana na msimamizi.</string>
     <string name="assignment_form_uuid_missing_warning">Samahani, fomu ya mgawo haijawekwa. Tafadhali wasiliana na msimamizi.</string>
@@ -105,8 +104,6 @@
     <string name="error_provider_fetch">Tatizo limetokea wakati kwa kuchukua taarifa za watoa huduma kutoka katika hifadhi ya kifaa</string>
     <string name="error_relationship_load">Mahusiano hayakuweza kupakiwa</string>
     <string name="error_relationship_type_load">Aina za uhusiano hazikuweza kupakiwa</string>
-    <string name="error_report_dataset_download">Haikuweza kupakua seti za data za ripoti</string>
-    <string name="error_report_dataset_load">Hitilafu ilitokea wakati wa kupakia seti ya data ya fomu</string>
     <string name="error_server_connection_unavailable">Seva haiwezi kufikiwa</string>
     <string name="error_server_url_invalid">URL ya Seva ni batili</string>
     <string name="error_settings_download">Haikuweza kupakua mipangilio</string>
@@ -170,7 +167,6 @@
     <string name="general_has_sexual_partner">Ana mpenzi wa ngono</string>
     <string name="general_help">Msaada</string>
     <string name="general_large">Kubwa</string>
-    <string name="general_leaderboard">Ubao wa wanaoongoza</string>
     <string name="general_load">Pakia</string>
     <string name="general_loading_encounters">Mkutano bado unapakia</string>
     <string name="general_loading_relationships">Mahusiano bado yanapakia</string>
@@ -193,7 +189,6 @@
     <string name="general_other">Nyingine</string>
     <string name="general_password">Neno la siri</string>
     <string name="general_patient_registration">Usajili wa Wateja</string>
-    <string name="general_performance_comparison">Ulinganisho wa Utendaji</string>
     <string name="general_person_create">Sajili Mtu</string>
     <string name="general_previous">Iliyopita</string>
     <string name="general_progress_message">Jambo hili huenda likachukua muda/kipindi fulani</string>
@@ -214,7 +209,6 @@
     <string name="general_synced">Iliyo landanishwa</string>
     <string name="general_tags">Tagi</string>
     <string name="general_thank_you">Asante!</string>
-    <string name="general_their_statistics">Takwimu zake</string>
     <string name="general_unexpected_error_occurred">Hitilafu isiyotarajiwa</string>
     <string name="general_update">Sasisha</string>
     <string name="general_upload">Pakia</string>
@@ -223,7 +217,6 @@
     <string name="general_welcome">Karibu</string>
     <string name="general_years_character">M</string>
     <string name="general_yes">Ndiyo</string>
-    <string name="general_your_statistics">Takwimu zako</string>
     <string name="get_more">Zaidi kutoka seva</string>
     <string name="header_cohort_category">Mipangilio ya kikundi</string>
     <string name="header_muzima_category">Mipangilio ya mUzima</string>
@@ -466,9 +459,6 @@
     <string name="info_new_patient_download">Wateja wapya %d wamedukuliwa</string>
     <string name="info_no_client_available_locally">Hakuna mteja aliyepatikana kwenye hifadhi ya kifaa. Ingiza angalu herufi 3 kutafuta katika seva ama sajili mteja mpya</string>
     <string name="info_no_cohort_download">Hakuna vikundi vya wateja vilivyolandanishwa</string>
-    <string name="info_no_forms_data_tip">Hakuna fomu zilizosanidiwa kwa ajili ya kuingiza data. Wasiliana na msimamizi wako ili kuongeza fomu</string>
-    <string name="info_no_observation_and_concept_data_tip">Hakuna dhana zilizosanidiwa. Wasiliana na msimamizi wako ili kuongeza dhana.</string>
-    <string name="info_no_observation_for_concept_data_tip">Hakuna data ya kihistoria iliyopo kwa dhana zilizosanidiwa</string>
     <string formatted="false" name="info_notification_download">Taarifa %d zimepakuliwa</string>
     <string name="info_notification_download_in_progress">Taarifa zinapakuliwa</string>
     <string name="info_notification_unavailable">Hakuna taarifa zinazopatikana</string>
@@ -506,9 +496,6 @@
     <string formatted="false" name="info_relationships_download_progress">Tumepakua mahusiano ya mteja %d wa %d.</string>
     <string formatted="false" name="info_relationships_not_downloaded_progress">Mahusiano ya mteja %d kwa %d hayajapakuliwa.</string>
     <string name="info_relationships_unavailable">Hakuna uhusiano unaopatikana</string>
-    <string name="info_report_dataset_download_in_progress">Inapakua Seti za Data za Ripoti</string>
-    <string name="info_report_dataset_downloaded">Imepakua Seti %d za Ripoti</string>
-    <string name="info_report_datasets_not_downloaded">Haikupakua Hifadhidata zozote za Ripoti</string>
     <string name="info_scanner_exists">Kifaa cha kusomea baakodi kimeunganishwa tayari</string>
     <string name="info_session_time_out">sesheni/kikao chako ndani ya mfumo wa mUzima kimeisha muda. Tafadhali ingia tena upate kuendelea.</string>
     <string name="info_setting_download_success">Mpangilio uliosasishwa umepakuliwa</string>
@@ -528,7 +515,6 @@
     <string name="info_submitted_form_data_status_check">Hali ya fomu zilizowasilishwa hivi karibuni inachunguzwa.</string>
     <string name="info_submitted_form_data_status_check_failure">Haikuwezekana kuchunguza hali ya fomu zilizowasilishwa hivi karibuni.</string>
     <string name="info_tag_unavailable">Hakuna tagi zilizopatikana</string>
-    <string name="info_terms_and_conditions">Sheria na Masharti</string>
     <string name="info_update_available">Sasisho linapatikana</string>
     <string name="info_update_person_demographics">Sasisha maelezo ya mtu</string>
     <string name="info_url_validate">Hatua ya 1: Kuhakiki URL</string>
@@ -598,8 +584,6 @@
     <string name="synced_total_label_text">## Zilizolandanishwa, ## Jumla</string>
     <string name="tagging_forms">Fomu za Kutagi</string>
     <string name="title_about_dashboard_help_html">Kuhusu dashibodi</string>
-    <string name="title_active_setup_config">Mipangilio Inayotumika ya Usanidi</string>
-    <string name="general_about_muzima">Kuhusu mUzima</string>
     <string name="title_activity_audio">Ongeza sauti</string>
     <string name="title_activity_client_encounters">Mikutano na Mteja</string>
     <string name="title_activity_client_observations">Chunguzi za daktari za mteja</string>
@@ -667,13 +651,11 @@
     <string name="title_install_psmart">Sakinisha programu ya P-Smart</string>
     <string name="title_introduction_video">Video ya Utangulizi ya mUzima</string>
     <string name="title_landing_page">Ukurasa wa mwanzo kwenye mfumo.</string>
-    <string name="title_last_logged_in">Mara ya Mwisho Kuingia</string>
     <string name="title_light_mode">Wezesha hali ya siku</string>
     <string name="title_local_client_search_help_video">Utafutaji wa mteja (wa ndani)</string>
     <string name="title_location_download">hatua 3: Ongeza sehemu</string>
     <string name="title_location_help">Msaada wa Sehemu</string>
-    <string name="title_logged_in_user">Mtumiaji Aliyeingia</string>
-    <string name="title_logo">Nembo ya mUzima</string>
+    <string name="title_logo">Nembo ya Muzima</string>
     <string name="title_logout_confirm">Uhakikisho!</string>
     <string name="title_manage_concept">Dhibiti dhana</string>
     <string name="title_manage_location">Dhibiti sehemu</string>
@@ -727,4 +709,17 @@
     <string name="write_SHR_to_card_text">Andika SHR kwenye kadi</string>
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
     <string name="youTube_player_error">Hitilafu ilitokea wakati wa kupakia video ya YouTube</string>
+    <string name="info_no_forms_data_tip">Hakuna fomu zilizosanidiwa kwa ajili ya kuingiza data. Wasiliana na msimamizi wako ili kuongeza fomu</string>
+    <string name="info_no_observation_for_concept_data_tip">Hakuna data ya kihistoria iliyopo kwa dhana zilizosanidiwa</string>
+    <string name="info_no_observation_and_concept_data_tip">Hakuna dhana zilizosanidiwa. Wasiliana na msimamizi wako ili kuongeza dhana.</string>
+    <string name="error_report_dataset_load">Hitilafu ilitokea wakati wa kupakia seti ya data ya fomu</string>
+    <string name="info_report_dataset_download_in_progress">Inapakua Seti za Data za Ripoti</string>
+    <string name="info_report_dataset_downloaded">Imepakua Seti %d za Ripoti</string>
+    <string name="info_report_datasets_not_downloaded">Haikupakua Hifadhidata zozote za Ripoti</string>
+    <string name="error_report_dataset_download">Haikuweza kupakua seti za data za ripoti</string>
+    <string name="general_leaderboard">Ubao wa wanaoongoza</string>
+    <string name="general_performance_comparison">Ulinganisho wa Utendaji</string>
+    <string name="general_your_statistics">Takwimu zako</string>
+    <string name="general_their_statistics">Takwimu zake</string>
+    <string name="info_terms_and_conditions">Sheria na Masharti</string>
 </resources>

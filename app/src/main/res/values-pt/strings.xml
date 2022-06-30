@@ -14,7 +14,6 @@
     <string name="add_individual_observation_text">Adicionar observação individual</string>
     <string name="app_name">mUzima</string>
     <string name="app_title">mUzima para Provedores de Saúde</string>
-    <string name="app_version">Versão do aplicativo</string>
     <string name="ask_help">Pedindo ajuda</string>
     <string name="assignment_form_not_downloaded_warning">Parece que o formulário de atribuição não foi baixado, confirme se foi baixado ou entre em contato com o administrador.</string>
     <string name="assignment_form_uuid_missing_warning">Desculpe, o formulário de atribuição não foi definido. Entre em contato com o administrador.</string>
@@ -105,8 +104,6 @@
     <string name="error_provider_fetch">Algo deu errado enquanto buscava provedores do repositório local</string>
     <string name="error_relationship_load">Não foi possível carregar os relacionamentos</string>
     <string name="error_relationship_type_load">Não foi possível carregar os tipos de relacionamento</string>
-    <string name="error_report_dataset_download">Não foi possível fazer download dos conjuntos de dados do relatório</string>
-    <string name="error_report_dataset_load">Ocorreu um erro ao carregar o conjunto de dados do relatório para o formulário</string>
     <string name="error_server_connection_unavailable">Servidor está inacessível</string>
     <string name="error_server_url_invalid">URL do Servidor Inválido </string>
     <string name="error_settings_download">Não foi possível baixar as configurações</string>
@@ -170,7 +167,6 @@
     <string name="general_has_sexual_partner">Tem parceiro sexual</string>
     <string name="general_help">Ajuda</string>
     <string name="general_large">Ampla</string>
-    <string name="general_leaderboard">Entre os melhores</string>
     <string name="general_load">Carregar</string>
     <string name="general_loading_encounters">Consultas ainda estão carregando</string>
     <string name="general_loading_relationships">Os relacionamentos ainda estão carregando</string>
@@ -193,7 +189,6 @@
     <string name="general_other">De outros</string>
     <string name="general_password">Senha</string>
     <string name="general_patient_registration">Registro do utente</string>
-    <string name="general_performance_comparison">Comparação de desempenho</string>
     <string name="general_person_create">Criar Pessoa</string>
     <string name="general_previous">Anterior</string>
     <string name="general_progress_message">Isso pode demorar um pouco</string>
@@ -214,7 +209,6 @@
     <string name="general_synced">Sincronizada</string>
     <string name="general_tags">Etiquetas</string>
     <string name="general_thank_you">Obrigado!</string>
-    <string name="general_their_statistics">Suas estatísticas</string>
     <string name="general_unexpected_error_occurred">Erro inesperado Ocorreu</string>
     <string name="general_update">Atualizar</string>
     <string name="general_upload">Carregar</string>
@@ -223,7 +217,6 @@
     <string name="general_welcome">Bem-vindo</string>
     <string name="general_years_character">A</string>
     <string name="general_yes">Sim</string>
-    <string name="general_your_statistics">Suas estatísticas</string>
     <string name="get_more">Mais do servidor</string>
     <string name="header_cohort_category">Configurações de coorte</string>
     <string name="header_muzima_category">Configurações de mUzima</string>
@@ -470,9 +463,6 @@
     <string name="info_new_patient_download">Baixou %d novos utentes</string>
     <string name="info_no_client_available_locally">Nenhum utente disponível localmente. Digite pelo menos três caracteres para pesquisa remota ou registre novos utentes</string>
     <string name="info_no_cohort_download">Nenhuma coorte foi sincronizada</string>
-    <string name="info_no_forms_data_tip">Nenhum formulário configurado para entrada de dados. Entre em contato com seu administrador para adicionar formulários</string>
-    <string name="info_no_observation_and_concept_data_tip">Nenhum conceito configurado. Entre em contato com seu administrador para adicionar conceitos.</string>
-    <string name="info_no_observation_for_concept_data_tip">Não existem dados históricos para os conceitos configurados</string>
     <string formatted="false" name="info_notification_download">Baixou %d notificações</string>
     <string name="info_notification_download_in_progress">Baixando notificações</string>
     <string name="info_notification_unavailable">Nenhuma notificação disponível</string>
@@ -510,9 +500,6 @@
     <string formatted="false" name="info_relationships_download_progress">Relacionamentos baixados para o utente %d de %d.</string>
     <string formatted="false" name="info_relationships_not_downloaded_progress">Relacionamentos para o utente %d de %d não baixados.</string>
     <string name="info_relationships_unavailable">Nenhum relacionamento disponível</string>
-    <string name="info_report_dataset_download_in_progress">Fazendo download de conjuntos de dados de relatórios</string>
-    <string name="info_report_dataset_downloaded">Conjuntos de dados de relatório %d baixados</string>
-    <string name="info_report_datasets_not_downloaded">Não fez download de nenhum conjunto de dados de relatório</string>
     <string name="info_scanner_exists">Código de barra já está instalado.</string>
     <string name="info_session_time_out">A sessão expirou. Por favor entra de novo para proceder.</string>
     <string name="info_setting_download_success">Configuração baixada e atualizada com sucesso</string>
@@ -532,7 +519,6 @@
     <string name="info_submitted_form_data_status_check">Verificando o status dos formulários enviados recentemente.</string>
     <string name="info_submitted_form_data_status_check_failure">Não foi possível verificar o estado dos formulários enviados recentemente.</string>
     <string name="info_tag_unavailable">Nenhuma etiqueta disponível</string>
-    <string name="info_terms_and_conditions">Termos e Condições</string>
     <string name="info_update_available">Atualização disponível</string>
     <string name="info_update_person_demographics">Atualizar dados demográficos de pessoas</string>
     <string name="info_url_validate">Passo 1: Validar URL</string>
@@ -602,8 +588,6 @@
     <string name="synced_total_label_text">## Sincronizado, ## Total</string>
     <string name="tagging_forms">Formulários de marcação</string>
     <string name="title_about_dashboard_help_html">Sobre o Painel de Controle</string>
-    <string name="title_active_setup_config">Configuração de configuração ativa</string>
-    <string name="general_about_muzima">Sobre mUzima</string>
     <string name="title_activity_audio">Adicionar Audio</string>
     <string name="title_activity_client_encounters">Visitas do utente</string>
     <string name="title_activity_client_observations">Observações do utente</string>
@@ -671,12 +655,10 @@
     <string name="title_install_psmart">Instalar o aplicativo P-Smart</string>
     <string name="title_introduction_video">Vídeo introdutório para mUzima</string>
     <string name="title_landing_page">Página de destino</string>
-    <string name="title_last_logged_in">Data do último login</string>
     <string name="title_light_mode">Ativar o modo de dia</string>
     <string name="title_local_client_search_help_video">Pesquisa de utentes (local)</string>
     <string name="title_location_download">Passo 3: Adicionar Local(s)</string>
     <string name="title_location_help">Ajuda com Locais</string>
-    <string name="title_logged_in_user">Usuário conectado</string>
     <string name="title_logo">mUzima Logotipo</string>
     <string name="title_logout_confirm">Confirmação!</string>
     <string name="title_manage_concept">Gestão de conceitos</string>
@@ -731,4 +713,18 @@
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
     <string name="youTube_player_error">Ocorreu um erro ao carregar o vídeo do YouTube</string>
+
+    <string name="info_no_forms_data_tip">Nenhum formulário configurado para entrada de dados. Entre em contato com seu administrador para adicionar formulários</string>
+    <string name="info_no_observation_for_concept_data_tip">Não existem dados históricos para os conceitos configurados</string>
+    <string name="info_no_observation_and_concept_data_tip">Nenhum conceito configurado. Entre em contato com seu administrador para adicionar conceitos.</string>
+    <string name="error_report_dataset_load">Ocorreu um erro ao carregar o conjunto de dados do relatório para o formulário</string>
+    <string name="info_report_dataset_download_in_progress">Fazendo download de conjuntos de dados de relatórios</string>
+    <string name="info_report_dataset_downloaded">Conjuntos de dados de relatório %d baixados</string>
+    <string name="info_report_datasets_not_downloaded">Não fez download de nenhum conjunto de dados de relatório</string>
+    <string name="error_report_dataset_download">Não foi possível fazer download dos conjuntos de dados do relatório</string>
+    <string name="general_leaderboard">Entre os melhores</string>
+    <string name="general_performance_comparison">Comparação de desempenho</string>
+    <string name="general_your_statistics">Suas estatísticas</string>
+    <string name="general_their_statistics">Suas estatísticas</string>
+    <string name="info_terms_and_conditions">Termos e Condições</string>
 </resources>

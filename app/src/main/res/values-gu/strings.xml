@@ -14,7 +14,6 @@
     <string name="add_individual_observation_text">વ્યક્તિગત નિરીક્ષણ ઉમેરો</string>
     <string name="app_name">mUzima</string>
     <string name="app_title">આરોગ્ય પ્રદાતાઓ માટે mUzima</string>
-    <string name="app_version">એપ્લિકેશન સંસ્કરણ</string>
     <string name="ask_help">મદદ માગવી</string>
     <string name="assignment_form_not_downloaded_warning">એવું લાગે છે કે અસાઇનમેન્ટ ફોર્મ ડાઉનલોડ થયું નથી, કૃપા કરીને ખાતરી કરો કે તે ડાઉનલોડ થયું છે અથવા એડમિનિસ્ટ્રેટરનો સંપર્ક કરો.</string>
     <string name="assignment_form_uuid_missing_warning">માફ કરશો, સોંપણી ફોર્મ સેટ કરવામાં આવ્યું નથી. કૃપા કરીને વ્યવસ્થાપકનો સંપર્ક કરો.</string>
@@ -105,8 +104,6 @@
     <string name="error_provider_fetch">સ્થાનિક રેપોમાંથી પ્રદાતાઓને લાવતી વખતે કંઈક ખોટું થયું</string>
     <string name="error_relationship_load">સંબંધો લોડ કરી શકાયા નથી</string>
     <string name="error_relationship_type_load">સંબંધોનાં પ્રકારો લોડ થઈ શક્યાં નથી</string>
-    <string name="error_report_dataset_download">રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કરી શકાયા નથી</string>
-    <string name="error_report_dataset_load">ફોર્મ માટે રિપોર્ટ ડેટાસેટ લોડ કરતી વખતે એક ભૂલ આવી</string>
     <string name="error_server_connection_unavailable">સર્વર સુધી પહોંચી શકાતું નથી</string>
     <string name="error_server_url_invalid">અમાન્ય સર્વર URL.</string>
     <string name="error_settings_download">સેટિંગ્સ ડાઉનલોડ કરી શકાઈ નથી</string>
@@ -170,7 +167,6 @@
     <string name="general_has_sexual_partner">જાતીય ભાગીદાર છે</string>
     <string name="general_help">સહાયતા</string>
     <string name="general_large">મોટું</string>
-    <string name="general_leaderboard">લીડરબોર્ડ</string>
     <string name="general_load">લોડ કરો</string>
     <string name="general_loading_encounters">એન્કાઉન્ટર્સ હજી લોડ થઈ રહ્યાં છે</string>
     <string name="general_loading_relationships">સંબંધો હજી લોડ થઈ રહ્યા છે</string>
@@ -193,7 +189,6 @@
     <string name="general_other">અન્ય</string>
     <string name="general_password">પાસવર્ડ</string>
     <string name="general_patient_registration">ક્લાયંટ નોંધણી</string>
-    <string name="general_performance_comparison">પ્રદર્શન સરખામણી</string>
     <string name="general_person_create">વ્યક્તિ બનાવો</string>
     <string name="general_previous">અગાઉ</string>
     <string name="general_progress_message">આમાં થોડો સમય લાગી શકે છે</string>
@@ -214,7 +209,6 @@
     <string name="general_synced">સમન્વયિત</string>
     <string name="general_tags">ટેગ્સ</string>
     <string name="general_thank_you">આપનો આભાર!</string>
-    <string name="general_their_statistics">તેમના આંકડા</string>
     <string name="general_unexpected_error_occurred">અનપેક્ષિત ભૂલ આવી</string>
     <string name="general_update">અપડેટ</string>
     <string name="general_upload">અપલોડ કરો</string>
@@ -223,7 +217,6 @@
     <string name="general_welcome">સ્વાગત છે</string>
     <string name="general_years_character">व</string>
     <string name="general_yes">હા</string>
-    <string name="general_your_statistics">તમારા આંકડા</string>
     <string name="get_more">સર્વરમાંથી વધુ</string>
     <string name="header_cohort_category">કોહર્ટ સેટિંગ્સ</string>
     <string name="header_muzima_category">mUzima સેટિંગ્સ </string>
@@ -463,9 +456,6 @@
     <string name="info_new_patient_download">%d નવા ક્લાયન્ટ ડાઉનલોડ કર્યા</string>
     <string name="info_no_client_available_locally">સ્થાનિક રીતે ગ્રાહકો ઉપલબ્ધ નથી. ઓછામાં ઓછું 3 દાખલ કરો દૂરસ્થ શોધ માટેનાં અક્ષરો અથવા નવા ગ્રાહકોની નોંધણી કરો</string>
     <string name="info_no_cohort_download">કોઈ સમૂહનું સમન્વય કરવામાં આવ્યું નથી</string>
-    <string name="info_no_forms_data_tip">ડેટા એન્ટ્રી માટે કોઈ ફોર્મ ગોઠવેલ નથી. ડેટા એન્ટ્રી ફોર્મ ઉમેરવા માટે તમારા વ્યવસ્થાપકનો સંપર્ક કરો</string>
-    <string name="info_no_observation_and_concept_data_tip">કોઈ વિભાવનાઓ ગોઠવેલ નથી. ખ્યાલો ઉમેરવા માટે તમારા વ્યવસ્થાપકનો સંપર્ક કરો.</string>
-    <string name="info_no_observation_for_concept_data_tip">રૂપરેખાંકિત ખ્યાલો માટે કોઈ ઐતિહાસિક ડેટા અસ્તિત્વમાં નથી</string>
     <string formatted="false" name="info_notification_download">%d સૂચનાઓ ડાઉનલોડ કરી</string>
     <string name="info_notification_download_in_progress">સૂચનાઓ ડાઉનલોડ કરી રહ્યાં છે</string>
     <string name="info_notification_unavailable">સૂચનાઓ ડાઉનલોડ કરી રહ્યાં છે</string>
@@ -503,9 +493,6 @@
     <string formatted="false" name="info_relationships_download_progress">ક્લાયંટ %d ના %d માટે ડાઉનલોડ કરેલા સંબંધો.</string>
     <string formatted="false" name="info_relationships_not_downloaded_progress">%d માંથી ક્લાયંટ %d માટેના સંબંધો ડાઉનલોડ થયા નથી.</string>
     <string name="info_relationships_unavailable">કોઈ સંબંધ ઉપલબ્ધ નથી</string>
-    <string name="info_report_dataset_download_in_progress">રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કરી રહ્યાં છીએ</string>
-    <string name="info_report_dataset_downloaded">%d રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કર્યા</string>
-    <string name="info_report_datasets_not_downloaded">કોઈપણ રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કર્યા નથી</string>
     <string name="info_scanner_exists">બારકોડ સ્કેનર પહેલાથી ઇન્સ્ટોલ કરેલું છે.</string>
     <string name="info_session_time_out">તમારું સત્ર સમાપ્ત થયું હતું. કૃપા કરીને આગળ વધવા માટે ફરીથી પ્રવેશ કરો.</string>
     <string name="info_setting_download_success">ડાઉનલોડ અને અપડેટ સેટિંગ સફળતાપૂર્વક</string>
@@ -525,7 +512,6 @@
     <string name="info_submitted_form_data_status_check">તાજેતરમાં સબમિટ કરેલા ફોર્મ્સની સ્થિતિ તપાસી રહ્યું છે</string>
     <string name="info_submitted_form_data_status_check_failure">તાજેતરમાં સબમિટ કરેલા ફોર્મ્સની સ્થિતિ ચકાસી શક્યાં નથી</string>
     <string name="info_tag_unavailable">કોઈ ટેગ્સ ઉપલબ્ધ નથી</string>
-    <string name="info_terms_and_conditions">નિયમો અને શરત</string>
     <string name="info_update_available">અપડેટ ઉપલબ્ધ છે</string>
     <string name="info_update_person_demographics">વ્યક્તિ વસ્તી વિષયક અપડેટ કરો</string>
     <string name="info_url_validate">પગલું 1: URL ની માન્યતા ચકાસણી</string>
@@ -595,8 +581,6 @@
     <string name="synced_total_label_text">## સમન્વયિત, ## કુલ</string>
     <string name="tagging_forms">લેબલ કરવના ફોર્મ્સ</string>
     <string name="title_about_dashboard_help_html">ડેશબોર્ડ વિશે</string>
-    <string name="title_active_setup_config">સક્રિય સેટઅપ રૂપરેખા</string>
-    <string name="general_about_muzima">મુઝિમા વિશે</string>
     <string name="title_activity_audio">અવાજ ઉમેરો</string>
     <string name="title_activity_client_encounters">ક્લાયન્ટ એન્કાઉન્ટર્સ</string>
     <string name="title_activity_client_observations">ગ્રાહક અવલોકનો</string>
@@ -664,12 +648,10 @@
     <string name="title_install_psmart">P-સ્માર્ટ એપ્લિકેશન ઇન્સ્ટોલ કરો </string>
     <string name="title_introduction_video">mUzima વિડિઓ પરિચય</string>
     <string name="title_landing_page">લેન્ડિંગ પૃષ્ઠ</string>
-    <string name="title_last_logged_in">છેલ્લે લૉગ ઇન કર્યું</string>
     <string name="title_light_mode">ડે મોડને સક્ષમ કરો</string>
     <string name="title_local_client_search_help_video">ક્લાયંટ શોધ (સ્થાનિક)</string>
     <string name="title_location_download">પગલું 3: સ્થાન(નો) ઉમેરો</string>
     <string name="title_location_help">સ્થાન માટે સહાયતા</string>
-    <string name="title_logged_in_user">લૉગ ઇન વપરાશકર્તા</string>
     <string name="title_logo">mUzima લોગો</string>
     <string name="title_logout_confirm">પુષ્ટિ!</string>
     <string name="title_manage_concept">ખ્યાલો મેનેજ કરો</string>
@@ -724,4 +706,17 @@
     <string name="write_SHR_to_card_text">SHR ને કાર્ડ પર લખો</string>
     <string name="write_shr_to_card_general">SHR ને કાર્ડ પર લખો</string>
     <string name="youTube_player_error">YouTube વિડિઓ લોડ કરતી વખતે ભૂલ આવી</string>
+    <string name="info_no_forms_data_tip">ડેટા એન્ટ્રી માટે કોઈ ફોર્મ ગોઠવેલ નથી. ડેટા એન્ટ્રી ફોર્મ ઉમેરવા માટે તમારા વ્યવસ્થાપકનો સંપર્ક કરો</string>
+    <string name="info_no_observation_for_concept_data_tip">રૂપરેખાંકિત ખ્યાલો માટે કોઈ ઐતિહાસિક ડેટા અસ્તિત્વમાં નથી</string>
+    <string name="info_no_observation_and_concept_data_tip">કોઈ વિભાવનાઓ ગોઠવેલ નથી. ખ્યાલો ઉમેરવા માટે તમારા વ્યવસ્થાપકનો સંપર્ક કરો.</string>
+    <string name="error_report_dataset_load">ફોર્મ માટે રિપોર્ટ ડેટાસેટ લોડ કરતી વખતે એક ભૂલ આવી</string>
+    <string name="info_report_dataset_download_in_progress">રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કરી રહ્યાં છીએ</string>
+    <string name="info_report_dataset_downloaded">%d રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કર્યા</string>
+    <string name="info_report_datasets_not_downloaded">કોઈપણ રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કર્યા નથી</string>
+    <string name="error_report_dataset_download">રિપોર્ટ ડેટાસેટ્સ ડાઉનલોડ કરી શકાયા નથી</string>
+    <string name="general_leaderboard">લીડરબોર્ડ</string>
+    <string name="general_performance_comparison">પ્રદર્શન સરખામણી</string>
+    <string name="general_your_statistics">તમારા આંકડા</string>
+    <string name="general_their_statistics">તેમના આંકડા</string>
+    <string name="info_terms_and_conditions">નિયમો અને શરત</string>
 </resources>

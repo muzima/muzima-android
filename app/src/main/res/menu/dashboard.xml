@@ -54,12 +54,6 @@
         android:title="@string/general_logout">
     </item>
     <item
-        android:id="@+id/action_about_muzima"
-        android:orderInCategory="3"
-        custom:showAsAction="never"
-        android:title="@string/general_about_muzima">
-    </item>
-    <item
             android:id="@+id/action_login"
             android:orderInCategory="4"
             custom:showAsAction="never"

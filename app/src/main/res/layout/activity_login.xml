@@ -9,9 +9,8 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/LoginActivityLayout"
-    android:padding="0dp">
+            style="@style/LoginActivityLayout"
+            android:padding="0dp">
 
     <LinearLayout
             android:orientation="vertical"
@@ -41,32 +40,24 @@
             <View
                     style="@style/LoginInfoLayoutDivider"
                     android:id="@+id/server_url_divider"/>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                        android:id="@+id/username"
-                        style="@style/LoginInfoEditText"
-                        android:inputType="textShortMessage"
-                        android:nextFocusDown="@+id/password"
-                        android:text=""
-                        android:hint="@string/general_username"/>
-            </com.google.android.material.textfield.TextInputLayout>
+
+            <EditText
+                    android:id="@+id/username"
+                    style="@style/LoginInfoEditText"
+                    android:inputType="textShortMessage"
+                    android:nextFocusDown="@+id/password"
+                    android:text=""
+                    android:hint="@string/general_username"/>
 
             <View style="@style/LoginInfoLayoutDivider"/>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:passwordToggleTint="@color/primary_black"
-                app:passwordToggleEnabled="true">
-                <EditText
-                        android:id="@+id/password"
-                        android:hint="@string/general_password"
-                        style="@style/LoginInfoEditText"
-                        android:nextFocusDown="@+id/login"
-                        android:text=""
-                        android:inputType="textPassword"/>
-            </com.google.android.material.textfield.TextInputLayout>
+
+            <EditText
+                    android:id="@+id/password"
+                    android:hint="@string/general_password"
+                    style="@style/LoginInfoEditText"
+                    android:nextFocusDown="@+id/login"
+                    android:text=""
+                    android:inputType="textPassword"/>
 
         </LinearLayout>
 
