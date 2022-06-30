@@ -74,6 +74,10 @@ public class DefaultMenuDropDownHelper {
                 intent = new Intent(activity, FeedbackActivity.class);
                 activity.startActivity(intent);
                 return true;
+            case R.id.action_about_muzima:
+                intent = new Intent(activity, AboutMuzimaActivity.class);
+                activity.startActivity(intent);
+                return true;
             case R.id.action_logout:
                 MuzimaApplication muzimaApplication = ((MuzimaApplication)activity.getApplicationContext());
                 MuzimaLoggerService.stopLogsSync();

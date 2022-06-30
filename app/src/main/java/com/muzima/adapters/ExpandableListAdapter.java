@@ -1,4 +1,4 @@
-package com.muzima.view;
+package com.muzima.adapters;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
  
-class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class ExpandableListAdapter extends BaseExpandableListAdapter {
  
     private final Context _context;
     private final List<String> _listDataHeader; // header titles
