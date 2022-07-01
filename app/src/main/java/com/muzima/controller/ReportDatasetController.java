@@ -29,12 +29,14 @@ public class ReportDatasetController {
         this.sntpService = sntpService;
     }
 
-    public List<ReportDataset> downloadReportDatasets(List<Integer> datasetDefinitionIds) throws ReportDatasetDownloadException{
+    public List<ReportDataset> downloadReportDatasets(List<Integer> datasetDefinitionIds, boolean isDeltaSync) throws ReportDatasetDownloadException{
         try {
             LastSyncTime lastSyncTime = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_REPORT_DATASETS);
             Date lastSyncDate = null;
-            if(lastSyncTime != null){
-                lastSyncDate = lastSyncTime.getLastSyncDate();
+            if(isDeltaSync) {
+                if (lastSyncTime != null) {
+                    lastSyncDate = lastSyncTime.getLastSyncDate();
+                }
             }
             List<ReportDataset> reportDatasets = new ArrayList<>();
             for(Integer datasetDefinitionId : datasetDefinitionIds){
@@ -85,6 +87,13 @@ public class ReportDatasetController {
         }
     }
 
+    public  void deleteReportDatasets(List<Integer> datasetToDeleteIds) throws ReportDatasetFetchException{
+        try {
+            reportDatasetService.deleteReportDatasets(datasetToDeleteIds);
+        } catch (IOException | ParseException e) {
+            throw new ReportDatasetController.ReportDatasetFetchException(e);
+        }
+    }
 
     public static class ReportDatasetFetchException extends Throwable {
         ReportDatasetFetchException(Throwable throwable) {

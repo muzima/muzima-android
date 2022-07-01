@@ -323,12 +323,12 @@ public class CohortController {
         }
     }
 
-    public void setSyncStatus(String[] cohortUuids) throws CohortUpdateException {
+    public void setSyncStatus(String[] cohortUuids, int status) throws CohortUpdateException {
         try {
             for (String cohortUuid : cohortUuids) {
                 Cohort cohort = cohortService.getCohortByUuid(cohortUuid);
                 if (cohort != null) {
-                    cohort.setSyncStatus(1);
+                    cohort.setSyncStatus(status);
                     cohortService.updateCohort(cohort);
                 }
             }
@@ -352,6 +352,29 @@ public class CohortController {
 
     public int countSyncedCohorts() throws CohortFetchException {
         return getSyncedCohorts().size();
+    }
+
+    public void deletePatientsNotBelongingToAnotherCohortByCohortUuids(List<String> cohortUuids){
+        for(String cohortUuid : cohortUuids){
+            try {
+                List<CohortMember> cohortMembers = cohortService.getCohortMembers(cohortUuid);
+                for(CohortMember cohortMember : cohortMembers){
+                    List<CohortMember> patientMembership = cohortService.getCohortMembershipByPatientUuid(cohortMember.getPatient().getUuid());
+                    if(patientMembership.size()==1){
+                        muzimaApplication.getPatientController().deleteOrMarkAsPendingDeletion(cohortMember.getPatient());
+                    }
+                }
+            } catch (IOException e) {
+                Log.e(getClass().getSimpleName(),"Error getting cohort membership "+e);
+            }
+
+        }
+    }
+
+    public void deleteAllCohortMembersByCohortUuids(List<String> cohortUuids) throws CohortReplaceException {
+        for (String cohortUuid : cohortUuids) {
+            deleteAllCohortMembers(cohortUuid);
+        }
     }
 
     public void deleteAllCohortMembers(String cohortUuid) throws CohortReplaceException {

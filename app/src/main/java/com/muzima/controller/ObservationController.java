@@ -258,6 +258,17 @@ public class ObservationController {
         }
     }
 
+    public List<Observation> downloadObservationsForAddedConceptsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> conceptUuids,String activeSetupConfigUuid) throws DownloadObservationException {
+        List<Observation> observations = new ArrayList<>();
+        try {
+            observations = observationService.downloadObservationsAndSetupConfig(patientUuids, conceptUuids, null, activeSetupConfigUuid);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return observations;
+    }
+
     private ArrayList<String> getAllUuids(List<String> knownUuids, List<String> newUuids) {
         HashSet<String> allUuids = new HashSet<>(knownUuids);
         allUuids.addAll(newUuids);

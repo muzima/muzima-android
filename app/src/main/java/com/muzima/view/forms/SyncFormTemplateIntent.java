@@ -15,9 +15,17 @@ import com.muzima.view.SyncIntent;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 
+import android.content.Context;
+
 public class SyncFormTemplateIntent extends SyncIntent {
     public SyncFormTemplateIntent(FragmentActivity activity, String[] selectedFormsArray) {
         super(activity);
+        putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_TEMPLATES);
+        putExtra(DataSyncServiceConstants.FORM_IDS, selectedFormsArray);
+    }
+
+    public SyncFormTemplateIntent(Context context, String[] selectedFormsArray) {
+        super(context);
         putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_TEMPLATES);
         putExtra(DataSyncServiceConstants.FORM_IDS, selectedFormsArray);
     }
