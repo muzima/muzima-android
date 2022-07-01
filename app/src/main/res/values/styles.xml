@@ -788,4 +788,29 @@
     <style name="ListMultiSelectableLayout">
         <item name="android:background">@drawable/list_multi_selector_blue</item>
     </style>
+
+    <style name="AboutMuzimaContentHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="AboutMuzimaContentDetails">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:textColor">?attr/secondaryTextColor</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
+    <style name="AboutMuzimaContentDividerLine">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/hint_text_grey</item>
+    </style>
 </resources>
