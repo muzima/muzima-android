@@ -1,5 +1,8 @@
 package com.muzima.scheduler;
 
+import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
+import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 import android.annotation.SuppressLint;
@@ -295,7 +298,13 @@ public class MuzimaJobScheduler extends JobService {
         }
 
         public void updateSettingsPreferences(List<MuzimaSetting> muzimaSettings) {
+            List<String> configSettings = new ArrayList<>();
+            List<String> preferenceSettings = new ArrayList<>();
+            preferenceSettings.add(SHR_FEATURE_ENABLED_SETTING);
+            preferenceSettings.add(GPS_FEATURE_ENABLED_SETTING);
+            preferenceSettings.add(PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING);
             for (MuzimaSetting muzimaSetting : muzimaSettings) {
+                configSettings.add(muzimaSetting.getProperty());
                 if (MuzimaSettingUtils.isGpsFeatureEnabledSetting(muzimaSetting)) {
                     ((MuzimaApplication) context).getGPSFeaturePreferenceService().updateGPSDataPreferenceSettings();
                 } else if (MuzimaSettingUtils.isSHRFeatureEnabledSetting(muzimaSetting)) {
@@ -303,6 +312,23 @@ public class MuzimaJobScheduler extends JobService {
                 } else if (MuzimaSettingUtils.isPatientIdentifierAutogenerationSetting(muzimaSetting)) {
                     new RequireMedicalRecordNumberPreferenceService(((MuzimaApplication) context)).updateRequireMedicalRecordNumberPreference();
                 }
+            }
+
+            /*check if the 3 mobile settings preferences are in setup else default to global, might have been deleted from the config*/
+            for(String settingProperty : preferenceSettings){
+                if(!configSettings.contains(settingProperty)){
+                    defaultToGlobalSettings(settingProperty);
+                }
+            }
+        }
+
+        public void defaultToGlobalSettings(String settingProperty){
+            if (settingProperty.equals(GPS_FEATURE_ENABLED_SETTING)) {
+                ((MuzimaApplication) context).getGPSFeaturePreferenceService().updateGPSDataPreferenceSettings();
+            } else if (settingProperty.equals(SHR_FEATURE_ENABLED_SETTING)) {
+                new SHRStatusPreferenceService(((MuzimaApplication) context)).updateSHRStatusPreference();
+            } else if (settingProperty.equals(PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING)) {
+                new RequireMedicalRecordNumberPreferenceService(((MuzimaApplication) context)).updateRequireMedicalRecordNumberPreference();
             }
         }
     }
