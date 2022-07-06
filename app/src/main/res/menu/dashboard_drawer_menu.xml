@@ -44,6 +44,11 @@
             android:icon="@drawable/ic_action_mail"/>
 
         <item
+            android:id="@+id/nav_about_us"
+            android:title="@string/general_about_muzima"
+            android:icon="@drawable/about_us"/>
+
+        <item
             android:id="@+id/nav_logout"
             android:title="@string/general_logout"
             android:icon="@drawable/ic_action_power_setting"/>

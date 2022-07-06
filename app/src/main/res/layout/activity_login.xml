@@ -13,6 +13,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/LoginActivityLayout"
     android:id="@+id/login_scroll_view"
+    android:padding="0dp"
     android:scrollbarSize="0dp">
 
     <LinearLayout
@@ -102,15 +103,19 @@
                 android:background="@drawable/border_button_gray"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/username"
-                    style="@style/LoginInfoEditText"
-                    android:drawableStart="@drawable/ic_action_arrow_person"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:hint="@string/general_username"
-                    android:inputType="textShortMessage"
-                    android:nextFocusDown="@+id/password"
-                    android:text="" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/username"
+                        style="@style/LoginInfoEditText"
+                        android:drawableStart="@drawable/ic_action_arrow_person"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:hint="@string/general_username"
+                        android:inputType="textShortMessage"
+                        android:nextFocusDown="@+id/password"
+                        android:text="" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
@@ -125,16 +130,22 @@
                 android:background="@drawable/border_button_gray"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/password"
-                    style="@style/LoginInfoEditText"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:hint="@string/general_password"
-                    android:inputType="textPassword"
-                    android:nextFocusDown="@+id/login"
-                    android:text=""
-                    android:drawableStart="@drawable/ic_password"/>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:passwordToggleTint="?attr/primaryDrawableColor"
+                    app:passwordToggleEnabled="true">
+                    <EditText
+                        android:id="@+id/password"
+                        style="@style/LoginInfoEditText"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:hint="@string/general_password"
+                        android:inputType="textPassword"
+                        android:nextFocusDown="@+id/login"
+                        android:text=""
+                        android:drawableStart="@drawable/ic_password"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
         </LinearLayout>

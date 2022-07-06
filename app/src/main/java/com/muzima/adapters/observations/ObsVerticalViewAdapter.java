@@ -157,7 +157,7 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
                 }
             }
         } catch (ObservationController.LoadObservationException e) {
-            Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations "+e);
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations ",e);
         }
         return observationList;
     }

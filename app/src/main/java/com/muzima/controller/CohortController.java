@@ -365,7 +365,7 @@ public class CohortController {
                     }
                 }
             } catch (IOException e) {
-                Log.e(getClass().getSimpleName(),"Error getting cohort membership "+e);
+                Log.e(getClass().getSimpleName(),"Error getting cohort membership ",e);
             }
 
         }

@@ -148,7 +148,7 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationsByType
             SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
             json = activeSetupConfig.getConfigJson();
         } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
-            Log.e(getClass().getSimpleName(),"Exception encountered while fetching setup configs "+e);
+            Log.e(getClass().getSimpleName(),"Exception encountered while fetching setup configs ",e);
         }
 
         List<Object> concepts = JsonUtils.readAsObjectList(json, "$['config']['concepts']");

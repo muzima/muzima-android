@@ -19,13 +19,14 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
-import androidx.appcompat.widget.Toolbar;
 import com.muzima.R;
 import com.muzima.adapters.ExpandableListAdapter;
+import com.muzima.utils.LanguageUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class HelpActivity extends BaseHelpActivity {
 
@@ -34,10 +35,10 @@ public class HelpActivity extends BaseHelpActivity {
     public static final String YOUTUBE_INITIALIZATION_FAILURE = "INITIALIZATION_FAILURE";
     public static final String VIDEO_PATH = "VIDEO_PATH";
     public static final String VIDEO_TITLE = "VIDEO_TITLE";
-    private static final String MUZIMA_INITAL_SETUP_GUIDE = "file:///android_asset/www/help-content/mUzima_initial_setup.html";
-    private static final String ABOUT_DASHBOARD_FORM = "file:///android_asset/www/help-content/About-dashboard.html";
-    private static final String MUZIMA_SETTINGS = "file:///android_asset/www/help-content/Settings.html";
-    private static final String FILL_PATIENT_FORMS = "file:///android_asset/www/help-content/filling-forms-for-a-patient.html";
+    private static final String MUZIMA_INITAL_SETUP_GUIDE = "mUzima_initial_setup.html";
+    private static final String ABOUT_DASHBOARD_FORM = "About-dashboard.html";
+    private static final String MUZIMA_SETTINGS = "Settings.html";
+    private static final String FILL_PATIENT_FORMS = "filling-forms-for-a-patient.html";
     private static final String GUIDED_SETUP = "https://youtu.be/aSa4CcGtGdo";
     private static final String COHORTS_DOWNLOAD_ON_DEMAND = "https://youtu.be/CcQZy32O8JQ";
     private static final String CONCEPTS_DOWNLOAD_ON_DEMAND = "https://youtu.be/Q6QIE7z6_O0";
@@ -45,14 +46,12 @@ public class HelpActivity extends BaseHelpActivity {
     private static final String CLIENT_REGISTRATION = "https://youtu.be/fmjhF-juq4k";
     private static final String LOCAL_CLIENT_SEARCH = "https://youtu.be/630daM1wxGE";
     private static final String SERVER_CLIENT_SEARCH = "https://youtu.be/C1xDs8wWjNM";
-    private static final String PRIVACY_POLICY_URL = "https://www.muzima.org/privacy-policy";
-    private static final String TERMS_AND_CONDITIONS = "https://www.muzima.org/terms-and-conditions";
 
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private List<String> listDataHeader;
-    private Toolbar toolbar;
-    private HashMap<String, List<String>> listDataChild;
+    private HashMap<String, List<String>> listDataChildTitlesMap;
+    private HashMap<String, List<String>> helpContentResourcesMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,7 @@ public class HelpActivity extends BaseHelpActivity {
         expListView = findViewById(R.id.lvExp);
         prepareListData();
 
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChildTitlesMap);
         expListView.setAdapter(listAdapter);
 
         expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
@@ -82,35 +81,9 @@ public class HelpActivity extends BaseHelpActivity {
         expListView.setOnChildClickListener(new OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if (groupPosition == 0 && childPosition == 0) {
-                    startHelpContentDisplayActivity(MUZIMA_INITAL_SETUP_GUIDE, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 0 && childPosition == 1) {
-                    startHelpContentDisplayActivity(ABOUT_DASHBOARD_FORM, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 0 && childPosition == 2) {
-                    startHelpContentDisplayActivity(MUZIMA_SETTINGS, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 0 && childPosition == 3) {
-                    startHelpContentDisplayActivity(FILL_PATIENT_FORMS, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 0 && childPosition == 4) {
-                    startHelpContentDisplayActivity(PRIVACY_POLICY_URL, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 0 && childPosition == 5) {
-                    startHelpContentDisplayActivity(TERMS_AND_CONDITIONS, (String) listAdapter.getChild(groupPosition, childPosition));
-                }
-                //video links
-                else if (groupPosition == 1 && childPosition == 0) {
-                    startVideoContentDisplayActivity(GUIDED_SETUP, (String) listAdapter.getChild(groupPosition, childPosition));
-                }  else if (groupPosition == 1 && childPosition == 1) {
-                    startVideoContentDisplayActivity(COHORTS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 1 && childPosition == 2) {
-                    startVideoContentDisplayActivity(CONCEPTS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 1 && childPosition == 3) {
-                    startVideoContentDisplayActivity(FORMS_DOWNLOAD_ON_DEMAND, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 1 && childPosition == 4) {
-                    startVideoContentDisplayActivity(CLIENT_REGISTRATION, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 1 && childPosition == 5) {
-                    startVideoContentDisplayActivity(LOCAL_CLIENT_SEARCH, (String) listAdapter.getChild(groupPosition, childPosition));
-                } else if (groupPosition == 1 && childPosition == 6) {
-                    startVideoContentDisplayActivity(SERVER_CLIENT_SEARCH, (String) listAdapter.getChild(groupPosition, childPosition));
-                }
+                startHelpContentDisplayActivity(
+                        helpContentResourcesMap.get(listDataHeader.get(groupPosition)).get(childPosition),
+                        (String) listAdapter.getChild(groupPosition, childPosition));
                 return false;
             }
         });
@@ -131,32 +104,54 @@ public class HelpActivity extends BaseHelpActivity {
      */
     private void prepareListData() {
         listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<>();
+        listDataChildTitlesMap = new HashMap<>();
+
+        //set root directory
+        LanguageUtil languageUtil = new LanguageUtil();
+        Locale locale = languageUtil.getSelectedLocale(getApplicationContext());
+        String LOCAL_HELP_CONTENT_ROOT_DIRECTORY = "file:///android_asset/www/help-content/"+locale.getLanguage()+"/";
 
         // Adding child data
         listDataHeader.add(getString(R.string.title_html_help));
         listDataHeader.add(getString(R.string.title_help_video_links));
 
         // Adding child data
-        List<String> howTo = new ArrayList<>();
-        howTo.add(getString(R.string.title_advanced_setup_help_html));
-        howTo.add(getString(R.string.title_about_dashboard_help_html));
-        howTo.add(getString(R.string.title_settings_help_html));
-        howTo.add(getString(R.string.title_fill_patient_forms_help));
-        howTo.add(getString(R.string.title_privacy_policy));
-        howTo.add(getString(R.string.info_terms_and_conditions));
+        List<String> howToTitles = new ArrayList<>();
+        howToTitles.add(getString(R.string.title_advanced_setup_help_html));
+        howToTitles.add(getString(R.string.title_about_dashboard_help_html));
+        howToTitles.add(getString(R.string.title_settings_help_html));
+        howToTitles.add(getString(R.string.title_fill_patient_forms_help));
+
+        List<String> howToContent = new ArrayList<>();
+        howToContent.add(LOCAL_HELP_CONTENT_ROOT_DIRECTORY+MUZIMA_INITAL_SETUP_GUIDE);
+        howToContent.add(LOCAL_HELP_CONTENT_ROOT_DIRECTORY+ABOUT_DASHBOARD_FORM);
+        howToContent.add(LOCAL_HELP_CONTENT_ROOT_DIRECTORY+MUZIMA_SETTINGS);
+        howToContent.add(LOCAL_HELP_CONTENT_ROOT_DIRECTORY+FILL_PATIENT_FORMS);
+
+        List<String> videoLinkTitles = new ArrayList<>();
+        videoLinkTitles.add(getString(R.string.title_guided_setup_help_video));
+        videoLinkTitles.add(getString(R.string.title_cohort_download_help_video));
+        videoLinkTitles.add(getString(R.string.title_concept_download_help_video));
+        videoLinkTitles.add(getString(R.string.title_form_download_help_video));
+        videoLinkTitles.add(getString(R.string.title_client_registration_help_video));
+        videoLinkTitles.add(getString(R.string.title_local_client_search_help_video));
+        videoLinkTitles.add(getString(R.string.title_server_client_search_help_video));
 
         List<String> videoLinks = new ArrayList<>();
-        videoLinks.add(getString(R.string.title_guided_setup_help_video));
-        videoLinks.add(getString(R.string.title_cohort_download_help_video));
-        videoLinks.add(getString(R.string.title_concept_download_help_video));
-        videoLinks.add(getString(R.string.title_form_download_help_video));
-        videoLinks.add(getString(R.string.title_client_registration_help_video));
-        videoLinks.add(getString(R.string.title_local_client_search_help_video));
-        videoLinks.add(getString(R.string.title_server_client_search_help_video));
+        videoLinks.add(GUIDED_SETUP);
+        videoLinks.add(COHORTS_DOWNLOAD_ON_DEMAND);
+        videoLinks.add(CONCEPTS_DOWNLOAD_ON_DEMAND);
+        videoLinks.add(FORMS_DOWNLOAD_ON_DEMAND);
+        videoLinks.add(CLIENT_REGISTRATION);
+        videoLinks.add(LOCAL_CLIENT_SEARCH);
+        videoLinks.add(SERVER_CLIENT_SEARCH);
 
-        listDataChild.put(listDataHeader.get(0), howTo); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), videoLinks);
+        listDataChildTitlesMap.put(listDataHeader.get(0), howToTitles); // Header, Child data
+        listDataChildTitlesMap.put(listDataHeader.get(1), videoLinkTitles);
+
+        helpContentResourcesMap = new HashMap<>();
+        helpContentResourcesMap.put(listDataHeader.get(0),howToContent);
+        helpContentResourcesMap.put(listDataHeader.get(1),videoLinks);
     }
 
     private void startHelpContentDisplayActivity(String filePath, String title) {

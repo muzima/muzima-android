@@ -163,7 +163,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                 }
             }
         } catch (ConceptController.ConceptFetchException | ObservationController.LoadObservationException | SetupConfigurationController.SetupConfigurationFetchException e) {
-            Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations or fetching concepts "+e);
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations or fetching concepts ",e);
         }
 
         obsGroup = obsGroups.toArray(new ObsGroups[0]);
@@ -230,7 +230,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
 
             }
         } catch (ConceptController.ConceptFetchException e) {
-            Log.e(getClass().getSimpleName(),"Exception encountered while fetching concepts "+e);
+            Log.e(getClass().getSimpleName(),"Exception encountered while fetching concepts ",e);
         }
     }
 

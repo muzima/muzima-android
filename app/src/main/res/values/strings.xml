@@ -839,4 +839,9 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_performance_comparison">Performance Comparison</string>
     <string name="general_your_statistics">Your Statistics</string>
     <string name="general_their_statistics">Their Statistics</string>
+    <string name="app_version">App version</string>
+    <string name="title_active_setup_config">Active Setup Config</string>
+    <string name="general_about_muzima">About mUzima</string>
+    <string name="title_last_logged_in">Date Last Logged In</string>
+    <string name="title_logged_in_user">Logged In User</string>
 </resources>

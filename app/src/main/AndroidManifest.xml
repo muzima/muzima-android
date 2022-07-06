@@ -381,6 +381,11 @@
             android:parentActivityName=".view.MainDashboardActivity">
         </activity>
 
+        <activity
+            android:name=".view.AboutMuzimaActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/general_about_muzima" />
+
         <receiver android:name=".utils.ConnectivityChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

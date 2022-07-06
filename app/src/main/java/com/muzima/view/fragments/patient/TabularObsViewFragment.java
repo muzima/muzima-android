@@ -48,7 +48,7 @@ public class TabularObsViewFragment extends Fragment implements RecyclerAdapter.
             obsCount = ((MuzimaApplication) context.getApplicationContext()).getObservationController().getObservationsCountByPatient(patientUuid);
             conceptCount = ((MuzimaApplication) context.getApplicationContext()).getConceptController().getConcepts().size();
         } catch (IOException | ConceptController.ConceptFetchException e) {
-            Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations "+e);
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations ",e);
         }
         if (obsCount == 0) {
             view.findViewById(R.id.no_data_layout).setVisibility(View.VISIBLE);

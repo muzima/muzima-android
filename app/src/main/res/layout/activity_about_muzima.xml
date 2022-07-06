@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.AboutMuzimaActivity"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AboutMuzimaContentHeader"
+            android:text="@string/title_logged_in_user"/>
+        <TextView
+            android:id="@+id/logged_in_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AboutMuzimaContentDetails"
+            android:text="logged in user display name"/>
+    </LinearLayout>
+
+    <View
+        style="@style/AboutMuzimaContentDividerLine"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AboutMuzimaContentHeader"
+            android:text="@string/title_last_logged_in"/>
+        <TextView
+            android:id="@+id/last_logged_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AboutMuzimaContentDetails"
+            android:text="last log in date/time"/>
+    </LinearLayout>
+
+    <View
+        style="@style/AboutMuzimaContentDividerLine"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AboutMuzimaContentHeader"
+            android:text="@string/title_active_setup_config"/>
+        <TextView
+            android:id="@+id/active_setup_config"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AboutMuzimaContentDetails"
+            android:text="Name of Config"/>
+    </LinearLayout>
+
+    <View
+        style="@style/AboutMuzimaContentDividerLine"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AboutMuzimaContentHeader"
+            android:text="@string/app_version"/>
+        <TextView
+            android:id="@+id/app_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AboutMuzimaContentDetails"
+            android:text="app version"/>
+    </LinearLayout>
+
+    <View
+        style="@style/AboutMuzimaContentDividerLine"/>
+
+    <LinearLayout
+        android:id="@+id/privacy_policy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AboutMuzimaContentHeader"
+            android:text="@string/title_privacy_policy"/>
+    </LinearLayout>
+
+    <View
+        style="@style/AboutMuzimaContentDividerLine"/>
+
+    <LinearLayout
+        android:id="@+id/terms_and_conditions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AboutMuzimaContentHeader"
+            android:text="@string/info_terms_and_conditions"/>
+    </LinearLayout>
+
+    <View
+        style="@style/AboutMuzimaContentDividerLine"/>
+
+    <LinearLayout
+        android:id="@+id/muzima_disclaimer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AboutMuzimaContentHeader"
+            android:text="@string/title_muzima_disclaimer"/>
+    </LinearLayout>
+</LinearLayout>
