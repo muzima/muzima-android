@@ -54,8 +54,6 @@ public class HelpActivity extends BaseHelpActivity {
     private static final String CLIENT_REGISTRATION = "https://youtu.be/fmjhF-juq4k";
     private static final String LOCAL_CLIENT_SEARCH = "https://youtu.be/630daM1wxGE";
     private static final String SERVER_CLIENT_SEARCH = "https://youtu.be/C1xDs8wWjNM";
-    private static final String PRIVACY_POLICY_URL = "privacy_policy.html";
-    private static final String TERMS_AND_CONDITIONS = "terms_and_conditions.html";
 
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
@@ -127,15 +125,11 @@ public class HelpActivity extends BaseHelpActivity {
         howToTitles.add(getString(R.string.title_about_dashboard_help_html));
         howToTitles.add(getString(R.string.title_settings_help_html));
         howToTitles.add(getString(R.string.title_fill_patient_forms_help));
-        howToTitles.add(getString(R.string.title_privacy_policy));
-        howToTitles.add(getString(R.string.info_terms_and_conditions));
         List<String> howToContent = new ArrayList<>();
         howToContent.add(LOCAL_HELP_CONTENT_ROOT_DIRECTORY+MUZIMA_INITAL_SETUP_GUIDE);
         howToContent.add(LOCAL_HELP_CONTENT_ROOT_DIRECTORY+ABOUT_DASHBOARD_FORM);
         howToContent.add(LOCAL_HELP_CONTENT_ROOT_DIRECTORY+MUZIMA_SETTINGS);
         howToContent.add(LOCAL_HELP_CONTENT_ROOT_DIRECTORY+FILL_PATIENT_FORMS);
-        howToContent.add(LOCAL_HELP_CONTENT_ROOT_DIRECTORY+PRIVACY_POLICY_URL);
-        howToContent.add(LOCAL_HELP_CONTENT_ROOT_DIRECTORY+TERMS_AND_CONDITIONS);
 
         List<String> videoLinkTitles = new ArrayList<>();
         videoLinkTitles.add(getString(R.string.title_guided_setup_help_video));

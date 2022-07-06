@@ -49,7 +49,7 @@ public class CredentialsPreferenceService extends PreferenceService {
             UserService userService = muzimaContext.getUserService();
             userService.deleteAllUsers();
         } catch (IOException e) {
-            Log.e(getClass().getSimpleName(),"An exception was encountered while deleting users "+e);
+            Log.e(getClass().getSimpleName(),"An exception was encountered while deleting users ",e);
         }
     }
 

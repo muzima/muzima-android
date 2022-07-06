@@ -1215,7 +1215,7 @@ public class MuzimaSyncService {
                 downloadReportDatasets(datasetDefinitionIds, isDeltaSync);
             }
         } catch (ReportDatasetController.ReportDatasetFetchException e) {
-            Log.e(getClass().getSimpleName(), "Error while fetching report datasets"+e);
+            Log.e(getClass().getSimpleName(), "Error while fetching report datasets",e);
         }
 
         return result;
