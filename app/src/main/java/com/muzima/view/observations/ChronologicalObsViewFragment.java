@@ -106,7 +106,7 @@ public class ChronologicalObsViewFragment extends ObservationsListFragment imple
                 noDataTip = getString(R.string.info_no_observation_and_concept_data_tip);
             }
         } catch (ConceptController.ConceptFetchException e) {
-            Log.e(getClass().getSimpleName(), "Exception while fetching concepts "+e);
+            Log.e(getClass().getSimpleName(), "Exception while fetching concepts ",e);
         }
 
         conceptsListRecyclerView.setNoDataLayout(noDataLayout,

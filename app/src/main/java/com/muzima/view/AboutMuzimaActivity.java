@@ -1,7 +1,10 @@
 package com.muzima.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.muzima.MuzimaApplication;
@@ -12,11 +15,16 @@ import com.muzima.api.model.User;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.HtmlCompat;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
+
+import java.util.Locale;
 
 
 public class AboutMuzimaActivity extends BaseActivity {
     private final ThemeUtils themeUtils = new ThemeUtils();
+    private static final String PRIVACY_POLICY_URL = "privacy_policy.html";
+    private static final String TERMS_AND_CONDITIONS = "terms_and_conditions.html";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,5 +61,34 @@ public class AboutMuzimaActivity extends BaseActivity {
         TextView appVersionTextView = findViewById(R.id.app_version);
         appVersionTextView.setText(((MuzimaApplication)getApplicationContext()).getApplicationVersion());
 
+        LanguageUtil languageUtil = new LanguageUtil();
+        Locale locale = languageUtil.getSelectedLocale(getApplicationContext());
+        String LOCAL_HELP_CONTENT_ROOT_DIRECTORY = "file:///android_asset/www/help-content/"+locale.getLanguage()+"/";
+
+        View privacyPolicy = findViewById(R.id.privacy_policy);
+        privacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startHelpContentDisplayActivity(LOCAL_HELP_CONTENT_ROOT_DIRECTORY + PRIVACY_POLICY_URL,
+                        getString(R.string.title_privacy_policy));
+            }
+        });
+
+        View termsAndConditions = findViewById(R.id.terms_and_conditions);
+        termsAndConditions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startHelpContentDisplayActivity(LOCAL_HELP_CONTENT_ROOT_DIRECTORY + TERMS_AND_CONDITIONS,
+                        getString(R.string.info_terms_and_conditions));
+            }
+        });
+
+    }
+
+    private void startHelpContentDisplayActivity(String filePath, String title) {
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra(WebViewActivity.HELP_FILE_PATH_PARAM, filePath);
+        intent.putExtra(WebViewActivity.HELP_TITLE, title);
+        startActivity(intent);
     }
 }

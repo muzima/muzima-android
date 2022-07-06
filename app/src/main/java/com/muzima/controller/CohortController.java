@@ -72,7 +72,7 @@ public class CohortController {
             }
         } catch (ProviderController.ProviderLoadException e) {
             loggedInProvider = null;
-            Log.e(getClass().getSimpleName(),"Exception while fetching logged in provider "+e);
+            Log.e(getClass().getSimpleName(),"Exception while fetching logged in provider ",e);
         }
         return  loggedInProvider;
     }
@@ -396,7 +396,7 @@ public class CohortController {
                     }
                 }
             } catch (IOException e) {
-                Log.e(getClass().getSimpleName(),"Error getting cohort membership "+e);
+                Log.e(getClass().getSimpleName(),"Error getting cohort membership ",e);
             }
 
         }

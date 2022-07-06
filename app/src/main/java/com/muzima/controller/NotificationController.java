@@ -231,7 +231,7 @@ public class NotificationController {
             try {
                 senderNotifications = notificationController.getNotificationByUploadStatus(Constants.NotificationStatusConstants.NOTIFICATION_NOT_UPLOADED);
             }catch (IOException e) {
-                Log.e(getClass().getSimpleName(),"Unable to load Notifications"+e);
+                Log.e(getClass().getSimpleName(),"Unable to load Notifications",e);
             }
             for (Notification notification : senderNotifications) {
                try {
@@ -242,9 +242,9 @@ public class NotificationController {
                 } catch (ValidationFailureException e) {
                     Log.e(getClass().getSimpleName(), "Unable to upload notification.");
                 } catch (IOException e) {
-                    Log.e(getClass().getSimpleName(),"Encountered an IOException "+e);
+                    Log.e(getClass().getSimpleName(),"Encountered an IOException ",e);
                 }  catch (NotificationSaveException e) {
-                    Log.e(getClass().getSimpleName(), "Unable to Save Notification "+e);
+                    Log.e(getClass().getSimpleName(), "Unable to Save Notification ",e);
                 }
 
             }
@@ -270,7 +270,7 @@ public class NotificationController {
             try {
                 senderNotifications = notificationController.getNotificationByUploadStatus(Constants.NotificationStatusConstants.NOTIFICATION_NOT_UPLOADED);
             } catch (IOException e) {
-                Log.e(getClass().getSimpleName(),"Unable to load Notifications"+e);
+                Log.e(getClass().getSimpleName(),"Unable to load Notifications",e);
             }
             for (Notification notification : senderNotifications) {
                try {
@@ -279,11 +279,11 @@ public class NotificationController {
                         notificationController.saveNotification(notification);
                     }
                 }catch (ValidationFailureException e) {
-                    Log.e(getClass().getSimpleName(), "Unable to upload notification. "+e);
+                    Log.e(getClass().getSimpleName(), "Unable to upload notification. ",e);
                 } catch (IOException e) {
-                    Log.e(getClass().getSimpleName(),"Encountered an IOException "+e);
+                    Log.e(getClass().getSimpleName(),"Encountered an IOException ",e);
                 } catch (NotificationSaveException e) {
-                    Log.e(getClass().getSimpleName(),"Unable to save notification "+e);
+                    Log.e(getClass().getSimpleName(),"Unable to save notification ",e);
                 }
 
             }
