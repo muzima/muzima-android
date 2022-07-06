@@ -26,6 +26,10 @@ public class AboutMuzimaActivity extends BaseActivity {
     private static final String PRIVACY_POLICY_URL = "privacy_policy.html";
     private static final String TERMS_AND_CONDITIONS = "terms_and_conditions.html";
 
+    private TextView loggedInUserTextView;
+    private TextView lastLoggedInTextView;
+    private TextView activeSetupConfigTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
@@ -33,26 +37,11 @@ public class AboutMuzimaActivity extends BaseActivity {
         setContentView(R.layout.activity_about_muzima);
         setTitle(R.string.general_about_muzima);
 
-        User authenticatedUser = ((MuzimaApplication)getApplicationContext()).getAuthenticatedUser();
-        TextView loggedInUserTextView = findViewById(R.id.logged_in_user);
-        loggedInUserTextView.setText(authenticatedUser.getPerson().getDisplayName());
+        loggedInUserTextView = findViewById(R.id.logged_in_user);
+        lastLoggedInTextView = findViewById(R.id.last_logged_in);
+        activeSetupConfigTextView = findViewById(R.id.active_setup_config);
 
-        TextView lastLoggedInTextView = findViewById(R.id.last_logged_in);
-        if(authenticatedUser.getDateLastLoggedIn() != null) {
-            lastLoggedInTextView.setText(DateUtils.getFormattedStandardDisplayDateTime(authenticatedUser.getDateLastLoggedIn()));
-        } else {
-            lastLoggedInTextView.setText("---");
-        }
 
-        try {
-            SetupConfigurationController setupConfigurationController = ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController();
-            SetupConfigurationTemplate template = setupConfigurationController.getActiveSetupConfigurationTemplate();
-            SetupConfiguration setupConfiguration = setupConfigurationController.getSetupConfigurations(template.getUuid());
-            TextView activeSetupConfigTextView = findViewById(R.id.active_setup_config);
-            activeSetupConfigTextView.setText(setupConfiguration.getName());
-        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
-            Log.e(getClass().getSimpleName(),"Cannot fetch active setup config",e);
-        }
 
         TextView disclaimerTextView = findViewById(R.id.disclaimer);
         String disclaimerText = getResources().getString(R.string.info_disclaimer);
@@ -82,7 +71,38 @@ public class AboutMuzimaActivity extends BaseActivity {
                         getString(R.string.info_terms_and_conditions));
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadUserInfo();
+    }
+
+    private void loadUserInfo(){
+        User authenticatedUser = ((MuzimaApplication)getApplicationContext()).getAuthenticatedUser();
+        if(authenticatedUser != null && authenticatedUser.getPerson() != null) {
+            loggedInUserTextView.setText(authenticatedUser.getPerson().getDisplayName());
+
+            if(authenticatedUser.getDateLastLoggedIn() != null) {
+                lastLoggedInTextView.setText(DateUtils.getFormattedStandardDisplayDateTime(authenticatedUser.getDateLastLoggedIn()));
+            } else {
+                lastLoggedInTextView.setText("---");
+            }
+
+            try {
+                SetupConfigurationController setupConfigurationController = ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController();
+                SetupConfigurationTemplate template = setupConfigurationController.getActiveSetupConfigurationTemplate();
+                SetupConfiguration setupConfiguration = setupConfigurationController.getSetupConfigurations(template.getUuid());
+                activeSetupConfigTextView.setText(setupConfiguration.getName());
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+                Log.e(getClass().getSimpleName(),"Cannot fetch active setup config",e);
+            }
+        } else {
+            loggedInUserTextView.setText("---");
+            lastLoggedInTextView.setText("---");
+            activeSetupConfigTextView.setText("---");
+        }
     }
 
     private void startHelpContentDisplayActivity(String filePath, String title) {

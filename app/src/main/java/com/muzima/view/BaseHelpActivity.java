@@ -61,8 +61,12 @@ public class BaseHelpActivity extends BaseActivity {
             for (int i = 0; i<menu.size(); i++) {
                 menu.getItem(i).setVisible(false);
             }
+
             MenuItem menuHelp = menu.findItem(R.id.action_login);
             if (menuHelp != null) menuHelp.setVisible(true);
+
+            MenuItem menuAbout = menu.findItem(R.id.action_about_muzima);
+            if (menuAbout != null) menuAbout.setVisible(true);
         }
     }
 
