@@ -590,7 +590,7 @@ public class MuzimaSyncService {
             downloadRemovedCohortMembershipData(cohortUuids);
 
             cohortController.markAsUpToDate(cohortUuids);
-            cohortController.setSyncStatus(cohortUuids);
+            cohortController.setSyncStatus(cohortUuids, 1);
         } catch (CohortController.CohortDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading cohort data.", e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
@@ -1187,10 +1187,10 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] downloadReportDatasets(List<Integer> datasetDefinitionIds){
+    public int[] downloadReportDatasets(List<Integer> datasetDefinitionIds, boolean isDeltaSync){
         int[] result = new int[2];
         try {
-            List<ReportDataset> reportDatasets = reportDatasetController.downloadReportDatasets(datasetDefinitionIds);
+            List<ReportDataset> reportDatasets = reportDatasetController.downloadReportDatasets(datasetDefinitionIds, isDeltaSync);
             reportDatasetController.saveReportDatasets(reportDatasets);
             result[0] = SUCCESS;
             result[1] = reportDatasets.size();
@@ -1203,7 +1203,7 @@ public class MuzimaSyncService {
     }
 
 
-    public int[] downloadReportDatasetsForDownloadedReports(){
+    public int[] downloadReportDatasetsForDownloadedReports(boolean isDeltaSync){
         int[] result = new int[2];
         List<Integer> datasetDefinitionIds = new ArrayList<>();
         try {
@@ -1212,7 +1212,7 @@ public class MuzimaSyncService {
                 for(ReportDataset reportDataset : reportDatasets){
                     datasetDefinitionIds.add(reportDataset.getDatasetDefinitionId());
                 }
-                downloadReportDatasets(datasetDefinitionIds);
+                downloadReportDatasets(datasetDefinitionIds, isDeltaSync);
             }
         } catch (ReportDatasetController.ReportDatasetFetchException e) {
             Log.e(getClass().getSimpleName(), "Error while fetching report datasets"+e);
@@ -1418,170 +1418,172 @@ public class MuzimaSyncService {
         for(String patientUuid:patientUuidList){
             try {
                 Patient patient = patientController.getPatientByUuid(patientUuid);
-                List<PatientTag> tags = new ArrayList<>();
-                if(patient.getTags() != null) {
-                    tags = new ArrayList<>(Arrays.asList(patient.getTags()));
-                }
-
-                PatientTag addressTag = null;
-                PatientTag assignmentTag = null;
-                PatientTag awaitingAssignmentTag = null;
-                boolean hasSexualPartnerTag = false;
-                boolean hasAssignmentTag = false;
-                boolean hasAwaitingAssignmentTag = false;
-                for (PatientTag tag : patient.getTags()) {
-                    if(StringUtils.equals(tag.getUuid(),HAS_SEXUAL_PARTNER_TAG_UUID)) {
-                        hasSexualPartnerTag = true;
-                    } else if(StringUtils.equals(tag.getUuid(),ALREADY_ASSIGNED_TAG_UUID)) {
-                        hasAssignmentTag = true;
-                        assignmentTag = tag;
-                    } else if(StringUtils.equals(tag.getUuid(),AWAITING_ASSIGNMENT_TAG_UUID)) {
-                        hasAwaitingAssignmentTag = true;
+                    if(patient != null){
+                    List<PatientTag> tags = new ArrayList<>();
+                    if (patient.getTags() != null) {
+                        tags = new ArrayList<>(Arrays.asList(patient.getTags()));
                     }
-                }
 
-                //Create tag if patient has a sexual partner
-                if(!hasSexualPartnerTag) {
-                    List<Relationship> relationships = relationshipController.getRelationshipsForPerson(patientUuid);
-                    for (Relationship relationship : relationships) {
-                        if (StringUtils.equals(relationship.getRelationshipType().getUuid(), "2f7d5778-0c80-11eb-b335-9f16b42e3b00")) {
-                            PatientTag sexualPartnerTag = new PatientTag();
-                            sexualPartnerTag.setName("P");
-                            sexualPartnerTag.setDescription(muzimaApplication.getString(R.string.general_has_sexual_partner));
-                            sexualPartnerTag.setUuid(HAS_SEXUAL_PARTNER_TAG_UUID);
-                            if(!hasSexualPartnerTag) {
-                                hasSexualPartnerTag = true;
-                                tags.add(sexualPartnerTag);
-                                patientController.savePatientTags(sexualPartnerTag);
-                            }
+                    PatientTag addressTag = null;
+                    PatientTag assignmentTag = null;
+                    PatientTag awaitingAssignmentTag = null;
+                    boolean hasSexualPartnerTag = false;
+                    boolean hasAssignmentTag = false;
+                    boolean hasAwaitingAssignmentTag = false;
+                    for (PatientTag tag : patient.getTags()) {
+                        if (StringUtils.equals(tag.getUuid(), HAS_SEXUAL_PARTNER_TAG_UUID)) {
+                            hasSexualPartnerTag = true;
+                        } else if (StringUtils.equals(tag.getUuid(), ALREADY_ASSIGNED_TAG_UUID)) {
+                            hasAssignmentTag = true;
+                            assignmentTag = tag;
+                        } else if (StringUtils.equals(tag.getUuid(), AWAITING_ASSIGNMENT_TAG_UUID)) {
+                            hasAwaitingAssignmentTag = true;
+                        }
+                    }
 
-                            //update for the related patient as well
-                            try {
-                                Patient relatedPatient = null;
-                                if (relationship.getPersonA() != null && !StringUtils.equals(patientUuid, relationship.getPersonA().getUuid())) {
-                                    relatedPatient = patientController.getPatientByUuid(relationship.getPersonA().getUuid());
-                                } else if (relationship.getPersonB() != null) {
-                                    relatedPatient = patientController.getPatientByUuid(relationship.getPersonB().getUuid());
+                    //Create tag if patient has a sexual partner
+                    if (!hasSexualPartnerTag) {
+                        List<Relationship> relationships = relationshipController.getRelationshipsForPerson(patientUuid);
+                        for (Relationship relationship : relationships) {
+                            if (StringUtils.equals(relationship.getRelationshipType().getUuid(), "2f7d5778-0c80-11eb-b335-9f16b42e3b00")) {
+                                PatientTag sexualPartnerTag = new PatientTag();
+                                sexualPartnerTag.setName("P");
+                                sexualPartnerTag.setDescription(muzimaApplication.getString(R.string.general_has_sexual_partner));
+                                sexualPartnerTag.setUuid(HAS_SEXUAL_PARTNER_TAG_UUID);
+                                if (!hasSexualPartnerTag) {
+                                    hasSexualPartnerTag = true;
+                                    tags.add(sexualPartnerTag);
+                                    patientController.savePatientTags(sexualPartnerTag);
                                 }
 
-                                if(relatedPatient != null) {
-                                    boolean relatedPatientHasSexualPartnerTag = false;
-                                    for (PatientTag tag : relatedPatient.getTags()) {
-                                        if(StringUtils.equals(tag.getUuid(),HAS_SEXUAL_PARTNER_TAG_UUID)) {
-                                            relatedPatientHasSexualPartnerTag = true;
+                                //update for the related patient as well
+                                try {
+                                    Patient relatedPatient = null;
+                                    if (relationship.getPersonA() != null && !StringUtils.equals(patientUuid, relationship.getPersonA().getUuid())) {
+                                        relatedPatient = patientController.getPatientByUuid(relationship.getPersonA().getUuid());
+                                    } else if (relationship.getPersonB() != null) {
+                                        relatedPatient = patientController.getPatientByUuid(relationship.getPersonB().getUuid());
+                                    }
+
+                                    if (relatedPatient != null) {
+                                        boolean relatedPatientHasSexualPartnerTag = false;
+                                        for (PatientTag tag : relatedPatient.getTags()) {
+                                            if (StringUtils.equals(tag.getUuid(), HAS_SEXUAL_PARTNER_TAG_UUID)) {
+                                                relatedPatientHasSexualPartnerTag = true;
+                                            }
+                                        }
+                                        if (!relatedPatientHasSexualPartnerTag) {
+                                            PatientTag relatedSexualPartnerTag = new PatientTag();
+                                            relatedSexualPartnerTag.setName("P");
+                                            relatedSexualPartnerTag.setDescription(muzimaApplication.getString(R.string.general_has_sexual_partner));
+                                            relatedSexualPartnerTag.setUuid(HAS_SEXUAL_PARTNER_TAG_UUID);
+                                            List<PatientTag> relatedPatientTags = new ArrayList<>(Arrays.asList(relatedPatient.getTags()));
+
+
+                                            relatedPatientTags.add(relatedSexualPartnerTag);
+                                            patientController.savePatientTags(relatedSexualPartnerTag);
+
+                                            relatedPatient.setTags(relatedPatientTags.toArray(new PatientTag[relatedPatientTags.size()]));
+                                            patientController.updatePatient(relatedPatient);
                                         }
                                     }
-                                    if(!relatedPatientHasSexualPartnerTag){
-                                        PatientTag relatedSexualPartnerTag = new PatientTag();
-                                        relatedSexualPartnerTag.setName("P");
-                                        relatedSexualPartnerTag.setDescription(muzimaApplication.getString(R.string.general_has_sexual_partner));
-                                        relatedSexualPartnerTag.setUuid(HAS_SEXUAL_PARTNER_TAG_UUID);
-                                        List<PatientTag> relatedPatientTags = new ArrayList<>(Arrays.asList(relatedPatient.getTags()));
-
-
-                                        relatedPatientTags.add(relatedSexualPartnerTag);
-                                        patientController.savePatientTags(relatedSexualPartnerTag);
-
-                                        relatedPatient.setTags(relatedPatientTags.toArray(new PatientTag[relatedPatientTags.size()]));
-                                        patientController.updatePatient(relatedPatient);
-                                    }
-                                }
-                            } catch (PatientController.PatientLoadException e){
-                                Log.e(getClass().getSimpleName(),"Could not update related patient",e);
-                            }
-                        }
-                    }
-                }
-
-                //Create tag if the patient has address field for Bairro.
-                List<String> tagNames = new ArrayList<>();
-
-                for(PatientTag tag:existingTags){
-                    tagNames.add(tag.getName());
-                }
-
-                PersonAddress personAddress = patient.getPreferredAddress();
-                String address5 = null;
-
-                if(personAddress != null){
-                    address5 = personAddress.getAddress5();
-                }
-
-                if(personAddress == null){
-                    for(PersonAddress address:patient.getAddresses()){
-                        if(!StringUtils.isEmpty(address.getAddress5())) {
-                            address5 = address.getAddress5();
-                            break;
-                        }
-                    }
-                }
-
-                if(!StringUtils.isEmpty(address5)){
-                    String addressTagName = null;
-                    if(address5.length() > 3) {
-                        addressTagName = address5.substring(0, 3);
-                    } else {
-                        addressTagName = address5;
-                    }
-
-                    for(PatientTag existingTag : existingTags){
-                        if(StringUtils.equals(existingTag.getName(),addressTagName)){
-                            addressTag = existingTag;
-                        }
-                    }
-
-                    if(addressTag == null) {
-                        addressTag = new PatientTag();
-                        addressTag.setName(addressTagName);
-                        addressTag.setDescription(address5);
-                        addressTag.setUuid(UUID.randomUUID().toString());
-                        existingTags.add(addressTag);
-                        patientController.savePatientTags(addressTag);
-                    }
-
-                    tags.add(addressTag);
-                }
-
-                if(!hasAssignmentTag) {
-                    List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
-                    List<Observation> consentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, INDEX_CASE_TESTING_CONSENT_CONCEPT_ID);
-
-                    if (consentObsList.size() > 0 && assignmentObsList.size() > 0) {
-                        for (Observation consentObs : consentObsList) {
-                            Date now = new Date();
-                            long consentDaysPassed = (now.getTime() - consentObs.getObservationDatetime().getTime()) / (24 * 60 * 60 * 1000);
-                            if (consentDaysPassed >= 0 && consentDaysPassed <= 30) {
-                                for (Observation assignmentObs : assignmentObsList) {
-                                    if (assignmentObs.getObservationDatetime().after(consentObs.getObservationDatetime())) {
-                                        assignmentTag = new PatientTag();
-                                        assignmentTag.setName("AL");
-                                        assignmentTag.setDescription(muzimaApplication.getString(R.string.general_already_assigned));
-                                        assignmentTag.setUuid(ALREADY_ASSIGNED_TAG_UUID);
-                                        tags.add(assignmentTag);
-                                        patientController.savePatientTags(assignmentTag);
-                                        break;
-
-                                    }
+                                } catch (PatientController.PatientLoadException e) {
+                                    Log.e(getClass().getSimpleName(), "Could not update related patient", e);
                                 }
                             }
-                            if (assignmentTag != null) {
+                        }
+                    }
+
+                    //Create tag if the patient has address field for Bairro.
+                    List<String> tagNames = new ArrayList<>();
+
+                    for (PatientTag tag : existingTags) {
+                        tagNames.add(tag.getName());
+                    }
+
+                    PersonAddress personAddress = patient.getPreferredAddress();
+                    String address5 = null;
+
+                    if (personAddress != null) {
+                        address5 = personAddress.getAddress5();
+                    }
+
+                    if (personAddress == null) {
+                        for (PersonAddress address : patient.getAddresses()) {
+                            if (!StringUtils.isEmpty(address.getAddress5())) {
+                                address5 = address.getAddress5();
                                 break;
                             }
                         }
                     }
-                }
 
-                if(!hasAwaitingAssignmentTag && assignmentTag == null){
-                    assignmentTag = new PatientTag();
-                    assignmentTag.setName("AA");
-                    assignmentTag.setDescription(muzimaApplication.getString(R.string.general_awaiting_assignment));
-                    assignmentTag.setUuid(AWAITING_ASSIGNMENT_TAG_UUID);
-                    tags.add(assignmentTag);
-                    patientController.savePatientTags(assignmentTag);
-                }
+                    if (!StringUtils.isEmpty(address5)) {
+                        String addressTagName = null;
+                        if (address5.length() > 3) {
+                            addressTagName = address5.substring(0, 3);
+                        } else {
+                            addressTagName = address5;
+                        }
 
-                patient.setTags(tags.toArray(new PatientTag[tags.size()]));
-                patientController.updatePatient(patient);
+                        for (PatientTag existingTag : existingTags) {
+                            if (StringUtils.equals(existingTag.getName(), addressTagName)) {
+                                addressTag = existingTag;
+                            }
+                        }
+
+                        if (addressTag == null) {
+                            addressTag = new PatientTag();
+                            addressTag.setName(addressTagName);
+                            addressTag.setDescription(address5);
+                            addressTag.setUuid(UUID.randomUUID().toString());
+                            existingTags.add(addressTag);
+                            patientController.savePatientTags(addressTag);
+                        }
+
+                        tags.add(addressTag);
+                    }
+
+                    if (!hasAssignmentTag) {
+                        List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
+                        List<Observation> consentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, INDEX_CASE_TESTING_CONSENT_CONCEPT_ID);
+
+                        if (consentObsList.size() > 0 && assignmentObsList.size() > 0) {
+                            for (Observation consentObs : consentObsList) {
+                                Date now = new Date();
+                                long consentDaysPassed = (now.getTime() - consentObs.getObservationDatetime().getTime()) / (24 * 60 * 60 * 1000);
+                                if (consentDaysPassed >= 0 && consentDaysPassed <= 30) {
+                                    for (Observation assignmentObs : assignmentObsList) {
+                                        if (assignmentObs.getObservationDatetime().after(consentObs.getObservationDatetime())) {
+                                            assignmentTag = new PatientTag();
+                                            assignmentTag.setName("AL");
+                                            assignmentTag.setDescription(muzimaApplication.getString(R.string.general_already_assigned));
+                                            assignmentTag.setUuid(ALREADY_ASSIGNED_TAG_UUID);
+                                            tags.add(assignmentTag);
+                                            patientController.savePatientTags(assignmentTag);
+                                            break;
+
+                                        }
+                                    }
+                                }
+                                if (assignmentTag != null) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (!hasAwaitingAssignmentTag && assignmentTag == null) {
+                        assignmentTag = new PatientTag();
+                        assignmentTag.setName("AA");
+                        assignmentTag.setDescription(muzimaApplication.getString(R.string.general_awaiting_assignment));
+                        assignmentTag.setUuid(AWAITING_ASSIGNMENT_TAG_UUID);
+                        tags.add(assignmentTag);
+                        patientController.savePatientTags(assignmentTag);
+                    }
+
+                    patient.setTags(tags.toArray(new PatientTag[tags.size()]));
+                    patientController.updatePatient(patient);
+                }
             } catch (RelationshipController.RetrieveRelationshipException e) {
                 Log.e(getClass().getSimpleName(),"Error retrieving relationships", e);
             } catch (PatientController.PatientSaveException e) {
