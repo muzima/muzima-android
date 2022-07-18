@@ -10,6 +10,8 @@
 
 package com.muzima.view.initialwizard;
 
+import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,9 +41,11 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupCardsViewPagerAdapter;
+import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.SetupConfigurationTemplate;
+import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.FCMTokenContoller;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
@@ -62,8 +66,12 @@ import com.muzima.view.MainDashboardActivity;
 
 import net.minidev.json.JSONObject;
 
+import org.apache.lucene.queryParser.ParseException;
+
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("staticFieldLeak")
@@ -88,6 +96,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private GuidedSetupCardsViewPagerAdapter guidedSetupCardsViewPagerAdapter;
     private int pageCount;
     private boolean isOnlineOnlyModeEnabled;
+    private String setupConfigTemplateUuid;
 
     public void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,false);
@@ -179,7 +188,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private void initiateSetupConfiguration() {
-        String setupConfigTemplateUuid = getIntent().getStringExtra(SETUP_CONFIG_UUID_INTENT_KEY);
+        setupConfigTemplateUuid = getIntent().getStringExtra(SETUP_CONFIG_UUID_INTENT_KEY);
         fetchConfigurationTemplate(setupConfigTemplateUuid);
         downloadSettings();
     }
@@ -909,7 +918,31 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private synchronized void evaluateFinishStatus() {
         int TOTAL_WIZARD_STEPS = isOnlineOnlyModeEnabled ? 7 : 9;
         if (wizardLevel == (TOTAL_WIZARD_STEPS)) {
+
+            AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
+            SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+            try {
+                AppUsageLogs setupConfig = new AppUsageLogs();
+                setupConfig.setLogKey(com.muzima.util.Constants.AppUsageLogs.SET_UP_CONFIG_UUID);
+                setupConfig.setLogvalue(setupConfigTemplateUuid);
+                setupConfig.setUpdateDatetime(new Date());
+                appUsageLogsController.saveOrUpdateAppUsageLog(setupConfig);
+
+                AppUsageLogs latestLoginTime1 = new AppUsageLogs();
+                latestLoginTime1.setLogKey(com.muzima.util.Constants.AppUsageLogs.SETUP_TIME);
+                latestLoginTime1.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                latestLoginTime1.setUpdateDatetime(new Date());
+                appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime1);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             if (wizardcompletedSuccessfully) {
+
                 initialSetupStatusTextView.setText(getString(R.string.info_setup_complete_success));
             } else {
                 initialSetupStatusTextView.setText(getString(R.string.info_setup_complete_fail));

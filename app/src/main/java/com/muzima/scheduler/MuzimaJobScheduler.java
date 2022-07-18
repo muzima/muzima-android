@@ -10,6 +10,7 @@
 
 package com.muzima.scheduler;
 
+import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
@@ -26,6 +27,7 @@ import android.util.Log;
 import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Form;
@@ -38,6 +40,7 @@ import com.muzima.api.model.Provider;
 import com.muzima.api.model.ReportDataset;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.model.User;
+import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
@@ -70,8 +73,10 @@ import com.muzima.view.forms.SyncFormTemplateIntent;
 import com.muzima.view.patients.SyncPatientDataIntent;
 import com.muzima.view.reports.SyncAllPatientReports;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @SuppressLint("NewApi")
@@ -153,6 +158,7 @@ public class MuzimaJobScheduler extends JobService {
                 new SyncAllPatientReportsBackgroundTask().execute();
             }
             new FormMetaDataSyncBackgroundTask().execute();
+            new SyncAppUsageLogsBackgroundTask().execute();
         }
     }
 
@@ -838,6 +844,25 @@ public class MuzimaJobScheduler extends JobService {
             }
 
             return lists;
+        }
+    }
+
+    private class SyncAppUsageLogsBackgroundTask extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Context context = getApplicationContext();
+            AppUsageLogsController appUsageLogsController = ((MuzimaApplication) context).getAppUsageLogsController();
+            Provider loggedInProvider = ((MuzimaApplication) context).getProviderController().getProviderBySystemId(((MuzimaApplication) context).getAuthenticatedUser().getSystemId());
+
+            try {
+                List<AppUsageLogs> appUsageLogs = appUsageLogsController.getAllAppUsageLogs();
+                appUsageLogsController.syncAppUsageLogs(appUsageLogs,loggedInProvider);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
         }
     }
 }

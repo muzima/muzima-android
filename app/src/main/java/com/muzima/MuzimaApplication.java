@@ -40,6 +40,7 @@ import com.muzima.api.service.NotificationTokenService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PersonService;
 import com.muzima.api.service.ProviderService;
+import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -119,6 +120,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private MinimumSupportedAppVersionController minimumSupportedAppVersionController;
     private FCMTokenContoller fcmTokenContoller;
     private ReportDatasetController reportDatasetController;
+    private AppUsageLogsController appUsageLogsController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -652,6 +654,18 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return reportDatasetController;
+    }
+
+    public AppUsageLogsController getAppUsageLogsController(){
+        if(appUsageLogsController == null){
+            try{
+                appUsageLogsController = new AppUsageLogsController(muzimaContext.getAppUsageLogsService(), muzimaContext.getLastSyncTimeService(), getSntpService());
+            }catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        return appUsageLogsController;
     }
 
     public String getApplicationVersion() {

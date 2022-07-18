@@ -64,6 +64,9 @@ public class Constants {
     public static final String STANDARD_DATE_FORMAT = "dd-MM-yyyy";
     public static final String STANDARD_DATE_LOCALE_FORMAT = "dd-MM-yyyy HH:mm";
     public static final String STANDARD_DISPLAY_FORMAT = "MMM dd, yyyy HH:mm";
+    public static final String STANDARD_DATE_TIMEZONE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    public static final String STANDARD_TIME_FORMAT = "HH:mm";
+
 
     public static final class FORMS_LAUNCH_MODE {
         public static final int INCOMPLETE_FORMS_VIEW = 0;
