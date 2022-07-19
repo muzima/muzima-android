@@ -155,7 +155,7 @@ public class HTMLPatientJSONMapper {
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "Could not populate patient registration data to JSON", e);
         } catch (PatientController.PatientLoadException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
         return prepopulateJSON.toString();
     }

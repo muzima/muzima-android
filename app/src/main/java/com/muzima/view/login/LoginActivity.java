@@ -39,7 +39,9 @@ import com.muzima.BuildConfig;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
+import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.MinimumSupportedAppVersion;
+import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
@@ -65,6 +67,15 @@ import com.muzima.view.help.HelpActivity;
 import com.muzima.view.initialwizard.SetupMethodPreferenceWizardActivity;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
+import static com.muzima.utils.Constants.STANDARD_TIME_FORMAT;
+
+import org.apache.lucene.queryParser.ParseException;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.util.Date;
 
 //This class shouldn't extend BaseAuthenticatedActivity. Since it is independent of the application's context
 public class LoginActivity extends BaseActivity {
@@ -408,6 +419,8 @@ public class LoginActivity extends BaseActivity {
                     muzimaApplication.deleteAllPatientsData();
                 }
 
+                Date successfulLoginTime = new Date();
+
                 MuzimaLoggerService.scheduleLogSync(muzimaApplication);
                 MuzimaLoggerService.log(muzimaApplication,"LOGIN_SUCCESS",
                         result.credentials.getUserName(),MuzimaLoggerService.getAndParseGPSLocationForLogging(muzimaApplication), "{}");
@@ -420,6 +433,8 @@ public class LoginActivity extends BaseActivity {
                 String preferredLocale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(languageKey,defaultLanguage);
 
                 localePreferenceService.setPreferredLocale(preferredLocale);
+
+                checkAndUpdateUsageLogsIfNecessary(muzimaApplication, successfulLoginTime);
 
                 MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -475,6 +490,72 @@ public class LoginActivity extends BaseActivity {
             private Result(Credentials credentials, int status) {
                 this.credentials = credentials;
                 this.status = status;
+            }
+        }
+
+        private void checkAndUpdateUsageLogsIfNecessary(MuzimaApplication muzimaApplication, Date date){
+            AppUsageLogsController appUsageLogsController = muzimaApplication.getAppUsageLogsController();
+            try {
+                //Check and Update app version if need be
+                AppUsageLogs appVersionLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.APP_VERSION);
+                if(appVersionLog != null){
+                    if(!appVersionLog.getLogvalue().equals(getApplicationVersion())){
+                        appVersionLog.setLogvalue(getApplicationVersion());
+                        appVersionLog.setUpdateDatetime(new Date());
+                        appUsageLogsController.saveOrUpdateAppUsageLog(appVersionLog);
+                    }
+                }else{
+                    AppUsageLogs appUsageLog1 = new AppUsageLogs();
+                    appUsageLog1.setLogKey(Constants.AppUsageLogs.APP_VERSION);
+                    appUsageLog1.setLogvalue(getApplicationVersion());
+                    appUsageLog1.setUpdateDatetime(new Date());
+                    Log.e(getClass().getSimpleName(), appUsageLog1.getLogKey());
+                    appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLog1);
+                }
+
+                //Check and update earliest login time if need be
+                AppUsageLogs earliestLoginTime = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.EARLIEST_LOGIN_TIME);
+                SimpleDateFormat simpleTimeFormat = new SimpleDateFormat(STANDARD_TIME_FORMAT);
+                SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+                Date loginTime = simpleTimeFormat.parse(simpleTimeFormat.format(date));
+                if(earliestLoginTime != null){
+                    Date logValue = simpleTimeFormat.parse(simpleTimeFormat.format(simpleDateTimezoneFormat.parse(earliestLoginTime.getLogvalue())));
+                    if (loginTime.before(logValue)) {
+                        earliestLoginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
+                        earliestLoginTime.setUpdateDatetime(new Date());
+                        appUsageLogsController.saveOrUpdateAppUsageLog(earliestLoginTime);
+                    }
+                }else{
+                    AppUsageLogs earliestLoginTime1 = new AppUsageLogs();
+                    earliestLoginTime1.setLogKey(Constants.AppUsageLogs.EARLIEST_LOGIN_TIME);
+                    earliestLoginTime1.setLogvalue(simpleDateTimezoneFormat.format(date));
+                    earliestLoginTime1.setUpdateDatetime(new Date());
+                    appUsageLogsController.saveOrUpdateAppUsageLog(earliestLoginTime1);
+                }
+
+                //Check and update Latest login time if need be
+                AppUsageLogs latestLoginTime = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.LATEST_LOGIN_TIME);
+                if(latestLoginTime != null){
+                    Date logValue = simpleTimeFormat.parse(simpleTimeFormat.format(simpleDateTimezoneFormat.parse(latestLoginTime.getLogvalue())));
+                    if (loginTime.after(logValue)) {
+                        latestLoginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
+                        latestLoginTime.setUpdateDatetime(new Date());
+                        appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime);
+                    }
+                }else{
+                    AppUsageLogs latestLoginTime1 = new AppUsageLogs();
+                    latestLoginTime1.setLogKey(Constants.AppUsageLogs.LATEST_LOGIN_TIME);
+                    latestLoginTime1.setLogvalue(simpleDateTimezoneFormat.format(date));
+                    latestLoginTime1.setUpdateDatetime(new Date());
+                    appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime1);
+                }
+
+            } catch (IOException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
+            } catch (ParseException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
+            } catch (java.text.ParseException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
             }
         }
     }

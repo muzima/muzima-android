@@ -597,7 +597,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
                 try {
                     smartCardController.saveSmartCardRecord(smartCardRecord);
                 } catch (SmartCardController.SmartCardRecordSaveException e) {
-                    e.printStackTrace();
+                    Log.e(getClass().getSimpleName(),"Encountered an exception",e);
                 }
             } else if (SHRToMuzimaMatchingPatient == null) {
                 negativeServerSearchResultNotifyAlertDialog.show();
@@ -631,7 +631,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
                 }
             } catch (PatientController.PatientLoadException e) {
                 Log.e(getClass().getSimpleName(), "Unable to search for patient locally." + e.getMessage());
-                e.printStackTrace();
             }
             return patient;
         }
@@ -683,7 +682,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
                 patientController.savePatient(SHRPatient);
                 KenyaEmrShrMapper.createAndSaveRegistrationPayloadForPatient(muzimaApplication, SHRPatient);
             } catch (PatientController.PatientSaveException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
             }
             if (smartCardRecord != null) {
                 smartCardRecord.setUuid(UUID.randomUUID().toString());
@@ -697,12 +696,12 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
                 try {
                     kenyaEmrSHRModel = KenyaEmrShrMapper.createSHRModelFromJson(smartCardRecord.getPlainPayload());
                 } catch (KenyaEmrShrMapper.ShrParseException e) {
-                    e.printStackTrace();
+                    Log.e(getClass().getSimpleName(),"Encountered an exception",e);
                 }
                 try {
                     KenyaEmrShrMapper.createNewObservationsAndEncountersFromShrModel(muzimaApplication, kenyaEmrSHRModel, SHRPatient);
                 } catch (KenyaEmrShrMapper.ShrParseException e) {
-                    e.printStackTrace();
+                    Log.e(getClass().getSimpleName(),"Encountered an exception",e);
                 }
                 Log.e(getClass().getSimpleName(), "Patient registered");
             }

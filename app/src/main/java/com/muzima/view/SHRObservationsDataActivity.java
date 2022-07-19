@@ -219,7 +219,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
                         }
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e(getClass().getSimpleName(),"Encounter an exception",e);
                 }
                 writeSHRDataOptionDialog.dismiss();
                 writeSHRDataOptionDialog.cancel();

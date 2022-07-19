@@ -823,4 +823,9 @@
     <string name="general_performance_comparison">प्रदर्शन तुलना</string>
     <string name="general_your_statistics">आपके आंकड़े</string>
     <string name="general_their_statistics">उनके आंकड़ेे</string>
+    <string name="app_version">एप्लिकेशन वेरीज़न</string>
+    <string name="title_active_setup_config">सक्रिय सेटअप कॉन्फ़िगरेशन</string>
+    <string name="general_about_muzima">mUzima . के बारे में</string>
+    <string name="title_last_logged_in">पिछला लॉग इन</string>
+    <string name="title_logged_in_user">लॉग इन यूजर</string>
 </resources>

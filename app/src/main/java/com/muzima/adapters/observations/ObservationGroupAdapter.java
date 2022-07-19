@@ -163,7 +163,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                 }
             }
         } catch (ConceptController.ConceptFetchException | ObservationController.LoadObservationException | SetupConfigurationController.SetupConfigurationFetchException e) {
-            Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations or fetching concepts "+e);
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations or fetching concepts ",e);
         }
 
         obsGroup = obsGroups.toArray(new ObsGroups[0]);
@@ -208,7 +208,8 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                                             } else if (concept.isCoded()) {
                                                 value = getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
                                             } else if (concept.isDatetime()) {
-                                                value = dateFormat.format(observation.getValueDatetime());
+                                                if(observation.getValueDatetime() != null)
+                                                    value = dateFormat.format(observation.getValueDatetime());
                                             } else {
                                                 value = observation.getValueText();
                                             }
@@ -229,7 +230,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
 
             }
         } catch (ConceptController.ConceptFetchException e) {
-            Log.e(getClass().getSimpleName(),"Exception encountered while fetching concepts "+e);
+            Log.e(getClass().getSimpleName(),"Exception encountered while fetching concepts ",e);
         }
     }
 

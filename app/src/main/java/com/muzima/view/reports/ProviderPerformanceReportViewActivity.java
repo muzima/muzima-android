@@ -262,7 +262,7 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
         try {
              jsonArray = (JSONArray) jp.parse(dataset);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
         return jsonArray;
     }

@@ -336,7 +336,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         });
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_settings, R.id.nav_help, R.id.nav_feedback, R.id.nav_contact)
+                R.id.nav_home, R.id.nav_settings, R.id.nav_help, R.id.nav_feedback, R.id.nav_contact, R.id.nav_about_us)
                 .setOpenableLayout(drawerLayout)
                 .build();
         navigationView.post(() -> {

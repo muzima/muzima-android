@@ -206,7 +206,7 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
                 Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
                 return String.format("%.02f", results[0] / 1000) + " km";
             }catch (NumberFormatException e){
-                Log.e(getClass().getSimpleName(),"Number format exception encountered while parsing number "+e);
+                Log.e(getClass().getSimpleName(),"Number format exception encountered while parsing number ",e);
             }
         }
         return "";

@@ -13,6 +13,7 @@ package com.muzima;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -39,6 +40,7 @@ import com.muzima.api.service.NotificationTokenService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PersonService;
 import com.muzima.api.service.ProviderService;
+import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -65,6 +67,7 @@ import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.FormWebViewActivity;
 import com.muzima.view.forms.HTMLFormWebViewActivity;
@@ -117,6 +120,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private MinimumSupportedAppVersionController minimumSupportedAppVersionController;
     private FCMTokenContoller fcmTokenContoller;
     private ReportDatasetController reportDatasetController;
+    private AppUsageLogsController appUsageLogsController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -650,6 +654,32 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return reportDatasetController;
+    }
+
+    public AppUsageLogsController getAppUsageLogsController(){
+        if(appUsageLogsController == null){
+            try{
+                appUsageLogsController = new AppUsageLogsController(muzimaContext.getAppUsageLogsService(), muzimaContext.getLastSyncTimeService(), getSntpService());
+            }catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        return appUsageLogsController;
+    }
+
+    public String getApplicationVersion() {
+        String versionText = "";
+        String versionCode = "";
+        try {
+            versionCode = String.valueOf(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+            LanguageUtil languageUtil = new LanguageUtil();
+            android.content.Context localizedContext = languageUtil.getLocalizedContext(this);
+            versionText = localizedContext.getResources().getString(R.string.general_application_version, versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(getClass().getSimpleName(), "Unable to read application version.", e);
+        }
+        return versionText;
     }
 
 }

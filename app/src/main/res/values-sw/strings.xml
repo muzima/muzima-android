@@ -588,7 +588,7 @@
     <string name="title_light_mode">Wezesha hali ya siku</string>
     <string name="title_local_client_search_help_video">Utafutaji wa mteja (wa ndani)</string>
     <string name="title_location_help">Msaada wa Sehemu</string>
-    <string name="title_logo">Nembo ya Muzima</string>
+    <string name="title_logo">Nembo ya mUzima</string>
     <string name="title_logout_confirm">Uhakikisho!</string>
     <string name="title_manage_concept">Dhibiti dhana</string>
     <string name="title_manage_location">Dhibiti sehemu</string>
@@ -827,4 +827,9 @@
     <string name="general_performance_comparison">Ulinganisho wa Utendaji</string>
     <string name="general_your_statistics">Takwimu zako</string>
     <string name="general_their_statistics">Takwimu zake</string>
+    <string name="app_version">Toleo la programu</string>
+    <string name="title_active_setup_config">Mipangilio Inayotumika ya Usanidi</string>
+    <string name="general_about_muzima">Kuhusu mUzima</string>
+    <string name="title_last_logged_in">Mara ya Mwisho Kuingia</string>
+    <string name="title_logged_in_user">Mtumiaji Aliyeingia</string>
 </resources>

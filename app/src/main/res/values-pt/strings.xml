@@ -831,4 +831,9 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_performance_comparison">Comparação de desempenho</string>
     <string name="general_your_statistics">Suas estatísticas</string>
     <string name="general_their_statistics">Suas estatísticas</string>
+    <string name="app_version">Versão do aplicativo</string>
+    <string name="title_active_setup_config">Configuração de configuração ativa</string>
+    <string name="general_about_muzima">Sobre mUzima</string>
+    <string name="title_last_logged_in">Data do último login</string>
+    <string name="title_logged_in_user">Usuário conectado</string>
 </resources>

@@ -13,6 +13,7 @@ package com.muzima.view.patients;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -200,7 +201,7 @@ public class ObsViewActivity extends ActivityWithPatientSummaryBottomNavigation 
                 ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
             gpsAddressTextView.setText(getDistanceToClientAddress(patient));
         } catch (PatientController.PatientLoadException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
     }
 
@@ -223,7 +224,7 @@ public class ObsViewActivity extends ActivityWithPatientSummaryBottomNavigation 
                 return String.format("%.02f", results[0] / 1000) + " km";
             }
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
         return "";
     }

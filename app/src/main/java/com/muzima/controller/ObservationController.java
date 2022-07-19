@@ -41,6 +41,8 @@ import static com.muzima.util.Constants.UUID_SEPARATOR;
 import static com.muzima.util.Constants.UUID_TYPE_SEPARATOR;
 import static java.util.Arrays.asList;
 
+import android.util.Log;
+
 public class ObservationController {
 
     private final ObservationService observationService;
@@ -256,6 +258,17 @@ public class ObservationController {
         } catch (IOException e) {
             throw new DownloadObservationException(e);
         }
+    }
+
+    public List<Observation> downloadObservationsForAddedConceptsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> conceptUuids,String activeSetupConfigUuid) throws DownloadObservationException {
+        List<Observation> observations = new ArrayList<>();
+        try {
+            observations = observationService.downloadObservationsAndSetupConfig(patientUuids, conceptUuids, null, activeSetupConfigUuid);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(),"Encounter an IO exception",e);
+        }
+
+        return observations;
     }
 
     private ArrayList<String> getAllUuids(List<String> knownUuids, List<String> newUuids) {

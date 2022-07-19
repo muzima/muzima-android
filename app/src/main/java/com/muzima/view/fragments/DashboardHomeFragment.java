@@ -425,7 +425,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
             EventBus.getDefault().register(this);
             loadAllPatients();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
     }
 

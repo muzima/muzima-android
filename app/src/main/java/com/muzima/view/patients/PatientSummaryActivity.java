@@ -216,7 +216,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
             gpsAddressTextView.setText(getDistanceToClientAddress(patient));
         } catch (PatientController.PatientLoadException e) {
-            Log.e(getClass().getSimpleName(),"Exception encountered while loading patients "+e);
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading patients ",e);
         }
     }
 
@@ -239,7 +239,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 return String.format("%.02f", results[0] / 1000) + " km";
             }
         } catch (NumberFormatException e) {
-            Log.e(getClass().getSimpleName(),"Number format exception "+e);
+            Log.e(getClass().getSimpleName(),"Number format exception ",e);
         }
         return "";
     }

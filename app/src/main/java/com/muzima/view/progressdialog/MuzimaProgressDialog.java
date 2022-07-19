@@ -60,9 +60,9 @@ public class MuzimaProgressDialog {
                 dialog.dismiss();
             }
         } catch (final IllegalArgumentException e) {
-            Log.e(getClass().getSimpleName(),"An Illegal Argument Exception  occurred while dismissing the dialog "+e);
+            Log.e(getClass().getSimpleName(),"An Illegal Argument Exception  occurred while dismissing the dialog ",e);
         } catch (final Exception e) {
-            Log.e(getClass().getSimpleName(),"An Exception  occurred while dismissing the dialog "+e);
+            Log.e(getClass().getSimpleName(),"An Exception  occurred while dismissing the dialog ",e);
         }
     }
 }

@@ -430,7 +430,7 @@
     <string name="info_provider_not_downloaded">N\'a pas téléchargé aucun fournisseurs</string>
     <string name="info_provider_unavailable">Aucun fournisseur n\'a encore été ajouté</string>
     <string formatted="false" name="info_providers_downloaded">%d fournisseurs téléchargés</string>
-    <string name="info_real_time_upload">Muzima est entrain de télécharger vos données</string>
+    <string name="info_real_time_upload">mUzima est entrain de télécharger vos données</string>
     <string name="info_real_time_upload_success">MUzima a téléchargé vos données avec succès</string>
     <string name="info_relationships_delete_success">%d relations supprimées avec succès</string>
     <string formatted="false" name="info_relationships_download">Téléchargé %d relations pour %d client (s).</string>
@@ -589,7 +589,7 @@
     <string name="title_initial_setup_guide">guide de configuration initiale de mUzima</string>
     <string name="title_install_barcode_scanner">Installer le scanner de codes à barres</string>
     <string name="title_install_psmart">Installer l\'application P-Smart</string>
-    <string name="title_introduction_video">Vidéo d\'introduction à Muzima</string>
+    <string name="title_introduction_video">Vidéo d\'introduction à mUzima</string>
     <string name="title_light_mode">Activer le mode jour</string>
     <string name="title_local_client_search_help_video">Recherche de clients (locale)</string>
     <string name="title_location_help">aide des emplacements</string>
@@ -634,7 +634,7 @@
     <string name="warning_forms_complete_and_sync">%s contient des formulaires qui lui sont associés. S\'il vous plaît compléter et synchronisez ces formulaires avant de télécharger une version plus récente.</string>
     <string name="warning_incompatible_module">Votre application mUzima actuelle n’est pas compatible avec le serveur. Veuillez contacter votre administrateur.</string>
     <string name="warning_invalid_url_provided">L\'URL que vous avez fournie n\'est pas valide</string>
-    <string name="warning_logout_confirm">Etes-vous sûr de vouloir vous déconnectez et quitter Muzima app?</string>
+    <string name="warning_logout_confirm">Etes-vous sûr de vouloir vous déconnectez et quitter mUzima app?</string>
     <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du client sur l\'appareil. Etes-vous sur?</string>
     <string name="warning_related_person_missing">Veuillez choisir une personne liée</string>
     <string name="warning_relationship_exists">Le client a déjà une relation %s:%s avec %s</string>
@@ -833,4 +833,9 @@
  <string name="general_performance_comparison">Comparaison des performances</string>
  <string name="general_your_statistics">Vos statistiques</string>
  <string name="general_their_statistics">Leurs statistiques</string>
+ <string name="app_version">Version de l\'application</string>
+ <string name="title_active_setup_config">Configuration d\'installation active</string>
+ <string name="general_about_muzima">À propos de mUzima</string>
+ <string name="title_last_logged_in">Date de la dernière connexion</string>
+ <string name="title_logged_in_user">Utilisateur connecté</string>
 </resources>

@@ -31,7 +31,7 @@ public class VideoWebViewActivity extends BaseHelpActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help_video_web_view);
-        setMuzimaTimout();
+        setMuzimaTimeout();
         setVideoHelpContent();
         logEvent("VIEW_VIDEOS");
     }
@@ -45,7 +45,7 @@ public class VideoWebViewActivity extends BaseHelpActivity {
         }
     }
 
-    private void setMuzimaTimout() {
+    private void setMuzimaTimeout() {
         MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
         muzimaTimeout = new TimeoutPreferenceService(muzimaApplication).getTimeout();
     }

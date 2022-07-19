@@ -29,7 +29,7 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
 
             User authenticatedUser = ((MuzimaApplication) context.getApplicationContext()).getAuthenticatedUser();
             if (authenticatedUser != null) {
-                Log.i(getClass().getSimpleName(),"Device got connected to network. Trying to start Muzima Real time Sync of completed forms.");
+                Log.i(getClass().getSimpleName(),"Device got connected to network. Trying to start mUzima Real time Sync of completed forms.");
                 RealTimeFormUploader.getInstance().uploadAllCompletedForms(context.getApplicationContext(),false);
             }
         }

@@ -73,7 +73,7 @@ public class AllCohortsListFragment extends Fragment implements CohortsAdapter.O
         try {
             EventBus.getDefault().register(this);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
     }
 
