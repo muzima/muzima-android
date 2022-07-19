@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.muzima.MuzimaApplication;
@@ -14,7 +13,6 @@ import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.model.User;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.utils.DateUtils;
-import com.muzima.utils.HtmlCompat;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 
@@ -25,6 +23,7 @@ public class AboutMuzimaActivity extends BaseActivity {
     private final ThemeUtils themeUtils = new ThemeUtils();
     private static final String PRIVACY_POLICY_URL = "privacy_policy.html";
     private static final String TERMS_AND_CONDITIONS = "terms_and_conditions.html";
+    private static final String MUZIMA_DISCLAIMER = "disclaimer.html";
 
     private TextView loggedInUserTextView;
     private TextView lastLoggedInTextView;
@@ -40,12 +39,6 @@ public class AboutMuzimaActivity extends BaseActivity {
         loggedInUserTextView = findViewById(R.id.logged_in_user);
         lastLoggedInTextView = findViewById(R.id.last_logged_in);
         activeSetupConfigTextView = findViewById(R.id.active_setup_config);
-
-
-
-        TextView disclaimerTextView = findViewById(R.id.disclaimer);
-        String disclaimerText = getResources().getString(R.string.info_disclaimer);
-        disclaimerTextView.setText(HtmlCompat.fromHtml(disclaimerText));
 
         TextView appVersionTextView = findViewById(R.id.app_version);
         appVersionTextView.setText(((MuzimaApplication)getApplicationContext()).getApplicationVersion());
@@ -69,6 +62,15 @@ public class AboutMuzimaActivity extends BaseActivity {
             public void onClick(View view) {
                 startHelpContentDisplayActivity(LOCAL_HELP_CONTENT_ROOT_DIRECTORY + TERMS_AND_CONDITIONS,
                         getString(R.string.info_terms_and_conditions));
+            }
+        });
+
+        View disclaimer = findViewById(R.id.disclaimer);
+        disclaimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startHelpContentDisplayActivity(LOCAL_HELP_CONTENT_ROOT_DIRECTORY + MUZIMA_DISCLAIMER,
+                        getString(R.string.title_muzima_disclaimer));
             }
         });
     }
