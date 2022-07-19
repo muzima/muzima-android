@@ -44,7 +44,7 @@ public class FormUtils {
         try {
             availableForms = formController.getDownloadedRegistrationForms();
         } catch (FormController.FormFetchException e) {
-            e.printStackTrace();
+            Log.e("FormUtils","Encounter an exception fetching forms",e);
         }
         return availableForms;
     }
@@ -145,7 +145,7 @@ public class FormUtils {
             }
             return dateTimeFormat.parse(dateTime);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("FormUtils","Encounter a  parse exception",e);
         }
         return null;
     }

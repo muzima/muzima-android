@@ -133,7 +133,7 @@ public class EncounterSummaryActivity  extends BroadcastListenerActivity impleme
                 try {
                     patient = ((MuzimaApplication) getApplicationContext()).getPatientController().getPatientByUuid(encounter.getPatient().getUuid());
                 } catch (PatientController.PatientLoadException e) {
-                    e.printStackTrace();
+                    Log.e(getClass().getSimpleName(),"Encounter an exception loading patient",e);
                 }
                 Intent intent = new Intent(this.getApplicationContext(), PatientSummaryActivity.class);
                 if(patient != null)

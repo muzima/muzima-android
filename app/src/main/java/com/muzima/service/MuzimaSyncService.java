@@ -313,7 +313,7 @@ public class MuzimaSyncService {
             result[0] = SyncStatusConstants.SAVE_ERROR;
             return result;
         } catch (ConceptController.ConceptFetchException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encounter an exception while fetching concepts",e);
         } catch (ProviderController.ProviderLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception while loading Providers", e);
             result[0] = SyncStatusConstants.LOAD_ERROR;
@@ -964,7 +964,7 @@ public class MuzimaSyncService {
         try {
             return formController.getArchivedFormData();
         } catch (FormController.FormDataFetchException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encounter an exception while fetching form data",e);
         }
         return new ArrayList<>();
     }
@@ -1452,7 +1452,7 @@ public class MuzimaSyncService {
         try {
             existingTags = patientController.getAllTags();
         } catch (PatientController.PatientLoadException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encounter an exception loading patients",e);
         }
 
         for(String patientUuid:patientUuidList){

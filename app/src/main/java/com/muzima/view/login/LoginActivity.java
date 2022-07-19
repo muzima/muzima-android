@@ -517,16 +517,17 @@ public class LoginActivity extends BaseActivity {
                 AppUsageLogs earliestLoginTime = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.EARLIEST_LOGIN_TIME);
                 SimpleDateFormat simpleTimeFormat = new SimpleDateFormat(STANDARD_TIME_FORMAT);
                 SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
-                LocalTime loginTime = LocalTime.parse(simpleTimeFormat.format(date));
+                Date loginTime = simpleTimeFormat.parse(simpleTimeFormat.format(date));
                 if(earliestLoginTime != null){
-                    if(loginTime.isBefore(LocalTime.parse(simpleTimeFormat.format(simpleTimeFormat.parse(earliestLoginTime.getLogvalue()))))){
+                    Date logValue = simpleTimeFormat.parse(simpleTimeFormat.format(simpleDateTimezoneFormat.parse(earliestLoginTime.getLogvalue())));
+                    if (loginTime.before(logValue)) {
                         earliestLoginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
                         earliestLoginTime.setUpdateDatetime(new Date());
                         appUsageLogsController.saveOrUpdateAppUsageLog(earliestLoginTime);
                     }
                 }else{
                     AppUsageLogs earliestLoginTime1 = new AppUsageLogs();
-                    earliestLoginTime1.setLogKey(Constants.AppUsageLogs.APP_VERSION);
+                    earliestLoginTime1.setLogKey(Constants.AppUsageLogs.EARLIEST_LOGIN_TIME);
                     earliestLoginTime1.setLogvalue(simpleDateTimezoneFormat.format(date));
                     earliestLoginTime1.setUpdateDatetime(new Date());
                     appUsageLogsController.saveOrUpdateAppUsageLog(earliestLoginTime1);
@@ -535,25 +536,26 @@ public class LoginActivity extends BaseActivity {
                 //Check and update Latest login time if need be
                 AppUsageLogs latestLoginTime = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.LATEST_LOGIN_TIME);
                 if(latestLoginTime != null){
-                    if(loginTime.isAfter(LocalTime.parse(simpleTimeFormat.format(simpleTimeFormat.parse(earliestLoginTime.getLogvalue()))))){
+                    Date logValue = simpleTimeFormat.parse(simpleTimeFormat.format(simpleDateTimezoneFormat.parse(latestLoginTime.getLogvalue())));
+                    if (loginTime.after(logValue)) {
                         latestLoginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
                         latestLoginTime.setUpdateDatetime(new Date());
                         appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime);
                     }
                 }else{
                     AppUsageLogs latestLoginTime1 = new AppUsageLogs();
-                    latestLoginTime1.setLogKey(Constants.AppUsageLogs.APP_VERSION);
+                    latestLoginTime1.setLogKey(Constants.AppUsageLogs.LATEST_LOGIN_TIME);
                     latestLoginTime1.setLogvalue(simpleDateTimezoneFormat.format(date));
                     latestLoginTime1.setUpdateDatetime(new Date());
                     appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime1);
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
             } catch (java.text.ParseException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
             }
         }
     }

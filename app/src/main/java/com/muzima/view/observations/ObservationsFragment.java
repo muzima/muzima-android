@@ -12,6 +12,7 @@ package com.muzima.view.observations;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +87,7 @@ public class ObservationsFragment extends Fragment {
             observationsPagerAdapter.initPagerViews();
             viewPager.setAdapter(observationsPagerAdapter);
         } catch (PatientController.PatientLoadException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
     }
 

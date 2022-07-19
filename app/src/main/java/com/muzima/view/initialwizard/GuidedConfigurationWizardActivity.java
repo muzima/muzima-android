@@ -936,9 +936,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
 
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
             }
 
             if (wizardcompletedSuccessfully) {

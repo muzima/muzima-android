@@ -13,6 +13,7 @@ package com.muzima.view.notifications;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import android.view.Menu;
@@ -105,7 +106,7 @@ public class NotificationsListActivity extends NotificationActivityBase {
                 }
 
             } catch (CohortController.CohortFetchException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
             }
             new SyncNotificationsIntent(this, authenticatedUser.getPerson().getUuid(), getDownloadedCohortsArray(downloadedCohortsUuid)).start();
         } else

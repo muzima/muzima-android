@@ -11,6 +11,7 @@
 package com.muzima.view.fragments.patient;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class HistoricalDataByTypeFragment extends Fragment implements Observatio
         try {
             EventBus.getDefault().register(this);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
     }
 

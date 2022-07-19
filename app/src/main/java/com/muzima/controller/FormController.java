@@ -1124,7 +1124,7 @@ public class FormController {
         } catch (IOException e) {
             throw new FormDataDeleteException(e);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encounter an JSON exception",e);
         }
     }
 

@@ -859,7 +859,7 @@ public class MuzimaJobScheduler extends JobService {
                 List<AppUsageLogs> appUsageLogs = appUsageLogsController.getAllAppUsageLogs();
                 appUsageLogsController.syncAppUsageLogs(appUsageLogs,loggedInProvider);
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(),"Encounter an IO exception",e);
             }
 
             return null;

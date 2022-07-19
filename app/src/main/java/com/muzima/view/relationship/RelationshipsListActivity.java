@@ -277,7 +277,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                             selectAction();
                         }
                     } catch (PatientController.PatientLoadException e) {
-                        e.printStackTrace();
+                        Log.e(getClass().getSimpleName(),"Encountered an exception",e);
                     }
                 }
             }
@@ -609,7 +609,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                             saveButton.setVisibility(View.VISIBLE);
                         }
                     } catch (PersonController.PersonLoadException e) {
-                        e.printStackTrace();
+                        Log.e(getClass().getSimpleName(),"Encountered an exception",e);
                         closeNewRelationshipWindow();
                     }
                 }
@@ -685,7 +685,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                 }
                 formController.deleteFormDataAndRelatedEncountersAndObs(formDataList);
             } catch (FormController.FormDataFetchException | FormController.FormDataDeleteException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
             }
 
             onCompleteOfRelationshipDelete(selectedRelationships.size());

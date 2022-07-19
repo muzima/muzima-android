@@ -11,6 +11,7 @@
 package com.muzima.view.fragments.cohorts;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,7 @@ public class DownloadedCohortsFragment extends Fragment implements CohortsAdapte
         try {
             EventBus.getDefault().register(this);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
     }
     @Subscribe

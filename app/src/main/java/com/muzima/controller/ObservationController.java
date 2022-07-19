@@ -41,6 +41,8 @@ import static com.muzima.util.Constants.UUID_SEPARATOR;
 import static com.muzima.util.Constants.UUID_TYPE_SEPARATOR;
 import static java.util.Arrays.asList;
 
+import android.util.Log;
+
 public class ObservationController {
 
     private final ObservationService observationService;
@@ -263,7 +265,7 @@ public class ObservationController {
         try {
             observations = observationService.downloadObservationsAndSetupConfig(patientUuids, conceptUuids, null, activeSetupConfigUuid);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encounter an IO exception",e);
         }
 
         return observations;

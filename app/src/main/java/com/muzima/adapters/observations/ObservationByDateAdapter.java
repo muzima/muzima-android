@@ -87,7 +87,8 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationsByType
             holder.obsDay.setText(String.format("%02d",calendar.get(Calendar.DATE)));
             holder.obsMonthYear.setText(String.format(String.format("%02d", calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR)));
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encounter an ParseException",e);
+
         }
 
         holder.obsHorizontalListRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));

@@ -91,7 +91,7 @@ public class AddSingleElementFragment extends Fragment implements ObservationsBy
         try {
             EventBus.getDefault().register(this);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
     }
 

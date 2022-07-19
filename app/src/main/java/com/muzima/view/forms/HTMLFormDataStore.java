@@ -241,7 +241,7 @@ class HTMLFormDataStore {
                         try {
                             existingTags = patientController.getAllTags();
                         } catch (PatientController.PatientLoadException e) {
-                            e.printStackTrace();
+                            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
                         }
 
                         List<PatientTag> tags = new ArrayList<PatientTag>();
@@ -1144,7 +1144,7 @@ class HTMLFormDataStore {
                 Patient patient = patientController.getPatientByUuid(patientUuid);
                 patients.add(patient);
             } catch (PatientController.PatientLoadException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
             }
         }
         return patients;

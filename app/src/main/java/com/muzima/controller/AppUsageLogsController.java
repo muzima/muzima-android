@@ -3,6 +3,8 @@ package com.muzima.controller;
 import static com.muzima.api.model.APIName.APP_USAGE_LOGS;
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS;
 
+import android.util.Log;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.LastSyncTime;
@@ -51,7 +53,7 @@ public class AppUsageLogsController {
         try {
             if(appUsageLogs.size() > 0){
                 for(AppUsageLogs appUsageLog : appUsageLogs){
-                    if(lastSyncTimeForLogs != null) {
+                   if(lastSyncTimeForLogs != null) {
                         if (lastSyncTimeForLogs.before(appUsageLog.getUpdateDatetime())) {
                             appUsageLogsService.syncAppUsageLogs(appUsageLog, provider.getIdentifier());
                         }
@@ -62,7 +64,7 @@ public class AppUsageLogsController {
                 lastSyncTimeService.saveLastSyncTime(lastSyncTime);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encounter an IO exception",e);
         }
 
         return true;

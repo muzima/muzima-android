@@ -14,6 +14,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -83,7 +85,7 @@ public class CustomNotificationReplyDialog extends Dialog {
 
             Toast.makeText(context, "Your reply was sent successfully ", Toast.LENGTH_LONG).show();
         } catch (NotificationController.NotificationSaveException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
     }
 }

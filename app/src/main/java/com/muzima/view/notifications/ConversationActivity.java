@@ -103,7 +103,7 @@ public class ConversationActivity extends BaseActivity {
                     try {
                         notificationController.saveNotification(notification);
                     } catch (NotificationController.NotificationSaveException e) {
-                        e.printStackTrace();
+                        Log.e(getClass().getSimpleName(),"Encountered an exception",e);
                     }
 
                     MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
