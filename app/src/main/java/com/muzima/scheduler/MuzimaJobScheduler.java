@@ -15,6 +15,7 @@ import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTI
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
 
 import android.annotation.SuppressLint;
 import android.app.job.JobParameters;
@@ -73,7 +74,10 @@ import com.muzima.view.forms.SyncFormTemplateIntent;
 import com.muzima.view.patients.SyncPatientDataIntent;
 import com.muzima.view.reports.SyncAllPatientReports;
 
+import org.apache.lucene.queryParser.ParseException;
+
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -158,7 +162,6 @@ public class MuzimaJobScheduler extends JobService {
                 new SyncAllPatientReportsBackgroundTask().execute();
             }
             new FormMetaDataSyncBackgroundTask().execute();
-            new SyncAppUsageLogsBackgroundTask().execute();
         }
     }
 
@@ -196,6 +199,27 @@ public class MuzimaJobScheduler extends JobService {
         protected Void doInBackground(Void... voids) {
             if (new WizardFinishPreferenceService(getApplicationContext()).isWizardFinished()) {
                 RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(),true);
+
+                AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
+                try {
+                    SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+                    AppUsageLogs lastUploadLog = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME);
+                    if(lastUploadLog != null){
+                        lastUploadLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                        lastUploadLog.setUpdateDatetime(new Date());
+                        appUsageLogsController.saveOrUpdateAppUsageLog(lastUploadLog);
+                    }else{
+                        AppUsageLogs newUploadTime = new AppUsageLogs();
+                        newUploadTime.setLogKey(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME);
+                        newUploadTime.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                        newUploadTime.setUpdateDatetime(new Date());
+                        appUsageLogsController.saveOrUpdateAppUsageLog(newUploadTime);
+                    }
+                } catch (IOException e) {
+                    Log.e(getClass().getSimpleName(),"Encountered IO Exception ",e);
+                } catch (ParseException e) {
+                    Log.e(getClass().getSimpleName(),"Encountered Parse Exception ",e);
+                }
             }
             return null;
         }
@@ -267,6 +291,27 @@ public class MuzimaJobScheduler extends JobService {
                         List<MuzimaSetting> settings = muzimaSettingController.getSettingsFromSetupConfigurationTemplate(template.getUuid());
 
                         updateSettingsPreferences(settings);
+
+                        AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
+                        try {
+                            SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+                            AppUsageLogs lastSetupUpdateLog = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.SETUP_UPDATE_TIME);
+                            if(lastSetupUpdateLog != null){
+                                lastSetupUpdateLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                                lastSetupUpdateLog.setUpdateDatetime(new Date());
+                                appUsageLogsController.saveOrUpdateAppUsageLog(lastSetupUpdateLog);
+                            }else{
+                                AppUsageLogs newSetupUpdateTime = new AppUsageLogs();
+                                newSetupUpdateTime.setLogKey(com.muzima.util.Constants.AppUsageLogs.SETUP_UPDATE_TIME);
+                                newSetupUpdateTime.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                                newSetupUpdateTime.setUpdateDatetime(new Date());
+                                appUsageLogsController.saveOrUpdateAppUsageLog(newSetupUpdateTime);
+                            }
+                        } catch (IOException e) {
+                            Log.e(getClass().getSimpleName(),"Encountered IO Exception ",e);
+                        } catch (ParseException e) {
+                            Log.e(getClass().getSimpleName(),"Encountered Parse Exception ",e);
+                        }
                     }
                 }
             } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
@@ -286,6 +331,7 @@ public class MuzimaJobScheduler extends JobService {
             new DownloadAndDeleteLocationBasedOnConfigChangesBackgroundTask().execute();
             new DownloadAndDeleteProvidersBasedOnConfigChangesBackgroundTask().execute();
             new DownloadAndDeleteConceptsBasedOnConfigChangesBackgroundTask().execute();
+            new SyncAppUsageLogsBackgroundTask().execute();
         }
 
         public int[] downloadAndSaveUpdatedSetupConfigurationTemplate(String uuid) {

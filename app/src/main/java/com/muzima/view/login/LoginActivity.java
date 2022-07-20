@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -496,6 +497,22 @@ public class LoginActivity extends BaseActivity {
         private void checkAndUpdateUsageLogsIfNecessary(MuzimaApplication muzimaApplication, Date date){
             AppUsageLogsController appUsageLogsController = muzimaApplication.getAppUsageLogsController();
             try {
+                SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+                SimpleDateFormat simpleTimeFormat = new SimpleDateFormat(STANDARD_TIME_FORMAT);
+
+                //update login time
+                AppUsageLogs loginTimeLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.LAST_LOGIN_TIME);
+                if(loginTimeLog != null) {
+                    loginTimeLog.setLogvalue(simpleDateTimezoneFormat.format(date));
+                    loginTimeLog.setUpdateDatetime(new Date());
+                    appUsageLogsController.saveOrUpdateAppUsageLog(loginTimeLog);
+                }else{
+                    AppUsageLogs loginTime = new AppUsageLogs();
+                    loginTime.setLogKey(Constants.AppUsageLogs.LAST_LOGIN_TIME);
+                    loginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
+                    loginTime.setUpdateDatetime(new Date());
+                    appUsageLogsController.saveOrUpdateAppUsageLog(loginTime);
+                }
                 //Check and Update app version if need be
                 AppUsageLogs appVersionLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.APP_VERSION);
                 if(appVersionLog != null){
@@ -509,14 +526,11 @@ public class LoginActivity extends BaseActivity {
                     appUsageLog1.setLogKey(Constants.AppUsageLogs.APP_VERSION);
                     appUsageLog1.setLogvalue(getApplicationVersion());
                     appUsageLog1.setUpdateDatetime(new Date());
-                    Log.e(getClass().getSimpleName(), appUsageLog1.getLogKey());
                     appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLog1);
                 }
 
                 //Check and update earliest login time if need be
                 AppUsageLogs earliestLoginTime = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.EARLIEST_LOGIN_TIME);
-                SimpleDateFormat simpleTimeFormat = new SimpleDateFormat(STANDARD_TIME_FORMAT);
-                SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
                 Date loginTime = simpleTimeFormat.parse(simpleTimeFormat.format(date));
                 if(earliestLoginTime != null){
                     Date logValue = simpleTimeFormat.parse(simpleTimeFormat.format(simpleDateTimezoneFormat.parse(earliestLoginTime.getLogvalue())));
