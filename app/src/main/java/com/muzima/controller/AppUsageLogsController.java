@@ -43,11 +43,15 @@ public class AppUsageLogsController {
        return appUsageLogsService.getAppUsageLogByKey(key);
     }
 
+    public AppUsageLogs getAppUsageLogByKeyAndUserName(String key, String username) throws IOException, ParseException {
+       return appUsageLogsService.getAppUsageLogByKeyAndUserName(key,username);
+    }
+
     public List<AppUsageLogs> getAllAppUsageLogs() throws IOException {
         return appUsageLogsService.getAllAppUsageLogs();
     }
 
-    public boolean syncAppUsageLogs(List<AppUsageLogs> appUsageLogs, Provider provider) throws IOException {
+    public boolean syncAppUsageLogs(List<AppUsageLogs> appUsageLogs, String username) throws IOException {
         Date lastSyncTimeForLogs = lastSyncTimeService.getLastSyncTimeFor(APP_USAGE_LOGS);
         LastSyncTime lastSyncTime = new LastSyncTime(APP_USAGE_LOGS, sntpService.getTimePerDeviceTimeZone());
         try {
@@ -55,10 +59,10 @@ public class AppUsageLogsController {
                 for(AppUsageLogs appUsageLog : appUsageLogs){
                    if(lastSyncTimeForLogs != null) {
                         if (lastSyncTimeForLogs.before(appUsageLog.getUpdateDatetime())) {
-                            appUsageLogsService.syncAppUsageLogs(appUsageLog, provider.getIdentifier());
+                            appUsageLogsService.syncAppUsageLogs(appUsageLog, username);
                         }
                     }else{
-                        appUsageLogsService.syncAppUsageLogs(appUsageLog, provider.getIdentifier());
+                        appUsageLogsService.syncAppUsageLogs(appUsageLog, username);
                     }
                 }
                 lastSyncTimeService.saveLastSyncTime(lastSyncTime);

@@ -70,6 +70,7 @@ import com.muzima.view.initialwizard.SetupMethodPreferenceWizardActivity;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
 import static com.muzima.utils.Constants.STANDARD_TIME_FORMAT;
+import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
 import org.apache.lucene.queryParser.ParseException;
 
@@ -77,6 +78,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.UUID;
 
 //This class shouldn't extend BaseAuthenticatedActivity. Since it is independent of the application's context
 public class LoginActivity extends BaseActivity {
@@ -499,68 +501,91 @@ public class LoginActivity extends BaseActivity {
             try {
                 SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
                 SimpleDateFormat simpleTimeFormat = new SimpleDateFormat(STANDARD_TIME_FORMAT);
+                String loggedInUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUserId();
+                String pseudoDeviceId = generatePseudoDeviceId();
+
 
                 //update login time
-                AppUsageLogs loginTimeLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.LAST_LOGIN_TIME);
+                AppUsageLogs loginTimeLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(Constants.AppUsageLogs.LAST_LOGIN_TIME,loggedInUser);
                 if(loginTimeLog != null) {
                     loginTimeLog.setLogvalue(simpleDateTimezoneFormat.format(date));
                     loginTimeLog.setUpdateDatetime(new Date());
+                    loginTimeLog.setDeviceId(pseudoDeviceId);
+                    loginTimeLog.setUserName(loggedInUser);
                     appUsageLogsController.saveOrUpdateAppUsageLog(loginTimeLog);
                 }else{
                     AppUsageLogs loginTime = new AppUsageLogs();
+                    loginTime.setUuid(UUID.randomUUID().toString());
                     loginTime.setLogKey(Constants.AppUsageLogs.LAST_LOGIN_TIME);
                     loginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
                     loginTime.setUpdateDatetime(new Date());
+                    loginTime.setDeviceId(pseudoDeviceId);
+                    loginTime.setUserName(loggedInUser);
                     appUsageLogsController.saveOrUpdateAppUsageLog(loginTime);
                 }
+
                 //Check and Update app version if need be
                 AppUsageLogs appVersionLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.APP_VERSION);
                 if(appVersionLog != null){
                     if(!appVersionLog.getLogvalue().equals(getApplicationVersion())){
                         appVersionLog.setLogvalue(getApplicationVersion());
                         appVersionLog.setUpdateDatetime(new Date());
+                        appVersionLog.setDeviceId(pseudoDeviceId);
                         appUsageLogsController.saveOrUpdateAppUsageLog(appVersionLog);
                     }
                 }else{
                     AppUsageLogs appUsageLog1 = new AppUsageLogs();
+                    appUsageLog1.setUuid(UUID.randomUUID().toString());
                     appUsageLog1.setLogKey(Constants.AppUsageLogs.APP_VERSION);
                     appUsageLog1.setLogvalue(getApplicationVersion());
                     appUsageLog1.setUpdateDatetime(new Date());
+                    appUsageLog1.setDeviceId(pseudoDeviceId);
+                    appUsageLog1.setUserName(loggedInUser);
                     appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLog1);
                 }
 
                 //Check and update earliest login time if need be
-                AppUsageLogs earliestLoginTime = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.EARLIEST_LOGIN_TIME);
+                AppUsageLogs earliestLoginTime = appUsageLogsController.getAppUsageLogByKeyAndUserName(Constants.AppUsageLogs.EARLIEST_LOGIN_TIME, loggedInUser);
                 Date loginTime = simpleTimeFormat.parse(simpleTimeFormat.format(date));
                 if(earliestLoginTime != null){
                     Date logValue = simpleTimeFormat.parse(simpleTimeFormat.format(simpleDateTimezoneFormat.parse(earliestLoginTime.getLogvalue())));
                     if (loginTime.before(logValue)) {
                         earliestLoginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
                         earliestLoginTime.setUpdateDatetime(new Date());
+                        earliestLoginTime.setDeviceId(pseudoDeviceId);
+                        earliestLoginTime.setUserName(loggedInUser);
                         appUsageLogsController.saveOrUpdateAppUsageLog(earliestLoginTime);
                     }
                 }else{
                     AppUsageLogs earliestLoginTime1 = new AppUsageLogs();
+                    earliestLoginTime1.setUuid(UUID.randomUUID().toString());
                     earliestLoginTime1.setLogKey(Constants.AppUsageLogs.EARLIEST_LOGIN_TIME);
                     earliestLoginTime1.setLogvalue(simpleDateTimezoneFormat.format(date));
                     earliestLoginTime1.setUpdateDatetime(new Date());
+                    earliestLoginTime1.setDeviceId(pseudoDeviceId);
+                    earliestLoginTime1.setUserName(loggedInUser);
                     appUsageLogsController.saveOrUpdateAppUsageLog(earliestLoginTime1);
                 }
 
                 //Check and update Latest login time if need be
-                AppUsageLogs latestLoginTime = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.LATEST_LOGIN_TIME);
+                AppUsageLogs latestLoginTime = appUsageLogsController.getAppUsageLogByKeyAndUserName(Constants.AppUsageLogs.LATEST_LOGIN_TIME, loggedInUser);
                 if(latestLoginTime != null){
                     Date logValue = simpleTimeFormat.parse(simpleTimeFormat.format(simpleDateTimezoneFormat.parse(latestLoginTime.getLogvalue())));
                     if (loginTime.after(logValue)) {
                         latestLoginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
                         latestLoginTime.setUpdateDatetime(new Date());
+                        latestLoginTime.setDeviceId(pseudoDeviceId);
+                        latestLoginTime.setUserName(loggedInUser);
                         appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime);
                     }
                 }else{
                     AppUsageLogs latestLoginTime1 = new AppUsageLogs();
+                    latestLoginTime1.setUuid(UUID.randomUUID().toString());
                     latestLoginTime1.setLogKey(Constants.AppUsageLogs.LATEST_LOGIN_TIME);
                     latestLoginTime1.setLogvalue(simpleDateTimezoneFormat.format(date));
                     latestLoginTime1.setUpdateDatetime(new Date());
+                    latestLoginTime1.setDeviceId(pseudoDeviceId);
+                    latestLoginTime1.setUserName(loggedInUser);
                     appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime1);
                 }
 

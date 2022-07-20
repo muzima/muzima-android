@@ -16,6 +16,7 @@ import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGE
 import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
+import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
 import android.annotation.SuppressLint;
 import android.app.job.JobParameters;
@@ -82,6 +83,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @SuppressLint("NewApi")
 public class MuzimaJobScheduler extends JobService {
@@ -93,6 +95,8 @@ public class MuzimaJobScheduler extends JobService {
     private boolean isAuthPerson = false;
     private MuzimaSettingController muzimaSettingController;
     private SetupConfigurationController setupConfigurationController;
+    private String pseudoDeviceId;
+    private String username;
 
     @Override
     public void onCreate() {
@@ -101,6 +105,8 @@ public class MuzimaJobScheduler extends JobService {
         muzimaSettingController = muzimaApplication.getMuzimaSettingController();
         muzimaSynService = muzimaApplication.getMuzimaSyncService();
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
+        pseudoDeviceId = generatePseudoDeviceId();
+        username = muzimaApplication.getAuthenticatedUserId();
         authenticatedUser = muzimaApplication.getAuthenticatedUser();
         if (authenticatedUser != null){
             person = authenticatedUser.getPerson();
@@ -203,16 +209,21 @@ public class MuzimaJobScheduler extends JobService {
                 AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
                 try {
                     SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
-                    AppUsageLogs lastUploadLog = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME);
+                    AppUsageLogs lastUploadLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME,username);
                     if(lastUploadLog != null){
                         lastUploadLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
                         lastUploadLog.setUpdateDatetime(new Date());
+                        lastUploadLog.setUserName(username);
+                        lastUploadLog.setDeviceId(pseudoDeviceId);
                         appUsageLogsController.saveOrUpdateAppUsageLog(lastUploadLog);
                     }else{
                         AppUsageLogs newUploadTime = new AppUsageLogs();
+                        newUploadTime.setUuid(UUID.randomUUID().toString());
                         newUploadTime.setLogKey(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME);
                         newUploadTime.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
                         newUploadTime.setUpdateDatetime(new Date());
+                        newUploadTime.setUserName(username);
+                        newUploadTime.setDeviceId(pseudoDeviceId);
                         appUsageLogsController.saveOrUpdateAppUsageLog(newUploadTime);
                     }
                 } catch (IOException e) {
@@ -295,16 +306,21 @@ public class MuzimaJobScheduler extends JobService {
                         AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
                         try {
                             SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
-                            AppUsageLogs lastSetupUpdateLog = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.SETUP_UPDATE_TIME);
+                            AppUsageLogs lastSetupUpdateLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.SETUP_UPDATE_TIME, username);
                             if(lastSetupUpdateLog != null){
                                 lastSetupUpdateLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
                                 lastSetupUpdateLog.setUpdateDatetime(new Date());
+                                lastSetupUpdateLog.setUserName(username);
+                                lastSetupUpdateLog.setDeviceId(pseudoDeviceId);
                                 appUsageLogsController.saveOrUpdateAppUsageLog(lastSetupUpdateLog);
                             }else{
                                 AppUsageLogs newSetupUpdateTime = new AppUsageLogs();
+                                newSetupUpdateTime.setUuid(UUID.randomUUID().toString());
                                 newSetupUpdateTime.setLogKey(com.muzima.util.Constants.AppUsageLogs.SETUP_UPDATE_TIME);
                                 newSetupUpdateTime.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
                                 newSetupUpdateTime.setUpdateDatetime(new Date());
+                                newSetupUpdateTime.setUserName(username);
+                                newSetupUpdateTime.setDeviceId(pseudoDeviceId);
                                 appUsageLogsController.saveOrUpdateAppUsageLog(newSetupUpdateTime);
                             }
                         } catch (IOException e) {
@@ -899,11 +915,10 @@ public class MuzimaJobScheduler extends JobService {
         protected Void doInBackground(Void... voids) {
             Context context = getApplicationContext();
             AppUsageLogsController appUsageLogsController = ((MuzimaApplication) context).getAppUsageLogsController();
-            Provider loggedInProvider = ((MuzimaApplication) context).getProviderController().getProviderBySystemId(((MuzimaApplication) context).getAuthenticatedUser().getSystemId());
 
             try {
                 List<AppUsageLogs> appUsageLogs = appUsageLogsController.getAllAppUsageLogs();
-                appUsageLogsController.syncAppUsageLogs(appUsageLogs,loggedInProvider);
+                appUsageLogsController.syncAppUsageLogs(appUsageLogs,username);
             } catch (IOException e) {
                 Log.e(getClass().getSimpleName(),"Encounter an IO exception",e);
             }
