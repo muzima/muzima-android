@@ -11,6 +11,7 @@
 package com.muzima.view.initialwizard;
 
 import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
+import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -73,6 +74,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @SuppressWarnings("staticFieldLeak")
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
@@ -919,21 +921,28 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         int TOTAL_WIZARD_STEPS = isOnlineOnlyModeEnabled ? 7 : 9;
         if (wizardLevel == (TOTAL_WIZARD_STEPS)) {
 
+            String loggedInUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUserId();
+            String pseudoDeviceId = generatePseudoDeviceId();
             AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
             SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
             try {
                 AppUsageLogs setupConfig = new AppUsageLogs();
+                setupConfig.setUuid(UUID.randomUUID().toString());
                 setupConfig.setLogKey(com.muzima.util.Constants.AppUsageLogs.SET_UP_CONFIG_UUID);
                 setupConfig.setLogvalue(setupConfigTemplateUuid);
                 setupConfig.setUpdateDatetime(new Date());
+                setupConfig.setUserName(loggedInUser);
+                setupConfig.setDeviceId(pseudoDeviceId);
                 appUsageLogsController.saveOrUpdateAppUsageLog(setupConfig);
 
-                AppUsageLogs latestLoginTime1 = new AppUsageLogs();
-                latestLoginTime1.setLogKey(com.muzima.util.Constants.AppUsageLogs.SETUP_TIME);
-                latestLoginTime1.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
-                latestLoginTime1.setUpdateDatetime(new Date());
-                appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime1);
-
+                AppUsageLogs setUpTime = new AppUsageLogs();
+                setUpTime.setUuid(UUID.randomUUID().toString());
+                setUpTime.setLogKey(com.muzima.util.Constants.AppUsageLogs.SETUP_TIME);
+                setUpTime.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                setUpTime.setUpdateDatetime(new Date());
+                setUpTime.setUserName(loggedInUser);
+                setUpTime.setDeviceId(pseudoDeviceId);
+                appUsageLogsController.saveOrUpdateAppUsageLog(setUpTime);
 
             } catch (IOException e) {
                 Log.e(getClass().getSimpleName(),"Encountered an exception",e);
