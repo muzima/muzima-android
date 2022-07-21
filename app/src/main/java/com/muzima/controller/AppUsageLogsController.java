@@ -51,7 +51,7 @@ public class AppUsageLogsController {
         return appUsageLogsService.getAllAppUsageLogs();
     }
 
-    public boolean syncAppUsageLogs(List<AppUsageLogs> appUsageLogs, String username) throws IOException {
+    public boolean syncAppUsageLogs(List<AppUsageLogs> appUsageLogs) throws IOException {
         Date lastSyncTimeForLogs = lastSyncTimeService.getLastSyncTimeFor(APP_USAGE_LOGS);
         LastSyncTime lastSyncTime = new LastSyncTime(APP_USAGE_LOGS, sntpService.getTimePerDeviceTimeZone());
         try {
@@ -59,10 +59,10 @@ public class AppUsageLogsController {
                 for(AppUsageLogs appUsageLog : appUsageLogs){
                    if(lastSyncTimeForLogs != null) {
                         if (lastSyncTimeForLogs.before(appUsageLog.getUpdateDatetime())) {
-                            appUsageLogsService.syncAppUsageLogs(appUsageLog, username);
+                            appUsageLogsService.syncAppUsageLogs(appUsageLog);
                         }
                     }else{
-                        appUsageLogsService.syncAppUsageLogs(appUsageLog, username);
+                        appUsageLogsService.syncAppUsageLogs(appUsageLog);
                     }
                 }
                 lastSyncTimeService.saveLastSyncTime(lastSyncTime);

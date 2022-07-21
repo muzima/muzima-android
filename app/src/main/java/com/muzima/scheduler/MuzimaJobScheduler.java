@@ -918,7 +918,7 @@ public class MuzimaJobScheduler extends JobService {
 
             try {
                 List<AppUsageLogs> appUsageLogs = appUsageLogsController.getAllAppUsageLogs();
-                appUsageLogsController.syncAppUsageLogs(appUsageLogs,username);
+                appUsageLogsController.syncAppUsageLogs(appUsageLogs);
             } catch (IOException e) {
                 Log.e(getClass().getSimpleName(),"Encounter an IO exception",e);
             }
