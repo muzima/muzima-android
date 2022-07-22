@@ -48,12 +48,14 @@ import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.adapters.patients.PatientTagsListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.model.location.MuzimaGPSLocation;
@@ -82,6 +84,8 @@ import java.util.UUID;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
+import static com.muzima.util.Constants.ServerSettings.DISALLOW_SERVER_PATIENT_SEARCH;
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
@@ -186,6 +190,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         logEvent("VIEW_CLIENT_LIST", "{\"cohortId\":\"" + cohortId + "\"}");
 
         setupNoDataView();
+        toggleServeSearch();
     }
 
     @Override
@@ -863,5 +868,20 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
             newSelectedTags.add(selectedTag.getName());
         }
         tagPreferenceService.savePatientSelectedTags(newSelectedTags);
+    }
+
+    private void toggleServeSearch(){
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+        MuzimaSetting disallowServerSearch = null;
+        try {
+            disallowServerSearch = muzimaSettingController.getSettingByProperty(DISALLOW_SERVER_PATIENT_SEARCH);
+            if(disallowServerSearch != null && disallowServerSearch.getValueBoolean()) {
+                searchServerLayout.setVisibility(View.GONE);
+            }else{
+                searchServerLayout.setVisibility(VISIBLE);
+            }
+        } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+            e.printStackTrace();
+        }
     }
 }
