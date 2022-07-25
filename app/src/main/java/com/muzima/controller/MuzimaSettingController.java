@@ -44,8 +44,14 @@ import java.util.List;
 import static com.muzima.api.model.APIName.DOWNLOAD_SETTINGS;
 import static com.muzima.util.Constants.ServerSettings.BARCODE_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.CLINICAL_SUMMARY_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.CONTACT_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
+import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
+import static com.muzima.util.Constants.ServerSettings.DISALLOW_SERVER_PATIENT_SEARCH;
+import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_COHORTS_IN_CONFIG_SETTING;
+import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_FORMS_IN_CONFIG_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GEOMAPPING_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.OBS_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
 import static com.muzima.util.Constants.ServerSettings.ONLINE_ONLY_MODE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.RELATIONSHIP_FEATURE_ENABLED;
@@ -447,6 +453,84 @@ public class MuzimaSettingController {
                 Log.e(getClass().getSimpleName(), "Tag generation setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Tag generation setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isDisplayOnlyCohortsInConfigEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(DISPLAY_ONLY_COHORTS_IN_CONFIG_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "The cohort Display filter setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "The cohort Display filter setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isDisplayOnlyFormsInConfigEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(DISPLAY_ONLY_FORMS_IN_CONFIG_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "The Form Display filter setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "The Form Display filter setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isContactListingOnPatientSummary() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(CONTACT_LISTING_UNDER_CLIENT_SUMMARY_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Contact Listing setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Contact Listing setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isObsListingOnPatientSummary() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(OBS_LISTING_UNDER_CLIENT_SUMMARY_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Obs Listing setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Obs Listing setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isDisallowServerPatientSearch() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(DISALLOW_SERVER_PATIENT_SEARCH);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Patient server search setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Patient server search setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isDefaultLoggedInUserAsEncounterProvider() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Encounter Provider setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Encounter Provider setting is missing on this server");
         }
         return false;
     }

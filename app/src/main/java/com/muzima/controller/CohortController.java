@@ -39,7 +39,6 @@ import java.util.List;
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS;
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS_DATA;
 import static com.muzima.api.model.APIName.DOWNLOAD_REMOVED_COHORTS_DATA;
-import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_COHORTS_IN_CONFIG_SETTING;
 
 public class CohortController {
     private static final String TAG = "CohortController";
@@ -87,8 +86,8 @@ public class CohortController {
         MuzimaSettingController muzimaSettingController = muzimaApplication.getMuzimaSettingController();
         try {
             List<Cohort> allCohorts = cohortService.getAllCohorts();
-            MuzimaSetting displayOnlyCohortsInSetupConfigSetting = muzimaSettingController.getSettingByProperty(DISPLAY_ONLY_COHORTS_IN_CONFIG_SETTING);
-            if(displayOnlyCohortsInSetupConfigSetting !=null && displayOnlyCohortsInSetupConfigSetting.getValueBoolean()) {
+            boolean isDisplayOnlyCohortsInConfig = muzimaSettingController.isDisplayOnlyCohortsInConfigEnabled();
+            if(isDisplayOnlyCohortsInConfig) {
                 List<Cohort> cohortsInConfig = new ArrayList<>();
                 List<String> cohortUuids = getCohortsInConfig();
                 for(Cohort cohort : allCohorts){
@@ -100,7 +99,7 @@ public class CohortController {
             } else {
                 return allCohorts;
             }
-        } catch (IOException | MuzimaSettingController.MuzimaSettingFetchException e) {
+        } catch (IOException e) {
             throw new CohortFetchException(e);
         }
     }
@@ -112,7 +111,7 @@ public class CohortController {
                 SetupConfigurationTemplate activeSetupConfig = muzimaApplication.getSetupConfigurationController().getActiveSetupConfigurationTemplate();
                 json = activeSetupConfig.getConfigJson();
             } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching setup config", e);
             }
 
             List<Object> cohorts = JsonUtils.readAsObjectList(json, "$['config']['cohorts']");
@@ -290,8 +289,8 @@ public class CohortController {
                     syncedCohorts.add(cohort);
                 }
             }
-            MuzimaSetting displayOnlyCohortsInSetupConfigSetting = muzimaApplication.getMuzimaSettingController().getSettingByProperty(DISPLAY_ONLY_COHORTS_IN_CONFIG_SETTING);
-            if(displayOnlyCohortsInSetupConfigSetting !=null && displayOnlyCohortsInSetupConfigSetting.getValueBoolean()) {
+            boolean isDisplayOnlyCohortsInConfig = muzimaApplication.getMuzimaSettingController().isDisplayOnlyCohortsInConfigEnabled();
+            if(isDisplayOnlyCohortsInConfig) {
                 List<Cohort> cohortsInConfig = new ArrayList<>();
                 List<String> cohortUuids = getCohortsInConfig();
                 for(Cohort cohort : syncedCohorts){
@@ -304,7 +303,7 @@ public class CohortController {
                 return syncedCohorts;
             }
 
-        } catch (IOException | MuzimaSettingController.MuzimaSettingFetchException e) {
+        } catch (IOException e) {
             throw new CohortFetchException(e);
         }
     }
@@ -318,8 +317,8 @@ public class CohortController {
                     unSyncedCohorts.add(cohort);
                 }
             }
-            MuzimaSetting displayOnlyCohortsInSetupConfigSetting = muzimaApplication.getMuzimaSettingController().getSettingByProperty(DISPLAY_ONLY_COHORTS_IN_CONFIG_SETTING);
-            if(displayOnlyCohortsInSetupConfigSetting !=null && displayOnlyCohortsInSetupConfigSetting.getValueBoolean()) {
+           boolean isDisplayOnlyCohortsInConfig = muzimaApplication.getMuzimaSettingController().isDisplayOnlyCohortsInConfigEnabled();
+            if(isDisplayOnlyCohortsInConfig) {
                 List<Cohort> cohortsInConfig = new ArrayList<>();
                 List<String> cohortUuids = getCohortsInConfig();
                 for(Cohort cohort : unSyncedCohorts){
@@ -331,7 +330,7 @@ public class CohortController {
             }else {
                 return unSyncedCohorts;
             }
-        } catch (IOException | MuzimaSettingController.MuzimaSettingFetchException e) {
+        } catch (IOException e) {
             throw new CohortFetchException(e);
         }
     }

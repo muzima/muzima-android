@@ -11,7 +11,6 @@
 package com.muzima.view.initialwizard;
 
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
-import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
 import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
 import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
@@ -548,7 +547,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                                 String key = resources.getString(R.string.preference_default_encounter_location);
 
                                 preferences.edit()
-                                        .putInt(key, defaultEncounterLocation.getId())
+                                        .putString(key, String.valueOf(defaultEncounterLocation.getId()))
                                         .apply();
                             }
                         }
@@ -616,23 +615,19 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                     int results[] =  muzimaSyncService.downloadProviders(uuids.toArray(new String[uuids.size()]));
 
-                    try {
-                        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
-                        MuzimaSetting defaultEncounterProviderSetting = muzimaSettingController.getSettingByProperty(DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING);
-                        if(defaultEncounterProviderSetting != null && defaultEncounterProviderSetting.getValueBoolean()) {
-                            Context context = getApplicationContext();
-                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                            Resources resources = context.getResources();
-                            String key = resources.getString(R.string.preference_encounter_provider_key);
+                    MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+                    boolean isDefaultLoggedInUserAsEncounterProvider = muzimaSettingController.isDefaultLoggedInUserAsEncounterProvider();
 
-                            preferences.edit()
-                                    .putBoolean(key,defaultEncounterProviderSetting.getValueBoolean())
-                                    .apply();
-                        }
-                    } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
-                        e.printStackTrace();
+                    if(isDefaultLoggedInUserAsEncounterProvider) {
+                        Context context = getApplicationContext();
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                        Resources resources = context.getResources();
+                        String key = resources.getString(R.string.preference_encounter_provider_key);
+
+                        preferences.edit()
+                                .putBoolean(key,isDefaultLoggedInUserAsEncounterProvider)
+                                .apply();
                     }
-
                     return results;
                 }
                 return null;

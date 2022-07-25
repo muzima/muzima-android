@@ -84,8 +84,6 @@ import java.util.UUID;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
-import static com.muzima.util.Constants.ServerSettings.DISALLOW_SERVER_PATIENT_SEARCH;
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
@@ -190,7 +188,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         logEvent("VIEW_CLIENT_LIST", "{\"cohortId\":\"" + cohortId + "\"}");
 
         setupNoDataView();
-        toggleServeSearch();
     }
 
     @Override
@@ -261,7 +258,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         if (StringUtils.isEmpty(searchString) || searchString.trim().length() < 3)
             searchServerLayout.setVisibility(View.INVISIBLE);
         else
-            searchServerLayout.setVisibility(View.VISIBLE);
+            toggleServeSearch();
     }
 
     @Override
@@ -872,16 +869,11 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
 
     private void toggleServeSearch(){
         MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
-        MuzimaSetting disallowServerSearch = null;
-        try {
-            disallowServerSearch = muzimaSettingController.getSettingByProperty(DISALLOW_SERVER_PATIENT_SEARCH);
-            if(disallowServerSearch != null && disallowServerSearch.getValueBoolean()) {
-                searchServerLayout.setVisibility(View.GONE);
-            }else{
-                searchServerLayout.setVisibility(VISIBLE);
-            }
-        } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
-            e.printStackTrace();
+        boolean isDisallowServerSearch = muzimaSettingController.isDisallowServerPatientSearch();
+        if(isDisallowServerSearch) {
+            searchServerLayout.setVisibility(View.GONE);
+        }else{
+            searchServerLayout.setVisibility(VISIBLE);
         }
     }
 }
