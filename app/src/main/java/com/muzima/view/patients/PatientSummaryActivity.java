@@ -85,8 +85,6 @@ import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 import static com.muzima.utils.RelationshipViewUtil.listOnClickListener;
 import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 
-import es.dmoral.toasty.Toasty;
-
 public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavigation implements ClientSummaryFormsAdapter.OnFormClickedListener, FormsLoaderService.FormsLoadedCallback, ListAdapter.BackgroundListQueryTaskListener {
     private static final String TAG = "PatientSummaryActivity";
     public static final String PATIENT = "patient";
@@ -535,112 +533,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         lvwPatientRelationships.setEmptyView(noDataView);
         lvwPatientRelationships.setOnItemClickListener(listOnClickListener(this,((MuzimaApplication) getApplicationContext()), patient, false, lvwPatientRelationships));
     }
-
-//    private AdapterView.OnItemClickListener listOnClickListener() {
-//        return new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-//                Relationship relationship = (Relationship) parent.getItemAtPosition(position);
-//                    Patient relatedPerson;
-//                    try {
-//                        selectedRelatedPerson = null;
-//                        if (StringUtils.equals(relationship.getPersonA().getUuid(), patient.getUuid()))
-//                            relatedPerson = ((MuzimaApplication) getApplication()).getPatientController().getPatientByUuid(relationship.getPersonB().getUuid());
-//                        else
-//                            relatedPerson = ((MuzimaApplication) getApplication()).getPatientController().getPatientByUuid(relationship.getPersonA().getUuid());
-//
-//                        if (relatedPerson != null) {
-//                            Intent intent = new Intent(PatientSummaryActivity.this, PatientSummaryActivity.class);
-//
-//                            intent.putExtra(PatientSummaryActivity.PATIENT_UUID, relatedPerson.getUuid());
-//                            startActivity(intent);
-//                        } else {
-//                            // We pick the right related person and create them as a patient
-//                            if (StringUtils.equalsIgnoreCase(patient.getUuid(), relationship.getPersonA().getUuid())) {
-//                                selectedRelatedPerson = relationship.getPersonB();
-//                            } else {
-//                                selectedRelatedPerson = relationship.getPersonA();
-//                            }
-//                            selectAction();
-//                        }
-//                    } catch (PatientController.PatientLoadException e) {
-//                        Log.e(getClass().getSimpleName(),"Encountered an exception",e);
-//                    }
-//            }
-//        };
-//    }
-
-//    private void createPatientFromRelatedPerson() {
-//        Intent intent = new Intent(this, RegistrationFormsActivity.class);
-//        Patient pat = new Patient();
-//        pat.setUuid(selectedRelatedPerson.getUuid());
-//        pat.setBirthdate(selectedRelatedPerson.getBirthdate());
-//        pat.setBirthdateEstimated(selectedRelatedPerson.getBirthdateEstimated());
-//        pat.setGender(selectedRelatedPerson.getGender());
-//        pat.setNames(selectedRelatedPerson.getNames());
-//
-//        intent.putExtra(PatientSummaryActivity.PATIENT, pat);
-//        intent.putExtra(INDEX_PATIENT, patient);
-//        startActivity(intent);
-//    }
-
-//    private void OpenUpdatePersonDemographicsForm() {
-//        Intent intent = new Intent(this, PersonDemographicsUpdateFormsActivity.class);
-//        intent.putExtra(PersonDemographicsUpdateFormsActivity.PERSON, selectedRelatedPerson);
-//        intent.putExtra(INDEX_PATIENT, patient);
-//        startActivity(intent);
-//    }
-
-//    private void selectAction(){
-//        AlertDialog.Builder builderSingle = new AlertDialog.Builder(PatientSummaryActivity.this);
-//        builderSingle.setIcon(R.drawable.ic_accept);
-//        builderSingle.setTitle(R.string.hint_person_action_prompt);
-//
-//        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(PatientSummaryActivity.this, android.R.layout.simple_selectable_list_item);
-//        arrayAdapter.add(getString(R.string.info_convert_person_to_patient));
-//        arrayAdapter.add(getString(R.string.info_update_person_demographics));
-//
-//        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                String strName = arrayAdapter.getItem(which);
-//                if(getString(R.string.info_convert_person_to_patient).equals(strName)){
-//                    showAlertDialog();
-//                } else {
-//                    OpenUpdatePersonDemographicsForm();
-//                }
-//            }
-//        });
-//        builderSingle.show();
-//    }
-
-//    private void showAlertDialog() {
-//        new AlertDialog.Builder(this)
-//                .setCancelable(true)
-//                .setIcon(ThemeUtils.getIconWarning(this))
-//                .setTitle(getResources().getString(R.string.title_logout_confirm))
-//                .setMessage(getResources().getString(R.string.confirm_create_patient_from_person))
-//                .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
-//                .setNegativeButton(getString(R.string.general_no), null)
-//                .create()
-//                .show();
-//    }
-
-//    private Dialog.OnClickListener positiveClickListener() {
-//        return new Dialog.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                createPatientFromRelatedPerson();
-//            }
-//        };
-//    }
 
     private void setupNoDataView() {
         noDataView = findViewById(R.id.no_data_layout);
