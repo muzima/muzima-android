@@ -10,12 +10,15 @@
 
 package com.muzima.view.initialwizard;
 
+import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
 import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
 import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -45,12 +48,14 @@ import com.muzima.adapters.setupconfiguration.GuidedSetupCardsViewPagerAdapter;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.FCMTokenContoller;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.DefaultEncounterLocationPreferenceService;
@@ -514,6 +519,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             protected int[] doInBackground(Void... voids) {
                 MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+                LocationController locationController = ((MuzimaApplication) getApplicationContext()).getLocationController();
                 boolean notificationSetting = muzimaSettingController.isPushNotificationsEnabled();
                 if(notificationSetting) {
                     SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(GuidedConfigurationWizardActivity.this);
@@ -529,8 +535,29 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 List<String> uuids = extractLocationsUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                    return muzimaSyncService.downloadLocations(uuids.toArray(new String[uuids.size()]));
+                    int[] result = muzimaSyncService.downloadLocations(uuids.toArray(new String[uuids.size()]));
+                    try {
+                        MuzimaSetting encounterLocationIdSetting = muzimaSettingController.getSettingByProperty(DEFAULT_ENCOUNTER_LOCATION_SETTING);
+                        if(encounterLocationIdSetting != null) {
+                            Location defaultEncounterLocation = locationController.getLocationById(Integer.valueOf(encounterLocationIdSetting.getValueString()));
+                            if(defaultEncounterLocation != null){
+                                Context context = getApplicationContext();
+                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                                Resources resources = context.getResources();
+                                String key = resources.getString(R.string.preference_default_encounter_location);
 
+                                preferences.edit()
+                                        .putString(key, String.valueOf(defaultEncounterLocation.getId()))
+                                        .apply();
+                            }
+                        }
+                    } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+                        Log.e(getClass().getSimpleName(), "Encountered an error while fetching setting ",e);
+                    } catch (LocationController.LocationLoadException e) {
+                        Log.e(getClass().getSimpleName(), "Encountered an error while fetching location ",e);
+                    }
+
+                    return result;
                 }
                 return null;
             }
@@ -586,8 +613,22 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 List<String> uuids = extractProvidersUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                    return muzimaSyncService.downloadProviders(uuids.toArray(new String[uuids.size()]));
+                    int results[] =  muzimaSyncService.downloadProviders(uuids.toArray(new String[uuids.size()]));
 
+                    MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+                    boolean isDefaultLoggedInUserAsEncounterProvider = muzimaSettingController.isDefaultLoggedInUserAsEncounterProvider();
+
+                    if(isDefaultLoggedInUserAsEncounterProvider) {
+                        Context context = getApplicationContext();
+                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                        Resources resources = context.getResources();
+                        String key = resources.getString(R.string.preference_encounter_provider_key);
+
+                        preferences.edit()
+                                .putBoolean(key,isDefaultLoggedInUserAsEncounterProvider)
+                                .apply();
+                    }
+                    return results;
                 }
                 return null;
             }

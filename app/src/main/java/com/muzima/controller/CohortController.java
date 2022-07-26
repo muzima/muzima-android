@@ -20,11 +20,15 @@ import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Provider;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.model.User;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.LastSyncTimeService;
+import com.muzima.model.ConceptIcons;
 import com.muzima.service.SntpService;
+import com.muzima.util.JsonUtils;
 import com.muzima.utils.StringUtils;
 
 import java.io.IOException;
@@ -79,12 +83,47 @@ public class CohortController {
 
 
     public List<Cohort> getAllCohorts() throws CohortFetchException {
+        MuzimaSettingController muzimaSettingController = muzimaApplication.getMuzimaSettingController();
         try {
-            return cohortService.getAllCohorts();
+            List<Cohort> allCohorts = cohortService.getAllCohorts();
+            boolean isDisplayOnlyCohortsInConfig = muzimaSettingController.isDisplayOnlyCohortsInConfigEnabled();
+            if(isDisplayOnlyCohortsInConfig) {
+                List<Cohort> cohortsInConfig = new ArrayList<>();
+                List<String> cohortUuids = getCohortsInConfig();
+                for(Cohort cohort : allCohorts){
+                   if(cohortUuids.contains(cohort.getUuid())){
+                       cohortsInConfig.add(cohort);
+                   }
+                }
+                return cohortsInConfig;
+            } else {
+                return allCohorts;
+            }
         } catch (IOException e) {
             throw new CohortFetchException(e);
         }
     }
+
+    public List<String> getCohortsInConfig(){
+            String json = "";
+            List<String> cohortUuids = new ArrayList<>();
+            try {
+                SetupConfigurationTemplate activeSetupConfig = muzimaApplication.getSetupConfigurationController().getActiveSetupConfigurationTemplate();
+                json = activeSetupConfig.getConfigJson();
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching setup config", e);
+            }
+
+            List<Object> cohorts = JsonUtils.readAsObjectList(json, "$['config']['cohorts']");
+            for (Object cohort : cohorts) {
+                net.minidev.json.JSONObject cohort1 = (net.minidev.json.JSONObject) cohort;
+                String cohortUuid = cohort1.get("uuid").toString();
+
+                cohortUuids.add(cohortUuid);
+            }
+
+            return cohortUuids;
+        }
 
     public int countAllCohorts() throws CohortFetchException {
         try {
@@ -243,14 +282,27 @@ public class CohortController {
 
     public List<Cohort> getSyncedCohorts() throws CohortFetchException {
         try {
-            List<Cohort> cohorts = cohortService.getAllCohorts();
+            List<Cohort> allCohorts = cohortService.getAllCohorts();
             List<Cohort> syncedCohorts = new ArrayList<>();
-            for (Cohort cohort : cohorts) {
+            for (Cohort cohort : allCohorts) {
                 if (isDownloaded(cohort)) {
                     syncedCohorts.add(cohort);
                 }
             }
-            return syncedCohorts;
+            boolean isDisplayOnlyCohortsInConfig = muzimaApplication.getMuzimaSettingController().isDisplayOnlyCohortsInConfigEnabled();
+            if(isDisplayOnlyCohortsInConfig) {
+                List<Cohort> cohortsInConfig = new ArrayList<>();
+                List<String> cohortUuids = getCohortsInConfig();
+                for(Cohort cohort : syncedCohorts){
+                    if(cohortUuids.contains(cohort.getUuid())){
+                        cohortsInConfig.add(cohort);
+                    }
+                }
+                return cohortsInConfig;
+            }else {
+                return syncedCohorts;
+            }
+
         } catch (IOException e) {
             throw new CohortFetchException(e);
         }
@@ -265,7 +317,19 @@ public class CohortController {
                     unSyncedCohorts.add(cohort);
                 }
             }
-            return unSyncedCohorts;
+           boolean isDisplayOnlyCohortsInConfig = muzimaApplication.getMuzimaSettingController().isDisplayOnlyCohortsInConfigEnabled();
+            if(isDisplayOnlyCohortsInConfig) {
+                List<Cohort> cohortsInConfig = new ArrayList<>();
+                List<String> cohortUuids = getCohortsInConfig();
+                for(Cohort cohort : unSyncedCohorts){
+                    if(cohortUuids.contains(cohort.getUuid())){
+                        cohortsInConfig.add(cohort);
+                    }
+                }
+                return cohortsInConfig;
+            }else {
+                return unSyncedCohorts;
+            }
         } catch (IOException e) {
             throw new CohortFetchException(e);
         }

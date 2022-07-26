@@ -9,6 +9,7 @@
  */
 package com.muzima.view.relationship;
 
+import static com.muzima.utils.RelationshipViewUtil.listOnClickListener;
 import static com.muzima.view.patients.PatientSummaryActivity.CALLING_ACTIVITY;
 
 import android.app.AlertDialog;
@@ -179,7 +180,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         lvwPatientRelationships.setClickable(true);
         lvwPatientRelationships.setLongClickable(true);
         lvwPatientRelationships.setEmptyView(noDataView);
-        lvwPatientRelationships.setOnItemClickListener(listOnClickListener());
+        lvwPatientRelationships.setOnItemClickListener(listOnClickListener(this,((MuzimaApplication) getApplicationContext()), patient, actionModeActive, lvwPatientRelationships));
         lvwPatientRelationships.setOnItemLongClickListener(listOnLongClickListener());
     }
 
@@ -222,66 +223,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private AdapterView.OnItemClickListener listOnClickListener() {
-        return new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-                Relationship relationship = (Relationship) parent.getItemAtPosition(position);
-
-                if (actionModeActive) {
-                    if (!relationship.getSynced()) {
-                        TypedValue typedValue = new TypedValue();
-                        Resources.Theme theme = getTheme();
-                        theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
-
-                        int selectedRelationshipsCount = getSelectedRelationships().size();
-                        if (selectedRelationshipsCount == 0 && actionModeActive) {
-                            actionMode.finish();
-                            view.setBackgroundResource(typedValue.resourceId);
-                        } else {
-                            if(view.isActivated()){
-                                view.setBackgroundResource(R.color.hint_blue_opaque);
-                            } else {
-                                view.setBackgroundResource(typedValue.resourceId);
-                            }
-                            actionMode.setTitle(String.valueOf(selectedRelationshipsCount));
-                        }
-                    } else {
-                        Toasty.warning(RelationshipsListActivity.this, getApplicationContext().getString(R.string.relationship_delete_fail), Toast.LENGTH_SHORT, true).show();
-                        lvwPatientRelationships.setItemChecked(position, false);
-                    }
-                } else {
-
-                    Patient relatedPerson;
-                    try {
-                        selectedRelatedPerson = null;
-                        if (StringUtils.equals(relationship.getPersonA().getUuid(), patient.getUuid()))
-                            relatedPerson = patientController.getPatientByUuid(relationship.getPersonB().getUuid());
-                        else
-                            relatedPerson = patientController.getPatientByUuid(relationship.getPersonA().getUuid());
-
-                        if (relatedPerson != null) {
-                            Intent intent = new Intent(RelationshipsListActivity.this, PatientSummaryActivity.class);
-
-                            intent.putExtra(PatientSummaryActivity.PATIENT_UUID, relatedPerson.getUuid());
-                            startActivity(intent);
-                        } else {
-                            // We pick the right related person and create them as a patient
-                            if (StringUtils.equalsIgnoreCase(patient.getUuid(), relationship.getPersonA().getUuid())) {
-                                selectedRelatedPerson = relationship.getPersonB();
-                            } else {
-                                selectedRelatedPerson = relationship.getPersonA();
-                            }
-                            selectAction();
-                        }
-                    } catch (PatientController.PatientLoadException e) {
-                        Log.e(getClass().getSimpleName(),"Encountered an exception",e);
-                    }
-                }
-            }
-        };
     }
 
     private AdapterView.OnItemLongClickListener listOnLongClickListener() {
@@ -327,57 +268,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         intent.putExtra(PersonDemographicsUpdateFormsActivity.PERSON, selectedRelatedPerson);
         intent.putExtra(INDEX_PATIENT, patient);
         startActivity(intent);
-    }
-
-    private void selectAction(){
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(RelationshipsListActivity.this);
-        builderSingle.setIcon(R.drawable.ic_accept);
-        builderSingle.setTitle(R.string.hint_person_action_prompt);
-
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(RelationshipsListActivity.this, android.R.layout.simple_selectable_list_item);
-        arrayAdapter.add(getString(R.string.info_convert_person_to_patient));
-        arrayAdapter.add(getString(R.string.info_update_person_demographics));
-
-        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String strName = arrayAdapter.getItem(which);
-                if(getString(R.string.info_convert_person_to_patient).equals(strName)){
-                    showAlertDialog();
-                } else {
-                    OpenUpdatePersonDemographicsForm();
-                }
-            }
-        });
-        builderSingle.show();
-    }
-
-    private void showAlertDialog() {
-        new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setIcon(ThemeUtils.getIconWarning(this))
-                .setTitle(getResources().getString(R.string.title_logout_confirm))
-                .setMessage(getResources().getString(R.string.confirm_create_patient_from_person))
-                .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
-                .setNegativeButton(getString(R.string.general_no), null)
-                .create()
-                .show();
-    }
-
-    private Dialog.OnClickListener positiveClickListener() {
-        return new Dialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                createPatientFromRelatedPerson();
-            }
-        };
     }
 
     private AdapterView.OnItemClickListener autoCompleteOnClickListener() {

@@ -64,6 +64,39 @@
                 android:layout_height="0dp"
                 android:layout_weight="100"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:id="@+id/relationships_listing"
+                    android:layout_height="0dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:onClick="navigateToRelationships"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/general_relationship"
+                            android:textSize="18dp"
+                            android:fontFamily="@font/montserrat_bold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_icon_right" />
+                    </RelativeLayout>
+
+                  <ListView
+                    android:id="@+id/relationships_list"
+                    style="@style/MuzimaSelectableListView"></ListView>
+
+                </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:id="@+id/historical_data"

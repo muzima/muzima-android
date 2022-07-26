@@ -48,12 +48,14 @@ import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.adapters.patients.PatientTagsListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.SmartCardRecord;
 import com.muzima.api.service.SmartCardRecordService;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.model.location.MuzimaGPSLocation;
@@ -256,7 +258,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         if (StringUtils.isEmpty(searchString) || searchString.trim().length() < 3)
             searchServerLayout.setVisibility(View.INVISIBLE);
         else
-            searchServerLayout.setVisibility(View.VISIBLE);
+            toggleServeSearch();
     }
 
     @Override
@@ -863,5 +865,15 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
             newSelectedTags.add(selectedTag.getName());
         }
         tagPreferenceService.savePatientSelectedTags(newSelectedTags);
+    }
+
+    private void toggleServeSearch(){
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+        boolean isDisallowServerSearch = muzimaSettingController.isDisallowServerPatientSearch();
+        if(isDisallowServerSearch) {
+            searchServerLayout.setVisibility(View.GONE);
+        }else{
+            searchServerLayout.setVisibility(VISIBLE);
+        }
     }
 }

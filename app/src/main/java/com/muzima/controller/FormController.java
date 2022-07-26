@@ -21,6 +21,7 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormDataStatus;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
@@ -144,8 +145,23 @@ public class FormController {
     }
 
     public List<Form> getAllAvailableForms() throws FormFetchException {
+        List<Form> allAvailableForms = new ArrayList<>();
         try {
-            return formService.getAllForms();
+            List<String> formsInConfig = getFormListAsPerConfigOrder();
+            boolean isDisplayOnlyFormsInSetupConfig= muzimaApplication.getMuzimaSettingController().isDisplayOnlyFormsInConfigEnabled();
+            if(isDisplayOnlyFormsInSetupConfig) {
+                List<Form> allForms = formService.getAllForms();
+                for(Form form: allForms){
+                    if(formsInConfig.contains(form.getUuid())){
+                        allAvailableForms.add(form);
+                    }
+                }
+            }else{
+                allAvailableForms = formService.getAllForms();
+            }
+
+            return allAvailableForms;
+
         } catch (IOException e) {
             throw new FormFetchException(e);
         }
@@ -157,8 +173,20 @@ public class FormController {
             List<Form> filteredForms = filterFormsByTags(allForms, tagsUuid, alwaysIncludeRegistrationForms);
             AvailableForms availableForms = new AvailableForms();
             availableForms = getAvailableForms(filteredForms);
+            AvailableForms availableFormsInConfig = new AvailableForms();
 
-            return availableForms;
+            List<String> formsInConfig = getFormListAsPerConfigOrder();
+            boolean isDisplayOnlyFormsInSetupConfig= muzimaApplication.getMuzimaSettingController().isDisplayOnlyFormsInConfigEnabled();
+            if(isDisplayOnlyFormsInSetupConfig) {
+                for(AvailableForm form: availableForms){
+                    if(formsInConfig.contains(form.getFormUuid())){
+                        availableFormsInConfig.add(form);
+                    }
+                }
+                return availableFormsInConfig;
+            }else{
+                return availableForms;
+            }
         } catch (IOException e) {
             throw new FormFetchException(e);
         }
@@ -1256,14 +1284,17 @@ public class FormController {
         }
 
         //add forms not in the setup config
-        for (Form filteredForm : filteredForms) {
-            if (!formUuids.contains(filteredForm.getUuid())) {
-                boolean downloadStatus = formService.isFormTemplateDownloaded(filteredForm.getUuid());
-                AvailableForm availableForm = new AvailableFormBuilder()
-                        .withAvailableForm(filteredForm)
-                        .withDownloadStatus(downloadStatus)
-                        .withUpdateAvailableStatus(filteredForm.isUpdateAvailable()).build();
-                availableForms.add(availableForm);
+        boolean isDisplayOnlyFormsInSetupConfig= muzimaApplication.getMuzimaSettingController().isDisplayOnlyFormsInConfigEnabled();
+        if(isDisplayOnlyFormsInSetupConfig) {
+            for (Form filteredForm : filteredForms) {
+                if (!formUuids.contains(filteredForm.getUuid())) {
+                    boolean downloadStatus = formService.isFormTemplateDownloaded(filteredForm.getUuid());
+                    AvailableForm availableForm = new AvailableFormBuilder()
+                            .withAvailableForm(filteredForm)
+                            .withDownloadStatus(downloadStatus)
+                            .withUpdateAvailableStatus(filteredForm.isUpdateAvailable()).build();
+                    availableForms.add(availableForm);
+                }
             }
         }
 
