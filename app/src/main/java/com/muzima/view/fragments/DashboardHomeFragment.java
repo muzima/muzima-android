@@ -224,7 +224,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         childContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new CloseBottomSheetEvent());
+                closeBottomSheet();
             }
         });
 
