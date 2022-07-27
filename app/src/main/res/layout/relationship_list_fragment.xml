@@ -1,0 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView android:id="@+id/no_relationship_data_msg"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        style="@style/NoDataMsg"/>
+
+    <ListView
+        android:id="@+id/relationships_list"
+        style="@style/MuzimaSelectableListView"></ListView>
+
+</LinearLayout>

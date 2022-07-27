@@ -10,21 +10,14 @@
 
 package com.muzima.view.patients;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.SparseBooleanArray;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -32,10 +25,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.muzima.MuzimaApplication;
@@ -43,23 +36,17 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
 import com.muzima.adapters.relationships.RelationshipsAdapter;
-import com.muzima.api.model.Form;
-import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
-import com.muzima.api.model.Relationship;
 import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
-import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
-import com.muzima.controller.RelationshipController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.tasks.FormsLoaderService;
-import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
@@ -70,8 +57,6 @@ import com.muzima.view.custom.ActivityWithPatientSummaryBottomNavigation;
 import com.muzima.view.custom.MuzimaRecyclerView;
 import com.muzima.view.forms.FormViewIntent;
 import com.muzima.view.forms.FormsWithDataActivity;
-import com.muzima.view.forms.PersonDemographicsUpdateFormsActivity;
-import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.fragments.patient.ChronologicalObsViewFragment;
 import com.muzima.view.relationship.RelationshipsListActivity;
 import org.greenrobot.eventbus.EventBus;
@@ -154,7 +139,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private void loadChronologicalObsView(){
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.chronological_fragment, new ChronologicalObsViewFragment(patientUuid)).commit();
+        transaction.replace(R.id.chronological_fragment, new ChronologicalObsViewFragment(patientUuid, true)).commit();
     }
 
     @Override
@@ -310,17 +295,28 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         formsListRecyclerView.setNoDataLayout(findViewById(R.id.no_data_layout),
                 getString(R.string.info_forms_unavailable),
                 getString(R.string.info_no_forms_data_tip));
+
+        ImageView noDataImage = findViewById(R.id.no_data_image);
+        noDataImage.setVisibility(View.GONE);
+
+        TextView textView = findViewById(R.id.no_data_msg);
+        Typeface typeface = ResourcesCompat.getFont(this, R.font.roboto_light);
+        textView.setTypeface(typeface);
     }
 
     public void initializeView(){
         LinearLayout historicalData = findViewById(R.id.historical_data);
         LinearLayout dataCollection = findViewById(R.id.data_collection);
         LinearLayout relationshipList = findViewById(R.id.relationships_listing);
+        View historicalDataSeparator = findViewById(R.id.historical_data_separator);
+        View relationshipListingSeparator = findViewById(R.id.relationships_list_separator);
 
         boolean isContactListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isContactListingOnPatientSummary();
         boolean isObsListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isObsListingOnPatientSummary();
 
         if(isContactListingOnPatientSummary && isObsListingOnPatientSummary){
+            historicalDataSeparator.setVisibility(View.VISIBLE);
+            relationshipListingSeparator.setVisibility(View.VISIBLE);
             LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     0,
@@ -342,6 +338,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             );
             dataCollection.setLayoutParams(formsParam);
         } else if(isContactListingOnPatientSummary && !isObsListingOnPatientSummary){
+            historicalDataSeparator.setVisibility(View.GONE);
+            relationshipListingSeparator.setVisibility(View.VISIBLE);
             LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     0,
@@ -363,6 +361,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             );
             dataCollection.setLayoutParams(formsParam);
         } else if(!isContactListingOnPatientSummary && isObsListingOnPatientSummary){
+            historicalDataSeparator.setVisibility(View.VISIBLE);
+            relationshipListingSeparator.setVisibility(View.GONE);
             LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     0,
@@ -384,6 +384,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             );
             dataCollection.setLayoutParams(formsParam);
         } else{
+            historicalDataSeparator.setVisibility(View.GONE);
+            relationshipListingSeparator.setVisibility(View.GONE);
             LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     0,
@@ -535,14 +537,15 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     }
 
     private void setupNoDataView() {
-        noDataView = findViewById(R.id.no_data_layout);
-        TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
+        TextView noDataMsgTextView = findViewById(R.id.no_relationship_data_msg);
+        Typeface typeface = ResourcesCompat.getFont(this, R.font.roboto_light);
         noDataMsgTextView.setText(getResources().getText(R.string.info_relationships_unavailable));
+        noDataMsgTextView.setVisibility(View.VISIBLE);
+        noDataMsgTextView.setTypeface(typeface);
     }
 
     private void setupStillLoadingView() {
-        noDataView = findViewById(R.id.no_data_layout);
-        TextView noDataMsgTextView = findViewById(R.id.no_data_msg);
+        TextView noDataMsgTextView = findViewById(R.id.no_relationship_data_msg);
         noDataMsgTextView.setText(R.string.general_loading_relationships);
     }
 

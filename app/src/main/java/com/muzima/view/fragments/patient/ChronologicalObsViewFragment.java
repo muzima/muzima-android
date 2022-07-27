@@ -1,14 +1,18 @@
 package com.muzima.view.fragments.patient;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -28,9 +32,11 @@ public class ChronologicalObsViewFragment extends Fragment implements RecyclerAd
     private ObservationByDateAdapter observationByDateAdapter;
     MuzimaRecyclerView conceptsListRecyclerView;
     LinearLayout noDataLayout;
+    boolean isPatientSummaryListing;
 
-    public ChronologicalObsViewFragment(String patientUuid) {
+    public ChronologicalObsViewFragment(String patientUuid, boolean isPatientSummaryListing) {
         this.patientUuid = patientUuid;
+        this.isPatientSummaryListing = isPatientSummaryListing;
     }
 
     @Nullable
@@ -50,6 +56,15 @@ public class ChronologicalObsViewFragment extends Fragment implements RecyclerAd
         conceptsListRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
         conceptsListRecyclerView.setAdapter(observationByDateAdapter);
         observationByDateAdapter.reloadData();
+
+        if(isPatientSummaryListing) {
+            MuzimaApplication muzimaApplication = (MuzimaApplication) requireActivity().getApplicationContext();
+            ImageView noDataImage = view.findViewById(R.id.no_data_image);
+            TextView textView = view.findViewById(R.id.no_data_msg);
+            Typeface typeface = ResourcesCompat.getFont(muzimaApplication, R.font.roboto_light);
+            textView.setTypeface(typeface);
+            noDataImage.setVisibility(View.GONE);
+        }
     }
 
     @Override

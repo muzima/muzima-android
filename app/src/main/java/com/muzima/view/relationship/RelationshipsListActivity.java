@@ -249,27 +249,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         };
     }
 
-    private void createPatientFromRelatedPerson() {
-        Intent intent = new Intent(this, RegistrationFormsActivity.class);
-        Patient pat = new Patient();
-        pat.setUuid(selectedRelatedPerson.getUuid());
-        pat.setBirthdate(selectedRelatedPerson.getBirthdate());
-        pat.setBirthdateEstimated(selectedRelatedPerson.getBirthdateEstimated());
-        pat.setGender(selectedRelatedPerson.getGender());
-        pat.setNames(selectedRelatedPerson.getNames());
-
-        intent.putExtra(PatientSummaryActivity.PATIENT, pat);
-        intent.putExtra(INDEX_PATIENT, patient);
-        startActivity(intent);
-    }
-
-    private void OpenUpdatePersonDemographicsForm() {
-        Intent intent = new Intent(this, PersonDemographicsUpdateFormsActivity.class);
-        intent.putExtra(PersonDemographicsUpdateFormsActivity.PERSON, selectedRelatedPerson);
-        intent.putExtra(INDEX_PATIENT, patient);
-        startActivity(intent);
-    }
-
     private AdapterView.OnItemClickListener autoCompleteOnClickListener() {
         return new AdapterView.OnItemClickListener() {
             @Override
