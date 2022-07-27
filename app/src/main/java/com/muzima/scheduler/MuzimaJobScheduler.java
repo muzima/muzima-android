@@ -348,7 +348,8 @@ public class MuzimaJobScheduler extends JobService {
             super.onPostExecute(aVoid);
             new SyncReportDatasetsBackgroundTask().execute();
             new FormTemplateSyncBackgroundTask().execute();
-            new DownloadAndDeleteCohortsBasedOnConfigChangesBackgroundTask().execute();
+            if(!muzimaSettingController.isOnlineOnlyModeEnabled())
+                new DownloadAndDeleteCohortsBasedOnConfigChangesBackgroundTask().execute();
             new DownloadAndDeleteLocationBasedOnConfigChangesBackgroundTask().execute();
             new DownloadAndDeleteProvidersBasedOnConfigChangesBackgroundTask().execute();
             new DownloadAndDeleteConceptsBasedOnConfigChangesBackgroundTask().execute();
