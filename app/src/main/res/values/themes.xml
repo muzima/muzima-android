@@ -41,7 +41,7 @@
         <item name="onDarkBackgroundColor">@color/dark_smoke</item>
         <item name="colorPrimary">@color/primary_black</item>
         <item name="icAssign">@drawable/ic_checkbox_marked_circle_plus_outline_light</item>
-        <item name="patientSummaryBackgroundColor">@color/patient_summary_background</item>
+        <item name="patientSummaryBorderColor">@color/patient_summary_border</item>
     </style>
     <style name="AppBaseTheme.NoActionBar" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <item name="android:statusBarColor">@color/primary_black</item>
@@ -72,7 +72,7 @@
         <item name="onDarkBackgroundColor">@color/dark_smoke</item>
         <item name="colorPrimary">@color/primary_black</item>
         <item name="icAssign">@drawable/ic_checkbox_marked_circle_plus_outline</item>
-        <item name="patientSummaryBackgroundColor">@color/patient_summary_background</item>
+        <item name="patientSummaryBorderColor">@color/patient_summary_border</item>
     </style>
 
     <style name="AppBaseTheme.Light" parent="Theme.MaterialComponents.Light.Bridge">
@@ -105,7 +105,7 @@
         <item name="onDarkBackgroundColor">@color/primary_black</item>
         <item name="colorPrimary">@color/primary_white</item>
         <item name="icAssign">@drawable/ic_checkbox_marked_circle_plus_outline_light</item>
-        <item name="patientSummaryBackgroundColor">@color/patient_summary_background_light</item>
+        <item name="patientSummaryBorderColor">@color/patient_summary_border_light</item>
     </style>
     <style name="AppBaseTheme.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="android:statusBarColor">@color/darker_primary_blue</item>
@@ -137,6 +137,6 @@
         <item name="onDarkBackgroundColor">@color/primary_black</item>
         <item name="colorPrimary">@color/primary_white</item>
         <item name="icAssign">@drawable/ic_checkbox_marked_circle_plus_outline</item>
-        <item name="patientSummaryBackgroundColor">@color/patient_summary_background_light</item>
+        <item name="patientSummaryBorderColor">@color/patient_summary_border_light</item>
     </style>
 </resources>

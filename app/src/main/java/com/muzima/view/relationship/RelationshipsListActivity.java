@@ -12,9 +12,6 @@ package com.muzima.view.relationship;
 import static com.muzima.utils.RelationshipViewUtil.listOnClickListener;
 import static com.muzima.view.patients.PatientSummaryActivity.CALLING_ACTIVITY;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -30,10 +27,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -58,10 +55,9 @@ import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.RelationshipJsonMapper;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.TagsUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.forms.PersonDemographicsUpdateFormsActivity;
-import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.patients.UpdatePatientTagsIntent;
 
@@ -145,6 +141,9 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             actionMode = startActionMode(new DeleteRelationshipsActionModeCallback());
             actionMode.setTitle(String.valueOf(getSelectedRelationships().size()));
         }
+
+        LinearLayout tagsLayout = findViewById(R.id.menu_tags);
+        TagsUtil.loadTags(patient, tagsLayout, getApplicationContext());
     }
 
     private void loadPatientData() {

@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +65,7 @@ import com.muzima.utils.DateUtils;
 import com.muzima.utils.FormUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.TagsUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.MainDashboardActivity;
@@ -151,6 +153,9 @@ public class DataCollectionActivity extends ActivityWithPatientSummaryBottomNavi
         });
 
         loadBottomNavigation(patientUuid);
+
+        LinearLayout tagsLayout = findViewById(R.id.menu_tags);
+        TagsUtil.loadTags(patient, tagsLayout, getApplicationContext());
     }
 
     @Override

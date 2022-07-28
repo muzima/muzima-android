@@ -35,14 +35,15 @@
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/patientSummaryBackgroundColor"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/patient_summary_border"
                 app:elevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"
+                    android:layout_margin="6dp"
                     android:orientation="vertical">
 
                     <include layout="@layout/client_summary_patients_list"/>
@@ -52,11 +53,6 @@
                         android:layout_marginHorizontal="2dp"
                         layout="@layout/forms_top_bar_view"/>
                 </LinearLayout>
-                <View
-                    style="@style/DividerLine"
-                    android:background="@color/tab_indicator_selected"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp" />
             </com.google.android.material.appbar.AppBarLayout>
 
             <LinearLayout

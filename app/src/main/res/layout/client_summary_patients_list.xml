@@ -46,7 +46,13 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
+                <LinearLayout
+                    android:id="@+id/menu_tags"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:gravity="start"
+                    android:orientation="horizontal"/>
                 <TextView
                     android:id="@+id/identifier"
                     android:fontFamily="@font/roboto_regular"
@@ -56,7 +62,7 @@
                     android:textColor="?attr/primaryTextColor"
                     android:layout_marginEnd="12dp"
                     android:layout_marginBottom="2dp"
-                    android:gravity="start" />
+                    android:layout_toRightOf="@id/menu_tags"/>
 
                 <TextView
                     android:id="@+id/distanceToClientAddress"
