@@ -491,6 +491,15 @@ public class CohortController {
         }
     }
 
+    public List<Cohort> getCohorts() throws CohortFetchException {
+        try {
+            List<Cohort> allCohorts = cohortService.getAllCohorts();
+            return allCohorts;
+        } catch (IOException e) {
+            throw new CohortFetchException(e);
+        }
+    }
+
     public List<CohortMember> getCohortMembershipByPatientUuid(String patientUuid) throws CohortFetchException {
         try {
             List<CohortMember> cohortMembers = cohortService.getCohortMembershipByPatientUuid(patientUuid);
