@@ -65,6 +65,12 @@
                 android:layout_weight="100"
                 android:orientation="vertical">
 
+                <View android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="1dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:background="?attr/primaryTextColor"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:id="@+id/relationships_listing"
@@ -79,9 +85,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/general_relationship"
-                            android:textSize="18dp"
-                            android:fontFamily="@font/montserrat_bold" />
+                            android:text="@string/general_relationships"
+                            android:textColor="?attr/primaryTextColor"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/roboto_bold" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -89,14 +96,19 @@
                             android:layout_alignParentEnd="true"
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/ic_icon_right" />
+
                     </RelativeLayout>
 
-                  <ListView
-                    android:id="@+id/relationships_list"
-                    style="@style/MuzimaSelectableListView"></ListView>
+                    <include layout="@layout/relationship_list_fragment"/>
 
                 </LinearLayout>
-
+                <View android:id="@+id/relationships_list_separator"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="1dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:background="?attr/primaryTextColor"
+                    android:visibility="gone"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:id="@+id/historical_data"
@@ -112,8 +124,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/general_historical_data"
-                            android:textSize="18dp"
-                            android:fontFamily="@font/montserrat_bold" />
+                            android:textColor="?attr/primaryTextColor"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/roboto_bold" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -128,15 +141,15 @@
                         android:id="@+id/chronological_fragment"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent" />
-                </LinearLayout>
 
-                <View android:layout_below="@+id/patient_details_container"
+                </LinearLayout>
+                <View android:id="@+id/historical_data_separator"
                     android:layout_width="match_parent"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_height="1dp"
                     android:fontFamily="@font/montserrat_bold"
-                    android:background="?attr/primaryTextColor"/>
+                    android:background="?attr/primaryTextColor"
+                    android:visibility="gone"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:id="@+id/data_collection"
@@ -151,8 +164,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/general_data_collection"
-                            android:textSize="18dp"
-                            android:fontFamily="@font/montserrat_bold" />
+                            android:textColor="?attr/primaryTextColor"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/roboto_bold" />
 
                         <ImageView
                             android:layout_width="wrap_content"
