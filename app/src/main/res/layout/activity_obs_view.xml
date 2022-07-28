@@ -22,8 +22,6 @@
             android:background="?attr/primaryBackgroundColor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="12dp"
-            android:layout_marginStart="12dp"
             android:layout_marginBottom="10dp"
             android:layout_above="@+id/bottom_navigation"
             android:orientation="vertical">
@@ -37,21 +35,30 @@
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/primaryBackgroundColor"
+                android:background="?attr/patientSummaryBackgroundColor"
                 app:elevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="12dp"
                     android:orientation="vertical">
 
                     <include layout="@layout/client_summary_patients_list"/>
                 </LinearLayout>
+                <View
+                    style="@style/DividerLine"
+                    android:background="@color/tab_indicator_selected"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp" />
             </com.google.android.material.appbar.AppBarLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_marginStart="12dp"
                 app:tabSelectedTextColor="@color/primary_blue"
                 app:tabIndicatorColor="@color/primary_blue"
                 android:paddingTop="6dp"

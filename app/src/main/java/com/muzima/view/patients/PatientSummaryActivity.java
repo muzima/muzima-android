@@ -454,6 +454,14 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_red));
             }
             completeFormsCountView.setText(String.valueOf(completeForms));
+
+            if(incompleteForms == 0 && completeForms == 0){
+                completeFormsView.setVisibility(View.GONE);
+                incompleteFormsView.setVisibility(View.GONE);
+            } else {
+                completeFormsView.setVisibility(View.VISIBLE);
+                incompleteFormsView.setVisibility(View.VISIBLE);
+            }
         } catch (FormController.FormFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);
         }
