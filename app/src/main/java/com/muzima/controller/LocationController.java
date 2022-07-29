@@ -183,6 +183,20 @@ public class LocationController {
 
     }
 
+    public void deleteLocationsByUuids(List<String> locationUuids) throws LocationDeleteException, IOException {
+        List<Location> locations = new ArrayList<>();
+        for(String locationUuid : locationUuids){
+            Location location = locationService.getLocationByUuid(locationUuid);
+            if(location != null){
+                locations.add(location);
+            }
+        }
+
+        if(locations.size() > 0){
+            deleteLocations(locations);
+        }
+    }
+
     public List<Location> getRelatedLocations(List<FormTemplate> formTemplates) throws LocationDownloadException {
         HashSet<Location> locations = new HashSet<>();
         LocationParser xmlParserUtils = new LocationParser();

@@ -21,7 +21,6 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormDataStatus;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.LastSyncTime;
-import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
@@ -1285,7 +1284,7 @@ public class FormController {
 
         //add forms not in the setup config
         boolean isDisplayOnlyFormsInSetupConfig= muzimaApplication.getMuzimaSettingController().isDisplayOnlyFormsInConfigEnabled();
-        if(isDisplayOnlyFormsInSetupConfig) {
+        if(!isDisplayOnlyFormsInSetupConfig) {
             for (Form filteredForm : filteredForms) {
                 if (!formUuids.contains(filteredForm.getUuid())) {
                     boolean downloadStatus = formService.isFormTemplateDownloaded(filteredForm.getUuid());
