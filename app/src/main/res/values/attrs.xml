@@ -12,6 +12,7 @@
 <resources>
     <attr name="activatedBackgroundIndicator" format="reference"/>
     <attr name="primaryBackgroundColor" format="reference|color"/>
+    <attr name="patientSummaryBorderColor" format="reference|color"/>
     <attr name="dashBoardBaseTextColor" format="color"/>
     <attr name="primaryTextColor" format="reference|color"/>
     <attr name="primaryDrawableColor" format="reference|color"/>

@@ -50,6 +50,7 @@ import com.muzima.tasks.FormsLoaderService;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.TagsUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.view.MainDashboardActivity;
@@ -112,6 +113,9 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         setupStillLoadingView();
         setTitle(R.string.title_activity_client_summary);
         loadBottomNavigation(patientUuid);
+
+        LinearLayout tagsLayout = findViewById(R.id.menu_tags);
+        TagsUtil.loadTags(patient, tagsLayout, getApplicationContext());
     }
 
     @Override
@@ -454,6 +458,14 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_red));
             }
             completeFormsCountView.setText(String.valueOf(completeForms));
+
+            if(incompleteForms == 0 && completeForms == 0){
+                completeFormsView.setVisibility(View.GONE);
+                incompleteFormsView.setVisibility(View.GONE);
+            } else {
+                completeFormsView.setVisibility(View.VISIBLE);
+                incompleteFormsView.setVisibility(View.VISIBLE);
+            }
         } catch (FormController.FormFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);
         }
