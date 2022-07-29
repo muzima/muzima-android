@@ -18,7 +18,6 @@
     <LinearLayout
         android:id="@+id/dashboard_forms_incomplete_forms_view"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:orientation="vertical"

@@ -20,8 +20,6 @@
             android:background="?attr/primaryBackgroundColor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="12dp"
-            android:layout_marginStart="12dp"
             android:layout_marginBottom="76dp"
             android:orientation="vertical">
 
@@ -34,30 +32,35 @@
         <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/primaryBackgroundColor"
+                android:layout_marginEnd="6dp"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/patient_summary_border"
                 app:elevation="6dp">
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:orientation="vertical">
 
                 <include layout="@layout/client_summary_patients_list"/>
+
+                <include android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="2dp"
+                    layout="@layout/forms_top_bar_view"/>
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="12dp"
+                android:layout_marginStart="12dp"
                 app:tabSelectedTextColor="@color/primary_blue"
                 app:tabIndicatorColor="@color/primary_blue"
                 android:paddingTop="6dp"
                 android:orientation="vertical">
-
-            <include android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_marginHorizontal="2dp"
-                     layout="@layout/forms_top_bar_view"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -65,18 +68,11 @@
                 android:layout_weight="100"
                 android:orientation="vertical">
 
-                <View android:layout_width="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:layout_height="1dp"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:background="?attr/primaryTextColor"/>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:id="@+id/relationships_listing"
                     android:layout_height="0dp"
                     android:orientation="vertical">
-
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:onClick="navigateToRelationships"

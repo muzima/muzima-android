@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.ActionMode;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.TagsUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.MainDashboardActivity;
 
@@ -118,6 +120,9 @@ public class FormsWithDataActivity extends FormsActivityBase {
                 ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
             }
             patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
+
+            LinearLayout tagsLayout = findViewById(R.id.menu_tags);
+            TagsUtil.loadTags(patient, tagsLayout, getApplicationContext());
         }
     }
 

@@ -62,4 +62,6 @@
     <color name="green">#008E00</color>
     <color name="red">#B3FF0000</color>
     <color name="orange">#FFA500</color>
+    <color name="patient_summary_border">#ffffff</color>
+    <color name="patient_summary_border_light">#303030</color>
 </resources>

@@ -23,9 +23,7 @@
             android:layout_above="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="12dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginStart="12dp"
             android:orientation="vertical">
 
             <View android:id="@+id/bottom_sheet_child_container"
@@ -37,30 +35,35 @@
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/primaryBackgroundColor"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/patient_summary_border"
                 app:elevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="6dp"
                     android:orientation="vertical">
 
                     <include layout="@layout/client_summary_patients_list"/>
+
+                    <include android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="2dp"
+                        layout="@layout/forms_top_bar_view"/>
                 </LinearLayout>
             </com.google.android.material.appbar.AppBarLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
                 app:tabSelectedTextColor="@color/primary_blue"
                 app:tabIndicatorColor="@color/primary_blue"
                 android:paddingTop="6dp"
                 android:orientation="vertical">
-
-                <include android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="2dp"
-                    layout="@layout/forms_top_bar_view"/>
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"

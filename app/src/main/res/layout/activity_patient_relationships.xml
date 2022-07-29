@@ -15,13 +15,24 @@
     android:layout_height="match_parent">
 
     <LinearLayout style="@style/DashboardTableContainer">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:background="@drawable/patient_summary_border"
+        app:elevation="6dp">
 
-        <include layout="@layout/client_summary_patients_list"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:orientation="vertical">
 
-        <View
-            style="@style/DividerLine"
-            android:background="@color/tab_indicator_selected"
-            android:layout_marginBottom="10dp" />
+            <include layout="@layout/client_summary_patients_list"/>
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
 
         <ScrollView
             android:id="@+id/add_relationship"

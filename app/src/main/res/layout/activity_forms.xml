@@ -16,16 +16,33 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <!-- The main content view -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/client_summary_patients_list"
-            android:id="@+id/client_summary_view"
-            android:visibility="gone"/>
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/patient_summary_border"
+            app:elevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:orientation="vertical">
+
+                <include layout="@layout/client_summary_patients_list"
+                    android:id="@+id/client_summary_view"
+                    android:visibility="gone"/>
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
         <com.muzima.view.custom.PagerSlidingTabStrip
             android:id="@+id/pager_indicator"
             android:layout_width="match_parent"
