@@ -561,6 +561,7 @@ public class MuzimaSyncService {
             Log.i(getClass().getSimpleName(), "Cohort data download successful with " + cohortDataList.size() + " cohorts");
             ArrayList<Patient> voidedPatients = new ArrayList<>();
             List<Patient> cohortPatients = new ArrayList<>();
+            List<Patient> downloadedPatients = new ArrayList<>();
             for (CohortData cohortData : cohortDataList) {
                 cohortController.addCohortMembers(cohortData.getCohortMembers());
                 cohortPatients = cohortData.getPatients();
@@ -568,6 +569,9 @@ public class MuzimaSyncService {
                 cohortPatients.removeAll(voidedPatients);
                 patientController.replacePatients(cohortPatients);
                 patientCount += cohortData.getPatients().size();
+                if(cohortPatients.size() > 0) {
+                    downloadedPatients.addAll(cohortPatients);
+                }
             }
             patientController.deletePatient(voidedPatients);
             long cohortMemberAndPatientReplaceTime = System.currentTimeMillis();
@@ -582,19 +586,19 @@ public class MuzimaSyncService {
             result[2] = cohortDataList.size();
             result[3] = voidedPatients.size();
 
+            downloadRelationshipsForPatientsByCohortUUIDs(cohortUuids);
+
             MuzimaSettingController muzimaSettingController = muzimaApplication.getMuzimaSettingController();
             if(muzimaSettingController.isPatientTagGenerationEnabled()) {
                 List<String> patientUuids = new ArrayList<>();
-                if(cohortPatients.size()>0) {
-                    for (Patient patient : cohortPatients) {
+                if(downloadedPatients.size()>0) {
+                    for (Patient patient : downloadedPatients) {
                         patientUuids.add(patient.getUuid());
                     }
                 }
                 if(patientUuids.size()>0){
-                    downloadRelationshipsForPatientsByCohortUUIDs(cohortUuids);
                     updatePatientTags(patientUuids);
                 }
-
             }
 
             //update memberships
