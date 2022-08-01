@@ -586,8 +586,9 @@ public class MuzimaSyncService {
             result[2] = cohortDataList.size();
             result[3] = voidedPatients.size();
 
-            downloadRelationshipsForPatientsByCohortUUIDs(cohortUuids);
-
+            if(cohortUuids.length > 0) {
+                downloadRelationshipsForPatientsByCohortUUIDs(cohortUuids);
+            }
             MuzimaSettingController muzimaSettingController = muzimaApplication.getMuzimaSettingController();
             if(muzimaSettingController.isPatientTagGenerationEnabled()) {
                 List<String> patientUuids = new ArrayList<>();
