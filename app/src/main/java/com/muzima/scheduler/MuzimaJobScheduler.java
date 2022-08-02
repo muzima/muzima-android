@@ -10,7 +10,6 @@
 
 package com.muzima.scheduler;
 
-import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
@@ -35,7 +34,6 @@ import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.AppUsageLogs;
-import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Location;
@@ -59,10 +57,8 @@ import com.muzima.controller.ProviderController;
 import com.muzima.controller.ReportDatasetController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.CompleteFormWithPatientData;
-import com.muzima.model.DownloadedForm;
 import com.muzima.model.IncompleteFormWithPatientData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
-import com.muzima.model.collections.DownloadedForms;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
@@ -102,6 +98,7 @@ public class MuzimaJobScheduler extends JobService {
     private SetupConfigurationController setupConfigurationController;
     private String pseudoDeviceId;
     private String username;
+    private SetupConfigurationTemplate configBeforeConfigUpdate;
 
     @Override
     public void onCreate() {
@@ -298,9 +295,11 @@ public class MuzimaJobScheduler extends JobService {
 
     private class SyncSetupConfigTemplatesBackgroundTask extends AsyncTask<Void,Void,Void> {
         Context context = getApplicationContext();
+        Boolean wasConfigUpdateDone = false;
         @Override
         protected Void doInBackground(Void... voids) {
             try {
+                configBeforeConfigUpdate = setupConfigurationController.getActiveSetupConfigurationTemplate();
                 for (SetupConfigurationTemplate template : setupConfigurationController.getSetupConfigurationTemplates()) {
                     int[] templateResult = downloadAndSaveUpdatedSetupConfigurationTemplate(template.getUuid());
                     if (templateResult[0] == SUCCESS) {
@@ -348,11 +347,13 @@ public class MuzimaJobScheduler extends JobService {
             super.onPostExecute(aVoid);
             new SyncReportDatasetsBackgroundTask().execute();
             new FormTemplateSyncBackgroundTask().execute();
-            if(!muzimaSettingController.isOnlineOnlyModeEnabled())
-                new DownloadAndDeleteCohortsBasedOnConfigChangesBackgroundTask().execute();
-            new DownloadAndDeleteLocationBasedOnConfigChangesBackgroundTask().execute();
-            new DownloadAndDeleteProvidersBasedOnConfigChangesBackgroundTask().execute();
-            new DownloadAndDeleteConceptsBasedOnConfigChangesBackgroundTask().execute();
+            if(wasConfigUpdateDone) {
+                if (!muzimaSettingController.isOnlineOnlyModeEnabled())
+                    new DownloadAndDeleteCohortsBasedOnConfigChangesBackgroundTask().execute();
+                new DownloadAndDeleteLocationBasedOnConfigChangesBackgroundTask().execute();
+                new DownloadAndDeleteProvidersBasedOnConfigChangesBackgroundTask().execute();
+                new DownloadAndDeleteConceptsBasedOnConfigChangesBackgroundTask().execute();
+            }
             new SyncAppUsageLogsBackgroundTask().execute();
         }
 
@@ -364,6 +365,7 @@ public class MuzimaJobScheduler extends JobService {
                 result[0] = SUCCESS;
                 if (setupConfigurationTemplate != null) {
                     result[1] = 1;
+                    wasConfigUpdateDone = true;
                     setupConfigurationController.updateSetupConfigurationTemplate(setupConfigurationTemplate);
                 }
 
@@ -484,11 +486,11 @@ public class MuzimaJobScheduler extends JobService {
             ReportDatasetController reportDatasetController = ((MuzimaApplication) context).getReportDatasetController();
             try {
                 //Get datasets in the config
-                String configJson = "";
                 List<Integer> datasetIds = new ArrayList<>();
+                List<Integer> datasetIdsBeforeConfigUpdate = new ArrayList<>();
 
                 SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
-                configJson = activeSetupConfig.getConfigJson();
+                String configJson = activeSetupConfig.getConfigJson();
                 List<Object> datasets = JsonUtils.readAsObjectList(configJson, "$['config']['datasets']");
                 for (Object dataset : datasets) {
                     net.minidev.json.JSONObject dataset1 = (net.minidev.json.JSONObject) dataset;
@@ -496,28 +498,33 @@ public class MuzimaJobScheduler extends JobService {
                     datasetIds.add(datasetId);
                 }
 
-                List<ReportDataset> reportDatasets = reportDatasetController.getReportDatasets();
+                String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+                List<Object> datasetsBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['datasets']");
+                for (Object dataset : datasetsBeforeConfigUpdate) {
+                    net.minidev.json.JSONObject dataset1 = (net.minidev.json.JSONObject) dataset;
+                    Integer datasetId = (Integer)dataset1.get("id");
+                    datasetIdsBeforeConfigUpdate.add(datasetId);
+                }
+
                 List<Integer> datasetToDeleteIds = new ArrayList<>();
-                List<Integer> downloadedDatasetIds = new ArrayList<>();
                 List<Integer> datasetToDownload= new ArrayList<>();
 
                 //Get datasets previously downloaded but not in the updated config
-                for(ReportDataset downloadedDataset: reportDatasets){
-                    if(!datasetIds.contains(downloadedDataset.getDatasetDefinitionId())){
-                        datasetToDeleteIds.add(downloadedDataset.getDatasetDefinitionId());
+                for(Integer datasetId: datasetIdsBeforeConfigUpdate){
+                    if(!datasetIds.contains(datasetId)){
+                        datasetToDeleteIds.add(datasetId);
                     }
-                    downloadedDatasetIds.add(downloadedDataset.getDatasetDefinitionId());
                 }
 
                 //sync the downloaded datasets with changes
-                if(downloadedDatasetIds.size() > 0){
-                    List<ReportDataset> reportDatasetList = reportDatasetController.downloadReportDatasets(downloadedDatasetIds, true);
+                if(datasetIdsBeforeConfigUpdate.size() > 0){
+                    List<ReportDataset> reportDatasetList = reportDatasetController.downloadReportDatasets(datasetIdsBeforeConfigUpdate, true);
                     reportDatasetController.saveReportDatasets(reportDatasetList);
                 }
 
                 //Get Added datasets to updated config
                 for(Integer datasetId : datasetIds){
-                    if(!downloadedDatasetIds.contains(datasetId)){
+                    if(!datasetIdsBeforeConfigUpdate.contains(datasetId)){
                         datasetToDownload.add(datasetId);
                     }
                 }
@@ -528,7 +535,7 @@ public class MuzimaJobScheduler extends JobService {
 
                 if(datasetToDownload.size()>0){
                     //Download Added datasets
-                    List<ReportDataset> reportDatasetList = reportDatasetController.downloadReportDatasets(downloadedDatasetIds, false);
+                    List<ReportDataset> reportDatasetList = reportDatasetController.downloadReportDatasets(datasetToDownload, false);
                     reportDatasetController.saveReportDatasets(reportDatasetList);
                 }
             } catch (ReportDatasetController.ReportDatasetSaveException reportDatasetSaveException) {
@@ -556,11 +563,11 @@ public class MuzimaJobScheduler extends JobService {
                 Context context = getApplicationContext();
                 FormController formController = ((MuzimaApplication) context).getFormController();
                 //Get forms in the config
-                String configJson = "";
                 List<String> formUuids = new ArrayList<>();
+                List<String> formUuidsBeforeConfigUpdate = new ArrayList<>();
 
                 SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
-                configJson = activeSetupConfig.getConfigJson();
+                String configJson = activeSetupConfig.getConfigJson();
                 List<Object> forms = JsonUtils.readAsObjectList(configJson, "$['config']['forms']");
                 for (Object form : forms) {
                     net.minidev.json.JSONObject form1 = (net.minidev.json.JSONObject) form;
@@ -568,22 +575,27 @@ public class MuzimaJobScheduler extends JobService {
                     formUuids.add(formUuid);
                 }
 
-                DownloadedForms downloadedForms = formController.getAllDownloadedForms();
+                String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+                List<Object> formsBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['forms']");
+                for (Object form : formsBeforeConfigUpdate) {
+                    net.minidev.json.JSONObject form1 = (net.minidev.json.JSONObject) form;
+                    String formUuid = form1.get("uuid").toString();
+                    formUuidsBeforeConfigUpdate.add(formUuid);
+                }
+
                 List<String> formTemplatesToDeleteUuids = new ArrayList<>();
-                List<String> downloadedFormUuids = new ArrayList<>();
                 List<String>  formTemplateToDownload= new ArrayList<>();
 
                 //Get forms previously downloaded but not in the updated config
-                for(DownloadedForm downloadedForm: downloadedForms){
-                    if(!formUuids.contains(downloadedForm.getFormUuid())){
-                        formTemplatesToDeleteUuids.add(downloadedForm.getFormUuid());
+                for(String formUuid: formUuidsBeforeConfigUpdate){
+                    if(!formUuids.contains(formUuid)){
+                        formTemplatesToDeleteUuids.add(formUuid);
                     }
-                    downloadedFormUuids.add(downloadedForm.getFormUuid());
                 }
 
                 //Get Added forms to updated config
                 for(String formUuid : formUuids){
-                    if(!downloadedFormUuids.contains(formUuid)){
+                    if(!formUuidsBeforeConfigUpdate.contains(formUuid)){
                         formTemplateToDownload.add(formUuid);
                     }
                 }
@@ -662,11 +674,11 @@ public class MuzimaJobScheduler extends JobService {
                 Context context = getApplicationContext();
                 CohortController cohortController = ((MuzimaApplication) context).getCohortController();
                 //Get cohorts in the config
-                String configJson = "";
                 List<String> cohortUuids = new ArrayList<>();
+                List<String> cohortUuidsBeforeUpdate = new ArrayList<>();
 
                 SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
-                configJson = activeSetupConfig.getConfigJson();
+                String configJson = activeSetupConfig.getConfigJson();
                 List<Object> cohorts = JsonUtils.readAsObjectList(configJson, "$['config']['cohorts']");
                 for (Object cohort : cohorts) {
                     net.minidev.json.JSONObject cohort1 = (net.minidev.json.JSONObject) cohort;
@@ -674,22 +686,28 @@ public class MuzimaJobScheduler extends JobService {
                     cohortUuids.add(cohortUuid);
                 }
 
-                List<Cohort> syncedCohorts = cohortController.getSyncedCohorts();
+
+                String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+                List<Object> cohortsBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['cohorts']");
+                for (Object cohort : cohortsBeforeConfigUpdate) {
+                    net.minidev.json.JSONObject cohort1 = (net.minidev.json.JSONObject) cohort;
+                    String cohortUuid = cohort1.get("uuid").toString();
+                    cohortUuidsBeforeUpdate.add(cohortUuid);
+                }
+
                 List<String> cohortsToSetAsUnsyncedUuids = new ArrayList<>();
-                List<String> downloadedCohortUuids = new ArrayList<>();
                 List<String> cohortsToDownload= new ArrayList<>();
 
-                //Get cohorts previously downloaded but not in the updated config
-                for(Cohort cohort: syncedCohorts){
-                    if(!cohortUuids.contains(cohort.getUuid())){
-                        cohortsToSetAsUnsyncedUuids.add(cohort.getUuid());
+                //Get cohorts previously in config but not in the updated config
+                for(String cohortUuid: cohortUuidsBeforeUpdate){
+                    if(!cohortUuids.contains(cohortUuid)){
+                        cohortsToSetAsUnsyncedUuids.add(cohortUuid);
                     }
-                    downloadedCohortUuids.add(cohort.getUuid());
                 }
 
                 //Get Added cohorts to updated config
                 for(String cohortUuid : cohortUuids){
-                    if(!downloadedCohortUuids.contains(cohortUuid)){
+                    if(!cohortUuidsBeforeUpdate.contains(cohortUuid)){
                         cohortsToDownload.add(cohortUuid);
                     }
                 }
@@ -706,8 +724,6 @@ public class MuzimaJobScheduler extends JobService {
 
             } catch (SetupConfigurationController.SetupConfigurationFetchException e){
                 Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get the active config ",e);
-            } catch (CohortController.CohortFetchException e) {
-                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not be able to fetch cohort ",e);
             } catch (CohortController.CohortUpdateException e) {
                 Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not able to update cohort ",e);
             } catch (CohortController.CohortReplaceException e) {
@@ -729,11 +745,11 @@ public class MuzimaJobScheduler extends JobService {
                 Context context = getApplicationContext();
                 LocationController locationController = ((MuzimaApplication) context).getLocationController();
                 //Get locations in the config
-                String configJson = "";
                 List<String> locationUuids = new ArrayList<>();
+                List<String> locationUuidsBeforeConfigUpdate = new ArrayList<>();
 
                 SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
-                configJson = activeSetupConfig.getConfigJson();
+                String configJson = activeSetupConfig.getConfigJson();
                 List<Object> locations = JsonUtils.readAsObjectList(configJson, "$['config']['locations']");
                 for (Object location : locations) {
                     net.minidev.json.JSONObject location1 = (net.minidev.json.JSONObject) location;
@@ -741,28 +757,33 @@ public class MuzimaJobScheduler extends JobService {
                     locationUuids.add(locationUuid);
                 }
 
-                List<Location> downloadedLocations = locationController.getAllLocations();
-                List<Location> locationsToBeDeleted = new ArrayList<>();
-                List<String> downloadedLocationUuids = new ArrayList<>();
+                String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+                List<Object> locationsBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['locations']");
+                for (Object location : locationsBeforeConfigUpdate) {
+                    net.minidev.json.JSONObject location1 = (net.minidev.json.JSONObject) location;
+                    String locationUuid = location1.get("uuid").toString();
+                    locationUuidsBeforeConfigUpdate.add(locationUuid);
+                }
+
+                List<String> locationsToBeDeleted = new ArrayList<>();
                 List<String> locationsToDownload= new ArrayList<>();
 
-                //Get locations previously downloaded but not in the updated config
-                for(Location location: downloadedLocations){
-                    if(!locationUuids.contains(location.getUuid())){
-                        locationsToBeDeleted.add(location);
+                //Get locations previously in config  but not in the updated config
+                for(String locationUuid: locationUuidsBeforeConfigUpdate){
+                    if(!locationUuids.contains(locationUuid)){
+                        locationsToBeDeleted.add(locationUuid);
                     }
-                    downloadedLocationUuids.add(location.getUuid());
                 }
 
                 //Get Added locations to updated config
                 for(String locationUuid : locationUuids){
-                    if(!downloadedLocationUuids.contains(locationUuid)){
+                    if(!locationUuidsBeforeConfigUpdate.contains(locationUuid)){
                         locationsToDownload.add(locationUuid);
                     }
                 }
 
                 if(locationsToBeDeleted.size()>0) {
-                    locationController.deleteLocations(locationsToBeDeleted);
+                    locationController.deleteLocationsByUuids(locationsToBeDeleted);
                 }
 
                 if(locationsToDownload.size()>0) {
@@ -772,14 +793,14 @@ public class MuzimaJobScheduler extends JobService {
 
             } catch (SetupConfigurationController.SetupConfigurationFetchException e){
                 Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get the active config ",e);
-            } catch (LocationController.LocationLoadException e) {
-                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get locations ",e);
-            } catch (LocationController.LocationDeleteException e) {
+            }  catch (LocationController.LocationDeleteException e) {
                 Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not delete locations ",e);
             } catch (LocationController.LocationDownloadException e) {
                 Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not download locations ",e);
             } catch (LocationController.LocationSaveException e) {
                 Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not save locations ",e);
+            } catch (IOException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get locations ",e);
             }
             return null;
         }
@@ -797,11 +818,11 @@ public class MuzimaJobScheduler extends JobService {
                 Context context = getApplicationContext();
                 ProviderController providerController = ((MuzimaApplication) context).getProviderController();
                 //Get providers in the config
-                String configJson = "";
                 List<String> providerUuids = new ArrayList<>();
+                List<String> providerUuidsBeforeConfigUpdate = new ArrayList<>();
 
                 SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
-                configJson = activeSetupConfig.getConfigJson();
+                String configJson = activeSetupConfig.getConfigJson();
                 List<Object> providers = JsonUtils.readAsObjectList(configJson, "$['config']['providers']");
                 for (Object provider : providers) {
                     net.minidev.json.JSONObject provider1 = (net.minidev.json.JSONObject) provider;
@@ -809,28 +830,33 @@ public class MuzimaJobScheduler extends JobService {
                     providerUuids.add(providerUuid);
                 }
 
-                List<Provider> syncedproviders = providerController.getAllProviders();
-                List<Provider> providersToBeDeleted = new ArrayList<>();
-                List<String> downloadedproviderUuids = new ArrayList<>();
+                String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+                List<Object> providersBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['providers']");
+                for (Object provider : providersBeforeConfigUpdate) {
+                    net.minidev.json.JSONObject provider1 = (net.minidev.json.JSONObject) provider;
+                    String providerUuid = provider1.get("uuid").toString();
+                    providerUuidsBeforeConfigUpdate.add(providerUuid);
+                }
+
+                List<String> providersToBeDeleted = new ArrayList<>();
                 List<String> providersToDownload= new ArrayList<>();
 
                 //Get providers previously downloaded but not in the updated config
-                for(Provider provider: syncedproviders){
-                    if(!providerUuids.contains(provider.getUuid())){
-                        providersToBeDeleted.add(provider);
+                for(String providerUuid: providerUuidsBeforeConfigUpdate){
+                    if(!providerUuids.contains(providerUuid)){
+                        providersToBeDeleted.add(providerUuid);
                     }
-                    downloadedproviderUuids.add(provider.getUuid());
                 }
 
                 //Get Added providers to updated config
                 for(String providerUuid : providerUuids){
-                    if(!downloadedproviderUuids.contains(providerUuid)){
+                    if(!providerUuidsBeforeConfigUpdate.contains(providerUuid)){
                         providersToDownload.add(providerUuid);
                     }
                 }
 
                 if(providersToBeDeleted.size()>0) {
-                    providerController.deleteProviders(providersToBeDeleted);
+                    providerController.deleteProvidersByUuids(providersToBeDeleted);
                 }
 
                 if(providersToDownload.size()>0) {
@@ -840,14 +866,14 @@ public class MuzimaJobScheduler extends JobService {
 
             } catch (SetupConfigurationController.SetupConfigurationFetchException e){
                 Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get the active config ",e);
-            } catch (ProviderController.ProviderLoadException e) {
-                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not load providers ",e);
             } catch (ProviderController.ProviderDeleteException e) {
                 Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not delete providers ",e);
             } catch (ProviderController.ProviderDownloadException e) {
                 Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not download providers ",e);
             } catch (ProviderController.ProviderSaveException e) {
                 Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not save providers ",e);
+            } catch (IOException e) {
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not load providers ",e);
             }
             return null;
         }
@@ -866,11 +892,11 @@ public class MuzimaJobScheduler extends JobService {
                 ConceptController conceptController = ((MuzimaApplication) context).getConceptController();
                 ObservationController observationController = ((MuzimaApplication) context).getObservationController();
                 //Get concepts in the config
-                String configJson = "";
                 List<String> conceptUuids = new ArrayList<>();
+                List<String> conceptUuidsBeforeConfigUpdate = new ArrayList<>();
 
                 SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
-                configJson = activeSetupConfig.getConfigJson();
+                String configJson = activeSetupConfig.getConfigJson();
                 List<Object> concepts = JsonUtils.readAsObjectList(configJson, "$['config']['concepts']");
                 for (Object concept : concepts) {
                     net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
@@ -878,22 +904,31 @@ public class MuzimaJobScheduler extends JobService {
                     conceptUuids.add(conceptUuid);
                 }
 
-                List<Concept> downloadedConcepts = conceptController.getConcepts();
+                String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+                List<Object> conceptsBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['concepts']");
+                for (Object concept : conceptsBeforeConfigUpdate) {
+                    net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
+                    String conceptUuid = concept1.get("uuid").toString();
+                    conceptUuidsBeforeConfigUpdate.add(conceptUuid);
+                }
+
                 List<Concept> conceptsToBeDeleted = new ArrayList<>();
-                List<String> downloadedConceptUuids = new ArrayList<>();
                 List<String> conceptsToDownload= new ArrayList<>();
 
                 //Get concepts previously downloaded but not in the updated config
-                for(Concept concept: downloadedConcepts){
-                    if(!conceptUuids.contains(concept.getUuid())){
-                        conceptsToBeDeleted.add(concept);
+                for(String conceptUuid: conceptUuidsBeforeConfigUpdate){
+                    if(!conceptUuids.contains(conceptUuid)){
+                        Concept concept = conceptController.getConceptByUuid(conceptUuid);
+                        if(concept != null){
+                            conceptsToBeDeleted.add(concept);
+                        }
+
                     }
-                    downloadedConceptUuids.add(concept.getUuid());
                 }
 
                 //Get Added concepts to updated config
                 for(String conceptUuid : conceptUuids){
-                    if(!downloadedConceptUuids.contains(conceptUuid)){
+                    if(!conceptUuidsBeforeConfigUpdate.contains(conceptUuid)){
                         conceptsToDownload.add(conceptUuid);
                     }
                 }

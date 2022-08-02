@@ -36,7 +36,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
         try {
             List<Cohort> downloadedCohorts = new ArrayList<>();
             for (Cohort allCohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
-                    .getAllCohorts()) {
+                    .getCohorts()) {
                 if (((MuzimaApplication) context.getApplicationContext()).getCohortController().isDownloaded(allCohort)) {
                     downloadedCohorts.add(allCohort);
                 }
