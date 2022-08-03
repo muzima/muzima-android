@@ -25,12 +25,14 @@
 
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/client_summary_view_app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="6dp"
             android:layout_marginStart="6dp"
             android:background="@drawable/patient_summary_border"
-            app:elevation="6dp">
+            app:elevation="6dp"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,9 +40,8 @@
                 android:layout_margin="6dp"
                 android:orientation="vertical">
 
-                <include layout="@layout/client_summary_patients_list"
-                    android:id="@+id/client_summary_view"
-                    android:visibility="gone"/>
+                <include layout="@layout/client_summary_patients_list"/>
+
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
         <com.muzima.view.custom.PagerSlidingTabStrip
