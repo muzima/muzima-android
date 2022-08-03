@@ -13,6 +13,7 @@ package com.muzima.scheduler;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.ONLINE_ONLY_MODE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
@@ -20,13 +21,16 @@ import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
 import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -61,6 +65,7 @@ import com.muzima.model.IncompleteFormWithPatientData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.OnlineOnlyModePreferenceService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
 import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
@@ -71,6 +76,7 @@ import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.SyncSettingsIntent;
+import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.SyncFormIntent;
 import com.muzima.view.forms.SyncFormTemplateIntent;
 import com.muzima.view.patients.SyncPatientDataIntent;
@@ -387,6 +393,20 @@ public class MuzimaJobScheduler extends JobService {
             preferenceSettings.add(PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING);
             preferenceSettings.add(DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING);
             preferenceSettings.add(DEFAULT_ENCOUNTER_LOCATION_SETTING);
+            preferenceSettings.add(ONLINE_ONLY_MODE_ENABLED_SETTING);
+
+            boolean onlineModeBeforeConfigUpdate = false;
+
+            String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+            List<Object> settingsBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['settings']");
+            for (Object setting : settingsBeforeConfigUpdate) {
+                net.minidev.json.JSONObject setting1 = (net.minidev.json.JSONObject) setting;
+                String property = (String)setting1.get("property");
+                if(property.equals(ONLINE_ONLY_MODE_ENABLED_SETTING)){
+                    onlineModeBeforeConfigUpdate = (Boolean) setting1.get("value");
+                }
+            }
+
             for (MuzimaSetting muzimaSetting : muzimaSettings) {
                 configSettings.add(muzimaSetting.getProperty());
                 if (MuzimaSettingUtils.isGpsFeatureEnabledSetting(muzimaSetting)) {
@@ -395,6 +415,29 @@ public class MuzimaJobScheduler extends JobService {
                     new SHRStatusPreferenceService(((MuzimaApplication) context)).updateSHRStatusPreference();
                 } else if (MuzimaSettingUtils.isPatientIdentifierAutogenerationSetting(muzimaSetting)) {
                     new RequireMedicalRecordNumberPreferenceService(((MuzimaApplication) context)).updateRequireMedicalRecordNumberPreference();
+                }else if (MuzimaSettingUtils.isOnlineOnlyModeSetting(muzimaSetting)) {
+                    if(onlineModeBeforeConfigUpdate != muzimaSetting.getValueBoolean()){
+                        muzimaSettingController.updateTheme();
+                        if(muzimaSetting.getValueBoolean()) {
+                            Intent intent;
+                            intent = new Intent(((MuzimaApplication) context), MainDashboardActivity.class);
+                            intent.putExtra("OnlineMode", muzimaSetting.getValueBoolean());
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            }
+                            ((MuzimaApplication) context).startActivity(intent);
+                        }else{
+                            ActivityManager am = (ActivityManager) ((MuzimaApplication) context).getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+                            ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+                            Intent intent = new Intent();
+                            intent.setComponent(cn);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            }
+                            ((MuzimaApplication) context).getApplicationContext().startActivity(intent);
+                        }
+                    }
+                    new OnlineOnlyModePreferenceService(((MuzimaApplication) context)).updateOnlineOnlyModePreferenceValue();
                 } else if(muzimaSetting.getProperty().equals(DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING)){
                     boolean isDefaultLoggedInUserAsEncounterProvider = muzimaSettingController.isDefaultLoggedInUserAsEncounterProvider();
 
@@ -429,7 +472,7 @@ public class MuzimaJobScheduler extends JobService {
                 }
             }
 
-            /*check if the 5 mobile settings preferences are in setup else default to global, might have been deleted from the config*/
+            /*check if the 6 mobile settings preferences are in setup else default to global, might have been deleted from the config*/
             for(String settingProperty : preferenceSettings){
                 if(!configSettings.contains(settingProperty)){
                     defaultToGlobalSettings(settingProperty);
@@ -444,7 +487,9 @@ public class MuzimaJobScheduler extends JobService {
                 new SHRStatusPreferenceService(((MuzimaApplication) context)).updateSHRStatusPreference();
             } else if (settingProperty.equals(PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING)) {
                 new RequireMedicalRecordNumberPreferenceService(((MuzimaApplication) context)).updateRequireMedicalRecordNumberPreference();
-            } else if(settingProperty.equals(DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING)){
+            } else if (settingProperty.equals(ONLINE_ONLY_MODE_ENABLED_SETTING)) {
+                new OnlineOnlyModePreferenceService(((MuzimaApplication) context)).updateOnlineOnlyModePreferenceValue();
+            }else if(settingProperty.equals(DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING)){
                 boolean isDefaultLoggedInUserAsEncounterProvider = muzimaSettingController.isDefaultLoggedInUserAsEncounterProvider();
 
                 Resources resources = context.getResources();
