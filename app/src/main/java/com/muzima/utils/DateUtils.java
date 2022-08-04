@@ -109,4 +109,10 @@ public class DateUtils {
         SimpleDateFormat formattedDate = new SimpleDateFormat("HH:ss");
         return formattedDate.format(date);
     }
+
+    public static String convertLongToDateString(long time){
+        Date date = new Date(time);
+        SimpleDateFormat format = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+        return format.format(date);
+    }
 }

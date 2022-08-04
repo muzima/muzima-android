@@ -659,7 +659,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public AppUsageLogsController getAppUsageLogsController(){
         if(appUsageLogsController == null){
             try{
-                appUsageLogsController = new AppUsageLogsController(muzimaContext.getAppUsageLogsService(), muzimaContext.getLastSyncTimeService(), getSntpService());
+                appUsageLogsController = new AppUsageLogsController(muzimaContext.getAppUsageLogsService());
             }catch (IOException e){
                 throw new RuntimeException(e);
             }

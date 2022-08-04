@@ -72,6 +72,7 @@ import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.JsonUtils;
 import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
+import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
@@ -215,29 +216,36 @@ public class MuzimaJobScheduler extends JobService {
                 RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(),true);
 
                 AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
+                FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
                 try {
-                    SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
-                    AppUsageLogs lastUploadLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME,username);
-                    if(lastUploadLog != null){
-                        lastUploadLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
-                        lastUploadLog.setUpdateDatetime(new Date());
-                        lastUploadLog.setUserName(username);
-                        lastUploadLog.setDeviceId(pseudoDeviceId);
-                        appUsageLogsController.saveOrUpdateAppUsageLog(lastUploadLog);
-                    }else{
-                        AppUsageLogs newUploadTime = new AppUsageLogs();
-                        newUploadTime.setUuid(UUID.randomUUID().toString());
-                        newUploadTime.setLogKey(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME);
-                        newUploadTime.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
-                        newUploadTime.setUpdateDatetime(new Date());
-                        newUploadTime.setUserName(username);
-                        newUploadTime.setDeviceId(pseudoDeviceId);
-                        appUsageLogsController.saveOrUpdateAppUsageLog(newUploadTime);
+                    if(formController.countAllCompleteForms() > 0 && NetworkUtils.isConnectedToNetwork(getApplicationContext())) {
+                        SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+                        AppUsageLogs lastUploadLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME, username);
+                        if (lastUploadLog != null) {
+                            lastUploadLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                            lastUploadLog.setUpdateDatetime(new Date());
+                            lastUploadLog.setUserName(username);
+                            lastUploadLog.setDeviceId(pseudoDeviceId);
+                            lastUploadLog.setLogSynced(false);
+                            appUsageLogsController.saveOrUpdateAppUsageLog(lastUploadLog);
+                        } else {
+                            AppUsageLogs newUploadTime = new AppUsageLogs();
+                            newUploadTime.setUuid(UUID.randomUUID().toString());
+                            newUploadTime.setLogKey(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME);
+                            newUploadTime.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                            newUploadTime.setUpdateDatetime(new Date());
+                            newUploadTime.setUserName(username);
+                            newUploadTime.setDeviceId(pseudoDeviceId);
+                            newUploadTime.setLogSynced(false);
+                            appUsageLogsController.saveOrUpdateAppUsageLog(newUploadTime);
+                        }
                     }
                 } catch (IOException e) {
                     Log.e(getClass().getSimpleName(),"Encountered IO Exception ",e);
                 } catch (ParseException e) {
                     Log.e(getClass().getSimpleName(),"Encountered Parse Exception ",e);
+                } catch (FormController.FormFetchException e) {
+                    Log.e(getClass().getSimpleName(), "Encountered exception while fetching forms ",e);
                 }
             }
             return null;
@@ -308,7 +316,7 @@ public class MuzimaJobScheduler extends JobService {
                 configBeforeConfigUpdate = setupConfigurationController.getActiveSetupConfigurationTemplate();
                 for (SetupConfigurationTemplate template : setupConfigurationController.getSetupConfigurationTemplates()) {
                     int[] templateResult = downloadAndSaveUpdatedSetupConfigurationTemplate(template.getUuid());
-                    if (templateResult[0] == SUCCESS) {
+                    if (templateResult[0] == SUCCESS && wasConfigUpdateDone) {
                         List<MuzimaSetting> settings = muzimaSettingController.getSettingsFromSetupConfigurationTemplate(template.getUuid());
 
                         updateSettingsPreferences(settings);
@@ -322,6 +330,7 @@ public class MuzimaJobScheduler extends JobService {
                                 lastSetupUpdateLog.setUpdateDatetime(new Date());
                                 lastSetupUpdateLog.setUserName(username);
                                 lastSetupUpdateLog.setDeviceId(pseudoDeviceId);
+                                lastSetupUpdateLog.setLogSynced(false);
                                 appUsageLogsController.saveOrUpdateAppUsageLog(lastSetupUpdateLog);
                             }else{
                                 AppUsageLogs newSetupUpdateTime = new AppUsageLogs();
@@ -331,6 +340,7 @@ public class MuzimaJobScheduler extends JobService {
                                 newSetupUpdateTime.setUpdateDatetime(new Date());
                                 newSetupUpdateTime.setUserName(username);
                                 newSetupUpdateTime.setDeviceId(pseudoDeviceId);
+                                newSetupUpdateTime.setLogSynced(false);
                                 appUsageLogsController.saveOrUpdateAppUsageLog(newSetupUpdateTime);
                             }
                         } catch (IOException e) {

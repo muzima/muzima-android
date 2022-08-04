@@ -70,6 +70,7 @@ import com.muzima.view.initialwizard.SetupMethodPreferenceWizardActivity;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
 import static com.muzima.utils.Constants.STANDARD_TIME_FORMAT;
+import static com.muzima.utils.DateUtils.convertLongToDateString;
 import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -512,6 +513,7 @@ public class LoginActivity extends BaseActivity {
                     loginTimeLog.setUpdateDatetime(new Date());
                     loginTimeLog.setDeviceId(pseudoDeviceId);
                     loginTimeLog.setUserName(loggedInUser);
+                    loginTimeLog.setLogSynced(false);
                     appUsageLogsController.saveOrUpdateAppUsageLog(loginTimeLog);
                 }else{
                     AppUsageLogs loginTime = new AppUsageLogs();
@@ -521,6 +523,7 @@ public class LoginActivity extends BaseActivity {
                     loginTime.setUpdateDatetime(new Date());
                     loginTime.setDeviceId(pseudoDeviceId);
                     loginTime.setUserName(loggedInUser);
+                    loginTime.setLogSynced(false);
                     appUsageLogsController.saveOrUpdateAppUsageLog(loginTime);
                 }
 
@@ -531,7 +534,31 @@ public class LoginActivity extends BaseActivity {
                         appVersionLog.setLogvalue(getApplicationVersion());
                         appVersionLog.setUpdateDatetime(new Date());
                         appVersionLog.setDeviceId(pseudoDeviceId);
+                        appVersionLog.setLogSynced(false);
                         appUsageLogsController.saveOrUpdateAppUsageLog(appVersionLog);
+
+                        long appInstallationOrUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).lastUpdateTime;
+                        if(appInstallationOrUpdateTime<=0){
+                            appInstallationOrUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).firstInstallTime;
+                        }
+                        AppUsageLogs appInstallationOrUpdateTimeLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
+                        if(appInstallationOrUpdateTimeLog != null) {
+                            appInstallationOrUpdateTimeLog.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
+                            appInstallationOrUpdateTimeLog.setUpdateDatetime(new Date());
+                            appInstallationOrUpdateTimeLog.setDeviceId(pseudoDeviceId);
+                            appInstallationOrUpdateTimeLog.setLogSynced(false);
+                            appUsageLogsController.saveOrUpdateAppUsageLog(appInstallationOrUpdateTimeLog);
+                        }else{
+                            AppUsageLogs appUsageLog1 = new AppUsageLogs();
+                            appUsageLog1.setUuid(UUID.randomUUID().toString());
+                            appUsageLog1.setLogKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
+                            appUsageLog1.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
+                            appUsageLog1.setUpdateDatetime(new Date());
+                            appUsageLog1.setDeviceId(pseudoDeviceId);
+                            appUsageLog1.setUserName(loggedInUser);
+                            appUsageLog1.setLogSynced(false);
+                            appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLog1);
+                        }
                     }
                 }else{
                     AppUsageLogs appUsageLog1 = new AppUsageLogs();
@@ -541,7 +568,32 @@ public class LoginActivity extends BaseActivity {
                     appUsageLog1.setUpdateDatetime(new Date());
                     appUsageLog1.setDeviceId(pseudoDeviceId);
                     appUsageLog1.setUserName(loggedInUser);
+                    appUsageLog1.setLogSynced(false);
                     appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLog1);
+
+                    long appInstallationOrUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).lastUpdateTime;
+                    if(appInstallationOrUpdateTime<=0){
+                        appInstallationOrUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).firstInstallTime;
+                    }
+
+                    AppUsageLogs appInstallationOrUpdateTimeLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
+                    if(appInstallationOrUpdateTimeLog != null) {
+                        appInstallationOrUpdateTimeLog.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
+                        appInstallationOrUpdateTimeLog.setUpdateDatetime(new Date());
+                        appInstallationOrUpdateTimeLog.setDeviceId(pseudoDeviceId);
+                        appInstallationOrUpdateTimeLog.setLogSynced(false);
+                        appUsageLogsController.saveOrUpdateAppUsageLog(appInstallationOrUpdateTimeLog);
+                    }else{
+                        AppUsageLogs appUsageLog = new AppUsageLogs();
+                        appUsageLog.setUuid(UUID.randomUUID().toString());
+                        appUsageLog.setLogKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
+                        appUsageLog.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
+                        appUsageLog.setUpdateDatetime(new Date());
+                        appUsageLog.setDeviceId(pseudoDeviceId);
+                        appUsageLog.setUserName(loggedInUser);
+                        appUsageLog.setLogSynced(false);
+                        appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLog);
+                    }
                 }
 
                 //Check and update earliest login time if need be
@@ -554,6 +606,7 @@ public class LoginActivity extends BaseActivity {
                         earliestLoginTime.setUpdateDatetime(new Date());
                         earliestLoginTime.setDeviceId(pseudoDeviceId);
                         earliestLoginTime.setUserName(loggedInUser);
+                        earliestLoginTime.setLogSynced(false);
                         appUsageLogsController.saveOrUpdateAppUsageLog(earliestLoginTime);
                     }
                 }else{
@@ -564,6 +617,7 @@ public class LoginActivity extends BaseActivity {
                     earliestLoginTime1.setUpdateDatetime(new Date());
                     earliestLoginTime1.setDeviceId(pseudoDeviceId);
                     earliestLoginTime1.setUserName(loggedInUser);
+                    earliestLoginTime1.setLogSynced(false);
                     appUsageLogsController.saveOrUpdateAppUsageLog(earliestLoginTime1);
                 }
 
@@ -576,6 +630,7 @@ public class LoginActivity extends BaseActivity {
                         latestLoginTime.setUpdateDatetime(new Date());
                         latestLoginTime.setDeviceId(pseudoDeviceId);
                         latestLoginTime.setUserName(loggedInUser);
+                        latestLoginTime.setLogSynced(false);
                         appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime);
                     }
                 }else{
@@ -586,6 +641,7 @@ public class LoginActivity extends BaseActivity {
                     latestLoginTime1.setUpdateDatetime(new Date());
                     latestLoginTime1.setDeviceId(pseudoDeviceId);
                     latestLoginTime1.setUserName(loggedInUser);
+                    latestLoginTime1.setLogSynced(false);
                     appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime1);
                 }
 
@@ -595,6 +651,8 @@ public class LoginActivity extends BaseActivity {
                 Log.e(getClass().getSimpleName(),"Encountered an exception",e);
             } catch (java.text.ParseException e) {
                 Log.e(getClass().getSimpleName(),"Encountered an exception",e);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
             }
         }
     }

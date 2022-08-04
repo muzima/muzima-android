@@ -974,6 +974,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 setupConfig.setUpdateDatetime(new Date());
                 setupConfig.setUserName(loggedInUser);
                 setupConfig.setDeviceId(pseudoDeviceId);
+                setupConfig.setLogSynced(false);
                 appUsageLogsController.saveOrUpdateAppUsageLog(setupConfig);
 
                 AppUsageLogs setUpTime = new AppUsageLogs();
@@ -983,6 +984,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 setUpTime.setUpdateDatetime(new Date());
                 setUpTime.setUserName(loggedInUser);
                 setUpTime.setDeviceId(pseudoDeviceId);
+                setUpTime.setLogSynced(false);
                 appUsageLogsController.saveOrUpdateAppUsageLog(setUpTime);
 
             } catch (IOException e) {
