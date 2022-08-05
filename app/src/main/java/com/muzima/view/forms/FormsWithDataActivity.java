@@ -105,8 +105,8 @@ public class FormsWithDataActivity extends FormsActivityBase {
             }
         }
 
-        if(patient!= null) {
-            findViewById(R.id.client_summary_view).setVisibility(View.VISIBLE);
+        if(patient != null) {
+            findViewById(R.id.client_summary_view_app_bar_layout).setVisibility(View.VISIBLE);
             TextView patientNameTextView = findViewById(R.id.name);
             ImageView patientGenderImageView = findViewById(R.id.genderImg);
             TextView dobTextView = findViewById(R.id.dateOfBirth);
