@@ -11,47 +11,76 @@
 
 <body class="col-md-8 col-md-offset-2">
 <h2 class="text-center"> mUzima </h2>
-
-<p>Lorsque vous vous connectez avec succès à l'application, vous verrez le tableau de bord mUzima. Le tableau de bord se compose de
-    :</p>
+<p>Le système de menu inférieur a été utilisé par opposition au tableau de bord dans les versions précédentes du logiciel mUzima. Ce menu est divisé en pages de :</p>
 <ol start="1">
+    <li>Accueil</li>
     <li>Cohortes</li>
-    <li>Client</li>
     <li>Formulaires</li>
-    <li>Notifications</li>
+    <li>Rapports</li>
 </ol>
-<div class="padded_div_images">
-    <img src="../../help-content/images/dashboard.jpeg" width="250" height="350">
-</div>
-<p>
-    <strong>Cohortes:</strong><br>
-    Une cohorte est une liste de patients. Il peut s'agir d'une liste statique de patients qui ne change jamais (comme une cohorte de
-    patients dans une étude) ou une liste dynamique de patients qui est régénérée à chaque fois (comme une cohorte de
-    'tous les patients de sexe masculin de plus de 65ans').
-</p>
+<ol start="1">
+    <li><strong>Accueil</strong></li>
+    <div class="padded_div_images">
+        <img src="../../help-content/images/dashboard.jpg" width="250" height="350">
+    </div>
+    <ul>
+        <li>Il s'agit de la page qui s'affiche lorsqu'un fournisseur de soins de santé se connecte au programme mUzima.</li>
+        <li>Cette page a un paramètre pour afficher la liste des clients en fonction de la ou des cohortes téléchargées depuis le serveur.</li>
+        <li>Le prestataire de soins de santé peut filtrer cette liste en fonction de la ou des cohortes de patients qu'il souhaite.</li>
+        <li>De même, un prestataire de soins de santé peut rechercher un patient dans la liste des patients en utilisant son nom dans le champ Rechercher un patient.</li>
+        <li>En outre, cette page comporte un bouton d'inscription du patient au cas où le prestataire de soins de santé aurait besoin d'inscrire le patient.</li>
+        <li>Des formulaires incomplets sont fournis dans une zone de cette page pour informer le fournisseur de soins de santé de la présence de ces formulaires.</li>
+        <li>De même, les formulaires non synchronisés se voient attribuer une section sur cette page pour informer le prestataire de soins de santé de l'existence de ces formulaires.</li>
+    </ul>
+    <li><strong>Cohortes</strong></li>
+    Cette page est divisée en trois onglets.
+    <ol class="roman_numeral_list">
+        <li>Onglet TOUT AFFICHER</li>
+        Cet onglet répertorie tous les groupes de patients dans les onglets TÉLÉCHARGÉS et DISPONIBLES EN LIGNE.
+        <div class="padded_div_images">
+            <img src="../../help-content/images/cohort1.jpg" width="250" height="350">
+        </div>
 
-<p>
-    <strong>Client:</strong><br>
-    Est une liste de tous les patients qui composent les différentes cohortes téléchargées. Un nouveau patient peut également être enregistré en cliquant sur le bouton Ajouter un patient.
-</p>
+        <li>Onglet TÉLÉCHARGÉ</li>
+        Cet onglet répertorie les groupes de patients téléchargés dans l'application mUzima.
+        <div class="padded_div_images">
+            <img src="../../help-content/images/cohort2.jpg" width="250" height="350">
+        </div>
 
-<p>
-    <strong>Formulaires:</strong><br>
-    Répertorie tous les formulaires qui ont été téléchargés, offre la possibilité de télécharger d'autres formulaires selon les besoins de l'utilisateur. Affiche les formulaires remplis et incomplets pour permettre à l'utilisateur
-    décider de manière appropriée.
-    Une fois que l'utilisateur a cliqué sur le menu de données complètes du formulaire, une option de téléchargement s'affiche et les formulaires complets peuvent être téléchargés.
-</p>
+        <li>Onglet DISPONIBLE EN LIGNE</li>
+        <p>Le prestataire de soins de santé peut télécharger la ou les cohortes souhaitées à partir de cet onglet en sélectionnant le
+            cohorte(s) le clic sur l'icône de téléchargement qui s'affiche en haut à droite de l'écran</p>
+        <div class="padded_div_images">
+            <img src="../../help-content/images/cohort3.jpg" width="250" height="350">
+        </div>
+    </ol>
+    <li><strong>Formulaires</strong></li>
+    Cette page est divisée en trois onglets.
+    <ol class="roman_numeral_list">
+        <li>Onglet TOUT AFFICHER</li>
+        Cet onglet répertorie les formulaires dans les onglets TÉLÉCHARGÉS et DISPONIBLES EN LIGNE.
+        <div class="padded_div_images">
+            <img src="../../help-content/images/forms1.jpg" width="250" height="350">
+        </div>
 
-<p>
-    <strong>Notification:</strong><br>
-    Répertorie toutes les communications de messages entre l'utilisateur de l'appareil et le serveur. Les messages sont regroupés comme suit:
-<ul>
-    <li>Messages client - spécifiques à un client </li>
-    <li>Messages généraux - qui ciblent l'utilisateur. </li>
-</ul>
+        <li>Onglet TÉLÉCHARGÉ</li>
+        Cet onglet liste les formulaires téléchargés dans le programme mUzima
+        <div class="padded_div_images">
+            <img src="../../help-content/images/forms2.jpg" width="250" height="350">
+        </div>
 
-</p>
-	
-	
+        <li>Onglet DISPONIBLE EN LIGNE</li>
+        <p>Le prestataire de soins de santé peut télécharger le(s) formulaire(s) requis via cet onglet en sélectionnant
+            le(s) formulaire(s) le clic sur l'icône de téléchargement qui s'affiche en haut à droite de l'écran</p>
+        <div class="padded_div_images">
+            <img src="../../help-content/images/forms3.jpg" width="250" height="350">
+        </div>
+    </ol>
+    <li><strong>Rapports</strong></li>
+    <p>Cette page répertorie les rapports de performance des agents de santé. Ces rapports peuvent être téléchargés côté serveur.</p>
+    <div class="padded_div_images">
+        <img src="../../help-content/images/provider-report.jpg" width="250" height="350">
+    </div>
+</ol>
 </body>
 </html>

@@ -310,25 +310,20 @@
     <string name="info_convert_person_to_patient">Badilisha mtu kuwa mteja</string>
     <string name="info_data_sync_cancelled">Ulandanishaji wa data ya mUzima ulisitishwa.</string>
     <string name="info_disclaimer">
-        <![CDATA[
-        <p>
         Mfumo wa mUzima umesambazwa chini ya masharti ya leseni kwa umma ya Mozilla, v.2.0.(MPL 2.0). Nakala ya leseni
         ya MPL 2.0 inaweza kupatikana kwa kutembelea http://mozilla.org/MPL/2.0.
-        </p><p>
-        Mfumo wa mUzima pia umesambazwa chini ya kibadhi cha ilani ya kujitoa hatiani na kizuizi cha dhima yenye kikomo.
-        </p><p><strong>Kibadhi cha ilani yakujitoa hatiani na kizuizi cha dhima yenye kikomo</strong></p><p>
+        \nMfumo wa mUzima pia umesambazwa chini ya kibadhi cha ilani ya kujitoa hatiani na kizuizi cha dhima yenye kikomo.
+        \n<strong>Kibadhi cha ilani yakujitoa hatiani na kizuizi cha dhima yenye kikomo</strong>
         Katika nchi ya Marekani, au mamlaka yoyote ambapo patahusika, vipengele zaidi vifuatavyo vya kibadhi cha ilani
         yakujitoa hatiani na kizuizi cha dhima yenye kikomo vimeshirikishwa kwenye sheria na masharti ya leseni ya MPL 2.0:
-        </p><p>
-        1. Hakuna dhamana ya aina yoyote ile kwa vyovyote vile imetolewa kwa ajili ya natija utakayoipata kutoka na kutegemea
+        \n1. Hakuna dhamana ya aina yoyote ile kwa vyovyote vile imetolewa kwa ajili ya natija utakayoipata kutoka na kutegemea
         kwako kwa utumizi wa kodi(ama habari zozote ama maandishi yoyote utakayopata kutokana na kodi ya mfumo huu),
         Dhamana hii inajumulisha lakini haijazuiliwa na kanuni za sharia za siri za kliniki na uuguzi wa kliniki.
         Kiwango cha itifaki. Utumizi wa kodi iliyoko ndani ya mfumo wa mUzima sio kibadilishi cha kutoa huduma za
         afya kupitia mtoa huduma. Uzoefu wastani ama uamuzi wa mtaalamu. Na maaumuzi yanayoambatana na matibabu ama
         usahihi wa taarifa ama maandishi yatakayopatikanwa kupitia kodi za mfumo huu ni jukumu la mtoa huduma za afya.
         Hivyo basi ni jukumu vile vile la mtoa huduma huyo kuhakiki historia na mipango ya matibabu kwa kila mteja
-        </p><p>
-        2. Hamna katika hali yoyote ile ama sharia yoyote ile iwe ya uhalifu (pia uzembe), kandarasi ama yeyote ile
+        \n2. Hamna katika hali yoyote ile ama sharia yoyote ile iwe ya uhalifu (pia uzembe), kandarasi ama yeyote ile
         mchangiaji yeyote ama mtu yeyote anaye sambaza mfumo huu kwa ruhusa ya leseni, atakuwa na jukumu kwako wewe
         kwa hasara fiche, maalum, ya ghafla ama kumuharibia sifa yeyote ghairi ya upungufu, hasara ya uungwana, kazi
         kusimama, tarakilishi kufeli ama kuharibika ama hasara zozote zile (Dhahiri ama fiche) kwa ajili ya matumizi ama
@@ -336,13 +331,10 @@
         ama maandishi yanayopatikanwa kupitia kodi ya mfumo ama nakala zote husika ama kufeli kwa kodi husishwa kufuata
         kiwango cha itifaki za kanuni na masharti ya siri za kliniki), hata kama wahusika hao watakuwa wameelezwa
         uwezekano wa madhara kama hayo.
-        </p><p>
-        3. Mfumo wa mUzima ni hatimiliki ya wadhamini wa vyuo vikuu vya Indana, Moi na kituo cha afya cha chuo cha Vanderbilt.
-        </p><p>
-        4. Ikiwa mtumiaji wa mfumo huu ni shirika ambalo linadhamiria kupata faida ya kibiashara ama natija kwa njia
+        \n3. Mfumo wa mUzima ni hatimiliki ya wadhamini wa vyuo vikuu vya Indana, Moi na kituo cha afya cha chuo cha Vanderbilt.
+       \n4. Ikiwa mtumiaji wa mfumo huu ni shirika ambalo linadhamiria kupata faida ya kibiashara ama natija kwa njia
         yoyote ile kwa mfumo utakaotumia kodi za mfumo huu kwenye biashara ya faida, mtumiaji anashurutishwa kuwasiliana
-        na mwenye hatimiliki kupitia barua pepe: mUzima.mobile@gmail.com</p>
-        ]]>
+        na mwenye hatimiliki kupitia barua pepe: mUzima.mobile@gmail.com
     </string>
     <string name="info_download_complete">Udukuzi umekamilika na hali %d</string>
     <string name="info_downloaded_image">Taswira/Picha imedukuliwa</string>

@@ -310,17 +310,13 @@
     <string name="info_convert_person_to_patient">Converter pessoa em paciente</string>
     <string name="info_data_sync_cancelled">A sincronização de dados do mUzima foi cancelada.</string>
     <string name="info_disclaimer">
-        <![CDATA[
-        <p>
         mUzima é distribuído sob os termos da Licença Pública de Mozilla, v. 2.0 (MPL 2.0). Uma cópia da licença MPL 2.0
         pode ser encontrada em http://mozilla.org/MPL/2.0/.
-        </p><p>
-        mUzima também é distribuído sob os termos da seguinte Garantia Adicional de Renúncia e Limitação de Responsabilidade.
-        </p><p><strong>Isenção de Garantia Adicional e Limitação de Responsabilidade</strong></p><p>
+        \nmUzima também é distribuído sob os termos da seguinte Garantia Adicional de Renúncia e Limitação de Responsabilidade.
+        \n<strong>Isenção de Garantia Adicional e Limitação de Responsabilidade</strong>
         Nos Estados Unidos, ou em quaisquer outras jurisdições onde se possam aplicar, as seguintes isenções da garantia
         e limitação de responsabilidade são aqui incorporadas nos termos e condições de MPL 2.0:
-        </p><p>
-        1. Nenhuma garantia de qualquer tipo é feita sobre os resultados que Você obterá com base no código fechado
+        \n1. Nenhuma garantia de qualquer tipo é feita sobre os resultados que Você obterá com base no código fechado
         (ou em qualquer informação ou conteúdo obtido através do código fechado) incluindo mas não limitado a
         conformidade com leis de privacidade ou regulamentos ou padrões e protocolos de indústria de cuidados clínicos.
         O uso do código fechado não é um substituto para a prática padrão ou julgamento profissional dos provedores de
@@ -328,8 +324,7 @@
         ou conteúdos disponibilizados pelo código fechado é a única responsabilidade do provedor de cuidados de saúde.
         Consequentemente, incumbe a cada provedor de cuidados de saúde para verificar toda a história médica e planos de
         tratamento com cada utente.
-        </p><p>
-        2. Sob nenhuma circunstância e sob nenhuma teoria legal, se o delito (incluindo negligência), contracto ou caso
+        \n2. Sob nenhuma circunstância e sob nenhuma teoria legal, se o delito (incluindo negligência), contracto ou caso
         contrário, qualquer Colaborador ou qualquer pessoa que distribuir o Software Fechado conforme permitido pela
         licença, ser responsável perante Você por quaisquer danos indiretos, especiais, incidentais ou conseqüentes de
         qualquer caráter incluindo, sem limitação, danos por perda de boa vontade, paragem de trabalho, falha ou avaria
@@ -338,15 +333,11 @@
         ou conteúdo disponibilizado pelo código fechado, toda a documentação associada a ele, e a falha de do código
         fechado para cumprir as leis e regulamentos de privacidade ou os padrões e protocolos da indústria de cuidados
         clínicos), mesmo que essa parte tenha sido informada da possibilidade de tais danos.
-        </p><p>
-        3. mUzima é protegido por direitos autorais da Universidade de Indiana, Universidade Moi, e o Centro Médico da
+        \n3. mUzima é protegido por direitos autorais da Universidade de Indiana, Universidade Moi, e o Centro Médico da
         Universidade da Vanderbilt.
-        </p><p>
-        4. Se o utilizador deste aplicativo for uma entidade que pretende comercializar qualquer aplicativo que utilize
+        \n4. Se o utilizador deste aplicativo for uma entidade que pretende comercializar qualquer aplicativo que utilize
         este código em um empreendimento com fins lucrativos, o usuário é obrigado entrar em contacto com o detentor dos
         direitos autorais pelo email info@mUzima.org.
-        </p>
-        ]]>
     </string>
     <string name="info_download_complete">Descarregamento completo com o estado %d</string>
     <string name="info_downloaded_image">Baixou a imagem</string>
