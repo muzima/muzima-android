@@ -1,120 +1,54 @@
 <!DOCTYPE html>
 <head>
-	<link href="../../forms/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../forms/css/muzima.css" rel="stylesheet">
-    <link href="../../forms/css/ui-darkness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
-	
-	 <link rel="stylesheet" href="../../forms/css/style.css" type="text/css" media="screen, projection">
-        <script type="text/javascript" src="../../forms/js/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="../../forms/js/scripts.js"></script>
-<!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script-->
-	
+    <link href="../forms/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../forms/css/muzima.css" rel="stylesheet">
+    <link href="../forms/css/ui-darkness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+    <style>
+        p{ text-align:justify;}
+    </style>
 </head>
 	
 <body class="col-md-8 col-md-offset-2">
-	<h2 class="text-center"> mUzima Settings </h2>
-<p>On the mUzima dashboard page tap on the 3 dots on the righthand cornerand tap on settings
-    :</p>
-<!--<div class="padded_div_images">
-    <img src="../../help-content/images/settings-icon.jpeg" width="250" height="350">
-</div>-->
-
-<p> <Strong>Appearance of the settings page
-	:</Strong></p>
-	<div class="padded_div_images">
-    <img src="../../help-content/images/settings-page.jpeg" width="250" height="350">
+<h2 class="text-center"> Paramètres dans mUzima </h2>
+<p>Les paramètres du programme mUzima sont accessibles via la page d'accueil. Cliquez sur l'icône hamburger dans le coin supérieur droit.</p>
+<div class="padded_div_images">
+    <img src="../../help-content/images/settings.jpg" width="250" height="350">
 </div>
 
-<p> <Strong>Operations under settings
-	:</Strong></p>
+<strong>Paramètres OpenMRS</strong>
+<p>Ce paramètre spécifie l'URL du serveur utilisé par mUzima pour accéder aux données. Un utilisateur de mUzima peut modifier
+    cette adresse en cliquant sur le champ d'adresse. Le nom d'utilisateur et le mot de passe ne sont modifiés que sur le serveur.</p>
+<div class="padded_div_images">
+    <img src="../../help-content/images/settings2.jpg" width="250" height="350">
+</div>
 
-<div id="listContainer">
-            <ul>
-                <li>
-                    Server Settings
-                    <ul>
-                        <li>
-                            This identifies the URL to which the mUzima App is linked and draws data from. To change server URL, tap on the available server link and you'll be enabled to make the necessary changes. The User name and password can only be changed from the server side. After changing the URL, tap on Okay.
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    mUzima settings
-					<ul>
-					<li>Time Out
-					<ul>
-					<span>Time out refers to the time of inactivity after which the Aplication will automatically log out. This is a security feature that is aimed at safeguarding patient information.</span>
-					</ul>
-					</li>
-
-					<li>Automatic form save interval
-					<ul>
-					<span>This is the time interval it takes for the forms to save automatically without the need of the provider consciously saving. </span>
-					</ul>
-					</li>
-
-					<li>Real time sync
-					<ul>
-					<span>Allows for automatic upload of completed patient forms</span>
-					</ul>
-					</li>
-
-					<li>Duplicate form data warning
-					<ul>
-					<span>Once the chaeck box is checked, the user will be warned in case a duplicate of a form for the same patient is being filled.</span>
-					</ul>
-					</li>
-
-					<li>Font size
-					<ul>
-					<span>Here the user can adjust the font size to one that is most suitable by choosing among the small, medium or large fonts. This font size applies to forms.</span>
-					</ul>
-					</li>
-					</ul>
-                </li>
-                <li>
-                    Provider/Location settings
-                    <ul>
-                        <li>Default encounter provider
-					<ul>
-					<span>Once this checkbox is checked, the logged in user will be the provider by default.</span>
-					</ul>
-					</li>
-                        <li>
-                            Add provider(s)
-                            <ul>
-                                <li>
-                                    <span>Under this section, the user can add providers</span>
-                                </li>
-                            </ul>
-                        </li>
-						<li>
-                            Add location(s)
-                            <ul>
-                                <li>
-                                    <span>Under this section, the user can add Locations</span>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-				<li>
-                    Cohort Settings
-                    <ul>
-                        <li>
-                            Add cohort prefixes
-                        </li>
-                        <li>
-                            Add concept(s)
-                            <ul>
-                                <li>
-                                    <span>The user can download more concepts as need may arise</span>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+<strong>Paramètres mUzima</strong>
+<p>Ce sont des paramètres au niveau de l'application.</p>
+<div class="padded_div_images">
+    <img src="../../help-content/images/settings3.jpg" width="250" height="350">
+</div>
+<ul>
+    <li>Expiration de la session si le programme n'est pas utilisé. Il s'agit d'un aspect de sécurité de mUzima conçu pour protéger les informations des patients.</li>
+    <li>L'intervalle d'enregistrement automatique du formulaire (minutes) est utilisé pour enregistrer le formulaire sans intervention du professionnel de la santé.</li>
+    <li>Une synchronisation en temps réel qui vous permet de télécharger automatiquement les formulaires remplis sur le serveur.</li>
+    <li>Exiger le numéro de dossier médical rendra le numéro de dossier médical obligatoire s'il est activé.</li>
+    <li>Avertissement des données de formulaire en double si le formulaire a été rempli plus d'une fois ; alerte l'utilisateur lors de l'enregistrement des données.</li>
+    <li>Taille de la police ; l'utilisateur peut choisir la taille de la police entre petite, moyenne et grande.</li>
+    <li>Activer le mode Jour est utilisé pour basculer entre le mode sombre (par défaut) et le mode clair</li>
+    <li>Activer SHR activera/désactivera les dossiers de santé partagés (fonctionnalité de carte à puce) sur l'application mobile</li>
+    <li>Activer le GPS activera/désactivera la collecte d'informations GPS ainsi que la fonction de géocartographie</li>
+</ul>
+<strong>Paramètres du fournisseur/de l'emplacement</strong>
+<p>Il s'agit de paramètres au niveau du fournisseur/de l'emplacement</p>
+<div class="padded_div_images">
+    <img src="../../help-content/images/settings4.jpg" width="250" height="350">
+</div>
+<ul>
+    <li>Prestataire de rendez-vous par défaut : l'utilisateur connecté sera automatiquement pré-rempli en tant que prestataire de services du patient lors du remplissage d'un formulaire.</li>
+    <li>Gérer les fournisseurs : utilisé pour obtenir d'autres fournisseurs de services du serveur ou les supprimer de l'application mUzima.</li>
+    <li>Lieu de rencontre par défaut : le lieu de rencontre sera utilisé comme lieu de rencontre par défaut lors d'une rencontre et pré-rempli dans un formulaire.</li>
+    <li>Gérer les emplacements : l'utilisateur peut obtenir des emplacements de rencontre à partir du serveur ou supprimer un emplacement de rencontre dans mUzima.</li>
+    <li>Gérer le concept : ce paramètre est utilisé pour obtenir plus de concepts du serveur ou supprimer les concepts de l'appareil.</li>
+</ul>
 </body>
 </html>

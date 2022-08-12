@@ -308,18 +308,14 @@
     <string name="info_convert_person_to_patient">Convertir une personne en patient</string>
     <string name="info_data_sync_cancelled">La synchronisation des données mUzima a été annulée.</string>
     <string name="info_disclaimer">
-        <![CDATA[
-        <p>
         mUzima est distribué sous les termes de la licence publique de Mozilla, v. 2.0 (MPL 2.0). Une copie de la
         licence MPL 2.0 peut être trouvée sur http://mozilla.org/MPL/2.0/.
-        </p><p>
-        mUzima est également distribué sous les termes de la clause de non-responsabilité Et Limitation de responsabilité
+        \nmUzima est également distribué sous les termes de la clause de non-responsabilité Et Limitation de responsabilité
         de garantie suivante.
-        </p><p><strong> Renonciation additionnelle de garantie et limitation de responsabilité </strong></p><p>
+        \n<strong> Renonciation additionnelle de garantie et limitation de responsabilité </strong>
         Aux États-Unis ou dans d\'autres juridictions où ils peuvent appliquer, L\'exclusion de la garantie et de la
         limitation de la responsabilité sont incorporées dans les Conditions de MPL 2.0:
-        </p><p>
-        1. Aucune garantie de quelconque nature n\'est faite quant aux résultats que vous obtiendrez de En s\'appuyant
+        \n1. Aucune garantie de quelconque nature n\'est faite quant aux résultats que vous obtiendrez de En s\'appuyant
         sur le code couvert (ou sur toute information ou contenu obtenu par le biais du code couvert), Y compris, mais
         sans s\'y limiter, le respect des lois ou règlements en matière de protection des renseignements personnels ou
         de l\'industrie des soins cliniques Normes et protocoles. L\'utilisation du code couvert ne remplace pas le Les
@@ -327,8 +323,7 @@
         validité ou la fiabilité des informations ou contenus mis à disposition par le code couvert, est la seule
         Responsabilité du prestataire de soins de santé. Par conséquent, il incombe à chaque prestataire de soins de santé
         Pour vérifier tous les antécédents médicaux et plans de traitement avec chaque client.
-        </p><p>
-        2. En aucun cas et sous aucune théorie juridique, que le délit (y compris la négligence), le contrat ou Autrement,
+        \n\n2. En aucun cas et sous aucune théorie juridique, que le délit (y compris la négligence), le contrat ou Autrement,
         tout Contributeur ou toute personne qui distribuera le Logiciel couvert tel que permis par la licence,
         Être responsable vis-à-vis de vous pour tout dommage indirect, spécial, accessoire ou consécutif de quelque nature
         que ce soit, Sans limitation, des dommages pour perte de bonne volonté, un arrêt de travail, une panne informatique
@@ -338,14 +333,11 @@
         s\'y rattachant et le défaut de Le code couvert pour se conformer aux lois et règlements sur la protection des
         renseignements personnels ou aux normes et protocoles de l\'industrie des soins médicaux); Même si cette partie a
         été informée de la possibilité de tels dommages.
-        </p><p>
-        3. mUzima est protégé par les droits d\'auteur des administrateurs de l\'Université de l\'Indiana, de l\'Université
+        \n\n3. mUzima est protégé par les droits d\'auteur des administrateurs de l\'Université de l\'Indiana, de l\'Université
         Moi et de l\'Université Vanderbilt Centre médical.
-        </p><p>
-        4. Si l\'utilisateur de cette demande est une entité qui a l\'intention de commercialiser une application qui
+        \n\n4. Si l\'utilisateur de cette demande est une entité qui a l\'intention de commercialiser une application qui
         utilise cette Code dans une entreprise à but lucratif, l\'utilisateur est tenu de contacter le détenteur des
         droits d’auteur via mUzima.mobile@gmail.com.
-        ]]>
     </string>
     <string name="info_download_complete">Téléchargement completé avec l\'état %d</string>
     <string name="info_downloaded_image">Image téléchargée</string>

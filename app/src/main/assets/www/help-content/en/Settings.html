@@ -1,120 +1,54 @@
 <!DOCTYPE html>
 <head>
-	<link href="../../forms/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../forms/css/muzima.css" rel="stylesheet">
-    <link href="../../forms/css/ui-darkness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
-	
-	 <link rel="stylesheet" href="../../forms/css/style.css" type="text/css" media="screen, projection">
-        <script type="text/javascript" src="../../forms/js/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="../../forms/js/scripts.js"></script>
-<!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script-->
-	
+    <link href="../forms/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../forms/css/muzima.css" rel="stylesheet">
+    <link href="../forms/css/ui-darkness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet">
+    <style>
+        p{ text-align:justify;}
+    </style>
 </head>
 	
 <body class="col-md-8 col-md-offset-2">
-	<h2 class="text-center"> mUzima Settings </h2>
-<p>On the mUzima dashboard page tap on the 3 dots on the righthand cornerand tap on settings
-    :</p>
-<!--<div class="padded_div_images">
-    <img src="../../help-content/images/settings-icon.jpeg" width="250" height="350">
-</div>-->	
-
-<p> <Strong>Appearance of the settings page
-	:</Strong></p>
-	<div class="padded_div_images">
-    <img src="../../help-content/images/settings-page.jpeg" width="250" height="350">
+<h2 class="text-center"> Settings in mUzima </h2>
+<p>The mUzima program settings can be accessed through the home page. Click on the hamburger icon on the top right corner.</p>
+<div class="padded_div_images">
+    <img src="../../help-content/images/settings.jpg" width="250" height="350">
 </div>
 
-<p> <Strong>Operations under settings
-	:</Strong></p>
+<strong>OpenMRS Settings</strong>
+<p>This setting specifies the url of the server used by mUzima to access data. A mUzima user can change
+    this address by clicking on the address field. Username and Password are changed only on the server.</p>
+<div class="padded_div_images">
+    <img src="../../help-content/images/settings2.jpg" width="250" height="350">
+</div>
 
-<div id="listContainer">
-            <ul>
-                <li>
-                    Server Settings
-                    <ul>
-                        <li>
-                            This identifies the URL to which the mUzima App is linked and draws data from. To change server URL, tap on the available server link and you'll be enabled to make the necessary changes. The User name and password can only be changed from the server side. After changing the URL, tap on Okay.
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    mUzima settings
-					<ul>
-					<li>Time Out
-					<ul>
-					<span>Time out refers to the time of inactivity after which the Aplication will automatically log out. This is a security feature that is aimed at safeguarding patient information.</span>
-					</ul>
-					</li>
-					
-					<li>Automatic form save interval
-					<ul>
-					<span>This is the time interval it takes for the forms to save automatically without the need of the provider consciously saving. </span>
-					</ul>
-					</li>
-					
-					<li>Real time sync
-					<ul>
-					<span>Allows for automatic upload of completed patient forms</span>
-					</ul>
-					</li>
-					
-					<li>Duplicate form data warning
-					<ul>
-					<span>Once the chaeck box is checked, the user will be warned in case a duplicate of a form for the same patient is being filled.</span>
-					</ul>
-					</li>
-					
-					<li>Font size
-					<ul>
-					<span>Here the user can adjust the font size to one that is most suitable by choosing among the small, medium or large fonts. This font size applies to forms.</span>
-					</ul>
-					</li>
-					</ul>
-                </li>
-                <li>
-                    Provider/Location settings
-                    <ul>
-                        <li>Default encounter provider
-					<ul>
-					<span>Once this checkbox is checked, the logged in user will be the provider by default.</span>
-					</ul>
-					</li>
-                        <li>
-                            Add provider(s)
-                            <ul>
-                                <li>
-                                    <span>Under this section, the user can add providers</span>
-                                </li>
-                            </ul>
-                        </li>
-						<li>
-                            Add location(s)
-                            <ul>
-                                <li>
-                                    <span>Under this section, the user can add Locations</span>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-				<li>
-                    Cohort Settings
-                    <ul>
-                        <li>
-                            Add cohort prefixes
-                        </li>
-                        <li>
-                            Add concept(s)
-                            <ul>
-                                <li>
-                                    <span>The user can download more concepts as need may arise</span>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>	
+<strong>mUzima Settings</strong>
+<p>These are application level settings.</p>
+<div class="padded_div_images">
+    <img src="../../help-content/images/settings3.jpg" width="250" height="350">
+</div>
+<ul>
+    <li>Session timeout if the program is not in use.This is a security aspect of mUzima designed to protect patient information.</li>
+    <li>The automatic form save interval (minutes) is used to save the form without healthcare provider intervention.</li>
+    <li>A real-time sync that allows you to automatically upload completed forms to the server.</li>
+    <li>Require medical record number will make medical record number to be required if it is enabled.</li>
+    <li>Duplicate form data warning if form has been filled more than once; alerts the user when saving data.</li>
+    <li>Font size; the user can choose the font size between small, medium and large.</li>
+    <li>Enable Day mode is used to toggle between dark mode(default) and light mode</li>
+    <li>Enable SHR will enable/disable the Shared Health Records(Smart card feature) on the mobile application</li>
+    <li>Enable GPS will enable/disable the collection of GPS information as well as the the geo-mapping feature</li>
+</ul>
+<strong>Provider/Location Settings</strong>
+<p>These are provider/location level settings</p>
+<div class="padded_div_images">
+    <img src="../../help-content/images/settings4.jpg" width="250" height="350">
+</div>
+<ul>
+    <li>Default encounter provider : the user logged will automatically be pre-filled as the patient's service provider while filling in a form.</li>
+    <li>Manage providers : used to get other service providers from the Server or remove them from the mUzima App.</li>
+    <li>Default Encounter Location : the encounter location will be used as a default encounter location during an encounter and pre-filled  in a form.</li>
+    <li>Manage Locations : the user can get encounter locations from the server or remove an encounter location in mUzima.</li>
+    <li>Manage Concept : This setting is used to get more concepts from the server or remove the concepts from the device.</li>
+</ul>
 </body>
 </html>
