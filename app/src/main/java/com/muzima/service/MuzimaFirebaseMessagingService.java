@@ -26,8 +26,12 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.domain.Credentials;
 import com.muzima.view.landing.SplashActivity;
+import com.muzima.view.login.LoginActivity;
+import com.muzima.view.preferences.SettingsActivity;
 
 public class MuzimaFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -79,6 +83,10 @@ public class MuzimaFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+
+            if(remoteMessage.getNotification().getBody().equals("CLEAR_DATA")){
+                clearData();
+            }
             sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle());
         }
 
@@ -121,6 +129,24 @@ public class MuzimaFirebaseMessagingService extends FirebaseMessagingService {
         // [START dispatch_job]
 
         // [END dispatch_job]
+    }
+
+    private void clearData(){
+        ((MuzimaApplication)getApplicationContext()).clearApplicationData();
+        new WizardFinishPreferenceService(getApplicationContext()).resetWizard();
+        new CredentialsPreferenceService(getApplicationContext()).saveCredentials(new Credentials("", null, null));
+        com.muzima.api.context.Context muzimaContext = ((MuzimaApplication)getApplicationContext()).getMuzimaContext();
+        new CredentialsPreferenceService(getApplicationContext()).deleteUserData(muzimaContext);
+        ((MuzimaApplication)getApplicationContext()).logOut();
+        launchLoginActivity(true);
+    }
+
+    public void launchLoginActivity(boolean isFirstLaunch) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(LoginActivity.isFirstLaunch, isFirstLaunch);
+        startActivity(intent);
     }
 
     /**

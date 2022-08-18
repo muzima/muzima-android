@@ -18,7 +18,6 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -88,7 +87,6 @@ import java.util.concurrent.TimeUnit;
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
-import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
@@ -185,11 +183,6 @@ public class MuzimaApplication extends MultiDexApplication {
                 .build());
     }
 
-    @Override
-    protected void attachBaseContext(android.content.Context base) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(base));
-        MultiDex.install(base);
-    }
 
     public void checkAndSetLocaleToDeviceLocaleIFDisclaimerNotAccepted() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
