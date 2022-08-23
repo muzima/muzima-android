@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -526,10 +527,19 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     String appTokenKey = GuidedConfigurationWizardActivity.this.getResources().getString(R.string.preference_app_token);
                     String token = settings.getString(appTokenKey, null);
                     FCMTokenContoller fcmTokenContoller = ((MuzimaApplication) getApplicationContext()).getFCMTokenController();
+
+                    String pseudoDeviceId = generatePseudoDeviceId();
+                    String serial = "UNKNOWN";
+
                     try {
-                        fcmTokenContoller.sendTokenToServer(token, ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getSystemId());
+                        serial = Build.class.getField("SERIAL").get(null).toString();
+                        fcmTokenContoller.sendTokenToServer(token, ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getSystemId(), pseudoDeviceId, serial, Build.MODEL);
                     } catch (IOException e) {
-                        Log.e(getClass().getSimpleName(), "Exception thrown while sending token to server" + e);
+                        Log.e(getClass().getSimpleName(), "Exception thrown while sending token to server", e);
+                    } catch (IllegalAccessException e) {
+                        Log.e(getClass().getSimpleName(), "Exception thrown while fetching serial ", e);
+                    } catch (NoSuchFieldException e) {
+                        Log.e(getClass().getSimpleName(), "Exception thrown while fetching serial ", e);
                     }
                 }
                 List<String> uuids = extractLocationsUuids();

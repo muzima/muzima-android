@@ -23,7 +23,7 @@ public class FCMTokenContoller {
         this.notificationTokenService = notificationTokenService;
     }
 
-    public boolean sendTokenToServer(String token,String userSystemId) throws IOException {
-        return notificationTokenService.sendTokenToServer(token, userSystemId);
+    public boolean sendTokenToServer(String token,String userSystemId, String pseudoDeviceId, String serial, String model) throws IOException {
+        return notificationTokenService.sendTokenToServer(token, userSystemId, pseudoDeviceId, serial, model);
     }
 }

@@ -371,7 +371,7 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/title_provider_reports"
-            android:parentActivityName=".view.MainDashboardActivity">
+            android:parentActivityName=".view.reports.ProviderReportListActivity">
         </activity>
         <activity
             android:name=".view.reports.ProviderReportListActivity"
