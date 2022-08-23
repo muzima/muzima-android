@@ -174,6 +174,12 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
             patientSearchBy.setVisibility(View.GONE);
         }
 
+        if(((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSettingController().isPatientRegistrationEnabled()) {
+            fabSearchButton.setVisibility(View.VISIBLE);
+        }else{
+            fabSearchButton.setVisibility(View.GONE);
+        }
+
         if(isBarcodeSearchEnabled()){
             searchByBarCode.setVisibility(VISIBLE);
         }

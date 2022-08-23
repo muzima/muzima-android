@@ -40,8 +40,10 @@ public class RelationshipViewUtil {
     private static Activity callingActivity;
     private static ListView lvwPatientRelationships;
     private static ActionMode actionMode;
+    private static MuzimaApplication mApplication;
 
     public static AdapterView.OnItemClickListener listOnClickListener(Activity activity, MuzimaApplication muzimaApplication, Patient patient, boolean actionModeActive, ListView listView) {
+        mApplication = muzimaApplication;
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
@@ -141,7 +143,10 @@ public class RelationshipViewUtil {
         builderSingle.setTitle(R.string.hint_person_action_prompt);
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(callingActivity, android.R.layout.simple_selectable_list_item);
-        arrayAdapter.add(callingActivity.getString(R.string.info_convert_person_to_patient));
+
+        if(mApplication.getMuzimaSettingController().isPatientRegistrationEnabled()) {
+            arrayAdapter.add(callingActivity.getString(R.string.info_convert_person_to_patient));
+        }
         arrayAdapter.add(callingActivity.getString(R.string.info_update_person_demographics));
 
         builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
