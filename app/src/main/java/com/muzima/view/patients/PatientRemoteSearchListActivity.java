@@ -112,13 +112,19 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         noDataTipTextView.setText(R.string.hint_client_remote_search);
 
         createPatientBtn = findViewById(R.id.create_patient_btn);
+
+        if(((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isPatientRegistrationEnabled()) {
+            createPatientBtn.setVisibility(View.VISIBLE);
+        }else{
+            createPatientBtn.setVisibility(View.GONE);
+        }
+
         createPatientBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(PatientRemoteSearchListActivity.this, RegistrationFormsActivity.class));
             }
         });
-        createPatientBtn.setVisibility(VISIBLE);
     }
 
     @Override
