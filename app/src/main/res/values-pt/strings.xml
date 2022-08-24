@@ -264,7 +264,7 @@
     <string name="hint_person_search">Pesquisar pessoa por nome ou identificador</string>
     <string name="hint_phone_number_validation_failure">Número de telefone inválido. Por favor verifique e re-introduza</string>
     <string name="hint_provider_not_set">Não tem privilégio de provedor ou o seus dados de provedor não foram baixados, por favor use a opção de adicionar provedor</string>
-    <string name="hint_real_time_sync">Habilitar a sincronização de dados em tempo real</string>
+    <string name="hint_real_time_sync">Ative a sincronização automática de dados</string>
     <string name="hint_repeating_section_minimum_repeats_validation_failure">Repetições minimas não satisfeita. Precisa uma pelo menos</string>
     <string name="hint_reports_unavailable">Por favor, selecione relatórios de todas as listas de formulários e clique em download</string>
     <string name="hint_require_medical_record_number">Exigir o número de registro médico do utente durante o registro</string>
@@ -598,7 +598,7 @@
     <string name="title_provider_help">Ajuda com Provedores</string>
     <string name="title_provider_not_set">Incapz de definir como Provedor</string>
     <string name="title_provider_reports">Relatórios de Fornecedores</string>
-    <string name="title_real_time_sync">Sincronização em tempo real</string>
+    <string name="title_real_time_sync">Sincronização automática</string>
     <string name="title_require_medical_record_number">Exigir número de registro médico</string>
     <string name="title_search_server">Pesquisa do servidor</string>
     <string name="title_server_client_search_help_video">Pesquisa de utentes (contra servidor)</string>
@@ -793,8 +793,8 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
 \n\n8. Detalhes de contato
 \nSe você tiver alguma dúvida ou preocupação sobre os termos, entre em contato conosco pelo e-mail mUzima.mobile@gmail.com
     </string>
-    <string name="title_real_time_sync_setting_unchanged">Sincronização em tempo real não alterada</string>
-    <string name="hint_real_time_sync_always_on">A sincronização em tempo real está sempre ATIVADA no modo online.</string>
+    <string name="title_real_time_sync_setting_unchanged">A preferência de sincronização automática não foi alterada</string>
+    <string name="hint_real_time_sync_always_on">A sincronização automática está sempre ATIVA no modo online.</string>
     <string name="online_mode_switch">Mudar para o modo online</string>
     <string name="online_mode_switch_warning">Você foi alternado do modo offline para o modo online. Enquanto estiver no modo online, todos os dados do paciente serão excluídos do seu dispositivo quando você sair ou for desconectado automaticamente.</string>
     <string name="general_online_mode">Modo online</string>
