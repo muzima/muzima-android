@@ -263,7 +263,7 @@
     <string name="hint_person_search">नाम या पहचानकर्ता से व्यक्ति को खोजें</string>
     <string name="hint_phone_number_validation_failure">अवैध फोन नंबर। कृपया जाँच करें और फिर से दर्ज करें</string>
     <string name="hint_provider_not_set">आपके पास प्रदाता अधिकार नहीं हैं या आपका प्रदाता डेटा डाउनलोड नहीं किया गया है, कृपया प्रदाता जोड़ें विकल्प का उपयोग करें।</string>
-    <string name="hint_real_time_sync">डेटा का वास्तविक समय सिंक्रनाइज़ेशन सक्षम करें</string>
+    <string name="hint_real_time_sync">डेटा का स्वचालित सिंक्रनाइज़ेशन सक्षम करें</string>
     <string name="hint_repeating_section_minimum_repeats_validation_failure">न्यूनतम दोहराना संतुष्ट नहीं हुआ। कम से कम चाहिए</string>
     <string name="hint_reports_unavailable">कृपया सभी फ़ॉर्म सूची से रिपोर्ट चुनें और डाउनलोड पर क्लिक करें</string>
     <string name="hint_require_medical_record_number">पंजीकरण के दौरान ग्राहक के मेडिकल रिकॉर्ड नंबर की आवश्यकता होती है</string>
@@ -590,7 +590,7 @@
     <string name="title_provider_help">प्रदाताओं में मदद</string>
     <string name="title_provider_not_set">प्रदाता के रूप में सेट करने में असमर्थ</string>
     <string name="title_provider_reports">प्रदाता रिपोर्ट</string>
-    <string name="title_real_time_sync">वास्तविक समय सिंक</string>
+    <string name="title_real_time_sync">स्वचालित सिंक</string>
     <string name="title_require_medical_record_number">चिकित्सा रिकॉर्ड संख्या आवश्यक है</string>
     <string name="title_search_server">सर्वर खोजें</string>
     <string name="title_server_client_search_help_video">ग्राहक खोज (सर्वर के सामने)</string>
@@ -785,8 +785,8 @@
 \n\n8. संपर्क विवरण
 \nयदि आपके पास शर्तों के बारे में कोई प्रश्न या कोई चिंता है, तो कृपया हमसे mUzima.mobile@gmail.com पर संपर्क करें
     </string>
-    <string name="title_real_time_sync_setting_unchanged">रीयल-टाइम सिंक नहीं बदला</string>
-    <string name="hint_real_time_sync_always_on">ऑनलाइन मोड में रीयल टाइम सिंक हमेशा चालू रहता है।</string>
+    <string name="title_real_time_sync_setting_unchanged">स्वचालित समन्वयन वरीयता नहीं बदली</string>
+    <string name="hint_real_time_sync_always_on">ऑनलाइन मोड में स्वचालित सिंक हमेशा चालू रहता है।</string>
     <string name="online_mode_switch">ऑनलाइन मोड में स्विच करें</string>
     <string name="online_mode_switch_warning">आपको ऑफलाइन मोड से ऑनलाइन मोड में स्विच कर दिया गया है। ऑनलाइन मोड पर रहते हुए, जब आप लॉग आउट करते हैं या आप स्वतः लॉग आउट होते हैं, तो सभी रोगी डेटा आपके डिवाइस से हटा दिए जाएंगे।</string>
     <string name="general_online_mode">ऑनलाइन मोड</string>

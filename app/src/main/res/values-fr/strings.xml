@@ -262,7 +262,7 @@
     <string name="hint_person_search">Rechercher une personne par son nom ou son identifiant</string>
     <string name="hint_phone_number_validation_failure">Numéro de telephone non valide. S\'il vous plait verifier et entrez de nouveau</string>
     <string name="hint_provider_not_set">Vous n\'avez pas les droits de fournisseur ou les données de votre fournisseur ne sont pas téléchargées, s\'il vous plaît utiliser l\'option ajouter un fournisseur.</string>
-    <string name="hint_real_time_sync">Activer la synchronisation des données en temps réel</string>
+    <string name="hint_real_time_sync">Activer la synchronisation automatique des données</string>
     <string name="hint_repeating_section_minimum_repeats_validation_failure">Les repetitions minimum non satisfaites. Besoin d\'au moins</string>
     <string name="hint_reports_unavailable">Veuillez sélectionner les rapports dans la liste de tous les formulaires et cliquer sur télécharger</string>
     <string name="hint_require_medical_record_number">Demander le numéro de dossier médical du client lors de l\'enregistrement</string>
@@ -600,7 +600,7 @@
     <string name="title_provider_help">Aide fournisseur</string>
     <string name="title_provider_not_set">Impossible de définir en tant que fournisseur</string>
     <string name="title_provider_reports">Rapports des fournisseurs</string>
-    <string name="title_real_time_sync">Synchronisation en temps réel</string>
+    <string name="title_real_time_sync">Synchronisation automatique</string>
     <string name="title_require_medical_record_number">" Exiger un numéro de dossier médical"</string>
     <string name="title_search_server">Recherche sur le serveur</string>
     <string name="title_server_client_search_help_video">Recherche de client (contre le serveur)</string>
@@ -795,8 +795,8 @@
 \n\n8. Coordonnées
 \nSi vous avez des questions ou des préoccupations concernant les conditions, veuillez nous contacter sur mUzima.mobile@gmail.com
  </string>
-    <string name="title_real_time_sync_setting_unchanged">Synchronisation en temps réel non modifiée</string>
-    <string name="hint_real_time_sync_always_on">La synchronisation en temps réel est toujours activée en mode en ligne.</string>
+    <string name="title_real_time_sync_setting_unchanged">Préférence de synchronisation automatique non modifiée</string>
+    <string name="hint_real_time_sync_always_on">La synchronisation automatique est toujours activée en mode en ligne.</string>
     <string name="online_mode_switch">Passer en mode en ligne</string>
     <string name="online_mode_switch_warning">Vous êtes passé du mode hors ligne au mode en ligne. En mode en ligne, toutes les données du patient seront supprimées de votre appareil lorsque vous vous déconnectez ou que vous êtes automatiquement déconnecté.</string>
     <string name="general_online_mode">Mode en ligne</string>

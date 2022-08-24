@@ -264,7 +264,7 @@
     <string name="hint_person_search">Tafuta mtu kwa jina au kitambulisho</string>
     <string name="hint_phone_number_validation_failure">Numbari ya simu batili.Tafadhali hakikisha na uiingize nambari hiyo tena.</string>
     <string name="hint_provider_not_set">Huna haki za mtoa huduma au taarifa zako za utoaji huduma hazijapakuliwa, tafadhali ongeza mtoa huduma.</string>
-    <string name="hint_real_time_sync">Wezesha muda sahihi wa ulandanishaji data</string>
+    <string name="hint_real_time_sync">Wezesha usawazishaji wa data kiotomatiki</string>
     <string name="hint_repeating_section_minimum_repeats_validation_failure">Kiwango cha chini cha marudio hakijakidhi. Inahitajika angalau</string>
     <string name="hint_reports_unavailable">Tafadhali chagua ripoti kutoka orodha zote za fomu na bonyeza kubofya</string>
     <string name="hint_require_medical_record_number">Inahitaji rekodi za matibabu za mteja/mteja wakati wa uandikishaji.</string>
@@ -595,7 +595,7 @@
     <string name="title_provider_help">Msaada kwa watoa huduma</string>
     <string name="title_provider_not_set">Imeshindikana kuweka mtoa huduma</string>
     <string name="title_provider_reports">Ripoti za Mtoaji</string>
-    <string name="title_real_time_sync">Ulandanishi wa wakati halisi.</string>
+    <string name="title_real_time_sync">Ulandanishi otomatiki</string>
     <string name="title_require_medical_record_number">sisitiza nambari ya recodi ya matibabu</string>
     <string name="title_search_server">Tafuta Seva husika</string>
     <string name="title_server_client_search_help_video">Utafutaji wa mteja (dhidi ya seva)</string>
@@ -790,8 +790,8 @@
 \n\n8. Maelezo ya Mawasiliano
 \nIkiwa una swali au wasiwasi wowote kuhusu sheria na masharti, tafadhali wasiliana nasi kwa mUzima.mobile@gmail.com
     </string>
-    <string name="title_real_time_sync_setting_unchanged">Usawazishaji wa wakati halisi haujabadilishwa</string>
-    <string name="hint_real_time_sync_always_on">Usawazishaji wa wakati halisi UMEWEZESHWA katika hali ya Mtandaoni.</string>
+    <string name="title_real_time_sync_setting_unchanged">Mapendeleo ya kulandanisha kiotomatiki hayajabadilishwa</string>
+    <string name="hint_real_time_sync_always_on">Ulandanishi kiotomatiki UMEWEZESHWA katika hali ya Mtandaoni.</string>
     <string name="online_mode_switch">Badili hadi hali ya mtandaoni</string>
     <string name="online_mode_switch_warning">Umebadilishwa kutoka hali ya nje ya mtandao hadi hali ya mtandaoni. Ukiwa kwenye hali ya mtandaoni, data yote ya mgonjwa itafutwa kutoka kwa kifaa chako ukiondoka kwenye akaunti au ukiondoka kwenye akaunti kiotomatiki.</string>
     <string name="general_online_mode">Hali ya Mtandaoni</string>

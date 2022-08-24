@@ -263,7 +263,7 @@
     <string name="hint_person_search">નામ અથવા ઓળખકર્તા દ્વારા વ્યક્તિને શોધો</string>
     <string name="hint_phone_number_validation_failure">અમાન્ય ફોન નંબર. કૃપા કરીને તપાસો અને ફરીથી દાખલ કરો</string>
     <string name="hint_provider_not_set">તમારી પાસે પ્રદાતા અધિકાર નથી અથવા તમારો પ્રદાતા ડેટા ડાઉનલોડ થયો નથી, કૃપા કરીને ઉમેરો પ્રદાતા વિકલ્પનો ઉપયોગ કરો.</string>
-    <string name="hint_real_time_sync">ડેટાના રીઅલ ટાઇમ સિંક્રોનાઇઝેશનને સક્ષમ કરો</string>
+    <string name="hint_real_time_sync">ડેટાનું સ્વચાલિત સિંક્રનાઇઝેશન સક્ષમ કરો</string>
     <string name="hint_repeating_section_minimum_repeats_validation_failure">ન્યૂનતમ પુનરાવર્તન સંતુષ્ટ નથી. ઓછામાં ઓછી જરૂર છે</string>
     <string name="hint_reports_unavailable">કૃપા કરીને તમામ સ્વરૂપોની સૂચિમાંથી અહેવાલો પસંદ કરો અને ડાઉનલોડ ક્લિક કરો</string>
     <string name="hint_require_medical_record_number">નોંધણી દરમિયાન ક્લાયંટનો તબીબી રેકોર્ડ નંબર આવશ્યક છે</string>
@@ -591,7 +591,7 @@
     <string name="title_provider_help">પ્રદાતાઓ સહાય</string>
     <string name="title_provider_not_set">પ્રદાતા તરીકે સેટ કરવામાં અસમર્થ</string>
     <string name="title_provider_reports">પ્રદાતા અહેવાલો</string>
-    <string name="title_real_time_sync">રીઅલ ટાઇમ સિંક</string>
+    <string name="title_real_time_sync">સ્વચાલિત સમન્વયન</string>
     <string name="title_require_medical_record_number">તબીબી રેકોર્ડ નંબર આવશ્યક છે</string>
     <string name="title_search_server">સર્વર શોધો</string>
     <string name="title_server_client_search_help_video">ક્લાયંટ શોધ (સર્વર સામે)</string>
@@ -786,8 +786,8 @@
 \n\n8. સંપર્ક વિગતો
 \nજો તમને શરતો વિશે કોઈ પ્રશ્ન અથવા કોઈ ચિંતા હોય, તો કૃપા કરીને mUzima.mobile@gmail.com પર અમારો સંપર્ક કરો
     </string>
-    <string name="title_real_time_sync_setting_unchanged">રીઅલ-ટાઇમ સિંક બદલાયો નથી</string>
-    <string name="hint_real_time_sync_always_on">ઑનલાઇન મોડમાં રીઅલ ટાઇમ સિંક હંમેશા ચાલુ હોય છે.</string>
+    <string name="title_real_time_sync_setting_unchanged">સ્વચાલિત સમન્વયન પસંદગી બદલાઈ નથી</string>
+    <string name="hint_real_time_sync_always_on">ઓનલાઈન મોડમાં ઓટોમેટિક સિંક હંમેશા ચાલુ હોય છે.</string>
     <string name="online_mode_switch">ઑનલાઇન મોડ પર સ્વિચ કરો</string>
     <string name="online_mode_switch_warning">તમને ઑફલાઇન મોડમાંથી ઑનલાઇન મોડ પર સ્વિચ કરવામાં આવ્યા છે. ઓનલાઈન મોડ પર હોવા પર, જ્યારે તમે લોગ આઉટ કરશો અથવા તમે ઓટો લોગ આઉટ થશો ત્યારે તમારા ઉપકરણમાંથી દર્દીનો તમામ ડેટા કાઢી નાખવામાં આવશે.</string>
     <string name="general_online_mode">ઓનલાઈન મોડ</string>
