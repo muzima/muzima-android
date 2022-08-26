@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.material.textfield.TextInputLayout;
 import com.muzima.BuildConfig;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -248,11 +249,15 @@ public class LoginActivity extends BaseActivity {
                     }
 
                     if (StringUtils.isEmpty(usernameText.getText().toString())) {
+                        TextInputLayout usernameTextInputLayout = findViewById(R.id.username_text_input_layout);
+                        usernameTextInputLayout.setHintEnabled(false);
                         usernameText.setHint(getString(R.string.hint_username_prompt));
                         usernameText.setHintTextColor(errorColor);
                     }
 
                     if (StringUtils.isEmpty(passwordText.getText().toString())) {
+                        TextInputLayout passwordTextInputLayout = findViewById(R.id.password_text_input_layout);
+                        passwordTextInputLayout.setHintEnabled(false);
                         passwordText.setHint(getString(R.string.hint_password_prompt));
                         passwordText.setHintTextColor(errorColor);
                     }
