@@ -496,6 +496,9 @@ class HTMLFormDataStore {
             if (person != null) {
                 personJsonObject.put("uuid", person.getUuid());
                 personJsonObject.put("name", person.getDisplayName());
+                personJsonObject.put("family_name", person.getFamilyName());
+                personJsonObject.put("middle_name", person.getMiddleName());
+                personJsonObject.put("given_name", person.getGivenName());
                 personJsonObject.put("birth_date", DateUtils.getFormattedDate(person.getBirthdate()));
                 personJsonObject.put("sex", person.getGender());
                 personJsonObject.put("attributes", person.getAtributes());
