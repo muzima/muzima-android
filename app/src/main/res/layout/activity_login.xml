@@ -104,6 +104,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/username_text_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
@@ -132,6 +133,7 @@
 
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/password_text_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:passwordToggleTint="?attr/primaryDrawableColor"

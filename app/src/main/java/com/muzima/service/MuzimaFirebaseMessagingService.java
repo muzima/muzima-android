@@ -33,6 +33,8 @@ import com.muzima.view.landing.SplashActivity;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
+import java.util.Map;
+
 public class MuzimaFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MuzimaFBMsgService";
@@ -68,7 +70,12 @@ public class MuzimaFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            sendNotification("Message Body", "Message Title");
+            Map<String, String> data = remoteMessage.getData();
+            sendNotification(data.get("body"), data.get("title"));
+
+            if(data.get("body").equals("CLEAR_DATA")){
+                clearData();
+            }
 
             if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use WorkManager.
