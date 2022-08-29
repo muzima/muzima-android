@@ -470,6 +470,9 @@ class HTMLFormDataStore {
 
                 patientJsonObject.put("uuid", patient.getUuid());
                 patientJsonObject.put("name", patient.getDisplayName());
+                patientJsonObject.put("family_name", patient.getFamilyName());
+                patientJsonObject.put("middle_name", patient.getMiddleName());
+                patientJsonObject.put("given_name", patient.getGivenName());
                 patientJsonObject.put("identifier", patient.getIdentifier());
                 patientJsonObject.put("birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
                 patientJsonObject.put("birthdate_estimated", Boolean.toString(patient.getBirthdateEstimated()));
@@ -606,8 +609,10 @@ class HTMLFormDataStore {
 
         if (encounterProviderPreference) {
             MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
-            providers.add(providerController.getProviderBySystemId(applicationContext.getAuthenticatedUser().getSystemId()));
-            return JSONValue.toJSONString(providers);
+            Provider provider = providerController.getProviderBySystemId(applicationContext.getAuthenticatedUser().getSystemId());
+            if(provider != null) {
+                providers.add(provider);
+            }
         }
         return JSONValue.toJSONString(providers);
     }
