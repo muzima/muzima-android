@@ -31,13 +31,17 @@
                 app:menu="@menu/menu_dashboard_home"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/nav_content"/>
+    <include
+        android:id="@+id/navContent"
+        layout="@layout/nav_content"/>
 
     <include
             layout="@layout/item_bottom_navigation"
             android:layout_gravity="bottom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:layout_anchorGravity="bottom"
+            app:layout_anchor="@id/navContent"/>
 
     <include layout="@layout/dashboard_home_cohort_filter_bottom_sheet"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
