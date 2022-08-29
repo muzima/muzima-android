@@ -1127,15 +1127,22 @@ public class FormController {
     public void deleteEncounterFormDataAndRelatedPatientData(List<FormData> formDataList) throws FormDataDeleteException {
         try {
             for (FormData formData : formDataList) {
+                boolean parseAsFormData = false;
                 if(formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS)){
                     String jsonPayload = formData.getJsonPayload();
                     org.json.JSONObject responseJSON = new org.json.JSONObject(jsonPayload);
                     org.json.JSONObject encounterObject = responseJSON.getJSONObject("encounter");
-                    String encounterUuid = encounterObject.getString("encounter.encounter_uuid");
-                    List<Observation> observations = observationService.getObservationsByEncounter(encounterUuid);
-                    observationService.deleteObservations(observations);
-                    formService.deleteFormData(formData);
-                }else {
+                    if(encounterObject.has("encounter.encounter_uuid")) {
+                        String encounterUuid = encounterObject.getString("encounter.encounter_uuid");
+                        List<Observation> observations = observationService.getObservationsByEncounter(encounterUuid);
+                        observationService.deleteObservations(observations);
+                        formService.deleteFormData(formData);
+                    } else {
+                        parseAsFormData = true;
+                    }
+                }
+
+                if(parseAsFormData || !formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS)){
                     if (isCompleteFormData(formData) || isArchivedFormData(formData)) {
                         List<Encounter> encounters = encounterService.getEncountersByFormDataUuid(formData.getUuid());
                         for (Encounter encounter : encounters) {
