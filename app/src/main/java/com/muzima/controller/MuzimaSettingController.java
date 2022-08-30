@@ -43,6 +43,8 @@ import java.util.List;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_SETTINGS;
 import static com.muzima.util.Constants.ServerSettings.BARCODE_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_COHORT_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_FORM_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.CLINICAL_SUMMARY_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.CONTACT_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
@@ -545,6 +547,32 @@ public class MuzimaSettingController {
                 Log.e(getClass().getSimpleName(), "Patient registration setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Patient registration setting is missing on this server");
+        }
+        return true;
+    }
+
+    public Boolean isBottomNavigationCohortEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(BOTTOM_NAVIGATION_COHORT_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Bottom nav cohort setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Bottom nav cohort setting setting is missing on this server");
+        }
+        return true;
+    }
+
+    public Boolean isBottomNavigationFormEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(BOTTOM_NAVIGATION_FORM_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Bottom nav form setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Bottom nav form setting is missing on this server");
         }
         return true;
     }

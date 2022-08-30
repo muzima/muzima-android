@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
@@ -37,6 +38,13 @@ public abstract class ActivityWithBottomNavigation extends BroadcastListenerActi
 
     protected void loadBottomNavigation() {
         navigationView = findViewById(R.id.bottom_navigation);
+        if(!((MuzimaApplication)getApplicationContext()).getMuzimaSettingController().isBottomNavigationCohortEnabled()) {
+            navigationView.getMenu().removeItem(R.id.action_cohorts);
+        }
+        if(!((MuzimaApplication)getApplicationContext()).getMuzimaSettingController().isBottomNavigationFormEnabled()) {
+            navigationView.getMenu().removeItem(R.id.action_forms);
+        }
+
         navigationView.setOnNavigationItemSelectedListener(this);
     }
 
@@ -86,7 +94,11 @@ public abstract class ActivityWithBottomNavigation extends BroadcastListenerActi
 
     private void selectBottomNavigationBarItem(int itemId) {
         MenuItem item = navigationView.getMenu().findItem(itemId);
-        item.setChecked(true);
+        if(item != null) {
+            item.setChecked(true);
+        }else{
+            startActivity(new Intent(this, MainDashboardActivity.class));
+        }
     }
 
     protected abstract int getBottomNavigationMenuItemId();
