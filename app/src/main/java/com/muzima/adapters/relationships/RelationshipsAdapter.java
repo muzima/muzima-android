@@ -20,11 +20,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.tasks.MuzimaAsyncTask;
@@ -33,15 +37,20 @@ import com.muzima.utils.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static com.muzima.util.Constants.ServerSettings.SUPPORTED_RELATIONSHIP_TYPES;
+import static com.muzima.util.Constants.ServerSettings.ALLOW_PATIENT_RELATIVES_DISPLAY;
 
 public class RelationshipsAdapter extends ListAdapter<Relationship> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private final String patientUuid;
     private final RelationshipController relationshipController;
     private final PatientController patientController;
+    private MuzimaApplication muzimaApplication;
 
 
     public RelationshipsAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController,
@@ -50,6 +59,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         this.patientUuid = patientUuid;
         this.relationshipController = relationshipController;
         this.patientController = patientController;
+        muzimaApplication = (MuzimaApplication) activity.getApplicationContext();
     }
 
     @Override
@@ -203,9 +213,47 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         protected List<Relationship> doInBackground(String... params) {
             List<Relationship> relationships = null;
             try {
+                List<String> supportedRelationshipIdList = new ArrayList<>();
+                MuzimaSetting setting = muzimaApplication.getMuzimaSettingController().getSettingByProperty(SUPPORTED_RELATIONSHIP_TYPES);
+                if(setting != null && !StringUtils.isEmpty(setting.getValueString())) {
+                    String supportedRelationshipIdString = setting.getValueString();
+                    supportedRelationshipIdList = Arrays.asList(supportedRelationshipIdString.split(","));
+                }
                relationships = relationshipController.getRelationshipsForPerson(patientUuid);
 
-            }catch(RelationshipController.RetrieveRelationshipException e){
+                if(!supportedRelationshipIdList.isEmpty()){
+                    List<Relationship> filteredRelationships = new ArrayList<>();
+                    for(Relationship relationship:relationships){
+                        if(supportedRelationshipIdList.contains(String.valueOf(relationship.getRelationshipType().getId()))){
+                            filteredRelationships.add(relationship);
+                        }
+                    }
+                    relationships = filteredRelationships;
+                }
+
+                MuzimaSetting allowPatientRelativesDisplaySetting = muzimaApplication.getMuzimaSettingController().getSettingByProperty(ALLOW_PATIENT_RELATIVES_DISPLAY);
+                if(!allowPatientRelativesDisplaySetting.getValueBoolean()){
+                    List<Relationship> nonPatientRelationships = new ArrayList<>();
+                    for(Relationship relationship:relationships){
+                        Person relatedPerson = null;
+                        if(StringUtils.equals(relationship.getPersonA().getUuid(),patientUuid)) {
+                            relatedPerson = relationship.getPersonB();
+                        } else {
+                            relatedPerson = relationship.getPersonA();
+                        }
+
+                        try {
+                            if (patientController.getPatientByUuid(relatedPerson.getUuid()) == null) {
+                                nonPatientRelationships.add(relationship);
+                            }
+                        } catch (PatientController.PatientLoadException e) {
+                            Log.e(this.getClass().getSimpleName(),"Could not get relationship patient",e);
+                        }
+                    }
+                    relationships = nonPatientRelationships;
+                }
+
+            }catch(RelationshipController.RetrieveRelationshipException | MuzimaSettingController.MuzimaSettingFetchException e){
                 Log.e(this.getClass().getSimpleName(),"Could not get relationship for patient",e);
             }
 

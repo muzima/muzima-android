@@ -9,38 +9,44 @@
  */
 package com.muzima.adapters.relationships;
 
+import static com.muzima.util.Constants.ServerSettings.SUPPORTED_RELATIONSHIP_TYPES;
 import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
 
-import android.content.res.Resources;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.RelationshipType;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.model.relationship.RelationshipTypeWrap;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class RelationshipTypesAdapter extends ListAdapter<RelationshipTypeWrap> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private final RelationshipController relationshipController;
+    private MuzimaApplication muzimaApplication;
 
     public RelationshipTypesAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController) {
         super(activity, textViewResourceId);
         this.relationshipController = relationshipController;
+        muzimaApplication = (MuzimaApplication) activity.getApplicationContext();
     }
 
     @Override
@@ -116,17 +122,25 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipTypeWrap> 
             List<RelationshipType> relationshipTypes;
             try {
                 relationshipTypes = relationshipController.getAllRelationshipTypes();
+                List<String> supportedRelationshipIdList = new ArrayList<>();
+                MuzimaSetting setting = muzimaApplication.getMuzimaSettingController().getSettingByProperty(SUPPORTED_RELATIONSHIP_TYPES);
+                if(setting != null && !StringUtils.isEmpty(setting.getValueString())) {
+                    String supportedRelationshipIdString = setting.getValueString();
+                    supportedRelationshipIdList = Arrays.asList(supportedRelationshipIdString.split(","));
+                }
 
                 for (RelationshipType relationshipType : relationshipTypes) {
-                    RelationshipTypeWrap typeWrap = new RelationshipTypeWrap(relationshipType.getUuid(), relationshipType.getAIsToB(), "A", relationshipType);
-                    relationshipTypeWraps.add(typeWrap);
-
-                    if (!StringUtils.equalsIgnoreCase(relationshipType.getAIsToB(), relationshipType.getBIsToA())) {
-                        typeWrap = new RelationshipTypeWrap(relationshipType.getUuid(), relationshipType.getBIsToA(), "B", relationshipType);
+                    if(supportedRelationshipIdList.isEmpty() || supportedRelationshipIdList.contains(String.valueOf(relationshipType.getId()))){
+                        RelationshipTypeWrap typeWrap = new RelationshipTypeWrap(relationshipType.getUuid(), relationshipType.getAIsToB(), "A", relationshipType);
                         relationshipTypeWraps.add(typeWrap);
+
+                        if (!StringUtils.equalsIgnoreCase(relationshipType.getAIsToB(), relationshipType.getBIsToA())) {
+                            typeWrap = new RelationshipTypeWrap(relationshipType.getUuid(), relationshipType.getBIsToA(), "B", relationshipType);
+                            relationshipTypeWraps.add(typeWrap);
+                        }
                     }
                 }
-            }catch(RelationshipController.RetrieveRelationshipTypeException e){
+            }catch(RelationshipController.RetrieveRelationshipTypeException | MuzimaSettingController.MuzimaSettingFetchException e){
                 Log.e(this.getClass().getSimpleName(),"Could not get relationship types",e);
             }
 
