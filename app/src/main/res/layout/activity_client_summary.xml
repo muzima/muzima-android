@@ -9,33 +9,33 @@
   ~ this code in a for-profit venture, please contact the copyright holder.
   -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
 
-            android:id="@+id/client_summary_view"
-            android:background="?attr/primaryBackgroundColor"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="76dp"
-            android:orientation="vertical">
+        android:id="@+id/client_summary_view"
+        android:background="?attr/primaryBackgroundColor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="76dp"
+        android:orientation="vertical">
 
         <View android:id="@+id/bottom_sheet_child_container"
-              android:visibility="gone"
-              android:background="@color/white_smoke"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"/>
+            android:visibility="gone"
+            android:background="@color/white_smoke"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
         <com.google.android.material.appbar.AppBarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:layout_marginStart="6dp"
-                android:background="@drawable/patient_summary_border"
-                app:elevation="6dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/patient_summary_border"
+            app:elevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,22 +45,180 @@
 
                 <include layout="@layout/client_summary_patients_list"/>
 
+                <RelativeLayout
+                    android:id="@+id/address_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="70dp"
+                        android:id="@+id/address"
+                        android:layout_height="wrap_content"
+                        android:text="@string/general_address"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+
+                    <TextView
+                        android:id="@+id/patient_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/address"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/phone_number_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="70dp"
+                        android:id="@+id/telno"
+                        android:layout_height="wrap_content"
+                        android:text="@string/general_phone_number"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+                    <TextView
+                        android:id="@+id/patient_phone_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/telno"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+
+                </RelativeLayout>
+
                 <include android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="2dp"
                     layout="@layout/forms_top_bar_view"/>
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
-
         <LinearLayout
+            android:id="@+id/dados_de_consentimento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:background="@drawable/patient_summary_border"
+            android:orientation="vertical">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="12dp"
-                android:layout_marginStart="12dp"
-                app:tabSelectedTextColor="@color/primary_blue"
-                app:tabIndicatorColor="@color/primary_blue"
-                android:paddingTop="6dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/general_consent_date"
+                    android:textColor="?attr/primaryTextColor"
+                    android:fontFamily="@font/roboto_regular" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="120dp"
+                        android:id="@+id/sector"
+                        android:layout_height="wrap_content"
+                        android:text="@string/general_testing_sector"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+                    <TextView
+                        android:id="@+id/sector_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/sector"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="120dp"
+                        android:id="@+id/testing_location"
+                        android:layout_height="wrap_content"
+                        android:text="@string/general_preferred_testing_location"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+                    <TextView
+                        android:id="@+id/preferred_testing_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/testing_location"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="120dp"
+                        android:id="@+id/testing_date"
+                        android:layout_height="wrap_content"
+                        android:text="@string/general_testing_date"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+                    <TextView
+                        android:id="@+id/testing_date_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/testing_date"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="120dp"
+                        android:id="@+id/last_consent_date"
+                        android:layout_height="wrap_content"
+                        android:text="@string/general_last_consent_date"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+                    <TextView
+                        android:id="@+id/last_consent_date_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/last_consent_date"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="8dp"
+            app:tabSelectedTextColor="@color/primary_blue"
+            app:tabIndicatorColor="@color/primary_blue"
+            android:paddingTop="6dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"

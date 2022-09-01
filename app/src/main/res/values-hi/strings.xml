@@ -819,4 +819,14 @@
     <string name="general_about_muzima">mUzima . के बारे में</string>
     <string name="title_last_logged_in">पिछला लॉग इन</string>
     <string name="title_logged_in_user">लॉग इन यूजर</string>
+    <string name="general_address">पता:</string>
+    <string name="general_phone_number">फ़ोन नंबर:</string>
+    <string name="general_consent_date">सहमति डेटा:</string>
+    <string name="general_testing_sector">परीक्षण क्षेत्र:</string>
+    <string name="general_preferred_testing_location">पसंदीदा परीक्षण स्थान:</string>
+    <string name="general_testing_date">परीक्षा की तारीख:</string>
+    <string name="general_last_consent_date">अंतिम सहमति तिथि:</string>
+    <string name="general_result">परिणाम:</string>
+    <string name="general_in_hiv_care">एचआईवी देखभाल:</string>
+    <string name="general_in_ccr">सीसीआर</string>
 </resources>
