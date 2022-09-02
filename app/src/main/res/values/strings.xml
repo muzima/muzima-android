@@ -844,4 +844,15 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_about_muzima">About mUzima</string>
     <string name="title_last_logged_in">Date Last Logged In</string>
     <string name="title_logged_in_user">Logged In User</string>
+    <string name="general_address">Address:</string>
+    <string name="general_phone_number">Phone Number:</string>
+    <string name="general_consent_date">Consent Data</string>
+    <string name="general_testing_sector">Testing Sector: </string>
+    <string name="general_preferred_testing_location">Preferred Testing Location:</string>
+    <string name="general_testing_date">Test Date:</string>
+    <string name="general_last_consent_date">Last Consent Date:</string>
+    <string name="general_result">Result:</string>
+    <string name="general_in_hiv_care">HIV care:</string>
+    <string name="general_in_ccr">CCR:</string>
+    <string name="general_hiv_test">HIV Test Date:</string>
 </resources>

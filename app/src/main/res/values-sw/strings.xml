@@ -824,4 +824,15 @@
     <string name="general_about_muzima">Kuhusu mUzima</string>
     <string name="title_last_logged_in">Mara ya Mwisho Kuingia</string>
     <string name="title_logged_in_user">Mtumiaji Aliyeingia</string>
+    <string name="general_address">Anwani:</string>
+    <string name="general_phone_number">Nambari ya simu:</string>
+    <string name="general_consent_date">Data ya Idhini</string>
+    <string name="general_testing_sector">Sekta ya vipimo:</string>
+    <string name="general_preferred_testing_location">Eneo la kupima Linalopendelewa:</string>
+    <string name="general_testing_date">Tarehe ya vipimo:</string>
+    <string name="general_last_consent_date">Tarehe ya mwisho ya idhini:</string>
+    <string name="general_result">Matokeo:</string>
+    <string name="general_in_hiv_care">Utunzaji wa HIV:</string>
+    <string name="general_in_ccr">CCR</string>
+    <string name="general_hiv_test">Tarehe ya Kupima HIV</string>
 </resources>

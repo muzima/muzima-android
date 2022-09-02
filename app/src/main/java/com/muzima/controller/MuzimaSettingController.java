@@ -51,6 +51,7 @@ import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS
 import static com.muzima.util.Constants.ServerSettings.DISALLOW_SERVER_PATIENT_SEARCH;
 import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_COHORTS_IN_CONFIG_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_FORMS_IN_CONFIG_SETTING;
+import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CLIENT_SUMMARY_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GEOMAPPING_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.OBS_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
@@ -575,6 +576,19 @@ public class MuzimaSettingController {
             Log.e(getClass().getSimpleName(), "Bottom nav form setting is missing on this server");
         }
         return true;
+    }
+
+    public Boolean isFGHCustomClientSummaryEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(FGH_CUSTOM_CLIENT_SUMMARY_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
+        }
+        return false;
     }
 
     public static class MuzimaSettingFetchException extends Throwable {

@@ -11,9 +11,11 @@
 package com.muzima.view.patients;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -36,11 +39,15 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
 import com.muzima.adapters.relationships.RelationshipsAdapter;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
@@ -61,13 +68,20 @@ import com.muzima.view.forms.FormsWithDataActivity;
 import com.muzima.view.fragments.patient.ChronologicalObsViewFragment;
 import com.muzima.view.relationship.RelationshipsListActivity;
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
+import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
+import static com.muzima.utils.DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT;
 import static com.muzima.utils.RelationshipViewUtil.listOnClickListener;
 import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 
@@ -97,6 +111,16 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private RelationshipsAdapter patientRelationshipsAdapter;
     private View noDataView;
     private Person selectedRelatedPerson;
+    private TextView patientAddress;
+    private TextView patientPhoneNumber;
+    private TextView testingSector;
+    private TextView preferredTestingLocation;
+    private TextView testingDate;
+    private TextView lastConsentDate;
+    private String applicationLanguage;
+    private ConceptController conceptController;
+    private ObservationController observationController;
+    private boolean isFGHCustomClientSummaryEnabled;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -229,10 +253,66 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             if (patient.getBirthdate() != null)
                 ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
             gpsAddressTextView.setText(getDistanceToClientAddress(patient));
+
+            if(patient.getPreferredAddress() != null) {
+                patientAddress.setText(patient.getPreferredAddress().getAddress1());
+            }else if(patient.getAddresses().size() > 0){
+                patientAddress.setText(patient.getAddresses().get(0).getAddress1());
+            }
+
+
+            if(patient.getAttribute("e2e3fd64-1d5f-11e0-b929-000c29ad1d07") != null) {
+                patientPhoneNumber.setText(patient.getAttribute("e2e3fd64-1d5f-11e0-b929-000c29ad1d07").getAttribute());
+            }
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            applicationLanguage = preferences.getString(getResources().getString(R.string.preference_app_language), getResources().getString(R.string.language_english));
+
+            conceptController = ((MuzimaApplication) getApplicationContext()).getConceptController();
+            observationController = ((MuzimaApplication) getApplicationContext()).getObservationController();
+
+            testingSector.setText(getObsByPatientUuidAndConceptId(patientUuid, 23877));
+            preferredTestingLocation.setText(getObsByPatientUuidAndConceptId(patientUuid, 21155));
+            testingDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23879));
+            lastConsentDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23775));
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(),"Exception encountered while loading patients ",e);
+        } catch (ObservationController.LoadObservationException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading patients ",e);
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(),"JSONException encountered ",e);
         }
     }
+
+    private String getObsByPatientUuidAndConceptId(String patientUuid, int conceptId) throws JSONException, ObservationController.LoadObservationException {
+        List<Observation> observations = new ArrayList<>();
+        try {
+            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+            Concept concept = conceptController.getConceptById(conceptId);
+            Collections.sort(observations, observationDateTimeComparator);
+            if(observations.size()>0){
+                Observation obs = observations.get(0);
+                if(concept.isDatetime())
+                    return DateUtils.getFormattedDate(obs.getValueDatetime(),SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
+                else if(concept.isCoded())
+                    return getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(),applicationLanguage);
+                else if(concept.isNumeric())
+                    return String.valueOf(obs.getValueNumeric());
+                else
+                    return obs.getValueText();
+            }
+        } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+        return StringUtils.EMPTY;
+    }
+
+    private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
+        @Override
+        public int compare(Observation lhs, Observation rhs) {
+            return -lhs.getObservationDatetime().compareTo(rhs.getObservationDatetime());
+        }
+    };
 
     private int getGenderImage(String gender) {
         return gender.equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female;
@@ -265,6 +345,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     }
 
     private void initializeResources() {
+        isFGHCustomClientSummaryEnabled = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isFGHCustomClientSummaryEnabled();
         patientNameTextView = findViewById(R.id.name);
         patientGenderImageView = findViewById(R.id.genderImg);
         dobTextView = findViewById(R.id.dateOfBirth);
@@ -275,7 +356,22 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         completeFormsCountView = findViewById(R.id.dashboard_forms_complete_forms_count_view);
         incompleteFormsView = findViewById(R.id.dashboard_forms_incomplete_forms_view);
         completeFormsView = findViewById(R.id.dashboard_forms_complete_forms_view);
+        patientAddress = findViewById(R.id.patient_address);
+        patientPhoneNumber = findViewById(R.id.patient_phone_number);
+        testingSector = findViewById(R.id.sector_value);
+        preferredTestingLocation = findViewById(R.id.preferred_testing_location);
+        testingDate = findViewById(R.id.testing_date_value);
+        lastConsentDate = findViewById(R.id.last_consent_date_value);
         TabLayout tabLayout = findViewById(R.id.tabLayout);
+        LinearLayout dadosDeConsentimento= findViewById(R.id.dados_de_consentimento);
+        RelativeLayout addressLayout= findViewById(R.id.address_layout);
+        RelativeLayout phoneNumberLayout= findViewById(R.id.phone_number_layout);
+
+        if(!isFGHCustomClientSummaryEnabled) {
+            dadosDeConsentimento.setVisibility(View.GONE);
+            addressLayout.setVisibility(View.GONE);
+            phoneNumberLayout.setVisibility(View.GONE);
+        }
 
         incompleteFormsView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -318,98 +414,107 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         boolean isContactListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isContactListingOnPatientSummary();
         boolean isObsListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isObsListingOnPatientSummary();
 
-        if(isContactListingOnPatientSummary && isObsListingOnPatientSummary){
-            historicalDataSeparator.setVisibility(View.VISIBLE);
-            relationshipListingSeparator.setVisibility(View.VISIBLE);
+        if(isFGHCustomClientSummaryEnabled){
             LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    40
-            );
-            relationshipList.setLayoutParams(relationshipParam);
-
-            LinearLayout.LayoutParams obsParam = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    40
-            );
-            historicalData.setLayoutParams(obsParam);
-
-            LinearLayout.LayoutParams formsParam = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    30
-            );
-            dataCollection.setLayoutParams(formsParam);
-        } else if(isContactListingOnPatientSummary && !isObsListingOnPatientSummary){
-            historicalDataSeparator.setVisibility(View.GONE);
-            relationshipListingSeparator.setVisibility(View.VISIBLE);
-            LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    60
-            );
-            relationshipList.setLayoutParams(relationshipParam);
-
-            LinearLayout.LayoutParams obsParam = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    0
-            );
-            historicalData.setLayoutParams(obsParam);
-
-            LinearLayout.LayoutParams formsParam = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    40
-            );
-            dataCollection.setLayoutParams(formsParam);
-        } else if(!isContactListingOnPatientSummary && isObsListingOnPatientSummary){
-            historicalDataSeparator.setVisibility(View.VISIBLE);
-            relationshipListingSeparator.setVisibility(View.GONE);
-            LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    0
-            );
-            relationshipList.setLayoutParams(relationshipParam);
-
-            LinearLayout.LayoutParams obsParam = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    60
-            );
-            historicalData.setLayoutParams(obsParam);
-
-            LinearLayout.LayoutParams formsParam = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    40
-            );
-            dataCollection.setLayoutParams(formsParam);
-        } else{
-            historicalDataSeparator.setVisibility(View.GONE);
-            relationshipListingSeparator.setVisibility(View.GONE);
-            LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    0
-            );
-            relationshipList.setLayoutParams(relationshipParam);
-
-            LinearLayout.LayoutParams obsParam = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    0
-            );
-            historicalData.setLayoutParams(obsParam);
-
-            LinearLayout.LayoutParams formsParam = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     0,
                     100
             );
-            dataCollection.setLayoutParams(formsParam);
+            relationshipList.setLayoutParams(relationshipParam);
+        } else {
+            if (isContactListingOnPatientSummary && isObsListingOnPatientSummary) {
+                historicalDataSeparator.setVisibility(View.VISIBLE);
+                relationshipListingSeparator.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        40
+                );
+                relationshipList.setLayoutParams(relationshipParam);
+
+                LinearLayout.LayoutParams obsParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        40
+                );
+                historicalData.setLayoutParams(obsParam);
+
+                LinearLayout.LayoutParams formsParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        30
+                );
+                dataCollection.setLayoutParams(formsParam);
+            } else if (isContactListingOnPatientSummary && !isObsListingOnPatientSummary) {
+                historicalDataSeparator.setVisibility(View.GONE);
+                relationshipListingSeparator.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        60
+                );
+                relationshipList.setLayoutParams(relationshipParam);
+
+                LinearLayout.LayoutParams obsParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        0
+                );
+                historicalData.setLayoutParams(obsParam);
+
+                LinearLayout.LayoutParams formsParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        40
+                );
+                dataCollection.setLayoutParams(formsParam);
+            } else if (!isContactListingOnPatientSummary && isObsListingOnPatientSummary) {
+                historicalDataSeparator.setVisibility(View.VISIBLE);
+                relationshipListingSeparator.setVisibility(View.GONE);
+                LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        0
+                );
+                relationshipList.setLayoutParams(relationshipParam);
+
+                LinearLayout.LayoutParams obsParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        60
+                );
+                historicalData.setLayoutParams(obsParam);
+
+                LinearLayout.LayoutParams formsParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        40
+                );
+                dataCollection.setLayoutParams(formsParam);
+            } else {
+                historicalDataSeparator.setVisibility(View.GONE);
+                relationshipListingSeparator.setVisibility(View.GONE);
+                LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        0
+                );
+                relationshipList.setLayoutParams(relationshipParam);
+
+                LinearLayout.LayoutParams obsParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        0
+                );
+                historicalData.setLayoutParams(obsParam);
+
+                LinearLayout.LayoutParams formsParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        100
+                );
+                dataCollection.setLayoutParams(formsParam);
+            }
         }
     }
 
@@ -459,7 +564,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             }
             completeFormsCountView.setText(String.valueOf(completeForms));
 
-            if(incompleteForms == 0 && completeForms == 0){
+            if((incompleteForms == 0 && completeForms == 0) || isFGHCustomClientSummaryEnabled){
                 completeFormsView.setVisibility(View.GONE);
                 incompleteFormsView.setVisibility(View.GONE);
             } else {

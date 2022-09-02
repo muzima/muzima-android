@@ -820,4 +820,15 @@
     <string name="general_about_muzima">મુઝિમા વિશે</string>
     <string name="title_last_logged_in">છેલ્લે લૉગ ઇન કર્યું</string>
     <string name="title_logged_in_user">લૉગ ઇન વપરાશકર્તા</string>
+    <string name="general_address">સરનામું:</string>
+    <string name="general_phone_number">ફોન નંબર:</string>
+    <string name="general_consent_date">સંમતિ ડેટા:</string>
+    <string name="general_testing_sector">પરીક્ષણ ક્ષેત્ર:</string>
+    <string name="general_preferred_testing_location">પસંદગીનું પરીક્ષણ સ્થાન:</string>
+    <string name="general_testing_date">ટેસ્ટ તારીખ:</string>
+    <string name="general_last_consent_date">છેલ્લી સંમતિ તારીખ:</string>
+    <string name="general_result">પરિણામ:</string>
+    <string name="general_in_hiv_care">એચઆઇવી સંભાળ:</string>
+    <string name="general_in_ccr">સીસીઆર</string>
+    <string name="general_hiv_test">HIV ટેસ્ટ તારીખ</string>
 </resources>

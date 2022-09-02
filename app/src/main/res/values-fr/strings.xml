@@ -830,4 +830,15 @@
  <string name="general_about_muzima">À propos de mUzima</string>
  <string name="title_last_logged_in">Date de la dernière connexion</string>
  <string name="title_logged_in_user">Utilisateur connecté</string>
+    <string name="general_address">Adresse:</string>
+ <string name="general_phone_number">Numéro de téléphone:</string>
+ <string name="general_consent_date">Données de consentement :</string>
+ <string name="general_testing_sector">Secteur d\'essai :</string>
+ <string name="general_preferred_testing_location">Lieu de test préféré :</string>
+ <string name="general_testing_date">Date d\'essai :</string>
+ <string name="general_last_consent_date">Date du dernier consentement :</string>
+ <string name="general_result">Résultat:</string>
+ <string name="general_in_hiv_care">Soins du VIH :</string>
+ <string name="general_in_ccr">RCC</string>
+    <string name="general_hiv_test">Date du test VIH</string>
 </resources>

@@ -827,4 +827,15 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_about_muzima">Sobre mUzima</string>
     <string name="title_last_logged_in">Data do último login</string>
     <string name="title_logged_in_user">Usuário conectado</string>
+    <string name="general_address">Endereço:</string>
+    <string name="general_phone_number">Contacto telefónico:</string>
+    <string name="general_consent_date">Dados de consentimento</string>
+    <string name="general_testing_sector">Origem CI:</string>
+    <string name="general_preferred_testing_location">Local Preferido de Testagem:</string>
+    <string name="general_testing_date">Data Prevista da Testagem:</string>
+    <string name="general_last_consent_date">Data do Último Consentimento:</string>
+    <string name="general_hiv_test">Data do Teste HIV:</string>
+    <string name="general_result">Resultado Teste HIV:</string>
+    <string name="general_in_hiv_care">Cuidados HIV:</string>
+    <string name="general_in_ccr">Em CCR:</string>
 </resources>

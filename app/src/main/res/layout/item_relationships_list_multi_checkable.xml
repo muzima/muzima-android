@@ -131,6 +131,123 @@
                         android:textStyle="italic"/>
 
                 </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/hiv_test_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_alignParentStart="true"
+                        android:id="@+id/hiv_test_date_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/ListDescription"
+                            android:fontFamily="@font/roboto_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:text="@string/general_hiv_test"
+                            android:textSize="12sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/hiv_test_date"
+                            style="@style/ListDescription"
+                            android:fontFamily="@font/roboto_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:textSize="12sp"
+                            android:textStyle="italic" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_below="@id/hiv_test_date_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="7dp"
+                        android:orientation="horizontal">
+                    <TextView
+                        style="@style/ListDescription"
+                        android:fontFamily="@font/roboto_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:text="@string/general_result"
+                        android:textSize="12sp"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:id="@+id/hiv_results"
+                        android:layout_marginEnd="12dp"
+                        android:paddingBottom="4dp"
+                        android:textSize="12sp"
+                        android:gravity="end"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="?attr/primaryTextColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"/>
+                    </LinearLayout>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/hiv_care_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_alignParentStart="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="7dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/ListDescription"
+                            android:fontFamily="@font/roboto_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:text="@string/general_in_hiv_care"
+                            android:textSize="12sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/in_hiv_care"
+                            style="@style/ListDescription"
+                            android:fontFamily="@font/roboto_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:textSize="12sp"
+                            android:textStyle="italic" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_alignParentEnd="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="7dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            style="@style/ListDescription"
+                            android:fontFamily="@font/roboto_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:text="@string/general_in_ccr"
+                            android:textSize="12sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/in_ccr"
+                            android:layout_marginEnd="12dp"
+                            android:paddingBottom="4dp"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/roboto_regular"
+                            android:textColor="?attr/primaryTextColor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="italic"/>
+                    </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

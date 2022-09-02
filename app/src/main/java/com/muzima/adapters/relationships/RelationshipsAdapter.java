@@ -12,23 +12,31 @@ package com.muzima.adapters.relationships;
 import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
+
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.api.model.Concept;
 import com.muzima.api.model.MuzimaSetting;
+import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.tasks.MuzimaAsyncTask;
@@ -38,12 +46,18 @@ import com.muzima.utils.StringUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import static com.muzima.util.Constants.ServerSettings.SUPPORTED_RELATIONSHIP_TYPES;
 import static com.muzima.util.Constants.ServerSettings.ALLOW_PATIENT_RELATIVES_DISPLAY;
+import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
+import static com.muzima.utils.DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT;
+
+import org.json.JSONException;
 
 public class RelationshipsAdapter extends ListAdapter<Relationship> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
@@ -86,12 +100,21 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             holder.dateOfBirth = convertView.findViewById(R.id.dateOfBirth);
             holder.age = convertView.findViewById(R.id.age_text_label);
             holder.identifier = convertView.findViewById(R.id.identifier);
+            holder.testDate = convertView.findViewById(R.id.hiv_test_date);
+            holder.results = convertView.findViewById(R.id.hiv_results);
+            holder.inHivCare = convertView.findViewById(R.id.in_hiv_care);
+            holder.inCCR = convertView.findViewById(R.id.in_ccr);
+            holder.hivTestDetails = convertView.findViewById(R.id.hiv_test_details);
+            holder.hivCareDetails = convertView.findViewById(R.id.hiv_care_details);
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        String relatedPersonUuid = "";
+
         if (StringUtils.equalsIgnoreCase(patientUuid, relationship.getPersonA().getUuid())) {
+            relatedPersonUuid = relationship.getPersonB().getUuid();
             holder.relatedPerson.setText(relationship.getPersonB().getDisplayName());
             holder.relationshipType.setText(relationship.getRelationshipType().getBIsToA());
 
@@ -120,6 +143,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                 Log.e(this.getClass().getSimpleName(), "Error searching Patient");
             }
         } else {
+            relatedPersonUuid = relationship.getPersonA().getUuid();
             holder.relatedPerson.setText(relationship.getPersonA().getDisplayName());
             holder.relationshipType.setText(relationship.getRelationshipType().getAIsToB());
 
@@ -149,8 +173,60 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             }
         }
 
+        if(!muzimaApplication.getMuzimaSettingController().isFGHCustomClientSummaryEnabled()){
+            holder.hivTestDetails.setVisibility(View.GONE);
+            holder.hivCareDetails.setVisibility(View.GONE);
+        }else {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            String applicationLanguage = preferences.getString(getContext().getResources().getString(R.string.preference_app_language), getContext().getResources().getString(R.string.language_english));
+
+            ConceptController conceptController = muzimaApplication.getConceptController();
+            ObservationController observationController = muzimaApplication.getObservationController();
+
+            try {
+                holder.testDate.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 23879, observationController, conceptController, applicationLanguage));
+                holder.results.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 23779, observationController, conceptController, applicationLanguage));
+                holder.inHivCare.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 23780, observationController, conceptController, applicationLanguage));
+                holder.inCCR.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 1885, observationController, conceptController, applicationLanguage));
+            } catch (JSONException e) {
+                Log.e(getClass().getSimpleName(),"Encountered JSONException ",e);
+            } catch (ObservationController.LoadObservationException e) {
+                Log.e(getClass().getSimpleName(),"Encountered LoadObservationException ",e);
+            }
+        }
+
         return convertView;
     }
+
+    public String getObsByPatientUuidAndConceptId(String patientUuid, int conceptId, ObservationController observationController, ConceptController conceptController, String applicationLanguage) throws JSONException, ObservationController.LoadObservationException {
+        List<Observation> observations = new ArrayList<>();
+        try {
+            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+            Concept concept = conceptController.getConceptById(conceptId);
+            Collections.sort(observations, observationDateTimeComparator);
+            if(observations.size()>0){
+                Observation obs = observations.get(0);
+                if(concept.isDatetime())
+                    return DateUtils.getFormattedDate(obs.getValueDatetime(),SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
+                else if(concept.isCoded())
+                    return getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(),applicationLanguage);
+                else if(concept.isNumeric())
+                    return String.valueOf(obs.getValueNumeric());
+                else
+                    return obs.getValueText();
+            }
+        } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+        return StringUtils.EMPTY;
+    }
+
+    private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
+        @Override
+        public int compare(Observation lhs, Observation rhs) {
+            return -lhs.getObservationDatetime().compareTo(rhs.getObservationDatetime());
+        }
+    };
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
         this.backgroundListQueryTaskListener = backgroundListQueryTaskListener;
@@ -199,6 +275,13 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
 
         TextView relatedPerson;
         TextView relationshipType;
+        TextView testDate;
+        TextView results;
+        TextView inHivCare;
+        TextView inCCR;
+        RelativeLayout hivTestDetails;
+        RelativeLayout hivCareDetails;
+
     }
 
     private class BackgroundQueryTask extends MuzimaAsyncTask<String, Void, List<Relationship>> {
