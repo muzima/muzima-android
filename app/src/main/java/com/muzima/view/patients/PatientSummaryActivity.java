@@ -271,11 +271,10 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             conceptController = ((MuzimaApplication) getApplicationContext()).getConceptController();
             observationController = ((MuzimaApplication) getApplicationContext()).getObservationController();
 
-            testingSector.setText(getObsByPatientUuidAndConceptId(patientUuid, 23783));
+            testingSector.setText(getObsByPatientUuidAndConceptId(patientUuid, 23877));
             preferredTestingLocation.setText(getObsByPatientUuidAndConceptId(patientUuid, 21155));
-            lastConsentDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23775));
             testingDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23879));
-
+            lastConsentDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23775));
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(),"Exception encountered while loading patients ",e);
         } catch (ObservationController.LoadObservationException e) {

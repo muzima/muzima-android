@@ -124,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp">
                     <TextView
-                        android:layout_width="120dp"
+                        android:layout_width="150dp"
                         android:id="@+id/sector"
                         android:layout_height="wrap_content"
                         android:text="@string/general_testing_sector"
@@ -146,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp">
                     <TextView
-                        android:layout_width="120dp"
+                        android:layout_width="150dp"
                         android:id="@+id/testing_location"
                         android:layout_height="wrap_content"
                         android:text="@string/general_preferred_testing_location"
@@ -169,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp">
                     <TextView
-                        android:layout_width="120dp"
+                        android:layout_width="150dp"
                         android:id="@+id/testing_date"
                         android:layout_height="wrap_content"
                         android:text="@string/general_testing_date"
@@ -179,6 +179,7 @@
                         android:id="@+id/testing_date_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@id/testing_date"
                         android:textColor="?attr/primaryTextColor"
@@ -191,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp">
                     <TextView
-                        android:layout_width="120dp"
+                        android:layout_width="150dp"
                         android:id="@+id/last_consent_date"
                         android:layout_height="wrap_content"
                         android:text="@string/general_last_consent_date"
@@ -201,6 +202,7 @@
                         android:id="@+id/last_consent_date_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@id/last_consent_date"
                         android:textColor="?attr/primaryTextColor"

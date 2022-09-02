@@ -830,4 +830,5 @@
     <string name="general_result">પરિણામ:</string>
     <string name="general_in_hiv_care">એચઆઇવી સંભાળ:</string>
     <string name="general_in_ccr">સીસીઆર</string>
+    <string name="general_hiv_test">HIV ટેસ્ટ તારીખ</string>
 </resources>
