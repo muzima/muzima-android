@@ -35,6 +35,18 @@ input.error {
     width: 90%;
 }
 
+.section-div {
+   background-color: #DCDCDC;
+}
+
+.input-section {
+  background-color: #F0EFE0;
+}
+
+.input-section-2 {
+  background-color: #FFD8C6;
+}
+
 .image_btn {
     height: 6%;
     width: 12%;
