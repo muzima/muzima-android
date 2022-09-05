@@ -33,7 +33,7 @@ public abstract class ActivityWithPatientSummaryBottomNavigation extends Broadca
         this.patientUuid = patientUuid;
 
         MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
-        if(!muzimaSettingController.isObsListingOnPatientSummary()){
+        if(!muzimaSettingController.isObsListingOnPatientSummaryEnabled()){
             MenuItem historicalDataMenu = navigationView.getMenu().findItem(R.id.action_historical_data);
             historicalDataMenu.setVisible(false);
         }

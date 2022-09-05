@@ -411,8 +411,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         View historicalDataSeparator = findViewById(R.id.historical_data_separator);
         View relationshipListingSeparator = findViewById(R.id.relationships_list_separator);
 
-        boolean isContactListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isContactListingOnPatientSummary();
-        boolean isObsListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isObsListingOnPatientSummary();
+        boolean isContactListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isContactListingOnPatientSummaryEnabled();
+        boolean isObsListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isObsListingOnPatientSummaryEnabled();
 
         if(isFGHCustomClientSummaryEnabled){
             LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
