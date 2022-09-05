@@ -487,7 +487,7 @@ public class MuzimaSettingController {
         return false;
     }
 
-    public Boolean isContactListingOnPatientSummary() {
+    public Boolean isContactListingOnPatientSummaryEnabled() {
         try {
             MuzimaSetting muzimaSetting = getSettingByProperty(CONTACT_LISTING_UNDER_CLIENT_SUMMARY_SETTING);
             if (muzimaSetting != null)
@@ -500,7 +500,7 @@ public class MuzimaSettingController {
         return false;
     }
 
-    public Boolean isObsListingOnPatientSummary() {
+    public Boolean isObsListingOnPatientSummaryEnabled() {
         try {
             MuzimaSetting muzimaSetting = getSettingByProperty(OBS_LISTING_UNDER_CLIENT_SUMMARY_SETTING);
             if (muzimaSetting != null)

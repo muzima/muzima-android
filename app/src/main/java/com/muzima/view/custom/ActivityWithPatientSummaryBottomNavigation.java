@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.view.BroadcastListenerActivity;
@@ -31,8 +32,8 @@ public abstract class ActivityWithPatientSummaryBottomNavigation extends Broadca
         navigationView.setOnNavigationItemSelectedListener(this);
         this.patientUuid = patientUuid;
 
-        MuzimaSettingController muzimaSettingController = ((MuzimaSettingController) getApplicationContext()).getMuzimaSettingController();
-        if(muzimaSettingController.isObsListingOnPatientSummary()){
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+        if(!muzimaSettingController.isObsListingOnPatientSummaryEnabled()){
             MenuItem historicalDataMenu = navigationView.getMenu().findItem(R.id.action_historical_data);
             historicalDataMenu.setVisible(false);
         }
