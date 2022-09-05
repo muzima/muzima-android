@@ -21,12 +21,10 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -39,7 +37,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -52,11 +49,9 @@ import com.muzima.api.model.Location;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.AppUsageLogsController;
-import com.muzima.controller.FCMTokenContoller;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaSettingController;
-import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.DefaultEncounterLocationPreferenceService;
@@ -521,27 +516,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected int[] doInBackground(Void... voids) {
                 MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
                 LocationController locationController = ((MuzimaApplication) getApplicationContext()).getLocationController();
-                boolean notificationSetting = muzimaSettingController.isPushNotificationsEnabled();
-                if(notificationSetting) {
-                    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(GuidedConfigurationWizardActivity.this);
-                    String appTokenKey = GuidedConfigurationWizardActivity.this.getResources().getString(R.string.preference_app_token);
-                    String token = settings.getString(appTokenKey, null);
-                    FCMTokenContoller fcmTokenContoller = ((MuzimaApplication) getApplicationContext()).getFCMTokenController();
-
-                    String pseudoDeviceId = generatePseudoDeviceId();
-                    String serial = "UNKNOWN";
-
-                    try {
-                        serial = Build.class.getField("SERIAL").get(null).toString();
-                        fcmTokenContoller.sendTokenToServer(token, ((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getSystemId(), pseudoDeviceId, serial, Build.MODEL);
-                    } catch (IOException e) {
-                        Log.e(getClass().getSimpleName(), "Exception thrown while sending token to server", e);
-                    } catch (IllegalAccessException e) {
-                        Log.e(getClass().getSimpleName(), "Exception thrown while fetching serial ", e);
-                    } catch (NoSuchFieldException e) {
-                        Log.e(getClass().getSimpleName(), "Exception thrown while fetching serial ", e);
-                    }
-                }
                 List<String> uuids = extractLocationsUuids();
                 if (!uuids.isEmpty()) {
                     MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();

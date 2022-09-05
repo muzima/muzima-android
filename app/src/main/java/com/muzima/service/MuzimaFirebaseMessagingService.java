@@ -126,6 +126,12 @@ public class MuzimaFirebaseMessagingService extends FirebaseMessagingService {
                 .putString(appTokenKey, token)
                 .commit();
 
+        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
+        String appTokenKeySyncStatus = this.getResources().getString(R.string.preference_app_token_synced);
+        setting.edit()
+                .putBoolean(appTokenKeySyncStatus, false)
+                .commit();
+
     }
     // [END on_new_token]
 
