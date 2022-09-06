@@ -523,16 +523,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     try {
                         MuzimaSetting encounterLocationIdSetting = muzimaSettingController.getSettingByProperty(DEFAULT_ENCOUNTER_LOCATION_SETTING);
                         if(encounterLocationIdSetting != null) {
-                            Location defaultEncounterLocation = locationController.getLocationById(Integer.valueOf(encounterLocationIdSetting.getValueString()));
-                            if(defaultEncounterLocation != null){
-                                Context context = getApplicationContext();
-                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                                Resources resources = context.getResources();
-                                String key = resources.getString(R.string.preference_default_encounter_location);
+                            if(encounterLocationIdSetting.getValueString() != null) {
+                                Location defaultEncounterLocation = locationController.getLocationById(Integer.valueOf(encounterLocationIdSetting.getValueString()));
+                                if (defaultEncounterLocation != null) {
+                                    Context context = getApplicationContext();
+                                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                                    Resources resources = context.getResources();
+                                    String key = resources.getString(R.string.preference_default_encounter_location);
 
-                                preferences.edit()
-                                        .putString(key, String.valueOf(defaultEncounterLocation.getId()))
-                                        .apply();
+                                    preferences.edit()
+                                            .putString(key, String.valueOf(defaultEncounterLocation.getId()))
+                                            .apply();
+                                }
                             }
                         }
                     } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
