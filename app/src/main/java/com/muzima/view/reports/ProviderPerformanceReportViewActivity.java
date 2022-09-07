@@ -122,9 +122,9 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
                         datasetMap.put(datasetId,datasetJsonArray);
                     } else {
                         // ToDo: delete this dummy dataset stub
-                        String dataset = "[{\"providerSystemId\": \"admin\",\"providerName\": \"Super User\",\"patientsAllocated\": 40,\"patientsVisited\": 20,\"patientsReturned\": 5}," +
-                                "{\"providerSystemId\": \"3-4\",\"providerName\": \"James Mwai\",\"patientsAllocated\": 30,\"patientsVisited\": 7,\"patientsReturned\": 1}," +
-                                "{\"providerSystemId\": \"4-10\",\"providerName\": \"Agwero Chaplin\",\"patientsAllocated\": 20,\"patientsVisited\": 19,\"patientsReturned\": 1}]";
+                        String dataset = "[{\"startDate\": \"1st July\",\"endDate\": \"31st July 2022\",\"providerSystemId\": \"admin\",\"providerName\": \"Super User\",\"patientsAllocated\": 40,\"patientsVisited\": 20,\"patientsReturned\": 5}," +
+                                "{\"startDate\": \"1st July\",\"endDate\": \"31st July 2022\",\"providerSystemId\": \"3-4\",\"providerName\": \"James Mwai\",\"patientsAllocated\": 30,\"patientsVisited\": 7,\"patientsReturned\": 1}," +
+                                "{\"startDate\": \"1st July\",\"endDate\": \"31st July 2022\",\"providerSystemId\": \"4-10\",\"providerName\": \"Agwero Chaplin\",\"patientsAllocated\": 20,\"patientsVisited\": 19,\"patientsReturned\": 1}]";
                         datasetJsonArray = parseDataset(dataset);
                         datasetMap.put(datasetId,datasetJsonArray);
                     }
@@ -153,6 +153,8 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
                     reportStatistic.setSummaryColorCode(template.get("colorCode").toString());
                     reportStatistic.setProviderName(providerDataset.get("providerName").toString());
                     reportStatistic.setProviderId(providerDataset.get("providerSystemId").toString());
+                    reportStatistic.setStartDate(providerDataset.get("startDate").toString());
+                    reportStatistic.setEndDate(providerDataset.get("endDate").toString());
 
                     Random rnd = new Random();
                     int color = Color.argb(255, 128+rnd.nextInt(120), 128+rnd.nextInt(120), 128+rnd.nextInt(120));
