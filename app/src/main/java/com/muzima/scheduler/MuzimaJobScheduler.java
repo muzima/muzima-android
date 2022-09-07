@@ -13,6 +13,7 @@ package com.muzima.scheduler;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.NOTIFICATION_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.ONLINE_ONLY_MODE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
@@ -52,6 +53,7 @@ import com.muzima.api.model.User;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.FCMTokenController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaSettingController;
@@ -106,6 +108,7 @@ public class MuzimaJobScheduler extends JobService {
     private String pseudoDeviceId;
     private String username;
     private SetupConfigurationTemplate configBeforeConfigUpdate;
+    private FCMTokenController fcmTokenController;
 
     @Override
     public void onCreate() {
@@ -114,6 +117,7 @@ public class MuzimaJobScheduler extends JobService {
         muzimaSettingController = muzimaApplication.getMuzimaSettingController();
         muzimaSynService = muzimaApplication.getMuzimaSyncService();
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
+        fcmTokenController = muzimaApplication.getFCMTokenController();
         pseudoDeviceId = generatePseudoDeviceId();
         username = muzimaApplication.getAuthenticatedUserId();
         authenticatedUser = muzimaApplication.getAuthenticatedUser();
@@ -478,6 +482,12 @@ public class MuzimaJobScheduler extends JobService {
                         Log.e(getClass().getSimpleName(), "Encountered Exception while fetching setting ", e);
                     } catch (LocationController.LocationLoadException e) {
                         Log.e(getClass().getSimpleName(), "Encountered Exception while fetching location ", e);
+                    }
+                }else if(muzimaSetting.getProperty().equals(NOTIFICATION_FEATURE_ENABLED_SETTING)){
+                    try {
+                        fcmTokenController.sendTokenToServer();
+                    } catch (IOException e) {
+                        Log.e(getClass().getSimpleName(), "Encountered Exception while sending token to server ", e);
                     }
                 }
             }

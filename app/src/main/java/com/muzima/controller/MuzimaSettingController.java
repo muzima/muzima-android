@@ -232,7 +232,12 @@ public class MuzimaSettingController {
             } else {
                 settingService.saveSetting(setting);
             }
-        } catch (IOException | NullPointerException | ParseException e) {
+
+            if(setting.getProperty().equals(NOTIFICATION_FEATURE_ENABLED_SETTING) && getSettingByProperty(NOTIFICATION_FEATURE_ENABLED_SETTING).getValueBoolean()){
+                muzimaApplication.getFCMTokenController().sendTokenToServer();
+            }
+
+        } catch (IOException | NullPointerException | ParseException | MuzimaSettingFetchException e) {
             throw new MuzimaSettingSaveException(e);
         }
     }

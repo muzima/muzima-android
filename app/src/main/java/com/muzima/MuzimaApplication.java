@@ -43,7 +43,7 @@ import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
-import com.muzima.controller.FCMTokenContoller;
+import com.muzima.controller.FCMTokenController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
@@ -116,7 +116,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private RelationshipController relationshipController;
     private PersonController personController;
     private MinimumSupportedAppVersionController minimumSupportedAppVersionController;
-    private FCMTokenContoller fcmTokenContoller;
+    private FCMTokenController fcmTokenController;
     private ReportDatasetController reportDatasetController;
     private AppUsageLogsController appUsageLogsController;
     private MuzimaTimer muzimaTimer;
@@ -627,15 +627,15 @@ public class MuzimaApplication extends MultiDexApplication {
         return executorService;
     }
 
-    public FCMTokenContoller getFCMTokenController() {
-        if (fcmTokenContoller == null) {
+    public FCMTokenController getFCMTokenController() {
+        if (fcmTokenController == null) {
             try {
-                fcmTokenContoller = new FCMTokenContoller(muzimaContext.getService(NotificationTokenService.class));
+                fcmTokenController = new FCMTokenController(muzimaContext.getService(NotificationTokenService.class), this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        return fcmTokenContoller;
+        return fcmTokenController;
     }
 
     public ReportDatasetController getReportDatasetController() {
