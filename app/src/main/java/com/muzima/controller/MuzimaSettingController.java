@@ -529,7 +529,7 @@ public class MuzimaSettingController {
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not fetch Historical Data Tab setting");
         }
-        return false;
+        return true;
     }
 
     public Boolean isDisallowServerPatientSearch() {
