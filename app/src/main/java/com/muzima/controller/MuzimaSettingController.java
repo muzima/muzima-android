@@ -54,6 +54,7 @@ import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_FORMS_IN_CON
 import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CLIENT_SUMMARY_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GEOMAPPING_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.HISTORICAL_DATA_TAB_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.OBS_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
 import static com.muzima.util.Constants.ServerSettings.ONLINE_ONLY_MODE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
@@ -516,6 +517,19 @@ public class MuzimaSettingController {
             Log.e(getClass().getSimpleName(), "Obs Listing setting is missing on this server");
         }
         return false;
+    }
+
+    public Boolean isHistoricalDataTabEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(HISTORICAL_DATA_TAB_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Historical Data Tab setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Could not fetch Historical Data Tab setting");
+        }
+        return true;
     }
 
     public Boolean isDisallowServerPatientSearch() {

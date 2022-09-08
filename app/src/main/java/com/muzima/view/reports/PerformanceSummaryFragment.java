@@ -57,11 +57,11 @@ public class PerformanceSummaryFragment extends Fragment {
             if(StringUtils.equals(statistic.getProviderId(), loggedInUserSystemId)) {
                 greeting1.setText(getString(R.string.hello_general) +" "+ statistic.getProviderName());
                 greeting1.setVisibility(View.VISIBLE);
-                greeting2.setText("Your performance between XXX and YYY"); //ToDo: To be translated once the text is clarified/dates fitted in
+                greeting2.setText(getString(R.string.hint_your_performance, statistic.getStartDate(),statistic.getEndDate()));
                 statisticsSummaryTitle.setText(R.string.general_your_statistics);
             } else {
                 greeting1.setVisibility(View.GONE);
-                greeting2.setText("Performance summary for "+statistic.getProviderName()+" between XXX and YYY"); //ToDo: To be translated once the text is clarified/dates fitted in
+                greeting2.setText(getString(R.string.hint_their_performance, statistic.getProviderName(), statistic.getStartDate(), statistic.getEndDate()));
                 statisticsSummaryTitle.setText(R.string.general_their_statistics);
             }
             ImageView avatar = view.findViewById(R.id.main_avatar_image_view);

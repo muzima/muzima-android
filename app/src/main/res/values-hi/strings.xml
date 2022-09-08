@@ -7,51 +7,42 @@
   ~ with additional health care disclaimer.
   ~ If the user is an entity intending to commercialize any application that uses
   ~ this code in a for-profit venture, please contact the copyright holder.
--->
-<resources>
+--><resources>
     <string name="SHR_card_text">SHR कार्ड</string>
-
     <string name="add_individual_observation_text">व्यक्तिगत अवलोकन जोड़ें</string>
-
     <string name="app_name">mUzima</string>
+    <string name="app_sub_title">स्वास्थ्य प्रदाताओं के लिए</string>
     <string name="app_title">स्वास्थ्य प्रदाताओं के लिए mUzima</string>
-
+    <string name="app_version">एप्लिकेशन वेरीज़न</string>
     <string name="ask_help">मदद मांगना</string>
-
+    <string name="assignment_form_not_downloaded_warning">ऐसा लगता है कि असाइनमेंट फ़ॉर्म डाउनलोड नहीं हुआ है, कृपया पुष्टि करें कि यह डाउनलोड हो गया है या व्यवस्थापक से संपर्क करें।</string>
+    <string name="assignment_form_uuid_missing_warning">क्षमा करें, असाइनमेंट फॉर्म सेट नहीं किया गया है। कृपया व्यवस्थापक से संपर्क करें।</string>
     <string name="autocomplete_server_not_found">सर्वर अगम्य है! \n कृपया अपने डिवाइस को कनेक्ट करें और फिर से प्रयास करें या एक नया व्यक्ति बनाएं</string>
-
     <string name="captured_date">कैप्चर की गई तारीख:</string>
-
     <string name="change_settings">सेटिंग्स बदले</string>
-
     <string name="client_registration_question_text">क्या आप mUzima में क्लाइंट रजिस्टर करना चाहेंगे?</string>
-
     <string name="complex_obs">जटिल अवलोकन</string>
-
     <string name="concept_description">संकल्पना विवरण</string>
     <string name="concept_details">संकल्पना विवरण</string>
     <string name="concept_name">संकल्पना नाम:</string>
-
     <string name="confirm_create_patient_from_person">यह इस व्यक्ति को ग्राहक के रूप में पंजीकृत करेगा। क्या आप वाकई ऐसा करना चाहते हैं?</string>
     <string name="confirm_duplicate_form_data_save">डुप्लीकेट फॉर्म डेटा को सेव करें</string>
     <string name="confirm_patient_id_exists">क्या क्लाइंट के पास पहले से आईडी मौजूद है</string>
-
+    <string name="contact_us">संपर्क करें</string>
     <string name="date_general">तारीख</string>
     <string name="date_temp">8 जून</string>
-
+    <string name="delete_individual_obs">व्यक्तिगत टिप्पणियों को हटाना</string>
     <string name="downloaded_reports">डाउनलोड की गई रिपोर्ट</string>
-
     <string name="downloading_cohorts_text">समूह डाउनलोड करना</string>
     <string name="downloading_forms">फॉर्म डाउनलोड करना</string>
-
     <string name="encounter_date">एनकाउंटर की तारीख:</string>
     <string name="encounter_details">एनकाउंटर विवरण</string>
     <string name="encounter_location">एनकाउंटर स्थान:</string>
     <string name="encounter_type">एनकाउंटर प्रकार:</string>
-
     <string name="enter_concept_name_text">संकल्पना नाम दर्ज करें …</string>
     <string name="enter_location_name">स्थान का नाम दर्ज करें …</string>
     <string name="enter_provider_name_hint">प्रदाता नाम दर्ज करें …</string>
+    <string name="erro_coded_concepts_not_supported">अमान्य कोडित अवधारणाएं समर्थित नहीं हैं</string>
     <string name="error_audio_chose_activity_find">त्रुटि: ऑडियो चुनने के लिए गतिविधि नहीं मिली</string>
     <string name="error_audio_play_activity_find">त्रुटि: ऑडियो चलाने के लिए गतिविधि नहीं मिली</string>
     <string name="error_audio_record_activity_find">त्रुटि: ऑडियो रिकॉर्डिंग के लिए गतिविधि नहीं मिली</string>
@@ -101,10 +92,13 @@
     <string name="error_patient_repo_fetch">स्थानीय रेपो से ग्राहकों को लाने के दौरान कुछ गलत हुआ</string>
     <string name="error_patient_report_fetch">स्थानीय रेपो से ग्राहक रिपोर्ट प्राप्त करते समय कुछ गलत हो गया</string>
     <string name="error_patient_search">क्लाइंट को खोजते समय कुछ गड़बड़ हुई</string>
+    <string name="error_policy_not_accepted">आगे बढ़ने के लिए नीति विवरण स्वीकार करें</string>
     <string name="error_provider_download">प्रदाताओं को डाउनलोड नहीं किया जा सका</string>
     <string name="error_provider_fetch">स्थानीय रेपो से प्रदाताओं को लाने के दौरान कुछ गलत हुआ</string>
     <string name="error_relationship_load">रिश्ते लोड नहीं किए जा सके</string>
     <string name="error_relationship_type_load">संबंध प्रकार लोड नहीं किए जा सके</string>
+    <string name="error_report_dataset_download">रिपोर्ट डेटासेट डाउनलोड नहीं कर सका</string>
+    <string name="error_report_dataset_load">प्रपत्र के लिए रिपोर्ट डेटासेट लोड करते समय एक त्रुटि हुई</string>
     <string name="error_server_connection_unavailable">सर्वर पहुँच से बाहर</string>
     <string name="error_server_url_invalid">अमान्य सर्वर URL</string>
     <string name="error_settings_download">सेटिंग्स डाउनलोड नहीं कर सका</string>
@@ -114,51 +108,88 @@
     <string name="error_tag_fetch">स्थानीय रेपो से टैग प्राप्त करते समय कुछ गलत हो गया</string>
     <string name="error_username_invalid_format">उपयोगकर्ता नाम में अमान्य वर्ण। इन्हें अनुमति नहीं है:%s</string>
     <string name="error_wizard_interrupted">विज़ार्ड बाधित हो गया था, कृपया लॉगआउट करें और विज़ार्ड को फिर से चलाएँ।</string>
-
     <string name="failure_obtain_smartcard_record">कार्ड पर लिखने के लिए स्मार्टकार्ड रिकॉर्ड प्राप्त नहीं किया जा सका।</string>
     <string name="failure_writing_smartcard">स्मार्ट कार्ड डेटा लिखने में विफल।</string>
-
     <string name="feedback_header">कृपया हमें अपनी टिप्पणियाँ और प्रतिक्रिया भेजें</string>
     <string name="feedback_hint">आपके मन में क्या चल रहा है?</string>
     <string name="feedback_rating_question">MUzima App का उपयोग करना कितना आसान है?</string>
-
     <string name="fill_out_forms_for_a_patient_general">एक मरीज के लिए फॉर्म भरें</string>
-
     <string name="form_encounter_date">एनकाउंटर की तारीख</string>
     <string name="form_encounter_location">मुठभेड़ स्थान</string>
     <string name="form_encounter_provider">एनकाउंटर करने वाला</string>
-
+    <string name="forms_general_sort_by">प्रपत्रों को क्रमबद्ध करें</string>
     <string name="gender_image_content_description">लिंग छवि</string>
-
+    <string name="general_about_muzima">mUzima . के बारे में</string>
     <string name="general_accept">स्वीकार करना</string>
     <string name="general_add">जोड़ना</string>
+    <string name="general_add_reading">पढ़ना जोड़ें</string>
+    <string name="general_add_single_element">एकल तत्व जोड़ें</string>
+    <string name="general_address">पता:</string>
     <string name="general_alert">चेतावनी!</string>
+    <string name="general_all">सभी</string>
+    <string name="general_all_clients">सभी ग्राहक</string>
+    <string name="general_already_assigned">पहले से ही असाइन किया गया</string>
     <string name="general_application_version">संस्करण %1$s</string>
+    <string name="general_available_online">ऑनलाइन मौजूद है</string>
+    <string name="general_awaiting_assignment">असाइनमेंट की प्रतीक्षा में</string>
     <string name="general_cancel">रद्द करना</string>
+    <string name="general_card_read_failed_msg">कार्ड पठन विफल।</string>
     <string name="general_caution">सावधान!</string>
     <string name="general_client_list">ग्राहक सूची</string>
     <string name="general_client_register">ग्राहक रजिस्टर करें</string>
     <string name="general_clients">ग्राहकों</string>
+    <string name="general_clinical_summary">नैदानिक सारांश</string>
+    <string name="general_clinical_summary_description">यह फीचर ओपनएमआरएस रिपोर्टिंग मॉड्यूल का उपयोग एचटीएमएल रिपोर्ट्स को डिजाइन और जेनरेट करने के लिए करता है, जिन्हें बाद में ऐप पर रेंडर किया जाता है।</string>
     <string name="general_close">बंद करे</string>
+    <string name="general_cohort_management">समूह प्रबंधन</string>
+    <string name="general_cohort_management_description">यह सुविधा मोबाइल डिवाइस पर विभिन्न रोगी या क्लाइंट समूहों के प्रबंधन की अनुमति देती है।</string>
     <string name="general_cohorts">समूह</string>
     <string name="general_concepts">अवधारणाओं</string>
+    <string name="general_consent_date">सहमति डेटा:</string>
+    <string name="general_data_collection">आंकड़ा संग्रहण</string>
+    <string name="general_data_collection_tools">डेटा संग्रह उपकरण</string>
+    <string name="general_data_collection_tools_description">mUzima डेटा एकत्र करने के लिए आसान-से-विकसित वेब-आधारित रूपों का उपयोग करता है जिसे आसानी से OpenMRS में प्रसारित और संग्रहीत किया जा सकता है।</string>
     <string name="general_date">तारीख</string>
     <string name="general_days_character">दि</string>
     <string name="general_delete">हटाएं</string>
     <string name="general_description_unavailable">कोई वर्णन उपलब्ध नहीं</string>
+    <string name="general_display_all">सभी प्रदर्शित करें</string>
     <string name="general_done">किया हुआ</string>
     <string name="general_download">डाउनलोड</string>
+    <string name="general_downloaded">डाउनलोड</string>
     <string name="general_draft">प्रारूप</string>
+    <string name="general_enter_value_to_save">बचाने के लिए मान दर्ज करें</string>
+    <string name="general_error_resolutions">त्रुटि समाधान</string>
+    <string name="general_error_resolutions_description">mUzima मोबाइल डिवाइस पर डुप्लिकेट फॉर्म डेटा प्रविष्टि को रोकता है और डेटा प्रोसेसिंग के दौरान OpenMRS में त्रुटियों का समाधान करता है।</string>
     <string name="general_fail">विफल</string>
     <string name="general_failure">असफलता</string>
     <string name="general_feedback">प्रतिपुष्टि</string>
     <string name="general_filling_forms">फॉर्म भरना</string>
+    <string name="general_filter_by">द्वारा फ़िल्टर किया गया</string>
+    <string name="general_filtered_list">फ़िल्टर की गई सूची</string>
     <string name="general_finish">समाप्त</string>
     <string name="general_form">प्रपत्र</string>
+    <string name="general_form_management">प्रपत्र प्रबंधन</string>
+    <string name="general_form_management_description">mUzima ऐप को फिर से इंस्टॉल करने या फिर से शुरू करने की आवश्यकता के बिना ऐप पर नए फॉर्म को आसानी से डाउनलोड और अपडेट करने में सक्षम बनाता है।</string>
     <string name="general_forms">फॉर्म</string>
+    <string name="general_geomapping">जियोमैपिंग</string>
+    <string name="general_geomapping_description">रोगी जीपीएस निर्देशांक को आसानी से पकड़ने और रिकॉर्ड करने की क्षमता लाता है, फिर सीएचवी को बाद की यात्राओं पर दिशा देता है।</string>
     <string name="general_get_directions">दिशा - निर्देश प्राप्त करें</string>
+    <string name="general_has_sexual_partner">यौन साथी है</string>
     <string name="general_help">सहायता</string>
+    <string name="general_historical_data">ऐतिहासिक डेटा</string>
+    <string name="general_historical_data_view">ऐतिहासिक डेटा दृश्य</string>
+    <string name="general_historical_data_view_description">मुज़िमा में रोगियों या ग्राहकों के ऐतिहासिक डेटा को पुनः प्राप्त करने और देखने के लिए आसान और कुशल उपयोगकर्ता के अनुकूल तंत्र है।</string>
+    <string name="general_hiv_test">एचआईवी परीक्षण तिथि</string>
+    <string name="general_home">घर</string>
+    <string name="general_in_ccr">सीसीआर</string>
+    <string name="general_in_hiv_care">एचआईवी देखभाल:</string>
+    <string name="general_label_sort_by_name">नाम द्वारा क्रमबद्ध करें</string>
+    <string name="general_label_sort_status">स्थिति के आधार पर छाँटें</string>
     <string name="general_large">विशाल</string>
+    <string name="general_last_consent_date">अंतिम सहमति तिथि:</string>
+    <string name="general_launching_map_message">नक्शा लॉन्च किया जा रहा है, कृपया प्रतीक्षा करें</string>
+    <string name="general_leaderboard">लीडरबोर्ड</string>
     <string name="general_load">भार</string>
     <string name="general_loading_relationships">रिश्ते अभी भी लोड हो रहे हैं</string>
     <string name="general_locations">स्थान</string>
@@ -166,6 +197,12 @@
     <string name="general_logout">लॉग आउट</string>
     <string name="general_medium">मध्यम</string>
     <string name="general_months_character">म</string>
+    <string name="general_multiple_cases_description">मुज़िमा नैदानिक सुविधाओं के भीतर और बाहर, किसी भी नैदानिक उपयोग के मामलों का समर्थन करने के लिए आसानी से अनुकूलन योग्य है।</string>
+    <string name="general_multiple_languages">कई भाषाएं</string>
+    <string name="general_multiple_languages_description">मुज़िमा विभिन्न भाषाओं में उपयोग के लिए बॉक्स के बाहर स्थानीयकरण समर्थन प्रदान करता है ताकि उपयोग के और लचीलेपन की अनुमति मिल सके।</string>
+    <string name="general_multiple_themes">एकाधिक थीम</string>
+    <string name="general_multiple_themes_description">मुज़िमा को दो थीम पर शिप किया गया है: डार्क थीम (ब्लैक पर व्हाइट) और लाइट थीम (ब्लैक ऑन व्हाइट)।</string>
+    <string name="general_multiple_use_cases">एकाधिक उपयोग के मामले</string>
     <string name="general_next">आगे</string>
     <string name="general_no">नहीं</string>
     <string name="general_not_available_text">उपलब्ध नहीं है</string>
@@ -173,41 +210,68 @@
     <string name="general_notifications">अधिसूचनाएं</string>
     <string name="general_observations">अवलोकन</string>
     <string name="general_ok">ठीक</string>
+    <string name="general_online_mode">ऑनलाइन मोड</string>
+    <string name="general_opening_card_reader">कार्ड रीडर खोलना</string>
+    <string name="general_openmrs_compatibility">ओपनएमआरएस संगतता</string>
+    <string name="general_openmrs_compatibility_description">mUzima को OpenMRS के mHealth एक्सटेंशन के रूप में डिज़ाइन किया गया था। OpenMRS को कई देशों में राष्ट्रीय स्तर पर तैनात किया गया है।</string>
+    <string name="general_or_search_by">या इसके द्वारा खोजें:</string>
     <string name="general_other">अन्य</string>
     <string name="general_password">पासवर्ड</string>
     <string name="general_patient_registration">ग्राहक पंजीकरण</string>
+    <string name="general_performance_comparison">प्रदर्शन तुलना</string>
     <string name="general_person_create">व्यक्ति बनाएँ</string>
+    <string name="general_phone_number">फ़ोन नंबर:</string>
+    <string name="general_policy_title">उपयोग नीतियां</string>
+    <string name="general_preferred_testing_location">पसंदीदा परीक्षण स्थान:</string>
     <string name="general_progress_message">इसमें कुछ समय लग सकता है</string>
     <string name="general_providers">प्रदाताओं</string>
+    <string name="general_reading">अध्ययन</string>
+    <string name="general_registration_form_missing_message">पंजीकरण फॉर्म गुम। कृपया व्यवस्थापक से संपर्क करें</string>
     <string name="general_relationship">संबंध</string>
+    <string name="general_relationship_management">संबंध प्रबंधन</string>
+    <string name="general_relationship_management_description">स्वास्थ्य सेवा के क्षेत्र में, एक रिश्ते का उपयोग दो लोगों को जोड़ने/जुड़ाने के लिए किया जाता है जिनकी देखभाल आपस में जुड़ी हो सकती है।</string>
     <string name="general_relationships">रिश्तों</string>
+    <string name="general_reports">रिपोर्टों</string>
+    <string name="general_reset">रीसेट</string>
+    <string name="general_result">परिणाम:</string>
     <string name="general_retry">पुन: प्रयास करें</string>
     <string name="general_save">सहेजें</string>
     <string name="general_saving_forms">फॉर्म सहेजना</string>
+    <string name="general_search_cohorts">समूह खोजें</string>
+    <string name="general_search_forms">खोज प्रपत्र</string>
+    <string name="general_search_patient">रोगी खोजें</string>
     <string name="general_searching">खोज कर रहे है…</string>
+    <string name="general_security">सुरक्षा</string>
+    <string name="general_security_description">मुज़िमा पासवर्ड लॉगिन, एन्क्रिप्शन, सुरक्षित डेटा ट्रांसमिशन, समयबद्ध उपयोगकर्ता लॉगआउट सहित सुरक्षा सुविधाएँ प्रदान करता है।</string>
+    <string name="general_selected">गिने चुने</string>
     <string name="general_server">सर्वर</string>
     <string name="general_settings">समायोजन</string>
+    <string name="general_setup_completed_message">सेटअप पूर्ण</string>
     <string name="general_skip">छोड़ें</string>
     <string name="general_small">छोटा</string>
+    <string name="general_sort_by_name">नाम से</string>
+    <string name="general_sort_by_status">स्थिति के अनुसार</string>
+    <string name="general_sync_service_already_running">मुज़िमा सिंक सेवा पहले से चल रही है…</string>
     <string name="general_tags">लेबल</string>
+    <string name="general_testing_date">परीक्षा की तारीख:</string>
+    <string name="general_testing_sector">परीक्षण क्षेत्र:</string>
+    <string name="general_their_statistics">उनके आंकड़ेे</string>
     <string name="general_upload">अपलोड</string>
     <string name="general_username">उपयोगकर्ता नाम</string>
     <string name="general_view_encounter">मुठभेड़ देखें</string>
     <string name="general_welcome">स्वागत हे</string>
+    <string name="general_works_offline">ऑफ़लाइन काम करता है</string>
+    <string name="general_works_offline_description">मुज़िमा ऑनलाइन और ऑफलाइन दोनों मोड में पूरी तरह से काम करता है। यह डिवाइस के ऑफ़लाइन होने पर भी डेटा संग्रह और समीक्षाओं की अनुमति देता है।</string>
     <string name="general_years_character">य</string>
     <string name="general_yes">हाँ</string>
-
+    <string name="general_your_statistics">आपके आंकड़े</string>
     <string name="get_more">सर्वर से अधिक</string>
-
     <string name="header_muzima_category">mUzima सेटिंग्स</string>
     <string name="header_openmrs_category">OpenMRS सेटिंग्स</string>
     <string name="header_provider_location_category">प्रदाता / स्थान सेटिंग्स</string>
-
     <string name="hello_general">नमस्ते</string>
-
     <string name="help_center">सहायता केंद्र</string>
     <string name="help_general">सहायता!</string>
-
     <string name="hint_audio_caption">कृपया ऑडियो के लिए एक कैप्शन दर्ज करें</string>
     <string name="hint_audio_record">ऑडियो रिकॉर्ड करें या चुनें</string>
     <string name="hint_authentication_progress">प्रमाणित कर रहे है …</string>
@@ -264,6 +328,7 @@
     <string name="hint_phone_number_validation_failure">अवैध फोन नंबर। कृपया जाँच करें और फिर से दर्ज करें</string>
     <string name="hint_provider_not_set">आपके पास प्रदाता अधिकार नहीं हैं या आपका प्रदाता डेटा डाउनलोड नहीं किया गया है, कृपया प्रदाता जोड़ें विकल्प का उपयोग करें।</string>
     <string name="hint_real_time_sync">डेटा का स्वचालित सिंक्रनाइज़ेशन सक्षम करें</string>
+    <string name="hint_real_time_sync_always_on">ऑनलाइन मोड में स्वचालित सिंक हमेशा चालू रहता है।</string>
     <string name="hint_repeating_section_minimum_repeats_validation_failure">न्यूनतम दोहराना संतुष्ट नहीं हुआ। कम से कम चाहिए</string>
     <string name="hint_reports_unavailable">कृपया सभी फ़ॉर्म सूची से रिपोर्ट चुनें और डाउनलोड पर क्लिक करें</string>
     <string name="hint_require_medical_record_number">पंजीकरण के दौरान ग्राहक के मेडिकल रिकॉर्ड नंबर की आवश्यकता होती है</string>
@@ -276,18 +341,26 @@
     <string name="hint_set_default_encounter_location_for_SHR">कृपया डिफ़ॉल्ट मुठभेड़ स्थान सेट करें ताकि नया कार्ड लिखने में सक्षम हो</string>
     <string name="hint_setting_refresh">क्या आप इस सेटिंग को सर्वर से पुनः डाउनलोड करना चाहते हैं?</string>
     <string name="hint_switch_location_on">कृपया सेटिंग्स में स्थान पर स्विच करें।</string>
+    <string name="hint_their_performance">%s और %s . के बीच %s के लिए प्रदर्शन सारांश</string>
     <string name="hint_username_prompt">कृपया उपयोगकर्ता नाम दर्ज करें</string>
     <string name="hint_video_caption_prompt">कृपया वीडियो के लिए एक कैप्शन दर्ज करें</string>
     <string name="hint_video_record">वीडियो रिकॉर्ड करें या चुनें</string>
     <string name="hint_write_SHR_to_card">क्या आप कार्ड में साझा स्वास्थ्य रिकॉर्ड लिखना चाहते हैं?</string>
-
+    <string name="hint_your_performance">%s और %s . के बीच आपका प्रदर्शन</string>
     <string name="how_to_general">कैसे:</string>
     <string name="individual_obs">व्यक्तिगत अवलोकन</string>
     <string name="individual_obs_description">व्यक्तिगत अवलोकन</string>
-
+    <string name="info_accept_all">सभी स्वीकार करो</string>
+    <string name="info_agree_to_muzima_license_and_disclaimer">मुज़िमा लाइसेंस और अस्वीकरण के लिए सहमत हों</string>
+    <string name="info_agree_to_muzima_privacy_policy_statement">मुज़िमा गोपनीयता नीति वक्तव्य से सहमत हों</string>
+    <string name="info_agree_to_muzima_terms_and_conditions">मुज़िमा नियम और शर्तों से सहमत हों</string>
     <string name="info_authentication_in_progress">प्रमाणीकरण प्रगति में …</string>
     <string name="info_background_data_sync_started">पृष्ठभूमि में डेटा सिंक करना</string>
+    <string name="info_by_abstract">सार द्वारा</string>
+    <string name="info_by_encounter">मुठभेड़ द्वारा</string>
+    <string name="info_by_type">प्रकार से</string>
     <string name="info_client_local_search_not_found">किसी भी ग्राहक ने आपकी खोज का स्थानीय रूप से मिलान नहीं किया। दूरस्थ खोज के लिए कम से कम 3 वर्ण दर्ज करें।</string>
+    <string name="info_client_local_search_not_found_secondary">हमें आपकी खोज से संबंधित कुछ भी नहीं मिला। सर्वर खोजने का प्रयास करें</string>
     <string name="info_client_remote_search_not_found">सर्वर पर कोई भी क्लाइंट आपकी खोज से मैच नहीं हुआ</string>
     <string name="info_cohort_download">कोहोर्ट्स डाउनलोड करना</string>
     <string name="info_cohort_downloaded">1 कोहोर्ट डाउनलोड किया गया</string>
@@ -299,6 +372,7 @@
     <string formatted="false" name="info_cohorts_downloaded">%d कोहोर्ट डाउनलोड किए गए</string>
     <string formatted="false" name="info_cohorts_patient_download">%d कोहोर्ट के लिए 1 ग्राहक डाउनलोड किया गया</string>
     <string formatted="false" name="info_cohorts_patients_download">%d कोहोर्ट के लिए %d क्लाइंट डाउनलोड किए गए</string>
+    <string name="info_complete_form">असम्बद्ध रूप</string>
     <string name="info_complete_form_unavailable">कोई पूर्ण और गैर समन्वित रूप नहीं</string>
     <string name="info_concept_delete_success">%d अवधारणाओं को सफलतापूर्वक हटा दिया गया !!</string>
     <string name="info_concept_download">संकल्पना डाउनलोड करना</string>
@@ -309,11 +383,12 @@
     <string name="info_convert_person_to_patient">व्यक्ति को रोगी में बदलें</string>
     <string name="info_data_sync_cancelled">mUzima डेटा सिंक रद कर दिया गया था।</string>
     <string name="info_disclaimer">
-        mUzima, Mozilla Public License, v. 2.0 (MPL 2.0) की शर्तों के तहत वितरित किया जाता है. MPL 2.0 लाइसेंस की एक प्रति
+                mUzima, Mozilla Public License, v. 2.0 (MPL 2.0) की शर्तों के तहत वितरित किया जाता है. MPL 2.0 लाइसेंस की एक प्रति
         http://mozilla.org/MPL/2.0/ पर देखी जा सकती है।
         \nmUzima को वारंटी के निम्नलिखित अतिरिक्त अस्वीकरण की शर्तों के तहत भी वितरित किया जाता है और देयता की सीमा।
-        \n<strong> देयता की वारंटी और सीमा का अतिरिक्त अस्वीकरण </strong>
-        संयुक्त राज्य अमेरिका, या किसी अन्य क्षेत्राधिकार में, जहां वे आवेदन कर सकते हैं, वारंटी और देयता की सीमा के अतिरिक्त अस्वीकरण को इसके अलावा MPL 2.0
+        \n
+        <strong> देयता की वारंटी और सीमा का अतिरिक्त अस्वीकरण </strong>
+                संयुक्त राज्य अमेरिका, या किसी अन्य क्षेत्राधिकार में, जहां वे आवेदन कर सकते हैं, वारंटी और देयता की सीमा के अतिरिक्त अस्वीकरण को इसके अलावा MPL 2.0
         के नियमों और शर्तों में शामिल किया गया है:
         \n1. किसी भी प्रकार की कोई वारंटियां उस परिणाम के रूप में नहीं की जाती हैं जो आप कवर किए गए कोड (या कवर किए गए कोड के माध्यम से प्राप्त की गई कोई भी
         जानकारी या सामग्री) पर निर्भा रहने से प्राप्त करेंगे, जिसमें गोपनीयता कानून या विनियम या नैदानिक ​​देखभाल उद्योग के मानकों और प्रोटोकॉल के अनुपालन तक सीमित
@@ -329,6 +404,7 @@
         \n\n3. mUzima को Indiana University, Moi University , और Vanderbilt University Medical Center के ट्रस्टियों का कॉपीराइट प्राप्त है।
         \n\n4. यदि इस एप्लिकेशन का उपयोगकर्ता एक ऐसी इकाई है जो व्यवसायीकरण करने या किसी भी एप्लिकेशन से लाभ कमाने का इरादा रखती है, जो इस कोड का लाभ-साहस
         के उपक्रम में उपयोग करती है, तो उपयोगकर्ता को mUzima.mobile@gmail.com के माध्यम से कॉपीराइट धारक से संपर्क करना होगा।
+    
     </string>
     <string name="info_download_complete">%d स्थिति के साथ डाउनलोड पूर्ण </string>
     <string name="info_downloaded_image">डाउनलोड की गई छवि</string>
@@ -342,6 +418,7 @@
     <string name="info_encounter_unavailable">कोई एनकाउंटर उपलब्ध नहीं है</string>
     <string formatted="false" name="info_encounters_patient_downloaded">1 क्लाइंट के लिए %d एनकाउंटर डाउनलोड किया गया</string>
     <string formatted="false" name="info_encounters_patients_downloaded">%d क्लाइंट के लिए %d एनकाउंटर डाउनलोड किया गया</string>
+    <string name="info_for_health_providers">स्वास्थ्य प्रदाताओं के लिए</string>
     <string formatted="false" name="info_form_data_delete">%d फॉर्म हटाए गए</string>
     <string name="info_form_data_save_success">पूर्ण फॉर्म डेटा सफलतापूर्वक सहेजा गया था।</string>
     <string name="info_form_data_upload_fail">वर्तमान सर्वर में फ़ॉर्म डेटा को सिंक करने में विफल। क्या आप अभी भी जारी रखना चाहते हैं?</string>
@@ -365,8 +442,10 @@
     <string name="info_form_upload_success">फॉर्म सफलतापूर्वक अपलोड किए गए</string>
     <string name="info_forms_downloaded">%d फॉर्म डाउनलोड किए गए</string>
     <string name="info_forms_unavailable">कोई फॉर्म उपलब्ध नहीं है</string>
+    <string name="info_incomplete_form">अपूर्ण प्रपत्र</string>
     <string name="info_incomplete_form_unavailable">कोई अपूर्ण फॉर्म नहीं</string>
     <string name="info_initial_setup_progress">प्रारंभिक सेटअप चल रहा है। कृपया प्रतीक्षा कीजिये…</string>
+    <string name="info_license_and_disclaimer">लाइसेंस और अस्वीकरण</string>
     <string name="info_location_delete_success">%d स्थान सफलतापूर्वक हटा दिए गए</string>
     <string name="info_location_download">स्थान डाउनलोड करना</string>
     <string name="info_location_downloaded">1 स्थान डाउनलोड किया</string>
@@ -383,8 +462,12 @@
     <string name="info_new_observation_download">%d नए अवलोकन डाउनलोड किए गए</string>
     <string formatted="false" name="info_new_observation_download_delete">%d नए अवलोकन और %d निवृत अवलोकन डाउनलोड किए गए</string>
     <string name="info_new_patient_download">%d नए क्लाइंट डाउनलोड किए गए</string>
+    <string name="info_no_client_available">इस डिवाइस पर स्थानीय रूप से कोई क्लाइंट उपलब्ध नहीं है।</string>
     <string name="info_no_client_available_locally">कोई भी ग्राहक स्थानीय रूप से उपलब्ध नहीं है। दूरस्थ खोज के लिए कम से कम 3 वर्ण दर्ज करें या नए ग्राहक पंजीकृत करें</string>
     <string name="info_no_cohort_download">कोई भी सहकर्मी समन्‍वयित नहीं किया गया है</string>
+    <string name="info_no_forms_data_tip">डेटा प्रविष्टि के लिए कोई प्रपत्र कॉन्फ़िगर नहीं किया गया है। डेटा प्रविष्टि प्रपत्र जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
+    <string name="info_no_observation_and_concept_data_tip">कोई अवधारणा कॉन्फ़िगर नहीं की गई है। अवधारणाओं को जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें।</string>
+    <string name="info_no_observation_for_concept_data_tip">कॉन्फ़िगर की गई अवधारणाओं के लिए कोई ऐतिहासिक डेटा मौजूद नहीं है</string>
     <string formatted="false" name="info_notification_download">%d अधिसूचनाएँ डाउनलोड की गईं</string>
     <string name="info_notification_download_in_progress">अधिसूचनाएं डाउनलोड कर रहा है</string>
     <string name="info_notification_unavailable">कोई अधिसूचना उपलब्ध नहीं है</string>
@@ -407,6 +490,7 @@
     <string name="info_patient_reports_fetch_in_progress">पहले से ही रिपोर्ट ला रहे है, अनुरोध को अनदेखा कर दिया</string>
     <string name="info_patient_reports_unavailable">कोई क्लाइंट रिपोर्ट उपलब्ध नहीं है</string>
     <string name="info_person_creation_failure">व्यक्ति का रिकॉर्ड नहीं बना सका</string>
+    <string name="info_privacy_policy_statement">गोपनीयता नीति वक्तव्य</string>
     <string name="info_provider_delete_success">%d प्रदाताओं को सफलतापूर्वक हटा दिया</string>
     <string name="info_provider_download">प्रदाता डाउनलोड हो रहे है</string>
     <string name="info_provider_downloaded">1 प्रदाता को डाउनलोड किया</string>
@@ -420,6 +504,10 @@
     <string formatted="false" name="info_relationships_download_progress">%d क्लाइंट के लिए %d संबंध डाउनलोड किए गए।</string>
     <string formatted="false" name="info_relationships_not_downloaded_progress">%d क्लाइंट के लिए %d संबंध डाउनलोड नहीं हुए हैं।</string>
     <string name="info_relationships_unavailable">कोई संबंध उपलब्ध नहीं है</string>
+    <string name="info_report_dataset_download_in_progress">रिपोर्ट डेटासेट डाउनलोड करना</string>
+    <string name="info_report_dataset_downloaded">डाउनलोड किया गया %d रिपोर्ट डेटासेट</string>
+    <string name="info_report_datasets_not_downloaded">कोई रिपोर्ट डेटासेट डाउनलोड नहीं किया</string>
+    <string name="info_scan_qrcode">सर्वर url को बदलने के लिए qr कोड को स्कैन करें</string>
     <string name="info_session_time_out">आपका सत्र समाप्त हो गया था। आगे बढ़ने के लिए कृपया फिर से लॉग इन करें।</string>
     <string name="info_setting_download_success">सेटिंग सफलतापूर्वक डाउनलोड और अपडेट की गई </string>
     <string name="info_setting_downloaded">1 सेटिंग डाउनलोड हुई</string>
@@ -438,315 +526,7 @@
     <string name="info_submitted_form_data_status_check">हाल ही में प्रस्तुत फॉर्मों की स्थिति की जाँच कर रहे है</string>
     <string name="info_submitted_form_data_status_check_failure">हाल ही में प्रस्तुत फॉर्मों की स्थिति की जाँच नहीं कर सके</string>
     <string name="info_tag_unavailable">कोई टैग उपलब्ध नहीं है</string>
-    <string name="info_update_person_demographics">व्यक्ति जनसांख्यिकी को अपडेट करें</string>
-    <string name="info_url_validate">चरण 1: URL मान्य करना</string>
-    <string name="info_video_chose_activity_unavailable">त्रुटि: वीडियो चुनने के लिए आवेदन नहीं मिला</string>
-    <string name="info_video_play_activity_unavailable">त्रुटि: वीडियो चलाने के लिए आवेदन नहीं मिला</string>
-    <string name="info_video_record_activity_unavailable">त्रुटि: वीडियो रिकॉर्डिंग के लिए आवेदन नहीं मिला</string>
-
-    <string name="initial_setup_for_muzima_general">MUzima के लिए प्रारंभिक सेटअप</string>
-
-    <string name="interactive_help_choose">एक विकल्प चुनें:</string>
-    <string name="interactive_help_header">कृपया हमें बताएं कि हम आपकी कैसे मदद कर सकते हैं</string>
-    <string name="interactive_help_hint">अपना संदेश टाइप करें</string>
-
-    <string name="introduction_to_muzima_general_text">mUzima का परिचय</string>
-
-    <string name="june_8_sample_date">8 जून</string>
-
-    <string name="language_english">अंग्रेज़ी</string>
-    <string name="language_french">फ्रेंच</string>
-    <string name="language_gujarati">गुजराती</string>
-    <string name="language_hindi">हिंदी</string>
-    <string name="language_portuguese">पुर्तगाली</string>
-    <string name="language_swahili">स्वाहिली</string>
-
-    <string formatted="false" name="menu_SHR_data_sync">सिंक SHR डेटा (%d)</string>
-    <string name="menu_all_data_sync">सभी डेटा को सिंक करें</string>
-    <string name="menu_form_back_to_draft">ड्राफ्ट पर वापस जाएं</string>
-
-    <string name="message_feedback_sent">आपके संदेश के लिए धन्यवाद। \n आपकी प्रतिक्रिया हमारे लिए महत्वपूर्ण है।</string>
-    <string name="message_help_sent">संपर्क करने के लिए धन्यवाद। \n हमारी सहायता टीम आपके अनुरोध की जांच करेगी। \n हम जल्द से जल्द आपके पास वापस आएँगे।</string>
-    <string name="message_missing_form_encounter_details_error">प्रदान करना आवश्यक है</string>
-
-    <string name="muzima_training_manual_general">mUzima प्रशिक्षण मैनुअल</string>
-
-    <string name="new_messages_number_text"># नए संदेश</string>
-
-    <string name="no_default_encounter_location">कोई डिफ़ॉल्ट मुठभेड़ स्थान नहीं</string>
-    <string name="no_description_general">कोई विवरण नहीं</string>
-    <string name="no_email_client">इस उपकरण पर कोई ईमेल क्लाइंट स्थापित नहीं किया गया है। \n कृपया एक इंस्टॉल करें और फिर अपनी प्रतिक्रिया दें।</string>
-
-    <string name="number_hashtag_representation">##</string>
-
-    <string name="observation_details">अवलोकन विवरण</string>
-    <string name="observation_value">अवलोकन मूल्य:</string>
-
-    <string name="patient_SHR_search_dialog_title">ग्राहक SHR खोज</string>
-    <string name="patient_SHR_search_title_text">ग्राहक SHR खोज</string>
-
-    <string name="provider_details">प्रदाता विवरण</string>
-    <string name="provider_identifier">प्रदाता पहचानकर्ता:</string>
-    <string name="provider_name">प्रदाता का नाम:</string>
-    <string name="provider_name_general">प्रदाता का नाम</string>
-    <string name="provider_reports_general">प्रदाता रिपोर्ट</string>
-
-    <string name="registering_patient_message_title_text">mUzima में ग्राहक का पंजीकरण …</string>
-
-    <string name="relationship_create_success">संबंध सफलतापूर्वक बना</string>
-    <string name="relationship_delete_fail">सर्वर पर पहले से सहेजे गए संबंध को हटा नहीं सकता। व्यवस्थापक से संपर्क करें</string>
-    <string name="relationship_to_self_error">ग्राहक का खुद से संबंध नहीं हो सकता</string>
-
-    <string name="reply_hint_text">अपना जवाब भेजें</string>
-
-    <string name="sample_date_text">21/02/2018</string>
-
-    <string name="scan_card_id_title">कार्ड आईडी स्कैन करें</string>
-
-    <string name="search_patient_on_server_option_title_text">क्लाइंट स्थानीय रूप से उपलब्ध नहीं है, क्या आप सर्वर पर खोजना चाहेंगे?</string>
-
-    <string name="select_a_registration_form_text">एक पंजीकरण फॉर्म चुनें</string>
-    <string name="select_a_relationship_form_text">एक फार्म का चयन करें</string>
-    <string name="select_default_encounter_location">अपना डिफ़ॉल्ट मुठभेड़ स्थान चुनें</string>
-
-    <string name="send_feedback">प्रतिक्रिया भेजें</string>
-    <string name="send_general_text">संदेश</string>
-
-    <string name="server_side_setup_general">सर्वर साइड सेटअप</string>
-
-    <string name="setting_up_muzima_general_text">MUzima की स्थापना</string>
-
-    <string name="shr_registration">SHR पंजीकरण</string>
-    <string name="shr_registration_description">SHR पंजीकरण डेटा</string>
-
-    <string name="success_writing_smartcard">स्मार्ट कार्ड डेटा सफलतापूर्वक लिखा गया था।</string>
-
-    <string name="tagging_forms">प्रपत्र टैग करना</string>
-
-    <string name="title_about_dashboard_help_html">डैशबोर्ड के बारे में</string>
-    <string name="title_activity_audio">ऑडियो जोड़ें</string>
-    <string name="title_activity_client_reports">ग्राहक रिपोर्ट</string>
-    <string name="title_activity_client_summary">ग्राहक सारांश</string>
-    <string name="title_activity_image">छवि जोड़ें</string>
-    <string name="title_activity_video">वीडियो जोड़ें</string>
-    <string name="title_advanced_setup">उन्नत सेटअप</string>
-    <string name="title_advanced_setup_help_html">MUzima के लिए प्रारंभिक सेटअप</string>
-    <string name="title_advanced_setup_help_video">उन्नत प्रारंभिक सेटअप</string>
-    <string name="title_app_language">भाषा: हिन्दी</string>
-    <string name="title_audio_caption">ऑडियो कैप्शन</string>
-    <string name="title_audio_choose">ऑडियो चुनें</string>
-    <string name="title_audio_record">ध्वनि रिकॉर्ड करें</string>
-    <string name="title_client_location">ग्राहक का स्थान</string>
-    <string name="title_client_location_update">ग्राहक का स्थान अपडेट करें</string>
-    <string name="title_client_notifications">ग्राहक सूचनाएँ</string>
-    <string name="title_client_registration_help_video">ग्राहक पंजीकरण</string>
-    <string name="title_clients_locations">ग्राहक के स्थान</string>
-    <string name="title_cohort_download_help_video">कोहोर्ट डाउनलोड (मांग पर)</string>
-    <string name="title_concept_download_help_video">अवधारणाओं को डाउनलोड करें (मांग पर)</string>
-    <string name="title_data_reset">चरण 3: डेटा रीसेट करना</string>
-    <string name="title_data_synchronize">चरण 2: स्थानीय डेटा को सिंक्रनाइज़ करना</string>
-    <string name="title_default_encounter_location">डिफ़ॉल्ट मुठभेड़ स्थान</string>
-    <string name="title_default_encounter_provider">डिफ़ॉल्ट मुठभेड़ प्रदाता</string>
-    <string name="title_duplicate_form_data_warning">डुप्लिकेट प्रपत्र डेटा चेतावनी</string>
-    <string name="title_enable_gps">GPS सक्षम करें</string>
-    <string name="title_enable_gps_location">स्थान और इंटरनेट कनेक्टिविटी सक्षम करें।</string>
-    <string name="title_enable_shr">SHR सक्षम करें</string>
-    <string name="title_fill_patient_forms_help">क्लाइंट के लिए फॉर्म भरें</string>
-    <string name="title_font_size">फ़ॉन्ट आकार</string>
-    <string name="title_form_auto_save_interval">स्वचालित रूप से सहेजने का अंतराल (मिनट)</string>
-    <string name="title_form_data_complete">असम्बद्ध प्रपत्र डेटा</string>
-    <string name="title_form_data_incomplete">अपूर्ण प्रपत्र डेटा</string>
-    <string name="title_form_download_help_video">प्रपत्र डाउनलोड (मांग पर)</string>
-    <string name="title_general_notifications">सामान्य सूचनाएं</string>
-    <string name="title_gps_location">जीपीएस स्थान</string>
-    <string name="title_guided_setup">निर्देशित सेटअप (अनुशंसित)</string>
-    <string name="title_guided_setup_help_video">मार्गदर्शित प्रारंभिक सेटअप</string>
-    <string name="title_guided_setup_progress">सेटअप प्रगति</string>
-    <string name="title_guided_setup_wizard">मार्गदर्शित सेटअप विज़ार्ड</string>
-    <string name="title_help_video_links">mUzima वीडियो लिंक</string>
-    <string name="title_html_help">सहायता केंद्र</string>
-    <string name="title_image_caption">तस्वीर का शीर्षक</string>
-    <string name="title_image_capture">छवि पर कब्जा</string>
-    <string name="title_image_choose">छवि चुनें</string>
-    <string name="title_initial_setup_guide">mUzima प्रारंभिक सेटअप गाइड</string>
-    <string name="title_install_barcode_scanner">बारकोड स्कैनर स्थापित करें</string>
-    <string name="title_install_psmart">P-Smart ऐप इंस्टॉल करें</string>
-    <string name="title_introduction_video">mUzima का वीडियो परिचय</string>
-    <string name="title_light_mode">डे मोड सक्षम करें</string>
-    <string name="title_local_client_search_help_video">ग्राहक खोज (स्थानीय)</string>
-    <string name="title_location_help">स्थान मदद</string>
-    <string name="title_logo">MuzimaLogo</string>
-    <string name="title_logout_confirm">पुष्टिकरण!</string>
-    <string name="title_manage_concept">संकल्पनाओं को प्रबंधित करें</string>
-    <string name="title_manage_location">स्थानों को प्रबंधित करें</string>
-    <string name="title_manage_provider">प्रदाताओं को प्रबंधित करें</string>
-    <string name="title_media_preview">मीडिया का पूर्वावलोकन करें</string>
-    <string name="title_missing_form_encounter_details_error">लापता एनकाउंटर का विवरण</string>
-    <string name="title_muzima_disclaimer">muzima अस्वीकरण</string>
-    <string name="title_muzima_training_manual">mUzima प्रशिक्षण मैनुअल</string>
-    <string name="title_observations_by_concepts">डेटा प्रकार अनुसार</string>
-    <string name="title_observations_by_encounters">तिथि के अनुसार</string>
-    <string name="title_pick_location">स्थान चुनें</string>
-    <string name="title_provider_help">प्रदाताओं में मदद</string>
-    <string name="title_provider_not_set">प्रदाता के रूप में सेट करने में असमर्थ</string>
-    <string name="title_provider_reports">प्रदाता रिपोर्ट</string>
-    <string name="title_real_time_sync">स्वचालित सिंक</string>
-    <string name="title_require_medical_record_number">चिकित्सा रिकॉर्ड संख्या आवश्यक है</string>
-    <string name="title_search_server">सर्वर खोजें</string>
-    <string name="title_server_client_search_help_video">ग्राहक खोज (सर्वर के सामने)</string>
-    <string name="title_server_side_setup">सर्वर साइड सेटअप</string>
-    <string name="title_session_timeout">सत्र समय समाप्त (मिनट)</string>
-    <string name="title_set_client_location">क्लाइंट स्थान सेट करें</string>
-    <string name="title_setting_refresh">सेटिंग रीफ्रेश करें</string>
-    <string name="title_settings_help_html">mUzima सेटिंग्स</string>
-    <string name="title_setup_method">सेटअप विधि</string>
-    <string name="title_video_caption">वीडियो कैप्शन</string>
-    <string name="title_video_choose">वीडियो चुनें</string>
-    <string name="title_video_record">वीडियो रिकॉर्ड करो</string>
-
-    <string name="to_text">सेवा</string>
-
-    <string name="type_a_message_hint">एक संदेश लिखें</string>
-
-    <string name="video_links_general_text">वीडियो लिंक:</string>
-
-    <string name="warning_auto_save_interval">ऑटो सेव इंटरवल: ऑटो सेव इंटरवल सेट नहीं कर सका। \n कृपया 1 और 120 के बीच मान दर्ज करें।</string>
-    <string name="warning_form_close">फॉर्म बंद करना: यह आपके सभी परिवर्तनों को छोड़ देगा। क्या आप वाकई ऐसा करना चाहते हैं?</string>
-    <string name="warning_form_data_already_exists">यह फॉर्म डेटा पहले से मौजूद क्लाइंट के लिए समान एनकाउंटर तिथि के साथ है।</string>
-    <string name="warning_forms_complete_and_sync">%s में इसके साथ कुछ संबद्ध फॉर्म्स हैं। कृपया एक नया संस्करण डाउनलोड करने से पहले उन रूपों को पूरा और सिंक करें।</string>
-    <string name="warning_incompatible_module">आपका वर्तमान mUzima एप्लिकेशन सर्वर के साथ संगत नहीं है। कृपया अपने व्यवस्थापक से संपर्क करें।</string>
-    <string name="warning_invalid_url_provided">आपके द्वारा प्रदत्त URL अमान्य है</string>
-    <string name="warning_logout_confirm">क्या आप वाकई mUzima ऐप से लॉग आउट करना और बाहर निकलना चाहते हैं?</string>
-    <string name="warning_registration_form_data_delete">आप पंजीकरण डेटा को हटाने वाले हैं। यह डिवाइस पर क्लाइंट रिकॉर्ड को भी हटा देगा। क्या आप निश्चित है?</string>
-    <string name="warning_related_person_missing">कृपया संबंधित व्यक्ति चुनें</string>
-    <string name="warning_relationship_exists">क्लाइंट के पास पहले से ही %s के साथ %s:%s संबंध है</string>
-    <string name="warning_relationship_type_missing">कृपया एक संबंध प्रकार चुनें</string>
-    <string name="warning_session_timeout">सत्र टाइमआउट: सत्र टाइमआउट सेट नहीं हो सका। कृपया 1 और 500 के बीच एक मान दर्ज करें।</string>
-    <string name="warning_setting_download_failure">सेटिंग डाउनलोड या अपडेट नहीं हो सका</string>
-    <string name="warning_switch_server">सर्वर बदली: यह आपके डिवाइस पर मौजूद सभी mUzima डेटा को साफ कर देगा, जिसमें कोई अधूरा फॉर्म भी शामिल है। क्या आप वाकई इस सेटिंग को बदलना चाहते हैं?</string>
-
-    <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
-    <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
-
-    <string name="title_qrcode">क्यू आर संहिता</string>
-    <string name="info_scan_qrcode">सर्वर url को बदलने के लिए qr कोड को स्कैन करें</string>
-    <string name="privacy_policy">
-        mUzima एक मोबाइल एप्लिकेशन है जो स्वास्थ्य पेशेवरों को OpenMRS मेडिकल रिकॉर्ड सिस्टम के विस्तार के रूप में स्वास्थ्य देखभाल डेटा एकत्र करने, प्रबंधित करने और उपयोग करने में सक्षम बनाता है। ऐप को एक ओपन सोर्स एंड यूजर एप्लिकेशन के रूप में बनाया गया है, जो बिना किसी कीमत के प्रदान किया जाता है, और इसका उपयोग करने का इरादा है। यदि आप किसी संगठन के लिए एप्लिकेशन का उपयोग कर रहे हैं, तो आप उस संगठन की ओर से इस गोपनीयता नीति से सहमत हैं। यदि आप किसी अन्य व्यक्ति को सेवाएं, सॉफ़्टवेयर और सामग्री प्रदान करने के लिए एप्लिकेशन का उपयोग कर रहे हैं, तो आप उनकी ओर से इस गोपनीयता नीति से सहमत हैं।
-\nयदि आप या आपका प्रतिनिधित्व करने वाला संगठन इस गोपनीयता नीति के लिए बाध्य होने के लिए सहमत नहीं है, तो आपको मोबाइल एप्लिकेशन का उपयोग नहीं करना चाहिए।
-
-\n\nतृतीय पक्ष सेवाएं
-\nएप्लिकेशन तृतीय-पक्ष सेवाओं का उपयोग करता है जो आपकी पहचान करने के लिए उपयोग की जाने वाली जानकारी एकत्र कर सकती हैं। ऐप द्वारा उपयोग किए जाने वाले तृतीय पक्ष सेवा प्रदाता हैं:
-\nGoogle Play सेवाएं: मुज़िमा मोबाइल एप्लिकेशन एंड्रॉइड ऑपरेटिंग सिस्टम पर चलने के लिए बनाया गया है और इसे मुख्य रूप से Google playstore के माध्यम से वितरित किया जाता है। इस कारण से, आपके द्वारा mUzima मोबाइल एप्लिकेशन का उपयोग Google गोपनीयता नीति द्वारा एंड्रॉइड प्लेटफॉर्म पर Google सेवाओं के उपयोग के साथ बाध्य है, जो यहां उपलब्ध है: https://www.google.com/policies/privacy/
-\nFirebase Crashlytics और analytics: ऐप में किसी त्रुटि के मामले में, जैसे कि एप्लिकेशन क्रैश होना, हम आपके फ़ोन पर Crashlytics डेटा नामक डेटा और जानकारी (तृतीय-पक्ष उत्पादों के माध्यम से) एकत्र करते हैं। इस Crashlytics डेटा में डिवाइस का नाम, ऑपरेटिंग सिस्टम संस्करण, हमारे एप्लिकेशन का उपयोग करते समय ऐप का कॉन्फ़िगरेशन, साथ ही आपके द्वारा एप्लिकेशन के उपयोग का समय और दिनांक जैसी जानकारी शामिल हो सकती है। आपकी सेटिंग के आधार पर एकत्र किए जा सकने वाले अन्य डेटा में स्थान जानकारी शामिल है। इसलिए मुज़िमा मोबाइल एप्लिकेशन का उपयोग यहां उपलब्ध फायरबेस गोपनीयता नीति द्वारा बाध्य है: https://firebase.google.com/support/privacy।
-
-\n\nकुकीज़
-\nकुकीज़ छोटी मात्रा में डेटा वाली फाइलें होती हैं जिनका उपयोग आमतौर पर अनाम विशिष्ट पहचानकर्ताओं के रूप में किया जाता है। ये आपके ब्राउज़र पर आपके द्वारा देखी जाने वाली वेबसाइटों से भेजे जाते हैं और आपके डिवाइस की आंतरिक मेमोरी में संग्रहीत होते हैं।
-
-\n\nmUzima ऐप इन \"कुकीज़\" का स्पष्ट रूप से उपयोग नहीं करता है। हालाँकि, ऐप तीसरे पक्ष के कोड और पुस्तकालयों का उपयोग कर सकता है जो जानकारी एकत्र करने और अपनी सेवाओं को बेहतर बनाने के लिए \"कुकीज़\" का उपयोग करते हैं। आपके पास इन कुकीज़ को स्वीकार या अस्वीकार करने और यह जानने का विकल्प है कि आपके डिवाइस पर कुकी कब भेजी जा रही है। यदि आप कुकीज़ को अस्वीकार करना चुनते हैं, तो आप इस सेवा के कुछ हिस्सों का उपयोग करने में सक्षम नहीं हो सकते हैं।
-
-\n\nजगह की जानकारी
-\nमुज़िमा मोबाइल एप्लिकेशन वैकल्पिक सुविधाओं के साथ आता है जिन्हें डिवाइस के सटीक या अनुमानित स्थान तक पहुंच की आवश्यकता हो सकती है। विशेषताएं हैं:
-\nरिकॉर्डिंग रोगी का पता:
-\nमरीजों के जीपीएस पते सुरक्षित ओपनएमआरएस मेडिकल रिकॉर्ड सिस्टम में संग्रहीत जानकारी के हिस्से के रूप में संग्रहीत किए जा सकते हैं। mUzima रोगी रिकॉर्ड का पता सेट करने की क्षमता प्रदान करता है, ताकि OpenMRS मेडिकल रिकॉर्ड सिस्टम में रिकॉर्ड को अपडेट किया जा सके।
-\nरोगी के पते पर नेविगेट करना:
-\nमुज़िमा जियोमैपिंग सुविधा प्रदान करता है ताकि उपयोगकर्ता/प्रदाता को रोगी के जीपीएस स्थान पर दिशा-निर्देश प्राप्त करने में सक्षम बनाया जा सके (एंड्रॉइड डिवाइस पर Google मानचित्र ऐप के माध्यम से) जैसा कि मेडिकल रिकॉर्ड द्वारा दर्शाया गया है।
-
-\nमोबाइल एप्लिकेशन के माध्यम से एकत्र की गई जीपीएस स्थान की जानकारी पूरी तरह से कार्यान्वयन के भीतर स्थानीयकृत सुविधाओं के लिए है और इसे किसी भी तरह से मुज़िमा या किसी तीसरे पक्ष के साथ साझा नहीं किया जाएगा। यदि आप इसे ऐसा करने की अनुमति देते हैं तो एप्लिकेशन स्थान की जानकारी का उपयोग कर सकता है। जब आप किसी भी समय हमारे एप्लिकेशन का उपयोग करते हैं, तो आप अपनी डिवाइस सेटिंग के माध्यम से स्थान सेवाओं को सक्षम या अक्षम कर सकते हैं। आपका कार्यान्वयन व्यवस्थापक उन वैकल्पिक सुविधाओं को सक्षम या अक्षम कर सकता है जिन्हें एप्लिकेशन सेटिंग के माध्यम से स्थान डेटा की आवश्यकता होती है।
-
-\n\nएक वीडियो का लिंक जो मुज़िमा की जीपीएस सुविधाओं को प्रदर्शित करता है, यहां पाया जा सकता है:
-\nhttps://drive.google.com/file/d/1CiiP6xodoQ55FMJZwBFdnYEhTbP1_jM4/view?usp=sharing.
-
-\n\nसुरक्षा
-\nहम अपने आवेदन में आपके भरोसे को महत्व देते हैं। लेकिन याद रखें कि इंटरनेट पर ट्रांसमिशन का कोई भी तरीका या इलेक्ट्रॉनिक स्टोरेज का तरीका 100% सुरक्षित और विश्वसनीय नहीं है, और हम इसकी पूर्ण सुरक्षा की गारंटी नहीं दे सकते।
-
-\n\nकृपया ध्यान रखें कि आपके द्वारा एप्लिकेशन के उपयोग के संबंध में आपके द्वारा प्रदान की गई कुछ व्यक्तिगत जानकारी और अन्य जानकारी आपके डिवाइस पर संग्रहीत की जा सकती है (भले ही हम वह जानकारी एकत्र न करें)। अनधिकृत पहुंच से अपने डिवाइस की सुरक्षा बनाए रखने के लिए आप पूरी तरह से जिम्मेदार हैं।
-
-\n\nइस गोपनीयता नीति में परिवर्तन
-\nहम समय-समय पर अपनी गोपनीयता नीति को अपडेट कर सकते हैं। इस प्रकार, आपको किसी भी परिवर्तन के लिए समय-समय पर इस पृष्ठ की समीक्षा करने की सलाह दी जाती है। हम इस पेज पर नई गोपनीयता नीति पोस्ट करके आपको किसी भी बदलाव के बारे में सूचित करेंगे। ये परिवर्तन इस पृष्ठ पर पोस्ट किए जाने के तुरंत बाद प्रभावी होते हैं।
-
-\n\nसंपर्क करें
-\nयदि हमारी गोपनीयता नीति के बारे में आपके कोई प्रश्न या सुझाव हैं, तो हमसे mUzima.mobile@gmail.com के माध्यम से संपर्क करने में संकोच न करें।
-    </string>
-    <string name="info_for_health_providers">स्वास्थ्य प्रदाताओं के लिए</string>
-    <string name="info_license_and_disclaimer">लाइसेंस और अस्वीकरण</string>
-    <string name="info_agree_to_muzima_license_and_disclaimer">मुज़िमा लाइसेंस और अस्वीकरण के लिए सहमत हों</string>
-    <string name="info_privacy_policy_statement">गोपनीयता नीति वक्तव्य</string>
-    <string name="info_agree_to_muzima_privacy_policy_statement">मुज़िमा गोपनीयता नीति वक्तव्य से सहमत हों</string>
     <string name="info_terms_and_conditions">नियम और शर्तें</string>
-    <string name="info_agree_to_muzima_terms_and_conditions">मुज़िमा नियम और शर्तों से सहमत हों</string>
-    <string name="info_accept_all">सभी स्वीकार करो</string>
-    <string name="error_policy_not_accepted">आगे बढ़ने के लिए नीति विवरण स्वीकार करें</string>
-    <string name="general_home">घर</string>
-    <string name="contact_us">संपर्क करें</string>
-    <string name="info_incomplete_form">अपूर्ण प्रपत्र</string>
-    <string name="info_complete_form">असम्बद्ध रूप</string>
-    <string name="general_search_forms">खोज प्रपत्र</string>
-    <string name="general_search_cohorts">समूह खोजें</string>
-    <string name="general_search_patient">रोगी खोजें</string>
-    <string name="general_or_search_by">या इसके द्वारा खोजें:</string>
-    <string name="app_sub_title">स्वास्थ्य प्रदाताओं के लिए</string>
-    <string name="general_policy_title">उपयोग नीतियां</string>
-    <string name="general_historical_data">ऐतिहासिक डेटा</string>
-    <string name="general_data_collection">आंकड़ा संग्रहण</string>
-    <string name="info_by_type">प्रकार से</string>
-    <string name="info_by_abstract">सार द्वारा</string>
-    <string name="info_by_encounter">मुठभेड़ द्वारा</string>
-    <string name="general_add_single_element">एकल तत्व जोड़ें</string>
-    <string name="info_no_client_available">इस डिवाइस पर स्थानीय रूप से कोई क्लाइंट उपलब्ध नहीं है।</string>
-    <string name="general_setup_completed_message">सेटअप पूर्ण</string>
-    <string name="general_filter_by">द्वारा फ़िल्टर किया गया</string>
-    <string name="general_all_clients">सभी ग्राहक</string>
-    <string name="general_display_all">सभी प्रदर्शित करें</string>
-    <string name="general_downloaded">डाउनलोड</string>
-    <string name="general_available_online">ऑनलाइन मौजूद है</string>
-    <string name="general_selected">गिने चुने</string>
-    <string name="general_sort_by_status">स्थिति के अनुसार</string>
-    <string name="general_filtered_list">फ़िल्टर की गई सूची</string>
-    <string name="general_security_description">मुज़िमा पासवर्ड लॉगिन, एन्क्रिप्शन, सुरक्षित डेटा ट्रांसमिशन, समयबद्ध उपयोगकर्ता लॉगआउट सहित सुरक्षा सुविधाएँ प्रदान करता है।</string>
-    <string name="general_security">सुरक्षा</string>
-    <string name="general_multiple_cases_description">मुज़िमा नैदानिक सुविधाओं के भीतर और बाहर, किसी भी नैदानिक उपयोग के मामलों का समर्थन करने के लिए आसानी से अनुकूलन योग्य है।</string>
-    <string name="general_multiple_use_cases">एकाधिक उपयोग के मामले</string>
-    <string name="general_openmrs_compatibility_description">mUzima को OpenMRS के mHealth एक्सटेंशन के रूप में डिज़ाइन किया गया था। OpenMRS को कई देशों में राष्ट्रीय स्तर पर तैनात किया गया है।</string>
-    <string name="general_openmrs_compatibility">ओपनएमआरएस संगतता</string>
-    <string name="forms_general_sort_by">प्रपत्रों को क्रमबद्ध करें</string>
-    <string name="general_sort_by_name">नाम से</string>
-    <string name="general_add_reading">पढ़ना जोड़ें</string>
-    <string name="general_reading">अध्ययन</string>
-    <string name="general_launching_map_message">नक्शा लॉन्च किया जा रहा है, कृपया प्रतीक्षा करें</string>
-    <string name="info_client_local_search_not_found_secondary">हमें आपकी खोज से संबंधित कुछ भी नहीं मिला। सर्वर खोजने का प्रयास करें</string>
-    <string name="general_data_collection_tools">डेटा संग्रह उपकरण</string>
-    <string name="general_works_offline">ऑफ़लाइन काम करता है</string>
-    <string name="general_geomapping">जियोमैपिंग</string>
-    <string name="general_clinical_summary">नैदानिक सारांश</string>
-    <string name="general_relationship_management">संबंध प्रबंधन</string>
-    <string name="general_multiple_themes">एकाधिक थीम</string>
-    <string name="general_historical_data_view">ऐतिहासिक डेटा दृश्य</string>
-    <string name="general_multiple_languages">कई भाषाएं</string>
-    <string name="general_cohort_management">समूह प्रबंधन</string>
-    <string name="general_form_management">प्रपत्र प्रबंधन</string>
-    <string name="general_error_resolutions">त्रुटि समाधान</string>
-    <string name="general_data_collection_tools_description">mUzima डेटा एकत्र करने के लिए आसान-से-विकसित वेब-आधारित रूपों का उपयोग करता है जिसे आसानी से OpenMRS में प्रसारित और संग्रहीत किया जा सकता है।</string>
-    <string name="general_works_offline_description">मुज़िमा ऑनलाइन और ऑफलाइन दोनों मोड में पूरी तरह से काम करता है। यह डिवाइस के ऑफ़लाइन होने पर भी डेटा संग्रह और समीक्षाओं की अनुमति देता है।</string>
-    <string name="general_error_resolutions_description">mUzima मोबाइल डिवाइस पर डुप्लिकेट फॉर्म डेटा प्रविष्टि को रोकता है और डेटा प्रोसेसिंग के दौरान OpenMRS में त्रुटियों का समाधान करता है।</string>
-    <string name="general_form_management_description">mUzima ऐप को फिर से इंस्टॉल करने या फिर से शुरू करने की आवश्यकता के बिना ऐप पर नए फॉर्म को आसानी से डाउनलोड और अपडेट करने में सक्षम बनाता है।</string>
-    <string name="general_cohort_management_description">यह सुविधा मोबाइल डिवाइस पर विभिन्न रोगी या क्लाइंट समूहों के प्रबंधन की अनुमति देती है।</string>
-    <string name="general_multiple_languages_description">मुज़िमा विभिन्न भाषाओं में उपयोग के लिए बॉक्स के बाहर स्थानीयकरण समर्थन प्रदान करता है ताकि उपयोग के और लचीलेपन की अनुमति मिल सके।</string>
-    <string name="general_historical_data_view_description">मुज़िमा में रोगियों या ग्राहकों के ऐतिहासिक डेटा को पुनः प्राप्त करने और देखने के लिए आसान और कुशल उपयोगकर्ता के अनुकूल तंत्र है।</string>
-    <string name="general_multiple_themes_description">मुज़िमा को दो थीम पर शिप किया गया है: डार्क थीम (ब्लैक पर व्हाइट) और लाइट थीम (ब्लैक ऑन व्हाइट)।</string>
-    <string name="general_relationship_management_description">स्वास्थ्य सेवा के क्षेत्र में, एक रिश्ते का उपयोग दो लोगों को जोड़ने/जुड़ाने के लिए किया जाता है जिनकी देखभाल आपस में जुड़ी हो सकती है।</string>
-    <string name="general_clinical_summary_description">यह फीचर ओपनएमआरएस रिपोर्टिंग मॉड्यूल का उपयोग एचटीएमएल रिपोर्ट्स को डिजाइन और जेनरेट करने के लिए करता है, जिन्हें बाद में ऐप पर रेंडर किया जाता है।</string>
-    <string name="general_geomapping_description">रोगी जीपीएस निर्देशांक को आसानी से पकड़ने और रिकॉर्ड करने की क्षमता लाता है, फिर सीएचवी को बाद की यात्राओं पर दिशा देता है।</string>
-    <string name="general_registration_form_missing_message">पंजीकरण फॉर्म गुम। कृपया व्यवस्थापक से संपर्क करें</string>
-    <string name="title_registration_form">पंजीकरण फॉर्म का चयन करें</string>
-    <string name="general_card_read_failed_msg">कार्ड पठन विफल।</string>
-    <string name="general_label_sort_by_name">नाम द्वारा क्रमबद्ध करें</string>
-    <string name="general_label_sort_status">स्थिति के आधार पर छाँटें</string>
-    <string name="general_enter_value_to_save">बचाने के लिए मान दर्ज करें</string>
-    <string name="general_sync_service_already_running">मुज़िमा सिंक सेवा पहले से चल रही है…</string>
-    <string name="general_opening_card_reader">कार्ड रीडर खोलना</string>
-    <string name="erro_coded_concepts_not_supported">अमान्य कोडित अवधारणाएं समर्थित नहीं हैं</string>
-    <string name="delete_individual_obs">व्यक्तिगत टिप्पणियों को हटाना</string>
-    <string name="warning_individual_form_data_delete">आप व्यक्तिगत अवलोकन को हटाने वाले हैं। क्या आपको यकीन है?</string>
     <string name="info_terms_and_conditions_text">
         हेल्थ प्रोवाइडर्स ऐप ("एप्लिकेशन") के लिए मुज़िमा एक ओपन सोर्स एंड-यूज़र ऐप के रूप में बनाया गया है और मोई यूनिवर्सिटी और वेंडरबिल्ट यूनिवर्सिटी मेडिकल सेंटर (सामूहिक रूप से, \"हम,\" \"हम\" या \"हमारा\") द्वारा प्रदान किया जाता है। और जैसा है वैसा ही उपयोग के लिए अभिप्रेत है। यदि आप (\"आप\", \"आपका\") किसी संगठन के लिए हमारे आवेदन का उपयोग कर रहे हैं, तो आप उस संगठन की ओर से इन नियमों और शर्तों से सहमत हैं। यदि आप किसी और को सेवाएं प्रदान करने के लिए हमारे आवेदन का उपयोग कर रहे हैं, तो आप उनकी ओर से इन नियमों और शर्तों से सहमत हैं। एप्लिकेशन का आपका उपयोग गोपनीयता नीति (\"गोपनीयता नीति\") और किसी भी लागू ओपन सोर्स या नीचे संदर्भित अन्य तृतीय पक्ष शर्तों ("तृतीय पक्ष की शर्तें") के अधीन है। यदि आप इन शर्तों, गोपनीयता नीति और तीसरे पक्ष की शर्तों (सामूहिक रूप से \"अनुबंध\") से सहमत नहीं हैं, तो आपको किसी भी तरह से इसके आवेदन का उपयोग नहीं करना चाहिए।
 
@@ -785,49 +565,210 @@
 \n\n8. संपर्क विवरण
 \nयदि आपके पास शर्तों के बारे में कोई प्रश्न या कोई चिंता है, तो कृपया हमसे mUzima.mobile@gmail.com पर संपर्क करें
     </string>
-    <string name="title_real_time_sync_setting_unchanged">स्वचालित समन्वयन वरीयता नहीं बदली</string>
-    <string name="hint_real_time_sync_always_on">ऑनलाइन मोड में स्वचालित सिंक हमेशा चालू रहता है।</string>
+    <string name="info_update_person_demographics">व्यक्ति जनसांख्यिकी को अपडेट करें</string>
+    <string name="info_url_validate">चरण 1: URL मान्य करना</string>
+    <string name="info_video_chose_activity_unavailable">त्रुटि: वीडियो चुनने के लिए आवेदन नहीं मिला</string>
+    <string name="info_video_play_activity_unavailable">त्रुटि: वीडियो चलाने के लिए आवेदन नहीं मिला</string>
+    <string name="info_video_record_activity_unavailable">त्रुटि: वीडियो रिकॉर्डिंग के लिए आवेदन नहीं मिला</string>
+    <string name="initial_setup_for_muzima_general">MUzima के लिए प्रारंभिक सेटअप</string>
+    <string name="interactive_help_choose">एक विकल्प चुनें:</string>
+    <string name="interactive_help_header">कृपया हमें बताएं कि हम आपकी कैसे मदद कर सकते हैं</string>
+    <string name="interactive_help_hint">अपना संदेश टाइप करें</string>
+    <string name="introduction_to_muzima_general_text">mUzima का परिचय</string>
+    <string name="june_8_sample_date">8 जून</string>
+    <string name="language_english">अंग्रेज़ी</string>
+    <string name="language_french">फ्रेंच</string>
+    <string name="language_gujarati">गुजराती</string>
+    <string name="language_hindi">हिंदी</string>
+    <string name="language_portuguese">पुर्तगाली</string>
+    <string name="language_swahili">स्वाहिली</string>
+    <string formatted="false" name="menu_SHR_data_sync">सिंक SHR डेटा (%d)</string>
+    <string name="menu_all_data_sync">सभी डेटा को सिंक करें</string>
+    <string name="menu_form_back_to_draft">ड्राफ्ट पर वापस जाएं</string>
+    <string name="message_auto_logout">आप %d सेकंड में स्वतः लॉग ऑफ हो जाएंगे</string>
+    <string name="message_feedback_sent">आपके संदेश के लिए धन्यवाद। \n आपकी प्रतिक्रिया हमारे लिए महत्वपूर्ण है।</string>
+    <string name="message_help_sent">संपर्क करने के लिए धन्यवाद। \n हमारी सहायता टीम आपके अनुरोध की जांच करेगी। \n हम जल्द से जल्द आपके पास वापस आएँगे।</string>
+    <string name="message_missing_form_encounter_details_error">प्रदान करना आवश्यक है</string>
+    <string name="muzima_training_manual_general">mUzima प्रशिक्षण मैनुअल</string>
+    <string name="new_messages_number_text"># नए संदेश</string>
+    <string name="no_default_encounter_location">कोई डिफ़ॉल्ट मुठभेड़ स्थान नहीं</string>
+    <string name="no_description_general">कोई विवरण नहीं</string>
+    <string name="no_email_client">इस उपकरण पर कोई ईमेल क्लाइंट स्थापित नहीं किया गया है। \n कृपया एक इंस्टॉल करें और फिर अपनी प्रतिक्रिया दें।</string>
+    <string name="number_hashtag_representation">##</string>
+    <string name="observation_details">अवलोकन विवरण</string>
+    <string name="observation_value">अवलोकन मूल्य:</string>
     <string name="online_mode_switch">ऑनलाइन मोड में स्विच करें</string>
     <string name="online_mode_switch_warning">आपको ऑफलाइन मोड से ऑनलाइन मोड में स्विच कर दिया गया है। ऑनलाइन मोड पर रहते हुए, जब आप लॉग आउट करते हैं या आप स्वतः लॉग आउट होते हैं, तो सभी रोगी डेटा आपके डिवाइस से हटा दिए जाएंगे।</string>
-    <string name="general_online_mode">ऑनलाइन मोड</string>
-    <string name="warning_logout_confirm_with_form_deletion">क्या आप वाकई लॉग आउट करना चाहते हैं और मुज़िमा ऐप से बाहर निकलना चाहते हैं? सभी पूर्ण और अपूर्ण प्रपत्र हटा दिए जाएंगे</string>
-    <string name="title_privacy_policy">गोपनीयता नीति</string>
-    <string name="assignment_form_uuid_missing_warning">क्षमा करें, असाइनमेंट फॉर्म सेट नहीं किया गया है। कृपया व्यवस्थापक से संपर्क करें।</string>
-    <string name="assignment_form_not_downloaded_warning">ऐसा लगता है कि असाइनमेंट फ़ॉर्म डाउनलोड नहीं हुआ है, कृपया पुष्टि करें कि यह डाउनलोड हो गया है या व्यवस्थापक से संपर्क करें।</string>
-    <string name="title_auto_logout">ऑटो लॉगआउट</string>
-    <string name="message_auto_logout">आप %d सेकंड में स्वतः लॉग ऑफ हो जाएंगे</string>
-    <string name="general_reset">रीसेट</string>
-    <string name="general_already_assigned">पहले से ही असाइन किया गया</string>
-    <string name="general_awaiting_assignment">असाइनमेंट की प्रतीक्षा में</string>
-    <string name="general_has_sexual_partner">यौन साथी है</string>
-    <string name="general_all">सभी</string>
-    <string name="info_no_forms_data_tip">डेटा प्रविष्टि के लिए कोई प्रपत्र कॉन्फ़िगर नहीं किया गया है। डेटा प्रविष्टि प्रपत्र जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
-    <string name="info_no_observation_for_concept_data_tip">कॉन्फ़िगर की गई अवधारणाओं के लिए कोई ऐतिहासिक डेटा मौजूद नहीं है</string>
-    <string name="info_no_observation_and_concept_data_tip">कोई अवधारणा कॉन्फ़िगर नहीं की गई है। अवधारणाओं को जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें।</string>
-    <string name="error_report_dataset_load">प्रपत्र के लिए रिपोर्ट डेटासेट लोड करते समय एक त्रुटि हुई</string>
-    <string name="info_report_dataset_download_in_progress">रिपोर्ट डेटासेट डाउनलोड करना</string>
-    <string name="info_report_dataset_downloaded">डाउनलोड किया गया %d रिपोर्ट डेटासेट</string>
-    <string name="info_report_datasets_not_downloaded">कोई रिपोर्ट डेटासेट डाउनलोड नहीं किया</string>
-    <string name="error_report_dataset_download">रिपोर्ट डेटासेट डाउनलोड नहीं कर सका</string>
-    <string name="general_reports">रिपोर्टों</string>
-    <string name="general_leaderboard">लीडरबोर्ड</string>
-    <string name="general_performance_comparison">प्रदर्शन तुलना</string>
-    <string name="general_your_statistics">आपके आंकड़े</string>
-    <string name="general_their_statistics">उनके आंकड़ेे</string>
-    <string name="app_version">एप्लिकेशन वेरीज़न</string>
+    <string name="patient_SHR_search_dialog_title">ग्राहक SHR खोज</string>
+    <string name="patient_SHR_search_title_text">ग्राहक SHR खोज</string>
+    <string name="privacy_policy">
+        mUzima एक मोबाइल एप्लिकेशन है जो स्वास्थ्य पेशेवरों को OpenMRS मेडिकल रिकॉर्ड सिस्टम के विस्तार के रूप में स्वास्थ्य देखभाल डेटा एकत्र करने, प्रबंधित करने और उपयोग करने में सक्षम बनाता है। ऐप को एक ओपन सोर्स एंड यूजर एप्लिकेशन के रूप में बनाया गया है, जो बिना किसी कीमत के प्रदान किया जाता है, और इसका उपयोग करने का इरादा है। यदि आप किसी संगठन के लिए एप्लिकेशन का उपयोग कर रहे हैं, तो आप उस संगठन की ओर से इस गोपनीयता नीति से सहमत हैं। यदि आप किसी अन्य व्यक्ति को सेवाएं, सॉफ़्टवेयर और सामग्री प्रदान करने के लिए एप्लिकेशन का उपयोग कर रहे हैं, तो आप उनकी ओर से इस गोपनीयता नीति से सहमत हैं।
+\nयदि आप या आपका प्रतिनिधित्व करने वाला संगठन इस गोपनीयता नीति के लिए बाध्य होने के लिए सहमत नहीं है, तो आपको मोबाइल एप्लिकेशन का उपयोग नहीं करना चाहिए।
+
+\n\nतृतीय पक्ष सेवाएं
+\nएप्लिकेशन तृतीय-पक्ष सेवाओं का उपयोग करता है जो आपकी पहचान करने के लिए उपयोग की जाने वाली जानकारी एकत्र कर सकती हैं। ऐप द्वारा उपयोग किए जाने वाले तृतीय पक्ष सेवा प्रदाता हैं:
+\nGoogle Play सेवाएं: मुज़िमा मोबाइल एप्लिकेशन एंड्रॉइड ऑपरेटिंग सिस्टम पर चलने के लिए बनाया गया है और इसे मुख्य रूप से Google playstore के माध्यम से वितरित किया जाता है। इस कारण से, आपके द्वारा mUzima मोबाइल एप्लिकेशन का उपयोग Google गोपनीयता नीति द्वारा एंड्रॉइड प्लेटफॉर्म पर Google सेवाओं के उपयोग के साथ बाध्य है, जो यहां उपलब्ध है: https://www.google.com/policies/privacy/
+\nFirebase Crashlytics और analytics: ऐप में किसी त्रुटि के मामले में, जैसे कि एप्लिकेशन क्रैश होना, हम आपके फ़ोन पर Crashlytics डेटा नामक डेटा और जानकारी (तृतीय-पक्ष उत्पादों के माध्यम से) एकत्र करते हैं। इस Crashlytics डेटा में डिवाइस का नाम, ऑपरेटिंग सिस्टम संस्करण, हमारे एप्लिकेशन का उपयोग करते समय ऐप का कॉन्फ़िगरेशन, साथ ही आपके द्वारा एप्लिकेशन के उपयोग का समय और दिनांक जैसी जानकारी शामिल हो सकती है। आपकी सेटिंग के आधार पर एकत्र किए जा सकने वाले अन्य डेटा में स्थान जानकारी शामिल है। इसलिए मुज़िमा मोबाइल एप्लिकेशन का उपयोग यहां उपलब्ध फायरबेस गोपनीयता नीति द्वारा बाध्य है: https://firebase.google.com/support/privacy।
+
+\n\nकुकीज़
+\nकुकीज़ छोटी मात्रा में डेटा वाली फाइलें होती हैं जिनका उपयोग आमतौर पर अनाम विशिष्ट पहचानकर्ताओं के रूप में किया जाता है। ये आपके ब्राउज़र पर आपके द्वारा देखी जाने वाली वेबसाइटों से भेजे जाते हैं और आपके डिवाइस की आंतरिक मेमोरी में संग्रहीत होते हैं।
+
+\n\nmUzima ऐप इन \"कुकीज़\" का स्पष्ट रूप से उपयोग नहीं करता है। हालाँकि, ऐप तीसरे पक्ष के कोड और पुस्तकालयों का उपयोग कर सकता है जो जानकारी एकत्र करने और अपनी सेवाओं को बेहतर बनाने के लिए \"कुकीज़\" का उपयोग करते हैं। आपके पास इन कुकीज़ को स्वीकार या अस्वीकार करने और यह जानने का विकल्प है कि आपके डिवाइस पर कुकी कब भेजी जा रही है। यदि आप कुकीज़ को अस्वीकार करना चुनते हैं, तो आप इस सेवा के कुछ हिस्सों का उपयोग करने में सक्षम नहीं हो सकते हैं।
+
+\n\nजगह की जानकारी
+\nमुज़िमा मोबाइल एप्लिकेशन वैकल्पिक सुविधाओं के साथ आता है जिन्हें डिवाइस के सटीक या अनुमानित स्थान तक पहुंच की आवश्यकता हो सकती है। विशेषताएं हैं:
+\nरिकॉर्डिंग रोगी का पता:
+\nमरीजों के जीपीएस पते सुरक्षित ओपनएमआरएस मेडिकल रिकॉर्ड सिस्टम में संग्रहीत जानकारी के हिस्से के रूप में संग्रहीत किए जा सकते हैं। mUzima रोगी रिकॉर्ड का पता सेट करने की क्षमता प्रदान करता है, ताकि OpenMRS मेडिकल रिकॉर्ड सिस्टम में रिकॉर्ड को अपडेट किया जा सके।
+\nरोगी के पते पर नेविगेट करना:
+\nमुज़िमा जियोमैपिंग सुविधा प्रदान करता है ताकि उपयोगकर्ता/प्रदाता को रोगी के जीपीएस स्थान पर दिशा-निर्देश प्राप्त करने में सक्षम बनाया जा सके (एंड्रॉइड डिवाइस पर Google मानचित्र ऐप के माध्यम से) जैसा कि मेडिकल रिकॉर्ड द्वारा दर्शाया गया है।
+
+\nमोबाइल एप्लिकेशन के माध्यम से एकत्र की गई जीपीएस स्थान की जानकारी पूरी तरह से कार्यान्वयन के भीतर स्थानीयकृत सुविधाओं के लिए है और इसे किसी भी तरह से मुज़िमा या किसी तीसरे पक्ष के साथ साझा नहीं किया जाएगा। यदि आप इसे ऐसा करने की अनुमति देते हैं तो एप्लिकेशन स्थान की जानकारी का उपयोग कर सकता है। जब आप किसी भी समय हमारे एप्लिकेशन का उपयोग करते हैं, तो आप अपनी डिवाइस सेटिंग के माध्यम से स्थान सेवाओं को सक्षम या अक्षम कर सकते हैं। आपका कार्यान्वयन व्यवस्थापक उन वैकल्पिक सुविधाओं को सक्षम या अक्षम कर सकता है जिन्हें एप्लिकेशन सेटिंग के माध्यम से स्थान डेटा की आवश्यकता होती है।
+
+\n\nएक वीडियो का लिंक जो मुज़िमा की जीपीएस सुविधाओं को प्रदर्शित करता है, यहां पाया जा सकता है:
+\nhttps://drive.google.com/file/d/1CiiP6xodoQ55FMJZwBFdnYEhTbP1_jM4/view?usp=sharing.
+
+\n\nसुरक्षा
+\nहम अपने आवेदन में आपके भरोसे को महत्व देते हैं। लेकिन याद रखें कि इंटरनेट पर ट्रांसमिशन का कोई भी तरीका या इलेक्ट्रॉनिक स्टोरेज का तरीका 100% सुरक्षित और विश्वसनीय नहीं है, और हम इसकी पूर्ण सुरक्षा की गारंटी नहीं दे सकते।
+
+\n\nकृपया ध्यान रखें कि आपके द्वारा एप्लिकेशन के उपयोग के संबंध में आपके द्वारा प्रदान की गई कुछ व्यक्तिगत जानकारी और अन्य जानकारी आपके डिवाइस पर संग्रहीत की जा सकती है (भले ही हम वह जानकारी एकत्र न करें)। अनधिकृत पहुंच से अपने डिवाइस की सुरक्षा बनाए रखने के लिए आप पूरी तरह से जिम्मेदार हैं।
+
+\n\nइस गोपनीयता नीति में परिवर्तन
+\nहम समय-समय पर अपनी गोपनीयता नीति को अपडेट कर सकते हैं। इस प्रकार, आपको किसी भी परिवर्तन के लिए समय-समय पर इस पृष्ठ की समीक्षा करने की सलाह दी जाती है। हम इस पेज पर नई गोपनीयता नीति पोस्ट करके आपको किसी भी बदलाव के बारे में सूचित करेंगे। ये परिवर्तन इस पृष्ठ पर पोस्ट किए जाने के तुरंत बाद प्रभावी होते हैं।
+
+\n\nसंपर्क करें
+\nयदि हमारी गोपनीयता नीति के बारे में आपके कोई प्रश्न या सुझाव हैं, तो हमसे mUzima.mobile@gmail.com के माध्यम से संपर्क करने में संकोच न करें।
+    </string>
+    <string name="provider_details">प्रदाता विवरण</string>
+    <string name="provider_identifier">प्रदाता पहचानकर्ता:</string>
+    <string name="provider_name">प्रदाता का नाम:</string>
+    <string name="provider_name_general">प्रदाता का नाम</string>
+    <string name="provider_reports_general">प्रदाता रिपोर्ट</string>
+    <string name="registering_patient_message_title_text">mUzima में ग्राहक का पंजीकरण …</string>
+    <string name="relationship_create_success">संबंध सफलतापूर्वक बना</string>
+    <string name="relationship_delete_fail">सर्वर पर पहले से सहेजे गए संबंध को हटा नहीं सकता। व्यवस्थापक से संपर्क करें</string>
+    <string name="relationship_to_self_error">ग्राहक का खुद से संबंध नहीं हो सकता</string>
+    <string name="reply_hint_text">अपना जवाब भेजें</string>
+    <string name="sample_date_text">21/02/2018</string>
+    <string name="scan_card_id_title">कार्ड आईडी स्कैन करें</string>
+    <string name="search_patient_on_server_option_title_text">क्लाइंट स्थानीय रूप से उपलब्ध नहीं है, क्या आप सर्वर पर खोजना चाहेंगे?</string>
+    <string name="select_a_registration_form_text">एक पंजीकरण फॉर्म चुनें</string>
+    <string name="select_a_relationship_form_text">एक फार्म का चयन करें</string>
+    <string name="select_default_encounter_location">अपना डिफ़ॉल्ट मुठभेड़ स्थान चुनें</string>
+    <string name="send_feedback">प्रतिक्रिया भेजें</string>
+    <string name="send_general_text">संदेश</string>
+    <string name="server_side_setup_general">सर्वर साइड सेटअप</string>
+    <string name="setting_up_muzima_general_text">MUzima की स्थापना</string>
+    <string name="shr_registration">SHR पंजीकरण</string>
+    <string name="shr_registration_description">SHR पंजीकरण डेटा</string>
+    <string name="success_writing_smartcard">स्मार्ट कार्ड डेटा सफलतापूर्वक लिखा गया था।</string>
+    <string name="tagging_forms">प्रपत्र टैग करना</string>
+    <string name="title_about_dashboard_help_html">डैशबोर्ड के बारे में</string>
     <string name="title_active_setup_config">सक्रिय सेटअप कॉन्फ़िगरेशन</string>
-    <string name="general_about_muzima">mUzima . के बारे में</string>
+    <string name="title_activity_audio">ऑडियो जोड़ें</string>
+    <string name="title_activity_client_reports">ग्राहक रिपोर्ट</string>
+    <string name="title_activity_client_summary">ग्राहक सारांश</string>
+    <string name="title_activity_image">छवि जोड़ें</string>
+    <string name="title_activity_video">वीडियो जोड़ें</string>
+    <string name="title_advanced_setup">उन्नत सेटअप</string>
+    <string name="title_advanced_setup_help_html">MUzima के लिए प्रारंभिक सेटअप</string>
+    <string name="title_advanced_setup_help_video">उन्नत प्रारंभिक सेटअप</string>
+    <string name="title_app_language">भाषा: हिन्दी</string>
+    <string name="title_audio_caption">ऑडियो कैप्शन</string>
+    <string name="title_audio_choose">ऑडियो चुनें</string>
+    <string name="title_audio_record">ध्वनि रिकॉर्ड करें</string>
+    <string name="title_auto_logout">ऑटो लॉगआउट</string>
+    <string name="title_client_location">ग्राहक का स्थान</string>
+    <string name="title_client_location_update">ग्राहक का स्थान अपडेट करें</string>
+    <string name="title_client_notifications">ग्राहक सूचनाएँ</string>
+    <string name="title_client_registration_help_video">ग्राहक पंजीकरण</string>
+    <string name="title_clients_locations">ग्राहक के स्थान</string>
+    <string name="title_cohort_download_help_video">कोहोर्ट डाउनलोड (मांग पर)</string>
+    <string name="title_concept_download_help_video">अवधारणाओं को डाउनलोड करें (मांग पर)</string>
+    <string name="title_data_reset">चरण 3: डेटा रीसेट करना</string>
+    <string name="title_data_synchronize">चरण 2: स्थानीय डेटा को सिंक्रनाइज़ करना</string>
+    <string name="title_default_encounter_location">डिफ़ॉल्ट मुठभेड़ स्थान</string>
+    <string name="title_default_encounter_provider">डिफ़ॉल्ट मुठभेड़ प्रदाता</string>
+    <string name="title_duplicate_form_data_warning">डुप्लिकेट प्रपत्र डेटा चेतावनी</string>
+    <string name="title_enable_gps">GPS सक्षम करें</string>
+    <string name="title_enable_gps_location">स्थान और इंटरनेट कनेक्टिविटी सक्षम करें।</string>
+    <string name="title_enable_shr">SHR सक्षम करें</string>
+    <string name="title_fill_patient_forms_help">क्लाइंट के लिए फॉर्म भरें</string>
+    <string name="title_font_size">फ़ॉन्ट आकार</string>
+    <string name="title_form_auto_save_interval">स्वचालित रूप से सहेजने का अंतराल (मिनट)</string>
+    <string name="title_form_data_complete">असम्बद्ध प्रपत्र डेटा</string>
+    <string name="title_form_data_incomplete">अपूर्ण प्रपत्र डेटा</string>
+    <string name="title_form_download_help_video">प्रपत्र डाउनलोड (मांग पर)</string>
+    <string name="title_general_notifications">सामान्य सूचनाएं</string>
+    <string name="title_gps_location">जीपीएस स्थान</string>
+    <string name="title_guided_setup">निर्देशित सेटअप (अनुशंसित)</string>
+    <string name="title_guided_setup_help_video">मार्गदर्शित प्रारंभिक सेटअप</string>
+    <string name="title_guided_setup_progress">सेटअप प्रगति</string>
+    <string name="title_guided_setup_wizard">मार्गदर्शित सेटअप विज़ार्ड</string>
+    <string name="title_help_video_links">mUzima वीडियो लिंक</string>
+    <string name="title_html_help">सहायता केंद्र</string>
+    <string name="title_image_caption">तस्वीर का शीर्षक</string>
+    <string name="title_image_capture">छवि पर कब्जा</string>
+    <string name="title_image_choose">छवि चुनें</string>
+    <string name="title_initial_setup_guide">mUzima प्रारंभिक सेटअप गाइड</string>
+    <string name="title_install_barcode_scanner">बारकोड स्कैनर स्थापित करें</string>
+    <string name="title_install_psmart">P-Smart ऐप इंस्टॉल करें</string>
+    <string name="title_introduction_video">mUzima का वीडियो परिचय</string>
     <string name="title_last_logged_in">पिछला लॉग इन</string>
+    <string name="title_light_mode">डे मोड सक्षम करें</string>
+    <string name="title_local_client_search_help_video">ग्राहक खोज (स्थानीय)</string>
+    <string name="title_location_help">स्थान मदद</string>
     <string name="title_logged_in_user">लॉग इन यूजर</string>
-    <string name="general_address">पता:</string>
-    <string name="general_phone_number">फ़ोन नंबर:</string>
-    <string name="general_consent_date">सहमति डेटा:</string>
-    <string name="general_testing_sector">परीक्षण क्षेत्र:</string>
-    <string name="general_preferred_testing_location">पसंदीदा परीक्षण स्थान:</string>
-    <string name="general_testing_date">परीक्षा की तारीख:</string>
-    <string name="general_last_consent_date">अंतिम सहमति तिथि:</string>
-    <string name="general_result">परिणाम:</string>
-    <string name="general_in_hiv_care">एचआईवी देखभाल:</string>
-    <string name="general_in_ccr">सीसीआर</string>
-    <string name="general_hiv_test">एचआईवी परीक्षण तिथि</string>
+    <string name="title_logo">MuzimaLogo</string>
+    <string name="title_logout_confirm">पुष्टिकरण!</string>
+    <string name="title_manage_concept">संकल्पनाओं को प्रबंधित करें</string>
+    <string name="title_manage_location">स्थानों को प्रबंधित करें</string>
+    <string name="title_manage_provider">प्रदाताओं को प्रबंधित करें</string>
+    <string name="title_media_preview">मीडिया का पूर्वावलोकन करें</string>
+    <string name="title_missing_form_encounter_details_error">लापता एनकाउंटर का विवरण</string>
+    <string name="title_muzima_disclaimer">muzima अस्वीकरण</string>
+    <string name="title_muzima_training_manual">mUzima प्रशिक्षण मैनुअल</string>
+    <string name="title_observations_by_concepts">डेटा प्रकार अनुसार</string>
+    <string name="title_observations_by_encounters">तिथि के अनुसार</string>
+    <string name="title_pick_location">स्थान चुनें</string>
+    <string name="title_privacy_policy">गोपनीयता नीति</string>
+    <string name="title_provider_help">प्रदाताओं में मदद</string>
+    <string name="title_provider_not_set">प्रदाता के रूप में सेट करने में असमर्थ</string>
+    <string name="title_provider_reports">प्रदाता रिपोर्ट</string>
+    <string name="title_qrcode">क्यू आर संहिता</string>
+    <string name="title_real_time_sync">स्वचालित सिंक</string>
+    <string name="title_real_time_sync_setting_unchanged">स्वचालित समन्वयन वरीयता नहीं बदली</string>
+    <string name="title_registration_form">पंजीकरण फॉर्म का चयन करें</string>
+    <string name="title_require_medical_record_number">चिकित्सा रिकॉर्ड संख्या आवश्यक है</string>
+    <string name="title_search_server">सर्वर खोजें</string>
+    <string name="title_server_client_search_help_video">ग्राहक खोज (सर्वर के सामने)</string>
+    <string name="title_server_side_setup">सर्वर साइड सेटअप</string>
+    <string name="title_session_timeout">सत्र समय समाप्त (मिनट)</string>
+    <string name="title_set_client_location">क्लाइंट स्थान सेट करें</string>
+    <string name="title_setting_refresh">सेटिंग रीफ्रेश करें</string>
+    <string name="title_settings_help_html">mUzima सेटिंग्स</string>
+    <string name="title_setup_method">सेटअप विधि</string>
+    <string name="title_video_caption">वीडियो कैप्शन</string>
+    <string name="title_video_choose">वीडियो चुनें</string>
+    <string name="title_video_record">वीडियो रिकॉर्ड करो</string>
+    <string name="to_text">सेवा</string>
+    <string name="type_a_message_hint">एक संदेश लिखें</string>
+    <string name="video_links_general_text">वीडियो लिंक:</string>
+    <string name="warning_auto_save_interval">ऑटो सेव इंटरवल: ऑटो सेव इंटरवल सेट नहीं कर सका। \n कृपया 1 और 120 के बीच मान दर्ज करें।</string>
+    <string name="warning_form_close">फॉर्म बंद करना: यह आपके सभी परिवर्तनों को छोड़ देगा। क्या आप वाकई ऐसा करना चाहते हैं?</string>
+    <string name="warning_form_data_already_exists">यह फॉर्म डेटा पहले से मौजूद क्लाइंट के लिए समान एनकाउंटर तिथि के साथ है।</string>
+    <string name="warning_forms_complete_and_sync">%s में इसके साथ कुछ संबद्ध फॉर्म्स हैं। कृपया एक नया संस्करण डाउनलोड करने से पहले उन रूपों को पूरा और सिंक करें।</string>
+    <string name="warning_incompatible_module">आपका वर्तमान mUzima एप्लिकेशन सर्वर के साथ संगत नहीं है। कृपया अपने व्यवस्थापक से संपर्क करें।</string>
+    <string name="warning_individual_form_data_delete">आप व्यक्तिगत अवलोकन को हटाने वाले हैं। क्या आपको यकीन है?</string>
+    <string name="warning_invalid_url_provided">आपके द्वारा प्रदत्त URL अमान्य है</string>
+    <string name="warning_logout_confirm">क्या आप वाकई mUzima ऐप से लॉग आउट करना और बाहर निकलना चाहते हैं?</string>
+    <string name="warning_logout_confirm_with_form_deletion">क्या आप वाकई लॉग आउट करना चाहते हैं और मुज़िमा ऐप से बाहर निकलना चाहते हैं? सभी पूर्ण और अपूर्ण प्रपत्र हटा दिए जाएंगे</string>
+    <string name="warning_registration_form_data_delete">आप पंजीकरण डेटा को हटाने वाले हैं। यह डिवाइस पर क्लाइंट रिकॉर्ड को भी हटा देगा। क्या आप निश्चित है?</string>
+    <string name="warning_related_person_missing">कृपया संबंधित व्यक्ति चुनें</string>
+    <string name="warning_relationship_exists">क्लाइंट के पास पहले से ही %s के साथ %s:%s संबंध है</string>
+    <string name="warning_relationship_type_missing">कृपया एक संबंध प्रकार चुनें</string>
+    <string name="warning_session_timeout">सत्र टाइमआउट: सत्र टाइमआउट सेट नहीं हो सका। कृपया 1 और 500 के बीच एक मान दर्ज करें।</string>
+    <string name="warning_setting_download_failure">सेटिंग डाउनलोड या अपडेट नहीं हो सका</string>
+    <string name="warning_switch_server">सर्वर बदली: यह आपके डिवाइस पर मौजूद सभी mUzima डेटा को साफ कर देगा, जिसमें कोई अधूरा फॉर्म भी शामिल है। क्या आप वाकई इस सेटिंग को बदलना चाहते हैं?</string>
+    <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
+    <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
 </resources>

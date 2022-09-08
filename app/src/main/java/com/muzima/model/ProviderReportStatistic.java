@@ -12,6 +12,8 @@ public class ProviderReportStatistic implements Comparable{
     private String statisticHint;
     private String summaryColorCode;
     private int leaderboardColor;
+    private String  startDate;
+    private String  endDate;
 
     public int getAchievement() {
         return achievement;
@@ -99,6 +101,22 @@ public class ProviderReportStatistic implements Comparable{
 
     public void setLeaderboardColor(int leaderboardColor) {
         this.leaderboardColor = leaderboardColor;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
     }
 
     @Override
