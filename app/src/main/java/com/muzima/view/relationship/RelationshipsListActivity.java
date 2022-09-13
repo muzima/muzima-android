@@ -96,6 +96,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private Spinner relationshipType;
     private Person selectedPerson;
     private Button saveButton;
+    private Button createPersonButton;
     private RelationshipController relationshipController;
     private PatientController patientController;
     private Person selectedRelatedPerson;
@@ -123,6 +124,13 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         searchServerView = findViewById(R.id.search_server_layout);
         createPersonView = findViewById(R.id.create_person_layout);
         progressBarContainer = findViewById(R.id.progress_bar_container);
+        createPersonButton = findViewById(R.id.create_person_button);
+
+        if(((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isFGHCustomClientSummaryEnabled()){
+           createPersonButton.setText(R.string.general_create_contact);
+        }else{
+            createPersonButton.setText(R.string.general_person_create);
+        }
 
         relationshipController = ((MuzimaApplication) getApplicationContext()).getRelationshipController();
         patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();

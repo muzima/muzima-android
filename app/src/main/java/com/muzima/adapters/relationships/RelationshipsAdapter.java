@@ -188,6 +188,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                 holder.results.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 23779, observationController, conceptController, applicationLanguage));
                 holder.inHivCare.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 23780, observationController, conceptController, applicationLanguage));
                 holder.inCCR.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 1885, observationController, conceptController, applicationLanguage));
+
             } catch (JSONException e) {
                 Log.e(getClass().getSimpleName(),"Encountered JSONException ",e);
             } catch (ObservationController.LoadObservationException e) {
