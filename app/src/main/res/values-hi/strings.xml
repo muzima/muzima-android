@@ -771,4 +771,5 @@
     <string name="warning_switch_server">सर्वर बदली: यह आपके डिवाइस पर मौजूद सभी mUzima डेटा को साफ कर देगा, जिसमें कोई अधूरा फॉर्म भी शामिल है। क्या आप वाकई इस सेटिंग को बदलना चाहते हैं?</string>
     <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
+    <string name="general_create_contact">संपर्क जोड़ें</string>
 </resources>
