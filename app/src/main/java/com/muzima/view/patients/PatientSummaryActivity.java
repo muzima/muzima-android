@@ -247,11 +247,11 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             patientNameTextView.setText(patient.getDisplayName());
             identifierTextView.setText(String.format(Locale.getDefault(), "ID:#%s", patient.getIdentifier()));
             if (patient.getBirthdate() != null)
-                dobTextView.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate())));
+                dobTextView.setText(String.format(R.string.general_date_of_birth+": %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate())));
 
             patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
             if (patient.getBirthdate() != null)
-                ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
+                ageTextView.setText(String.format(Locale.getDefault(), "%d "+R.string.general_years, DateUtils.calculateAge(patient.getBirthdate())));
             gpsAddressTextView.setText(getDistanceToClientAddress(patient));
 
             if(patient.getPreferredAddress() != null) {

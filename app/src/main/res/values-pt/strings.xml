@@ -33,7 +33,7 @@
     <string name="concept_name">Nome do conceito:</string>
 
     <string name="confirm_create_patient_from_person">Isso registrará essa pessoa como utente. Tem certeza de que gostaria de fazer isso?</string>
-    <string name="confirm_duplicate_form_data_save">Guardar Dados do Formulãrio Duplicado</string>
+    <string name="confirm_duplicate_form_data_save">Guardar Dados do Formulário Duplicado</string>
     <string name="confirm_patient_id_exists">O utente já tem o Identificador?</string>
 
     <string name="date_general">Encontro</string>
@@ -447,7 +447,7 @@
     <string name="info_submitted_form_data_status_check">Verificando o status dos formulários enviados recentemente.</string>
     <string name="info_submitted_form_data_status_check_failure">Não foi possível verificar o estado dos formulários enviados recentemente.</string>
     <string name="info_tag_unavailable">Nenhuma etiqueta disponível</string>
-    <string name="info_update_person_demographics">Atualizar dados demográficos de pessoas</string>
+    <string name="info_update_person_demographics">Formulário ATS e Adicionar Contacto</string>
     <string name="info_url_validate">Passo 1: Validar URL</string>
     <string name="info_video_chose_activity_unavailable">Erro: Aplicação para escolha de vídeo não encontrado</string>
     <string name="info_video_play_activity_unavailable">Erro: Aplicação para projectar vídeo não encontrado</string>
@@ -496,9 +496,9 @@
 
     <string name="provider_details">Detalhes do provedor</string>
     <string name="provider_identifier">Identificador de Provedor:</string>
-    <string name="provider_name">Nome do provedor:</string>
-    <string name="provider_name_general">Nome do provedor</string>
-    <string name="provider_reports_general">Relatórios de fornecedores</string>
+    <string name="provider_name">Nome do Provedor:</string>
+    <string name="provider_name_general">Nome do Provedor</string>
+    <string name="provider_reports_general">Relatórios de Provedores</string>
 
     <string name="registering_patient_message_title_text">Registrando utente em mUzima …</string>
 
@@ -690,7 +690,7 @@
     <string name="info_complete_form">Formulários Completos</string>
     <string name="general_search_forms">Formulários de Pesquisa</string>
     <string name="general_search_cohorts">Coortes de pesquisa</string>
-    <string name="general_search_patient">Paciente de pesquisa</string>
+    <string name="general_search_patient">Pesquisar Paciente</string>
     <string name="general_or_search_by">Ou pesquise por:</string>
     <string name="app_sub_title">para provedores de saúde</string>
     <string name="general_policy_title">Políticas de Uso</string>
@@ -838,4 +838,6 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_result">Resultado Teste HIV:</string>
     <string name="general_in_hiv_care">Cuidados HIV:</string>
     <string name="general_in_ccr">Em CCR:</string>
+    <string name="general_date_of_birth">Data de Nascimento:</string>
+    <string name="general_years">anos</string>
 </resources>

@@ -352,7 +352,7 @@ public class DataCollectionActivity extends ActivityWithPatientSummaryBottomNavi
 
             patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
             if (patient.getBirthdate() != null)
-                ageTextView.setText(String.format(Locale.getDefault(), "%d Yrs", DateUtils.calculateAge(patient.getBirthdate())));
+                ageTextView.setText(String.format(Locale.getDefault(), "%d "+R.string.general_years, DateUtils.calculateAge(patient.getBirthdate())));
             gpsAddressTextView.setText(getDistanceToClientAddress(patient));
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(),"Exception encountered while loading Patients ",e);

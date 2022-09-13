@@ -45,7 +45,8 @@ public class PatientReportActivity extends BroadcastListenerActivity {
         patient = (Patient) intent.getSerializableExtra(PatientSummaryActivity.PATIENT);
         initPager();
         initPagerIndicator();
-        getActionBar().setTitle(patient.getSummary());
+        String title = getResources().getString(R.string.provider_reports_general);
+        getActionBar().setTitle(title);
         logEvent("VIEW_CLIENT_DOWNLOADED_REPORTS", "{\"patientuuid\":\""+patient.getUuid()+"\"}");
     }
 

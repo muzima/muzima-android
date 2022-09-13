@@ -493,7 +493,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="info_submitted_form_data_status_check">Checking status of recently submitted forms</string>
     <string name="info_submitted_form_data_status_check_failure">Could not check status of recently submitted forms</string>
     <string name="info_tag_unavailable">No tags available</string>
-    <string name="info_update_person_demographics">Update person demographics</string>
+    <string name="info_update_person_demographics">HTC/Add Contact Form</string>
     <string name="info_url_validate">Step 1: Validating URL</string>
     <string name="info_video_chose_activity_unavailable">Error: Application for choosing video not found</string>
     <string name="info_video_play_activity_unavailable">Error: Application for playing video not found</string>
@@ -855,4 +855,6 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_in_hiv_care">HIV care:</string>
     <string name="general_in_ccr">CCR:</string>
     <string name="general_hiv_test">HIV Test Date:</string>
+    <string name="general_date_of_birth">Date of birth</string>
+    <string name="general_years">Years</string>
 </resources>
