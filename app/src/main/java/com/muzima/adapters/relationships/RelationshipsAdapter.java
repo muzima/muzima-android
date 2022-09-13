@@ -106,6 +106,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             holder.inCCR = convertView.findViewById(R.id.in_ccr);
             holder.hivTestDetails = convertView.findViewById(R.id.hiv_test_details);
             holder.hivCareDetails = convertView.findViewById(R.id.hiv_care_details);
+            holder.personNID = convertView.findViewById(R.id.person_nid);
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
@@ -188,6 +189,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                 holder.results.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 23779, observationController, conceptController, applicationLanguage));
                 holder.inHivCare.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 23780, observationController, conceptController, applicationLanguage));
                 holder.inCCR.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 1885, observationController, conceptController, applicationLanguage));
+                holder.personNID.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 5325, observationController, conceptController, applicationLanguage));
             } catch (JSONException e) {
                 Log.e(getClass().getSimpleName(),"Encountered JSONException ",e);
             } catch (ObservationController.LoadObservationException e) {
@@ -279,6 +281,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         TextView results;
         TextView inHivCare;
         TextView inCCR;
+        TextView personNID;
         RelativeLayout hivTestDetails;
         RelativeLayout hivCareDetails;
 
