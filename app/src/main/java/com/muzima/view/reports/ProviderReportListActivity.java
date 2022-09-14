@@ -23,6 +23,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.reports.AvailableReportsAdapter;
 import com.muzima.model.AvailableForm;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
@@ -36,14 +37,20 @@ public class ProviderReportListActivity extends ActivityWithBottomNavigation imp
     private View noDataView;
     private FrameLayout progressBarContainer;
     private AvailableReportsAdapter reportsAdapter;
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,true);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.report_layout_list);
         progressBarContainer = findViewById(R.id.progressbarContainer);
         loadBottomNavigation();
+
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.title_provider_reports));
+        }
 
         setupListView();
         setupNoDataView();

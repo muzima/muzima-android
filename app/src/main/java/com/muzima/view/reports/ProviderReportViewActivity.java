@@ -24,6 +24,7 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Provider;
 import com.muzima.model.AvailableForm;
 import com.muzima.controller.FormController;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.javascriptinterface.ProviderReportJavascriptInterface;
 import com.muzima.view.BroadcastListenerActivity;
@@ -38,10 +39,12 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
     public Provider provider;
     private MuzimaProgressDialog progressDialog;
     private FormTemplate reportTemplate;
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,true);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_webview);
         progressDialog = new MuzimaProgressDialog(this);
@@ -53,6 +56,10 @@ public class ProviderReportViewActivity extends BroadcastListenerActivity {
             Log.e(getClass().getSimpleName(),"Could not obtain report template");
         }
         setupWebView();
+
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.title_provider_reports));
+        }
         logEvent("VIEW_PROVIDER_REPORT","{\"reporttemplateuuid\":\""+reportTemplate.getUuid()+"\"}");
     }
 

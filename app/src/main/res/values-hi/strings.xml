@@ -772,4 +772,8 @@
     <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
     <string name="general_create_contact">संपर्क जोड़ें</string>
+    <string name="info_htc_contact_form">एचटीसी/संपर्क फ़ॉर्म जोड़ें</string>
+    <string name="general_date_of_birth">जन्म की तारीख %s</string>
+    <string name="general_years">%s वर्षों</string>
+    <string name="general_individual_summary">व्यक्तिगत सारांश</string>
 </resources>

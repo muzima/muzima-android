@@ -782,4 +782,8 @@
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
     <string name="general_create_contact">Ajouter le contact</string>
+    <string name="info_htc_contact_form">HTC/Ajouter un formulaire de contact</string>
+    <string name="general_date_of_birth">Date de naissance: %s</string>
+    <string name="general_years">%s Ans</string>
+    <string name="general_individual_summary">Résumé individuel</string>
 </resources>

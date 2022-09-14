@@ -106,6 +106,7 @@
                         <TextView
                                 android:id="@+id/dateOfBirth"
                                 style="@style/ListDescription"
+                                android:textSize="12sp"
                                 android:fontFamily="@font/roboto_regular"
                                 android:layout_width="wrap_content"
                                 android:layout_marginEnd="6dp"/>
@@ -122,7 +123,8 @@
                     <TextView
                             android:id="@+id/age_text_label"
                             android:layout_marginEnd="12dp"
-                            android:paddingBottom="4dp"
+                            android:paddingTop="3dp"
+                            android:paddingBottom="2dp"
                             android:textSize="12sp"
                             android:gravity="end"
                             android:fontFamily="@font/roboto_regular"

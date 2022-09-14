@@ -11,6 +11,7 @@
 package com.muzima.adapters.patients;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.location.Location;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.model.patient.PatientItem;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.CheckedLinearLayout;
 import java.text.SimpleDateFormat;
@@ -49,12 +51,17 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
     private List<String> selectedPatientsUuids;
     private PatientListClickListener patientListClickListener;
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
+    private final LanguageUtil languageUtil = new LanguageUtil();
+    private Configuration configuration ;
 
     public PatientAdapterHelper(Context context, PatientController patientController) {
         this.patientController = patientController;
         this.context = context;
         patientList = new ArrayList<>();
         selectedPatientsUuids = new ArrayList<>();
+
+        configuration = new Configuration(context.getResources().getConfiguration());
+        configuration.setLocale(languageUtil.getSelectedLocale(context));
     }
 
     protected Context getContext(){
@@ -100,9 +107,9 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
         }
         Date dob = patient.getBirthdate();
         if(dob != null) {
-            holder.dateOfBirth.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy",
-                    Locale.getDefault()).format(dob)));
-            holder.age.setText(String.format(Locale.getDefault(), "%d yrs", DateUtils.calculateAge(dob)));
+            holder.dateOfBirth.setText(context.createConfigurationContext(configuration).getResources().getString(R.string.general_date_of_birth ,String.format(" %s", new SimpleDateFormat("MM-dd-yyyy",
+                    Locale.getDefault()).format(dob))));
+            holder.age.setText(context.createConfigurationContext(configuration).getResources().getString(R.string.general_years ,String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(dob))));
         }else{
             holder.dateOfBirth.setText(String.format(""));
             holder.age.setText(String.format(""));

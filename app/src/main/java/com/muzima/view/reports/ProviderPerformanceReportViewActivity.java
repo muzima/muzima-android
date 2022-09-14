@@ -29,6 +29,7 @@ import com.muzima.controller.ReportDatasetController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.ProviderReportStatistic;
 import com.muzima.util.JsonUtils;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
@@ -66,11 +67,13 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
     private Fragment individualPerformanceSummaryFragment;
     private Fragment leaderboardFragment;
     private Fragment currentFragment;
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,true);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_performance_report);
         progressDialog = new MuzimaProgressDialog(this);
@@ -212,7 +215,7 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
         getLeaderboardAdapter().notifyDataSetChanged();
 
         if(getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Individual Summary");
+            getSupportActionBar().setTitle(getString(R.string.general_individual_summary));
         }
         currentFragment = individualPerformanceSummaryFragment;
     }
@@ -229,7 +232,7 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
         getLeaderboardAdapter().notifyDataSetChanged();
 
         if(getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Leaderboard");
+            getSupportActionBar().setTitle(getString(R.string.general_leaderboard));
         }
         currentFragment = leaderboardFragment;
     }

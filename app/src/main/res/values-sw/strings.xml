@@ -777,4 +777,8 @@
     <string name="write_SHR_to_card_text">Andika SHR kwenye kadi</string>
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
     <string name="general_create_contact">Ongeza uhusiano</string>
+    <string name="info_htc_contact_form">HTC/Ongeza Fomu ya Mawasiliano</string>
+    <string name="general_date_of_birth">Tarehe ya kuzaliwa: %s</string>
+    <string name="general_years">%s Miaka</string>
+    <string name="general_individual_summary">Muhtasari wa Mtu Binafsi</string>
 </resources>
