@@ -147,7 +147,12 @@ public class RelationshipViewUtil {
         if(mApplication.getMuzimaSettingController().isPatientRegistrationEnabled()) {
             arrayAdapter.add(callingActivity.getString(R.string.info_convert_person_to_patient));
         }
-        arrayAdapter.add(callingActivity.getString(R.string.info_update_person_demographics));
+
+        if(mApplication.getMuzimaSettingController().isFGHCustomClientSummaryEnabled()){
+            arrayAdapter.add(callingActivity.getString(R.string.info_htc_contact_form));
+        }else {
+            arrayAdapter.add(callingActivity.getString(R.string.info_update_person_demographics));
+        }
 
         builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override

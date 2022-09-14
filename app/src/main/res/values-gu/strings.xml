@@ -773,4 +773,7 @@
     <string name="write_SHR_to_card_text">SHR ને કાર્ડ પર લખો</string>
     <string name="write_shr_to_card_general">SHR ને કાર્ડ પર લખો</string>
     <string name="general_create_contact">સંપર્ક ઉમેરો</string>
+    <string name="info_htc_contact_form">HTC/સંપર્ક ફોર્મ ઉમેરો</string>
+    <string name="general_date_of_birth">જન્મ તારીખ %s</string>
+    <string name="general_years">%s વર્ષ</string>
 </resources>

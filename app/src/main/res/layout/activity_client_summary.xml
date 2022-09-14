@@ -136,6 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@id/sector"
+                        android:layout_centerVertical="true"
                         android:textColor="?attr/primaryTextColor"
                         android:fontFamily="@font/roboto_regular" />
 
@@ -243,7 +244,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/general_relationships"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:fontFamily="@font/roboto_bold" />
 
                         <ImageView
@@ -281,7 +282,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/general_historical_data"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:fontFamily="@font/roboto_bold" />
 
                         <ImageView
@@ -319,9 +320,9 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/general_data_collection"
+                            android:text="@string/general_forms"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:fontFamily="@font/roboto_bold" />
 
                         <ImageView

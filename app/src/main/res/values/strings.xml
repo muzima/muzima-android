@@ -585,6 +585,7 @@
 \nIf you have any question or any concerns about the terms, please reach us on mUzimamobile@gmail.com
 </string>
     <string name="info_update_person_demographics">Update person demographics</string>
+    <string name="info_htc_contact_form">HTC/Add Contact Form</string>
     <string name="info_url_validate">Step 1: Validating URL</string>
     <string name="info_video_chose_activity_unavailable">Error: Application for choosing video not found</string>
     <string name="info_video_play_activity_unavailable">Error: Application for playing video not found</string>
@@ -797,4 +798,6 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
     <string name="general_create_contact">Create Contact</string>
+    <string name="general_date_of_birth">Date of birth: %s</string>
+    <string name="general_years">%s Years</string>
 </resources>
