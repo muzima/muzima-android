@@ -775,4 +775,5 @@
     <string name="info_htc_contact_form">एचटीसी/संपर्क फ़ॉर्म जोड़ें</string>
     <string name="general_date_of_birth">जन्म की तारीख %s</string>
     <string name="general_years">%s वर्षों</string>
+    <string name="general_individual_summary">व्यक्तिगत सारांश</string>
 </resources>

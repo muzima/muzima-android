@@ -776,4 +776,5 @@
     <string name="info_htc_contact_form">HTC/સંપર્ક ફોર્મ ઉમેરો</string>
     <string name="general_date_of_birth">જન્મ તારીખ %s</string>
     <string name="general_years">%s વર્ષ</string>
+    <string name="general_individual_summary">વ્યક્તિગત સારાંશ</string>
 </resources>

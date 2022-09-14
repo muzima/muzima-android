@@ -800,4 +800,5 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_create_contact">Create Contact</string>
     <string name="general_date_of_birth">Date of birth: %s</string>
     <string name="general_years">%s Years</string>
+    <string name="general_individual_summary">Individual Summary</string>
 </resources>

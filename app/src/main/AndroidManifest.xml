@@ -348,7 +348,6 @@
         <activity
             android:name=".view.reports.ProviderPerformanceReportViewActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/title_provider_reports"
             android:parentActivityName=".view.reports.ProviderReportListActivity">
         </activity>
 
@@ -370,14 +369,12 @@
             android:name=".view.reports.ProviderReportViewActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/title_provider_reports"
             android:parentActivityName=".view.reports.ProviderReportListActivity">
         </activity>
         <activity
             android:name=".view.reports.ProviderReportListActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/title_provider_reports"
             android:parentActivityName=".view.MainDashboardActivity">
         </activity>
 

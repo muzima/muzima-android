@@ -783,4 +783,5 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_create_contact">Adicionar Contacto</string>
     <string name="general_date_of_birth">Data de Nascimento: %s</string>
     <string name="general_years">%s anos</string>
+    <string name="general_individual_summary">Resumo Individual</string>
 </resources>
