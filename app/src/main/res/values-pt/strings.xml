@@ -341,12 +341,12 @@
     <string name="hint_set_default_encounter_location_for_SHR">Por favor, defina localização encontro padrão, de modo a permitir a escrita de novo cartão</string>
     <string name="hint_setting_refresh">Deseja voltar a baixar essa configuração do servidor?</string>
     <string name="hint_switch_location_on">Por favor, ative a localização nas configurações.</string>
-    <string name="hint_their_performance">Resumo de desempenho para %s entre %s e %s</string>
+    <string name="hint_their_performance" formatted="false">Resumo de desempenho para %s entre %s e %s</string>
     <string name="hint_username_prompt">Por favor introduza o nome do utilizador</string>
     <string name="hint_video_caption_prompt">Por favor introduza uma legenda para o vídeo</string>
     <string name="hint_video_record">Gravar ou escolher vídeo</string>
     <string name="hint_write_SHR_to_card">Você quer escrever o Registro de Saúde Compartilhado no cartão?</string>
-    <string name="hint_your_performance">Seu desempenho entre %s e %s</string>
+    <string name="hint_your_performance" formatted="false">Seu desempenho entre %s e %s</string>
     <string name="how_to_general">Como:</string>
     <string name="individual_obs">Obs Individual</string>
     <string name="individual_obs_description">Obs Individual</string>
@@ -773,7 +773,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="warning_logout_confirm_with_form_deletion">Tem certeza de que deseja sair e sair do aplicativo mUzima? Todos os formulários completos e incompletos serão excluídos</string>
     <string name="warning_registration_form_data_delete">Está para apagar dados de registo. Isto irá apagar o registo do utente no dispositivo. Tem certeza?</string>
     <string name="warning_related_person_missing">Por favor, escolha uma pessoa relacionada</string>
-    <string name="warning_relationship_exists">O utente já possui relacionamento %s:%s com %s</string>
+    <string name="warning_relationship_exists" formatted="false">O utente já possui relacionamento %s:%s com %s</string>
     <string name="warning_relationship_type_missing">Por favor, escolha um tipo de relacionamento</string>
     <string name="warning_session_timeout">Sessão expirou: não foi possível definir o tempo limite da sessão. Por favor insira um valor entre 1 e 500.</string>
     <string name="warning_setting_download_failure">Não foi possível baixar ou atualizar a configuração</string>
@@ -784,4 +784,5 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_date_of_birth">Data de Nascimento: %s</string>
     <string name="general_years">%s anos</string>
     <string name="general_individual_summary">Resumo Individual</string>
+    <string name="general_is_a">%s é um:</string>
 </resources>

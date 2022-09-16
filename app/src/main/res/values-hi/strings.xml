@@ -341,12 +341,12 @@
     <string name="hint_set_default_encounter_location_for_SHR">कृपया डिफ़ॉल्ट मुठभेड़ स्थान सेट करें ताकि नया कार्ड लिखने में सक्षम हो</string>
     <string name="hint_setting_refresh">क्या आप इस सेटिंग को सर्वर से पुनः डाउनलोड करना चाहते हैं?</string>
     <string name="hint_switch_location_on">कृपया सेटिंग्स में स्थान पर स्विच करें।</string>
-    <string name="hint_their_performance">%s और %s . के बीच %s के लिए प्रदर्शन सारांश</string>
+    <string name="hint_their_performance" formatted="false">%s और %s . के बीच %s के लिए प्रदर्शन सारांश</string>
     <string name="hint_username_prompt">कृपया उपयोगकर्ता नाम दर्ज करें</string>
     <string name="hint_video_caption_prompt">कृपया वीडियो के लिए एक कैप्शन दर्ज करें</string>
     <string name="hint_video_record">वीडियो रिकॉर्ड करें या चुनें</string>
     <string name="hint_write_SHR_to_card">क्या आप कार्ड में साझा स्वास्थ्य रिकॉर्ड लिखना चाहते हैं?</string>
-    <string name="hint_your_performance">%s और %s . के बीच आपका प्रदर्शन</string>
+    <string name="hint_your_performance" formatted="false">%s और %s . के बीच आपका प्रदर्शन</string>
     <string name="how_to_general">कैसे:</string>
     <string name="individual_obs">व्यक्तिगत अवलोकन</string>
     <string name="individual_obs_description">व्यक्तिगत अवलोकन</string>
@@ -764,7 +764,7 @@
     <string name="warning_logout_confirm_with_form_deletion">क्या आप वाकई लॉग आउट करना चाहते हैं और मुज़िमा ऐप से बाहर निकलना चाहते हैं? सभी पूर्ण और अपूर्ण प्रपत्र हटा दिए जाएंगे</string>
     <string name="warning_registration_form_data_delete">आप पंजीकरण डेटा को हटाने वाले हैं। यह डिवाइस पर क्लाइंट रिकॉर्ड को भी हटा देगा। क्या आप निश्चित है?</string>
     <string name="warning_related_person_missing">कृपया संबंधित व्यक्ति चुनें</string>
-    <string name="warning_relationship_exists">क्लाइंट के पास पहले से ही %s के साथ %s:%s संबंध है</string>
+    <string name="warning_relationship_exists" formatted="false">क्लाइंट के पास पहले से ही %s के साथ %s:%s संबंध है</string>
     <string name="warning_relationship_type_missing">कृपया एक संबंध प्रकार चुनें</string>
     <string name="warning_session_timeout">सत्र टाइमआउट: सत्र टाइमआउट सेट नहीं हो सका। कृपया 1 और 500 के बीच एक मान दर्ज करें।</string>
     <string name="warning_setting_download_failure">सेटिंग डाउनलोड या अपडेट नहीं हो सका</string>
@@ -776,4 +776,5 @@
     <string name="general_date_of_birth">जन्म की तारीख %s</string>
     <string name="general_years">%s वर्षों</string>
     <string name="general_individual_summary">व्यक्तिगत सारांश</string>
+    <string name="general_is_a">%s एक है:</string>
 </resources>

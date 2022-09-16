@@ -14,8 +14,11 @@ import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.LastSyncTimeService;
+import com.muzima.api.service.MuzimaSettingService;
+import com.muzima.api.service.SetupConfigurationService;
 import com.muzima.service.SntpService;
 import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
@@ -30,6 +33,7 @@ import java.util.List;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS;
 import static com.muzima.api.model.APIName.DOWNLOAD_COHORTS_DATA;
+import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_COHORTS_IN_CONFIG_SETTING;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -56,7 +60,7 @@ public class CohortControllerTest {
     private Date mockDate;
 
     @Before
-    public void setup() {
+    public void setup() throws MuzimaSettingController.MuzimaSettingFetchException {
         cohortService = mock(CohortService.class);
         lastSyncTimeService = mock(LastSyncTimeService.class);
         sntpService = mock(SntpService.class);
@@ -64,6 +68,15 @@ public class CohortControllerTest {
         controller = new CohortController(cohortService, lastSyncTimeService, sntpService, muzimaApplication);
         anotherMockDate = mock(Date.class);
         mockDate = mock(Date.class);
+
+        SetupConfigurationService setupConfigurationService = mock(SetupConfigurationService.class);
+        MuzimaSettingService muzimaSettingService = mock(MuzimaSettingService.class);
+        MuzimaSettingController muzimaSettingController = new MuzimaSettingController(muzimaSettingService, lastSyncTimeService, sntpService, setupConfigurationService, muzimaApplication);
+        MuzimaSetting muzimaSetting = new MuzimaSetting();
+        muzimaSetting.setProperty(DISPLAY_ONLY_COHORTS_IN_CONFIG_SETTING);
+        muzimaSetting.setValueBoolean(false);
+        when(muzimaSettingController.getSettingByProperty(DISPLAY_ONLY_COHORTS_IN_CONFIG_SETTING)).thenReturn(muzimaSetting);
+        when(muzimaApplication.getMuzimaSettingController()).thenReturn(muzimaSettingController);
     }
 
     @Test

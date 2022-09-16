@@ -341,12 +341,12 @@
     <string name="hint_set_default_encounter_location_for_SHR">કૃપા કરીને ડિફૉલ્ટ એન્કાઉન્ટર સ્થાન સેટ કરો જેથી નવું કાર્ડ લખવાનું સક્ષમ થાય</string>
     <string name="hint_setting_refresh">શું તમે આ સેટિંગને સર્વરથી ફરીથી ડાઉનલોડ કરવા માંગો છો?</string>
     <string name="hint_switch_location_on">કૃપા કરીને સેટિંગ્સમાં સ્થાન પર સ્વિચ કરો.</string>
-    <string name="hint_their_performance">%s અને %s ની વચ્ચે %s માટે પ્રદર્શન સારાંશ</string>
+    <string name="hint_their_performance" formatted="false">%s અને %s ની વચ્ચે %s માટે પ્રદર્શન સારાંશ</string>
     <string name="hint_username_prompt">કૃપા કરીને વપરાશકર્તા નામ દાખલ કરો</string>
     <string name="hint_video_caption_prompt">કૃપા કરીને વિડિઓ માટે કેપ્શન દાખલ કરો</string>
     <string name="hint_video_record">વિડિઓ રેકોર્ડ કરો અથવા પસંદ કરો</string>
     <string name="hint_write_SHR_to_card">શું તમે કાર્ડ પર વહેંચાયેલ આરોગ્ય રેકોર્ડ લખવા માંગો છો?</string>
-    <string name="hint_your_performance">%s અને %s વચ્ચે તમારું પ્રદર્શન</string>
+    <string name="hint_your_performance" formatted="false">%s અને %s વચ્ચે તમારું પ્રદર્શન</string>
     <string name="how_to_general">કઈ રીતે:</string>
     <string name="individual_obs">વ્યક્તિગત નિરીક્ષણ</string>
     <string name="individual_obs_description">વ્યક્તિગત નિરીક્ષણ</string>
@@ -765,7 +765,7 @@
     <string name="warning_logout_confirm_with_form_deletion">શું તમે ખરેખર લૉગ આઉટ કરવા અને mUzima ઍપમાંથી બહાર નીકળવા માંગો છો? તમામ પૂર્ણ અને અપૂર્ણ ફોર્મ કાઢી નાખવામાં આવશે</string>
     <string name="warning_registration_form_data_delete">તમે નોંધણી ડેટા કાઢી નાખવા જઈ રહ્યા છો. આ ઉપકરણ પર ક્લાયંટ રેકોર્ડ પણ કાઢી નાખશે. શું તમને ખાતરી છે?</string>
     <string name="warning_related_person_missing">કૃપા કરીને સંબંધિત વ્યક્તિ પસંદ કરો</string>
-    <string name="warning_relationship_exists">ક્લાયન્ટ પાસે પહેલેથી જ %s સાથે %s:%s સંબંધ છે</string>
+    <string name="warning_relationship_exists" formatted="false">ક્લાયન્ટ પાસે પહેલેથી જ %s સાથે %s:%s સંબંધ છે</string>
     <string name="warning_relationship_type_missing">કૃપા કરીને સંબંધનો પ્રકાર પસંદ કરો</string>
     <string name="warning_session_timeout">સત્ર સમયસમાપ્તિ: સત્ર સમયસમાપ્તિ સેટ કરી શકાયું નથી. કૃપા કરીને 1 અને 500 ની વચ્ચેનું મૂલ્ય દાખલ કરો.</string>
     <string name="warning_setting_download_failure">સેટિંગને ડાઉનલોડ અથવા અપડેટ કરી શક્યા નથી</string>
@@ -777,4 +777,5 @@
     <string name="general_date_of_birth">જન્મ તારીખ %s</string>
     <string name="general_years">%s વર્ષ</string>
     <string name="general_individual_summary">વ્યક્તિગત સારાંશ</string>
+    <string name="general_is_a">%s એ છે:</string>
 </resources>
