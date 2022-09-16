@@ -16,11 +16,13 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Tag;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.FormService;
 import com.muzima.api.service.LastSyncTimeService;
+import com.muzima.api.service.MuzimaSettingService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PatientService;
 import com.muzima.api.service.EncounterService;
@@ -56,6 +58,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.matchers.JUnitMatchers.hasItem;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_FORMS;
+import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_FORMS_IN_CONFIG_SETTING;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
@@ -79,7 +82,7 @@ public class FormControllerTest {
     private CohortService cohortService;
 
     @Before
-    public void setup() throws IOException {
+    public void setup() throws IOException, MuzimaSettingController.MuzimaSettingFetchException {
         muzimaApplication = mock(MuzimaApplication.class);
         formService = mock(FormService.class);
         patientService = mock(PatientService.class);
@@ -107,6 +110,14 @@ public class FormControllerTest {
         when(muzimaApplication.getPatientController()).thenReturn(patientController);
         LastSyncTime lastSyncTime = mock(LastSyncTime.class);
         mockDate = mock(Date.class);
+
+        MuzimaSettingService muzimaSettingService = mock(MuzimaSettingService.class);
+        MuzimaSettingController muzimaSettingController = new MuzimaSettingController(muzimaSettingService, lastSyncTimeService, sntpService, setupConfigurationService, muzimaApplication);
+        MuzimaSetting muzimaSetting = new MuzimaSetting();
+        muzimaSetting.setProperty(DISPLAY_ONLY_FORMS_IN_CONFIG_SETTING);
+        muzimaSetting.setValueBoolean(false);
+        when(muzimaSettingController.getSettingByProperty(DISPLAY_ONLY_FORMS_IN_CONFIG_SETTING)).thenReturn(muzimaSetting);
+        when(muzimaApplication.getMuzimaSettingController()).thenReturn(muzimaSettingController);
     }
 
     @Test
