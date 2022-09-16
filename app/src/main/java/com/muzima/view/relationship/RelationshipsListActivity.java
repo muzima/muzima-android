@@ -397,7 +397,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         // Show the add relationship view
         addRelationshipView.setVisibility(View.VISIBLE);
         autoCompletePersonTextView.requestFocus();
-        textViewInfo.setText(String.format("%s is a:", patient.getDisplayName()));
+        textViewInfo.setText(getString(R.string.general_is_a ,String.format("%s", patient.getDisplayName())));
     }
 
     public void saveRelationship(View view) {

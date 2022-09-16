@@ -341,12 +341,12 @@
     <string name="hint_set_default_encounter_location_for_SHR">Tafadhali weka eneo la kukutana na default ili kuwezesha kuandika kadi mpya</string>
     <string name="hint_setting_refresh">Je, ungependa kuupakuwa tena mpangilio huu kutoka kwenye Seva.</string>
     <string name="hint_switch_location_on">Tafadhali wezesha eneo katika mipangilio.</string>
-    <string name="hint_their_performance">Muhtasari wa utendakazi wa %s kati ya %s na %s</string>
+    <string name="hint_their_performance" formatted="false">Muhtasari wa utendakazi wa %s kati ya %s na %s</string>
     <string name="hint_username_prompt">Tafadhali ingiza jina la mtumiaji</string>
     <string name="hint_video_caption_prompt">Tafadhali ingiza maelezo mafupi kwa ajili ya video hii</string>
     <string name="hint_video_record">Rekodi au chagua video</string>
     <string name="hint_write_SHR_to_card">Je, unataka kuandika Rekodi ya Afya ya Pamoja kwa kadi?</string>
-    <string name="hint_your_performance">Utendaji wako kati ya %s na %s</string>
+    <string name="hint_your_performance" formatted="false">Utendaji wako kati ya %s na %s</string>
     <string name="how_to_general">Jinsi ya:</string>
     <string name="individual_obs">Uchunguzi wa kibinafsi</string>
     <string name="individual_obs_description">Uchunguzi wa kibinafsi</string>
@@ -769,7 +769,7 @@
     <string name="warning_logout_confirm_with_form_deletion">Je, una uhakika unataka kutoka na kuondoka kwenye programu ya mUzima? Fomu zote zilizojazwa na ambazo hazijakamilika zitafutwa</string>
     <string name="warning_registration_form_data_delete">Unakaribia kufuta data za usajili. Kufanya hivi kutafuta taarifa za mteja kwenye kifaa hichi pia. Je una uhakika?</string>
     <string name="warning_related_person_missing">Tafadhali chagua mtu anayehusiana</string>
-    <string name="warning_relationship_exists">Mteja tayari ana uhusiano wa %s:%s na %s</string>
+    <string name="warning_relationship_exists" formatted="false">Mteja tayari ana uhusiano wa %s:%s na %s</string>
     <string name="warning_relationship_type_missing">Tafadhali chagua aina ya uhusiano</string>
     <string name="warning_session_timeout">Muda wa sesheni kuisha: Haikuweza kuweka muda wa kusitisha. Tafadhali ingiza thamani kati ya 1 na 500.</string>
     <string name="warning_setting_download_failure">Imeshindikana kupakua au kusahihisha mipangilio</string>
@@ -781,4 +781,5 @@
     <string name="general_date_of_birth">Tarehe ya kuzaliwa: %s</string>
     <string name="general_years">%s Miaka</string>
     <string name="general_individual_summary">Muhtasari wa Mtu Binafsi</string>
+    <string name="general_is_a">%s ni:</string>
 </resources>

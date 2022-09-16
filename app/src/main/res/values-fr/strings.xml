@@ -341,12 +341,12 @@
     <string name="hint_set_default_encounter_location_for_SHR">Veuillez définir l\'emplacement de rencontre par défaut afin d\'activer l\'écriture d\'une nouvelle carte.</string>
     <string name="hint_setting_refresh">Voulez-vous télécharger de nouveau cette configuration de votre serveur?</string>
     <string name="hint_switch_location_on">Veuillez activer la localisation dans les paramètres.</string>
-    <string name="hint_their_performance">Résumé des performances pour %s entre %s et %s</string>
+    <string name="hint_their_performance" formatted="false">Résumé des performances pour %s entre %s et %s</string>
     <string name="hint_username_prompt">Veuillez entrer votre nom d\'utilisateur</string>
     <string name="hint_video_caption_prompt">Veuillez entrer une légende pour la vidéo</string>
     <string name="hint_video_record">Enregistrer ou choisir une vidéo</string>
     <string name="hint_write_SHR_to_card">Voulez-vous écrire Shared Health Record sur la carte?</string>
-    <string name="hint_your_performance">Vos performances entre %s et %s</string>
+    <string name="hint_your_performance" formatted="false">Vos performances entre %s et %s</string>
     <string name="how_to_general">Comment:</string>
     <string name="individual_obs">Obs individuel</string>
     <string name="individual_obs_description">Obs individuel</string>
@@ -774,7 +774,7 @@
     <string name="warning_logout_confirm_with_form_deletion">Voulez-vous vraiment vous déconnecter et quitter l\'application mUzima ? Tous les formulaires complets et incomplets seront supprimés</string>
     <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du client sur l\'appareil. Etes-vous sur?</string>
     <string name="warning_related_person_missing">Veuillez choisir une personne liée</string>
-    <string name="warning_relationship_exists">Le client a déjà une relation %s:%s avec %s</string>
+    <string name="warning_relationship_exists" formatted="false">Le client a déjà une relation %s:%s avec %s</string>
     <string name="warning_relationship_type_missing">Veuillez choisir un type de relation</string>
     <string name="warning_session_timeout">Expiration de la session: Impossible de définir le délai d\'expiration de la session. Veuillez entrer une valeur entre 1 et 500.</string>
     <string name="warning_setting_download_failure">Echec du téléchargement ou de la mise à jour des configurations</string>
@@ -786,4 +786,5 @@
     <string name="general_date_of_birth">Date de naissance: %s</string>
     <string name="general_years">%s Ans</string>
     <string name="general_individual_summary">Résumé individuel</string>
+    <string name="general_is_a">%s est un :</string>
 </resources>
