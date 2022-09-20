@@ -150,6 +150,7 @@
                             android:layout_marginEnd="6dp"
                             android:text="@string/general_hiv_test"
                             android:textSize="12sp"
+                            android:textColor="@color/secondary_text"
                             android:textStyle="italic" />
 
                         <TextView
@@ -175,6 +176,7 @@
                         android:layout_marginEnd="6dp"
                         android:text="@string/general_result"
                         android:textSize="12sp"
+                        android:textColor="@color/secondary_text"
                         android:textStyle="italic" />
 
                     <TextView
@@ -197,6 +199,7 @@
 
                     <LinearLayout
                         android:layout_alignParentStart="true"
+                        android:id="@+id/hiv_care"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="7dp"
@@ -209,6 +212,7 @@
                             android:layout_marginEnd="6dp"
                             android:text="@string/general_in_hiv_care"
                             android:textSize="12sp"
+                            android:textColor="@color/secondary_text"
                             android:textStyle="italic" />
 
                         <TextView
@@ -222,7 +226,7 @@
 
                     </LinearLayout>
                     <LinearLayout
-                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/hiv_care"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="7dp"
@@ -234,6 +238,7 @@
                             android:layout_marginEnd="6dp"
                             android:text="@string/general_in_ccr"
                             android:textSize="12sp"
+                            android:textColor="@color/secondary_text"
                             android:textStyle="italic" />
 
                         <TextView

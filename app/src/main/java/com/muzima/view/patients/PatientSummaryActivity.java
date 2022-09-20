@@ -13,6 +13,7 @@ package com.muzima.view.patients;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -254,12 +255,10 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 ageTextView.setText(getString(R.string.general_years, String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(patient.getBirthdate()))));
             gpsAddressTextView.setText(getDistanceToClientAddress(patient));
 
-            if(patient.getPreferredAddress() != null) {
-                patientAddress.setText(patient.getPreferredAddress().getAddress1());
-            }else if(patient.getAddresses().size() > 0){
-                patientAddress.setText(patient.getAddresses().get(0).getAddress1());
+            if(patient.getAddresses().size()>0) {
+                int index = patient.getAddresses().size()-1;
+                patientAddress.setText(getFormattedPatientAddress(patient.getAddresses().get(index)));
             }
-
 
             if(patient.getAttribute("e2e3fd64-1d5f-11e0-b929-000c29ad1d07") != null) {
                 patientPhoneNumber.setText(patient.getAttribute("e2e3fd64-1d5f-11e0-b929-000c29ad1d07").getAttribute());
@@ -282,6 +281,26 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(),"JSONException encountered ",e);
         }
+    }
+
+    private String getFormattedPatientAddress(PersonAddress personAddress){
+        String formattedAddress = "";
+        if(!StringUtils.isEmpty(personAddress.getAddress6())){
+            formattedAddress = formattedAddress +" "+ personAddress.getAddress6()+ ";";
+        }
+
+        if(!StringUtils.isEmpty(personAddress.getAddress5())){
+            formattedAddress = formattedAddress +" "+ personAddress.getAddress5()+ ";";
+        }
+
+        if(!StringUtils.isEmpty(personAddress.getAddress3())){
+            formattedAddress = formattedAddress +" "+ personAddress.getAddress3()+ ";";
+        }
+        if(!StringUtils.isEmpty(personAddress.getAddress1())){
+            formattedAddress = formattedAddress +" "+ personAddress.getAddress1()+ ";";
+        }
+
+        return formattedAddress;
     }
 
     private String getObsByPatientUuidAndConceptId(String patientUuid, int conceptId) throws JSONException, ObservationController.LoadObservationException {
