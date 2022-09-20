@@ -182,8 +182,8 @@
     <string name="general_historical_data_view_description">mUzima tem mecanismos fáceis e eficientes de fácil utilização para recuperar e visualizar dados históricos de pacientes ou utentes.</string>
     <string name="general_hiv_test">Data do Teste HIV:</string>
     <string name="general_home">Casa</string>
-    <string name="general_in_ccr">Em CCR:</string>
-    <string name="general_in_hiv_care">Cuidados HIV:</string>
+    <string name="general_in_ccr">Em CCR?</string>
+    <string name="general_in_hiv_care">Cuidados HIV?</string>
     <string name="general_label_sort_by_name">Classificar por nome</string>
     <string name="general_label_sort_status">Classificar por status</string>
     <string name="general_large">Ampla</string>
