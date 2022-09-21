@@ -185,7 +185,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             ObservationController observationController = muzimaApplication.getObservationController();
 
             try {
-                holder.testDate.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 23879, observationController, conceptController, applicationLanguage));
+                holder.testDate.setText(getObsDateTimeByPatientUuidAndConceptId(relatedPersonUuid, 23779, observationController, conceptController, applicationLanguage));
                 holder.results.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 23779, observationController, conceptController, applicationLanguage));
                 holder.inHivCare.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 23780, observationController, conceptController, applicationLanguage));
                 holder.inCCR.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 1885, observationController, conceptController, applicationLanguage));
@@ -218,6 +218,21 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                     return obs.getValueText();
             }
         } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+        return StringUtils.EMPTY;
+    }
+
+    private String getObsDateTimeByPatientUuidAndConceptId(String patientUuid, int conceptId, ObservationController observationController, ConceptController conceptController, String applicationLanguage) throws JSONException, ObservationController.LoadObservationException {
+        List<Observation> observations = new ArrayList<>();
+        try {
+            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+            Collections.sort(observations, observationDateTimeComparator);
+            if(observations.size()>0){
+                Observation obs = observations.get(0);
+                return DateUtils.getFormattedDate(obs.getObservationDatetime(),SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
+            }
+        } catch (ObservationController.LoadObservationException | Exception  e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
         return StringUtils.EMPTY;
