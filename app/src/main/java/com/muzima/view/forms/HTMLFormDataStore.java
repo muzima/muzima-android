@@ -367,7 +367,7 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getRelationshipForPersons(String person1Uuid, String person2Uuid){
+        public String getRelationshipForPersons(String person1Uuid, String person2Uuid){
         JSONArray relationshipsJsonArray = new JSONArray();
         RelationshipController relationshipController = ((MuzimaApplication)formWebViewActivity.getApplicationContext()).getRelationshipController();
         try {

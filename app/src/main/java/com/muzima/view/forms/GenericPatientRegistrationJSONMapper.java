@@ -226,6 +226,9 @@ public class GenericPatientRegistrationJSONMapper{
         setDemographicsUpdatePersonAsPatient(person);
         updatePersonAsPatient();
         copyDemographicsUpdateFromPatient(person);
+        if(isRelationshipStubDefined()) {
+            createRelationships();
+        }
         return person;
     }
 
@@ -731,6 +734,10 @@ public class GenericPatientRegistrationJSONMapper{
                     } else if (!StringUtils.equals(existingRelationship.getRelationshipType().getUuid(), relationshipType.getUuid())) {
                         //ToDo: Consider updating relationship type for existing relationship
                         Log.d(getClass().getSimpleName(), "Could not create relationship");
+                        existingRelationship.setPersonA(personA);
+                        existingRelationship.setPersonB(personB);
+                        existingRelationship.setRelationshipType(relationshipType);
+                        muzimaApplication.getRelationshipController().updateRelationship(existingRelationship);
                     }
                 } else {
                     throw new JSONException("Could not create relationship");
