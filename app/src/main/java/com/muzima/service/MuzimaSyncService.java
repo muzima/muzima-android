@@ -668,6 +668,12 @@ public class MuzimaSyncService {
                 updateProgressDialog(muzimaApplication.getString(R.string.error_encounter_observation_download));
 
             }
+            MuzimaSettingController muzimaSettingController = muzimaApplication.getMuzimaSettingController();
+            if(muzimaSettingController.isPatientTagGenerationEnabled()) {
+                if (patientlist.size() > 0) {
+                    updatePatientTags(patientlist);
+                }
+            }
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while loading patients.", e);
             result[0] = SyncStatusConstants.LOAD_ERROR;
@@ -1590,27 +1596,35 @@ public class MuzimaSyncService {
 
                     if (!hasAssignmentTag) {
                         List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
-                        List<Observation> consentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, INDEX_CASE_TESTING_CONSENT_CONCEPT_ID);
-
-                        if (consentObsList.size() > 0 && assignmentObsList.size() > 0) {
-                            for (Observation consentObs : consentObsList) {
+                        if (assignmentObsList.size() > 0) {
+                            for (Observation assignmentObs : assignmentObsList) {
                                 Date now = new Date();
-                                long consentDaysPassed = (now.getTime() - consentObs.getObservationDatetime().getTime()) / (24 * 60 * 60 * 1000);
-                                if (consentDaysPassed >= 0 && consentDaysPassed <= 30) {
-                                    for (Observation assignmentObs : assignmentObsList) {
-                                        if (assignmentObs.getObservationDatetime().after(consentObs.getObservationDatetime())) {
-                                            assignmentTag = new PatientTag();
-                                            assignmentTag.setName("AL");
-                                            assignmentTag.setDescription(muzimaApplication.getString(R.string.general_already_assigned));
-                                            assignmentTag.setUuid(ALREADY_ASSIGNED_TAG_UUID);
-                                            tags.add(assignmentTag);
-                                            patientController.savePatientTags(assignmentTag);
-                                            break;
+                                long assignmentDaysPassed = (now.getTime() - assignmentObs.getObservationDatetime().getTime()) / (24 * 60 * 60 * 1000);
+                                if (assignmentDaysPassed >= 0 && assignmentDaysPassed <= 21) {
+                                    assignmentTag = new PatientTag();
+                                    assignmentTag.setName("AL");
+                                    assignmentTag.setDescription(muzimaApplication.getString(R.string.general_already_assigned));
+                                    assignmentTag.setUuid(ALREADY_ASSIGNED_TAG_UUID);
+                                    tags.add(assignmentTag);
+                                    patientController.savePatientTags(assignmentTag);
 
+                                    //remove AA tag if available
+                                    PatientTag AATag = null;
+                                    for(PatientTag patientTag : tags){
+                                        if(patientTag.getName().equals("AA")){
+                                            AATag = patientTag;
                                         }
                                     }
+
+                                    if(AATag != null){
+                                        tags.remove(AATag);
+                                    }
+
+                                    hasAssignmentTag = true;
+                                    break;
                                 }
                                 if (assignmentTag != null) {
+                                    hasAssignmentTag = true;
                                     break;
                                 }
                             }
