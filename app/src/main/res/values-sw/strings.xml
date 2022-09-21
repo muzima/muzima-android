@@ -182,8 +182,8 @@
     <string name="general_historical_data_view_description">mUzima ina njia rahisi na nzuri ya kutumia-kirafiki ya kupata na kutazama data ya kihistoria kwa wagonjwa au wateja.</string>
     <string name="general_hiv_test">Tarehe ya Kupima HIV</string>
     <string name="general_home">Nyumbani</string>
-    <string name="general_in_ccr">CCR</string>
-    <string name="general_in_hiv_care">Utunzaji wa HIV:</string>
+    <string name="general_in_ccr">CCR?</string>
+    <string name="general_in_hiv_care">Utunzaji wa HIV?</string>
     <string name="general_label_sort_by_name">Panga kwa jina</string>
     <string name="general_label_sort_status">Panga kwa hali</string>
     <string name="general_large">Kubwa</string>

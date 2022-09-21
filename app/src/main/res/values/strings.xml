@@ -187,8 +187,8 @@
     <string name="general_historical_data_view_description">mUzima has easy and efficient user-friendly mechanisms for retrieving and viewing historical data on patients or clients.</string>
     <string name="general_hiv_test">HIV Test Date:</string>
     <string name="general_home">Home</string>
-    <string name="general_in_ccr">CCR:</string>
-    <string name="general_in_hiv_care">HIV care:</string>
+    <string name="general_in_ccr">In CCR?</string>
+    <string name="general_in_hiv_care">HIV care?</string>
     <string name="general_label_sort_by_name">Sort by name</string>
     <string name="general_label_sort_status">Sort by status</string>
     <string name="general_large">Large</string>
