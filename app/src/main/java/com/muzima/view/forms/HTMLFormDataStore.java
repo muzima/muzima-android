@@ -380,6 +380,7 @@ class HTMLFormDataStore {
                     relationshipJsonObject.put("personA", relationship.getPersonA().getUuid());
                     relationshipJsonObject.put("personB", relationship.getPersonB().getUuid());
                     relationshipJsonObject.put("relationshipType", relationship.getRelationshipType().getUuid());
+                    relationshipJsonObject.put("relationshipUuid", relationship.getUuid());
 
                     relationshipsJsonArray.put(relationshipJsonObject);
                 }

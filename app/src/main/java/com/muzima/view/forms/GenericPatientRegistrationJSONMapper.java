@@ -732,7 +732,6 @@ public class GenericPatientRegistrationJSONMapper{
 
                         muzimaApplication.getRelationshipController().saveRelationship(newRelationship);
                     } else if (!StringUtils.equals(existingRelationship.getRelationshipType().getUuid(), relationshipType.getUuid())) {
-                        //ToDo: Consider updating relationship type for existing relationship
                         Log.d(getClass().getSimpleName(), "Could not create relationship");
                     }
                 } else {
