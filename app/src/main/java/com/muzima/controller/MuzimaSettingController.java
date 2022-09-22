@@ -42,6 +42,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_SETTINGS;
+import static com.muzima.util.Constants.ServerSettings.ALLOCATION_TAG_GENERATION;
 import static com.muzima.util.Constants.ServerSettings.BARCODE_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_COHORT_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_FORM_ENABLED_SETTING;
@@ -608,6 +609,19 @@ public class MuzimaSettingController {
             Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
         }
         return false;
+    }
+
+    public Boolean isAllocationTagGenerationEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(ALLOCATION_TAG_GENERATION);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Allocation tag generation setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Allocation tag generation setting is missing on this server");
+        }
+        return true;
     }
 
     public static class MuzimaSettingFetchException extends Throwable {
