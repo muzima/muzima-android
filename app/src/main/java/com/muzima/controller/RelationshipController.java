@@ -155,6 +155,25 @@ public class RelationshipController {
             if (personService.getPersonByUuid(relationship.getPersonB().getUuid()) == null)
                 personService.savePerson(relationship.getPersonB());
 
+            Relationship saved = relationshipService.getRelationshipByUuid(relationship.getUuid());
+
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while saving the relationship", e);
+            throw new SaveRelationshipException(e);
+        }
+    }
+
+    /**
+     * Save a single relationship to the local repo
+     * @param relationship list of {@link Relationship}
+     * @throws SaveRelationshipException Relationship Save Exception
+     */
+    public void updateRelationship(Relationship relationship) throws SaveRelationshipException {
+        try {
+            relationshipService.updateRelationship(relationship);
+
+            Relationship saved = relationshipService.getRelationshipByUuid(relationship.getUuid());
+
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while saving the relationship", e);
             throw new SaveRelationshipException(e);

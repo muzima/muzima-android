@@ -226,6 +226,9 @@ public class GenericPatientRegistrationJSONMapper{
         setDemographicsUpdatePersonAsPatient(person);
         updatePersonAsPatient();
         copyDemographicsUpdateFromPatient(person);
+        if(isRelationshipUpdateStubDefined()) {
+            updateRelationships();
+        }
         return person;
     }
 
@@ -729,7 +732,6 @@ public class GenericPatientRegistrationJSONMapper{
 
                         muzimaApplication.getRelationshipController().saveRelationship(newRelationship);
                     } else if (!StringUtils.equals(existingRelationship.getRelationshipType().getUuid(), relationshipType.getUuid())) {
-                        //ToDo: Consider updating relationship type for existing relationship
                         Log.d(getClass().getSimpleName(), "Could not create relationship");
                     }
                 } else {
@@ -759,8 +761,90 @@ public class GenericPatientRegistrationJSONMapper{
         }
     }
 
+    private void updateRelationships() throws JSONException{
+        if(isRelationshipUpdateStubDefined()) {
+            Object relationshipObject = demographicsUpdateJSON.get("demographicsupdate.relationships");
+
+            if (relationshipObject instanceof JSONArray) {
+                JSONArray relationships = (JSONArray) relationshipObject;
+                for (int i = 0; i < relationships.length(); i++) {
+                    updateRelationship(relationships.getJSONObject(i));
+                }
+            } else if (relationshipObject instanceof JSONObject) {
+                updateRelationship((JSONObject) relationshipObject);
+            }
+        }
+    }
+
+    private void updateRelationship(JSONObject jsonObject) throws JSONException{
+        try {
+            if(jsonObject.has("person.relationshipType")) {
+                String relationshipTypeUuid = (String) getFromJsonObject(jsonObject, "person.relationshipType");
+                RelationshipType relationshipType = muzimaApplication.getRelationshipController().getRelationshipTypeByUuid(relationshipTypeUuid);
+                String personBUuid = (String) getFromJsonObject(jsonObject, "personB.uuid");
+                String personAUuid = (String) getFromJsonObject(jsonObject, "personA.uuid");
+
+                if (StringUtils.isEmpty(personAUuid) || StringUtils.isEmpty(personBUuid)) {
+                    return;
+                }
+
+                Person personA;
+                if (StringUtils.equals(personAUuid, patient.getUuid())) {
+                    personA = patient;
+                } else {
+                    personA = muzimaApplication.getPersonController().getPersonByUuid(personAUuid);
+                    if (personA == null) {
+                        personA = muzimaApplication.getPatientController().getPatientByUuid(personAUuid);
+                    }
+                }
+
+                Person personB;
+                if (StringUtils.equals(personBUuid, patient.getUuid())) {
+                    personB = patient;
+                } else {
+                    personB = muzimaApplication.getPersonController().getPersonByUuid(personBUuid);
+                    if (personB == null) {
+                        personB = muzimaApplication.getPatientController().getPatientByUuid(personBUuid);
+                    }
+                }
+
+                if (relationshipType != null && personA != null && personB != null && personA != personB) {
+                    List<Relationship> existingRelationships = muzimaApplication.getRelationshipController().getRelationshipsForPerson(personA.getUuid());
+                    Relationship existingRelationship = null;
+                    for (Relationship relationship : existingRelationships) {
+                        if ((StringUtils.equals(relationship.getPersonA().getUuid(), personA.getUuid()) ||
+                                StringUtils.equals(relationship.getPersonA().getUuid(), personB.getUuid()))
+                                && (StringUtils.equals(relationship.getPersonB().getUuid(), personA.getUuid()) ||
+                                StringUtils.equals(relationship.getPersonB().getUuid(), personB.getUuid()))) {
+                            existingRelationship = relationship;
+                            break;
+                        }
+                    }
+
+                    if (existingRelationship != null) {
+                        existingRelationship.setPersonA(personA);
+                        existingRelationship.setPersonB(personB);
+                        existingRelationship.setRelationshipType(relationshipType);
+                        muzimaApplication.getRelationshipController().updateRelationship(existingRelationship);
+                    }
+                } else {
+                    throw new JSONException("Could not update relationship");
+                }
+            }
+        } catch (RelationshipController.RetrieveRelationshipTypeException | JSONException |
+                RelationshipController.SaveRelationshipException | PersonController.PersonLoadException | PatientController.PatientLoadException |
+                RelationshipController.RetrieveRelationshipException e) {
+            Log.e(getClass().getSimpleName(), "Could not update relationship",e);
+            throw new JSONException("Could not update relationship");
+        }
+    }
+
     private boolean isRelationshipStubDefined(){
         return personJSON != null && personJSON.has("person.relationships");
+    }
+
+    private boolean isRelationshipUpdateStubDefined(){
+        return demographicsUpdateJSON != null && demographicsUpdateJSON.has("demographicsupdate.relationships");
     }
 
     private Object getFromJsonObject(JSONObject jsonObject, String key) throws JSONException{
