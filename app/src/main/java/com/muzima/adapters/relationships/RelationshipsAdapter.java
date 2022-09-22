@@ -65,6 +65,8 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
     private final RelationshipController relationshipController;
     private final PatientController patientController;
     private MuzimaApplication muzimaApplication;
+    private ConceptController conceptController;
+    private ObservationController observationController;
 
 
     public RelationshipsAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController,
@@ -74,6 +76,8 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         this.relationshipController = relationshipController;
         this.patientController = patientController;
         muzimaApplication = (MuzimaApplication) activity.getApplicationContext();
+        conceptController = muzimaApplication.getConceptController();
+        observationController = muzimaApplication.getObservationController();
     }
 
     @Override
@@ -181,9 +185,6 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
             String applicationLanguage = preferences.getString(getContext().getResources().getString(R.string.preference_app_language), getContext().getResources().getString(R.string.language_english));
 
-            ConceptController conceptController = muzimaApplication.getConceptController();
-            ObservationController observationController = muzimaApplication.getObservationController();
-
             try {
                 holder.testDate.setText(getObsDateTimeByPatientUuidAndConceptId(relatedPersonUuid, 23779, observationController, conceptController, applicationLanguage));
                 holder.results.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 23779, observationController, conceptController, applicationLanguage));
@@ -236,6 +237,28 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
         return StringUtils.EMPTY;
+    }
+
+    private boolean isContactHivPositive(String patientUuid, int conceptId, ObservationController observationController, ConceptController conceptController) {
+        List<Observation> observations = new ArrayList<>();
+        try {
+            Concept concept = conceptController.getConceptById(conceptId);
+            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+            Collections.sort(observations, observationDateTimeComparator);
+            if(observations.size()>0){
+                Observation obs = observations.get(0);
+                if(concept.isCoded()){
+                    if(obs.getValueCoded().getId() == 703)
+                        return true;
+                    else
+                        return false;
+
+                }
+            }
+        } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+        return false;
     }
 
     private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
@@ -344,8 +367,13 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
 
                         try {
                             if (patientController.getPatientByUuid(relatedPerson.getUuid()) == null) {
-                                nonPatientRelationships.add(relationship);
+                                //remove hiv positive contacts
+                                boolean isHivTestPositive = isContactHivPositive(relatedPerson.getUuid(), 23779, observationController, conceptController);
+                                if(!isHivTestPositive) {
+                                    nonPatientRelationships.add(relationship);
+                                }
                             }
+
                         } catch (PatientController.PatientLoadException e) {
                             Log.e(this.getClass().getSimpleName(),"Could not get relationship patient",e);
                         }
