@@ -1594,50 +1594,52 @@ public class MuzimaSyncService {
                         }
                     }
 
-                    if (!hasAssignmentTag) {
-                        List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
-                        if (assignmentObsList.size() > 0) {
-                            for (Observation assignmentObs : assignmentObsList) {
-                                Date now = new Date();
-                                long assignmentDaysPassed = (now.getTime() - assignmentObs.getObservationDatetime().getTime()) / (24 * 60 * 60 * 1000);
-                                if (assignmentDaysPassed >= 0 && assignmentDaysPassed <= 21) {
-                                    assignmentTag = new PatientTag();
-                                    assignmentTag.setName("AL");
-                                    assignmentTag.setDescription(muzimaApplication.getString(R.string.general_already_assigned));
-                                    assignmentTag.setUuid(ALREADY_ASSIGNED_TAG_UUID);
-                                    tags.add(assignmentTag);
-                                    patientController.savePatientTags(assignmentTag);
+                    if(muzimaApplication.getMuzimaSettingController().isAllocationTagGenerationEnabled()) {
+                        if (!hasAssignmentTag) {
+                            List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
+                            if (assignmentObsList.size() > 0) {
+                                for (Observation assignmentObs : assignmentObsList) {
+                                    Date now = new Date();
+                                    long assignmentDaysPassed = (now.getTime() - assignmentObs.getObservationDatetime().getTime()) / (24 * 60 * 60 * 1000);
+                                    if (assignmentDaysPassed >= 0 && assignmentDaysPassed <= 21) {
+                                        assignmentTag = new PatientTag();
+                                        assignmentTag.setName("AL");
+                                        assignmentTag.setDescription(muzimaApplication.getString(R.string.general_already_assigned));
+                                        assignmentTag.setUuid(ALREADY_ASSIGNED_TAG_UUID);
+                                        tags.add(assignmentTag);
+                                        patientController.savePatientTags(assignmentTag);
 
-                                    //remove AA tag if available
-                                    PatientTag AATag = null;
-                                    for(PatientTag patientTag : tags){
-                                        if(patientTag.getName().equals("AA")){
-                                            AATag = patientTag;
+                                        //remove AA tag if available
+                                        PatientTag AATag = null;
+                                        for (PatientTag patientTag : tags) {
+                                            if (patientTag.getName().equals("AA")) {
+                                                AATag = patientTag;
+                                            }
                                         }
-                                    }
 
-                                    if(AATag != null){
-                                        tags.remove(AATag);
-                                    }
+                                        if (AATag != null) {
+                                            tags.remove(AATag);
+                                        }
 
-                                    hasAssignmentTag = true;
-                                    break;
-                                }
-                                if (assignmentTag != null) {
-                                    hasAssignmentTag = true;
-                                    break;
+                                        hasAssignmentTag = true;
+                                        break;
+                                    }
+                                    if (assignmentTag != null) {
+                                        hasAssignmentTag = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    if (!hasAssignmentTag && !hasAwaitingAssignmentTag && assignmentTag == null) {
-                        assignmentTag = new PatientTag();
-                        assignmentTag.setName("AA");
-                        assignmentTag.setDescription(muzimaApplication.getString(R.string.general_awaiting_assignment));
-                        assignmentTag.setUuid(AWAITING_ASSIGNMENT_TAG_UUID);
-                        tags.add(assignmentTag);
-                        patientController.savePatientTags(assignmentTag);
+                        if (!hasAssignmentTag && !hasAwaitingAssignmentTag && assignmentTag == null) {
+                            assignmentTag = new PatientTag();
+                            assignmentTag.setName("AA");
+                            assignmentTag.setDescription(muzimaApplication.getString(R.string.general_awaiting_assignment));
+                            assignmentTag.setUuid(AWAITING_ASSIGNMENT_TAG_UUID);
+                            tags.add(assignmentTag);
+                            patientController.savePatientTags(assignmentTag);
+                        }
                     }
 
                     patient.setTags(tags.toArray(new PatientTag[tags.size()]));
