@@ -52,6 +52,7 @@ import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS
 import static com.muzima.util.Constants.ServerSettings.DISALLOW_SERVER_PATIENT_SEARCH;
 import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_COHORTS_IN_CONFIG_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_FORMS_IN_CONFIG_SETTING;
+import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CLIENT_ADDRESS;
 import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CLIENT_SUMMARY_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GEOMAPPING_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
@@ -622,6 +623,19 @@ public class MuzimaSettingController {
             Log.e(getClass().getSimpleName(), "Allocation tag generation setting is missing on this server");
         }
         return true;
+    }
+
+    public Boolean isFGHCustomClientAddressEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(FGH_CUSTOM_CLIENT_ADDRESS);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Allocation tag generation setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Allocation tag generation setting is missing on this server");
+        }
+        return false;
     }
 
     public static class MuzimaSettingFetchException extends Throwable {
