@@ -369,7 +369,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                             if (patientController.getPatientByUuid(relatedPerson.getUuid()) == null) {
                                 //remove hiv positive contacts
                                 boolean isHivTestPositive = isContactHivPositive(relatedPerson.getUuid(), 23779, observationController, conceptController);
-                                if(!isHivTestPositive) {
+                                if(!isHivTestPositive && !relatedPerson.isVoided()) {
                                     nonPatientRelationships.add(relationship);
                                 }
                             }
