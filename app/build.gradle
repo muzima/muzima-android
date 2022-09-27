@@ -35,14 +35,13 @@ description = 'Muzima-Android'
 
 android {
     compileSdkVersion 29
-
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 25
-        versionName "3.0.6-SNAPSHOT"
+        versionName "3.0.7-SNAPSHOT"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [versionCode: defaultConfig.versionCode, versionName: defaultConfig.versionName]
 
