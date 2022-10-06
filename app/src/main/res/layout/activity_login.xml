@@ -115,7 +115,7 @@
                         android:hint="@string/general_username"
                         android:inputType="textShortMessage"
                         android:nextFocusDown="@+id/password"
-                        android:text="" />
+                        android:text="admin" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -145,7 +145,7 @@
                         android:hint="@string/general_password"
                         android:inputType="textPassword"
                         android:nextFocusDown="@+id/login"
-                        android:text=""
+                        android:text="Test2019"
                         android:drawableStart="@drawable/ic_password"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>

@@ -5,11 +5,15 @@ import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CO
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.muzima.MuzimaApplication;
@@ -55,6 +59,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     Map<String, Integer> map = new LinkedHashMap<>( );
     Map<String, String> conceptGroupMap = new LinkedHashMap<>();
     Map<String, List<Observation>> conceptsObservations = new LinkedHashMap<>();
+    private final String applicationLanguage;
 
 
     public List<String> getHeaders() {
@@ -98,6 +103,8 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         this.observationController = app.getObservationController();
         this.context = context;
         shouldReplaceProviderIdWithNames = app.getMuzimaSettingController().isPatientTagGenerationEnabled();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        this.applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
 
         h = getHeaders();
         headers = h.toArray(new String[0]);
@@ -175,9 +182,6 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
 
     public void getObservationByConcept(){
         try {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
-
             List<String> conceptUuids = new ArrayList<>();
 
             for (Map.Entry<String,List<Observation>> pair : conceptsObservations.entrySet()){
@@ -283,16 +287,135 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
             convertView = layoutInflater.inflate(R.layout.item_table_header, parent, false);
         }
         ((TextView) convertView.findViewById(R.id.text1)).setText(headers[column + 1]);
+
         return convertView;
     }
 
     private View getFirstBody(int row, int column, View convertView, ViewGroup parent) {
 
         convertView = layoutInflater.inflate(R.layout.item_table_first, parent, false);
-        convertView.setBackgroundResource(map.get(getDevice(row).data[0]) % 2 == 0 ? R.drawable.bg_table_color1 : R.drawable.bg_table_color2);
+        ((TextView) convertView.findViewById(android.R.id.text1)).setBackgroundResource(map.get(getDevice(row).data[0]) % 2 == 0 ? R.drawable.table_border1 : R.drawable.table_border2);
 
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(getDevice(row).data[column + 1]);
+
+        setClickListenersOnView(getDevice(row).data[column + 1], convertView);
+
         return convertView;
+    }
+
+
+    private void setClickListenersOnView(String concept, View convertView) {
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                showDialog(concept);
+                return true;
+            }
+        });
+    }
+
+    public void showDialog(String conceptName){
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        androidx.appcompat.app.AlertDialog.Builder addIndividualObservationsDialogBuilder =
+                new androidx.appcompat.app.AlertDialog.Builder(
+                        context
+                );
+
+        View conceptDetails = layoutInflater.inflate(R.layout.obs_by_concept_details, null);
+        addIndividualObservationsDialogBuilder.setView(conceptDetails);
+        addIndividualObservationsDialogBuilder
+                .setCancelable(true);
+
+        androidx.appcompat.app.AlertDialog obsDetailsViewDialog = addIndividualObservationsDialogBuilder.create();
+        obsDetailsViewDialog.show();
+
+        TextView conceptTextView = conceptDetails.findViewById(R.id.concept_name);
+        conceptTextView.setText(conceptName);
+
+
+        TableLayout tableLayout = (TableLayout)conceptDetails.findViewById(R.id.tableLayout);
+        tableLayout.setStretchAllColumns(true);
+        List<Observation> observations = new ArrayList<>();
+        Concept concept = new Concept();
+        try {
+            concept = conceptController.getConceptByName(conceptName);
+            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,concept.getId());
+        } catch (ConceptController.ConceptFetchException | ObservationController.LoadObservationException e) {
+            e.printStackTrace();
+        }
+        for(Observation observation : observations){
+            String value = "";
+            if (shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID) {
+                Provider provider = app.getProviderController().getProviderBySystemId(observation.getValueText());
+                if (provider != null) {
+                    value = provider.getName();
+                } else {
+                    value = observation.getValueText();
+                }
+            } else {
+                if (concept.isNumeric()) {
+                    value = String.valueOf(observation.getValueNumeric());
+                } else if (concept.isCoded()) {
+                    value = getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
+                } else if (concept.isDatetime()) {
+                    if(observation.getValueDatetime() != null)
+                        value = dateFormat.format(observation.getValueDatetime());
+                } else {
+                    value = observation.getValueText();
+                }
+            }
+
+            String obsDate = dateFormat.format(observation.getObservationDatetime());
+            final TextView dateValue = new TextView(context);
+            dateValue.setLayoutParams(new
+                    TableRow.LayoutParams(100,
+                    TableRow.LayoutParams.WRAP_CONTENT));
+            dateValue.setGravity(Gravity.LEFT);
+            dateValue.setPadding(15, 15, 0, 15);
+            dateValue.setText(obsDate);
+            dateValue.setTextColor(R.color.primary_black);
+
+            final TextView obsValue = new TextView(context);
+            obsValue.setLayoutParams(new
+                    TableRow.LayoutParams(300,
+                    TableRow.LayoutParams.WRAP_CONTENT));
+            obsValue.setGravity(Gravity.LEFT);
+            obsValue.setPadding(5, 15, 0, 15);
+            obsValue.setText(value);
+            obsValue.setTextColor(R.color.primary_black);
+
+            final TableRow tr = new TableRow(context);
+            TableLayout.LayoutParams trParams = new
+                    TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT);
+            trParams.setMargins(30, 5, 10,
+                    5);
+            tr.setPadding(0,0,0,0);
+            tr.setLayoutParams(trParams);
+
+            tr.addView(dateValue);
+            tr.addView(obsValue);
+
+            tableLayout.addView(tr);
+
+            final TableRow trSep = new TableRow(context);
+            TableLayout.LayoutParams trParamsSep = new
+                    TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT);
+            trParamsSep.setMargins(5, 5,
+                    5, 5);
+            trSep.setLayoutParams(trParamsSep);
+            TextView obsSeparator = new TextView(context);
+            TableRow.LayoutParams separator = new
+                    TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT);
+            separator.span = 2;
+            obsSeparator.setLayoutParams(separator);
+            obsSeparator.setBackgroundColor(Color.parseColor("#000000"));
+            obsSeparator.setHeight(1);
+            trSep.addView(obsSeparator);
+            tableLayout.addView(trSep, trParamsSep);
+        }
     }
 
     private View getBody(int row, int column, View convertView, ViewGroup parent) {
