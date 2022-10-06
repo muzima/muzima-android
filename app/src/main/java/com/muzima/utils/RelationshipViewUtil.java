@@ -97,7 +97,7 @@ public class RelationshipViewUtil {
                                 selectedRelatedPerson = relationship.getPersonA();
                             }
                             Boolean isHTCAddContactOptionEnabled = mApplication.getMuzimaSettingController().isHTCAddContactOptionEnabled();
-                            if(!isHTCAddContactOptionEnabled) {
+                            if(isHTCAddContactOptionEnabled) {
                                  selectAction();
                                                              }
                         }
