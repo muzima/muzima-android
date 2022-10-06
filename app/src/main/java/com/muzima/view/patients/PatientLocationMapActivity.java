@@ -67,7 +67,6 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_location_map);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
-        //getActionBar().setTitle(patient.getSummary());
         initializeHomeLocationMapView();
         initializeMapActionButtons();
 
