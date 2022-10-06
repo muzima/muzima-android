@@ -42,6 +42,8 @@ import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.maps.GPSLocationPickerActivity;
+import com.muzima.view.relationship.RelationshipsListActivity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,6 +52,7 @@ import java.util.List;
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.view.maps.GPSLocationPickerActivity.LATITUDE;
 import static com.muzima.view.maps.GPSLocationPickerActivity.LONGITUDE;
+import static com.muzima.view.patients.PatientSummaryActivity.CALLING_ACTIVITY;
 import static java.text.MessageFormat.format;
 
 public class PatientLocationMapActivity extends BroadcastListenerActivity{
@@ -64,7 +67,7 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_location_map);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
-        getActionBar().setTitle(patient.getSummary());
+        //getActionBar().setTitle(patient.getSummary());
         initializeHomeLocationMapView();
         initializeMapActionButtons();
 
@@ -304,6 +307,9 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
         if(item.getItemId() == R.id.update_client_location) {
             promptUpdateLocation();
             return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
@@ -312,5 +318,10 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
     @Override
     protected void onResume(){
         super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
