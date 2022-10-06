@@ -69,6 +69,8 @@ import static com.muzima.util.Constants.ServerSettings.SINGLE_ELEMENT_ENTRY_FEAT
 
 import static com.muzima.util.Constants.ServerSettings.TAG_GENERATION_ENABLED_SETTING;
 
+import static com.muzima.util.Constants.ServerSettings.ADD_CONTACT_POPUP_ENABLED_SETTING;
+
 public class MuzimaSettingController {
     private final MuzimaSettingService settingService;
     private final LastSyncTimeService lastSyncTimeService;
@@ -634,6 +636,19 @@ public class MuzimaSettingController {
                 Log.e(getClass().getSimpleName(), "Allocation tag generation setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Allocation tag generation setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isHTCAddContactOptionEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(ADD_CONTACT_POPUP_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
         }
         return false;
     }

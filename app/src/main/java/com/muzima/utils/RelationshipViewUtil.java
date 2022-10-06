@@ -23,6 +23,7 @@ import com.muzima.R;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
+import com.muzima.api.model.Role;
 import com.muzima.controller.PatientController;
 import com.muzima.view.forms.PersonDemographicsUpdateFormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -95,7 +96,10 @@ public class RelationshipViewUtil {
                             } else {
                                 selectedRelatedPerson = relationship.getPersonA();
                             }
-                            selectAction();
+                            Boolean isHTCAddContactOptionEnabled = mApplication.getMuzimaSettingController().isHTCAddContactOptionEnabled();
+                            if(!isHTCAddContactOptionEnabled) {
+                                 selectAction();
+                                                             }
                         }
                     } catch (PatientController.PatientLoadException e) {
                         Log.e(getClass().getSimpleName(),"Encountered an exception",e);
@@ -149,7 +153,7 @@ public class RelationshipViewUtil {
         }
 
         if(mApplication.getMuzimaSettingController().isFGHCustomClientSummaryEnabled()){
-            arrayAdapter.add(callingActivity.getString(R.string.info_htc_contact_form));
+               arrayAdapter.add(callingActivity.getString(R.string.info_htc_contact_form));
         }else {
             arrayAdapter.add(callingActivity.getString(R.string.info_update_person_demographics));
         }
