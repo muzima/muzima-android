@@ -397,7 +397,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                                        isEligible = true;
                                    } else {
                                        int age = DateUtils.calculateAge(relatedPerson.getBirthdate());
-                                       if(age<=15)
+                                       if(age<15)
                                             isEligible = true;
                                    }
 
