@@ -25,16 +25,10 @@
 			android:gravity="right"
 			android:id="@+id/concept_name"/>
 
-	<androidx.core.widget.NestedScrollView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-		<TableLayout
+		<androidx.recyclerview.widget.RecyclerView
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:background="@android:color/white"
-			android:id="@+id/tableLayout">
-
-		</TableLayout>
-	</androidx.core.widget.NestedScrollView>
+			android:id="@+id/recyclerView"
+			android:layout_marginBottom="10dp"/>
 
 </LinearLayout>

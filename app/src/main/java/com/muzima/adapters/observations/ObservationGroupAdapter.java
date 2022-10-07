@@ -5,16 +5,16 @@ import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CO
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -57,6 +57,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     private  Context context;
     private boolean shouldReplaceProviderIdWithNames;
     Map<String, Integer> map = new LinkedHashMap<>( );
+    Map<String, String> conceptUnits = new LinkedHashMap<>( );
     Map<String, String> conceptGroupMap = new LinkedHashMap<>();
     Map<String, List<Observation>> conceptsObservations = new LinkedHashMap<>();
     private final String applicationLanguage;
@@ -227,7 +228,13 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                                 }
                             }
                         }
+                        String units = "";
+                        if(!StringUtils.isEmpty(concept.getUnit())){
+                            units = concept.getUnit();
+                        }
+
                         map.put(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage), groups.indexOf(conceptGroupMap.get(pair.getKey())));
+                        conceptUnits.put(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage), units);
                         obsGroup[groups.indexOf(conceptGroupMap.get(pair.getKey()))].list.add(new ObsData(conceptRow.toArray(new String[0])));
                     }
                 }
@@ -332,9 +339,6 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         TextView conceptTextView = conceptDetails.findViewById(R.id.concept_name);
         conceptTextView.setText(conceptName);
 
-
-        TableLayout tableLayout = (TableLayout)conceptDetails.findViewById(R.id.tableLayout);
-        tableLayout.setStretchAllColumns(true);
         List<Observation> observations = new ArrayList<>();
         Concept concept = new Concept();
         try {
@@ -343,87 +347,20 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         } catch (ConceptController.ConceptFetchException | ObservationController.LoadObservationException e) {
             e.printStackTrace();
         }
-        for(Observation observation : observations){
-            String value = "";
-            if (shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID) {
-                Provider provider = app.getProviderController().getProviderBySystemId(observation.getValueText());
-                if (provider != null) {
-                    value = provider.getName();
-                } else {
-                    value = observation.getValueText();
-                }
-            } else {
-                if (concept.isNumeric()) {
-                    value = String.valueOf(observation.getValueNumeric());
-                } else if (concept.isCoded()) {
-                    value = getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
-                } else if (concept.isDatetime()) {
-                    if(observation.getValueDatetime() != null)
-                        value = dateFormat.format(observation.getValueDatetime());
-                } else {
-                    value = observation.getValueText();
-                }
-            }
 
-            String obsDate = dateFormat.format(observation.getObservationDatetime());
-            final TextView dateValue = new TextView(context);
-            dateValue.setLayoutParams(new
-                    TableRow.LayoutParams(100,
-                    TableRow.LayoutParams.WRAP_CONTENT));
-            dateValue.setGravity(Gravity.LEFT);
-            dateValue.setPadding(15, 15, 0, 15);
-            dateValue.setText(obsDate);
-            dateValue.setTextColor(R.color.primary_black);
-
-            final TextView obsValue = new TextView(context);
-            obsValue.setLayoutParams(new
-                    TableRow.LayoutParams(300,
-                    TableRow.LayoutParams.WRAP_CONTENT));
-            obsValue.setGravity(Gravity.LEFT);
-            obsValue.setPadding(5, 15, 0, 15);
-            obsValue.setText(value);
-            obsValue.setTextColor(R.color.primary_black);
-
-            final TableRow tr = new TableRow(context);
-            TableLayout.LayoutParams trParams = new
-                    TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-                    TableLayout.LayoutParams.WRAP_CONTENT);
-            trParams.setMargins(30, 5, 10,
-                    5);
-            tr.setPadding(0,0,0,0);
-            tr.setLayoutParams(trParams);
-
-            tr.addView(dateValue);
-            tr.addView(obsValue);
-
-            tableLayout.addView(tr);
-
-            final TableRow trSep = new TableRow(context);
-            TableLayout.LayoutParams trParamsSep = new
-                    TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-                    TableLayout.LayoutParams.WRAP_CONTENT);
-            trParamsSep.setMargins(5, 5,
-                    5, 5);
-            trSep.setLayoutParams(trParamsSep);
-            TextView obsSeparator = new TextView(context);
-            TableRow.LayoutParams separator = new
-                    TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT);
-            separator.span = 2;
-            obsSeparator.setLayoutParams(separator);
-            obsSeparator.setBackgroundColor(Color.parseColor("#000000"));
-            obsSeparator.setHeight(1);
-            trSep.addView(obsSeparator);
-            tableLayout.addView(trSep, trParamsSep);
-        }
+        RecyclerView recyclerView = conceptDetails.findViewById(R.id.recyclerView);;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(new ObsListAdapter(new ArrayList<>(observations),context,shouldReplaceProviderIdWithNames, concept, app, applicationLanguage));
     }
 
     private View getBody(int row, int column, View convertView, ViewGroup parent) {
         convertView = layoutInflater.inflate(R.layout.item_table, parent, false);
 
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(getDevice(row).data[column + 1]);
-        ((TextView) convertView.findViewById(android.R.id.text1)).setBackgroundResource(map.get(getDevice(row).data[0]) % 2 == 0 ? R.drawable.table_border1 : R.drawable.table_border2);
-
+        if(!StringUtils.isEmpty(getDevice(row).data[column + 1])) {
+            ((TextView) convertView.findViewById(android.R.id.text2)).setText(conceptUnits.get(getDevice(row).data[0]));
+        }
+        ((LinearLayout) convertView.findViewById(R.id.ll1)).setBackgroundResource(map.get(getDevice(row).data[0]) % 2 == 0 ? R.drawable.table_border1 : R.drawable.table_border2);
         return convertView;
     }
 
