@@ -261,6 +261,27 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         return false;
     }
 
+    private boolean isHivTestNegativeOrPositive(String patientUuid, int conceptId, ObservationController observationController, ConceptController conceptController) {
+        List<Observation> observations = new ArrayList<>();
+        try {
+            Concept concept = conceptController.getConceptById(conceptId);
+            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+            Collections.sort(observations, observationDateTimeComparator);
+            if(observations.size()>0){
+                Observation obs = observations.get(0);
+                if(concept.isCoded()){
+                    if(obs.getValueCoded().getId() == 664 || obs.getValueCoded().getId() == 703)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+        } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+        return false;
+    }
+
     private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
         @Override
         public int compare(Observation lhs, Observation rhs) {
@@ -368,12 +389,27 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                         try {
                             if (patientController.getPatientByUuid(relatedPerson.getUuid()) == null) {
                                 //remove hiv positive contacts
-                                boolean isHivTestPositive = isContactHivPositive(relatedPerson.getUuid(), 23779, observationController, conceptController);
-                                if(!isHivTestPositive && !relatedPerson.isVoided()) {
-                                    nonPatientRelationships.add(relationship);
+                               if(relationship.getRelationshipType().getUuid().equals("8d91a210-c2cc-11de-8d13-0010c6dffd0f")){
+                                   boolean isEligible = false;
+                                   if(relatedPerson.getBirthdate() == null){
+                                       isEligible = true;
+                                   } else {
+                                       int age = DateUtils.calculateAge(relatedPerson.getBirthdate());
+                                       if(age<=15)
+                                            isEligible = true;
+                                   }
+
+                                    boolean isHivTestNegativeOrPositive = isHivTestNegativeOrPositive(relatedPerson.getUuid(), 23779, observationController, conceptController);
+                                    if(!isHivTestNegativeOrPositive && !relatedPerson.isVoided() && isEligible){
+                                        nonPatientRelationships.add(relationship);
+                                    }
+                                }else {
+                                   boolean isHivTestPositive = isContactHivPositive(relatedPerson.getUuid(), 23779, observationController, conceptController);
+                                   if (!isHivTestPositive && !relatedPerson.isVoided()) {
+                                        nonPatientRelationships.add(relationship);
+                                    }
                                 }
                             }
-
                         } catch (PatientController.PatientLoadException e) {
                             Log.e(this.getClass().getSimpleName(),"Could not get relationship patient",e);
                         }

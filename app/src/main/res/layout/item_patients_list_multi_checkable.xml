@@ -110,7 +110,6 @@
                             android:layout_width="wrap_content"
                             android:layout_marginEnd="6dp"
                             android:fontFamily="@font/roboto_regular"
-                            android:text="bhjdvb vsabvkjsv fvddddddd"
                             android:layout_weight="1"
                             android:textSize="12sp" />
 
@@ -120,8 +119,7 @@
                             android:layout_width="wrap_content"
                             android:layout_marginStart="12dp"
                             android:fontFamily="@font/roboto_regular"
-                            android:layout_weight="1"
-                            android:text="sfcwasv av asv sdfv fdsv dfsv " />
+                            android:layout_weight="1" />
                     </LinearLayout>
 
                     <TextView
