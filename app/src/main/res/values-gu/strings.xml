@@ -146,10 +146,12 @@
     <string name="general_cohorts">સમૂહ</string>
     <string name="general_concepts">ખ્યાલો</string>
     <string name="general_consent_date">સંમતિ ડેટા:</string>
+    <string name="general_create_contact">સંપર્ક ઉમેરો</string>
     <string name="general_data_collection">માહિતી સંગ્રહ</string>
     <string name="general_data_collection_tools">ડેટા સંગ્રહ સાધનો</string>
     <string name="general_data_collection_tools_description">મુઝિમા ઓપનએમઆરએસમાં સરળતાથી પ્રસારિત અને સંગ્રહિત કરી શકાય તેવો ડેટા એકત્રિત કરવા માટે સરળ રીતે વિકસિત વેબ-આધારિત સ્વરૂપોનો ઉપયોગ કરે છે.</string>
     <string name="general_date">તારીખ</string>
+    <string name="general_date_of_birth">જન્મ તારીખ %s</string>
     <string name="general_days_character">દિ</string>
     <string name="general_delete">કાઢી નાખો</string>
     <string name="general_description_unavailable">કોઈ વર્ણન ઉપલબ્ધ નથી</string>
@@ -184,6 +186,8 @@
     <string name="general_home">ઘર</string>
     <string name="general_in_ccr">સીસીઆર</string>
     <string name="general_in_hiv_care">એચઆઇવી સંભાળ:</string>
+    <string name="general_individual_summary">વ્યક્તિગત સારાંશ</string>
+    <string name="general_is_a">%s એ છે:</string>
     <string name="general_label_sort_by_name">નામ દ્વારા સ Sર્ટ કરો</string>
     <string name="general_label_sort_status">સ્થિતિ દ્વારા સortર્ટ કરો</string>
     <string name="general_large">મોટું</string>
@@ -257,11 +261,13 @@
     <string name="general_testing_sector">પરીક્ષણ ક્ષેત્ર:</string>
     <string name="general_their_statistics">તેમના આંકડા</string>
     <string name="general_upload">અપલોડ કરો</string>
+    <string name="general_use_selected_location">પસંદ કરેલ સ્થાનનો ઉપયોગ કરો</string>
     <string name="general_username">વપરાશકર્તા નામ</string>
     <string name="general_view_encounter">એન્કાઉન્ટર જુઓ</string>
     <string name="general_welcome">સ્વાગત છે</string>
     <string name="general_works_offline">Offફલાઇન કામ કરે છે</string>
     <string name="general_works_offline_description">મુઝિમા onlineનલાઇન અને offlineફલાઇન બંને રીતે સંપૂર્ણ રીતે કામ કરે છે. આ ઉપકરણ .ફલાઇન હોય ત્યારે પણ ડેટા સંગ્રહ અને સમીક્ષાઓ માટે પરવાનગી આપે છે.</string>
+    <string name="general_years">%s વર્ષ</string>
     <string name="general_years_character">व</string>
     <string name="general_yes">હા</string>
     <string name="general_your_statistics">તમારા આંકડા</string>
@@ -341,12 +347,12 @@
     <string name="hint_set_default_encounter_location_for_SHR">કૃપા કરીને ડિફૉલ્ટ એન્કાઉન્ટર સ્થાન સેટ કરો જેથી નવું કાર્ડ લખવાનું સક્ષમ થાય</string>
     <string name="hint_setting_refresh">શું તમે આ સેટિંગને સર્વરથી ફરીથી ડાઉનલોડ કરવા માંગો છો?</string>
     <string name="hint_switch_location_on">કૃપા કરીને સેટિંગ્સમાં સ્થાન પર સ્વિચ કરો.</string>
-    <string name="hint_their_performance" formatted="false">%s અને %s ની વચ્ચે %s માટે પ્રદર્શન સારાંશ</string>
+    <string formatted="false" name="hint_their_performance">%s અને %s ની વચ્ચે %s માટે પ્રદર્શન સારાંશ</string>
     <string name="hint_username_prompt">કૃપા કરીને વપરાશકર્તા નામ દાખલ કરો</string>
     <string name="hint_video_caption_prompt">કૃપા કરીને વિડિઓ માટે કેપ્શન દાખલ કરો</string>
     <string name="hint_video_record">વિડિઓ રેકોર્ડ કરો અથવા પસંદ કરો</string>
     <string name="hint_write_SHR_to_card">શું તમે કાર્ડ પર વહેંચાયેલ આરોગ્ય રેકોર્ડ લખવા માંગો છો?</string>
-    <string name="hint_your_performance" formatted="false">%s અને %s વચ્ચે તમારું પ્રદર્શન</string>
+    <string formatted="false" name="hint_your_performance">%s અને %s વચ્ચે તમારું પ્રદર્શન</string>
     <string name="how_to_general">કઈ રીતે:</string>
     <string name="individual_obs">વ્યક્તિગત નિરીક્ષણ</string>
     <string name="individual_obs_description">વ્યક્તિગત નિરીક્ષણ</string>
@@ -383,12 +389,13 @@
     <string name="info_convert_person_to_patient">વ્યક્તિને દર્દીમાં ફેરવો</string>
     <string name="info_data_sync_cancelled">mUzima ડેટા સમન્વયન રદ કરાયું હતું.</string>
     <string name="info_disclaimer">
-                mUzima Mozilla Public License, v. 2.0 (MPL 2.0) ની શરતો હેઠળ વિતરિત થયેલ છે. MPL 2.0 લાઇસન્સની એક નકલ
+                        mUzima Mozilla Public License, v. 2.0 (MPL 2.0) ની શરતો હેઠળ વિતરિત થયેલ છે. MPL 2.0 લાઇસન્સની એક નકલ
         http://mozilla.org/MPL/2.0/ પર મળી શકે છે.
         \nવોરંટી અને જવાબદારીની મર્યાદા નીચેના વધારાના અસ્વીકરણની શરતો હેઠળ mUzima નું વિતરણ પણ કરવામાં આવે છે.
         \n
+        
         <strong>વધારાના અસ્વીકરણ વોરંટી અને જવાબદારીની મર્યાદા</strong>
-                United States માં અથવા અન્ય અધિકારક્ષેત્રોમાં જ્યાં તેઓ અરજી કરી શકે છે, નીચેના વધારાના વોરંટી નિવેદનો અને જવાબદારીની મર્યાદાઓ MPL 2.0
+                        United States માં અથવા અન્ય અધિકારક્ષેત્રોમાં જ્યાં તેઓ અરજી કરી શકે છે, નીચેના વધારાના વોરંટી નિવેદનો અને જવાબદારીની મર્યાદાઓ MPL 2.0
         ની શરતો અને શરતોમાં શામેલ છે:
         \n1. તમે જે પરિણામો મેળવશો તેના આધારે કોઈપણ પ્રકારની બાંયધરી આપવામાં આવી નથી સમાવેલ સોફ્ટવેર કોડ પર આધાર રાખવો (અથવા સમાવિષ્ટ સોફ્ટવેર
         કોડ દ્વારા પ્રાપ્ત કોઈપણ માહિતી અથવા સામગ્રી),ગોપનીયતા કાયદા અથવા નિયમો અથવા ક્લિનિકલ કેર ઉદ્યોગના ધોરણો અને પ્રોટોકોલ્સનું પાલન સહિતની
@@ -405,6 +412,7 @@
         \n\n3. mUzima Indiana University, Moi University, અને Vanderbilt University Medical Center ના ટ્રસ્ટીઓને કૉપિરાઇટ કરેલુ છે.
         \n\n4. જો આ એપ્લિકેશનનો ઉપયોગ કરનાર કોઈ પણ વસ્તુનું વેપારીકરણ કરવા અથવા નફો કરવાનો ઇરાદો ધરાવતી એક એન્ટિટી છે. એપ્લિકેશન જે આ કોડનો
         ઉપયોગ નફાકારક સાહસમાં કરે છે, વપરાશકર્તાએ કૉપિરાઇટ ધારકનો mUzima.mobile@gmail.com મારફત સંપર્ક કરવો જરૂરી છે.
+    
     
     </string>
     <string name="info_download_complete">%d સ્થિતિ સાથે ડાઉનલોડ પૂર્ણ</string>
@@ -443,6 +451,7 @@
     <string name="info_form_upload_success">ફોર્મ્સ સફળતાપૂર્વક અપલોડ થયા</string>
     <string name="info_forms_downloaded">%d ફોર્મ્સ ડાઉનલોડ કર્યા</string>
     <string name="info_forms_unavailable">કોઈ ફોર્મ ઉપલબ્ધ નથી</string>
+    <string name="info_htc_contact_form">HTC/સંપર્ક ફોર્મ ઉમેરો</string>
     <string name="info_incomplete_form">અધૂરા ફોર્મ</string>
     <string name="info_incomplete_form_unavailable">કોઈ અપૂર્ણ ફોર્મ્સ નથી</string>
     <string name="info_initial_setup_progress">પ્રારંભિક સેટઅપ ચાલી રહ્યું છે. કૃપા કરી રાહ જુવો…</string>
@@ -765,17 +774,11 @@
     <string name="warning_logout_confirm_with_form_deletion">શું તમે ખરેખર લૉગ આઉટ કરવા અને mUzima ઍપમાંથી બહાર નીકળવા માંગો છો? તમામ પૂર્ણ અને અપૂર્ણ ફોર્મ કાઢી નાખવામાં આવશે</string>
     <string name="warning_registration_form_data_delete">તમે નોંધણી ડેટા કાઢી નાખવા જઈ રહ્યા છો. આ ઉપકરણ પર ક્લાયંટ રેકોર્ડ પણ કાઢી નાખશે. શું તમને ખાતરી છે?</string>
     <string name="warning_related_person_missing">કૃપા કરીને સંબંધિત વ્યક્તિ પસંદ કરો</string>
-    <string name="warning_relationship_exists" formatted="false">ક્લાયન્ટ પાસે પહેલેથી જ %s સાથે %s:%s સંબંધ છે</string>
+    <string formatted="false" name="warning_relationship_exists">ક્લાયન્ટ પાસે પહેલેથી જ %s સાથે %s:%s સંબંધ છે</string>
     <string name="warning_relationship_type_missing">કૃપા કરીને સંબંધનો પ્રકાર પસંદ કરો</string>
     <string name="warning_session_timeout">સત્ર સમયસમાપ્તિ: સત્ર સમયસમાપ્તિ સેટ કરી શકાયું નથી. કૃપા કરીને 1 અને 500 ની વચ્ચેનું મૂલ્ય દાખલ કરો.</string>
     <string name="warning_setting_download_failure">સેટિંગને ડાઉનલોડ અથવા અપડેટ કરી શક્યા નથી</string>
     <string name="warning_switch_server">સર્વર બદલી: આ તમારા ઉપકરણ પરના બધા mUzima ડેટાને સાફ કરશે, કોઈપણ અપૂર્ણ સ્વરૂપો સહિત. શું તમે ખરેખર આ સેટિંગ બદલવા માંગો છો?</string>
     <string name="write_SHR_to_card_text">SHR ને કાર્ડ પર લખો</string>
     <string name="write_shr_to_card_general">SHR ને કાર્ડ પર લખો</string>
-    <string name="general_create_contact">સંપર્ક ઉમેરો</string>
-    <string name="info_htc_contact_form">HTC/સંપર્ક ફોર્મ ઉમેરો</string>
-    <string name="general_date_of_birth">જન્મ તારીખ %s</string>
-    <string name="general_years">%s વર્ષ</string>
-    <string name="general_individual_summary">વ્યક્તિગત સારાંશ</string>
-    <string name="general_is_a">%s એ છે:</string>
 </resources>
