@@ -226,7 +226,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     }
 
     private void navigateToClientsLocationMap() {
-        Intent intent = new Intent(getApplicationContext(), PatientsLocationMapActivity.class);
+        Intent intent = new Intent(this, PatientLocationMapActivity.class);
+        intent.putExtra(PATIENT,patient);
         startActivity(intent);
     }
     private void navigateToRelationshipsView() {
