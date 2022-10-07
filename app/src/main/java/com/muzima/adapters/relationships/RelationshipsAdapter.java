@@ -380,8 +380,10 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                     List<Relationship> nonPatientRelationships = new ArrayList<>();
                     for(Relationship relationship:relationships){
                         Person relatedPerson = null;
+                        boolean isRelatedPersonB = false;
                         if(StringUtils.equals(relationship.getPersonA().getUuid(),patientUuid)) {
                             relatedPerson = relationship.getPersonB();
+                            isRelatedPersonB = true;
                         } else {
                             relatedPerson = relationship.getPersonA();
                         }
@@ -389,7 +391,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                         try {
                             if (patientController.getPatientByUuid(relatedPerson.getUuid()) == null) {
                                 //remove hiv positive contacts
-                               if(relationship.getRelationshipType().getUuid().equals("8d91a210-c2cc-11de-8d13-0010c6dffd0f")){
+                               if(relationship.getRelationshipType().getUuid().equals("8d91a210-c2cc-11de-8d13-0010c6dffd0f") && isRelatedPersonB){
                                    boolean isEligible = false;
                                    if(relatedPerson.getBirthdate() == null){
                                        isEligible = true;
