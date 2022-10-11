@@ -790,4 +790,6 @@
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
+    <string name="info_program_unavailable">Aucun programme disponible</string>
+    <string name="info_program_unavailable_tip">Aucun programme configuré. Contactez votre administrateur pour ajouter un programme</string>
 </resources>

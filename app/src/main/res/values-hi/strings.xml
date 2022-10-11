@@ -780,4 +780,6 @@
     <string name="warning_switch_server">सर्वर बदली: यह आपके डिवाइस पर मौजूद सभी mUzima डेटा को साफ कर देगा, जिसमें कोई अधूरा फॉर्म भी शामिल है। क्या आप वाकई इस सेटिंग को बदलना चाहते हैं?</string>
     <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
+    <string name="info_program_unavailable">कोई कार्यक्रम उपलब्ध नहीं</string>
+    <string name="info_program_unavailable_tip">कोई प्रोग्राम कॉन्फ़िगर नहीं किया गया है। प्रोग्राम जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
 </resources>

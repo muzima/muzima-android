@@ -83,6 +83,7 @@
             style="@style/setupMethodConfigurationsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/scroll_view"
             android:layout_below="@+id/guided_setup_header"
             android:fillViewport="true"
             android:scrollbars="vertical">
@@ -99,6 +100,11 @@
                 android:scrollbarSize="1dp"
                 android:scrollbarStyle="outsideOverlay" />
         </ScrollView>
+
+        <include layout="@layout/recycler_no_data_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"/>
     </LinearLayout>
 
     <RelativeLayout
