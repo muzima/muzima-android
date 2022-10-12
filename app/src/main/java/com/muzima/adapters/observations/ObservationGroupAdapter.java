@@ -301,7 +301,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     private View getFirstBody(int row, int column, View convertView, ViewGroup parent) {
 
         convertView = layoutInflater.inflate(R.layout.item_table_first, parent, false);
-        ((TextView) convertView.findViewById(android.R.id.text1)).setBackgroundResource(map.get(getDevice(row).data[0]) % 2 == 0 ? R.drawable.table_border1 : R.drawable.table_border2);
+        ((TextView) convertView.findViewById(android.R.id.text1)).setBackgroundResource(R.drawable.bg_table_color1);
 
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(getDevice(row).data[column + 1]);
 
@@ -360,7 +360,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         if(!StringUtils.isEmpty(getDevice(row).data[column + 1])) {
             ((TextView) convertView.findViewById(android.R.id.text2)).setText(conceptUnits.get(getDevice(row).data[0]));
         }
-        ((LinearLayout) convertView.findViewById(R.id.ll1)).setBackgroundResource(map.get(getDevice(row).data[0]) % 2 == 0 ? R.drawable.table_border1 : R.drawable.table_border2);
+        ((LinearLayout) convertView.findViewById(R.id.ll1)).setBackgroundResource(R.drawable.table_border1);
         return convertView;
     }
 
@@ -376,7 +376,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         }
 
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(string);
-        convertView.setBackgroundResource(groups.indexOf(getGroup(row).name) % 2 == 0 ? R.drawable.bg_table_color1 : R.drawable.bg_table_color2);
+        convertView.setBackgroundResource(R.drawable.bg_table_color2);
         return convertView;
     }
 

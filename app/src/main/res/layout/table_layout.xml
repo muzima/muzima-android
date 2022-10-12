@@ -10,14 +10,14 @@
             android:id="@+id/obs_date"
             android:gravity="left"
             android:padding="6dp"
-            android:textColor="@color/primary_black"
+            android:textColor="@color/white_smoke"
             android:layout_width="100dp"
             />
         <TextView
             android:id="@+id/obs_value"
             android:gravity="left"
             android:padding="6dp"
-            android:textColor="@color/primary_black"
+            android:textColor="@color/white_smoke"
             android:layout_weight="1"
             />
     </TableRow>

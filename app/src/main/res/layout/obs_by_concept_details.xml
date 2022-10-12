@@ -9,14 +9,14 @@
   ~ this code in a for-profit venture, please contact the copyright holder.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:background="@android:color/white"
+              android:background="@drawable/bg_table_color1"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
 	<TextView
 			android:padding="5dp"
-			android:textColor="@android:color/black"
+			android:textColor="@android:color/white"
 			android:textSize="16sp"
 			android:textStyle="bold"
 			android:layout_marginBottom="4dp"

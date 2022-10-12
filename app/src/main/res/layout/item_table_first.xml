@@ -11,6 +11,9 @@
         android:layout_weight="1"
         android:gravity="center_vertical|left"
         android:fontFamily="@font/montserrat_semibold"
+        android:scrollHorizontally="true"
+        android:ellipsize="end"
+        android:maxLines="3"
         android:paddingLeft="10dip" />
 
 </LinearLayout>

@@ -15,6 +15,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/montserrat_regular"
+                android:scrollHorizontally="true"
+                android:ellipsize="end"
+                android:maxLines="3"
                 android:gravity="center_vertical|left" />
             <TextView
                 android:id="@android:id/text2"
