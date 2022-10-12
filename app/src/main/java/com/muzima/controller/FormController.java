@@ -524,15 +524,36 @@ public class FormController {
                     completeForms.add(completeForm);
                 } else {
                     if (formData.getDiscriminator() != null) {
-                        List<String> supportedNonFormPayloadDiscriminators = new ArrayList<>();
-                        supportedNonFormPayloadDiscriminators.add(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS);
-                        supportedNonFormPayloadDiscriminators.add(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION);
-                        supportedNonFormPayloadDiscriminators.add(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP);
-                        supportedNonFormPayloadDiscriminators.add(Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE);
-
-                        if (supportedNonFormPayloadDiscriminators.contains(formData.getDiscriminator())) {
+                        if (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS)) {
                             CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
                                     .withIndividualObsForm(form, context)
+                                    .withFormDataUuid(formData.getUuid())
+                                    .withPatient(patient)
+                                    .withLastModifiedDate(formData.getSaveTime())
+                                    .withEncounterDate(formData.getEncounterDate())
+                                    .build();
+                            completeForms.add(completeForm);
+                        }else if (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION)) {
+                            CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
+                                    .withSHRRegistrationForm(form, context)
+                                    .withFormDataUuid(formData.getUuid())
+                                    .withPatient(patient)
+                                    .withLastModifiedDate(formData.getSaveTime())
+                                    .withEncounterDate(formData.getEncounterDate())
+                                    .build();
+                            completeForms.add(completeForm);
+                        }else if (formData.getDiscriminator().equals(FORM_JSON_DISCRIMINATOR_RELATIONSHIP)) {
+                            CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
+                                    .withRelationshipForm(form, context)
+                                    .withFormDataUuid(formData.getUuid())
+                                    .withPatient(patient)
+                                    .withLastModifiedDate(formData.getSaveTime())
+                                    .withEncounterDate(formData.getEncounterDate())
+                                    .build();
+                            completeForms.add(completeForm);
+                        }else if (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE)) {
+                            CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
+                                    .withDemographicsUpdateForm(form, context)
                                     .withFormDataUuid(formData.getUuid())
                                     .withPatient(patient)
                                     .withLastModifiedDate(formData.getSaveTime())
