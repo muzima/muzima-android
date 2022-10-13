@@ -787,4 +787,9 @@
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
     <string name="info_program_unavailable">Hakuna programu inayopatikana</string>
     <string name="info_program_unavailable_tip">Hakuna programu iliyosanidiwa. Wasiliana na msimamizi wako ili kuongeza programu</string>
+    <string name="error_patient_address_not_updated">Anwani ya GPS haikuweza kupatikana.</string>
+    <string name="general_demographics_update">Usasishaji wa demografia</string>
+    <string name="error_current_gps_not_obtained">Haikuweza kupata eneo la sasa la GPS. Inapakia eneo chaguomsingi kwenye ramani.</string>
+    <string name="title_internet_connection_failure">Muunganisho wa mtandao umeshindwa</string>
+    <string name="hint_network_connection_failure_map_loading">Kifaa hakijaunganishwa kwenye mtandao. Ramani haipatikani ukiwa nje ya mtandao.</string>
 </resources>

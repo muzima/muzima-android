@@ -783,4 +783,9 @@
     <string name="write_shr_to_card_general">SHR ને કાર્ડ પર લખો</string>
     <string name="info_program_unavailable">કોઈ પ્રોગ્રામ ઉપલબ્ધ નથી</string>
     <string name="info_program_unavailable_tip">કોઈ પ્રોગ્રામ ગોઠવેલ નથી. પ્રોગ્રામ ઉમેરવા માટે તમારા વ્યવસ્થાપકનો સંપર્ક કરો</string>
+    <string name="error_patient_address_not_updated">જીપીએસ સરનામું મેળવી શકાયું નથી.</string>
+    <string name="general_demographics_update">વસ્તી વિષયક અપડેટ</string>
+    <string name="error_current_gps_not_obtained">વર્તમાન GPS સ્થાન મેળવી શકાયું નથી. નકશા પર ડિફૉલ્ટ સ્થાન લોડ કરી રહ્યું છે.</string>
+    <string name="title_internet_connection_failure">ઇન્ટરનેટ કનેક્શન નિષ્ફળતા</string>
+    <string name="hint_network_connection_failure_map_loading">ઉપકરણ ઇન્ટરનેટથી કનેક્ટ થયેલ નથી. ઑફલાઇન હોય ત્યારે નકશો ઉપલબ્ધ નથી.</string>
 </resources>

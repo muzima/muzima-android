@@ -782,4 +782,9 @@
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
     <string name="info_program_unavailable">कोई कार्यक्रम उपलब्ध नहीं</string>
     <string name="info_program_unavailable_tip">कोई प्रोग्राम कॉन्फ़िगर नहीं किया गया है। प्रोग्राम जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
+    <string name="error_patient_address_not_updated">GPS पता प्राप्त नहीं किया जा सका</string>
+    <string name="general_demographics_update">जनसांख्यिकी अद्यतन</string>
+    <string name="error_current_gps_not_obtained">वर्तमान GPS स्थान प्राप्त नहीं कर सका। मानचित्र पर डिफ़ॉल्ट स्थान लोड हो रहा है।</string>
+    <string name="title_internet_connection_failure">इंटरनेट कनेक्शन विफलता</string>
+    <string name="hint_network_connection_failure_map_loading">डिवाइस इंटरनेट से कनेक्ट नहीं है। ऑफ़लाइन होने पर नक्शा उपलब्ध नहीं होता है।</string>
 </resources>
