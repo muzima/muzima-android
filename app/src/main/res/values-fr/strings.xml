@@ -790,4 +790,9 @@
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
+    <string name="error_patient_address_not_updated">L\'adresse GPS n\'a pas pu être obtenue.</string>
+    <string name="general_demographics_update">Mise à jour démographique</string>
+    <string name="error_current_gps_not_obtained">Impossible d\'obtenir la position GPS actuelle. Chargement de la position par défaut sur la carte.</string>
+    <string name="title_internet_connection_failure">La connexion Internet a échoué</string>
+    <string name="hint_network_connection_failure_map_loading">L\'appareil n\'est pas connecté à Internet. La carte n\'est pas disponible hors ligne.</string>
 </resources>

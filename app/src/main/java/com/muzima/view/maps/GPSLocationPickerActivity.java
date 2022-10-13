@@ -11,6 +11,9 @@
 package com.muzima.view.maps;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationListener;
@@ -18,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.view.View;
 import android.webkit.ConsoleMessage;
@@ -35,9 +39,12 @@ import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.util.Constants;
 import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.patients.PatientLocationMapActivity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -87,7 +94,7 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_LOCATION) {
             if (resultCode != Activity.RESULT_OK) {
-                Toast.makeText(this, "Could not obtain the current GPS location.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.error_current_gps_not_obtained), Toast.LENGTH_LONG).show();
                 latitude = "0.5117";
                 longitude = "35.282614";
             } else {
@@ -183,6 +190,19 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
 
         webView.addJavascriptInterface(this,"locationPickerInterface");
         webView.loadUrl("file:///android_asset/www/maps/mapLocationPicker.html");
+        if(!NetworkUtils.isConnectedToNetwork(getApplicationContext())){
+            android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
+            alertDialog.setTitle("Internet connection failure");
+            alertDialog.setMessage("The device is not connected to the internet. The map is not available when offline.");
+            alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, getString(R.string.general_ok),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+            alertDialog.show();
+        }
     }
 
     @JavascriptInterface
