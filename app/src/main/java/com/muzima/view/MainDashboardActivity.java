@@ -188,8 +188,10 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
             @Override
             public void onFinish() {
                 if(!isTimerReset) {
-                    ((MuzimaApplication) getApplication()).logOut();
-                    launchLoginActivity();
+                    if(((MuzimaApplication) getApplication()).getAuthenticatedUser() != null) {
+                        ((MuzimaApplication) getApplication()).logOut();
+                        launchLoginActivity();
+                    }
                 }
             }
         };
