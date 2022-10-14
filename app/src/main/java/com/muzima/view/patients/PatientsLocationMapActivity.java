@@ -34,6 +34,7 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.util.Constants;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
@@ -53,11 +54,14 @@ public class PatientsLocationMapActivity extends BroadcastListenerActivity {
     private WebView webView;
 
     private String selectedPatientUuid;
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,true);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
+        setTitle(R.string.title_clients_locations);
         setContentView(R.layout.activity_patients_location_map);
         if(!NetworkUtils.isConnectedToNetwork(getApplicationContext())) {
             promptConnectionFailureMessage();
