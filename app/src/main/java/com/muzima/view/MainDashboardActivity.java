@@ -11,8 +11,6 @@
 package com.muzima.view;
 
 import static android.content.DialogInterface.BUTTON_POSITIVE;
-import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
-import static android.view.MenuItem.SHOW_AS_ACTION_NEVER;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -26,7 +24,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -57,9 +54,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortFilterAdapter;
 import com.muzima.adapters.patients.PatientTagsListAdapter;
-import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.Cohort;
-import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientTag;
@@ -303,7 +298,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         if(!isGeomappingEnabled)
             locationMenu.setVisibility(View.GONE);
 
-        if(!isTagGenerationEnabled){
+        if(!isTagGenerationEnabled && tagsMenu != null){
             tagsMenu.setVisibility(View.GONE);
         }
 

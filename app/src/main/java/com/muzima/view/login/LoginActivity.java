@@ -443,7 +443,7 @@ public class LoginActivity extends BaseActivity {
 
                 localePreferenceService.setPreferredLocale(preferredLocale);
 
-                checkAndUpdateUsageLogsIfNecessary(muzimaApplication, successfulLoginTime);
+                checkAndUpdateUsageLogsIfNecessary(muzimaApplication, successfulLoginTime, result.credentials.getUserName());
 
                 MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -502,12 +502,11 @@ public class LoginActivity extends BaseActivity {
             }
         }
 
-        private void checkAndUpdateUsageLogsIfNecessary(MuzimaApplication muzimaApplication, Date date){
+        private void checkAndUpdateUsageLogsIfNecessary(MuzimaApplication muzimaApplication, Date date, String loggedInUser){
             AppUsageLogsController appUsageLogsController = muzimaApplication.getAppUsageLogsController();
             try {
                 SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
                 SimpleDateFormat simpleTimeFormat = new SimpleDateFormat(STANDARD_TIME_FORMAT);
-                String loggedInUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUserId();
                 String pseudoDeviceId = generatePseudoDeviceId();
 
 
