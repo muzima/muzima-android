@@ -28,15 +28,21 @@ import com.muzima.view.custom.MuzimaRecyclerView;
 import java.util.List;
 
 public class ChronologicalObsViewFragment extends Fragment implements RecyclerAdapter.BackgroundListQueryTaskListener {
-    private final String patientUuid;
+    private String patientUuid;
     private ObservationByDateAdapter observationByDateAdapter;
     MuzimaRecyclerView conceptsListRecyclerView;
     LinearLayout noDataLayout;
     boolean isPatientSummaryListing;
 
-    public ChronologicalObsViewFragment(String patientUuid, boolean isPatientSummaryListing) {
-        this.patientUuid = patientUuid;
-        this.isPatientSummaryListing = isPatientSummaryListing;
+    public ChronologicalObsViewFragment() {
+
+    }
+
+    public static ChronologicalObsViewFragment newInstance(String patientUuid,  boolean isPatientSummaryListing) {
+        ChronologicalObsViewFragment f = new ChronologicalObsViewFragment();
+        f.isPatientSummaryListing = isPatientSummaryListing;
+        f.patientUuid = patientUuid;
+        return f;
     }
 
     @Nullable

@@ -38,6 +38,7 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.util.Constants;
 import com.muzima.utils.GeolocationJsonMapper;
+import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
@@ -59,11 +60,14 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
     private Patient patient;
     Button getDirectionsButton;
     WebView webView;
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,true);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
+        setTitle(R.string.title_client_location);
         setContentView(R.layout.activity_patient_location_map);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         if(!NetworkUtils.isConnectedToNetwork(getApplicationContext())) {
@@ -338,6 +342,7 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
     @Override
     protected void onResume(){
         super.onResume();
+        languageUtil.onResume(this);
     }
 
     @Override

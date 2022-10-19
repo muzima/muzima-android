@@ -781,6 +781,8 @@
     <string name="warning_switch_server">સર્વર બદલી: આ તમારા ઉપકરણ પરના બધા mUzima ડેટાને સાફ કરશે, કોઈપણ અપૂર્ણ સ્વરૂપો સહિત. શું તમે ખરેખર આ સેટિંગ બદલવા માંગો છો?</string>
     <string name="write_SHR_to_card_text">SHR ને કાર્ડ પર લખો</string>
     <string name="write_shr_to_card_general">SHR ને કાર્ડ પર લખો</string>
+    <string name="info_program_unavailable">કોઈ પ્રોગ્રામ ઉપલબ્ધ નથી</string>
+    <string name="info_program_unavailable_tip">કોઈ પ્રોગ્રામ ગોઠવેલ નથી. પ્રોગ્રામ ઉમેરવા માટે તમારા વ્યવસ્થાપકનો સંપર્ક કરો</string>
     <string name="error_patient_address_not_updated">જીપીએસ સરનામું મેળવી શકાયું નથી.</string>
     <string name="general_demographics_update">વસ્તી વિષયક અપડેટ</string>
     <string name="error_current_gps_not_obtained">વર્તમાન GPS સ્થાન મેળવી શકાયું નથી. નકશા પર ડિફૉલ્ટ સ્થાન લોડ કરી રહ્યું છે.</string>

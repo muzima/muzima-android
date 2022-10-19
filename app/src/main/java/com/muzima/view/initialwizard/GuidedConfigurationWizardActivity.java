@@ -10,7 +10,9 @@
 
 package com.muzima.view.initialwizard;
 
+import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
 import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
@@ -23,6 +25,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -43,11 +46,14 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupCardsViewPagerAdapter;
+import com.muzima.adapters.setupconfiguration.SetupConfigurationRecyclerViewAdapter;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Form;
+import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfigurationTemplate;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
@@ -56,6 +62,7 @@ import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.DefaultEncounterLocationPreferenceService;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.SntpService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.util.JsonUtils;
@@ -100,14 +107,15 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private int pageCount;
     private boolean isOnlineOnlyModeEnabled;
     private String setupConfigTemplateUuid;
+    private PowerManager.WakeLock wakeLock = null;
 
     public void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guided_setup_wizard);
         initializeResources();
-        initiateSetupConfiguration();
         startViewPagerAnimation();
+        downloadConfigurationByUuid();
     }
 
     private void startViewPagerAnimation() {
@@ -139,6 +147,68 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 startViewPagerAnimation();
             }
         }.start();
+    }
+
+    private void downloadConfigurationByUuid() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
+
+            @Override
+            protected void onPreExecute() {
+                ((MuzimaApplication) getApplication()).cancelTimer();
+                keepPhoneAwake(true);
+                setupConfigTemplateUuid = getIntent().getStringExtra(SETUP_CONFIG_UUID_INTENT_KEY);
+            }
+
+            @Override
+            protected int[] doInBackground(Void... voids) {
+                return downloadSetupConfiguration(setupConfigTemplateUuid);
+            }
+
+            @Override
+            protected void onPostExecute(int[] result) {
+                Log.i(getClass().getSimpleName(), "Restarting timeout timer!");
+                ((MuzimaApplication) getApplication()).restartTimer();
+                if (result[0] != SUCCESS) {
+                    Toast.makeText(GuidedConfigurationWizardActivity.this,
+                            getString(R.string.error_setup_configuration_template_download), Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        LastSyncTimeService lastSyncTimeService =
+                                ((MuzimaApplication) getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
+                        SntpService sntpService = ((MuzimaApplication) getApplicationContext()).getSntpService();
+                        LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_SETUP_CONFIGURATIONS, sntpService.getTimePerDeviceTimeZone());
+                        lastSyncTimeService.saveLastSyncTime(lastSyncTime);
+                    } catch (IOException e) {
+                        Log.i(getClass().getSimpleName(), "Error setting Setup Configuration sync time.");
+                    }
+                    keepPhoneAwake(false);
+                    initiateSetupConfiguration();
+                }
+            }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
+        }.execute();
+    }
+
+    private int[] downloadSetupConfiguration(String setupConfigUuid) {
+        MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+        return muzimaSyncService.downloadSetupConfigurationTemplate(setupConfigUuid);
+    }
+
+    private void keepPhoneAwake(boolean awakeState) {
+        Log.d(getClass().getSimpleName(), "Launching wake state: " + awakeState);
+        if (awakeState) {
+            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, UUID.randomUUID().toString());
+            wakeLock.acquire();
+        } else {
+            if (wakeLock != null) {
+                wakeLock.release();
+            }
+        }
     }
 
     private void updateStepper(int page) {
@@ -191,7 +261,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private void initiateSetupConfiguration() {
-        setupConfigTemplateUuid = getIntent().getStringExtra(SETUP_CONFIG_UUID_INTENT_KEY);
         fetchConfigurationTemplate(setupConfigTemplateUuid);
         downloadSettings();
     }

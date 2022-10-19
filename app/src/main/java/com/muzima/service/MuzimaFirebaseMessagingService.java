@@ -71,10 +71,11 @@ public class MuzimaFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             Map<String, String> data = remoteMessage.getData();
-            sendNotification(data.get("body"), data.get("title"));
 
             if(data.get("body").equals("CLEAR_DATA")){
                 clearData();
+            }else{
+                sendNotification(data.get("body"), data.get("title"));
             }
 
             if (/* Check if data needs to be processed by long running job */ true) {
@@ -93,8 +94,9 @@ public class MuzimaFirebaseMessagingService extends FirebaseMessagingService {
 
             if(remoteMessage.getNotification().getBody().equals("CLEAR_DATA")){
                 clearData();
+            }else {
+                sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle());
             }
-            sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle());
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM

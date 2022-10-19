@@ -26,9 +26,9 @@ public class ObsViewAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 1)
-                return new TabularObsViewFragment(patientUuid, context);
+                return TabularObsViewFragment.newInstance(patientUuid, context);
             else
-                return new ChronologicalObsViewFragment(patientUuid, false);
+                return ChronologicalObsViewFragment.newInstance(patientUuid, false);
     }
 
     @Override

@@ -10,7 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -53,8 +57,10 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     private  Context context;
     private boolean shouldReplaceProviderIdWithNames;
     Map<String, Integer> map = new LinkedHashMap<>( );
+    Map<String, String> conceptUnits = new LinkedHashMap<>( );
     Map<String, String> conceptGroupMap = new LinkedHashMap<>();
     Map<String, List<Observation>> conceptsObservations = new LinkedHashMap<>();
+    private final String applicationLanguage;
 
 
     public List<String> getHeaders() {
@@ -98,6 +104,8 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         this.observationController = app.getObservationController();
         this.context = context;
         shouldReplaceProviderIdWithNames = app.getMuzimaSettingController().isPatientTagGenerationEnabled();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        this.applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
 
         h = getHeaders();
         headers = h.toArray(new String[0]);
@@ -175,9 +183,6 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
 
     public void getObservationByConcept(){
         try {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
-
             List<String> conceptUuids = new ArrayList<>();
 
             for (Map.Entry<String,List<Observation>> pair : conceptsObservations.entrySet()){
@@ -223,7 +228,13 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                                 }
                             }
                         }
+                        String units = "";
+                        if(!StringUtils.isEmpty(concept.getUnit())){
+                            units = concept.getUnit();
+                        }
+
                         map.put(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage), groups.indexOf(conceptGroupMap.get(pair.getKey())));
+                        conceptUnits.put(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage), units);
                         obsGroup[groups.indexOf(conceptGroupMap.get(pair.getKey()))].list.add(new ObsData(conceptRow.toArray(new String[0])));
                     }
                 }
@@ -283,24 +294,73 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
             convertView = layoutInflater.inflate(R.layout.item_table_header, parent, false);
         }
         ((TextView) convertView.findViewById(R.id.text1)).setText(headers[column + 1]);
+
         return convertView;
     }
 
     private View getFirstBody(int row, int column, View convertView, ViewGroup parent) {
 
         convertView = layoutInflater.inflate(R.layout.item_table_first, parent, false);
-        convertView.setBackgroundResource(map.get(getDevice(row).data[0]) % 2 == 0 ? R.drawable.bg_table_color1 : R.drawable.bg_table_color2);
+        ((TextView) convertView.findViewById(android.R.id.text1)).setBackgroundResource(R.drawable.bg_table_color1);
 
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(getDevice(row).data[column + 1]);
+
+        setClickListenersOnView(getDevice(row).data[column + 1], convertView);
+
         return convertView;
+    }
+
+
+    private void setClickListenersOnView(String concept, View convertView) {
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                showDialog(concept);
+                return true;
+            }
+        });
+    }
+
+    public void showDialog(String conceptName){
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        androidx.appcompat.app.AlertDialog.Builder addIndividualObservationsDialogBuilder =
+                new androidx.appcompat.app.AlertDialog.Builder(
+                        context
+                );
+
+        View conceptDetails = layoutInflater.inflate(R.layout.obs_by_concept_details, null);
+        addIndividualObservationsDialogBuilder.setView(conceptDetails);
+        addIndividualObservationsDialogBuilder
+                .setCancelable(true);
+
+        androidx.appcompat.app.AlertDialog obsDetailsViewDialog = addIndividualObservationsDialogBuilder.create();
+        obsDetailsViewDialog.show();
+
+        TextView conceptTextView = conceptDetails.findViewById(R.id.concept_name);
+        conceptTextView.setText(conceptName);
+
+        List<Observation> observations = new ArrayList<>();
+        Concept concept = new Concept();
+        try {
+            concept = conceptController.getConceptByName(conceptName);
+            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,concept.getId());
+        } catch (ConceptController.ConceptFetchException | ObservationController.LoadObservationException e) {
+            e.printStackTrace();
+        }
+
+        RecyclerView recyclerView = conceptDetails.findViewById(R.id.recyclerView);;
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(new ObsListAdapter(new ArrayList<>(observations),context,shouldReplaceProviderIdWithNames, concept, app, applicationLanguage));
     }
 
     private View getBody(int row, int column, View convertView, ViewGroup parent) {
         convertView = layoutInflater.inflate(R.layout.item_table, parent, false);
 
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(getDevice(row).data[column + 1]);
-        ((TextView) convertView.findViewById(android.R.id.text1)).setBackgroundResource(map.get(getDevice(row).data[0]) % 2 == 0 ? R.drawable.table_border1 : R.drawable.table_border2);
-
+        if(!StringUtils.isEmpty(getDevice(row).data[column + 1])) {
+            ((TextView) convertView.findViewById(android.R.id.text2)).setText(conceptUnits.get(getDevice(row).data[0]));
+        }
+        ((LinearLayout) convertView.findViewById(R.id.ll1)).setBackgroundResource(R.drawable.table_border1);
         return convertView;
     }
 
@@ -316,7 +376,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         }
 
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(string);
-        convertView.setBackgroundResource(groups.indexOf(getGroup(row).name) % 2 == 0 ? R.drawable.bg_table_color1 : R.drawable.bg_table_color2);
+        convertView.setBackgroundResource(R.drawable.bg_table_color2);
         return convertView;
     }
 

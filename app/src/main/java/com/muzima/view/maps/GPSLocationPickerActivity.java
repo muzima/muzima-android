@@ -70,6 +70,7 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
         ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
+        setTitle(R.string.title_pick_location);
         setContentView(R.layout.activity_map_location_picker);
         if(getIntent().hasExtra(LATITUDE)){
             latitude = getIntent().getStringExtra(LATITUDE);
@@ -192,8 +193,8 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
         webView.loadUrl("file:///android_asset/www/maps/mapLocationPicker.html");
         if(!NetworkUtils.isConnectedToNetwork(getApplicationContext())){
             android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
-            alertDialog.setTitle("Internet connection failure");
-            alertDialog.setMessage("The device is not connected to the internet. The map is not available when offline.");
+            alertDialog.setTitle(getResources().getString(R.string.title_internet_connection_failure));
+            alertDialog.setMessage(getResources().getString(R.string.hint_network_connection_failure_map_loading));
             alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, getString(R.string.general_ok),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {

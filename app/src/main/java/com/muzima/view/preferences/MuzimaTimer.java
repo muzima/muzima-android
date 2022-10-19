@@ -50,21 +50,26 @@ public class MuzimaTimer extends CountDownTimer {
 
     @Override
     public void onTick(long l) {
-        if(l*0.001<=30) {
-            Intent intent;
-            intent = new Intent(muzimaApplication, MainDashboardActivity.class);
-            intent.putExtra("AutoLogOutTimer", true);
-            intent.putExtra("RemainingTime", l);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        boolean isWizardComplete = new WizardFinishPreferenceService(muzimaApplication).isWizardFinished();
+        if(muzimaApplication.getAuthenticatedUser() != null && isWizardComplete) {
+            if (l * 0.001 <= 30) {
+                Intent intent;
+                intent = new Intent(muzimaApplication, MainDashboardActivity.class);
+                intent.putExtra("AutoLogOutTimer", true);
+                intent.putExtra("RemainingTime", l);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
+                muzimaApplication.startActivity(intent);
             }
-            muzimaApplication.startActivity(intent);
         }
     }
 
     @Override
     public void onFinish() {
-        logOut();
+        if(muzimaApplication.getAuthenticatedUser() != null) {
+            logOut();
+        }
     }
 
     public void restart() {

@@ -168,7 +168,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private void loadChronologicalObsView(){
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.chronological_fragment, new ChronologicalObsViewFragment(patientUuid, true)).commit();
+        transaction.replace(R.id.chronological_fragment, ChronologicalObsViewFragment.newInstance(patientUuid, true)).commit();
     }
 
     @Override

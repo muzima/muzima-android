@@ -785,6 +785,8 @@
     <string name="warning_switch_server">Ubadilishaji wa seva: Kitendo hiki kitafuta data zote za mUzima katika kifaa chako, ikiwa ni pamoja na fomu zozote ambazo hazijakamilika bado. Una hakika unataka kubadili mpangilio huu?</string>
     <string name="write_SHR_to_card_text">Andika SHR kwenye kadi</string>
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
+    <string name="info_program_unavailable">Hakuna programu inayopatikana</string>
+    <string name="info_program_unavailable_tip">Hakuna programu iliyosanidiwa. Wasiliana na msimamizi wako ili kuongeza programu</string>
     <string name="error_patient_address_not_updated">Anwani ya GPS haikuweza kupatikana.</string>
     <string name="general_demographics_update">Usasishaji wa demografia</string>
     <string name="error_current_gps_not_obtained">Haikuweza kupata eneo la sasa la GPS. Inapakia eneo chaguomsingi kwenye ramani.</string>
