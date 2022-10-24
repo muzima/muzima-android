@@ -10,17 +10,30 @@
 
 package com.muzima.view.login;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DownloadManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,8 +54,10 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.model.AppUsageLogs;
+import com.muzima.api.model.AppVersion;
 import com.muzima.api.model.MinimumSupportedAppVersion;
 import com.muzima.controller.AppUsageLogsController;
+import com.muzima.controller.AppVersionController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
@@ -73,12 +88,25 @@ import static com.muzima.utils.Constants.STANDARD_TIME_FORMAT;
 import static com.muzima.utils.DateUtils.convertLongToDateString;
 import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+
 import org.apache.lucene.queryParser.ParseException;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+
 
 //This class shouldn't extend BaseAuthenticatedActivity. Since it is independent of the application's context
 public class LoginActivity extends BaseActivity {
@@ -104,6 +132,10 @@ public class LoginActivity extends BaseActivity {
     private boolean isUpdatePasswordChecked;
     private boolean isOnlineModeEnabled;
     private final LanguageUtil languageUtil = new LanguageUtil();
+    private android.content.Context context;
+    private long downloadID;
+    private String filename = "";
+    private String appUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +171,7 @@ public class LoginActivity extends BaseActivity {
         onlineModeText.setText(isOnlineModeEnabled ? getResources().getString(R.string.general_online_mode) : "");
         usernameText.requestFocus();
         initializeGPSDataCollection();
+        context = getApplicationContext();
     }
 
     private void showSessionTimeOutPopUpIfNeeded() {
@@ -739,7 +772,7 @@ public class LoginActivity extends BaseActivity {
                         if (appVersionCode < version || version==0) {
                             showAlertDialog();
                         } else {
-                            startNextActivity();
+                            checkIfNewAppVersionAvailable(serverUrl);
                         }
                     }catch (NumberFormatException e){
                         Log.e(getClass().getSimpleName(),"Encountered an exception while parsing string to integer ",e);
@@ -753,31 +786,6 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         protected void onBackgroundError(Exception e) {}
-
-        private void startNextActivity(){
-            Intent intent;
-            if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
-                downloadMissingServerSettings();
-                intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
-            } else {
-                removeRemnantDataFromPreviousRunOfWizard();
-                intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
-            }
-            startActivity(intent);
-            finish();
-        }
-
-        private void downloadMissingServerSettings(){
-            try {
-                boolean isSettingsDownloadNeeded = !((MuzimaApplication) getApplication()).getMuzimaSettingController()
-                        .isAllMandatorySettingsDownloaded();
-                if (isSettingsDownloadNeeded) {
-                    new SyncSettingsIntent(getApplicationContext()).start();
-                }
-            } catch (MuzimaSettingController.MuzimaSettingFetchException e){
-                Log.e(getClass().getSimpleName(),""+e.getMessage());
-            }
-        }
 
         private void showAlertDialog() {
             new AlertDialog.Builder(LoginActivity.this)
@@ -800,6 +808,268 @@ public class LoginActivity extends BaseActivity {
                     }
                 }
             };
+        }
+
+        private void checkIfNewAppVersionAvailable(String serverUrl){
+            new DownloadAppVersionBackGroundTask().execute(serverUrl);
+        }
+
+    }
+
+    private class DownloadAppVersionBackGroundTask extends MuzimaAsyncTask<String, Void,String > {
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        public String doInBackground(String... params){
+            String serverUrl = params[0];
+            AppVersionController appVersionController = ((MuzimaApplication) getApplication()).getAppVersionController();
+            try {
+                if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
+                    AppVersion localAppVersion = appVersionController.getAppVersion();
+                    AppVersion downloadedAppVersion = appVersionController.downloadAppVersion();
+                    if(downloadedAppVersion != null) {
+                        if (localAppVersion.getVersion() != null) {
+                            appVersionController.updateAppVersion(downloadedAppVersion);
+                        } else {
+                            appVersionController.saveAppVersion(downloadedAppVersion);
+                        }
+                    }
+                }
+            } catch (AppVersionController.AppVersionFetchException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching app version ",e);
+            } catch (AppVersionController.AppVersionDownloadException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while downloading app version ",e);
+            } catch (AppVersionController.AppVersionSaveException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while saving app version ",e);
+            }
+            return serverUrl;
+        }
+
+        @Override
+        protected void onPostExecute(String serverUrl) {
+            AppVersion newAppVersion;
+            AppVersionController appVersionController = ((MuzimaApplication) getApplication()).getAppVersionController();
+            try {
+                newAppVersion = appVersionController.getAppVersion();
+                if(newAppVersion == null || newAppVersion.getVersion() == null){
+                    //No version set. Do nothing
+                }else {
+                    String newVersion = newAppVersion.getVersion();
+                    String installedVersion = BuildConfig.VERSION_NAME;
+
+                    appUrl = newAppVersion.getUrl();
+
+                    if (!installedVersion.equals(newVersion)) {
+                        showAlertDialog(newVersion);
+                    }else{
+                        startNextActivity();
+                    }
+                }
+            } catch (AppVersionController.AppVersionFetchException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
+            }
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {}
+
+        private void showAlertDialog(String newVersion) {
+            new AlertDialog.Builder(LoginActivity.this)
+                    .setCancelable(false)
+                    .setIcon(ThemeUtils.getIconWarning(LoginActivity.this))
+                    .setTitle(getResources().getString(R.string.general_alert))
+                    .setMessage(getResources().getString(R.string.warning_new_version_available, newVersion))
+                    .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
+                    .setNegativeButton(getString(R.string.general_no), negativeClickListener())
+                    .create()
+                    .show();
+        }
+
+        private Dialog.OnClickListener positiveClickListener() {
+            return new Dialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    initiateInstall();
+                }
+            };
+        }
+
+        private Dialog.OnClickListener negativeClickListener() {
+            return new Dialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startNextActivity();
+                }
+            };
+        }
+    }
+
+    private void startNextActivity(){
+        Intent intent;
+        if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
+            downloadMissingServerSettings();
+            intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+        } else {
+            removeRemnantDataFromPreviousRunOfWizard();
+            intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
+        }
+        startActivity(intent);
+        finish();
+    }
+
+    private void downloadMissingServerSettings(){
+        try {
+            boolean isSettingsDownloadNeeded = !((MuzimaApplication) getApplication()).getMuzimaSettingController()
+                    .isAllMandatorySettingsDownloaded();
+            if (isSettingsDownloadNeeded) {
+                new SyncSettingsIntent(getApplicationContext()).start();
+            }
+        } catch (MuzimaSettingController.MuzimaSettingFetchException e){
+            Log.e(getClass().getSimpleName(),""+e.getMessage());
+        }
+    }
+
+    public void checkForAppUpdates(){
+        /*if google drive*/
+//        String channelId = "10992";
+//        NotificationCompat.Builder builder =
+//                new NotificationCompat.Builder(LoginActivity.this, channelId)
+//                        .setSmallIcon(R.drawable.ic_launcher_logo)
+//                        .setContentTitle("New Version")
+//                        .setContentText(appUrl)
+//                        .setAutoCancel(true)
+//                        .setShowWhen(false)
+//                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+//                        .setCategory(NotificationCompat.CATEGORY_REMINDER)
+//                        .setVisibility(NotificationCompat.VISIBILITY_SECRET);
+//
+//        Intent update = new Intent(Intent.ACTION_VIEW, Uri.parse(appUrl))
+//                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        PendingIntent piUpdate = PendingIntent.getActivity(LoginActivity.this, 5, update, 0 | PendingIntent.FLAG_ONE_SHOT);
+//        builder.setContentIntent(piUpdate);
+//
+//        if (!TextUtils.isEmpty(appUrl)) {
+//            Intent download = new Intent(Intent.ACTION_VIEW, Uri.parse(appUrl))
+//                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            PendingIntent piDownload = PendingIntent.getActivity(LoginActivity.this, 0, download, 0 | PendingIntent.FLAG_ONE_SHOT);
+//            NotificationCompat.Action.Builder actionDownload = new NotificationCompat.Action.Builder(
+//                    R.drawable.ic_launcher_logo,
+//                    "Download",
+//                    piDownload);
+//            builder.addAction(actionDownload.build());
+//        }
+//        try {
+//            NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                NotificationChannel channel = new NotificationChannel(channelId,
+//                        "mUzima",
+//                        NotificationManager.IMPORTANCE_HIGH);
+//                nm.createNotificationChannel(channel);
+//            }
+//
+//            nm.notify(0 , builder.build());
+//        } catch (Throwable ex) {
+//            Log.w("",ex);
+//        }
+
+        /*if dropbox and other download*/
+        registerReceiver(onDownloadComplete,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        String filepath = appUrl;
+        URL url = null;
+        try {
+            url  = new URL(filepath);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        filename = url.getPath();
+        filename = filename.substring(filename.lastIndexOf('/')+1);
+
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url+""));
+        request.setTitle(filename);
+        request.allowScanningByMediaScanner();
+        request.setAllowedOverMetered(true);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+        DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        downloadID = dm.enqueue(request);
+
+        startNextActivity();
+    }
+
+    private BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
+        @Override
+        public void onReceive(android.content.Context context, Intent intent) {
+            //Fetching the download id received with the broadcast
+            long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+            //Checking if the received broadcast is for our enqueued download by matching download id
+            if (downloadID == id) {
+                installApk();
+            }
+        }
+    };
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
+
+        boolean granted = result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+        Log.e(getClass().getSimpleName(),"Permissions check == "+granted);
+        return granted;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void requestPermission() {
+        Log.e(getClass().getSimpleName(),"Permissions requesting");
+        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, 200);
+    }
+
+    public void initiateInstall(){
+        if (checkPermission()) {
+            checkForAppUpdates();
+        } else {
+            Log.e(getClass().getSimpleName(),"Permissions not granted");
+            requestPermission();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.e(getClass().getSimpleName(),"Permissions onRequestPermissionsResult");
+        if (requestCode == 200) {
+            if (grantResults.length > 0) {
+                checkForAppUpdates();
+            }
+        }
+    }
+
+    private void installApk() {
+        try {
+            String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
+
+            File file = new File(PATH + "/"+filename);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            if (Build.VERSION.SDK_INT >= 24) {
+                Uri downloaded_apk = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
+                intent.setDataAndType(downloaded_apk, "application/vnd.android.package-archive");
+                List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo resolveInfo : resInfoList) {
+                    context.grantUriPermission(context.getApplicationContext().getPackageName() + ".provider", downloaded_apk, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(intent);
+            } else {
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+                intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

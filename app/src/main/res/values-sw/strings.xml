@@ -792,4 +792,5 @@
     <string name="error_current_gps_not_obtained">Haikuweza kupata eneo la sasa la GPS. Inapakia eneo chaguomsingi kwenye ramani.</string>
     <string name="title_internet_connection_failure">Muunganisho wa mtandao umeshindwa</string>
     <string name="hint_network_connection_failure_map_loading">Kifaa hakijaunganishwa kwenye mtandao. Ramani haipatikani ukiwa nje ya mtandao.</string>
+    <string name="warning_new_version_available">Toleo jipya la mUzima (v%s) linapatikana. Je, unataka kusasisha.</string>
 </resources>
