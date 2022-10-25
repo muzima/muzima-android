@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -126,6 +127,7 @@ public class LoginActivity extends BaseActivity {
     private FrameLayout loginFrameLayout;
     private TextView onlineModeText;
     private static final int RC_BARCODE_CAPTURE = 9001;
+    private static final int EXTERNAL_STORAGE_MANAGEMENT = 9002;
 
     private ValueAnimator flipFromLoginToAuthAnimator;
     private ValueAnimator flipFromAuthToLoginAnimator;
@@ -355,6 +357,14 @@ public class LoginActivity extends BaseActivity {
                 }
             } else {
                 Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null "+CommonStatusCodes.getStatusCodeString(resultCode));
+            }
+        }else if(requestCode == EXTERNAL_STORAGE_MANAGEMENT) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+                    downloadAPK();
+                } else {
+                    Toast.makeText(this, "Allow permission for storage access!", Toast.LENGTH_SHORT).show();
+                }
             }
         }
         else {
@@ -826,18 +836,9 @@ public class LoginActivity extends BaseActivity {
             AppVersionController appVersionController = ((MuzimaApplication) getApplication()).getAppVersionController();
             try {
                 if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
-                    AppVersion localAppVersion = appVersionController.getAppVersion();
-                    AppVersion downloadedAppVersion = appVersionController.downloadAppVersion();
-                    if(downloadedAppVersion != null) {
-                        if (localAppVersion.getVersion() != null) {
-                            appVersionController.updateAppVersion(downloadedAppVersion);
-                        } else {
-                            appVersionController.saveAppVersion(downloadedAppVersion);
-                        }
-                    }
+                    List<AppVersion> downloadedAppVersions = appVersionController.downloadAppVersion();
+                    appVersionController.saveAppVersion(downloadedAppVersions);
                 }
-            } catch (AppVersionController.AppVersionFetchException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching app version ",e);
             } catch (AppVersionController.AppVersionDownloadException e) {
                 Log.e(getClass().getSimpleName(),"Encountered an exception while downloading app version ",e);
             } catch (AppVersionController.AppVersionSaveException e) {
@@ -852,16 +853,19 @@ public class LoginActivity extends BaseActivity {
             AppVersionController appVersionController = ((MuzimaApplication) getApplication()).getAppVersionController();
             try {
                 newAppVersion = appVersionController.getAppVersion();
-                if(newAppVersion == null || newAppVersion.getVersion() == null){
-                    //No version set. Do nothing
+                if(newAppVersion == null || newAppVersion.getVersionCode() == null){
+                    //No version set. Do nothing, and start next activity
+                    startNextActivity();
                 }else {
-                    String newVersion = newAppVersion.getVersion();
-                    String installedVersion = BuildConfig.VERSION_NAME;
+                    Integer newVersionCode = newAppVersion.getVersionCode();
+                    Integer minSDKVersion = newAppVersion.getMinSDKVersion();
+                    String newVersionName = newAppVersion.getVersionName();
+                    Integer installedVersion = BuildConfig.VERSION_CODE;
 
                     appUrl = newAppVersion.getUrl();
-
-                    if (!installedVersion.equals(newVersion)) {
-                        showAlertDialog(newVersion);
+                    Log.e(getClass().getSimpleName(), "++++++++++++++ "+installedVersion +" < "+ newVersionCode +" && "+ Build.VERSION.SDK_INT + " >= "+ minSDKVersion);
+                    if (installedVersion < newVersionCode && Build.VERSION.SDK_INT>=minSDKVersion) {
+                        showAlertDialog(newVersionName);
                     }else{
                         startNextActivity();
                     }
@@ -930,50 +934,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    public void checkForAppUpdates(){
-        /*if google drive*/
-//        String channelId = "10992";
-//        NotificationCompat.Builder builder =
-//                new NotificationCompat.Builder(LoginActivity.this, channelId)
-//                        .setSmallIcon(R.drawable.ic_launcher_logo)
-//                        .setContentTitle("New Version")
-//                        .setContentText(appUrl)
-//                        .setAutoCancel(true)
-//                        .setShowWhen(false)
-//                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-//                        .setCategory(NotificationCompat.CATEGORY_REMINDER)
-//                        .setVisibility(NotificationCompat.VISIBILITY_SECRET);
-//
-//        Intent update = new Intent(Intent.ACTION_VIEW, Uri.parse(appUrl))
-//                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        PendingIntent piUpdate = PendingIntent.getActivity(LoginActivity.this, 5, update, 0 | PendingIntent.FLAG_ONE_SHOT);
-//        builder.setContentIntent(piUpdate);
-//
-//        if (!TextUtils.isEmpty(appUrl)) {
-//            Intent download = new Intent(Intent.ACTION_VIEW, Uri.parse(appUrl))
-//                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            PendingIntent piDownload = PendingIntent.getActivity(LoginActivity.this, 0, download, 0 | PendingIntent.FLAG_ONE_SHOT);
-//            NotificationCompat.Action.Builder actionDownload = new NotificationCompat.Action.Builder(
-//                    R.drawable.ic_launcher_logo,
-//                    "Download",
-//                    piDownload);
-//            builder.addAction(actionDownload.build());
-//        }
-//        try {
-//            NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                NotificationChannel channel = new NotificationChannel(channelId,
-//                        "mUzima",
-//                        NotificationManager.IMPORTANCE_HIGH);
-//                nm.createNotificationChannel(channel);
-//            }
-//
-//            nm.notify(0 , builder.build());
-//        } catch (Throwable ex) {
-//            Log.w("",ex);
-//        }
-
-        /*if dropbox and other download*/
+    public void downloadAPK(){
         registerReceiver(onDownloadComplete,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         String filepath = appUrl;
         URL url = null;
@@ -1012,23 +973,38 @@ public class LoginActivity extends BaseActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
-        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
-
-        boolean granted = result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
-        Log.e(getClass().getSimpleName(),"Permissions check == "+granted);
-        return granted;
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
+             return Environment.isExternalStorageManager();
+        } else {
+            int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+            int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
+            boolean granted = result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+            return granted;
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void requestPermission() {
         Log.e(getClass().getSimpleName(),"Permissions requesting");
-        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, 200);
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
+            try{
+                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                intent.addCategory("android.intent.category.DEFAULT");
+                intent.setData(Uri.parse(String.format("package:%s", new Object[]{getApplicationContext().getPackageName()})));
+                startActivityForResult(intent, EXTERNAL_STORAGE_MANAGEMENT);
+            }catch(Exception e){
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivityForResult(intent, EXTERNAL_STORAGE_MANAGEMENT);
+            }
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, 200);
+        }
     }
 
     public void initiateInstall(){
         if (checkPermission()) {
-            checkForAppUpdates();
+            downloadAPK();
         } else {
             Log.e(getClass().getSimpleName(),"Permissions not granted");
             requestPermission();
@@ -1037,10 +1013,10 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.e(getClass().getSimpleName(),"Permissions onRequestPermissionsResult");
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 200) {
             if (grantResults.length > 0) {
-                checkForAppUpdates();
+                downloadAPK();
             }
         }
     }

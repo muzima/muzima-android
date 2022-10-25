@@ -1,20 +1,39 @@
 package com.muzima.controller;
 
+import static com.muzima.api.model.APIName.DOWNLOAD_LATEST_APP_VERSION;
+
 import com.muzima.api.model.AppVersion;
+import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.AppVersionService;
+import com.muzima.api.service.LastSyncTimeService;
+import com.muzima.service.SntpService;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public class AppVersionController {
     private final AppVersionService appVersionService;
+    private final LastSyncTimeService lastSyncTimeService;
+    private final SntpService sntpService;
 
-    public AppVersionController(AppVersionService appVersionService) {
+    public AppVersionController(AppVersionService appVersionService, LastSyncTimeService lastSyncTimeService, SntpService sntpService) {
         this.appVersionService = appVersionService;
+        this.lastSyncTimeService = lastSyncTimeService;
+        this.sntpService = sntpService;
     }
 
-    public AppVersion downloadAppVersion() throws AppVersionController.AppVersionDownloadException {
+    public List<AppVersion> downloadAppVersion() throws AppVersionController.AppVersionDownloadException {
         try {
-            AppVersion appVersion =  appVersionService.downloadAppVersion();
+            LastSyncTime lastSyncTime = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_LATEST_APP_VERSION);
+            Date lastSyncDate = null;
+            if (lastSyncTime != null) {
+                lastSyncDate = lastSyncTime.getLastSyncDate();
+            }
+            List<AppVersion> appVersion =  appVersionService.downloadAppVersion(lastSyncDate);
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_LATEST_APP_VERSION, sntpService.getTimePerDeviceTimeZone());
+            lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return  appVersion;
         } catch (IOException e) {
             throw new AppVersionController.AppVersionDownloadException(e);
@@ -23,20 +42,16 @@ public class AppVersionController {
 
     public AppVersion getAppVersion() throws AppVersionController.AppVersionFetchException {
         try {
-              AppVersion appVersions = appVersionService.getAppVersion();
-              AppVersion appVersion = new AppVersion();
-              appVersion.setVersion("3.0.9");
-              appVersion.setUrl("https://dl.dropboxusercontent.com/s/22nh01nz38oanr5/MD-168-debug-2.8.4-FGH.apk");
-
+              AppVersion appVersion = appVersionService.getAppVersion();
               return appVersion;
         } catch (IOException e) {
             throw new AppVersionController.AppVersionFetchException(e);
         }
     }
 
-    public void saveAppVersion(AppVersion appVersion) throws AppVersionController.AppVersionSaveException {
+    public void saveAppVersion(List<AppVersion> appVersions) throws AppVersionController.AppVersionSaveException {
         try {
-            appVersionService.saveAppVersion(appVersion);
+            appVersionService.saveAppVersion(appVersions);
         } catch (IOException e) {
             throw new AppVersionController.AppVersionSaveException(e);
         }

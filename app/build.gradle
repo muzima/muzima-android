@@ -34,12 +34,12 @@ group = 'com.muzima'
 description = 'Muzima-Android'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         minSdkVersion 24
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 28
         versionName "3.0.8-SNAPSHOT"
         vectorDrawables.useSupportLibrary = true

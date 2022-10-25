@@ -666,7 +666,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public AppVersionController getAppVersionController() {
         if (appVersionController == null) {
             try {
-                appVersionController = new AppVersionController(muzimaContext.getAppVersionService());
+                appVersionController = new AppVersionController(muzimaContext.getAppVersionService(), muzimaContext.getLastSyncTimeService(), getSntpService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
