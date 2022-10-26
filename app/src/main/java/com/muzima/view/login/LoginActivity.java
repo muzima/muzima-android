@@ -865,7 +865,7 @@ public class LoginActivity extends BaseActivity {
                     appUrl = newAppVersion.getUrl();
                     Log.e(getClass().getSimpleName(), "++++++++++++++ "+installedVersion +" < "+ newVersionCode +" && "+ Build.VERSION.SDK_INT + " >= "+ minSDKVersion);
                     if (installedVersion < newVersionCode && Build.VERSION.SDK_INT>=minSDKVersion) {
-                        showAlertDialog(newVersionName);
+                        showAlertDialog(newVersionName, newAppVersion.isEnforcedUpdate());
                     }else{
                         startNextActivity();
                     }
@@ -878,16 +878,19 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onBackgroundError(Exception e) {}
 
-        private void showAlertDialog(String newVersion) {
-            new AlertDialog.Builder(LoginActivity.this)
-                    .setCancelable(false)
-                    .setIcon(ThemeUtils.getIconWarning(LoginActivity.this))
-                    .setTitle(getResources().getString(R.string.general_alert))
-                    .setMessage(getResources().getString(R.string.warning_new_version_available, newVersion))
-                    .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
-                    .setNegativeButton(getString(R.string.general_no), negativeClickListener())
-                    .create()
-                    .show();
+        private void showAlertDialog(String newVersion, boolean isEnforcedUpdate) {
+            AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+            alertDialog.setCancelable(false);
+            alertDialog.setIcon(ThemeUtils.getIconWarning(LoginActivity.this));
+            alertDialog.setTitle(getResources().getString(R.string.general_alert));
+            alertDialog.setMessage(getResources().getString(R.string.warning_new_version_available, newVersion));
+            if(isEnforcedUpdate) {
+                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.general_ok), positiveClickListener());
+            }else{
+                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.general_yes), positiveClickListener());
+                alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.general_no), negativeClickListener());
+            }
+            alertDialog.show();
         }
 
         private Dialog.OnClickListener positiveClickListener() {
