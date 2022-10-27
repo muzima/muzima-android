@@ -697,7 +697,7 @@ public class LoginActivity extends BaseActivity {
             } catch (java.text.ParseException e) {
                 Log.e(getClass().getSimpleName(),"Encountered an exception",e);
             } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(), "Encountered an exception",e);
             }
         }
     }
@@ -863,7 +863,6 @@ public class LoginActivity extends BaseActivity {
                     Integer installedVersion = BuildConfig.VERSION_CODE;
 
                     appUrl = newAppVersion.getUrl();
-                    Log.e(getClass().getSimpleName(), "++++++++++++++ "+installedVersion +" < "+ newVersionCode +" && "+ Build.VERSION.SDK_INT + " >= "+ minSDKVersion);
                     if (installedVersion < newVersionCode && Build.VERSION.SDK_INT>=minSDKVersion) {
                         showAlertDialog(newVersionName, newAppVersion.isEnforcedUpdate());
                     }else{
@@ -944,7 +943,7 @@ public class LoginActivity extends BaseActivity {
         try {
             url  = new URL(filepath);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Malformed UARl Exception ",e);
         }
 
         filename = url.getPath();
@@ -1048,7 +1047,7 @@ public class LoginActivity extends BaseActivity {
             }
             startActivity(intent);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Exception ",e);
         }
     }
 }
