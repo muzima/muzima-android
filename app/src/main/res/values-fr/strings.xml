@@ -797,4 +797,5 @@
     <string name="hint_network_connection_failure_map_loading">L\'appareil n\'est pas connecté à Internet. La carte n\'est pas disponible hors ligne.</string>
     <string name="info_program_unavailable">Aucun programme disponible</string>
     <string name="info_program_unavailable_tip">Aucun programme configuré. Contactez votre administrateur pour ajouter un programme</string>
+    <string name="warning_new_version_available">Une nouvelle version de mUzima (v%s) est disponible. Voulez-vous mettre à jour.</string>
 </resources>

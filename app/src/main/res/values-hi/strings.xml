@@ -787,4 +787,5 @@
     <string name="error_current_gps_not_obtained">वर्तमान GPS स्थान प्राप्त नहीं कर सका। मानचित्र पर डिफ़ॉल्ट स्थान लोड हो रहा है।</string>
     <string name="title_internet_connection_failure">इंटरनेट कनेक्शन विफलता</string>
     <string name="hint_network_connection_failure_map_loading">डिवाइस इंटरनेट से कनेक्ट नहीं है। ऑफ़लाइन होने पर नक्शा उपलब्ध नहीं होता है।</string>
+    <string name="warning_new_version_available">मुज़िमा का नया संस्करण (v%s) उपलब्ध है। क्या आप अपडेट करना चाहते हैं।</string>
 </resources>

@@ -34,7 +34,7 @@ group = 'com.muzima'
 description = 'Muzima-Android'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
