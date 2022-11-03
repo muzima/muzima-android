@@ -795,5 +795,6 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="error_current_gps_not_obtained">Não foi possível obter a localização GPS atual. Carregando a localização padrão no mapa.</string>
     <string name="title_internet_connection_failure">Falha na conexão com a Internet</string>
     <string name="hint_network_connection_failure_map_loading">O dispositivo não está conectado à Internet. O mapa não está disponível quando offline.</string>
-    <string name="warning_new_version_available">Uma nova versão do mUzima (v%s) está disponível. Você quer atualizar.</string>
+    <string name="warning_new_version_available">Uma nova versão do mUzima (v%s) está disponível.\n Você pode continuar usando o aplicativo enquanto baixa a atualização. Quando o download estiver concluído, você será notificado e pedirá permissão para instalar o aplicativo. Por favor, conceda permissão uma vez solicitada.\n\n Deseja atualizar.</string>
+    <string name="general_new_version">Nova versão</string>
 </resources>

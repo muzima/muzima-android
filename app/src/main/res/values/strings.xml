@@ -810,5 +810,6 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="error_current_gps_not_obtained">Could not obtain the current GPS location.Loading default location on the map.</string>
     <string name="title_internet_connection_failure">Internet connection failure</string>
     <string name="hint_network_connection_failure_map_loading">The device is not connected to the internet. The map is not available when offline.</string>
-    <string name="warning_new_version_available">A new version of mUzima (v%s) is available. Do you want to update.</string>
+    <string name="warning_new_version_available">A new version of mUzima (v%s) is available.\n You can continue using the app while downloading the update. Once the download is complete you will be notified and asked for permission to install the app. Please grant permission once requested.\n\n  Do you want to update.</string>
+    <string name="general_new_version">New Version</string>
 </resources>
