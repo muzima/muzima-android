@@ -788,5 +788,6 @@
     <string name="error_current_gps_not_obtained">વર્તમાન GPS સ્થાન મેળવી શકાયું નથી. નકશા પર ડિફૉલ્ટ સ્થાન લોડ કરી રહ્યું છે.</string>
     <string name="title_internet_connection_failure">ઇન્ટરનેટ કનેક્શન નિષ્ફળતા</string>
     <string name="hint_network_connection_failure_map_loading">ઉપકરણ ઇન્ટરનેટથી કનેક્ટ થયેલ નથી. ઑફલાઇન હોય ત્યારે નકશો ઉપલબ્ધ નથી.</string>
-    <string name="warning_new_version_available">mUzima (v%s) નું નવું સંસ્કરણ ઉપલબ્ધ છે. શું તમે અપડેટ કરવા માંગો છો.</string>
+    <string name="warning_new_version_available">mUzima (v%s) નું નવું સંસ્કરણ ઉપલબ્ધ છે.\n\n તમે અપડેટ ડાઉનલોડ કરતી વખતે એપ્લિકેશનનો ઉપયોગ કરવાનું ચાલુ રાખી શકો છો. એકવાર ડાઉનલોડ પૂર્ણ થઈ જાય પછી તમને સૂચિત કરવામાં આવશે અને એપ્લિકેશન ઇન્સ્ટોલ કરવાની પરવાનગી માટે પૂછવામાં આવશે. વિનંતી કર્યા પછી કૃપા કરીને પરવાનગી આપો.\n\n શું તમે અપડેટ કરવા માંગો છો.</string>
+    <string name="general_new_version">નવી આવૃત્તિ</string>
 </resources>

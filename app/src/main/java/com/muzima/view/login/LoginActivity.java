@@ -17,9 +17,6 @@ import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DownloadManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,8 +31,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -92,7 +89,6 @@ import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
@@ -138,6 +134,7 @@ public class LoginActivity extends BaseActivity {
     private long downloadID;
     private String filename = "";
     private String appUrl = "";
+    private boolean isConnectedToServer = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -747,6 +744,7 @@ public class LoginActivity extends BaseActivity {
             MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
             try {
                 if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
+                    isConnectedToServer = true;
                     MinimumSupportedAppVersion localMinimumSupportedAppVersion = minimumSupportedAppVersionController.getMinimumSupportedAppVersion();
                     MinimumSupportedAppVersion downloadedMinimumSupportedAppVersion = minimumSupportedAppVersionController.downloadMinimumSupportedAppVersion();
                     if(downloadedMinimumSupportedAppVersion != null) {
@@ -835,7 +833,7 @@ public class LoginActivity extends BaseActivity {
             String serverUrl = params[0];
             AppVersionController appVersionController = ((MuzimaApplication) getApplication()).getAppVersionController();
             try {
-                if(NetworkUtils.isAddressReachable(serverUrl, Constants.CONNECTION_TIMEOUT)) {
+                if(isConnectedToServer) {
                     List<AppVersion> downloadedAppVersions = appVersionController.downloadAppVersion();
                     appVersionController.saveAppVersion(downloadedAppVersions);
                 }
@@ -849,28 +847,33 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(String serverUrl) {
-            AppVersion newAppVersion;
-            AppVersionController appVersionController = ((MuzimaApplication) getApplication()).getAppVersionController();
-            try {
-                newAppVersion = appVersionController.getAppVersion();
-                if(newAppVersion == null || newAppVersion.getVersionCode() == null){
-                    //No version set. Do nothing, and start next activity
-                    startNextActivity();
-                }else {
-                    Integer newVersionCode = newAppVersion.getVersionCode();
-                    Integer minSDKVersion = newAppVersion.getMinSDKVersion();
-                    String newVersionName = newAppVersion.getVersionName();
-                    Integer installedVersion = BuildConfig.VERSION_CODE;
-
-                    appUrl = newAppVersion.getUrl();
-                    if (installedVersion < newVersionCode && Build.VERSION.SDK_INT>=minSDKVersion) {
-                        showAlertDialog(newVersionName, newAppVersion.isEnforcedUpdate());
-                    }else{
+            Log.e(getClass().getSimpleName(),""+isConnectedToServer);
+            if(isConnectedToServer) {
+                AppVersion newAppVersion;
+                AppVersionController appVersionController = ((MuzimaApplication) getApplication()).getAppVersionController();
+                try {
+                    newAppVersion = appVersionController.getAppVersion();
+                    if (newAppVersion == null || newAppVersion.getVersionCode() == null) {
+                        //No version set. Do nothing, and start next activity
                         startNextActivity();
+                    } else {
+                        Integer newVersionCode = newAppVersion.getVersionCode();
+                        Integer minSDKVersion = newAppVersion.getMinSDKVersion();
+                        String newVersionName = newAppVersion.getVersionName();
+                        Integer installedVersion = BuildConfig.VERSION_CODE;
+
+                        appUrl = newAppVersion.getUrl();
+                        if (installedVersion < newVersionCode && Build.VERSION.SDK_INT >= minSDKVersion) {
+                            showAlertDialog(newVersionName, newAppVersion.isEnforcedUpdate());
+                        } else {
+                            startNextActivity();
+                        }
                     }
+                } catch (AppVersionController.AppVersionFetchException e) {
+                    Log.e(getClass().getSimpleName(), "Encountered an exception while fetching/retrieving supported app version ", e);
                 }
-            } catch (AppVersionController.AppVersionFetchException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
+            }else{
+                startNextActivity();
             }
         }
 
@@ -881,7 +884,7 @@ public class LoginActivity extends BaseActivity {
             AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
             alertDialog.setCancelable(false);
             alertDialog.setIcon(ThemeUtils.getIconWarning(LoginActivity.this));
-            alertDialog.setTitle(getResources().getString(R.string.general_alert));
+            alertDialog.setTitle(getResources().getString(R.string.general_new_version));
             alertDialog.setMessage(getResources().getString(R.string.warning_new_version_available, newVersion));
             if(isEnforcedUpdate) {
                 alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.general_ok), positiveClickListener());
@@ -948,7 +951,6 @@ public class LoginActivity extends BaseActivity {
 
         filename = url.getPath();
         filename = filename.substring(filename.lastIndexOf('/')+1);
-
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url+""));
         request.setTitle(filename);
         request.allowScanningByMediaScanner();

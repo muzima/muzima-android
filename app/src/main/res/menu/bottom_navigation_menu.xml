@@ -22,5 +22,6 @@
           android:icon="@drawable/description"/>
     <item android:id="@+id/action_reports"
         android:title="@string/general_reports"
+        android:visible="false"
         android:icon="@drawable/report"/>
 </menu>
