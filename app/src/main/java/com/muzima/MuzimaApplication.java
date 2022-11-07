@@ -40,7 +40,7 @@ import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PersonService;
 import com.muzima.api.service.ProviderService;
 import com.muzima.controller.AppUsageLogsController;
-import com.muzima.controller.AppVersionController;
+import com.muzima.controller.AppReleaseController;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -124,7 +124,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
     private User authenticatedUser;
-    private AppVersionController appVersionController;
+    private AppReleaseController appVersionController;
     private ExecutorService executorService;
 
     public void clearApplicationData() {
@@ -663,10 +663,10 @@ public class MuzimaApplication extends MultiDexApplication {
         return appUsageLogsController;
     }
 
-    public AppVersionController getAppVersionController() {
+    public AppReleaseController getAppReleaseController() {
         if (appVersionController == null) {
             try {
-                appVersionController = new AppVersionController(muzimaContext.getAppVersionService(), muzimaContext.getLastSyncTimeService(), getSntpService());
+                appVersionController = new AppReleaseController(muzimaContext.getAppReleaseService(), muzimaContext.getLastSyncTimeService(), getSntpService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

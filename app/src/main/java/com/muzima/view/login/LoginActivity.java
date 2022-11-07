@@ -32,7 +32,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -51,11 +50,11 @@ import com.muzima.BuildConfig;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
+import com.muzima.api.model.AppRelease;
 import com.muzima.api.model.AppUsageLogs;
-import com.muzima.api.model.AppVersion;
 import com.muzima.api.model.MinimumSupportedAppVersion;
 import com.muzima.controller.AppUsageLogsController;
-import com.muzima.controller.AppVersionController;
+import com.muzima.controller.AppReleaseController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
@@ -780,7 +779,7 @@ public class LoginActivity extends BaseActivity {
                         if (appVersionCode < version || version==0) {
                             showAlertDialog();
                         } else {
-                            checkIfNewAppVersionAvailable(serverUrl);
+                            checkIfNewAppReleaseAvailable(serverUrl);
                         }
                     }catch (NumberFormatException e){
                         Log.e(getClass().getSimpleName(),"Encountered an exception while parsing string to integer ",e);
@@ -818,59 +817,68 @@ public class LoginActivity extends BaseActivity {
             };
         }
 
-        private void checkIfNewAppVersionAvailable(String serverUrl){
-            new DownloadAppVersionBackGroundTask().execute(serverUrl);
+        private void checkIfNewAppReleaseAvailable(String serverUrl){
+            new DownloadAppReleaseBackGroundTask().execute(serverUrl);
         }
 
     }
 
-    private class DownloadAppVersionBackGroundTask extends MuzimaAsyncTask<String, Void,String > {
+    private class DownloadAppReleaseBackGroundTask extends MuzimaAsyncTask<String, Void,String > {
         @Override
         protected void onPreExecute() {}
 
         @Override
         public String doInBackground(String... params){
             String serverUrl = params[0];
-            AppVersionController appVersionController = ((MuzimaApplication) getApplication()).getAppVersionController();
+            AppReleaseController appReleaseController = ((MuzimaApplication) getApplication()).getAppReleaseController();
             try {
                 if(isConnectedToServer) {
-                    List<AppVersion> downloadedAppVersions = appVersionController.downloadAppVersion();
-                    appVersionController.saveAppVersion(downloadedAppVersions);
+                    List<AppRelease> downloadedAppReleases = appReleaseController.downloadAppRelease();
+                    appReleaseController.saveAppRelease(downloadedAppReleases);
                 }
-            } catch (AppVersionController.AppVersionDownloadException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while downloading app version ",e);
-            } catch (AppVersionController.AppVersionSaveException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while saving app version ",e);
+            } catch (AppReleaseController.AppReleaseDownloadException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while downloading app releases ",e);
+            } catch (AppReleaseController.AppReleaseSaveException e) {
+                Log.e(getClass().getSimpleName(),"Encountered an exception while saving app releases ",e);
             }
             return serverUrl;
         }
 
         @Override
         protected void onPostExecute(String serverUrl) {
-            Log.e(getClass().getSimpleName(),""+isConnectedToServer);
             if(isConnectedToServer) {
-                AppVersion newAppVersion;
-                AppVersionController appVersionController = ((MuzimaApplication) getApplication()).getAppVersionController();
+                AppRelease newAppRelease;
+                AppReleaseController appReleaseController = ((MuzimaApplication) getApplication()).getAppReleaseController();
                 try {
-                    newAppVersion = appVersionController.getAppVersion();
-                    if (newAppVersion == null || newAppVersion.getVersionCode() == null) {
-                        //No version set. Do nothing, and start next activity
+                    newAppRelease = appReleaseController.getAppRelease();
+                    if (newAppRelease == null || newAppRelease.getVersionCode() == null) {
+                        //No Release set. Do nothing, and start next activity
                         startNextActivity();
                     } else {
-                        Integer newVersionCode = newAppVersion.getVersionCode();
-                        Integer minSDKVersion = newAppVersion.getMinSDKVersion();
-                        String newVersionName = newAppVersion.getVersionName();
+                        Integer newVersionCode = newAppRelease.getVersionCode();
+                        Integer minSDKVersion = newAppRelease.getMinSDKVersion();
+                        String newVersionName = newAppRelease.getVersionName();
+                        Date availabilityDate = newAppRelease.getAvailabilityDate();
+                        boolean isTodayEqualToOrGreaterThanAvailabilityDate = false;
                         Integer installedVersion = BuildConfig.VERSION_CODE;
-
-                        appUrl = newAppVersion.getUrl();
-                        if (installedVersion < newVersionCode && Build.VERSION.SDK_INT >= minSDKVersion) {
-                            showAlertDialog(newVersionName, newAppVersion.isEnforcedUpdate());
+                        //check if current date is greater than availability date
+                        if(availabilityDate == null){
+                            isTodayEqualToOrGreaterThanAvailabilityDate = true;
+                        }else{
+                            Date today = new Date();
+                            if(today.after(availabilityDate) || today.equals(availabilityDate)) {
+                                isTodayEqualToOrGreaterThanAvailabilityDate = true;
+                            }
+                        }
+                        appUrl = newAppRelease.getUrl();
+                        if (installedVersion < newVersionCode && Build.VERSION.SDK_INT >= minSDKVersion && isTodayEqualToOrGreaterThanAvailabilityDate) {
+                            showAlertDialog(newVersionName, newAppRelease.isEnforcedUpdate());
                         } else {
                             startNextActivity();
                         }
                     }
-                } catch (AppVersionController.AppVersionFetchException e) {
-                    Log.e(getClass().getSimpleName(), "Encountered an exception while fetching/retrieving supported app version ", e);
+                } catch (AppReleaseController.AppReleaseFetchException e) {
+                    Log.e(getClass().getSimpleName(), "Encountered an exception while fetching/retrieving supported app release ", e);
                 }
             }else{
                 startNextActivity();
