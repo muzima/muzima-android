@@ -32,8 +32,10 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -889,36 +891,44 @@ public class LoginActivity extends BaseActivity {
         protected void onBackgroundError(Exception e) {}
 
         private void showAlertDialog(String newVersion, boolean isEnforcedUpdate) {
-            AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
-            alertDialog.setCancelable(false);
-            alertDialog.setIcon(ThemeUtils.getIconWarning(LoginActivity.this));
-            alertDialog.setTitle(getResources().getString(R.string.general_new_version));
-            alertDialog.setMessage(getResources().getString(R.string.warning_new_version_available, newVersion));
+            ViewGroup viewGroup = findViewById(android.R.id.content);
+            View dialogView = LayoutInflater.from(LoginActivity.this).inflate(R.layout.new_version_alert_dialog, viewGroup, false);
+            Button positiveButton = (Button) dialogView.findViewById(R.id.buttonPositive);
+            Button negativeButton = (Button) dialogView.findViewById(R.id.buttonNegative);
+            TextView message = (TextView) dialogView.findViewById(R.id.message);
+            message.setText(getResources().getString(R.string.warning_new_version_available, newVersion));
+
             if(isEnforcedUpdate) {
-                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.general_ok), positiveClickListener());
+                negativeButton.setVisibility(View.GONE);
+                positiveButton.setText(getString(R.string.general_ok));
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        initiateInstall();
+                    }
+                });
             }else{
-                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.general_yes), positiveClickListener());
-                alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.general_no), negativeClickListener());
+                positiveButton.setText(getString(R.string.general_yes));
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        initiateInstall();
+                    }
+                });
+
+                negativeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startNextActivity();
+                    }
+                });
             }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+            builder.setView(dialogView);
+            AlertDialog alertDialog = builder.create();
+            alertDialog.setCancelable(false);
             alertDialog.show();
-        }
-
-        private Dialog.OnClickListener positiveClickListener() {
-            return new Dialog.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    initiateInstall();
-                }
-            };
-        }
-
-        private Dialog.OnClickListener negativeClickListener() {
-            return new Dialog.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    startNextActivity();
-                }
-            };
         }
     }
 
