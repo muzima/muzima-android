@@ -797,6 +797,6 @@
     <string name="hint_network_connection_failure_map_loading">L\'appareil n\'est pas connecté à Internet. La carte n\'est pas disponible hors ligne.</string>
     <string name="info_program_unavailable">Aucun programme disponible</string>
     <string name="info_program_unavailable_tip">Aucun programme configuré. Contactez votre administrateur pour ajouter un programme</string>
-    <string name="warning_new_version_available">Une nouvelle version de mUzima (v%s) est disponible.\n\n Vous pouvez continuer à utiliser l\'application pendant le téléchargement de la mise à jour. Une fois le téléchargement terminé, vous serez averti et vous demanderez l\'autorisation d\'installer l\'application. Veuillez accorder l\'autorisation une fois demandée.\n\n Voulez-vous mettre à jour.</string>
+    <string name="warning_new_version_available">Une nouvelle version de mUzima (v%s) est disponible.\n\nVous pouvez continuer à utiliser mUzima pendant le téléchargement de la mise à jour. Une fois le téléchargement terminé, vous serez averti et vous demanderez l\'autorisation d\'installer la nouvelle version. Veuillez accorder l\'autorisation une fois demandée.\n\nPoursuivre la mise à jour ?</string>
     <string name="general_new_version">Nouvelle version</string>
 </resources>
