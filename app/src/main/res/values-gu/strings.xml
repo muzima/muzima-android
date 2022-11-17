@@ -778,4 +778,18 @@
     <string name="general_years">%s વર્ષ</string>
     <string name="general_individual_summary">વ્યક્તિગત સારાંશ</string>
     <string name="general_is_a">%s એ છે:</string>
+    <string name="confidant_details">Confidant Details</string>
+    <string name="confidant_name">Confidant Name:</string>
+    <string name="confidant_phone_number_1">Confidant Phone Number 1:</string>
+    <string name="confidant_phone_number_2">Confidant Phone Number 2:</string>
+    <string name="clinical_information_details">Clinical Information</string>
+    <string name="most_recent_viral_load_result">Most recent Viral Load Result:</string>
+    <string name="most_recent_viral_load_result_date">Most recent VL Result Date:</string>
+    <string name="most_recent_arv_pickup">Most recent ARV pick-up (FILA):</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">Most recent ARV pick-up (FILA) dispensation mode:</string>
+    <string name="next_scheduled_arv_pickup">Next scheduled ARV pick-up (FILA):</string>
+    <string name="most_recent_clinical_consultation_date">Most recent clinical consultation date:</string>
+    <string name="next_clinical_consultation_date">Next scheduled clinical consultation date:</string>
+    <string name="tpt_start_date">TPT start date:</string>
+    <string name="tpt_end_date">TPT end date:</string>
 </resources>

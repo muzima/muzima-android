@@ -118,6 +118,31 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private TextView preferredTestingLocation;
     private TextView testingDate;
     private TextView lastConsentDate;
+
+    private TextView confidantName;
+
+    private TextView confidantContact1;
+
+    private TextView confidantContact2;
+
+    private TextView lastCVResult;
+
+    private TextView lastCVResultDate;
+
+    private TextView lastARVPickup;
+
+    private TextView lastARVPickupDispenseMode;
+
+    private TextView nextARVPickupDate;
+
+    private TextView lastClinicalConsultDate;
+
+    private TextView nextClinicalConsultDate;
+
+    private TextView tptStartDate;
+
+    private TextView tptEndDate;
+
     private String applicationLanguage;
     private ConceptController conceptController;
     private ObservationController observationController;
@@ -125,7 +150,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        ThemeUtils.getInstance().onCreate(this,true);
+        ThemeUtils.getInstance().onCreate(this, true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_summary);
@@ -165,7 +190,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 .execute(new FormsLoaderService(this.getApplicationContext(), this));
     }
 
-    private void loadChronologicalObsView(){
+    private void loadChronologicalObsView() {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.chronological_fragment, new ChronologicalObsViewFragment(patientUuid, true)).commit();
@@ -183,13 +208,13 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         boolean isRelationshipEnabled = muzimaSettingController.isRelationshipEnabled();
         boolean isGeomappingEnabled = muzimaSettingController.isGeoMappingEnabled();
 
-        if(!isSHRSettingEnabled)
+        if (!isSHRSettingEnabled)
             shrMenu.setVisible(false);
 
-        if(!isRelationshipEnabled)
+        if (!isRelationshipEnabled)
             relationshipMenu.setVisible(false);
 
-        if(!isGeomappingEnabled)
+        if (!isGeomappingEnabled)
             locationMenu.setVisible(false);
 
         locationMenu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -229,11 +254,13 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         Intent intent = new Intent(getApplicationContext(), PatientsLocationMapActivity.class);
         startActivity(intent);
     }
+
     private void navigateToRelationshipsView() {
         Intent intent = new Intent(this, RelationshipsListActivity.class);
-        intent.putExtra(PATIENT,patient);
+        intent.putExtra(PATIENT, patient);
         startActivity(intent);
     }
+
     @Override
     public void onUserInteraction() {
         ((MuzimaApplication) getApplication()).restartTimer();
@@ -248,19 +275,19 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             patientNameTextView.setText(patient.getDisplayName());
             identifierTextView.setText(String.format(Locale.getDefault(), "ID:#%s", patient.getIdentifier()));
             if (patient.getBirthdate() != null)
-                dobTextView.setText(getString(R.string.general_date_of_birth ,String.format(" %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate()))));
+                dobTextView.setText(getString(R.string.general_date_of_birth, String.format(" %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate()))));
 
             patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
             if (patient.getBirthdate() != null)
                 ageTextView.setText(getString(R.string.general_years, String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(patient.getBirthdate()))));
             gpsAddressTextView.setText(getDistanceToClientAddress(patient));
 
-            if(patient.getAddresses().size()>0) {
-                int index = patient.getAddresses().size()-1;
+            if (patient.getAddresses().size() > 0) {
+                int index = patient.getAddresses().size() - 1;
                 patientAddress.setText(getFormattedPatientAddress(patient.getAddresses().get(index)));
             }
 
-            if(patient.getAttribute("e2e3fd64-1d5f-11e0-b929-000c29ad1d07") != null) {
+            if (patient.getAttribute("e2e3fd64-1d5f-11e0-b929-000c29ad1d07") != null) {
                 patientPhoneNumber.setText(patient.getAttribute("e2e3fd64-1d5f-11e0-b929-000c29ad1d07").getAttribute());
             }
 
@@ -274,30 +301,42 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             preferredTestingLocation.setText(getObsByPatientUuidAndConceptId(patientUuid, 21155));
             testingDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23879));
             lastConsentDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23775));
+            confidantName.setText(getObsByPatientUuidAndConceptId(patientUuid, 1740));
+            confidantContact1.setText(getObsByPatientUuidAndConceptId(patientUuid, 6224));
+            confidantContact2.setText(getObsByPatientUuidAndConceptId(patientUuid, 6224));
+            lastCVResult.setText(getObsByPatientUuidAndConceptId(patientUuid, 23853)); //165326  23853
+            lastCVResultDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23722));
+            lastARVPickup.setText(getObsByPatientUuidAndConceptId(patientUuid, 23866));
+            lastARVPickupDispenseMode.setText(getObsByPatientUuidAndConceptId(patientUuid, 165326));//correct this
+            nextARVPickupDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 5096));
+            lastClinicalConsultDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 165326));//correct this
+            nextClinicalConsultDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 1410));
+            tptStartDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 6128));
+            tptEndDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 6129));
         } catch (PatientController.PatientLoadException e) {
-            Log.e(getClass().getSimpleName(),"Exception encountered while loading patients ",e);
+            Log.e(getClass().getSimpleName(), "Exception encountered while loading patients ", e);
         } catch (ObservationController.LoadObservationException e) {
-            Log.e(getClass().getSimpleName(),"Exception encountered while loading patients ",e);
+            Log.e(getClass().getSimpleName(), "Exception encountered while loading patients ", e);
         } catch (JSONException e) {
-            Log.e(getClass().getSimpleName(),"JSONException encountered ",e);
+            Log.e(getClass().getSimpleName(), "JSONException encountered ", e);
         }
     }
 
-    private String getFormattedPatientAddress(PersonAddress personAddress){
+    private String getFormattedPatientAddress(PersonAddress personAddress) {
         String formattedAddress = "";
-        if(!StringUtils.isEmpty(personAddress.getAddress6())){
-            formattedAddress = formattedAddress +" "+ personAddress.getAddress6()+ ";";
+        if (!StringUtils.isEmpty(personAddress.getAddress6())) {
+            formattedAddress = formattedAddress + " " + personAddress.getAddress6() + ";";
         }
 
-        if(!StringUtils.isEmpty(personAddress.getAddress5())){
-            formattedAddress = formattedAddress +" "+ personAddress.getAddress5()+ ";";
+        if (!StringUtils.isEmpty(personAddress.getAddress5())) {
+            formattedAddress = formattedAddress + " " + personAddress.getAddress5() + ";";
         }
 
-        if(!StringUtils.isEmpty(personAddress.getAddress3())){
-            formattedAddress = formattedAddress +" "+ personAddress.getAddress3()+ ";";
+        if (!StringUtils.isEmpty(personAddress.getAddress3())) {
+            formattedAddress = formattedAddress + " " + personAddress.getAddress3() + ";";
         }
-        if(!StringUtils.isEmpty(personAddress.getAddress1())){
-            formattedAddress = formattedAddress +" "+ personAddress.getAddress1()+ ";";
+        if (!StringUtils.isEmpty(personAddress.getAddress1())) {
+            formattedAddress = formattedAddress + " " + personAddress.getAddress1() + ";";
         }
 
         return formattedAddress;
@@ -309,18 +348,19 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
             Concept concept = conceptController.getConceptById(conceptId);
             Collections.sort(observations, observationDateTimeComparator);
-            if(observations.size()>0){
+            if (observations.size() > 0) {
                 Observation obs = observations.get(0);
-                if(concept.isDatetime())
-                    return DateUtils.getFormattedDate(obs.getValueDatetime(),SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
-                else if(concept.isCoded())
-                    return getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(),applicationLanguage);
-                else if(concept.isNumeric())
+                if (concept.isDatetime())
+                    return DateUtils.getFormattedDate(obs.getValueDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
+                else if (concept.isCoded())
+                    return getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(), applicationLanguage);
+                else if (concept.isNumeric())
                     return String.valueOf(obs.getValueNumeric());
                 else
                     return obs.getValueText();
             }
-        } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
+        } catch (ObservationController.LoadObservationException | Exception |
+                 ConceptController.ConceptFetchException e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
         return StringUtils.EMPTY;
@@ -352,7 +392,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 return String.format("%.02f", results[0] / 1000) + " km";
             }
         } catch (NumberFormatException e) {
-            Log.e(getClass().getSimpleName(),"Number format exception ",e);
+            Log.e(getClass().getSimpleName(), "Number format exception ", e);
         }
         return "";
     }
@@ -382,16 +422,28 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         preferredTestingLocation = findViewById(R.id.preferred_testing_location);
         testingDate = findViewById(R.id.testing_date_value);
         lastConsentDate = findViewById(R.id.last_consent_date_value);
+        confidantName = findViewById(R.id.confidant_name_value);
+        confidantContact1 = findViewById(R.id.confidant_phone_number_1_value);
+        confidantContact2 = findViewById(R.id.confidant_phone_number_2_value);
+        lastCVResult = findViewById(R.id.most_recent_viral_load_result_value);
+        lastCVResultDate = findViewById(R.id.most_recent_viral_load_result_date_value);
+        lastARVPickup = findViewById(R.id.most_recent_arv_pickup_value);
+        lastARVPickupDispenseMode = findViewById(R.id.most_recent_arv_pickup_dispensation_mode_value);
+        nextARVPickupDate = findViewById(R.id.next_scheduled_arv_pickup_value);
+        lastClinicalConsultDate = findViewById(R.id.most_recent_clinical_consultation_date_value);
+        nextClinicalConsultDate = findViewById(R.id.next_clinical_consultation_date_value);
+        tptStartDate = findViewById(R.id.tpt_start_date_value);
+        tptEndDate = findViewById(R.id.tpt_end_date_value);
         TabLayout tabLayout = findViewById(R.id.tabLayout);
-        LinearLayout dadosDeConsentimento= findViewById(R.id.dados_de_consentimento);
-        RelativeLayout addressLayout= findViewById(R.id.address_layout);
-        RelativeLayout phoneNumberLayout= findViewById(R.id.phone_number_layout);
+        LinearLayout dadosDeConsentimento = findViewById(R.id.dados_de_consentimento);
+        RelativeLayout addressLayout = findViewById(R.id.address_layout);
+        RelativeLayout phoneNumberLayout = findViewById(R.id.phone_number_layout);
 
-        if(!isFGHCustomClientSummaryEnabled) {
+        if (!isFGHCustomClientSummaryEnabled) {
             dadosDeConsentimento.setVisibility(View.GONE);
         }
 
-        if(!isFGHCustomClientAddressEnabled){
+        if (!isFGHCustomClientAddressEnabled) {
             addressLayout.setVisibility(View.GONE);
             phoneNumberLayout.setVisibility(View.GONE);
         }
@@ -427,17 +479,34 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         textView.setTypeface(typeface);
     }
 
-    public void initializeView(){
+    public void initializeView() {
         LinearLayout historicalData = findViewById(R.id.historical_data);
         LinearLayout dataCollection = findViewById(R.id.data_collection);
         LinearLayout relationshipList = findViewById(R.id.relationships_listing);
+        LinearLayout confidantLayout = findViewById(R.id.confidant_details_layout);
+        LinearLayout clinicalInfoLayout = findViewById(R.id.clinical_information_layout);
         View historicalDataSeparator = findViewById(R.id.historical_data_separator);
         View relationshipListingSeparator = findViewById(R.id.relationships_list_separator);
+        View confidantDetailsSeparator = findViewById(R.id.confidant_details_separator);
+        View confidantNameSeparator = findViewById(R.id.confidant_name_textview_separator);
+        View confidantContact1Separator = findViewById(R.id.confidant_phone_number_1_textview_separator);
+        View confidantContact2Separator = findViewById(R.id.confidant_phone_number_2_textView_separator);
+        View clinicalInfoSeparator = findViewById(R.id.clinical_information_separator);
+        View lastCVResultVSeparator = findViewById(R.id.most_recent_viral_load_result_separator);
+        View lastCVResultSeparator = findViewById(R.id.most_recent_viral_load_result_date_separator);
+        View lastCVResultDateSeparator = findViewById(R.id.most_recent_clinical_consultation_date_separator);
+        View lastARVPickupSeparator = findViewById(R.id.most_recent_arv_pickup_separator);
+        View lastARVPickupDispenseModeSeparator = findViewById(R.id.most_recent_arv_pickup_dispensation_mode_separator);
+        View nextARVPickupDateSeparator = findViewById(R.id.next_scheduled_arv_pickup_separator);
+        View lastClinicalConsultDateSeparator = findViewById(R.id.most_recent_clinical_consultation_date_separator);
+        View nextClinicalConsultDateSeparator = findViewById(R.id.next_clinical_consultation_date_separator);
+        View tptStartDateSeparator = findViewById(R.id.tpt_start_date_separator);
+        View tptEndDateSeparator = findViewById(R.id.tpt_end_date_separator);
 
         boolean isContactListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isContactListingOnPatientSummaryEnabled();
         boolean isObsListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isObsListingOnPatientSummaryEnabled();
 
-        if(isFGHCustomClientSummaryEnabled){
+        if (isFGHCustomClientSummaryEnabled) {
             LinearLayout.LayoutParams relationshipParam = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     0,
@@ -514,6 +583,42 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                         40
                 );
                 dataCollection.setLayoutParams(formsParam);
+            } else if (true) {
+                confidantDetailsSeparator.setVisibility(View.VISIBLE);
+                confidantNameSeparator.setVisibility(View.VISIBLE);
+                confidantContact1Separator.setVisibility(View.VISIBLE);
+                confidantContact2Separator.setVisibility(View.VISIBLE);
+                clinicalInfoSeparator.setVisibility(View.VISIBLE);
+                lastCVResultVSeparator.setVisibility(View.VISIBLE);
+                lastCVResultSeparator.setVisibility(View.VISIBLE);
+                lastCVResultDateSeparator.setVisibility(View.VISIBLE);
+                lastARVPickupSeparator.setVisibility(View.VISIBLE);
+                lastARVPickupDispenseModeSeparator.setVisibility(View.VISIBLE);
+                nextARVPickupDateSeparator.setVisibility(View.VISIBLE);
+                lastClinicalConsultDateSeparator.setVisibility(View.VISIBLE);
+                nextClinicalConsultDateSeparator.setVisibility(View.VISIBLE);
+                tptStartDateSeparator.setVisibility(View.VISIBLE);
+                tptEndDateSeparator.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams confidantParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        25
+                );
+                confidantLayout.setLayoutParams(confidantParam);
+
+                LinearLayout.LayoutParams clinicalInfoParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        45
+                );
+                clinicalInfoLayout.setLayoutParams(clinicalInfoParam);
+
+                LinearLayout.LayoutParams formsParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        30
+                );
+                dataCollection.setLayoutParams(formsParam);
             } else {
                 historicalDataSeparator.setVisibility(View.GONE);
                 relationshipListingSeparator.setVisibility(View.GONE);
@@ -568,26 +673,26 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             long completeForms = ((MuzimaApplication) getApplicationContext()).getFormController().countCompleteFormsForPatient(patientUuid);
             incompleteFormsCountView.setText(String.valueOf(incompleteForms));
 
-            if(incompleteForms == 0){
+            if (incompleteForms == 0) {
                 incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_green));
-            }else if(incompleteForms>0 && incompleteForms<=5){
+            } else if (incompleteForms > 0 && incompleteForms <= 5) {
                 incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_orange));
-            }else{
+            } else {
                 incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_red));
             }
 
             incompleteFormsCountView.setText(String.valueOf(incompleteForms));
 
-            if(completeForms == 0){
+            if (completeForms == 0) {
                 completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_green));
-            }else if(completeForms>0 && completeForms<=5){
+            } else if (completeForms > 0 && completeForms <= 5) {
                 completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_orange));
-            }else{
+            } else {
                 completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_red));
             }
             completeFormsCountView.setText(String.valueOf(completeForms));
 
-            if((incompleteForms == 0 && completeForms == 0) || isFGHCustomClientSummaryEnabled){
+            if ((incompleteForms == 0 && completeForms == 0) || isFGHCustomClientSummaryEnabled) {
                 completeFormsView.setVisibility(View.GONE);
                 incompleteFormsView.setVisibility(View.GONE);
             } else {
@@ -595,7 +700,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 incompleteFormsView.setVisibility(View.VISIBLE);
             }
         } catch (FormController.FormFetchException e) {
-            Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms",e);
+            Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms", e);
         }
     }
 
@@ -611,8 +716,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private void launchFormDataList(boolean isIncompleteFormsData) {
         Intent intent = new Intent(this, FormsWithDataActivity.class);
 
-        intent.putExtra(PATIENT_UUID,patientUuid);
-        intent.putExtra(PATIENT,patient);
+        intent.putExtra(PATIENT_UUID, patientUuid);
+        intent.putExtra(PATIENT, patient);
         if (isIncompleteFormsData) {
             intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_INCOMPLETE);
         } else {
@@ -635,7 +740,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     @Override
     public void onFormClickedListener(int position) {
         AvailableForm form = forms.get(position);
-        Intent intent = new FormViewIntent(this, form, patient , false);
+        Intent intent = new FormViewIntent(this, form, patient, false);
         intent.putExtra(INDEX_PATIENT, patient);
         this.startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
@@ -659,11 +764,11 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
     public void navigateToRelationships(View v) {
         Intent intent = new Intent(this, RelationshipsListActivity.class);
-        intent.putExtra(PATIENT,patient);
+        intent.putExtra(PATIENT, patient);
         startActivity(intent);
     }
 
-    private void loadRelationships(){
+    private void loadRelationships() {
         lvwPatientRelationships = findViewById(R.id.relationships_list);
         patientRelationshipsAdapter = new RelationshipsAdapter(this, R.layout.item_patients_list_multi_checkable, ((MuzimaApplication) getApplicationContext()).getRelationshipController(),
                 patient.getUuid(), ((MuzimaApplication) getApplicationContext()).getPatientController());
@@ -673,7 +778,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         lvwPatientRelationships.setClickable(true);
         lvwPatientRelationships.setLongClickable(true);
         lvwPatientRelationships.setEmptyView(noDataView);
-        lvwPatientRelationships.setOnItemClickListener(listOnClickListener(this,((MuzimaApplication) getApplicationContext()), patient, false, lvwPatientRelationships));
+        lvwPatientRelationships.setOnItemClickListener(listOnClickListener(this, ((MuzimaApplication) getApplicationContext()), patient, false, lvwPatientRelationships));
     }
 
     private void setupNoDataView() {

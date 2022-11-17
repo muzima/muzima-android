@@ -785,4 +785,18 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_years">%s anos</string>
     <string name="general_individual_summary">Resumo Individual</string>
     <string name="general_is_a">%s é um:</string>
+    <string name="confidant_details">Detalhes do Confidente</string>
+    <string name="confidant_name">Nome:</string>
+    <string name="confidant_phone_number_1">Contacto telefónico 1:</string>
+    <string name="confidant_phone_number_2">Contacto telefónico 2:</string>
+    <string name="clinical_information_details">Informação Clínica</string>
+    <string name="most_recent_viral_load_result">Resultado de CV mais recente:</string>
+    <string name="most_recent_viral_load_result_date">Data do Resultado CV mais recente:</string>
+    <string name="most_recent_arv_pickup">Lev. ARV mais recente (FILA):</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">Modo de Dispensa do Lev. ARV mais recente (FILA):</string>
+    <string name="next_scheduled_arv_pickup">Próximo Lev. ARVs marcado (FILA):</string>
+    <string name="most_recent_clinical_consultation_date">Data da Consulta Clínica mais recente:</string>
+    <string name="next_clinical_consultation_date">Data da Próxima Consulta Clínica:</string>
+    <string name="tpt_start_date">Data Início TPT:</string>
+    <string name="tpt_end_date">Data Fim TPT:</string>
 </resources>
