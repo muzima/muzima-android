@@ -123,8 +123,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
     private TextView confidantContact1;
 
-    private TextView confidantContact2;
-
     private TextView lastCVResult;
 
     private TextView lastCVResultDate;
@@ -303,7 +301,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             lastConsentDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23775));
             confidantName.setText(getObsByPatientUuidAndConceptId(patientUuid, 1740));
             confidantContact1.setText(getObsByPatientUuidAndConceptId(patientUuid, 6224));
-            confidantContact2.setText(getObsByPatientUuidAndConceptId(patientUuid, 6224));
             lastCVResult.setText(getObsByPatientUuidAndConceptId(patientUuid, 23853)); //165326  23853
             lastCVResultDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23722));
             lastARVPickup.setText(getObsByPatientUuidAndConceptId(patientUuid, 23866));
@@ -424,7 +421,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         lastConsentDate = findViewById(R.id.last_consent_date_value);
         confidantName = findViewById(R.id.confidant_name_value);
         confidantContact1 = findViewById(R.id.confidant_phone_number_1_value);
-        confidantContact2 = findViewById(R.id.confidant_phone_number_2_value);
         lastCVResult = findViewById(R.id.most_recent_viral_load_result_value);
         lastCVResultDate = findViewById(R.id.most_recent_viral_load_result_date_value);
         lastARVPickup = findViewById(R.id.most_recent_arv_pickup_value);
@@ -490,7 +486,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         View confidantDetailsSeparator = findViewById(R.id.confidant_details_separator);
         View confidantNameSeparator = findViewById(R.id.confidant_name_textview_separator);
         View confidantContact1Separator = findViewById(R.id.confidant_phone_number_1_textview_separator);
-        View confidantContact2Separator = findViewById(R.id.confidant_phone_number_2_textView_separator);
         View clinicalInfoSeparator = findViewById(R.id.clinical_information_separator);
         View lastCVResultVSeparator = findViewById(R.id.most_recent_viral_load_result_separator);
         View lastCVResultSeparator = findViewById(R.id.most_recent_viral_load_result_date_separator);
@@ -587,7 +582,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 confidantDetailsSeparator.setVisibility(View.VISIBLE);
                 confidantNameSeparator.setVisibility(View.VISIBLE);
                 confidantContact1Separator.setVisibility(View.VISIBLE);
-                confidantContact2Separator.setVisibility(View.VISIBLE);
                 clinicalInfoSeparator.setVisibility(View.VISIBLE);
                 lastCVResultVSeparator.setVisibility(View.VISIBLE);
                 lastCVResultSeparator.setVisibility(View.VISIBLE);
@@ -602,21 +596,21 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 LinearLayout.LayoutParams confidantParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0,
-                        25
+                        20
                 );
                 confidantLayout.setLayoutParams(confidantParam);
 
                 LinearLayout.LayoutParams clinicalInfoParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0,
-                        45
+                        55
                 );
                 clinicalInfoLayout.setLayoutParams(clinicalInfoParam);
 
                 LinearLayout.LayoutParams formsParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0,
-                        30
+                        25
                 );
                 dataCollection.setLayoutParams(formsParam);
             } else {

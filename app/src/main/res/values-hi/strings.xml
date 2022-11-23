@@ -779,8 +779,7 @@
     <string name="general_is_a">%s एक है:</string>
     <string name="confidant_details">Confidant Details</string>
     <string name="confidant_name">Confidant Name:</string>
-    <string name="confidant_phone_number_1">Confidant Phone Number 1:</string>
-    <string name="confidant_phone_number_2">Confidant Phone Number 2:</string>
+    <string name="confidant_phone_number_1">Confidant Phone Number:</string>
     <string name="clinical_information_details">Clinical Information</string>
     <string name="most_recent_viral_load_result">Most recent Viral Load Result:</string>
     <string name="most_recent_viral_load_result_date">Most recent VL Result Date:</string>

@@ -787,16 +787,15 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_is_a">%s é um:</string>
     <string name="confidant_details">Detalhes do Confidente</string>
     <string name="confidant_name">Nome:</string>
-    <string name="confidant_phone_number_1">Contacto telefónico 1:</string>
-    <string name="confidant_phone_number_2">Contacto telefónico 2:</string>
+    <string name="confidant_phone_number_1">Contacto telefónico:</string>
     <string name="clinical_information_details">Informação Clínica</string>
-    <string name="most_recent_viral_load_result">Resultado de CV mais recente:</string>
-    <string name="most_recent_viral_load_result_date">Data do Resultado CV mais recente:</string>
-    <string name="most_recent_arv_pickup">Lev. ARV mais recente (FILA):</string>
-    <string name="most_recent_arv_pickup_dispensation_mode">Modo de Dispensa do Lev. ARV mais recente (FILA):</string>
-    <string name="next_scheduled_arv_pickup">Próximo Lev. ARVs marcado (FILA):</string>
-    <string name="most_recent_clinical_consultation_date">Data da Consulta Clínica mais recente:</string>
-    <string name="next_clinical_consultation_date">Data da Próxima Consulta Clínica:</string>
+    <string name="most_recent_viral_load_result">Resultado CV:</string>
+    <string name="most_recent_viral_load_result_date">Data Resultado CV:</string>
+    <string name="most_recent_arv_pickup">Último Lev. ARV:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">Modo de Dispensa:</string>
+    <string name="next_scheduled_arv_pickup">Próximo Lev. ARV:</string>
+    <string name="most_recent_clinical_consultation_date">Última Consulta Clínica:</string>
+    <string name="next_clinical_consultation_date">Próxima Consulta Clínica:</string>
     <string name="tpt_start_date">Data Início TPT:</string>
     <string name="tpt_end_date">Data Fim TPT:</string>
 </resources>
