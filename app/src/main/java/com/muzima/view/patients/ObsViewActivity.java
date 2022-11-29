@@ -177,7 +177,9 @@ public class ObsViewActivity extends ActivityWithPatientSummaryBottomNavigation 
     }
 
     private void navigateToClientsLocationMap() {
-        Intent intent = new Intent(getApplicationContext(), PatientsLocationMapActivity.class);
+        Intent intent = new Intent();
+        intent.setClassName("com.muzima.geomapping", "com.muzima.geomapping.maps.PatientsLocationMapActivity");
+        intent.putExtra("id", "12354");
         startActivity(intent);
     }
     private void navigateToRelationshipsView() {

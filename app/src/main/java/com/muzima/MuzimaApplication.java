@@ -20,6 +20,7 @@ import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
+import com.google.android.play.core.splitcompat.SplitCompatApplication;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.muzima.api.context.Context;
@@ -93,7 +94,7 @@ import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
-public class MuzimaApplication extends MultiDexApplication {
+public class MuzimaApplication extends SplitCompatApplication {
 
     private Context muzimaContext;
     private Activity currentActivity;

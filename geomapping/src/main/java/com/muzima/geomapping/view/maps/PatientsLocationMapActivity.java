@@ -8,8 +8,10 @@
  * this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.patients;
+package com.muzima.geomapping.view.maps;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -25,8 +27,11 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+
+import com.google.android.play.core.splitcompat.SplitCompat;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.SplitInstallActivity;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
@@ -38,12 +43,16 @@ import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static java.text.MessageFormat.format;
@@ -55,6 +64,12 @@ public class PatientsLocationMapActivity extends BroadcastListenerActivity {
 
     private String selectedPatientUuid;
     private final LanguageUtil languageUtil = new LanguageUtil();
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);
+        SplitCompat.install(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +85,6 @@ public class PatientsLocationMapActivity extends BroadcastListenerActivity {
             initializeMapActionButtons();
         }
     }
-
     private void promptConnectionFailureMessage(){
         android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
         alertDialog.setTitle(getString(R.string.title_internet_connection_failure));

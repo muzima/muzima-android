@@ -8,11 +8,10 @@
  * this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.maps;
+package com.muzima.geomapping.view.maps;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
@@ -31,8 +31,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.android.play.core.splitcompat.SplitCompat;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.SplitInstallActivity;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.location.MuzimaGPSLocation;
@@ -43,7 +46,6 @@ import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.patients.PatientLocationMapActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,6 +66,12 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     private WebView webView;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);
+        SplitCompat.install(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

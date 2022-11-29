@@ -10,7 +10,6 @@
 
 package com.muzima.view.forms;
 
-import android.app.ActionBar;
 import android.os.Build;
 
 import android.app.AlertDialog;
@@ -60,7 +59,7 @@ import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
-import com.muzima.view.maps.LocationPickerResult;
+//import com.muzima.geomapping.view.maps.LocationPickerResult;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 import org.apache.commons.lang.time.DateUtils;
 import org.json.JSONException;
@@ -113,7 +112,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private ImagingComponent imagingComponent;
     private AudioComponent audioComponent;
     private VideoComponent videoComponent;
-    private GPSLocationPickerComponent gpsLocationPickerComponent;
+//    private GPSLocationPickerComponent gpsLocationPickerComponent;
     private RelationshipComponent relationshipComponent;
     private Map<String, String> scanResultMap;
     private Map<String, String> imageResultMap;
@@ -421,16 +420,16 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             videoResultMap.put(videoComponent.getVideoPathField(), videoResult.getVideoUri());
             videoResultMap.put(videoComponent.getVideoCaptionField(), videoResult.getVideoCaption());
         }
-
-        LocationPickerResult locationPickerResult = GPSLocationPickerComponent.parseActivityResult(requestCode, resultCode, intent);
-        if (locationPickerResult != null) {
-            sectionName = gpsLocationPickerComponent.getSectionName();
-            gpsLocationPickerResultMap.put(gpsLocationPickerComponent.getLatitudeField(), locationPickerResult.getLatitude());
-            gpsLocationPickerResultMap.put(gpsLocationPickerComponent.getLongitudeField(), locationPickerResult.getLongitude());
-            if(gpsLocationPickerComponent.isCreateDemographicsUpdatePreferred()){
-                createLocationUpdateFormData();
-            }
-        }
+//From optional module
+//        LocationPickerResult locationPickerResult = GPSLocationPickerComponent.parseActivityResult(requestCode, resultCode, intent);
+//        if (locationPickerResult != null) {
+//            sectionName = gpsLocationPickerComponent.getSectionName();
+//            gpsLocationPickerResultMap.put(gpsLocationPickerComponent.getLatitudeField(), locationPickerResult.getLatitude());
+//            gpsLocationPickerResultMap.put(gpsLocationPickerComponent.getLongitudeField(), locationPickerResult.getLongitude());
+//            if(gpsLocationPickerComponent.isCreateDemographicsUpdatePreferred()){
+//                createLocationUpdateFormData();
+//            }
+//        }
 
         CreateRelationshipPersonResult relationshipPersonResult = RelationshipComponent.parseActivityResult(requestCode, resultCode, intent);
         if (relationshipPersonResult != null) {
@@ -530,7 +529,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         audioComponent = new AudioComponent(this);
         videoComponent = new VideoComponent(this);
 
-        gpsLocationPickerComponent = new GPSLocationPickerComponent(this);
+        //gpsLocationPickerComponent = new GPSLocationPickerComponent(this);
         relationshipComponent = new RelationshipComponent(this, patient);
 
         encounterMiniFormCreatorComponent = new EncounterMiniFormCreatorComponent(this);
@@ -540,7 +539,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         webView.addJavascriptInterface(audioComponent, AUDIO);
         webView.addJavascriptInterface(videoComponent, VIDEO);
 
-        webView.addJavascriptInterface(gpsLocationPickerComponent, GPS_LOCATION_PICKER);
+        //webView.addJavascriptInterface(gpsLocationPickerComponent, GPS_LOCATION_PICKER);
         webView.addJavascriptInterface(relationshipComponent, RELATIONSHIP_CREATOR);
 
         webView.addJavascriptInterface(encounterMiniFormCreatorComponent, ENCOUNTER_MINI_FORM_CREATOR);

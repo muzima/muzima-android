@@ -289,39 +289,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.muzima.view.patients.PatientSummaryActivity" />
         </activity>
-        <activity
-            android:name=".view.patients.PatientLocationMapActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:label="@string/title_client_location"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
-            android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientSummaryActivity" />
-        </activity>
-        <activity
-            android:name=".view.patients.PatientsLocationMapActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:label="@string/title_clients_locations"
-            android:parentActivityName=".view.patients.PatientsSearchActivity"
-            android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientsSearchActivity" />
-        </activity>
-        <activity
-            android:name=".view.maps.GPSLocationPickerActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:label="@string/title_pick_location"
-            android:parentActivityName=".view.patients.PatientsSearchActivity"
-            android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientsSearchActivity" />
-        </activity>
 
         <activity
             android:name=".view.notifications.NotificationsListActivity"
@@ -451,6 +418,7 @@
             android:theme="@style/DialogNoTitleBar" />
 
         <activity android:name=".view.initialwizard.OnboardScreenActivity" />
+        <activity android:name=".SplitInstallActivity" />
         <activity android:name=".view.initialwizard.TermsAndPolicyActivity"
             android:label="@string/general_policy_title"/>
         <activity android:name=".view.MainDashboardActivity"

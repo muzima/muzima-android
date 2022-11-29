@@ -8,14 +8,18 @@
  * this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.patients;
+package com.muzima.geomapping.view.maps;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,8 +32,11 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
 import android.os.Bundle;
+
+import com.google.android.play.core.splitcompat.SplitCompat;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.SplitInstallActivity;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
@@ -43,7 +50,7 @@ import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.maps.GPSLocationPickerActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,11 +58,11 @@ import org.json.JSONObject;
 import java.util.List;
 
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
-import static com.muzima.view.maps.GPSLocationPickerActivity.LATITUDE;
-import static com.muzima.view.maps.GPSLocationPickerActivity.LONGITUDE;
+import static com.muzima.geomapping.view.maps.GPSLocationPickerActivity.LATITUDE;
+import static com.muzima.geomapping.view.maps.GPSLocationPickerActivity.LONGITUDE;
 import static java.text.MessageFormat.format;
 
-public class PatientLocationMapActivity extends BroadcastListenerActivity{
+public class PatientLocationMapActivity extends BroadcastListenerActivity {
     private static int PICK_LOCATION_REQUEST_CODE = 201;
     private Patient patient;
     Button getDirectionsButton;
@@ -63,11 +70,17 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
     private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);
+        SplitCompat.install(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
-        setTitle(R.string.title_client_location);
+        super.setTitle(R.string.title_client_location);
         setContentView(R.layout.activity_patient_location_map);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         if(!NetworkUtils.isConnectedToNetwork(getApplicationContext())) {
@@ -268,7 +281,7 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode ==PICK_LOCATION_REQUEST_CODE) {
             if(resultCode == RESULT_OK) {
-                if(data.hasExtra(GPSLocationPickerActivity.LATITUDE) && data.hasExtra(LONGITUDE)) {
+                if(data.hasExtra(LATITUDE) && data.hasExtra(LONGITUDE)) {
 
                     try {
                         String latitude = data.getStringExtra(LATITUDE);

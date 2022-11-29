@@ -52,6 +52,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.SplitInstallActivity;
 import com.muzima.adapters.cohort.CohortFilterAdapter;
 import com.muzima.adapters.patients.PatientTagsListAdapter;
 import com.muzima.api.model.Cohort;
@@ -84,7 +85,6 @@ import com.muzima.utils.smartcard.SmartCardIntentResult;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
 import com.muzima.view.login.LoginActivity;
-import com.muzima.view.patients.PatientsLocationMapActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -469,7 +469,9 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     }
 
     private void navigateToClientsLocationMap() {
-        Intent intent = new Intent(getApplicationContext(), PatientsLocationMapActivity.class);
+        Intent intent = new Intent(getApplicationContext(), SplitInstallActivity.class);
+        intent.putExtra(SplitInstallActivity.FEATURE_MODULE_MODULE_NAME, getString(R.string.title_geomapping));
+        intent.putExtra(SplitInstallActivity.FEATURE_MODULE_CLASS_NAME, "com.muzima.geomapping.view.maps.PatientsLocationMapActivity");
         startActivity(intent);
     }
 

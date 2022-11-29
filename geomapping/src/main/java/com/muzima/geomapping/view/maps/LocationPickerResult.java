@@ -8,7 +8,7 @@
  * this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.maps;
+package com.muzima.geomapping.view.maps;
 
 public class LocationPickerResult {
     private String latitude;

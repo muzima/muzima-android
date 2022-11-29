@@ -8,16 +8,16 @@
  * this code in a for-profit venture, please contact the copyright holder.
  */
 
-package com.muzima.view.forms;
+package com.muzima.geomapping.view.maps;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.webkit.JavascriptInterface;
-import com.muzima.view.maps.LocationPickerResult;
-import com.muzima.view.maps.GPSLocationPickerActivity;
+import com.muzima.geomapping.view.maps.LocationPickerResult;
+import com.muzima.geomapping.view.maps.GPSLocationPickerActivity;
 
-import static com.muzima.view.maps.GPSLocationPickerActivity.LATITUDE;
-import static com.muzima.view.maps.GPSLocationPickerActivity.LONGITUDE;
+import static com.muzima.geomapping.view.maps.GPSLocationPickerActivity.LATITUDE;
+import static com.muzima.geomapping.view.maps.GPSLocationPickerActivity.LONGITUDE;
 
 public class GPSLocationPickerComponent {
 

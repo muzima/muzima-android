@@ -17,6 +17,7 @@ import android.content.IntentFilter;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.widget.Toast;
 
+import com.google.android.play.core.splitcompat.SplitCompat;
 import com.muzima.R;
 import com.muzima.utils.StringUtils;
 

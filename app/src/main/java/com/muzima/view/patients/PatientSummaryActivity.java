@@ -13,7 +13,6 @@ package com.muzima.view.patients;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -37,6 +36,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.tabs.TabLayout;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.SplitInstallActivity;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
 import com.muzima.adapters.relationships.RelationshipsAdapter;
@@ -75,7 +75,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -226,8 +225,10 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     }
 
     private void navigateToClientsLocationMap() {
-        Intent intent = new Intent(this, PatientLocationMapActivity.class);
+        Intent intent = new Intent(getApplicationContext(), SplitInstallActivity.class);
         intent.putExtra(PATIENT,patient);
+        intent.putExtra(SplitInstallActivity.FEATURE_MODULE_MODULE_NAME, getString(R.string.title_geomapping));
+        intent.putExtra(SplitInstallActivity.FEATURE_MODULE_CLASS_NAME, "com.muzima.geomapping.view.maps.PatientLocationMapActivity");
         startActivity(intent);
     }
     private void navigateToRelationshipsView() {

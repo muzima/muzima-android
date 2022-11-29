@@ -76,6 +76,7 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    dynamicFeatures = [':geomapping']
 }
 
 repositories {
@@ -109,11 +110,12 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.2.0'
     //implementation 'com.google.firebase:firebase-core:16.0.1'
 
-    implementation(group: 'com.muzima', name: 'muzima-api', version: '1.3.19-SNAPSHOT') {
+    api(group: 'com.muzima', name: 'muzima-api', version: '1.3.19-SNAPSHOT') {
         exclude(module: 'guice')
     }
     implementation group: 'com.google.inject', name: 'guice', version: '3.0', classifier: 'no_aop'
     implementation 'com.google.android.gms:play-services-vision:20.1.3'
+    api 'com.google.android.play:core:1.8.2'
 
     testImplementation group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
     testImplementation group: 'junit', name: 'junit-dep', version: '4.10'
