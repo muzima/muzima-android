@@ -28,6 +28,8 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormDataStatus;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.Media;
+import com.muzima.api.model.MediaCategory;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
@@ -48,6 +50,8 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MediaCategoryController;
+import com.muzima.controller.MediaController;
 import com.muzima.controller.PatientReportController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
@@ -110,6 +114,8 @@ public class MuzimaSyncService {
     private RelationshipController relationshipController;
     private PersonController personController;
     private ReportDatasetController reportDatasetController;
+    private MediaController mediaController;
+    private MediaCategoryController mediaCategoryController;
     private Logger logger;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
@@ -129,6 +135,8 @@ public class MuzimaSyncService {
         relationshipController = muzimaApplication.getRelationshipController();
         personController = muzimaApplication.getPersonController();
         reportDatasetController = muzimaApplication.getReportDatasetController();
+        mediaController = muzimaApplication.getMediaController();
+        mediaCategoryController = muzimaApplication.getMediaCategoryController();
     }
 
     public int authenticate(String[] credentials) {
@@ -1690,6 +1698,42 @@ public class MuzimaSyncService {
             Log.e(getClass().getSimpleName(), "Error while fetching report datasets",e);
         }
 
+        return result;
+    }
+
+    public int[] downloadMediaCategories(){
+        int[] result = new int[2];
+        try {
+            List<MediaCategory> mediaCategories = mediaCategoryController.downloadMediaCategory();
+            mediaCategoryController.saveMediaCategory(mediaCategories);
+            result[0] = SUCCESS;
+            result[1] = mediaCategories.size();
+
+        } catch (MediaCategoryController.MediaCategoryDownloadException | MediaCategoryController.MediaCategorySaveException e) {
+            Log.e(TAG, "Encountered Load Exception while getting media categories", e);
+        }
+        return result;
+    }
+
+    public List<Media> downloadMedia(List<String> uuids){
+        List<Media> media = new ArrayList<>();
+        try {
+            media = mediaController.downloadMedia(uuids, false);
+        } catch (MediaController.MediaDownloadException e) {
+            Log.e(TAG, "Encountered Load Exception while getting media", e);
+        }
+        return media;
+    }
+
+    public int[] saveMedia(List<Media> media){
+        int[] result = new int[2];
+        try {
+            mediaController.saveMedia(media);
+            result[0] = SUCCESS;
+            result[1] = media.size();
+        } catch (MediaController.MediaSaveException e) {
+            Log.e(TAG, "Encountered Load Exception while downloading media", e);
+        }
         return result;
     }
 }

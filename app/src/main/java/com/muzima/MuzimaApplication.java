@@ -47,6 +47,8 @@ import com.muzima.controller.EncounterController;
 import com.muzima.controller.FCMTokenController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MediaCategoryController;
+import com.muzima.controller.MediaController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.NotificationController;
@@ -125,6 +127,8 @@ public class MuzimaApplication extends MultiDexApplication {
     private SntpService sntpService;
     private User authenticatedUser;
     private AppReleaseController appVersionController;
+    private MediaController mediaController;
+    private MediaCategoryController mediaCategoryController;
     private ExecutorService executorService;
 
     public void clearApplicationData() {
@@ -672,6 +676,28 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return appVersionController;
+    }
+
+    public MediaCategoryController getMediaCategoryController() {
+        if (mediaCategoryController == null) {
+            try {
+                mediaCategoryController = new MediaCategoryController(muzimaContext.getMediaCategoryService(), muzimaContext.getLastSyncTimeService(), getSntpService());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return mediaCategoryController;
+    }
+
+    public MediaController getMediaController() {
+        if (mediaController == null) {
+            try {
+                mediaController = new MediaController(muzimaContext.getMediaService(), muzimaContext.getLastSyncTimeService(), getSntpService());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return mediaController;
     }
 
     public String getApplicationVersion() {

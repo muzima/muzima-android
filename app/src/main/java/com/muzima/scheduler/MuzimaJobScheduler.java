@@ -23,6 +23,7 @@ import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.DownloadManager;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.ComponentName;
@@ -30,8 +31,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -42,6 +45,8 @@ import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.Media;
+import com.muzima.api.model.MediaCategory;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
@@ -56,6 +61,8 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.FCMTokenController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MediaCategoryController;
+import com.muzima.controller.MediaController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
@@ -71,6 +78,7 @@ import com.muzima.service.OnlineOnlyModePreferenceService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
 import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.util.JsonUtils;
 import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
@@ -87,12 +95,14 @@ import com.muzima.view.reports.SyncAllPatientReports;
 
 import org.apache.lucene.queryParser.ParseException;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @SuppressLint("NewApi")
@@ -181,6 +191,7 @@ public class MuzimaJobScheduler extends JobService {
                 new SyncAllPatientReportsBackgroundTask().execute();
             }
             new FormMetaDataSyncBackgroundTask().execute();
+            new MediaCategorySyncBackgroundTask().execute();
         }
     }
 
@@ -367,6 +378,7 @@ public class MuzimaJobScheduler extends JobService {
             super.onPostExecute(aVoid);
             new SyncReportDatasetsBackgroundTask().execute();
             new FormTemplateSyncBackgroundTask().execute();
+            new DownloadAndDeleteMediaBasedOnConfigChangesBackgroundTask().execute();
             if(wasConfigUpdateDone) {
                 if (!muzimaSettingController.isOnlineOnlyModeEnabled())
                     new DownloadAndDeleteCohortsBasedOnConfigChangesBackgroundTask().execute();
@@ -1094,6 +1106,128 @@ public class MuzimaJobScheduler extends JobService {
             }
 
             return null;
+        }
+    }
+
+    private class MediaCategorySyncBackgroundTask extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... input) {
+            Context context = getApplicationContext();
+            MediaCategoryController mediaCategoryController = ((MuzimaApplication) context).getMediaCategoryController();
+            try {
+                List<MediaCategory> mediaCategories = mediaCategoryController.downloadMediaCategory();
+                if(mediaCategories.size()>0){
+                    mediaCategoryController.saveMediaCategory(mediaCategories);
+                }
+            } catch (MediaCategoryController.MediaCategoryDownloadException e) {
+                Log.e(getClass().getSimpleName(), "Encountered an error while downloading media categories");
+            } catch (MediaCategoryController.MediaCategorySaveException e) {
+                Log.e(getClass().getSimpleName(), "Encountered an error while saving media categories");
+            }
+            return null;
+        }
+    }
+
+    private class DownloadAndDeleteMediaBasedOnConfigChangesBackgroundTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Context context = getApplicationContext();
+                MediaController mediaController = ((MuzimaApplication) context).getMediaController();
+                //Get media in the config
+                List<String> mediaUuids = new ArrayList<>();
+                List<String> mediaUuidsBeforeConfigUpdate = new ArrayList<>();
+
+                SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+                String configJson = activeSetupConfig.getConfigJson();
+                List<Object> mediaList = JsonUtils.readAsObjectList(configJson, "$['config']['media']");
+                for (Object media : mediaList) {
+                    net.minidev.json.JSONObject media1 = (net.minidev.json.JSONObject) media;
+                    String mediaUuid = media1.get("uuid").toString();
+                    mediaUuids.add(mediaUuid);
+                }
+
+                String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+                List<Object> mediaBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['providers']");
+                for (Object media : mediaBeforeConfigUpdate) {
+                    net.minidev.json.JSONObject media1 = (net.minidev.json.JSONObject) media;
+                    String mediaUuid = media1.get("uuid").toString();
+                    mediaUuidsBeforeConfigUpdate.add(mediaUuid);
+                }
+
+                List<String> mediaToBeDeleted = new ArrayList<>();
+                List<String> mediaToDownload= new ArrayList<>();
+                List<String> mediaToCheckForUpdates = new ArrayList<>();
+
+                //Get media previously downloaded but not in the updated config
+                for(String mediaUuid: mediaUuidsBeforeConfigUpdate){
+                    if(!mediaUuids.contains(mediaUuid)){
+                        mediaToBeDeleted.add(mediaUuid);
+                    }else{
+                        mediaToCheckForUpdates.add(mediaUuid);
+                    }
+                }
+
+                //Get Added media to updated config
+                for(String mediaUuid : mediaUuids){
+                    if(!mediaUuidsBeforeConfigUpdate.contains(mediaUuid)){
+                        mediaToDownload.add(mediaUuid);
+                    }
+                }
+
+                if(mediaToBeDeleted.size()>0) {
+                    mediaController.deleteMedia(mediaToBeDeleted);
+                }
+
+                if(mediaToCheckForUpdates.size()>0){
+                    List<Media> mediaListToUpdate = mediaController.downloadMedia(mediaToCheckForUpdates, true);
+                    mediaController.updateMedia(mediaListToUpdate);
+                    for(Media media: mediaListToUpdate){
+                        downloadFile(media.getUrl(), media.getName(), media.getDescription());
+                    }
+                }
+
+                if(mediaToDownload.size()>0) {
+                    List<Media> downloadedMediaList = mediaController.downloadMedia(mediaToDownload, false);
+                    mediaController.saveMedia(downloadedMediaList);
+                    for(Media media: downloadedMediaList){
+                        downloadFile(media.getUrl(), media.getName(), media.getDescription());
+                    }
+                }
+
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e){
+                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get the active config ",e);
+            } catch (MediaController.MediaSaveException e) {
+                e.printStackTrace();
+            } catch (MediaController.MediaDownloadException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        public void downloadFile(String downloadUrl, String filename, String description){
+            //Delete file if exists
+            String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
+            File file = new File(PATH + "/"+filename);
+            if(file.exists())
+                file.delete();
+
+            //Enqueue the file for download
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadUrl));
+            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+            request.setTitle(filename);
+            request.setDescription(description);
+            request.allowScanningByMediaScanner();
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            dm.enqueue(request);
         }
     }
 }

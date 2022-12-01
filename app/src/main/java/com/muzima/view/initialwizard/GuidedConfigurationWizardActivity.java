@@ -16,15 +16,18 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
 import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -51,6 +54,7 @@ import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.Media;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.service.LastSyncTimeService;
@@ -77,11 +81,13 @@ import net.minidev.json.JSONObject;
 
 import org.apache.lucene.queryParser.ParseException;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @SuppressWarnings("staticFieldLeak")
@@ -765,8 +771,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 onQueryTaskFinish();
                 if(!isOnlineOnlyModeEnabled) {
                     downloadObservations();
+                } else {
+                    downloadReportDatasets();
                 }
-                downloadReportDatasets();
             }
 
             @Override
@@ -834,6 +841,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadObservationsLog.setSetupActionResult(resultDescription);
                 downloadObservationsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
+                downloadReportDatasets();
             }
 
             @Override
@@ -846,7 +854,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private void downloadReportDatasets() {
         final SetupActionLogModel downloadReportDatasetLog = new SetupActionLogModel();
         addSetupActionLog(downloadReportDatasetLog);
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
                 downloadReportDatasetLog.setSetupAction(getString(R.string.info_report_dataset_download_in_progress));
@@ -886,8 +894,141 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadReportDatasetLog.setSetupActionResultStatus(resultStatus);
 
                 onQueryTaskFinish();
+                downloadMediaCategories();
+            }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
             }
         }.execute();
+    }
+
+
+    private void downloadMediaCategories() {
+        final SetupActionLogModel downloadMediaCategoryLog = new SetupActionLogModel();
+        addSetupActionLog(downloadMediaCategoryLog);
+        new MuzimaAsyncTask<Void, Void, int[]>() {
+            @Override
+            protected void onPreExecute() {
+                downloadMediaCategoryLog.setSetupAction(getString(R.string.info_media_category_download_in_progress));
+                onQueryTaskStarted();
+            }
+
+            @Override
+            protected int[] doInBackground(Void... voids) {
+                MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                int[] resultForMediaCategory= muzimaSyncService.downloadMediaCategories();
+                return resultForMediaCategory;
+            }
+
+            @Override
+            protected void onPostExecute(int[] result) {
+                String resultDescription = null;
+                String resultStatus = null;
+                if (result == null) {
+                    resultDescription = getString(R.string.info_media_categories_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    int downloadedCategories = result[1];
+                    if (downloadedCategories == 0) {
+                        resultDescription = getString(R.string.info_media_categories_not_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_media_category_downloaded, downloadedCategories);
+                    }
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else {
+                    wizardcompletedSuccessfully = false;
+                    resultDescription = getString(R.string.error_media_category_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                }
+
+                downloadMediaCategoryLog.setSetupActionResult(resultDescription);
+                downloadMediaCategoryLog.setSetupActionResultStatus(resultStatus);
+
+                onQueryTaskFinish();
+                downloadMedia();
+            }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
+        }.execute();
+    }
+
+    private void downloadMedia() {
+        final SetupActionLogModel downloadMediaLog = new SetupActionLogModel();
+        addSetupActionLog(downloadMediaLog);
+        new MuzimaAsyncTask<Void, Void, int[]>() {
+            @Override
+            protected void onPreExecute() {
+                downloadMediaLog.setSetupAction(getString(R.string.info_media_download_in_progress));
+                onQueryTaskStarted();
+            }
+
+            @Override
+            protected int[] doInBackground(Void... voids) {
+                MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                List<String> mediaUuids = extractMediaUuids();
+                List<Media> mediaList= muzimaSyncService.downloadMedia(mediaUuids);
+                int[] resultForMedia= muzimaSyncService.saveMedia(mediaList);
+                for(Media media:mediaList){
+                    downloadFile(media.getUrl(), media.getName(), media.getDescription());
+                }
+                return resultForMedia;
+            }
+
+            @Override
+            protected void onPostExecute(int[] result) {
+                String resultDescription = null;
+                String resultStatus = null;
+                if (result == null) {
+                    resultDescription = getString(R.string.info_media_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    int downloadedCategories = result[1];
+                    if (downloadedCategories == 0) {
+                        resultDescription = getString(R.string.info_media_not_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_media_downloaded, downloadedCategories);
+                    }
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else {
+                    wizardcompletedSuccessfully = false;
+                    resultDescription = getString(R.string.error_media_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                }
+
+                downloadMediaLog.setSetupActionResult(resultDescription);
+                downloadMediaLog.setSetupActionResultStatus(resultStatus);
+
+                onQueryTaskFinish();
+            }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
+        }.execute();
+    }
+
+    public void downloadFile(String downloadUrl,String filename, String description){
+        //Delete file if exists
+        String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
+        File file = new File(PATH + "/"+filename);
+        if(file.exists())
+            file.delete();
+
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadUrl));
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+        request.setTitle(filename);
+        request.setDescription(description);
+        request.allowScanningByMediaScanner();
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+        DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        dm.enqueue(request);
     }
 
     private List<String> extractConceptsUuids() {
@@ -1098,5 +1239,17 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
         }
         return datasetIds;
+    }
+
+    private List<String> extractMediaUuids() {
+        List<String> mediaUuids = new ArrayList<>();
+        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['media']");
+        if (objects != null) {
+            for (Object object : objects) {
+                JSONObject dataset = (JSONObject) object;
+                mediaUuids.add((String)dataset.get("uuid"));
+            }
+        }
+        return mediaUuids;
     }
 }

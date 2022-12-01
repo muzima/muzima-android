@@ -812,4 +812,12 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="hint_network_connection_failure_map_loading">The device is not connected to the internet. The map is not available when offline.</string>
     <string name="warning_new_version_available">A new version of mUzima (v%s) is available.\n\nYou can continue using the mUzima while downloading the update. Once the download is complete you will be notified and asked for permission to install the new version. Please grant permission once requested.\n\nProceed to update?</string>
     <string name="general_new_version">New Version</string>
+    <string name="info_media_category_download_in_progress">Downloading Media Categories</string>
+    <string name="info_media_categories_not_downloaded">Did not download any media category</string>
+    <string formatted="false" name="info_media_category_downloaded">Downloaded %d Media Categories</string>
+    <string name="error_media_category_download">Could not download media categories</string>
+    <string name="info_media_download_in_progress">Downloading Media</string>
+    <string name="info_media_not_downloaded">Did not download any media</string>
+    <string formatted="false" name="info_media_downloaded">Downloaded %d Media</string>
+    <string name="error_media_download">Could not download media</string>
 </resources>
