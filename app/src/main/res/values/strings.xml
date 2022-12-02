@@ -820,4 +820,5 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="info_media_not_downloaded">Did not download any media</string>
     <string formatted="false" name="info_media_downloaded">Downloaded %d Media</string>
     <string name="error_media_download">Could not download media</string>
+    <string name="general_media">Media</string>
 </resources>

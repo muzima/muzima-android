@@ -477,6 +477,17 @@
             android:label="@string/general_forms"
             android:launchMode="singleTask"/>
 
+        <activity
+            android:name=".view.MediaActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/general_media"
+            android:parentActivityName=".view.MainDashboardActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.muzima.view.MainDashboardActivity" />
+        </activity>
+
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />

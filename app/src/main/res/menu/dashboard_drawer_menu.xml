@@ -32,6 +32,10 @@
             android:id="@+id/nav_help"
             android:title="@string/help_general"
             android:icon="@drawable/ic_action_help"/>
+        <item
+            android:id="@+id/nav_media"
+            android:title="@string/general_media"
+            android:icon="@drawable/multimedia"/>
 
         <item
             android:id="@+id/nav_feedback"
