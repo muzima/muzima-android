@@ -789,4 +789,15 @@
     <string name="hint_network_connection_failure_map_loading">डिवाइस इंटरनेट से कनेक्ट नहीं है। ऑफ़लाइन होने पर नक्शा उपलब्ध नहीं होता है।</string>
     <string name="warning_new_version_available">mUzima (v%s) का एक नया संस्करण उपलब्ध है।\n\nआप अपडेट को डाउनलोड करते समय mUzima का उपयोग जारी रख सकते हैं। एक बार डाउनलोड पूरा हो जाने पर आपको सूचित किया जाएगा और नए संस्करण को स्थापित करने की अनुमति मांगी जाएगी। कृपया अनुरोध करने के बाद अनुमति दें।\n\nअपडेट करने के लिए आगे बढ़ें?</string>
     <string name="general_new_version">नया संस्करण</string>
+    <string name="info_media_category_download_in_progress">मीडिया श्रेणियाँ डाउनलोड कर रहा है</string>
+    <string name="info_media_categories_not_downloaded">किसी भी मीडिया श्रेणी को डाउनलोड नहीं किया</string>
+    <string name="info_media_category_downloaded">%d मीडिया श्रेणियाँ डाउनलोड की गईं</string>
+    <string name="error_media_category_download">मीडिया श्रेणियां डाउनलोड नहीं की जा सकीं</string>
+    <string name="info_media_download_in_progress">मीडिया डाउनलोड कर रहा है</string>
+    <string name="info_media_not_downloaded">कोई मीडिया डाउनलोड नहीं किया</string>
+    <string name="info_media_downloaded">%d मीडिया डाउनलोड किया गया</string>
+    <string name="error_media_download">मीडिया डाउनलोड नहीं किया जा सका</string>
+    <string name="general_media">मीडिया</string>
+    <string name="info_media_unavailable">कोई मीडिया उपलब्ध नहीं है</string>
+    <string name="info_no_media_data_tip">कोई मीडिया कॉन्फ़िगर नहीं किया गया। मीडिया जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
 </resources>

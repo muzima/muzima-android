@@ -18,4 +18,28 @@
         android:id="@+id/elvMedia"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/no_data_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        style="@style/NoDataView">
+
+        <ImageView android:id="@+id/no_data_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/empty_view"/>
+
+        <TextView android:id="@+id/no_data_msg"
+            android:text="@string/info_media_unavailable"
+            style="@style/NoDataMsg"/>
+
+        <TextView android:id="@+id/no_data_tip"
+            android:text="@string/info_no_media_data_tip"
+            style="@style/NoDataTip"/>
+    </LinearLayout>
 </LinearLayout>

@@ -794,4 +794,15 @@
     <string name="hint_network_connection_failure_map_loading">Kifaa hakijaunganishwa kwenye mtandao. Ramani haipatikani ukiwa nje ya mtandao.</string>
     <string name="warning_new_version_available">Toleo jipya la mUzima (v%s) linapatikana.\n\nUnaweza kuendelea kutumia mUzima unapopakua sasisho. Upakuaji ukikamilika utaarifiwa na kuombwa ruhusa ya kusakinisha toleo jipya. Tafadhali toa ruhusa baada ya ombi lako.\n\nUngependa kusasisha?</string>
     <string name="general_new_version">Toleo Jipya</string>
+    <string name="info_media_category_download_in_progress">Inapakua Aina za Midia</string>
+    <string name="info_media_categories_not_downloaded">Haikupakua kategoria yoyote ya media</string>
+    <string name="info_media_category_downloaded">Vitengo %d vya Vyombo vya Habari vimepakuliwa</string>
+    <string name="error_media_category_download">Haikuweza kupakua kategoria za midia</string>
+    <string name="info_media_download_in_progress">Inapakua Midia</string>
+    <string name="info_media_not_downloaded">Haikupakua media yoyote</string>
+    <string name="info_media_downloaded">Imepakuliwa %d Media</string>
+    <string name="error_media_download">Haikuweza kupakua midia</string>
+    <string name="general_media">Media</string>
+    <string name="info_media_unavailable">Hakuna media inayopatikana</string>
+    <string name="info_no_media_data_tip">Hakuna midia iliyosanidiwa. Wasiliana na msimamizi wako ili kuongeza midia</string>
 </resources>

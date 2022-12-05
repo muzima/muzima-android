@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 
 import androidx.core.content.FileProvider;
 
@@ -57,13 +58,18 @@ public class MediaActivity extends BaseActivity{
             }
         });
 
-        expListView.expandGroup(0);
-
+        if(mediaCategories.size()>0) {
+            expListView.expandGroup(0);
+        }else{
+            LinearLayout noDataLayout = findViewById(R.id.no_data_layout);
+            noDataLayout.setVisibility(View.VISIBLE);
+            expListView.setVisibility(View.GONE);
+        }
         // Listview on child click listener
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                startHelpContentDisplayActivity(
+                startMediaDisplayActivity(
                         mediaListMap.get(mediaCategories.get(groupPosition)).get(childPosition).getName());
                 return false;
             }
@@ -102,7 +108,7 @@ public class MediaActivity extends BaseActivity{
         }
     }
 
-    private void startHelpContentDisplayActivity(String filePath) {
+    private void startMediaDisplayActivity(String filePath) {
         String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
         File file = new File(PATH + "/"+filePath);
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -124,5 +130,4 @@ public class MediaActivity extends BaseActivity{
         }
         startActivity(intent);
     }
-
 }

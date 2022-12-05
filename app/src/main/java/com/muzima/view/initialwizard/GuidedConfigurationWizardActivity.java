@@ -1020,15 +1020,19 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         if(file.exists())
             file.delete();
 
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadUrl));
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-        request.setTitle(filename);
-        request.setDescription(description);
-        request.allowScanningByMediaScanner();
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-        DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        dm.enqueue(request);
+        try {
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadUrl + ""));
+            request.setTitle(filename);
+            request.setDescription(description);
+            request.allowScanningByMediaScanner();
+            request.setAllowedOverMetered(true);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            dm.enqueue(request);
+        } catch(Exception e) {
+            Log.e(getClass().getSimpleName(),"Error ",e);
+        }
     }
 
     private List<String> extractConceptsUuids() {
@@ -1155,7 +1159,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private synchronized void evaluateFinishStatus() {
-        int TOTAL_WIZARD_STEPS = isOnlineOnlyModeEnabled ? 7 : 9;
+        int TOTAL_WIZARD_STEPS = isOnlineOnlyModeEnabled ? 9 : 11;
         if (wizardLevel == (TOTAL_WIZARD_STEPS)) {
 
             String loggedInUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUserId();

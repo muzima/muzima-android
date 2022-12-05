@@ -799,4 +799,15 @@
     <string name="info_program_unavailable_tip">Aucun programme configuré. Contactez votre administrateur pour ajouter un programme</string>
     <string name="warning_new_version_available">Une nouvelle version de mUzima (v%s) est disponible.\n\nVous pouvez continuer à utiliser mUzima pendant le téléchargement de la mise à jour. Une fois le téléchargement terminé, vous serez averti et vous demanderez l\'autorisation d\'installer la nouvelle version. Veuillez accorder l\'autorisation une fois demandée.\n\nPoursuivre la mise à jour ?</string>
     <string name="general_new_version">Nouvelle version</string>
+    <string name="info_media_category_download_in_progress">Téléchargement de catégories de médias</string>
+    <string name="info_media_categories_not_downloaded">N\'a téléchargé aucune catégorie de média</string>
+    <string name="info_media_category_downloaded">%d catégories de médias téléchargées</string>
+    <string name="error_media_category_download">Impossible de télécharger les catégories de médias</string>
+    <string name="info_media_download_in_progress">Téléchargement de médias</string>
+    <string name="info_media_not_downloaded">N\'a téléchargé aucun média</string>
+    <string name="info_media_downloaded">%d médias téléchargés</string>
+    <string name="error_media_download">Impossible de télécharger le média</string>
+    <string name="general_media">Médias</string>
+    <string name="info_media_unavailable">Aucun média disponible</string>
+    <string name="info_no_media_data_tip">Aucun média configuré. Contactez votre administrateur pour ajouter des médias</string>
 </resources>
