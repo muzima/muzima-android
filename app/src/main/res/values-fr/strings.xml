@@ -810,4 +810,5 @@
     <string name="general_media">Médias</string>
     <string name="info_media_unavailable">Aucun média disponible</string>
     <string name="info_no_media_data_tip">Aucun média configuré. Contactez votre administrateur pour ajouter des médias</string>
+    <string name="info_no_media_not_available">Le fichier multimédia n\'est pas disponible, il a peut-être été supprimé de l\'appareil</string>
 </resources>

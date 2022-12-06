@@ -805,4 +805,5 @@
     <string name="general_media">Media</string>
     <string name="info_media_unavailable">Hakuna media inayopatikana</string>
     <string name="info_no_media_data_tip">Hakuna midia iliyosanidiwa. Wasiliana na msimamizi wako ili kuongeza midia</string>
+    <string name="info_no_media_not_available">Faili ya midia haipatikani, inaweza kuwa imefutwa kutoka kwa kifaa</string>
 </resources>

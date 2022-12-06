@@ -800,4 +800,5 @@
     <string name="general_media">मीडिया</string>
     <string name="info_media_unavailable">कोई मीडिया उपलब्ध नहीं है</string>
     <string name="info_no_media_data_tip">कोई मीडिया कॉन्फ़िगर नहीं किया गया। मीडिया जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
+    <string name="info_no_media_not_available">मीडिया फ़ाइल उपलब्ध नहीं है, हो सकता है कि उसे डिवाइस से हटा दिया गया हो</string>
 </resources>
