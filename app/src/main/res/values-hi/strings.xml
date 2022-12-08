@@ -789,12 +789,6 @@
     <string name="hint_network_connection_failure_map_loading">डिवाइस इंटरनेट से कनेक्ट नहीं है। ऑफ़लाइन होने पर नक्शा उपलब्ध नहीं होता है।</string>
     <string name="warning_new_version_available">mUzima (v%s) का एक नया संस्करण उपलब्ध है।\n\nआप अपडेट को डाउनलोड करते समय mUzima का उपयोग जारी रख सकते हैं। एक बार डाउनलोड पूरा हो जाने पर आपको सूचित किया जाएगा और नए संस्करण को स्थापित करने की अनुमति मांगी जाएगी। कृपया अनुरोध करने के बाद अनुमति दें।\n\nअपडेट करने के लिए आगे बढ़ें?</string>
     <string name="general_new_version">नया संस्करण</string>
-    <string name="general_create_contact">संपर्क जोड़ें</string>
-    <string name="info_htc_contact_form">एचटीसी/संपर्क फ़ॉर्म जोड़ें</string>
-    <string name="general_date_of_birth">जन्म की तारीख %s</string>
-    <string name="general_years">%s वर्षों</string>
-    <string name="general_individual_summary">व्यक्तिगत सारांश</string>
-    <string name="general_is_a">%s एक है:</string>
     <string name="confidant_details">Confidant Details</string>
     <string name="confidant_name">Confidant Name:</string>
     <string name="confidant_phone_number_1">Confidant Phone Number:</string>

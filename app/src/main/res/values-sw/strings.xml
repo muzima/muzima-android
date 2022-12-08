@@ -794,12 +794,6 @@
     <string name="hint_network_connection_failure_map_loading">Kifaa hakijaunganishwa kwenye mtandao. Ramani haipatikani ukiwa nje ya mtandao.</string>
     <string name="warning_new_version_available">Toleo jipya la mUzima (v%s) linapatikana.\n\nUnaweza kuendelea kutumia mUzima unapopakua sasisho. Upakuaji ukikamilika utaarifiwa na kuombwa ruhusa ya kusakinisha toleo jipya. Tafadhali toa ruhusa baada ya ombi lako.\n\nUngependa kusasisha?</string>
     <string name="general_new_version">Toleo Jipya</string>
-    <string name="general_create_contact">Ongeza uhusiano</string>
-    <string name="info_htc_contact_form">HTC/Ongeza Fomu ya Mawasiliano</string>
-    <string name="general_date_of_birth">Tarehe ya kuzaliwa: %s</string>
-    <string name="general_years">%s Miaka</string>
-    <string name="general_individual_summary">Muhtasari wa Mtu Binafsi</string>
-    <string name="general_is_a">%s ni:</string>
     <string name="confidant_details">Confidant Details</string>
     <string name="confidant_name">Confidant Name:</string>
     <string name="confidant_phone_number_1">Confidant Phone Number:</string>

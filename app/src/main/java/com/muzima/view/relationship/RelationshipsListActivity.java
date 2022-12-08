@@ -167,8 +167,13 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         }
         identifierTextView.setText(String.format(Locale.getDefault(), "ID:#%s", patient.getIdentifier()));
         if(patient.getBirthdate() != null) {
+<<<<<<< HEAD
             dobTextView.setText(getString(R.string.general_date_of_birth ,String.format(" %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate()))));
             ageTextView.setText(getString(R.string.general_years ,String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(patient.getBirthdate()))));
+=======
+            dobTextView.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate())));
+            ageTextView.setText(String.format(Locale.getDefault(), "%d "+R.string.general_years, DateUtils.calculateAge(patient.getBirthdate())));
+>>>>>>> accb53b5fca49fd3cda94b9dcb223225e2410839
         }
         patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
     }

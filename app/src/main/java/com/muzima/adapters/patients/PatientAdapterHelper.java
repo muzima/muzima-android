@@ -107,9 +107,15 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
         }
         Date dob = patient.getBirthdate();
         if(dob != null) {
+<<<<<<< HEAD
             holder.dateOfBirth.setText(context.createConfigurationContext(configuration).getResources().getString(R.string.general_date_of_birth ,String.format(" %s", new SimpleDateFormat("MM-dd-yyyy",
                     Locale.getDefault()).format(dob))));
             holder.age.setText(context.createConfigurationContext(configuration).getResources().getString(R.string.general_years ,String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(dob))));
+=======
+            holder.dateOfBirth.setText(String.format("DOB: %s", new SimpleDateFormat("MM-dd-yyyy",
+                    Locale.getDefault()).format(dob)));
+            holder.age.setText(String.format(Locale.getDefault(), "%d "+R.string.general_years, DateUtils.calculateAge(dob)));
+>>>>>>> accb53b5fca49fd3cda94b9dcb223225e2410839
         }else{
             holder.dateOfBirth.setText(String.format(""));
             holder.age.setText(String.format(""));

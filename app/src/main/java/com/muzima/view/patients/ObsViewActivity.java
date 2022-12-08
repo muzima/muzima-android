@@ -204,7 +204,11 @@ public class ObsViewActivity extends ActivityWithPatientSummaryBottomNavigation 
 
             patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
             if (patient.getBirthdate() != null)
+<<<<<<< HEAD
                 ageTextView.setText(getString(R.string.general_years ,String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(patient.getBirthdate()))));
+=======
+                ageTextView.setText(String.format(Locale.getDefault(), "%d "+R.string.general_years, DateUtils.calculateAge(patient.getBirthdate())));
+>>>>>>> accb53b5fca49fd3cda94b9dcb223225e2410839
             gpsAddressTextView.setText(getDistanceToClientAddress(patient));
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(),"Encountered an exception",e);

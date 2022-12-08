@@ -783,39 +783,25 @@
     <string name="warning_logout_confirm_with_form_deletion">Voulez-vous vraiment vous déconnecter et quitter l\'application mUzima ? Tous les formulaires complets et incomplets seront supprimés</string>
     <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du client sur l\'appareil. Etes-vous sur?</string>
     <string name="warning_related_person_missing">Veuillez choisir une personne liée</string>
-    <string formatted="false" name="warning_relationship_exists">Le client a déjà une relation %s:%s avec %s</string>
+    <string name="warning_relationship_exists" formatted="false">Le client a déjà une relation %s:%s avec %s</string>
     <string name="warning_relationship_type_missing">Veuillez choisir un type de relation</string>
     <string name="warning_session_timeout">Expiration de la session: Impossible de définir le délai d\'expiration de la session. Veuillez entrer une valeur entre 1 et 500.</string>
     <string name="warning_setting_download_failure">Echec du téléchargement ou de la mise à jour des configurations</string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
-    <string name="error_patient_address_not_updated">L\'adresse GPS n\'a pas pu être obtenue.</string>
-    <string name="general_demographics_update">Mise à jour démographique</string>
-    <string name="error_current_gps_not_obtained">Impossible d\'obtenir la position GPS actuelle. Chargement de la position par défaut sur la carte.</string>
-    <string name="title_internet_connection_failure">La connexion Internet a échoué</string>
-    <string name="hint_network_connection_failure_map_loading">L\'appareil n\'est pas connecté à Internet. La carte n\'est pas disponible hors ligne.</string>
-    <string name="info_program_unavailable">Aucun programme disponible</string>
-    <string name="info_program_unavailable_tip">Aucun programme configuré. Contactez votre administrateur pour ajouter un programme</string>
-    <string name="warning_new_version_available">Une nouvelle version de mUzima (v%s) est disponible.\n\nVous pouvez continuer à utiliser mUzima pendant le téléchargement de la mise à jour. Une fois le téléchargement terminé, vous serez averti et vous demanderez l\'autorisation d\'installer la nouvelle version. Veuillez accorder l\'autorisation une fois demandée.\n\nPoursuivre la mise à jour ?</string>
-    <string name="general_new_version">Nouvelle version</string>
-    <string name="general_create_contact">Ajouter le contact</string>
-    <string name="info_htc_contact_form">HTC/Ajouter un formulaire de contact</string>
-    <string name="general_date_of_birth">Date de naissance: %s</string>
-    <string name="general_years">%s Ans</string>
-    <string name="general_individual_summary">Résumé individuel</string>
-    <string name="general_is_a">%s est un :</string>
-    <string name="confidant_details">Confidant Details</string>
-    <string name="confidant_name">Confidant Name:</string>
-    <string name="confidant_phone_number_1">Confidant Phone Number:</string>
-    <string name="clinical_information_details">Clinical Information</string>
-    <string name="most_recent_viral_load_result">Most recent Viral Load Result:</string>
-    <string name="most_recent_viral_load_result_date">Most recent VL Result Date:</string>
-    <string name="most_recent_arv_pickup">Most recent ARV pick-up (FILA):</string>
-    <string name="most_recent_arv_pickup_dispensation_mode">Most recent ARV pick-up (FILA) dispensation mode:</string>
-    <string name="next_scheduled_arv_pickup">Next scheduled ARV pick-up (FILA):</string>
-    <string name="most_recent_clinical_consultation_date">Most recent clinical consultation date:</string>
-    <string name="next_clinical_consultation_date">Next scheduled clinical consultation date:</string>
-    <string name="tpt_start_date">TPT start date:</string>
-    <string name="tpt_end_date">TPT end date:</string>
+
+    <string name="confidant_details">Detalhes do Confidente</string>
+    <string name="confidant_name">Nome:</string>
+    <string name="confidant_phone_number_1">Contacto telefónico:</string>
+    <string name="clinical_information_details">Informação Clínica</string>
+    <string name="most_recent_viral_load_result">Resultado CV:</string>
+    <string name="most_recent_viral_load_result_date">Data Resultado CV:</string>
+    <string name="most_recent_arv_pickup">Último Lev. ARV:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">Modo de Dispensa:</string>
+    <string name="next_scheduled_arv_pickup">Próximo Lev. ARV:</string>
+    <string name="most_recent_clinical_consultation_date">Última Consulta Clínica:</string>
+    <string name="next_clinical_consultation_date">Próxima Consulta Clínica:</string>
+    <string name="tpt_start_date">Data Início TPT:</string>
+    <string name="tpt_end_date">Data Fim TPT:</string>
 </resources>
