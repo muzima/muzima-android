@@ -108,7 +108,7 @@ public class DataSyncService extends IntentService {
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     downloadPatientsInCohorts(broadcastIntent, cohortIds);
                     consolidatePatients();
-                    downloadObservations(broadcastIntent, cohortIds);
+                    downloadObservationsAndEncounters(broadcastIntent, cohortIds);
                 }
                 break;
             case Constants.DataSyncServiceConstants.UPDATE_PATIENT_TAGS:
@@ -127,7 +127,7 @@ public class DataSyncService extends IntentService {
                 String[] savedCohortIds = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
                 updateNotificationMsg(getString(R.string.info_patient_data_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
-                    downloadObservations(broadcastIntent, savedCohortIds);
+                    downloadObservationsAndEncounters(broadcastIntent, savedCohortIds);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_UPLOAD_FORMS:
@@ -155,7 +155,7 @@ public class DataSyncService extends IntentService {
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                     LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
 
-                    downloadObservations(broadcastIntent, downloadedCohortIds);
+                    downloadObservationsAndEncounters(broadcastIntent, downloadedCohortIds);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_PATIENT_REPORTS_HEADERS:
@@ -257,6 +257,10 @@ public class DataSyncService extends IntentService {
         int[] resultForObs = muzimaSyncService.downloadObservationsForPatientsByPatientUUIDs(patientUUIDList, true);
         broadCastMessageForObservationDownload(broadcastIntent, resultForObs);
 
+        //Sync Encounters for all patients
+        int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByPatientUUIDs(patientUUIDList, true);
+        broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
+
         //Sync Relationships for all clients
         muzimaSyncService.downloadRelationshipsTypes();
         int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByPatientUUIDs(patientUUIDList);
@@ -284,6 +288,9 @@ public class DataSyncService extends IntentService {
             int[] resultForObs = muzimaSyncService.downloadObservationsForPatientsByPatientUUIDs(patientUUIDList, true);
             broadCastMessageForObservationDownload(broadcastIntent, resultForObs);
 
+            int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByPatientUUIDs(patientUUIDList, true);
+            broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
+
             int[] resultForRelationships = muzimaSyncService.downloadRelationshipsForPatientsByPatientUUIDs(patientUUIDList);
             broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
             MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
@@ -298,9 +305,12 @@ public class DataSyncService extends IntentService {
         }
     }
 
-    private void downloadObservations(Intent broadcastIntent, String[] savedCohortIds) {
+    private void downloadObservationsAndEncounters(Intent broadcastIntent, String[] savedCohortIds) {
         int[] resultForObservations = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(savedCohortIds, true);
         broadCastMessageForObservationDownload(broadcastIntent, resultForObservations);
+
+        int[] resultForEncounters = muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(savedCohortIds, true);
+        broadCastMessageForEncounters(broadcastIntent, resultForEncounters);
 
         MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
 

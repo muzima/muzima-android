@@ -220,7 +220,7 @@
     <string name="general_patient_registration">Registro do Utente</string>
     <string name="general_performance_comparison">Comparação de desempenho</string>
     <string name="general_person_create">Criar Pessoa</string>
-    <string name="general_phone_number">Contacto telefónico:</string>
+    <string name="general_phone_number">Contacto:</string>
     <string name="general_policy_title">Políticas de Uso</string>
     <string name="general_preferred_testing_location">Local Preferido de Testagem:</string>
     <string name="general_progress_message">Isso pode demorar um pouco</string>

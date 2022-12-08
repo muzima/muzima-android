@@ -327,7 +327,7 @@
                     <View android:id="@+id/confidant_name_textview_separator"
                           android:layout_width="match_parent"
                           android:layout_marginTop="5dp"
-                          android:layout_height="0dp"
+                          android:layout_height="1dp"
                           android:fontFamily="@font/montserrat_bold"
                           android:background="?attr/primaryTextColor"
                           android:visibility="gone"/>
@@ -340,6 +340,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/confidant_name"
                                 android:layout_marginLeft="15dp"
+                                android:textStyle="bold"
                                 android:textColor="?attr/primaryTextColor"
                                 android:fontFamily="@font/roboto_regular" />
                         <TextView
@@ -347,8 +348,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_marginLeft="5dp"
-                                android:layout_toRightOf="@id/confidant_name_textview"
+                                android:layout_marginLeft="15dp"
+                                android:layout_below="@id/confidant_name_textview"
                                 android:textColor="?attr/primaryTextColor"
                                 android:fontFamily="@font/roboto_regular"/>
 
@@ -370,6 +371,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/confidant_phone_number_1"
                                 android:layout_marginLeft="15dp"
+                                android:textStyle="bold"
                                 android:textColor="?attr/primaryTextColor"
                                 android:fontFamily="@font/roboto_regular" />
                         <TextView
@@ -377,8 +379,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_marginLeft="5dp"
-                                android:layout_toRightOf="@id/confidant_phone_number_1_textview"
+                                android:layout_marginLeft="15dp"
+                                android:layout_below="@id/confidant_phone_number_1_textview"
                                 android:textColor="?attr/primaryTextColor"
                                 android:fontFamily="@font/roboto_regular"/>
 
@@ -387,7 +389,7 @@
 
                 <View android:id="@+id/clinical_information_separator"
                       android:layout_width="fill_parent"
-                      android:layout_marginTop="5dp"
+                      android:layout_marginTop="10dp"
                       android:layout_height="0dp"
                       android:fontFamily="@font/montserrat_bold"
                       android:background="?attr/primaryTextColor"
@@ -402,10 +404,10 @@
                         <TextView
                                 android:id="@+id/clinical_information_details_textview"
                                 android:padding="14dp"
-                                android:textColor="@android:color/white"
                                 android:text="@string/clinical_information_details"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
+                                android:textColor="?attr/primaryTextColor"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
                     <ScrollView
@@ -419,7 +421,7 @@
                             <View android:id="@+id/most_recent_viral_load_result_separator"
                                   android:layout_width="match_parent"
                                   android:layout_marginTop="5dp"
-                                  android:layout_height="0dp"
+                                  android:layout_height="1dp"
                                   android:fontFamily="@font/montserrat_bold"
                                   android:background="?attr/primaryTextColor"
                                   android:visibility="gone"/>
@@ -432,6 +434,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="@string/most_recent_viral_load_result"
                                         android:layout_marginLeft="15dp"
+                                        android:textStyle="bold"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular" />
                                 <TextView
@@ -439,8 +442,8 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_toRightOf="@id/most_recent_viral_load_result_textView"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_below="@id/most_recent_viral_load_result_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
 
@@ -462,6 +465,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="@string/most_recent_viral_load_result_date"
                                         android:layout_marginLeft="15dp"
+                                        android:textStyle="bold"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular" />
                                 <TextView
@@ -469,8 +473,8 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_toRightOf="@id/most_recent_viral_load_result_date_textView"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_below="@id/most_recent_viral_load_result_date_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
 
@@ -492,6 +496,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="@string/most_recent_arv_pickup"
                                         android:layout_marginLeft="15dp"
+                                        android:textStyle="bold"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular" />
                                 <TextView
@@ -499,8 +504,8 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_toRightOf="@id/most_recent_arv_pickup_textView"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_below="@id/most_recent_arv_pickup_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
 
@@ -522,6 +527,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="@string/most_recent_arv_pickup_dispensation_mode"
                                         android:layout_marginLeft="15dp"
+                                        android:textStyle="bold"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular" />
                                 <TextView
@@ -529,8 +535,8 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_toRightOf="@id/most_recent_arv_pickup_dispensation_mode_textView"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_below="@id/most_recent_arv_pickup_dispensation_mode_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
 
@@ -552,6 +558,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="@string/next_scheduled_arv_pickup"
                                         android:layout_marginLeft="15dp"
+                                        android:textStyle="bold"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular" />
                                 <TextView
@@ -559,8 +566,8 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_toRightOf="@id/next_scheduled_arv_pickup_textView"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_below="@id/next_scheduled_arv_pickup_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
 
@@ -582,6 +589,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="@string/most_recent_clinical_consultation_date"
                                         android:layout_marginLeft="15dp"
+                                        android:textStyle="bold"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular" />
                                 <TextView
@@ -589,8 +597,8 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_toRightOf="@id/most_recent_clinical_consultation_date_textView"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_below="@id/most_recent_clinical_consultation_date_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
 
@@ -612,6 +620,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="@string/next_clinical_consultation_date"
                                         android:layout_marginLeft="15dp"
+                                        android:textStyle="bold"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular" />
                                 <TextView
@@ -619,8 +628,8 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_toRightOf="@id/next_clinical_consultation_date_textView"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_below="@id/next_clinical_consultation_date_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
 
@@ -642,6 +651,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="@string/tpt_start_date"
                                         android:layout_marginLeft="15dp"
+                                        android:textStyle="bold"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular" />
                                 <TextView
@@ -649,8 +659,8 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_toRightOf="@id/tpt_start_date_textView"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_below="@id/tpt_start_date_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
 
@@ -660,7 +670,7 @@
                                   android:layout_width="match_parent"
                                   android:layout_marginTop="5dp"
                                   android:layout_height="0dp"
-                                  android:fontFamily="@font/montserrat_bold"
+                                  android:fontFamily="@font/roboto_thin"
                                   android:background="?attr/primaryTextColor"
                                   android:visibility="gone"/>
                             <RelativeLayout
@@ -672,6 +682,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="@string/tpt_end_date"
                                         android:layout_marginLeft="15dp"
+                                        android:textStyle="bold"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular" />
                                 <TextView
@@ -679,10 +690,11 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
-                                        android:layout_marginLeft="5dp"
-                                        android:layout_toRightOf="@id/tpt_end_date_textView"
+                                        android:layout_marginLeft="15dp"
+                                        android:layout_below="@id/tpt_end_date_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
+
                             </RelativeLayout>
 
                         </LinearLayout>

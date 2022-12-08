@@ -42,34 +42,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_SETTINGS;
-import static com.muzima.util.Constants.ServerSettings.ALLOCATION_TAG_GENERATION;
-import static com.muzima.util.Constants.ServerSettings.BARCODE_FEATURE_ENABLED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_COHORT_ENABLED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_FORM_ENABLED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.CLINICAL_SUMMARY_FEATURE_ENABLED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.CONTACT_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
-import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
-import static com.muzima.util.Constants.ServerSettings.DISALLOW_SERVER_PATIENT_SEARCH;
-import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_COHORTS_IN_CONFIG_SETTING;
-import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_FORMS_IN_CONFIG_SETTING;
-import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CLIENT_ADDRESS;
-import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CLIENT_SUMMARY_ENABLED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.GEOMAPPING_FEATURE_ENABLED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.HISTORICAL_DATA_TAB_ENABLED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.OBS_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
-import static com.muzima.util.Constants.ServerSettings.ONLINE_ONLY_MODE_ENABLED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
-import static com.muzima.util.Constants.ServerSettings.PATIENT_REGISTRATION_ENABLED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.RELATIONSHIP_FEATURE_ENABLED;
-import static com.muzima.util.Constants.ServerSettings.NOTIFICATION_FEATURE_ENABLED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.DEMOGRAPHICS_UPDATE_MANUAL_REVIEW_REQUIRED_SETTING;
-import static com.muzima.util.Constants.ServerSettings.SINGLE_ELEMENT_ENTRY_FEATURE_ENABLED_SETTING;
-
-import static com.muzima.util.Constants.ServerSettings.TAG_GENERATION_ENABLED_SETTING;
-
-import static com.muzima.util.Constants.ServerSettings.ADD_CONTACT_POPUP_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.*;
 
 public class MuzimaSettingController {
     private final MuzimaSettingService settingService;
@@ -636,6 +609,32 @@ public class MuzimaSettingController {
                 Log.e(getClass().getSimpleName(), "Allocation tag generation setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Allocation tag generation setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isFGHCustomConfidantOptionEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(FGH_CUSTOM_CONFIDANT_INFORMATION_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isFGHCustomClinicalOptionEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(FGH_CUSTOM_CLINICAL_INFORMATION_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
         }
         return false;
     }
