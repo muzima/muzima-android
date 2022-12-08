@@ -146,10 +146,12 @@
     <string name="general_cohorts">समूह</string>
     <string name="general_concepts">अवधारणाओं</string>
     <string name="general_consent_date">सहमति डेटा:</string>
+    <string name="general_create_contact">संपर्क जोड़ें</string>
     <string name="general_data_collection">आंकड़ा संग्रहण</string>
     <string name="general_data_collection_tools">डेटा संग्रह उपकरण</string>
     <string name="general_data_collection_tools_description">mUzima डेटा एकत्र करने के लिए आसान-से-विकसित वेब-आधारित रूपों का उपयोग करता है जिसे आसानी से OpenMRS में प्रसारित और संग्रहीत किया जा सकता है।</string>
     <string name="general_date">तारीख</string>
+    <string name="general_date_of_birth">जन्म की तारीख %s</string>
     <string name="general_days_character">दि</string>
     <string name="general_delete">हटाएं</string>
     <string name="general_description_unavailable">कोई वर्णन उपलब्ध नहीं</string>
@@ -184,6 +186,8 @@
     <string name="general_home">घर</string>
     <string name="general_in_ccr">सीसीआर</string>
     <string name="general_in_hiv_care">एचआईवी देखभाल:</string>
+    <string name="general_individual_summary">व्यक्तिगत सारांश</string>
+    <string name="general_is_a">%s एक है:</string>
     <string name="general_label_sort_by_name">नाम द्वारा क्रमबद्ध करें</string>
     <string name="general_label_sort_status">स्थिति के आधार पर छाँटें</string>
     <string name="general_large">विशाल</string>
@@ -257,11 +261,13 @@
     <string name="general_testing_sector">परीक्षण क्षेत्र:</string>
     <string name="general_their_statistics">उनके आंकड़ेे</string>
     <string name="general_upload">अपलोड</string>
+    <string name="general_use_selected_location">चयनित स्थान का उपयोग करें</string>
     <string name="general_username">उपयोगकर्ता नाम</string>
     <string name="general_view_encounter">मुठभेड़ देखें</string>
     <string name="general_welcome">स्वागत हे</string>
     <string name="general_works_offline">ऑफ़लाइन काम करता है</string>
     <string name="general_works_offline_description">मुज़िमा ऑनलाइन और ऑफलाइन दोनों मोड में पूरी तरह से काम करता है। यह डिवाइस के ऑफ़लाइन होने पर भी डेटा संग्रह और समीक्षाओं की अनुमति देता है।</string>
+    <string name="general_years">%s वर्षों</string>
     <string name="general_years_character">य</string>
     <string name="general_yes">हाँ</string>
     <string name="general_your_statistics">आपके आंकड़े</string>
@@ -341,12 +347,12 @@
     <string name="hint_set_default_encounter_location_for_SHR">कृपया डिफ़ॉल्ट मुठभेड़ स्थान सेट करें ताकि नया कार्ड लिखने में सक्षम हो</string>
     <string name="hint_setting_refresh">क्या आप इस सेटिंग को सर्वर से पुनः डाउनलोड करना चाहते हैं?</string>
     <string name="hint_switch_location_on">कृपया सेटिंग्स में स्थान पर स्विच करें।</string>
-    <string name="hint_their_performance" formatted="false">%s और %s . के बीच %s के लिए प्रदर्शन सारांश</string>
+    <string formatted="false" name="hint_their_performance">%s और %s . के बीच %s के लिए प्रदर्शन सारांश</string>
     <string name="hint_username_prompt">कृपया उपयोगकर्ता नाम दर्ज करें</string>
     <string name="hint_video_caption_prompt">कृपया वीडियो के लिए एक कैप्शन दर्ज करें</string>
     <string name="hint_video_record">वीडियो रिकॉर्ड करें या चुनें</string>
     <string name="hint_write_SHR_to_card">क्या आप कार्ड में साझा स्वास्थ्य रिकॉर्ड लिखना चाहते हैं?</string>
-    <string name="hint_your_performance" formatted="false">%s और %s . के बीच आपका प्रदर्शन</string>
+    <string formatted="false" name="hint_your_performance">%s और %s . के बीच आपका प्रदर्शन</string>
     <string name="how_to_general">कैसे:</string>
     <string name="individual_obs">व्यक्तिगत अवलोकन</string>
     <string name="individual_obs_description">व्यक्तिगत अवलोकन</string>
@@ -383,12 +389,13 @@
     <string name="info_convert_person_to_patient">व्यक्ति को रोगी में बदलें</string>
     <string name="info_data_sync_cancelled">mUzima डेटा सिंक रद कर दिया गया था।</string>
     <string name="info_disclaimer">
-                mUzima, Mozilla Public License, v. 2.0 (MPL 2.0) की शर्तों के तहत वितरित किया जाता है. MPL 2.0 लाइसेंस की एक प्रति
+                        mUzima, Mozilla Public License, v. 2.0 (MPL 2.0) की शर्तों के तहत वितरित किया जाता है. MPL 2.0 लाइसेंस की एक प्रति
         http://mozilla.org/MPL/2.0/ पर देखी जा सकती है।
         \nmUzima को वारंटी के निम्नलिखित अतिरिक्त अस्वीकरण की शर्तों के तहत भी वितरित किया जाता है और देयता की सीमा।
         \n
+
         <strong> देयता की वारंटी और सीमा का अतिरिक्त अस्वीकरण </strong>
-                संयुक्त राज्य अमेरिका, या किसी अन्य क्षेत्राधिकार में, जहां वे आवेदन कर सकते हैं, वारंटी और देयता की सीमा के अतिरिक्त अस्वीकरण को इसके अलावा MPL 2.0
+                        संयुक्त राज्य अमेरिका, या किसी अन्य क्षेत्राधिकार में, जहां वे आवेदन कर सकते हैं, वारंटी और देयता की सीमा के अतिरिक्त अस्वीकरण को इसके अलावा MPL 2.0
         के नियमों और शर्तों में शामिल किया गया है:
         \n1. किसी भी प्रकार की कोई वारंटियां उस परिणाम के रूप में नहीं की जाती हैं जो आप कवर किए गए कोड (या कवर किए गए कोड के माध्यम से प्राप्त की गई कोई भी
         जानकारी या सामग्री) पर निर्भा रहने से प्राप्त करेंगे, जिसमें गोपनीयता कानून या विनियम या नैदानिक ​​देखभाल उद्योग के मानकों और प्रोटोकॉल के अनुपालन तक सीमित
@@ -405,6 +412,7 @@
         \n\n4. यदि इस एप्लिकेशन का उपयोगकर्ता एक ऐसी इकाई है जो व्यवसायीकरण करने या किसी भी एप्लिकेशन से लाभ कमाने का इरादा रखती है, जो इस कोड का लाभ-साहस
         के उपक्रम में उपयोग करती है, तो उपयोगकर्ता को mUzima.mobile@gmail.com के माध्यम से कॉपीराइट धारक से संपर्क करना होगा।
     
+
     </string>
     <string name="info_download_complete">%d स्थिति के साथ डाउनलोड पूर्ण </string>
     <string name="info_downloaded_image">डाउनलोड की गई छवि</string>
@@ -442,6 +450,7 @@
     <string name="info_form_upload_success">फॉर्म सफलतापूर्वक अपलोड किए गए</string>
     <string name="info_forms_downloaded">%d फॉर्म डाउनलोड किए गए</string>
     <string name="info_forms_unavailable">कोई फॉर्म उपलब्ध नहीं है</string>
+    <string name="info_htc_contact_form">एचटीसी/संपर्क फ़ॉर्म जोड़ें</string>
     <string name="info_incomplete_form">अपूर्ण प्रपत्र</string>
     <string name="info_incomplete_form_unavailable">कोई अपूर्ण फॉर्म नहीं</string>
     <string name="info_initial_setup_progress">प्रारंभिक सेटअप चल रहा है। कृपया प्रतीक्षा कीजिये…</string>
@@ -764,13 +773,22 @@
     <string name="warning_logout_confirm_with_form_deletion">क्या आप वाकई लॉग आउट करना चाहते हैं और मुज़िमा ऐप से बाहर निकलना चाहते हैं? सभी पूर्ण और अपूर्ण प्रपत्र हटा दिए जाएंगे</string>
     <string name="warning_registration_form_data_delete">आप पंजीकरण डेटा को हटाने वाले हैं। यह डिवाइस पर क्लाइंट रिकॉर्ड को भी हटा देगा। क्या आप निश्चित है?</string>
     <string name="warning_related_person_missing">कृपया संबंधित व्यक्ति चुनें</string>
-    <string name="warning_relationship_exists" formatted="false">क्लाइंट के पास पहले से ही %s के साथ %s:%s संबंध है</string>
+    <string formatted="false" name="warning_relationship_exists">क्लाइंट के पास पहले से ही %s के साथ %s:%s संबंध है</string>
     <string name="warning_relationship_type_missing">कृपया एक संबंध प्रकार चुनें</string>
     <string name="warning_session_timeout">सत्र टाइमआउट: सत्र टाइमआउट सेट नहीं हो सका। कृपया 1 और 500 के बीच एक मान दर्ज करें।</string>
     <string name="warning_setting_download_failure">सेटिंग डाउनलोड या अपडेट नहीं हो सका</string>
     <string name="warning_switch_server">सर्वर बदली: यह आपके डिवाइस पर मौजूद सभी mUzima डेटा को साफ कर देगा, जिसमें कोई अधूरा फॉर्म भी शामिल है। क्या आप वाकई इस सेटिंग को बदलना चाहते हैं?</string>
     <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
+    <string name="info_program_unavailable">कोई कार्यक्रम उपलब्ध नहीं</string>
+    <string name="info_program_unavailable_tip">कोई प्रोग्राम कॉन्फ़िगर नहीं किया गया है। प्रोग्राम जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
+    <string name="error_patient_address_not_updated">GPS पता प्राप्त नहीं किया जा सका</string>
+    <string name="general_demographics_update">जनसांख्यिकी अद्यतन</string>
+    <string name="error_current_gps_not_obtained">वर्तमान GPS स्थान प्राप्त नहीं कर सका। मानचित्र पर डिफ़ॉल्ट स्थान लोड हो रहा है।</string>
+    <string name="title_internet_connection_failure">इंटरनेट कनेक्शन विफलता</string>
+    <string name="hint_network_connection_failure_map_loading">डिवाइस इंटरनेट से कनेक्ट नहीं है। ऑफ़लाइन होने पर नक्शा उपलब्ध नहीं होता है।</string>
+    <string name="warning_new_version_available">mUzima (v%s) का एक नया संस्करण उपलब्ध है।\n\nआप अपडेट को डाउनलोड करते समय mUzima का उपयोग जारी रख सकते हैं। एक बार डाउनलोड पूरा हो जाने पर आपको सूचित किया जाएगा और नए संस्करण को स्थापित करने की अनुमति मांगी जाएगी। कृपया अनुरोध करने के बाद अनुमति दें।\n\nअपडेट करने के लिए आगे बढ़ें?</string>
+    <string name="general_new_version">नया संस्करण</string>
     <string name="general_create_contact">संपर्क जोड़ें</string>
     <string name="info_htc_contact_form">एचटीसी/संपर्क फ़ॉर्म जोड़ें</string>
     <string name="general_date_of_birth">जन्म की तारीख %s</string>

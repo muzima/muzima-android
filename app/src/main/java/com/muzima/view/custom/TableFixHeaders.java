@@ -1,3 +1,4 @@
+
 package com.muzima.view.custom;
 
 
@@ -104,13 +105,13 @@ public class TableFixHeaders extends ViewGroup {
 
         this.shadows = new ImageView[4];
         this.shadows[0] = new ImageView(context);
-        this.shadows[0].setImageResource(R.drawable.ic_action_add);
+        this.shadows[0].setImageResource(R.drawable.less_than);
         this.shadows[1] = new ImageView(context);
-        this.shadows[1].setImageResource(R.drawable.ic_action_add);
+        this.shadows[1].setImageResource(R.drawable.chevron_up);
         this.shadows[2] = new ImageView(context);
-        this.shadows[2].setImageResource(R.drawable.ic_action_add);
+        this.shadows[2].setImageResource(R.drawable.greater_than);
         this.shadows[3] = new ImageView(context);
-        this.shadows[3].setImageResource(R.drawable.ic_action_add);
+        this.shadows[3].setImageResource(R.drawable.chevron_down);
 
         this.shadowSize = getResources().getDimensionPixelSize(R.dimen.shadow_size);
 

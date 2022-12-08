@@ -38,10 +38,13 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.util.Constants;
 import com.muzima.utils.GeolocationJsonMapper;
+import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.maps.GPSLocationPickerActivity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,21 +60,41 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
     private Patient patient;
     Button getDirectionsButton;
     WebView webView;
+    private final LanguageUtil languageUtil = new LanguageUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,true);
+        languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
+        setTitle(R.string.title_client_location);
         setContentView(R.layout.activity_patient_location_map);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
-        getActionBar().setTitle(patient.getSummary());
-        initializeHomeLocationMapView();
-        initializeMapActionButtons();
+        if(!NetworkUtils.isConnectedToNetwork(getApplicationContext())) {
+            promptConnectionFailureMessage();
+        } else {
+            initializeHomeLocationMapView();
+            initializeMapActionButtons();
 
-        getLatestPatientRecord();
-        if(!patientHomeLocationExists()){
-            promptSetLocation();
+            getLatestPatientRecord();
+            if (!patientHomeLocationExists()) {
+                promptSetLocation();
+            }
         }
+    }
+
+    private void promptConnectionFailureMessage(){
+        android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
+        alertDialog.setTitle(getString(R.string.title_internet_connection_failure));
+        alertDialog.setMessage(getString(R.string.hint_network_connection_failure_map_loading));
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, getString(R.string.general_ok),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+        alertDialog.show();
     }
 
     private void getLatestPatientRecord(){
@@ -251,26 +274,30 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
                         String latitude = data.getStringExtra(LATITUDE);
                         String longitude = data.getStringExtra(LONGITUDE);
 
-                        PersonAddress preferredAddress = patient.getPreferredAddress();
+                        if(latitude != null && longitude != null) {
+                            PersonAddress preferredAddress = patient.getPreferredAddress();
 
-                        if (preferredAddress == null) {
-                            List<PersonAddress> addresses = patient.getAddresses();
-                            if(addresses.size() == 1){
-                                preferredAddress = addresses.get(0);
-                            } else {
-                                preferredAddress = new PersonAddress();
-                                patient.getAddresses().add(preferredAddress);
+                            if (preferredAddress == null) {
+                                List<PersonAddress> addresses = patient.getAddresses();
+                                if (addresses.size() == 1) {
+                                    preferredAddress = addresses.get(0);
+                                } else {
+                                    preferredAddress = new PersonAddress();
+                                    patient.getAddresses().add(preferredAddress);
+                                }
+                                preferredAddress.setPreferred(true);
                             }
-                            preferredAddress.setPreferred(true);
-                        }
 
-                        preferredAddress.setLatitude(latitude);
-                        preferredAddress.setLongitude(longitude);
-                        ((MuzimaApplication) getApplicationContext()).getPatientController().updatePatient(patient);
-                        createLocationUpdateFormData();
-                        initializeHomeLocationMapView();
+                            preferredAddress.setLatitude(latitude);
+                            preferredAddress.setLongitude(longitude);
+                            ((MuzimaApplication) getApplicationContext()).getPatientController().updatePatient(patient);
+                            createLocationUpdateFormData();
+                            initializeHomeLocationMapView();
+                        } else {
+                            Toast.makeText(this, getString(R.string.error_patient_address_not_updated),Toast.LENGTH_LONG).show();
+                        }
                     } catch (PatientController.PatientSaveException e) {
-                        Log.e(getClass().getSimpleName(), "Could not update patient locaction", e);
+                        Log.e(getClass().getSimpleName(), "Could not update patient location", e);
                     }
                 } else {
                     finish();
@@ -304,6 +331,9 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
         if(item.getItemId() == R.id.update_client_location) {
             promptUpdateLocation();
             return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
@@ -312,5 +342,11 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
     @Override
     protected void onResume(){
         super.onResume();
+        languageUtil.onResume(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

@@ -146,10 +146,12 @@
     <string name="general_cohorts">Kikundi cha wateja</string>
     <string name="general_concepts">Dhana</string>
     <string name="general_consent_date">Data ya Idhini</string>
+    <string name="general_create_contact">Ongeza uhusiano</string>
     <string name="general_data_collection">Ukusanyaji wa Takwimu</string>
     <string name="general_data_collection_tools">Zana za Ukusanyaji wa Takwimu</string>
     <string name="general_data_collection_tools_description">mUzima hutumia fomu rahisi za kukuza wavuti kukusanya data ambazo zinaweza kupitishwa na kuhifadhiwa kwa OpenMRS.</string>
     <string name="general_date">Tarehe</string>
+    <string name="general_date_of_birth">Tarehe ya kuzaliwa: %s</string>
     <string name="general_days_character">s</string>
     <string name="general_delete">Futa</string>
     <string name="general_description_unavailable">Hakuna maelezo</string>
@@ -184,6 +186,8 @@
     <string name="general_home">Nyumbani</string>
     <string name="general_in_ccr">CCR?</string>
     <string name="general_in_hiv_care">Utunzaji wa HIV?</string>
+    <string name="general_individual_summary">Muhtasari wa Mtu Binafsi</string>
+    <string name="general_is_a">%s ni:</string>
     <string name="general_label_sort_by_name">Panga kwa jina</string>
     <string name="general_label_sort_status">Panga kwa hali</string>
     <string name="general_large">Kubwa</string>
@@ -257,11 +261,13 @@
     <string name="general_testing_sector">Sekta ya vipimo:</string>
     <string name="general_their_statistics">Takwimu zake</string>
     <string name="general_upload">Pakia</string>
+    <string name="general_use_selected_location">Tumia eneo lililochaguliwa</string>
     <string name="general_username">Jina la mtumiaji.</string>
     <string name="general_view_encounter">Tazama mkutano</string>
     <string name="general_welcome">Karibu</string>
     <string name="general_works_offline">Inafanya kazi bila Mtandao</string>
     <string name="general_works_offline_description">mUzima hufanya kazi kikamilifu katika njia za mkondoni na nje ya mkondo. Hii inaruhusu ukusanyaji wa data na hakiki hata wakati kifaa kiko nje ya mtandao.</string>
+    <string name="general_years">%s Miaka</string>
     <string name="general_years_character">M</string>
     <string name="general_yes">Ndiyo</string>
     <string name="general_your_statistics">Takwimu zako</string>
@@ -341,12 +347,12 @@
     <string name="hint_set_default_encounter_location_for_SHR">Tafadhali weka eneo la kukutana na default ili kuwezesha kuandika kadi mpya</string>
     <string name="hint_setting_refresh">Je, ungependa kuupakuwa tena mpangilio huu kutoka kwenye Seva.</string>
     <string name="hint_switch_location_on">Tafadhali wezesha eneo katika mipangilio.</string>
-    <string name="hint_their_performance" formatted="false">Muhtasari wa utendakazi wa %s kati ya %s na %s</string>
+    <string formatted="false" name="hint_their_performance">Muhtasari wa utendakazi wa %s kati ya %s na %s</string>
     <string name="hint_username_prompt">Tafadhali ingiza jina la mtumiaji</string>
     <string name="hint_video_caption_prompt">Tafadhali ingiza maelezo mafupi kwa ajili ya video hii</string>
     <string name="hint_video_record">Rekodi au chagua video</string>
     <string name="hint_write_SHR_to_card">Je, unataka kuandika Rekodi ya Afya ya Pamoja kwa kadi?</string>
-    <string name="hint_your_performance" formatted="false">Utendaji wako kati ya %s na %s</string>
+    <string formatted="false" name="hint_your_performance">Utendaji wako kati ya %s na %s</string>
     <string name="how_to_general">Jinsi ya:</string>
     <string name="individual_obs">Uchunguzi wa kibinafsi</string>
     <string name="individual_obs_description">Uchunguzi wa kibinafsi</string>
@@ -383,12 +389,13 @@
     <string name="info_convert_person_to_patient">Badilisha mtu kuwa mteja</string>
     <string name="info_data_sync_cancelled">Ulandanishaji wa data ya mUzima ulisitishwa.</string>
     <string name="info_disclaimer">
-                Mfumo wa mUzima umesambazwa chini ya masharti ya leseni kwa umma ya Mozilla, v.2.0.(MPL 2.0). Nakala ya leseni
+                        Mfumo wa mUzima umesambazwa chini ya masharti ya leseni kwa umma ya Mozilla, v.2.0.(MPL 2.0). Nakala ya leseni
         ya MPL 2.0 inaweza kupatikana kwa kutembelea http://mozilla.org/MPL/2.0.
         \nMfumo wa mUzima pia umesambazwa chini ya kibadhi cha ilani ya kujitoa hatiani na kizuizi cha dhima yenye kikomo.
         \n
+
         <strong>Kibadhi cha ilani yakujitoa hatiani na kizuizi cha dhima yenye kikomo</strong>
-                Katika nchi ya Marekani, au mamlaka yoyote ambapo patahusika, vipengele zaidi vifuatavyo vya kibadhi cha ilani
+                        Katika nchi ya Marekani, au mamlaka yoyote ambapo patahusika, vipengele zaidi vifuatavyo vya kibadhi cha ilani
         yakujitoa hatiani na kizuizi cha dhima yenye kikomo vimeshirikishwa kwenye sheria na masharti ya leseni ya MPL 2.0:
         \n1. Hakuna dhamana ya aina yoyote ile kwa vyovyote vile imetolewa kwa ajili ya natija utakayoipata kutoka na kutegemea
         kwako kwa utumizi wa kodi(ama habari zozote ama maandishi yoyote utakayopata kutokana na kodi ya mfumo huu),
@@ -410,6 +417,7 @@
         yoyote ile kwa mfumo utakaotumia kodi za mfumo huu kwenye biashara ya faida, mtumiaji anashurutishwa kuwasiliana
         na mwenye hatimiliki kupitia barua pepe: mUzima.mobile@gmail.com
     
+
     </string>
     <string name="info_download_complete">Udukuzi umekamilika na hali %d</string>
     <string name="info_downloaded_image">Taswira/Picha imedukuliwa</string>
@@ -447,6 +455,7 @@
     <string name="info_form_upload_success">Fomu zimefanikiwa kupakiwaa</string>
     <string name="info_forms_downloaded">Fomu %d zimepakuliwa</string>
     <string name="info_forms_unavailable">Hakuna fomu zinazopatikanwa</string>
+    <string name="info_htc_contact_form">HTC/Ongeza Fomu ya Mawasiliano</string>
     <string name="info_incomplete_form">Fomu ambazo hazijakamilika</string>
     <string name="info_incomplete_form_unavailable">Hakuna fomu ambazo hazijakamilika</string>
     <string name="info_initial_setup_progress">Utaratibu wa mwanzo uko kazini. Tafadhali subiri…</string>
@@ -769,13 +778,22 @@
     <string name="warning_logout_confirm_with_form_deletion">Je, una uhakika unataka kutoka na kuondoka kwenye programu ya mUzima? Fomu zote zilizojazwa na ambazo hazijakamilika zitafutwa</string>
     <string name="warning_registration_form_data_delete">Unakaribia kufuta data za usajili. Kufanya hivi kutafuta taarifa za mteja kwenye kifaa hichi pia. Je una uhakika?</string>
     <string name="warning_related_person_missing">Tafadhali chagua mtu anayehusiana</string>
-    <string name="warning_relationship_exists" formatted="false">Mteja tayari ana uhusiano wa %s:%s na %s</string>
+    <string formatted="false" name="warning_relationship_exists">Mteja tayari ana uhusiano wa %s:%s na %s</string>
     <string name="warning_relationship_type_missing">Tafadhali chagua aina ya uhusiano</string>
     <string name="warning_session_timeout">Muda wa sesheni kuisha: Haikuweza kuweka muda wa kusitisha. Tafadhali ingiza thamani kati ya 1 na 500.</string>
     <string name="warning_setting_download_failure">Imeshindikana kupakua au kusahihisha mipangilio</string>
     <string name="warning_switch_server">Ubadilishaji wa seva: Kitendo hiki kitafuta data zote za mUzima katika kifaa chako, ikiwa ni pamoja na fomu zozote ambazo hazijakamilika bado. Una hakika unataka kubadili mpangilio huu?</string>
     <string name="write_SHR_to_card_text">Andika SHR kwenye kadi</string>
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
+    <string name="info_program_unavailable">Hakuna programu inayopatikana</string>
+    <string name="info_program_unavailable_tip">Hakuna programu iliyosanidiwa. Wasiliana na msimamizi wako ili kuongeza programu</string>
+    <string name="error_patient_address_not_updated">Anwani ya GPS haikuweza kupatikana.</string>
+    <string name="general_demographics_update">Usasishaji wa demografia</string>
+    <string name="error_current_gps_not_obtained">Haikuweza kupata eneo la sasa la GPS. Inapakia eneo chaguomsingi kwenye ramani.</string>
+    <string name="title_internet_connection_failure">Muunganisho wa mtandao umeshindwa</string>
+    <string name="hint_network_connection_failure_map_loading">Kifaa hakijaunganishwa kwenye mtandao. Ramani haipatikani ukiwa nje ya mtandao.</string>
+    <string name="warning_new_version_available">Toleo jipya la mUzima (v%s) linapatikana.\n\nUnaweza kuendelea kutumia mUzima unapopakua sasisho. Upakuaji ukikamilika utaarifiwa na kuombwa ruhusa ya kusakinisha toleo jipya. Tafadhali toa ruhusa baada ya ombi lako.\n\nUngependa kusasisha?</string>
+    <string name="general_new_version">Toleo Jipya</string>
     <string name="general_create_contact">Ongeza uhusiano</string>
     <string name="info_htc_contact_form">HTC/Ongeza Fomu ya Mawasiliano</string>
     <string name="general_date_of_birth">Tarehe ya kuzaliwa: %s</string>

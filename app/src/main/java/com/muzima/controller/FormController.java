@@ -533,7 +533,7 @@ public class FormController {
                                     .withEncounterDate(formData.getEncounterDate())
                                     .build();
                             completeForms.add(completeForm);
-                        } else if (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION)) {
+                        }else if (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION)) {
                             CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
                                     .withSHRRegistrationForm(form, context)
                                     .withFormDataUuid(formData.getUuid())
@@ -542,9 +542,18 @@ public class FormController {
                                     .withEncounterDate(formData.getEncounterDate())
                                     .build();
                             completeForms.add(completeForm);
-                        } else if (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP)) {
+                        }else if (formData.getDiscriminator().equals(FORM_JSON_DISCRIMINATOR_RELATIONSHIP)) {
                             CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
                                     .withRelationshipForm(form, context)
+                                    .withFormDataUuid(formData.getUuid())
+                                    .withPatient(patient)
+                                    .withLastModifiedDate(formData.getSaveTime())
+                                    .withEncounterDate(formData.getEncounterDate())
+                                    .build();
+                            completeForms.add(completeForm);
+                        }else if (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE)) {
+                            CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
+                                    .withDemographicsUpdateForm(form, context)
                                     .withFormDataUuid(formData.getUuid())
                                     .withPatient(patient)
                                     .withLastModifiedDate(formData.getSaveTime())

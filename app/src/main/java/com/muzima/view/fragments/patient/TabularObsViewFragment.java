@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
-import com.muzima.adapters.observations.ObservationByDateAdapter;
 import com.muzima.controller.ConceptController;
 import com.muzima.view.custom.TableFixHeaders;
 import com.muzima.adapters.observations.BaseTableAdapter;
@@ -24,14 +23,18 @@ import com.muzima.adapters.observations.ObservationGroupAdapter;
 import java.io.IOException;
 
 public class TabularObsViewFragment extends Fragment implements RecyclerAdapter.BackgroundListQueryTaskListener {
-    private final String patientUuid;
-    private ObservationGroupAdapter observationGroupAdapter;
-    private ObservationByDateAdapter observationByDateAdapter;
-    private final Context context;
+    private String patientUuid;
+    private Context context;
 
-    public TabularObsViewFragment(String patientUuid, Context context) {
-        this.patientUuid = patientUuid;
-        this.context = context;
+    public TabularObsViewFragment() {
+
+    }
+
+    public static TabularObsViewFragment newInstance(String patientUuid, Context context) {
+        TabularObsViewFragment f = new TabularObsViewFragment();
+        f.patientUuid = patientUuid;
+        f.context = context;
+        return f;
     }
 
     @Nullable

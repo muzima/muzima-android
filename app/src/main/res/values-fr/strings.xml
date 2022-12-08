@@ -146,10 +146,12 @@
     <string name="general_cohorts">Cohortes</string>
     <string name="general_concepts">Concepts</string>
     <string name="general_consent_date">Données de consentement :</string>
+    <string name="general_create_contact">Ajouter le contact</string>
     <string name="general_data_collection">Collecte de données</string>
     <string name="general_data_collection_tools">Outils de collecte de données</string>
     <string name="general_data_collection_tools_description">mUzima utilise des formulaires Web faciles à développer pour collecter des données qui peuvent facilement être transmises et stockées dans OpenMRS.</string>
     <string name="general_date">Date</string>
+    <string name="general_date_of_birth">Date de naissance: %s</string>
     <string name="general_days_character">j</string>
     <string name="general_delete">Supprimer</string>
     <string name="general_description_unavailable">Description non disponible</string>
@@ -184,6 +186,8 @@
     <string name="general_home">Domicile</string>
     <string name="general_in_ccr">RCC?</string>
     <string name="general_in_hiv_care">Soins du VIH?</string>
+    <string name="general_individual_summary">Résumé individuel</string>
+    <string name="general_is_a">%s est un :</string>
     <string name="general_label_sort_by_name">Trier par nom</string>
     <string name="general_label_sort_status">Trier par statut</string>
     <string name="general_large">Large</string>
@@ -257,11 +261,13 @@
     <string name="general_testing_sector">Secteur d\'essai :</string>
     <string name="general_their_statistics">Leurs statistiques</string>
     <string name="general_upload">Télécharger</string>
+    <string name="general_use_selected_location">Utiliser l\'emplacement sélectionné</string>
     <string name="general_username">Nom d\'utilisateur</string>
     <string name="general_view_encounter">Voir la rencontre</string>
     <string name="general_welcome">Bienvenue</string>
     <string name="general_works_offline">Fonctionne hors ligne</string>
     <string name="general_works_offline_description">mUzima fonctionne parfaitement en mode en ligne et hors ligne. Cela permet la collecte de données et les examens même lorsque l\'appareil est hors ligne.</string>
+    <string name="general_years">%s Ans</string>
     <string name="general_years_character">A</string>
     <string name="general_yes">Oui</string>
     <string name="general_your_statistics">Vos statistiques</string>
@@ -341,12 +347,12 @@
     <string name="hint_set_default_encounter_location_for_SHR">Veuillez définir l\'emplacement de rencontre par défaut afin d\'activer l\'écriture d\'une nouvelle carte.</string>
     <string name="hint_setting_refresh">Voulez-vous télécharger de nouveau cette configuration de votre serveur?</string>
     <string name="hint_switch_location_on">Veuillez activer la localisation dans les paramètres.</string>
-    <string name="hint_their_performance" formatted="false">Résumé des performances pour %s entre %s et %s</string>
+    <string formatted="false" name="hint_their_performance">Résumé des performances pour %s entre %s et %s</string>
     <string name="hint_username_prompt">Veuillez entrer votre nom d\'utilisateur</string>
     <string name="hint_video_caption_prompt">Veuillez entrer une légende pour la vidéo</string>
     <string name="hint_video_record">Enregistrer ou choisir une vidéo</string>
     <string name="hint_write_SHR_to_card">Voulez-vous écrire Shared Health Record sur la carte?</string>
-    <string name="hint_your_performance" formatted="false">Vos performances entre %s et %s</string>
+    <string formatted="false" name="hint_your_performance">Vos performances entre %s et %s</string>
     <string name="how_to_general">Comment:</string>
     <string name="individual_obs">Obs individuel</string>
     <string name="individual_obs_description">Obs individuel</string>
@@ -383,13 +389,14 @@
     <string name="info_convert_person_to_patient">Convertir une personne en patient</string>
     <string name="info_data_sync_cancelled">La synchronisation des données mUzima a été annulée.</string>
     <string name="info_disclaimer">
-                mUzima est distribué sous les termes de la licence publique de Mozilla, v. 2.0 (MPL 2.0). Une copie de la
+                        mUzima est distribué sous les termes de la licence publique de Mozilla, v. 2.0 (MPL 2.0). Une copie de la
         licence MPL 2.0 peut être trouvée sur http://mozilla.org/MPL/2.0/.
         \nmUzima est également distribué sous les termes de la clause de non-responsabilité Et Limitation de responsabilité
         de garantie suivante.
         \n
+
         <strong> Renonciation additionnelle de garantie et limitation de responsabilité </strong>
-                Aux États-Unis ou dans d\'autres juridictions où ils peuvent appliquer, L\'exclusion de la garantie et de la
+                        Aux États-Unis ou dans d\'autres juridictions où ils peuvent appliquer, L\'exclusion de la garantie et de la
         limitation de la responsabilité sont incorporées dans les Conditions de MPL 2.0:
         \n1. Aucune garantie de quelconque nature n\'est faite quant aux résultats que vous obtiendrez de En s\'appuyant
         sur le code couvert (ou sur toute information ou contenu obtenu par le biais du code couvert), Y compris, mais
@@ -415,6 +422,7 @@
         utilise cette Code dans une entreprise à but lucratif, l\'utilisateur est tenu de contacter le détenteur des
         droits d’auteur via mUzima.mobile@gmail.com.
     
+
     </string>
     <string name="info_download_complete">Téléchargement completé avec l\'état %d</string>
     <string name="info_downloaded_image">Image téléchargée</string>
@@ -452,6 +460,7 @@
     <string name="info_form_upload_success">Formulaires téléchargés avec succès</string>
     <string name="info_forms_downloaded">%d Formulaires téléchargés</string>
     <string name="info_forms_unavailable">Aucun formulaire disponible</string>
+    <string name="info_htc_contact_form">HTC/Ajouter un formulaire de contact</string>
     <string name="info_incomplete_form">Formulaires incomplets</string>
     <string name="info_incomplete_form_unavailable">Pas de formulaires incomplets</string>
     <string name="info_initial_setup_progress">Configuration initiale en cours d\'exécution. Patientez s\'il vous plaît…</string>
@@ -774,13 +783,22 @@
     <string name="warning_logout_confirm_with_form_deletion">Voulez-vous vraiment vous déconnecter et quitter l\'application mUzima ? Tous les formulaires complets et incomplets seront supprimés</string>
     <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du client sur l\'appareil. Etes-vous sur?</string>
     <string name="warning_related_person_missing">Veuillez choisir une personne liée</string>
-    <string name="warning_relationship_exists" formatted="false">Le client a déjà une relation %s:%s avec %s</string>
+    <string formatted="false" name="warning_relationship_exists">Le client a déjà une relation %s:%s avec %s</string>
     <string name="warning_relationship_type_missing">Veuillez choisir un type de relation</string>
     <string name="warning_session_timeout">Expiration de la session: Impossible de définir le délai d\'expiration de la session. Veuillez entrer une valeur entre 1 et 500.</string>
     <string name="warning_setting_download_failure">Echec du téléchargement ou de la mise à jour des configurations</string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
+    <string name="error_patient_address_not_updated">L\'adresse GPS n\'a pas pu être obtenue.</string>
+    <string name="general_demographics_update">Mise à jour démographique</string>
+    <string name="error_current_gps_not_obtained">Impossible d\'obtenir la position GPS actuelle. Chargement de la position par défaut sur la carte.</string>
+    <string name="title_internet_connection_failure">La connexion Internet a échoué</string>
+    <string name="hint_network_connection_failure_map_loading">L\'appareil n\'est pas connecté à Internet. La carte n\'est pas disponible hors ligne.</string>
+    <string name="info_program_unavailable">Aucun programme disponible</string>
+    <string name="info_program_unavailable_tip">Aucun programme configuré. Contactez votre administrateur pour ajouter un programme</string>
+    <string name="warning_new_version_available">Une nouvelle version de mUzima (v%s) est disponible.\n\nVous pouvez continuer à utiliser mUzima pendant le téléchargement de la mise à jour. Une fois le téléchargement terminé, vous serez averti et vous demanderez l\'autorisation d\'installer la nouvelle version. Veuillez accorder l\'autorisation une fois demandée.\n\nPoursuivre la mise à jour ?</string>
+    <string name="general_new_version">Nouvelle version</string>
     <string name="general_create_contact">Ajouter le contact</string>
     <string name="info_htc_contact_form">HTC/Ajouter un formulaire de contact</string>
     <string name="general_date_of_birth">Date de naissance: %s</string>

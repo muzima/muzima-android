@@ -151,10 +151,12 @@
     <string name="general_cohorts">Cohorts</string>
     <string name="general_concepts">Concepts</string>
     <string name="general_consent_date">Consent Data</string>
+    <string name="general_create_contact">Create Contact</string>
     <string name="general_data_collection">Data Collection</string>
     <string name="general_data_collection_tools">"Data Collection Tools "</string>
     <string name="general_data_collection_tools_description">mUzima uses easy-to-develop web-based forms to collect data that can easily be transmitted and stored in OpenMRS.</string>
     <string name="general_date">Date</string>
+    <string name="general_date_of_birth">Date of birth: %s</string>
     <string name="general_days_character">d</string>
     <string name="general_delete">Delete</string>
     <string name="general_description_unavailable">No description available</string>
@@ -189,6 +191,8 @@
     <string name="general_home">Home</string>
     <string name="general_in_ccr">In CCR?</string>
     <string name="general_in_hiv_care">HIV care?</string>
+    <string name="general_individual_summary">Individual Summary</string>
+    <string name="general_is_a">%s is a:</string>
     <string name="general_label_sort_by_name">Sort by name</string>
     <string name="general_label_sort_status">Sort by status</string>
     <string name="general_large">Large</string>
@@ -262,11 +266,13 @@
     <string name="general_testing_sector">Testing Sector: </string>
     <string name="general_their_statistics">Their Statistics</string>
     <string name="general_upload">Upload</string>
+    <string name="general_use_selected_location">Use selected location</string>
     <string name="general_username">Username</string>
     <string name="general_view_encounter">View encounter</string>
     <string name="general_welcome">Welcome</string>
     <string name="general_works_offline">"Works Offline"</string>
     <string name="general_works_offline_description">mUzima works perfectly both in online and offline modes. This allows for data collection and reviews even when the device is offline.</string>
+    <string name="general_years">%s Years</string>
     <string name="general_years_character">y</string>
     <string name="general_yes">Yes</string>
     <string name="general_your_statistics">Your Statistics</string>
@@ -368,12 +374,12 @@
     </string>
     <string name="hint_setting_refresh">Do you want to re-download this setting from server?</string>
     <string name="hint_switch_location_on">Kindly switch on location in settings.</string>
-    <string name="hint_their_performance" formatted="false">Performance summary for %s between %s and %s</string>
+    <string formatted="false" name="hint_their_performance">Performance summary for %s between %s and %s</string>
     <string name="hint_username_prompt">Please enter username</string>
     <string name="hint_video_caption_prompt">Please enter a caption for the video</string>
     <string name="hint_video_record">Record or choose video</string>
     <string name="hint_write_SHR_to_card">Do you want to write Shared Health Record to card ?</string>
-    <string name="hint_your_performance" formatted="false">Your performance between %s and %s</string>
+    <string formatted="false" name="hint_your_performance">Your performance between %s and %s</string>
     <string name="how_to_general">How To:</string>
     <string name="individual_obs">Individual Obs</string>
     <string name="individual_obs_description">Individual Obs</string>
@@ -460,6 +466,7 @@
     <string name="info_form_upload_success">Forms uploaded successfully</string>
     <string name="info_forms_downloaded">Downloaded %d forms</string>
     <string name="info_forms_unavailable">No forms available</string>
+    <string name="info_htc_contact_form">HTC/Add Contact Form</string>
     <string name="info_incomplete_form">Incomplete Forms</string>
     <string name="info_incomplete_form_unavailable">No incomplete forms</string>
     <string name="info_initial_setup_progress">Initial setup running. Please wait…</string>
@@ -585,7 +592,6 @@
 \nIf you have any question or any concerns about the terms, please reach us on mUzimamobile@gmail.com
 </string>
     <string name="info_update_person_demographics">Update person demographics</string>
-    <string name="info_htc_contact_form">HTC/Add Contact Form</string>
     <string name="info_url_validate">Step 1: Validating URL</string>
     <string name="info_video_chose_activity_unavailable">Error: Application for choosing video not found</string>
     <string name="info_video_play_activity_unavailable">Error: Application for playing video not found</string>
@@ -788,7 +794,7 @@ mUzima is a mobile application that enables health professionals collect, manage
         delete client record on device. Are you sure?
     </string>
     <string name="warning_related_person_missing">Please choose a related person</string>
-    <string name="warning_relationship_exists" formatted="false">Client already has %s:%s relationship with %s</string>
+    <string formatted="false" name="warning_relationship_exists">Client already has %s:%s relationship with %s</string>
     <string name="warning_relationship_type_missing">Please choose a relationship type</string>
     <string name="warning_session_timeout">Session Timeout: Could not set session timeout. Please enter a value between 1 and 500.</string>
     <string name="warning_setting_download_failure">Could not download or update setting</string>
@@ -797,6 +803,15 @@ mUzima is a mobile application that enables health professionals collect, manage
     </string>
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
+    <string name="info_program_unavailable">No program available</string>
+    <string name="info_program_unavailable_tip">No program configured. Contact your administrator to add a program</string>
+    <string name="error_patient_address_not_updated">The GPS address could not be obtained</string>
+    <string name="general_demographics_update">Demographics update</string>
+    <string name="error_current_gps_not_obtained">Could not obtain the current GPS location.Loading default location on the map.</string>
+    <string name="title_internet_connection_failure">Internet connection failure</string>
+    <string name="hint_network_connection_failure_map_loading">The device is not connected to the internet. The map is not available when offline.</string>
+    <string name="warning_new_version_available">A new version of mUzima (v%s) is available.\n\nYou can continue using the mUzima while downloading the update. Once the download is complete you will be notified and asked for permission to install the new version. Please grant permission once requested.\n\nProceed to update?</string>
+    <string name="general_new_version">New Version</string>
     <string name="general_create_contact">Create Contact</string>
     <string name="general_date_of_birth">Date of birth: %s</string>
     <string name="general_years">%s Years</string>

@@ -61,6 +61,15 @@ public abstract class FormWithDataBuilder<B extends FormWithDataBuilder, F exten
         return (B) this;
     }
 
+    public B withDemographicsUpdateForm(Form completeForm, Context context){
+        if(context != null) {
+            this.formWithData.setName(context.getString(R.string.general_demographics_update));
+            this.formWithData.setDescription(context.getString(R.string.general_demographics_update));
+        }
+        this.formWithData.setFormUuid(UUID.randomUUID().toString());
+        return (B) this;
+    }
+
     public B withFormDataUuid(String formDataUuid) {
         formWithData.setFormDataUuid(formDataUuid);
         return (B) this;
