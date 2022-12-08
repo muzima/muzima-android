@@ -73,7 +73,7 @@ public class PersonDemographicsUpdateFormsActivity extends AppCompatActivity {
         if (isOnlyOneRelationshipFormAvailable(availableForms)) {
             startWebViewActivity(availableForms.get(0));
         } else {
-            prepare(formController, availableForms, observationController);
+            prepareRelationshipAdapter(formController, availableForms, observationController);
         }
     }
 
