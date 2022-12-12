@@ -803,6 +803,15 @@ mUzima is a mobile application that enables health professionals collect, manage
     </string>
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
+    <string name="info_program_unavailable">No program available</string>
+    <string name="info_program_unavailable_tip">No program configured. Contact your administrator to add a program</string>
+    <string name="error_patient_address_not_updated">The GPS address could not be obtained</string>
+    <string name="general_demographics_update">Demographics update</string>
+    <string name="error_current_gps_not_obtained">Could not obtain the current GPS location.Loading default location on the map.</string>
+    <string name="title_internet_connection_failure">Internet connection failure</string>
+    <string name="hint_network_connection_failure_map_loading">The device is not connected to the internet. The map is not available when offline.</string>
+    <string name="warning_new_version_available">A new version of mUzima (v%s) is available.\n\nYou can continue using the mUzima while downloading the update. Once the download is complete you will be notified and asked for permission to install the new version. Please grant permission once requested.\n\nProceed to update?</string>
+    <string name="general_new_version">New Version</string>
     <string name="confidant_details">Confidant Details</string>
     <string name="confidant_name">Confidant Name:</string>
     <string name="confidant_phone_number_1">Confidant Phone Number:</string>

@@ -394,7 +394,7 @@
         \nmUzima est également distribué sous les termes de la clause de non-responsabilité Et Limitation de responsabilité
         de garantie suivante.
         \n
-
+        
         <strong> Renonciation additionnelle de garantie et limitation de responsabilité </strong>
                         Aux États-Unis ou dans d\'autres juridictions où ils peuvent appliquer, L\'exclusion de la garantie et de la
         limitation de la responsabilité sont incorporées dans les Conditions de MPL 2.0:
@@ -422,7 +422,7 @@
         utilise cette Code dans une entreprise à but lucratif, l\'utilisateur est tenu de contacter le détenteur des
         droits d’auteur via mUzima.mobile@gmail.com.
     
-
+    
     </string>
     <string name="info_download_complete">Téléchargement completé avec l\'état %d</string>
     <string name="info_downloaded_image">Image téléchargée</string>
@@ -783,14 +783,22 @@
     <string name="warning_logout_confirm_with_form_deletion">Voulez-vous vraiment vous déconnecter et quitter l\'application mUzima ? Tous les formulaires complets et incomplets seront supprimés</string>
     <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du client sur l\'appareil. Etes-vous sur?</string>
     <string name="warning_related_person_missing">Veuillez choisir une personne liée</string>
-    <string name="warning_relationship_exists" formatted="false">Le client a déjà une relation %s:%s avec %s</string>
+    <string formatted="false" name="warning_relationship_exists">Le client a déjà une relation %s:%s avec %s</string>
     <string name="warning_relationship_type_missing">Veuillez choisir un type de relation</string>
     <string name="warning_session_timeout">Expiration de la session: Impossible de définir le délai d\'expiration de la session. Veuillez entrer une valeur entre 1 et 500.</string>
     <string name="warning_setting_download_failure">Echec du téléchargement ou de la mise à jour des configurations</string>
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
-
+    <string name="error_patient_address_not_updated">L\'adresse GPS n\'a pas pu être obtenue.</string>
+    <string name="general_demographics_update">Mise à jour démographique</string>
+    <string name="error_current_gps_not_obtained">Impossible d\'obtenir la position GPS actuelle. Chargement de la position par défaut sur la carte.</string>
+    <string name="title_internet_connection_failure">La connexion Internet a échoué</string>
+    <string name="hint_network_connection_failure_map_loading">L\'appareil n\'est pas connecté à Internet. La carte n\'est pas disponible hors ligne.</string>
+    <string name="info_program_unavailable">Aucun programme disponible</string>
+    <string name="info_program_unavailable_tip">Aucun programme configuré. Contactez votre administrateur pour ajouter un programme</string>
+    <string name="warning_new_version_available">Une nouvelle version de mUzima (v%s) est disponible.\n\nVous pouvez continuer à utiliser mUzima pendant le téléchargement de la mise à jour. Une fois le téléchargement terminé, vous serez averti et vous demanderez l\'autorisation d\'installer la nouvelle version. Veuillez accorder l\'autorisation une fois demandée.\n\nPoursuivre la mise à jour ?</string>
+    <string name="general_new_version">Nouvelle version</string>
     <string name="confidant_details">Detalhes do Confidente</string>
     <string name="confidant_name">Nome:</string>
     <string name="confidant_phone_number_1">Contacto telefónico:</string>

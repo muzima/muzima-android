@@ -716,7 +716,6 @@
 
                     <RelativeLayout
                             android:layout_width="match_parent"
-<<<<<<< HEAD
                             android:onClick="loadForms"
                             android:layout_height="wrap_content">
                         <TextView
@@ -726,13 +725,6 @@
                                 android:textColor="?attr/primaryTextColor"
                                 android:textSize="18sp"
                                 android:fontFamily="@font/roboto_bold"/>
-=======
-                            android:layout_height="wrap_content"
-                            android:text="@string/general_forms"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="20sp"
-                            android:fontFamily="@font/roboto_bold" />
->>>>>>> accb53b5fca49fd3cda94b9dcb223225e2410839
 
                         <ImageView
                                 android:layout_width="wrap_content"
