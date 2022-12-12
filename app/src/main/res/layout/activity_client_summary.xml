@@ -349,6 +349,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="15dp"
+                                android:layout_marginTop="3dp"
                                 android:layout_below="@id/confidant_name_textview"
                                 android:textColor="?attr/primaryTextColor"
                                 android:fontFamily="@font/roboto_regular"/>
@@ -380,6 +381,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="15dp"
+                                android:layout_marginTop="3dp"
                                 android:layout_below="@id/confidant_phone_number_1_textview"
                                 android:textColor="?attr/primaryTextColor"
                                 android:fontFamily="@font/roboto_regular"/>
@@ -443,6 +445,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
                                         android:layout_marginLeft="15dp"
+                                        android:layout_marginTop="10dp"
                                         android:layout_below="@id/most_recent_viral_load_result_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
@@ -474,6 +477,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
                                         android:layout_marginLeft="15dp"
+                                        android:layout_marginTop="10dp"
                                         android:layout_below="@id/most_recent_viral_load_result_date_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
@@ -505,6 +509,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
                                         android:layout_marginLeft="15dp"
+                                        android:layout_marginTop="10dp"
                                         android:layout_below="@id/most_recent_arv_pickup_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
@@ -536,6 +541,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
                                         android:layout_marginLeft="15dp"
+                                        android:layout_marginTop="10dp"
                                         android:layout_below="@id/most_recent_arv_pickup_dispensation_mode_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
@@ -567,6 +573,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
                                         android:layout_marginLeft="15dp"
+                                        android:layout_marginTop="10dp"
                                         android:layout_below="@id/next_scheduled_arv_pickup_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
@@ -598,6 +605,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
                                         android:layout_marginLeft="15dp"
+                                        android:layout_marginTop="10dp"
                                         android:layout_below="@id/most_recent_clinical_consultation_date_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
@@ -629,6 +637,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
                                         android:layout_marginLeft="15dp"
+                                        android:layout_marginTop="10dp"
                                         android:layout_below="@id/next_clinical_consultation_date_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
@@ -660,6 +669,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
                                         android:layout_marginLeft="15dp"
+                                        android:layout_marginTop="10dp"
                                         android:layout_below="@id/tpt_start_date_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>
@@ -691,6 +701,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
                                         android:layout_marginLeft="15dp"
+                                        android:layout_marginTop="10dp"
                                         android:layout_below="@id/tpt_end_date_textView"
                                         android:textColor="?attr/primaryTextColor"
                                         android:fontFamily="@font/roboto_regular"/>

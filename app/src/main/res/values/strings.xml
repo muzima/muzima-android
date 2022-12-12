@@ -814,7 +814,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_new_version">New Version</string>
     <string name="confidant_details">Confidant Details</string>
     <string name="confidant_name">Confidant Name:</string>
-    <string name="confidant_phone_number_1">Confidant Phone Number:</string>
+    <string name="confidant_phone_number_1">Phone Number:</string>
     <string name="clinical_information_details">Clinical Information</string>
     <string name="most_recent_viral_load_result">Viral Load Result:</string>
     <string name="most_recent_viral_load_result_date">Viral Load Result Date:</string>
