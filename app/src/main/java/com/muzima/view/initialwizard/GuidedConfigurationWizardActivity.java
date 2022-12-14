@@ -918,7 +918,8 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             protected int[] doInBackground(Void... voids) {
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                int[] resultForMediaCategory= muzimaSyncService.downloadMediaCategories();
+                List<String> mediaCategoryUuids = extractMediaCategoryUuids();
+                int[] resultForMediaCategory= muzimaSyncService.downloadMediaCategories(mediaCategoryUuids);
                 return resultForMediaCategory;
             }
 
@@ -970,11 +971,12 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             protected int[] doInBackground(Void... voids) {
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
-                List<String> mediaUuids = extractMediaUuids();
-                List<Media> mediaList= muzimaSyncService.downloadMedia(mediaUuids);
+                List<String> mediaUuids = extractMediaCategoryUuids();
+
+                List<Media> mediaList= muzimaSyncService.downloadMedia(mediaUuids, false);
                 int[] resultForMedia= muzimaSyncService.saveMedia(mediaList);
                 for(Media media:mediaList){
-                    downloadFile(media.getUrl(), media.getName(), media.getDescription());
+                    downloadFile(media);
                 }
                 return resultForMedia;
             }
@@ -1013,25 +1015,27 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         }.execute();
     }
 
-    public void downloadFile(String downloadUrl,String filename, String description){
+    public void downloadFile(Media media){
         //Delete file if exists
         String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
-        File file = new File(PATH + "/"+filename);
+        File file = new File(PATH + "/"+media.getName()+"."+media.getMimeType().substring(media.getMimeType().lastIndexOf("/") + 1));
         if(file.exists())
             file.delete();
 
-        try {
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadUrl + ""));
-            request.setTitle(filename);
-            request.setDescription(description);
-            request.allowScanningByMediaScanner();
-            request.setAllowedOverMetered(true);
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-            DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-            dm.enqueue(request);
-        } catch(Exception e) {
-            Log.e(getClass().getSimpleName(),"Error ",e);
+        if(!media.isVoided()) {
+            try {
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(media.getUrl() + ""));
+                request.setTitle(media.getName());
+                request.setDescription(media.getDescription());
+                request.allowScanningByMediaScanner();
+                request.setAllowedOverMetered(true);
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, media.getName());
+                DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                dm.enqueue(request);
+            } catch (Exception e) {
+                Log.e(getClass().getSimpleName(), "Error ", e);
+            }
         }
     }
 
@@ -1245,15 +1249,15 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         return datasetIds;
     }
 
-    private List<String> extractMediaUuids() {
-        List<String> mediaUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['media']");
+    private List<String> extractMediaCategoryUuids() {
+        List<String> mediaCategoryUuids = new ArrayList<>();
+        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['mediaCategories']");
         if (objects != null) {
             for (Object object : objects) {
-                JSONObject dataset = (JSONObject) object;
-                mediaUuids.add((String)dataset.get("uuid"));
+                JSONObject mediaCategory = (JSONObject) object;
+                mediaCategoryUuids.add((String)mediaCategory.get("uuid"));
             }
         }
-        return mediaUuids;
+        return mediaCategoryUuids;
     }
 }

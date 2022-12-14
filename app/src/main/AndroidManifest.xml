@@ -482,10 +482,8 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/general_media"
-            android:parentActivityName=".view.MainDashboardActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.MainDashboardActivity" />
+            android:launchMode="singleTask">
+
         </activity>
 
         <meta-data

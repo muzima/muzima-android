@@ -191,7 +191,6 @@ public class MuzimaJobScheduler extends JobService {
                 new SyncAllPatientReportsBackgroundTask().execute();
             }
             new FormMetaDataSyncBackgroundTask().execute();
-            new MediaCategorySyncBackgroundTask().execute();
         }
     }
 
@@ -378,7 +377,7 @@ public class MuzimaJobScheduler extends JobService {
             super.onPostExecute(aVoid);
             new SyncReportDatasetsBackgroundTask().execute();
             new FormTemplateSyncBackgroundTask().execute();
-            new DownloadAndDeleteMediaBasedOnConfigChangesBackgroundTask().execute();
+            new MediaCategorySyncBackgroundTask().execute();
             if(wasConfigUpdateDone) {
                 if (!muzimaSettingController.isOnlineOnlyModeEnabled())
                     new DownloadAndDeleteCohortsBasedOnConfigChangesBackgroundTask().execute();
@@ -1116,16 +1115,74 @@ public class MuzimaJobScheduler extends JobService {
             Context context = getApplicationContext();
             MediaCategoryController mediaCategoryController = ((MuzimaApplication) context).getMediaCategoryController();
             try {
-                List<MediaCategory> mediaCategories = mediaCategoryController.downloadMediaCategory();
-                if(mediaCategories.size()>0){
-                    mediaCategoryController.saveMediaCategory(mediaCategories);
+                //Get media Categories in the config
+                List<String> mediaCategoryUuids = new ArrayList<>();
+                List<String> mediaCategoryUuidsBeforeConfigUpdate = new ArrayList<>();
+
+                SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+                String configJson = activeSetupConfig.getConfigJson();
+                List<Object> mediaCategoryList = JsonUtils.readAsObjectList(configJson, "$['config']['mediaCategories']");
+                for (Object mediaCategory : mediaCategoryList) {
+                    net.minidev.json.JSONObject mediaCategory1 = (net.minidev.json.JSONObject) mediaCategory;
+                    String mediaCategoryUuid = mediaCategory1.get("uuid").toString();
+                    mediaCategoryUuids.add(mediaCategoryUuid);
+                }
+
+                String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+                List<Object> mediaCategoryBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['mediaCategories']");
+                for (Object mediaCategory : mediaCategoryBeforeConfigUpdate) {
+                    net.minidev.json.JSONObject mediaCategory1 = (net.minidev.json.JSONObject) mediaCategory;
+                    String mediaCategoryUuid = mediaCategory1.get("uuid").toString();
+                    mediaCategoryUuidsBeforeConfigUpdate.add(mediaCategoryUuid);
+                }
+
+                List<String> mediaCategoryToBeDeleted = new ArrayList<>();
+                List<String> mediaCategoryToDownload= new ArrayList<>();
+                List<String> mediaCategoryToCheckForUpdates = new ArrayList<>();
+
+                //Get mediaCategory previously downloaded but not in the updated config
+                for(String mediaCategoryUuid: mediaCategoryUuidsBeforeConfigUpdate){
+                    if(!mediaCategoryUuids.contains(mediaCategoryUuid)){
+                        mediaCategoryToBeDeleted.add(mediaCategoryUuid);
+                    }else{
+                        mediaCategoryToCheckForUpdates.add(mediaCategoryUuid);
+                    }
+                }
+
+                //Get Added mediaCategory to updated config
+                for(String mediaCategoryUuid : mediaCategoryUuids){
+                    if(!mediaCategoryUuidsBeforeConfigUpdate.contains(mediaCategoryUuid)){
+                        mediaCategoryToDownload.add(mediaCategoryUuid);
+                    }
+                }
+
+                if(mediaCategoryToBeDeleted.size()>0) {
+                    mediaCategoryController.deleteMediaCategory(mediaCategoryToBeDeleted);
+                }
+
+                if(mediaCategoryToCheckForUpdates.size()>0){
+                    List<MediaCategory> mediaCategoryListToUpdate = mediaCategoryController.downloadMediaCategory(mediaCategoryToCheckForUpdates, true);
+                    mediaCategoryController.updateMediaCategory(mediaCategoryListToUpdate);
+                }
+
+                if(mediaCategoryToDownload.size()>0) {
+                    List<MediaCategory> downloadedMediaList = mediaCategoryController.downloadMediaCategory(mediaCategoryToDownload, false);
+                    mediaCategoryController.saveMediaCategory(downloadedMediaList);
                 }
             } catch (MediaCategoryController.MediaCategoryDownloadException e) {
                 Log.e(getClass().getSimpleName(), "Encountered an error while downloading media categories");
             } catch (MediaCategoryController.MediaCategorySaveException e) {
                 Log.e(getClass().getSimpleName(), "Encountered an error while saving media categories");
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+                Log.e(getClass().getSimpleName(), "Encountered an error while getting config");
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            new DownloadAndDeleteMediaBasedOnConfigChangesBackgroundTask().execute();
         }
     }
 
@@ -1133,75 +1190,22 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                Context context = getApplicationContext();
-                MediaController mediaController = ((MuzimaApplication) context).getMediaController();
-                //Get media in the config
-                List<String> mediaUuids = new ArrayList<>();
-                List<String> mediaUuidsBeforeConfigUpdate = new ArrayList<>();
-
-                SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
-                String configJson = activeSetupConfig.getConfigJson();
-                List<Object> mediaList = JsonUtils.readAsObjectList(configJson, "$['config']['media']");
-                for (Object media : mediaList) {
-                    net.minidev.json.JSONObject media1 = (net.minidev.json.JSONObject) media;
-                    String mediaUuid = media1.get("uuid").toString();
-                    mediaUuids.add(mediaUuid);
-                }
-
-                String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
-                List<Object> mediaBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['providers']");
-                for (Object media : mediaBeforeConfigUpdate) {
-                    net.minidev.json.JSONObject media1 = (net.minidev.json.JSONObject) media;
-                    String mediaUuid = media1.get("uuid").toString();
-                    mediaUuidsBeforeConfigUpdate.add(mediaUuid);
-                }
-
-                List<String> mediaToBeDeleted = new ArrayList<>();
-                List<String> mediaToDownload= new ArrayList<>();
-                List<String> mediaToCheckForUpdates = new ArrayList<>();
-
-                //Get media previously downloaded but not in the updated config
-                for(String mediaUuid: mediaUuidsBeforeConfigUpdate){
-                    if(!mediaUuids.contains(mediaUuid)){
-                        mediaToBeDeleted.add(mediaUuid);
-                    }else{
-                        mediaToCheckForUpdates.add(mediaUuid);
+                MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                MediaCategoryController mediaCategoryController = ((MuzimaApplication) getApplicationContext()).getMediaCategoryController();
+                List<MediaCategory> mediaCategoryList= mediaCategoryController.getMediaCategories();
+                List<String> mediaCategoryUuids = new ArrayList<>();
+                if(mediaCategoryList.size()>0) {
+                    for (MediaCategory mediaCategory : mediaCategoryList) {
+                        mediaCategoryUuids.add(mediaCategory.getUuid());
+                    }
+                    List<Media> mediaList = muzimaSyncService.downloadMedia(mediaCategoryUuids, true);
+                    muzimaSyncService.saveMedia(mediaList);
+                    for (Media media : mediaList) {
+                        downloadFile(media);
                     }
                 }
-
-                //Get Added media to updated config
-                for(String mediaUuid : mediaUuids){
-                    if(!mediaUuidsBeforeConfigUpdate.contains(mediaUuid)){
-                        mediaToDownload.add(mediaUuid);
-                    }
-                }
-
-                if(mediaToBeDeleted.size()>0) {
-                    mediaController.deleteMedia(mediaToBeDeleted);
-                }
-
-                if(mediaToCheckForUpdates.size()>0){
-                    List<Media> mediaListToUpdate = mediaController.downloadMedia(mediaToCheckForUpdates, true);
-                    mediaController.updateMedia(mediaListToUpdate);
-                    for(Media media: mediaListToUpdate){
-                        downloadFile(media.getUrl(), media.getName(), media.getDescription());
-                    }
-                }
-
-                if(mediaToDownload.size()>0) {
-                    List<Media> downloadedMediaList = mediaController.downloadMedia(mediaToDownload, false);
-                    mediaController.saveMedia(downloadedMediaList);
-                    for(Media media: downloadedMediaList){
-                        downloadFile(media.getUrl(), media.getName(), media.getDescription());
-                    }
-                }
-
-            } catch (SetupConfigurationController.SetupConfigurationFetchException e){
-                Log.e(MuzimaJobScheduler.class.getSimpleName(),"Could not get the active config ",e);
-            } catch (MediaController.MediaSaveException e) {
-                e.printStackTrace();
-            } catch (MediaController.MediaDownloadException e) {
-                e.printStackTrace();
+            }  catch (MediaCategoryController.MediaCategoryFetchException e) {
+                Log.e(getClass().getSimpleName(), "Encountered an error while saving media");
             }
             return null;
         }
@@ -1211,26 +1215,28 @@ public class MuzimaJobScheduler extends JobService {
             super.onPostExecute(aVoid);
         }
 
-        public void downloadFile(String downloadUrl, String filename, String description){
+        public void downloadFile(Media media){
             //Delete file if exists
             String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
-            File file = new File(PATH + "/"+filename);
+            File file = new File(PATH + "/"+media.getName()+"."+media.getMimeType().substring(media.getMimeType().lastIndexOf("/") + 1));
             if(file.exists())
                 file.delete();
 
-            //Enqueue the file for download
-            try {
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadUrl+""));
-                request.setTitle(filename);
-                request.setDescription(description);
-                request.allowScanningByMediaScanner();
-                request.setAllowedOverMetered(true);
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-                DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-                dm.enqueue(request);
-            }catch(Exception e){
-                Log.e(getClass().getSimpleName(),"Error ",e);
+            if(!media.isVoided()) {
+                //Enqueue the file for download
+                try {
+                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(media.getUrl() + ""));
+                    request.setTitle(media.getName());
+                    request.setDescription(media.getDescription());
+                    request.allowScanningByMediaScanner();
+                    request.setAllowedOverMetered(true);
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, media.getName());
+                    DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                    dm.enqueue(request);
+                } catch (Exception e) {
+                    Log.e(getClass().getSimpleName(), "Error ", e);
+                }
             }
         }
     }

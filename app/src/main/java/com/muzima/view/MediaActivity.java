@@ -71,7 +71,7 @@ public class MediaActivity extends BaseActivity{
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 startMediaDisplayActivity(
-                        mediaListMap.get(mediaCategories.get(groupPosition)).get(childPosition).getName());
+                        mediaListMap.get(mediaCategories.get(groupPosition)).get(childPosition));
                 return false;
             }
         });
@@ -97,11 +97,12 @@ public class MediaActivity extends BaseActivity{
         try {
             List<MediaCategory> mediaCategoryList = mediaCategoryController.getMediaCategories();
             for(MediaCategory mediaCategory:mediaCategoryList){
-                mediaCategories.add(mediaCategory);
-                List<Media> mediaList = mediaController.getMediaByCategoryID(mediaCategory.getId());
-                mediaListMap.put(mediaCategory,mediaList);
+                List<Media> mediaList = mediaController.getMediaByCategoryUuid(mediaCategory.getUuid());
+                if(mediaList.size()>0) {
+                    mediaCategories.add(mediaCategory);
+                    mediaListMap.put(mediaCategory, mediaList);
+                }
             }
-
         } catch (MediaCategoryController.MediaCategoryFetchException e) {
             Log.e(getClass().getSimpleName(),"Encountered error while fetching media category ",e);
         } catch (MediaController.MediaFetchException e) {
@@ -109,9 +110,10 @@ public class MediaActivity extends BaseActivity{
         }
     }
 
-    private void startMediaDisplayActivity(String filename) {
+    private void startMediaDisplayActivity(Media media) {
+        String mimeType = media.getMimeType();
         String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
-        File file = new File(PATH + "/"+filename);
+        File file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
         if(!file.exists()){
             Toast.makeText(this, getString(R.string.info_no_media_not_available), Toast.LENGTH_LONG).show();
         }else {

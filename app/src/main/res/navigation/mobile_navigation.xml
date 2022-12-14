@@ -28,10 +28,6 @@
             android:id="@+id/nav_help"
             android:name="com.muzima.view.help.HelpActivity"
             tools:layout="@layout/activity_help_new"/>
-    <activity
-        android:id="@+id/nav_media"
-        android:name="com.muzima.view.MediaActivity"
-        tools:layout="@layout/activity_media"/>
 
     <activity
             android:id="@+id/nav_feedback"

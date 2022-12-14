@@ -13,6 +13,7 @@ package com.muzima.view.custom;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,11 +22,18 @@ import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.Media;
+import com.muzima.api.model.MediaCategory;
+import com.muzima.controller.MediaCategoryController;
+import com.muzima.controller.MediaController;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
+import com.muzima.view.MediaActivity;
 import com.muzima.view.cohort.CohortPagerActivity;
 import com.muzima.view.forms.FormPagerActivity;
 import com.muzima.view.reports.ProviderReportListActivity;
+
+import java.util.List;
 
 public abstract class ActivityWithBottomNavigation extends BroadcastListenerActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -43,6 +51,27 @@ public abstract class ActivityWithBottomNavigation extends BroadcastListenerActi
         }
         if(!((MuzimaApplication)getApplicationContext()).getMuzimaSettingController().isBottomNavigationFormEnabled()) {
             navigationView.getMenu().removeItem(R.id.action_forms);
+        }
+
+        boolean isAnyGroupWithMedia = false;
+        MediaCategoryController mediaCategoryController = ((MuzimaApplication) getApplication()).getMediaCategoryController();
+        MediaController mediaController = ((MuzimaApplication) getApplication()).getMediaController();
+        try {
+            List<MediaCategory> mediaCategoryList = mediaCategoryController.getMediaCategories();
+            for(MediaCategory mediaCategory:mediaCategoryList){
+                List<Media> mediaList = mediaController.getMediaByCategoryUuid(mediaCategory.getUuid());
+                if(mediaList.size()>0) {
+                    isAnyGroupWithMedia = true;
+                }
+            }
+        } catch (MediaCategoryController.MediaCategoryFetchException e) {
+            Log.e(getClass().getSimpleName(),"Encountered error while fetching media category ",e);
+        } catch (MediaController.MediaFetchException e) {
+            Log.e(getClass().getSimpleName(),"Encountered error while fetching media ",e);
+        }
+
+        if(!isAnyGroupWithMedia){
+            navigationView.getMenu().removeItem(R.id.media);
         }
 
         navigationView.setOnNavigationItemSelectedListener(this);
@@ -82,6 +111,8 @@ public abstract class ActivityWithBottomNavigation extends BroadcastListenerActi
                 startActivity(new Intent(this, FormPagerActivity.class));
             } else if (itemId == R.id.action_reports) {
                 startActivity(new Intent(this, ProviderReportListActivity.class));
+            }else if (itemId == R.id.media) {
+                startActivity(new Intent(this, MediaActivity.class));
             }
         });
         return true;

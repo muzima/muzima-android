@@ -24,4 +24,8 @@
         android:title="@string/general_reports"
         android:visible="false"
         android:icon="@drawable/report"/>
+    <item android:id="@+id/media"
+        android:title="@string/general_media"
+        android:visible="true"
+        android:icon="@drawable/multimedia"/>
 </menu>

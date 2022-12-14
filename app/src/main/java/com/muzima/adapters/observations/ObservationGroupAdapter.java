@@ -345,7 +345,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
             concept = conceptController.getConceptByName(conceptName);
             observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,concept.getId());
         } catch (ConceptController.ConceptFetchException | ObservationController.LoadObservationException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Encountered an error while getting concept or observations");
         }
 
         RecyclerView recyclerView = conceptDetails.findViewById(R.id.recyclerView);;

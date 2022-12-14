@@ -30,7 +30,7 @@ public class MediaController {
         this.sntpService = sntpService;
     }
 
-    public List<Media> downloadMedia(List<String> uuids, boolean isDeltaSync) throws MediaController.MediaDownloadException {
+    public List<Media> downloadMedia(List<String> mediaCategoryUuids, boolean isDeltaSync) throws MediaController.MediaDownloadException {
         try {
             LastSyncTime lastSyncTime = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_MEDIA);
             Date lastSyncDate = null;
@@ -39,13 +39,7 @@ public class MediaController {
                     lastSyncDate = lastSyncTime.getLastSyncDate();
                 }
             }
-            List<Media> mediaList = new ArrayList<>();
-            for(String uuid : uuids){
-                List<Media> media = mediaService.downloadMedia(lastSyncDate, uuid);
-                if(media != null) {
-                    mediaList.addAll(media);
-                }
-            }
+            List<Media> mediaList = mediaService.downloadMedia(lastSyncDate, mediaCategoryUuids);
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_MEDIA, sntpService.getTimePerDeviceTimeZone());
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return  mediaList;
@@ -56,7 +50,6 @@ public class MediaController {
 
     public List<Media> getMedia() throws MediaController.MediaFetchException {
         try {
-
             List<Media> media = mediaService.getMedia();
             return media;
         } catch (IOException e) {
@@ -64,10 +57,10 @@ public class MediaController {
         }
     }
 
-    public List<Media> getMediaByCategoryID(Integer categoryId) throws MediaController.MediaFetchException {
+    public List<Media> getMediaByCategoryUuid(String categoryUuid) throws MediaController.MediaFetchException {
         try {
 
-            List<Media> media = mediaService.getMediaByCategoryId(categoryId);
+            List<Media> media = mediaService.getMediaByCategoryUuid(categoryUuid);
             return media;
         } catch (IOException | ParseException e) {
             throw new MediaController.MediaFetchException(e);

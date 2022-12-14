@@ -1701,10 +1701,10 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] downloadMediaCategories(){
+    public int[] downloadMediaCategories(List<String> mediaCategoryUuids){
         int[] result = new int[2];
         try {
-            List<MediaCategory> mediaCategories = mediaCategoryController.downloadMediaCategory();
+            List<MediaCategory> mediaCategories = mediaCategoryController.downloadMediaCategory(mediaCategoryUuids, false);
             mediaCategoryController.saveMediaCategory(mediaCategories);
             result[0] = SUCCESS;
             result[1] = mediaCategories.size();
@@ -1715,10 +1715,10 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public List<Media> downloadMedia(List<String> uuids){
+    public List<Media> downloadMedia(List<String> mediaCategoryUuids, boolean isDeltaSync){
         List<Media> media = new ArrayList<>();
         try {
-            media = mediaController.downloadMedia(uuids, false);
+            media = mediaController.downloadMedia(mediaCategoryUuids, isDeltaSync);
         } catch (MediaController.MediaDownloadException e) {
             Log.e(TAG, "Encountered Load Exception while getting media", e);
         }
