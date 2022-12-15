@@ -809,4 +809,6 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="info_media_unavailable">Nenhuma mídia disponível</string>
     <string name="info_no_media_data_tip">Nenhuma mídia configurada. Entre em contato com seu administrador para adicionar mídia</string>
     <string name="info_no_media_not_available">O arquivo de mídia não está disponível, pode ter sido excluído do dispositivo</string>
+    <string name="general_low_available_space">Espaço disponível insuficiente</string>
+    <string name="warning_new_no_enough_space">Você não tem espaço suficiente para mídia, precisa de %s mais espaço para download de mídia.</string>
 </resources>

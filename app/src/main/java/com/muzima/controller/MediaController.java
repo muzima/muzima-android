@@ -9,6 +9,7 @@ import com.muzima.api.model.Media;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.MediaService;
 import com.muzima.service.SntpService;
+import com.muzima.utils.MemoryUtil;
 
 import org.apache.lucene.queryParser.ParseException;
 
@@ -40,8 +41,14 @@ public class MediaController {
                 }
             }
             List<Media> mediaList = mediaService.downloadMedia(lastSyncDate, mediaCategoryUuids);
-            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_MEDIA, sntpService.getTimePerDeviceTimeZone());
-            lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
+            long mediaSize = MemoryUtil.getTotalMediaFileSize(mediaList);
+            long availableSpace = MemoryUtil.getAvailableInternalMemorySize();
+            if(mediaSize<availableSpace) {
+                LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_MEDIA, sntpService.getTimePerDeviceTimeZone());
+                lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
+            }else{
+                mediaList = new ArrayList<>();
+            }
             return  mediaList;
         } catch (IOException e) {
             throw new MediaController.MediaDownloadException(e);

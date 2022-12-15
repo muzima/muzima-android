@@ -82,6 +82,7 @@ import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.util.JsonUtils;
 import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
+import com.muzima.utils.MemoryUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
 import com.muzima.utils.StringUtils;
@@ -90,6 +91,7 @@ import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.SyncFormIntent;
 import com.muzima.view.forms.SyncFormTemplateIntent;
+import com.muzima.view.initialwizard.GuidedConfigurationWizardActivity;
 import com.muzima.view.patients.SyncPatientDataIntent;
 import com.muzima.view.reports.SyncAllPatientReports;
 
@@ -385,7 +387,6 @@ public class MuzimaJobScheduler extends JobService {
                 new DownloadAndDeleteProvidersBasedOnConfigChangesBackgroundTask().execute();
                 new DownloadAndDeleteConceptsBasedOnConfigChangesBackgroundTask().execute();
             }
-            new SyncAppUsageLogsBackgroundTask().execute();
         }
 
         public int[] downloadAndSaveUpdatedSetupConfigurationTemplate(String uuid) {
@@ -1190,6 +1191,32 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
+                //update memory space app usage log
+                AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
+                AppUsageLogs appUsageLogs = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.AVAILABLE_INTERNAL_SPACE);
+                String availableMemory = MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize());
+
+                if(appUsageLogs != null) {
+                    if(!availableMemory.equals(appUsageLogs.getLogvalue())) {
+                        appUsageLogs.setLogvalue(availableMemory);
+                        appUsageLogs.setUpdateDatetime(new Date());
+                        appUsageLogs.setUserName(username);
+                        appUsageLogs.setDeviceId(pseudoDeviceId);
+                        appUsageLogs.setLogSynced(false);
+                        appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLogs);
+                    }
+                }else{
+                    AppUsageLogs availableSpace = new AppUsageLogs();
+                    availableSpace.setUuid(UUID.randomUUID().toString());
+                    availableSpace.setLogKey(com.muzima.util.Constants.AppUsageLogs.AVAILABLE_INTERNAL_SPACE);
+                    availableSpace.setLogvalue(availableMemory);
+                    availableSpace.setUpdateDatetime(new Date());
+                    availableSpace.setUserName(username);
+                    availableSpace.setDeviceId(pseudoDeviceId);
+                    availableSpace.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(availableSpace);
+                }
+
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 MediaCategoryController mediaCategoryController = ((MuzimaApplication) getApplicationContext()).getMediaCategoryController();
                 List<MediaCategory> mediaCategoryList= mediaCategoryController.getMediaCategories();
@@ -1199,13 +1226,43 @@ public class MuzimaJobScheduler extends JobService {
                         mediaCategoryUuids.add(mediaCategory.getUuid());
                     }
                     List<Media> mediaList = muzimaSyncService.downloadMedia(mediaCategoryUuids, true);
-                    muzimaSyncService.saveMedia(mediaList);
-                    for (Media media : mediaList) {
-                        downloadFile(media);
+                    long totalFileSize = MemoryUtil.getTotalMediaFileSize(mediaList);
+                    long availableSpace = MemoryUtil.getAvailableInternalMemorySize();
+                    if(availableSpace>totalFileSize) {
+                        muzimaSyncService.saveMedia(mediaList);
+                        for (Media media : mediaList) {
+                            downloadFile(media);
+                        }
+                    }else{
+                        AppUsageLogs noEnoughSpaceLog = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.NO_ENOUGH_SPACE_DEVICES);
+                        String requiredMemory = MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize());
+                        if(noEnoughSpaceLog != null) {
+                            noEnoughSpaceLog.setLogvalue("Required: "+requiredMemory+ " Available: "+availableMemory);
+                            noEnoughSpaceLog.setUpdateDatetime(new Date());
+                            noEnoughSpaceLog.setUserName(username);
+                            noEnoughSpaceLog.setDeviceId(pseudoDeviceId);
+                            noEnoughSpaceLog.setLogSynced(false);
+                            appUsageLogsController.saveOrUpdateAppUsageLog(noEnoughSpaceLog);
+                        }else{
+                            AppUsageLogs newNoEnoughSpaceLog = new AppUsageLogs();
+                            newNoEnoughSpaceLog.setUuid(UUID.randomUUID().toString());
+                            newNoEnoughSpaceLog.setLogKey(com.muzima.util.Constants.AppUsageLogs.NO_ENOUGH_SPACE_DEVICES);
+                            newNoEnoughSpaceLog.setLogvalue("Required: "+requiredMemory+ " Available: "+availableMemory);
+                            newNoEnoughSpaceLog.setUpdateDatetime(new Date());
+                            newNoEnoughSpaceLog.setUserName(username);
+                            newNoEnoughSpaceLog.setDeviceId(pseudoDeviceId);
+                            newNoEnoughSpaceLog.setLogSynced(false);
+                            appUsageLogsController.saveOrUpdateAppUsageLog(newNoEnoughSpaceLog);
+                        }
+                        MemoryUtil.showAlertDialog(availableSpace,totalFileSize, getApplication().getApplicationContext());
                     }
                 }
             }  catch (MediaCategoryController.MediaCategoryFetchException e) {
                 Log.e(getClass().getSimpleName(), "Encountered an error while saving media");
+            } catch (IOException e) {
+                Log.e(getClass().getSimpleName(),"Encountered IOException ",e);
+            } catch (ParseException e) {
+                Log.e(getClass().getSimpleName(),"Encountered ParseException ",e);
             }
             return null;
         }
@@ -1213,6 +1270,7 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            new SyncAppUsageLogsBackgroundTask().execute();
         }
 
         public void downloadFile(Media media){

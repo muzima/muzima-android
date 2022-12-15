@@ -31,8 +31,10 @@ import android.os.Environment;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -73,9 +75,12 @@ import com.muzima.util.JsonUtils;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import com.muzima.utils.Constants.SetupLogConstants;
+import com.muzima.utils.MemoryUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
+import com.muzima.view.MediaActivity;
+import com.muzima.view.login.LoginActivity;
 
 import net.minidev.json.JSONObject;
 
@@ -974,9 +979,48 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 List<String> mediaUuids = extractMediaCategoryUuids();
 
                 List<Media> mediaList= muzimaSyncService.downloadMedia(mediaUuids, false);
-                int[] resultForMedia= muzimaSyncService.saveMedia(mediaList);
-                for(Media media:mediaList){
-                    downloadFile(media);
+
+                int[] resultForMedia = null;
+                long totalFileSize = MemoryUtil.getTotalMediaFileSize(mediaList);
+                long availableSpace = MemoryUtil.getAvailableInternalMemorySize();
+                if(availableSpace>totalFileSize) {
+                    resultForMedia = muzimaSyncService.saveMedia(mediaList);
+                    for (Media media : mediaList) {
+                        downloadFile(media);
+                    }
+                }else {
+                    String loggedInUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUserId();
+                    String pseudoDeviceId = generatePseudoDeviceId();
+                    AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
+                    AppUsageLogs noEnoughSpaceLog = null;
+                    try {
+                        String availableMemory = MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize());
+                        noEnoughSpaceLog = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.NO_ENOUGH_SPACE_DEVICES);
+                        String requiredMemory = MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize());
+                        if (noEnoughSpaceLog != null) {
+                            noEnoughSpaceLog.setLogvalue("Required: " + requiredMemory + " Available: " + availableMemory);
+                            noEnoughSpaceLog.setUpdateDatetime(new Date());
+                            noEnoughSpaceLog.setUserName(loggedInUser);
+                            noEnoughSpaceLog.setDeviceId(pseudoDeviceId);
+                            noEnoughSpaceLog.setLogSynced(false);
+                            appUsageLogsController.saveOrUpdateAppUsageLog(noEnoughSpaceLog);
+                        } else {
+                            AppUsageLogs newNoEnoughSpaceLog = new AppUsageLogs();
+                            newNoEnoughSpaceLog.setUuid(UUID.randomUUID().toString());
+                            newNoEnoughSpaceLog.setLogKey(com.muzima.util.Constants.AppUsageLogs.NO_ENOUGH_SPACE_DEVICES);
+                            newNoEnoughSpaceLog.setLogvalue("Required: " + requiredMemory + " Available: " + availableMemory);
+                            newNoEnoughSpaceLog.setUpdateDatetime(new Date());
+                            newNoEnoughSpaceLog.setUserName(loggedInUser);
+                            newNoEnoughSpaceLog.setDeviceId(pseudoDeviceId);
+                            newNoEnoughSpaceLog.setLogSynced(false);
+                            appUsageLogsController.saveOrUpdateAppUsageLog(newNoEnoughSpaceLog);
+                        }
+                        MemoryUtil.showAlertDialog(availableSpace, totalFileSize, GuidedConfigurationWizardActivity.this);
+                    } catch (IOException e) {
+                        Log.e(getClass().getSimpleName(),"Encountered IOException ",e);
+                    } catch (ParseException e) {
+                        Log.e(getClass().getSimpleName(),"Encountered parse exception ",e);
+                    }
                 }
                 return resultForMedia;
             }
@@ -1190,6 +1234,16 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 setUpTime.setDeviceId(pseudoDeviceId);
                 setUpTime.setLogSynced(false);
                 appUsageLogsController.saveOrUpdateAppUsageLog(setUpTime);
+
+                AppUsageLogs availableSpace = new AppUsageLogs();
+                availableSpace.setUuid(UUID.randomUUID().toString());
+                availableSpace.setLogKey(com.muzima.util.Constants.AppUsageLogs.AVAILABLE_INTERNAL_SPACE);
+                availableSpace.setLogvalue(MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize()));
+                availableSpace.setUpdateDatetime(new Date());
+                availableSpace.setUserName(loggedInUser);
+                availableSpace.setDeviceId(pseudoDeviceId);
+                availableSpace.setLogSynced(false);
+                appUsageLogsController.saveOrUpdateAppUsageLog(availableSpace);
 
             } catch (IOException e) {
                 Log.e(getClass().getSimpleName(),"Encountered an exception",e);

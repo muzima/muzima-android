@@ -802,4 +802,6 @@
     <string name="info_media_unavailable">કોઈ મીડિયા ઉપલબ્ધ નથી</string>
     <string name="info_no_media_data_tip">કોઈ મીડિયા ગોઠવેલ નથી. મીડિયા ઉમેરવા માટે તમારા વ્યવસ્થાપકનો સંપર્ક કરો</string>
     <string name="info_no_media_not_available">મીડિયા ફાઇલ ઉપલબ્ધ નથી, તે ઉપકરણમાંથી કાઢી નાખવામાં આવી હશે</string>
+    <string name="general_low_available_space">ઉપલબ્ધ જગ્યા પૂરતી નથી</string>
+    <string name="warning_new_no_enough_space">તમારી પાસે મીડિયા માટે પૂરતી જગ્યા નથી, મીડિયા ડાઉનલોડ કરવા માટે તમારે %s વધુ જગ્યાની જરૂર છે.</string>
 </resources>

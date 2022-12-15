@@ -824,4 +824,6 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="info_media_unavailable">No media available</string>
     <string name="info_no_media_data_tip">No media configured. Contact your administrator to add media</string>
     <string name="info_no_media_not_available">The media file is not available, it might have been deleted from the device</string>
+    <string name="general_low_available_space">Available space not enough</string>
+    <string name="warning_new_no_enough_space">You don\'t have enough space for media, you need %s more space for media download.</string>
 </resources>
