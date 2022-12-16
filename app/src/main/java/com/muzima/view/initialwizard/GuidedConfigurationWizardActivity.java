@@ -1066,7 +1066,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         if(file.exists())
             file.delete();
 
-        if(!media.isVoided()) {
+        if(!media.isRetired()) {
             try {
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(media.getUrl() + ""));
                 request.setTitle(media.getName());

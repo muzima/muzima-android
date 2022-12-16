@@ -121,6 +121,7 @@ public class MuzimaJobScheduler extends JobService {
     private String username;
     private SetupConfigurationTemplate configBeforeConfigUpdate;
     private FCMTokenController fcmTokenController;
+    private AppUsageLogsController  appUsageLogsController;
 
     @Override
     public void onCreate() {
@@ -130,6 +131,7 @@ public class MuzimaJobScheduler extends JobService {
         muzimaSynService = muzimaApplication.getMuzimaSyncService();
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
         fcmTokenController = muzimaApplication.getFCMTokenController();
+        appUsageLogsController = muzimaApplication.getAppUsageLogsController();
         pseudoDeviceId = generatePseudoDeviceId();
         username = muzimaApplication.getAuthenticatedUserId();
         authenticatedUser = muzimaApplication.getAuthenticatedUser();
@@ -230,8 +232,6 @@ public class MuzimaJobScheduler extends JobService {
         protected Void doInBackground(Void... voids) {
             if (new WizardFinishPreferenceService(getApplicationContext()).isWizardFinished()) {
                 RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(),true);
-
-                AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
                 FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
                 try {
                     if(formController.countAllCompleteForms() > 0 && NetworkUtils.isConnectedToNetwork(getApplicationContext())) {
@@ -337,7 +337,6 @@ public class MuzimaJobScheduler extends JobService {
 
                         updateSettingsPreferences(settings);
 
-                        AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
                         try {
                             SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
                             AppUsageLogs lastSetupUpdateLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.SETUP_UPDATE_TIME, username);
@@ -1192,7 +1191,6 @@ public class MuzimaJobScheduler extends JobService {
         protected Void doInBackground(Void... voids) {
             try {
                 //update memory space app usage log
-                AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
                 AppUsageLogs appUsageLogs = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.AVAILABLE_INTERNAL_SPACE);
                 String availableMemory = MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize());
 
@@ -1280,7 +1278,7 @@ public class MuzimaJobScheduler extends JobService {
             if(file.exists())
                 file.delete();
 
-            if(!media.isVoided()) {
+            if(!media.isRetired()) {
                 //Enqueue the file for download
                 try {
                     DownloadManager.Request request = new DownloadManager.Request(Uri.parse(media.getUrl() + ""));
