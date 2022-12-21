@@ -73,28 +73,6 @@
         <item name="android:textColor">@color/primary_white</item>
     </style>
 
-    <style name="DashboardBaseText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">?attr/dashBoardBaseTextColor</item>
-    </style>
-
-    <style name="DashboardTitleText" parent="DashboardBaseText">
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:capitalize">words</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">30sp</item>
-    </style>
-
-    <style name="DashboardMediumTitleText" parent="DashboardTitleText">
-        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
-        <item name="android:paddingLeft">0dp</item>
-
-    </style>
-
     <style name="NotClickableSummaryItem">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -151,14 +129,6 @@
         <item name="android:textSize">15sp</item>
     </style>
 
-    <style name="PatientDemographicsLayout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:paddingLeft">15dp</item>
-        <item name="android:paddingRight">15dp</item>
-    </style>
-
     <style name="FormSaveDateTime">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -201,13 +171,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:padding">2dp</item>
-    </style>
-
-    <style name="ObservationByConceptElement">
-        <item name="android:layout_width">@dimen/observation_element_by_concept_height</item>
-        <item name="android:layout_height">@dimen/observation_element_by_concept_height</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:background">@android:color/white</item>
     </style>
 
     <style name="ObservationByEncounterElement">
@@ -329,24 +292,6 @@
         <item name="android:background">@drawable/login_layout_background</item>
     </style>
 
-    <style name="LoginLandscapeLeftLayout">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:gravity">center</item>
-    </style>
-
-    <style name="LoginLandscapeRightLayout">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">2</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:gravity">center</item>
-    </style>
-
     <style name="LoginInfoEditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">70dp</item>
@@ -397,13 +342,6 @@
         <item name="android:padding">4dp</item>
     </style>
 
-    <style name="HelpContent">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">15dp</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">20sp</item>
-    </style>
     <style name="MuzimaListView" parent="@android:style/Widget.ListView">
         <item name="android:divider">@drawable/divider</item>
         <item name="android:dividerHeight">1dp</item>

@@ -19,7 +19,6 @@
     <string name="assignment_form_uuid_missing_warning">Désolé, le formulaire de devoir n\'a pas été défini. Veuillez contacter l\'administrateur.</string>
     <string name="autocomplete_server_not_found">Le serveur est inaccessible! \\nConnectez votre appareil et essayez à nouveau OU créez un nouveau profil</string>
     <string name="captured_date">Date de capture:</string>
-    <string name="change_settings">Modifier les paramètres</string>
     <string name="client_registration_question_text">Voulez-vous enregistrer un client dans mUzima?</string>
     <string name="complex_obs">Complexe obs</string>
     <string name="concept_description">Description du concept</string>
@@ -29,12 +28,8 @@
     <string name="confirm_duplicate_form_data_save">Sauvegarder les données des formulaires dupliqués</string>
     <string name="confirm_patient_id_exists">Le client possède-t-il déjà un identifiant ?</string>
     <string name="contact_us">Nous contacter</string>
-    <string name="date_general">Date</string>
-    <string name="date_temp">8 juin</string>
     <string name="delete_individual_obs">Supprimer des obs individuels</string>
     <string name="downloaded_reports">Rapports téléchargés</string>
-    <string name="downloading_cohorts_text">Téléchargement de cohortes</string>
-    <string name="downloading_forms">Téléchargement de formulaires</string>
     <string name="encounter_date">Date de rencontre:</string>
     <string name="encounter_details">Détails de la rencontre</string>
     <string name="encounter_location">Lieu de rencontre:</string>
@@ -56,7 +51,6 @@
     <string name="error_credential_invalid">Nom d\'utilisateur, mot de passe, combinaison de serveur invalides.</string>
     <string name="error_data_download">Une erreur est survenue lors du téléchargement de données depuis le serveur</string>
     <string name="error_data_save">Une erreur est survenue lors de l\'enregistrement des données dans le repertoire local</string>
-    <string name="error_empty_message_text">Impossible d\'envoyer un message vide.</string>
     <string name="error_encounter_download">Echec du téléchargement des rencontres</string>
     <string name="error_encounter_load">Impossible de charger les rencontres</string>
     <string name="error_encounter_observation_download">Impossible de télécharger les observations pour les clients</string>
@@ -67,7 +61,6 @@
     <string name="error_form_download">Impossible de télécharger les formulaires</string>
     <string name="error_form_fetch">Quelque chose s\'est avérée incorrecte lors de la récupération des formulaires du repositoire local</string>
     <string name="error_form_load">Impossible de charger les formulaires</string>
-    <string name="error_form_load_fail">Impossible de charger le formulaire</string>
     <string name="error_form_location_load">Une erreur est survenue lors du chargement des emplacements pour le formulaire</string>
     <string name="error_form_provider_load">Une erreur est survenue lors du chargement de fournisseur pour le formulaire</string>
     <string name="error_form_save">Une erreur s\'est produite lors de l\'enregistrement du formulaire</string>
@@ -80,8 +73,6 @@
     <string name="error_local_repo_data_delete">Une erreur s\'est produite lors de la suppression des données du repositoire local</string>
     <string name="error_location_download">Impossible de télécharger les emplacements</string>
     <string name="error_location_fetch">Quelque chose a mal tourné lors de la récupération des emplacements du repositoire local</string>
-    <string name="error_notification_download">Erreur lors du téléchargement des notifications</string>
-    <string name="error_notification_fetch">Quelque chose a mal tourné lors de la récupération des notifications de la base de données locale</string>
     <string name="error_observation_download">Impossible de télécharger les observations</string>
     <string name="error_observation_form_save">Une erreur s\'est produite lors de l\'enregistrement des observations dans le formulaire</string>
     <string name="error_observation_load">Echec du chargement des observations</string>
@@ -113,7 +104,6 @@
     <string name="feedback_header">S\'il vous plaît envoyez-nous vos commentaires et réactions</string>
     <string name="feedback_hint">Qu\'est-ce que tu as en tête?</string>
     <string name="feedback_rating_question">Comment facile à utiliser mUzima App?</string>
-    <string name="fill_out_forms_for_a_patient_general">Remplir des formulaires pour un client</string>
     <string name="form_encounter_date">Date de rencontre</string>
     <string name="form_encounter_location">Lieu de rencontre</string>
     <string name="form_encounter_provider">Fournisseur de rencontres</string>
@@ -147,10 +137,8 @@
     <string name="general_concepts">Concepts</string>
     <string name="general_consent_date">Données de consentement :</string>
     <string name="general_create_contact">Ajouter le contact</string>
-    <string name="general_data_collection">Collecte de données</string>
     <string name="general_data_collection_tools">Outils de collecte de données</string>
     <string name="general_data_collection_tools_description">mUzima utilise des formulaires Web faciles à développer pour collecter des données qui peuvent facilement être transmises et stockées dans OpenMRS.</string>
-    <string name="general_date">Date</string>
     <string name="general_date_of_birth">Date de naissance: %s</string>
     <string name="general_days_character">j</string>
     <string name="general_delete">Supprimer</string>
@@ -163,7 +151,6 @@
     <string name="general_enter_value_to_save">Saisissez la valeur à enregistrer</string>
     <string name="general_error_resolutions">Résolutions d\'erreurs</string>
     <string name="general_error_resolutions_description">mUzima empêche la saisie de données de formulaire en double sur l\'appareil mobile et résout les erreurs dans OpenMRS lors du traitement des données.</string>
-    <string name="general_fail">Échouer</string>
     <string name="general_failure">Échec</string>
     <string name="general_feedback">Avis</string>
     <string name="general_filling_forms">Remplir des formulaires</string>
@@ -210,7 +197,6 @@
     <string name="general_next">Suivant</string>
     <string name="general_no">Non</string>
     <string name="general_not_available_text">Indisponible</string>
-    <string name="general_notification">Notification</string>
     <string name="general_notifications">Notifications</string>
     <string name="general_observations">Observations</string>
     <string name="general_ok">D\'accord/ok</string>
@@ -250,7 +236,6 @@
     <string name="general_selected">Choisi</string>
     <string name="general_server">Serveur</string>
     <string name="general_settings">Paramètres</string>
-    <string name="general_setup_completed_message">Configuration terminée</string>
     <string name="general_skip">Ignorer</string>
     <string name="general_small">Petit</string>
     <string name="general_sort_by_name">De nom</string>
@@ -263,8 +248,6 @@
     <string name="general_upload">Télécharger</string>
     <string name="general_use_selected_location">Utiliser l\'emplacement sélectionné</string>
     <string name="general_username">Nom d\'utilisateur</string>
-    <string name="general_view_encounter">Voir la rencontre</string>
-    <string name="general_welcome">Bienvenue</string>
     <string name="general_works_offline">Fonctionne hors ligne</string>
     <string name="general_works_offline_description">mUzima fonctionne parfaitement en mode en ligne et hors ligne. Cela permet la collecte de données et les examens même lorsque l\'appareil est hors ligne.</string>
     <string name="general_years">%s Ans</string>
@@ -281,7 +264,6 @@
     <string name="hint_audio_caption">S\'il vous plaît entrer une légende pour l\'audio</string>
     <string name="hint_audio_record">Enregistrer ou choisir l\'audio</string>
     <string name="hint_authentication_progress">Authentification…</string>
-    <string name="hint_card_not_empty">La carte n\'est pas vide. S\'il vous plaît utiliser une nouvelle carte.</string>
     <string name="hint_check_digit_validation_failure">S\'il vous plait entrez les numéros qui correspondent a l\'algorithme CheckDigit</string>
     <string name="hint_client_local_search">Votre recherche comprend le numéro identificateur du client, prenom et le nom de famille nom et recherche uniquement dans l\'appareil</string>
     <string name="hint_client_location_update">Voulez-vous mettre à jour l\'emplacement de la maison pour ce client?</string>
@@ -291,7 +273,6 @@
     <string name="hint_complete_form_unavailable">Les formulaires non synchronisés sont disponibles si vous avez rempli un formulaire complètement, mais lorsqu\'ils n\'ont pas été synchronisés avec le serveur</string>
     <string name="hint_configuration_search">Rechercher un programme</string>
     <string name="hint_consultation_consultant_validation_failure">Fournissaient s\'il vous plait un consultant de la liste des consultants potentiels</string>
-    <string name="hint_create_new_SHR">Le client n\'a pas de SHR. Voulez-vous créer un nouveau SHR et écrire sur la carte?</string>
     <string name="hint_current_or_past_date_validation_failure">S\'il vous plait entrez une date inferieur ou égal à aujaud\'hui</string>
     <string name="hint_default_encounter_location">Cet emplacement de rencontre sélectionné sera l\'emplacement de rencontre par défaut pour tous les formulaires</string>
     <string name="hint_default_encounter_provider">L\'utilisateur connecté sera utilisé comme fournisseur de rencontres par défaut</string>
@@ -307,13 +288,11 @@
     <string name="hint_form_download">S\'il vous plaît sélectionner les formulaires de la liste de tous les formulaires et cliquez sur télécharger</string>
     <string name="hint_form_validation_failure">Un ou plusieurs contrôles de validation ont échoué sur ce formulaire. Veuillez revoir et soumettre à nouveau le formulaire</string>
     <string name="hint_future_date_validation_failure">Veuillez entrer une date dans le futur</string>
-    <string name="hint_gps_location_off">La localisation est désactivée ! Veuillez activer la fonction de localisation dans les paramètres.</string>
     <string name="hint_guided_setup">Sélectionnez une configuration prédéfinie et laissez mUzima faire le reste pour vous</string>
     <string name="hint_help_prompt">Veuillez saisir votre message</string>
     <string name="hint_image_caption_prompt">Veuillez entrer une légende pour l\'image</string>
     <string name="hint_incomplete_form_unavailable">Les formulaires incomplets ne sont disponibles que si vous avez enregistré un formulaire partiellement rempli</string>
     <string name="hint_install_psmart">Voulez-vous installer l\'application P-Smart?</string>
-    <string name="hint_last_synced">Dernière synchronisation effectuée: %s</string>
     <string name="hint_light_mode">Activer le thème de la lumière</string>
     <string name="hint_loading_progress">Chargement en cours…</string>
     <string name="hint_local_connection_unavailable">Veuillez connecter votre appareil et réessayer</string>
@@ -322,8 +301,6 @@
     <string name="hint_manage_location">Obtenir plus d\'emplacements depuis le serveur ou supprimer les emplacements de l\'appareil</string>
     <string name="hint_manage_provider">Obtenir plus de concepts à partir du serveur ou supprimer les concepts de ce périphérique. Les concepts sont utilisées pour configurer les observations à télécharger.</string>
     <string name="hint_mandatory_question_validation_failure">Cette question doit etre repondue</string>
-    <string name="hint_notification_sync">Assurez-vous que vous avez une connexion vers le serveur et appuyez sur le bouton de charger</string>
-    <string name="hint_opening_card_reader">Lecteur de carte d\'ouverture</string>
     <string name="hint_option_none_exclusive_selection_validation_failure">Si\'Aucun\' est selectionné, aucune autre option peut etre selectionnée</string>
     <string name="hint_password_change">Avez-vous changé votre mot de passe récemment?</string>
     <string name="hint_password_prompt">Veuillez entrer votre mot de passe</string>
@@ -344,16 +321,13 @@
     <string name="hint_server_url_prompt">Entrez l\'URL du serveur</string>
     <string name="hint_session_timeout">Si inactif pendant ce temps, mUzima se déconnectera automatiquement</string>
     <string name="hint_set_client_location">Le domicile de ce client n\'a pas été défini. Voulez-vous le définir maintenant?</string>
-    <string name="hint_set_default_encounter_location_for_SHR">Veuillez définir l\'emplacement de rencontre par défaut afin d\'activer l\'écriture d\'une nouvelle carte.</string>
     <string name="hint_setting_refresh">Voulez-vous télécharger de nouveau cette configuration de votre serveur?</string>
-    <string name="hint_switch_location_on">Veuillez activer la localisation dans les paramètres.</string>
     <string formatted="false" name="hint_their_performance">Résumé des performances pour %s entre %s et %s</string>
     <string name="hint_username_prompt">Veuillez entrer votre nom d\'utilisateur</string>
     <string name="hint_video_caption_prompt">Veuillez entrer une légende pour la vidéo</string>
     <string name="hint_video_record">Enregistrer ou choisir une vidéo</string>
     <string name="hint_write_SHR_to_card">Voulez-vous écrire Shared Health Record sur la carte?</string>
     <string formatted="false" name="hint_your_performance">Vos performances entre %s et %s</string>
-    <string name="how_to_general">Comment:</string>
     <string name="individual_obs">Obs individuel</string>
     <string name="individual_obs_description">Obs individuel</string>
     <string name="info_accept_all">Accepter tout</string>
@@ -362,7 +336,6 @@
     <string name="info_agree_to_muzima_terms_and_conditions">Accepter les conditions générales de mUzima</string>
     <string name="info_authentication_in_progress">Authentification en cours …</string>
     <string name="info_background_data_sync_started">Synchroniser les données en arrière-plan</string>
-    <string name="info_by_abstract">Par résumé</string>
     <string name="info_by_encounter">Par rencontre</string>
     <string name="info_by_type">Par type</string>
     <string name="info_client_local_search_not_found">Aucun client ne correspond à votre recherche dans l\'appareil. Entrez au moins 3 caractères pour la recherche à distance.</string>
@@ -428,14 +401,8 @@
     <string name="info_downloaded_image">Image téléchargée</string>
     <string name="info_downloaded_reports_unavailable">Aucun rapport n\'a été téléchargé</string>
     <string name="info_draft_form_save_success">Le brouillon du formulaire a été enregistré avec succès.</string>
-    <string name="info_encounter_download">Téléchargement des rencontres en cours</string>
     <string formatted="false" name="info_encounter_download_progress">Rencontres téléchargées pour client %d de %d.</string>
-    <string name="info_encounter_patient_downloaded">1 rencontre téléchargée pour 1 client</string>
-    <string name="info_encounter_patient_not_downloaded">N\'a pas téléchargé aucune rencontres</string>
-    <string formatted="false" name="info_encounter_patients_downloaded">1 rencontre a été Téléchargé pour %d clients</string>
     <string name="info_encounter_unavailable">Aucune rencontre n\'est disponible</string>
-    <string formatted="false" name="info_encounters_patient_downloaded">%d rencontres Téléchargé pour 1 client</string>
-    <string formatted="false" name="info_encounters_patients_downloaded">%d rencontres Téléchargés pour %d clients</string>
     <string name="info_for_health_providers">pour les prestataires de santé</string>
     <string formatted="false" name="info_form_data_delete">Formulaires %d supprimés</string>
     <string name="info_form_data_save_success">Les données de formulaire remplies ont été enregistrées avec succès.</string>
@@ -487,9 +454,6 @@
     <string name="info_no_forms_data_tip">Aucun formulaire configuré pour la saisie de données. Contactez votre administrateur pour ajouter des formulaires de saisie de données</string>
     <string name="info_no_observation_and_concept_data_tip">Aucun concept configuré. Contactez votre administrateur pour ajouter des concepts.</string>
     <string name="info_no_observation_for_concept_data_tip">Aucune donnée historique n\'existe pour les concepts configurés</string>
-    <string formatted="false" name="info_notification_download">%d notifications Téléchargées</string>
-    <string name="info_notification_download_in_progress">Notifications en cours de téléchargement</string>
-    <string name="info_notification_unavailable">Aucune notification disponible</string>
     <string name="info_observation_download">observations en cours de Téléchargement</string>
     <string name="info_observation_in_progress">Les observations sont encore en cours de chargement</string>
     <string name="info_observation_load">Les observations sont en cours de chargement</string>
@@ -540,7 +504,6 @@
     <string name="info_setup_config_load">Chargement des configurations d\'installation</string>
     <string name="info_setup_configuration_template_download_in_progress">Mise à jour des configurations d\'installation</string>
     <string formatted="false" name="info_setup_configuration_templates_downloaded">%d modèles de configuration d\'installation téléchargés</string>
-    <string name="info_setup_configuration_wizard_prepare">Préparation de l\'assistant de configuration</string>
     <string formatted="false" name="info_submitted_form_data_status">Statut des formulaires récemment soumis: %d traité avec succès, %d traité avec erreur, %d en attente de traitement, %d état inconnu.</string>
     <string name="info_submitted_form_data_status_check">Vérification du statut des formulaires récemment soumis.</string>
     <string name="info_submitted_form_data_status_check_failure">Impossible de vérifier l\'état des formulaires récemment soumis.</string>
@@ -589,36 +552,27 @@
     <string name="info_video_chose_activity_unavailable">Erreur: Application pour choisir la vidéo non trouvée</string>
     <string name="info_video_play_activity_unavailable">Erreur: Application pour la lecture vidéo non trouvé</string>
     <string name="info_video_record_activity_unavailable">Erreur: Application d\'enregistrement vidéo non trouvé</string>
-    <string name="initial_setup_for_muzima_general">Configuration initiale pour mUzima</string>
     <string name="interactive_help_choose">Choisis une option:</string>
     <string name="interactive_help_header">Dites-nous comment nous pouvons vous aider</string>
     <string name="interactive_help_hint">Tapez votre message</string>
-    <string name="introduction_to_muzima_general_text">Introduction à mUzima</string>
-    <string name="june_8_sample_date">8 juin</string>
     <string name="language_english">Anglais</string>
     <string name="language_french">Française</string>
     <string name="language_gujarati">Gujarati</string>
     <string name="language_hindi">Hindi</string>
     <string name="language_portuguese">Portugais</string>
     <string name="language_swahili">Swahili</string>
-    <string formatted="false" name="menu_SHR_data_sync">Synchroniser les données SHR (%d)</string>
-    <string name="menu_all_data_sync">Synchroniser toutes les données</string>
     <string name="menu_form_back_to_draft">Retour au brouillon</string>
     <string name="message_auto_logout">Vous serez automatiquement déconnecté dans %d secondes</string>
     <string name="message_feedback_sent">Merci pour votre message. \n Vos commentaires sont importants pour nous.</string>
     <string name="message_help_sent">Merci de tendre la main. \nNotre équipe d\'assistance étudiera votre demande. \nNous reviendrons vers vous dès que possible.</string>
     <string name="message_missing_form_encounter_details_error">doit être fourni</string>
-    <string name="muzima_training_manual_general">Manuel de formation mUzima</string>
-    <string name="new_messages_number_text"># nouveaux messages</string>
     <string name="no_default_encounter_location">Aucun lieu de rencontre par défaut</string>
     <string name="no_description_general">Pas de description</string>
     <string name="no_email_client">Aucun client de messagerie installé sur ce périphérique. \nVeuillez en installer un, puis laissez vos commentaires.</string>
-    <string name="number_hashtag_representation">##</string>
     <string name="observation_details">Détails d\'observation</string>
     <string name="observation_value">Valeur d\'observation:</string>
     <string name="online_mode_switch">Passer en mode en ligne</string>
     <string name="online_mode_switch_warning">Vous êtes passé du mode hors ligne au mode en ligne. En mode en ligne, toutes les données du patient seront supprimées de votre appareil lorsque vous vous déconnectez ou que vous êtes automatiquement déconnecté.</string>
-    <string name="patient_SHR_search_dialog_title">Recherche SHR du client</string>
     <string name="patient_SHR_search_title_text">Recherche SHR du client</string>
     <string name="privacy_policy">
      mUzima est une application mobile qui permet aux professionnels de la santé de collecter, gérer et utiliser les données de santé comme une extension du système de dossier médical OpenMRS. L\'application est conçue comme une application d\'utilisateur final open source, fournie gratuitement et destinée à être utilisée telle quelle. Si vous utilisez l\'application pour une organisation, vous acceptez cette politique de confidentialité au nom de cette organisation. Si vous utilisez l\'application pour fournir des services, des logiciels et du contenu à quelqu\'un d\'autre, vous acceptez cette politique de confidentialité en son nom.
@@ -661,26 +615,16 @@
     <string name="provider_identifier">Identifiant du fournisseur:</string>
     <string name="provider_name">Nom du fournisseur:</string>
     <string name="provider_name_general">Nom du fournisseur</string>
-    <string name="provider_reports_general">Rapports de fournisseur</string>
     <string name="registering_patient_message_title_text">Enregistrement du client dans mUzima …</string>
     <string name="relationship_create_success">Relation créée avec succès</string>
     <string name="relationship_delete_fail">Impossible de supprimer la relation car elle est déjà enregistrée sur le serveur. Contacter l\'administrateur</string>
     <string name="relationship_to_self_error">Le client ne peut pas se rapporter à lui-même</string>
-    <string name="reply_hint_text">envoyer votre réponse</string>
-    <string name="sample_date_text">21/02/2018</string>
-    <string name="scan_card_id_title">ID de carte de numérisation</string>
-    <string name="search_patient_on_server_option_title_text">Le client n\'est pas disponible localement, souhaitez-vous effectuer une recherche sur le serveur?</string>
     <string name="select_a_registration_form_text">Sélectionnez un formulaire d\'inscription</string>
     <string name="select_a_relationship_form_text">Sélectionnez un formulaire</string>
-    <string name="select_default_encounter_location">Choisissez votre lieu de rencontre par défaut</string>
-    <string name="send_feedback">Envoyer des commentaires</string>
     <string name="send_general_text">Envoyer</string>
-    <string name="server_side_setup_general">Configuration côté serveur</string>
-    <string name="setting_up_muzima_general_text">Mise en place de mUzima</string>
     <string name="shr_registration">Enregistrement SHR</string>
     <string name="shr_registration_description">Données d\'enregistrement SHR</string>
     <string name="success_writing_smartcard">Les données de la carte à puce ont été écrites avec succès.</string>
-    <string name="tagging_forms">Marquage des formulaires</string>
     <string name="title_about_dashboard_help_html">À propos du tableau de bord</string>
     <string name="title_active_setup_config">Configuration d\'installation active</string>
     <string name="title_activity_audio">Ajouter Audio</string>
@@ -688,9 +632,7 @@
     <string name="title_activity_client_summary">Résumé du client</string>
     <string name="title_activity_image">Ajouter une image</string>
     <string name="title_activity_video">Ajouter une vidéo</string>
-    <string name="title_advanced_setup">Configuration avancée</string>
     <string name="title_advanced_setup_help_html">Configuration initiale pour mUzima</string>
-    <string name="title_advanced_setup_help_video">Configuration initiale avancée</string>
     <string name="title_app_language">Langue</string>
     <string name="title_audio_caption">Légende audio</string>
     <string name="title_audio_choose">Choisir audio</string>
@@ -698,7 +640,6 @@
     <string name="title_auto_logout">Déconnexion automatique</string>
     <string name="title_client_location">Emplacement des clients</string>
     <string name="title_client_location_update">Mettre à jour l\'emplacement du client</string>
-    <string name="title_client_notifications">Notifications de client</string>
     <string name="title_client_registration_help_video">Enregistrement du client</string>
     <string name="title_clients_locations">Emplacements des clients</string>
     <string name="title_cohort_download_help_video">Téléchargement de cohortes (sur demande)</string>
@@ -709,7 +650,6 @@
     <string name="title_default_encounter_provider">fournisseur de rencontre par défaut</string>
     <string name="title_duplicate_form_data_warning">Avertissement de données de formulaire dupliquer</string>
     <string name="title_enable_gps">Activer le GPS</string>
-    <string name="title_enable_gps_location">Activer l\'emplacement et la connectivité Internet.</string>
     <string name="title_enable_shr">Activer SHR</string>
     <string name="title_fill_patient_forms_help">Remplissez les formulaires pour un client</string>
     <string name="title_font_size">Taille de police</string>
@@ -717,7 +657,6 @@
     <string name="title_form_data_complete">Données de formulaire non synchronisées</string>
     <string name="title_form_data_incomplete">Données de formulaire incomplètes</string>
     <string name="title_form_download_help_video">Téléchargement de formulaires (sur demande)</string>
-    <string name="title_general_notifications">Notifications générales</string>
     <string name="title_gps_location">Localisation GPS</string>
     <string name="title_guided_setup">Configuration guidée (recommandée)</string>
     <string name="title_guided_setup_help_video">Configuration initiale guidée</string>
@@ -728,14 +667,10 @@
     <string name="title_image_caption">Légende de l\'image</string>
     <string name="title_image_capture">Capture d\'image</string>
     <string name="title_image_choose">Choisir l\'image</string>
-    <string name="title_initial_setup_guide">guide de configuration initiale de mUzima</string>
-    <string name="title_install_barcode_scanner">Installer le scanner de codes à barres</string>
     <string name="title_install_psmart">Installer l\'application P-Smart</string>
-    <string name="title_introduction_video">Vidéo d\'introduction à mUzima</string>
     <string name="title_last_logged_in">Date de la dernière connexion</string>
     <string name="title_light_mode">Activer le mode jour</string>
     <string name="title_local_client_search_help_video">Recherche de clients (locale)</string>
-    <string name="title_location_help">aide des emplacements</string>
     <string name="title_logged_in_user">Utilisateur connecté</string>
     <string name="title_logo">Logo de mUzima</string>
     <string name="title_logout_confirm">Confirmation!</string>
@@ -745,22 +680,18 @@
     <string name="title_media_preview">Aperçu du média</string>
     <string name="title_missing_form_encounter_details_error">Détails de Rencontre manquante</string>
     <string name="title_muzima_disclaimer">Avertissement de mUzima</string>
-    <string name="title_muzima_training_manual">Manuel de formation mUzima</string>
     <string name="title_observations_by_concepts">Par type de données</string>
     <string name="title_observations_by_encounters">Par rencontre</string>
     <string name="title_pick_location">Choisir emplacement</string>
     <string name="title_privacy_policy">Politique de confidentialité</string>
-    <string name="title_provider_help">Aide fournisseur</string>
     <string name="title_provider_not_set">Impossible de définir en tant que fournisseur</string>
     <string name="title_provider_reports">Rapports des fournisseurs</string>
     <string name="title_qrcode">QR code</string>
     <string name="title_real_time_sync">Synchronisation automatique</string>
     <string name="title_real_time_sync_setting_unchanged">Préférence de synchronisation automatique non modifiée</string>
-    <string name="title_registration_form">Sélectionnez le formulaire d\'inscription</string>
     <string name="title_require_medical_record_number">" Exiger un numéro de dossier médical"</string>
     <string name="title_search_server">Recherche sur le serveur</string>
     <string name="title_server_client_search_help_video">Recherche de client (contre le serveur)</string>
-    <string name="title_server_side_setup">Configuration côté serveur</string>
     <string name="title_session_timeout">Expiration de la session (minutes)</string>
     <string name="title_set_client_location">Définir l\'emplacement du client</string>
     <string name="title_setting_refresh">Actualiser les paramètres</string>
@@ -770,8 +701,6 @@
     <string name="title_video_choose">Choisir vidéo</string>
     <string name="title_video_record">Enregistrement vidéo</string>
     <string name="to_text">À</string>
-    <string name="type_a_message_hint">Tapez un message</string>
-    <string name="video_links_general_text">Liens vidéo:</string>
     <string name="warning_auto_save_interval">Intervalle de sauvegarde de formulaire automatique: Impossible de définir l\'intervalle d\'enregistrement automatique. \nVeuillez entrer une valeur comprise entre 1 et 120.</string>
     <string name="warning_form_close">Formulaire de clôture: Ceci annulera toutes vos modifications. Etes-vous sûr de vouloir faire ca?</string>
     <string name="warning_form_data_already_exists">Ce formulaire de données existe déjà pour ce client avec la même date de rencontre.</string>
