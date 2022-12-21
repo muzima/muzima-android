@@ -220,7 +220,7 @@ public class MuzimaSettingController {
                         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
                         Intent intent = new Intent();
                         intent.setComponent(cn);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         }
                         muzimaApplication.getApplicationContext().startActivity(intent);
@@ -228,7 +228,7 @@ public class MuzimaSettingController {
                         Intent intent;
                         intent = new Intent(muzimaApplication, MainDashboardActivity.class);
                         intent.putExtra("OnlineMode", setting.getValueBoolean());
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         }
                         muzimaApplication.startActivity(intent);

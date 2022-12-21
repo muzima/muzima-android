@@ -257,11 +257,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                 if (realTimeSyncPreference.isChecked() &&
                 !((MuzimaApplication) getActivity().getApplication()).getMuzimaSettingController().isOnlineOnlyModeEnabled()) {
                     MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getActivity().getApplicationContext());
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(0,false);
-                    } else {
-                        RealTimeFormUploader.getInstance().uploadAllCompletedForms(getActivity().getApplicationContext(),false);
-                    }
+                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(0,false);
                 }
                 return false;
             }

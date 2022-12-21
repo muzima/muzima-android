@@ -54,7 +54,6 @@ import com.muzima.controller.MediaCategoryController;
 import com.muzima.controller.MediaController;
 import com.muzima.controller.PatientReportController;
 import com.muzima.controller.MuzimaSettingController;
-import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
@@ -105,7 +104,6 @@ public class MuzimaSyncService {
     private final PatientController patientController;
     private final ObservationController observationController;
     private EncounterController encounterController;
-    private NotificationController notificationController;
     private LocationController locationController;
     private ProviderController providerController;
     private SetupConfigurationController setupConfigurationController;
@@ -126,7 +124,6 @@ public class MuzimaSyncService {
         patientController = muzimaApplication.getPatientController();
         observationController = muzimaApplication.getObservationController();
         encounterController = muzimaApplication.getEncounterController();
-        notificationController = muzimaApplication.getNotificationController();
         locationController = muzimaApplication.getLocationController();
         providerController = muzimaApplication.getProviderController();
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
@@ -1121,36 +1118,6 @@ public class MuzimaSyncService {
             patientUuids.add(patient.getUuid());
         }
         return patientUuids;
-    }
-
-    public int[] downloadNotifications(String receiverUuid) {
-        Log.e(getClass().getSimpleName(), "Downloading messages in MuzimaSyncService");
-        int[] result = new int[2];
-
-        try {
-            List<Notification> notifications;
-            notifications = notificationController.downloadNotificationByReceiver(receiverUuid);
-            Log.i(getClass().getSimpleName(), "Notifications download successful");
-            notificationController.saveNotifications(notifications);
-            Log.i(getClass().getSimpleName(), "New notifications are saved");
-
-            List<Notification> senderNotifications;
-            senderNotifications = notificationController.downloadNotificationBySender(receiverUuid);
-            notificationController.saveNotifications(senderNotifications);
-
-            result[0] = SUCCESS;
-            result[1] = notifications.size();
-
-        } catch (NotificationController.NotificationDownloadException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to download notifications", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
-            return result;
-        } catch (NotificationController.NotificationSaveException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to save notifications", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
-            return result;
-        }
-        return result;
     }
 
     public int[] downloadPatientReportHeaders(String patientUuid) {

@@ -190,16 +190,6 @@
                 android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
-            android:name=".view.notifications.PatientNotificationActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_client_summary"
-            android:parentActivityName=".view.patients.PatientSummaryActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientSummaryActivity" />
-        </activity>
-        <activity
             android:name=".view.encounters.EncounterSummaryActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
@@ -268,17 +258,6 @@
                 android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
-            android:name=".view.notifications.NotificationActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:label="@string/general_notification"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
-            android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientSummaryActivity" />
-        </activity>
-        <activity
             android:name=".view.relationship.RelationshipsListActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
@@ -321,14 +300,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.muzima.view.patients.PatientsSearchActivity" />
-        </activity>
-
-        <activity
-            android:name=".view.notifications.NotificationsListActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:label="@string/general_notifications"
-            android:parentActivityName=".view.MainDashboardActivity">
         </activity>
 
         <activity
@@ -399,7 +370,6 @@
             android:exported="false" />
 
         <activity android:name=".view.SHRObservationsDataActivity" />
-        <activity android:name=".view.notifications.ConversationActivity" />
 
         <service
             android:name=".scheduler.MuzimaJobScheduler"

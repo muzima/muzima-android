@@ -61,10 +61,7 @@ public class PatientReportWebActivity extends BroadcastListenerActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDatabaseEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            webView.setWebContentsDebuggingEnabled(true);
-        }
+        webView.setWebContentsDebuggingEnabled(true);
 
         webView.loadDataWithBaseURL(
                 "file:///android_asset/www/forms/",

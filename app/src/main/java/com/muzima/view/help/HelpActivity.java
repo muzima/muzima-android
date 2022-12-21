@@ -177,11 +177,7 @@ public class HelpActivity extends BaseHelpActivity {
                     return;
                 }
                 if (data.hasExtra(YOUTUBE_API_CANCEL_CASE) && data.getStringExtra(YOUTUBE_API_CANCEL_CASE).equals(YOUTUBE_INITIALIZATION_FAILURE)) {
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                        startVideoWebViewActivity(data.getStringExtra(VIDEO_PATH), data.getStringExtra(VIDEO_TITLE));
-                    } else {
-                        viewVideo(data.getStringExtra(VIDEO_PATH));
-                    }
+                    startVideoWebViewActivity(data.getStringExtra(VIDEO_PATH), data.getStringExtra(VIDEO_TITLE));
                 }
             }
         }

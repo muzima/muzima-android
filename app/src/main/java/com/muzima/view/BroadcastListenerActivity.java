@@ -133,9 +133,6 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
                     case DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
                         msg = getString(R.string.info_real_time_upload_success);
                         break;
-                    case DataSyncServiceConstants.SYNC_NOTIFICATIONS:
-                        msg = getString(R.string.info_notification_download, downloadCount);
-                        break;
                     case DataSyncServiceConstants.SYNC_PATIENT_REPORTS_HEADERS:
                         msg = getString(R.string.info_patient_reports_downloaded, downloadCount);
                         break;

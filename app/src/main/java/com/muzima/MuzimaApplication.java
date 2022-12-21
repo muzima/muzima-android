@@ -14,7 +14,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -51,7 +50,6 @@ import com.muzima.controller.MediaCategoryController;
 import com.muzima.controller.MediaController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaSettingController;
-import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.PatientReportController;
@@ -105,7 +103,6 @@ public class MuzimaApplication extends MultiDexApplication {
     private ConceptController conceptController;
     private ObservationController observationController;
     private EncounterController encounterController;
-    private NotificationController notificationController;
     private LocationController locationController;
     private ProviderController providerController;
     private MuzimaSyncService muzimaSyncService;
@@ -165,9 +162,6 @@ public class MuzimaApplication extends MultiDexApplication {
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Security.removeProvider("AndroidOpenSSL");
-        }
         logOut();
         muzimaTimer = getTimer(this);
 
@@ -321,18 +315,6 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return encounterController;
-    }
-
-    public NotificationController getNotificationController() {
-        if (notificationController == null) {
-            try {
-                notificationController = new NotificationController(muzimaContext.getService(NotificationService.class),
-                        muzimaContext.getFormService(), this, getSntpService());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return notificationController;
     }
 
     public LocationController getLocationController() {

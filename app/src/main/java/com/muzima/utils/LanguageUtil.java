@@ -43,15 +43,10 @@ public class LanguageUtil {
 
     private static void setContextLocale(Context context, Locale selectedLocale) {
         Configuration configuration = context.getResources().getConfiguration();
-
-        if (!configuration.locale.equals(selectedLocale)) {
-            configuration.locale = selectedLocale;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                configuration.setLocale(selectedLocale);
-                configuration.setLayoutDirection(selectedLocale);
-            }else{
-                configuration.locale = selectedLocale;
-            }
+        Locale configurationLocale = configuration.getLocales().get(0);
+        if (!configurationLocale.equals(selectedLocale)) {
+            configuration.setLocale(selectedLocale);
+            configuration.setLayoutDirection(selectedLocale);
             context.getResources().updateConfiguration(configuration,
                     context.getResources().getDisplayMetrics());
         }

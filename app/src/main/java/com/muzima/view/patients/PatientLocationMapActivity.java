@@ -186,9 +186,7 @@ public class PatientLocationMapActivity extends BroadcastListenerActivity{
         webSettings.setDatabaseEnabled(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setBuiltInZoomControls(false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            webView.setWebContentsDebuggingEnabled(true);
-        }
+        webView.setWebContentsDebuggingEnabled(true);
         webView.addJavascriptInterface(this,"patientLocationMapInterface");
         webView.loadUrl("file:///android_asset/www/maps/patientHomeLocationMap.html");
     }

@@ -89,9 +89,7 @@ public class MuzimaJobScheduleBuilder {
 
     private void handleScheduledPeriodicDataSyncJob() {
         ComponentName componentName = new ComponentName(context, MuzimaJobScheduler.class);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-
-            JobInfo mUzimaJobInfo;
+        JobInfo mUzimaJobInfo;
 
             mUzimaJobInfo = new JobInfo
                     .Builder(MESSAGE_SYNC_JOB_ID, componentName)
@@ -103,17 +101,12 @@ public class MuzimaJobScheduleBuilder {
             if (jobScheduler != null) {
                 jobScheduler.schedule(mUzimaJobInfo);
             }
-        }
-
     }
 
     private void cancelPeriodicBackgroundDataSyncJob() {
         JobScheduler jobScheduler = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
-            jobScheduler.cancel(MESSAGE_SYNC_JOB_ID);
-            Toast.makeText(context, R.string.info_data_sync_cancelled, Toast.LENGTH_SHORT).show();
-
-        }
+        jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
+        jobScheduler.cancel(MESSAGE_SYNC_JOB_ID);
+        Toast.makeText(context, R.string.info_data_sync_cancelled, Toast.LENGTH_SHORT).show();
     }
 }

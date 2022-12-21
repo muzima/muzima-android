@@ -195,28 +195,15 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
                                 .show();
 
                     } else if (writeErrors != null) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            Snackbar.make(findViewById(R.id.client_summary_view), getString(R.string.failure_writing_smartcard) + writeErrors.get(0), Snackbar.LENGTH_LONG)
-                                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark, null))
-                                    .setAction(R.string.general_retry, new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            invokeSHRApplication();
-                                        }
-                                    })
-                                    .show();
-                        } else {
-
-                            Snackbar.make(findViewById(R.id.client_summary_view), getString(R.string.failure_writing_smartcard) + writeErrors.get(0), Snackbar.LENGTH_LONG)
-                                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark))
-                                    .setAction(R.string.general_retry, new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            invokeSHRApplication();
-                                        }
-                                    })
-                                    .show();
-                        }
+                        Snackbar.make(findViewById(R.id.client_summary_view), getString(R.string.failure_writing_smartcard) + writeErrors.get(0), Snackbar.LENGTH_LONG)
+                                .setActionTextColor(getResources().getColor(android.R.color.holo_red_dark, null))
+                                .setAction(R.string.general_retry, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        invokeSHRApplication();
+                                    }
+                                })
+                                .show();
                     }
                 } catch (Exception e) {
                     Log.e(getClass().getSimpleName(),"Encounter an exception",e);

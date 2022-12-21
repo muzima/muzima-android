@@ -447,7 +447,7 @@ public class MuzimaJobScheduler extends JobService {
                             Intent intent;
                             intent = new Intent(((MuzimaApplication) context), MainDashboardActivity.class);
                             intent.putExtra("OnlineMode", muzimaSetting.getValueBoolean());
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             }
                             ((MuzimaApplication) context).startActivity(intent);
@@ -456,7 +456,7 @@ public class MuzimaJobScheduler extends JobService {
                             ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
                             Intent intent = new Intent();
                             intent.setComponent(cn);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             }
                             ((MuzimaApplication) context).getApplicationContext().startActivity(intent);

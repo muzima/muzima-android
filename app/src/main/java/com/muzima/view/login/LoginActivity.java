@@ -485,10 +485,8 @@ public class LoginActivity extends BaseActivity {
                 checkAndUpdateUsageLogsIfNecessary(muzimaApplication, successfulLoginTime, result.credentials.getUserName());
 
                 MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    //delay for 10 seconds to allow next UI activity to finish loading
-                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(10000,false);
-                }
+                //delay for 10 seconds to allow next UI activity to finish loading
+                muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(10000,false);
                 boolean isTaskRunning = false;
                 checkMuzimaCoreModuleCompatibility(result);
             } else {
@@ -1012,7 +1010,6 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void requestPermission() {
         Log.e(getClass().getSimpleName(),"Permissions requesting");
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
@@ -1056,22 +1053,13 @@ public class LoginActivity extends BaseActivity {
 
             File file = new File(PATH + "/"+filename);
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            if (Build.VERSION.SDK_INT >= 24) {
-                Uri downloaded_apk = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
-                intent.setDataAndType(downloaded_apk, "application/vnd.android.package-archive");
-                List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                for (ResolveInfo resolveInfo : resInfoList) {
-                    context.grantUriPermission(context.getApplicationContext().getPackageName() + ".provider", downloaded_apk, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivity(intent);
-            } else {
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
-                intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Uri downloaded_apk = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
+            intent.setDataAndType(downloaded_apk, "application/vnd.android.package-archive");
+            List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                context.grantUriPermission(context.getApplicationContext().getPackageName() + ".provider", downloaded_apk, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(intent);
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), "Exception ",e);
