@@ -51,8 +51,6 @@
     <string name="error_credential_invalid">અમાન્ય વપરાશકર્તા નામ, પાસવર્ડ, સર્વર સંયોજન.</string>
     <string name="error_data_download">સર્વરમાંથી ડેટા ડાઉનલોડ કરતી વખતે ભૂલ આવી</string>
     <string name="error_data_save">સ્થાનિક રેપોમાં ડેટા સાચવતી વખતે ભૂલ આવી</string>
-    <string name="error_encounter_download">એન્કાઉન્ટર ડાઉનલોડ કરી શક્યાં નથી</string>
-    <string name="error_encounter_load">એન્કાઉન્ટર્સ લોડ કરી શકાયા નહીં</string>
     <string name="error_encounter_observation_download">ક્લાયન્ટ માટે નિરીક્ષણો ડાઉનલોડ કરી શક્યાં નથી</string>
     <string name="error_exception_data_load">ડેટા લોડ કરતી વખતે લોડ ત્રુટિ આવી</string>
     <string name="error_exception_data_upload">અપલોડ કરેલા ડેટા પર સર્વર દ્વારા પ્રક્રિયા કરી શકાઈ નહીં</string>
@@ -75,8 +73,6 @@
     <string name="error_location_fetch">સ્થાનિક રેપોથી સ્થાનો લાવતી વખતે કંઈક ખોટું થયું</string>
     <string name="error_observation_download">નિરીક્ષણો ડાઉનલોડ કરી શક્યાં નથી</string>
     <string name="error_observation_form_save">ફોર્મમાં નિરીક્ષણો સાચવતી વખતે ભૂલ આવી</string>
-    <string name="error_observation_load">અવલોકનો લોડ કરી શકાયાં નથી</string>
-    <string name="error_observation_unavailable">કોઈ નિરીક્ષણો ઉપલબ્ધ નથી</string>
     <string name="error_parse_exception_data_fetch">ડેટા લાવતી વખતે પાર્સ અપવાદ આવ્યો છે</string>
     <string name="error_patient_data_form_exist">ફોર્મ ડેટા અસ્તિત્વમાં છે. ફોર્મ નમૂનાઓ સમન્વયિત કરતા પહેલા અપૂર્ણ ડેટાને પૂર્ણ કરો અને તેને સર્વર સાથે સમન્વયિત કરો.</string>
     <string name="error_patient_download">ક્લાયંટને ડાઉનલોડ કરી શક્યાં નથી</string>
@@ -197,7 +193,6 @@
     <string name="general_next">આગળ</string>
     <string name="general_no">ના</string>
     <string name="general_not_available_text">ઉપલબ્ધ નથી</string>
-    <string name="general_notifications">સૂચનાઓ</string>
     <string name="general_observations">અવલોકનો</string>
     <string name="general_ok">બરાબર</string>
     <string name="general_online_mode">ઓનલાઈન મોડ</string>
@@ -336,8 +331,6 @@
     <string name="info_agree_to_muzima_terms_and_conditions">મુઝિમાના નિયમો અને શરતો સાથે સંમત થાઓ</string>
     <string name="info_authentication_in_progress">પ્રમાણીકરણ ચાલુ છે …</string>
     <string name="info_background_data_sync_started">પૃષ્ઠભૂમિમાં ડેટાને સમન્વયિત કરી રહ્યાં છે</string>
-    <string name="info_by_encounter">એન્કાઉન્ટર દ્વારા</string>
-    <string name="info_by_type">પ્રકાર દ્વારા</string>
     <string name="info_client_local_search_not_found">કોઈ પણ ગ્રાહકો સ્થાનિક રીતે તમારી શોધ સાથે મેળ ખાતા નથી. દૂરસ્થ શોધ માટે ઓછામાં ઓછા 3 અક્ષરો દાખલ કરો.</string>
     <string name="info_client_local_search_not_found_secondary">અમે તમારી શોધ સાથે સંબંધિત કંઈપણ શોધી શક્યા નથી. સર્વર શોધવાનો પ્રયાસ કરો</string>
     <string name="info_client_remote_search_not_found">કોઈ ક્લાયંટ સર્વર પર તમારી શોધ સાથે મેળ ખાતા નથી</string>
@@ -392,8 +385,6 @@
     <string name="info_downloaded_image">ડાઉનલોડ કરેલી છબી</string>
     <string name="info_downloaded_reports_unavailable">કોઈ અહેવાલો ડાઉનલોડ કરવામાં આવ્યા નથી</string>
     <string name="info_draft_form_save_success">ડ્રાફ્ટ ફોર્મ સફળતાપૂર્વક સાચવવામાં આવ્યું હતું.</string>
-    <string formatted="false" name="info_encounter_download_progress">%d માંથી %d ક્લાયંટ માટે એન્કાઉન્ટર ડાઉનલોડ કર્યા.</string>
-    <string name="info_encounter_unavailable">કોઈ એન્કાઉન્ટર ઉપલબ્ધ નથી</string>
     <string name="info_for_health_providers">આરોગ્ય પ્રદાતાઓ માટે</string>
     <string formatted="false" name="info_form_data_delete">%d ફોર્મ્સ કાઢી નાખ્યા</string>
     <string name="info_form_data_save_success">પૂર્ણ થયેલ ફોર્મ ડેટા સફળતાપૂર્વક સાચવવામાં આવ્યો.</string>
@@ -446,7 +437,6 @@
     <string name="info_no_observation_and_concept_data_tip">કોઈ વિભાવનાઓ ગોઠવેલ નથી. ખ્યાલો ઉમેરવા માટે તમારા વ્યવસ્થાપકનો સંપર્ક કરો.</string>
     <string name="info_no_observation_for_concept_data_tip">રૂપરેખાંકિત ખ્યાલો માટે કોઈ ઐતિહાસિક ડેટા અસ્તિત્વમાં નથી</string>
     <string name="info_observation_download">અવલોકનો ડાઉનલોડ કરી રહ્યા છીએ</string>
-    <string name="info_observation_in_progress">અવલોકનો હજી લોડ થઈ રહ્યાં છે</string>
     <string name="info_observation_load">અવલોકનો લોડ થાય છે</string>
     <string name="info_observation_patient_downloaded">1 ક્લાયંટ માટે 1 અવલોકન ડાઉનલોડ કર્યું</string>
     <string name="info_observation_patient_not_downloaded">કોઈપણ અવલોકનો ડાઉનલોડ કર્યા નથી</string>
@@ -454,7 +444,6 @@
     <string name="info_observation_search">અવલોકનો શોધો</string>
     <string name="info_observation_unavailable">કોઈ અવલોકનો ઉપલબ્ધ નથી</string>
     <string formatted="false" name="info_observations_download_progress">%d ના ક્લાયંટ %d માટે અવલોકનો ડાઉનલોડ કર્યા.</string>
-    <string name="info_observations_load_in_progress">અવલોકનો હજી લોડ થઈ રહ્યાં છે</string>
     <string formatted="false" name="info_observations_patient_downloaded">%d ગ્રાહકો માટે 1 અવલોકન ડાઉનલોડ કર્યું</string>
     <string formatted="false" name="info_observations_patients_downloaded">%d ગ્રાહકો માટે %d અવલોકનો ડાઉનલોડ કર્યા</string>
     <string name="info_patient_data_download">ક્લાયંટનો ડેટા ડાઉનલોડ કરી રહ્યાં છે</string>
@@ -671,8 +660,6 @@
     <string name="title_media_preview">પૂર્વદર્શન મીડિયા</string>
     <string name="title_missing_form_encounter_details_error">એન્કાઉન્ટર વિગતો ખૂટે છે</string>
     <string name="title_muzima_disclaimer">mUzima ડિસક્લેમર</string>
-    <string name="title_observations_by_concepts">ડેટા પ્રકાર દ્વારા</string>
-    <string name="title_observations_by_encounters">તારીખ દ્વારા</string>
     <string name="title_pick_location">સ્થાન પસંદ કરો</string>
     <string name="title_privacy_policy">ગોપનીયતા નીતિ</string>
     <string name="title_provider_not_set">પ્રદાતા તરીકે સેટ કરવામાં અસમર્થ</string>

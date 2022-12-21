@@ -51,8 +51,6 @@
     <string name="error_credential_invalid">Muungano wa Jina la mtumiaji, Neno la siri na Seva sio halali</string>
     <string name="error_data_download">Tatizo limetokea wakati wa kupakua data kutoka katika seva</string>
     <string name="error_data_save">Tatizo:limetokea wakati wa kuhifadhi data katika hifadhi ya kifaa</string>
-    <string name="error_encounter_download">Imeshindikana kupakua mkutano</string>
-    <string name="error_encounter_load">Mkutano umeshindikana kupakiwa</string>
     <string name="error_encounter_observation_download">Imeshindikana kupakua uchunguzi wa wateja</string>
     <string name="error_exception_data_load">Tatizo la kimfumo limetokea wakati wa kupakia data</string>
     <string name="error_exception_data_upload">Seva imeshindwa kutumia data zilizopandishwa</string>
@@ -75,8 +73,6 @@
     <string name="error_location_fetch">Tatizo limetokea wakati wa kuchukua sehemu kutoka katika hifadhi ya kifaa</string>
     <string name="error_observation_download">Imeshindikana kupakua uchunguzi wa daktari</string>
     <string name="error_observation_form_save">Tatizo limetokea wakati wa kuhifadhi uchunguzi wa kliniki zilizoko kwenye fomu</string>
-    <string name="error_observation_load">Imeshindikana kupakia uchunguzi wa daktari</string>
-    <string name="error_observation_unavailable">Hakuna uchunguzi wa daktari uliopatikana</string>
     <string name="error_parse_exception_data_fetch">Tatizo la kiuchanganuzi limetokea wakati wa kuchukua data</string>
     <string name="error_patient_data_form_exist">Kuna data ya fomu. Maliza data ambayo Haijakamilika na uisawazishe kwa Seva kwanza kabla ya kusawazisha violezo vya fomu.</string>
     <string name="error_patient_download">Imeshindikana kupakua wateja.</string>
@@ -197,7 +193,6 @@
     <string name="general_next">Inayofuata</string>
     <string name="general_no">Hapana</string>
     <string name="general_not_available_text">Haipatikani</string>
-    <string name="general_notifications">Taarifa</string>
     <string name="general_observations">Ukaguzi wa daktari</string>
     <string name="general_ok">SAWA</string>
     <string name="general_online_mode">Hali ya Mtandaoni</string>
@@ -336,8 +331,6 @@
     <string name="info_agree_to_muzima_terms_and_conditions">Kukubaliana na mUzima Masharti na Masharti</string>
     <string name="info_authentication_in_progress">Uthibitisho wa utambulisho unaendelea…</string>
     <string name="info_background_data_sync_started">Data inalandanishwa</string>
-    <string name="info_by_encounter">Kwa Mkutano</string>
-    <string name="info_by_type">Kwa Aina</string>
     <string name="info_client_local_search_not_found">Hakuna wateja wamefanana na ulichotafuta katika hifadhi ya kifaa. Ingiza angalu herufi 3 kutafuta katika seva</string>
     <string name="info_client_local_search_not_found_secondary">Hatukuweza kupata chochote kinachohusiana na utafutaji wako. Jaribu kutafuta seva</string>
     <string name="info_client_remote_search_not_found">Hakuna wateja wamefanana na ulichotafuta katika seva</string>
@@ -396,8 +389,6 @@
     <string name="info_downloaded_image">Taswira/Picha imedukuliwa</string>
     <string name="info_downloaded_reports_unavailable">Hakuna ripoti zimepakuliwa</string>
     <string name="info_draft_form_save_success">Fomu ya drafti imefanikiwa kuhifadhiwa</string>
-    <string formatted="false" name="info_encounter_download_progress">Upakuaji wa mikutano kwa mteja %d kati ya %d.</string>
-    <string name="info_encounter_unavailable">Hakuna mkutano uliopo</string>
     <string name="info_for_health_providers">kwa watoa huduma wa afya</string>
     <string formatted="false" name="info_form_data_delete">Fomu %d zimefutwa</string>
     <string name="info_form_data_save_success">Fomu iliyokamilika imefanikwa kuhifadhiwa</string>
@@ -450,7 +441,6 @@
     <string name="info_no_observation_and_concept_data_tip">Hakuna dhana zilizosanidiwa. Wasiliana na msimamizi wako ili kuongeza dhana.</string>
     <string name="info_no_observation_for_concept_data_tip">Hakuna data ya kihistoria iliyopo kwa dhana zilizosanidiwa</string>
     <string name="info_observation_download">Chunguzi za daktari zinapakuliwa</string>
-    <string name="info_observation_in_progress">Chunguzi za daktari bado zinapakiwa</string>
     <string name="info_observation_load">Chunguzi za daktari zinapakiwa</string>
     <string name="info_observation_patient_downloaded">Uchunguzi mmoja wa daktari umepakuliwa wa mteja mmoja</string>
     <string name="info_observation_patient_not_downloaded">Hamna chunguzi zozote za daktari zilizopakuliwa</string>
@@ -458,7 +448,6 @@
     <string name="info_observation_search">Tafuta chunguzi za daktari.</string>
     <string name="info_observation_unavailable">Hakuna chunguzi za daktari zilizopatikana</string>
     <string formatted="false" name="info_observations_download_progress">Chunguzi za daktari za mteja %d kati ya %d zimepakuliwa</string>
-    <string name="info_observations_load_in_progress">Chunguzi za daktari bado zinapakiwa</string>
     <string formatted="false" name="info_observations_patient_downloaded">Uchunguzi mmoja wa daktari umepakuliwa wa wateja %d</string>
     <string formatted="false" name="info_observations_patients_downloaded">Chunguzi %d za wateja %d zimepakuliwa</string>
     <string name="info_patient_data_download">Data za wateja zinapakuliwa</string>
@@ -675,8 +664,6 @@
     <string name="title_media_preview">Hakiki chombo cha habari</string>
     <string name="title_missing_form_encounter_details_error">Maelezo ya Mkutano Hayapo</string>
     <string name="title_muzima_disclaimer">Ilani ya kujitoa hatiani</string>
-    <string name="title_observations_by_concepts">Kwa Aina ya Data</string>
-    <string name="title_observations_by_encounters">Kwa Tarehe</string>
     <string name="title_pick_location">Chagua Mahali</string>
     <string name="title_privacy_policy">Sera ya faragha</string>
     <string name="title_provider_not_set">Imeshindikana kuweka mtoa huduma</string>

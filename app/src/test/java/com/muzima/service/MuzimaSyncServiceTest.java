@@ -82,7 +82,6 @@ public class MuzimaSyncServiceTest {
     private PatientController patientController;
     private ObservationController observationController;
     private ConceptController conceptController;
-    private EncounterController encounterController;
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController muzimaSettingController;
 
@@ -96,7 +95,6 @@ public class MuzimaSyncServiceTest {
         observationController = mock(ObservationController.class);
         sharedPref = mock(SharedPreferences.class);
         conceptController = mock(ConceptController.class);
-        encounterController = mock(EncounterController.class);
         setupConfigurationController = mock(SetupConfigurationController.class);
         ProviderController providerController = mock(ProviderController.class);
         muzimaSettingController = mock(MuzimaSettingController.class);
@@ -111,7 +109,6 @@ public class MuzimaSyncServiceTest {
         when(muzimaApplication.getProviderController()).thenReturn(providerController);
         when(muzimaApplication.getObservationController()).thenReturn(observationController);
         when(muzimaApplication.getConceptController()).thenReturn(conceptController);
-        when(muzimaApplication.getEncounterController()).thenReturn(encounterController);
         when(muzimaApplication.getSetupConfigurationController()).thenReturn(setupConfigurationController);
         when(muzimaApplication.getSharedPreferences(anyString(), anyInt())).thenReturn(sharedPref);
         when(muzimaApplication.getApplicationContext()).thenReturn(RuntimeEnvironment.application);
@@ -624,59 +621,6 @@ public class MuzimaSyncServiceTest {
 
         int[] result = muzimaSyncService.downloadObservationsForPatientsByCohortUUIDs(cohortUuids,true);
         assertThat(result[0], is(SyncStatusConstants.REPLACE_ERROR));
-    }
-
-    @Test
-    public void downloadEncountersForPatients_shouldDownloadInBatch() throws PatientController.PatientLoadException, EncounterController.ReplaceEncounterException, EncounterController.DownloadEncounterException, SetupConfigurationController.SetupConfigurationFetchException {
-        String[] cohortUuids = new String[]{"uuid1"};
-        final Patient patient = new Patient() {{
-            setUuid("patient1");
-        }};
-        List<Patient> patients = new ArrayList<Patient>() {{
-            add(patient);
-        }};
-
-        List<Encounter> encounters = new ArrayList<Encounter>() {{
-            add(new Encounter(){{setPatient(patient);}});
-        }};
-
-        SetupConfigurationTemplate setupConfigurationTemplate = new SetupConfigurationTemplate();
-        setupConfigurationTemplate.setUuid("dummySetupConfig");
-        when(setupConfigurationController.getActiveSetupConfigurationTemplate()).thenReturn(setupConfigurationTemplate);
-
-        when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
-        List<String> patientUuids = Collections.singletonList("patient1");
-
-        when(encounterController.downloadEncountersByPatientUuids(patientUuids, setupConfigurationTemplate.getUuid())).thenReturn(encounters);
-        muzimaSyncService.downloadEncountersForPatientsByCohortUUIDs(cohortUuids, true);
-
-        verify(encounterController).downloadEncountersByPatientUuids(patientUuids, setupConfigurationTemplate.getUuid());
-        verify(encounterController).replaceEncounters(encounters);
-        verifyNoMoreInteractions(observationController);
-    }
-
-    @Test
-    public void shouldDeleteVoidedEncountersWhenDownloadingEncounters() throws EncounterController.DeleteEncounterException, EncounterController.DownloadEncounterException, SetupConfigurationController.SetupConfigurationFetchException {
-        String[] patientUuids = new String[]{"patientUuid1", "patientUuid2"};
-        final Patient patient = new Patient() {{
-            setUuid("patient1");
-        }};
-
-        SetupConfigurationTemplate setupConfigurationTemplate = new SetupConfigurationTemplate();
-        setupConfigurationTemplate.setUuid("dummySetupConfig");
-        when(setupConfigurationController.getActiveSetupConfigurationTemplate()).thenReturn(setupConfigurationTemplate);
-
-        List<Encounter> encounters = new ArrayList<>();
-        encounters.add(new Encounter(){{setPatient(patient);}});
-
-        Encounter voidedEncounter = mock(Encounter.class);
-        when(voidedEncounter.isVoided()).thenReturn(true);
-        when(voidedEncounter.getPatient()).thenReturn(patient);
-        encounters.add(voidedEncounter);
-
-        when(encounterController.downloadEncountersByPatientUuids(asList(patientUuids), setupConfigurationTemplate.getUuid())).thenReturn(encounters);
-        muzimaSyncService.downloadEncountersForPatientsByPatientUUIDs(asList(patientUuids),true);
-        verify(encounterController).deleteEncounters(Collections.singletonList(voidedEncounter));
     }
 
     @Test

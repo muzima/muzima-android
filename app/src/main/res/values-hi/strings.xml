@@ -51,8 +51,6 @@
     <string name="error_credential_invalid">अमान्य उपयोगकर्ता नाम, पासवर्ड, सर्वर संयोजन।</string>
     <string name="error_data_download">डेटा फॉर्म सर्वर डाउनलोड करते समय एक त्रुटि हुई</string>
     <string name="error_data_save">स्थानीय रेपो में डेटा सहेजते समय एक त्रुटि हुई</string>
-    <string name="error_encounter_download">मुठभेड़ों को डाउनलोड नहीं किया जा सका</string>
-    <string name="error_encounter_load">मुठभेड़ों को लोड नहीं किया जा सका</string>
     <string name="error_encounter_observation_download">ग्राहकों के लिए टिप्पणियों को डाउनलोड नहीं किया जा सका</string>
     <string name="error_exception_data_load">डेटा लोड करते समय लोड अपवाद आया</string>
     <string name="error_exception_data_upload">सर्वर अपलोड किए गए डेटा को संसाधित नहीं कर सका</string>
@@ -75,8 +73,6 @@
     <string name="error_location_fetch">स्थानीय रेपो से स्थानों को लाते समय कुछ गलत हो गया</string>
     <string name="error_observation_download">टिप्पणियों को डाउनलोड नहीं किया जा सका</string>
     <string name="error_observation_form_save">प्रपत्र में टिप्पणियों को सहेजते समय एक त्रुटि हुई</string>
-    <string name="error_observation_load">टिप्पणियों को लोड नहीं किया जा सका</string>
-    <string name="error_observation_unavailable">कोई अवलोकन उपलब्ध नहीं है</string>
     <string name="error_parse_exception_data_fetch">डेटा प्राप्त करते समय पार्स अपवाद को फेंक दिया गया है</string>
     <string name="error_patient_data_form_exist">मौजूदा प्रपत्र डेटा। अधूरा डेटा समाप्त करें और प्रपत्र टेम्पलेट्स को सिंक करने से पहले इसे सर्वर से सिंक करें</string>
     <string name="error_patient_download">क्लाइंट डाउनलोड नहीं कर सके</string>
@@ -197,7 +193,6 @@
     <string name="general_next">आगे</string>
     <string name="general_no">नहीं</string>
     <string name="general_not_available_text">उपलब्ध नहीं है</string>
-    <string name="general_notifications">अधिसूचनाएं</string>
     <string name="general_observations">अवलोकन</string>
     <string name="general_ok">ठीक</string>
     <string name="general_online_mode">ऑनलाइन मोड</string>
@@ -336,8 +331,6 @@
     <string name="info_agree_to_muzima_terms_and_conditions">मुज़िमा नियम और शर्तों से सहमत हों</string>
     <string name="info_authentication_in_progress">प्रमाणीकरण प्रगति में …</string>
     <string name="info_background_data_sync_started">पृष्ठभूमि में डेटा सिंक करना</string>
-    <string name="info_by_encounter">मुठभेड़ द्वारा</string>
-    <string name="info_by_type">प्रकार से</string>
     <string name="info_client_local_search_not_found">किसी भी ग्राहक ने आपकी खोज का स्थानीय रूप से मिलान नहीं किया। दूरस्थ खोज के लिए कम से कम 3 वर्ण दर्ज करें।</string>
     <string name="info_client_local_search_not_found_secondary">हमें आपकी खोज से संबंधित कुछ भी नहीं मिला। सर्वर खोजने का प्रयास करें</string>
     <string name="info_client_remote_search_not_found">सर्वर पर कोई भी क्लाइंट आपकी खोज से मैच नहीं हुआ</string>
@@ -391,8 +384,6 @@
     <string name="info_downloaded_image">डाउनलोड की गई छवि</string>
     <string name="info_downloaded_reports_unavailable">कोई रिपोर्ट डाउनलोड नहीं की गई है</string>
     <string name="info_draft_form_save_success">ड्राफ्ट फॉर्म को सफलतापूर्वक सहेज लिया गया था।</string>
-    <string formatted="false" name="info_encounter_download_progress">%d में से %d ग्राहक के लिए एनकाउंटर डाउनलोड किए गए।</string>
-    <string name="info_encounter_unavailable">कोई एनकाउंटर उपलब्ध नहीं है</string>
     <string name="info_for_health_providers">स्वास्थ्य प्रदाताओं के लिए</string>
     <string formatted="false" name="info_form_data_delete">%d फॉर्म हटाए गए</string>
     <string name="info_form_data_save_success">पूर्ण फॉर्म डेटा सफलतापूर्वक सहेजा गया था।</string>
@@ -445,7 +436,6 @@
     <string name="info_no_observation_and_concept_data_tip">कोई अवधारणा कॉन्फ़िगर नहीं की गई है। अवधारणाओं को जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें।</string>
     <string name="info_no_observation_for_concept_data_tip">कॉन्फ़िगर की गई अवधारणाओं के लिए कोई ऐतिहासिक डेटा मौजूद नहीं है</string>
     <string name="info_observation_download">अवलोकन डाउनलोड करना</string>
-    <string name="info_observation_in_progress">अवलोकन अभी भी लोड हो रहे हैं</string>
     <string name="info_observation_load">अवलोकन लोड हो रहे हैं</string>
     <string name="info_observation_patient_downloaded">1 ग्राहक के लिए 1 अवलोकन डाउनलोड किया गया</string>
     <string name="info_observation_patient_not_downloaded">कोई अवलोकन नहीं किया</string>
@@ -453,7 +443,6 @@
     <string name="info_observation_search">अवलोकन देखें</string>
     <string name="info_observation_unavailable">कोई अवलोकन उपलब्ध नहीं है</string>
     <string formatted="false" name="info_observations_download_progress">%d में से %d क्लाइंट के लिए अवलोकन डाउनलोड किए गए।</string>
-    <string name="info_observations_load_in_progress">अवलोकन अभी भी लोड हो रहे हैं</string>
     <string formatted="false" name="info_observations_patient_downloaded">%d क्लाइंट के लिए 1 अवलोकन डाउनलोड किया गया</string>
     <string formatted="false" name="info_observations_patients_downloaded">%d ग्राहकों के लिए %d अवलोकन डाउनलोड किया गया</string>
     <string name="info_patient_data_download">क्लाइंट डेटा डाउनलोड करना</string>
@@ -670,8 +659,6 @@
     <string name="title_media_preview">मीडिया का पूर्वावलोकन करें</string>
     <string name="title_missing_form_encounter_details_error">लापता एनकाउंटर का विवरण</string>
     <string name="title_muzima_disclaimer">muzima अस्वीकरण</string>
-    <string name="title_observations_by_concepts">डेटा प्रकार अनुसार</string>
-    <string name="title_observations_by_encounters">तिथि के अनुसार</string>
     <string name="title_pick_location">स्थान चुनें</string>
     <string name="title_privacy_policy">गोपनीयता नीति</string>
     <string name="title_provider_not_set">प्रदाता के रूप में सेट करने में असमर्थ</string>

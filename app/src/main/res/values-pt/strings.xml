@@ -51,8 +51,6 @@
     <string name="error_credential_invalid">Combinação inválida de Nome de Utilizador, Senha, e Servidor.</string>
     <string name="error_data_download">Ocorreu um erro enquanto baixava os dados do servidor</string>
     <string name="error_data_save">Ocorreu um erro enquanto guardava os dados no repositório local</string>
-    <string name="error_encounter_download">Não poderá baixar visitas</string>
-    <string name="error_encounter_load">Visitas não poderão ser carregados</string>
     <string name="error_encounter_observation_download">Não poderá baixar observações para os utentes</string>
     <string name="error_exception_data_load">Uma excepção de carregamento foi lançada ao carregar os dados</string>
     <string name="error_exception_data_upload">Uma excepção foi lançada ao carregar os dados</string>
@@ -75,8 +73,6 @@
     <string name="error_location_fetch">Algo de errado aconteceu enquanto buscava locais do repositório local</string>
     <string name="error_observation_download">Não poderá baixar observações</string>
     <string name="error_observation_form_save">Ocorreu um erro enquanto guardava observações no formulário</string>
-    <string name="error_observation_load">Observações não puderam ser carregados</string>
-    <string name="error_observation_unavailable">Nenhuma observação disponível</string>
     <string name="error_parse_exception_data_fetch">Excepção de análise foi laçanda enquanto buscava os dados</string>
     <string name="error_patient_data_form_exist">Existe dados do formulário. Finalize os dados incompletos e sincronize os dados o servidor antes de sincronizar os modelos do formulário.</string>
     <string name="error_patient_download">Não poderá baixar utentes</string>
@@ -197,7 +193,6 @@
     <string name="general_next">Próximo</string>
     <string name="general_no">Não</string>
     <string name="general_not_available_text">Não disponível</string>
-    <string name="general_notifications">Notificações</string>
     <string name="general_observations">Observações</string>
     <string name="general_ok">Ok</string>
     <string name="general_online_mode">Modo online</string>
@@ -336,8 +331,6 @@
     <string name="info_agree_to_muzima_terms_and_conditions">Aceite os Termos e Condições da mUzima</string>
     <string name="info_authentication_in_progress">Autenticação em progresso…</string>
     <string name="info_background_data_sync_started">Sincronizando dados em segundo plano</string>
-    <string name="info_by_encounter">Por encontro</string>
-    <string name="info_by_type">Por tipo</string>
     <string name="info_client_local_search_not_found">Nenhum utente corresponde à sua pesquisa localmente. Introduza pelo menos 3 caracteres para a pesquisa remota.</string>
     <string name="info_client_local_search_not_found_secondary">Não encontramos nada relacionado à sua pesquisa. Tente pesquisar no servidor</string>
     <string name="info_client_remote_search_not_found">Nenhum utente corresponde à sua pesquisa no servidor</string>
@@ -399,8 +392,6 @@
     <string name="info_downloaded_image">Baixou a imagem</string>
     <string name="info_downloaded_reports_unavailable">Nenhum relatório foi baixado</string>
     <string name="info_draft_form_save_success">Racunho do formulário foi guardado com sucesso</string>
-    <string formatted="false" name="info_encounter_download_progress">Visitas baixadas para utentes %d de %d</string>
-    <string name="info_encounter_unavailable">Nenhuma visita disponível</string>
     <string name="info_for_health_providers">para provedores de saúde</string>
     <string formatted="false" name="info_form_data_delete">Apagado %d formulários</string>
     <string name="info_form_data_save_success">Dados do formulário completado foi guardado com sucessso</string>
@@ -453,7 +444,6 @@
     <string name="info_no_observation_and_concept_data_tip">Nenhum conceito configurado. Entre em contato com seu administrador para adicionar conceitos.</string>
     <string name="info_no_observation_for_concept_data_tip">Não existem dados históricos para os conceitos configurados</string>
     <string name="info_observation_download">Baixando observações</string>
-    <string name="info_observation_in_progress">Observações ainda estão a carregar</string>
     <string name="info_observation_load">Observações estão a carregar</string>
     <string name="info_observation_patient_downloaded">Baixou 1 observação para 1 utente</string>
     <string name="info_observation_patient_not_downloaded">Não baixou nenhuma observação</string>
@@ -461,7 +451,6 @@
     <string name="info_observation_search">Pesquisar observações</string>
     <string name="info_observation_unavailable">Nenhuma observação disponível</string>
     <string formatted="false" name="info_observations_download_progress">Observações baixadas para utente %d de %d.</string>
-    <string name="info_observations_load_in_progress">Observações ainda estão a carregar</string>
     <string formatted="false" name="info_observations_patient_downloaded">Baixou 1 observação para %d utentes</string>
     <string formatted="false" name="info_observations_patients_downloaded">Baixou %d observações para %d utentes</string>
     <string name="info_patient_data_download">Bainxando dados dos utentes</string>
@@ -678,8 +667,6 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="title_media_preview">Prever Mídia</string>
     <string name="title_missing_form_encounter_details_error">Detalhes do encontro ausente</string>
     <string name="title_muzima_disclaimer">Aviso Legal de mUzima</string>
-    <string name="title_observations_by_concepts">Por Conceitos</string>
-    <string name="title_observations_by_encounters">Por Encontros</string>
     <string name="title_pick_location">Escolha o local</string>
     <string name="title_privacy_policy">Política de Privacidade</string>
     <string name="title_provider_not_set">Incapz de definir como Provedor</string>

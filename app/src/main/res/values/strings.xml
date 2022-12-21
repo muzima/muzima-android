@@ -54,8 +54,6 @@
     <string name="error_credential_invalid">Invalid Username, Password, Server combination.</string>
     <string name="error_data_download">An error occurred while downloading data form server</string>
     <string name="error_data_save">An error occurred while saving data to local repo</string>
-    <string name="error_encounter_download">Could not download encounters</string>
-    <string name="error_encounter_load">Encounters could not be loaded</string>
     <string name="error_encounter_observation_download">Could not download observations for clients</string>
     <string name="error_exception_data_load">Load exception has been thrown while loading data</string>
     <string name="error_exception_data_upload">Server could not process uploaded data</string>
@@ -78,8 +76,6 @@
     <string name="error_location_fetch">Something went wrong while fetching locations from local repo</string>
     <string name="error_observation_download">Could not download observations</string>
     <string name="error_observation_form_save">An error occurred while saving observations in the form</string>
-    <string name="error_observation_load">Observations could not be loaded</string>
-    <string name="error_observation_unavailable">No observations Available</string>
     <string name="error_parse_exception_data_fetch">Parse exception has been thrown while fetching data</string>
     <string name="error_patient_data_form_exist">There is existing form data.
         Finish Incomplete data and sync it to the Server first before syncing form templates.
@@ -203,7 +199,6 @@
     <string name="general_next">Next</string>
     <string name="general_no">No</string>
     <string name="general_not_available_text">Not Available</string>
-    <string name="general_notifications">Notifications</string>
     <string name="general_observations">Observations</string>
     <string name="general_ok">OK</string>
     <string name="general_online_mode">Online Mode</string>
@@ -361,8 +356,6 @@
     <string name="info_agree_to_muzima_terms_and_conditions">Agree to mUzima Terms and Conditions</string>
     <string name="info_authentication_in_progress">Authentication in progress…</string>
     <string name="info_background_data_sync_started">Syncing data in background</string>
-    <string name="info_by_encounter">By Encounter</string>
-    <string name="info_by_type">By Type</string>
     <string name="info_client_local_search_not_found">No clients matched your search locally. Enter at least 3
         characters for remote search.
     </string>
@@ -403,8 +396,6 @@
     <string name="info_downloaded_image">Downloaded image</string>
     <string name="info_downloaded_reports_unavailable">No reports have been downloaded</string>
     <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
-    <string formatted="false" name="info_encounter_download_progress">Downloaded encounters for client %d of %d.</string>
-    <string name="info_encounter_unavailable">No encounters available</string>
     <string name="info_for_health_providers">for health providers</string>
     <string formatted="false" name="info_form_data_delete">Deleted %d forms</string>
     <string name="info_form_data_save_success">Completed form data was saved successfully.</string>
@@ -459,7 +450,6 @@
     <string name="info_no_observation_and_concept_data_tip">No concepts configured. Contact your administrator to add concepts.</string>
     <string name="info_no_observation_for_concept_data_tip">No historical data exists for the configured concepts</string>
     <string name="info_observation_download">Downloading Observations</string>
-    <string name="info_observation_in_progress">Observations are still loading</string>
     <string name="info_observation_load">Observations are loading</string>
     <string name="info_observation_patient_downloaded">Downloaded 1 observation for 1 client</string>
     <string name="info_observation_patient_not_downloaded">Did not download any observations</string>
@@ -467,7 +457,6 @@
     <string name="info_observation_search">Search observations</string>
     <string name="info_observation_unavailable">No observations available</string>
     <string formatted="false" name="info_observations_download_progress">Downloaded observations for client %d of %d.</string>
-    <string name="info_observations_load_in_progress">Observations are still loading</string>
     <string formatted="false" name="info_observations_patient_downloaded">Downloaded 1 observation for %d clients</string>
     <string formatted="false" name="info_observations_patients_downloaded">Downloaded %d observations for %d clients</string>
     <string name="info_patient_data_download">Downloading clients data</string>
@@ -685,8 +674,6 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="title_media_preview">Preview Media</string>
     <string name="title_missing_form_encounter_details_error">Missing Encounter Details</string>
     <string name="title_muzima_disclaimer">mUzima Disclaimer</string>
-    <string name="title_observations_by_concepts">By Data Type</string>
-    <string name="title_observations_by_encounters">By Date</string>
     <string name="title_pick_location">Pick Location</string>
     <string name="title_privacy_policy">Privacy Policy</string>
     <string name="title_provider_not_set">Unable to set as Provider</string>

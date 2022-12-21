@@ -51,8 +51,6 @@
     <string name="error_credential_invalid">Nom d\'utilisateur, mot de passe, combinaison de serveur invalides.</string>
     <string name="error_data_download">Une erreur est survenue lors du téléchargement de données depuis le serveur</string>
     <string name="error_data_save">Une erreur est survenue lors de l\'enregistrement des données dans le repertoire local</string>
-    <string name="error_encounter_download">Echec du téléchargement des rencontres</string>
-    <string name="error_encounter_load">Impossible de charger les rencontres</string>
     <string name="error_encounter_observation_download">Impossible de télécharger les observations pour les clients</string>
     <string name="error_exception_data_load">L\'exception de chargement a été levée pendant le chargement des données</string>
     <string name="error_exception_data_upload">Le serveur n\'a pas pu traiter les données téléchargées</string>
@@ -75,8 +73,6 @@
     <string name="error_location_fetch">Quelque chose a mal tourné lors de la récupération des emplacements du repositoire local</string>
     <string name="error_observation_download">Impossible de télécharger les observations</string>
     <string name="error_observation_form_save">Une erreur s\'est produite lors de l\'enregistrement des observations dans le formulaire</string>
-    <string name="error_observation_load">Echec du chargement des observations</string>
-    <string name="error_observation_unavailable">Observations non disponibles</string>
     <string name="error_parse_exception_data_fetch">abandon de l\'amalyse exceptionnelle lors de la récupération des données</string>
     <string name="error_patient_data_form_exist">données de formulaire existantes. Terminer les données incomplètes et synchroniser les données dans le serveur d\'abord avant de synchroniser les modeles des formulaire.</string>
     <string name="error_patient_download">Impossible de télécharger les données des clients</string>
@@ -197,7 +193,6 @@
     <string name="general_next">Suivant</string>
     <string name="general_no">Non</string>
     <string name="general_not_available_text">Indisponible</string>
-    <string name="general_notifications">Notifications</string>
     <string name="general_observations">Observations</string>
     <string name="general_ok">D\'accord/ok</string>
     <string name="general_online_mode">Mode en ligne</string>
@@ -336,8 +331,6 @@
     <string name="info_agree_to_muzima_terms_and_conditions">Accepter les conditions générales de mUzima</string>
     <string name="info_authentication_in_progress">Authentification en cours …</string>
     <string name="info_background_data_sync_started">Synchroniser les données en arrière-plan</string>
-    <string name="info_by_encounter">Par rencontre</string>
-    <string name="info_by_type">Par type</string>
     <string name="info_client_local_search_not_found">Aucun client ne correspond à votre recherche dans l\'appareil. Entrez au moins 3 caractères pour la recherche à distance.</string>
     <string name="info_client_local_search_not_found_secondary">Nous n\'avons rien trouvé en rapport avec votre recherche. Essayez de rechercher le serveur</string>
     <string name="info_client_remote_search_not_found">Aucun client ne correspond à votre recherche sur le serveur</string>
@@ -401,8 +394,6 @@
     <string name="info_downloaded_image">Image téléchargée</string>
     <string name="info_downloaded_reports_unavailable">Aucun rapport n\'a été téléchargé</string>
     <string name="info_draft_form_save_success">Le brouillon du formulaire a été enregistré avec succès.</string>
-    <string formatted="false" name="info_encounter_download_progress">Rencontres téléchargées pour client %d de %d.</string>
-    <string name="info_encounter_unavailable">Aucune rencontre n\'est disponible</string>
     <string name="info_for_health_providers">pour les prestataires de santé</string>
     <string formatted="false" name="info_form_data_delete">Formulaires %d supprimés</string>
     <string name="info_form_data_save_success">Les données de formulaire remplies ont été enregistrées avec succès.</string>
@@ -455,7 +446,6 @@
     <string name="info_no_observation_and_concept_data_tip">Aucun concept configuré. Contactez votre administrateur pour ajouter des concepts.</string>
     <string name="info_no_observation_for_concept_data_tip">Aucune donnée historique n\'existe pour les concepts configurés</string>
     <string name="info_observation_download">observations en cours de Téléchargement</string>
-    <string name="info_observation_in_progress">Les observations sont encore en cours de chargement</string>
     <string name="info_observation_load">Les observations sont en cours de chargement</string>
     <string name="info_observation_patient_downloaded">Téléchargement de 1 observation pour 1 client</string>
     <string name="info_observation_patient_not_downloaded">N\'a pas téléchargé aucune observation</string>
@@ -463,7 +453,6 @@
     <string name="info_observation_search">recherche des observations</string>
     <string name="info_observation_unavailable">Aucune observation disponible</string>
     <string formatted="false" name="info_observations_download_progress">Téléchargement en cours des observations pour le client %d of %d.</string>
-    <string name="info_observations_load_in_progress">Les observations sont encore en cours de chargement</string>
     <string formatted="false" name="info_observations_patient_downloaded">1 observation téléchargée pour %d clients</string>
     <string formatted="false" name="info_observations_patients_downloaded">Téléchargé observations %d pour %d clients</string>
     <string name="info_patient_data_download">Téléchargement en cours les données des clients</string>
@@ -680,8 +669,6 @@
     <string name="title_media_preview">Aperçu du média</string>
     <string name="title_missing_form_encounter_details_error">Détails de Rencontre manquante</string>
     <string name="title_muzima_disclaimer">Avertissement de mUzima</string>
-    <string name="title_observations_by_concepts">Par type de données</string>
-    <string name="title_observations_by_encounters">Par rencontre</string>
     <string name="title_pick_location">Choisir emplacement</string>
     <string name="title_privacy_policy">Politique de confidentialité</string>
     <string name="title_provider_not_set">Impossible de définir en tant que fournisseur</string>
