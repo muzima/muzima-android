@@ -269,7 +269,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
             if (patient.getBirthdate() != null)
                 ageTextView.setText(getString(R.string.general_years, String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(patient.getBirthdate()))));
-                dobTextView.setText(getString(R.string.general_date_of_birth, String.format(" %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate()))));
+                dobTextView.setText(getString(R.string.general_date_of_birth, String.format(" %s", new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(patient.getBirthdate()))));
             patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
 
             if (patient.getAddresses().size() > 0) {
@@ -299,108 +299,66 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             String cContact = getObsByPatientUuidAndConceptId(patientUuid, 6224);
             confidantContact1.setText((StringUtils.EMPTY.equalsIgnoreCase(cContact) || cContact == null)?"-----------------":cContact);
 
+            List<String> encounterTypes = new ArrayList<>(0);
+            encounterTypes.add("b5b7d21f-efd1-407e-81ce-ba9d93c524f8");
+            encounterTypes.add("e422ecf9-75dd-4367-b21e-54bccabc4763");
+            encounterTypes.add("e2790f68-1d5f-11e0-b929-000c29ad1d07");
+            encounterTypes.add("e278f956-1d5f-11e0-b929-000c29ad1d07");
+
+
             // Clinical Information
-
-            // FSR
-            Observation cvResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 1305, "b5b7d21f-efd1-407e-81ce-ba9d93c524f8");
-            if(cvResultObs!=null) {
-                String cvResult = getConceptNameFromConceptNamesByLocale(cvResultObs.getValueCoded().getConceptNames(), applicationLanguage);
+            Observation hvlObservation = getObservationByPatientUuidAndConceptId(patientUuid, 1305);
+            if(hvlObservation!=null){
+            EncounterType encounterType = hvlObservation.getEncounter().getEncounterType();
+            if(encounterTypes.contains(encounterType.getUuid())){
+                String cvResult = setHvlResult(hvlObservation);
                 lastCVResult.setText((StringUtils.EMPTY.equalsIgnoreCase(cvResult) || cvResult == null)?"-----------------":cvResult);
+                Date cvResultDate = hvlObservation.getObservationDatetime();
+                lastCVResultDate.setText(cvResultDate!=null?DateUtils.getFormattedDate(cvResultDate, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"-----------------");
             }
-            else{
+            else {
                 lastCVResult.setText("-----------------");
+                lastCVResultDate.setText("-----------------");
             }
+            }
+            else {
+                hvlObservation = getObservationByPatientUuidAndConceptId(patientUuid, 856);
 
-            if(cvResultObs==null) {
-                cvResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 856, "b5b7d21f-efd1-407e-81ce-ba9d93c524f8");
-                if(cvResultObs!=null) {
-                    String value = cvResultObs.getValueNumeric().toString();
-                    lastCVResult.setText((StringUtils.EMPTY.equalsIgnoreCase(value) || value == null)?"-----------------":value);
+                if(hvlObservation!=null) {
+                    String value = hvlObservation.getValueNumeric().toString();
+                    lastCVResult.setText((StringUtils.EMPTY.equalsIgnoreCase(value) || value == null) ? "-----------------" : value);
+
+                    EncounterType encounterType = hvlObservation.getEncounter().getEncounterType();
+                    if (encounterTypes.contains(encounterType.getUuid())) {
+                        Date cvResultDate = hvlObservation.getObservationDatetime();
+                        lastCVResultDate.setText(cvResultDate != null ? DateUtils.getFormattedDate(cvResultDate, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT) : "-----------------");
+                    }
+                    else {
+                        lastCVResult.setText("-----------------");
+                        lastCVResultDate.setText("-----------------");
+                    }
                 }
-                else{
+                else {
                     lastCVResult.setText("-----------------");
+                    lastCVResultDate.setText("-----------------");
                 }
-            }
-
-            if(cvResultObs!=null){
-            Date cvResultDate = cvResultObs.getObservationDatetime();
-            if(cvResultDate!=null) {
-                String value = DateUtils.getFormattedDate(cvResultDate, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
-                lastCVResultDate.setText((StringUtils.EMPTY.equalsIgnoreCase(value) || value == null)?"-----------------":value);
-            }
-            else{
-                lastCVResultDate.setText("-----------------");
-            }
-            }
-            else{
-                lastCVResultDate.setText("-----------------");
-            }
-
-            // Ficha Lab
-            cvResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 1305, "e2790f68-1d5f-11e0-b929-000c29ad1d07");
-            if(cvResultObs!=null) {
-                String cvResult = getConceptNameFromConceptNamesByLocale(cvResultObs.getValueCoded().getConceptNames(), applicationLanguage);
-                lastCVResult.setText((StringUtils.EMPTY.equalsIgnoreCase(cvResult) || cvResult == null)?"-----------------":cvResult);
-            }
-            if(cvResultObs==null) {
-                cvResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 856, "e2790f68-1d5f-11e0-b929-000c29ad1d07");
-                if(cvResultObs!=null) {
-                    String value = cvResultObs.getValueNumeric().toString();
-                    lastCVResult.setText((StringUtils.EMPTY.equalsIgnoreCase(value) || value == null)?"-----------------":value);
-                }
-                else{
-                    lastCVResult.setText("-----------------");
-                }
-            }
-
-            if(cvResultObs!=null){
-            Date cvResultDate = cvResultObs.getObservationDatetime();
-            if(cvResultDate!=null) {
-                String value = DateUtils.getFormattedDate(cvResultDate, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
-                lastCVResultDate.setText((StringUtils.EMPTY.equalsIgnoreCase(value) || value == null)?"-----------------":value);
-            }
-            else{
-                lastCVResultDate.setText("-----------------");
-            }
-            }
-            else{
-                lastCVResultDate.setText("-----------------");
             }
 
             //FICHA CLINICA
-            Observation consultationResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 1305, "e278f956-1d5f-11e0-b929-000c29ad1d07");
-            if(consultationResultObs==null) {
-                consultationResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 856, "e278f956-1d5f-11e0-b929-000c29ad1d07");
-            }
+            Observation consultationResultObs = getEncounterDateTimeByPatientUuidAndEncounterTypeUuid(patientUuid, "e278f956-1d5f-11e0-b929-000c29ad1d07");
             if(consultationResultObs!=null) {
                 Date lastClinicalConsult = consultationResultObs.getObservationDatetime();
-                if (lastClinicalConsult != null) {
-                    String value = DateUtils.getFormattedDate(lastClinicalConsult, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
-                    lastClinicalConsultDate.setText((StringUtils.EMPTY.equalsIgnoreCase(value) || value == null)?"-----------------":value);
-                }
-                else{
-                    lastClinicalConsultDate.setText("-----------------");
-                }
+                lastClinicalConsultDate.setText(lastClinicalConsult!=null? DateUtils.getFormattedDate(lastClinicalConsult, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"-----------------");
+
+
+                consultationResultObs = consultationResultObs.getValueDatetime()==null?getObservationByPatientUuidAndConceptId(patientUuid, 1410):consultationResultObs;
+                Date nextClinicalConsult = consultationResultObs.getValueDatetime();
+                nextClinicalConsultDate.setText(nextClinicalConsult!=null? DateUtils.getFormattedDate(nextClinicalConsult, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"-----------------");
             }
-            else{
+            else {
                 lastClinicalConsultDate.setText("-----------------");
-            }
-
-            consultationResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 1410, "e278f956-1d5f-11e0-b929-000c29ad1d07");
-            if(consultationResultObs!=null){
-            Date nextClinicalConsult = consultationResultObs.getObservationDatetime();
-            if(nextClinicalConsult!=null) {
-                String value = DateUtils.getFormattedDate(nextClinicalConsult, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
-                nextClinicalConsultDate.setText((StringUtils.EMPTY.equalsIgnoreCase(value) || value == null)?"-----------------":value);
-            }
-            else{
                 nextClinicalConsultDate.setText("-----------------");
             }
-            }
-            else{
-                nextClinicalConsultDate.setText("-----------------");
-            }
-
 
             //FILA
             Observation lastARVPickupObs = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 165174, "e279133c-1d5f-11e0-b929-000c29ad1d07");
@@ -430,17 +388,31 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             }
 
             // FICHA RESUMO
-            Observation tptStartDateResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCoded(patientUuid, 165308, "1256");
-            tptStartDate.setText(tptStartDateResultObs!=null?DateUtils.getFormattedDate(tptStartDateResultObs.getObservationDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"------------------------");
-            Observation tptEndDateResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCoded(patientUuid, 165308, "1267");
-            tptEndDate.setText(tptEndDateResultObs!=null?DateUtils.getFormattedDate(tptEndDateResultObs.getObservationDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"------------------------");
+            Observation tptStartDateResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCoded(patientUuid, 165308,  1256);
+            if(tptStartDateResultObs!=null){
+                tptStartDate.setText(tptStartDateResultObs!=null?DateUtils.getFormattedDate(tptStartDateResultObs.getObservationDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"------------------------");
+            }
+            else{
+                // FILT
+                tptStartDateResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCoded(patientUuid, 23987,  1256);
 
-            // FICHA CLINICA
-            tptStartDateResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCoded(patientUuid, 165308, "INICIAR");
-            tptStartDate.setText(tptStartDateResultObs!=null?DateUtils.getFormattedDate(tptStartDateResultObs.getObservationDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"------------------------");
+                // FICHA CLINICA -- not used
+                //tptStartDateResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCoded(patientUuid, 165308,  1256);
+                tptStartDate.setText(tptStartDateResultObs!=null?DateUtils.getFormattedDate(tptStartDateResultObs.getObservationDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"------------------------");
+            }
 
-            tptEndDateResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCoded(patientUuid, 165308, "COMPLETO");
-            tptEndDate.setText(tptEndDateResultObs!=null?DateUtils.getFormattedDate(tptEndDateResultObs.getObservationDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"------------------------");
+            Observation tptEndDateResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCoded(patientUuid, 165308,  1267);
+            if(tptEndDateResultObs!=null){
+                tptEndDate.setText(tptEndDateResultObs!=null?DateUtils.getFormattedDate(tptEndDateResultObs.getObservationDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"------------------------");
+            }else {
+                // FILT
+                tptEndDateResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCoded(patientUuid, 23987,  1267);
+
+                // FICHA CLINICA -- not used
+                //tptEndDateResultObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCoded(patientUuid, 165308,  1267);
+                tptEndDate.setText(tptEndDateResultObs!=null?DateUtils.getFormattedDate(tptEndDateResultObs.getObservationDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"------------------------");
+            }
+
 
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception encountered while loading patients ", e);
@@ -449,6 +421,20 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "JSONException encountered ", e);
         }
+    }
+
+    private String setHvlResult(Observation observation){
+        if(1306 == observation.getValueCoded().getId()){
+            return "Nível de detenção baixo";
+        }
+        if(23814 == observation.getValueCoded().getId()){
+            return getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
+        }
+        if(165331 == observation.getValueCoded().getId() || 23904 == observation.getValueCoded().getId() || 23905 == observation.getValueCoded().getId() || 23906 == observation.getValueCoded().getId()
+                || 23907 == observation.getValueCoded().getId() || 23908 == observation.getValueCoded().getId()){
+            return getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage) + " "+ observation.getComment();
+        }
+        return getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
     }
 
     private String getFormattedPatientAddress(PersonAddress personAddress) {
@@ -493,6 +479,23 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
         return StringUtils.EMPTY;
+    }
+
+    private Observation getObservationByPatientUuidAndConceptId(String patientUuid, int conceptId) throws JSONException, ObservationController.LoadObservationException {
+        List<Observation> observations = new ArrayList<>();
+        try {
+            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+            Concept concept = conceptController.getConceptById(conceptId);
+            Collections.sort(observations, observationDateTimeComparator);
+            if (observations.size() > 0) {
+                Observation obs = observations.get(0);
+                return obs;
+            }
+        } catch (ObservationController.LoadObservationException | Exception |
+                 ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+        return null;
     }
 
     private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
@@ -553,14 +556,33 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         return null;
     }
 
-    private Observation getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCoded(String patientUuid, int conceptId, String valueCoded) {
+    private Observation getEncounterDateTimeByPatientUuidAndEncounterTypeUuid(String patientUuid, String encounterTypeUuid) {
+        try {
+            List<Observation> observations = observationController.getObservationsByPatient(patientUuid);
+            Collections.sort(observations, observationDateTimeComparator);
+            if (observations.size() > 0) {
+                for (Observation observation: observations) {
+                    EncounterType encounterType = observation.getEncounter().getEncounterType();
+                    if(encounterTypeUuid.equalsIgnoreCase(encounterType.getUuid())){
+                        return observation;
+                    }
+                }
+            }
+        }
+        catch (ObservationController.LoadObservationException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    private Observation getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCoded(String patientUuid, int conceptId, int valueCoded) {
         try {
             List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
             Collections.sort(observations, observationDateTimeComparator);
             if (observations.size() > 0) {
                 for (Observation observation:observations) {
-                    System.out.println(observation.getValueCoded().getName());
-                    if(observation.getValueCoded().getName().equalsIgnoreCase(valueCoded)){
+                    if(valueCoded == observation.getValueCoded().getId()){
                         return observation;
                     }
                 }

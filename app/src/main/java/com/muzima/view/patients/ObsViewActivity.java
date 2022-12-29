@@ -200,8 +200,7 @@ public class ObsViewActivity extends ActivityWithPatientSummaryBottomNavigation 
             patientNameTextView.setText(patient.getDisplayName());
             identifierTextView.setText(String.format(Locale.getDefault(), "ID:#%s", patient.getIdentifier()));
             if (patient.getBirthdate() != null)
-                dobTextView.setText(getString(R.string.general_date_of_birth ,String.format(": %s", new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(patient.getBirthdate()))));
-
+                dobTextView.setText(getString(R.string.general_date_of_birth ,String.format(": %s", new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(patient.getBirthdate()))));
             patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
             if (patient.getBirthdate() != null)
                 ageTextView.setText(getString(R.string.general_years ,String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(patient.getBirthdate()))));

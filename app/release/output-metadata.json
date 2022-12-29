@@ -10,9 +10,9 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 25,
-      "versionName": "3.0.7-SNAPSHOT",
-      "outputFile": "muzima-android-release-3.0.7-SNAPSHOT.apk"
+      "versionCode": 28,
+      "versionName": "3.0.8-SNAPSHOT",
+      "outputFile": "muzima-android-release-3.0.8-SNAPSHOT.apk"
     }
   ]
 }

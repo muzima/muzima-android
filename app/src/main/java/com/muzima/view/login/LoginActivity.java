@@ -378,6 +378,7 @@ public class LoginActivity extends BaseActivity {
 
     private void initViews() {
         serverUrlText = findViewById(R.id.serverUrl);
+        serverUrlText.setText("http://10.10.2.17:8088/openmrschabeco");
         usernameText = findViewById(R.id.username);
         passwordText = findViewById(R.id.password);
         updatePassword = findViewById(R.id.update_password);
