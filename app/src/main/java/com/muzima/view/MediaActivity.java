@@ -116,7 +116,7 @@ public class MediaActivity extends BaseActivity{
         File file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
         if(!file.exists()){
             Toast.makeText(this, getString(R.string.info_no_media_not_available), Toast.LENGTH_LONG).show();
-        }else {
+        } else {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             Uri fileUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", file);
             intent.setData(fileUri);

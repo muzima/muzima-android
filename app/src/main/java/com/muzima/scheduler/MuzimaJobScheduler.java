@@ -1272,27 +1272,28 @@ public class MuzimaJobScheduler extends JobService {
         }
 
         public void downloadFile(Media media){
-            //Delete file if exists
-            String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
-            File file = new File(PATH + "/"+media.getName()+"."+media.getMimeType().substring(media.getMimeType().lastIndexOf("/") + 1));
-            if(file.exists())
-                file.delete();
+            try {
+                //Delete file if exists
+                String mimeType = media.getMimeType();
+                String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
+                File file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
+                if(file.exists())
+                    file.delete();
 
-            if(!media.isRetired()) {
-                //Enqueue the file for download
-                try {
+                if(!media.isRetired()) {
+                    //Enqueue the file for download
                     DownloadManager.Request request = new DownloadManager.Request(Uri.parse(media.getUrl() + ""));
                     request.setTitle(media.getName());
                     request.setDescription(media.getDescription());
                     request.allowScanningByMediaScanner();
                     request.setAllowedOverMetered(true);
                     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, media.getName());
+                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
                     DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                     dm.enqueue(request);
-                } catch (Exception e) {
-                    Log.e(getClass().getSimpleName(), "Error ", e);
                 }
+            } catch (Exception e) {
+                Log.e(getClass().getSimpleName(), "Error ", e);
             }
         }
     }
