@@ -67,15 +67,12 @@ public class MediaActivity extends BaseActivity{
             expListView.setVisibility(View.GONE);
         }
         // Listview on child click listener
-        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                startMediaDisplayActivity(
-                        mediaListMap.get(mediaCategories.get(groupPosition)).get(childPosition));
-                return false;
-            }
+        expListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            startMediaDisplayActivity(
+                    mediaListMap.get(mediaCategories.get(groupPosition)).get(childPosition));
+            return false;
         });
-        logEvent("VIEW_HELP");
+        logEvent("VIEW_MEDIA");
     }
 
     @Override
