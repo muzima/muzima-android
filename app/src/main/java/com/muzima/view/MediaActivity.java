@@ -23,6 +23,7 @@ import com.muzima.api.model.Media;
 import com.muzima.api.model.MediaCategory;
 import com.muzima.controller.MediaCategoryController;
 import com.muzima.controller.MediaController;
+import com.muzima.view.custom.ActivityWithBottomNavigation;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class MediaActivity extends BaseActivity{
+public class MediaActivity extends ActivityWithBottomNavigation {
 
     private MediaAdapter listAdapter;
     private ExpandableListView expListView;
@@ -41,6 +42,8 @@ public class MediaActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media);
+
+        loadBottomNavigation();
 
         expListView = findViewById(R.id.elvMedia);
         prepareListData();
@@ -73,6 +76,11 @@ public class MediaActivity extends BaseActivity{
             return false;
         });
         logEvent("VIEW_MEDIA");
+    }
+
+    @Override
+    protected int getBottomNavigationMenuItemId() {
+        return R.id.media;
     }
 
     @Override
