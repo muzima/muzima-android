@@ -1,4 +1,4 @@
-package com.muzima.adapters;
+package com.muzima.adapters.media;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.R;
 import com.muzima.api.model.Media;
@@ -20,6 +23,7 @@ public class MediaAdapter extends BaseExpandableListAdapter {
     private final Context context;
     private final List<MediaCategory> mediaCategoryList; 
     private final HashMap<MediaCategory, List<Media>> mediaCategoryListHashMap;
+    RecyclerView recyclerView;
 
     public MediaAdapter(Context context, List<MediaCategory> mediaCategoryList, HashMap<MediaCategory, List<Media>> listChildData) {
         this.context = context;
@@ -40,24 +44,29 @@ public class MediaAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         Media media = (Media) getChild(groupPosition, childPosition);
-        final String childText = media.getName();
-        final String description = media.getDescription();
 
         if (convertView == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.media_list_item, null);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.media_item, parent,
+                    false);
+            recyclerView = (RecyclerView) convertView.findViewById(R.id.recyclerview);
+            MediaRecyclerViewAdapter sbc=new MediaRecyclerViewAdapter(context,
+                    mediaCategoryListHashMap,groupPosition,mediaCategoryList);
+            recyclerView.setLayoutManager(new GridLayoutManager(context,3));
+            recyclerView.setAdapter(sbc);
         }
 
-        TextView tvName = convertView.findViewById(R.id.tvName);
-        TextView tvDescription = convertView.findViewById(R.id.tvDescription);
-        tvName.setText(childText);
-        tvDescription.setText(description);
+        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.media_item,parent,false);
+        recyclerView = (RecyclerView) convertView.findViewById(R.id.recyclerview);
+        MediaRecyclerViewAdapter sbc=new MediaRecyclerViewAdapter(context,
+                mediaCategoryListHashMap,groupPosition,mediaCategoryList);
+        recyclerView.setLayoutManager(new GridLayoutManager(context,3));
+        recyclerView.setAdapter(sbc);
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.mediaCategoryListHashMap.get(this.mediaCategoryList.get(groupPosition)).size();
+        return 1;
     }
 
     @Override
@@ -82,7 +91,7 @@ public class MediaAdapter extends BaseExpandableListAdapter {
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.activity_help_list_group, null);
+            convertView = infalInflater.inflate(R.layout.media_category_title, null);
         }
 
         TextView mediaCategoryHeader = convertView.findViewById(R.id.lblListHeader);
