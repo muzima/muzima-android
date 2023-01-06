@@ -719,4 +719,5 @@
     <string name="info_no_media_not_available">मीडिया फ़ाइल उपलब्ध नहीं है, हो सकता है कि उसे डिवाइस से हटा दिया गया हो</string>
     <string name="general_low_available_space">उपलब्ध स्थान पर्याप्त नहीं है</string>
     <string name="warning_new_no_enough_space">आपके पास मीडिया के लिए पर्याप्त स्थान नहीं है, आपको मीडिया डाउनलोड करने के लिए %s अधिक स्थान की आवश्यकता है।</string>
+    <string name="general_recently_viewed">हाल में देखा गया</string>
 </resources>

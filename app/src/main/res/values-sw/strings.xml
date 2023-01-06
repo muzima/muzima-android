@@ -724,4 +724,5 @@
     <string name="info_no_media_not_available">Faili ya midia haipatikani, inaweza kuwa imefutwa kutoka kwa kifaa</string>
     <string name="general_low_available_space">Nafasi inayopatikana haitoshi</string>
     <string name="warning_new_no_enough_space">Huna nafasi ya kutosha kwa midia, unahitaji nafasi %s zaidi ya kupakua midia.</string>
+    <string name="general_recently_viewed">Iliyotazamwa Hivi Karibuni</string>
 </resources>

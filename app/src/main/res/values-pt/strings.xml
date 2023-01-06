@@ -727,4 +727,5 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="info_no_media_not_available">O arquivo de mídia não está disponível, pode ter sido excluído do dispositivo</string>
     <string name="general_low_available_space">Espaço disponível insuficiente</string>
     <string name="warning_new_no_enough_space">Você não tem espaço suficiente para mídia, precisa de %s mais espaço para download de mídia.</string>
+    <string name="general_recently_viewed">Visualizado recentemente</string>
 </resources>

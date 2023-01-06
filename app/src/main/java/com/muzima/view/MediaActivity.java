@@ -1,6 +1,8 @@
 package com.muzima.view;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +16,9 @@ import com.muzima.api.model.Media;
 import com.muzima.api.model.MediaCategory;
 import com.muzima.controller.MediaCategoryController;
 import com.muzima.controller.MediaController;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
+import com.muzima.view.forms.HTMLFormWebViewActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,6 +78,29 @@ public class MediaActivity extends ActivityWithBottomNavigation {
         MediaCategoryController mediaCategoryController = ((MuzimaApplication) getApplication()).getMediaCategoryController();
         MediaController mediaController = ((MuzimaApplication) getApplication()).getMediaController();
         try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+            String recentMedia = preferences.getString(this.getResources().getString(R.string.preference_recently_viewed_media), StringUtils.EMPTY);
+            if(!StringUtils.isEmpty(recentMedia)) {
+                MediaCategory recentlyViewedMediaCategory = new MediaCategory();
+                recentlyViewedMediaCategory.setUuid("5b4574a4-1b3b-4b95-9ba2-821771af47d1");
+                recentlyViewedMediaCategory.setName(this.getResources().getString(R.string.general_recently_viewed));
+
+                String[] mediaUuids = recentMedia.split(",");
+                List<Media> recentlyViewedMediaList = new ArrayList<>();
+                for (int i = 0; i < mediaUuids.length; i++) {
+                    String mediaUuid = mediaUuids[i];
+                    Media media = mediaController.getMediaByUuid(mediaUuid);
+                    if(media != null) {
+                        recentlyViewedMediaList.add(media);
+                    }
+                }
+
+                if(recentlyViewedMediaList.size()>0){
+                    mediaCategories.add(recentlyViewedMediaCategory);
+                    mediaListMap.put(recentlyViewedMediaCategory, recentlyViewedMediaList);
+                }
+            }
+
             List<MediaCategory> mediaCategoryList = mediaCategoryController.getMediaCategories();
             for(MediaCategory mediaCategory:mediaCategoryList){
                 List<Media> mediaList = mediaController.getMediaByCategoryUuid(mediaCategory.getUuid());

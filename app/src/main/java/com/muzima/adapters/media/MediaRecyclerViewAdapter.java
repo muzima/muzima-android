@@ -2,6 +2,7 @@ package com.muzima.adapters.media;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,9 +26,11 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Media;
 import com.muzima.api.model.MediaCategory;
+import com.muzima.controller.MediaController;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -129,6 +133,32 @@ public class MediaRecyclerViewAdapter extends RecyclerView.Adapter<MediaRecycler
         if(!file.exists()){
             Toast.makeText(context, context.getString(R.string.info_no_media_not_available), Toast.LENGTH_LONG).show();
         } else {
+            String commaSeparatedMediaUuids = media.getUuid();
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+            String recentMedia = preferences.getString(context.getResources().getString(R.string.preference_recently_viewed_media), com.muzima.utils.StringUtils.EMPTY);
+            if(!com.muzima.utils.StringUtils.isEmpty(recentMedia)) {
+                String[] mediaUuids = recentMedia.split(",");
+                for (int i = 0; i < mediaUuids.length; i++) {
+                    String mediaUuid = mediaUuids[i];
+                    MediaController mediaController = ((MuzimaApplication) context.getApplicationContext()).getMediaController();
+                    Media med = null;
+                    if(i<2) {
+                        try {
+                            med = mediaController.getMediaByUuid(mediaUuid);
+                            if (med != null) {
+                                commaSeparatedMediaUuids = commaSeparatedMediaUuids.concat(",").concat(mediaUuid);
+                                }
+                        } catch (MediaController.MediaFetchException e) {
+                            Log.e(getClass().getSimpleName(),"Encountered Error while fetching media");
+                        }
+                    }
+                }
+            }
+
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+            String disclaimerKey = context.getResources().getString(R.string.preference_recently_viewed_media);
+            settings.edit().putString(disclaimerKey, commaSeparatedMediaUuids).commit();
+
             Intent intent = new Intent(Intent.ACTION_VIEW);
             Uri fileUri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
             intent.setData(fileUri);

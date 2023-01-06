@@ -729,4 +729,5 @@
     <string name="info_no_media_not_available">Le fichier multimédia n\'est pas disponible, il a peut-être été supprimé de l\'appareil</string>
     <string name="general_low_available_space">L\'espace disponible n\'est pas suffisant</string>
     <string name="warning_new_no_enough_space">Vous n\'avez pas assez d\'espace pour les médias, vous avez besoin de %s d\'espace supplémentaire pour le téléchargement des médias.</string>
+    <string name="general_recently_viewed">vu récemment</string>
 </resources>

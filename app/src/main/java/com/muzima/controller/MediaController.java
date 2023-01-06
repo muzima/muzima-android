@@ -64,10 +64,19 @@ public class MediaController {
         }
     }
 
+    public Media getMediaByUuid(String mediaUuid) throws MediaController.MediaFetchException {
+        try {
+            Media media = mediaService.getMediaByUuid(mediaUuid);
+            return media;
+        } catch (IOException | ParseException e) {
+            throw new MediaController.MediaFetchException(e);
+        }
+    }
+
     public List<Media> getMediaByCategoryUuid(String categoryUuid) throws MediaController.MediaFetchException {
         try {
-
             List<Media> media = mediaService.getMediaByCategoryUuid(categoryUuid);
+
             return media;
         } catch (IOException | ParseException e) {
             throw new MediaController.MediaFetchException(e);
