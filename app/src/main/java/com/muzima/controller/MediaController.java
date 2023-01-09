@@ -16,6 +16,8 @@ import org.apache.lucene.queryParser.ParseException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -76,7 +78,7 @@ public class MediaController {
     public List<Media> getMediaByCategoryUuid(String categoryUuid) throws MediaController.MediaFetchException {
         try {
             List<Media> media = mediaService.getMediaByCategoryUuid(categoryUuid);
-
+            Collections.sort(media, mediaOrderComparator);
             return media;
         } catch (IOException | ParseException e) {
             throw new MediaController.MediaFetchException(e);
@@ -120,6 +122,13 @@ public class MediaController {
             throw new MediaController.MediaSaveException(e);
         }
     }
+
+    private final Comparator<Media> mediaOrderComparator = new Comparator<Media>() {
+        @Override
+        public int compare(Media lhs, Media rhs) {
+            return lhs.getOrder()-rhs.getOrder();
+        }
+    };
 
     public static class MediaFetchException extends Throwable {
         MediaFetchException(Throwable throwable) {

@@ -2,21 +2,19 @@ package com.muzima.controller;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_MEDIA_CATEGORIES;
 
-import android.os.Environment;
 
 import com.muzima.api.model.LastSyncTime;
-import com.muzima.api.model.Media;
 import com.muzima.api.model.MediaCategory;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.MediaCategoryService;
 import com.muzima.service.SntpService;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class MediaCategoryController {
     private final MediaCategoryService mediaCategoryService;
@@ -48,6 +46,7 @@ public class MediaCategoryController {
     public List<MediaCategory> getMediaCategories() throws MediaCategoryController.MediaCategoryFetchException {
         try {
             List<MediaCategory> mediaCategory = mediaCategoryService.getMediaCategories();
+            Collections.sort(mediaCategory, mediaCategoryOrderComparator);
             return mediaCategory;
         } catch (IOException e) {
             throw new MediaCategoryController.MediaCategoryFetchException(e);
@@ -93,6 +92,13 @@ public class MediaCategoryController {
             throw new MediaCategoryController.MediaCategorySaveException(e);
         }
     }
+
+    private final Comparator<MediaCategory> mediaCategoryOrderComparator = new Comparator<MediaCategory>() {
+        @Override
+        public int compare(MediaCategory lhs, MediaCategory rhs) {
+            return lhs.getOrder()-rhs.getOrder();
+        }
+    };
 
     public static class MediaCategoryFetchException extends Throwable {
         MediaCategoryFetchException(Throwable throwable) {

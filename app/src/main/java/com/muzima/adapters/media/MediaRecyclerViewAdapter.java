@@ -77,12 +77,13 @@ public class MediaRecyclerViewAdapter extends RecyclerView.Adapter<MediaRecycler
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Media media = (Media) getChild(groupPosition, position);
+        String mimeType = media.getMimeType();
+        String type = mimeType.substring(mimeType.lastIndexOf("/") + 1);
         final String mediaName = media.getName();
         holder.name.setText(mediaName);
 
-        String mimeType = media.getMimeType();
         String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
-        File file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
+        File file = new File(PATH + "/"+media.getName()+"."+type);
 
         if(StringUtils.substringBefore(mimeType, "/").equals("image")){
             Uri uri = Uri.fromFile(file);
@@ -96,18 +97,17 @@ public class MediaRecyclerViewAdapter extends RecyclerView.Adapter<MediaRecycler
                 Bitmap thumbnail = getDefaultThumbNail();
                 holder.imageView.setImageBitmap(thumbnail);
             }
-        }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("mp4")){
+        }else if(type.equals("mp4")){
             Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(file.getAbsolutePath(), MediaStore.Video.Thumbnails.MICRO_KIND);
             Bitmap thumbnail = ThumbnailUtils.extractThumbnail(bitmap,400,400);
             holder.imageView.setImageBitmap(thumbnail);
-        }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("pdf")) {
+        }else if(type.equals("pdf")) {
             Bitmap thumbnail = getPDFThumbnail(file);
             holder.imageView.setImageBitmap(thumbnail);
         }else{
             Bitmap thumbnail = getDefaultThumbNail();
             holder.imageView.setImageBitmap(thumbnail);
         }
-
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
