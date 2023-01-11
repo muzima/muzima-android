@@ -971,8 +971,10 @@ public class LoginActivity extends BaseActivity {
         //Delete file if exists
         String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
         File file = new File(PATH + "/"+filename);
-        if(file.exists())
+        if(file.exists()) {
             file.delete();
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+        }
 
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url+""));
         request.setTitle(filename);

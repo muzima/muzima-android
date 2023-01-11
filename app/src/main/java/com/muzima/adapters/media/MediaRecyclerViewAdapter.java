@@ -138,19 +138,23 @@ public class MediaRecyclerViewAdapter extends RecyclerView.Adapter<MediaRecycler
             String recentMedia = preferences.getString(context.getResources().getString(R.string.preference_recently_viewed_media), com.muzima.utils.StringUtils.EMPTY);
             if(!com.muzima.utils.StringUtils.isEmpty(recentMedia)) {
                 String[] mediaUuids = recentMedia.split(",");
+                int j = 0;
                 for (int i = 0; i < mediaUuids.length; i++) {
                     String mediaUuid = mediaUuids[i];
-                    MediaController mediaController = ((MuzimaApplication) context.getApplicationContext()).getMediaController();
-                    Media med = null;
-                    if(i<2) {
-                        try {
-                            med = mediaController.getMediaByUuid(mediaUuid);
-                            if (med != null) {
-                                commaSeparatedMediaUuids = commaSeparatedMediaUuids.concat(",").concat(mediaUuid);
+                    if(!mediaUuid.equals(media.getUuid())) {
+                        MediaController mediaController = ((MuzimaApplication) context.getApplicationContext()).getMediaController();
+                        Media med = null;
+                        if (j < 2) {
+                            try {
+                                med = mediaController.getMediaByUuid(mediaUuid);
+                                if (med != null) {
+                                    commaSeparatedMediaUuids = commaSeparatedMediaUuids.concat(",").concat(mediaUuid);
                                 }
-                        } catch (MediaController.MediaFetchException e) {
-                            Log.e(getClass().getSimpleName(),"Encountered Error while fetching media");
+                            } catch (MediaController.MediaFetchException e) {
+                                Log.e(getClass().getSimpleName(), "Encountered Error while fetching media");
+                            }
                         }
+                        j++;
                     }
                 }
             }

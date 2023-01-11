@@ -1065,8 +1065,10 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             String mimeType = media.getMimeType();
             String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
             File file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
-            if(file.exists())
+            if(file.exists()) {
                 file.delete();
+                getApplicationContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+            }
 
             if(!media.isRetired()) {
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(media.getUrl() + ""));
