@@ -10,8 +10,10 @@
 
 package com.muzima.scheduler;
 
+import static com.muzima.util.Constants.ServerSettings.AUTOMATIC_FORM_SYNC_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
+import static com.muzima.util.Constants.ServerSettings.FORM_DUPLICATE_CHECK_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.NOTIFICATION_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.ONLINE_ONLY_MODE_ENABLED_SETTING;
@@ -73,8 +75,10 @@ import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.IncompleteFormWithPatientData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
+import com.muzima.service.FormDuplicateCheckPreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.OnlineOnlyModePreferenceService;
+import com.muzima.service.RealTimeFormDataSyncPreferenceService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
 import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
@@ -419,6 +423,8 @@ public class MuzimaJobScheduler extends JobService {
             preferenceSettings.add(DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING);
             preferenceSettings.add(DEFAULT_ENCOUNTER_LOCATION_SETTING);
             preferenceSettings.add(ONLINE_ONLY_MODE_ENABLED_SETTING);
+            preferenceSettings.add(FORM_DUPLICATE_CHECK_ENABLED_SETTING);
+            preferenceSettings.add(AUTOMATIC_FORM_SYNC_ENABLED_SETTING);
 
             boolean onlineModeBeforeConfigUpdate = false;
 
@@ -500,10 +506,14 @@ public class MuzimaJobScheduler extends JobService {
                     } catch (IOException e) {
                         Log.e(getClass().getSimpleName(), "Encountered Exception while sending token to server ", e);
                     }
+                }else if(muzimaSetting.getProperty().equals(FORM_DUPLICATE_CHECK_ENABLED_SETTING)){
+                    new FormDuplicateCheckPreferenceService(((MuzimaApplication) context)).updateFormDuplicateCheckPreferenceSettings();
+                }else if(muzimaSetting.getProperty().equals(AUTOMATIC_FORM_SYNC_ENABLED_SETTING)){
+                    new RealTimeFormDataSyncPreferenceService(((MuzimaApplication) context)).updateRealTimeSyncPreferenceSettings();
                 }
             }
 
-            /*check if the 6 mobile settings preferences are in setup else default to global, might have been deleted from the config*/
+            /*check if the mobile settings preferences are in setup else default to global, might have been deleted from the config*/
             for(String settingProperty : preferenceSettings){
                 if(!configSettings.contains(settingProperty)){
                     defaultToGlobalSettings(settingProperty);
@@ -551,6 +561,16 @@ public class MuzimaJobScheduler extends JobService {
                 } catch (LocationController.LocationLoadException e) {
                     Log.e(getClass().getSimpleName(), "Encountered Exception while fetching location ", e);
                 }
+            }else if(settingProperty.equals(NOTIFICATION_FEATURE_ENABLED_SETTING)){
+                try {
+                    fcmTokenController.sendTokenToServer();
+                } catch (IOException e) {
+                    Log.e(getClass().getSimpleName(), "Encountered Exception while sending token to server ", e);
+                }
+            }else if(settingProperty.equals(FORM_DUPLICATE_CHECK_ENABLED_SETTING)){
+                new FormDuplicateCheckPreferenceService(((MuzimaApplication) context)).updateFormDuplicateCheckPreferenceSettings();
+            }else if(settingProperty.equals(AUTOMATIC_FORM_SYNC_ENABLED_SETTING)){
+                new RealTimeFormDataSyncPreferenceService(((MuzimaApplication) context)).updateRealTimeSyncPreferenceSettings();
             }
         }
     }

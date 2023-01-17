@@ -1228,6 +1228,10 @@ public class MuzimaSyncService {
                 new RequireMedicalRecordNumberPreferenceService(muzimaApplication).updateRequireMedicalRecordNumberPreference();
             } else if (MuzimaSettingUtils.isOnlineOnlyModeSetting(muzimaSetting)) {
                 new OnlineOnlyModePreferenceService(muzimaApplication).updateOnlineOnlyModePreferenceValue();
+            }else if(MuzimaSettingUtils.isDuplicateFormCheckSetting(muzimaSetting)){
+                new FormDuplicateCheckPreferenceService(muzimaApplication).updateFormDuplicateCheckPreferenceSettings();
+            }else if(MuzimaSettingUtils.isRealTimeSyncSetting(muzimaSetting)){
+                new RealTimeFormDataSyncPreferenceService(muzimaApplication).updateRealTimeSyncPreferenceSettings();
             }
         }
     }

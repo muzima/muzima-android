@@ -43,6 +43,7 @@ import java.util.List;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_SETTINGS;
 import static com.muzima.util.Constants.ServerSettings.ALLOCATION_TAG_GENERATION;
+import static com.muzima.util.Constants.ServerSettings.AUTOMATIC_FORM_SYNC_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.BARCODE_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_COHORT_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_FORM_ENABLED_SETTING;
@@ -54,6 +55,7 @@ import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_COHORTS_IN_C
 import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_FORMS_IN_CONFIG_SETTING;
 import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CLIENT_ADDRESS;
 import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CLIENT_SUMMARY_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.FORM_DUPLICATE_CHECK_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GEOMAPPING_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.HISTORICAL_DATA_TAB_ENABLED_SETTING;
@@ -649,6 +651,36 @@ public class MuzimaSettingController {
                 Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isFormDuplicateCheckEnabled(){
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(FORM_DUPLICATE_CHECK_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+        }
+        return true;
+    }
+
+    public Boolean isRealTimeSyncEnabled(){
+        try {
+            if(isOnlineOnlyModeEnabled()){
+                return true;
+            } else {
+                MuzimaSetting muzimaSetting = getSettingByProperty(AUTOMATIC_FORM_SYNC_ENABLED_SETTING);
+                if (muzimaSetting != null)
+                    return muzimaSetting.getValueBoolean();
+                else
+                    Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+            }
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Setting is missing on this server");
         }
         return false;
     }
