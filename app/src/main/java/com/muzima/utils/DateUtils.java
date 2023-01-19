@@ -76,11 +76,7 @@ public class DateUtils {
     }
 
     public static int calculateAge(Date birthdate) {
-
-        if(birthdate==null){
-            return 0;
-        }
-
+        
         try {
             Calendar dob = Calendar.getInstance();
             dob.setTime(birthdate);

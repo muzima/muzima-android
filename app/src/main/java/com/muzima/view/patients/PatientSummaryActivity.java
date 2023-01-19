@@ -310,13 +310,11 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             testingDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23879));
             lastConsentDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23775));
 
-            // Confidant Information
             String cName = getObsByPatientUuidAndConceptId(patientUuid, 1740);
             confidantName.setText((StringUtils.EMPTY.equalsIgnoreCase(cName) || cName == null)?"-----------------":cName);
             String cContact = getObsByPatientUuidAndConceptId(patientUuid, 6224);
             confidantContact1.setText((StringUtils.EMPTY.equalsIgnoreCase(cContact) || cContact == null)?"-----------------":cContact);
 
-            // Qualitativa
             Observation obsHVLResultFL = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 1305, "e2790f68-1d5f-11e0-b929-000c29ad1d07");
             Observation obsHVLResultFSR = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 1305, "b5b7d21f-efd1-407e-81ce-ba9d93c524f8");
 
@@ -347,7 +345,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 hvlResult = "-----------------";
             }
 
-            // Quantitativa
             Observation obsHVLResultFLQuantitativa = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 856, "e2790f68-1d5f-11e0-b929-000c29ad1d07");
             Observation obsHVLResultFSRQuantitativa = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 856, "b5b7d21f-efd1-407e-81ce-ba9d93c524f8");
             Date lastHVLResultDateQuantitativa = null;
@@ -399,7 +396,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 lastCVResultDate.setText("-----------------");
             }
 
-            //FICHA CLINICA
             Observation consultationResultObs = getEncounterDateTimeByPatientUuidAndEncounterTypeUuid(patientUuid, "e278f956-1d5f-11e0-b929-000c29ad1d07");
             if(consultationResultObs!=null){
                 lastClinicalConsultDate.setText(consultationResultObs!=null? DateUtils.getFormattedDate(consultationResultObs.getObservationDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"-----------------");
@@ -408,7 +404,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 nextClinicalConsultDate.setText(observation != null ? DateUtils.getFormattedDate(observation.getValueDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT) : "-----------------");
             }
 
-            // MODO DE DISPENSA
             Observation obsModoDispensa = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 165174, "e279133c-1d5f-11e0-b929-000c29ad1d07");
             if(obsModoDispensa!=null){
                 String dispenseModeValue = getConceptNameFromConceptNamesByLocale(obsModoDispensa.getValueCoded().getConceptNames(), applicationLanguage);
@@ -417,7 +412,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 lastARVPickupDispenseMode.setText("-----------------");
             }
 
-            // FILA
             Observation obsNextARVPickUp = getEncounterDateTimeByPatientUuidAndConceptIdAndEncounterTypeUuid(patientUuid, 5096, "e279133c-1d5f-11e0-b929-000c29ad1d07");
             if(obsNextARVPickUp!=null){
                 Date nextARVPickup = obsNextARVPickUp.getValueDatetime();
@@ -525,9 +519,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     }
 
     private String getObsByPatientUuidAndConceptId(String patientUuid, int conceptId) throws JSONException, ObservationController.LoadObservationException {
-        List<Observation> observations = new ArrayList<>();
         try {
-            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+            List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
             Concept concept = conceptController.getConceptById(conceptId);
             Collections.sort(observations, observationDateTimeComparator);
             if (observations.size() > 0) {
@@ -548,34 +541,10 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         return StringUtils.EMPTY;
     }
 
-    private Observation getObservationByPatientUuidAndConceptId(String patientUuid, int conceptId) throws JSONException, ObservationController.LoadObservationException {
-        List<Observation> observations = new ArrayList<>();
-        try {
-            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
-            Concept concept = conceptController.getConceptById(conceptId);
-            Collections.sort(observations, observationDateTimeComparator);
-            if (observations.size() > 0) {
-                Observation obs = observations.get(0);
-                return obs;
-            }
-        } catch (ObservationController.LoadObservationException | Exception |
-                 ConceptController.ConceptFetchException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
-        }
-        return null;
-    }
-
     private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
         @Override
         public int compare(Observation lhs, Observation rhs) {
             return -lhs.getObservationDatetime().compareTo(rhs.getObservationDatetime());
-        }
-    };
-
-    private final Comparator<Encounter> encounterDateTimeComparator = new Comparator<Encounter>() {
-        @Override
-        public int compare(Encounter lhs, Encounter rhs) {
-            return -lhs.getEncounterDatetime().compareTo(rhs.getEncounterDatetime());
         }
     };
 
