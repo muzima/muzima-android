@@ -730,4 +730,17 @@
     <string name="general_low_available_space">L\'espace disponible n\'est pas suffisant</string>
     <string name="warning_new_no_enough_space">Vous n\'avez pas assez d\'espace pour les médias, vous avez besoin de %s d\'espace supplémentaire pour le téléchargement des médias.</string>
     <string name="general_recently_viewed">vu récemment</string>
+    <string name="confidant_details">Détails confidentiels</string>
+    <string name="confidant_name">Nom:</string>
+    <string name="confidant_phone_number_1">contact téléphonique:</string>
+    <string name="clinical_information_details">Informations cliniques</string>
+    <string name="most_recent_viral_load_result">Charge virale résultante:</string>
+    <string name="most_recent_viral_load_result_date">Date Résultat Charge virale:</string>
+    <string name="most_recent_arv_pickup">Dernière enquête ARV:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">Mode de distribution:</string>
+    <string name="next_scheduled_arv_pickup">Prochaine enquête ARV:</string>
+    <string name="most_recent_clinical_consultation_date">Dernière consultation clinique:</string>
+    <string name="next_clinical_consultation_date">Prochain rendez-vous clinique:</string>
+    <string name="tpt_start_date">Date de début TPT:</string>
+    <string name="tpt_end_date">Date de fin TPT:</string>
 </resources>

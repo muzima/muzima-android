@@ -741,4 +741,17 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_low_available_space">Available space not enough</string>
     <string name="warning_new_no_enough_space">You don\'t have enough space for media, you need %s more space for media download.</string>
     <string name="general_recently_viewed">Recently Viewed</string>
+    <string name="confidant_details">Confidant Details</string>
+    <string name="confidant_name">Confidant Name:</string>
+    <string name="confidant_phone_number_1">Phone Number:</string>
+    <string name="clinical_information_details">Clinical Information</string>
+    <string name="most_recent_viral_load_result">Viral Load Result:</string>
+    <string name="most_recent_viral_load_result_date">Viral Load Result Date:</string>
+    <string name="most_recent_arv_pickup">ARV pick-up:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">Dispensation Mode:</string>
+    <string name="next_scheduled_arv_pickup">Next scheduled ARV pick-up:</string>
+    <string name="most_recent_clinical_consultation_date">Clinical Consultation Date:</string>
+    <string name="next_clinical_consultation_date">Next Scheduled Clinical Consultation Date:</string>
+    <string name="tpt_start_date">TPT start date:</string>
+    <string name="tpt_end_date">TPT end date:</string>
 </resources>

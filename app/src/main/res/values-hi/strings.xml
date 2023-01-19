@@ -720,4 +720,17 @@
     <string name="general_low_available_space">उपलब्ध स्थान पर्याप्त नहीं है</string>
     <string name="warning_new_no_enough_space">आपके पास मीडिया के लिए पर्याप्त स्थान नहीं है, आपको मीडिया डाउनलोड करने के लिए %s अधिक स्थान की आवश्यकता है।</string>
     <string name="general_recently_viewed">हाल में देखा गया</string>
+    <string name="confidant_details">विश्वासपात्र विवरण</string>
+    <string name="confidant_name">नाम:</string>
+    <string name="confidant_phone_number_1">टेलीफोन संपर्क:</string>
+    <string name="clinical_information_details">नैदानिक ​​जानकारी</string>
+    <string name="most_recent_viral_load_result">परिणाम वायरल लोड:</string>
+    <string name="most_recent_viral_load_result_date">दिनांक परिणाम वायरल लोड:</string>
+    <string name="most_recent_arv_pickup">अंतिम एआरवी सर्वेक्षण:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">वितरण मोड:</string>
+    <string name="next_scheduled_arv_pickup">अगला एआरवी सर्वेक्षण:</string>
+    <string name="most_recent_clinical_consultation_date">अंतिम नैदानिक ​​परामर्श:</string>
+    <string name="next_clinical_consultation_date">अगली क्लिनिकल अपॉइंटमेंट:</string>
+    <string name="tpt_start_date">टीपीटी प्रारंभ तिथि:</string>
+    <string name="tpt_end_date">टीपीटी समाप्ति तिथि:</string>
 </resources>

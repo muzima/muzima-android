@@ -721,4 +721,17 @@
     <string name="general_low_available_space">ઉપલબ્ધ જગ્યા પૂરતી નથી</string>
     <string name="warning_new_no_enough_space">તમારી પાસે મીડિયા માટે પૂરતી જગ્યા નથી, મીડિયા ડાઉનલોડ કરવા માટે તમારે %s વધુ જગ્યાની જરૂર છે.</string>
     <string name="general_recently_viewed">તાજેતરમાં જોવાયેલ</string>
+    <string name="confidant_details">વિશ્વસનીય વિગતો</string>
+    <string name="confidant_name">નામ:</string>
+    <string name="confidant_phone_number_1">ટેલિફોન સંપર્ક:</string>
+    <string name="clinical_information_details">ક્લિનિકલ માહિતી</string>
+    <string name="most_recent_viral_load_result">પરિણામ વાયરલ લોડ:</string>
+    <string name="most_recent_viral_load_result_date">તારીખ પરિણામ વાયરલ લોડ:</string>
+    <string name="most_recent_arv_pickup">છેલ્લું ARV સર્વે:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">ડિસ્પેન્સિંગ મોડ:</string>
+    <string name="next_scheduled_arv_pickup">આગામી ARV સર્વે:</string>
+    <string name="most_recent_clinical_consultation_date">છેલ્લું ક્લિનિકલ કન્સલ્ટેશન:</string>
+    <string name="next_clinical_consultation_date">આગામી ક્લિનિકલ એપોઇન્ટમેન્ટ:</string>
+    <string name="tpt_start_date">TPT પ્રારંભ તારીખ:</string>
+    <string name="tpt_end_date">TPT સમાપ્તિ તારીખ:</string>
 </resources>
