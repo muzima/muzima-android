@@ -120,7 +120,6 @@ public class FormsWithDataActivity extends FormsActivityBase {
                 ageTextView.setText(getString(R.string.general_years ,String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(patient.getBirthdate()))));
             }
             patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
-
             LinearLayout tagsLayout = findViewById(R.id.menu_tags);
             TagsUtil.loadTags(patient, tagsLayout, getApplicationContext());
         }

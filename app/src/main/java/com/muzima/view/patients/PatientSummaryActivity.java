@@ -285,7 +285,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 ageTextView.setText(getString(R.string.general_years, String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(patient.getBirthdate()))));
                 dobTextView.setText(getString(R.string.general_date_of_birth, String.format(" %s", new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(patient.getBirthdate()))));
             }
-                patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
+            patientGenderImageView.setImageResource(getGenderImage(patient.getGender()));
+            gpsAddressTextView.setText(getDistanceToClientAddress(patient));
 
             if (patient.getAddresses().size() > 0) {
                 int index = patient.getAddresses().size() - 1;
