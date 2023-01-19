@@ -521,10 +521,10 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private String getObsByPatientUuidAndConceptId(String patientUuid, int conceptId) throws JSONException, ObservationController.LoadObservationException {
         try {
             List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
-            Concept concept = conceptController.getConceptById(conceptId);
             Collections.sort(observations, observationDateTimeComparator);
             if (observations.size() > 0) {
                 Observation obs = observations.get(0);
+                Concept concept = obs.getConcept();
                 if (concept.isDatetime())
                     return DateUtils.getFormattedDate(obs.getValueDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
                 else if (concept.isCoded())
@@ -534,8 +534,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 else
                     return obs.getValueText();
             }
-        } catch (ObservationController.LoadObservationException | Exception |
-                 ConceptController.ConceptFetchException e) {
+        } catch (ObservationController.LoadObservationException | Exception e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
         return StringUtils.EMPTY;
