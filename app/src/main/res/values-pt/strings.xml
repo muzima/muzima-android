@@ -224,7 +224,7 @@
     <string name="general_patient_registration">Registro do Utente</string>
     <string name="general_performance_comparison">Comparação de desempenho</string>
     <string name="general_person_create">Criar Pessoa</string>
-    <string name="general_phone_number">Contacto telefónico:</string>
+    <string name="general_phone_number">Contacto:</string>
     <string name="general_policy_title">Políticas de Uso</string>
     <string name="general_preferred_testing_location">Local Preferido de Testagem:</string>
     <string name="general_progress_message">Isso pode demorar um pouco</string>
@@ -797,4 +797,17 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="hint_network_connection_failure_map_loading">O dispositivo não está conectado à Internet. O mapa não está disponível quando offline.</string>
     <string name="warning_new_version_available">Uma nova versão do mUzima (v%s) está disponível.\n\nVocê pode continuar usando o mUzima enquanto baixa a atualização. Assim que o download for concluído, você será notificado e pedirá permissão para instalar a nova versão. Por favor, conceda permissão assim que solicitado.\n\nContinuar com a atualização?</string>
     <string name="general_new_version">Nova versão</string>
+    <string name="confidant_details">Detalhes do Confidente</string>
+    <string name="confidant_name">Nome:</string>
+    <string name="confidant_phone_number_1">Contacto:</string>
+    <string name="clinical_information_details">Informação Clínica</string>
+    <string name="most_recent_viral_load_result">Resultado CV:</string>
+    <string name="most_recent_viral_load_result_date">Data Resultado CV:</string>
+    <string name="most_recent_arv_pickup">Último Lev. ARV:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">Modo de Dispensa:</string>
+    <string name="next_scheduled_arv_pickup">Próximo Lev. ARV:</string>
+    <string name="most_recent_clinical_consultation_date">Última Consulta Clínica:</string>
+    <string name="next_clinical_consultation_date">Próxima Consulta Clínica:</string>
+    <string name="tpt_start_date">Data Início TPT:</string>
+    <string name="tpt_end_date">Data Fim TPT:</string>
 </resources>

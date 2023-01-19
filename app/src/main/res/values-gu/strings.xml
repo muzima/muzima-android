@@ -790,4 +790,17 @@
     <string name="hint_network_connection_failure_map_loading">ઉપકરણ ઇન્ટરનેટથી કનેક્ટ થયેલ નથી. ઑફલાઇન હોય ત્યારે નકશો ઉપલબ્ધ નથી.</string>
     <string name="warning_new_version_available">mUzima (v%s) નું નવું સંસ્કરણ ઉપલબ્ધ છે.\n\nતમે અપડેટ ડાઉનલોડ કરતી વખતે mUzima નો ઉપયોગ કરવાનું ચાલુ રાખી શકો છો. એકવાર ડાઉનલોડ પૂર્ણ થઈ જાય પછી તમને સૂચિત કરવામાં આવશે અને નવું સંસ્કરણ ઇન્સ્ટોલ કરવાની પરવાનગી માટે પૂછવામાં આવશે. વિનંતી કર્યા પછી કૃપા કરીને પરવાનગી આપો.\n\nઅપડેટ કરવા આગળ વધીએ?</string>
     <string name="general_new_version">નવી આવૃત્તિ</string>
+    <string name="confidant_details">વિશ્વસનીય વિગતો</string>
+    <string name="confidant_name">નામ:</string>
+    <string name="confidant_phone_number_1">ટેલિફોન સંપર્ક:</string>
+    <string name="clinical_information_details">ક્લિનિકલ માહિતી</string>
+    <string name="most_recent_viral_load_result">પરિણામ વાયરલ લોડ:</string>
+    <string name="most_recent_viral_load_result_date">તારીખ પરિણામ વાયરલ લોડ:</string>
+    <string name="most_recent_arv_pickup">છેલ્લું ARV સર્વે:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">ડિસ્પેન્સિંગ મોડ:</string>
+    <string name="next_scheduled_arv_pickup">આગામી ARV સર્વે:</string>
+    <string name="most_recent_clinical_consultation_date">છેલ્લું ક્લિનિકલ કન્સલ્ટેશન:</string>
+    <string name="next_clinical_consultation_date">આગામી ક્લિનિકલ એપોઇન્ટમેન્ટ:</string>
+    <string name="tpt_start_date">TPT પ્રારંભ તારીખ:</string>
+    <string name="tpt_end_date">TPT સમાપ્તિ તારીખ:</string>
 </resources>

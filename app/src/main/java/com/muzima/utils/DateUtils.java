@@ -76,9 +76,27 @@ public class DateUtils {
     }
 
     public static int calculateAge(Date birthdate) {
-        Calendar dob = Calendar.getInstance();
-        dob.setTime(birthdate);
-        return Calendar.getInstance().get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        
+        try {
+            Calendar dob = Calendar.getInstance();
+            dob.setTime(birthdate);
+            Calendar now = Calendar.getInstance();
+
+            int age = now.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+            if (now.get(Calendar.MONTH) < dob.get(Calendar.MONTH)) {
+                age--;
+            }
+            else
+            {
+                if (now.get(Calendar.MONTH) == dob.get(Calendar.MONTH) && now.get(Calendar.DAY_OF_MONTH) < dob.get(Calendar.DAY_OF_MONTH)) {
+                    age--;
+                }
+            }
+            return age;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     public static String convertDateToStdString(Date date) {

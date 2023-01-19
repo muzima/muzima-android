@@ -794,4 +794,17 @@
     <string name="hint_network_connection_failure_map_loading">Kifaa hakijaunganishwa kwenye mtandao. Ramani haipatikani ukiwa nje ya mtandao.</string>
     <string name="warning_new_version_available">Toleo jipya la mUzima (v%s) linapatikana.\n\nUnaweza kuendelea kutumia mUzima unapopakua sasisho. Upakuaji ukikamilika utaarifiwa na kuombwa ruhusa ya kusakinisha toleo jipya. Tafadhali toa ruhusa baada ya ombi lako.\n\nUngependa kusasisha?</string>
     <string name="general_new_version">Toleo Jipya</string>
+    <string name="confidant_details">Maelezo ya Msiri</string>
+    <string name="confidant_name">Jina:</string>
+    <string name="confidant_phone_number_1">Mawasiliano ya simu:</string>
+    <string name="clinical_information_details">Taarifa za Kliniki</string>
+    <string name="most_recent_viral_load_result">Matokeo ya Mzigo wa Virusi:</string>
+    <string name="most_recent_viral_load_result_date">Matokeo ya Tarehe Mzigo wa Virusi:</string>
+    <string name="most_recent_arv_pickup">Utafiti wa mwisho wa ARV:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">Hali ya Usambazaji:</string>
+    <string name="next_scheduled_arv_pickup">Utafiti Ujao wa ARV:</string>
+    <string name="most_recent_clinical_consultation_date">Ushauri wa Kliniki wa Mwisho:</string>
+    <string name="next_clinical_consultation_date">Inayofuata Uteuzi wa Kliniki:</string>
+    <string name="tpt_start_date">Tarehe ya kuanza kwa TPT:</string>
+    <string name="tpt_end_date">Tarehe ya mwisho ya TPT:</string>
 </resources>

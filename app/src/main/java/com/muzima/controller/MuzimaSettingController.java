@@ -70,6 +70,8 @@ import static com.muzima.util.Constants.ServerSettings.SINGLE_ELEMENT_ENTRY_FEAT
 import static com.muzima.util.Constants.ServerSettings.TAG_GENERATION_ENABLED_SETTING;
 
 import static com.muzima.util.Constants.ServerSettings.ADD_CONTACT_POPUP_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CONFIDANT_INFORMATION_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CLINICAL_INFORMATION_ENABLED_SETTING;
 
 public class MuzimaSettingController {
     private final MuzimaSettingService settingService;
@@ -636,6 +638,32 @@ public class MuzimaSettingController {
                 Log.e(getClass().getSimpleName(), "Allocation tag generation setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Allocation tag generation setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isFGHCustomConfidantOptionEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(FGH_CUSTOM_CONFIDANT_INFORMATION_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isFGHCustomClinicalOptionEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(FGH_CUSTOM_CLINICAL_INFORMATION_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
         }
         return false;
     }

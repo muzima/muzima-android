@@ -789,4 +789,17 @@
     <string name="hint_network_connection_failure_map_loading">डिवाइस इंटरनेट से कनेक्ट नहीं है। ऑफ़लाइन होने पर नक्शा उपलब्ध नहीं होता है।</string>
     <string name="warning_new_version_available">mUzima (v%s) का एक नया संस्करण उपलब्ध है।\n\nआप अपडेट को डाउनलोड करते समय mUzima का उपयोग जारी रख सकते हैं। एक बार डाउनलोड पूरा हो जाने पर आपको सूचित किया जाएगा और नए संस्करण को स्थापित करने की अनुमति मांगी जाएगी। कृपया अनुरोध करने के बाद अनुमति दें।\n\nअपडेट करने के लिए आगे बढ़ें?</string>
     <string name="general_new_version">नया संस्करण</string>
+    <string name="confidant_details">विश्वासपात्र विवरण</string>
+    <string name="confidant_name">नाम:</string>
+    <string name="confidant_phone_number_1">टेलीफोन संपर्क:</string>
+    <string name="clinical_information_details">नैदानिक ​​जानकारी</string>
+    <string name="most_recent_viral_load_result">परिणाम वायरल लोड:</string>
+    <string name="most_recent_viral_load_result_date">दिनांक परिणाम वायरल लोड:</string>
+    <string name="most_recent_arv_pickup">अंतिम एआरवी सर्वेक्षण:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">वितरण मोड:</string>
+    <string name="next_scheduled_arv_pickup">अगला एआरवी सर्वेक्षण:</string>
+    <string name="most_recent_clinical_consultation_date">अंतिम नैदानिक ​​परामर्श:</string>
+    <string name="next_clinical_consultation_date">अगली क्लिनिकल अपॉइंटमेंट:</string>
+    <string name="tpt_start_date">टीपीटी प्रारंभ तिथि:</string>
+    <string name="tpt_end_date">टीपीटी समाप्ति तिथि:</string>
 </resources>
