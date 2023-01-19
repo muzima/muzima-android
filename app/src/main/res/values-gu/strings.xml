@@ -734,4 +734,5 @@
     <string name="next_clinical_consultation_date">આગામી ક્લિનિકલ એપોઇન્ટમેન્ટ:</string>
     <string name="tpt_start_date">TPT પ્રારંભ તારીખ:</string>
     <string name="tpt_end_date">TPT સમાપ્તિ તારીખ:</string>
+    <string name="provider_reports_general">પ્રદાતા અહેવાલો</string>
 </resources>

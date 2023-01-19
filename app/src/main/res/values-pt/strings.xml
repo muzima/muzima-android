@@ -741,4 +741,5 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="next_clinical_consultation_date">Próxima Consulta Clínica:</string>
     <string name="tpt_start_date">Data Início TPT:</string>
     <string name="tpt_end_date">Data Fim TPT:</string>
+    <string name="provider_reports_general">Relatórios de Provedores</string>
 </resources>

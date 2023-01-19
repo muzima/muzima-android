@@ -733,4 +733,5 @@
     <string name="next_clinical_consultation_date">अगली क्लिनिकल अपॉइंटमेंट:</string>
     <string name="tpt_start_date">टीपीटी प्रारंभ तिथि:</string>
     <string name="tpt_end_date">टीपीटी समाप्ति तिथि:</string>
+    <string name="provider_reports_general">प्रदाता रिपोर्ट</string>
 </resources>

@@ -754,4 +754,5 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="next_clinical_consultation_date">Next Scheduled Clinical Consultation Date:</string>
     <string name="tpt_start_date">TPT start date:</string>
     <string name="tpt_end_date">TPT end date:</string>
+    <string name="provider_reports_general">Provider Reports</string>
 </resources>

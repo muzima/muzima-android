@@ -743,4 +743,5 @@
     <string name="next_clinical_consultation_date">Prochain rendez-vous clinique:</string>
     <string name="tpt_start_date">Date de début TPT:</string>
     <string name="tpt_end_date">Date de fin TPT:</string>
+    <string name="provider_reports_general">Rapports de fournisseur</string>
 </resources>
