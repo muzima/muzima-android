@@ -45,12 +45,14 @@ public class MediaRecyclerViewAdapter extends RecyclerView.Adapter<MediaRecycler
     Context context;
     int groupPosition;
     List<MediaCategory> mediaCategoryList;
+    HashMap<String, Bitmap> bitmaps;
 
-    public MediaRecyclerViewAdapter(Context context, HashMap<MediaCategory, List<Media>> child, int groupPosition, List<MediaCategory> mediaCategory) {
+    public MediaRecyclerViewAdapter(Context context, HashMap<MediaCategory, List<Media>> child, int groupPosition, List<MediaCategory> mediaCategory, HashMap<String, Bitmap> bitmaps) {
         this.mediaCategoryListHashMap = child;
         this.context=context;
         this.groupPosition=groupPosition;
         this.mediaCategoryList=mediaCategory;
+        this.bitmaps = bitmaps;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -82,30 +84,21 @@ public class MediaRecyclerViewAdapter extends RecyclerView.Adapter<MediaRecycler
         final String mediaName = media.getName();
         holder.name.setText(mediaName);
 
-        String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
-        File file = new File(PATH + "/"+media.getName()+"."+type);
-
         if(StringUtils.substringBefore(mimeType, "/").equals("image")){
-            Uri uri = Uri.fromFile(file);
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(context.getApplicationContext().getContentResolver(), uri);
-                Bitmap thumbnail = ThumbnailUtils.extractThumbnail(bitmap,400,400);
-                holder.imageView.setImageBitmap(thumbnail);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Bitmap thumbnail = getDefaultThumbNail();
-                holder.imageView.setImageBitmap(thumbnail);
-            }
-        }else if(type.equals("mp4")){
-            Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(file.getAbsolutePath(), MediaStore.Video.Thumbnails.MICRO_KIND);
-            Bitmap thumbnail = ThumbnailUtils.extractThumbnail(bitmap,400,400);
-            holder.imageView.setImageBitmap(thumbnail);
+            holder.imageView.setImageBitmap(bitmaps.get("images"));
+        }else if(StringUtils.substringBefore(mimeType, "/").equals("video") || StringUtils.substringBefore(mimeType, "/").equals("audio")){
+            holder.imageView.setImageBitmap(bitmaps.get("video"));
         }else if(type.equals("pdf")) {
-            Bitmap thumbnail = getPDFThumbnail(file);
-            holder.imageView.setImageBitmap(thumbnail);
+            holder.imageView.setImageBitmap(bitmaps.get("pdf"));
+        }else if(type.equals("msword") || type.equals("vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+            holder.imageView.setImageBitmap(bitmaps.get("word"));
+        }else if(type.equals("vnd.ms-powerpoint") || type.equals("vnd.openxmlformats-officedocument.presentationml.presentation")) {
+            holder.imageView.setImageBitmap(bitmaps.get("powerpoint"));
+        }else if(type.equals("vnd.ms-excel") || type.equals("vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+            holder.imageView.setImageBitmap(bitmaps.get("excel"));
         }else{
-            Bitmap thumbnail = getDefaultThumbNail();
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.splash_background);
+            Bitmap thumbnail = ThumbnailUtils.extractThumbnail(bitmap,400,400);
             holder.imageView.setImageBitmap(thumbnail);
         }
 
@@ -129,7 +122,16 @@ public class MediaRecyclerViewAdapter extends RecyclerView.Adapter<MediaRecycler
     private void startMediaDisplayActivity(Media media) {
         String mimeType = media.getMimeType();
         String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
-        File file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
+        File file = new File(PATH + "/" + media.getName() + "." + mimeType.substring(mimeType.lastIndexOf("/") + 1));
+        if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-excel")){
+            file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1)+".xls");
+        }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("msword")){
+                file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1)+".doc");
+        }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-powerpoint")){
+            file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1)+".ppt");
+        }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.presentationml.presentation")){
+            file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1)+".pptx");
+        }
         if(!file.exists()){
             Toast.makeText(context, context.getString(R.string.info_no_media_not_available), Toast.LENGTH_LONG).show();
         } else {
@@ -173,37 +175,5 @@ public class MediaRecyclerViewAdapter extends RecyclerView.Adapter<MediaRecycler
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             context.startActivity(intent);
         }
-    }
-
-    private Bitmap getDefaultThumbNail(){
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
-                R.drawable.splash_background);
-        Bitmap thumbnail = ThumbnailUtils.extractThumbnail(bitmap,400,400);
-        return thumbnail;
-    }
-
-    private Bitmap getPDFThumbnail(File PDFFile){
-        Bitmap bitmap = null;
-        try {
-            PdfRenderer renderer = new PdfRenderer(ParcelFileDescriptor.open(PDFFile, ParcelFileDescriptor.MODE_READ_ONLY));
-            final int pageCount = renderer.getPageCount();
-            if(pageCount>0){
-                PdfRenderer.Page page = renderer.openPage(0);
-                int width = context.getResources().getDisplayMetrics().densityDpi / 72 * page.getWidth();
-                int height = context.getResources().getDisplayMetrics().densityDpi / 72 * page.getHeight();
-                bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-                page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
-                page.close();
-            }else{
-                bitmap = getDefaultThumbNail();
-            }
-            renderer.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            bitmap = getDefaultThumbNail();
-        }
-        Bitmap thumbnail = ThumbnailUtils.extractThumbnail(bitmap,400,400);
-        return thumbnail;
     }
 }

@@ -1,7 +1,10 @@
 package com.muzima.adapters.media;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.media.ThumbnailUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +27,19 @@ public class MediaAdapter extends BaseExpandableListAdapter {
     private final List<MediaCategory> mediaCategoryList; 
     private final HashMap<MediaCategory, List<Media>> mediaCategoryListHashMap;
     RecyclerView recyclerView;
+    private HashMap<String, Bitmap> bitmaps = new HashMap<>();;
 
     public MediaAdapter(Context context, List<MediaCategory> mediaCategoryList, HashMap<MediaCategory, List<Media>> listChildData) {
         this.context = context;
         this.mediaCategoryList = mediaCategoryList;
         this.mediaCategoryListHashMap = listChildData;
+
+        bitmaps.put("images", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.image_icon), 400, 400));
+        bitmaps.put("pdf", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.pdf_file_icon), 400, 400));
+        bitmaps.put("excel", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.excell_icon), 400, 400));
+        bitmaps.put("word", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.ms_word_document), 400, 400));
+        bitmaps.put("powerpoint", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.ms_powerpoint), 400, 400));
+        bitmaps.put("video", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.videos_audio_icon), 400, 400));
     }
 
     @Override
@@ -50,7 +61,7 @@ public class MediaAdapter extends BaseExpandableListAdapter {
                     false);
             recyclerView = (RecyclerView) convertView.findViewById(R.id.recyclerview);
             MediaRecyclerViewAdapter sbc=new MediaRecyclerViewAdapter(context,
-                    mediaCategoryListHashMap,groupPosition,mediaCategoryList);
+                    mediaCategoryListHashMap,groupPosition,mediaCategoryList, bitmaps);
             recyclerView.setLayoutManager(new GridLayoutManager(context,3));
             recyclerView.setAdapter(sbc);
         }
@@ -58,7 +69,7 @@ public class MediaAdapter extends BaseExpandableListAdapter {
         convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.media_item,parent,false);
         recyclerView = (RecyclerView) convertView.findViewById(R.id.recyclerview);
         MediaRecyclerViewAdapter sbc=new MediaRecyclerViewAdapter(context,
-                mediaCategoryListHashMap,groupPosition,mediaCategoryList);
+                mediaCategoryListHashMap,groupPosition,mediaCategoryList, bitmaps);
         recyclerView.setLayoutManager(new GridLayoutManager(context,3));
         recyclerView.setAdapter(sbc);
         return convertView;
