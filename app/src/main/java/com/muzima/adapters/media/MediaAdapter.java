@@ -34,12 +34,12 @@ public class MediaAdapter extends BaseExpandableListAdapter {
         this.mediaCategoryList = mediaCategoryList;
         this.mediaCategoryListHashMap = listChildData;
 
-        bitmaps.put("images", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.image_icon), 400, 400));
-        bitmaps.put("pdf", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.pdf_file_icon), 400, 400));
-        bitmaps.put("excel", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.excell_icon), 400, 400));
-        bitmaps.put("word", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.ms_word_document), 400, 400));
-        bitmaps.put("powerpoint", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.ms_powerpoint), 400, 400));
-        bitmaps.put("video", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.videos_audio_icon), 400, 400));
+        bitmaps.put("images", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.image_icon), 150, 150));
+        bitmaps.put("pdf", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.pdf_file_icon), 150, 150));
+        bitmaps.put("excel", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.excell_icon), 150, 150));
+        bitmaps.put("word", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.ms_word_document), 150, 150));
+        bitmaps.put("powerpoint", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.ms_powerpoint), 150, 150));
+        bitmaps.put("video", ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(context.getResources(), R.drawable.videos_audio_icon), 150, 150));
     }
 
     @Override
