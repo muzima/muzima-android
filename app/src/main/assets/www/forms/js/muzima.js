@@ -1348,7 +1348,7 @@ $(document).ready(function () {
     var obsDatetimeArray = null;
     var setObsDatetimeArray = function ($form) {
         obsDatetimeArray = {};
-        var obsDatetimeElements = $form.find('*[data-obsdatetimefor]').filter(':visible');
+        var obsDatetimeElements = $form.find('*[data-obsdatetimefor]');
         $.each(obsDatetimeElements, function (i, element) {
             pushIntoArray(obsDatetimeArray, $(element).attr('data-obsdatetimefor'), $(element).val());
         });
@@ -1366,7 +1366,7 @@ $(document).ready(function () {
     var obsValueTextArray = null;
     var setObsValueTextArray = function ($form) {
         obsValueTextArray = {};
-        var obsValueTextElements = $form.find('*[data-obsvaluetextfor]').filter(':visible');
+        var obsValueTextElements = $form.find('*[data-obsvaluetextfor]');
         $.each(obsValueTextElements, function (i, element) {
            pushIntoArray(obsValueTextArray, $(element).attr('data-obsvaluetextfor'), $(element).val());
         });
@@ -1385,7 +1385,7 @@ $(document).ready(function () {
     var obsValueCodedArray = null;
     var setObsValueCodedArray = function ($form) {
         obsValueCodedArray = {};
-        var obsValueCodedElements = $form.find('*[data-obsvaluecodedfor]').filter(':visible');
+        var obsValueCodedElements = $form.find('*[data-obsvaluecodedfor]');
         $.each(obsValueCodedElements, function (i, element) {
             if ($(element).is(':checkbox') || $(element).is(':radio')) {
                 if ($(element).is(':checked')) {
@@ -1410,7 +1410,7 @@ $(document).ready(function () {
     var obsValueUuidArray = null;
     var setObsValueUuidArray = function ($form) {
         obsValueUuidArray = {};
-        var obsValueUuidElements = $form.find('*[data-obsvalueuuidfor]').filter(':visible');
+        var obsValueUuidElements = $form.find('*[data-obsvalueuuidfor]');
         $.each(obsValueUuidElements, function (i, element) {
             pushIntoArray(obsValueUuidArray, $(element).attr('data-obsvalueuuidfor'), $(element).val());
         });

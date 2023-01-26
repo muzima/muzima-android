@@ -190,26 +190,6 @@
                 android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
-            android:name=".view.notifications.PatientNotificationActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_client_summary"
-            android:parentActivityName=".view.patients.PatientSummaryActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientSummaryActivity" />
-        </activity>
-        <activity
-            android:name=".view.encounters.EncounterSummaryActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:label="@string/general_observations"
-            android:parentActivityName=".view.patients.PatientSummaryActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientSummaryActivity" />
-        </activity>
-        <activity
             android:name=".view.forms.RegistrationFormsActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
@@ -268,17 +248,6 @@
                 android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
-            android:name=".view.notifications.NotificationActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:label="@string/general_notification"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
-            android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.muzima.view.patients.PatientSummaryActivity" />
-        </activity>
-        <activity
             android:name=".view.relationship.RelationshipsListActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
@@ -324,18 +293,9 @@
         </activity>
 
         <activity
-            android:name=".view.notifications.NotificationsListActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:label="@string/general_notifications"
-            android:parentActivityName=".view.MainDashboardActivity">
-        </activity>
-
-        <activity
             android:name=".view.patients.DataCollectionActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/general_notifications"
             android:parentActivityName=".view.patients.PatientSummaryActivity">
         </activity>
 
@@ -343,7 +303,7 @@
             android:name=".view.patients.ObsViewActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/general_notifications"
+            android:label="@string/general_observations"
             android:parentActivityName=".view.patients.PatientSummaryActivity">
         </activity>
 
@@ -399,7 +359,6 @@
             android:exported="false" />
 
         <activity android:name=".view.SHRObservationsDataActivity" />
-        <activity android:name=".view.notifications.ConversationActivity" />
 
         <service
             android:name=".scheduler.MuzimaJobScheduler"
@@ -476,6 +435,15 @@
             android:screenOrientation="portrait"
             android:label="@string/general_forms"
             android:launchMode="singleTask"/>
+
+        <activity
+            android:name=".view.MediaActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/general_media"
+            android:launchMode="singleTask">
+
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

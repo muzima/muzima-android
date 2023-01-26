@@ -88,7 +88,6 @@ public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel
             //update progress here
             if (!StringUtils.isEmpty(text) && StringUtils.equals(text, Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG)) {
                 setupActionResult.setTextColor(Color.RED);
-                //setupActionResult.setText(String.format("%s: ", (getContext().getString(R.string.general_fail)).toUpperCase()));
                 statusImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_close));
             } else if (!StringUtils.isEmpty(text) && StringUtils.equals(text, Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG)) {
                 if (ThemeUtils.getInstance().isLightModeSettingEnabled(context.getApplicationContext()))
@@ -96,7 +95,6 @@ public class GuidedSetupActionLogAdapter extends ListAdapter<SetupActionLogModel
                 else
                     setupActionResult.setTextColor(ContextCompat.getColor(getContext(), R.color.primary_white));
                 statusImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_tick));
-                // setupActionResult.setText(String.format("%s: ", (getContext().getString(R.string.general_ok)).toUpperCase()));
             }
         }
     }

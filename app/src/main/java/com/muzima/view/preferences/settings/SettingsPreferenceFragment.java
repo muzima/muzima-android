@@ -36,8 +36,10 @@ import com.muzima.api.model.Location;
 import com.muzima.controller.LocationController;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.RealTimeFormUploader;
+import com.muzima.service.FormDuplicateCheckPreferenceService;
 import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.RealTimeFormDataSyncPreferenceService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
 import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.tasks.MuzimaAsyncTask;
@@ -74,6 +76,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private SwitchPreference sHRFeatureCheckBoxPreference;
     private SwitchPreference requireMedicalRecordNumberCheckBoxPreference;
     private SwitchPreference gpsLocationFeatureCheckBoxPreference;
+    private SwitchPreference duplicateFormCheckCheckBoxPreference;
+    private SwitchPreference realTimeSyncCheckBoxPreference;
     private Activity mActivity;
     private static final int RC_BARCODE_CAPTURE = 9001;
 
@@ -103,6 +107,8 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         setUpGPSLocationFeaturePreference();
         setUpSHRFeaturePreference();
         setUpLocalePreference();
+        setUpFormDuplicateCheckPreference();
+        setUpAutomaticFormSyncPreference();
     }
 
     private void setUpServerPreference(){
@@ -257,11 +263,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                 if (realTimeSyncPreference.isChecked() &&
                 !((MuzimaApplication) getActivity().getApplication()).getMuzimaSettingController().isOnlineOnlyModeEnabled()) {
                     MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getActivity().getApplicationContext());
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(0,false);
-                    } else {
-                        RealTimeFormUploader.getInstance().uploadAllCompletedForms(getActivity().getApplicationContext(),false);
-                    }
+                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(0,false);
                 }
                 return false;
             }
@@ -420,6 +422,22 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         localePreference.setSummary(localePreference.getValue());
         registerListPreferenceChangeHandler(localePreferenceKey, localePreference);
 
+    }
+
+    private void setUpFormDuplicateCheckPreference(){
+        String enableFormDuplicateCheckKey = getResources().getString(R.string.preference_duplicate_form_data_key);
+        duplicateFormCheckCheckBoxPreference = (SwitchPreference) getPreferenceScreen()
+                .findPreference(enableFormDuplicateCheckKey);
+        duplicateFormCheckCheckBoxPreference.setOnPreferenceChangeListener(
+                new ServerSideSettingPreferenceChangeListener(new DownloadFormDuplicateCheckSettingAsyncTask()));
+    }
+
+    private void setUpAutomaticFormSyncPreference(){
+        String enableGPSLocationFeaturePreferenceKey = getResources().getString(R.string.preference_real_time_sync);
+        realTimeSyncCheckBoxPreference = (SwitchPreference) getPreferenceScreen()
+                .findPreference(enableGPSLocationFeaturePreferenceKey);
+        realTimeSyncCheckBoxPreference.setOnPreferenceChangeListener(
+                new ServerSideSettingPreferenceChangeListener(new DownloadRealTimeSyncSettingAsyncTask()));
     }
 
     @Override
@@ -785,6 +803,96 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
                         }
                     }).create().show();
             return false;
+        }
+    }
+
+    public class DownloadFormDuplicateCheckSettingAsyncTask extends SettingDownloadAsyncTask {
+        public DownloadFormDuplicateCheckSettingAsyncTask(){ }
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        DownloadFormDuplicateCheckSettingAsyncTask newInstance(){
+            return new DownloadFormDuplicateCheckSettingAsyncTask();
+        }
+
+        @Override
+        public int[] doInBackground(Void... params){
+            MuzimaSyncService syncService = ((MuzimaApplication) mActivity
+                    .getApplication()).getMuzimaSyncService();
+            return syncService.downloadSetting(Constants.ServerSettings.FORM_DUPLICATE_CHECK_ENABLED_SETTING);
+        }
+
+        @Override
+        protected void onPostExecute(int[] result) {
+            if(result[0] == SUCCESS) {
+                FormDuplicateCheckPreferenceService formDuplicateCheckPreferenceService
+                        = ((MuzimaApplication) mActivity.getApplication()).getFormDuplicateCheckPreferenceService();
+                formDuplicateCheckPreferenceService.updateFormDuplicateCheckPreferenceSettings();
+                if(duplicateFormCheckCheckBoxPreference != null) {
+                    duplicateFormCheckCheckBoxPreference
+                            .setChecked(formDuplicateCheckPreferenceService.isFormDuplicateCheckSettingEnabled());
+                }
+                if(getActivity() != null) {
+                    Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                if(getActivity() != null) {
+                    Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
+    }
+
+    public class DownloadRealTimeSyncSettingAsyncTask extends SettingDownloadAsyncTask {
+        public DownloadRealTimeSyncSettingAsyncTask(){ }
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        DownloadRealTimeSyncSettingAsyncTask newInstance(){
+            return new DownloadRealTimeSyncSettingAsyncTask();
+        }
+
+        @Override
+        public int[] doInBackground(Void... params){
+            MuzimaSyncService syncService = ((MuzimaApplication) mActivity
+                    .getApplication()).getMuzimaSyncService();
+            return syncService.downloadSetting(Constants.ServerSettings.AUTOMATIC_FORM_SYNC_ENABLED_SETTING);
+        }
+
+        @Override
+        protected void onPostExecute(int[] result) {
+            if(result[0] == SUCCESS) {
+                RealTimeFormDataSyncPreferenceService realTimeFormDataSyncPreferenceService
+                        = ((MuzimaApplication) mActivity.getApplication()).getRealTimeFormDataSyncPreferenceService();
+                realTimeFormDataSyncPreferenceService.updateRealTimeSyncPreferenceSettings();
+                if(realTimeSyncCheckBoxPreference != null) {
+                    realTimeSyncCheckBoxPreference
+                            .setChecked(realTimeFormDataSyncPreferenceService.isRealTimeSyncSettingEnabled());
+                }
+                if(getActivity() != null) {
+                    Toast.makeText(getActivity(), getString(R.string.info_setting_download_success), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                if(getActivity() != null) {
+                    Toast.makeText(getActivity(), getString(R.string.warning_setting_download_failure), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
         }
     }
 }

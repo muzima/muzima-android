@@ -28,6 +28,8 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormDataStatus;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.Media;
+import com.muzima.api.model.MediaCategory;
 import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
@@ -48,9 +50,10 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MediaCategoryController;
+import com.muzima.controller.MediaController;
 import com.muzima.controller.PatientReportController;
 import com.muzima.controller.MuzimaSettingController;
-import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.PersonController;
@@ -100,8 +103,6 @@ public class MuzimaSyncService {
     private final CohortController cohortController;
     private final PatientController patientController;
     private final ObservationController observationController;
-    private EncounterController encounterController;
-    private NotificationController notificationController;
     private LocationController locationController;
     private ProviderController providerController;
     private SetupConfigurationController setupConfigurationController;
@@ -110,6 +111,8 @@ public class MuzimaSyncService {
     private RelationshipController relationshipController;
     private PersonController personController;
     private ReportDatasetController reportDatasetController;
+    private MediaController mediaController;
+    private MediaCategoryController mediaCategoryController;
     private Logger logger;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
@@ -119,8 +122,6 @@ public class MuzimaSyncService {
         cohortController = muzimaApplication.getCohortController();
         patientController = muzimaApplication.getPatientController();
         observationController = muzimaApplication.getObservationController();
-        encounterController = muzimaApplication.getEncounterController();
-        notificationController = muzimaApplication.getNotificationController();
         locationController = muzimaApplication.getLocationController();
         providerController = muzimaApplication.getProviderController();
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
@@ -129,6 +130,8 @@ public class MuzimaSyncService {
         relationshipController = muzimaApplication.getRelationshipController();
         personController = muzimaApplication.getPersonController();
         reportDatasetController = muzimaApplication.getReportDatasetController();
+        mediaController = muzimaApplication.getMediaController();
+        mediaCategoryController = muzimaApplication.getMediaCategoryController();
     }
 
     public int authenticate(String[] credentials) {
@@ -822,111 +825,6 @@ public class MuzimaSyncService {
         return voidedObservations;
     }
 
-    public int[] downloadEncountersForPatientsByCohortUUIDs(String[] cohortUuids, boolean replaceExistingEncounters) {
-        int[] result = new int[4];
-        List<Patient> patients;
-        try {
-            patients = patientController.getPatientsForCohorts(cohortUuids);
-
-            List<String> patientlist = new ArrayList();
-            for (Patient patient : patients) {
-                patientlist.add(patient.getUuid());
-            }
-            result = downloadEncountersForPatientsByPatientUUIDs(patientlist, replaceExistingEncounters);
-            if (result[0] != SUCCESS) {
-                Log.e(getClass().getSimpleName(), "Could not download encounters");
-                updateProgressDialog(muzimaApplication.getString(R.string.error_encounter_download));
-            }
-
-        } catch (PatientController.PatientLoadException e) {
-            Log.e(getClass().getSimpleName(), "Exception thrown while loading patients.", e);
-            result[0] = SyncStatusConstants.LOAD_ERROR;
-        }
-        return result;
-    }
-
-    public int[] downloadEncountersForPatientsByPatientUUIDs(List<String> patientUuids, boolean replaceExistingEncounters) {
-        int[] result = new int[4];
-        try {
-            String activeSetupConfigUuid = null;
-            try {
-                SetupConfigurationTemplate setupConfigurationTemplate = setupConfigurationController.getActiveSetupConfigurationTemplate();
-                if (setupConfigurationTemplate != null) {
-                    activeSetupConfigUuid = setupConfigurationTemplate.getUuid();
-                }
-            } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
-                Log.e(getClass().getSimpleName(), "Could not obtain active setup config", e);
-            }
-            List<List<String>> slicedPatientUuids = split(patientUuids);
-            Set<String> patientsForDownloadedEncounters = new HashSet();
-            long totalTimeDownloading = 0, totalTimeReplacing = 0, totalTimeSaving = 0;
-            int i = 0;
-            for (List<String> slicedPatientUuid : slicedPatientUuids) {
-                Log.i(getClass().getSimpleName(), "Downloading encounters for " + slicedPatientUuid.size() + " patients");
-                long startDownloadEncounters = System.currentTimeMillis();
-                List<Encounter> allEncounters = new ArrayList<>(encounterController.downloadEncountersByPatientUuids(slicedPatientUuid, activeSetupConfigUuid));
-
-                long endDownloadObservations = System.currentTimeMillis();
-                Log.d(getClass().getSimpleName(), "In Downloading encounters : " + (endDownloadObservations - startDownloadEncounters) / 1000 + " sec\n");
-                totalTimeDownloading += endDownloadObservations - startDownloadEncounters;
-
-                Log.i(getClass().getSimpleName(), "Encounters download successful with " + allEncounters.size() + " encounters");
-                for (Encounter encounter : allEncounters) {
-                    patientsForDownloadedEncounters.add(encounter.getPatient().getUuid());
-                }
-                Log.i(getClass().getSimpleName(), "Downloaded Encounters for patient " + patientsForDownloadedEncounters.size() + " of " + patientUuids.size());
-                updateProgressDialog(muzimaApplication.getString(R.string.info_encounter_download_progress, patientsForDownloadedEncounters.size(), patientUuids.size()));
-
-                ArrayList<Encounter> voidedEncounters = getVoidedEncounters(allEncounters);
-                allEncounters.removeAll(voidedEncounters);
-                encounterController.deleteEncounters(voidedEncounters);
-                Log.i(getClass().getSimpleName(), "Voided encounters delete successful with " + voidedEncounters.size() + " encounters");
-
-                if (replaceExistingEncounters) {
-                    encounterController.replaceEncounters(allEncounters);
-                    long replacedEncounters = System.currentTimeMillis();
-                    Log.d(getClass().getSimpleName(), "In Replacing encounters for patients: " + (replacedEncounters - endDownloadObservations) / 1000 + " sec");
-                    totalTimeReplacing += replacedEncounters - endDownloadObservations;
-                } else {
-                    encounterController.saveEncounters(allEncounters);
-                    long savedEncounters = System.currentTimeMillis();
-                    Log.d(getClass().getSimpleName(), "In Saving encounters : " + (savedEncounters - endDownloadObservations) / 1000 + " sec\n");
-                    totalTimeSaving += savedEncounters - endDownloadObservations;
-                }
-                result[1] += allEncounters.size();
-                result[2] += voidedEncounters.size();
-            }
-            Log.d(getClass().getSimpleName(), "Total Downloading encounters : " + totalTimeDownloading / 1000 + " sec\n");
-            Log.d(getClass().getSimpleName(), "Total Replacing encounters : " + totalTimeReplacing / 1000 + " sec\n");
-            Log.d(getClass().getSimpleName(), "Total Saving encounters : " + totalTimeSaving / 1000 + " sec\n");
-            result[0] = SUCCESS;
-            result[3] = patientsForDownloadedEncounters.size();
-        } catch (EncounterController.DownloadEncounterException e) {
-            Log.e(getClass().getSimpleName(), "Exception thrown while downloading encounters.", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
-        } catch (EncounterController.ReplaceEncounterException e) {
-            Log.e(getClass().getSimpleName(), "Exception thrown while replacing encounters.", e);
-            result[0] = SyncStatusConstants.REPLACE_ERROR;
-        } catch (EncounterController.DeleteEncounterException e) {
-            Log.e(getClass().getSimpleName(), "Exception thrown while deleting encounters.", e);
-            result[0] = SyncStatusConstants.DELETE_ERROR;
-        } catch (EncounterController.SaveEncounterException e) {
-            Log.e(getClass().getSimpleName(), "Exception thrown while saving encounters.", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
-        }
-        return result;
-    }
-
-    private ArrayList<Encounter> getVoidedEncounters(List<Encounter> allEncounters) {
-        ArrayList<Encounter> voidedEncounters = new ArrayList<>();
-        for (Encounter encounter : allEncounters) {
-            if (encounter.isVoided()) {
-                voidedEncounters.add(encounter);
-            }
-        }
-        return voidedEncounters;
-    }
-
     public int[] uploadAllCompletedForms() {
         int[] result = new int[1];
 
@@ -1113,36 +1011,6 @@ public class MuzimaSyncService {
             patientUuids.add(patient.getUuid());
         }
         return patientUuids;
-    }
-
-    public int[] downloadNotifications(String receiverUuid) {
-        Log.e(getClass().getSimpleName(), "Downloading messages in MuzimaSyncService");
-        int[] result = new int[2];
-
-        try {
-            List<Notification> notifications;
-            notifications = notificationController.downloadNotificationByReceiver(receiverUuid);
-            Log.i(getClass().getSimpleName(), "Notifications download successful");
-            notificationController.saveNotifications(notifications);
-            Log.i(getClass().getSimpleName(), "New notifications are saved");
-
-            List<Notification> senderNotifications;
-            senderNotifications = notificationController.downloadNotificationBySender(receiverUuid);
-            notificationController.saveNotifications(senderNotifications);
-
-            result[0] = SUCCESS;
-            result[1] = notifications.size();
-
-        } catch (NotificationController.NotificationDownloadException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to download notifications", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
-            return result;
-        } catch (NotificationController.NotificationSaveException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to save notifications", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
-            return result;
-        }
-        return result;
     }
 
     public int[] downloadPatientReportHeaders(String patientUuid) {
@@ -1360,6 +1228,10 @@ public class MuzimaSyncService {
                 new RequireMedicalRecordNumberPreferenceService(muzimaApplication).updateRequireMedicalRecordNumberPreference();
             } else if (MuzimaSettingUtils.isOnlineOnlyModeSetting(muzimaSetting)) {
                 new OnlineOnlyModePreferenceService(muzimaApplication).updateOnlineOnlyModePreferenceValue();
+            }else if(MuzimaSettingUtils.isDuplicateFormCheckSetting(muzimaSetting)){
+                new FormDuplicateCheckPreferenceService(muzimaApplication).updateFormDuplicateCheckPreferenceSettings();
+            }else if(MuzimaSettingUtils.isRealTimeSyncSetting(muzimaSetting)){
+                new RealTimeFormDataSyncPreferenceService(muzimaApplication).updateRealTimeSyncPreferenceSettings();
             }
         }
     }
@@ -1690,6 +1562,42 @@ public class MuzimaSyncService {
             Log.e(getClass().getSimpleName(), "Error while fetching report datasets",e);
         }
 
+        return result;
+    }
+
+    public int[] downloadMediaCategories(List<String> mediaCategoryUuids){
+        int[] result = new int[2];
+        try {
+            List<MediaCategory> mediaCategories = mediaCategoryController.downloadMediaCategory(mediaCategoryUuids, false);
+            mediaCategoryController.saveMediaCategory(mediaCategories);
+            result[0] = SUCCESS;
+            result[1] = mediaCategories.size();
+
+        } catch (MediaCategoryController.MediaCategoryDownloadException | MediaCategoryController.MediaCategorySaveException e) {
+            Log.e(TAG, "Encountered Load Exception while getting media categories", e);
+        }
+        return result;
+    }
+
+    public List<Media> downloadMedia(List<String> mediaCategoryUuids, boolean isDeltaSync){
+        List<Media> media = new ArrayList<>();
+        try {
+            media = mediaController.downloadMedia(mediaCategoryUuids, isDeltaSync);
+        } catch (MediaController.MediaDownloadException e) {
+            Log.e(TAG, "Encountered Load Exception while getting media", e);
+        }
+        return media;
+    }
+
+    public int[] saveMedia(List<Media> media){
+        int[] result = new int[2];
+        try {
+            mediaController.saveMedia(media);
+            result[0] = SUCCESS;
+            result[1] = media.size();
+        } catch (MediaController.MediaSaveException e) {
+            Log.e(TAG, "Encountered Load Exception while downloading media", e);
+        }
         return result;
     }
 }

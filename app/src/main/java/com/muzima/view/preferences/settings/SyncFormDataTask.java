@@ -39,11 +39,7 @@ class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            progressDialog = new ProgressDialog(settingsPreferenceFragment.getContext());
-        }else{
-            progressDialog = new ProgressDialog(settingsPreferenceFragment.getActivity());
-        }
+        progressDialog = new ProgressDialog(settingsPreferenceFragment.getContext());
         progressDialog.setMessage(settingsPreferenceFragment.getString(R.string.title_data_synchronize));
 
         progressDialog.show();

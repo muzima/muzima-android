@@ -19,7 +19,6 @@
     <string name="assignment_form_uuid_missing_warning">Sorry, assignment form has not been set. Please contact administrator.</string>
     <string name="autocomplete_server_not_found">Server is unreachable! \nPlease connect your device and try again OR create a new person</string>
     <string name="captured_date">Captured Date:</string>
-    <string name="change_settings">Change Settings</string>
     <string name="client_registration_question_text">Would you like to register client in mUzima?</string>
     <string name="complex_obs">Complex Obs</string>
     <string name="concept_description">Concept Description</string>
@@ -29,14 +28,10 @@
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
     <string name="confirm_patient_id_exists">Does the client already have existing ID?</string>
     <string name="contact_us">Contact Us</string>
-    <string name="date_general">Date</string>
-    <string name="date_temp">June 8</string>
     <string name="default_auto_save_interval" translatable="false">2</string>
     <string name="default_server" translatable="false">https://demo2.muzima.org</string>
     <string name="delete_individual_obs">Deleting individual obs</string>
     <string name="downloaded_reports">Downloaded Reports</string>
-    <string name="downloading_cohorts_text">Downloading Cohorts</string>
-    <string name="downloading_forms">Downloading Forms</string>
     <string name="drawer_close" translatable="false">close</string>
     <string name="encounter_date">Encounter Date:</string>
     <string name="encounter_details">Encounter Details</string>
@@ -59,9 +54,6 @@
     <string name="error_credential_invalid">Invalid Username, Password, Server combination.</string>
     <string name="error_data_download">An error occurred while downloading data form server</string>
     <string name="error_data_save">An error occurred while saving data to local repo</string>
-    <string name="error_empty_message_text">Cannot send empty message.</string>
-    <string name="error_encounter_download">Could not download encounters</string>
-    <string name="error_encounter_load">Encounters could not be loaded</string>
     <string name="error_encounter_observation_download">Could not download observations for clients</string>
     <string name="error_exception_data_load">Load exception has been thrown while loading data</string>
     <string name="error_exception_data_upload">Server could not process uploaded data</string>
@@ -70,7 +62,6 @@
     <string name="error_form_download">Could not download forms</string>
     <string name="error_form_fetch">Something went wrong while fetching forms from local repo</string>
     <string name="error_form_load">Could not load forms</string>
-    <string name="error_form_load_fail">Could not load form</string>
     <string name="error_form_location_load">An error occurred while loading locations for the form</string>
     <string name="error_form_provider_load">An error occurred while loading provider for the form</string>
     <string name="error_form_save">An error occurred while saving the form</string>
@@ -83,12 +74,8 @@
     <string name="error_local_repo_data_delete">An error occurred while deleting data from local repo</string>
     <string name="error_location_download">Could not download locations</string>
     <string name="error_location_fetch">Something went wrong while fetching locations from local repo</string>
-    <string name="error_notification_download">Error downloading notifications</string>
-    <string name="error_notification_fetch">Something went wrong while fetching notifications from local repo</string>
     <string name="error_observation_download">Could not download observations</string>
     <string name="error_observation_form_save">An error occurred while saving observations in the form</string>
-    <string name="error_observation_load">Observations could not be loaded</string>
-    <string name="error_observation_unavailable">No observations Available</string>
     <string name="error_parse_exception_data_fetch">Parse exception has been thrown while fetching data</string>
     <string name="error_patient_data_form_exist">There is existing form data.
         Finish Incomplete data and sync it to the Server first before syncing form templates.
@@ -118,7 +105,6 @@
     <string name="feedback_header">Please send us your comments and feedback</string>
     <string name="feedback_hint">What is in your mind?</string>
     <string name="feedback_rating_question">How easy to use mUzima App?</string>
-    <string name="fill_out_forms_for_a_patient_general">Fill out forms for a patient</string>
     <string name="form_encounter_date">Encounter date</string>
     <string name="form_encounter_location">Encounter location</string>
     <string name="form_encounter_provider">Encounter provider</string>
@@ -152,10 +138,9 @@
     <string name="general_concepts">Concepts</string>
     <string name="general_consent_date">Consent Data</string>
     <string name="general_create_contact">Create Contact</string>
-    <string name="general_data_collection">Data Collection</string>
+
     <string name="general_data_collection_tools">"Data Collection Tools "</string>
     <string name="general_data_collection_tools_description">mUzima uses easy-to-develop web-based forms to collect data that can easily be transmitted and stored in OpenMRS.</string>
-    <string name="general_date">Date</string>
     <string name="general_date_of_birth">Date of birth: %s</string>
     <string name="general_days_character">d</string>
     <string name="general_delete">Delete</string>
@@ -168,7 +153,6 @@
     <string name="general_enter_value_to_save">Enter value to save</string>
     <string name="general_error_resolutions">"Error Resolutions"</string>
     <string name="general_error_resolutions_description">mUzima prevents duplicate form data entry on mobile device and resolves errors in OpenMRS during data processing.</string>
-    <string name="general_fail">Fail</string>
     <string name="general_failure">Failure</string>
     <string name="general_feedback">Feedback</string>
     <string name="general_filling_forms">Fill Forms</string>
@@ -215,8 +199,6 @@
     <string name="general_next">Next</string>
     <string name="general_no">No</string>
     <string name="general_not_available_text">Not Available</string>
-    <string name="general_notification">Notification</string>
-    <string name="general_notifications">Notifications</string>
     <string name="general_observations">Observations</string>
     <string name="general_ok">OK</string>
     <string name="general_online_mode">Online Mode</string>
@@ -255,7 +237,6 @@
     <string name="general_selected">Selected</string>
     <string name="general_server">Server</string>
     <string name="general_settings">Settings</string>
-    <string name="general_setup_completed_message">Setup complete</string>
     <string name="general_skip">Skip</string>
     <string name="general_small">Small</string>
     <string name="general_sort_by_name">By name</string>
@@ -268,8 +249,6 @@
     <string name="general_upload">Upload</string>
     <string name="general_use_selected_location">Use selected location</string>
     <string name="general_username">Username</string>
-    <string name="general_view_encounter">View encounter</string>
-    <string name="general_welcome">Welcome</string>
     <string name="general_works_offline">"Works Offline"</string>
     <string name="general_works_offline_description">mUzima works perfectly both in online and offline modes. This allows for data collection and reviews even when the device is offline.</string>
     <string name="general_years">%s Years</string>
@@ -286,7 +265,6 @@
     <string name="hint_audio_caption">Please enter a caption for the audio</string>
     <string name="hint_audio_record">Record or choose audio</string>
     <string name="hint_authentication_progress">Authenticating…</string>
-    <string name="hint_card_not_empty">The card is not empty. Please use a new card.</string>
     <string name="hint_check_digit_validation_failure">Please enter digits that matches CheckDigit algorithm</string>
     <string name="hint_client_local_search">Your search includes client id, given name, middle name and family
         name and searched only in the device
@@ -301,7 +279,6 @@
     </string>
     <string name="hint_configuration_search">Search a program</string>
     <string name="hint_consultation_consultant_validation_failure">Please provide a consultant from the list of possible consultants</string>
-    <string name="hint_create_new_SHR">Client does not have an SHR. Do you want to create new SHR and write to card?</string>
     <string name="hint_current_or_past_date_validation_failure">Please enter a date prior or equal to today</string>
     <string name="hint_default_encounter_location">This selected encounter location will be the default encounter
         location for all forms
@@ -323,7 +300,6 @@
         and resubmit the form
     </string>
     <string name="hint_future_date_validation_failure">Please enter a date in the future</string>
-    <string name="hint_gps_location_off">Location is switched off! Kindly turn on location in settings.</string>
     <string name="hint_guided_setup">Let’s select the program within which you will be working</string>
     <string name="hint_help_prompt">Please enter your message</string>
     <string name="hint_image_caption_prompt">Please enter a caption for the image</string>
@@ -331,7 +307,6 @@
         filled form
     </string>
     <string name="hint_install_psmart">Would you like to install P-Smart app?</string>
-    <string name="hint_last_synced">Last synced on: %s</string>
     <string name="hint_light_mode">Enable Light Theme</string>
     <string name="hint_loading_progress">Loading…</string>
     <string name="hint_local_connection_unavailable">Please connect your device and try again</string>
@@ -342,8 +317,6 @@
     <string name="hint_manage_location">Get more locations from the server or remove locations from this device</string>
     <string name="hint_manage_provider">Get more providers from the server or remove providers from this device</string>
     <string name="hint_mandatory_question_validation_failure">This question must be answered</string>
-    <string name="hint_notification_sync">Make sure you have connectivity to server and press the load button</string>
-    <string name="hint_opening_card_reader">Opening Card Reader</string>
     <string name="hint_option_none_exclusive_selection_validation_failure">If \'None\' is selected, no other options can
         be selected
     </string>
@@ -367,20 +340,14 @@
     <string name="hint_server_url">Server URL</string>
     <string name="hint_server_url_prompt">Please enter server URL</string>
     <string name="hint_session_timeout">If in-active for this time, mUzima will automatically logout</string>
-    <string name="hint_set_client_location">This client\'s home location has not been set. Do you want to set it now?
-    </string>
-    <string name="hint_set_default_encounter_location_for_SHR">Please set default encounter location so as to enable
-        writing new card
-    </string>
+    <string name="hint_set_client_location">This client\'s home location has not been set. Do you want to set it now?</string>
     <string name="hint_setting_refresh">Do you want to re-download this setting from server?</string>
-    <string name="hint_switch_location_on">Kindly switch on location in settings.</string>
     <string formatted="false" name="hint_their_performance">Performance summary for %s between %s and %s</string>
     <string name="hint_username_prompt">Please enter username</string>
     <string name="hint_video_caption_prompt">Please enter a caption for the video</string>
     <string name="hint_video_record">Record or choose video</string>
     <string name="hint_write_SHR_to_card">Do you want to write Shared Health Record to card ?</string>
     <string formatted="false" name="hint_your_performance">Your performance between %s and %s</string>
-    <string name="how_to_general">How To:</string>
     <string name="individual_obs">Individual Obs</string>
     <string name="individual_obs_description">Individual Obs</string>
     <string name="info_accept_all">Accept all</string>
@@ -389,9 +356,6 @@
     <string name="info_agree_to_muzima_terms_and_conditions">Agree to mUzima Terms and Conditions</string>
     <string name="info_authentication_in_progress">Authentication in progress…</string>
     <string name="info_background_data_sync_started">Syncing data in background</string>
-    <string name="info_by_abstract">By Abstract</string>
-    <string name="info_by_encounter">By Encounter</string>
-    <string name="info_by_type">By Type</string>
     <string name="info_client_local_search_not_found">No clients matched your search locally. Enter at least 3
         characters for remote search.
     </string>
@@ -432,14 +396,6 @@
     <string name="info_downloaded_image">Downloaded image</string>
     <string name="info_downloaded_reports_unavailable">No reports have been downloaded</string>
     <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
-    <string name="info_encounter_download">Downloading Encounters</string>
-    <string formatted="false" name="info_encounter_download_progress">Downloaded encounters for client %d of %d.</string>
-    <string name="info_encounter_patient_downloaded">Downloaded 1 encounter for 1 client</string>
-    <string name="info_encounter_patient_not_downloaded">Did not download any encounters</string>
-    <string formatted="false" name="info_encounter_patients_downloaded">Downloaded 1 encounter for %d clients</string>
-    <string name="info_encounter_unavailable">No encounters available</string>
-    <string formatted="false" name="info_encounters_patient_downloaded">Downloaded %d encounters for 1 client</string>
-    <string formatted="false" name="info_encounters_patients_downloaded">Downloaded %d encounters for %d clients</string>
     <string name="info_for_health_providers">for health providers</string>
     <string formatted="false" name="info_form_data_delete">Deleted %d forms</string>
     <string name="info_form_data_save_success">Completed form data was saved successfully.</string>
@@ -493,11 +449,7 @@
     <string name="info_no_forms_data_tip">No forms configured for data entry. Contact your administrator to add forms</string>
     <string name="info_no_observation_and_concept_data_tip">No concepts configured. Contact your administrator to add concepts.</string>
     <string name="info_no_observation_for_concept_data_tip">No historical data exists for the configured concepts</string>
-    <string formatted="false" name="info_notification_download">Downloaded %d notifications</string>
-    <string name="info_notification_download_in_progress">Downloading notifications</string>
-    <string name="info_notification_unavailable">No notifications available</string>
     <string name="info_observation_download">Downloading Observations</string>
-    <string name="info_observation_in_progress">Observations are still loading</string>
     <string name="info_observation_load">Observations are loading</string>
     <string name="info_observation_patient_downloaded">Downloaded 1 observation for 1 client</string>
     <string name="info_observation_patient_not_downloaded">Did not download any observations</string>
@@ -505,7 +457,6 @@
     <string name="info_observation_search">Search observations</string>
     <string name="info_observation_unavailable">No observations available</string>
     <string formatted="false" name="info_observations_download_progress">Downloaded observations for client %d of %d.</string>
-    <string name="info_observations_load_in_progress">Observations are still loading</string>
     <string formatted="false" name="info_observations_patient_downloaded">Downloaded 1 observation for %d clients</string>
     <string formatted="false" name="info_observations_patients_downloaded">Downloaded %d observations for %d clients</string>
     <string name="info_patient_data_download">Downloading clients data</string>
@@ -546,7 +497,6 @@
     <string name="info_setup_config_load">Loading Setup Configs</string>
     <string name="info_setup_configuration_template_download_in_progress">Updating Setup Configs</string>
     <string formatted="false" name="info_setup_configuration_templates_downloaded">Downloaded %d setup configuration templates</string>
-    <string name="info_setup_configuration_wizard_prepare">Preparing program setup wizard</string>
     <string formatted="false" name="info_submitted_form_data_status">Status of recently submitted forms: %d Processed successfully,
         %d Processed with error, %d Pending processing, %d Unknown status </string>
     <string name="info_submitted_form_data_status_check">Checking status of recently submitted forms</string>
@@ -596,37 +546,28 @@
     <string name="info_video_chose_activity_unavailable">Error: Application for choosing video not found</string>
     <string name="info_video_play_activity_unavailable">Error: Application for playing video not found</string>
     <string name="info_video_record_activity_unavailable">Error: Application for recording video not found</string>
-    <string name="initial_setup_for_muzima_general">Initial setup for mUzima</string>
     <string name="interactive_help_choose">Choose an Option:</string>
     <string name="interactive_help_header">Please tell us how we can help you</string>
     <string name="interactive_help_hint">Type your message</string>
-    <string name="introduction_to_muzima_general_text">Introduction to mUzima</string>
-    <string name="june_8_sample_date">June 8</string>
     <string name="language_english">English</string>
     <string name="language_french">French</string>
     <string name="language_gujarati">Gujarati</string>
     <string name="language_hindi">Hindi</string>
     <string name="language_portuguese">Portuguese</string>
     <string name="language_swahili">Swahili</string>
-    <string formatted="false" name="menu_SHR_data_sync">Sync SHR data (%d)</string>
-    <string name="menu_all_data_sync">Sync all data</string>
     <string name="menu_form_back_to_draft">Back To Draft</string>
     <string name="message_auto_logout">You will be auto logged off in %d sec</string>
     <string name="message_feedback_sent">Thank you for your message. \n Your feedback is important for us.</string>
     <string name="message_help_sent">Thanks for reaching out. \nOur support team will investigate your request. \n
         We will get back to you as soon as possible.</string>
     <string name="message_missing_form_encounter_details_error">must be provided</string>
-    <string name="muzima_training_manual_general">mUzima Training Manual</string>
-    <string name="new_messages_number_text"># new messages</string>
     <string name="no_default_encounter_location">No default encounter location</string>
     <string name="no_description_general">No description</string>
     <string name="no_email_client">No email client installed on this device. \nPlease install one and then leave your feedback.</string>
-    <string name="number_hashtag_representation">##</string>
     <string name="observation_details">Observation Details</string>
     <string name="observation_value">Observation Value:</string>
     <string name="online_mode_switch">Switch to online mode</string>
     <string name="online_mode_switch_warning">You have been switched from the offline mode to online mode. While on online mode, all patient data will be deleted from your device when you log out or you are auto logged out.</string>
-    <string name="patient_SHR_search_dialog_title">Client SHR Search</string>
     <string name="patient_SHR_search_title_text">Client SHR Search</string>
     <string name="privacy_policy">
 mUzima is a mobile application that enables health professionals collect, manage and use healthcare data as an extension to the OpenMRS medical record system. The app is built as an open source end user application, which is provided at no cost, and is intended for use as is. If you\'re using the application for an organization, you\'re agreeing to this Privacy Policy on behalf of that organization. If you\'re using the application to provide services, software and content for someone else, you\'re agreeing to this Privacy Policy on their behalf.
@@ -668,26 +609,16 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="provider_identifier">Provider Identifier:</string>
     <string name="provider_name">Provider Name:</string>
     <string name="provider_name_general">Provider Name</string>
-    <string name="provider_reports_general">Provider Reports</string>
     <string name="registering_patient_message_title_text">Registering client in mUzima…</string>
     <string name="relationship_create_success">Relationship created successfully</string>
     <string name="relationship_delete_fail">Cannot delete the relationship as it is already saved on the server. Contact the Administrator</string>
     <string name="relationship_to_self_error">Client cannot relate to him/herself</string>
-    <string name="reply_hint_text">send your reply</string>
-    <string name="sample_date_text">21/02/2018</string>
-    <string name="scan_card_id_title">Scan card ID</string>
-    <string name="search_patient_on_server_option_title_text">Client is not available locally, would you like to search server?</string>
     <string name="select_a_registration_form_text">Select a registration form</string>
     <string name="select_a_relationship_form_text">Select a form</string>
-    <string name="select_default_encounter_location">Choose your default encounter location</string>
-    <string name="send_feedback">Send feedback</string>
     <string name="send_general_text">Send</string>
-    <string name="server_side_setup_general">Server side Setup</string>
-    <string name="setting_up_muzima_general_text">Setting Up mUzima</string>
     <string name="shr_registration">SHR Registration</string>
     <string name="shr_registration_description">SHR Registration Data</string>
     <string name="success_writing_smartcard">Smart card data was written successfully.</string>
-    <string name="tagging_forms">Tagging Forms</string>
     <string name="title_about_dashboard_help_html">About Dashboard</string>
     <string name="title_active_setup_config">Active Setup Config</string>
     <string name="title_activity_audio">Add Audio</string>
@@ -695,9 +626,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="title_activity_client_summary">Client Summary</string>
     <string name="title_activity_image">Add Image</string>
     <string name="title_activity_video">Add Video</string>
-    <string name="title_advanced_setup">Advanced Setup</string>
     <string name="title_advanced_setup_help_html">Initial setup for mUzima</string>
-    <string name="title_advanced_setup_help_video">Advanced initial setup</string>
     <string name="title_app_language">Language</string>
     <string name="title_audio_caption">Audio Caption</string>
     <string name="title_audio_choose">Choose Audio</string>
@@ -705,7 +634,6 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="title_auto_logout">Auto Logout</string>
     <string name="title_client_location">Client Location</string>
     <string name="title_client_location_update">Update Client location</string>
-    <string name="title_client_notifications">Client Notifications</string>
     <string name="title_client_registration_help_video">Client registration</string>
     <string name="title_clients_locations">Clients Locations</string>
     <string name="title_cohort_download_help_video">Cohorts download (on demand)</string>
@@ -716,7 +644,6 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="title_default_encounter_provider">Default encounter provider</string>
     <string name="title_duplicate_form_data_warning">Duplicate form data warning</string>
     <string name="title_enable_gps">Enable GPS</string>
-    <string name="title_enable_gps_location">Enable Location and Internet connectivity.</string>
     <string name="title_enable_shr">Enable SHR</string>
     <string name="title_fill_patient_forms_help">Fill out forms for a client</string>
     <string name="title_font_size">Font size</string>
@@ -724,7 +651,6 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="title_form_data_complete">Unsynced Form Data</string>
     <string name="title_form_data_incomplete">Incomplete Form Data</string>
     <string name="title_form_download_help_video">Forms download (on demand)</string>
-    <string name="title_general_notifications">General Notifications</string>
     <string name="title_gps_location">GPS Location</string>
     <string name="title_guided_setup">Guided Setup</string>
     <string name="title_guided_setup_help_video">Guided initial setup</string>
@@ -735,14 +661,10 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="title_image_caption">Image Caption</string>
     <string name="title_image_capture">Capture Image</string>
     <string name="title_image_choose">Choose Image</string>
-    <string name="title_initial_setup_guide">mUzima initial setup guide</string>
-    <string name="title_install_barcode_scanner">Install Barcode Scanner</string>
     <string name="title_install_psmart">Install P-Smart app</string>
-    <string name="title_introduction_video">Video introduction to mUzima</string>
     <string name="title_last_logged_in">Date Last Logged In</string>
     <string name="title_light_mode">Enable Day Mode</string>
     <string name="title_local_client_search_help_video">Client search (local)</string>
-    <string name="title_location_help">Locations Help</string>
     <string name="title_logged_in_user">Logged In User</string>
     <string name="title_logo">MuzimaLogo</string>
     <string name="title_logout_confirm">Confirmation!</string>
@@ -752,22 +674,16 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="title_media_preview">Preview Media</string>
     <string name="title_missing_form_encounter_details_error">Missing Encounter Details</string>
     <string name="title_muzima_disclaimer">mUzima Disclaimer</string>
-    <string name="title_muzima_training_manual">mUzima training manual</string>
-    <string name="title_observations_by_concepts">By Data Type</string>
-    <string name="title_observations_by_encounters">By Date</string>
     <string name="title_pick_location">Pick Location</string>
     <string name="title_privacy_policy">Privacy Policy</string>
-    <string name="title_provider_help">providers Help</string>
     <string name="title_provider_not_set">Unable to set as Provider</string>
     <string name="title_provider_reports">Provider Reports</string>
     <string name="title_qrcode">QR code</string>
     <string name="title_real_time_sync">Automatic sync</string>
     <string name="title_real_time_sync_setting_unchanged">Automatic sync preference not changed</string>
-    <string name="title_registration_form">Select registration form</string>
     <string name="title_require_medical_record_number">Require medical record number</string>
     <string name="title_search_server">Search server</string>
     <string name="title_server_client_search_help_video">Client search (against server)</string>
-    <string name="title_server_side_setup">Server Side Setup</string>
     <string name="title_session_timeout">Session timeout (mins)</string>
     <string name="title_set_client_location">Set Client location</string>
     <string name="title_setting_refresh">Refresh Setting</string>
@@ -777,8 +693,6 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="title_video_choose">Choose Video</string>
     <string name="title_video_record">Record Video</string>
     <string name="to_text">To</string>
-    <string name="type_a_message_hint">Type a message</string>
-    <string name="video_links_general_text">Video Links:</string>
     <string name="warning_auto_save_interval">Auto Save Interval: Could not set auto save interval. \nPlease enter a value between 1 and 120.</string>
     <string name="warning_form_close">Closing Form: This will discard all your changes. Are you sure you would like to do this?</string>
     <string name="warning_form_data_already_exists">This Form Data already exists for this client with same encounter date.</string>
@@ -812,6 +726,21 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="hint_network_connection_failure_map_loading">The device is not connected to the internet. The map is not available when offline.</string>
     <string name="warning_new_version_available">A new version of mUzima (v%s) is available.\n\nYou can continue using the mUzima while downloading the update. Once the download is complete you will be notified and asked for permission to install the new version. Please grant permission once requested.\n\nProceed to update?</string>
     <string name="general_new_version">New Version</string>
+    <string name="info_media_category_download_in_progress">Downloading Media Categories</string>
+    <string name="info_media_categories_not_downloaded">Did not download any media category</string>
+    <string formatted="false" name="info_media_category_downloaded">Downloaded %d Media Categories</string>
+    <string name="error_media_category_download">Could not download media categories</string>
+    <string name="info_media_download_in_progress">Downloading Media</string>
+    <string name="info_media_not_downloaded">Did not download any media</string>
+    <string formatted="false" name="info_media_downloaded">Downloaded %d Media</string>
+    <string name="error_media_download">Could not download media</string>
+    <string name="general_media">Media</string>
+    <string name="info_media_unavailable">No media available</string>
+    <string name="info_no_media_data_tip">No media configured. Contact your administrator to add media</string>
+    <string name="info_no_media_not_available">The media file is not available, it might have been deleted from the device</string>
+    <string name="general_low_available_space">Available space not enough</string>
+    <string name="warning_new_no_enough_space">You don\'t have enough space for media, you need %s more space for media download.</string>
+    <string name="general_recently_viewed">Recently Viewed</string>
     <string name="confidant_details">Confidant Details</string>
     <string name="confidant_name">Confidant Name:</string>
     <string name="confidant_phone_number_1">Phone Number:</string>
@@ -825,4 +754,5 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="next_clinical_consultation_date">Next Scheduled Clinical Consultation Date:</string>
     <string name="tpt_start_date">TPT start date:</string>
     <string name="tpt_end_date">TPT end date:</string>
+    <string name="provider_reports_general">Provider Reports</string>
 </resources>

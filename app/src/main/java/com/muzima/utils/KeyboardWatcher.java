@@ -40,11 +40,7 @@ public class KeyboardWatcher {
 
     public void destroy() {
         if (rootViewRef.get() != null)
-            if (Build.VERSION.SDK_INT >= 16) {
-                rootViewRef.get().getViewTreeObserver().removeOnGlobalLayoutListener(viewTreeObserverListener);
-            } else {
-                rootViewRef.get().getViewTreeObserver().removeGlobalOnLayoutListener(viewTreeObserverListener);
-            }
+            rootViewRef.get().getViewTreeObserver().removeOnGlobalLayoutListener(viewTreeObserverListener);
     }
 
     private void initialize() {

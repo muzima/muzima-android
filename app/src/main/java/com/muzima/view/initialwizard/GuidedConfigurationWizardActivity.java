@@ -10,23 +10,30 @@
 
 package com.muzima.view.initialwizard;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
 import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.AsyncTask;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,7 +45,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.muzima.MuzimaApplication;
@@ -46,11 +56,11 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupCardsViewPagerAdapter;
-import com.muzima.adapters.setupconfiguration.SetupConfigurationRecyclerViewAdapter;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.Media;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.service.LastSyncTimeService;
@@ -69,19 +79,23 @@ import com.muzima.util.JsonUtils;
 import com.muzima.utils.Constants;
 import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import com.muzima.utils.Constants.SetupLogConstants;
+import com.muzima.utils.MemoryUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
+import com.muzima.view.barcode.BarcodeCaptureActivity;
 
 import net.minidev.json.JSONObject;
 
 import org.apache.lucene.queryParser.ParseException;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @SuppressWarnings("staticFieldLeak")
@@ -108,6 +122,8 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private boolean isOnlineOnlyModeEnabled;
     private String setupConfigTemplateUuid;
     private PowerManager.WakeLock wakeLock = null;
+    private static final int EXTERNAL_STORAGE_MANAGEMENT = 9002;
+    private List<Media> mediaList = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,false);
@@ -765,8 +781,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 onQueryTaskFinish();
                 if(!isOnlineOnlyModeEnabled) {
                     downloadObservations();
+                } else {
+                    downloadReportDatasets();
                 }
-                downloadReportDatasets();
             }
 
             @Override
@@ -834,6 +851,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadObservationsLog.setSetupActionResult(resultDescription);
                 downloadObservationsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
+                downloadReportDatasets();
             }
 
             @Override
@@ -846,7 +864,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private void downloadReportDatasets() {
         final SetupActionLogModel downloadReportDatasetLog = new SetupActionLogModel();
         addSetupActionLog(downloadReportDatasetLog);
-        new AsyncTask<Void, Void, int[]>() {
+        new MuzimaAsyncTask<Void, Void, int[]>() {
             @Override
             protected void onPreExecute() {
                 downloadReportDatasetLog.setSetupAction(getString(R.string.info_report_dataset_download_in_progress));
@@ -886,8 +904,222 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadReportDatasetLog.setSetupActionResultStatus(resultStatus);
 
                 onQueryTaskFinish();
+                downloadMediaCategories();
+            }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
             }
         }.execute();
+    }
+
+
+    private void downloadMediaCategories() {
+        final SetupActionLogModel downloadMediaCategoryLog = new SetupActionLogModel();
+        addSetupActionLog(downloadMediaCategoryLog);
+        new MuzimaAsyncTask<Void, Void, int[]>() {
+            @Override
+            protected void onPreExecute() {
+                downloadMediaCategoryLog.setSetupAction(getString(R.string.info_media_category_download_in_progress));
+                onQueryTaskStarted();
+            }
+
+            @Override
+            protected int[] doInBackground(Void... voids) {
+                MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                List<String> mediaCategoryUuids = extractMediaCategoryUuids();
+                int[] resultForMediaCategory= muzimaSyncService.downloadMediaCategories(mediaCategoryUuids);
+                return resultForMediaCategory;
+            }
+
+            @Override
+            protected void onPostExecute(int[] result) {
+                String resultDescription = null;
+                String resultStatus = null;
+                if (result == null) {
+                    resultDescription = getString(R.string.info_media_categories_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    int downloadedCategories = result[1];
+                    if (downloadedCategories == 0) {
+                        resultDescription = getString(R.string.info_media_categories_not_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_media_category_downloaded, downloadedCategories);
+                    }
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else {
+                    wizardcompletedSuccessfully = false;
+                    resultDescription = getString(R.string.error_media_category_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                }
+
+                downloadMediaCategoryLog.setSetupActionResult(resultDescription);
+                downloadMediaCategoryLog.setSetupActionResultStatus(resultStatus);
+
+                onQueryTaskFinish();
+                if(result[1]>0) {
+                    if (checkPermissionForStoragePermission()) {
+                        downloadMedia();
+                    } else {
+                        requestPermission();
+                    }
+                }else{
+                    downloadMedia();
+                }
+            }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
+        }.execute();
+    }
+
+    private void downloadMedia() {
+        final SetupActionLogModel downloadMediaLog = new SetupActionLogModel();
+        addSetupActionLog(downloadMediaLog);
+        new MuzimaAsyncTask<Void, Void, int[]>() {
+            @Override
+            protected void onPreExecute() {
+                downloadMediaLog.setSetupAction(getString(R.string.info_media_download_in_progress));
+                onQueryTaskStarted();
+            }
+
+            @Override
+            protected int[] doInBackground(Void... voids) {
+                MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                List<String> mediaUuids = extractMediaCategoryUuids();
+
+                mediaList = muzimaSyncService.downloadMedia(mediaUuids, false);
+
+                int[] resultForMedia = null;
+                long totalFileSize = MemoryUtil.getTotalMediaFileSize(mediaList);
+                long availableSpace = MemoryUtil.getAvailableInternalMemorySize();
+                if(availableSpace>totalFileSize) {
+                    if(mediaList.size()>0){
+                        resultForMedia = muzimaSyncService.saveMedia(mediaList);
+                        for (Media media : mediaList) {
+                            downloadFile(media);
+                        }
+                    }
+                }else {
+                    String loggedInUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUserId();
+                    String pseudoDeviceId = generatePseudoDeviceId();
+                    AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
+                    AppUsageLogs noEnoughSpaceLog = null;
+                    try {
+                        String availableMemory = MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize());
+                        noEnoughSpaceLog = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.NO_ENOUGH_SPACE_DEVICES);
+                        String requiredMemory = MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize());
+                        if (noEnoughSpaceLog != null) {
+                            noEnoughSpaceLog.setLogvalue("Required: " + requiredMemory + " Available: " + availableMemory);
+                            noEnoughSpaceLog.setUpdateDatetime(new Date());
+                            noEnoughSpaceLog.setUserName(loggedInUser);
+                            noEnoughSpaceLog.setDeviceId(pseudoDeviceId);
+                            noEnoughSpaceLog.setLogSynced(false);
+                            appUsageLogsController.saveOrUpdateAppUsageLog(noEnoughSpaceLog);
+                        } else {
+                            AppUsageLogs newNoEnoughSpaceLog = new AppUsageLogs();
+                            newNoEnoughSpaceLog.setUuid(UUID.randomUUID().toString());
+                            newNoEnoughSpaceLog.setLogKey(com.muzima.util.Constants.AppUsageLogs.NO_ENOUGH_SPACE_DEVICES);
+                            newNoEnoughSpaceLog.setLogvalue("Required: " + requiredMemory + " Available: " + availableMemory);
+                            newNoEnoughSpaceLog.setUpdateDatetime(new Date());
+                            newNoEnoughSpaceLog.setUserName(loggedInUser);
+                            newNoEnoughSpaceLog.setDeviceId(pseudoDeviceId);
+                            newNoEnoughSpaceLog.setLogSynced(false);
+                            appUsageLogsController.saveOrUpdateAppUsageLog(newNoEnoughSpaceLog);
+                        }
+                        MemoryUtil.showAlertDialog(availableSpace, totalFileSize, GuidedConfigurationWizardActivity.this);
+                    } catch (IOException e) {
+                        Log.e(getClass().getSimpleName(),"Encountered IOException ",e);
+                    } catch (ParseException e) {
+                        Log.e(getClass().getSimpleName(),"Encountered parse exception ",e);
+                    }
+                }
+                return resultForMedia;
+            }
+
+            @Override
+            protected void onPostExecute(int[] result) {
+                String resultDescription = null;
+                String resultStatus = null;
+                if (result == null) {
+                    resultDescription = getString(R.string.info_media_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    int downloadedCategories = result[1];
+                    if (downloadedCategories == 0) {
+                        resultDescription = getString(R.string.info_media_not_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_media_downloaded, downloadedCategories);
+                    }
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else {
+                    wizardcompletedSuccessfully = false;
+                    resultDescription = getString(R.string.error_media_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                }
+
+                downloadMediaLog.setSetupActionResult(resultDescription);
+                downloadMediaLog.setSetupActionResultStatus(resultStatus);
+
+                onQueryTaskFinish();
+            }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
+        }.execute();
+    }
+
+    public void downloadFile(Media media){
+        try {
+            //Delete file if exists
+            String mimeType = media.getMimeType();
+            String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
+            File file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
+            String mediaName = media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1);
+            if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-excel")){
+                file = new File(PATH + "/"+media.getName()+".xls");
+                mediaName = media.getName()+".xls";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.spreadsheetml.sheet")){
+                file = new File(PATH + "/"+media.getName()+".xlsx");
+                mediaName = media.getName()+".xlsx";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("msword")){
+                file = new File(PATH + "/"+media.getName()+".doc");
+                mediaName = media.getName()+".doc";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.wordprocessingml.document")){
+                file = new File(PATH + "/"+media.getName()+".docx");
+                mediaName = media.getName()+".docx";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-powerpoint")){
+                file = new File(PATH + "/"+media.getName()+".ppt");
+                mediaName = media.getName()+".ppt";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.presentationml.presentation")){
+                file = new File(PATH + "/"+media.getName()+".pptx");
+                mediaName = media.getName()+".pptx";
+            }
+
+            if(file.exists()) {
+                file.delete();
+                getApplicationContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+            }
+
+            if(!media.isRetired()) {
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(media.getUrl() + ""));
+                request.setTitle(media.getName());
+                request.setDescription(media.getDescription());
+                request.allowScanningByMediaScanner();
+                request.setAllowedOverMetered(true);
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, mediaName);
+                DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                dm.enqueue(request);
+            }
+        }catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error ", e);
+        }
     }
 
     private List<String> extractConceptsUuids() {
@@ -1014,7 +1246,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private synchronized void evaluateFinishStatus() {
-        int TOTAL_WIZARD_STEPS = isOnlineOnlyModeEnabled ? 7 : 9;
+        int TOTAL_WIZARD_STEPS = isOnlineOnlyModeEnabled ? 9 : 11;
         if (wizardLevel == (TOTAL_WIZARD_STEPS)) {
 
             String loggedInUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUserId();
@@ -1041,6 +1273,16 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 setUpTime.setDeviceId(pseudoDeviceId);
                 setUpTime.setLogSynced(false);
                 appUsageLogsController.saveOrUpdateAppUsageLog(setUpTime);
+
+                AppUsageLogs availableSpace = new AppUsageLogs();
+                availableSpace.setUuid(UUID.randomUUID().toString());
+                availableSpace.setLogKey(com.muzima.util.Constants.AppUsageLogs.AVAILABLE_INTERNAL_SPACE);
+                availableSpace.setLogvalue(MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize()));
+                availableSpace.setUpdateDatetime(new Date());
+                availableSpace.setUserName(loggedInUser);
+                availableSpace.setDeviceId(pseudoDeviceId);
+                availableSpace.setLogSynced(false);
+                appUsageLogsController.saveOrUpdateAppUsageLog(availableSpace);
 
             } catch (IOException e) {
                 Log.e(getClass().getSimpleName(),"Encountered an exception",e);
@@ -1098,5 +1340,72 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
         }
         return datasetIds;
+    }
+
+    private List<String> extractMediaCategoryUuids() {
+        List<String> mediaCategoryUuids = new ArrayList<>();
+        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['mediaCategories']");
+        if (objects != null) {
+            for (Object object : objects) {
+                JSONObject mediaCategory = (JSONObject) object;
+                mediaCategoryUuids.add((String)mediaCategory.get("uuid"));
+            }
+        }
+        return mediaCategoryUuids;
+    }
+
+    private boolean checkPermissionForStoragePermission() {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
+            return Environment.isExternalStorageManager();
+        } else {
+            int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+            int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
+            boolean granted = result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+            return granted;
+        }
+    }
+
+    private void requestPermission() {
+        Log.e(getClass().getSimpleName(),"Permissions requesting");
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
+            try{
+                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                intent.addCategory("android.intent.category.DEFAULT");
+                intent.setData(Uri.parse(String.format("package:%s", new Object[]{getApplicationContext().getPackageName()})));
+                startActivityForResult(intent, EXTERNAL_STORAGE_MANAGEMENT);
+            }catch(Exception e){
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivityForResult(intent, EXTERNAL_STORAGE_MANAGEMENT);
+            }
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, 200);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EXTERNAL_STORAGE_MANAGEMENT) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+                    downloadMedia();
+                } else {
+                    Toast.makeText(this, "Allow permission for storage access!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 200) {
+            if (grantResults.length > 0) {
+                downloadMedia();
+            }
+        }
     }
 }

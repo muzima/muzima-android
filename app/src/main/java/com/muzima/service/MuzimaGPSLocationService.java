@@ -132,11 +132,9 @@ public class MuzimaGPSLocationService {
     public void requestGPSLocationPermissions(Activity activity, boolean ignoreGPSFeaturePreference) {
         if(ignoreGPSFeaturePreference || ((MuzimaApplication) context.getApplicationContext())
                 .getGPSFeaturePreferenceService().isGPSDataCollectionSettingEnabled()){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 ActivityCompat.requestPermissions(activity,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         LOCATION_ACCESS_PERMISSION_REQUEST_CODE);
-            }
         }
     }
 

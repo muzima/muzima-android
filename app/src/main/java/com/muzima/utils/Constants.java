@@ -102,7 +102,6 @@ public class Constants {
         public static final int SYNC_SELECTED_COHORTS_PATIENTS_DATA_ONLY = 7;
         public static final int SYNC_UPLOAD_FORMS = 8;
         public static final int DOWNLOAD_SELECTED_PATIENTS_FULL_DATA = 9;
-        public static final int SYNC_NOTIFICATIONS = 10;
         public static final int SYNC_REAL_TIME_UPLOAD_FORMS = 11;
         public static final int SYNC_SHR = 12;
         public static final int SYNC_PATIENT_REPORTS_HEADERS = 13;

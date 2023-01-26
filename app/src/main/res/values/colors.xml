@@ -23,15 +23,12 @@
     <color name="primary_background">@android:color/white</color>
     <color name="tab_indicator_pressed">#6633B5E5</color>
     <color name="tab_indicator">#137EFE</color>
-    <color name="tab_indicator_selected">#85C6BE</color>
     <color name="tab_background_color_dark">#303030</color>
     <color name="tab_background_color_light">#e8e8e8</color>
     <color name="list_item_state_pressed">#6633B5E5</color>
     <color name="list_item_state_focused">#6633B5E5</color>
     <color name="drawer_background">#303030</color>
     <color name="drawer_background_light">#f0f0f0</color>
-    <color name="observation_scroller_background">#d4d4d4</color>
-    <color name="observation_by_encounter_header_background">#888888</color>
     <color name="previous_button_color">#888888</color>
     <color name="error_text_color">#ffaf6267</color>
     <color name="pending_resource_update_color">#990000</color>
@@ -58,7 +55,6 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="tag_color">#51FFFFFF</color>
     <color name="bottom_navigation_background_light">#CCFFFFFF</color>
-    <color name="yellow">#B3FFFF00</color>
     <color name="green">#008E00</color>
     <color name="red">#B3FF0000</color>
     <color name="orange">#FFA500</color>

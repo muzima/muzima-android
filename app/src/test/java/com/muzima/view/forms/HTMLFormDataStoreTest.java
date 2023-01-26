@@ -87,16 +87,6 @@ public class HTMLFormDataStoreTest {
         };
     }
 
-//    @Test
-//    public void shouldParsedPayloadForCompletedForm() {
-//        when(formWebViewActivity.getString(anyInt())).thenReturn("success");
-//        when(formController.isRegistrationFormData(formData)).thenReturn(false);
-//        String jsonPayLoad = readFile();
-//
-//        htmlFormDataStore.saveHTML(jsonPayLoad, Constants.STATUS_COMPLETE);
-//        verify(htmlFormObservationCreator).createAndPersistObservations(jsonPayLoad,formData.getUuid());
-//    }
-
     @Test
     public void shouldNotParseIncompletedForm() throws SetupConfigurationController.SetupConfigurationFetchException {
         when(formWebViewActivity.getString(anyInt())).thenReturn("success");

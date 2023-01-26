@@ -145,19 +145,6 @@ public class DataSyncService extends IntentService {
                     downloadPatientsWithObsAndEncounters(broadcastIntent, patientsToBeDownloaded);
                 }
                 break;
-            case DataSyncServiceConstants.SYNC_NOTIFICATIONS:
-                String receiverUUid = intent.getStringExtra(NotificationStatusConstants.RECEIVER_UUID);
-                String[] downloadedCohortIds = intent.getStringArrayExtra(DataSyncServiceConstants.COHORT_IDS);
-                updateNotificationMsg(getString(R.string.info_notification_download_in_progress));
-                if (authenticationSuccessful(credentials, broadcastIntent)) {
-                    int[] result = muzimaSyncService.downloadNotifications(receiverUUid);
-                    String msg = getString(R.string.info_notification_download, result[1]);
-                    prepareBroadcastMsg(broadcastIntent, result, msg);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
-
-                    downloadObservations(broadcastIntent, downloadedCohortIds);
-                }
-                break;
             case DataSyncServiceConstants.SYNC_PATIENT_REPORTS_HEADERS:
                 String patientUUid = intent.getStringExtra(Constants.SyncPatientReportsConstants.PATIENT_UUID);
                 updateNotificationMsg(getString(R.string.info_patient_reports_download_in_progress));

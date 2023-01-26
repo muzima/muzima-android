@@ -750,11 +750,7 @@ public class TableFixHeaders extends ViewGroup {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @SuppressWarnings("deprecation")
     private void setAlpha(ImageView imageView, float alpha) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            imageView.setAlpha(alpha);
-        } else {
-            imageView.setAlpha(Math.round(alpha * 255));
-        }
+        imageView.setAlpha(alpha);
     }
 
     private void addShadow(ImageView imageView, int l, int t, int r, int b) {

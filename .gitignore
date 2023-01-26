@@ -18,3 +18,4 @@ classes/
 *.apk
 app/debug
 /release/output-metadata.json
+*.aab

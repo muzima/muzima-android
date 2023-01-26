@@ -10,8 +10,10 @@
 
 package com.muzima.scheduler;
 
+import static com.muzima.util.Constants.ServerSettings.AUTOMATIC_FORM_SYNC_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
+import static com.muzima.util.Constants.ServerSettings.FORM_DUPLICATE_CHECK_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.NOTIFICATION_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.ONLINE_ONLY_MODE_ENABLED_SETTING;
@@ -23,6 +25,7 @@ import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.DownloadManager;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.ComponentName;
@@ -30,8 +33,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -42,6 +47,8 @@ import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Location;
+import com.muzima.api.model.Media;
+import com.muzima.api.model.MediaCategory;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
@@ -56,6 +63,8 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.FCMTokenController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MediaCategoryController;
+import com.muzima.controller.MediaController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
@@ -66,14 +75,18 @@ import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.IncompleteFormWithPatientData;
 import com.muzima.model.collections.CompleteFormsWithPatientData;
 import com.muzima.model.collections.IncompleteFormsWithPatientData;
+import com.muzima.service.FormDuplicateCheckPreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.OnlineOnlyModePreferenceService;
+import com.muzima.service.RealTimeFormDataSyncPreferenceService;
 import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
 import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
+import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.util.JsonUtils;
 import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
+import com.muzima.utils.MemoryUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
 import com.muzima.utils.StringUtils;
@@ -82,17 +95,20 @@ import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.SyncFormIntent;
 import com.muzima.view.forms.SyncFormTemplateIntent;
+import com.muzima.view.initialwizard.GuidedConfigurationWizardActivity;
 import com.muzima.view.patients.SyncPatientDataIntent;
 import com.muzima.view.reports.SyncAllPatientReports;
 
 import org.apache.lucene.queryParser.ParseException;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @SuppressLint("NewApi")
@@ -109,6 +125,7 @@ public class MuzimaJobScheduler extends JobService {
     private String username;
     private SetupConfigurationTemplate configBeforeConfigUpdate;
     private FCMTokenController fcmTokenController;
+    private AppUsageLogsController  appUsageLogsController;
 
     @Override
     public void onCreate() {
@@ -118,6 +135,7 @@ public class MuzimaJobScheduler extends JobService {
         muzimaSynService = muzimaApplication.getMuzimaSyncService();
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
         fcmTokenController = muzimaApplication.getFCMTokenController();
+        appUsageLogsController = muzimaApplication.getAppUsageLogsController();
         pseudoDeviceId = generatePseudoDeviceId();
         username = muzimaApplication.getAuthenticatedUserId();
         authenticatedUser = muzimaApplication.getAuthenticatedUser();
@@ -218,8 +236,6 @@ public class MuzimaJobScheduler extends JobService {
         protected Void doInBackground(Void... voids) {
             if (new WizardFinishPreferenceService(getApplicationContext()).isWizardFinished()) {
                 RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(),true);
-
-                AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
                 FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
                 try {
                     if(formController.countAllCompleteForms() > 0 && NetworkUtils.isConnectedToNetwork(getApplicationContext())) {
@@ -325,7 +341,6 @@ public class MuzimaJobScheduler extends JobService {
 
                         updateSettingsPreferences(settings);
 
-                        AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
                         try {
                             SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
                             AppUsageLogs lastSetupUpdateLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.SETUP_UPDATE_TIME, username);
@@ -367,6 +382,7 @@ public class MuzimaJobScheduler extends JobService {
             super.onPostExecute(aVoid);
             new SyncReportDatasetsBackgroundTask().execute();
             new FormTemplateSyncBackgroundTask().execute();
+            new MediaCategorySyncBackgroundTask().execute();
             if(wasConfigUpdateDone) {
                 if (!muzimaSettingController.isOnlineOnlyModeEnabled())
                     new DownloadAndDeleteCohortsBasedOnConfigChangesBackgroundTask().execute();
@@ -374,7 +390,6 @@ public class MuzimaJobScheduler extends JobService {
                 new DownloadAndDeleteProvidersBasedOnConfigChangesBackgroundTask().execute();
                 new DownloadAndDeleteConceptsBasedOnConfigChangesBackgroundTask().execute();
             }
-            new SyncAppUsageLogsBackgroundTask().execute();
         }
 
         public int[] downloadAndSaveUpdatedSetupConfigurationTemplate(String uuid) {
@@ -408,6 +423,8 @@ public class MuzimaJobScheduler extends JobService {
             preferenceSettings.add(DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING);
             preferenceSettings.add(DEFAULT_ENCOUNTER_LOCATION_SETTING);
             preferenceSettings.add(ONLINE_ONLY_MODE_ENABLED_SETTING);
+            preferenceSettings.add(FORM_DUPLICATE_CHECK_ENABLED_SETTING);
+            preferenceSettings.add(AUTOMATIC_FORM_SYNC_ENABLED_SETTING);
 
             boolean onlineModeBeforeConfigUpdate = false;
 
@@ -436,7 +453,7 @@ public class MuzimaJobScheduler extends JobService {
                             Intent intent;
                             intent = new Intent(((MuzimaApplication) context), MainDashboardActivity.class);
                             intent.putExtra("OnlineMode", muzimaSetting.getValueBoolean());
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             }
                             ((MuzimaApplication) context).startActivity(intent);
@@ -445,7 +462,7 @@ public class MuzimaJobScheduler extends JobService {
                             ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
                             Intent intent = new Intent();
                             intent.setComponent(cn);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P || Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             }
                             ((MuzimaApplication) context).getApplicationContext().startActivity(intent);
@@ -489,10 +506,14 @@ public class MuzimaJobScheduler extends JobService {
                     } catch (IOException e) {
                         Log.e(getClass().getSimpleName(), "Encountered Exception while sending token to server ", e);
                     }
+                }else if(muzimaSetting.getProperty().equals(FORM_DUPLICATE_CHECK_ENABLED_SETTING)){
+                    new FormDuplicateCheckPreferenceService(((MuzimaApplication) context)).updateFormDuplicateCheckPreferenceSettings();
+                }else if(muzimaSetting.getProperty().equals(AUTOMATIC_FORM_SYNC_ENABLED_SETTING)){
+                    new RealTimeFormDataSyncPreferenceService(((MuzimaApplication) context)).updateRealTimeSyncPreferenceSettings();
                 }
             }
 
-            /*check if the 6 mobile settings preferences are in setup else default to global, might have been deleted from the config*/
+            /*check if the mobile settings preferences are in setup else default to global, might have been deleted from the config*/
             for(String settingProperty : preferenceSettings){
                 if(!configSettings.contains(settingProperty)){
                     defaultToGlobalSettings(settingProperty);
@@ -540,6 +561,16 @@ public class MuzimaJobScheduler extends JobService {
                 } catch (LocationController.LocationLoadException e) {
                     Log.e(getClass().getSimpleName(), "Encountered Exception while fetching location ", e);
                 }
+            }else if(settingProperty.equals(NOTIFICATION_FEATURE_ENABLED_SETTING)){
+                try {
+                    fcmTokenController.sendTokenToServer();
+                } catch (IOException e) {
+                    Log.e(getClass().getSimpleName(), "Encountered Exception while sending token to server ", e);
+                }
+            }else if(settingProperty.equals(FORM_DUPLICATE_CHECK_ENABLED_SETTING)){
+                new FormDuplicateCheckPreferenceService(((MuzimaApplication) context)).updateFormDuplicateCheckPreferenceSettings();
+            }else if(settingProperty.equals(AUTOMATIC_FORM_SYNC_ENABLED_SETTING)){
+                new RealTimeFormDataSyncPreferenceService(((MuzimaApplication) context)).updateRealTimeSyncPreferenceSettings();
             }
         }
     }
@@ -1094,6 +1125,218 @@ public class MuzimaJobScheduler extends JobService {
             }
 
             return null;
+        }
+    }
+
+    private class MediaCategorySyncBackgroundTask extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... input) {
+            Context context = getApplicationContext();
+            MediaCategoryController mediaCategoryController = ((MuzimaApplication) context).getMediaCategoryController();
+            try {
+                //Get media Categories in the config
+                List<String> mediaCategoryUuids = new ArrayList<>();
+                List<String> mediaCategoryUuidsBeforeConfigUpdate = new ArrayList<>();
+
+                SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+                String configJson = activeSetupConfig.getConfigJson();
+                List<Object> mediaCategoryList = JsonUtils.readAsObjectList(configJson, "$['config']['mediaCategories']");
+                for (Object mediaCategory : mediaCategoryList) {
+                    net.minidev.json.JSONObject mediaCategory1 = (net.minidev.json.JSONObject) mediaCategory;
+                    String mediaCategoryUuid = mediaCategory1.get("uuid").toString();
+                    mediaCategoryUuids.add(mediaCategoryUuid);
+                }
+
+                String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+                List<Object> mediaCategoryBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['mediaCategories']");
+                for (Object mediaCategory : mediaCategoryBeforeConfigUpdate) {
+                    net.minidev.json.JSONObject mediaCategory1 = (net.minidev.json.JSONObject) mediaCategory;
+                    String mediaCategoryUuid = mediaCategory1.get("uuid").toString();
+                    mediaCategoryUuidsBeforeConfigUpdate.add(mediaCategoryUuid);
+                }
+
+                List<String> mediaCategoryToBeDeleted = new ArrayList<>();
+                List<String> mediaCategoryToDownload= new ArrayList<>();
+                List<String> mediaCategoryToCheckForUpdates = new ArrayList<>();
+
+                //Get mediaCategory previously downloaded but not in the updated config
+                for(String mediaCategoryUuid: mediaCategoryUuidsBeforeConfigUpdate){
+                    if(!mediaCategoryUuids.contains(mediaCategoryUuid)){
+                        mediaCategoryToBeDeleted.add(mediaCategoryUuid);
+                    }else{
+                        mediaCategoryToCheckForUpdates.add(mediaCategoryUuid);
+                    }
+                }
+
+                //Get Added mediaCategory to updated config
+                for(String mediaCategoryUuid : mediaCategoryUuids){
+                    if(!mediaCategoryUuidsBeforeConfigUpdate.contains(mediaCategoryUuid)){
+                        mediaCategoryToDownload.add(mediaCategoryUuid);
+                    }
+                }
+
+                if(mediaCategoryToBeDeleted.size()>0) {
+                    mediaCategoryController.deleteMediaCategory(mediaCategoryToBeDeleted);
+                }
+
+                if(mediaCategoryToCheckForUpdates.size()>0){
+                    List<MediaCategory> mediaCategoryListToUpdate = mediaCategoryController.downloadMediaCategory(mediaCategoryToCheckForUpdates, true);
+                    mediaCategoryController.updateMediaCategory(mediaCategoryListToUpdate);
+                }
+
+                if(mediaCategoryToDownload.size()>0) {
+                    List<MediaCategory> downloadedMediaList = mediaCategoryController.downloadMediaCategory(mediaCategoryToDownload, false);
+                    mediaCategoryController.saveMediaCategory(downloadedMediaList);
+                }
+            } catch (MediaCategoryController.MediaCategoryDownloadException e) {
+                Log.e(getClass().getSimpleName(), "Encountered an error while downloading media categories");
+            } catch (MediaCategoryController.MediaCategorySaveException e) {
+                Log.e(getClass().getSimpleName(), "Encountered an error while saving media categories");
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+                Log.e(getClass().getSimpleName(), "Encountered an error while getting config");
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            new DownloadAndDeleteMediaBasedOnConfigChangesBackgroundTask().execute();
+        }
+    }
+
+    private class DownloadAndDeleteMediaBasedOnConfigChangesBackgroundTask extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                //update memory space app usage log
+                AppUsageLogs appUsageLogs = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.AVAILABLE_INTERNAL_SPACE);
+                String availableMemory = MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize());
+
+                if(appUsageLogs != null) {
+                    if(!availableMemory.equals(appUsageLogs.getLogvalue())) {
+                        appUsageLogs.setLogvalue(availableMemory);
+                        appUsageLogs.setUpdateDatetime(new Date());
+                        appUsageLogs.setUserName(username);
+                        appUsageLogs.setDeviceId(pseudoDeviceId);
+                        appUsageLogs.setLogSynced(false);
+                        appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLogs);
+                    }
+                }else{
+                    AppUsageLogs availableSpace = new AppUsageLogs();
+                    availableSpace.setUuid(UUID.randomUUID().toString());
+                    availableSpace.setLogKey(com.muzima.util.Constants.AppUsageLogs.AVAILABLE_INTERNAL_SPACE);
+                    availableSpace.setLogvalue(availableMemory);
+                    availableSpace.setUpdateDatetime(new Date());
+                    availableSpace.setUserName(username);
+                    availableSpace.setDeviceId(pseudoDeviceId);
+                    availableSpace.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(availableSpace);
+                }
+
+                MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                MediaCategoryController mediaCategoryController = ((MuzimaApplication) getApplicationContext()).getMediaCategoryController();
+                List<MediaCategory> mediaCategoryList= mediaCategoryController.getMediaCategories();
+                List<String> mediaCategoryUuids = new ArrayList<>();
+                if(mediaCategoryList.size()>0) {
+                    for (MediaCategory mediaCategory : mediaCategoryList) {
+                        mediaCategoryUuids.add(mediaCategory.getUuid());
+                    }
+                    List<Media> mediaList = muzimaSyncService.downloadMedia(mediaCategoryUuids, true);
+                    long totalFileSize = MemoryUtil.getTotalMediaFileSize(mediaList);
+                    long availableSpace = MemoryUtil.getAvailableInternalMemorySize();
+                    if(availableSpace>totalFileSize) {
+                        muzimaSyncService.saveMedia(mediaList);
+                        for (Media media : mediaList) {
+                            downloadFile(media);
+                        }
+                    }else{
+                        AppUsageLogs noEnoughSpaceLog = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.NO_ENOUGH_SPACE_DEVICES);
+                        String requiredMemory = MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize());
+                        if(noEnoughSpaceLog != null) {
+                            noEnoughSpaceLog.setLogvalue("Required: "+requiredMemory+ " Available: "+availableMemory);
+                            noEnoughSpaceLog.setUpdateDatetime(new Date());
+                            noEnoughSpaceLog.setUserName(username);
+                            noEnoughSpaceLog.setDeviceId(pseudoDeviceId);
+                            noEnoughSpaceLog.setLogSynced(false);
+                            appUsageLogsController.saveOrUpdateAppUsageLog(noEnoughSpaceLog);
+                        }else{
+                            AppUsageLogs newNoEnoughSpaceLog = new AppUsageLogs();
+                            newNoEnoughSpaceLog.setUuid(UUID.randomUUID().toString());
+                            newNoEnoughSpaceLog.setLogKey(com.muzima.util.Constants.AppUsageLogs.NO_ENOUGH_SPACE_DEVICES);
+                            newNoEnoughSpaceLog.setLogvalue("Required: "+requiredMemory+ " Available: "+availableMemory);
+                            newNoEnoughSpaceLog.setUpdateDatetime(new Date());
+                            newNoEnoughSpaceLog.setUserName(username);
+                            newNoEnoughSpaceLog.setDeviceId(pseudoDeviceId);
+                            newNoEnoughSpaceLog.setLogSynced(false);
+                            appUsageLogsController.saveOrUpdateAppUsageLog(newNoEnoughSpaceLog);
+                        }
+                        MemoryUtil.showAlertDialog(availableSpace,totalFileSize, getApplication().getApplicationContext());
+                    }
+                }
+            }  catch (MediaCategoryController.MediaCategoryFetchException e) {
+                Log.e(getClass().getSimpleName(), "Encountered an error while saving media");
+            } catch (IOException e) {
+                Log.e(getClass().getSimpleName(),"Encountered IOException ",e);
+            } catch (ParseException e) {
+                Log.e(getClass().getSimpleName(),"Encountered ParseException ",e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            new SyncAppUsageLogsBackgroundTask().execute();
+        }
+
+        public void downloadFile(Media media){
+            try {
+                //Delete file if exists
+                String mimeType = media.getMimeType();
+                String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
+                File file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
+                String mediaName = media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1);
+                if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-excel")){
+                    file = new File(PATH + "/"+media.getName()+".xls");
+                    mediaName = media.getName()+".xls";
+                }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.spreadsheetml.sheet")){
+                    file = new File(PATH + "/"+media.getName()+".xlsx");
+                    mediaName = media.getName()+".xlsx";
+                }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("msword")){
+                    file = new File(PATH + "/"+media.getName()+".doc");
+                    mediaName = media.getName()+".doc";
+                }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.wordprocessingml.document")){
+                    file = new File(PATH + "/"+media.getName()+".docx");
+                    mediaName = media.getName()+".docx";
+                }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-powerpoint")){
+                    file = new File(PATH + "/"+media.getName()+".ppt");
+                    mediaName = media.getName()+".ppt";
+                }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.presentationml.presentation")){
+                    file = new File(PATH + "/"+media.getName()+".pptx");
+                    mediaName = media.getName()+".pptx";
+                }
+                if(file.exists()) {
+                    file.delete();
+                    getApplicationContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+                }
+
+                if(!media.isRetired()) {
+                    //Enqueue the file for download
+                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(media.getUrl() + ""));
+                    request.setTitle(media.getName());
+                    request.setDescription(media.getDescription());
+                    request.allowScanningByMediaScanner();
+                    request.setAllowedOverMetered(true);
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, mediaName);
+                    DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                    dm.enqueue(request);
+                }
+            } catch (Exception e) {
+                Log.e(getClass().getSimpleName(), "Error ", e);
+            }
         }
     }
 }

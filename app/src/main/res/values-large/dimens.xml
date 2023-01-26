@@ -12,16 +12,10 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">24dp</dimen>
-
     <dimen name="pager_indicator_height">84dp</dimen>
     <dimen name="pager_indicator_text_size">20sp</dimen>
-
     <dimen name="tag_selected_height">24dp</dimen>
-
     <dimen name="sync_bar_height">60dp</dimen>
-
-    <dimen name="observation_element_by_concept_height">180dp</dimen>
-    <dimen name="observation_element_by_encounter_height">210dp</dimen>
     <dimen name="observation_element_padding">3dp</dimen>
 
 </resources>

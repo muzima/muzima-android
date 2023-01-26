@@ -14,7 +14,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -47,9 +46,10 @@ import com.muzima.controller.EncounterController;
 import com.muzima.controller.FCMTokenController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
+import com.muzima.controller.MediaCategoryController;
+import com.muzima.controller.MediaController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaSettingController;
-import com.muzima.controller.NotificationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.PatientReportController;
@@ -60,11 +60,13 @@ import com.muzima.controller.ReportDatasetController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
+import com.muzima.service.FormDuplicateCheckPreferenceService;
 import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.service.RealTimeFormDataSyncPreferenceService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
 import com.muzima.utils.LanguageUtil;
@@ -103,7 +105,6 @@ public class MuzimaApplication extends MultiDexApplication {
     private ConceptController conceptController;
     private ObservationController observationController;
     private EncounterController encounterController;
-    private NotificationController notificationController;
     private LocationController locationController;
     private ProviderController providerController;
     private MuzimaSyncService muzimaSyncService;
@@ -125,7 +126,11 @@ public class MuzimaApplication extends MultiDexApplication {
     private SntpService sntpService;
     private User authenticatedUser;
     private AppReleaseController appVersionController;
+    private MediaController mediaController;
+    private MediaCategoryController mediaCategoryController;
     private ExecutorService executorService;
+    private FormDuplicateCheckPreferenceService formDuplicateCheckPreferenceService;
+    private RealTimeFormDataSyncPreferenceService realTimeFormDataSyncPreferenceService;
 
     public void clearApplicationData() {
         try {
@@ -161,9 +166,6 @@ public class MuzimaApplication extends MultiDexApplication {
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Security.removeProvider("AndroidOpenSSL");
-        }
         logOut();
         muzimaTimer = getTimer(this);
 
@@ -319,18 +321,6 @@ public class MuzimaApplication extends MultiDexApplication {
         return encounterController;
     }
 
-    public NotificationController getNotificationController() {
-        if (notificationController == null) {
-            try {
-                notificationController = new NotificationController(muzimaContext.getService(NotificationService.class),
-                        muzimaContext.getFormService(), this, getSntpService());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return notificationController;
-    }
-
     public LocationController getLocationController() {
         if (locationController == null) {
             try {
@@ -414,6 +404,20 @@ public class MuzimaApplication extends MultiDexApplication {
             gpsFeaturePreferenceService = new GPSFeaturePreferenceService(this);
         }
         return gpsFeaturePreferenceService;
+    }
+
+    public FormDuplicateCheckPreferenceService getFormDuplicateCheckPreferenceService() {
+        if (formDuplicateCheckPreferenceService == null) {
+            formDuplicateCheckPreferenceService = new FormDuplicateCheckPreferenceService(this);
+        }
+        return formDuplicateCheckPreferenceService;
+    }
+
+    public RealTimeFormDataSyncPreferenceService getRealTimeFormDataSyncPreferenceService() {
+        if (realTimeFormDataSyncPreferenceService == null) {
+            realTimeFormDataSyncPreferenceService = new RealTimeFormDataSyncPreferenceService(this);
+        }
+        return realTimeFormDataSyncPreferenceService;
     }
 
     public RelationshipController getRelationshipController() {
@@ -672,6 +676,28 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return appVersionController;
+    }
+
+    public MediaCategoryController getMediaCategoryController() {
+        if (mediaCategoryController == null) {
+            try {
+                mediaCategoryController = new MediaCategoryController(muzimaContext.getMediaCategoryService(), muzimaContext.getLastSyncTimeService(), getSntpService());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return mediaCategoryController;
+    }
+
+    public MediaController getMediaController() {
+        if (mediaController == null) {
+            try {
+                mediaController = new MediaController(muzimaContext.getMediaService(), muzimaContext.getLastSyncTimeService(), getSntpService());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return mediaController;
     }
 
     public String getApplicationVersion() {
