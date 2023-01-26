@@ -10,6 +10,8 @@
 
 package com.muzima.view.initialwizard;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
@@ -21,20 +23,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -43,7 +45,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.muzima.MuzimaApplication;
@@ -51,7 +56,6 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupCardsViewPagerAdapter;
-import com.muzima.adapters.setupconfiguration.SetupConfigurationRecyclerViewAdapter;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.LastSyncTime;
@@ -79,8 +83,7 @@ import com.muzima.utils.MemoryUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
-import com.muzima.view.MediaActivity;
-import com.muzima.view.login.LoginActivity;
+import com.muzima.view.barcode.BarcodeCaptureActivity;
 
 import net.minidev.json.JSONObject;
 
@@ -119,6 +122,8 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private boolean isOnlineOnlyModeEnabled;
     private String setupConfigTemplateUuid;
     private PowerManager.WakeLock wakeLock = null;
+    private static final int EXTERNAL_STORAGE_MANAGEMENT = 9002;
+    private List<Media> mediaList = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,false);
@@ -953,7 +958,15 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadMediaCategoryLog.setSetupActionResultStatus(resultStatus);
 
                 onQueryTaskFinish();
-                downloadMedia();
+                if(result[1]>0) {
+                    if (checkPermissionForStoragePermission()) {
+                        downloadMedia();
+                    } else {
+                        requestPermission();
+                    }
+                }else{
+                    downloadMedia();
+                }
             }
 
             @Override
@@ -978,15 +991,17 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
                 List<String> mediaUuids = extractMediaCategoryUuids();
 
-                List<Media> mediaList= muzimaSyncService.downloadMedia(mediaUuids, false);
+                mediaList = muzimaSyncService.downloadMedia(mediaUuids, false);
 
                 int[] resultForMedia = null;
                 long totalFileSize = MemoryUtil.getTotalMediaFileSize(mediaList);
                 long availableSpace = MemoryUtil.getAvailableInternalMemorySize();
                 if(availableSpace>totalFileSize) {
-                    resultForMedia = muzimaSyncService.saveMedia(mediaList);
-                    for (Media media : mediaList) {
-                        downloadFile(media);
+                    if(mediaList.size()>0){
+                        resultForMedia = muzimaSyncService.saveMedia(mediaList);
+                        for (Media media : mediaList) {
+                            downloadFile(media);
+                        }
                     }
                 }else {
                     String loggedInUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUserId();
@@ -1065,6 +1080,27 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             String mimeType = media.getMimeType();
             String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
             File file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
+            String mediaName = media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1);
+            if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-excel")){
+                file = new File(PATH + "/"+media.getName()+".xls");
+                mediaName = media.getName()+".xls";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.spreadsheetml.sheet")){
+                file = new File(PATH + "/"+media.getName()+".xlsx");
+                mediaName = media.getName()+".xlsx";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("msword")){
+                file = new File(PATH + "/"+media.getName()+".doc");
+                mediaName = media.getName()+".doc";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.wordprocessingml.document")){
+                file = new File(PATH + "/"+media.getName()+".docx");
+                mediaName = media.getName()+".docx";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-powerpoint")){
+                file = new File(PATH + "/"+media.getName()+".ppt");
+                mediaName = media.getName()+".ppt";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.presentationml.presentation")){
+                file = new File(PATH + "/"+media.getName()+".pptx");
+                mediaName = media.getName()+".pptx";
+            }
+
             if(file.exists()) {
                 file.delete();
                 getApplicationContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
@@ -1077,7 +1113,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 request.allowScanningByMediaScanner();
                 request.setAllowedOverMetered(true);
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, mediaName);
                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                 dm.enqueue(request);
             }
@@ -1316,5 +1352,60 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
         }
         return mediaCategoryUuids;
+    }
+
+    private boolean checkPermissionForStoragePermission() {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
+            return Environment.isExternalStorageManager();
+        } else {
+            int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+            int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
+            boolean granted = result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+            return granted;
+        }
+    }
+
+    private void requestPermission() {
+        Log.e(getClass().getSimpleName(),"Permissions requesting");
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
+            try{
+                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                intent.addCategory("android.intent.category.DEFAULT");
+                intent.setData(Uri.parse(String.format("package:%s", new Object[]{getApplicationContext().getPackageName()})));
+                startActivityForResult(intent, EXTERNAL_STORAGE_MANAGEMENT);
+            }catch(Exception e){
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivityForResult(intent, EXTERNAL_STORAGE_MANAGEMENT);
+            }
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, 200);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EXTERNAL_STORAGE_MANAGEMENT) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+                    downloadMedia();
+                } else {
+                    Toast.makeText(this, "Allow permission for storage access!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 200) {
+            if (grantResults.length > 0) {
+                downloadMedia();
+            }
+        }
     }
 }

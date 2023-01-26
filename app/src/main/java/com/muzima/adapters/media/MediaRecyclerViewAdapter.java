@@ -124,13 +124,17 @@ public class MediaRecyclerViewAdapter extends RecyclerView.Adapter<MediaRecycler
         String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
         File file = new File(PATH + "/" + media.getName() + "." + mimeType.substring(mimeType.lastIndexOf("/") + 1));
         if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-excel")){
-            file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1)+".xls");
+            file = new File(PATH + "/"+media.getName()+".xls");
+        }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.spreadsheetml.sheet")){
+            file = new File(PATH + "/"+media.getName()+".xlsx");
         }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("msword")){
-                file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1)+".doc");
+            file = new File(PATH + "/"+media.getName()+".doc");
+        }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.wordprocessingml.document")){
+            file = new File(PATH + "/"+media.getName()+".docx");
         }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-powerpoint")){
-            file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1)+".ppt");
+            file = new File(PATH + "/"+media.getName()+".ppt");
         }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.presentationml.presentation")){
-            file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1)+".pptx");
+            file = new File(PATH + "/"+media.getName()+".pptx");
         }
         if(!file.exists()){
             Toast.makeText(context, context.getString(R.string.info_no_media_not_available), Toast.LENGTH_LONG).show();

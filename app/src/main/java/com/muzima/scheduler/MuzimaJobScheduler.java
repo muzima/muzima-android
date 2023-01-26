@@ -1297,6 +1297,26 @@ public class MuzimaJobScheduler extends JobService {
                 String mimeType = media.getMimeType();
                 String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
                 File file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
+                String mediaName = media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1);
+                if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-excel")){
+                    file = new File(PATH + "/"+media.getName()+".xls");
+                    mediaName = media.getName()+".xls";
+                }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.spreadsheetml.sheet")){
+                    file = new File(PATH + "/"+media.getName()+".xlsx");
+                    mediaName = media.getName()+".xlsx";
+                }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("msword")){
+                    file = new File(PATH + "/"+media.getName()+".doc");
+                    mediaName = media.getName()+".doc";
+                }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.wordprocessingml.document")){
+                    file = new File(PATH + "/"+media.getName()+".docx");
+                    mediaName = media.getName()+".docx";
+                }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-powerpoint")){
+                    file = new File(PATH + "/"+media.getName()+".ppt");
+                    mediaName = media.getName()+".ppt";
+                }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.presentationml.presentation")){
+                    file = new File(PATH + "/"+media.getName()+".pptx");
+                    mediaName = media.getName()+".pptx";
+                }
                 if(file.exists()) {
                     file.delete();
                     getApplicationContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
@@ -1310,7 +1330,7 @@ public class MuzimaJobScheduler extends JobService {
                     request.allowScanningByMediaScanner();
                     request.setAllowedOverMetered(true);
                     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
+                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, mediaName);
                     DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                     dm.enqueue(request);
                 }
