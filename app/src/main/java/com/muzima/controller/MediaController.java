@@ -70,7 +70,7 @@ public class MediaController {
         try {
             Media media = mediaService.getMediaByUuid(mediaUuid);
             return media;
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
             throw new MediaController.MediaFetchException(e);
         }
     }
@@ -118,7 +118,7 @@ public class MediaController {
             if(mediaList.size()>0)
                 mediaService.deleteMedia(mediaList);
 
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
             throw new MediaController.MediaSaveException(e);
         }
     }
