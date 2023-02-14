@@ -56,6 +56,7 @@ import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
 import com.muzima.utils.imaging.ImageResult;
+import com.muzima.utils.javascriptinterface.ReportDatasetJavascriptInterface;
 import com.muzima.utils.video.VideoResult;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
@@ -550,6 +551,9 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 (MuzimaApplication) getApplicationContext());
         htmlFormDataStore.setSelectedPatientsUuids(getSelectedFormUuidsFromIntent());
         webView.addJavascriptInterface(htmlFormDataStore, HTML_DATA_STORE);
+
+        webView.addJavascriptInterface(new ReportDatasetJavascriptInterface(this),
+                "reportDatasetInterface");
 
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         if (isFormComplete()) {
