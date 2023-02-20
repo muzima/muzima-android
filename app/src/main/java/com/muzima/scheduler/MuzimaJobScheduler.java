@@ -615,7 +615,7 @@ public class MuzimaJobScheduler extends JobService {
                 //sync the downloaded datasets with changes
                 if(datasetIdsBeforeConfigUpdate.size() > 0){
                     List<ReportDataset> reportDatasetList = reportDatasetController.downloadReportDatasets(datasetIdsBeforeConfigUpdate, true);
-                    reportDatasetController.saveReportDatasets(reportDatasetList);
+                    reportDatasetController.updateReportDatasets(reportDatasetList);
                 }
 
                 //Get Added datasets to updated config
