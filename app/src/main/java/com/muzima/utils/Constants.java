@@ -91,6 +91,7 @@ public class Constants {
         public static final String COHORT_IDS = "cohortIds";
         public static final String PATIENT_UUID_FOR_DOWNLOAD = "patientUUIDForDownload";
         public static final String PATIENT_UUIDS = "patientUuids";
+        public static final String CONFIG_BEFORE_UPDATE = "configBeforeConfigUpdate";
 
         public static final int SYNC_FORMS = 0;
         public static final int SYNC_TEMPLATES = 1;
@@ -114,6 +115,8 @@ public class Constants {
         public static final int SYNC_SETUP_CONFIGURATION_TEMPLATES = 20;
         public static final int UPDATE_PATIENT_TAGS = 21;
         public static final int SYNC_REPORT_DATASETS = 22;
+        public static final int SYNC_MEDIA_CATEGORIES = 23;
+        public static final int SYNC_DATASETS = 24;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;

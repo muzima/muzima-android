@@ -24,6 +24,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.utils.Constants;
 import com.muzima.view.BroadcastListenerActivity;
@@ -59,6 +60,7 @@ public class DataSyncService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
+        SetupConfigurationTemplate configBeforeUpdate = (SetupConfigurationTemplate) intent.getSerializableExtra(DataSyncServiceConstants.CONFIG_BEFORE_UPDATE);
         Intent broadcastIntent = new Intent();
         String[] credentials = intent.getStringArrayExtra(DataSyncServiceConstants.CREDENTIALS);
         broadcastIntent.setAction(BroadcastListenerActivity.MESSAGE_SENT_ACTION);
@@ -203,6 +205,24 @@ public class DataSyncService extends IntentService {
                 updateNotificationMsg(getString(R.string.info_report_dataset_download_in_progress));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadReportDatasetsForDownloadedReports(true);
+                    String msg = getString(R.string.info_report_dataset_downloaded,result[1]);
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_MEDIA_CATEGORIES:
+                updateNotificationMsg(getString(R.string.info_media_category_download_in_progress));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.SyncMediaCategory(configBeforeUpdate);
+                    String msg = getString(R.string.info_media_category_downloaded,result[1]);
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_DATASETS:
+                updateNotificationMsg(getString(R.string.info_report_dataset_download_in_progress));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.SyncDatasets(configBeforeUpdate);
                     String msg = getString(R.string.info_report_dataset_downloaded,result[1]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                     LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
