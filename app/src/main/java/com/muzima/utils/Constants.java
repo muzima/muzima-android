@@ -117,6 +117,12 @@ public class Constants {
         public static final int SYNC_REPORT_DATASETS = 22;
         public static final int SYNC_MEDIA_CATEGORIES = 23;
         public static final int SYNC_DATASETS = 24;
+        public static final int SYNC_MEDIA = 25;
+        public static final int SYNC_PATIENT_FULL_PATIENT_DATA_BASED_ON_COHORT_CHANGES_IN_CONFIG = 26;
+        public static final int SYNC_LOCATIONS_BASED_ON_CHANGES_IN_CONFIG = 27;
+        public static final int SYNC_PROVIDERS_BASED_ON_CHANGES_IN_CONFIG = 28;
+        public static final int SYNC_CONCEPTS_AND_OBS_BASED_ON_CHANGES_IN_CONFIG = 29;
+        public static final int SYNC_OBS_BASED_ON_CONCEPTS_ADDED = 30;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;

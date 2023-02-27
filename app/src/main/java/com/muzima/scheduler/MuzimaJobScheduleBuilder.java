@@ -46,9 +46,10 @@ public class MuzimaJobScheduleBuilder {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    if (!isJobAlreadyScheduled(context))
+                    if (!isJobAlreadyScheduled(context)) {
+                        Toast.makeText(context,  context.getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
                         handleScheduledPeriodicDataSyncJob();
-                    else
+                    } else
                         Toast.makeText(context, context.getResources().getString(R.string.general_sync_service_already_running), Toast.LENGTH_LONG).show();
                 }
             };

@@ -40,8 +40,10 @@ public class MediaCategoryController {
         try {
             LastSyncTime lastSyncTime = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_MEDIA_CATEGORIES);
             Date lastSyncDate = null;
-            if (lastSyncTime != null) {
-                lastSyncDate = lastSyncTime.getLastSyncDate();
+            if(isDelta) {
+                if (lastSyncTime != null) {
+                    lastSyncDate = lastSyncTime.getLastSyncDate();
+                }
             }
             List<MediaCategory> mediaCategory =  mediaCategoryService.downloadMediaCategories(mediaCategoryUuids, lastSyncDate);
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_MEDIA_CATEGORIES, sntpService.getTimePerDeviceTimeZone());

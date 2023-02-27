@@ -34,7 +34,6 @@ import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
-import static com.muzima.utils.Constants.NotificationStatusConstants;
 import static java.util.Arrays.asList;
 
 public class DataSyncService extends IntentService {
@@ -43,6 +42,7 @@ public class DataSyncService extends IntentService {
     private String notificationServiceFinished;
     private String notificationMsg;
     private MuzimaSyncService muzimaSyncService;
+    private SetupConfigurationTemplate configBeforeUpdate;
 
     public DataSyncService() {
         super("DataSyncService");
@@ -60,7 +60,7 @@ public class DataSyncService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
-        SetupConfigurationTemplate configBeforeUpdate = (SetupConfigurationTemplate) intent.getSerializableExtra(DataSyncServiceConstants.CONFIG_BEFORE_UPDATE);
+        configBeforeUpdate = (SetupConfigurationTemplate) intent.getSerializableExtra(DataSyncServiceConstants.CONFIG_BEFORE_UPDATE);
         Intent broadcastIntent = new Intent();
         String[] credentials = intent.getStringArrayExtra(DataSyncServiceConstants.CREDENTIALS);
         broadcastIntent.setAction(BroadcastListenerActivity.MESSAGE_SENT_ACTION);
@@ -154,7 +154,6 @@ public class DataSyncService extends IntentService {
                     int[] result = muzimaSyncService.downloadPatientReportHeaders(patientUUid);
                     String msg = getString(R.string.info_patient_reports_downloaded, result[1]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_PATIENT_REPORTS:
@@ -164,7 +163,6 @@ public class DataSyncService extends IntentService {
                     int[] result = muzimaSyncService.downloadPatientReportsByUuid(reportUuids);
                     String msg = getString(R.string.info_patient_reports_downloaded, result[1]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
@@ -190,7 +188,6 @@ public class DataSyncService extends IntentService {
                     int[] result = muzimaSyncService.downloadAllPatientReportHeadersAndReports();
                     String msg = getString(R.string.info_patient_reports_downloaded, result[1]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_SETUP_CONFIGURATION_TEMPLATES:
@@ -205,27 +202,72 @@ public class DataSyncService extends IntentService {
                 updateNotificationMsg(getString(R.string.info_report_dataset_download_in_progress));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.downloadReportDatasetsForDownloadedReports(true);
-                    String msg = getString(R.string.info_report_dataset_downloaded,result[1]);
+                    String msg = getString(R.string.info_report_dataset_downloaded, result[1]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_MEDIA_CATEGORIES:
                 updateNotificationMsg(getString(R.string.info_media_category_download_in_progress));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.SyncMediaCategory(configBeforeUpdate);
-                    String msg = getString(R.string.info_media_category_downloaded,result[1]);
+                    String msg = getString(R.string.info_media_category_downloaded, result[1]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
                 }
                 break;
             case DataSyncServiceConstants.SYNC_DATASETS:
                 updateNotificationMsg(getString(R.string.info_report_dataset_download_in_progress));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
                     int[] result = muzimaSyncService.SyncDatasets(configBeforeUpdate);
-                    String msg = getString(R.string.info_report_dataset_downloaded,result[1]);
+                    String msg = getString(R.string.info_report_dataset_downloaded, result[1]);
                     prepareBroadcastMsg(broadcastIntent, result, msg);
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_MEDIA:
+                updateNotificationMsg(getString(R.string.info_media_download_in_progress));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.SyncMedia();
+                    String msg = getString(R.string.info_media_downloaded, result[1]);
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_PATIENT_FULL_PATIENT_DATA_BASED_ON_COHORT_CHANGES_IN_CONFIG:
+                updateNotificationMsg(getString(R.string.info_cohort_download));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.SyncPatientFullDataBasedOnCohortChangesInConfig(configBeforeUpdate);
+                    String msg = getString(R.string.info_new_cohort_download_delete, result[1], result[2]);
+                    broadcastIntent.putExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY, result[2]);
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_LOCATIONS_BASED_ON_CHANGES_IN_CONFIG:
+                updateNotificationMsg(getString(R.string.info_location_download));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.DownloadAndDeleteLocationBasedOnConfigChanges(configBeforeUpdate);
+                    String msg = getString(R.string.info_locations_downloaded_deleted, result[1], result[2]);
+                    broadcastIntent.putExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY, result[2]);
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_PROVIDERS_BASED_ON_CHANGES_IN_CONFIG:
+                updateNotificationMsg(getString(R.string.info_location_download));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.DownloadAndDeleteProvidersBasedOnConfigChanges(configBeforeUpdate);
+                    String msg = getString(R.string.info_provider_downloaded_deleted, result[1], result[2]);
+                    broadcastIntent.putExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY, result[2]);
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+                }
+                break;
+            case DataSyncServiceConstants.SYNC_CONCEPTS_AND_OBS_BASED_ON_CHANGES_IN_CONFIG:
+                updateNotificationMsg(getString(R.string.info_concept_download));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.DownloadAndDeleteConceptAndObservationBasedOnConfigChanges(configBeforeUpdate);
+
+
+                    String msg = getString(R.string.info_concepts_downloaded_deleted, result[1], result[2]);
+                    broadcastIntent.putExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY, result[2]);
+                    prepareBroadcastMsg(broadcastIntent, result, msg);
+
+                    broadCastMessageForObservationDownloadForNewConcepts(broadcastIntent, result);
                 }
                 break;
             default:
@@ -243,8 +285,8 @@ public class DataSyncService extends IntentService {
         result = muzimaSyncService.downloadPatientsForCohortsWithUpdatesAvailable();
         List<Patient> updatedPatients = muzimaSyncService.updatePatientsNotPartOfCohorts();
 
-        if(updatedPatients.size()>0){
-            result[1]+=updatedPatients.size();
+        if (updatedPatients.size() > 0) {
+            result[1] += updatedPatients.size();
             result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
         }
 
@@ -271,11 +313,11 @@ public class DataSyncService extends IntentService {
 
         MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
 
-        if(muzimaSettingController.isRelationshipEnabled()){
+        if (muzimaSettingController.isRelationshipEnabled()) {
             muzimaSyncService.downloadObservationsForAllPersons(true);
         }
 
-        if(muzimaSettingController.isPatientTagGenerationEnabled()) {
+        if (muzimaSettingController.isPatientTagGenerationEnabled()) {
             muzimaSyncService.updatePatientTags(patientUUIDList);
         }
     }
@@ -295,11 +337,11 @@ public class DataSyncService extends IntentService {
             broadCastMessageForRelationshipsDownload(broadcastIntent, resultForRelationships);
             MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
 
-            if(muzimaSettingController.isRelationshipEnabled()){
+            if (muzimaSettingController.isRelationshipEnabled()) {
                 muzimaSyncService.downloadObservationsForAllPersons(true);
             }
 
-            if(muzimaSettingController.isPatientTagGenerationEnabled()) {
+            if (muzimaSettingController.isPatientTagGenerationEnabled()) {
                 muzimaSyncService.updatePatientTags(patientUUIDList);
             }
         }
@@ -311,11 +353,11 @@ public class DataSyncService extends IntentService {
 
         MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplication()).getMuzimaSettingController();
 
-        if(muzimaSettingController.isRelationshipEnabled()){
+        if (muzimaSettingController.isRelationshipEnabled()) {
             muzimaSyncService.downloadObservationsForAllPersons(true);
         }
 
-        if(muzimaSettingController.isPatientTagGenerationEnabled()) {
+        if (muzimaSettingController.isPatientTagGenerationEnabled()) {
             muzimaSyncService.updatePatientTags(muzimaSyncService.getUuidsForPatientsInCohorts(savedCohortIds));
         }
     }
@@ -325,11 +367,11 @@ public class DataSyncService extends IntentService {
         broadCastMessageForPatientsInCohorts(broadcastIntent, resultForPatients);
     }
 
-    private void consolidatePatients(){
+    private void consolidatePatients() {
         muzimaSyncService.consolidatePatients();
     }
 
-    private void checkAndDeleteTemporaryDataForProcessedFormData(Intent broadcastIntent){
+    private void checkAndDeleteTemporaryDataForProcessedFormData(Intent broadcastIntent) {
         List<FormData> archivedFormData = muzimaSyncService.getArchivedFormData();
         if (archivedFormData.size() > 0) {
             updateNotificationMsg(getString(R.string.info_submitted_form_data_status_check));
@@ -394,7 +436,6 @@ public class DataSyncService extends IntentService {
             broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msgForRelationships);
             prepareBroadcastMsg(broadcastIntent, resultForRelationships, msgForRelationships);
             broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_RELATIONSHIPS);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
         }
     }
 
@@ -478,5 +519,19 @@ public class DataSyncService extends IntentService {
     private void updateNotificationMsg(String msg) {
         notificationMsg = msg;
         showNotification(notificationServiceRunning, notificationMsg);
+    }
+
+    private void broadCastMessageForObservationDownloadForNewConcepts(Intent broadcastIntent, int[] resultForObservations) {
+        String msgForObservations = getString(R.string.info_obs_concept_downloaded, resultForObservations[3], resultForObservations[1], resultForObservations[4]);
+        broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, resultForObservations[0]);
+        broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msgForObservations);
+        if (isSuccess(resultForObservations)) {
+            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, resultForObservations[3]);
+            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForObservations[1]);
+            broadcastIntent.putExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY, resultForObservations[4]);
+            updateNotificationMsg(msgForObservations);
+        }
+        broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_OBS_BASED_ON_CONCEPTS_ADDED);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 }
