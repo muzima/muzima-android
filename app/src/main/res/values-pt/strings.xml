@@ -742,4 +742,8 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="tpt_start_date">Data Início TPT:</string>
     <string name="tpt_end_date">Data Fim TPT:</string>
     <string name="provider_reports_general">Relatórios de Provedores</string>
+    <string name="info_locations_downloaded_deleted">%d locais baixados, %d locais excluídos</string>
+    <string name="info_provider_downloaded_deleted">Provedores %d baixados, provedores %d excluídos</string>
+    <string name="info_concepts_downloaded_deleted">%d conceitos baixados, %d conceitos excluídos</string>
+    <string name="info_obs_concept_downloaded">%d nova observação baixada para %d novos conceitos para %d clientes</string>
 </resources>

@@ -111,7 +111,6 @@ import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
 
 import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
-import static com.muzima.utils.Constants.FGH.Concepts.INDEX_CASE_TESTING_CONSENT_CONCEPT_ID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.ALREADY_ASSIGNED_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.AWAITING_ASSIGNMENT_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID;
@@ -1892,7 +1891,6 @@ public class MuzimaSyncService {
                 mediaCategoryController.deleteMediaCategory(mediaCategoryToBeDeleted);
             }
 
-            Log.e(getClass().getSimpleName(), mediaCategoryToCheckForUpdates.size()+" ==== "+mediaCategoryToDownload.size());
             if(mediaCategoryToCheckForUpdates.size()>0){
                 List<MediaCategory> mediaCategoryListToUpdate = mediaCategoryController.downloadMediaCategory(mediaCategoryToCheckForUpdates, true);
                 mediaCategoryController.updateMediaCategory(mediaCategoryListToUpdate);
@@ -1902,7 +1900,6 @@ public class MuzimaSyncService {
             if(mediaCategoryToDownload.size()>0) {
                 List<MediaCategory> downloadedMediaList = mediaCategoryController.downloadMediaCategory(mediaCategoryToDownload, false);
                 mediaCategoryController.saveMediaCategory(downloadedMediaList);
-                Log.e(getClass().getSimpleName(), "size ====== "+downloadedMediaList.size());
                 mediaCategories = mediaCategories+downloadedMediaList.size();
             }
 
@@ -1971,6 +1968,7 @@ public class MuzimaSyncService {
 
                         downloadFile(media,context);
                     }
+                    result[0] =SUCCESS;
                     result[1] = mediaList.size();
                 }else{
                     AppUsageLogs noEnoughSpaceLog = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.NO_ENOUGH_SPACE_DEVICES);
@@ -2058,8 +2056,7 @@ public class MuzimaSyncService {
         }
     }
 
-    public int[] SyncPatientFullDataBasedOnCohortChangesInConfig(SetupConfigurationTemplate configBeforeConfigUpdate){
-        int result[] = new int[3];
+    public void SyncPatientFullDataBasedOnCohortChangesInConfig(SetupConfigurationTemplate configBeforeConfigUpdate){
         try {
             android.content.Context context = muzimaApplication.getApplicationContext();
             //Get cohorts in the config
@@ -2107,24 +2104,16 @@ public class MuzimaSyncService {
                 cohortController.deleteAllCohortMembersByCohortUuids(cohortsToSetAsUnsyncedUuids);
             }
 
-            result[0] = SUCCESS;
-            result[1] = cohortsToDownload.size();
-            result[2] = cohortsToSetAsUnsyncedUuids.size();
-
             if (cohortsToDownload.size() > 0)
                 new SyncPatientDataIntent(context, cohortsToDownload.stream().toArray(String[]::new)).start();
 
         } catch(SetupConfigurationController.SetupConfigurationFetchException e) {
-            result[0] = LOAD_ERROR;
             Log.e(getClass().getSimpleName(), "Could not get the active config ", e);
         } catch(CohortController.CohortUpdateException e) {
-            result[0] = SAVE_ERROR;
             Log.e(getClass().getSimpleName(), "Could not able to update cohort ", e);
         } catch(CohortController.CohortReplaceException e) {
-            result[0] = SAVE_ERROR;
             Log.e(getClass().getSimpleName(), "Could not able to replace cohort ", e);
         }
-        return result;
     }
 
     public int[] DownloadAndDeleteLocationBasedOnConfigChanges(SetupConfigurationTemplate configBeforeConfigUpdate){

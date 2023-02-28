@@ -734,4 +734,8 @@
     <string name="tpt_start_date">टीपीटी प्रारंभ तिथि:</string>
     <string name="tpt_end_date">टीपीटी समाप्ति तिथि:</string>
     <string name="provider_reports_general">प्रदाता रिपोर्ट</string>
+    <string name="info_locations_downloaded_deleted">डाउनलोड किए गए %d स्थान, हटाए गए %d स्थान</string>
+    <string name="info_provider_downloaded_deleted">डाउनलोड किए गए %d प्रदाता, हटाए गए %d प्रदाता</string>
+    <string name="info_concepts_downloaded_deleted">%d अवधारणाएँ डाउनलोड की गईं, %d संकल्पनाएँ हटाई गईं</string>
+    <string name="info_obs_concept_downloaded">%d ग्राहकों के लिए %d नई अवधारणाओं के लिए %d नया अवलोकन डाउनलोड किया गया</string>
 </resources>

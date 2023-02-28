@@ -155,6 +155,7 @@ public class MuzimaJobScheduler extends JobService {
             onStopJob(params);
         } else {
             //execute job
+            Log.i(getClass().getSimpleName(), "Service Started ===");
             LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(MESSAGE_SENT_ACTION));
             handleBackgroundWork(params);
         }
@@ -164,14 +165,12 @@ public class MuzimaJobScheduler extends JobService {
     @Override
     public boolean onStopJob(JobParameters params) {
         Log.i(getClass().getSimpleName(), "mUzima Job Service stopped ==== " + params.getJobId());
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         return false;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         Log.i(getClass().getSimpleName(), "Service destroyed ====");
     }
 
@@ -660,7 +659,6 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            new SyncAppUsageLogsBackgroundTask().execute();
         }
     }
 
@@ -669,8 +667,6 @@ public class MuzimaJobScheduler extends JobService {
                 Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR);
 
         String msg = intent.getStringExtra(Constants.DataSyncServiceConstants.SYNC_RESULT_MESSAGE);
-
-        Log.e(getClass().getName(), syncStatus+" ==== "+msg);
 
         switch (syncStatus) {
             case Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR:
@@ -705,80 +701,17 @@ public class MuzimaJobScheduler extends JobService {
                 int downloadCount = intent.getIntExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, 0);
 
                 switch (syncType) {
-                    case Constants.DataSyncServiceConstants.SYNC_FORMS:
-                        int deletedFormCount = intent.getIntExtra(Constants.DataSyncServiceConstants.DELETED_COUNT_PRIMARY, 0);
-                        msg = getString(R.string.info_forms_downloaded, downloadCount);
-                        if (deletedFormCount > 0) {
-                            msg = getString(R.string.info_form_download_delete, downloadCount, deletedFormCount);
-                        }
-                        break;
-                    case Constants.DataSyncServiceConstants.SYNC_TEMPLATES:
-                        msg = getString(R.string.info_form_template_concept_download, downloadCount, intent.getIntExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0));
-                        break;
-                    case Constants.DataSyncServiceConstants.SYNC_COHORTS_METADATA:
-                        msg = getString(R.string.info_new_cohort_download, downloadCount);
-                        break;
-                    case Constants.DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA: {
-                        int downloadCountSec = intent.getIntExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
-                        msg = getString(R.string.info_cohort_new_patient_download, downloadCount, downloadCountSec) + getString(R.string.info_patient_data_download);
-                        break;
-                    }
-                    case Constants.DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_ONLY: {
-                        int downloadCountSec = intent.getIntExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
-                        msg = getString(R.string.info_cohorts_patients_download, downloadCount, downloadCountSec);
-                        break;
-                    }
-                    case Constants.DataSyncServiceConstants.SYNC_OBSERVATIONS:
-                        msg = getString(R.string.info_new_observation_download, downloadCount);
-                        break;
-                    case Constants.DataSyncServiceConstants.SYNC_ENCOUNTERS:
-                        msg = getString(R.string.info_new_encounter_download, downloadCount);
-                        break;
-                    case Constants.DataSyncServiceConstants.SYNC_UPLOAD_FORMS:
-                        msg = getString(R.string.info_form_data_upload_sucess);
-                        break;
-                    case Constants.DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
-                        msg = getString(R.string.info_real_time_upload_success);
-                        break;
-                    case Constants.DataSyncServiceConstants.SYNC_PATIENT_REPORTS_HEADERS:
-                        msg = getString(R.string.info_patient_reports_downloaded, downloadCount);
-                        break;
-                    case Constants.DataSyncServiceConstants.SYNC_PATIENT_REPORTS:
-                        msg = getString(R.string.info_patient_reports_downloaded, downloadCount);
-                        break;
-                    case Constants.DataSyncServiceConstants.SYNC_PATIENT_FULL_PATIENT_DATA_BASED_ON_COHORT_CHANGES_IN_CONFIG: {
-                        int deleteCount = intent.getIntExtra(Constants.DataSyncServiceConstants.DELETED_COUNT_PRIMARY, 0);
-                        msg = getString(R.string.info_new_cohort_download_delete, downloadCount, deleteCount);
-                        break;
-                    }
-                    case Constants.DataSyncServiceConstants.SYNC_LOCATIONS_BASED_ON_CHANGES_IN_CONFIG: {
-                        int deleteCount = intent.getIntExtra(Constants.DataSyncServiceConstants.DELETED_COUNT_PRIMARY, 0);
-                        msg = getString(R.string.info_locations_downloaded_deleted, downloadCount, deleteCount);
-                        break;
-                    }
-                    case Constants.DataSyncServiceConstants.SYNC_PROVIDERS_BASED_ON_CHANGES_IN_CONFIG: {
-                        int deleteCount = intent.getIntExtra(Constants.DataSyncServiceConstants.DELETED_COUNT_PRIMARY, 0);
-                        msg = getString(R.string.info_provider_downloaded_deleted, downloadCount, deleteCount);
-                        break;
-                    }
                     case Constants.DataSyncServiceConstants.SYNC_CONCEPTS_AND_OBS_BASED_ON_CHANGES_IN_CONFIG: {
                         int deleteCount = intent.getIntExtra(Constants.DataSyncServiceConstants.DELETED_COUNT_PRIMARY, 0);
-                        msg = getString(R.string.info_provider_downloaded_deleted, downloadCount, deleteCount);
-                        break;
-                    }
-                    case Constants.DataSyncServiceConstants.SYNC_OBS_BASED_ON_CONCEPTS_ADDED: {
-                        int downloadCountSec = intent.getIntExtra(Constants.DataSyncServiceConstants.DELETED_COUNT_PRIMARY, 0);
-                        int deleteCount = intent.getIntExtra(Constants.DataSyncServiceConstants.DELETED_COUNT_PRIMARY, 0);
-                        msg = getString(R.string.info_obs_concept_downloaded, downloadCount, downloadCountSec ,deleteCount);
+                        msg = getString(R.string.info_concepts_downloaded_deleted, downloadCount, deleteCount);
                         break;
                     }
                     case Constants.DataSyncServiceConstants.SYNC_MEDIA_CATEGORIES: {
-                        msg = getString(R.string.info_media_category_downloaded, downloadCount);
                         new DownloadAndDeleteMediaBasedOnConfigChangesBackgroundTask().execute();
                         break;
                     }
                     case Constants.DataSyncServiceConstants.SYNC_MEDIA: {
-                        msg = getString(R.string.info_media_downloaded, downloadCount);
+                        new SyncAppUsageLogsBackgroundTask().execute();
                         break;
                     }
                 }
@@ -789,6 +722,6 @@ public class MuzimaJobScheduler extends JobService {
             msg = getString(R.string.info_download_complete, syncStatus) + " Sync type = " + intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
         }
 
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+       //TODO: Save the msg to a database
     }
 }
