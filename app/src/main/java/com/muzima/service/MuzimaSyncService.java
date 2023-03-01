@@ -10,8 +10,13 @@
 
 package com.muzima.service;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
+
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -19,6 +24,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.exception.AuthenticationException;
+import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.Concept;
@@ -45,6 +51,7 @@ import com.muzima.api.model.RelationshipType;
 import com.muzima.api.model.ReportDataset;
 import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
+import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
@@ -61,23 +68,34 @@ import com.muzima.controller.ProviderController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.controller.ReportDatasetController;
 import com.muzima.controller.SetupConfigurationController;
+import com.muzima.model.CompleteFormWithPatientData;
+import com.muzima.model.IncompleteFormWithPatientData;
+import com.muzima.model.collections.CompleteFormsWithPatientData;
+import com.muzima.model.collections.IncompleteFormsWithPatientData;
+import com.muzima.util.JsonUtils;
 import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
+import com.muzima.utils.MemoryUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.forms.SyncFormTemplateIntent;
+import com.muzima.view.patients.SyncPatientDataIntent;
 import com.muzima.view.progressdialog.ProgressDialogUpdateIntentService;
 
 import org.apache.lucene.queryParser.ParseException;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -85,15 +103,19 @@ import java.util.logging.Logger;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
 
 import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
-import static com.muzima.utils.Constants.FGH.Concepts.INDEX_CASE_TESTING_CONSENT_CONCEPT_ID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.ALREADY_ASSIGNED_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.AWAITING_ASSIGNMENT_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID;
+import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
+import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
 public class MuzimaSyncService {
     private static final String TAG = "MuzimaSyncService";
@@ -113,7 +135,10 @@ public class MuzimaSyncService {
     private ReportDatasetController reportDatasetController;
     private MediaController mediaController;
     private MediaCategoryController mediaCategoryController;
+    private AppUsageLogsController appUsageLogsController;
     private Logger logger;
+    private String username;
+    private String pseudoDeviceId;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
         this.muzimaApplication = muzimaContext;
@@ -132,6 +157,9 @@ public class MuzimaSyncService {
         reportDatasetController = muzimaApplication.getReportDatasetController();
         mediaController = muzimaApplication.getMediaController();
         mediaCategoryController = muzimaApplication.getMediaCategoryController();
+        appUsageLogsController = muzimaApplication.getAppUsageLogsController();
+        username = muzimaApplication.getAuthenticatedUserId();
+        pseudoDeviceId = generatePseudoDeviceId();
     }
 
     public int authenticate(String[] credentials) {
@@ -831,6 +859,32 @@ public class MuzimaSyncService {
         try {
             result[0] = formController.uploadAllCompletedForms() ? SUCCESS : SyncStatusConstants.UPLOAD_ERROR;
             patientController.deletePatientsPendingDeletion();
+            try {
+                SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+                AppUsageLogs lastUploadLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME, username);
+                if (lastUploadLog != null) {
+                    lastUploadLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                    lastUploadLog.setUpdateDatetime(new Date());
+                    lastUploadLog.setUserName(username);
+                    lastUploadLog.setDeviceId(pseudoDeviceId);
+                    lastUploadLog.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(lastUploadLog);
+                } else {
+                    AppUsageLogs newUploadTime = new AppUsageLogs();
+                    newUploadTime.setUuid(UUID.randomUUID().toString());
+                    newUploadTime.setLogKey(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME);
+                    newUploadTime.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                    newUploadTime.setUpdateDatetime(new Date());
+                    newUploadTime.setUserName(username);
+                    newUploadTime.setDeviceId(pseudoDeviceId);
+                    newUploadTime.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(newUploadTime);
+                }
+            } catch (IOException e) {
+                Log.e(getClass().getSimpleName(),"Encountered IO Exception ",e);
+            } catch (ParseException e) {
+                Log.e(getClass().getSimpleName(),"Encountered Parse Exception ",e);
+            }
         } catch (FormController.UploadFormDataException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while uploading forms.", e);
             String exceptionError = e.getMessage();
@@ -1559,6 +1613,7 @@ public class MuzimaSyncService {
                 downloadReportDatasets(datasetDefinitionIds, isDeltaSync);
             }
         } catch (ReportDatasetController.ReportDatasetFetchException e) {
+            result[0] = LOAD_ERROR;
             Log.e(getClass().getSimpleName(), "Error while fetching report datasets",e);
         }
 
@@ -1573,8 +1628,13 @@ public class MuzimaSyncService {
             result[0] = SUCCESS;
             result[1] = mediaCategories.size();
 
-        } catch (MediaCategoryController.MediaCategoryDownloadException | MediaCategoryController.MediaCategorySaveException e) {
-            Log.e(TAG, "Encountered Load Exception while getting media categories", e);
+        } catch (MediaCategoryController.MediaCategoryDownloadException e) {
+            result[0] = DOWNLOAD_ERROR;
+            Log.e(TAG, "Encountered Load Exception while downloading media categories", e);
+
+        } catch (MediaCategoryController.MediaCategorySaveException e) {
+            result[0] = DOWNLOAD_ERROR;
+            Log.e(TAG, "Encountered Load Exception while saving media categories", e);
         }
         return result;
     }
@@ -1596,8 +1656,719 @@ public class MuzimaSyncService {
             result[0] = SUCCESS;
             result[1] = media.size();
         } catch (MediaController.MediaSaveException e) {
+            result[0] = SyncStatusConstants.SAVE_ERROR;
             Log.e(TAG, "Encountered Load Exception while downloading media", e);
         }
         return result;
     }
+
+    public int[] SyncDatasets(SetupConfigurationTemplate configBeforeConfigUpdate){
+        int[] result = new int[2];
+        int reportDatasets = 0;
+        try {
+            //Get datasets in the config
+            List<Integer> datasetIds = new ArrayList<>();
+            List<Integer> datasetIdsBeforeConfigUpdate = new ArrayList<>();
+
+            SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+            String configJson = activeSetupConfig.getConfigJson();
+            List<Object> datasets = JsonUtils.readAsObjectList(configJson, "$['config']['datasets']");
+            for (Object dataset : datasets) {
+                net.minidev.json.JSONObject dataset1 = (net.minidev.json.JSONObject) dataset;
+                Integer datasetId = (Integer)dataset1.get("id");
+                datasetIds.add(datasetId);
+            }
+
+            String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+            List<Object> datasetsBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['datasets']");
+            for (Object dataset : datasetsBeforeConfigUpdate) {
+                net.minidev.json.JSONObject dataset1 = (net.minidev.json.JSONObject) dataset;
+                Integer datasetId = (Integer)dataset1.get("id");
+                datasetIdsBeforeConfigUpdate.add(datasetId);
+            }
+
+            List<Integer> datasetToDeleteIds = new ArrayList<>();
+            List<Integer> datasetToDownload= new ArrayList<>();
+
+            //Get datasets previously downloaded but not in the updated config
+            for(Integer datasetId: datasetIdsBeforeConfigUpdate){
+                if(!datasetIds.contains(datasetId)){
+                    datasetToDeleteIds.add(datasetId);
+                }
+            }
+
+            //sync the downloaded datasets with changes
+            if(datasetIdsBeforeConfigUpdate.size() > 0){
+                List<ReportDataset> reportDatasetList = reportDatasetController.downloadReportDatasets(datasetIdsBeforeConfigUpdate, true);
+                reportDatasetController.updateReportDatasets(reportDatasetList);
+                reportDatasets = reportDatasetList.size();
+            }
+
+            //Get Added datasets to updated config
+            for(Integer datasetId : datasetIds){
+                if(!datasetIdsBeforeConfigUpdate.contains(datasetId)){
+                    datasetToDownload.add(datasetId);
+                }
+            }
+
+            if(datasetToDeleteIds.size() > 0) {
+                reportDatasetController.deleteReportDatasets(datasetToDeleteIds);
+            }
+
+            if(datasetToDownload.size()>0){
+                //Download Added datasets
+                List<ReportDataset> reportDatasetList = reportDatasetController.downloadReportDatasets(datasetToDownload, false);
+                reportDatasetController.saveReportDatasets(reportDatasetList);
+                reportDatasets = reportDatasets+reportDatasetList.size();
+            }
+
+            result[0] = SUCCESS;
+            result[1] = reportDatasets;
+
+        } catch (ReportDatasetController.ReportDatasetSaveException reportDatasetSaveException) {
+            reportDatasetSaveException.printStackTrace();
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+        } catch (SetupConfigurationController.SetupConfigurationFetchException setupConfigurationFetchException) {
+            setupConfigurationFetchException.printStackTrace();
+            result[0] = SyncStatusConstants.LOAD_ERROR;
+        } catch (ReportDatasetController.ReportDatasetDownloadException reportDatasetDownloadException) {
+            reportDatasetDownloadException.printStackTrace();
+            result[0] = SyncStatusConstants.LOAD_ERROR;
+        } catch (ReportDatasetController.ReportDatasetFetchException reportDatasetFetchException) {
+            reportDatasetFetchException.printStackTrace();
+            result[0] = SyncStatusConstants.LOAD_ERROR;
+        }
+        return result;
+    }
+
+    public void SyncFormTemplates(SetupConfigurationTemplate configBeforeConfigUpdate){
+        try {
+            android.content.Context context = muzimaApplication.getApplicationContext();
+            //Get forms in the config
+            List<String> formUuids = new ArrayList<>();
+            List<String> formUuidsBeforeConfigUpdate = new ArrayList<>();
+
+            SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+            String configJson = activeSetupConfig.getConfigJson();
+            List<Object> forms = JsonUtils.readAsObjectList(configJson, "$['config']['forms']");
+            for (Object form : forms) {
+                net.minidev.json.JSONObject form1 = (net.minidev.json.JSONObject) form;
+                String formUuid = form1.get("uuid").toString();
+                formUuids.add(formUuid);
+            }
+
+            String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+            List<Object> formsBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['forms']");
+            for (Object form : formsBeforeConfigUpdate) {
+                net.minidev.json.JSONObject form1 = (net.minidev.json.JSONObject) form;
+                String formUuid = form1.get("uuid").toString();
+                formUuidsBeforeConfigUpdate.add(formUuid);
+            }
+
+            List<String> formTemplatesToDeleteUuids = new ArrayList<>();
+            List<String>  formTemplateToDownload= new ArrayList<>();
+
+            //Get forms previously downloaded but not in the updated config
+            for(String formUuid: formUuidsBeforeConfigUpdate){
+                if(!formUuids.contains(formUuid)){
+                    formTemplatesToDeleteUuids.add(formUuid);
+                }
+            }
+
+            //Get Added forms to updated config
+            for(String formUuid : formUuids){
+                if(!formUuidsBeforeConfigUpdate.contains(formUuid)){
+                    formTemplateToDownload.add(formUuid);
+                }
+            }
+
+            //Get Forms with Updates
+            List<Form> allForms = formController.getAllAvailableForms();
+            for (Form form : allForms) {
+                if (form.isUpdateAvailable() && formUuids.contains(form.getUuid())) {
+                    formTemplateToDownload.add(form.getUuid());
+                }
+            }
+
+            boolean isFormWithPatientDataAvailable = formController.isFormWithPatientDataAvailable(context);
+
+            if(!isFormWithPatientDataAvailable){
+                String[] formsToDownload = formTemplateToDownload.stream().toArray(String[]::new);
+
+                if(formTemplatesToDeleteUuids.size()>0)
+                    formController.deleteFormTemplatesByUUID(formTemplatesToDeleteUuids);
+
+                if(formTemplateToDownload.size()>0)
+                    new SyncFormTemplateIntent(context, formsToDownload).start();
+            }else{
+                List<String> formsWithPatientData = new ArrayList<>();
+
+                CompleteFormsWithPatientData completeFormsWithPatientData = formController.getAllCompleteFormsWithPatientData(context, StringUtils.EMPTY);
+                IncompleteFormsWithPatientData incompleteFormsWithPatientData = formController.getAllIncompleteFormsWithPatientData(StringUtils.EMPTY);
+
+                for(CompleteFormWithPatientData completeFormWithPatientData : completeFormsWithPatientData){
+                    formsWithPatientData.add(completeFormWithPatientData.getFormUuid());
+                }
+
+                for(IncompleteFormWithPatientData inCompleteFormWithPatientData : incompleteFormsWithPatientData){
+                    formsWithPatientData.add(inCompleteFormWithPatientData.getFormUuid());
+                }
+
+                for(String formTemplateToDeleteUuid : formTemplatesToDeleteUuids) {
+                    if (!formsWithPatientData.contains(formTemplateToDeleteUuid)) {
+                        //Delete form template
+                        formController.deleteFormTemplatesByUUID(Collections.singletonList(formTemplateToDeleteUuid));
+                    }
+                }
+
+                List<String> formsToDownloadUuids = new ArrayList<>();
+                for(String formTemplateUuidToDownload : formTemplateToDownload) {
+                    if (!formsWithPatientData.contains(formTemplateUuidToDownload)) {
+                        formsToDownloadUuids.add(formTemplateUuidToDownload);
+
+                    }
+                }
+                if(formsToDownloadUuids.size()>0){
+                    //Download Templates
+                    new SyncFormTemplateIntent(context, formsToDownloadUuids.stream().toArray(String[]::new)).start();
+                }
+            }
+        } catch (FormController.FormFetchException e){
+            Log.e(getClass().getSimpleName(),"Could not fetch downloaded forms ",e);
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e){
+            Log.e(getClass().getSimpleName(),"Could not get the active config ",e);
+        } catch (FormController.FormDeleteException e) {
+            Log.e(getClass().getSimpleName(),"Could not delete form templates ",e);
+        }
+    }
+
+    public int[] SyncMediaCategory(SetupConfigurationTemplate configBeforeConfigUpdate){
+        int[] result = new int[2];
+        int mediaCategories = 0;
+        try {
+            //Get media Categories in the config
+            List<String> mediaCategoryUuids = new ArrayList<>();
+            List<String> mediaCategoryUuidsBeforeConfigUpdate = new ArrayList<>();
+
+            SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+            String configJson = activeSetupConfig.getConfigJson();
+            List<Object> mediaCategoryList = JsonUtils.readAsObjectList(configJson, "$['config']['mediaCategories']");
+            for (Object mediaCategory : mediaCategoryList) {
+                net.minidev.json.JSONObject mediaCategory1 = (net.minidev.json.JSONObject) mediaCategory;
+                String mediaCategoryUuid = mediaCategory1.get("uuid").toString();
+                mediaCategoryUuids.add(mediaCategoryUuid);
+            }
+
+            String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+            List<Object> mediaCategoryBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['mediaCategories']");
+            for (Object mediaCategory : mediaCategoryBeforeConfigUpdate) {
+                net.minidev.json.JSONObject mediaCategory1 = (net.minidev.json.JSONObject) mediaCategory;
+                String mediaCategoryUuid = mediaCategory1.get("uuid").toString();
+                mediaCategoryUuidsBeforeConfigUpdate.add(mediaCategoryUuid);
+            }
+
+            List<String> mediaCategoryToBeDeleted = new ArrayList<>();
+            List<String> mediaCategoryToDownload= new ArrayList<>();
+            List<String> mediaCategoryToCheckForUpdates = new ArrayList<>();
+
+            //Get mediaCategory previously downloaded but not in the updated config
+            for(String mediaCategoryUuid: mediaCategoryUuidsBeforeConfigUpdate){
+                if(!mediaCategoryUuids.contains(mediaCategoryUuid)){
+                    mediaCategoryToBeDeleted.add(mediaCategoryUuid);
+                }else{
+                    mediaCategoryToCheckForUpdates.add(mediaCategoryUuid);
+                }
+            }
+
+            //Get Added mediaCategory to updated config
+            for(String mediaCategoryUuid : mediaCategoryUuids){
+                if(!mediaCategoryUuidsBeforeConfigUpdate.contains(mediaCategoryUuid)){
+                    mediaCategoryToDownload.add(mediaCategoryUuid);
+                }
+            }
+
+            if(mediaCategoryToBeDeleted.size()>0) {
+                mediaCategoryController.deleteMediaCategory(mediaCategoryToBeDeleted);
+            }
+
+            if(mediaCategoryToCheckForUpdates.size()>0){
+                List<MediaCategory> mediaCategoryListToUpdate = mediaCategoryController.downloadMediaCategory(mediaCategoryToCheckForUpdates, true);
+                mediaCategoryController.updateMediaCategory(mediaCategoryListToUpdate);
+                mediaCategories = mediaCategories+mediaCategoryListToUpdate.size();
+            }
+
+            if(mediaCategoryToDownload.size()>0) {
+                List<MediaCategory> downloadedMediaList = mediaCategoryController.downloadMediaCategory(mediaCategoryToDownload, false);
+                mediaCategoryController.saveMediaCategory(downloadedMediaList);
+                mediaCategories = mediaCategories+downloadedMediaList.size();
+            }
+
+            result[0] = SUCCESS;
+            result[1] = mediaCategories;
+        } catch (MediaCategoryController.MediaCategoryDownloadException e) {
+            result[0] = DOWNLOAD_ERROR;
+            Log.e(getClass().getSimpleName(), "Encountered an error while downloading media categories");
+        } catch (MediaCategoryController.MediaCategorySaveException e) {
+            result[0] = SyncStatusConstants.SAVE_ERROR;
+            Log.e(getClass().getSimpleName(), "Encountered an error while saving media categories");
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+            result[0] = SyncStatusConstants.LOAD_ERROR;
+            Log.e(getClass().getSimpleName(), "Encountered an error while getting config");
+        }
+        return result;
+    }
+
+    public int[] SyncMedia(){
+        int[] result = new int[2];
+        try {
+            android.content.Context context = muzimaApplication.getApplicationContext();
+            //update memory space app usage log
+            AppUsageLogs appUsageLogs = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.AVAILABLE_INTERNAL_SPACE);
+            String availableMemory = MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize());
+
+            if(appUsageLogs != null) {
+                if(!availableMemory.equals(appUsageLogs.getLogvalue())) {
+                    appUsageLogs.setLogvalue(availableMemory);
+                    appUsageLogs.setUpdateDatetime(new Date());
+                    appUsageLogs.setUserName(username);
+                    appUsageLogs.setDeviceId(pseudoDeviceId);
+                    appUsageLogs.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLogs);
+                }
+            }else{
+                AppUsageLogs availableSpace = new AppUsageLogs();
+                availableSpace.setUuid(UUID.randomUUID().toString());
+                availableSpace.setLogKey(com.muzima.util.Constants.AppUsageLogs.AVAILABLE_INTERNAL_SPACE);
+                availableSpace.setLogvalue(availableMemory);
+                availableSpace.setUpdateDatetime(new Date());
+                availableSpace.setUserName(username);
+                availableSpace.setDeviceId(pseudoDeviceId);
+                availableSpace.setLogSynced(false);
+                appUsageLogsController.saveOrUpdateAppUsageLog(availableSpace);
+            }
+
+            MuzimaSyncService muzimaSyncService = ((MuzimaApplication) context).getMuzimaSyncService();
+            MediaCategoryController mediaCategoryController = ((MuzimaApplication) context).getMediaCategoryController();
+            List<MediaCategory> mediaCategoryList= mediaCategoryController.getMediaCategories();
+            List<String> mediaCategoryUuids = new ArrayList<>();
+            if(mediaCategoryList.size()>0) {
+                for (MediaCategory mediaCategory : mediaCategoryList) {
+                    mediaCategoryUuids.add(mediaCategory.getUuid());
+                }
+                List<Media> mediaList = muzimaSyncService.downloadMedia(mediaCategoryUuids, true);
+                long totalFileSize = MemoryUtil.getTotalMediaFileSize(mediaList);
+                long availableSpace = MemoryUtil.getAvailableInternalMemorySize();
+                if(availableSpace>totalFileSize) {
+                    for (Media media : mediaList) {
+                        Media media1 = mediaController.getMediaByUuid(media.getUuid());
+                        if(media1 != null)
+                            mediaController.updateMedia(Collections.singletonList(media));
+                        else
+                            mediaController.saveMedia(Collections.singletonList(media));
+
+                        downloadFile(media,context);
+                    }
+                    result[0] =SUCCESS;
+                    result[1] = mediaList.size();
+                }else{
+                    AppUsageLogs noEnoughSpaceLog = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.NO_ENOUGH_SPACE_DEVICES);
+                    String requiredMemory = MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize());
+                    if(noEnoughSpaceLog != null) {
+                        noEnoughSpaceLog.setLogvalue("Required: "+requiredMemory+ " Available: "+availableMemory);
+                        noEnoughSpaceLog.setUpdateDatetime(new Date());
+                        noEnoughSpaceLog.setUserName(username);
+                        noEnoughSpaceLog.setDeviceId(pseudoDeviceId);
+                        noEnoughSpaceLog.setLogSynced(false);
+                        appUsageLogsController.saveOrUpdateAppUsageLog(noEnoughSpaceLog);
+                    }else{
+                        AppUsageLogs newNoEnoughSpaceLog = new AppUsageLogs();
+                        newNoEnoughSpaceLog.setUuid(UUID.randomUUID().toString());
+                        newNoEnoughSpaceLog.setLogKey(com.muzima.util.Constants.AppUsageLogs.NO_ENOUGH_SPACE_DEVICES);
+                        newNoEnoughSpaceLog.setLogvalue("Required: "+requiredMemory+ " Available: "+availableMemory);
+                        newNoEnoughSpaceLog.setUpdateDatetime(new Date());
+                        newNoEnoughSpaceLog.setUserName(username);
+                        newNoEnoughSpaceLog.setDeviceId(pseudoDeviceId);
+                        newNoEnoughSpaceLog.setLogSynced(false);
+                        appUsageLogsController.saveOrUpdateAppUsageLog(newNoEnoughSpaceLog);
+                    }
+                    MemoryUtil.showAlertDialog(availableSpace,totalFileSize, context.getApplicationContext());
+                }
+            }
+        }  catch (MediaCategoryController.MediaCategoryFetchException e) {
+            Log.e(getClass().getSimpleName(), "Encountered an error while fetching media categories");
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(),"Encountered IOException ",e);
+        } catch (ParseException e) {
+            Log.e(getClass().getSimpleName(),"Encountered ParseException ",e);
+        } catch (MediaController.MediaFetchException e) {
+            Log.e(getClass().getSimpleName(),"Encountered Media fetch exception ",e);
+        } catch (MediaController.MediaSaveException e) {
+            Log.e(getClass().getSimpleName(),"Encountered exception while saving media ",e);
+        }
+        return result;
+    }
+
+    public void downloadFile(Media media, android.content.Context context){
+        try {
+            //Delete file if exists
+            String mimeType = media.getMimeType();
+            String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
+            File file = new File(PATH + "/"+media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1));
+            String mediaName = media.getName()+"."+mimeType.substring(mimeType.lastIndexOf("/") + 1);
+            if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-excel")){
+                file = new File(PATH + "/"+media.getName()+".xls");
+                mediaName = media.getName()+".xls";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.spreadsheetml.sheet")){
+                file = new File(PATH + "/"+media.getName()+".xlsx");
+                mediaName = media.getName()+".xlsx";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("msword")){
+                file = new File(PATH + "/"+media.getName()+".doc");
+                mediaName = media.getName()+".doc";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.wordprocessingml.document")){
+                file = new File(PATH + "/"+media.getName()+".docx");
+                mediaName = media.getName()+".docx";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.ms-powerpoint")){
+                file = new File(PATH + "/"+media.getName()+".ppt");
+                mediaName = media.getName()+".ppt";
+            }else if(mimeType.substring(mimeType.lastIndexOf("/") + 1).equals("vnd.openxmlformats-officedocument.presentationml.presentation")){
+                file = new File(PATH + "/"+media.getName()+".pptx");
+                mediaName = media.getName()+".pptx";
+            }
+            if(file.exists()) {
+                file.delete();
+                context.getApplicationContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+            }
+
+            if(!media.isRetired()) {
+                //Enqueue the file for download
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(media.getUrl() + ""));
+                request.setTitle(media.getName());
+                request.setDescription(media.getDescription());
+                request.allowScanningByMediaScanner();
+                request.setAllowedOverMetered(true);
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, mediaName);
+                DownloadManager dm = (DownloadManager) context.getApplicationContext().getSystemService(DOWNLOAD_SERVICE);
+                dm.enqueue(request);
+            }
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error ", e);
+        }
+    }
+
+    public void SyncPatientFullDataBasedOnCohortChangesInConfig(SetupConfigurationTemplate configBeforeConfigUpdate){
+        try {
+            android.content.Context context = muzimaApplication.getApplicationContext();
+            //Get cohorts in the config
+            List<String> cohortUuids = new ArrayList<>();
+            List<String> cohortUuidsBeforeUpdate = new ArrayList<>();
+
+            SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+            String configJson = activeSetupConfig.getConfigJson();
+            List<Object> cohorts = JsonUtils.readAsObjectList(configJson, "$['config']['cohorts']");
+            for (Object cohort : cohorts) {
+                net.minidev.json.JSONObject cohort1 = (net.minidev.json.JSONObject) cohort;
+                String cohortUuid = cohort1.get("uuid").toString();
+                cohortUuids.add(cohortUuid);
+            }
+
+
+            String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+            List<Object> cohortsBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['cohorts']");
+            for (Object cohort : cohortsBeforeConfigUpdate) {
+                net.minidev.json.JSONObject cohort1 = (net.minidev.json.JSONObject) cohort;
+                String cohortUuid = cohort1.get("uuid").toString();
+                cohortUuidsBeforeUpdate.add(cohortUuid);
+            }
+
+            List<String> cohortsToSetAsUnsyncedUuids = new ArrayList<>();
+            List<String> cohortsToDownload = new ArrayList<>();
+
+            //Get cohorts previously in config but not in the updated config
+            for (String cohortUuid : cohortUuidsBeforeUpdate) {
+                if (!cohortUuids.contains(cohortUuid)) {
+                    cohortsToSetAsUnsyncedUuids.add(cohortUuid);
+                }
+            }
+
+            //Get Added cohorts to updated config
+            for (String cohortUuid : cohortUuids) {
+                if (!cohortUuidsBeforeUpdate.contains(cohortUuid)) {
+                    cohortsToDownload.add(cohortUuid);
+                }
+            }
+
+            if (cohortsToSetAsUnsyncedUuids.size() > 0) {
+                cohortController.setSyncStatus(cohortsToSetAsUnsyncedUuids.stream().toArray(String[]::new), 0);
+                cohortController.deletePatientsNotBelongingToAnotherCohortByCohortUuids(cohortsToSetAsUnsyncedUuids);
+                cohortController.deleteAllCohortMembersByCohortUuids(cohortsToSetAsUnsyncedUuids);
+            }
+
+            if (cohortsToDownload.size() > 0)
+                new SyncPatientDataIntent(context, cohortsToDownload.stream().toArray(String[]::new)).start();
+
+        } catch(SetupConfigurationController.SetupConfigurationFetchException e) {
+            Log.e(getClass().getSimpleName(), "Could not get the active config ", e);
+        } catch(CohortController.CohortUpdateException e) {
+            Log.e(getClass().getSimpleName(), "Could not able to update cohort ", e);
+        } catch(CohortController.CohortReplaceException e) {
+            Log.e(getClass().getSimpleName(), "Could not able to replace cohort ", e);
+        }
+    }
+
+    public int[] DownloadAndDeleteLocationBasedOnConfigChanges(SetupConfigurationTemplate configBeforeConfigUpdate){
+        int result[] = new int[3];
+        try {
+            //Get locations in the config
+            List<String> locationUuids = new ArrayList<>();
+            List<String> locationUuidsBeforeConfigUpdate = new ArrayList<>();
+
+            SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+            String configJson = activeSetupConfig.getConfigJson();
+            List<Object> locations = JsonUtils.readAsObjectList(configJson, "$['config']['locations']");
+            for (Object location : locations) {
+                net.minidev.json.JSONObject location1 = (net.minidev.json.JSONObject) location;
+                String locationUuid = location1.get("uuid").toString();
+                locationUuids.add(locationUuid);
+            }
+
+            String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+            List<Object> locationsBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['locations']");
+            for (Object location : locationsBeforeConfigUpdate) {
+                net.minidev.json.JSONObject location1 = (net.minidev.json.JSONObject) location;
+                String locationUuid = location1.get("uuid").toString();
+                locationUuidsBeforeConfigUpdate.add(locationUuid);
+            }
+
+            List<String> locationsToBeDeleted = new ArrayList<>();
+            List<String> locationsToDownload= new ArrayList<>();
+
+            //Get locations previously in config  but not in the updated config
+            for(String locationUuid: locationUuidsBeforeConfigUpdate){
+                if(!locationUuids.contains(locationUuid)){
+                    locationsToBeDeleted.add(locationUuid);
+                }
+            }
+
+            //Get Added locations to updated config
+            for(String locationUuid : locationUuids){
+                if(!locationUuidsBeforeConfigUpdate.contains(locationUuid)){
+                    locationsToDownload.add(locationUuid);
+                }
+            }
+
+            if(locationsToBeDeleted.size()>0) {
+                locationController.deleteLocationsByUuids(locationsToBeDeleted);
+            }
+
+            if(locationsToDownload.size()>0) {
+                List<Location> locationList = locationController.downloadLocationsFromServerByUuid(locationsToDownload.stream().toArray(String[]::new));
+                locationController.saveLocations(locationList);
+            }
+
+            result[0] = SUCCESS;
+            result[1] = locationsToDownload.size();
+            result[2] = locationsToBeDeleted.size();
+
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e){
+            result[0] = LOAD_ERROR;
+            Log.e(getClass().getSimpleName(),"Could not get the active config ",e);
+        }  catch (LocationController.LocationDeleteException e) {
+            result[0] = DELETE_ERROR;
+            Log.e(getClass().getSimpleName(),"Could not delete locations ",e);
+        } catch (LocationController.LocationDownloadException e) {
+            result[0] = DOWNLOAD_ERROR;
+            Log.e(getClass().getSimpleName(),"Could not download locations ",e);
+        } catch (LocationController.LocationSaveException e) {
+            result[0] = SAVE_ERROR;
+            Log.e(getClass().getSimpleName(),"Could not save locations ",e);
+        } catch (IOException e) {
+            result[0] = UNKNOWN_ERROR;
+            Log.e(getClass().getSimpleName(),"Could not get locations ",e);
+        }
+        return result;
+    }
+
+    public int[] DownloadAndDeleteProvidersBasedOnConfigChanges(SetupConfigurationTemplate configBeforeConfigUpdate){
+        int result[] = new int[3];
+        try {
+            //Get providers in the config
+            List<String> providerUuids = new ArrayList<>();
+            List<String> providerUuidsBeforeConfigUpdate = new ArrayList<>();
+
+            SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+            String configJson = activeSetupConfig.getConfigJson();
+            List<Object> providers = JsonUtils.readAsObjectList(configJson, "$['config']['providers']");
+            for (Object provider : providers) {
+                net.minidev.json.JSONObject provider1 = (net.minidev.json.JSONObject) provider;
+                String providerUuid = provider1.get("uuid").toString();
+                providerUuids.add(providerUuid);
+            }
+
+            String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+            List<Object> providersBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['providers']");
+            for (Object provider : providersBeforeConfigUpdate) {
+                net.minidev.json.JSONObject provider1 = (net.minidev.json.JSONObject) provider;
+                String providerUuid = provider1.get("uuid").toString();
+                providerUuidsBeforeConfigUpdate.add(providerUuid);
+            }
+
+            List<String> providersToBeDeleted = new ArrayList<>();
+            List<String> providersToDownload= new ArrayList<>();
+
+            //Get providers previously downloaded but not in the updated config
+            for(String providerUuid: providerUuidsBeforeConfigUpdate){
+                if(!providerUuids.contains(providerUuid)){
+                    providersToBeDeleted.add(providerUuid);
+                }
+            }
+
+            //Get Added providers to updated config
+            for(String providerUuid : providerUuids){
+                if(!providerUuidsBeforeConfigUpdate.contains(providerUuid)){
+                    providersToDownload.add(providerUuid);
+                }
+            }
+
+            if(providersToBeDeleted.size()>0) {
+                providerController.deleteProvidersByUuids(providersToBeDeleted);
+            }
+
+            if(providersToDownload.size()>0) {
+                List<Provider> providerList = providerController.downloadProvidersFromServerByUuid(providersToDownload.stream().toArray(String[]::new));
+                providerController.saveProviders(providerList);
+            }
+
+            result[0] = SUCCESS;
+            result[1] = providersToDownload.size();
+            result[2] = providersToBeDeleted.size();
+
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e){
+            result[0] = LOAD_ERROR;
+            Log.e(getClass().getSimpleName(),"Could not get the active config ",e);
+        } catch (ProviderController.ProviderDeleteException e) {
+            result[0] = DELETE_ERROR;
+            Log.e(getClass().getSimpleName(),"Could not delete providers ",e);
+        } catch (ProviderController.ProviderDownloadException e) {
+            result[0] = DOWNLOAD_ERROR;
+            Log.e(getClass().getSimpleName(),"Could not download providers ",e);
+        } catch (ProviderController.ProviderSaveException e) {
+            result[0] = SAVE_ERROR;
+            Log.e(getClass().getSimpleName(),"Could not save providers ",e);
+        } catch (IOException e) {
+            result[0] = UNKNOWN_ERROR;
+            Log.e(getClass().getSimpleName(),"Could not load providers ",e);
+        }
+        return result;
+    }
+
+    public int[] DownloadAndDeleteConceptAndObservationBasedOnConfigChanges(SetupConfigurationTemplate configBeforeConfigUpdate){
+        int result[] = new int[5];
+        try {
+            android.content.Context context = muzimaApplication.getApplicationContext();
+            //Get concepts in the config
+            List<String> conceptUuids = new ArrayList<>();
+            List<String> conceptUuidsBeforeConfigUpdate = new ArrayList<>();
+
+            SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+            String configJson = activeSetupConfig.getConfigJson();
+            List<Object> concepts = JsonUtils.readAsObjectList(configJson, "$['config']['concepts']");
+            for (Object concept : concepts) {
+                net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
+                String conceptUuid = concept1.get("uuid").toString();
+                conceptUuids.add(conceptUuid);
+            }
+
+            String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+            List<Object> conceptsBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['concepts']");
+            for (Object concept : conceptsBeforeConfigUpdate) {
+                net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
+                String conceptUuid = concept1.get("uuid").toString();
+                conceptUuidsBeforeConfigUpdate.add(conceptUuid);
+            }
+
+            List<Concept> conceptsToBeDeleted = new ArrayList<>();
+            List<String> conceptsToDownload= new ArrayList<>();
+
+            //Get concepts previously downloaded but not in the updated config
+            for(String conceptUuid: conceptUuidsBeforeConfigUpdate){
+                if(!conceptUuids.contains(conceptUuid)){
+                    Concept concept = conceptController.getConceptByUuid(conceptUuid);
+                    if(concept != null){
+                        conceptsToBeDeleted.add(concept);
+                    }
+
+                }
+            }
+
+            //Get Added concepts to updated config
+            for(String conceptUuid : conceptUuids){
+                if(!conceptUuidsBeforeConfigUpdate.contains(conceptUuid)){
+                    conceptsToDownload.add(conceptUuid);
+                }
+            }
+
+            if(conceptsToBeDeleted.size()>0) {
+                conceptController.deleteConcepts(conceptsToBeDeleted);
+                observationController.deleteAllObservations(conceptsToBeDeleted);
+            }
+
+            List<Patient> patients = new ArrayList<>();
+            List<Observation> observations = new ArrayList<>();
+
+            if(conceptsToDownload.size()>0) {
+                patients = ((MuzimaApplication) context).getPatientController().getAllPatients();
+                List<String> patientUuids = new ArrayList<>();
+                for(Patient patient : patients){
+                    patientUuids.add(patient.getUuid());
+                }
+                List<List<String>> slicedPatientUuids = split(patientUuids);
+                List<List<String>> slicedConceptUuids = split(conceptsToDownload);
+
+                List<Concept> conceptList = conceptController.downloadConceptsByUuid(conceptsToDownload.stream().toArray(String[]::new));
+                if(conceptList.size()>0){
+                    conceptController.saveConcepts(conceptList);
+                    for (List<String> slicedPatientUuid : slicedPatientUuids) {
+                        for (List<String> slicedConceptUuid : slicedConceptUuids) {
+                            List<Observation> observationsDownloaded = observationController.downloadObservationsForAddedConceptsByPatientUuidsAndConceptUuids(slicedPatientUuid, slicedConceptUuid,activeSetupConfig.getUuid());
+
+                            if(observationsDownloaded.size() > 0){
+                                observations.addAll(observationsDownloaded);
+                            }
+                        }
+                    }
+                    if(observations.size() > 0){
+                        observationController.saveObservations(observations);
+                    }
+                }
+            }
+
+            result[0] = SUCCESS;
+            result[1] = conceptsToDownload.size();
+            result[2] = conceptsToBeDeleted.size();
+            result[3] = observations.size();
+            result[4] = patients.size();
+
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e){
+            Log.e(getClass().getSimpleName(),"Could not get the active config ",e);
+        } catch (ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(),"Could not get concepts ",e);
+        } catch (ConceptController.ConceptDeleteException e) {
+            Log.e(getClass().getSimpleName(),"Could not delete concepts ",e);
+        } catch (ObservationController.DeleteObservationException e) {
+            Log.e(getClass().getSimpleName(),"Could not delete observations ",e);
+        } catch (ConceptController.ConceptDownloadException e) {
+            Log.e(getClass().getSimpleName(),"Could not download concepts ",e);
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(),"Could not load patients ",e);
+        } catch (ObservationController.DownloadObservationException e) {
+            Log.e(getClass().getSimpleName(),"Could not download observations ",e);
+        } catch (ObservationController.SaveObservationException e) {
+            Log.e(getClass().getSimpleName(),"Could not save observations ",e);
+        } catch (ConceptController.ConceptSaveException e) {
+            Log.e(getClass().getSimpleName(),"Could not save concepts ",e);
+        }
+        return result;
+    }
+
 }

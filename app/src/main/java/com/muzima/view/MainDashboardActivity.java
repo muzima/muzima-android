@@ -281,7 +281,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                         return true;
 
                     case R.id.menu_load:
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
                         new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
                 }
 

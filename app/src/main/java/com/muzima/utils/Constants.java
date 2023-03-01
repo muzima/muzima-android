@@ -91,6 +91,7 @@ public class Constants {
         public static final String COHORT_IDS = "cohortIds";
         public static final String PATIENT_UUID_FOR_DOWNLOAD = "patientUUIDForDownload";
         public static final String PATIENT_UUIDS = "patientUuids";
+        public static final String CONFIG_BEFORE_UPDATE = "configBeforeConfigUpdate";
 
         public static final int SYNC_FORMS = 0;
         public static final int SYNC_TEMPLATES = 1;
@@ -114,6 +115,14 @@ public class Constants {
         public static final int SYNC_SETUP_CONFIGURATION_TEMPLATES = 20;
         public static final int UPDATE_PATIENT_TAGS = 21;
         public static final int SYNC_REPORT_DATASETS = 22;
+        public static final int SYNC_MEDIA_CATEGORIES = 23;
+        public static final int SYNC_DATASETS = 24;
+        public static final int SYNC_MEDIA = 25;
+        public static final int SYNC_PATIENT_FULL_PATIENT_DATA_BASED_ON_COHORT_CHANGES_IN_CONFIG = 26;
+        public static final int SYNC_LOCATIONS_BASED_ON_CHANGES_IN_CONFIG = 27;
+        public static final int SYNC_PROVIDERS_BASED_ON_CHANGES_IN_CONFIG = 28;
+        public static final int SYNC_CONCEPTS_AND_OBS_BASED_ON_CHANGES_IN_CONFIG = 29;
+        public static final int SYNC_OBS_BASED_ON_CONCEPTS_ADDED = 30;
 
         public static class SyncStatusConstants {
             public static final int DOWNLOAD_ERROR = 0;

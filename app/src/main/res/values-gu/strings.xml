@@ -735,4 +735,8 @@
     <string name="tpt_start_date">TPT પ્રારંભ તારીખ:</string>
     <string name="tpt_end_date">TPT સમાપ્તિ તારીખ:</string>
     <string name="provider_reports_general">પ્રદાતા અહેવાલો</string>
+    <string name="info_locations_downloaded_deleted">%d સ્થાનો ડાઉનલોડ કર્યા, %d સ્થાનો કાઢી નાખ્યા</string>
+    <string name="info_provider_downloaded_deleted">ડાઉનલોડ કરેલ %d પ્રદાતાઓ, કાઢી નાખેલ %d પ્રદાતાઓ</string>
+    <string name="info_concepts_downloaded_deleted">ડાઉનલોડ કરેલ %d ખ્યાલો, કાઢી નાખેલ %d ખ્યાલો</string>
+    <string name="info_obs_concept_downloaded">%d ક્લાયન્ટ્સ માટે %d નવા ખ્યાલો માટે %d નવું અવલોકન ડાઉનલોડ કર્યું</string>
 </resources>

@@ -739,4 +739,8 @@
     <string name="tpt_start_date">Tarehe ya kuanza kwa TPT:</string>
     <string name="tpt_end_date">Tarehe ya mwisho ya TPT:</string>
     <string name="provider_reports_general">Ripoti ya mtoa huduma</string>
+    <string name="info_locations_downloaded_deleted">Imepakua biashara %d, Imefuta biashara %d</string>
+    <string name="info_provider_downloaded_deleted">Imepakua watoa huduma %d, Imefuta watoa huduma %d</string>
+    <string name="info_concepts_downloaded_deleted">Imepakuliwa dhana %d, Imefutwa dhana %d</string>
+    <string name="info_obs_concept_downloaded">Imepakua uchunguzi %d mpya wa dhana %d mpya kwa wateja %d</string>
 </resources>

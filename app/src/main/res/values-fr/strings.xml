@@ -744,4 +744,8 @@
     <string name="tpt_start_date">Date de début TPT:</string>
     <string name="tpt_end_date">Date de fin TPT:</string>
     <string name="provider_reports_general">Rapports de fournisseur</string>
+    <string name="info_locations_downloaded_deleted">Emplacements %d téléchargés, emplacements %d supprimés</string>
+    <string name="info_provider_downloaded_deleted">Fournisseurs %d téléchargés, fournisseurs %d supprimés</string>
+    <string name="info_concepts_downloaded_deleted">%d concepts téléchargés, %d concepts supprimés</string>
+    <string name="info_obs_concept_downloaded">%d nouvelle observation téléchargée pour les %d nouveaux concepts pour %d clients</string>
 </resources>
