@@ -82,6 +82,8 @@ public class MuzimaJobScheduleBuilder {
             if (jobInfo.getId() == MESSAGE_SYNC_JOB_ID) {
                 hasBeenScheduled = true;
                 break;
+            } else {
+                System.out.println(".......................Is not the job with ID: "+jobInfo.getId());
             }
         }
 

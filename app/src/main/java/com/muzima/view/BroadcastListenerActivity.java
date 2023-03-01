@@ -10,15 +10,30 @@
 
 package com.muzima.view;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.muzima.R;
 import com.muzima.utils.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
@@ -26,6 +41,10 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivity {
     public static final String MESSAGE_SENT_ACTION = "com.muzima.MESSAGE_RECEIVED_ACTION";
     public static final String PROGRESS_UPDATE_ACTION = "com.muzima.PROGRESS_UPDATE_ACTION";
+    private static  final List<String> dataSyncProgressLog = new ArrayList<>();
+    private ArrayAdapter<String> dataSyncProgressMessageArrayAdapter;
+    private static boolean isSyncRunning;
+    private ImageView imageView;
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -148,5 +167,94 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
         }
 
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        dataSyncProgressLog.add(msg);
+        if(dataSyncProgressMessageArrayAdapter != null) {
+            dataSyncProgressMessageArrayAdapter.notifyDataSetChanged();
+        }
+        if(dataSyncProgressLog.size()>=9){
+            setSyncRunningStatus(false);
+            updateSyncProgressWidgets();
+        }
     }
+
+    protected final void showBackgroundSyncProgressDialog(Context context){
+
+        if(dataSyncProgressMessageArrayAdapter == null){
+            dataSyncProgressMessageArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, dataSyncProgressLog);
+        }
+
+        View progressListView = getLayoutInflater().inflate(R.layout.sync_progress_layout_list, null,false);
+        ListView listView = progressListView.findViewById(R.id.listView);
+        listView.setAdapter(dataSyncProgressMessageArrayAdapter);
+
+        if(listView.getParent() != null){
+            ((ViewGroup) listView.getParent()).removeView(listView);
+        }
+        View syncTitleView = getLayoutInflater().inflate(R.layout.sync_progress_layout_title,null,false);
+        if(syncTitleView.getParent() != null){
+            ((ViewGroup) syncTitleView.getParent()).removeView(syncTitleView);
+        }
+
+        imageView = syncTitleView.findViewById(R.id.iv_refresh_icon);
+        if(isSyncRunning){
+            startProgressAnimation();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(listView)
+                .setCancelable(true)
+                .setCustomTitle(syncTitleView)
+                .setNegativeButton("Hide",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    protected void setSyncRunningStatus(boolean isSyncRunning){
+        this.isSyncRunning = isSyncRunning;
+        if(isSyncRunning){
+            startProgressAnimation();
+        } else {
+            stopProgressAnimation();
+        }
+    }
+
+    protected boolean getSyncRunningStatus(){
+        return isSyncRunning;
+    }
+
+    private void startProgressAnimation(){
+        if(imageView != null) {
+            RotateAnimation rotateAnim = new RotateAnimation(0.0f, 360.0f,
+                    RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                    RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+
+            rotateAnim.setInterpolator(new LinearInterpolator());
+            rotateAnim.setDuration(1000);
+            rotateAnim.setRepeatCount(Animation.INFINITE);
+            imageView.startAnimation(rotateAnim);
+        }
+    }
+
+    private void stopProgressAnimation(){
+        if(imageView != null) {
+            imageView.clearAnimation();
+        }
+    }
+
+    protected void updateSyncProgressWidgets(){
+
+    }
+
+    protected void notifySyncStarted(){
+        if(dataSyncProgressLog != null) {
+            dataSyncProgressLog.clear();
+        }
+    }
+
+
 }
