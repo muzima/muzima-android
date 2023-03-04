@@ -1923,7 +1923,13 @@ public class MuzimaSyncService {
         try {
             android.content.Context context = muzimaApplication.getApplicationContext();
             //update memory space app usage log
-            AppUsageLogs appUsageLogs = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.AVAILABLE_INTERNAL_SPACE);
+            AppUsageLogs appUsageLogs = null;
+
+            try{
+                appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.AVAILABLE_INTERNAL_SPACE);
+            } catch (IOException e){
+                Log.e(TAG,"Could nt find availableInternalSpace log");
+            }
             String availableMemory = MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize());
 
             if(appUsageLogs != null) {

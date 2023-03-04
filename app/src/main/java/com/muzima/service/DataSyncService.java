@@ -43,6 +43,7 @@ public class DataSyncService extends IntentService {
     private String notificationMsg;
     private MuzimaSyncService muzimaSyncService;
     private SetupConfigurationTemplate configBeforeUpdate;
+    private final static List<Integer> ongoingSyncTasks = new ArrayList<>();
 
     public DataSyncService() {
         super("DataSyncService");
@@ -57,9 +58,14 @@ public class DataSyncService extends IntentService {
         updateNotificationMsg(notificationServiceRunning);
     }
 
+    public static void addQueuedSyncType(Integer syncType){
+        ongoingSyncTasks.add(syncType);
+    }
+
     @Override
     protected void onHandleIntent(Intent intent) {
-        int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
+        Integer syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
+        System.out.println("...........................OngoingTasks A:"+ongoingSyncTasks.size());
         configBeforeUpdate = (SetupConfigurationTemplate) intent.getSerializableExtra(DataSyncServiceConstants.CONFIG_BEFORE_UPDATE);
         Intent broadcastIntent = new Intent();
         String[] credentials = intent.getStringArrayExtra(DataSyncServiceConstants.CREDENTIALS);
@@ -264,6 +270,13 @@ public class DataSyncService extends IntentService {
             default:
                 break;
         }
+        ongoingSyncTasks.remove(syncType);
+        if(ongoingSyncTasks.isEmpty()){
+            Intent syncCompletedBroadcastIntent = new Intent();
+            syncCompletedBroadcastIntent.setAction(BroadcastListenerActivity.SYNC_COMPLETED_ACTION);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(syncCompletedBroadcastIntent);
+        }
+        System.out.println("...........................OngoingTasks B:"+ongoingSyncTasks.size()+"......[removed :"+syncType+"]");
     }
 
     private void syncCohortsAndAllPatientsFullData(Intent broadcastIntent) {

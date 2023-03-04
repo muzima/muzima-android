@@ -18,6 +18,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -122,9 +124,9 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private static final long INTERVAL = 1000L;
     private long timeRemaining;
     private boolean isTimerReset = false;
-    private boolean isSyncRunning = false;
     private ActionMenuItemView refreshMenu;
-
+    private ActionMenuItemView syncReportMenu;
+    private Drawable syncReportMenuIconDrawable;
     private Animation refreshIconRotateAnimation;
 
     private CountDownTimer mCountDownTimer;
@@ -272,11 +274,10 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         Toolbar toolbar = findViewById(R.id.dashboard_toolbar);
 
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //toolbarSyncIconImageView = (ImageView)inflater.inflate(R.layout.iv_refresh, null);
         refreshIconRotateAnimation = AnimationUtils.loadAnimation(MainDashboardActivity.this, R.anim.rotate_refresh);
         refreshIconRotateAnimation.setRepeatCount(Animation.INFINITE);
         refreshMenu = findViewById(R.id.menu_load);
-
+        syncReportMenu = findViewById(R.id.menu_sync_report);
 
         refreshMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -285,15 +286,14 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
             }
         });
 
-        refreshMenu.setOnLongClickListener(new View.OnLongClickListener() {
+        syncReportMenu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View view) {
-                //show progress
+            public void onClick(View view) {
                 showBackgroundSyncProgressDialog(MainDashboardActivity.this);
-                setSyncRunningStatus(isSyncRunning);
-                return false;
             }
         });
+        syncReportMenu.setVisibility(View.GONE);
+        syncReportMenuIconDrawable = toolbar.getMenu().findItem(R.id.menu_sync_report).getIcon();
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -408,35 +408,37 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         if (((MuzimaApplication) getApplicationContext()).getAuthenticatedUser() != null)
             headerTitleTextView.setText(((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getUsername());
         setTitle(StringUtils.EMPTY);
-
     }
 
     private void processSync(Animation rotation){
-        if(!isSyncRunning && !MuzimaJobScheduleBuilder.isJobAlreadyScheduled(getApplicationContext())) {
+        if(!isDataSyncRunning()) {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
             new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
 
 
             refreshMenu.startAnimation(rotation);
+            syncReportMenu.setVisibility(View.GONE);
 
-            isSyncRunning = true;
             notifySyncStarted();
             showBackgroundSyncProgressDialog(MainDashboardActivity.this);
-            setSyncRunningStatus(isSyncRunning);
         } else {
-            isSyncRunning = getSyncRunningStatus();
             showBackgroundSyncProgressDialog(MainDashboardActivity.this);
-
-            if(isSyncRunning == false){
-                refreshMenu.clearAnimation();
-            }
         }
     }
 
-    protected void updateSyncProgressWidgets(){
-        isSyncRunning = getSyncRunningStatus();
-        if(isSyncRunning == false && refreshMenu != null){
+    protected void updateSyncProgressWidgets(boolean isSyncRunning){
+        if(isSyncRunning == false){
             refreshMenu.clearAnimation();
+            syncReportMenu.setVisibility(View.VISIBLE);
+            if(isSyncCompletedWithError()){
+                syncReportMenuIconDrawable.mutate();
+                syncReportMenuIconDrawable.setColorFilter(getResources().getColor(R.color.red,getTheme()), PorterDuff.Mode.SRC_ATOP);
+            } else {
+                syncReportMenuIconDrawable.mutate();
+                syncReportMenuIconDrawable.setColorFilter(getResources().getColor(R.color.green,getTheme()), PorterDuff.Mode.SRC_ATOP);
+            }
+        } else{
+            refreshMenu.startAnimation(refreshIconRotateAnimation);
         }
     }
 
@@ -601,12 +603,8 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         showIncompleteWizardWarning();
         tagsListAdapter.reloadData();
 
-
-        isSyncRunning = getSyncRunningStatus();
-        if(isSyncRunning && refreshMenu != null){
+        if(isDataSyncRunning() && refreshMenu != null){
             refreshMenu.startAnimation(refreshIconRotateAnimation);
-        } else {
-            System.out.println("................NOT RUNNING....................");
         }
     }
 

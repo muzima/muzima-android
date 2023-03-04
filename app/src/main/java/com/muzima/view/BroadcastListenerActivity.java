@@ -18,7 +18,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -27,6 +26,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.muzima.R;
@@ -37,14 +37,19 @@ import java.util.List;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivity {
     public static final String MESSAGE_SENT_ACTION = "com.muzima.MESSAGE_RECEIVED_ACTION";
     public static final String PROGRESS_UPDATE_ACTION = "com.muzima.PROGRESS_UPDATE_ACTION";
+    public static final String SYNC_COMPLETED_ACTION = "com.muzima.SYNC_COMPLETED_ACTION";
+    public static final String SYNC_STARTED_ACTION = "com.muzima.SYNC_STARTED_ACTION";
     private static  final List<String> dataSyncProgressLog = new ArrayList<>();
     private ArrayAdapter<String> dataSyncProgressMessageArrayAdapter;
     private static boolean isSyncRunning;
+    private boolean syncErrorOccured = false;
     private ImageView imageView;
+    private TextView titleTextView;
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -58,6 +63,8 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(MESSAGE_SENT_ACTION));
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(PROGRESS_UPDATE_ACTION));
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(SYNC_STARTED_ACTION));
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(SYNC_COMPLETED_ACTION));
     }
 
     @Override
@@ -74,45 +81,93 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
         String action = intent.getAction();
         return action.equals(PROGRESS_UPDATE_ACTION);
     }
+
+    private boolean isSyncStartedIntent(Intent intent){
+        String action = intent.getAction();
+        return action.equals(SYNC_STARTED_ACTION);
+    }
+
+    private boolean isSyncCompletedIntent(Intent intent){
+        String action = intent.getAction();
+        return action.equals(SYNC_COMPLETED_ACTION);
+    }
     private void displayToast(Intent intent) {
         if(isProgessUpdate(intent)){
             //ToDo: put logic to log update status
             return;
         }
+
+        if(isSyncStartedIntent(intent)){
+            isSyncRunning = true;
+            if(dataSyncProgressLog != null) {
+                dataSyncProgressLog.clear();
+            }
+
+            if(titleTextView != null){
+                titleTextView.setText("Sync Progress ...");
+            }
+
+            startProgressAnimation();
+            updateSyncProgressWidgets(isSyncRunning);
+            return;
+        }
+
+
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS,
                 SyncStatusConstants.UNKNOWN_ERROR);
+
+
+        if(isSyncCompletedIntent(intent)){
+            isSyncRunning = false;
+
+            if(titleTextView != null){
+                titleTextView.setText("Sync Completed");
+            }
+            stopProgressAnimation();
+            updateSyncProgressWidgets(isSyncRunning);
+            return;
+        }
 
         String msg = intent.getStringExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE);
 
         switch (syncStatus) {
             case SyncStatusConstants.DOWNLOAD_ERROR:
                 msg = getString(R.string.error_data_download);
+                syncErrorOccured = true;
                 break;
             case SyncStatusConstants.AUTHENTICATION_ERROR:
                 msg = getString(R.string.error_authentication_occur);
+                syncErrorOccured = true;
                 break;
             case SyncStatusConstants.DELETE_ERROR:
                 msg = getString(R.string.error_local_repo_data_delete);
+                syncErrorOccured = true;
                 break;
             case SyncStatusConstants.SAVE_ERROR:
                 msg = getString(R.string.error_data_save);
+                syncErrorOccured = true;
                 break;
             case SyncStatusConstants.LOCAL_CONNECTION_ERROR:
                 msg = getString(R.string.error_local_connection_unavailable);
+                syncErrorOccured = true;
                 break;
             case SyncStatusConstants.SERVER_CONNECTION_ERROR:
                 msg = getString(R.string.error_server_connection_unavailable);
+                syncErrorOccured = true;
                 break;
             case SyncStatusConstants.PARSING_ERROR:
                 msg = getString(R.string.error_parse_exception_data_fetch);
+                syncErrorOccured = true;
                 break;
             case SyncStatusConstants.LOAD_ERROR:
                 msg = getString(R.string.error_exception_data_load);
+                syncErrorOccured = true;
                 break;
             case SyncStatusConstants.UPLOAD_ERROR:
                 msg = getString(R.string.error_exception_data_upload);
+                syncErrorOccured = true;
                 break;
-            case SyncStatusConstants.SUCCESS:
+            case SUCCESS:
                 int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
                 int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, 0);
 
@@ -171,10 +226,6 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
         if(dataSyncProgressMessageArrayAdapter != null) {
             dataSyncProgressMessageArrayAdapter.notifyDataSetChanged();
         }
-        if(dataSyncProgressLog.size()>=9){
-            setSyncRunningStatus(false);
-            updateSyncProgressWidgets();
-        }
     }
 
     protected final void showBackgroundSyncProgressDialog(Context context){
@@ -200,6 +251,8 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
             startProgressAnimation();
         }
 
+        titleTextView = syncTitleView.findViewById(R.id.sync_progress_title);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setView(listView)
                 .setCancelable(true)
@@ -214,17 +267,12 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
                 .show();
     }
 
-    protected void setSyncRunningStatus(boolean isSyncRunning){
-        this.isSyncRunning = isSyncRunning;
-        if(isSyncRunning){
-            startProgressAnimation();
-        } else {
-            stopProgressAnimation();
-        }
+    public boolean isDataSyncRunning(){
+        return isSyncRunning;
     }
 
-    protected boolean getSyncRunningStatus(){
-        return isSyncRunning;
+    public boolean isSyncCompletedWithError(){
+        return syncErrorOccured;
     }
 
     private void startProgressAnimation(){
@@ -246,7 +294,7 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
         }
     }
 
-    protected void updateSyncProgressWidgets(){
+    protected void updateSyncProgressWidgets(boolean isSyncRunning){
 
     }
 

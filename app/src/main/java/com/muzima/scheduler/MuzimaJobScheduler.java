@@ -78,6 +78,7 @@ import com.muzima.utils.SyncDatasetsIntent;
 import com.muzima.utils.SyncMediaCategoryIntent;
 import com.muzima.utils.SyncMediaIntent;
 import com.muzima.utils.SyncSettingsIntent;
+import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.SyncFormIntent;
 import com.muzima.view.reports.SyncAllPatientReports;
@@ -150,12 +151,18 @@ public class MuzimaJobScheduler extends JobService {
 
     @Override
     public boolean onStartJob(final JobParameters params) {
+        System.out.println("...........................OngoingTasks ONSTARTJOB ");
 
         if (authenticatedUser == null || !isAuthPerson) {
             onStopJob(params);
         } else {
             //execute job
             Log.i(getClass().getSimpleName(), "Service Started ===");
+
+            Intent syncStartedBroadcastIntent = new Intent();
+            syncStartedBroadcastIntent.setAction(BroadcastListenerActivity.SYNC_STARTED_ACTION);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(syncStartedBroadcastIntent);
+
             LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(MESSAGE_SENT_ACTION));
             handleBackgroundWork(params);
         }
