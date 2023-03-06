@@ -16,19 +16,27 @@
         android:icon="@drawable/ic_location"
         android:orderInCategory="10"
         android:title="@string/general_load"
-        custom:showAsAction="ifRoom" />
+        custom:showAsAction="always" />
 
     <item
         android:id="@+id/menu_tags"
         android:icon="@drawable/ic_labels"
         android:orderInCategory="10"
         android:title="@string/general_tags"
-        custom:showAsAction="ifRoom"  />
+        custom:showAsAction="always"  />
 
     <item
         android:id="@+id/menu_load"
         android:icon="@drawable/ic_refresh"
         android:orderInCategory="10"
         android:title="@string/general_load"
-        custom:showAsAction="ifRoom" />
+        custom:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_sync_report"
+        android:icon="@drawable/ic_action_info"
+        android:iconTint="?attr/primaryTextColor"
+        android:orderInCategory="11"
+        android:title="@string/general_load"
+        custom:showAsAction="always" />
 </menu>

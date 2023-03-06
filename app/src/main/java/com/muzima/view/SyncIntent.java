@@ -16,6 +16,7 @@ import com.muzima.domain.Credentials;
 import com.muzima.service.DataSyncService;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
 
 public class SyncIntent extends Intent {
     private final Context context;
@@ -27,6 +28,10 @@ public class SyncIntent extends Intent {
     }
 
     public void start() {
+        int syncType = getIntExtra(SYNC_TYPE, -1);
+        if(syncType != -1){
+            DataSyncService.addQueuedSyncType(syncType);
+        }
         context.startService(this);
     }
 }

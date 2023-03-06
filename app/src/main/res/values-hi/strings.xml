@@ -20,10 +20,14 @@
     <string name="autocomplete_server_not_found">सर्वर अगम्य है! \n कृपया अपने डिवाइस को कनेक्ट करें और फिर से प्रयास करें या एक नया व्यक्ति बनाएं</string>
     <string name="captured_date">कैप्चर की गई तारीख:</string>
     <string name="client_registration_question_text">क्या आप mUzima में क्लाइंट रजिस्टर करना चाहेंगे?</string>
+    <string name="clinical_information_details">नैदानिक ​​जानकारी</string>
     <string name="complex_obs">जटिल अवलोकन</string>
     <string name="concept_description">संकल्पना विवरण</string>
     <string name="concept_details">संकल्पना विवरण</string>
     <string name="concept_name">संकल्पना नाम:</string>
+    <string name="confidant_details">विश्वासपात्र विवरण</string>
+    <string name="confidant_name">नाम:</string>
+    <string name="confidant_phone_number_1">टेलीफोन संपर्क:</string>
     <string name="confirm_create_patient_from_person">यह इस व्यक्ति को ग्राहक के रूप में पंजीकृत करेगा। क्या आप वाकई ऐसा करना चाहते हैं?</string>
     <string name="confirm_duplicate_form_data_save">डुप्लीकेट फॉर्म डेटा को सेव करें</string>
     <string name="confirm_patient_id_exists">क्या क्लाइंट के पास पहले से आईडी मौजूद है</string>
@@ -49,6 +53,7 @@
     <string name="error_concept_fetch">स्थानीय रेपो से अवधारणाओं को लाने के दौरान कुछ गलत हो गया</string>
     <string name="error_concept_parse">फॉर्म में अवधारणाओं को पार्स करते समय एक त्रुटि हुई</string>
     <string name="error_credential_invalid">अमान्य उपयोगकर्ता नाम, पासवर्ड, सर्वर संयोजन।</string>
+    <string name="error_current_gps_not_obtained">वर्तमान GPS स्थान प्राप्त नहीं कर सका। मानचित्र पर डिफ़ॉल्ट स्थान लोड हो रहा है।</string>
     <string name="error_data_download">डेटा फॉर्म सर्वर डाउनलोड करते समय एक त्रुटि हुई</string>
     <string name="error_data_save">स्थानीय रेपो में डेटा सहेजते समय एक त्रुटि हुई</string>
     <string name="error_encounter_observation_download">ग्राहकों के लिए टिप्पणियों को डाउनलोड नहीं किया जा सका</string>
@@ -71,9 +76,12 @@
     <string name="error_local_repo_data_delete">स्थानीय रेपो से डेटा हटाते समय एक त्रुटि हुई</string>
     <string name="error_location_download">स्थानों को डाउनलोड नहीं किया जा सका</string>
     <string name="error_location_fetch">स्थानीय रेपो से स्थानों को लाते समय कुछ गलत हो गया</string>
+    <string name="error_media_category_download">मीडिया श्रेणियां डाउनलोड नहीं की जा सकीं</string>
+    <string name="error_media_download">मीडिया डाउनलोड नहीं किया जा सका</string>
     <string name="error_observation_download">टिप्पणियों को डाउनलोड नहीं किया जा सका</string>
     <string name="error_observation_form_save">प्रपत्र में टिप्पणियों को सहेजते समय एक त्रुटि हुई</string>
     <string name="error_parse_exception_data_fetch">डेटा प्राप्त करते समय पार्स अपवाद को फेंक दिया गया है</string>
+    <string name="error_patient_address_not_updated">GPS पता प्राप्त नहीं किया जा सका</string>
     <string name="error_patient_data_form_exist">मौजूदा प्रपत्र डेटा। अधूरा डेटा समाप्त करें और प्रपत्र टेम्पलेट्स को सिंक करने से पहले इसे सर्वर से सिंक करें</string>
     <string name="error_patient_download">क्लाइंट डाउनलोड नहीं कर सके</string>
     <string name="error_patient_repo_fetch">स्थानीय रेपो से ग्राहकों को लाने के दौरान कुछ गलत हुआ</string>
@@ -138,6 +146,7 @@
     <string name="general_date_of_birth">जन्म की तारीख %s</string>
     <string name="general_days_character">दि</string>
     <string name="general_delete">हटाएं</string>
+    <string name="general_demographics_update">जनसांख्यिकी अद्यतन</string>
     <string name="general_description_unavailable">कोई वर्णन उपलब्ध नहीं</string>
     <string name="general_display_all">सभी प्रदर्शित करें</string>
     <string name="general_done">किया हुआ</string>
@@ -162,6 +171,7 @@
     <string name="general_get_directions">दिशा - निर्देश प्राप्त करें</string>
     <string name="general_has_sexual_partner">यौन साथी है</string>
     <string name="general_help">सहायता</string>
+    <string name="general_hide">छिपाना</string>
     <string name="general_historical_data">ऐतिहासिक डेटा</string>
     <string name="general_historical_data_view">ऐतिहासिक डेटा दृश्य</string>
     <string name="general_historical_data_view_description">मुज़िमा में रोगियों या ग्राहकों के ऐतिहासिक डेटा को पुनः प्राप्त करने और देखने के लिए आसान और कुशल उपयोगकर्ता के अनुकूल तंत्र है।</string>
@@ -182,6 +192,8 @@
     <string name="general_locations">स्थान</string>
     <string name="general_login">लॉग इन करें</string>
     <string name="general_logout">लॉग आउट</string>
+    <string name="general_low_available_space">उपलब्ध स्थान पर्याप्त नहीं है</string>
+    <string name="general_media">मीडिया</string>
     <string name="general_medium">मध्यम</string>
     <string name="general_months_character">म</string>
     <string name="general_multiple_cases_description">मुज़िमा नैदानिक सुविधाओं के भीतर और बाहर, किसी भी नैदानिक उपयोग के मामलों का समर्थन करने के लिए आसानी से अनुकूलन योग्य है।</string>
@@ -190,6 +202,7 @@
     <string name="general_multiple_themes">एकाधिक थीम</string>
     <string name="general_multiple_themes_description">मुज़िमा को दो थीम पर शिप किया गया है: डार्क थीम (ब्लैक पर व्हाइट) और लाइट थीम (ब्लैक ऑन व्हाइट)।</string>
     <string name="general_multiple_use_cases">एकाधिक उपयोग के मामले</string>
+    <string name="general_new_version">नया संस्करण</string>
     <string name="general_next">आगे</string>
     <string name="general_no">नहीं</string>
     <string name="general_not_available_text">उपलब्ध नहीं है</string>
@@ -211,6 +224,7 @@
     <string name="general_progress_message">इसमें कुछ समय लग सकता है</string>
     <string name="general_providers">प्रदाताओं</string>
     <string name="general_reading">अध्ययन</string>
+    <string name="general_recently_viewed">हाल में देखा गया</string>
     <string name="general_registration_form_missing_message">पंजीकरण फॉर्म गुम। कृपया व्यवस्थापक से संपर्क करें</string>
     <string name="general_relationship">संबंध</string>
     <string name="general_relationship_management">संबंध प्रबंधन</string>
@@ -296,6 +310,7 @@
     <string name="hint_manage_location">सर्वर से अधिक स्थान प्राप्त करें या इस उपकरण से स्थान निकालें</string>
     <string name="hint_manage_provider">सर्वर से अधिक प्रदाता प्राप्त करें या इस डिवाइस से प्रदाताओं को हटा दें</string>
     <string name="hint_mandatory_question_validation_failure">इस प्रश्न का उत्तर दिया जाना आवश्यक है</string>
+    <string name="hint_network_connection_failure_map_loading">डिवाइस इंटरनेट से कनेक्ट नहीं है। ऑफ़लाइन होने पर नक्शा उपलब्ध नहीं होता है।</string>
     <string name="hint_option_none_exclusive_selection_validation_failure">यदि \'कोई नहीं\' चुना जाता है, तो कोई अन्य विकल्प नहीं चुना जा सकता है</string>
     <string name="hint_password_change">क्या आपने हाल ही में अपना पासवर्ड बदला है?</string>
     <string name="hint_password_prompt">कृप्या पासवर्ड डाले</string>
@@ -352,16 +367,18 @@
     <string name="info_concept_not_downloaded">किसी भी अवधारणा को डाउनलोड नहीं किया</string>
     <string name="info_concept_unavailable">अभी तक कोई संकल्पना नहीं जोड़ी गई है।</string>
     <string formatted="false" name="info_concepts_downloaded">%d संकल्पनाएँ डाउनलोड की गई</string>
+    <string name="info_concepts_downloaded_deleted">%d अवधारणाएँ डाउनलोड की गईं, %d संकल्पनाएँ हटाई गईं</string>
     <string name="info_convert_person_to_patient">व्यक्ति को रोगी में बदलें</string>
     <string name="info_data_sync_cancelled">mUzima डेटा सिंक रद कर दिया गया था।</string>
     <string name="info_disclaimer">
-                        mUzima, Mozilla Public License, v. 2.0 (MPL 2.0) की शर्तों के तहत वितरित किया जाता है. MPL 2.0 लाइसेंस की एक प्रति
+                                mUzima, Mozilla Public License, v. 2.0 (MPL 2.0) की शर्तों के तहत वितरित किया जाता है. MPL 2.0 लाइसेंस की एक प्रति
         http://mozilla.org/MPL/2.0/ पर देखी जा सकती है।
         \nmUzima को वारंटी के निम्नलिखित अतिरिक्त अस्वीकरण की शर्तों के तहत भी वितरित किया जाता है और देयता की सीमा।
         \n
         
+        
         <strong> देयता की वारंटी और सीमा का अतिरिक्त अस्वीकरण </strong>
-                        संयुक्त राज्य अमेरिका, या किसी अन्य क्षेत्राधिकार में, जहां वे आवेदन कर सकते हैं, वारंटी और देयता की सीमा के अतिरिक्त अस्वीकरण को इसके अलावा MPL 2.0
+                                संयुक्त राज्य अमेरिका, या किसी अन्य क्षेत्राधिकार में, जहां वे आवेदन कर सकते हैं, वारंटी और देयता की सीमा के अतिरिक्त अस्वीकरण को इसके अलावा MPL 2.0
         के नियमों और शर्तों में शामिल किया गया है:
         \n1. किसी भी प्रकार की कोई वारंटियां उस परिणाम के रूप में नहीं की जाती हैं जो आप कवर किए गए कोड (या कवर किए गए कोड के माध्यम से प्राप्त की गई कोई भी
         जानकारी या सामग्री) पर निर्भा रहने से प्राप्त करेंगे, जिसमें गोपनीयता कानून या विनियम या नैदानिक ​​देखभाल उद्योग के मानकों और प्रोटोकॉल के अनुपालन तक सीमित
@@ -377,6 +394,7 @@
         \n\n3. mUzima को Indiana University, Moi University , और Vanderbilt University Medical Center के ट्रस्टियों का कॉपीराइट प्राप्त है।
         \n\n4. यदि इस एप्लिकेशन का उपयोगकर्ता एक ऐसी इकाई है जो व्यवसायीकरण करने या किसी भी एप्लिकेशन से लाभ कमाने का इरादा रखती है, जो इस कोड का लाभ-साहस
         के उपक्रम में उपयोग करती है, तो उपयोगकर्ता को mUzima.mobile@gmail.com के माध्यम से कॉपीराइट धारक से संपर्क करना होगा।
+    
     
     
     </string>
@@ -419,6 +437,14 @@
     <string name="info_location_not_downloaded">किसी भी स्थान को डाउनलोड नहीं किया</string>
     <string name="info_location_unavailable">अभी तक कोई स्थान नहीं जोड़ा गया है</string>
     <string formatted="false" name="info_locations_downloaded">%d स्थान डाउनलोड किया</string>
+    <string name="info_locations_downloaded_deleted">डाउनलोड किए गए %d स्थान, हटाए गए %d स्थान</string>
+    <string name="info_media_categories_not_downloaded">किसी भी मीडिया श्रेणी को डाउनलोड नहीं किया</string>
+    <string name="info_media_category_download_in_progress">मीडिया श्रेणियाँ डाउनलोड कर रहा है</string>
+    <string name="info_media_category_downloaded">%d मीडिया श्रेणियाँ डाउनलोड की गईं</string>
+    <string name="info_media_download_in_progress">मीडिया डाउनलोड कर रहा है</string>
+    <string name="info_media_downloaded">%d मीडिया डाउनलोड किया गया</string>
+    <string name="info_media_not_downloaded">कोई मीडिया डाउनलोड नहीं किया</string>
+    <string name="info_media_unavailable">कोई मीडिया उपलब्ध नहीं है</string>
     <string name="info_muzima_sync_service_finish">mUzima सिंक सेवा समाप्त</string>
     <string name="info_muzima_sync_service_in_progress">mUzima सिंक सेवा चल रही है</string>
     <string name="info_new_cohort_download">%d नए समूह डाउनलोड किए गए</string>
@@ -433,8 +459,11 @@
     <string name="info_no_client_available_locally">कोई भी ग्राहक स्थानीय रूप से उपलब्ध नहीं है। दूरस्थ खोज के लिए कम से कम 3 वर्ण दर्ज करें या नए ग्राहक पंजीकृत करें</string>
     <string name="info_no_cohort_download">कोई भी सहकर्मी समन्‍वयित नहीं किया गया है</string>
     <string name="info_no_forms_data_tip">डेटा प्रविष्टि के लिए कोई प्रपत्र कॉन्फ़िगर नहीं किया गया है। डेटा प्रविष्टि प्रपत्र जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
+    <string name="info_no_media_data_tip">कोई मीडिया कॉन्फ़िगर नहीं किया गया। मीडिया जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
+    <string name="info_no_media_not_available">मीडिया फ़ाइल उपलब्ध नहीं है, हो सकता है कि उसे डिवाइस से हटा दिया गया हो</string>
     <string name="info_no_observation_and_concept_data_tip">कोई अवधारणा कॉन्फ़िगर नहीं की गई है। अवधारणाओं को जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें।</string>
     <string name="info_no_observation_for_concept_data_tip">कॉन्फ़िगर की गई अवधारणाओं के लिए कोई ऐतिहासिक डेटा मौजूद नहीं है</string>
+    <string name="info_obs_concept_downloaded">%d ग्राहकों के लिए %d नई अवधारणाओं के लिए %d नया अवलोकन डाउनलोड किया गया</string>
     <string name="info_observation_download">अवलोकन डाउनलोड करना</string>
     <string name="info_observation_load">अवलोकन लोड हो रहे हैं</string>
     <string name="info_observation_patient_downloaded">1 ग्राहक के लिए 1 अवलोकन डाउनलोड किया गया</string>
@@ -453,9 +482,12 @@
     <string name="info_patient_reports_unavailable">कोई क्लाइंट रिपोर्ट उपलब्ध नहीं है</string>
     <string name="info_person_creation_failure">व्यक्ति का रिकॉर्ड नहीं बना सका</string>
     <string name="info_privacy_policy_statement">गोपनीयता नीति वक्तव्य</string>
+    <string name="info_program_unavailable">कोई कार्यक्रम उपलब्ध नहीं</string>
+    <string name="info_program_unavailable_tip">कोई प्रोग्राम कॉन्फ़िगर नहीं किया गया है। प्रोग्राम जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
     <string name="info_provider_delete_success">%d प्रदाताओं को सफलतापूर्वक हटा दिया</string>
     <string name="info_provider_download">प्रदाता डाउनलोड हो रहे है</string>
     <string name="info_provider_downloaded">1 प्रदाता को डाउनलोड किया</string>
+    <string name="info_provider_downloaded_deleted">डाउनलोड किए गए %d प्रदाता, हटाए गए %d प्रदाता</string>
     <string name="info_provider_not_downloaded">किसी भी प्रदाता को डाउनलोड नहीं किया</string>
     <string name="info_provider_unavailable">अभी तक कोई प्रदाता नहीं जोड़ा गया है</string>
     <string formatted="false" name="info_providers_downloaded">%d प्रदाता डाउनलोड किए गए</string>
@@ -486,6 +518,8 @@
     <string formatted="false" name="info_submitted_form_data_status">हाल ही में प्रस्तुत फॉर्मों की स्थिति:%d सफलतापूर्वक संसाधित,%d त्रुटि के साथ संसाधित,%d लंबित प्रसंस्करण,%d अज्ञात स्थिति</string>
     <string name="info_submitted_form_data_status_check">हाल ही में प्रस्तुत फॉर्मों की स्थिति की जाँच कर रहे है</string>
     <string name="info_submitted_form_data_status_check_failure">हाल ही में प्रस्तुत फॉर्मों की स्थिति की जाँच नहीं कर सके</string>
+    <string name="info_sync_completed">समन्‍वयन पूर्ण हुआ</string>
+    <string name="info_sync_progress">सिंक प्रगति ...</string>
     <string name="info_tag_unavailable">कोई टैग उपलब्ध नहीं है</string>
     <string name="info_terms_and_conditions">नियम और शर्तें</string>
     <string name="info_terms_and_conditions_text">
@@ -545,6 +579,13 @@
     <string name="message_feedback_sent">आपके संदेश के लिए धन्यवाद। \n आपकी प्रतिक्रिया हमारे लिए महत्वपूर्ण है।</string>
     <string name="message_help_sent">संपर्क करने के लिए धन्यवाद। \n हमारी सहायता टीम आपके अनुरोध की जांच करेगी। \n हम जल्द से जल्द आपके पास वापस आएँगे।</string>
     <string name="message_missing_form_encounter_details_error">प्रदान करना आवश्यक है</string>
+    <string name="most_recent_arv_pickup">अंतिम एआरवी सर्वेक्षण:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">वितरण मोड:</string>
+    <string name="most_recent_clinical_consultation_date">अंतिम नैदानिक ​​परामर्श:</string>
+    <string name="most_recent_viral_load_result">परिणाम वायरल लोड:</string>
+    <string name="most_recent_viral_load_result_date">दिनांक परिणाम वायरल लोड:</string>
+    <string name="next_clinical_consultation_date">अगली क्लिनिकल अपॉइंटमेंट:</string>
+    <string name="next_scheduled_arv_pickup">अगला एआरवी सर्वेक्षण:</string>
     <string name="no_default_encounter_location">कोई डिफ़ॉल्ट मुठभेड़ स्थान नहीं</string>
     <string name="no_description_general">कोई विवरण नहीं</string>
     <string name="no_email_client">इस उपकरण पर कोई ईमेल क्लाइंट स्थापित नहीं किया गया है। \n कृपया एक इंस्टॉल करें और फिर अपनी प्रतिक्रिया दें।</string>
@@ -594,6 +635,7 @@
     <string name="provider_identifier">प्रदाता पहचानकर्ता:</string>
     <string name="provider_name">प्रदाता का नाम:</string>
     <string name="provider_name_general">प्रदाता का नाम</string>
+    <string name="provider_reports_general">प्रदाता रिपोर्ट</string>
     <string name="registering_patient_message_title_text">mUzima में ग्राहक का पंजीकरण …</string>
     <string name="relationship_create_success">संबंध सफलतापूर्वक बना</string>
     <string name="relationship_delete_fail">सर्वर पर पहले से सहेजे गए संबंध को हटा नहीं सकता। व्यवस्थापक से संपर्क करें</string>
@@ -647,6 +689,7 @@
     <string name="title_image_capture">छवि पर कब्जा</string>
     <string name="title_image_choose">छवि चुनें</string>
     <string name="title_install_psmart">P-Smart ऐप इंस्टॉल करें</string>
+    <string name="title_internet_connection_failure">इंटरनेट कनेक्शन विफलता</string>
     <string name="title_last_logged_in">पिछला लॉग इन</string>
     <string name="title_light_mode">डे मोड सक्षम करें</string>
     <string name="title_local_client_search_help_video">ग्राहक खोज (स्थानीय)</string>
@@ -678,6 +721,8 @@
     <string name="title_video_choose">वीडियो चुनें</string>
     <string name="title_video_record">वीडियो रिकॉर्ड करो</string>
     <string name="to_text">सेवा</string>
+    <string name="tpt_end_date">टीपीटी समाप्ति तिथि:</string>
+    <string name="tpt_start_date">टीपीटी प्रारंभ तिथि:</string>
     <string name="warning_auto_save_interval">ऑटो सेव इंटरवल: ऑटो सेव इंटरवल सेट नहीं कर सका। \n कृपया 1 और 120 के बीच मान दर्ज करें।</string>
     <string name="warning_form_close">फॉर्म बंद करना: यह आपके सभी परिवर्तनों को छोड़ देगा। क्या आप वाकई ऐसा करना चाहते हैं?</string>
     <string name="warning_form_data_already_exists">यह फॉर्म डेटा पहले से मौजूद क्लाइंट के लिए समान एनकाउंटर तिथि के साथ है।</string>
@@ -687,6 +732,8 @@
     <string name="warning_invalid_url_provided">आपके द्वारा प्रदत्त URL अमान्य है</string>
     <string name="warning_logout_confirm">क्या आप वाकई mUzima ऐप से लॉग आउट करना और बाहर निकलना चाहते हैं?</string>
     <string name="warning_logout_confirm_with_form_deletion">क्या आप वाकई लॉग आउट करना चाहते हैं और मुज़िमा ऐप से बाहर निकलना चाहते हैं? सभी पूर्ण और अपूर्ण प्रपत्र हटा दिए जाएंगे</string>
+    <string name="warning_new_no_enough_space">आपके पास मीडिया के लिए पर्याप्त स्थान नहीं है, आपको मीडिया डाउनलोड करने के लिए %s अधिक स्थान की आवश्यकता है।</string>
+    <string name="warning_new_version_available">mUzima (v%s) का एक नया संस्करण उपलब्ध है।\n\nआप अपडेट को डाउनलोड करते समय mUzima का उपयोग जारी रख सकते हैं। एक बार डाउनलोड पूरा हो जाने पर आपको सूचित किया जाएगा और नए संस्करण को स्थापित करने की अनुमति मांगी जाएगी। कृपया अनुरोध करने के बाद अनुमति दें।\n\nअपडेट करने के लिए आगे बढ़ें?</string>
     <string name="warning_registration_form_data_delete">आप पंजीकरण डेटा को हटाने वाले हैं। यह डिवाइस पर क्लाइंट रिकॉर्ड को भी हटा देगा। क्या आप निश्चित है?</string>
     <string name="warning_related_person_missing">कृपया संबंधित व्यक्ति चुनें</string>
     <string formatted="false" name="warning_relationship_exists">क्लाइंट के पास पहले से ही %s के साथ %s:%s संबंध है</string>
@@ -696,46 +743,4 @@
     <string name="warning_switch_server">सर्वर बदली: यह आपके डिवाइस पर मौजूद सभी mUzima डेटा को साफ कर देगा, जिसमें कोई अधूरा फॉर्म भी शामिल है। क्या आप वाकई इस सेटिंग को बदलना चाहते हैं?</string>
     <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
-    <string name="info_program_unavailable">कोई कार्यक्रम उपलब्ध नहीं</string>
-    <string name="info_program_unavailable_tip">कोई प्रोग्राम कॉन्फ़िगर नहीं किया गया है। प्रोग्राम जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
-    <string name="error_patient_address_not_updated">GPS पता प्राप्त नहीं किया जा सका</string>
-    <string name="general_demographics_update">जनसांख्यिकी अद्यतन</string>
-    <string name="error_current_gps_not_obtained">वर्तमान GPS स्थान प्राप्त नहीं कर सका। मानचित्र पर डिफ़ॉल्ट स्थान लोड हो रहा है।</string>
-    <string name="title_internet_connection_failure">इंटरनेट कनेक्शन विफलता</string>
-    <string name="hint_network_connection_failure_map_loading">डिवाइस इंटरनेट से कनेक्ट नहीं है। ऑफ़लाइन होने पर नक्शा उपलब्ध नहीं होता है।</string>
-    <string name="warning_new_version_available">mUzima (v%s) का एक नया संस्करण उपलब्ध है।\n\nआप अपडेट को डाउनलोड करते समय mUzima का उपयोग जारी रख सकते हैं। एक बार डाउनलोड पूरा हो जाने पर आपको सूचित किया जाएगा और नए संस्करण को स्थापित करने की अनुमति मांगी जाएगी। कृपया अनुरोध करने के बाद अनुमति दें।\n\nअपडेट करने के लिए आगे बढ़ें?</string>
-    <string name="general_new_version">नया संस्करण</string>
-    <string name="info_media_category_download_in_progress">मीडिया श्रेणियाँ डाउनलोड कर रहा है</string>
-    <string name="info_media_categories_not_downloaded">किसी भी मीडिया श्रेणी को डाउनलोड नहीं किया</string>
-    <string name="info_media_category_downloaded">%d मीडिया श्रेणियाँ डाउनलोड की गईं</string>
-    <string name="error_media_category_download">मीडिया श्रेणियां डाउनलोड नहीं की जा सकीं</string>
-    <string name="info_media_download_in_progress">मीडिया डाउनलोड कर रहा है</string>
-    <string name="info_media_not_downloaded">कोई मीडिया डाउनलोड नहीं किया</string>
-    <string name="info_media_downloaded">%d मीडिया डाउनलोड किया गया</string>
-    <string name="error_media_download">मीडिया डाउनलोड नहीं किया जा सका</string>
-    <string name="general_media">मीडिया</string>
-    <string name="info_media_unavailable">कोई मीडिया उपलब्ध नहीं है</string>
-    <string name="info_no_media_data_tip">कोई मीडिया कॉन्फ़िगर नहीं किया गया। मीडिया जोड़ने के लिए अपने व्यवस्थापक से संपर्क करें</string>
-    <string name="info_no_media_not_available">मीडिया फ़ाइल उपलब्ध नहीं है, हो सकता है कि उसे डिवाइस से हटा दिया गया हो</string>
-    <string name="general_low_available_space">उपलब्ध स्थान पर्याप्त नहीं है</string>
-    <string name="warning_new_no_enough_space">आपके पास मीडिया के लिए पर्याप्त स्थान नहीं है, आपको मीडिया डाउनलोड करने के लिए %s अधिक स्थान की आवश्यकता है।</string>
-    <string name="general_recently_viewed">हाल में देखा गया</string>
-    <string name="confidant_details">विश्वासपात्र विवरण</string>
-    <string name="confidant_name">नाम:</string>
-    <string name="confidant_phone_number_1">टेलीफोन संपर्क:</string>
-    <string name="clinical_information_details">नैदानिक ​​जानकारी</string>
-    <string name="most_recent_viral_load_result">परिणाम वायरल लोड:</string>
-    <string name="most_recent_viral_load_result_date">दिनांक परिणाम वायरल लोड:</string>
-    <string name="most_recent_arv_pickup">अंतिम एआरवी सर्वेक्षण:</string>
-    <string name="most_recent_arv_pickup_dispensation_mode">वितरण मोड:</string>
-    <string name="next_scheduled_arv_pickup">अगला एआरवी सर्वेक्षण:</string>
-    <string name="most_recent_clinical_consultation_date">अंतिम नैदानिक ​​परामर्श:</string>
-    <string name="next_clinical_consultation_date">अगली क्लिनिकल अपॉइंटमेंट:</string>
-    <string name="tpt_start_date">टीपीटी प्रारंभ तिथि:</string>
-    <string name="tpt_end_date">टीपीटी समाप्ति तिथि:</string>
-    <string name="provider_reports_general">प्रदाता रिपोर्ट</string>
-    <string name="info_locations_downloaded_deleted">डाउनलोड किए गए %d स्थान, हटाए गए %d स्थान</string>
-    <string name="info_provider_downloaded_deleted">डाउनलोड किए गए %d प्रदाता, हटाए गए %d प्रदाता</string>
-    <string name="info_concepts_downloaded_deleted">%d अवधारणाएँ डाउनलोड की गईं, %d संकल्पनाएँ हटाई गईं</string>
-    <string name="info_obs_concept_downloaded">%d ग्राहकों के लिए %d नई अवधारणाओं के लिए %d नया अवलोकन डाउनलोड किया गया</string>
 </resources>

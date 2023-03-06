@@ -20,10 +20,14 @@
     <string name="autocomplete_server_not_found">Le serveur est inaccessible! \\nConnectez votre appareil et essayez à nouveau OU créez un nouveau profil</string>
     <string name="captured_date">Date de capture:</string>
     <string name="client_registration_question_text">Voulez-vous enregistrer un client dans mUzima?</string>
+    <string name="clinical_information_details">Informations cliniques</string>
     <string name="complex_obs">Complexe obs</string>
     <string name="concept_description">Description du concept</string>
     <string name="concept_details">Détails du concept</string>
     <string name="concept_name">Nom du concept:</string>
+    <string name="confidant_details">Détails confidentiels</string>
+    <string name="confidant_name">Nom:</string>
+    <string name="confidant_phone_number_1">contact téléphonique:</string>
     <string name="confirm_create_patient_from_person">" Cela enregistrera cette personne en tant que client. Êtes-vous sûr de vouloir faire ça?"</string>
     <string name="confirm_duplicate_form_data_save">Sauvegarder les données des formulaires dupliqués</string>
     <string name="confirm_patient_id_exists">Le client possède-t-il déjà un identifiant ?</string>
@@ -49,6 +53,7 @@
     <string name="error_concept_fetch">Quelque chose a mal tourné lors de l\'extraction des concepts du repertoire local</string>
     <string name="error_concept_parse">Une erreur s\'est produite lors de l\'analyse des concepts dans le formulaire</string>
     <string name="error_credential_invalid">Nom d\'utilisateur, mot de passe, combinaison de serveur invalides.</string>
+    <string name="error_current_gps_not_obtained">Impossible d\'obtenir la position GPS actuelle. Chargement de la position par défaut sur la carte.</string>
     <string name="error_data_download">Une erreur est survenue lors du téléchargement de données depuis le serveur</string>
     <string name="error_data_save">Une erreur est survenue lors de l\'enregistrement des données dans le repertoire local</string>
     <string name="error_encounter_observation_download">Impossible de télécharger les observations pour les clients</string>
@@ -71,9 +76,12 @@
     <string name="error_local_repo_data_delete">Une erreur s\'est produite lors de la suppression des données du repositoire local</string>
     <string name="error_location_download">Impossible de télécharger les emplacements</string>
     <string name="error_location_fetch">Quelque chose a mal tourné lors de la récupération des emplacements du repositoire local</string>
+    <string name="error_media_category_download">Impossible de télécharger les catégories de médias</string>
+    <string name="error_media_download">Impossible de télécharger le média</string>
     <string name="error_observation_download">Impossible de télécharger les observations</string>
     <string name="error_observation_form_save">Une erreur s\'est produite lors de l\'enregistrement des observations dans le formulaire</string>
     <string name="error_parse_exception_data_fetch">abandon de l\'amalyse exceptionnelle lors de la récupération des données</string>
+    <string name="error_patient_address_not_updated">L\'adresse GPS n\'a pas pu être obtenue.</string>
     <string name="error_patient_data_form_exist">données de formulaire existantes. Terminer les données incomplètes et synchroniser les données dans le serveur d\'abord avant de synchroniser les modeles des formulaire.</string>
     <string name="error_patient_download">Impossible de télécharger les données des clients</string>
     <string name="error_patient_repo_fetch">Quelque chose a mal tourné lors de l\'extraction des données des clients du repositoire local</string>
@@ -138,6 +146,7 @@
     <string name="general_date_of_birth">Date de naissance: %s</string>
     <string name="general_days_character">j</string>
     <string name="general_delete">Supprimer</string>
+    <string name="general_demographics_update">Mise à jour démographique</string>
     <string name="general_description_unavailable">Description non disponible</string>
     <string name="general_display_all">Afficher tout</string>
     <string name="general_done">TERMINÉ</string>
@@ -162,6 +171,7 @@
     <string name="general_get_directions">Obtenir des indications</string>
     <string name="general_has_sexual_partner">A un partenaire sexuel</string>
     <string name="general_help">Aide</string>
+    <string name="general_hide">Cacher</string>
     <string name="general_historical_data">Données historiques</string>
     <string name="general_historical_data_view">Affichage des données historiques</string>
     <string name="general_historical_data_view_description">mUzima dispose de mécanismes conviviaux simples et efficaces pour récupérer et afficher les données historiques sur les patients ou les clients.</string>
@@ -182,6 +192,8 @@
     <string name="general_locations">Emplacements</string>
     <string name="general_login">S\'identifier</string>
     <string name="general_logout">Se deconnecter</string>
+    <string name="general_low_available_space">L\'espace disponible n\'est pas suffisant</string>
+    <string name="general_media">Médias</string>
     <string name="general_medium">Moyen</string>
     <string name="general_months_character">m</string>
     <string name="general_multiple_cases_description">mUzima est facilement personnalisable pour prendre en charge tous les cas d\'utilisation clinique, à la fois à l\'intérieur et à l\'extérieur des installations cliniques.</string>
@@ -190,6 +202,7 @@
     <string name="general_multiple_themes">Thèmes multiples</string>
     <string name="general_multiple_themes_description">mUzima est livré sur deux thèmes : thème sombre (blanc sur noir) et thème clair (noir sur blanc).</string>
     <string name="general_multiple_use_cases">Cas d\'utilisation multiples</string>
+    <string name="general_new_version">Nouvelle version</string>
     <string name="general_next">Suivant</string>
     <string name="general_no">Non</string>
     <string name="general_not_available_text">Indisponible</string>
@@ -211,6 +224,7 @@
     <string name="general_progress_message">Ceci pourra prendre du temps</string>
     <string name="general_providers">Fournisseurs</string>
     <string name="general_reading">En train de lire</string>
+    <string name="general_recently_viewed">vu récemment</string>
     <string name="general_registration_form_missing_message">Formulaire d\'inscription manquant. Veuillez contacter l\'administrateur</string>
     <string name="general_relationship">Relation</string>
     <string name="general_relationship_management">Gestion de la relation</string>
@@ -296,6 +310,7 @@
     <string name="hint_manage_location">Obtenir plus d\'emplacements depuis le serveur ou supprimer les emplacements de l\'appareil</string>
     <string name="hint_manage_provider">Obtenir plus de concepts à partir du serveur ou supprimer les concepts de ce périphérique. Les concepts sont utilisées pour configurer les observations à télécharger.</string>
     <string name="hint_mandatory_question_validation_failure">Cette question doit etre repondue</string>
+    <string name="hint_network_connection_failure_map_loading">L\'appareil n\'est pas connecté à Internet. La carte n\'est pas disponible hors ligne.</string>
     <string name="hint_option_none_exclusive_selection_validation_failure">Si\'Aucun\' est selectionné, aucune autre option peut etre selectionnée</string>
     <string name="hint_password_change">Avez-vous changé votre mot de passe récemment?</string>
     <string name="hint_password_prompt">Veuillez entrer votre mot de passe</string>
@@ -352,17 +367,19 @@
     <string name="info_concept_not_downloaded">aucun concept n\'a été téléchargé</string>
     <string name="info_concept_unavailable">Aucun concept n\'a été ajouté encore.</string>
     <string formatted="false" name="info_concepts_downloaded">Concepts %d téléchargés</string>
+    <string name="info_concepts_downloaded_deleted">%d concepts téléchargés, %d concepts supprimés</string>
     <string name="info_convert_person_to_patient">Convertir une personne en patient</string>
     <string name="info_data_sync_cancelled">La synchronisation des données mUzima a été annulée.</string>
     <string name="info_disclaimer">
-                        mUzima est distribué sous les termes de la licence publique de Mozilla, v. 2.0 (MPL 2.0). Une copie de la
+                                mUzima est distribué sous les termes de la licence publique de Mozilla, v. 2.0 (MPL 2.0). Une copie de la
         licence MPL 2.0 peut être trouvée sur http://mozilla.org/MPL/2.0/.
         \nmUzima est également distribué sous les termes de la clause de non-responsabilité Et Limitation de responsabilité
         de garantie suivante.
         \n
         
+        
         <strong> Renonciation additionnelle de garantie et limitation de responsabilité </strong>
-                        Aux États-Unis ou dans d\'autres juridictions où ils peuvent appliquer, L\'exclusion de la garantie et de la
+                                Aux États-Unis ou dans d\'autres juridictions où ils peuvent appliquer, L\'exclusion de la garantie et de la
         limitation de la responsabilité sont incorporées dans les Conditions de MPL 2.0:
         \n1. Aucune garantie de quelconque nature n\'est faite quant aux résultats que vous obtiendrez de En s\'appuyant
         sur le code couvert (ou sur toute information ou contenu obtenu par le biais du code couvert), Y compris, mais
@@ -387,6 +404,7 @@
         \n\n4. Si l\'utilisateur de cette demande est une entité qui a l\'intention de commercialiser une application qui
         utilise cette Code dans une entreprise à but lucratif, l\'utilisateur est tenu de contacter le détenteur des
         droits d’auteur via mUzima.mobile@gmail.com.
+    
     
     
     </string>
@@ -429,6 +447,14 @@
     <string name="info_location_not_downloaded">N\'a pas téléchargé aucun emplacement</string>
     <string name="info_location_unavailable">Aucun emplacement n\'a encore été ajouté</string>
     <string formatted="false" name="info_locations_downloaded">%d emplacements téléchargé</string>
+    <string name="info_locations_downloaded_deleted">Emplacements %d téléchargés, emplacements %d supprimés</string>
+    <string name="info_media_categories_not_downloaded">N\'a téléchargé aucune catégorie de média</string>
+    <string name="info_media_category_download_in_progress">Téléchargement de catégories de médias</string>
+    <string name="info_media_category_downloaded">%d catégories de médias téléchargées</string>
+    <string name="info_media_download_in_progress">Téléchargement de médias</string>
+    <string name="info_media_downloaded">%d médias téléchargés</string>
+    <string name="info_media_not_downloaded">N\'a téléchargé aucun média</string>
+    <string name="info_media_unavailable">Aucun média disponible</string>
     <string name="info_muzima_sync_service_finish">synchronisation du service mUzima terminée</string>
     <string name="info_muzima_sync_service_in_progress">synchronisation du service MUzima en cours d\'exécution</string>
     <string name="info_new_cohort_download">%d nouvelles cohortes téléchargées</string>
@@ -443,8 +469,11 @@
     <string name="info_no_client_available_locally">Pas de clients disponibles localement. Saisissez au moins 3 caractères pour la recherche à distance ou enregistrez de nouveaux clients.</string>
     <string name="info_no_cohort_download">Aucune cohorte n \'a été synchronisé</string>
     <string name="info_no_forms_data_tip">Aucun formulaire configuré pour la saisie de données. Contactez votre administrateur pour ajouter des formulaires de saisie de données</string>
+    <string name="info_no_media_data_tip">Aucun média configuré. Contactez votre administrateur pour ajouter des médias</string>
+    <string name="info_no_media_not_available">Le fichier multimédia n\'est pas disponible, il a peut-être été supprimé de l\'appareil</string>
     <string name="info_no_observation_and_concept_data_tip">Aucun concept configuré. Contactez votre administrateur pour ajouter des concepts.</string>
     <string name="info_no_observation_for_concept_data_tip">Aucune donnée historique n\'existe pour les concepts configurés</string>
+    <string name="info_obs_concept_downloaded">%d nouvelle observation téléchargée pour les %d nouveaux concepts pour %d clients</string>
     <string name="info_observation_download">observations en cours de Téléchargement</string>
     <string name="info_observation_load">Les observations sont en cours de chargement</string>
     <string name="info_observation_patient_downloaded">Téléchargement de 1 observation pour 1 client</string>
@@ -463,9 +492,12 @@
     <string name="info_patient_reports_unavailable">Aucun rapport client disponible</string>
     <string name="info_person_creation_failure">Impossible de créer un enregistrement de personne</string>
     <string name="info_privacy_policy_statement">Déclaration de politique de confidentialité</string>
+    <string name="info_program_unavailable">Aucun programme disponible</string>
+    <string name="info_program_unavailable_tip">Aucun programme configuré. Contactez votre administrateur pour ajouter un programme</string>
     <string name="info_provider_delete_success">%d fournisseurs supprimés avec succés</string>
     <string name="info_provider_download">Téléchargement des fournisseurs en cours</string>
     <string name="info_provider_downloaded">1 fournisseur a été téléchargé</string>
+    <string name="info_provider_downloaded_deleted">Fournisseurs %d téléchargés, fournisseurs %d supprimés</string>
     <string name="info_provider_not_downloaded">N\'a pas téléchargé aucun fournisseurs</string>
     <string name="info_provider_unavailable">Aucun fournisseur n\'a encore été ajouté</string>
     <string formatted="false" name="info_providers_downloaded">%d fournisseurs téléchargés</string>
@@ -496,6 +528,8 @@
     <string formatted="false" name="info_submitted_form_data_status">Statut des formulaires récemment soumis: %d traité avec succès, %d traité avec erreur, %d en attente de traitement, %d état inconnu.</string>
     <string name="info_submitted_form_data_status_check">Vérification du statut des formulaires récemment soumis.</string>
     <string name="info_submitted_form_data_status_check_failure">Impossible de vérifier l\'état des formulaires récemment soumis.</string>
+    <string name="info_sync_completed">Synchronisation terminée</string>
+    <string name="info_sync_progress">Progression de la synchronisation...</string>
     <string name="info_tag_unavailable">Aucune etiquette n\'est disponible</string>
     <string name="info_terms_and_conditions">Termes et conditions</string>
     <string name="info_terms_and_conditions_text">
@@ -555,6 +589,13 @@
     <string name="message_feedback_sent">Merci pour votre message. \n Vos commentaires sont importants pour nous.</string>
     <string name="message_help_sent">Merci de tendre la main. \nNotre équipe d\'assistance étudiera votre demande. \nNous reviendrons vers vous dès que possible.</string>
     <string name="message_missing_form_encounter_details_error">doit être fourni</string>
+    <string name="most_recent_arv_pickup">Dernière enquête ARV:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">Mode de distribution:</string>
+    <string name="most_recent_clinical_consultation_date">Dernière consultation clinique:</string>
+    <string name="most_recent_viral_load_result">Charge virale résultante:</string>
+    <string name="most_recent_viral_load_result_date">Date Résultat Charge virale:</string>
+    <string name="next_clinical_consultation_date">Prochain rendez-vous clinique:</string>
+    <string name="next_scheduled_arv_pickup">Prochaine enquête ARV:</string>
     <string name="no_default_encounter_location">Aucun lieu de rencontre par défaut</string>
     <string name="no_description_general">Pas de description</string>
     <string name="no_email_client">Aucun client de messagerie installé sur ce périphérique. \nVeuillez en installer un, puis laissez vos commentaires.</string>
@@ -604,6 +645,7 @@
     <string name="provider_identifier">Identifiant du fournisseur:</string>
     <string name="provider_name">Nom du fournisseur:</string>
     <string name="provider_name_general">Nom du fournisseur</string>
+    <string name="provider_reports_general">Rapports de fournisseur</string>
     <string name="registering_patient_message_title_text">Enregistrement du client dans mUzima …</string>
     <string name="relationship_create_success">Relation créée avec succès</string>
     <string name="relationship_delete_fail">Impossible de supprimer la relation car elle est déjà enregistrée sur le serveur. Contacter l\'administrateur</string>
@@ -657,6 +699,7 @@
     <string name="title_image_capture">Capture d\'image</string>
     <string name="title_image_choose">Choisir l\'image</string>
     <string name="title_install_psmart">Installer l\'application P-Smart</string>
+    <string name="title_internet_connection_failure">La connexion Internet a échoué</string>
     <string name="title_last_logged_in">Date de la dernière connexion</string>
     <string name="title_light_mode">Activer le mode jour</string>
     <string name="title_local_client_search_help_video">Recherche de clients (locale)</string>
@@ -688,6 +731,8 @@
     <string name="title_video_choose">Choisir vidéo</string>
     <string name="title_video_record">Enregistrement vidéo</string>
     <string name="to_text">À</string>
+    <string name="tpt_end_date">Date de fin TPT:</string>
+    <string name="tpt_start_date">Date de début TPT:</string>
     <string name="warning_auto_save_interval">Intervalle de sauvegarde de formulaire automatique: Impossible de définir l\'intervalle d\'enregistrement automatique. \nVeuillez entrer une valeur comprise entre 1 et 120.</string>
     <string name="warning_form_close">Formulaire de clôture: Ceci annulera toutes vos modifications. Etes-vous sûr de vouloir faire ca?</string>
     <string name="warning_form_data_already_exists">Ce formulaire de données existe déjà pour ce client avec la même date de rencontre.</string>
@@ -697,6 +742,8 @@
     <string name="warning_invalid_url_provided">L\'URL que vous avez fournie n\'est pas valide</string>
     <string name="warning_logout_confirm">Etes-vous sûr de vouloir vous déconnectez et quitter mUzima app?</string>
     <string name="warning_logout_confirm_with_form_deletion">Voulez-vous vraiment vous déconnecter et quitter l\'application mUzima ? Tous les formulaires complets et incomplets seront supprimés</string>
+    <string name="warning_new_no_enough_space">Vous n\'avez pas assez d\'espace pour les médias, vous avez besoin de %s d\'espace supplémentaire pour le téléchargement des médias.</string>
+    <string name="warning_new_version_available">Une nouvelle version de mUzima (v%s) est disponible.\n\nVous pouvez continuer à utiliser mUzima pendant le téléchargement de la mise à jour. Une fois le téléchargement terminé, vous serez averti et vous demanderez l\'autorisation d\'installer la nouvelle version. Veuillez accorder l\'autorisation une fois demandée.\n\nPoursuivre la mise à jour ?</string>
     <string name="warning_registration_form_data_delete">Vous êtes sur le point de supprimer les données d\'enregistrement. Cela effacera également les données du client sur l\'appareil. Etes-vous sur?</string>
     <string name="warning_related_person_missing">Veuillez choisir une personne liée</string>
     <string formatted="false" name="warning_relationship_exists">Le client a déjà une relation %s:%s avec %s</string>
@@ -706,46 +753,4 @@
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
-    <string name="error_patient_address_not_updated">L\'adresse GPS n\'a pas pu être obtenue.</string>
-    <string name="general_demographics_update">Mise à jour démographique</string>
-    <string name="error_current_gps_not_obtained">Impossible d\'obtenir la position GPS actuelle. Chargement de la position par défaut sur la carte.</string>
-    <string name="title_internet_connection_failure">La connexion Internet a échoué</string>
-    <string name="hint_network_connection_failure_map_loading">L\'appareil n\'est pas connecté à Internet. La carte n\'est pas disponible hors ligne.</string>
-    <string name="info_program_unavailable">Aucun programme disponible</string>
-    <string name="info_program_unavailable_tip">Aucun programme configuré. Contactez votre administrateur pour ajouter un programme</string>
-    <string name="warning_new_version_available">Une nouvelle version de mUzima (v%s) est disponible.\n\nVous pouvez continuer à utiliser mUzima pendant le téléchargement de la mise à jour. Une fois le téléchargement terminé, vous serez averti et vous demanderez l\'autorisation d\'installer la nouvelle version. Veuillez accorder l\'autorisation une fois demandée.\n\nPoursuivre la mise à jour ?</string>
-    <string name="general_new_version">Nouvelle version</string>
-    <string name="info_media_category_download_in_progress">Téléchargement de catégories de médias</string>
-    <string name="info_media_categories_not_downloaded">N\'a téléchargé aucune catégorie de média</string>
-    <string name="info_media_category_downloaded">%d catégories de médias téléchargées</string>
-    <string name="error_media_category_download">Impossible de télécharger les catégories de médias</string>
-    <string name="info_media_download_in_progress">Téléchargement de médias</string>
-    <string name="info_media_not_downloaded">N\'a téléchargé aucun média</string>
-    <string name="info_media_downloaded">%d médias téléchargés</string>
-    <string name="error_media_download">Impossible de télécharger le média</string>
-    <string name="general_media">Médias</string>
-    <string name="info_media_unavailable">Aucun média disponible</string>
-    <string name="info_no_media_data_tip">Aucun média configuré. Contactez votre administrateur pour ajouter des médias</string>
-    <string name="info_no_media_not_available">Le fichier multimédia n\'est pas disponible, il a peut-être été supprimé de l\'appareil</string>
-    <string name="general_low_available_space">L\'espace disponible n\'est pas suffisant</string>
-    <string name="warning_new_no_enough_space">Vous n\'avez pas assez d\'espace pour les médias, vous avez besoin de %s d\'espace supplémentaire pour le téléchargement des médias.</string>
-    <string name="general_recently_viewed">vu récemment</string>
-    <string name="confidant_details">Détails confidentiels</string>
-    <string name="confidant_name">Nom:</string>
-    <string name="confidant_phone_number_1">contact téléphonique:</string>
-    <string name="clinical_information_details">Informations cliniques</string>
-    <string name="most_recent_viral_load_result">Charge virale résultante:</string>
-    <string name="most_recent_viral_load_result_date">Date Résultat Charge virale:</string>
-    <string name="most_recent_arv_pickup">Dernière enquête ARV:</string>
-    <string name="most_recent_arv_pickup_dispensation_mode">Mode de distribution:</string>
-    <string name="next_scheduled_arv_pickup">Prochaine enquête ARV:</string>
-    <string name="most_recent_clinical_consultation_date">Dernière consultation clinique:</string>
-    <string name="next_clinical_consultation_date">Prochain rendez-vous clinique:</string>
-    <string name="tpt_start_date">Date de début TPT:</string>
-    <string name="tpt_end_date">Date de fin TPT:</string>
-    <string name="provider_reports_general">Rapports de fournisseur</string>
-    <string name="info_locations_downloaded_deleted">Emplacements %d téléchargés, emplacements %d supprimés</string>
-    <string name="info_provider_downloaded_deleted">Fournisseurs %d téléchargés, fournisseurs %d supprimés</string>
-    <string name="info_concepts_downloaded_deleted">%d concepts téléchargés, %d concepts supprimés</string>
-    <string name="info_obs_concept_downloaded">%d nouvelle observation téléchargée pour les %d nouveaux concepts pour %d clients</string>
 </resources>

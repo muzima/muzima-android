@@ -20,10 +20,14 @@
     <string name="autocomplete_server_not_found">Server is unreachable! \nPlease connect your device and try again OR create a new person</string>
     <string name="captured_date">Captured Date:</string>
     <string name="client_registration_question_text">Would you like to register client in mUzima?</string>
+    <string name="clinical_information_details">Clinical Information</string>
     <string name="complex_obs">Complex Obs</string>
     <string name="concept_description">Concept Description</string>
     <string name="concept_details">Concept Details</string>
     <string name="concept_name">Concept Name:</string>
+    <string name="confidant_details">Confidant Details</string>
+    <string name="confidant_name">Confidant Name:</string>
+    <string name="confidant_phone_number_1">Phone Number:</string>
     <string name="confirm_create_patient_from_person">This will register this person as a client. Are you sure you would like to do this?</string>
     <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
     <string name="confirm_patient_id_exists">Does the client already have existing ID?</string>
@@ -52,6 +56,7 @@
     <string name="error_concept_fetch">Something went wrong while fetching concepts from local repo</string>
     <string name="error_concept_parse">An error occurred while parsing concepts in the form</string>
     <string name="error_credential_invalid">Invalid Username, Password, Server combination.</string>
+    <string name="error_current_gps_not_obtained">Could not obtain the current GPS location.Loading default location on the map.</string>
     <string name="error_data_download">An error occurred while downloading data form server</string>
     <string name="error_data_save">An error occurred while saving data to local repo</string>
     <string name="error_encounter_observation_download">Could not download observations for clients</string>
@@ -74,9 +79,12 @@
     <string name="error_local_repo_data_delete">An error occurred while deleting data from local repo</string>
     <string name="error_location_download">Could not download locations</string>
     <string name="error_location_fetch">Something went wrong while fetching locations from local repo</string>
+    <string name="error_media_category_download">Could not download media categories</string>
+    <string name="error_media_download">Could not download media</string>
     <string name="error_observation_download">Could not download observations</string>
     <string name="error_observation_form_save">An error occurred while saving observations in the form</string>
     <string name="error_parse_exception_data_fetch">Parse exception has been thrown while fetching data</string>
+    <string name="error_patient_address_not_updated">The GPS address could not be obtained</string>
     <string name="error_patient_data_form_exist">There is existing form data.
         Finish Incomplete data and sync it to the Server first before syncing form templates.
     </string>
@@ -138,12 +146,12 @@
     <string name="general_concepts">Concepts</string>
     <string name="general_consent_date">Consent Data</string>
     <string name="general_create_contact">Create Contact</string>
-
     <string name="general_data_collection_tools">"Data Collection Tools "</string>
     <string name="general_data_collection_tools_description">mUzima uses easy-to-develop web-based forms to collect data that can easily be transmitted and stored in OpenMRS.</string>
     <string name="general_date_of_birth">Date of birth: %s</string>
     <string name="general_days_character">d</string>
     <string name="general_delete">Delete</string>
+    <string name="general_demographics_update">Demographics update</string>
     <string name="general_description_unavailable">No description available</string>
     <string name="general_display_all">Display All</string>
     <string name="general_done">DONE</string>
@@ -168,6 +176,7 @@
     <string name="general_get_directions">Get directions</string>
     <string name="general_has_sexual_partner">Has sexual partner</string>
     <string name="general_help">Help</string>
+    <string name="general_hide">Hide</string>
     <string name="general_historical_data">Historical Data</string>
     <string name="general_historical_data_view">"Historical Data View"</string>
     <string name="general_historical_data_view_description">mUzima has easy and efficient user-friendly mechanisms for retrieving and viewing historical data on patients or clients.</string>
@@ -188,6 +197,8 @@
     <string name="general_locations">Locations</string>
     <string name="general_login">Login</string>
     <string name="general_logout">Logout</string>
+    <string name="general_low_available_space">Available space not enough</string>
+    <string name="general_media">Media</string>
     <string name="general_medium">Medium</string>
     <string name="general_months_character">m</string>
     <string name="general_multiple_cases_description">mUzima is easily customizable to support any clinical use cases, both within and outside of clinical facilities.</string>
@@ -196,6 +207,7 @@
     <string name="general_multiple_themes">"Multiple Themes"</string>
     <string name="general_multiple_themes_description">mUzima is shipped on two themes: dark theme (White on Black) and Light theme (Black on white).</string>
     <string name="general_multiple_use_cases">Multiple Use Cases</string>
+    <string name="general_new_version">New Version</string>
     <string name="general_next">Next</string>
     <string name="general_no">No</string>
     <string name="general_not_available_text">Not Available</string>
@@ -217,6 +229,7 @@
     <string name="general_progress_message">This might take a while</string>
     <string name="general_providers">Providers</string>
     <string name="general_reading">Reading</string>
+    <string name="general_recently_viewed">Recently Viewed</string>
     <string name="general_registration_form_missing_message">Missing registration form. Please contact administrator</string>
     <string name="general_relationship">Relationship</string>
     <string name="general_relationship_management">"Relationship Management"</string>
@@ -317,6 +330,7 @@
     <string name="hint_manage_location">Get more locations from the server or remove locations from this device</string>
     <string name="hint_manage_provider">Get more providers from the server or remove providers from this device</string>
     <string name="hint_mandatory_question_validation_failure">This question must be answered</string>
+    <string name="hint_network_connection_failure_map_loading">The device is not connected to the internet. The map is not available when offline.</string>
     <string name="hint_option_none_exclusive_selection_validation_failure">If \'None\' is selected, no other options can
         be selected
     </string>
@@ -379,6 +393,7 @@
     <string name="info_concept_not_downloaded">Did not download any concepts</string>
     <string name="info_concept_unavailable">No Concepts added yet.</string>
     <string formatted="false" name="info_concepts_downloaded">Downloaded %d concepts</string>
+    <string formatted="false" name="info_concepts_downloaded_deleted">Downloaded %d concepts, Deleted %d concepts</string>
     <string name="info_convert_person_to_patient">Convert person to patient</string>
     <string name="info_data_sync_cancelled">mUzima data sync was cancelled.</string>
     <string name="info_disclaimer">
@@ -433,6 +448,14 @@
     <string name="info_location_not_downloaded">Did not download any locations</string>
     <string name="info_location_unavailable">No locations have been added yet</string>
     <string formatted="false" name="info_locations_downloaded">Downloaded %d locations</string>
+    <string formatted="false" name="info_locations_downloaded_deleted">Downloaded %d locations, Deleted %d locations</string>
+    <string name="info_media_categories_not_downloaded">Did not download any media category</string>
+    <string name="info_media_category_download_in_progress">Downloading Media Categories</string>
+    <string formatted="false" name="info_media_category_downloaded">Downloaded %d Media Categories</string>
+    <string name="info_media_download_in_progress">Downloading Media</string>
+    <string formatted="false" name="info_media_downloaded">Downloaded %d Media</string>
+    <string name="info_media_not_downloaded">Did not download any media</string>
+    <string name="info_media_unavailable">No media available</string>
     <string name="info_muzima_sync_service_finish">mUzima sync service finished</string>
     <string name="info_muzima_sync_service_in_progress">mUzima sync service running</string>
     <string name="info_new_cohort_download">Downloaded %d new cohorts</string>
@@ -447,8 +470,11 @@
     <string name="info_no_client_available_locally">No clients available locally. Enter at least 3 characters for remote search or register new clients.</string>
     <string name="info_no_cohort_download">No cohorts have been synced</string>
     <string name="info_no_forms_data_tip">No forms configured for data entry. Contact your administrator to add forms</string>
+    <string name="info_no_media_data_tip">No media configured. Contact your administrator to add media</string>
+    <string name="info_no_media_not_available">The media file is not available, it might have been deleted from the device</string>
     <string name="info_no_observation_and_concept_data_tip">No concepts configured. Contact your administrator to add concepts.</string>
     <string name="info_no_observation_for_concept_data_tip">No historical data exists for the configured concepts</string>
+    <string formatted="false" name="info_obs_concept_downloaded">Downloaded %d new observation for the %d new concepts for %d clients</string>
     <string name="info_observation_download">Downloading Observations</string>
     <string name="info_observation_load">Observations are loading</string>
     <string name="info_observation_patient_downloaded">Downloaded 1 observation for 1 client</string>
@@ -467,9 +493,12 @@
     <string name="info_patient_reports_unavailable">No Client Reports Available</string>
     <string name="info_person_creation_failure">Could not create person record</string>
     <string name="info_privacy_policy_statement">Privacy Policy Statement</string>
+    <string name="info_program_unavailable">No program available</string>
+    <string name="info_program_unavailable_tip">No program configured. Contact your administrator to add a program</string>
     <string name="info_provider_delete_success">%d Providers deleted successfully</string>
     <string name="info_provider_download">Downloading Providers</string>
     <string name="info_provider_downloaded">Downloaded 1 provider</string>
+    <string formatted="false" name="info_provider_downloaded_deleted">Downloaded %d providers, Deleted %d providers</string>
     <string name="info_provider_not_downloaded">Did not download any providers</string>
     <string name="info_provider_unavailable">No providers have been added yet</string>
     <string formatted="false" name="info_providers_downloaded">Downloaded %d providers</string>
@@ -501,6 +530,8 @@
         %d Processed with error, %d Pending processing, %d Unknown status </string>
     <string name="info_submitted_form_data_status_check">Checking status of recently submitted forms</string>
     <string name="info_submitted_form_data_status_check_failure">Could not check status of recently submitted forms</string>
+    <string name="info_sync_completed">Sync Completed</string>
+    <string name="info_sync_progress">Sync Progress ...</string>
     <string name="info_tag_unavailable">No tags available</string>
     <string name="info_terms_and_conditions">Terms and Conditions</string>
     <string name="info_terms_and_conditions_text">
@@ -561,6 +592,13 @@
     <string name="message_help_sent">Thanks for reaching out. \nOur support team will investigate your request. \n
         We will get back to you as soon as possible.</string>
     <string name="message_missing_form_encounter_details_error">must be provided</string>
+    <string name="most_recent_arv_pickup">ARV pick-up:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">Dispensation Mode:</string>
+    <string name="most_recent_clinical_consultation_date">Clinical Consultation Date:</string>
+    <string name="most_recent_viral_load_result">Viral Load Result:</string>
+    <string name="most_recent_viral_load_result_date">Viral Load Result Date:</string>
+    <string name="next_clinical_consultation_date">Next Scheduled Clinical Consultation Date:</string>
+    <string name="next_scheduled_arv_pickup">Next scheduled ARV pick-up:</string>
     <string name="no_default_encounter_location">No default encounter location</string>
     <string name="no_description_general">No description</string>
     <string name="no_email_client">No email client installed on this device. \nPlease install one and then leave your feedback.</string>
@@ -609,6 +647,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="provider_identifier">Provider Identifier:</string>
     <string name="provider_name">Provider Name:</string>
     <string name="provider_name_general">Provider Name</string>
+    <string name="provider_reports_general">Provider Reports</string>
     <string name="registering_patient_message_title_text">Registering client in mUzima…</string>
     <string name="relationship_create_success">Relationship created successfully</string>
     <string name="relationship_delete_fail">Cannot delete the relationship as it is already saved on the server. Contact the Administrator</string>
@@ -662,6 +701,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="title_image_capture">Capture Image</string>
     <string name="title_image_choose">Choose Image</string>
     <string name="title_install_psmart">Install P-Smart app</string>
+    <string name="title_internet_connection_failure">Internet connection failure</string>
     <string name="title_last_logged_in">Date Last Logged In</string>
     <string name="title_light_mode">Enable Day Mode</string>
     <string name="title_local_client_search_help_video">Client search (local)</string>
@@ -693,6 +733,8 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="title_video_choose">Choose Video</string>
     <string name="title_video_record">Record Video</string>
     <string name="to_text">To</string>
+    <string name="tpt_end_date">TPT end date:</string>
+    <string name="tpt_start_date">TPT start date:</string>
     <string name="warning_auto_save_interval">Auto Save Interval: Could not set auto save interval. \nPlease enter a value between 1 and 120.</string>
     <string name="warning_form_close">Closing Form: This will discard all your changes. Are you sure you would like to do this?</string>
     <string name="warning_form_data_already_exists">This Form Data already exists for this client with same encounter date.</string>
@@ -704,6 +746,8 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="warning_invalid_url_provided">The URL you have provided is invalid</string>
     <string name="warning_logout_confirm">Are you sure you want to log out and exit mUzima app?</string>
     <string name="warning_logout_confirm_with_form_deletion">Are you sure you want to log out and exit mUzima app? All Complete and incomplete forms will be deleted</string>
+    <string name="warning_new_no_enough_space">You don\'t have enough space for media, you need %s more space for media download.</string>
+    <string name="warning_new_version_available">A new version of mUzima (v%s) is available.\n\nYou can continue using the mUzima while downloading the update. Once the download is complete you will be notified and asked for permission to install the new version. Please grant permission once requested.\n\nProceed to update?</string>
     <string name="warning_registration_form_data_delete">You are about to delete registration data. This will also
         delete client record on device. Are you sure?
     </string>
@@ -717,46 +761,4 @@ mUzima is a mobile application that enables health professionals collect, manage
     </string>
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
-    <string name="info_program_unavailable">No program available</string>
-    <string name="info_program_unavailable_tip">No program configured. Contact your administrator to add a program</string>
-    <string name="error_patient_address_not_updated">The GPS address could not be obtained</string>
-    <string name="general_demographics_update">Demographics update</string>
-    <string name="error_current_gps_not_obtained">Could not obtain the current GPS location.Loading default location on the map.</string>
-    <string name="title_internet_connection_failure">Internet connection failure</string>
-    <string name="hint_network_connection_failure_map_loading">The device is not connected to the internet. The map is not available when offline.</string>
-    <string name="warning_new_version_available">A new version of mUzima (v%s) is available.\n\nYou can continue using the mUzima while downloading the update. Once the download is complete you will be notified and asked for permission to install the new version. Please grant permission once requested.\n\nProceed to update?</string>
-    <string name="general_new_version">New Version</string>
-    <string name="info_media_category_download_in_progress">Downloading Media Categories</string>
-    <string name="info_media_categories_not_downloaded">Did not download any media category</string>
-    <string formatted="false" name="info_media_category_downloaded">Downloaded %d Media Categories</string>
-    <string name="error_media_category_download">Could not download media categories</string>
-    <string name="info_media_download_in_progress">Downloading Media</string>
-    <string name="info_media_not_downloaded">Did not download any media</string>
-    <string formatted="false" name="info_media_downloaded">Downloaded %d Media</string>
-    <string name="error_media_download">Could not download media</string>
-    <string name="general_media">Media</string>
-    <string name="info_media_unavailable">No media available</string>
-    <string name="info_no_media_data_tip">No media configured. Contact your administrator to add media</string>
-    <string name="info_no_media_not_available">The media file is not available, it might have been deleted from the device</string>
-    <string name="general_low_available_space">Available space not enough</string>
-    <string name="warning_new_no_enough_space">You don\'t have enough space for media, you need %s more space for media download.</string>
-    <string name="general_recently_viewed">Recently Viewed</string>
-    <string name="confidant_details">Confidant Details</string>
-    <string name="confidant_name">Confidant Name:</string>
-    <string name="confidant_phone_number_1">Phone Number:</string>
-    <string name="clinical_information_details">Clinical Information</string>
-    <string name="most_recent_viral_load_result">Viral Load Result:</string>
-    <string name="most_recent_viral_load_result_date">Viral Load Result Date:</string>
-    <string name="most_recent_arv_pickup">ARV pick-up:</string>
-    <string name="most_recent_arv_pickup_dispensation_mode">Dispensation Mode:</string>
-    <string name="next_scheduled_arv_pickup">Next scheduled ARV pick-up:</string>
-    <string name="most_recent_clinical_consultation_date">Clinical Consultation Date:</string>
-    <string name="next_clinical_consultation_date">Next Scheduled Clinical Consultation Date:</string>
-    <string name="tpt_start_date">TPT start date:</string>
-    <string name="tpt_end_date">TPT end date:</string>
-    <string name="provider_reports_general">Provider Reports</string>
-    <string formatted="false" name="info_locations_downloaded_deleted">Downloaded %d locations, Deleted %d locations</string>
-    <string formatted="false" name="info_provider_downloaded_deleted">Downloaded %d providers, Deleted %d providers</string>
-    <string formatted="false" name="info_concepts_downloaded_deleted">Downloaded %d concepts, Deleted %d concepts</string>
-    <string formatted="false" name="info_obs_concept_downloaded">Downloaded %d new observation for the %d new concepts for %d clients</string>
 </resources>

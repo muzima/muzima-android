@@ -20,10 +20,14 @@
     <string name="autocomplete_server_not_found">Servidor inacessível! \nConecte seu dispositivo e tente novamente OU Crie uma nova pessoa</string>
     <string name="captured_date">Data Capturada:</string>
     <string name="client_registration_question_text">Você gostaria de registrar o utente no mUzima?</string>
+    <string name="clinical_information_details">Informação Clínica</string>
     <string name="complex_obs">Complexo Obs</string>
     <string name="concept_description">Conceito Descrição</string>
     <string name="concept_details">Detalhes do conceito</string>
     <string name="concept_name">Nome do conceito:</string>
+    <string name="confidant_details">Detalhes do Confidente</string>
+    <string name="confidant_name">Nome:</string>
+    <string name="confidant_phone_number_1">Contacto:</string>
     <string name="confirm_create_patient_from_person">Isso registrará essa pessoa como utente. Tem certeza de que gostaria de fazer isso?</string>
     <string name="confirm_duplicate_form_data_save">Guardar Dados do Formulário Duplicado</string>
     <string name="confirm_patient_id_exists">O utente já tem o Identificador?</string>
@@ -49,6 +53,7 @@
     <string name="error_concept_fetch">Algo deu errado enquanto buscava os conceitos do repositório local</string>
     <string name="error_concept_parse">Ocorreu um erro durante a análise de conceitos no formulário</string>
     <string name="error_credential_invalid">Combinação inválida de Nome de Utilizador, Senha, e Servidor.</string>
+    <string name="error_current_gps_not_obtained">Não foi possível obter a localização GPS atual. Carregando a localização padrão no mapa.</string>
     <string name="error_data_download">Ocorreu um erro enquanto baixava os dados do servidor</string>
     <string name="error_data_save">Ocorreu um erro enquanto guardava os dados no repositório local</string>
     <string name="error_encounter_observation_download">Não poderá baixar observações para os utentes</string>
@@ -71,9 +76,12 @@
     <string name="error_local_repo_data_delete">Um erro ocorreu enquanto apagava dados do repositório local</string>
     <string name="error_location_download">Não poderá baixar locais</string>
     <string name="error_location_fetch">Algo de errado aconteceu enquanto buscava locais do repositório local</string>
+    <string name="error_media_category_download">Não foi possível baixar as categorias de mídia</string>
+    <string name="error_media_download">Não foi possível baixar a mídia</string>
     <string name="error_observation_download">Não poderá baixar observações</string>
     <string name="error_observation_form_save">Ocorreu um erro enquanto guardava observações no formulário</string>
     <string name="error_parse_exception_data_fetch">Excepção de análise foi laçanda enquanto buscava os dados</string>
+    <string name="error_patient_address_not_updated">O endereço GPS não pôde ser obtido</string>
     <string name="error_patient_data_form_exist">Existe dados do formulário. Finalize os dados incompletos e sincronize os dados o servidor antes de sincronizar os modelos do formulário.</string>
     <string name="error_patient_download">Não poderá baixar utentes</string>
     <string name="error_patient_repo_fetch">Algo deu errado enquanto buscava utentes do repositório local</string>
@@ -138,6 +146,7 @@
     <string name="general_date_of_birth">Data de Nascimento: %s</string>
     <string name="general_days_character">d</string>
     <string name="general_delete">Apagar</string>
+    <string name="general_demographics_update">Atualização demográfica</string>
     <string name="general_description_unavailable">Sem descrição disponível</string>
     <string name="general_display_all">Exibir tudo</string>
     <string name="general_done">Feito</string>
@@ -162,6 +171,7 @@
     <string name="general_get_directions">Obter direções</string>
     <string name="general_has_sexual_partner">Tem parceiro sexual</string>
     <string name="general_help">Ajuda</string>
+    <string name="general_hide">Esconder</string>
     <string name="general_historical_data">Data histórica</string>
     <string name="general_historical_data_view">Visualização de dados históricos</string>
     <string name="general_historical_data_view_description">mUzima tem mecanismos fáceis e eficientes de fácil utilização para recuperar e visualizar dados históricos de pacientes ou utentes.</string>
@@ -182,6 +192,8 @@
     <string name="general_locations">Locais</string>
     <string name="general_login">Entrar</string>
     <string name="general_logout">Sair</string>
+    <string name="general_low_available_space">Espaço disponível insuficiente</string>
+    <string name="general_media">Mídia</string>
     <string name="general_medium">Médio</string>
     <string name="general_months_character">m</string>
     <string name="general_multiple_cases_description">O mUzima é facilmente personalizável para dar suporte a qualquer caso de uso clínico, tanto dentro quanto fora das instalações clínicas.</string>
@@ -190,6 +202,7 @@
     <string name="general_multiple_themes">Temas Múltiplos</string>
     <string name="general_multiple_themes_description">O mUzima é fornecido em dois temas: tema escuro (branco no preto) e tema claro (preto no branco).</string>
     <string name="general_multiple_use_cases">Casos de uso múltiplo</string>
+    <string name="general_new_version">Nova versão</string>
     <string name="general_next">Próximo</string>
     <string name="general_no">Não</string>
     <string name="general_not_available_text">Não disponível</string>
@@ -211,6 +224,7 @@
     <string name="general_progress_message">Isso pode demorar um pouco</string>
     <string name="general_providers">Provedores</string>
     <string name="general_reading">Lendo</string>
+    <string name="general_recently_viewed">Visualizado recentemente</string>
     <string name="general_registration_form_missing_message">Formulário de registro ausente. Por favor, contate o administrador</string>
     <string name="general_relationship">Relação</string>
     <string name="general_relationship_management">Gestão de Relacionamento</string>
@@ -296,6 +310,7 @@
     <string name="hint_manage_location">Obtenha mais locais a partir do servidor ou remova os locais a partir deste dispositivo</string>
     <string name="hint_manage_provider">Obtenha mais provedores a partir do servidor ou remova os provedores a partir deste dispositivo</string>
     <string name="hint_mandatory_question_validation_failure">Está pergunta deve ser respondida</string>
+    <string name="hint_network_connection_failure_map_loading">O dispositivo não está conectado à Internet. O mapa não está disponível quando offline.</string>
     <string name="hint_option_none_exclusive_selection_validation_failure">Se \'Nenhum\' é seleccionado, nehuma outra opção pode ser seleccionada</string>
     <string name="hint_password_change">Alterou a sua senha recentemente?</string>
     <string name="hint_password_prompt">Por favor Introduza a Senha</string>
@@ -352,16 +367,18 @@
     <string name="info_concept_not_downloaded">Não baixou nenhum conceito</string>
     <string name="info_concept_unavailable">Nenhum conceito adicionado ainda</string>
     <string formatted="false" name="info_concepts_downloaded">Baixou %d conceitos</string>
+    <string name="info_concepts_downloaded_deleted">%d conceitos baixados, %d conceitos excluídos</string>
     <string name="info_convert_person_to_patient">Converter pessoa em paciente</string>
     <string name="info_data_sync_cancelled">A sincronização de dados do mUzima foi cancelada.</string>
     <string name="info_disclaimer">
-                        mUzima é distribuído sob os termos da Licença Pública de Mozilla, v. 2.0 (MPL 2.0). Uma cópia da licença MPL 2.0
+                                mUzima é distribuído sob os termos da Licença Pública de Mozilla, v. 2.0 (MPL 2.0). Uma cópia da licença MPL 2.0
         pode ser encontrada em http://mozilla.org/MPL/2.0/.
         \nmUzima também é distribuído sob os termos da seguinte Garantia Adicional de Renúncia e Limitação de Responsabilidade.
         \n
         
+        
         <strong>Isenção de Garantia Adicional e Limitação de Responsabilidade</strong>
-                        Nos Estados Unidos, ou em quaisquer outras jurisdições onde se possam aplicar, as seguintes isenções da garantia
+                                Nos Estados Unidos, ou em quaisquer outras jurisdições onde se possam aplicar, as seguintes isenções da garantia
         e limitação de responsabilidade são aqui incorporadas nos termos e condições de MPL 2.0:
         \n1. Nenhuma garantia de qualquer tipo é feita sobre os resultados que Você obterá com base no código fechado
         (ou em qualquer informação ou conteúdo obtido através do código fechado) incluindo mas não limitado a
@@ -385,6 +402,7 @@
         \n\n4. Se o utilizador deste aplicativo for uma entidade que pretende comercializar qualquer aplicativo que utilize
         este código em um empreendimento com fins lucrativos, o usuário é obrigado entrar em contacto com o detentor dos
         direitos autorais pelo email info@mUzima.org.
+    
     
     
     </string>
@@ -427,6 +445,14 @@
     <string name="info_location_not_downloaded">Não baixou nenhum local</string>
     <string name="info_location_unavailable">Nenhum local foi adicionado ainda</string>
     <string formatted="false" name="info_locations_downloaded">Baixou %d locais</string>
+    <string name="info_locations_downloaded_deleted">%d locais baixados, %d locais excluídos</string>
+    <string name="info_media_categories_not_downloaded">Não baixou nenhuma categoria de mídia</string>
+    <string name="info_media_category_download_in_progress">Baixando categorias de mídia</string>
+    <string name="info_media_category_downloaded">%d categorias de mídia baixadas</string>
+    <string name="info_media_download_in_progress">Baixando mídia</string>
+    <string name="info_media_downloaded">Mídia %d baixada</string>
+    <string name="info_media_not_downloaded">Não baixou nenhuma mídia</string>
+    <string name="info_media_unavailable">Nenhuma mídia disponível</string>
     <string name="info_muzima_sync_service_finish">Serviço de sincronização de mUzima finalizado</string>
     <string name="info_muzima_sync_service_in_progress">Serviço de sincronização de mUzima está correndo</string>
     <string name="info_new_cohort_download">Baixou %d novas coortes</string>
@@ -441,8 +467,11 @@
     <string name="info_no_client_available_locally">Nenhum utente disponível localmente. Digite pelo menos três caracteres para pesquisa remota ou registre novos utentes</string>
     <string name="info_no_cohort_download">Nenhuma coorte foi sincronizada</string>
     <string name="info_no_forms_data_tip">Nenhum formulário configurado para entrada de dados. Entre em contato com seu administrador para adicionar formulários</string>
+    <string name="info_no_media_data_tip">Nenhuma mídia configurada. Entre em contato com seu administrador para adicionar mídia</string>
+    <string name="info_no_media_not_available">O arquivo de mídia não está disponível, pode ter sido excluído do dispositivo</string>
     <string name="info_no_observation_and_concept_data_tip">Nenhum conceito configurado. Entre em contato com seu administrador para adicionar conceitos.</string>
     <string name="info_no_observation_for_concept_data_tip">Não existem dados históricos para os conceitos configurados</string>
+    <string name="info_obs_concept_downloaded">%d nova observação baixada para %d novos conceitos para %d clientes</string>
     <string name="info_observation_download">Baixando observações</string>
     <string name="info_observation_load">Observações estão a carregar</string>
     <string name="info_observation_patient_downloaded">Baixou 1 observação para 1 utente</string>
@@ -461,9 +490,12 @@
     <string name="info_patient_reports_unavailable">Não há relatórios de utentes disponíveis</string>
     <string name="info_person_creation_failure">Não foi possível criar o registro da pessoa</string>
     <string name="info_privacy_policy_statement">Declaração de Política de Privacidade</string>
+    <string name="info_program_unavailable">Nenhum programa disponível</string>
+    <string name="info_program_unavailable_tip">Nenhum programa configurado. Entre em contato com seu administrador para adicionar um programa</string>
     <string name="info_provider_delete_success">%d Provedores apagados com sucesso</string>
     <string name="info_provider_download">Baixando Provedores…</string>
     <string name="info_provider_downloaded">Baixou 1 provedor</string>
+    <string name="info_provider_downloaded_deleted">Provedores %d baixados, provedores %d excluídos</string>
     <string name="info_provider_not_downloaded">Não baixou nenhum provedor</string>
     <string name="info_provider_unavailable">Nenhum provedor foi adicionado ainda</string>
     <string formatted="false" name="info_providers_downloaded">Baixou %d provedores</string>
@@ -494,6 +526,8 @@
     <string formatted="false" name="info_submitted_form_data_status">Estado dos formulários enviados recentemente: %d Processado com sucesso, %d Processado com erro, %d Processamento pendente, %d status desconhecido.</string>
     <string name="info_submitted_form_data_status_check">Verificando o status dos formulários enviados recentemente.</string>
     <string name="info_submitted_form_data_status_check_failure">Não foi possível verificar o estado dos formulários enviados recentemente.</string>
+    <string name="info_sync_completed">Sincronização concluída</string>
+    <string name="info_sync_progress">Sincronizar Progresso...</string>
     <string name="info_tag_unavailable">Nenhuma etiqueta disponível</string>
     <string name="info_terms_and_conditions">Termos e Condições</string>
     <string name="info_terms_and_conditions_text">
@@ -553,6 +587,13 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="message_feedback_sent">Obrigado pela sua mensagem. \n Seu feedback é importante para nós.</string>
     <string name="message_help_sent">Agradecemos seu contato. \nNossa equipe de suporte investigará sua solicitação. \nNós vamos voltar para você o mais breve possível.</string>
     <string name="message_missing_form_encounter_details_error">deve ser providenciado</string>
+    <string name="most_recent_arv_pickup">Último Lev. ARV:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">Modo de Dispensa:</string>
+    <string name="most_recent_clinical_consultation_date">Última Consulta Clínica:</string>
+    <string name="most_recent_viral_load_result">Resultado CV:</string>
+    <string name="most_recent_viral_load_result_date">Data Resultado CV:</string>
+    <string name="next_clinical_consultation_date">Próxima Consulta Clínica:</string>
+    <string name="next_scheduled_arv_pickup">Próximo Lev. ARV:</string>
     <string name="no_default_encounter_location">Nenhum local de encontro padrão</string>
     <string name="no_description_general">Nenhuma descrição</string>
     <string name="no_email_client">Nenhum utente de email instalado neste dispositivo. \nPor favor, instale um e depois deixe seu feedback.</string>
@@ -602,6 +643,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="provider_identifier">Identificador de Provedor:</string>
     <string name="provider_name">Nome do Provedor:</string>
     <string name="provider_name_general">Nome do Provedor</string>
+    <string name="provider_reports_general">Relatórios de Provedores</string>
     <string name="registering_patient_message_title_text">Registrando utente em mUzima …</string>
     <string name="relationship_create_success">Relacionamento criado com sucesso</string>
     <string name="relationship_delete_fail">Não é possível excluir o relacionamento, pois ele já está salvo no servidor. Entre em contato com o administrador</string>
@@ -655,6 +697,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="title_image_capture">Capturar Imagem</string>
     <string name="title_image_choose">Escolher Imagem</string>
     <string name="title_install_psmart">Instalar o aplicativo P-Smart</string>
+    <string name="title_internet_connection_failure">Falha na conexão com a Internet</string>
     <string name="title_last_logged_in">Data do último login</string>
     <string name="title_light_mode">Ativar o modo de dia</string>
     <string name="title_local_client_search_help_video">Pesquisa de utentes (local)</string>
@@ -686,6 +729,8 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="title_video_choose">Escolha o Vídeo</string>
     <string name="title_video_record">Gravar o Vídeo</string>
     <string name="to_text">Para</string>
+    <string name="tpt_end_date">Data Fim TPT:</string>
+    <string name="tpt_start_date">Data Início TPT:</string>
     <string name="warning_auto_save_interval">Intervalo de gravação automática de formulário: Não foi possível definir o intervalo de salvamento automático. \nPor favor, insira um valor entre 1 e 120.</string>
     <string name="warning_form_close">Formulário de fechamento: Isto irá descartar todas suas alterações. Tem certeza que quer fazer isto?</string>
     <string name="warning_form_data_already_exists">Estes dados do formulário já existem para estes utentes com mesma data de visita</string>
@@ -695,6 +740,8 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="warning_invalid_url_provided">O URL que você forneceu é inválido</string>
     <string name="warning_logout_confirm">Tem certeza que quer sair e fechar o aplicativo mUzima?</string>
     <string name="warning_logout_confirm_with_form_deletion">Tem certeza de que deseja sair e sair do aplicativo mUzima? Todos os formulários completos e incompletos serão excluídos</string>
+    <string name="warning_new_no_enough_space">Você não tem espaço suficiente para mídia, precisa de %s mais espaço para download de mídia.</string>
+    <string name="warning_new_version_available">Uma nova versão do mUzima (v%s) está disponível.\n\nVocê pode continuar usando o mUzima enquanto baixa a atualização. Assim que o download for concluído, você será notificado e pedirá permissão para instalar a nova versão. Por favor, conceda permissão assim que solicitado.\n\nContinuar com a atualização?</string>
     <string name="warning_registration_form_data_delete">Está para apagar dados de registo. Isto irá apagar o registo do utente no dispositivo. Tem certeza?</string>
     <string name="warning_related_person_missing">Por favor, escolha uma pessoa relacionada</string>
     <string formatted="false" name="warning_relationship_exists">O utente já possui relacionamento %s:%s com %s</string>
@@ -704,46 +751,4 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo, incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?</string>
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
-    <string name="info_program_unavailable">Nenhum programa disponível</string>
-    <string name="info_program_unavailable_tip">Nenhum programa configurado. Entre em contato com seu administrador para adicionar um programa</string>
-    <string name="error_patient_address_not_updated">O endereço GPS não pôde ser obtido</string>
-    <string name="general_demographics_update">Atualização demográfica</string>
-    <string name="error_current_gps_not_obtained">Não foi possível obter a localização GPS atual. Carregando a localização padrão no mapa.</string>
-    <string name="title_internet_connection_failure">Falha na conexão com a Internet</string>
-    <string name="hint_network_connection_failure_map_loading">O dispositivo não está conectado à Internet. O mapa não está disponível quando offline.</string>
-    <string name="warning_new_version_available">Uma nova versão do mUzima (v%s) está disponível.\n\nVocê pode continuar usando o mUzima enquanto baixa a atualização. Assim que o download for concluído, você será notificado e pedirá permissão para instalar a nova versão. Por favor, conceda permissão assim que solicitado.\n\nContinuar com a atualização?</string>
-    <string name="general_new_version">Nova versão</string>
-    <string name="info_media_category_download_in_progress">Baixando categorias de mídia</string>
-    <string name="info_media_categories_not_downloaded">Não baixou nenhuma categoria de mídia</string>
-    <string name="info_media_category_downloaded">%d categorias de mídia baixadas</string>
-    <string name="error_media_category_download">Não foi possível baixar as categorias de mídia</string>
-    <string name="info_media_download_in_progress">Baixando mídia</string>
-    <string name="info_media_not_downloaded">Não baixou nenhuma mídia</string>
-    <string name="info_media_downloaded">Mídia %d baixada</string>
-    <string name="error_media_download">Não foi possível baixar a mídia</string>
-    <string name="general_media">Mídia</string>
-    <string name="info_media_unavailable">Nenhuma mídia disponível</string>
-    <string name="info_no_media_data_tip">Nenhuma mídia configurada. Entre em contato com seu administrador para adicionar mídia</string>
-    <string name="info_no_media_not_available">O arquivo de mídia não está disponível, pode ter sido excluído do dispositivo</string>
-    <string name="general_low_available_space">Espaço disponível insuficiente</string>
-    <string name="warning_new_no_enough_space">Você não tem espaço suficiente para mídia, precisa de %s mais espaço para download de mídia.</string>
-    <string name="general_recently_viewed">Visualizado recentemente</string>
-    <string name="confidant_details">Detalhes do Confidente</string>
-    <string name="confidant_name">Nome:</string>
-    <string name="confidant_phone_number_1">Contacto:</string>
-    <string name="clinical_information_details">Informação Clínica</string>
-    <string name="most_recent_viral_load_result">Resultado CV:</string>
-    <string name="most_recent_viral_load_result_date">Data Resultado CV:</string>
-    <string name="most_recent_arv_pickup">Último Lev. ARV:</string>
-    <string name="most_recent_arv_pickup_dispensation_mode">Modo de Dispensa:</string>
-    <string name="next_scheduled_arv_pickup">Próximo Lev. ARV:</string>
-    <string name="most_recent_clinical_consultation_date">Última Consulta Clínica:</string>
-    <string name="next_clinical_consultation_date">Próxima Consulta Clínica:</string>
-    <string name="tpt_start_date">Data Início TPT:</string>
-    <string name="tpt_end_date">Data Fim TPT:</string>
-    <string name="provider_reports_general">Relatórios de Provedores</string>
-    <string name="info_locations_downloaded_deleted">%d locais baixados, %d locais excluídos</string>
-    <string name="info_provider_downloaded_deleted">Provedores %d baixados, provedores %d excluídos</string>
-    <string name="info_concepts_downloaded_deleted">%d conceitos baixados, %d conceitos excluídos</string>
-    <string name="info_obs_concept_downloaded">%d nova observação baixada para %d novos conceitos para %d clientes</string>
 </resources>

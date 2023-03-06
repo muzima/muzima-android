@@ -18,12 +18,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -119,6 +124,10 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private static final long INTERVAL = 1000L;
     private long timeRemaining;
     private boolean isTimerReset = false;
+    private ActionMenuItemView refreshMenuActionView;
+    private ActionMenuItemView syncReportMenuActionView;
+    private Drawable syncReportMenuIconDrawable;
+    private Animation refreshIconRotateAnimation;
 
     private CountDownTimer mCountDownTimer;
     private DrawerLayout mainLayout;
@@ -263,6 +272,29 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
     private void initializeResources() {
         Toolbar toolbar = findViewById(R.id.dashboard_toolbar);
+
+        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        refreshIconRotateAnimation = AnimationUtils.loadAnimation(MainDashboardActivity.this, R.anim.rotate_refresh);
+        refreshIconRotateAnimation.setRepeatCount(Animation.INFINITE);
+        refreshMenuActionView = findViewById(R.id.menu_load);
+        syncReportMenuActionView = findViewById(R.id.menu_sync_report);
+
+        refreshMenuActionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                processSync(refreshIconRotateAnimation);
+            }
+        });
+
+        syncReportMenuActionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showBackgroundSyncProgressDialog(MainDashboardActivity.this);
+            }
+        });
+        syncReportMenuActionView.setVisibility(View.GONE);
+        syncReportMenuIconDrawable = toolbar.getMenu().findItem(R.id.menu_sync_report).getIcon();
+
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -279,9 +311,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                             mainLayout.openDrawer(GravityCompat.END);
                         }
                         return true;
-
-                    case R.id.menu_load:
-                        new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
                 }
 
                 return true;
@@ -289,6 +318,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         });
         ActionMenuItemView locationMenu = findViewById(R.id.menu_location);
         ActionMenuItemView tagsMenu = findViewById(R.id.menu_tags);
+
 
         MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
         boolean isGeomappingEnabled = muzimaSettingController.isGeoMappingEnabled();
@@ -300,7 +330,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         if(!isTagGenerationEnabled && tagsMenu != null){
             tagsMenu.setVisibility(View.GONE);
         }
-
 
         drawerLayout = findViewById(R.id.main_dashboard_drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
@@ -378,8 +407,39 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         if (((MuzimaApplication) getApplicationContext()).getAuthenticatedUser() != null)
             headerTitleTextView.setText(((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getUsername());
         setTitle(StringUtils.EMPTY);
-
     }
+
+    private void processSync(Animation rotation){
+        if(!isDataSyncRunning()) {
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
+            new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
+
+            refreshMenuActionView.startAnimation(rotation);
+            syncReportMenuActionView.setVisibility(View.GONE);
+
+            notifySyncStarted();
+            showBackgroundSyncProgressDialog(MainDashboardActivity.this);
+        } else {
+            showBackgroundSyncProgressDialog(MainDashboardActivity.this);
+        }
+    }
+
+    protected void updateSyncProgressWidgets(boolean isSyncRunning){
+        if(isSyncRunning == false){
+            refreshMenuActionView.clearAnimation();
+            syncReportMenuActionView.setVisibility(View.VISIBLE);
+            if(isSyncCompletedWithError()){
+                syncReportMenuIconDrawable.mutate();
+                syncReportMenuIconDrawable.setColorFilter(getResources().getColor(R.color.red,getTheme()), PorterDuff.Mode.SRC_ATOP);
+            } else {
+                syncReportMenuIconDrawable.mutate();
+                syncReportMenuIconDrawable.setColorFilter(getResources().getColor(R.color.green,getTheme()), PorterDuff.Mode.SRC_ATOP);
+            }
+        } else{
+            refreshMenuActionView.startAnimation(refreshIconRotateAnimation);
+        }
+    }
+
 
     @Override
     public boolean onNavigateUp() {
@@ -444,9 +504,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                                         .setCancelable(true).show();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
-//                                prepareRegisterLocallyDialog();
-//                                prepareLocalSearchNotifyDialog(SHRPatient);
-//                                executeLocalPatientSearchInBackgroundTask();
                             }
                         } else {
                             Toast.makeText(getApplicationContext(), "This card seems to be blank", Toast.LENGTH_LONG).show();
@@ -540,6 +597,12 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         languageUtil.onResume(this);
         showIncompleteWizardWarning();
         tagsListAdapter.reloadData();
+
+        if(isDataSyncRunning() && refreshMenuActionView != null){
+            refreshMenuActionView.startAnimation(refreshIconRotateAnimation);
+        } else if(refreshMenuActionView != null){
+            refreshMenuActionView.clearAnimation();
+        }
     }
 
     @Override

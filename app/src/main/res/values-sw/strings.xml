@@ -20,10 +20,14 @@
     <string name="autocomplete_server_not_found">Seva haipatikani! \nTafadhali unganisha kifaa chako na ujaribu tena au sajili mtu mpya</string>
     <string name="captured_date">Tarehe iliyopigwa:</string>
     <string name="client_registration_question_text">Ungependa kusajili mteja ndani ya mUzima?</string>
+    <string name="clinical_information_details">Taarifa za Kliniki</string>
     <string name="complex_obs">Uchunguzi mkali</string>
     <string name="concept_description">Maelezo ya Dhana</string>
     <string name="concept_details">Taarifa za Dhana</string>
     <string name="concept_name">Jina la Dhana:</string>
+    <string name="confidant_details">Maelezo ya Msiri</string>
+    <string name="confidant_name">Jina:</string>
+    <string name="confidant_phone_number_1">Mawasiliano ya simu:</string>
     <string name="confirm_create_patient_from_person">Hii itamsajili mtu huyu kama mteja. Je, unauhakika ungependa kufanya hivyo</string>
     <string name="confirm_duplicate_form_data_save">Hifadhi Fomu ya Data mara mbili</string>
     <string name="confirm_patient_id_exists">Je, mteja ana nambari ya usajili inayotumika tayari?</string>
@@ -49,6 +53,7 @@
     <string name="error_concept_fetch">Tatizo limetokea wakati wa kuchukua dhana husika kutoka katika hifadhi ya ndani</string>
     <string name="error_concept_parse">Tatizo limetokea wakati wa kuchanganua dhana husika katika fomu</string>
     <string name="error_credential_invalid">Muungano wa Jina la mtumiaji, Neno la siri na Seva sio halali</string>
+    <string name="error_current_gps_not_obtained">Haikuweza kupata eneo la sasa la GPS. Inapakia eneo chaguomsingi kwenye ramani.</string>
     <string name="error_data_download">Tatizo limetokea wakati wa kupakua data kutoka katika seva</string>
     <string name="error_data_save">Tatizo:limetokea wakati wa kuhifadhi data katika hifadhi ya kifaa</string>
     <string name="error_encounter_observation_download">Imeshindikana kupakua uchunguzi wa wateja</string>
@@ -71,9 +76,12 @@
     <string name="error_local_repo_data_delete">Tatizo limetokea wakati wa kufuta data kutoka katika hifadhi ya kifaa</string>
     <string name="error_location_download">Imeshindikana kupakua mahali/maeneo</string>
     <string name="error_location_fetch">Tatizo limetokea wakati wa kuchukua sehemu kutoka katika hifadhi ya kifaa</string>
+    <string name="error_media_category_download">Haikuweza kupakua kategoria za midia</string>
+    <string name="error_media_download">Haikuweza kupakua midia</string>
     <string name="error_observation_download">Imeshindikana kupakua uchunguzi wa daktari</string>
     <string name="error_observation_form_save">Tatizo limetokea wakati wa kuhifadhi uchunguzi wa kliniki zilizoko kwenye fomu</string>
     <string name="error_parse_exception_data_fetch">Tatizo la kiuchanganuzi limetokea wakati wa kuchukua data</string>
+    <string name="error_patient_address_not_updated">Anwani ya GPS haikuweza kupatikana.</string>
     <string name="error_patient_data_form_exist">Kuna data ya fomu. Maliza data ambayo Haijakamilika na uisawazishe kwa Seva kwanza kabla ya kusawazisha violezo vya fomu.</string>
     <string name="error_patient_download">Imeshindikana kupakua wateja.</string>
     <string name="error_patient_repo_fetch">Tatizo limetokea wakati wa kuchukua taarifa za mteja kutoka katika hifadhi ya kifaa</string>
@@ -138,6 +146,7 @@
     <string name="general_date_of_birth">Tarehe ya kuzaliwa: %s</string>
     <string name="general_days_character">s</string>
     <string name="general_delete">Futa</string>
+    <string name="general_demographics_update">Usasishaji wa demografia</string>
     <string name="general_description_unavailable">Hakuna maelezo</string>
     <string name="general_display_all">Onyesha Zote</string>
     <string name="general_done">KAMILIKA</string>
@@ -162,6 +171,7 @@
     <string name="general_get_directions">Pata maelekezo</string>
     <string name="general_has_sexual_partner">Ana mpenzi wa ngono</string>
     <string name="general_help">Msaada</string>
+    <string name="general_hide">Ficha</string>
     <string name="general_historical_data">Takwimu za Kihistoria</string>
     <string name="general_historical_data_view">Mtazamo wa Takwimu za Kihistoria</string>
     <string name="general_historical_data_view_description">mUzima ina njia rahisi na nzuri ya kutumia-kirafiki ya kupata na kutazama data ya kihistoria kwa wagonjwa au wateja.</string>
@@ -182,6 +192,8 @@
     <string name="general_locations">Mahali</string>
     <string name="general_login">Ingia</string>
     <string name="general_logout">Toka</string>
+    <string name="general_low_available_space">Nafasi inayopatikana haitoshi</string>
+    <string name="general_media">Media</string>
     <string name="general_medium">Wastani</string>
     <string name="general_months_character">m</string>
     <string name="general_multiple_cases_description">mUzima inabadilishwa kwa urahisi kusaidia kesi zozote za utumiaji wa kliniki, ndani na nje ya vituo vya kliniki.</string>
@@ -190,6 +202,7 @@
     <string name="general_multiple_themes">Mada Nyingi</string>
     <string name="general_multiple_themes_description">mUzima inasafirishwa juu ya mandhari mbili: mandhari nyeusi (Nyeupe juu ya Nyeusi) na Nuru mandhari (Nyeusi kwa nyeupe).</string>
     <string name="general_multiple_use_cases">Kesi Nyingi za Matumizi</string>
+    <string name="general_new_version">Toleo Jipya</string>
     <string name="general_next">Inayofuata</string>
     <string name="general_no">Hapana</string>
     <string name="general_not_available_text">Haipatikani</string>
@@ -211,6 +224,7 @@
     <string name="general_progress_message">Jambo hili huenda likachukua muda/kipindi fulani</string>
     <string name="general_providers">Watoa huduma</string>
     <string name="general_reading">Kusoma</string>
+    <string name="general_recently_viewed">Iliyotazamwa Hivi Karibuni</string>
     <string name="general_registration_form_missing_message">Fomu ya usajili haipo. Tafadhali wasiliana na msimamizi</string>
     <string name="general_relationship">Uhusiano</string>
     <string name="general_relationship_management">Usimamizi wa Uhusiano</string>
@@ -296,6 +310,7 @@
     <string name="hint_manage_location">Pata sehemu nyingine kutoka katika seva au ondoa sehemu kutoka katika kifaa hiki</string>
     <string name="hint_manage_provider">Pata watoa huduma wengine/zaidi kutoka kwenye Seva ama ondosha watoa huduma kutoka kwenye kifaa hichi.</string>
     <string name="hint_mandatory_question_validation_failure">Swali hili ni lazima lijibiwe.</string>
+    <string name="hint_network_connection_failure_map_loading">Kifaa hakijaunganishwa kwenye mtandao. Ramani haipatikani ukiwa nje ya mtandao.</string>
     <string name="hint_option_none_exclusive_selection_validation_failure">Kama hakuna lolote lililochaguliwa, hamna chaguo lingine linaweza chaguliwa</string>
     <string name="hint_password_change">Je, umebadilisha neno lako la siri hivi karibuni?</string>
     <string name="hint_password_prompt">Tafadhali ingiza neno la siri</string>
@@ -352,16 +367,18 @@
     <string name="info_concept_not_downloaded">Hamna dhana yeyote iliyopakuliwa</string>
     <string name="info_concept_unavailable">Hamna dhana zilizoongezwa tayari</string>
     <string formatted="false" name="info_concepts_downloaded">Dhana %d zimepakuliwa</string>
+    <string name="info_concepts_downloaded_deleted">Imepakuliwa dhana %d, Imefutwa dhana %d</string>
     <string name="info_convert_person_to_patient">Badilisha mtu kuwa mteja</string>
     <string name="info_data_sync_cancelled">Ulandanishaji wa data ya mUzima ulisitishwa.</string>
     <string name="info_disclaimer">
-                        Mfumo wa mUzima umesambazwa chini ya masharti ya leseni kwa umma ya Mozilla, v.2.0.(MPL 2.0). Nakala ya leseni
+                                Mfumo wa mUzima umesambazwa chini ya masharti ya leseni kwa umma ya Mozilla, v.2.0.(MPL 2.0). Nakala ya leseni
         ya MPL 2.0 inaweza kupatikana kwa kutembelea http://mozilla.org/MPL/2.0.
         \nMfumo wa mUzima pia umesambazwa chini ya kibadhi cha ilani ya kujitoa hatiani na kizuizi cha dhima yenye kikomo.
         \n
         
+        
         <strong>Kibadhi cha ilani yakujitoa hatiani na kizuizi cha dhima yenye kikomo</strong>
-                        Katika nchi ya Marekani, au mamlaka yoyote ambapo patahusika, vipengele zaidi vifuatavyo vya kibadhi cha ilani
+                                Katika nchi ya Marekani, au mamlaka yoyote ambapo patahusika, vipengele zaidi vifuatavyo vya kibadhi cha ilani
         yakujitoa hatiani na kizuizi cha dhima yenye kikomo vimeshirikishwa kwenye sheria na masharti ya leseni ya MPL 2.0:
         \n1. Hakuna dhamana ya aina yoyote ile kwa vyovyote vile imetolewa kwa ajili ya natija utakayoipata kutoka na kutegemea
         kwako kwa utumizi wa kodi(ama habari zozote ama maandishi yoyote utakayopata kutokana na kodi ya mfumo huu),
@@ -382,6 +399,7 @@
         \n\n4. Ikiwa mtumiaji wa mfumo huu ni shirika ambalo linadhamiria kupata faida ya kibiashara ama natija kwa njia
         yoyote ile kwa mfumo utakaotumia kodi za mfumo huu kwenye biashara ya faida, mtumiaji anashurutishwa kuwasiliana
         na mwenye hatimiliki kupitia barua pepe: mUzima.mobile@gmail.com
+    
     
     
     </string>
@@ -424,6 +442,14 @@
     <string name="info_location_not_downloaded">Imeshindikana kupakuwa sehemu yoyote</string>
     <string name="info_location_unavailable">Hakuna sehemu zilizoongezwa kwa sasa</string>
     <string formatted="false" name="info_locations_downloaded">Sehemu %d zimepakuliwa</string>
+    <string name="info_locations_downloaded_deleted">Imepakua biashara %d, Imefuta biashara %d</string>
+    <string name="info_media_categories_not_downloaded">Haikupakua kategoria yoyote ya media</string>
+    <string name="info_media_category_download_in_progress">Inapakua Aina za Midia</string>
+    <string name="info_media_category_downloaded">Vitengo %d vya Vyombo vya Habari vimepakuliwa</string>
+    <string name="info_media_download_in_progress">Inapakua Midia</string>
+    <string name="info_media_downloaded">Imepakuliwa %d Media</string>
+    <string name="info_media_not_downloaded">Haikupakua media yoyote</string>
+    <string name="info_media_unavailable">Hakuna media inayopatikana</string>
     <string name="info_muzima_sync_service_finish">Huduma ya ulandanishaji ya mUzima imemalizika</string>
     <string name="info_muzima_sync_service_in_progress">Huduma ya ulandanishaji ya mUzima ipo kazini</string>
     <string name="info_new_cohort_download">Vikundi vipya %d vimepakuliwa</string>
@@ -438,8 +464,11 @@
     <string name="info_no_client_available_locally">Hakuna mteja aliyepatikana kwenye hifadhi ya kifaa. Ingiza angalu herufi 3 kutafuta katika seva ama sajili mteja mpya</string>
     <string name="info_no_cohort_download">Hakuna vikundi vya wateja vilivyolandanishwa</string>
     <string name="info_no_forms_data_tip">Hakuna fomu zilizosanidiwa kwa ajili ya kuingiza data. Wasiliana na msimamizi wako ili kuongeza fomu</string>
+    <string name="info_no_media_data_tip">Hakuna midia iliyosanidiwa. Wasiliana na msimamizi wako ili kuongeza midia</string>
+    <string name="info_no_media_not_available">Faili ya midia haipatikani, inaweza kuwa imefutwa kutoka kwa kifaa</string>
     <string name="info_no_observation_and_concept_data_tip">Hakuna dhana zilizosanidiwa. Wasiliana na msimamizi wako ili kuongeza dhana.</string>
     <string name="info_no_observation_for_concept_data_tip">Hakuna data ya kihistoria iliyopo kwa dhana zilizosanidiwa</string>
+    <string name="info_obs_concept_downloaded">Imepakua uchunguzi %d mpya wa dhana %d mpya kwa wateja %d</string>
     <string name="info_observation_download">Chunguzi za daktari zinapakuliwa</string>
     <string name="info_observation_load">Chunguzi za daktari zinapakiwa</string>
     <string name="info_observation_patient_downloaded">Uchunguzi mmoja wa daktari umepakuliwa wa mteja mmoja</string>
@@ -458,9 +487,12 @@
     <string name="info_patient_reports_unavailable">Hakuna Ripoti za Mteja Zinazopatikana</string>
     <string name="info_person_creation_failure">Haikuweza kuunda rekodi ya mtu</string>
     <string name="info_privacy_policy_statement">Taarifa ya Sera ya Faragha</string>
+    <string name="info_program_unavailable">Hakuna programu inayopatikana</string>
+    <string name="info_program_unavailable_tip">Hakuna programu iliyosanidiwa. Wasiliana na msimamizi wako ili kuongeza programu</string>
     <string name="info_provider_delete_success">Watoa huduma %d wamefanikiwa kufutwa</string>
     <string name="info_provider_download">Watoa huduma wanapakuliwa</string>
     <string name="info_provider_downloaded">Mtoa huduma mmoja amepakuliwa</string>
+    <string name="info_provider_downloaded_deleted">Imepakua watoa huduma %d, Imefuta watoa huduma %d</string>
     <string name="info_provider_not_downloaded">Hamna watoa huduma waliopakuliwa</string>
     <string name="info_provider_unavailable">Hamna watoa huduma waloongezwa kwa sasa.</string>
     <string formatted="false" name="info_providers_downloaded">Watoa huduma %d wamepakuliwa</string>
@@ -491,6 +523,8 @@
     <string formatted="false" name="info_submitted_form_data_status">Hali ya fomu zilizowasilishwa hivi karibuni: %d Ilishughulikiwa kwa mafanikio, %d Iliyosindika na kosa, %d Inasubiri usindikaji, %d Hali haijulikani.</string>
     <string name="info_submitted_form_data_status_check">Hali ya fomu zilizowasilishwa hivi karibuni inachunguzwa.</string>
     <string name="info_submitted_form_data_status_check_failure">Haikuwezekana kuchunguza hali ya fomu zilizowasilishwa hivi karibuni.</string>
+    <string name="info_sync_completed">Usawazishaji Umekamilika</string>
+    <string name="info_sync_progress">Maendeleo ya Usawazishaji...</string>
     <string name="info_tag_unavailable">Hakuna tagi zilizopatikana</string>
     <string name="info_terms_and_conditions">Sheria na Masharti</string>
     <string name="info_terms_and_conditions_text">
@@ -550,6 +584,13 @@
     <string name="message_feedback_sent">Asante kwa ujumbe wako. \n Maoni yako ni muhimu kwetu.</string>
     <string name="message_help_sent">Asante kwa kuwasiliana nasi. \nTimu yetu ya usaidizi itachunguza ombi lako. \nTutakurudia haraka iwezekanavyo.</string>
     <string name="message_missing_form_encounter_details_error">lazima yatolewa</string>
+    <string name="most_recent_arv_pickup">Utafiti wa mwisho wa ARV:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">Hali ya Usambazaji:</string>
+    <string name="most_recent_clinical_consultation_date">Ushauri wa Kliniki wa Mwisho:</string>
+    <string name="most_recent_viral_load_result">Matokeo ya Mzigo wa Virusi:</string>
+    <string name="most_recent_viral_load_result_date">Matokeo ya Tarehe Mzigo wa Virusi:</string>
+    <string name="next_clinical_consultation_date">Inayofuata Uteuzi wa Kliniki:</string>
+    <string name="next_scheduled_arv_pickup">Utafiti Ujao wa ARV:</string>
     <string name="no_default_encounter_location">Hakuna lokesheni ya chaguo-msingi</string>
     <string name="no_description_general">Hakuna maelezo</string>
     <string name="no_email_client">Hakuna mteja wa barua pepe aliyewekwa kwenye kifaa hiki. \nTafadhali weka moja na kisha uacha maoni yako.</string>
@@ -599,6 +640,7 @@
     <string name="provider_identifier">Kitambulisho cha Mtoa huduma:</string>
     <string name="provider_name">Jina la Mtoa huduma:</string>
     <string name="provider_name_general">Jina la Mtoa huduma</string>
+    <string name="provider_reports_general">Ripoti ya mtoa huduma</string>
     <string name="registering_patient_message_title_text">Kuandikisha mteja katika mUzima …</string>
     <string name="relationship_create_success">Uhusiano umefanikiwa kutengenezwa</string>
     <string name="relationship_delete_fail">Hauwezi kufuta uhusiano huo kwani tayari imehifadhiwa kwenye seva. Wasiliana na Msimamizi</string>
@@ -652,6 +694,7 @@
     <string name="title_image_capture">Chukua picha</string>
     <string name="title_image_choose">Chagua picha</string>
     <string name="title_install_psmart">Sakinisha programu ya P-Smart</string>
+    <string name="title_internet_connection_failure">Muunganisho wa mtandao umeshindwa</string>
     <string name="title_last_logged_in">Mara ya Mwisho Kuingia</string>
     <string name="title_light_mode">Wezesha hali ya siku</string>
     <string name="title_local_client_search_help_video">Utafutaji wa mteja (wa ndani)</string>
@@ -683,6 +726,8 @@
     <string name="title_video_choose">Chagua video</string>
     <string name="title_video_record">Rekodi video</string>
     <string name="to_text">Kwa</string>
+    <string name="tpt_end_date">Tarehe ya mwisho ya TPT:</string>
+    <string name="tpt_start_date">Tarehe ya kuanza kwa TPT:</string>
     <string name="warning_auto_save_interval">Muda wa kungoja kuhifadhi fomu kiotomatiki: Haikuweza kuweka muda wa kuokoa auto. \nTafadhali ingiza thamani kati ya 1 na 120.</string>
     <string name="warning_form_close">Kufunga Fomu: Kufanya hivi kutapoteza mabadiliko yako yote uliyofanya. Je, una uhakika ungetaka kufanya hivi?</string>
     <string name="warning_form_data_already_exists">Data za Fomu hii tayari zipo kwa mteja huyu zenye tarehe sawa ya mkutano.</string>
@@ -692,6 +737,8 @@
     <string name="warning_invalid_url_provided">URL uliyoweka ni batili</string>
     <string name="warning_logout_confirm">Una uhakika unataka kutoka nje ya app ya mUzima?</string>
     <string name="warning_logout_confirm_with_form_deletion">Je, una uhakika unataka kutoka na kuondoka kwenye programu ya mUzima? Fomu zote zilizojazwa na ambazo hazijakamilika zitafutwa</string>
+    <string name="warning_new_no_enough_space">Huna nafasi ya kutosha kwa midia, unahitaji nafasi %s zaidi ya kupakua midia.</string>
+    <string name="warning_new_version_available">Toleo jipya la mUzima (v%s) linapatikana.\n\nUnaweza kuendelea kutumia mUzima unapopakua sasisho. Upakuaji ukikamilika utaarifiwa na kuombwa ruhusa ya kusakinisha toleo jipya. Tafadhali toa ruhusa baada ya ombi lako.\n\nUngependa kusasisha?</string>
     <string name="warning_registration_form_data_delete">Unakaribia kufuta data za usajili. Kufanya hivi kutafuta taarifa za mteja kwenye kifaa hichi pia. Je una uhakika?</string>
     <string name="warning_related_person_missing">Tafadhali chagua mtu anayehusiana</string>
     <string formatted="false" name="warning_relationship_exists">Mteja tayari ana uhusiano wa %s:%s na %s</string>
@@ -701,46 +748,4 @@
     <string name="warning_switch_server">Ubadilishaji wa seva: Kitendo hiki kitafuta data zote za mUzima katika kifaa chako, ikiwa ni pamoja na fomu zozote ambazo hazijakamilika bado. Una hakika unataka kubadili mpangilio huu?</string>
     <string name="write_SHR_to_card_text">Andika SHR kwenye kadi</string>
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
-    <string name="info_program_unavailable">Hakuna programu inayopatikana</string>
-    <string name="info_program_unavailable_tip">Hakuna programu iliyosanidiwa. Wasiliana na msimamizi wako ili kuongeza programu</string>
-    <string name="error_patient_address_not_updated">Anwani ya GPS haikuweza kupatikana.</string>
-    <string name="general_demographics_update">Usasishaji wa demografia</string>
-    <string name="error_current_gps_not_obtained">Haikuweza kupata eneo la sasa la GPS. Inapakia eneo chaguomsingi kwenye ramani.</string>
-    <string name="title_internet_connection_failure">Muunganisho wa mtandao umeshindwa</string>
-    <string name="hint_network_connection_failure_map_loading">Kifaa hakijaunganishwa kwenye mtandao. Ramani haipatikani ukiwa nje ya mtandao.</string>
-    <string name="warning_new_version_available">Toleo jipya la mUzima (v%s) linapatikana.\n\nUnaweza kuendelea kutumia mUzima unapopakua sasisho. Upakuaji ukikamilika utaarifiwa na kuombwa ruhusa ya kusakinisha toleo jipya. Tafadhali toa ruhusa baada ya ombi lako.\n\nUngependa kusasisha?</string>
-    <string name="general_new_version">Toleo Jipya</string>
-    <string name="info_media_category_download_in_progress">Inapakua Aina za Midia</string>
-    <string name="info_media_categories_not_downloaded">Haikupakua kategoria yoyote ya media</string>
-    <string name="info_media_category_downloaded">Vitengo %d vya Vyombo vya Habari vimepakuliwa</string>
-    <string name="error_media_category_download">Haikuweza kupakua kategoria za midia</string>
-    <string name="info_media_download_in_progress">Inapakua Midia</string>
-    <string name="info_media_not_downloaded">Haikupakua media yoyote</string>
-    <string name="info_media_downloaded">Imepakuliwa %d Media</string>
-    <string name="error_media_download">Haikuweza kupakua midia</string>
-    <string name="general_media">Media</string>
-    <string name="info_media_unavailable">Hakuna media inayopatikana</string>
-    <string name="info_no_media_data_tip">Hakuna midia iliyosanidiwa. Wasiliana na msimamizi wako ili kuongeza midia</string>
-    <string name="info_no_media_not_available">Faili ya midia haipatikani, inaweza kuwa imefutwa kutoka kwa kifaa</string>
-    <string name="general_low_available_space">Nafasi inayopatikana haitoshi</string>
-    <string name="warning_new_no_enough_space">Huna nafasi ya kutosha kwa midia, unahitaji nafasi %s zaidi ya kupakua midia.</string>
-    <string name="general_recently_viewed">Iliyotazamwa Hivi Karibuni</string>
-    <string name="confidant_details">Maelezo ya Msiri</string>
-    <string name="confidant_name">Jina:</string>
-    <string name="confidant_phone_number_1">Mawasiliano ya simu:</string>
-    <string name="clinical_information_details">Taarifa za Kliniki</string>
-    <string name="most_recent_viral_load_result">Matokeo ya Mzigo wa Virusi:</string>
-    <string name="most_recent_viral_load_result_date">Matokeo ya Tarehe Mzigo wa Virusi:</string>
-    <string name="most_recent_arv_pickup">Utafiti wa mwisho wa ARV:</string>
-    <string name="most_recent_arv_pickup_dispensation_mode">Hali ya Usambazaji:</string>
-    <string name="next_scheduled_arv_pickup">Utafiti Ujao wa ARV:</string>
-    <string name="most_recent_clinical_consultation_date">Ushauri wa Kliniki wa Mwisho:</string>
-    <string name="next_clinical_consultation_date">Inayofuata Uteuzi wa Kliniki:</string>
-    <string name="tpt_start_date">Tarehe ya kuanza kwa TPT:</string>
-    <string name="tpt_end_date">Tarehe ya mwisho ya TPT:</string>
-    <string name="provider_reports_general">Ripoti ya mtoa huduma</string>
-    <string name="info_locations_downloaded_deleted">Imepakua biashara %d, Imefuta biashara %d</string>
-    <string name="info_provider_downloaded_deleted">Imepakua watoa huduma %d, Imefuta watoa huduma %d</string>
-    <string name="info_concepts_downloaded_deleted">Imepakuliwa dhana %d, Imefutwa dhana %d</string>
-    <string name="info_obs_concept_downloaded">Imepakua uchunguzi %d mpya wa dhana %d mpya kwa wateja %d</string>
 </resources>
