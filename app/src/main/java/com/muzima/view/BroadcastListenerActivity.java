@@ -114,7 +114,6 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
             return;
         }
 
-
         int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS,
                 SyncStatusConstants.UNKNOWN_ERROR);
 

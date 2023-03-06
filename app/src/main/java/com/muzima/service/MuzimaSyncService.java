@@ -1928,7 +1928,7 @@ public class MuzimaSyncService {
             try{
                 appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.AVAILABLE_INTERNAL_SPACE);
             } catch (IOException e){
-                Log.e(TAG,"Could nt find availableInternalSpace log");
+                Log.e(TAG,"Could not find availableInternalSpace log");
             }
             String availableMemory = MemoryUtil.getFormattedMemory(MemoryUtil.getAvailableInternalMemorySize());
 
