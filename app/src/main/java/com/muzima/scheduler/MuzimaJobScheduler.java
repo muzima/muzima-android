@@ -151,8 +151,6 @@ public class MuzimaJobScheduler extends JobService {
 
     @Override
     public boolean onStartJob(final JobParameters params) {
-        System.out.println("...........................OngoingTasks ONSTARTJOB ");
-
         if (authenticatedUser == null || !isAuthPerson) {
             onStopJob(params);
         } else {

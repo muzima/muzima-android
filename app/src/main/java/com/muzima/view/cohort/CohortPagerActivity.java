@@ -14,16 +14,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
-import androidx.annotation.RequiresApi;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
@@ -42,13 +43,15 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
 import org.greenrobot.eventbus.EventBus;;
 
-import static com.muzima.view.BroadcastListenerActivity.MESSAGE_SENT_ACTION;
-import static com.muzima.view.BroadcastListenerActivity.PROGRESS_UPDATE_ACTION;
-
 public class CohortPagerActivity extends ActivityWithBottomNavigation {
     private ViewPager viewPager;
     private EditText searchCohorts;
     private final LanguageUtil languageUtil = new LanguageUtil();
+
+    private ActionMenuItemView refreshMenuActionView;
+    private ActionMenuItemView syncReportMenuActionView;
+    private Drawable syncReportMenuIconDrawable;
+    private Animation refreshIconRotateAnimation;
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -62,6 +65,7 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
         ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_cohort_pager);
         loadBottomNavigation();
 
@@ -103,24 +107,41 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
             @Override
             public void afterTextChanged(Editable editable) {}
         });
-        setTitle(StringUtils.EMPTY);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dashboard_home, menu);
-        menu.findItem(R.id.menu_location).setVisible(false);
-        menu.findItem(R.id.menu_tags).setVisible(false);
-        MenuItem menuRefresh = menu.findItem(R.id.menu_load);
-        menuRefresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        refreshIconRotateAnimation = AnimationUtils.loadAnimation(CohortPagerActivity.this, R.anim.rotate_refresh);
+        refreshIconRotateAnimation.setRepeatCount(Animation.INFINITE);
+        refreshMenuActionView = findViewById(R.id.menu_load);
+        syncReportMenuActionView = findViewById(R.id.menu_sync_report);
+
+        refreshMenuActionView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
-                return true;
+            public void onClick(View view) {
+                processSync(refreshIconRotateAnimation);
             }
         });
-        return true;
+
+        syncReportMenuActionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showBackgroundSyncProgressDialog(CohortPagerActivity.this);
+            }
+        });
+        syncReportMenuActionView.setVisibility(View.GONE);
+
+
+        Toolbar toolbar = findViewById(R.id.cohort_pager_toolbar);
+        syncReportMenuIconDrawable = toolbar.getMenu().findItem(R.id.menu_sync_report).getIcon();
+
+        findViewById(R.id.menu_location).setVisibility(View.GONE);
+        findViewById(R.id.menu_tags).setVisibility(View.GONE);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        setTitle(StringUtils.EMPTY);
     }
 
     @Override
@@ -128,6 +149,12 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(MESSAGE_SENT_ACTION));
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(PROGRESS_UPDATE_ACTION));
+
+        if(isDataSyncRunning() && refreshMenuActionView != null){
+            refreshMenuActionView.startAnimation(refreshIconRotateAnimation);
+        } else if(refreshMenuActionView != null){
+            refreshMenuActionView.clearAnimation();
+        }
     }
 
     @Override
@@ -185,12 +212,35 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
         return R.id.action_cohorts;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
+    private void processSync(Animation rotation){
+        if(!isDataSyncRunning()) {
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
+            new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
+
+
+            refreshMenuActionView.startAnimation(rotation);
+            syncReportMenuActionView.setVisibility(View.GONE);
+
+            notifySyncStarted();
+            showBackgroundSyncProgressDialog(CohortPagerActivity.this);
+        } else {
+            showBackgroundSyncProgressDialog(CohortPagerActivity.this);
         }
-        return false;
+    }
+
+    protected void updateSyncProgressWidgets(boolean isSyncRunning){
+        if(isSyncRunning == false){
+            refreshMenuActionView.clearAnimation();
+            syncReportMenuActionView.setVisibility(View.VISIBLE);
+            if(isSyncCompletedWithError()){
+                syncReportMenuIconDrawable.mutate();
+                syncReportMenuIconDrawable.setColorFilter(getResources().getColor(R.color.red,getTheme()), PorterDuff.Mode.SRC_ATOP);
+            } else {
+                syncReportMenuIconDrawable.mutate();
+                syncReportMenuIconDrawable.setColorFilter(getResources().getColor(R.color.green,getTheme()), PorterDuff.Mode.SRC_ATOP);
+            }
+        } else{
+            refreshMenuActionView.startAnimation(refreshIconRotateAnimation);
+        }
     }
 }

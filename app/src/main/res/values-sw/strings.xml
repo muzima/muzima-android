@@ -743,4 +743,7 @@
     <string name="info_provider_downloaded_deleted">Imepakua watoa huduma %d, Imefuta watoa huduma %d</string>
     <string name="info_concepts_downloaded_deleted">Imepakuliwa dhana %d, Imefutwa dhana %d</string>
     <string name="info_obs_concept_downloaded">Imepakua uchunguzi %d mpya wa dhana %d mpya kwa wateja %d</string>
+    <string name="general_hide">Ficha</string>
+    <string name="info_sync_completed">Usawazishaji Umekamilika</string>
+    <string name="info_sync_progress">Maendeleo ya Usawazishaji...</string>
 </resources>

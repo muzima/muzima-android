@@ -739,4 +739,7 @@
     <string name="info_provider_downloaded_deleted">ડાઉનલોડ કરેલ %d પ્રદાતાઓ, કાઢી નાખેલ %d પ્રદાતાઓ</string>
     <string name="info_concepts_downloaded_deleted">ડાઉનલોડ કરેલ %d ખ્યાલો, કાઢી નાખેલ %d ખ્યાલો</string>
     <string name="info_obs_concept_downloaded">%d ક્લાયન્ટ્સ માટે %d નવા ખ્યાલો માટે %d નવું અવલોકન ડાઉનલોડ કર્યું</string>
+    <string name="general_hide">છુપાવો</string>
+    <string name="info_sync_completed">સમન્વયન પૂર્ણ થયું</string>
+    <string name="info_sync_progress">સિંક પ્રોગ્રેસ...</string>
 </resources>

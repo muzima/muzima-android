@@ -35,6 +35,7 @@ import com.muzima.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.muzima.service.DataSyncService.hasOngoingSyncTasks;
 import static com.muzima.utils.Constants.DataSyncServiceConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
@@ -65,6 +66,7 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(PROGRESS_UPDATE_ACTION));
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(SYNC_STARTED_ACTION));
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(SYNC_COMPLETED_ACTION));
+        isSyncRunning = hasOngoingSyncTasks();
     }
 
     @Override
@@ -104,7 +106,7 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
             }
 
             if(titleTextView != null){
-                titleTextView.setText("Sync Progress ...");
+                titleTextView.setText(R.string.info_sync_progress);
             }
 
             startProgressAnimation();
@@ -121,7 +123,7 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
             isSyncRunning = false;
 
             if(titleTextView != null){
-                titleTextView.setText("Sync Completed");
+                titleTextView.setText(R.string.info_sync_completed);
             }
             stopProgressAnimation();
             updateSyncProgressWidgets(isSyncRunning);
@@ -257,7 +259,7 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
         builder.setView(listView)
                 .setCancelable(true)
                 .setCustomTitle(syncTitleView)
-                .setNegativeButton("Hide",new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.general_hide,new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -295,7 +297,7 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
     }
 
     protected void updateSyncProgressWidgets(boolean isSyncRunning){
-
+        //Sub-classes that have widgets to be updated need to override this
     }
 
     protected void notifySyncStarted(){

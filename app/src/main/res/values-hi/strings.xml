@@ -738,4 +738,7 @@
     <string name="info_provider_downloaded_deleted">डाउनलोड किए गए %d प्रदाता, हटाए गए %d प्रदाता</string>
     <string name="info_concepts_downloaded_deleted">%d अवधारणाएँ डाउनलोड की गईं, %d संकल्पनाएँ हटाई गईं</string>
     <string name="info_obs_concept_downloaded">%d ग्राहकों के लिए %d नई अवधारणाओं के लिए %d नया अवलोकन डाउनलोड किया गया</string>
+    <string name="general_hide">छिपाना</string>
+    <string name="info_sync_completed">समन्‍वयन पूर्ण हुआ</string>
+    <string name="info_sync_progress">सिंक प्रगति ...</string>
 </resources>

@@ -748,4 +748,7 @@
     <string name="info_provider_downloaded_deleted">Fournisseurs %d téléchargés, fournisseurs %d supprimés</string>
     <string name="info_concepts_downloaded_deleted">%d concepts téléchargés, %d concepts supprimés</string>
     <string name="info_obs_concept_downloaded">%d nouvelle observation téléchargée pour les %d nouveaux concepts pour %d clients</string>
+    <string name="general_hide">Cacher</string>
+    <string name="info_sync_completed">Synchronisation terminée</string>
+    <string name="info_sync_progress">Progression de la synchronisation...</string>
 </resources>

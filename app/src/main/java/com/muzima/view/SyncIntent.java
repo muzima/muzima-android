@@ -31,7 +31,6 @@ public class SyncIntent extends Intent {
         int syncType = getIntExtra(SYNC_TYPE, -1);
         if(syncType != -1){
             DataSyncService.addQueuedSyncType(syncType);
-            System.out.println("...........................OngoingTasks Added: "+syncType);
         }
         context.startService(this);
     }

@@ -124,8 +124,8 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private static final long INTERVAL = 1000L;
     private long timeRemaining;
     private boolean isTimerReset = false;
-    private ActionMenuItemView refreshMenu;
-    private ActionMenuItemView syncReportMenu;
+    private ActionMenuItemView refreshMenuActionView;
+    private ActionMenuItemView syncReportMenuActionView;
     private Drawable syncReportMenuIconDrawable;
     private Animation refreshIconRotateAnimation;
 
@@ -276,23 +276,23 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         refreshIconRotateAnimation = AnimationUtils.loadAnimation(MainDashboardActivity.this, R.anim.rotate_refresh);
         refreshIconRotateAnimation.setRepeatCount(Animation.INFINITE);
-        refreshMenu = findViewById(R.id.menu_load);
-        syncReportMenu = findViewById(R.id.menu_sync_report);
+        refreshMenuActionView = findViewById(R.id.menu_load);
+        syncReportMenuActionView = findViewById(R.id.menu_sync_report);
 
-        refreshMenu.setOnClickListener(new View.OnClickListener() {
+        refreshMenuActionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 processSync(refreshIconRotateAnimation);
             }
         });
 
-        syncReportMenu.setOnClickListener(new View.OnClickListener() {
+        syncReportMenuActionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showBackgroundSyncProgressDialog(MainDashboardActivity.this);
             }
         });
-        syncReportMenu.setVisibility(View.GONE);
+        syncReportMenuActionView.setVisibility(View.GONE);
         syncReportMenuIconDrawable = toolbar.getMenu().findItem(R.id.menu_sync_report).getIcon();
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -416,8 +416,8 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
             new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
 
 
-            refreshMenu.startAnimation(rotation);
-            syncReportMenu.setVisibility(View.GONE);
+            refreshMenuActionView.startAnimation(rotation);
+            syncReportMenuActionView.setVisibility(View.GONE);
 
             notifySyncStarted();
             showBackgroundSyncProgressDialog(MainDashboardActivity.this);
@@ -428,8 +428,8 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
     protected void updateSyncProgressWidgets(boolean isSyncRunning){
         if(isSyncRunning == false){
-            refreshMenu.clearAnimation();
-            syncReportMenu.setVisibility(View.VISIBLE);
+            refreshMenuActionView.clearAnimation();
+            syncReportMenuActionView.setVisibility(View.VISIBLE);
             if(isSyncCompletedWithError()){
                 syncReportMenuIconDrawable.mutate();
                 syncReportMenuIconDrawable.setColorFilter(getResources().getColor(R.color.red,getTheme()), PorterDuff.Mode.SRC_ATOP);
@@ -438,7 +438,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                 syncReportMenuIconDrawable.setColorFilter(getResources().getColor(R.color.green,getTheme()), PorterDuff.Mode.SRC_ATOP);
             }
         } else{
-            refreshMenu.startAnimation(refreshIconRotateAnimation);
+            refreshMenuActionView.startAnimation(refreshIconRotateAnimation);
         }
     }
 
@@ -506,9 +506,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                                         .setCancelable(true).show();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Searching Patient Locally", Toast.LENGTH_LONG).show();
-//                                prepareRegisterLocallyDialog();
-//                                prepareLocalSearchNotifyDialog(SHRPatient);
-//                                executeLocalPatientSearchInBackgroundTask();
                             }
                         } else {
                             Toast.makeText(getApplicationContext(), "This card seems to be blank", Toast.LENGTH_LONG).show();
@@ -603,8 +600,10 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         showIncompleteWizardWarning();
         tagsListAdapter.reloadData();
 
-        if(isDataSyncRunning() && refreshMenu != null){
-            refreshMenu.startAnimation(refreshIconRotateAnimation);
+        if(isDataSyncRunning() && refreshMenuActionView != null){
+            refreshMenuActionView.startAnimation(refreshIconRotateAnimation);
+        } else if(refreshMenuActionView != null){
+            refreshMenuActionView.clearAnimation();
         }
     }
 

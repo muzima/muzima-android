@@ -10,8 +10,8 @@
 
 package com.muzima.view.forms;
 
-import android.content.Intent;
-import android.os.Build;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,12 +19,14 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -54,8 +56,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static androidx.core.view.WindowCompat.FEATURE_ACTION_BAR;
-
 public class FormPagerActivity extends ActivityWithBottomNavigation {
     private ViewPager viewPager;
     private EditText searchForms;
@@ -74,11 +74,17 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
     private View formFilterNamesContainer;
     private CheckBox formFilterNamesCheckbox;
 
+    private ActionMenuItemView refreshMenuActionView;
+    private ActionMenuItemView syncReportMenuActionView;
+    private Drawable syncReportMenuIconDrawable;
+    private Animation refreshIconRotateAnimation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_form_pager);
         loadBottomNavigation();
 
@@ -180,24 +186,41 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
         });
 
         formFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        setTitle(StringUtils.EMPTY);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dashboard_home, menu);
-        menu.findItem(R.id.menu_location).setVisible(false);
-        menu.findItem(R.id.menu_tags).setVisible(false);
-        MenuItem menuRefresh = menu.findItem(R.id.menu_load);
-        menuRefresh.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        refreshIconRotateAnimation = AnimationUtils.loadAnimation(FormPagerActivity.this, R.anim.rotate_refresh);
+        refreshIconRotateAnimation.setRepeatCount(Animation.INFINITE);
+        refreshMenuActionView = findViewById(R.id.menu_load);
+        syncReportMenuActionView = findViewById(R.id.menu_sync_report);
+
+        refreshMenuActionView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
-                return true;
+            public void onClick(View view) {
+                processSync(refreshIconRotateAnimation);
             }
         });
-        return true;
+
+        syncReportMenuActionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showBackgroundSyncProgressDialog(FormPagerActivity.this);
+            }
+        });
+        syncReportMenuActionView.setVisibility(View.GONE);
+
+
+        Toolbar toolbar = findViewById(R.id.form_pager_toolbar);
+        syncReportMenuIconDrawable = toolbar.getMenu().findItem(R.id.menu_sync_report).getIcon();
+
+        findViewById(R.id.menu_location).setVisibility(View.GONE);
+        findViewById(R.id.menu_tags).setVisibility(View.GONE);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        setTitle(StringUtils.EMPTY);
     }
 
     @Override
@@ -289,13 +312,46 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
         return R.id.action_forms;
     }
 
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
+    protected void onResume() {
+        super.onResume();
+
+        if(isDataSyncRunning() && refreshMenuActionView != null){
+            refreshMenuActionView.startAnimation(refreshIconRotateAnimation);
+        } else if(refreshMenuActionView != null){
+            refreshMenuActionView.clearAnimation();
         }
-        return false;
+    }
+
+    private void processSync(Animation rotation){
+        if(!isDataSyncRunning()) {
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
+            new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
+
+
+            refreshMenuActionView.startAnimation(rotation);
+            syncReportMenuActionView.setVisibility(View.GONE);
+
+            notifySyncStarted();
+            showBackgroundSyncProgressDialog(FormPagerActivity.this);
+        } else {
+            showBackgroundSyncProgressDialog(FormPagerActivity.this);
+        }
+    }
+
+    protected void updateSyncProgressWidgets(boolean isSyncRunning){
+        if(isSyncRunning == false){
+            refreshMenuActionView.clearAnimation();
+            syncReportMenuActionView.setVisibility(View.VISIBLE);
+            if(isSyncCompletedWithError()){
+                syncReportMenuIconDrawable.mutate();
+                syncReportMenuIconDrawable.setColorFilter(getResources().getColor(R.color.red,getTheme()), PorterDuff.Mode.SRC_ATOP);
+            } else {
+                syncReportMenuIconDrawable.mutate();
+                syncReportMenuIconDrawable.setColorFilter(getResources().getColor(R.color.green,getTheme()), PorterDuff.Mode.SRC_ATOP);
+            }
+        } else{
+            refreshMenuActionView.startAnimation(refreshIconRotateAnimation);
+        }
     }
 }

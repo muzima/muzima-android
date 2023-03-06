@@ -746,4 +746,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="info_provider_downloaded_deleted">Provedores %d baixados, provedores %d excluídos</string>
     <string name="info_concepts_downloaded_deleted">%d conceitos baixados, %d conceitos excluídos</string>
     <string name="info_obs_concept_downloaded">%d nova observação baixada para %d novos conceitos para %d clientes</string>
+    <string name="general_hide">Esconder</string>
+    <string name="info_sync_completed">Sincronização concluída</string>
+    <string name="info_sync_progress">Sincronizar Progresso...</string>
 </resources>
