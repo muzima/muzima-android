@@ -388,10 +388,6 @@ public class LoginActivity extends BaseActivity {
         loginScrollView = findViewById(R.id.login_scroll_view);
         loginFrameLayout = findViewById(R.id.login_frame_layout);
         onlineModeText = findViewById(R.id.online_mode);
-
-        serverUrlText.setText("https://pretest.muzima.org");
-        usernameText.setText("admin");
-        passwordText.setText("Test2019");
     }
 
     public void onUpdatePasswordCheckboxClicked(View view) {

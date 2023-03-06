@@ -207,7 +207,6 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
         });
         syncReportMenuActionView.setVisibility(View.GONE);
 
-
         Toolbar toolbar = findViewById(R.id.form_pager_toolbar);
         syncReportMenuIconDrawable = toolbar.getMenu().findItem(R.id.menu_sync_report).getIcon();
 
@@ -327,7 +326,6 @@ public class FormPagerActivity extends ActivityWithBottomNavigation {
         if(!isDataSyncRunning()) {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
             new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
-
 
             refreshMenuActionView.startAnimation(rotation);
             syncReportMenuActionView.setVisibility(View.GONE);

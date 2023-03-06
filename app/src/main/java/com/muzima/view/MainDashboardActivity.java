@@ -331,7 +331,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
             tagsMenu.setVisibility(View.GONE);
         }
 
-
         drawerLayout = findViewById(R.id.main_dashboard_drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         cohortFilterBottomSheetView = findViewById(R.id.dashboard_home_bottom_view_container);
@@ -414,7 +413,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         if(!isDataSyncRunning()) {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
             new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
-
 
             refreshMenuActionView.startAnimation(rotation);
             syncReportMenuActionView.setVisibility(View.GONE);
