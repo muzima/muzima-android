@@ -22,6 +22,7 @@ import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTI
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
 import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
+import static com.muzima.view.BroadcastListenerActivity.SYNC_COMPLETED_ACTION;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -146,7 +147,11 @@ public class MuzimaJobScheduler extends JobService {
     };
 
     protected void onReceive(Intent intent){
-        displayToast(intent);
+        if(intent.getAction().equals(SYNC_COMPLETED_ACTION)){
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        } else {
+            displayToast(intent);
+        }
     }
 
     @Override
@@ -156,12 +161,13 @@ public class MuzimaJobScheduler extends JobService {
         } else {
             //execute job
             Log.i(getClass().getSimpleName(), "Service Started ===");
+            LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(MESSAGE_SENT_ACTION));
+            LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(SYNC_COMPLETED_ACTION));
 
             Intent syncStartedBroadcastIntent = new Intent();
             syncStartedBroadcastIntent.setAction(BroadcastListenerActivity.SYNC_STARTED_ACTION);
             LocalBroadcastManager.getInstance(this).sendBroadcast(syncStartedBroadcastIntent);
 
-            LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(MESSAGE_SENT_ACTION));
             handleBackgroundWork(params);
         }
         return false;
