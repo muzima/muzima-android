@@ -751,4 +751,5 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo, incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?</string>
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
+    <string name="general_art_start_date">Data início TARV:</string>
 </resources>

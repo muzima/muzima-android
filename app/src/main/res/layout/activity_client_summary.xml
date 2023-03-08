@@ -90,6 +90,28 @@
                         android:fontFamily="@font/roboto_regular" />
 
                 </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/date_of_art_start_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="70dp"
+                        android:id="@+id/art_start"
+                        android:layout_height="wrap_content"
+                        android:text="@string/general_art_start_date"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+                    <TextView
+                        android:id="@+id/art_start_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/art_start"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+
+                </RelativeLayout>
 
                 <include android:layout_width="match_parent"
                     android:layout_height="wrap_content"
