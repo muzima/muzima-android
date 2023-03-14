@@ -513,11 +513,9 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         try {
             List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
             Concept concept = conceptController.getConceptById(conceptId);
-            Log.e(getClass().getSimpleName(),conceptId+" ==== "+concept.isDatetime());
             Collections.sort(observations, observationDateTimeComparator);
             if (observations.size() > 0) {
                 Observation obs = observations.get(0);
-                Log.e(getClass().getSimpleName(),conceptId+" ==== "+concept.isDatetime());
                 if (concept.isDatetime())
                     return DateUtils.getFormattedDate(obs.getValueDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
                 else if (concept.isCoded())
