@@ -122,28 +122,18 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private TextView preferredTestingLocation;
     private TextView testingDate;
     private TextView lastConsentDate;
-
     private TextView confidantName;
-
     private TextView confidantContact1;
-
     private TextView lastCVResult;
-
     private TextView lastCVResultDate;
-
     private TextView lastARVPickup;
-
     private TextView lastARVPickupDispenseMode;
-
     private TextView nextARVPickupDate;
-
     private TextView lastClinicalConsultDate;
-
     private TextView nextClinicalConsultDate;
-
     private TextView tptStartDate;
-
     private TextView tptEndDate;
+    private TextView artStartDate;
 
     private String applicationLanguage;
     private ConceptController conceptController;
@@ -305,6 +295,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             encounterController =  ((MuzimaApplication) getApplicationContext()).getEncounterController();
             formController =  ((MuzimaApplication) getApplicationContext()).getFormController();
 
+            artStartDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 1190));
             testingSector.setText(getObsByPatientUuidAndConceptId(patientUuid, 23877));
             preferredTestingLocation.setText(getObsByPatientUuidAndConceptId(patientUuid, 21155));
             testingDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23879));
@@ -697,13 +688,17 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         nextClinicalConsultDate = findViewById(R.id.next_clinical_consultation_date_value);
         tptStartDate = findViewById(R.id.tpt_start_date_value);
         tptEndDate = findViewById(R.id.tpt_end_date_value);
+        artStartDate = findViewById(R.id.art_start_date);
+
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         LinearLayout dadosDeConsentimento = findViewById(R.id.dados_de_consentimento);
         RelativeLayout addressLayout = findViewById(R.id.address_layout);
         RelativeLayout phoneNumberLayout = findViewById(R.id.phone_number_layout);
+        RelativeLayout artInitDateLayout = findViewById(R.id.date_of_art_start_layout);
 
         if (!isFGHCustomClientSummaryEnabled) {
             dadosDeConsentimento.setVisibility(View.GONE);
+            artInitDateLayout.setVisibility(View.GONE);
         }
 
         if (!isFGHCustomClientAddressEnabled) {
