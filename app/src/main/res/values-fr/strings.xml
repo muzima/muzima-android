@@ -754,4 +754,17 @@
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
     <string name="general_art_start_date">Date de début du TAR:</string>
+    <string name="info_derived_concept_download">Téléchargement des concepts dérivés</string>
+    <string name="info_derived_concept_not_downloaded">N\'a pas téléchargé de concepts dérivés</string>
+    <string name="info_derived_concept_downloaded">Téléchargé 1 concept dérivé</string>
+    <string name="info_derived_concepts_downloaded">%d concepts dérivés téléchargés</string>
+    <string name="error_derived_concept_download">Impossible de télécharger les concepts dérivés</string>
+    <string name="info_derived_observation_download">Téléchargement des observations dérivées</string>
+    <string name="error_derived_observation_download">Impossible de télécharger les observations dérivées pour les clients</string>
+    <string name="info_derived_observations_download_progress">Observations dérivées téléchargées pour le client %d sur %d.</string>
+    <string name="info_derived_observation_patient_not_downloaded">N\'a pas téléchargé d\'observations dérivées</string>
+    <string name="info_derived_observation_patient_downloaded">Téléchargé 1 observation dérivée pour 1 client</string>
+    <string name="info_derived_observation_patients_downloaded">%d observations dérivées téléchargées pour 1 client</string>
+    <string name="info_derived_observations_patient_downloaded">1 observation dérivée téléchargée pour %d clients</string>
+    <string name="info_derived_observations_patients_downloaded">%d observations dérivées téléchargées pour %d clients</string>
 </resources>

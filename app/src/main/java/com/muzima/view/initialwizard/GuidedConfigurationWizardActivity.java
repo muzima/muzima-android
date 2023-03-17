@@ -1065,6 +1065,127 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadMediaLog.setSetupActionResultStatus(resultStatus);
 
                 onQueryTaskFinish();
+                downloadDerivedConcepts();
+            }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
+        }.execute();
+    }
+
+
+    public void downloadDerivedConcepts(){
+        final SetupActionLogModel downloadDerivedConceptsLog = new SetupActionLogModel();
+        addSetupActionLog(downloadDerivedConceptsLog);
+        new MuzimaAsyncTask<Void, Void, int[]>() {
+            @Override
+            protected void onPreExecute() {
+                downloadDerivedConceptsLog.setSetupAction(getString(R.string.info_derived_concept_download));
+                onQueryTaskStarted();
+            }
+
+            @Override
+            protected int[] doInBackground(Void... voids) {
+                List<String> uuids = extractDerivedConceptsUuids();
+                if (!uuids.isEmpty()) {
+                    MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+                    return muzimaSyncService.downloadDerivedConcepts(uuids.toArray(new String[uuids.size()]));
+
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(int[] result) {
+                String resultDescription = null;
+                String resultStatus = null;
+                if (result == null) {
+                    resultDescription = getString(R.string.info_derived_concept_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    if (result[1] == 1) {
+                        resultDescription = getString(R.string.info_derived_concept_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_derived_concepts_downloaded, result[1]);
+                    }
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else {
+                    wizardcompletedSuccessfully = false;
+                    resultDescription = getString(R.string.error_derived_concept_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                }
+                downloadDerivedConceptsLog.setSetupActionResult(resultDescription);
+                downloadDerivedConceptsLog.setSetupActionResultStatus(resultStatus);
+                onQueryTaskFinish();
+                if(!isOnlineOnlyModeEnabled) {
+                    downloadDerivedObservations();
+                }
+            }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
+        }.execute();
+    }
+
+    public void downloadDerivedObservations(){
+        final SetupActionLogModel downloadDerivedObservationsLog = new SetupActionLogModel();
+        addSetupActionLog(downloadDerivedObservationsLog);
+        new MuzimaAsyncTask<Void, Void, int[]>() {
+            @Override
+            protected void onPreExecute() {
+                downloadDerivedObservationsLog.setSetupAction(getString(R.string.info_derived_observation_download));
+                onQueryTaskStarted();
+            }
+
+            @Override
+            protected int[] doInBackground(Void... voids) {
+                List<String> uuids = extractCohortsUuids();
+                if (!uuids.isEmpty()) {
+                    MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+
+                    String[] cohortUuidsArray = uuids.toArray(new String[uuids.size()]);
+                    int[] resultForPatientObs = muzimaSyncService.downloadDerivedObservationsForPatientsByCohortUUIDs(
+                            cohortUuidsArray, false);
+                    return resultForPatientObs;
+
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(int[] result) {
+                String resultDescription = null;
+                String resultStatus = null;
+                if (result == null) {
+                    resultDescription = getString(R.string.info_derived_observation_patient_not_downloaded);
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                    int downloadedObs = result[1];
+                    int patients = result[3];
+                    if (downloadedObs == 1 && patients == 1) {
+                        resultDescription = getString(R.string.info_derived_observation_patient_downloaded);
+                    } else if (downloadedObs == 1) {
+                        resultDescription = getString(R.string.info_derived_observation_patients_downloaded, patients);
+                    } else if (patients == 1) {
+                        resultDescription = getString(R.string.info_derived_observations_patient_downloaded, patients);
+                    } else if (downloadedObs == 0) {
+                        resultDescription = getString(R.string.info_derived_observation_patient_not_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_derived_observations_patients_downloaded, downloadedObs, patients);
+                    }
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else {
+                    wizardcompletedSuccessfully = false;
+                    resultDescription = getString(R.string.error_derived_observation_download);
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                }
+                downloadDerivedObservationsLog.setSetupActionResult(resultDescription);
+                downloadDerivedObservationsLog.setSetupActionResultStatus(resultStatus);
+                onQueryTaskFinish();
             }
 
             @Override
@@ -1180,6 +1301,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             }
         }
         return cohortUuids;
+    }
+
+    private List<String> extractDerivedConceptsUuids() {
+        List<String> derivedConceptsUuids = new ArrayList<>();
+        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['derivedConcepts']");
+        if (objects != null) {
+            for (Object object : objects) {
+                JSONObject derivedConcept = (JSONObject) object;
+                derivedConceptsUuids.add((String) derivedConcept.get("uuid"));
+            }
+        }
+        return derivedConceptsUuids;
     }
 
     public void checkIfCohortWithFilterByLocationExists() {

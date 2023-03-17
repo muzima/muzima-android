@@ -745,4 +745,17 @@
     <string name="write_SHR_to_card_text">SHR ને કાર્ડ પર લખો</string>
     <string name="write_shr_to_card_general">SHR ને કાર્ડ પર લખો</string>
     <string name="general_art_start_date">ART પ્રારંભ તારીખ:</string>
+    <string name="info_derived_concept_download">વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કરી રહ્યા છીએ</string>
+    <string name="info_derived_concept_not_downloaded">કોઈપણ વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કર્યા નથી</string>
+    <string name="info_derived_concept_downloaded">1 વ્યુત્પન્ન ખ્યાલ ડાઉનલોડ કર્યો</string>
+    <string name="info_derived_concepts_downloaded">%d વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કર્યા</string>
+    <string name="error_derived_concept_download">વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કરી શકાયા નથી</string>
+    <string name="info_derived_observation_download">વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કરી રહ્યાં છીએ</string>
+    <string name="error_derived_observation_download">ક્લાયન્ટ્સ માટે વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કરી શક્યાં નથી</string>
+    <string name="info_derived_observations_download_progress">%d માંથી %d ક્લાયન્ટ માટે વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા.</string>
+    <string name="info_derived_observation_patient_not_downloaded">કોઈપણ વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા નથી</string>
+    <string name="info_derived_observation_patient_downloaded">1 ક્લાયન્ટ માટે 1 વ્યુત્પન્ન અવલોકન ડાઉનલોડ કર્યું</string>
+    <string name="info_derived_observation_patients_downloaded">1 ક્લાયન્ટ માટે %d વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા</string>
+    <string name="info_derived_observations_patient_downloaded">%d ક્લાયન્ટ્સ માટે 1 વ્યુત્પન્ન અવલોકન ડાઉનલોડ કર્યું</string>
+    <string name="info_derived_observations_patients_downloaded">%d ક્લાયન્ટ્સ માટે %d વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા</string>
 </resources>

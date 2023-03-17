@@ -762,4 +762,17 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
     <string name="general_art_start_date">"ART start date:"</string>
+    <string name="info_derived_concept_download">Downloading Derived Concepts</string>
+    <string name="info_derived_concept_not_downloaded">Did not download any derived concepts</string>
+    <string name="info_derived_concept_downloaded">Downloaded 1 derived concept</string>
+    <string formatted="false" name="info_derived_concepts_downloaded">Downloaded %d derived concepts</string>
+    <string name="error_derived_concept_download">Could not download derived concepts</string>
+    <string name="info_derived_observation_download">Downloading Derived Observations</string>
+    <string name="error_derived_observation_download">Could not download derived observations for clients</string>
+    <string formatted="false" name="info_derived_observations_download_progress">Downloaded derived observations for client %d of %d.</string>
+    <string name="info_derived_observation_patient_not_downloaded">Did not download any derived observations</string>
+    <string name="info_derived_observation_patient_downloaded">Downloaded 1 derived observation for 1 client</string>
+    <string formatted="false" name="info_derived_observation_patients_downloaded">Downloaded %d derived observations for 1 client</string>
+    <string formatted="false" name="info_derived_observations_patient_downloaded">Downloaded 1 derived observation for %d clients</string>
+    <string formatted="false" name="info_derived_observations_patients_downloaded">Downloaded %d derived observations for %d clients</string>
 </resources>

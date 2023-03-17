@@ -22,6 +22,8 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.DerivedConcept;
+import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Location;
@@ -37,6 +39,8 @@ import com.muzima.api.model.RelationshipType;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.DerivedConceptController;
+import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.ObservationController;
@@ -83,6 +87,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
+import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
@@ -103,6 +108,8 @@ class HTMLFormDataStore {
     private final CohortController cohortController;
     private final PatientController patientController;
     private final PersonController personController;
+    private final DerivedConceptController derivedConceptController;
+    private final DerivedObservationController derivedObservationController;
 
     private String selectedPatientsUuids;
 
@@ -120,6 +127,8 @@ class HTMLFormDataStore {
         this.cohortController = application.getCohortController();
         this.patientController = application.getPatientController();
         this.personController = application.getPersonController();
+        this.derivedConceptController = application.getDerivedConceptController();
+        this.derivedObservationController = application.getDerivedObservationController();
         this.application = application;
         logFormStartEvent(isFormReload);
     }
@@ -1202,4 +1211,112 @@ class HTMLFormDataStore {
 
         return jsonPayload;
     }
+
+    @JavascriptInterface
+    public String getDerivedObservationByPatientUuid(String patientUuid) throws JSONException, DerivedConceptController.DerivedConceptFetchException {
+        List<DerivedObservation> derivedObservations = new ArrayList<>();
+        try {
+            derivedObservations = derivedObservationController.getDerivedObservationByPatientUuid(patientUuid);
+            Collections.sort(derivedObservations, derivedObservationDateTimeComparator);
+        } catch (DerivedObservationController.DerivedObservationFetchException e) {
+            Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations",e);
+        }
+        return createDerivedObsJsonArray(derivedObservations);
+    }
+
+    @JavascriptInterface
+    public String getDerivedObservationByPatientUuidAndDerivedConceptUuid(String patientUuid, String derivedConceptUuid) throws JSONException, DerivedConceptController.DerivedConceptFetchException {
+        List<DerivedObservation> derivedObservations = new ArrayList<>();
+        try {
+            derivedObservations = derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid,derivedConceptUuid);
+            Collections.sort(derivedObservations, derivedObservationDateTimeComparator);
+        } catch (DerivedObservationController.DerivedObservationFetchException e) {
+            Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations",e);
+        }
+        return createDerivedObsJsonArray(derivedObservations);
+    }
+
+    @JavascriptInterface
+    public String getDerivedObservationByPatientUuidAndDerivedConceptId(String patientUuid, int derivedConceptId) throws JSONException, DerivedConceptController.DerivedConceptFetchException {
+        List<DerivedObservation> derivedObservations = new ArrayList<>();
+        try {
+            derivedObservations = derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptId(patientUuid,derivedConceptId);
+            Collections.sort(derivedObservations, derivedObservationDateTimeComparator);
+        } catch (DerivedObservationController.DerivedObservationFetchException e) {
+            Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations",e);
+        }
+        return createDerivedObsJsonArray(derivedObservations);
+    }
+
+    private final Comparator<DerivedObservation> derivedObservationDateTimeComparator = new Comparator<DerivedObservation>() {
+        @Override
+        public int compare(DerivedObservation lhs, DerivedObservation rhs) {
+            return -lhs.getDateCreated().compareTo(rhs.getDateCreated());
+        }
+    };
+
+    private String createDerivedObsJsonArray(List<DerivedObservation> derivedObservations) throws JSONException, DerivedConceptController.DerivedConceptFetchException {
+        int i = 0;
+        JSONArray arr = new JSONArray();
+        HashMap<String, JSONObject> map = new HashMap<>();
+        List<DerivedConcept> derivedConcepts = derivedConceptController.getDerivedConcepts();
+        for (DerivedObservation derivedObservation : derivedObservations) {
+            String derivedConceptName = "";
+            String conceptUuid = derivedObservation.getDerivedConcept().getUuid();
+            for (DerivedConcept derivedConcept : derivedConcepts) {
+                if (derivedConcept.getUuid().equals(conceptUuid)) {
+                    derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(),getApplicationLanguage());
+                }
+            }
+            final String dateFormat = STANDARD_DATE_FORMAT;
+            SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
+            Date dateCreated = null;
+            Date valueDateTime = null;
+            try {
+                dateCreated = newDateFormat.parse(newDateFormat.format(derivedObservation.getDateCreated()));
+                if(derivedObservation.getValueDatetime() != null) {
+                    valueDateTime = newDateFormat.parse(newDateFormat.format(derivedObservation.getValueDatetime()));
+                }
+            } catch (ParseException e) {
+                Log.e(getClass().getSimpleName(), "Exception occurred while parsing date", e);
+            }
+            newDateFormat.applyPattern(dateFormat);
+            String convertedCreationDate = newDateFormat.format(dateCreated);
+            String convertedValueDateTime = "";
+            if(valueDateTime != null){
+                convertedValueDateTime = newDateFormat.format(valueDateTime);
+            }
+
+            JSONObject json = new JSONObject();
+            JSONObject derivedCodedConcept = new JSONObject();
+            if (!derivedConceptName.isEmpty()) {
+                json.put("derivedConceptName", derivedConceptName);
+            } else {
+                json.put("derivedConceptName", "NULL");
+            }
+
+            json.put("derivedConceptId",derivedObservation.getDerivedConcept().getId());
+            json.put("derivedConceptUuid",derivedObservation.getDerivedConcept().getUuid());
+
+            json.put("dateCreated", convertedCreationDate);
+            if(derivedObservation.getValueCoded() != null) {
+                derivedCodedConcept.put("uuid",derivedObservation.getValueCoded().getUuid());
+                derivedCodedConcept.put("id",derivedObservation.getValueCoded().getId());
+                derivedCodedConcept.put("name",getDerivedConceptNameFromConceptNamesByLocale(derivedObservation.getValueCoded().getDerivedConceptName(),getApplicationLanguage()));;
+                json.put("valueCoded",derivedCodedConcept);
+            }else{
+                json.put("valueCoded", derivedObservation.getValueCoded());
+            }
+            json.put("valueNumeric", derivedObservation.getValueNumeric());
+            json.put("valueText", derivedObservation.getValueText());
+            json.put("valueBoolean", derivedObservation.isValueBoolean());
+            json.put("valueDatetime",convertedValueDateTime);
+            json.put("uuid",derivedObservation.getUuid());
+            map.put("json" + i, json);
+            arr.put(map.get("json" + i));
+            i++;
+        }
+        return arr.toString();
+    }
+
 }

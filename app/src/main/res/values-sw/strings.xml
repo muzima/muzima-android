@@ -749,4 +749,17 @@
     <string name="write_SHR_to_card_text">Andika SHR kwenye kadi</string>
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
     <string name="general_art_start_date">Tarehe ya kuanza kwa ART:</string>
+    <string name="info_derived_concept_download">Inapakua Dhana Zilizotolewa</string>
+    <string name="info_derived_concept_not_downloaded">Haikupakua dhana zozote zinazotolewa</string>
+    <string name="info_derived_concept_downloaded">Imepakuliwa dhana 1 inayotokana</string>
+    <string name="info_derived_concepts_downloaded">Imepakuliwa dhana %d zinazotokana</string>
+    <string name="error_derived_concept_download">Haikuweza kupakua dhana zinazotolewa</string>
+    <string name="info_derived_observation_download">Inapakua Uchunguzi Uliotolewa</string>
+    <string name="error_derived_observation_download">Haikuweza kupakua uchunguzi unaotokana na wateja</string>
+    <string name="info_derived_observations_download_progress">Umepakua uchunguzi unaotokana na mteja %d kati ya %d.</string>
+    <string name="info_derived_observation_patient_not_downloaded">Haikupakua uchunguzi wowote uliotolewa</string>
+    <string name="info_derived_observation_patient_downloaded">Imepakua uchunguzi 1 unaotokana na mteja 1</string>
+    <string name="info_derived_observation_patients_downloaded">Imepakua uchunguzi %d unaotokana na mteja 1</string>
+    <string name="info_derived_observations_patient_downloaded">Imepakua uchunguzi 1 unaotokana na wateja %d</string>
+    <string name="info_derived_observations_patients_downloaded">Imepakua uchunguzi %d unaotokana na wateja %d</string>
 </resources>
