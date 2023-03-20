@@ -1379,7 +1379,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private synchronized void evaluateFinishStatus() {
-        int TOTAL_WIZARD_STEPS = isOnlineOnlyModeEnabled ? 10 : 12;
+        int TOTAL_WIZARD_STEPS = isOnlineOnlyModeEnabled ? 11 : 14;
         if (wizardLevel == (TOTAL_WIZARD_STEPS)) {
 
             String loggedInUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUserId();
@@ -1460,7 +1460,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private void updateOnlineOnlyModeSettingValue(){
         isOnlineOnlyModeEnabled = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isOnlineOnlyModeEnabled();
-        mainProgressbar.setMax(isOnlineOnlyModeEnabled ? 10 : 12);
+        mainProgressbar.setMax(isOnlineOnlyModeEnabled ? 11 : 14);
     }
 
     private List<Integer> extractDatasetDefinitionIds() {
