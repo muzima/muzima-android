@@ -2390,7 +2390,7 @@ public class MuzimaSyncService {
 
         try {
             List<DerivedConcept> derivedConcepts = derivedConceptController.downloadDerivedConceptsByUuid(conceptUuids);
-            derivedConceptController.saveDerivedConceptController(derivedConcepts);
+            derivedConceptController.saveDerivedConcepts(derivedConcepts);
             Log.i(getClass().getSimpleName(), "Downloaded " + derivedConcepts.size() + " derived concepts");
 
             result[0] = SUCCESS;
@@ -2432,10 +2432,6 @@ public class MuzimaSyncService {
         int[] result = new int[4];
         try {
             List<String> conceptUuidsFromDerivedConcepts = getConceptUuidsFromDerivedConcepts(derivedConceptController.getDerivedConcepts());
-            List<List<String>> slicedPatientUuids = split(patientUuids);
-            List<List<String>> slicedDerivedConceptUuids = split(conceptUuidsFromDerivedConcepts);
-            Set<String> patientUuidsForDownloadedObs = new HashSet<>();
-
             String activeSetupConfigUuid = null;
             try {
                 SetupConfigurationTemplate setupConfigurationTemplate = setupConfigurationController.getActiveSetupConfigurationTemplate();
@@ -2446,33 +2442,26 @@ public class MuzimaSyncService {
                 Log.e(getClass().getSimpleName(), "Could not obtain active setup config", e);
             }
 
-            for (List<String> slicedPatientUuid : slicedPatientUuids) {
-                for (List<String> slicedDerivedConceptUuid : slicedDerivedConceptUuids) {
+            List<String> patientUuidsForDownloadedObs = new ArrayList<>();
+            List<DerivedObservation> derivedObservations = new ArrayList<>(derivedObservationController.downloadDerivedObservationsByPatientUuidsAndConceptUuids(
+                    patientUuids, conceptUuidsFromDerivedConcepts, activeSetupConfigUuid, false));
 
-                    List<DerivedObservation> derivedObservations = new ArrayList<>(derivedObservationController.downloadDerivedObservationsByPatientUuidsAndConceptUuids(
-                            slicedPatientUuid, slicedDerivedConceptUuid, activeSetupConfigUuid));
-
-                    for (DerivedObservation derivedObservation : derivedObservations) {
-                        patientUuidsForDownloadedObs.add(derivedObservation.getPerson().getUuid());
-                    }
-
-                    updateProgressDialog(muzimaApplication.getString(R.string.info_derived_observations_download_progress, patientUuidsForDownloadedObs.size(), patientUuids.size()));
-
-                    List<DerivedObservation> voidedObservations = getVoidedDerivedObservations(derivedObservations);
-                    derivedObservationController.deleteDerivedObservations(voidedObservations);
-                    derivedObservations.removeAll(voidedObservations);
-
-                    if (replaceExistingObservations) {
-                        derivedObservationController.updateDerivedObservations(derivedObservations);
-                    } else {
-                        derivedObservationController.saveDerivedObservations(derivedObservations);
-                    }
-
-                    result[1] += derivedObservations.size();
-                    result[2] += voidedObservations.size();
-
-                }
+            for (DerivedObservation derivedObservation : derivedObservations) {
+                patientUuidsForDownloadedObs.add(derivedObservation.getPerson().getUuid());
             }
+
+            List<DerivedObservation> voidedObservations = getVoidedDerivedObservations(derivedObservations);
+            derivedObservationController.deleteDerivedObservations(voidedObservations);
+            derivedObservations.removeAll(voidedObservations);
+
+            if (replaceExistingObservations) {
+                derivedObservationController.updateDerivedObservations(derivedObservations);
+            } else {
+                derivedObservationController.saveDerivedObservations(derivedObservations);
+            }
+
+            result[1] = derivedObservations.size();
+            result[2] = voidedObservations.size();
             result[3] = patientUuidsForDownloadedObs.size();
             result[0] = SUCCESS;
         } catch (DerivedObservationController.DerivedObservationDownloadException e) {
@@ -2502,10 +2491,125 @@ public class MuzimaSyncService {
     private List<DerivedObservation> getVoidedDerivedObservations(List<DerivedObservation> derivedObservations) {
         List<DerivedObservation> voidedDerivedObservations = new ArrayList<>();
         for (DerivedObservation derivedObservation : derivedObservations) {
-            if (derivedObservation.isVoided()) {
+            if (derivedObservation.isRetired()) {
                 voidedDerivedObservations.add(derivedObservation);
             }
         }
         return voidedDerivedObservations;
+    }
+
+    public int[] DownloadAndDeleteDerivedConceptAndObservationBasedOnConfigChanges(SetupConfigurationTemplate configBeforeConfigUpdate){
+        int result[] = new int[5];
+        try {
+            android.content.Context context = muzimaApplication.getApplicationContext();
+            //Get derived concepts in the config
+            List<String> derivedConceptUuids = new ArrayList<>();
+            List<String> derivedConceptUuidsBeforeConfigUpdate = new ArrayList<>();
+
+            SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
+            String configJson = activeSetupConfig.getConfigJson();
+            List<Object> derivedConcepts = JsonUtils.readAsObjectList(configJson, "$['config']['derivedConcepts']");
+            for (Object derivedConcept : derivedConcepts) {
+                net.minidev.json.JSONObject derivedConcept1 = (net.minidev.json.JSONObject) derivedConcept;
+                String derivedConceptUuid = derivedConcept1.get("uuid").toString();
+                derivedConceptUuids.add(derivedConceptUuid);
+            }
+
+            String configJsonBeforeConfigUpdate = configBeforeConfigUpdate.getConfigJson();
+            List<Object> derivedConceptsBeforeConfigUpdate = JsonUtils.readAsObjectList(configJsonBeforeConfigUpdate, "$['config']['derivedConcepts']");
+            for (Object derivedConcept : derivedConceptsBeforeConfigUpdate) {
+                net.minidev.json.JSONObject derivedConcept1 = (net.minidev.json.JSONObject) derivedConcept;
+                String derivedConceptUuid = derivedConcept1.get("uuid").toString();
+                derivedConceptUuidsBeforeConfigUpdate.add(derivedConceptUuid);
+            }
+
+            List<DerivedConcept> derivedConceptsToBeDeleted = new ArrayList<>();
+            List<String> derivedConceptsToDownload= new ArrayList<>();
+            List<String> derivedConceptsToUpdate= new ArrayList<>();
+
+            //Get derived concepts previously downloaded but not in the updated config
+            for(String derivedConceptUuid: derivedConceptUuidsBeforeConfigUpdate){
+                if(!derivedConceptUuids.contains(derivedConceptUuid)){
+                    DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedConceptUuid);
+                    if(derivedConcept != null){
+                        derivedConceptsToBeDeleted.add(derivedConcept);
+                    }
+                }else{
+                    DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedConceptUuid);
+                    if(derivedConcept != null){
+                        derivedConceptsToUpdate.add(derivedConceptUuid);
+                    }
+                }
+            }
+
+            //Get Added derived concepts to updated config
+            for(String derivedConceptUuid : derivedConceptUuids){
+                if(!derivedConceptUuidsBeforeConfigUpdate.contains(derivedConceptUuid)){
+                    derivedConceptsToDownload.add(derivedConceptUuid);
+                }
+            }
+
+            if(derivedConceptsToBeDeleted.size()>0) {
+                derivedConceptController.deleteDerivedConcepts(derivedConceptsToBeDeleted);
+                derivedObservationController.deleteDerivedObservationsForDerivedConcepts(derivedConceptsToBeDeleted);
+            }
+
+            List<Patient> patients = new ArrayList<>();
+            List<DerivedObservation> derivedObservations = new ArrayList<>();
+
+            patients = ((MuzimaApplication) context).getPatientController().getAllPatients();
+            List<String> patientUuids = new ArrayList<>();
+            for(Patient patient : patients){
+                patientUuids.add(patient.getUuid());
+            }
+
+            if(derivedConceptsToUpdate.size()>0 && patientUuids.size()>0) {
+                List<DerivedObservation> derivedObservationsDownloaded = derivedObservationController.downloadDerivedObservationsByPatientUuidsAndConceptUuids(patientUuids, derivedConceptsToUpdate,activeSetupConfig.getUuid(),true);
+
+                if(derivedObservationsDownloaded.size() > 0){
+                    derivedObservations.addAll(derivedObservationsDownloaded);
+                    derivedObservationController.updateDerivedObservations(derivedObservationsDownloaded);
+                }
+            }
+
+            if(derivedConceptsToDownload.size()>0) {
+                List<DerivedConcept> derivedConceptList = derivedConceptController.downloadDerivedConceptsByUuid(derivedConceptsToDownload.stream().toArray(String[]::new));
+                if(derivedConceptList.size()>0){
+                    derivedConceptController.saveDerivedConcepts(derivedConceptList);
+                    List<DerivedObservation> derivedObservationsDownloaded = derivedObservationController.downloadDerivedObservationsByPatientUuidsAndConceptUuids(patientUuids, derivedConceptsToDownload,activeSetupConfig.getUuid(),false);
+
+                    if(derivedObservationsDownloaded.size() > 0){
+                        derivedObservations.addAll(derivedObservationsDownloaded);
+                        derivedObservationController.saveDerivedObservations(derivedObservationsDownloaded);
+                    }
+                }
+            }
+
+            result[0] = SUCCESS;
+            result[1] = derivedConceptsToDownload.size();
+            result[2] = derivedConceptsToBeDeleted.size();
+            result[3] = derivedObservations.size();
+            result[4] = patients.size();
+
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e){
+            Log.e(getClass().getSimpleName(),"Could not get the active config ",e);
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(),"Could not load patients ",e);
+        } catch (DerivedConceptController.DerivedConceptFetchException e) {
+            Log.e(getClass().getSimpleName(),"Could not get derived concepts ",e);
+        } catch (DerivedConceptController.DerivedConceptDownloadException e) {
+            Log.e(getClass().getSimpleName(),"Could not download derived concepts ",e);
+        } catch (DerivedConceptController.DerivedConceptSaveException e) {
+            Log.e(getClass().getSimpleName(),"Could not save derived concepts ",e);
+        } catch (DerivedObservationController.DerivedObservationDownloadException e) {
+            Log.e(getClass().getSimpleName(),"Could not download derived observations ",e);
+        } catch (DerivedObservationController.DerivedObservationSaveException e) {
+            Log.e(getClass().getSimpleName(),"Could not save derived obs ",e);
+        } catch (DerivedConceptController.DerivedConceptDeleteException e) {
+            Log.e(getClass().getSimpleName(),"Could not delete derived concepts ",e);
+        } catch (DerivedObservationController.DerivedObservationDeleteException e) {
+            Log.e(getClass().getSimpleName(),"Could not delete derived observations ",e);
+        }
+        return result;
     }
 }

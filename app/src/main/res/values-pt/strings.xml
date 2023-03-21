@@ -765,4 +765,5 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="info_derived_observation_patients_downloaded">%d observações derivadas baixadas para 1 cliente</string>
     <string name="info_derived_observations_patient_downloaded">1 observação derivada baixada para %d clientes</string>
     <string name="info_derived_observations_patients_downloaded">%d observações derivadas baixadas para %d clientes</string>
+    <string name="info_derived_concepts_downloaded_deleted">%d conceitos derivados baixados, %d conceitos derivados excluídos</string>
 </resources>

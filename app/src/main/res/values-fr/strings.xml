@@ -767,4 +767,5 @@
     <string name="info_derived_observation_patients_downloaded">%d observations dérivées téléchargées pour 1 client</string>
     <string name="info_derived_observations_patient_downloaded">1 observation dérivée téléchargée pour %d clients</string>
     <string name="info_derived_observations_patients_downloaded">%d observations dérivées téléchargées pour %d clients</string>
+    <string name="info_derived_concepts_downloaded_deleted">%d concepts dérivés téléchargés, %d concepts dérivés supprimés</string>
 </resources>

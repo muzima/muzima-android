@@ -270,6 +270,13 @@ public class DataSyncService extends IntentService {
                     broadCastMessageForNewConceptsDownloaded(broadcastIntent, result);
                 }
                 break;
+            case DataSyncServiceConstants.SYNC_DERIVED_CONCEPTS_AND_OBS_BASED_ON_CHANGES_IN_CONFIG:
+                updateNotificationMsg(getString(R.string.info_derived_concept_download));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.DownloadAndDeleteDerivedConceptAndObservationBasedOnConfigChanges(configBeforeUpdate);
+                    broadCastMessageForNewDerivedConceptsDownloaded(broadcastIntent, result);
+                }
+                break;
             default:
                 break;
         }
@@ -542,10 +549,12 @@ public class DataSyncService extends IntentService {
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_CONCEPTS_AND_OBS_BASED_ON_CHANGES_IN_CONFIG);
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
 
-        broadCastMessageForObservationDownloadForNewConcepts(broadcastIntent, result);
+        broadCastMessageForObservationDownloadForNewConcepts(result);
     }
 
-    private void broadCastMessageForObservationDownloadForNewConcepts(Intent broadcastIntent, int[] resultForObservations) {
+    private void broadCastMessageForObservationDownloadForNewConcepts(int[] resultForObservations) {
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction(BroadcastListenerActivity.MESSAGE_SENT_ACTION);
         String msgForObservations = getString(R.string.info_obs_concept_downloaded, resultForObservations[3], resultForObservations[1], resultForObservations[4]);
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, resultForObservations[0]);
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msgForObservations);
@@ -556,6 +565,36 @@ public class DataSyncService extends IntentService {
             updateNotificationMsg(msgForObservations);
         }
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_OBS_BASED_ON_CONCEPTS_ADDED);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+    }
+
+    private void broadCastMessageForNewDerivedConceptsDownloaded(Intent broadcastIntent, int[] result){
+        String msg = getString(R.string.info_derived_concepts_downloaded_deleted, result[1], result[2]);
+        broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, result[0]);
+        broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msg);
+        if (isSuccess(result)) {
+            broadcastIntent.putExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY, result[2]);
+            updateNotificationMsg(msg);
+        }
+        broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_DERIVED_CONCEPTS_AND_OBS_BASED_ON_CHANGES_IN_CONFIG);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+
+        broadCastMessageForDerivedObservationDownloadForNewConcepts(result);
+    }
+
+    private void broadCastMessageForDerivedObservationDownloadForNewConcepts(int[] resultForObservations) {
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction(BroadcastListenerActivity.MESSAGE_SENT_ACTION);
+        String msgForObservations = getString(R.string.info_derived_observations_patients_downloaded, resultForObservations[3] , resultForObservations[4]);
+        broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, resultForObservations[0]);
+        broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msgForObservations);
+        if (isSuccess(resultForObservations)) {
+            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, resultForObservations[3]);
+            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, resultForObservations[1]);
+            broadcastIntent.putExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY, resultForObservations[4]);
+            updateNotificationMsg(msgForObservations);
+        }
+        broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_DERIVED_OBS);
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 }

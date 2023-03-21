@@ -1,23 +1,17 @@
 package com.muzima.controller;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_DERIVED_OBSERVATIONS;
-import static com.muzima.api.model.APIName.DOWNLOAD_OBSERVATIONS;
-import static com.muzima.util.Constants.UUID_SEPARATOR;
-import static com.muzima.util.Constants.UUID_TYPE_SEPARATOR;
-import static java.util.Arrays.asList;
 
+import com.muzima.api.model.DerivedConcept;
 import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.DerivedObservationService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.SntpService;
-import com.muzima.utils.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 public class DerivedObservationController {
@@ -31,64 +25,21 @@ public class DerivedObservationController {
         this.sntpService = sntpService;
     }
 
-    public List<DerivedObservation> downloadDerivedObservationsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> derivedConceptUuids, String activeSetupConfigUuid) throws DerivedObservationDownloadException {
+    public List<DerivedObservation> downloadDerivedObservationsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> derivedConceptUuids, String activeSetupConfigUuid, boolean isDeltaSync) throws DerivedObservationDownloadException {
         try {
-            String paramSignature = buildParamSignature(patientUuids, derivedConceptUuids);
-            Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_DERIVED_OBSERVATIONS, paramSignature);
+            Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_DERIVED_OBSERVATIONS);
             List<DerivedObservation> derivedObservations = new ArrayList<>();
-            if (lastSyncTime != null) {
+            if(isDeltaSync && lastSyncTime != null) {
                 derivedObservations.addAll(derivedObservationService.downloadDerivedObservationsByPatientUuidsAndDerivedConceptUuidsAndSyncDate(patientUuids, derivedConceptUuids, lastSyncTime, activeSetupConfigUuid));
-            } else {
-
-                LastSyncTime fullLastSyncTimeInfo = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS);
-                if (fullLastSyncTimeInfo == null) {
-                    derivedObservations.addAll(derivedObservationService.downloadDerivedObservationsByPatientUuidsAndDerivedConceptUuidsAndSyncDate(patientUuids, derivedConceptUuids, null, activeSetupConfigUuid));
-                } else {
-                    String[] parameterSplit = fullLastSyncTimeInfo.getParamSignature().split(UUID_TYPE_SEPARATOR, -1);
-                    List<String> knownPatientsUuid = asList(parameterSplit[0].split(UUID_SEPARATOR));
-                    List<String> newPatientsUuids = getNewUuids(patientUuids, knownPatientsUuid);
-                    List<String> knownDerivedConceptsUuid = asList(parameterSplit[1].split(UUID_SEPARATOR));
-                    List<String> newConceptsUuids = getNewUuids(derivedConceptUuids, knownDerivedConceptsUuid);
-                    List<String> allConceptsUuids = getAllUuids(knownDerivedConceptsUuid, newConceptsUuids);
-                    List<String> allPatientsUuids = getAllUuids(knownPatientsUuid, newPatientsUuids);
-                    paramSignature = buildParamSignature(allPatientsUuids, allConceptsUuids);
-                    if(newPatientsUuids.size()!=0) {
-                        derivedObservations = derivedObservationService.downloadDerivedObservationsByPatientUuidsAndDerivedConceptUuidsAndSyncDate(newPatientsUuids, allConceptsUuids, null, activeSetupConfigUuid);
-                        derivedObservations.addAll(derivedObservationService.downloadDerivedObservationsByPatientUuidsAndDerivedConceptUuidsAndSyncDate(knownPatientsUuid, newConceptsUuids, null, activeSetupConfigUuid));
-                        derivedObservations.addAll(derivedObservationService.downloadDerivedObservationsByPatientUuidsAndDerivedConceptUuidsAndSyncDate(knownPatientsUuid, knownDerivedConceptsUuid, fullLastSyncTimeInfo.getLastSyncDate(), activeSetupConfigUuid));
-                    }
-                    else{
-                        derivedObservations.addAll(derivedObservationService.downloadDerivedObservationsByPatientUuidsAndDerivedConceptUuidsAndSyncDate(patientUuids, derivedConceptUuids, fullLastSyncTimeInfo.getLastSyncDate(),activeSetupConfigUuid));
-                    }
-                }
+            }else {
+                derivedObservations.addAll(derivedObservationService.downloadDerivedObservationsByPatientUuidsAndDerivedConceptUuidsAndSyncDate(patientUuids, derivedConceptUuids, null, activeSetupConfigUuid));
             }
-            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_DERIVED_OBSERVATIONS, sntpService.getTimePerDeviceTimeZone(), paramSignature);
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_DERIVED_OBSERVATIONS, sntpService.getTimePerDeviceTimeZone());
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return derivedObservations;
         } catch (IOException e) {
             throw new DerivedObservationDownloadException(e);
         }
-    }
-
-    private String buildParamSignature(List<String> patientUuids, List<String> derivedConceptUuids) {
-        String paramSignature = StringUtils.getCommaSeparatedStringFromList(patientUuids);
-        paramSignature += UUID_TYPE_SEPARATOR;
-        paramSignature += StringUtils.getCommaSeparatedStringFromList(derivedConceptUuids);
-        return paramSignature;
-    }
-
-    private ArrayList<String> getAllUuids(List<String> knownUuids, List<String> newUuids) {
-        HashSet<String> allUuids = new HashSet<>(knownUuids);
-        allUuids.addAll(newUuids);
-        ArrayList<String> sortedUuids = new ArrayList<>(allUuids);
-        Collections.sort(sortedUuids);
-        return sortedUuids;
-    }
-
-    private List<String> getNewUuids(List<String> allUuids, List<String> knownUuid) {
-        List<String> newUuids = new ArrayList<>(allUuids);
-        newUuids.removeAll(knownUuid);
-        return newUuids;
     }
 
     public List<DerivedObservation> getDerivedObservationByPatientUuid(String patientUuid) throws DerivedObservationFetchException {
@@ -137,6 +88,22 @@ public class DerivedObservationController {
         } catch (IOException e) {
             throw new DerivedObservationDeleteException(e);
         }
+    }
+
+    public void deleteDerivedObservationsForDerivedConcepts(List<DerivedConcept> derivedConcepts) throws DerivedObservationDeleteException {
+        try {
+            derivedObservationService.deleteDerivedObservations(getDerivedObservationsByDerivedConcepts(derivedConcepts));
+        } catch (IOException e) {
+            throw new DerivedObservationDeleteException(e);
+        }
+    }
+
+    private List<DerivedObservation> getDerivedObservationsByDerivedConcepts(List<DerivedConcept> derivedConcepts) throws IOException {
+        ArrayList<DerivedObservation> derivedObservations = new ArrayList<>();
+        for (DerivedConcept derivedConcept : derivedConcepts) {
+            derivedObservations.addAll(derivedObservationService.getDerivedObservationsByDerivedConcept(derivedConcept));
+        }
+        return derivedObservations;
     }
 
     public static class DerivedObservationDownloadException extends Throwable {

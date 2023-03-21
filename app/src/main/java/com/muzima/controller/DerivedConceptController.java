@@ -31,7 +31,7 @@ public class DerivedConceptController {
         return new ArrayList<>(result);
     }
 
-    public void saveDerivedConceptController(List<DerivedConcept> derivedConcepts) throws DerivedConceptSaveException {
+    public void saveDerivedConcepts(List<DerivedConcept> derivedConcepts) throws DerivedConceptSaveException {
         try {
             derivedConceptService.saveDerivedConcepts(derivedConcepts);
         } catch (IOException e) {
@@ -44,6 +44,22 @@ public class DerivedConceptController {
             return derivedConceptService.getDerivedConcepts();
         } catch (IOException e) {
             throw new DerivedConceptFetchException(e);
+        }
+    }
+
+    public DerivedConcept getDerivedConceptByUuid(String uuid) throws DerivedConceptFetchException {
+        try {
+            return derivedConceptService.getDerivedConceptByUuid(uuid);
+        } catch (IOException e) {
+            throw new DerivedConceptFetchException(e);
+        }
+    }
+
+    public void deleteDerivedConcepts(List<DerivedConcept> derivedConcepts) throws DerivedConceptDeleteException {
+        try {
+            derivedConceptService.deleteDerivedConcepts(derivedConcepts);
+        } catch (IOException e) {
+            throw new DerivedConceptDeleteException(e);
         }
     }
 
@@ -61,6 +77,12 @@ public class DerivedConceptController {
 
     public static class DerivedConceptFetchException extends Throwable {
         DerivedConceptFetchException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class DerivedConceptDeleteException extends Throwable {
+        DerivedConceptDeleteException(Throwable throwable) {
             super(throwable);
         }
     }

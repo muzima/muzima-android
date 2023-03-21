@@ -762,4 +762,5 @@
     <string name="info_derived_observation_patients_downloaded">Imepakua uchunguzi %d unaotokana na mteja 1</string>
     <string name="info_derived_observations_patient_downloaded">Imepakua uchunguzi 1 unaotokana na wateja %d</string>
     <string name="info_derived_observations_patients_downloaded">Imepakua uchunguzi %d unaotokana na wateja %d</string>
+    <string name="info_derived_concepts_downloaded_deleted">Imepakuliwa dhana %d zinazotokana, Imefutwa dhana %d zinazotokana</string>
 </resources>

@@ -70,6 +70,7 @@ import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DownloadAndDeleteCohortsBasedOnConfigChangesIntent;
 import com.muzima.utils.DownloadAndDeleteConceptAndObservationBasedOnConfigChangesIntent;
+import com.muzima.utils.DownloadAndDeleteDerivedConceptAndObservationBasedOnConfigChangesIntent;
 import com.muzima.utils.DownloadAndDeleteLocationBasedOnConfigChangesIntent;
 import com.muzima.utils.DownloadAndDeleteProvidersBasedOnConfigChangesIntent;
 import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
@@ -357,6 +358,7 @@ public class MuzimaJobScheduler extends JobService {
             new SyncReportDatasetsBackgroundTask().execute();
             new FormTemplateSyncBackgroundTask().execute();
             new MediaCategorySyncBackgroundTask().execute();
+            new DownloadAndDeleteDerivedConceptsBasedOnConfigChangesBackgroundTask().execute();
             if(wasConfigUpdateDone) {
                 if (!muzimaSettingController.isOnlineOnlyModeEnabled())
                     new DownloadAndDeleteCohortsBasedOnConfigChangesBackgroundTask().execute();
@@ -619,6 +621,19 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected Void doInBackground(Void... voids) {
             new DownloadAndDeleteConceptAndObservationBasedOnConfigChangesIntent(getApplicationContext(), configBeforeConfigUpdate).start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private class  DownloadAndDeleteDerivedConceptsBasedOnConfigChangesBackgroundTask extends AsyncTask<Void,Void,Void>{
+        @Override
+        protected Void doInBackground(Void... voids) {
+            new DownloadAndDeleteDerivedConceptAndObservationBasedOnConfigChangesIntent(getApplicationContext(), configBeforeConfigUpdate).start();
             return null;
         }
 

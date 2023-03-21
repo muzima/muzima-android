@@ -775,4 +775,5 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string formatted="false" name="info_derived_observation_patients_downloaded">Downloaded %d derived observations for 1 client</string>
     <string formatted="false" name="info_derived_observations_patient_downloaded">Downloaded 1 derived observation for %d clients</string>
     <string formatted="false" name="info_derived_observations_patients_downloaded">Downloaded %d derived observations for %d clients</string>
+    <string formatted="false" name="info_derived_concepts_downloaded_deleted">Downloaded %d derived concepts, Deleted %d derived concepts</string>
 </resources>
