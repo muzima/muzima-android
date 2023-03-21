@@ -2585,11 +2585,17 @@ public class MuzimaSyncService {
                 }
             }
 
+            List<String> patientUuidsForDownloadedDerivedObs = new ArrayList<>();
+
+            for (DerivedObservation derivedObservation : derivedObservations) {
+                patientUuidsForDownloadedDerivedObs.add(derivedObservation.getPerson().getUuid());
+            }
+
             result[0] = SUCCESS;
             result[1] = derivedConceptsToDownload.size();
             result[2] = derivedConceptsToBeDeleted.size();
             result[3] = derivedObservations.size();
-            result[4] = patients.size();
+            result[4] = patientUuidsForDownloadedDerivedObs.size();
 
         } catch (SetupConfigurationController.SetupConfigurationFetchException e){
             Log.e(getClass().getSimpleName(),"Could not get the active config ",e);
