@@ -1302,7 +1302,7 @@ class HTMLFormDataStore {
             if(derivedObservation.getValueCoded() != null) {
                 derivedCodedConcept.put("uuid",derivedObservation.getValueCoded().getUuid());
                 derivedCodedConcept.put("id",derivedObservation.getValueCoded().getId());
-                derivedCodedConcept.put("name",getDerivedConceptNameFromConceptNamesByLocale(derivedObservation.getValueCoded().getDerivedConceptName(),getApplicationLanguage()));;
+                derivedCodedConcept.put("name",getConceptNameFromConceptNamesByLocale(derivedObservation.getValueCoded().getConceptNames(),getApplicationLanguage()));;
                 json.put("valueCoded",derivedCodedConcept);
             }else{
                 json.put("valueCoded", derivedObservation.getValueCoded());
