@@ -2444,10 +2444,12 @@ public class MuzimaSyncService {
 
             List<String> patientUuidsForDownloadedObs = new ArrayList<>();
             List<DerivedObservation> derivedObservations = new ArrayList<>(derivedObservationController.downloadDerivedObservationsByPatientUuidsAndConceptUuids(
-                    patientUuids, conceptUuidsFromDerivedConcepts, activeSetupConfigUuid, false));
+                    patientUuids, conceptUuidsFromDerivedConcepts, activeSetupConfigUuid));
 
             for (DerivedObservation derivedObservation : derivedObservations) {
-                patientUuidsForDownloadedObs.add(derivedObservation.getPerson().getUuid());
+                if(!patientUuidsForDownloadedObs.contains(derivedObservation.getPerson().getUuid())) {
+                    patientUuidsForDownloadedObs.add(derivedObservation.getPerson().getUuid());
+                }
             }
 
             List<DerivedObservation> voidedObservations = getVoidedDerivedObservations(derivedObservations);
@@ -2526,6 +2528,7 @@ public class MuzimaSyncService {
             List<DerivedConcept> derivedConceptsToBeDeleted = new ArrayList<>();
             List<String> derivedConceptsToDownload= new ArrayList<>();
             List<String> derivedConceptsToUpdate= new ArrayList<>();
+            List<String> allConceptUuids = new ArrayList<>();
 
             //Get derived concepts previously downloaded but not in the updated config
             for(String derivedConceptUuid: derivedConceptUuidsBeforeConfigUpdate){
@@ -2563,26 +2566,21 @@ public class MuzimaSyncService {
                 patientUuids.add(patient.getUuid());
             }
 
-            if(derivedConceptsToUpdate.size()>0 && patientUuids.size()>0) {
-                List<DerivedObservation> derivedObservationsDownloaded = derivedObservationController.downloadDerivedObservationsByPatientUuidsAndConceptUuids(patientUuids, derivedConceptsToUpdate,activeSetupConfig.getUuid(),true);
-
-                if(derivedObservationsDownloaded.size() > 0){
-                    derivedObservations.addAll(derivedObservationsDownloaded);
-                    derivedObservationController.updateDerivedObservations(derivedObservationsDownloaded);
-                }
-            }
-
             if(derivedConceptsToDownload.size()>0) {
                 List<DerivedConcept> derivedConceptList = derivedConceptController.downloadDerivedConceptsByUuid(derivedConceptsToDownload.stream().toArray(String[]::new));
                 if(derivedConceptList.size()>0){
                     derivedConceptController.saveDerivedConcepts(derivedConceptList);
-                    List<DerivedObservation> derivedObservationsDownloaded = derivedObservationController.downloadDerivedObservationsByPatientUuidsAndConceptUuids(patientUuids, derivedConceptsToDownload,activeSetupConfig.getUuid(),false);
-
-                    if(derivedObservationsDownloaded.size() > 0){
-                        derivedObservations.addAll(derivedObservationsDownloaded);
-                        derivedObservationController.saveDerivedObservations(derivedObservationsDownloaded);
-                    }
                 }
+            }
+
+            allConceptUuids.addAll(derivedConceptsToUpdate);
+            allConceptUuids.addAll(derivedConceptsToDownload);
+
+            List<DerivedObservation> derivedObservationsDownloaded = derivedObservationController.downloadDerivedObservationsByPatientUuidsAndConceptUuids(patientUuids, allConceptUuids,activeSetupConfig.getUuid());
+
+            if(derivedObservationsDownloaded.size() > 0){
+                derivedObservations.addAll(derivedObservationsDownloaded);
+                derivedObservationController.saveDerivedObservations(derivedObservationsDownloaded);
             }
 
             List<String> patientUuidsForDownloadedDerivedObs = new ArrayList<>();
@@ -2596,7 +2594,6 @@ public class MuzimaSyncService {
             result[2] = derivedConceptsToBeDeleted.size();
             result[3] = derivedObservations.size();
             result[4] = patientUuidsForDownloadedDerivedObs.size();
-
         } catch (SetupConfigurationController.SetupConfigurationFetchException e){
             Log.e(getClass().getSimpleName(),"Could not get the active config ",e);
         } catch (PatientController.PatientLoadException e) {
