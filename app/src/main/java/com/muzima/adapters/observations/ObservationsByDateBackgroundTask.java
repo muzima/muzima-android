@@ -14,8 +14,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
+import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.ObservationController;
 
 import java.text.SimpleDateFormat;
@@ -36,12 +38,14 @@ class ObservationsByDateBackgroundTask extends AsyncTask<Void, List<String>, Lis
 
     private final ObservationByDateAdapter observationByDateAdapter;
     private final ObservationController observationController;
+    private final DerivedObservationController derivedObservationController;
     private final String patientUuid;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-    public ObservationsByDateBackgroundTask(ObservationByDateAdapter observationByDateAdapter, ObservationController observationController, String patientUuid) {
+    public ObservationsByDateBackgroundTask(ObservationByDateAdapter observationByDateAdapter, ObservationController observationController, String patientUuid, DerivedObservationController derivedObservationController) {
         this.observationByDateAdapter = observationByDateAdapter;
         this.observationController = observationController;
+        this.derivedObservationController = derivedObservationController;
         this.patientUuid = patientUuid;
     }
 
@@ -57,6 +61,15 @@ class ObservationsByDateBackgroundTask extends AsyncTask<Void, List<String>, Lis
         List<String> dates = new ArrayList();
         try {
             List<Observation> observations = observationController.getObservationsByPatient(patientUuid);
+
+            List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByPatientUuid(patientUuid);
+            for (DerivedObservation derivedObservation : derivedObservations) {
+                Observation observation = new Observation();
+                observation.setUuid(derivedObservation.getUuid());
+                observation.setObservationDatetime(derivedObservation.getDateCreated());
+                observations.add(observation);
+            }
+
             Collections.sort(observations, obsDateTimeComparator);
             for (Observation observation : observations) {
                 if (!isCancelled() && observation.getObservationDatetime() != null) {
@@ -70,6 +83,8 @@ class ObservationsByDateBackgroundTask extends AsyncTask<Void, List<String>, Lis
             }
         } catch (ObservationController.LoadObservationException e) {
             Log.w("Observations", String.format("Exception while loading observations for %s."), e);
+        } catch (DerivedObservationController.DerivedObservationFetchException e) {
+            Log.w(getClass().getSimpleName(), "Exception while loading derived observations for %s.", e);
         }
         return dates;
     }

@@ -11,6 +11,7 @@
 package com.muzima.adapters.observations;
 
 import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
+import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
 
 import android.content.Context;
@@ -24,9 +25,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.ConceptName;
+import com.muzima.api.model.DerivedConcept;
+import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Provider;
+import com.muzima.controller.DerivedConceptController;
+import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
@@ -52,16 +60,19 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
     private final String patientUuid;
     private final Context context;
     private final List<ConceptIcons> conceptIcons;
+    final DerivedObservationController derivedObservationController;
+    final DerivedConceptController derivedConceptController;
 
-    public ObsVerticalViewAdapter(String date,
-                                  EncounterController encounterController, ObservationController observationController,
-                                  String applicationLanguage, ProviderController providerController,
-                                  boolean shouldReplaceProviderIdWithNames, String patientUuid, Context context, List<ConceptIcons> conceptIcons) {
+    public ObsVerticalViewAdapter(String date, MuzimaApplication muzimaApplication, String applicationLanguage,
+                                  boolean shouldReplaceProviderIdWithNames, String patientUuid, Context context,
+                                  List<ConceptIcons> conceptIcons) {
         this.date = date;
-        this.encounterController = encounterController;
-        this.observationController = observationController;
+        this.encounterController = muzimaApplication.getEncounterController();
+        this.observationController = muzimaApplication.getObservationController();
         this.applicationLanguage = applicationLanguage;
-        this.providerController = providerController;
+        this.providerController = muzimaApplication.getProviderController();
+        this.derivedObservationController = muzimaApplication.getDerivedObservationController();
+        this.derivedConceptController = muzimaApplication.getDerivedConceptController();
         this.shouldReplaceProviderIdWithNames = shouldReplaceProviderIdWithNames;
         this.patientUuid = patientUuid;
         observationList = getObservationForDate(date);
@@ -111,7 +122,6 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
                     holder.observationValue.setText(observation.getValueText());
                 }
             }
-
         }
 
         holder.observationDate.setText(DateUtils.getTime(observation.getObservationDatetime()));
@@ -156,8 +166,46 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
                     }
                 }
             }
+
+            List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByPatientUuid(patientUuid);
+            for (DerivedObservation derivedObservation : derivedObservations) {
+                if (!observationUuids.contains(derivedObservation.getUuid())) {
+                    if (date.equals(dateFormat.format(derivedObservation.getDateCreated()))) {
+                        observationUuids.add(derivedObservation.getUuid());
+                        Observation observation = new Observation();
+
+                        DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedObservation.getDerivedConcept().getUuid());
+
+                        List<ConceptName> conceptNames = new ArrayList<>();
+                        ConceptName conceptName = new ConceptName();
+                        conceptName.setName(getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage));
+                        conceptName.setLocale(applicationLanguage);
+                        conceptNames.add(conceptName);
+
+                        Concept concept = new Concept();
+                        concept.setUuid(derivedObservation.getDerivedConcept().getUuid());
+                        concept.setConceptNames(conceptNames);
+                        concept.setConceptType(derivedConcept.getConceptType());
+
+                        observation.setUuid(derivedObservation.getUuid());
+                        observation.setPerson(derivedObservation.getPerson());
+                        observation.setConcept(concept);
+                        observation.setValueCoded(derivedObservation.getValueCoded());
+                        observation.setValueDatetime(derivedObservation.getValueDatetime());
+                        observation.setValueNumeric(derivedObservation.getValueNumeric());
+                        observation.setValueText(derivedObservation.getValueText());
+                        observation.setObservationDatetime(derivedObservation.getDateCreated());
+
+                        observationList.add(observation);
+                    }
+                }
+            }
         } catch (ObservationController.LoadObservationException e) {
             Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations ",e);
+        } catch (DerivedObservationController.DerivedObservationFetchException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading Derived Observations ",e);
+        } catch (DerivedConceptController.DerivedConceptFetchException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading Derived Concepts ",e);
         }
         return observationList;
     }
