@@ -1,6 +1,7 @@
 package com.muzima.adapters.observations;
 
 import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
+import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
 
 import android.content.Context;
@@ -19,10 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.ConceptName;
+import com.muzima.api.model.DerivedConcept;
+import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.DerivedConceptController;
+import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.ObsData;
@@ -61,13 +67,23 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
     Map<String, String> conceptGroupMap = new LinkedHashMap<>();
     Map<String, List<Observation>> conceptsObservations = new LinkedHashMap<>();
     private final String applicationLanguage;
-
+    private final DerivedConceptController derivedConceptController;
+    private final DerivedObservationController derivedObservationController;
+    List<DerivedConcept> derivedConcepts = new ArrayList<>();
 
     public List<String> getHeaders() {
         List<String> dates = new ArrayList();
         dates.add("");
         try {
             List<Observation> observations = observationController.getObservationsByPatient(patientUuid);
+            List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByPatientUuid(patientUuid);
+            for (DerivedObservation derivedObservation : derivedObservations) {
+                Observation observation = new Observation();
+                observation.setUuid(derivedObservation.getUuid());
+                observation.setObservationDatetime(derivedObservation.getDateCreated());
+                observations.add(observation);
+            }
+
             Collections.sort(observations, obsDateTimeComparator);
             for (Observation observation : observations) {
                 if (observation.getObservationDatetime() != null) {
@@ -81,6 +97,8 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
             }
         } catch (ObservationController.LoadObservationException e) {
             Log.w("Observations", String.format("Exception while loading observations for %s."), e);
+        } catch (DerivedObservationController.DerivedObservationFetchException e) {
+            Log.w(getClass().getSimpleName(), "Exception while loading derived observations for %s.", e);
         }
         return dates;
     }
@@ -102,6 +120,8 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
         this.patientUuid = patientUuid;
         this.conceptController = app.getConceptController();
         this.observationController = app.getObservationController();
+        this.derivedObservationController = app.getDerivedObservationController();
+        this.derivedConceptController = app.getDerivedConceptController();
         this.context = context;
         shouldReplaceProviderIdWithNames = app.getMuzimaSettingController().isPatientTagGenerationEnabled();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
@@ -170,8 +190,55 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                     }
                 }
             }
+
+            derivedConcepts = derivedConceptController.getDerivedConcepts();
+            for(DerivedConcept derivedConcept : derivedConcepts){
+                if (derivedConcept != null) {
+                    List<Observation> observations = new ArrayList<>();
+                    List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, derivedConcept.getUuid());
+                    for (DerivedObservation derivedObservation : derivedObservations) {
+                        Observation observation = new Observation();
+
+                        List<ConceptName> conceptNames = new ArrayList<>();
+                        ConceptName conceptName = new ConceptName();
+                        conceptName.setName(getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage));
+                        conceptName.setLocale(applicationLanguage);
+                        conceptNames.add(conceptName);
+
+                        Concept concept = new Concept();
+                        concept.setUuid(derivedObservation.getDerivedConcept().getUuid());
+                        concept.setConceptNames(conceptNames);
+                        concept.setConceptType(derivedConcept.getConceptType());
+
+                        observation.setUuid(derivedObservation.getUuid());
+                        observation.setPerson(derivedObservation.getPerson());
+                        observation.setConcept(concept);
+                        observation.setValueCoded(derivedObservation.getValueCoded());
+                        observation.setValueDatetime(derivedObservation.getValueDatetime());
+                        observation.setValueNumeric(derivedObservation.getValueNumeric());
+                        observation.setValueText(derivedObservation.getValueText());
+                        observation.setObservationDatetime(derivedObservation.getDateCreated());
+
+                        observations.add(observation);
+                    }
+
+                    if (observations.size() > 0) {
+                        if(!groups.contains(app.getString(R.string.general_other))) {
+                            obsGroups.add(new ObsGroups(app.getString(R.string.general_other)));
+                            groups.add(app.getString(R.string.general_other));
+                        }
+                        conceptGroupMap.put(derivedConcept.getUuid(),app.getString(R.string.general_other));
+                        conceptsObservations.put(derivedConcept.getUuid(),observations);
+                    }
+                }
+            }
+
         } catch (ConceptController.ConceptFetchException | ObservationController.LoadObservationException | SetupConfigurationController.SetupConfigurationFetchException e) {
             Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations or fetching concepts ",e);
+        } catch (DerivedConceptController.DerivedConceptFetchException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading derived concepts ",e);
+        } catch (DerivedObservationController.DerivedObservationFetchException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading derived observations ",e);
         }
 
         obsGroup = obsGroups.toArray(new ObsGroups[0]);
@@ -237,11 +304,60 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                         conceptUnits.put(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage), units);
                         obsGroup[groups.indexOf(conceptGroupMap.get(pair.getKey()))].list.add(new ObsData(conceptRow.toArray(new String[0])));
                     }
+                }else {
+                    DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(pair.getKey());
+                    if (derivedConcept != null) {
+                        List<String> conceptRow = new ArrayList<>();
+                        List<Observation> observations = pair.getValue();
+                        if (observations.size() > 0) {
+                            conceptWithObservations.add(observations.get(0).getConcept());
+                            for (String dateString : h) {
+                                if (dateString.isEmpty()) {
+                                    conceptRow.add(getConceptNameFromConceptNamesByLocale(observations.get(0).getConcept().getConceptNames(), applicationLanguage));
+                                } else {
+                                    String value = "";
+                                    for (Observation observation : observations) {
+                                        if (dateString.equals(dateFormat.format(observation.getObservationDatetime()))) {
+                                            if (shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID) {
+                                                Provider provider = app.getProviderController().getProviderBySystemId(observation.getValueText());
+                                                if (provider != null) {
+                                                    value = provider.getName();
+                                                } else {
+                                                    value = observation.getValueText();
+                                                }
+                                            } else {
+                                                if (derivedConcept.isNumeric()) {
+                                                    value = String.valueOf(observation.getValueNumeric());
+                                                } else if (derivedConcept.isCoded()) {
+                                                    value = getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
+                                                } else if (derivedConcept.isDatetime()) {
+                                                    if (observation.getValueDatetime() != null)
+                                                        value = dateFormat.format(observation.getValueDatetime());
+                                                } else {
+                                                    value = observation.getValueText();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (!StringUtils.isEmpty(value)) {
+                                        conceptRow.add(value);
+                                    } else {
+                                        conceptRow.add("");
+                                    }
+                                }
+                            }
+                            String units = "";
+                            map.put(getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage), groups.indexOf(conceptGroupMap.get(pair.getKey())));
+                            conceptUnits.put(getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage), units);
+                            obsGroup[groups.indexOf(conceptGroupMap.get(pair.getKey()))].list.add(new ObsData(conceptRow.toArray(new String[0])));
+                        }
+                    }
                 }
-
             }
         } catch (ConceptController.ConceptFetchException e) {
             Log.e(getClass().getSimpleName(),"Exception encountered while fetching concepts ",e);
+        } catch (DerivedConceptController.DerivedConceptFetchException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while getting derived concepts ",e);
         }
     }
 
@@ -305,7 +421,14 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
 
         ((TextView) convertView.findViewById(android.R.id.text1)).setText(getDevice(row).data[column + 1]);
 
-        setClickListenersOnView(getDevice(row).data[column + 1], convertView);
+        try {
+            Concept concept = conceptController.getConceptByName(getDevice(row).data[column + 1]);
+            if(concept!=null) {
+                setClickListenersOnView(getDevice(row).data[column + 1], convertView);
+            }
+        } catch (ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(),"Error while loading concepts");
+        }
 
         return convertView;
     }

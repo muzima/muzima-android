@@ -29,7 +29,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptName;
-import com.muzima.api.model.DerivedConcept;
 import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Provider;
@@ -174,18 +173,16 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
                         observationUuids.add(derivedObservation.getUuid());
                         Observation observation = new Observation();
 
-                        DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedObservation.getDerivedConcept().getUuid());
-
                         List<ConceptName> conceptNames = new ArrayList<>();
                         ConceptName conceptName = new ConceptName();
-                        conceptName.setName(getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage));
+                        conceptName.setName(getDerivedConceptNameFromConceptNamesByLocale(derivedObservation.getDerivedConcept().getDerivedConceptName(), applicationLanguage));
                         conceptName.setLocale(applicationLanguage);
                         conceptNames.add(conceptName);
 
                         Concept concept = new Concept();
                         concept.setUuid(derivedObservation.getDerivedConcept().getUuid());
                         concept.setConceptNames(conceptNames);
-                        concept.setConceptType(derivedConcept.getConceptType());
+                        concept.setConceptType(derivedObservation.getDerivedConcept().getConceptType());
 
                         observation.setUuid(derivedObservation.getUuid());
                         observation.setPerson(derivedObservation.getPerson());
@@ -204,8 +201,6 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
             Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations ",e);
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
             Log.e(getClass().getSimpleName(),"Exception encountered while loading Derived Observations ",e);
-        } catch (DerivedConceptController.DerivedConceptFetchException e) {
-            Log.e(getClass().getSimpleName(),"Exception encountered while loading Derived Concepts ",e);
         }
         return observationList;
     }
