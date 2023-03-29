@@ -699,9 +699,8 @@ public class MuzimaSyncService {
             patients = patientController.getPatientsForCohorts(cohortUuids);
 
             List<String> patientlist = new ArrayList();
-            for (Patient patient : patients) {
-                patientlist.add(patient.getUuid());
-            }
+            patientlist = getPatientUuids(patients);
+
             result = downloadObservationsForPatientsByPatientUUIDs(patientlist, replaceExistingObservation);
             if (result[0] != SUCCESS) {
                 updateProgressDialog(muzimaApplication.getString(R.string.error_encounter_observation_download));
@@ -1070,7 +1069,9 @@ public class MuzimaSyncService {
     List<String> getPatientUuids(List<Patient> patients) {
         List<String> patientUuids = new ArrayList<>();
         for (Patient patient : patients) {
-            patientUuids.add(patient.getUuid());
+            if(!patientUuids.contains(patient.getUuid())) {
+                patientUuids.add(patient.getUuid());
+            }
         }
         return patientUuids;
     }
@@ -1369,7 +1370,9 @@ public class MuzimaSyncService {
                 count++;
                 Log.i(getClass().getSimpleName(), "Downloading relationships for patient " + count + " of " + patientsTotal);
                 updateProgressDialog(muzimaApplication.getString(R.string.info_relationships_download_progress, count, patientsTotal));
-                patientList.add(patient.getUuid());
+                if(!patientList.contains(patient.getUuid())) {
+                    patientList.add(patient.getUuid());
+                }
             }
             result = downloadRelationshipsForPatientsByPatientUUIDs(patientList);
             if (result[0] != SUCCESS) {
@@ -2414,9 +2417,8 @@ public class MuzimaSyncService {
             patients = patientController.getPatientsForCohorts(cohortUuids);
 
             List<String> patientlist = new ArrayList();
-            for (Patient patient : patients) {
-                patientlist.add(patient.getUuid());
-            }
+            patientlist = getPatientUuids(patients);
+
             result = downloadDerivedObservationsForPatientsByPatientUUIDs(patientlist, replaceExistingObservation);
             if (result[0] != SUCCESS) {
                 updateProgressDialog(muzimaApplication.getString(R.string.error_derived_observation_download));
