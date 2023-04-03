@@ -333,6 +333,8 @@ public class DataSyncService extends IntentService {
         if (muzimaSettingController.isPatientTagGenerationEnabled()) {
             muzimaSyncService.updatePatientTags(patientUUIDList);
         }
+
+        muzimaSyncService.downloadDerivedObservationsForPatientsByPatientUUIDs(patientUUIDList, true);
     }
 
     private void downloadPatientsWithObsAndEncounters(Intent broadcastIntent, String[] patientUUIDs) {
