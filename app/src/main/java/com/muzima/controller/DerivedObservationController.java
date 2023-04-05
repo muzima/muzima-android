@@ -13,6 +13,8 @@ import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.SntpService;
 import com.muzima.utils.StringUtils;
 
+import org.apache.lucene.queryParser.ParseException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,6 +95,14 @@ public class DerivedObservationController {
         try {
             return derivedObservationService.getDerivedObservationsByPatientUuid(patientUuid);
         } catch (IOException e) {
+            throw new DerivedObservationFetchException(e);
+        }
+    }
+
+    public List<DerivedObservation> getDerivedObservationsByPatientUuidAndCreationDate(String patientUuid, Date date) throws DerivedObservationFetchException {
+        try {
+            return derivedObservationService.getDerivedObservationsByPatientUuidAndCreationDate(patientUuid, date);
+        } catch (IOException | ParseException e) {
             throw new DerivedObservationFetchException(e);
         }
     }
