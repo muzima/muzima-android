@@ -743,11 +743,5 @@ public class MuzimaJobScheduler extends JobService {
                 }
                 break;
         }
-
-        if(StringUtils.isEmpty(msg)){
-            msg = getString(R.string.info_download_complete, syncStatus) + " Sync type = " + intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
-        }
-
-       //TODO: Save the msg to a database
     }
 }

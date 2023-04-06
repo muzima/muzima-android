@@ -2502,7 +2502,7 @@ public class MuzimaSyncService {
         return voidedDerivedObservations;
     }
 
-    public int[] DownloadAndDeleteDerivedConceptAndObservationBasedOnConfigChanges(SetupConfigurationTemplate configBeforeConfigUpdate){
+    public int[] DownloadAndDeleteDerivedConceptAndObservationBasedOnConfigChanges(SetupConfigurationTemplate configBeforeConfigUpdate, boolean replaceExistingDerivedObservation){
         int result[] = new int[5];
         try {
             android.content.Context context = muzimaApplication.getApplicationContext();
@@ -2582,7 +2582,10 @@ public class MuzimaSyncService {
 
             if(derivedObservationsDownloaded.size() > 0){
                 derivedObservations.addAll(derivedObservationsDownloaded);
-                derivedObservationController.saveDerivedObservations(derivedObservationsDownloaded);
+                if(replaceExistingDerivedObservation)
+                    derivedObservationController.updateDerivedObservations(derivedObservationsDownloaded);
+                else
+                    derivedObservationController.saveDerivedObservations(derivedObservationsDownloaded);
             }
 
             List<String> patientUuidsForDownloadedDerivedObs = new ArrayList<>();

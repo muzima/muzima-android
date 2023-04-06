@@ -155,7 +155,6 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
     }
 
     public List<Observation> getObservationForDate(String date){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         observationList = new ArrayList<>();
         List<String> observationUuids = new ArrayList<>();
         try {

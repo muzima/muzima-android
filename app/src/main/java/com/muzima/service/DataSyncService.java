@@ -273,7 +273,7 @@ public class DataSyncService extends IntentService {
             case DataSyncServiceConstants.SYNC_DERIVED_CONCEPTS_AND_OBS_BASED_ON_CHANGES_IN_CONFIG:
                 updateNotificationMsg(getString(R.string.info_derived_concept_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
-                    int[] result = muzimaSyncService.DownloadAndDeleteDerivedConceptAndObservationBasedOnConfigChanges(configBeforeUpdate);
+                    int[] result = muzimaSyncService.DownloadAndDeleteDerivedConceptAndObservationBasedOnConfigChanges(configBeforeUpdate, true);
                     broadCastMessageForNewDerivedConceptsDownloaded(broadcastIntent, result);
                 }
                 break;
