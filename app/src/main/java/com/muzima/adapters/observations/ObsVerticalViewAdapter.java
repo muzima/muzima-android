@@ -112,7 +112,10 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
             if (observation.getConcept().isCoded())
                 holder.observationValue.setText(getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage));
 
-            if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded()){
+            if (observation.getConcept().isBoolean())
+                holder.observationValue.setText(String.valueOf(observation.isValueBoolean()));
+
+            if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded() && !observation.getConcept().isBoolean()){
                 if(shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID){
                     Provider provider = providerController.getProviderBySystemId(observation.getValueAsString());
                     if(provider != null){
@@ -186,6 +189,7 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
                 observation.setValueDatetime(derivedObservation.getValueDatetime());
                 observation.setValueNumeric(derivedObservation.getValueNumeric());
                 observation.setValueText(derivedObservation.getValueText());
+                observation.setValueBoolean(derivedObservation.isValueBoolean());
                 observation.setObservationDatetime(derivedObservation.getDateCreated());
 
                 observationList.add(observation);

@@ -217,6 +217,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                         observation.setValueDatetime(derivedObservation.getValueDatetime());
                         observation.setValueNumeric(derivedObservation.getValueNumeric());
                         observation.setValueText(derivedObservation.getValueText());
+                        observation.setValueBoolean(derivedObservation.isValueBoolean());
                         observation.setObservationDatetime(derivedObservation.getDateCreated());
 
                         observations.add(observation);
@@ -333,6 +334,8 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                                                 } else if (derivedConcept.isDatetime()) {
                                                     if (observation.getValueDatetime() != null)
                                                         value = dateFormat.format(observation.getValueDatetime());
+                                                } else if(derivedConcept.isBoolean()){
+                                                    value = String.valueOf(observation.isValueBoolean());
                                                 } else {
                                                     value = observation.getValueText();
                                                 }
