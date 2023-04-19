@@ -124,6 +124,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         setupNoDataView(view);
         return view;
     }
+
     @Override
     public void onResume(){
         super.onResume();
@@ -459,14 +460,15 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         List<CohortFilter> filters = event.getFilters();
 
         List<String> cohortUuidList = new ArrayList<>();
-        if (filters.size() > 0) {
-            for (CohortFilter filter : filters) {
-                if (filter.getCohort() != null && !cohortUuidList.contains(filter.getCohort().getUuid())) {
-                    cohortUuidList.add(filter.getCohort().getUuid());
-                }
-            }
-        }
-        patientSearchAdapter.filterByCohorts(cohortUuidList);
+        List<CohortFilter> cohortFilters = new ArrayList<>();
+//        if (filters.size() > 0) {
+//            for (CohortFilter filter : filters) {
+//                if (filter.getCohortWithDerivedConceptFilter().getCohort() != null && !cohortUuidList.contains(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid())) {
+//                    cohortFilters.add(filter);
+//                }
+//            }
+//        }
+        patientSearchAdapter.filterByCohortsWithDerivedConceptFilter(filters);
     }
 
     @Subscribe
@@ -476,20 +478,20 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
     private void updateCohortFilterLabel(CohortFilterActionEvent event) {
         if (event.getFilters().size() == 1) {
-            if (event.getFilters().get(0).getCohort() == null)
+            if (event.getFilters().get(0).getCohortWithDerivedConceptFilter() == null)
                 filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
             else
-                filterLabelTextView.setText(event.getFilters().get(0).getCohort().getName());
+                filterLabelTextView.setText(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getCohort().getName()+" - "+event.getFilters().get(0).getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
         } else if (event.getFilters().isEmpty())
             filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
-        else if (event.getFilters().size() == 1 && event.getFilters().get(0) != null && event.getFilters().get(0).getCohort() == null)
+        else if (event.getFilters().size() == 1 && event.getFilters().get(0) != null && event.getFilters().get(0).getCohortWithDerivedConceptFilter().getCohort() == null)
             filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
         else if (event.getFilters().size() > 1) {
             filterLabelTextView.setText(getResources().getString(R.string.general_filtered_list));
         }
 
         for (CohortFilter filter : event.getFilters()) {
-            if (filter.getCohort() == null && filter.isSelected())
+            if (filter.getCohortWithDerivedConceptFilter().getCohort() == null && filter.isSelected())
                 filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
         }
     }

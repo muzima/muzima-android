@@ -99,6 +99,14 @@ public class DerivedObservationController {
         }
     }
 
+    public List<DerivedObservation> getDerivedObservationByDerivedConceptUuid(String derivedConceptUuid) throws DerivedObservationFetchException {
+        try {
+            return derivedObservationService.getDerivedObservationsByDerivedConceptUuid(derivedConceptUuid);
+        } catch (IOException e) {
+            throw new DerivedObservationFetchException(e);
+        }
+    }
+
     public List<DerivedObservation> getDerivedObservationsByPatientUuidAndCreationDate(String patientUuid, Date date) throws DerivedObservationFetchException {
         try {
             return derivedObservationService.getDerivedObservationsByPatientUuidAndCreationDate(patientUuid, date);
