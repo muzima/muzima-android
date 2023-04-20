@@ -19,9 +19,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.MuzimaSetting;
-import com.muzima.api.model.Observation;
 import com.muzima.controller.CohortController;
-import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.CohortWithDerivedConceptFilter;
@@ -48,36 +46,37 @@ public class LoadDownloadedCohortsTask implements Runnable {
     @Override
     public void run() {
         try {
-            List<Cohort> downloadedCohorts = new ArrayList<>();
             List<CohortWithDerivedConceptFilter> cohortWithDerivedConceptFilters = new ArrayList<>();
             MuzimaSetting muzimaSetting = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
-            DerivedConceptController derivedConceptController = ((MuzimaApplication) context.getApplicationContext()).getDerivedConceptController();
             DerivedObservationController derivedObservationController = ((MuzimaApplication) context.getApplicationContext()).getDerivedObservationController();
             for (Cohort cohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
                     .getCohorts()) {
                 if (((MuzimaApplication) context.getApplicationContext()).getCohortController().isDownloaded(cohort)) {
-                    //String settingValue = muzimaSetting.getValueString();
-                    String derivedConceptUuid = "";
-                    String settingValue = "{ \"f0edf47a-196f-4fd0-9560-ebad8227ed27\" : \"ce620b7d-fe91-4849-ae0e-6d54bcf7a45e\", \"2beecc10-0f84-4f89-a499-fba7d333255b\" : \"ce620b7d-fe91-4849-ae0e-6d54bcf7a45e\"}";
-                    JSONObject jsonObject = new JSONObject(settingValue);
-                    if(jsonObject.has(cohort.getUuid())){
-                        derivedConceptUuid = jsonObject.getString(cohort.getUuid());
-                    }
-                    if(!derivedConceptUuid.isEmpty()){
-                        List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByDerivedConceptUuid(derivedConceptUuid);
-                        if(derivedObservations.size()>0) {
-                            List<String> answerValues = new ArrayList<>();
-                            for(DerivedObservation derivedObservation : derivedObservations) {
-                                if(!answerValues.contains(derivedObservation.getValueAsString())) {
-                                    cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedObservation.getValueAsString()));
-                                    answerValues.add(derivedObservation.getValueAsString());
+                    String settingValue = muzimaSetting.getValueString();
+                    if(settingValue != null) {
+                        String derivedConceptUuid = "";
+                        JSONObject jsonObject = new JSONObject(settingValue);
+                        if (jsonObject.has(cohort.getUuid())) {
+                            derivedConceptUuid = jsonObject.getString(cohort.getUuid());
+                        }
+                        if (!derivedConceptUuid.isEmpty()) {
+                            List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByDerivedConceptUuid(derivedConceptUuid);
+                            if (derivedObservations.size() > 0) {
+                                List<String> answerValues = new ArrayList<>();
+                                for (DerivedObservation derivedObservation : derivedObservations) {
+                                    if (!answerValues.contains(derivedObservation.getValueAsString())) {
+                                        cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedObservation.getValueAsString()));
+                                        answerValues.add(derivedObservation.getValueAsString());
+                                    }
                                 }
+                            } else {
+                                cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
                             }
                         } else {
-                            cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort,StringUtils.EMPTY, StringUtils.EMPTY));
+                            cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
                         }
                     }else{
-                       cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort,StringUtils.EMPTY,StringUtils.EMPTY));
+                        cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
                     }
                 }
             }
@@ -90,13 +89,16 @@ public class LoadDownloadedCohortsTask implements Runnable {
             });
             cohortsLoadedCallback.onCohortsLoaded(cohortWithDerivedConceptFilters);
         } catch (CohortController.CohortFetchException ex) {
-            ex.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered An error while fetching cohorts ",ex);
         } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered An error while fetching muzima settings ",e);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered a JSON Exception ",e);
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered an error while fetching derived observations ",e);
+        } catch (NullPointerException e){
+            Log.e(getClass().getSimpleName(),"Encountered a null pointer exception while fetching filter setting ",e);
+            run();
         }
     }
 
