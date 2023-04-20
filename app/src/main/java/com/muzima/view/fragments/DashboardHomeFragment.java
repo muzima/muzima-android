@@ -140,7 +140,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         recyclerView = view.findViewById(R.id.list);
         Context context = getActivity().getApplicationContext();
         patientSearchAdapter = new PatientsLocalSearchAdapter(context,
-                ((MuzimaApplication) context).getPatientController(), null, getCurrentGPSLocation());
+                ((MuzimaApplication) context).getPatientController(), null, null, getCurrentGPSLocation());
 
         patientSearchAdapter.setBackgroundListQueryTaskListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
@@ -459,15 +459,6 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
         List<CohortFilter> filters = event.getFilters();
 
-        List<String> cohortUuidList = new ArrayList<>();
-        List<CohortFilter> cohortFilters = new ArrayList<>();
-//        if (filters.size() > 0) {
-//            for (CohortFilter filter : filters) {
-//                if (filter.getCohortWithDerivedConceptFilter().getCohort() != null && !cohortUuidList.contains(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid())) {
-//                    cohortFilters.add(filter);
-//                }
-//            }
-//        }
         patientSearchAdapter.filterByCohortsWithDerivedConceptFilter(filters);
     }
 

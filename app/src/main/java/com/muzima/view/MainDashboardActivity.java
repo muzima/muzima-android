@@ -557,7 +557,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                         }
                     }
                 }
-                selectedCohortFilters.add(cohortFilter);
             }
         } else {
             if (cohortFilter.isSelected()) {

@@ -32,7 +32,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
 
 
     public PatientsLocalSearchAdapter(Context context, PatientController patientController,
-                                      List<String> cohortUuids,
+                                      List<String> cohortUuids, List<CohortFilter> filters,
                                       MuzimaGPSLocation currentLocation) {
         super(context,patientController);
         this.patientController = patientController;
@@ -41,6 +41,13 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
         } else {
             this.cohortUuids = new ArrayList<>();
         }
+
+        if (filters != null){
+            this.filters = filters;
+        } else {
+            this.filters = new ArrayList<>();
+        }
+
         setCurrentLocation(currentLocation);
     }
 
@@ -52,7 +59,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
             backgroundQueryTask.execute(cohortUuids.toArray(new String[cohortUuids.size()]));
         } else if(filters.size()>0){
             backgroundQueryTask = new BackgroundQueryTask();
-
+            backgroundQueryTask.execute();
         } else {
             backgroundQueryTask = new BackgroundQueryTask();
             backgroundQueryTask.execute(StringUtils.EMPTY);
@@ -259,7 +266,10 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
         }
 
         private boolean isSearch(String[] params) {
-            return params.length == 2 && SEARCH.equals(params[1]);
+            if(params != null)
+                return params.length == 2 && SEARCH.equals(params[1]);
+            else
+                return false;
         }
 
         @Override
