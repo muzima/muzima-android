@@ -197,37 +197,8 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                         }
                     } else {
                         for (CohortFilter filter : filters) {
-                            int patientCount = patientController.countPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
-                            List<Patient> temp = null;
-                            if (patientCount <= pageSize) {
-                                temp = patientController.getPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
-                                if(patients == null)
-                                    patients = temp;
-                                else
-                                    patients.addAll(temp);
-                                publishProgress(temp);
-                            } else {
-                                int pages = new Double(Math.ceil((float) patientCount / pageSize)).intValue();
-
-                                for (int page = 1; page <= pages; page++) {
-                                    if (!isCancelled()) {
-                                        if (patients == null) {
-                                            patients = patientController.getPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter(), page, pageSize);
-                                            if (patients != null) {
-                                                publishProgress(patients);
-                                            }
-                                        } else {
-                                            temp = patientController.getPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter(), page, pageSize);
-                                            if (temp != null) {
-                                                patients.addAll(temp);
-                                                publishProgress(temp);
-                                            }
-                                        }
-                                    } else {
-                                        break;
-                                    }
-                                }
-                            }
+                                patients = patientController.getPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
+                                publishProgress(patients);
                         }
                     }
                 } else {

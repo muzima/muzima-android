@@ -82,6 +82,7 @@ import java.util.Locale;
 import static android.view.View.VISIBLE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
+import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_DERIVED_CONCEPT_MAP;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_ASSIGNMENT_FORM_UUID_SETTING;
 
@@ -458,8 +459,21 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         updateCohortFilterLabel(event);
 
         List<CohortFilter> filters = event.getFilters();
-
-        patientSearchAdapter.filterByCohortsWithDerivedConceptFilter(filters);
+        try {
+            MuzimaSetting muzimaSetting = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
+            if(muzimaSetting != null && !muzimaSetting.getValueString().isEmpty()) {
+                patientSearchAdapter.filterByCohortsWithDerivedConceptFilter(filters);
+            }else{
+                List<String> cohortUuids = new ArrayList<>();
+                for(CohortFilter cohortFilter : filters){
+                    if(cohortFilter.getCohortWithDerivedConceptFilter() != null && !cohortUuids.contains(cohortFilter.getCohortWithDerivedConceptFilter().getCohort().getUuid()))
+                        cohortUuids.add(cohortFilter.getCohortWithDerivedConceptFilter().getCohort().getUuid());
+                }
+                patientSearchAdapter.filterByCohorts(cohortUuids);
+            }
+        } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(),"Encountered a setting fetch exception ",e);
+        }
     }
 
     @Subscribe
