@@ -113,9 +113,9 @@ public class PatientController {
         }
     }
 
-    public int countPatients(String cohortId) throws PatientLoadException {
+    public int countPatients(String cohortUuid) throws PatientLoadException {
         try {
-            return patientService.countPatients(cohortId);
+            return patientService.countPatients(cohortUuid);
         } catch (IOException e) {
             throw new PatientLoadException(e);
         }
