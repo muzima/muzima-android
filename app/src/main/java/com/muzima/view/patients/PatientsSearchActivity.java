@@ -366,7 +366,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         patientAdapter = new PatientsLocalSearchAdapter(this,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), new ArrayList<String>(){{add(cohortId);}},
-                getCurrentGPSLocation());
+               null ,getCurrentGPSLocation());
 
         patientAdapter.setBackgroundListQueryTaskListener(this);
         patientAdapter.setPatientListClickListener(this);

@@ -10,11 +10,23 @@
 
 package com.muzima.tasks;
 
+import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_DERIVED_CONCEPT_MAP;
+
 import android.content.Context;
+import android.util.Log;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.DerivedObservation;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.DerivedObservationController;
+import com.muzima.controller.MuzimaSettingController;
+import com.muzima.model.CohortWithDerivedConceptFilter;
+import com.muzima.utils.StringUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,26 +46,63 @@ public class LoadDownloadedCohortsTask implements Runnable {
     @Override
     public void run() {
         try {
-            List<Cohort> downloadedCohorts = new ArrayList<>();
-            for (Cohort allCohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
+            List<CohortWithDerivedConceptFilter> cohortWithDerivedConceptFilters = new ArrayList<>();
+            MuzimaSetting muzimaSetting = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
+            DerivedObservationController derivedObservationController = ((MuzimaApplication) context.getApplicationContext()).getDerivedObservationController();
+            for (Cohort cohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
                     .getCohorts()) {
-                if (((MuzimaApplication) context.getApplicationContext()).getCohortController().isDownloaded(allCohort)) {
-                    downloadedCohorts.add(allCohort);
+                if (((MuzimaApplication) context.getApplicationContext()).getCohortController().isDownloaded(cohort)) {
+                    String settingValue = muzimaSetting.getValueString();
+                    if(settingValue != null) {
+                        String derivedConceptUuid = "";
+                        JSONObject jsonObject = new JSONObject(settingValue);
+                        if (jsonObject.has(cohort.getUuid())) {
+                            derivedConceptUuid = jsonObject.getString(cohort.getUuid());
+                        }
+                        if (!derivedConceptUuid.isEmpty()) {
+                            List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByDerivedConceptUuid(derivedConceptUuid);
+                            if (derivedObservations.size() > 0) {
+                                List<String> answerValues = new ArrayList<>();
+                                for (DerivedObservation derivedObservation : derivedObservations) {
+                                    if (!answerValues.contains(derivedObservation.getValueAsString())) {
+                                        cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedObservation.getValueAsString()));
+                                        answerValues.add(derivedObservation.getValueAsString());
+                                    }
+                                }
+                            } else {
+                                cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
+                            }
+                        } else {
+                            cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
+                        }
+                    }else{
+                        cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
+                    }
                 }
             }
-            Collections.sort(downloadedCohorts, new Comparator<Cohort>() {
+
+            Collections.sort(cohortWithDerivedConceptFilters, new Comparator<CohortWithDerivedConceptFilter>() {
                 @Override
-                public int compare(Cohort o1, Cohort o2) {
-                    return o1.getName().compareTo(o2.getName());
+                public int compare(CohortWithDerivedConceptFilter o1, CohortWithDerivedConceptFilter o2) {
+                    return o1.getCohort().getName().compareTo(o2.getCohort().getName());
                 }
             });
-            cohortsLoadedCallback.onCohortsLoaded(downloadedCohorts);
+            cohortsLoadedCallback.onCohortsLoaded(cohortWithDerivedConceptFilters);
         } catch (CohortController.CohortFetchException ex) {
-            ex.printStackTrace();
+            Log.e(getClass().getSimpleName(),"Encountered An error while fetching cohorts ",ex);
+        } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(),"Encountered An error while fetching muzima settings ",e);
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(),"Encountered a JSON Exception ",e);
+        } catch (DerivedObservationController.DerivedObservationFetchException e) {
+            Log.e(getClass().getSimpleName(),"Encountered an error while fetching derived observations ",e);
+        } catch (NullPointerException e){
+            Log.e(getClass().getSimpleName(),"Encountered a null pointer exception while fetching filter setting ",e);
+            run();
         }
     }
 
     public interface OnDownloadedCohortsLoadedCallback {
-        void onCohortsLoaded(List<Cohort> cohorts);
+        void onCohortsLoaded(List<CohortWithDerivedConceptFilter> cohortWithDerivedConceptFilters);
     }
 }

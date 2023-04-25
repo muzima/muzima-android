@@ -16,6 +16,8 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.DerivedConceptController;
+import com.muzima.controller.DerivedObservationController;
 import com.muzima.view.custom.TableFixHeaders;
 import com.muzima.adapters.observations.BaseTableAdapter;
 import com.muzima.adapters.observations.ObservationGroupAdapter;
@@ -49,9 +51,15 @@ public class TabularObsViewFragment extends Fragment implements RecyclerAdapter.
         int conceptCount = 0;
         try {
             obsCount = ((MuzimaApplication) context.getApplicationContext()).getObservationController().getObservationsCountByPatient(patientUuid);
+            obsCount+= ((MuzimaApplication) context.getApplicationContext()).getDerivedObservationController().getDerivedObservationByPatientUuid(patientUuid).size();
             conceptCount = ((MuzimaApplication) context.getApplicationContext()).getConceptController().getConcepts().size();
+            conceptCount+= ((MuzimaApplication) context.getApplicationContext()).getDerivedConceptController().getDerivedConcepts().size();
         } catch (IOException | ConceptController.ConceptFetchException e) {
             Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations ",e);
+        } catch (DerivedObservationController.DerivedObservationFetchException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading Derived Obs ",e);
+        } catch (DerivedConceptController.DerivedConceptFetchException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading Derived concepts ",e);
         }
         if (obsCount == 0) {
             view.findViewById(R.id.no_data_layout).setVisibility(View.VISIBLE);

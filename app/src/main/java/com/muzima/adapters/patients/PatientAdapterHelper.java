@@ -221,31 +221,33 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
 
     private void addTags(ViewHolder holder, Patient patient) {
         PatientTag[] tags = patient.getTags();
-        if (tags.length > 0) {
+        if(tags!=null) {
+            if (tags.length > 0) {
 //            holder.tagsScroller.setVisibility(View.VISIBLE);
-            LayoutInflater layoutInflater = LayoutInflater.from(context);
+                LayoutInflater layoutInflater = LayoutInflater.from(context);
 
-            //add update tags
-            for (int i = 0; i < tags.length; i++) {
-                TextView textView = null;
-                if (holder.tags.size() <= i) {
-                    textView = newTextView(layoutInflater);
-                    holder.addTag(textView);
+                //add update tags
+                for (int i = 0; i < tags.length; i++) {
+                    TextView textView = null;
+                    if (holder.tags.size() <= i) {
+                        textView = newTextView(layoutInflater);
+                        holder.addTag(textView);
+                    }
+                    textView = holder.tags.get(i);
+                    textView.setBackgroundColor(patientController.getTagColor(tags[i].getUuid()));
+                    textView.setText(tags[i].getName());
                 }
-                textView = holder.tags.get(i);
-                textView.setBackgroundColor(patientController.getTagColor(tags[i].getUuid()));
-                textView.setText(tags[i].getName());
-            }
 
-            //remove existing extra tags which are present because of recycled list view
-            if (tags.length < holder.tags.size()) {
-                List<TextView> tagsToRemove = new ArrayList<>();
-                for (int i = tags.length; i < holder.tags.size(); i++) {
-                    tagsToRemove.add(holder.tags.get(i));
+                //remove existing extra tags which are present because of recycled list view
+                if (tags.length < holder.tags.size()) {
+                    List<TextView> tagsToRemove = new ArrayList<>();
+                    for (int i = tags.length; i < holder.tags.size(); i++) {
+                        tagsToRemove.add(holder.tags.get(i));
+                    }
+                    holder.removeTags(tagsToRemove);
                 }
-                holder.removeTags(tagsToRemove);
             }
-        } else {
+        }else {
 //            holder.tagsScroller.setVisibility(View.INVISIBLE);
         }
     }

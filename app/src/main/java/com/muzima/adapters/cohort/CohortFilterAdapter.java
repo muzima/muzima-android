@@ -44,10 +44,14 @@ public class CohortFilterAdapter extends RecyclerView.Adapter<CohortFilterAdapte
     @Override
     public void onBindViewHolder(@NonNull CohortFilterAdapter.ViewHolder holder, int position) {
         CohortFilter cohort = cohortList.get(position);
-        if (cohort.getCohort() == null) {
+        if (cohort.getCohortWithDerivedConceptFilter() == null || cohort.getCohortWithDerivedConceptFilter().getCohort() == null) {
             holder.checkBox.setText(context.getResources().getString(R.string.general_all_clients));
         } else {
-            holder.checkBox.setText(cohort.getCohort().getName());
+            if(!cohort.getCohortWithDerivedConceptFilter().getDerivedObservationFilter().isEmpty()) {
+                holder.checkBox.setText(cohort.getCohortWithDerivedConceptFilter().getCohort().getName() + " - "+cohort.getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
+            }else{
+                holder.checkBox.setText(cohort.getCohortWithDerivedConceptFilter().getCohort().getName());
+            }
         }
         holder.checkBox.setChecked(cohort.isSelected());
         if (cohort.isSelected())

@@ -42,6 +42,8 @@ import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.AppReleaseController;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.DerivedConceptController;
+import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FCMTokenController;
 import com.muzima.controller.FormController;
@@ -121,6 +123,8 @@ public class MuzimaApplication extends MultiDexApplication {
     private FCMTokenController fcmTokenController;
     private ReportDatasetController reportDatasetController;
     private AppUsageLogsController appUsageLogsController;
+    private DerivedConceptController derivedConceptController;
+    private DerivedObservationController derivedObservationController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -698,6 +702,30 @@ public class MuzimaApplication extends MultiDexApplication {
             }
         }
         return mediaController;
+    }
+
+    public DerivedConceptController getDerivedConceptController(){
+        if(derivedConceptController == null){
+            try{
+                derivedConceptController = new DerivedConceptController(muzimaContext.getDerivedConceptService());
+            }catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        return derivedConceptController;
+    }
+
+    public DerivedObservationController getDerivedObservationController(){
+        if(derivedObservationController == null){
+            try{
+                derivedObservationController = new DerivedObservationController(muzimaContext.getDerivedObservationService(), muzimaContext.getLastSyncTimeService(), getSntpService());
+            }catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        return derivedObservationController;
     }
 
     public String getApplicationVersion() {

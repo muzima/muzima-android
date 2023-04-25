@@ -124,7 +124,7 @@ public class DateUtils {
     }
 
     public static String getTime(Date date) {
-        SimpleDateFormat formattedDate = new SimpleDateFormat("HH:ss");
+        SimpleDateFormat formattedDate = new SimpleDateFormat("HH:mm");
         return formattedDate.format(date);
     }
 

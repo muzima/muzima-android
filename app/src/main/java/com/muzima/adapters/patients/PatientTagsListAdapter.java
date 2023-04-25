@@ -46,7 +46,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
     public PatientTagsListAdapter(Context context, int textViewResourceId,PatientController patientController) {
         super(context, textViewResourceId);
         this.patientController = patientController;
-        patientsLocalSearchAdapter = new PatientsLocalSearchAdapter(context, patientController, null, null);
+        patientsLocalSearchAdapter = new PatientsLocalSearchAdapter(context, patientController, null,null, null);
     }
 
     public void onTagsChanged() {
