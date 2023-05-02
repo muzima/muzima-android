@@ -25,6 +25,7 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.CohortWithDerivedConceptFilter;
 import com.muzima.utils.StringUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,24 +56,51 @@ public class LoadDownloadedCohortsTask implements Runnable {
                     String settingValue = muzimaSetting.getValueString();
                     if(settingValue != null) {
                         String derivedConceptUuid = "";
+                        Object derivedConceptObject = null;
                         JSONObject jsonObject = new JSONObject(settingValue);
                         if (jsonObject.has(cohort.getUuid())) {
-                            derivedConceptUuid = jsonObject.getString(cohort.getUuid());
-                        }
-                        if (!derivedConceptUuid.isEmpty()) {
-                            List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByDerivedConceptUuid(derivedConceptUuid);
-                            if (derivedObservations.size() > 0) {
-                                List<String> answerValues = new ArrayList<>();
-                                for (DerivedObservation derivedObservation : derivedObservations) {
-                                    if (!answerValues.contains(derivedObservation.getValueAsString())) {
-                                        cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedObservation.getValueAsString()));
-                                        answerValues.add(derivedObservation.getValueAsString());
+                            derivedConceptObject = jsonObject.get(cohort.getUuid());
+                            if (derivedConceptObject != null && derivedConceptObject instanceof JSONArray) {
+                                JSONArray jsonArray = (JSONArray) derivedConceptObject;
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    derivedConceptUuid = jsonArray.get(i).toString();
+                                    if (!derivedConceptUuid.isEmpty()) {
+                                        List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByDerivedConceptUuid(derivedConceptUuid);
+                                        if (derivedObservations.size() > 0) {
+                                            List<String> answerValues = new ArrayList<>();
+                                            for (DerivedObservation derivedObservation : derivedObservations) {
+                                                if (!answerValues.contains(derivedObservation.getValueAsString())) {
+                                                    cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedObservation.getValueAsString()));
+                                                    answerValues.add(derivedObservation.getValueAsString());
+                                                }
+                                            }
+                                        } else {
+                                            cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
+                                        }
+                                    } else {
+                                        cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
                                     }
                                 }
                             } else {
-                                cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
+                                derivedConceptUuid = derivedConceptObject.toString();
+                                if (!derivedConceptUuid.isEmpty()) {
+                                    List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByDerivedConceptUuid(derivedConceptUuid);
+                                    if (derivedObservations.size() > 0) {
+                                        List<String> answerValues = new ArrayList<>();
+                                        for (DerivedObservation derivedObservation : derivedObservations) {
+                                            if (!answerValues.contains(derivedObservation.getValueAsString())) {
+                                                cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedObservation.getValueAsString()));
+                                                answerValues.add(derivedObservation.getValueAsString());
+                                            }
+                                        }
+                                    } else {
+                                        cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
+                                    }
+                                } else {
+                                    cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
+                                }
                             }
-                        } else {
+                        }else{
                             cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
                         }
                     }else{
