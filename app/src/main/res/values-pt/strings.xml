@@ -752,4 +752,18 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
     <string name="general_art_start_date">Data início TARV:</string>
+    <string name="info_derived_concept_download">Baixando Conceitos Derivados</string>
+    <string name="info_derived_concept_not_downloaded">Não baixou nenhum conceito derivado</string>
+    <string name="info_derived_concept_downloaded">1 conceito derivado baixado</string>
+    <string name="info_derived_concepts_downloaded">%d conceitos derivados baixados</string>
+    <string name="error_derived_concept_download">Não foi possível baixar os conceitos derivados</string>
+    <string name="info_derived_observation_download">Baixando observações derivadas</string>
+    <string name="error_derived_observation_download">Não foi possível baixar observações derivadas para clientes</string>
+    <string name="info_derived_observations_download_progress">Observações derivadas baixadas para o cliente %d de %d.</string>
+    <string name="info_derived_observation_patient_not_downloaded">Não baixou nenhuma observação derivada</string>
+    <string name="info_derived_observation_patient_downloaded">1 observação derivada baixada para 1 cliente</string>
+    <string name="info_derived_observation_patients_downloaded">%d observações derivadas baixadas para 1 cliente</string>
+    <string name="info_derived_observations_patient_downloaded">1 observação derivada baixada para %d clientes</string>
+    <string name="info_derived_observations_patients_downloaded">%d observações derivadas baixadas para %d clientes</string>
+    <string name="info_derived_concepts_downloaded_deleted">%d conceitos derivados baixados, %d conceitos derivados excluídos</string>
 </resources>

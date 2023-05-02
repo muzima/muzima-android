@@ -20,6 +20,7 @@ import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
@@ -48,19 +49,22 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationsByType
     final ObservationController observationController;
     final ProviderController providerController;
     final SetupConfigurationController setupConfigurationController;
+    final DerivedObservationController derivedObservationController;
     private final Boolean shouldReplaceProviderIdWithNames;
     private final List<ConceptIcons> conceptIcons;
+    private final MuzimaApplication muzimaApplication;
 
     public ObservationByDateAdapter(Context context, String patientUuid) {
         this.context = context;
         this.patientUuid = patientUuid;
-        MuzimaApplication app = (MuzimaApplication) context.getApplicationContext();
-        this.encounterController = app.getEncounterController();
-        this.conceptController = app.getConceptController();
-        this.observationController = app.getObservationController();
-        this.providerController = app.getProviderController();
-        this.setupConfigurationController = app.getSetupConfigurationController();
-        this.shouldReplaceProviderIdWithNames = app.getMuzimaSettingController().isPatientTagGenerationEnabled();
+        this.muzimaApplication = (MuzimaApplication) context.getApplicationContext();
+        this.encounterController = muzimaApplication.getEncounterController();
+        this.conceptController = muzimaApplication.getConceptController();
+        this.observationController = muzimaApplication.getObservationController();
+        this.providerController = muzimaApplication.getProviderController();
+        this.setupConfigurationController = muzimaApplication.getSetupConfigurationController();
+        this.derivedObservationController = muzimaApplication.getDerivedObservationController();
+        this.shouldReplaceProviderIdWithNames = muzimaApplication.getMuzimaSettingController().isPatientTagGenerationEnabled();
         dates = new ArrayList<>();
         this.conceptIcons = getConceptIcons();
     }
@@ -92,8 +96,8 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationsByType
         }
 
         holder.obsHorizontalListRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        ObsVerticalViewAdapter observationsListAdapter = new ObsVerticalViewAdapter(date, encounterController,
-                observationController,  applicationLanguage, providerController, shouldReplaceProviderIdWithNames, patientUuid, context, conceptIcons);
+        ObsVerticalViewAdapter observationsListAdapter = new ObsVerticalViewAdapter(date, muzimaApplication,
+                applicationLanguage, shouldReplaceProviderIdWithNames, patientUuid, context, conceptIcons);
 
         holder.obsHorizontalListRecyclerView.setAdapter(observationsListAdapter);
     }
@@ -110,7 +114,7 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationsByType
     @Override
     public void reloadData() {
         cancelBackgroundQueryTask();
-        AsyncTask<Void, ?, ?> backgroundQueryTask = new ObservationsByDateBackgroundTask(this, observationController, patientUuid);
+        AsyncTask<Void, ?, ?> backgroundQueryTask = new ObservationsByDateBackgroundTask(this, observationController, patientUuid, derivedObservationController);
         BackgroundTaskHelper.executeInParallel(backgroundQueryTask);
         setRunningBackgroundQueryTask(backgroundQueryTask);
     }

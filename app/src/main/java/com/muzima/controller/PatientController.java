@@ -113,9 +113,34 @@ public class PatientController {
         }
     }
 
-    public int countPatients(String cohortId) throws PatientLoadException {
+    public int countPatients(String cohortUuid) throws PatientLoadException {
         try {
-            return patientService.countPatients(cohortId);
+            return patientService.countPatients(cohortUuid);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
+
+    public int countPatients(String cohortUuid, String derivedConceptUuid, String obsValue) throws PatientLoadException {
+        try {
+            return patientService.countPatients(cohortUuid, derivedConceptUuid, obsValue);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
+    public List<Patient> getPatients(String cohortUuid, String derivedConceptUuid, String obsValue) throws PatientLoadException {
+        try {
+            return patientService.getPatients(cohortUuid, derivedConceptUuid, obsValue);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
+    public List<Patient> getPatients(String cohortUuid, String derivedConceptUuid, String obsValue,int page, int pageSize) throws PatientLoadException {
+        try {
+            return patientService.getPatients(cohortUuid, derivedConceptUuid, obsValue, page,pageSize);
         } catch (IOException e) {
             throw new PatientLoadException(e);
         }

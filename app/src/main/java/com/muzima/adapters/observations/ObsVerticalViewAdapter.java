@@ -11,6 +11,7 @@
 package com.muzima.adapters.observations;
 
 import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
+import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
 
 import android.content.Context;
@@ -24,9 +25,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.ConceptName;
+import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Provider;
+import com.muzima.controller.DerivedConceptController;
+import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
@@ -37,8 +44,11 @@ import com.muzima.utils.StringUtils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalViewAdapter.ViewHolder> {
@@ -52,16 +62,19 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
     private final String patientUuid;
     private final Context context;
     private final List<ConceptIcons> conceptIcons;
+    final DerivedObservationController derivedObservationController;
+    final DerivedConceptController derivedConceptController;
 
-    public ObsVerticalViewAdapter(String date,
-                                  EncounterController encounterController, ObservationController observationController,
-                                  String applicationLanguage, ProviderController providerController,
-                                  boolean shouldReplaceProviderIdWithNames, String patientUuid, Context context, List<ConceptIcons> conceptIcons) {
+    public ObsVerticalViewAdapter(String date, MuzimaApplication muzimaApplication, String applicationLanguage,
+                                  boolean shouldReplaceProviderIdWithNames, String patientUuid, Context context,
+                                  List<ConceptIcons> conceptIcons) {
         this.date = date;
-        this.encounterController = encounterController;
-        this.observationController = observationController;
+        this.encounterController = muzimaApplication.getEncounterController();
+        this.observationController = muzimaApplication.getObservationController();
         this.applicationLanguage = applicationLanguage;
-        this.providerController = providerController;
+        this.providerController = muzimaApplication.getProviderController();
+        this.derivedObservationController = muzimaApplication.getDerivedObservationController();
+        this.derivedConceptController = muzimaApplication.getDerivedConceptController();
         this.shouldReplaceProviderIdWithNames = shouldReplaceProviderIdWithNames;
         this.patientUuid = patientUuid;
         observationList = getObservationForDate(date);
@@ -99,7 +112,10 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
             if (observation.getConcept().isCoded())
                 holder.observationValue.setText(getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage));
 
-            if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded()){
+            if (observation.getConcept().isBoolean())
+                holder.observationValue.setText(String.valueOf(observation.isValueBoolean()));
+
+            if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded() && !observation.getConcept().isBoolean()){
                 if(shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID){
                     Provider provider = providerController.getProviderBySystemId(observation.getValueAsString());
                     if(provider != null){
@@ -111,7 +127,6 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
                     holder.observationValue.setText(observation.getValueText());
                 }
             }
-
         }
 
         holder.observationDate.setText(DateUtils.getTime(observation.getObservationDatetime()));
@@ -143,21 +158,48 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
     }
 
     public List<Observation> getObservationForDate(String date){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         observationList = new ArrayList<>();
         List<String> observationUuids = new ArrayList<>();
         try {
-            List<Observation> observations = observationController.getObservationsByPatient(patientUuid);
-            for (Observation observation : observations){
-                if(!observationUuids.contains(observation.getUuid())) {
-                    if (date.equals(dateFormat.format(observation.getObservationDatetime()))) {
-                        observationUuids.add(observation.getUuid());
-                        observationList.add(observation);
-                    }
-                }
+            List<Observation> observations = observationController.getObservationsByPatientAndObservationDatetime(patientUuid, DateUtils.parse(date));
+            Collections.sort(observations, obsDateTimeComparator);
+            observationList.addAll(observations);
+
+            List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationsByPatientUuidAndCreationDate(patientUuid,DateUtils.parse(date));
+            Collections.sort(derivedObservations, derivedObsDateTimeComparator);
+            for (DerivedObservation derivedObservation : derivedObservations) {
+                observationUuids.add(derivedObservation.getUuid());
+                Observation observation = new Observation();
+
+                List<ConceptName> conceptNames = new ArrayList<>();
+                ConceptName conceptName = new ConceptName();
+                conceptName.setName(getDerivedConceptNameFromConceptNamesByLocale(derivedObservation.getDerivedConcept().getDerivedConceptName(), applicationLanguage));
+                conceptName.setLocale(applicationLanguage);
+                conceptNames.add(conceptName);
+
+                Concept concept = new Concept();
+                concept.setUuid(derivedObservation.getDerivedConcept().getUuid());
+                concept.setConceptNames(conceptNames);
+                concept.setConceptType(derivedObservation.getDerivedConcept().getConceptType());
+
+                observation.setUuid(derivedObservation.getUuid());
+                observation.setPerson(derivedObservation.getPerson());
+                observation.setConcept(concept);
+                observation.setValueCoded(derivedObservation.getValueCoded());
+                observation.setValueDatetime(derivedObservation.getValueDatetime());
+                observation.setValueNumeric(derivedObservation.getValueNumeric());
+                observation.setValueText(derivedObservation.getValueText());
+                observation.setValueBoolean(derivedObservation.isValueBoolean());
+                observation.setObservationDatetime(derivedObservation.getDateCreated());
+
+                observationList.add(observation);
             }
         } catch (ObservationController.LoadObservationException e) {
             Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations ",e);
+        } catch (DerivedObservationController.DerivedObservationFetchException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while loading Derived Observations ",e);
+        } catch (ParseException e) {
+            Log.e(getClass().getSimpleName(),"Exception encountered while Parsing data ",e);
         }
         return observationList;
     }
@@ -171,4 +213,22 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
         }
         return icon;
     }
+
+    private final Comparator<Observation> obsDateTimeComparator = (lhs, rhs) -> {
+        if (lhs.getObservationDatetime()==null)
+            return -1;
+        if (rhs.getObservationDatetime()==null)
+            return 1;
+        return -(lhs.getObservationDatetime()
+                .compareTo(rhs.getObservationDatetime()));
+    };
+
+    private final Comparator<DerivedObservation> derivedObsDateTimeComparator = (lhs, rhs) -> {
+        if (lhs.getDateCreated()==null)
+            return -1;
+        if (rhs.getDateCreated()==null)
+            return 1;
+        return -(lhs.getDateCreated()
+                .compareTo(rhs.getDateCreated()));
+    };
 }

@@ -744,4 +744,18 @@
     <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
     <string name="general_art_start_date">एआरटी प्रारंभ तिथि:</string>
+    <string name="info_derived_concept_download">व्युत्पन्न अवधारणाओं को डाउनलोड करना</string>
+    <string name="info_derived_concept_not_downloaded">किसी व्युत्पन्न अवधारणा को डाउनलोड नहीं किया</string>
+    <string name="info_derived_concept_downloaded">डाउनलोड की गई 1 व्युत्पन्न अवधारणा</string>
+    <string name="info_derived_concepts_downloaded">%d डिराइव्ड अवधारणाएं डाउनलोड की गईं</string>
+    <string name="error_derived_concept_download">व्युत्पन्न अवधारणाओं को डाउनलोड नहीं किया जा सका</string>
+    <string name="info_derived_observation_download">व्युत्पन्न टिप्पणियों को डाउनलोड करना</string>
+    <string name="error_derived_observation_download">ग्राहकों के लिए व्युत्पन्न टिप्पणियों को डाउनलोड नहीं किया जा सका</string>
+    <string name="info_derived_observations_download_progress">%d के क्लाइंट %d के लिए व्युत्पन्न प्रेक्षण डाउनलोड किए गए।</string>
+    <string name="info_derived_observation_patient_not_downloaded">कोई व्युत्पन्न अवलोकन डाउनलोड नहीं किया</string>
+    <string name="info_derived_observation_patient_downloaded">1 ग्राहक के लिए 1 व्युत्पन्न अवलोकन डाउनलोड किया गया</string>
+    <string name="info_derived_observation_patients_downloaded">1 क्लाइंट के लिए %d व्युत्पन्न प्रेक्षण डाउनलोड किए गए</string>
+    <string name="info_derived_observations_patient_downloaded">%d क्लाइंट के लिए 1 डिराइव्ड ऑब्जर्वेशन डाउनलोड किया गया</string>
+    <string name="info_derived_observations_patients_downloaded">%d ग्राहकों के लिए %d व्युत्पन्न प्रेक्षणों को डाउनलोड किया</string>
+    <string name="info_derived_concepts_downloaded_deleted">डाउनलोड की गई %d व्युत्पन्न अवधारणाएँ, %d व्युत्पन्न अवधारणाएँ हटाई गईं</string>
 </resources>

@@ -3,6 +3,8 @@ package com.muzima.utils;
 import android.util.Log;
 
 import com.muzima.api.model.ConceptName;
+import com.muzima.api.model.DerivedConcept;
+import com.muzima.api.model.DerivedConceptName;
 
 import java.util.List;
 
@@ -45,5 +47,33 @@ public class ConceptUtils {
         }
 
         return anyOtherConcept;
+    }
+
+    public static String getDerivedConceptNameFromConceptNamesByLocale(List<DerivedConceptName> derivedConceptNames, String preferredLocale){
+
+        if(derivedConceptNames.size()==1){
+            return derivedConceptNames.get(0).getFullName();
+        }
+
+        String derivedConceptNameForLocale = null;
+        String otherDerivedConceptName = null;
+
+        for(DerivedConceptName derivedConceptName : derivedConceptNames){
+            if(derivedConceptName.getLocale().equals(preferredLocale) ){
+                derivedConceptNameForLocale = derivedConceptName.getFullName();
+            }
+
+            if(!derivedConceptName.getLocale().equals(preferredLocale)){
+                otherDerivedConceptName = derivedConceptName.getFullName();
+            }
+        }
+
+        if(derivedConceptNameForLocale != null){
+            return derivedConceptNameForLocale;
+        }else if(otherDerivedConceptName != null){
+            return otherDerivedConceptName;
+        }
+
+        return otherDerivedConceptName;
     }
 }

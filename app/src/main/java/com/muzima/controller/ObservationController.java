@@ -207,6 +207,16 @@ public class ObservationController {
         }
     }
 
+    public List<Observation> getObservationsByPatientAndObservationDatetime(String patientUuid, Date date)  throws LoadObservationException{
+        try {
+            List<Observation> observations = observationService.getObservationsByPatientAndObservationDatetime(patientUuid, date);
+            inflateConcepts(observations);
+            return observations;
+        } catch (IOException e) {
+            throw new LoadObservationException(e);
+        }
+    }
+
     private Encounters groupByEncounters(List<Observation> observationsByPatient) throws IOException {
         inflateConcepts(observationsByPatient);
         inflateEncounters(observationsByPatient);

@@ -14,6 +14,7 @@ import android.content.Context;
 import android.util.Log;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
+import com.muzima.model.CohortFilter;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.Constants;
@@ -26,11 +27,12 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
     private static final String SEARCH = "search";
     private final PatientController patientController;
     private final List<String> cohortUuids;
+    private List<CohortFilter> filters;
     private MuzimaAsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
 
 
     public PatientsLocalSearchAdapter(Context context, PatientController patientController,
-                                      List<String> cohortUuids,
+                                      List<String> cohortUuids, List<CohortFilter> filters,
                                       MuzimaGPSLocation currentLocation) {
         super(context,patientController);
         this.patientController = patientController;
@@ -39,6 +41,13 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
         } else {
             this.cohortUuids = new ArrayList<>();
         }
+
+        if (filters != null){
+            this.filters = filters;
+        } else {
+            this.filters = new ArrayList<>();
+        }
+
         setCurrentLocation(currentLocation);
     }
 
@@ -48,6 +57,9 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
         if(!cohortUuids.isEmpty() ) {
             backgroundQueryTask = new BackgroundQueryTask();
             backgroundQueryTask.execute(cohortUuids.toArray(new String[cohortUuids.size()]));
+        } else if(filters.size()>0){
+            backgroundQueryTask = new BackgroundQueryTask();
+            backgroundQueryTask.execute();
         } else {
             backgroundQueryTask = new BackgroundQueryTask();
             backgroundQueryTask.execute(StringUtils.EMPTY);
@@ -70,6 +82,14 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
         this.cohortUuids.addAll(cohortUuids);
         reloadData();
     }
+
+    public void filterByCohortsWithDerivedConceptFilter(List<CohortFilter> cohortFilters) {
+        cancelBackgroundTask();
+        this.filters.clear();
+        this.filters.addAll(cohortFilters);
+        reloadData();
+    }
+
 
 
     public void cancelBackgroundTask(){
@@ -148,7 +168,69 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                             }
                         }
                     }
+                } else if(filters.size()>0) {
+                    if(filters.size()==1 && filters.get(0).getCohortWithDerivedConceptFilter()==null){
+                        int patientCount = patientController.countAllPatients();
+                        if (patientCount <= pageSize) {
+                            patients = patientController.getAllPatients();
+                        } else {
+                            int pages = new Double(Math.ceil((float) patientCount / pageSize)).intValue();
+                            List<Patient> temp = null;
+                            for (int page = 1; page <= pages; page++) {
+                                if (!isCancelled()) {
+                                    if (patients == null) {
+                                        patients = patientController.getPatients(page, pageSize);
+                                        if (patients != null) {
+                                            publishProgress(patients);
+                                        }
+                                    } else {
+                                        temp = patientController.getPatients(page, pageSize);
+                                        if (temp != null) {
+                                            patients.addAll(temp);
+                                            publishProgress(temp);
+                                        }
+                                    }
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        for(CohortFilter filter : filters) {
+                            int patientCount = patientController.countPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid());
+                            List<Patient> temp = null;
+                            if (patientCount <= pageSize) {
+                                temp = patientController.getPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
+                                if(patients == null)
+                                    patients = temp;
+                                else
+                                    patients.addAll(temp);
+                                publishProgress(temp);
+                            } else {
+                                int pages = new Double(Math.ceil((float) patientCount / pageSize)).intValue();
 
+                                for (int page = 1; page <= pages; page++) {
+                                    if (!isCancelled()) {
+                                        if (patients == null) {
+                                            patients = patientController.getPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter(),page, pageSize);
+
+                                            if (patients != null) {
+                                                publishProgress(patients);
+                                            }
+                                        } else {
+                                            temp = patientController.getPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter(),page, pageSize);
+                                            if (temp != null) {
+                                                patients.addAll(temp);
+                                                publishProgress(temp);
+                                            }
+                                        }
+                                    } else {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 } else {
                     int patientCount = patientController.countAllPatients();
                     if(patientCount <= pageSize){
@@ -185,7 +267,10 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
         }
 
         private boolean isSearch(String[] params) {
-            return params.length == 2 && SEARCH.equals(params[1]);
+            if(params != null)
+                return params.length == 2 && SEARCH.equals(params[1]);
+            else
+                return false;
         }
 
         @Override
