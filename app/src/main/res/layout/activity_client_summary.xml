@@ -50,7 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:layout_width="70dp"
+                        android:layout_width="150dp"
                         android:id="@+id/address"
                         android:layout_height="wrap_content"
                         android:text="@string/general_address"
@@ -72,9 +72,9 @@
                     android:id="@+id/phone_number_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp">
+                    android:layout_marginTop="5dp">
                     <TextView
-                        android:layout_width="70dp"
+                        android:layout_width="150dp"
                         android:id="@+id/telno"
                         android:layout_height="wrap_content"
                         android:text="@string/general_phone_number"
@@ -94,9 +94,9 @@
                     android:id="@+id/date_of_art_start_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp">
+                    android:layout_marginTop="5dp">
                     <TextView
-                        android:layout_width="70dp"
+                        android:layout_width="150dp"
                         android:id="@+id/art_start"
                         android:layout_height="wrap_content"
                         android:text="@string/general_art_start_date"

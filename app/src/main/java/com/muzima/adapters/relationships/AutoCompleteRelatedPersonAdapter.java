@@ -24,6 +24,7 @@ import com.muzima.domain.Credentials;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.relationship.RelationshipsListActivity;
 
 import java.util.ArrayList;
@@ -76,7 +77,23 @@ public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Pe
 
     @Override
     protected String getOptionName(Person person) {
-        return person.getDisplayName()+", "+ person.getGender()+", "+context.getString(R.string.general_years, String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(person.getBirthdate())));
+        return person.getDisplayName();
+    }
+
+    @Override
+    protected String getOptionNameExtra(Person person) {
+        String personName = "";
+        if(!StringUtils.isEmpty(person.getGender())){
+            personName= person.getGender();
+        }
+        if(!StringUtils.isEmpty(String.valueOf(person.getBirthdate()))){
+            if(StringUtils.isEmpty(personName))
+                personName = context.getString(R.string.general_years, String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(person.getBirthdate())));
+            else
+                personName = personName.concat(", ").concat(context.getString(R.string.general_years, String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(person.getBirthdate()))));
+        }
+
+        return personName;
     }
 
     public void setSearchRemote(boolean searchRemote) {

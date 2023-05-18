@@ -45,5 +45,10 @@ public class AutoCompleteCohortPrefixAdapter extends AutoCompleteBaseAdapter<Coh
     }
 
     @Override
+    protected String getOptionNameExtra(Cohort option) {
+        return "";
+    }
+
+    @Override
     protected void filterComplete(int count) {}
 }
