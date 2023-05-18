@@ -43,5 +43,10 @@ public class AutoCompleteProviderAdapter extends AutoCompleteBaseAdapter<Provide
     }
 
     @Override
+    protected String getOptionNameExtra(Provider option) {
+        return "";
+    }
+
+    @Override
     protected void filterComplete(int count) {}
 }

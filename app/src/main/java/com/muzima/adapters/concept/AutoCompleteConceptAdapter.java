@@ -45,5 +45,10 @@ public class AutoCompleteConceptAdapter extends AutoCompleteBaseAdapter<Concept>
     }
 
     @Override
+    protected String getOptionNameExtra(Concept option) {
+        return "";
+    }
+
+    @Override
     protected void filterComplete(int count) {}
 }
