@@ -24,6 +24,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaSyncService;
+import com.muzima.utils.StringUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -147,6 +148,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
 
     private class ViewHolder {
         TextView name;
+        TextView name_extra;
     }
 
     @NonNull
@@ -158,15 +160,22 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
             convertView = layoutInflater.inflate(R.layout.item_option_autocomplete, parent, false);
             holder = new ViewHolder();
             holder.name = convertView.findViewById(R.id.option_autocomplete_name);
+            holder.name_extra = convertView.findViewById(R.id.option_autocomplete_name_extra);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
         T option = getItem(position);
         holder.name.setText(getOptionName(option));
+        if(!StringUtils.isEmpty(getOptionNameExtra(option))) {
+            holder.name_extra.setVisibility(View.VISIBLE);
+            holder.name_extra.setText(getOptionNameExtra(option));
+        }
         return convertView;
     }
 
     protected abstract String getOptionName(T option);
+
+    protected abstract String getOptionNameExtra(T option);
 
     protected abstract void filterComplete(int count);
 

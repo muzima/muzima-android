@@ -880,7 +880,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 ViewGroup.LayoutParams volunteerLayoutParam = new LinearLayout.LayoutParams(
                   LinearLayout.LayoutParams.MATCH_PARENT,
                   0,
-                  20
+                  22
                 );
 
                 volunteerLayout.setLayoutParams(volunteerLayoutParam);
@@ -927,7 +927,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 ViewGroup.LayoutParams volunteerLayoutParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0,
-                        20
+                        22
                 );
 
                 volunteerLayout.setLayoutParams(volunteerLayoutParam);
@@ -981,7 +981,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 ViewGroup.LayoutParams volunteerLayoutParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0,
-                        20
+                        22
                 );
 
                 volunteerLayout.setLayoutParams(volunteerLayoutParam);

@@ -2434,6 +2434,10 @@ public class MuzimaSyncService {
         int[] result = new int[4];
         try {
             List<String> conceptUuidsFromDerivedConcepts = getConceptUuidsFromDerivedConcepts(derivedConceptController.getDerivedConcepts());
+            List<List<String>> slicedPatientUuids = split(patientUuids);
+            List<List<String>> slicedDerivedConceptUuids = split(conceptUuidsFromDerivedConcepts);
+            Set<String> patientUuidsForDownloadedObs = new HashSet<>();
+
             String activeSetupConfigUuid = null;
             try {
                 SetupConfigurationTemplate setupConfigurationTemplate = setupConfigurationController.getActiveSetupConfigurationTemplate();
@@ -2444,28 +2448,35 @@ public class MuzimaSyncService {
                 Log.e(getClass().getSimpleName(), "Could not obtain active setup config", e);
             }
 
-            List<String> patientUuidsForDownloadedObs = new ArrayList<>();
-            List<DerivedObservation> derivedObservations = new ArrayList<>(derivedObservationController.downloadDerivedObservationsByPatientUuidsAndConceptUuids(
-                    patientUuids, conceptUuidsFromDerivedConcepts, activeSetupConfigUuid));
+            for (List<String> slicedPatientUuid : slicedPatientUuids) {
+                for (List<String> slicedDerivedConceptUuid : slicedDerivedConceptUuids) {
 
-            for (DerivedObservation derivedObservation : derivedObservations) {
-                if(!patientUuidsForDownloadedObs.contains(derivedObservation.getPerson().getUuid())) {
-                    patientUuidsForDownloadedObs.add(derivedObservation.getPerson().getUuid());
+                    List<DerivedObservation> derivedObservations = new ArrayList<>(derivedObservationController.downloadDerivedObservationsByPatientUuidsAndConceptUuids(
+                            slicedPatientUuid, slicedDerivedConceptUuid, activeSetupConfigUuid));
+
+                    for (DerivedObservation derivedObservation : derivedObservations) {
+                        if(!patientUuidsForDownloadedObs.contains(derivedObservation.getPerson().getUuid())) {
+                            patientUuidsForDownloadedObs.add(derivedObservation.getPerson().getUuid());
+                        }
+                    }
+
+                    updateProgressDialog(muzimaApplication.getString(R.string.info_derived_observations_download_progress, patientUuidsForDownloadedObs.size(), patientUuids.size()));
+
+                    List<DerivedObservation> voidedObservations = getVoidedDerivedObservations(derivedObservations);
+                    derivedObservationController.deleteDerivedObservations(voidedObservations);
+                    derivedObservations.removeAll(voidedObservations);
+
+                    if (replaceExistingObservations) {
+                        derivedObservationController.updateDerivedObservations(derivedObservations);
+                    } else {
+                        derivedObservationController.saveDerivedObservations(derivedObservations);
+                    }
+
+                    result[1] += derivedObservations.size();
+                    result[2] += voidedObservations.size();
                 }
             }
 
-            List<DerivedObservation> voidedObservations = getVoidedDerivedObservations(derivedObservations);
-            derivedObservationController.deleteDerivedObservations(voidedObservations);
-            derivedObservations.removeAll(voidedObservations);
-
-            if (replaceExistingObservations) {
-                derivedObservationController.updateDerivedObservations(derivedObservations);
-            } else {
-                derivedObservationController.saveDerivedObservations(derivedObservations);
-            }
-
-            result[1] = derivedObservations.size();
-            result[2] = voidedObservations.size();
             result[3] = patientUuidsForDownloadedObs.size();
             result[0] = SUCCESS;
         } catch (DerivedObservationController.DerivedObservationDownloadException e) {
