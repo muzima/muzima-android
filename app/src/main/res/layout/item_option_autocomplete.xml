@@ -22,4 +22,12 @@
               android:paddingBottom="2dp"
               android:background="@drawable/list_multi_selector_blue"/>
 
+    <TextView android:id="@+id/option_autocomplete_name_extra"
+        style="@style/ListDescription"
+        android:textStyle="italic"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:visibility="gone"
+        android:background="@drawable/list_multi_selector_blue"/>
+
 </LinearLayout>
