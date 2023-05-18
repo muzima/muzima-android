@@ -758,4 +758,6 @@
     <string name="info_derived_observations_patient_downloaded">%d क्लाइंट के लिए 1 डिराइव्ड ऑब्जर्वेशन डाउनलोड किया गया</string>
     <string name="info_derived_observations_patients_downloaded">%d ग्राहकों के लिए %d व्युत्पन्न प्रेक्षणों को डाउनलोड किया</string>
     <string name="info_derived_concepts_downloaded_deleted">डाउनलोड की गई %d व्युत्पन्न अवधारणाएँ, %d व्युत्पन्न अवधारणाएँ हटाई गईं</string>
+    <string name="general_last_encounter_details">अंतिम मुलाकात का विवरण</string>
+    <string name="last_encounter_volunteer_name">स्वयंसेवक का नाम:</string>
 </resources>
