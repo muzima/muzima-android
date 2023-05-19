@@ -287,7 +287,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             DerivedConceptController derivedConceptController = ((MuzimaApplication) getApplicationContext()).getDerivedConceptController();
             DerivedObservationController derivedObservationController = ((MuzimaApplication) getApplicationContext()).getDerivedObservationController();
 
-            // 31ba65ef-4d23-414c-bb9a-1aefce4c2d5c
             DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid("c1d2e451-c50b-48a3-9bc6-7229ee832875");
             if(derivedConcept!=null) {
                 List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptId(patientUuid, derivedConcept.getId());
@@ -710,7 +709,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
         if (!isFGHCustomClientSummaryEnabled) {
             dadosDeConsentimento.setVisibility(View.GONE);
-            //detalhesDaUltimaVisita.setVisibility(View.GONE);
             artInitDateLayout.setVisibility(View.GONE);
         }
 
