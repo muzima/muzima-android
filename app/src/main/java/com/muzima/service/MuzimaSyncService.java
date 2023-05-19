@@ -2589,27 +2589,35 @@ public class MuzimaSyncService {
             allConceptUuids.addAll(derivedConceptsToUpdate);
             allConceptUuids.addAll(derivedConceptsToDownload);
 
-            List<DerivedObservation> derivedObservationsDownloaded = derivedObservationController.downloadDerivedObservationsByPatientUuidsAndConceptUuids(patientUuids, allConceptUuids,activeSetupConfig.getUuid());
+            if (allConceptUuids.size() > 0) {
+                List<DerivedObservation> derivedObservationsDownloaded = derivedObservationController.downloadDerivedObservationsByPatientUuidsAndConceptUuids(patientUuids, allConceptUuids, activeSetupConfig.getUuid());
 
-            if(derivedObservationsDownloaded.size() > 0){
-                derivedObservations.addAll(derivedObservationsDownloaded);
-                if(replaceExistingDerivedObservation)
-                    derivedObservationController.updateDerivedObservations(derivedObservationsDownloaded);
-                else
-                    derivedObservationController.saveDerivedObservations(derivedObservationsDownloaded);
+                if (derivedObservationsDownloaded.size() > 0) {
+                    derivedObservations.addAll(derivedObservationsDownloaded);
+                    if (replaceExistingDerivedObservation)
+                        derivedObservationController.updateDerivedObservations(derivedObservationsDownloaded);
+                    else
+                        derivedObservationController.saveDerivedObservations(derivedObservationsDownloaded);
+                }
+
+                List<String> patientUuidsForDownloadedDerivedObs = new ArrayList<>();
+
+                for (DerivedObservation derivedObservation : derivedObservations) {
+                    patientUuidsForDownloadedDerivedObs.add(derivedObservation.getPerson().getUuid());
+                }
+
+                result[0] = SUCCESS;
+                result[1] = derivedConceptsToDownload.size();
+                result[2] = derivedConceptsToBeDeleted.size();
+                result[3] = derivedObservations.size();
+                result[4] = patientUuidsForDownloadedDerivedObs.size();
+            } else {
+                result[0] = SUCCESS;
+                result[1] = 0;
+                result[2] = 0;
+                result[3] = 0;
+                result[4] = 0;
             }
-
-            List<String> patientUuidsForDownloadedDerivedObs = new ArrayList<>();
-
-            for (DerivedObservation derivedObservation : derivedObservations) {
-                patientUuidsForDownloadedDerivedObs.add(derivedObservation.getPerson().getUuid());
-            }
-
-            result[0] = SUCCESS;
-            result[1] = derivedConceptsToDownload.size();
-            result[2] = derivedConceptsToBeDeleted.size();
-            result[3] = derivedObservations.size();
-            result[4] = patientUuidsForDownloadedDerivedObs.size();
         } catch (SetupConfigurationController.SetupConfigurationFetchException e){
             Log.e(getClass().getSimpleName(),"Could not get the active config ",e);
         } catch (PatientController.PatientLoadException e) {
