@@ -763,4 +763,6 @@
     <string name="info_derived_observations_patient_downloaded">Imepakua uchunguzi 1 unaotokana na wateja %d</string>
     <string name="info_derived_observations_patients_downloaded">Imepakua uchunguzi %d unaotokana na wateja %d</string>
     <string name="info_derived_concepts_downloaded_deleted">Imepakuliwa dhana %d zinazotokana, Imefutwa dhana %d zinazotokana</string>
+    <string name="general_last_encounter_details">Maelezo ya mwisho ya kukutana</string>
+    <string name="last_encounter_volunteer_name">Jina la kujitolea:</string>
 </resources>

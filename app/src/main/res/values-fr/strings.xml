@@ -768,4 +768,6 @@
     <string name="info_derived_observations_patient_downloaded">1 observation dérivée téléchargée pour %d clients</string>
     <string name="info_derived_observations_patients_downloaded">%d observations dérivées téléchargées pour %d clients</string>
     <string name="info_derived_concepts_downloaded_deleted">%d concepts dérivés téléchargés, %d concepts dérivés supprimés</string>
+    <string name="general_last_encounter_details">Détails de la dernière recontre</string>
+    <string name="last_encounter_volunteer_name">Nom du bénévole:</string>
 </resources>

@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -40,20 +41,24 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
 import com.muzima.adapters.relationships.RelationshipsAdapter;
+import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
-import com.muzima.api.model.Patient;
-import com.muzima.api.model.Observation;
-import com.muzima.api.model.ConceptName;
+import com.muzima.api.model.DerivedObservation;
+import com.muzima.api.model.DerivedConcept;
 import com.muzima.api.model.Concept;
-import com.muzima.api.model.Encounter;
+import com.muzima.api.model.Observation;
 import com.muzima.api.model.EncounterType;
+import com.muzima.api.model.Encounter;
+import com.muzima.api.model.ConceptName;
+import com.muzima.controller.EncounterController;
+import com.muzima.controller.DerivedConceptController;
+import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.FormController;
-import com.muzima.controller.EncounterController;
-import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.model.location.MuzimaGPSLocation;
@@ -135,10 +140,11 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private TextView tptEndDate;
     private TextView artStartDate;
 
+    private TextView lastVolunteerName;
+
     private String applicationLanguage;
     private ConceptController conceptController;
     private ObservationController observationController;
-    private EncounterController encounterController;
     private FormController formController;
     private boolean isFGHCustomClientSummaryEnabled;
 
@@ -292,8 +298,23 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
             conceptController = ((MuzimaApplication) getApplicationContext()).getConceptController();
             observationController = ((MuzimaApplication) getApplicationContext()).getObservationController();
-            encounterController =  ((MuzimaApplication) getApplicationContext()).getEncounterController();
+            EncounterController encounterController =  ((MuzimaApplication) getApplicationContext()).getEncounterController();
             formController =  ((MuzimaApplication) getApplicationContext()).getFormController();
+            DerivedConceptController derivedConceptController = ((MuzimaApplication) getApplicationContext()).getDerivedConceptController();
+            DerivedObservationController derivedObservationController = ((MuzimaApplication) getApplicationContext()).getDerivedObservationController();
+
+            DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid("c1d2e451-c50b-48a3-9bc6-7229ee832875");
+            if(derivedConcept!=null) {
+                List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptId(patientUuid, derivedConcept.getId());
+                if (!derivedObservations.isEmpty()) {
+                    DerivedObservation derivedObservation = derivedObservations.get(0);
+                    lastVolunteerName.setText(derivedObservation.getValueText());
+                } else {
+                    lastVolunteerName.setText("-----------------");
+                }
+            } else {
+                lastVolunteerName.setText("-----------------");
+            }
 
             artStartDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 1190));
             testingSector.setText(getObsByPatientUuidAndConceptId(patientUuid, 23877));
@@ -466,6 +487,10 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             Log.e(getClass().getSimpleName(), "Exception encountered while loading patients ", e);
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "JSONException encountered ", e);
+        } catch (DerivedConceptController.DerivedConceptFetchException e) {
+            throw new RuntimeException(e);
+        } catch (DerivedObservationController.DerivedObservationFetchException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -689,9 +714,11 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         tptStartDate = findViewById(R.id.tpt_start_date_value);
         tptEndDate = findViewById(R.id.tpt_end_date_value);
         artStartDate = findViewById(R.id.art_start_date);
+        lastVolunteerName = findViewById(R.id.last_encounter_volunteer_name_value);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         LinearLayout dadosDeConsentimento = findViewById(R.id.dados_de_consentimento);
+        LinearLayout detalhesDaUltimaVisita = findViewById(R.id.general_last_encounter_details);
         RelativeLayout addressLayout = findViewById(R.id.address_layout);
         RelativeLayout phoneNumberLayout = findViewById(R.id.phone_number_layout);
         RelativeLayout artInitDateLayout = findViewById(R.id.date_of_art_start_layout);
@@ -740,6 +767,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     public void initializeView() {
         LinearLayout historicalData = findViewById(R.id.historical_data);
         LinearLayout dataCollection = findViewById(R.id.data_collection);
+        LinearLayout volunteerLayout = findViewById(R.id.general_last_encounter_details);
         LinearLayout relationshipList = findViewById(R.id.relationships_listing);
         LinearLayout confidantLayout = findViewById(R.id.confidant_details_layout);
         LinearLayout clinicalInfoLayout = findViewById(R.id.clinical_information_layout);
@@ -759,6 +787,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         View nextClinicalConsultDateSeparator = findViewById(R.id.next_clinical_consultation_date_separator);
         View tptStartDateSeparator = findViewById(R.id.tpt_start_date_separator);
         View tptEndDateSeparator = findViewById(R.id.tpt_end_date_separator);
+        View general_last_encounter_details_separator = findViewById(R.id.general_last_encounter_details_separator);
+        View general_last_encounter_details_textView_separator = findViewById(R.id.general_last_encounter_details_textView_separator);
 
         boolean isContactListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isContactListingOnPatientSummaryEnabled();
         boolean isObsListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isObsListingOnPatientSummaryEnabled();
@@ -858,10 +888,21 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 nextClinicalConsultDateSeparator.setVisibility(View.VISIBLE);
                 tptStartDateSeparator.setVisibility(View.VISIBLE);
                 tptEndDateSeparator.setVisibility(View.VISIBLE);
+                general_last_encounter_details_separator.setVisibility(View.VISIBLE);
+                general_last_encounter_details_textView_separator.setVisibility(View.VISIBLE);
+
+                ViewGroup.LayoutParams volunteerLayoutParam = new LinearLayout.LayoutParams(
+                  LinearLayout.LayoutParams.MATCH_PARENT,
+                  0,
+                  22
+                );
+
+                volunteerLayout.setLayoutParams(volunteerLayoutParam);
+
                 LinearLayout.LayoutParams confidantParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0,
-                        100
+                        80
                 );
                 confidantLayout.setLayoutParams(confidantParam);
 
@@ -894,6 +935,17 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 nextClinicalConsultDateSeparator.setVisibility(View.VISIBLE);
                 tptStartDateSeparator.setVisibility(View.VISIBLE);
                 tptEndDateSeparator.setVisibility(View.VISIBLE);
+                general_last_encounter_details_separator.setVisibility(View.VISIBLE);
+                general_last_encounter_details_textView_separator.setVisibility(View.VISIBLE);
+
+                ViewGroup.LayoutParams volunteerLayoutParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        22
+                );
+
+                volunteerLayout.setLayoutParams(volunteerLayoutParam);
+
                 LinearLayout.LayoutParams confidantParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0,
@@ -904,7 +956,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 LinearLayout.LayoutParams clinicalInfoParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0,
-                        100
+                        80
                 );
                 clinicalInfoLayout.setLayoutParams(clinicalInfoParam);
 
@@ -930,6 +982,9 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 nextClinicalConsultDateSeparator.setVisibility(View.VISIBLE);
                 tptStartDateSeparator.setVisibility(View.VISIBLE);
                 tptEndDateSeparator.setVisibility(View.VISIBLE);
+                general_last_encounter_details_separator.setVisibility(View.VISIBLE);
+                general_last_encounter_details_textView_separator.setVisibility(View.VISIBLE);
+
                 LinearLayout.LayoutParams confidantParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0,
@@ -937,10 +992,18 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 );
                 confidantLayout.setLayoutParams(confidantParam);
 
+                ViewGroup.LayoutParams volunteerLayoutParam = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        0,
+                        22
+                );
+
+                volunteerLayout.setLayoutParams(volunteerLayoutParam);
+
                 LinearLayout.LayoutParams clinicalInfoParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0,
-                        65
+                        35
                 );
                 clinicalInfoLayout.setLayoutParams(clinicalInfoParam);
 

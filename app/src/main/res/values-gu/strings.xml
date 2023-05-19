@@ -759,4 +759,6 @@
     <string name="info_derived_observations_patient_downloaded">%d ક્લાયન્ટ્સ માટે 1 વ્યુત્પન્ન અવલોકન ડાઉનલોડ કર્યું</string>
     <string name="info_derived_observations_patients_downloaded">%d ક્લાયન્ટ્સ માટે %d વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા</string>
     <string name="info_derived_concepts_downloaded_deleted">%d વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કર્યા, %d વ્યુત્પન્ન ખ્યાલો કાઢી નાખ્યા</string>
+    <string name="general_last_encounter_details">છેલ્લી મુલાકાતની વિગતો</string>
+    <string name="last_encounter_volunteer_name">સ્વયંસેવકનું નામ:</string>
 </resources>
