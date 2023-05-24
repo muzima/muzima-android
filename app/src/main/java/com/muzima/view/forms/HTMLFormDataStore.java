@@ -1248,6 +1248,31 @@ class HTMLFormDataStore {
         return createDerivedObsJsonArray(derivedObservations);
     }
 
+    @JavascriptInterface
+    public String getInterventionsDerivedObservationByPatientUuid(String patientUuid) throws JSONException, DerivedConceptController.DerivedConceptFetchException {
+        List<DerivedObservation> derivedObservations = new ArrayList<>();
+        List<DerivedObservation> derivedObservationList = new ArrayList<DerivedObservation>(0);
+        try {
+            derivedObservations = derivedObservationController.getDerivedObservationByPatientUuid(patientUuid);
+            Collections.sort(derivedObservations, derivedObservationDateTimeComparator);
+            List<String> interventionsDerivedConceptUuids = new ArrayList<String>(0);
+            interventionsDerivedConceptUuids.add("4b479a6c-4276-45a1-b785-ecbc7dc59ff1");
+            interventionsDerivedConceptUuids.add("1bd47ba9-b6ff-4b4c-ba26-f5b86498d738");
+            interventionsDerivedConceptUuids.add("9e928864-b7d2-445d-9856-cb7c9a0632dd");
+            interventionsDerivedConceptUuids.add("46e6c352-bddb-4191-8d1e-40380aa1a346");
+            interventionsDerivedConceptUuids.add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
+            for (DerivedObservation derivedObservation: derivedObservations) {
+                if(interventionsDerivedConceptUuids.contains(derivedObservation.getDerivedConcept().getUuid())){
+                    derivedObservationList.add(derivedObservation);
+                }
+            }
+            Collections.sort(derivedObservationList, derivedObservationDateTimeComparator);
+        } catch (DerivedObservationController.DerivedObservationFetchException e) {
+            Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations",e);
+        }
+        return createDerivedObsJsonArray(derivedObservationList);
+    }
+
     private final Comparator<DerivedObservation> derivedObservationDateTimeComparator = new Comparator<DerivedObservation>() {
         @Override
         public int compare(DerivedObservation lhs, DerivedObservation rhs) {
