@@ -303,7 +303,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             DerivedConceptController derivedConceptController = ((MuzimaApplication) getApplicationContext()).getDerivedConceptController();
             DerivedObservationController derivedObservationController = ((MuzimaApplication) getApplicationContext()).getDerivedObservationController();
 
-            DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid("c1d2e451-c50b-48a3-9bc6-7229ee832875");
+            DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid("e6e48883-0c7f-41e7-abc9-bab5134d9863");
             if(derivedConcept!=null) {
                 List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptId(patientUuid, derivedConcept.getId());
                 if (!derivedObservations.isEmpty()) {
