@@ -158,7 +158,7 @@ public class RelationshipViewUtil {
             arrayAdapter.add(callingActivity.getString(R.string.info_update_person_demographics));
         }
 
-        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+        builderSingle.setNegativeButton(R.string.general_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
