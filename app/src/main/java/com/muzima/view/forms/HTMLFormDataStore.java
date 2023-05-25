@@ -1251,26 +1251,18 @@ class HTMLFormDataStore {
     @JavascriptInterface
     public String getInterventionsDerivedObservationByPatientUuid(String patientUuid) throws JSONException, DerivedConceptController.DerivedConceptFetchException {
         List<DerivedObservation> derivedObservations = new ArrayList<>();
-        List<DerivedObservation> derivedObservationList = new ArrayList<DerivedObservation>(0);
         try {
             derivedObservations = derivedObservationController.getDerivedObservationByPatientUuid(patientUuid);
+            derivedObservations.addAll(derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "4b479a6c-4276-45a1-b785-ecbc7dc59ff1"));
+            derivedObservations.addAll(derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "1bd47ba9-b6ff-4b4c-ba26-f5b86498d738"));
+            derivedObservations.addAll(derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "9e928864-b7d2-445d-9856-cb7c9a0632dd"));
+            derivedObservations.addAll(derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "46e6c352-bddb-4191-8d1e-40380aa1a346"));
+            derivedObservations.addAll(derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "379e2aa5-b750-4b08-af13-cd0b9795eca7"));
             Collections.sort(derivedObservations, derivedObservationDateTimeComparator);
-            List<String> interventionsDerivedConceptUuids = new ArrayList<String>(0);
-            interventionsDerivedConceptUuids.add("4b479a6c-4276-45a1-b785-ecbc7dc59ff1");
-            interventionsDerivedConceptUuids.add("1bd47ba9-b6ff-4b4c-ba26-f5b86498d738");
-            interventionsDerivedConceptUuids.add("9e928864-b7d2-445d-9856-cb7c9a0632dd");
-            interventionsDerivedConceptUuids.add("46e6c352-bddb-4191-8d1e-40380aa1a346");
-            interventionsDerivedConceptUuids.add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
-            for (DerivedObservation derivedObservation: derivedObservations) {
-                if(interventionsDerivedConceptUuids.contains(derivedObservation.getDerivedConcept().getUuid())){
-                    derivedObservationList.add(derivedObservation);
-                }
-            }
-            Collections.sort(derivedObservationList, derivedObservationDateTimeComparator);
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
             Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations",e);
         }
-        return createDerivedObsJsonArray(derivedObservationList);
+        return createDerivedObsJsonArray(derivedObservations);
     }
 
     private final Comparator<DerivedObservation> derivedObservationDateTimeComparator = new Comparator<DerivedObservation>() {
@@ -1279,6 +1271,34 @@ class HTMLFormDataStore {
             return -lhs.getDateCreated().compareTo(rhs.getDateCreated());
         }
     };
+
+    @JavascriptInterface
+    public String getLastVisitAttemptNumberAfterLastTriangulation(String patientUuid, int conceptId) throws ConceptController.ConceptFetchException, JSONException {
+        List<Observation> observations = new ArrayList<Observation>(0);
+        try {
+            List<Observation> lastTriangulations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 1912);
+            Collections.sort(lastTriangulations, observationDateTimeComparator);
+            Observation lastTriangulation = null;
+            for (Observation observation: lastTriangulations) {
+              if("ALLOCATION_PARENT_OBS".equalsIgnoreCase(observation.getComment())){
+                  lastTriangulation = observation;
+                  break;
+              }
+            }
+
+            if(lastTriangulation!=null) {
+                List<Observation> lastAttempts = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+                Collections.sort(lastAttempts, observationDateTimeComparator);
+                Observation lastAttempt = lastAttempts.get(0);
+                if (lastAttempt.getObservationDatetime().after(lastTriangulation.getObservationDatetime())) {
+                    observations.add(lastAttempt);
+                }
+            }
+        }  catch (ObservationController.LoadObservationException | RuntimeException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+        return createObsJsonArray(observations);
+    }
 
     private String createDerivedObsJsonArray(List<DerivedObservation> derivedObservations) throws JSONException, DerivedConceptController.DerivedConceptFetchException {
         int i = 0;
