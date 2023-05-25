@@ -1,5 +1,7 @@
 package com.muzima.utils;
 
+import static com.muzima.util.Constants.ServerSettings.ALLOW_PATIENT_RELATIVES_DISPLAY;
+import static com.muzima.util.Constants.ServerSettings.SUPPORTED_RELATIONSHIP_TYPES;
 import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 
 import android.app.Activity;
@@ -20,22 +22,31 @@ import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.Concept;
+import com.muzima.api.model.MuzimaSetting;
+import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
-import com.muzima.api.model.Role;
+import com.muzima.controller.ConceptController;
+import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.RelationshipController;
 import com.muzima.view.forms.PersonDemographicsUpdateFormsActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
-import com.muzima.view.relationship.RelationshipsListActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
 public class RelationshipViewUtil {
+    private static String TAG = "RelationshipViewUtil";
     private static Person selectedRelatedPerson;
     private static Patient patients;
     private static Activity callingActivity;
@@ -199,4 +210,124 @@ public class RelationshipViewUtil {
             }
         };
     }
+
+    public static List<Person> getDisplayableRelatedPersonsList(String patientUuid, MuzimaApplication mApplication) {
+        List<Relationship> relationships = null;
+        List<Person> relatedPersons = new ArrayList<>();
+        try {
+            List<String> supportedRelationshipIdList = new ArrayList<>();
+            MuzimaSetting setting = mApplication.getMuzimaSettingController().getSettingByProperty(SUPPORTED_RELATIONSHIP_TYPES);
+            if(setting != null && !StringUtils.isEmpty(setting.getValueString())) {
+                String supportedRelationshipIdString = setting.getValueString();
+                supportedRelationshipIdList = Arrays.asList(supportedRelationshipIdString.split(","));
+            }
+            relationships = mApplication.getRelationshipController().getRelationshipsForPerson(patientUuid);
+
+            if(!supportedRelationshipIdList.isEmpty()){
+                List<Relationship> filteredRelationships = new ArrayList<>();
+                for(Relationship relationship:relationships){
+                    if(supportedRelationshipIdList.contains(String.valueOf(relationship.getRelationshipType().getId()))){
+                        filteredRelationships.add(relationship);
+                    }
+                }
+                relationships = filteredRelationships;
+            }
+
+            MuzimaSetting allowPatientRelativesDisplaySetting = mApplication.getMuzimaSettingController().getSettingByProperty(ALLOW_PATIENT_RELATIVES_DISPLAY);
+            if(!allowPatientRelativesDisplaySetting.getValueBoolean()){
+                for(Relationship relationship:relationships){
+                    Person relatedPerson = null;
+                    boolean isRelatedPersonB = false;
+                    if(StringUtils.equals(relationship.getPersonA().getUuid(),patientUuid)) {
+                        relatedPerson = relationship.getPersonB();
+                        isRelatedPersonB = true;
+                    } else {
+                        relatedPerson = relationship.getPersonA();
+                    }
+
+                    try {
+                        if (mApplication.getPatientController().getPatientByUuid(relatedPerson.getUuid()) == null) {
+                            //remove hiv positive contacts
+                            if(relationship.getRelationshipType().getUuid().equals("8d91a210-c2cc-11de-8d13-0010c6dffd0f") && isRelatedPersonB){
+                                boolean isEligible = false;
+                                if(relatedPerson.getBirthdate() == null){
+                                    isEligible = true;
+                                } else {
+                                    int age = DateUtils.calculateAge(relatedPerson.getBirthdate());
+                                    if(age<15)
+                                        isEligible = true;
+                                }
+
+                                boolean isHivTestNegativeOrPositive = isHivTestNegativeOrPositive(relatedPerson.getUuid(), 23779,
+                                        mApplication.getObservationController(), mApplication.getConceptController());
+                                if(!isHivTestNegativeOrPositive && !relatedPerson.isVoided() && isEligible){
+                                    relatedPersons.add(relatedPerson);
+                                }
+                            }else {
+                                boolean isHivTestPositive = isContactHivPositive(relatedPerson.getUuid(),
+                                        23779, mApplication.getObservationController(), mApplication.getConceptController());
+                                if (!isHivTestPositive && !relatedPerson.isVoided()) {
+                                    relatedPersons.add(relatedPerson);
+                                }
+                            }
+                        }
+                    } catch (PatientController.PatientLoadException e) {
+                        Log.e("RelationshipViewUtil","Could not get relationship patient",e);
+                    }
+                }
+            }
+
+        }catch(RelationshipController.RetrieveRelationshipException | MuzimaSettingController.MuzimaSettingFetchException e){
+            Log.e("RelationshipViewUtil","Could not get relationship for patient",e);
+        }
+
+        return relatedPersons;
+    }
+    private static boolean isHivTestNegativeOrPositive(String patientUuid, int conceptId, ObservationController observationController, ConceptController conceptController) {
+        List<Observation> observations = new ArrayList<>();
+        try {
+            Concept concept = conceptController.getConceptById(conceptId);
+            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+            Collections.sort(observations, observationDateTimeComparator);
+            if(observations.size()>0){
+                Observation obs = observations.get(0);
+                if(concept.isCoded()){
+                    if(obs.getValueCoded().getId() == 664 || obs.getValueCoded().getId() == 703)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+        } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
+            Log.e(TAG, "Exception occurred while loading observations", e);
+        }
+        return false;
+    }
+    private static boolean isContactHivPositive(String patientUuid, int conceptId, ObservationController observationController, ConceptController conceptController) {
+        List<Observation> observations = new ArrayList<>();
+        try {
+            Concept concept = conceptController.getConceptById(conceptId);
+            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+            Collections.sort(observations, observationDateTimeComparator);
+            if(observations.size()>0){
+                Observation obs = observations.get(0);
+                if(concept.isCoded()){
+                    if(obs.getValueCoded().getId() == 703)
+                        return true;
+                    else
+                        return false;
+
+                }
+            }
+        } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
+            Log.e(TAG, "Exception occurred while loading observations", e);
+        }
+        return false;
+    }
+    private static final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
+        @Override
+        public int compare(Observation lhs, Observation rhs) {
+            return -lhs.getObservationDatetime().compareTo(rhs.getObservationDatetime());
+        }
+    };
 }

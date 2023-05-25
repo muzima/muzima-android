@@ -21,6 +21,8 @@ import com.muzima.api.model.PersonName;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.User;
 import com.muzima.controller.PatientController;
+import com.muzima.search.api.util.StringUtil;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static com.muzima.utils.Constants.FGH.FormTemplateUuids.INDEX_CASE_PERSON_REGISTRATION_FORM;
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.PersonRegistrationUtils.createBirthDate;
@@ -53,15 +56,27 @@ public class RelationshipJsonMapper {
     }
 
     public FormData createFormDataFromRelationship(Patient patient, Relationship relationship) throws JSONException {
+        String templateUuid;
+        if(muzimaApplication.getMuzimaSettingController().isPatientTagGenerationEnabled()){
+            templateUuid = INDEX_CASE_PERSON_REGISTRATION_FORM;
+        } else {
+            templateUuid = UUID.randomUUID().toString();
+        }
+        String personUuid = null;
+        if(StringUtil.equals(relationship.getPersonA().getUuid(), patient.getUuid())){
+            personUuid = relationship.getPersonB().getUuid();
+        } else {
+            personUuid = relationship.getPersonA().getUuid();
+        }
         this.patient =patient;
         this.relationship = relationship;
         FormData formData = new FormData();
         formData.setDiscriminator(FORM_JSON_DISCRIMINATOR_RELATIONSHIP);
         formData.setEncounterDate(new Date());
-        formData.setPatientUuid(patient.getUuid());
+        formData.setPatientUuid(personUuid);
         formData.setStatus(STATUS_COMPLETE);
         formData.setUserUuid(loggedInUser.getUuid());
-        formData.setTemplateUuid(UUID.randomUUID().toString());
+        formData.setTemplateUuid(templateUuid);
         formData.setUuid(relationship.getUuid());
         formData.setUserSystemId(loggedInUser.getSystemId());
         formData.setXmlPayload(null);

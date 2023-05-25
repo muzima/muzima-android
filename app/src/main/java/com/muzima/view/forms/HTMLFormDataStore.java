@@ -91,6 +91,7 @@ import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptName
 import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
+import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 
 
 class HTMLFormDataStore {
@@ -218,8 +219,10 @@ class HTMLFormDataStore {
                     } else {
                         formController.updatePatient(application, formData);
                         parseObsFromCompletedForm(jsonPayload, status, false);
-                        //update tags
-                        initiatePatientTagsUpdate(new ArrayList<String>(){{add(patientUuid);}});
+
+                        initiatePatientTagsUpdate(new ArrayList<String>() {{
+                            add(patientUuid);
+                        }});
                     }
                 } else if (status.equals("complete") && formData.getDiscriminator() != null &&
                         formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE)) {
@@ -296,6 +299,16 @@ class HTMLFormDataStore {
 
                         patient.setTags(tags.toArray(new PatientTag[tags.size()]));
                         patientController.updatePatient(patient);
+                    }
+
+                    if (formData.getDiscriminator() != null &&
+                            (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_PERSON_UPDATE))) {
+                        Patient indexPatient = (Patient) formWebViewActivity.getIntent().getSerializableExtra(INDEX_PATIENT);
+                        if(indexPatient != null) {
+                            initiatePatientTagsUpdate(new ArrayList<String>() {{
+                                add(indexPatient.getUuid());
+                            }});
+                        }
                     }
                 }
                 if (!keepFormOpen) {

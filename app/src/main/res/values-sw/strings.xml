@@ -56,6 +56,8 @@
     <string name="error_current_gps_not_obtained">Haikuweza kupata eneo la sasa la GPS. Inapakia eneo chaguomsingi kwenye ramani.</string>
     <string name="error_data_download">Tatizo limetokea wakati wa kupakua data kutoka katika seva</string>
     <string name="error_data_save">Tatizo:limetokea wakati wa kuhifadhi data katika hifadhi ya kifaa</string>
+    <string name="error_derived_concept_download">Haikuweza kupakua dhana zinazotolewa</string>
+    <string name="error_derived_observation_download">Haikuweza kupakua uchunguzi unaotokana na wateja</string>
     <string name="error_encounter_observation_download">Imeshindikana kupakua uchunguzi wa wateja</string>
     <string name="error_exception_data_load">Tatizo la kimfumo limetokea wakati wa kupakia data</string>
     <string name="error_exception_data_upload">Seva imeshindwa kutumia data zilizopandishwa</string>
@@ -122,8 +124,10 @@
     <string name="general_alert">Tahadhari!</string>
     <string name="general_all">Vyote</string>
     <string name="general_all_clients">Wateja wote</string>
+    <string name="general_all_contacts_visited">Washiriki wote wametembelewa</string>
     <string name="general_already_assigned">Tayari Imekabidhiwa</string>
     <string name="general_application_version">Toleo %1$s</string>
+    <string name="general_art_start_date">Tarehe ya kuanza kwa ART:</string>
     <string name="general_available_online">Inapatikana Mkondoni</string>
     <string name="general_awaiting_assignment">Inasubiri Mgawo</string>
     <string name="general_cancel">Batilisha</string>
@@ -185,6 +189,7 @@
     <string name="general_label_sort_status">Panga kwa hali</string>
     <string name="general_large">Kubwa</string>
     <string name="general_last_consent_date">Tarehe ya mwisho ya idhini:</string>
+    <string name="general_last_encounter_details">Maelezo ya mwisho ya kukutana</string>
     <string name="general_launching_map_message">Inazindua ramani, tafadhali subiri</string>
     <string name="general_leaderboard">Ubao wa wanaoongoza</string>
     <string name="general_load">Pakia</string>
@@ -370,15 +375,28 @@
     <string name="info_concepts_downloaded_deleted">Imepakuliwa dhana %d, Imefutwa dhana %d</string>
     <string name="info_convert_person_to_patient">Badilisha mtu kuwa mteja</string>
     <string name="info_data_sync_cancelled">Ulandanishaji wa data ya mUzima ulisitishwa.</string>
+    <string name="info_derived_concept_download">Inapakua Dhana Zilizotolewa</string>
+    <string name="info_derived_concept_downloaded">Imepakuliwa dhana 1 inayotokana</string>
+    <string name="info_derived_concept_not_downloaded">Haikupakua dhana zozote zinazotolewa</string>
+    <string name="info_derived_concepts_downloaded">Imepakuliwa dhana %d zinazotokana</string>
+    <string name="info_derived_concepts_downloaded_deleted">Imepakuliwa dhana %d zinazotokana, Imefutwa dhana %d zinazotokana</string>
+    <string name="info_derived_observation_download">Inapakua Uchunguzi Uliotolewa</string>
+    <string name="info_derived_observation_patient_downloaded">Imepakua uchunguzi 1 unaotokana na mteja 1</string>
+    <string name="info_derived_observation_patient_not_downloaded">Haikupakua uchunguzi wowote uliotolewa</string>
+    <string name="info_derived_observation_patients_downloaded">Imepakua uchunguzi %d unaotokana na mteja 1</string>
+    <string name="info_derived_observations_download_progress">Umepakua uchunguzi unaotokana na mteja %d kati ya %d.</string>
+    <string name="info_derived_observations_patient_downloaded">Imepakua uchunguzi 1 unaotokana na wateja %d</string>
+    <string name="info_derived_observations_patients_downloaded">Imepakua uchunguzi %d unaotokana na wateja %d</string>
     <string name="info_disclaimer">
-                                Mfumo wa mUzima umesambazwa chini ya masharti ya leseni kwa umma ya Mozilla, v.2.0.(MPL 2.0). Nakala ya leseni
+                                        Mfumo wa mUzima umesambazwa chini ya masharti ya leseni kwa umma ya Mozilla, v.2.0.(MPL 2.0). Nakala ya leseni
         ya MPL 2.0 inaweza kupatikana kwa kutembelea http://mozilla.org/MPL/2.0.
         \nMfumo wa mUzima pia umesambazwa chini ya kibadhi cha ilani ya kujitoa hatiani na kizuizi cha dhima yenye kikomo.
         \n
         
         
+        
         <strong>Kibadhi cha ilani yakujitoa hatiani na kizuizi cha dhima yenye kikomo</strong>
-                                Katika nchi ya Marekani, au mamlaka yoyote ambapo patahusika, vipengele zaidi vifuatavyo vya kibadhi cha ilani
+                                        Katika nchi ya Marekani, au mamlaka yoyote ambapo patahusika, vipengele zaidi vifuatavyo vya kibadhi cha ilani
         yakujitoa hatiani na kizuizi cha dhima yenye kikomo vimeshirikishwa kwenye sheria na masharti ya leseni ya MPL 2.0:
         \n1. Hakuna dhamana ya aina yoyote ile kwa vyovyote vile imetolewa kwa ajili ya natija utakayoipata kutoka na kutegemea
         kwako kwa utumizi wa kodi(ama habari zozote ama maandishi yoyote utakayopata kutokana na kodi ya mfumo huu),
@@ -399,6 +417,7 @@
         \n\n4. Ikiwa mtumiaji wa mfumo huu ni shirika ambalo linadhamiria kupata faida ya kibiashara ama natija kwa njia
         yoyote ile kwa mfumo utakaotumia kodi za mfumo huu kwenye biashara ya faida, mtumiaji anashurutishwa kuwasiliana
         na mwenye hatimiliki kupitia barua pepe: mUzima.mobile@gmail.com
+    
     
     
     
@@ -579,6 +598,7 @@
     <string name="language_hindi">Kihindi</string>
     <string name="language_portuguese">Kireno</string>
     <string name="language_swahili">Kiswahili</string>
+    <string name="last_encounter_volunteer_name">Jina la kujitolea:</string>
     <string name="menu_form_back_to_draft">Rudi katika drafti</string>
     <string name="message_auto_logout">Utaondolewa kiotomatiki baada ya sekunde %d</string>
     <string name="message_feedback_sent">Asante kwa ujumbe wako. \n Maoni yako ni muhimu kwetu.</string>
@@ -748,21 +768,4 @@
     <string name="warning_switch_server">Ubadilishaji wa seva: Kitendo hiki kitafuta data zote za mUzima katika kifaa chako, ikiwa ni pamoja na fomu zozote ambazo hazijakamilika bado. Una hakika unataka kubadili mpangilio huu?</string>
     <string name="write_SHR_to_card_text">Andika SHR kwenye kadi</string>
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
-    <string name="general_art_start_date">Tarehe ya kuanza kwa ART:</string>
-    <string name="info_derived_concept_download">Inapakua Dhana Zilizotolewa</string>
-    <string name="info_derived_concept_not_downloaded">Haikupakua dhana zozote zinazotolewa</string>
-    <string name="info_derived_concept_downloaded">Imepakuliwa dhana 1 inayotokana</string>
-    <string name="info_derived_concepts_downloaded">Imepakuliwa dhana %d zinazotokana</string>
-    <string name="error_derived_concept_download">Haikuweza kupakua dhana zinazotolewa</string>
-    <string name="info_derived_observation_download">Inapakua Uchunguzi Uliotolewa</string>
-    <string name="error_derived_observation_download">Haikuweza kupakua uchunguzi unaotokana na wateja</string>
-    <string name="info_derived_observations_download_progress">Umepakua uchunguzi unaotokana na mteja %d kati ya %d.</string>
-    <string name="info_derived_observation_patient_not_downloaded">Haikupakua uchunguzi wowote uliotolewa</string>
-    <string name="info_derived_observation_patient_downloaded">Imepakua uchunguzi 1 unaotokana na mteja 1</string>
-    <string name="info_derived_observation_patients_downloaded">Imepakua uchunguzi %d unaotokana na mteja 1</string>
-    <string name="info_derived_observations_patient_downloaded">Imepakua uchunguzi 1 unaotokana na wateja %d</string>
-    <string name="info_derived_observations_patients_downloaded">Imepakua uchunguzi %d unaotokana na wateja %d</string>
-    <string name="info_derived_concepts_downloaded_deleted">Imepakuliwa dhana %d zinazotokana, Imefutwa dhana %d zinazotokana</string>
-    <string name="general_last_encounter_details">Maelezo ya mwisho ya kukutana</string>
-    <string name="last_encounter_volunteer_name">Jina la kujitolea:</string>
 </resources>
