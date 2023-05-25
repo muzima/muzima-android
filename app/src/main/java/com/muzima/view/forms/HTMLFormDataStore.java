@@ -1252,17 +1252,23 @@ class HTMLFormDataStore {
     public String getInterventionsDerivedObservationByPatientUuid(String patientUuid) throws JSONException, DerivedConceptController.DerivedConceptFetchException {
         List<DerivedObservation> derivedObservations = new ArrayList<>();
         try {
-            derivedObservations = derivedObservationController.getDerivedObservationByPatientUuid(patientUuid);
-            derivedObservations.addAll(derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "4b479a6c-4276-45a1-b785-ecbc7dc59ff1"));
-            derivedObservations.addAll(derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "1bd47ba9-b6ff-4b4c-ba26-f5b86498d738"));
-            derivedObservations.addAll(derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "9e928864-b7d2-445d-9856-cb7c9a0632dd"));
-            derivedObservations.addAll(derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "46e6c352-bddb-4191-8d1e-40380aa1a346"));
-            derivedObservations.addAll(derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "379e2aa5-b750-4b08-af13-cd0b9795eca7"));
+            addInterventionsDerivedObs(derivedObservations, derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "4b479a6c-4276-45a1-b785-ecbc7dc59ff1"));
+            addInterventionsDerivedObs(derivedObservations, derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "4b479a6c-4276-45a1-b785-ecbc7dc59ff1"));
+            addInterventionsDerivedObs(derivedObservations, derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "1bd47ba9-b6ff-4b4c-ba26-f5b86498d738"));
+            addInterventionsDerivedObs(derivedObservations, derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "9e928864-b7d2-445d-9856-cb7c9a0632dd"));
+            addInterventionsDerivedObs(derivedObservations, derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "46e6c352-bddb-4191-8d1e-40380aa1a346"));
+            addInterventionsDerivedObs(derivedObservations, derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "379e2aa5-b750-4b08-af13-cd0b9795eca7"));
             Collections.sort(derivedObservations, derivedObservationDateTimeComparator);
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
             Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations",e);
         }
         return createDerivedObsJsonArray(derivedObservations);
+    }
+
+    private void addInterventionsDerivedObs(List<DerivedObservation> derivedObservations, List<DerivedObservation> derivedObsToBeAdded){
+          if(!derivedObsToBeAdded.isEmpty()){
+              derivedObservations.addAll(derivedObsToBeAdded);
+          }
     }
 
     private final Comparator<DerivedObservation> derivedObservationDateTimeComparator = new Comparator<DerivedObservation>() {
@@ -1274,7 +1280,7 @@ class HTMLFormDataStore {
 
     @JavascriptInterface
     public String getLastVisitAttemptNumberAfterLastTriangulation(String patientUuid, int conceptId) throws ConceptController.ConceptFetchException, JSONException {
-        List<Observation> observations = new ArrayList<Observation>(0);
+        List<Observation> observations = new ArrayList<Observation>();
         try {
             List<Observation> lastTriangulations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 1912);
             Collections.sort(lastTriangulations, observationDateTimeComparator);
