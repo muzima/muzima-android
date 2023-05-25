@@ -56,6 +56,8 @@
     <string name="error_current_gps_not_obtained">Impossible d\'obtenir la position GPS actuelle. Chargement de la position par défaut sur la carte.</string>
     <string name="error_data_download">Une erreur est survenue lors du téléchargement de données depuis le serveur</string>
     <string name="error_data_save">Une erreur est survenue lors de l\'enregistrement des données dans le repertoire local</string>
+    <string name="error_derived_concept_download">Impossible de télécharger les concepts dérivés</string>
+    <string name="error_derived_observation_download">Impossible de télécharger les observations dérivées pour les clients</string>
     <string name="error_encounter_observation_download">Impossible de télécharger les observations pour les clients</string>
     <string name="error_exception_data_load">L\'exception de chargement a été levée pendant le chargement des données</string>
     <string name="error_exception_data_upload">Le serveur n\'a pas pu traiter les données téléchargées</string>
@@ -122,8 +124,10 @@
     <string name="general_alert">Alerte!</string>
     <string name="general_all">Tout</string>
     <string name="general_all_clients">Tous les clients</string>
+    <string name="general_all_contacts_visited">Tous les contacts visités</string>
     <string name="general_already_assigned">Déjà attribué</string>
     <string name="general_application_version">Version %1$s</string>
+    <string name="general_art_start_date">Date de début du TAR:</string>
     <string name="general_available_online">Disponible en ligne</string>
     <string name="general_awaiting_assignment">En attente d\'affectation</string>
     <string name="general_cancel">Annuler</string>
@@ -185,6 +189,7 @@
     <string name="general_label_sort_status">Trier par statut</string>
     <string name="general_large">Large</string>
     <string name="general_last_consent_date">Date du dernier consentement :</string>
+    <string name="general_last_encounter_details">Détails de la dernière recontre</string>
     <string name="general_launching_map_message">Lancement de la carte, veuillez patienter</string>
     <string name="general_leaderboard">Classement</string>
     <string name="general_load">Charger</string>
@@ -370,16 +375,29 @@
     <string name="info_concepts_downloaded_deleted">%d concepts téléchargés, %d concepts supprimés</string>
     <string name="info_convert_person_to_patient">Convertir une personne en patient</string>
     <string name="info_data_sync_cancelled">La synchronisation des données mUzima a été annulée.</string>
+    <string name="info_derived_concept_download">Téléchargement des concepts dérivés</string>
+    <string name="info_derived_concept_downloaded">Téléchargé 1 concept dérivé</string>
+    <string name="info_derived_concept_not_downloaded">N\'a pas téléchargé de concepts dérivés</string>
+    <string name="info_derived_concepts_downloaded">%d concepts dérivés téléchargés</string>
+    <string name="info_derived_concepts_downloaded_deleted">%d concepts dérivés téléchargés, %d concepts dérivés supprimés</string>
+    <string name="info_derived_observation_download">Téléchargement des observations dérivées</string>
+    <string name="info_derived_observation_patient_downloaded">Téléchargé 1 observation dérivée pour 1 client</string>
+    <string name="info_derived_observation_patient_not_downloaded">N\'a pas téléchargé d\'observations dérivées</string>
+    <string name="info_derived_observation_patients_downloaded">%d observations dérivées téléchargées pour 1 client</string>
+    <string name="info_derived_observations_download_progress">Observations dérivées téléchargées pour le client %d sur %d.</string>
+    <string name="info_derived_observations_patient_downloaded">1 observation dérivée téléchargée pour %d clients</string>
+    <string name="info_derived_observations_patients_downloaded">%d observations dérivées téléchargées pour %d clients</string>
     <string name="info_disclaimer">
-                                mUzima est distribué sous les termes de la licence publique de Mozilla, v. 2.0 (MPL 2.0). Une copie de la
+                                        mUzima est distribué sous les termes de la licence publique de Mozilla, v. 2.0 (MPL 2.0). Une copie de la
         licence MPL 2.0 peut être trouvée sur http://mozilla.org/MPL/2.0/.
         \nmUzima est également distribué sous les termes de la clause de non-responsabilité Et Limitation de responsabilité
         de garantie suivante.
         \n
         
         
+        
         <strong> Renonciation additionnelle de garantie et limitation de responsabilité </strong>
-                                Aux États-Unis ou dans d\'autres juridictions où ils peuvent appliquer, L\'exclusion de la garantie et de la
+                                        Aux États-Unis ou dans d\'autres juridictions où ils peuvent appliquer, L\'exclusion de la garantie et de la
         limitation de la responsabilité sont incorporées dans les Conditions de MPL 2.0:
         \n1. Aucune garantie de quelconque nature n\'est faite quant aux résultats que vous obtiendrez de En s\'appuyant
         sur le code couvert (ou sur toute information ou contenu obtenu par le biais du code couvert), Y compris, mais
@@ -404,6 +422,7 @@
         \n\n4. Si l\'utilisateur de cette demande est une entité qui a l\'intention de commercialiser une application qui
         utilise cette Code dans une entreprise à but lucratif, l\'utilisateur est tenu de contacter le détenteur des
         droits d’auteur via mUzima.mobile@gmail.com.
+    
     
     
     
@@ -584,6 +603,7 @@
     <string name="language_hindi">Hindi</string>
     <string name="language_portuguese">Portugais</string>
     <string name="language_swahili">Swahili</string>
+    <string name="last_encounter_volunteer_name">Nom du bénévole:</string>
     <string name="menu_form_back_to_draft">Retour au brouillon</string>
     <string name="message_auto_logout">Vous serez automatiquement déconnecté dans %d secondes</string>
     <string name="message_feedback_sent">Merci pour votre message. \n Vos commentaires sont importants pour nous.</string>
@@ -753,21 +773,4 @@
     <string name="warning_switch_server">Changement de serveur: Cela effacera toutes les données mUzima sur votre appareil, y compris les formulaires incomplets. Etes-vous sûr de vouloir modifier ce paramètre?</string>
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
-    <string name="general_art_start_date">Date de début du TAR:</string>
-    <string name="info_derived_concept_download">Téléchargement des concepts dérivés</string>
-    <string name="info_derived_concept_not_downloaded">N\'a pas téléchargé de concepts dérivés</string>
-    <string name="info_derived_concept_downloaded">Téléchargé 1 concept dérivé</string>
-    <string name="info_derived_concepts_downloaded">%d concepts dérivés téléchargés</string>
-    <string name="error_derived_concept_download">Impossible de télécharger les concepts dérivés</string>
-    <string name="info_derived_observation_download">Téléchargement des observations dérivées</string>
-    <string name="error_derived_observation_download">Impossible de télécharger les observations dérivées pour les clients</string>
-    <string name="info_derived_observations_download_progress">Observations dérivées téléchargées pour le client %d sur %d.</string>
-    <string name="info_derived_observation_patient_not_downloaded">N\'a pas téléchargé d\'observations dérivées</string>
-    <string name="info_derived_observation_patient_downloaded">Téléchargé 1 observation dérivée pour 1 client</string>
-    <string name="info_derived_observation_patients_downloaded">%d observations dérivées téléchargées pour 1 client</string>
-    <string name="info_derived_observations_patient_downloaded">1 observation dérivée téléchargée pour %d clients</string>
-    <string name="info_derived_observations_patients_downloaded">%d observations dérivées téléchargées pour %d clients</string>
-    <string name="info_derived_concepts_downloaded_deleted">%d concepts dérivés téléchargés, %d concepts dérivés supprimés</string>
-    <string name="general_last_encounter_details">Détails de la dernière recontre</string>
-    <string name="last_encounter_volunteer_name">Nom du bénévole:</string>
 </resources>

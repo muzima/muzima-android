@@ -56,6 +56,8 @@
     <string name="error_current_gps_not_obtained">वर्तमान GPS स्थान प्राप्त नहीं कर सका। मानचित्र पर डिफ़ॉल्ट स्थान लोड हो रहा है।</string>
     <string name="error_data_download">डेटा फॉर्म सर्वर डाउनलोड करते समय एक त्रुटि हुई</string>
     <string name="error_data_save">स्थानीय रेपो में डेटा सहेजते समय एक त्रुटि हुई</string>
+    <string name="error_derived_concept_download">व्युत्पन्न अवधारणाओं को डाउनलोड नहीं किया जा सका</string>
+    <string name="error_derived_observation_download">ग्राहकों के लिए व्युत्पन्न टिप्पणियों को डाउनलोड नहीं किया जा सका</string>
     <string name="error_encounter_observation_download">ग्राहकों के लिए टिप्पणियों को डाउनलोड नहीं किया जा सका</string>
     <string name="error_exception_data_load">डेटा लोड करते समय लोड अपवाद आया</string>
     <string name="error_exception_data_upload">सर्वर अपलोड किए गए डेटा को संसाधित नहीं कर सका</string>
@@ -122,8 +124,10 @@
     <string name="general_alert">चेतावनी!</string>
     <string name="general_all">सभी</string>
     <string name="general_all_clients">सभी ग्राहक</string>
+    <string name="general_all_contacts_visited">सभी संपर्क देखे गए</string>
     <string name="general_already_assigned">पहले से ही असाइन किया गया</string>
     <string name="general_application_version">संस्करण %1$s</string>
+    <string name="general_art_start_date">एआरटी प्रारंभ तिथि:</string>
     <string name="general_available_online">ऑनलाइन मौजूद है</string>
     <string name="general_awaiting_assignment">असाइनमेंट की प्रतीक्षा में</string>
     <string name="general_cancel">रद्द करना</string>
@@ -185,6 +189,7 @@
     <string name="general_label_sort_status">स्थिति के आधार पर छाँटें</string>
     <string name="general_large">विशाल</string>
     <string name="general_last_consent_date">अंतिम सहमति तिथि:</string>
+    <string name="general_last_encounter_details">अंतिम मुलाकात का विवरण</string>
     <string name="general_launching_map_message">नक्शा लॉन्च किया जा रहा है, कृपया प्रतीक्षा करें</string>
     <string name="general_leaderboard">लीडरबोर्ड</string>
     <string name="general_load">भार</string>
@@ -370,15 +375,28 @@
     <string name="info_concepts_downloaded_deleted">%d अवधारणाएँ डाउनलोड की गईं, %d संकल्पनाएँ हटाई गईं</string>
     <string name="info_convert_person_to_patient">व्यक्ति को रोगी में बदलें</string>
     <string name="info_data_sync_cancelled">mUzima डेटा सिंक रद कर दिया गया था।</string>
+    <string name="info_derived_concept_download">व्युत्पन्न अवधारणाओं को डाउनलोड करना</string>
+    <string name="info_derived_concept_downloaded">डाउनलोड की गई 1 व्युत्पन्न अवधारणा</string>
+    <string name="info_derived_concept_not_downloaded">किसी व्युत्पन्न अवधारणा को डाउनलोड नहीं किया</string>
+    <string name="info_derived_concepts_downloaded">%d डिराइव्ड अवधारणाएं डाउनलोड की गईं</string>
+    <string name="info_derived_concepts_downloaded_deleted">डाउनलोड की गई %d व्युत्पन्न अवधारणाएँ, %d व्युत्पन्न अवधारणाएँ हटाई गईं</string>
+    <string name="info_derived_observation_download">व्युत्पन्न टिप्पणियों को डाउनलोड करना</string>
+    <string name="info_derived_observation_patient_downloaded">1 ग्राहक के लिए 1 व्युत्पन्न अवलोकन डाउनलोड किया गया</string>
+    <string name="info_derived_observation_patient_not_downloaded">कोई व्युत्पन्न अवलोकन डाउनलोड नहीं किया</string>
+    <string name="info_derived_observation_patients_downloaded">1 क्लाइंट के लिए %d व्युत्पन्न प्रेक्षण डाउनलोड किए गए</string>
+    <string name="info_derived_observations_download_progress">%d के क्लाइंट %d के लिए व्युत्पन्न प्रेक्षण डाउनलोड किए गए।</string>
+    <string name="info_derived_observations_patient_downloaded">%d क्लाइंट के लिए 1 डिराइव्ड ऑब्जर्वेशन डाउनलोड किया गया</string>
+    <string name="info_derived_observations_patients_downloaded">%d ग्राहकों के लिए %d व्युत्पन्न प्रेक्षणों को डाउनलोड किया</string>
     <string name="info_disclaimer">
-                                mUzima, Mozilla Public License, v. 2.0 (MPL 2.0) की शर्तों के तहत वितरित किया जाता है. MPL 2.0 लाइसेंस की एक प्रति
+                                        mUzima, Mozilla Public License, v. 2.0 (MPL 2.0) की शर्तों के तहत वितरित किया जाता है. MPL 2.0 लाइसेंस की एक प्रति
         http://mozilla.org/MPL/2.0/ पर देखी जा सकती है।
         \nmUzima को वारंटी के निम्नलिखित अतिरिक्त अस्वीकरण की शर्तों के तहत भी वितरित किया जाता है और देयता की सीमा।
         \n
         
         
+        
         <strong> देयता की वारंटी और सीमा का अतिरिक्त अस्वीकरण </strong>
-                                संयुक्त राज्य अमेरिका, या किसी अन्य क्षेत्राधिकार में, जहां वे आवेदन कर सकते हैं, वारंटी और देयता की सीमा के अतिरिक्त अस्वीकरण को इसके अलावा MPL 2.0
+                                        संयुक्त राज्य अमेरिका, या किसी अन्य क्षेत्राधिकार में, जहां वे आवेदन कर सकते हैं, वारंटी और देयता की सीमा के अतिरिक्त अस्वीकरण को इसके अलावा MPL 2.0
         के नियमों और शर्तों में शामिल किया गया है:
         \n1. किसी भी प्रकार की कोई वारंटियां उस परिणाम के रूप में नहीं की जाती हैं जो आप कवर किए गए कोड (या कवर किए गए कोड के माध्यम से प्राप्त की गई कोई भी
         जानकारी या सामग्री) पर निर्भा रहने से प्राप्त करेंगे, जिसमें गोपनीयता कानून या विनियम या नैदानिक ​​देखभाल उद्योग के मानकों और प्रोटोकॉल के अनुपालन तक सीमित
@@ -394,6 +412,7 @@
         \n\n3. mUzima को Indiana University, Moi University , और Vanderbilt University Medical Center के ट्रस्टियों का कॉपीराइट प्राप्त है।
         \n\n4. यदि इस एप्लिकेशन का उपयोगकर्ता एक ऐसी इकाई है जो व्यवसायीकरण करने या किसी भी एप्लिकेशन से लाभ कमाने का इरादा रखती है, जो इस कोड का लाभ-साहस
         के उपक्रम में उपयोग करती है, तो उपयोगकर्ता को mUzima.mobile@gmail.com के माध्यम से कॉपीराइट धारक से संपर्क करना होगा।
+    
     
     
     
@@ -574,6 +593,7 @@
     <string name="language_hindi">हिंदी</string>
     <string name="language_portuguese">पुर्तगाली</string>
     <string name="language_swahili">स्वाहिली</string>
+    <string name="last_encounter_volunteer_name">स्वयंसेवक का नाम:</string>
     <string name="menu_form_back_to_draft">ड्राफ्ट पर वापस जाएं</string>
     <string name="message_auto_logout">आप %d सेकंड में स्वतः लॉग ऑफ हो जाएंगे</string>
     <string name="message_feedback_sent">आपके संदेश के लिए धन्यवाद। \n आपकी प्रतिक्रिया हमारे लिए महत्वपूर्ण है।</string>
@@ -743,21 +763,4 @@
     <string name="warning_switch_server">सर्वर बदली: यह आपके डिवाइस पर मौजूद सभी mUzima डेटा को साफ कर देगा, जिसमें कोई अधूरा फॉर्म भी शामिल है। क्या आप वाकई इस सेटिंग को बदलना चाहते हैं?</string>
     <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
-    <string name="general_art_start_date">एआरटी प्रारंभ तिथि:</string>
-    <string name="info_derived_concept_download">व्युत्पन्न अवधारणाओं को डाउनलोड करना</string>
-    <string name="info_derived_concept_not_downloaded">किसी व्युत्पन्न अवधारणा को डाउनलोड नहीं किया</string>
-    <string name="info_derived_concept_downloaded">डाउनलोड की गई 1 व्युत्पन्न अवधारणा</string>
-    <string name="info_derived_concepts_downloaded">%d डिराइव्ड अवधारणाएं डाउनलोड की गईं</string>
-    <string name="error_derived_concept_download">व्युत्पन्न अवधारणाओं को डाउनलोड नहीं किया जा सका</string>
-    <string name="info_derived_observation_download">व्युत्पन्न टिप्पणियों को डाउनलोड करना</string>
-    <string name="error_derived_observation_download">ग्राहकों के लिए व्युत्पन्न टिप्पणियों को डाउनलोड नहीं किया जा सका</string>
-    <string name="info_derived_observations_download_progress">%d के क्लाइंट %d के लिए व्युत्पन्न प्रेक्षण डाउनलोड किए गए।</string>
-    <string name="info_derived_observation_patient_not_downloaded">कोई व्युत्पन्न अवलोकन डाउनलोड नहीं किया</string>
-    <string name="info_derived_observation_patient_downloaded">1 ग्राहक के लिए 1 व्युत्पन्न अवलोकन डाउनलोड किया गया</string>
-    <string name="info_derived_observation_patients_downloaded">1 क्लाइंट के लिए %d व्युत्पन्न प्रेक्षण डाउनलोड किए गए</string>
-    <string name="info_derived_observations_patient_downloaded">%d क्लाइंट के लिए 1 डिराइव्ड ऑब्जर्वेशन डाउनलोड किया गया</string>
-    <string name="info_derived_observations_patients_downloaded">%d ग्राहकों के लिए %d व्युत्पन्न प्रेक्षणों को डाउनलोड किया</string>
-    <string name="info_derived_concepts_downloaded_deleted">डाउनलोड की गई %d व्युत्पन्न अवधारणाएँ, %d व्युत्पन्न अवधारणाएँ हटाई गईं</string>
-    <string name="general_last_encounter_details">अंतिम मुलाकात का विवरण</string>
-    <string name="last_encounter_volunteer_name">स्वयंसेवक का नाम:</string>
 </resources>

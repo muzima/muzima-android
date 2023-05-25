@@ -59,6 +59,8 @@
     <string name="error_current_gps_not_obtained">Could not obtain the current GPS location.Loading default location on the map.</string>
     <string name="error_data_download">An error occurred while downloading data form server</string>
     <string name="error_data_save">An error occurred while saving data to local repo</string>
+    <string name="error_derived_concept_download">Could not download derived concepts</string>
+    <string name="error_derived_observation_download">Could not download derived observations for clients</string>
     <string name="error_encounter_observation_download">Could not download observations for clients</string>
     <string name="error_exception_data_load">Load exception has been thrown while loading data</string>
     <string name="error_exception_data_upload">Server could not process uploaded data</string>
@@ -127,8 +129,10 @@
     <string name="general_alert">Alert!</string>
     <string name="general_all">All</string>
     <string name="general_all_clients">All Clients</string>
+    <string name="general_all_contacts_visited">All Contacts Visited</string>
     <string name="general_already_assigned">Already Assigned</string>
     <string name="general_application_version">Version %1$s</string>
+    <string name="general_art_start_date">"ART start date:"</string>
     <string name="general_available_online">Available Online</string>
     <string name="general_awaiting_assignment">Awaiting Assignment</string>
     <string name="general_cancel">Cancel</string>
@@ -190,6 +194,7 @@
     <string name="general_label_sort_status">Sort by status</string>
     <string name="general_large">Large</string>
     <string name="general_last_consent_date">Last Consent Date:</string>
+    <string name="general_last_encounter_details">Last Encounter Details</string>
     <string name="general_launching_map_message">Launching map, please wait</string>
     <string name="general_leaderboard">Leaderboard</string>
     <string name="general_load">Load</string>
@@ -396,6 +401,18 @@
     <string formatted="false" name="info_concepts_downloaded_deleted">Downloaded %d concepts, Deleted %d concepts</string>
     <string name="info_convert_person_to_patient">Convert person to patient</string>
     <string name="info_data_sync_cancelled">mUzima data sync was cancelled.</string>
+    <string name="info_derived_concept_download">Downloading Derived Concepts</string>
+    <string name="info_derived_concept_downloaded">Downloaded 1 derived concept</string>
+    <string name="info_derived_concept_not_downloaded">Did not download any derived concepts</string>
+    <string formatted="false" name="info_derived_concepts_downloaded">Downloaded %d derived concepts</string>
+    <string formatted="false" name="info_derived_concepts_downloaded_deleted">Downloaded %d derived concepts, Deleted %d derived concepts</string>
+    <string name="info_derived_observation_download">Downloading Derived Observations</string>
+    <string name="info_derived_observation_patient_downloaded">Downloaded 1 derived observation for 1 client</string>
+    <string name="info_derived_observation_patient_not_downloaded">Did not download any derived observations</string>
+    <string formatted="false" name="info_derived_observation_patients_downloaded">Downloaded %d derived observations for 1 client</string>
+    <string formatted="false" name="info_derived_observations_download_progress">Downloaded derived observations for client %d of %d.</string>
+    <string formatted="false" name="info_derived_observations_patient_downloaded">Downloaded 1 derived observation for %d clients</string>
+    <string formatted="false" name="info_derived_observations_patients_downloaded">Downloaded %d derived observations for %d clients</string>
     <string name="info_disclaimer">
         mUzima is distributed under the terms of the Mozilla Public License, v. 2.0 (MPL 2.0). A copy of the MPL 2.0 license can be found at http://mozilla.org/MPL/2.0/.
 \nmUzima is also distributed under the terms of the following Additional Disclaimer of Warranty and Limitation of Liability.
@@ -586,6 +603,7 @@
     <string name="language_hindi">Hindi</string>
     <string name="language_portuguese">Portuguese</string>
     <string name="language_swahili">Swahili</string>
+    <string name="last_encounter_volunteer_name">Volunteer Name:</string>
     <string name="menu_form_back_to_draft">Back To Draft</string>
     <string name="message_auto_logout">You will be auto logged off in %d sec</string>
     <string name="message_feedback_sent">Thank you for your message. \n Your feedback is important for us.</string>
@@ -761,21 +779,4 @@ mUzima is a mobile application that enables health professionals collect, manage
     </string>
     <string name="write_SHR_to_card_text">Write SHR to Card</string>
     <string name="write_shr_to_card_general">Write SHR to card</string>
-    <string name="general_art_start_date">"ART start date:"</string>
-    <string name="info_derived_concept_download">Downloading Derived Concepts</string>
-    <string name="info_derived_concept_not_downloaded">Did not download any derived concepts</string>
-    <string name="info_derived_concept_downloaded">Downloaded 1 derived concept</string>
-    <string formatted="false" name="info_derived_concepts_downloaded">Downloaded %d derived concepts</string>
-    <string name="error_derived_concept_download">Could not download derived concepts</string>
-    <string name="info_derived_observation_download">Downloading Derived Observations</string>
-    <string name="error_derived_observation_download">Could not download derived observations for clients</string>
-    <string formatted="false" name="info_derived_observations_download_progress">Downloaded derived observations for client %d of %d.</string>
-    <string name="info_derived_observation_patient_not_downloaded">Did not download any derived observations</string>
-    <string name="info_derived_observation_patient_downloaded">Downloaded 1 derived observation for 1 client</string>
-    <string formatted="false" name="info_derived_observation_patients_downloaded">Downloaded %d derived observations for 1 client</string>
-    <string formatted="false" name="info_derived_observations_patient_downloaded">Downloaded 1 derived observation for %d clients</string>
-    <string formatted="false" name="info_derived_observations_patients_downloaded">Downloaded %d derived observations for %d clients</string>
-    <string formatted="false" name="info_derived_concepts_downloaded_deleted">Downloaded %d derived concepts, Deleted %d derived concepts</string>
-    <string name="general_last_encounter_details">Last Encounter Details</string>
-    <string name="last_encounter_volunteer_name">Volunteer Name:</string>
 </resources>

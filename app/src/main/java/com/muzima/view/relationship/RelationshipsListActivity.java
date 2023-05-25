@@ -321,13 +321,15 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             autoCompleteRelatedPersonAdapterAdapter.setSearchRemote(false);
             searchServerView.setVisibility(View.GONE);
             if (count < 1) {
+                textViewCreatePersonTip.setVisibility(View.VISIBLE);
                 if (connectivityFailed)
                     textViewCreatePersonTip.setText(getString(R.string.autocomplete_server_not_found));
                 else
                     textViewCreatePersonTip.setText(getString(R.string.info_client_remote_search_not_found));
-
-                createPersonView.setVisibility(View.VISIBLE);
+            } else {
+                textViewCreatePersonTip.setVisibility(View.GONE);
             }
+            createPersonView.setVisibility(View.VISIBLE);
         } else {
             // local search
             wasServerSearch = false;
@@ -350,6 +352,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         autoCompletePersonTextView.setText(StringUtils.EMPTY);
         addRelationshipView.setVisibility(View.GONE);
         createPersonView.setVisibility(View.GONE);
+        textViewCreatePersonTip.setVisibility(View.GONE);
         searchServerView.setVisibility(View.GONE);
         progressBarContainer.setVisibility(View.GONE);
     }

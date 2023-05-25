@@ -56,6 +56,8 @@
     <string name="error_current_gps_not_obtained">Não foi possível obter a localização GPS atual. Carregando a localização padrão no mapa.</string>
     <string name="error_data_download">Ocorreu um erro enquanto baixava os dados do servidor</string>
     <string name="error_data_save">Ocorreu um erro enquanto guardava os dados no repositório local</string>
+    <string name="error_derived_concept_download">Não foi possível baixar os conceitos derivados</string>
+    <string name="error_derived_observation_download">Não foi possível baixar observações derivadas para clientes</string>
     <string name="error_encounter_observation_download">Não poderá baixar observações para os utentes</string>
     <string name="error_exception_data_load">Uma excepção de carregamento foi lançada ao carregar os dados</string>
     <string name="error_exception_data_upload">Uma excepção foi lançada ao carregar os dados</string>
@@ -122,8 +124,10 @@
     <string name="general_alert">Alerta!</string>
     <string name="general_all">Todos</string>
     <string name="general_all_clients">Todos os utentes</string>
+    <string name="general_all_contacts_visited">Todos os contatos visitados</string>
     <string name="general_already_assigned">Já atribuído</string>
     <string name="general_application_version">Versão %1$s</string>
+    <string name="general_art_start_date">Data início TARV:</string>
     <string name="general_available_online">Disponível</string>
     <string name="general_awaiting_assignment">Aguardando Atribuição</string>
     <string name="general_cancel">Cancelar</string>
@@ -185,6 +189,7 @@
     <string name="general_label_sort_status">Classificar por status</string>
     <string name="general_large">Ampla</string>
     <string name="general_last_consent_date">Data do Último Consentimento:</string>
+    <string name="general_last_encounter_details">Detalhes da última visita</string>
     <string name="general_launching_map_message">Lançando mapa, por favor aguarde</string>
     <string name="general_leaderboard">Entre os melhores</string>
     <string name="general_load">Carregar</string>
@@ -370,15 +375,28 @@
     <string name="info_concepts_downloaded_deleted">%d conceitos baixados, %d conceitos excluídos</string>
     <string name="info_convert_person_to_patient">Converter pessoa em paciente</string>
     <string name="info_data_sync_cancelled">A sincronização de dados do mUzima foi cancelada.</string>
+    <string name="info_derived_concept_download">Baixando Conceitos Derivados</string>
+    <string name="info_derived_concept_downloaded">1 conceito derivado baixado</string>
+    <string name="info_derived_concept_not_downloaded">Não baixou nenhum conceito derivado</string>
+    <string name="info_derived_concepts_downloaded">%d conceitos derivados baixados</string>
+    <string name="info_derived_concepts_downloaded_deleted">%d conceitos derivados baixados, %d conceitos derivados excluídos</string>
+    <string name="info_derived_observation_download">Baixando observações derivadas</string>
+    <string name="info_derived_observation_patient_downloaded">1 observação derivada baixada para 1 cliente</string>
+    <string name="info_derived_observation_patient_not_downloaded">Não baixou nenhuma observação derivada</string>
+    <string name="info_derived_observation_patients_downloaded">%d observações derivadas baixadas para 1 cliente</string>
+    <string name="info_derived_observations_download_progress">Observações derivadas baixadas para o cliente %d de %d.</string>
+    <string name="info_derived_observations_patient_downloaded">1 observação derivada baixada para %d clientes</string>
+    <string name="info_derived_observations_patients_downloaded">%d observações derivadas baixadas para %d clientes</string>
     <string name="info_disclaimer">
-                                mUzima é distribuído sob os termos da Licença Pública de Mozilla, v. 2.0 (MPL 2.0). Uma cópia da licença MPL 2.0
+                                        mUzima é distribuído sob os termos da Licença Pública de Mozilla, v. 2.0 (MPL 2.0). Uma cópia da licença MPL 2.0
         pode ser encontrada em http://mozilla.org/MPL/2.0/.
         \nmUzima também é distribuído sob os termos da seguinte Garantia Adicional de Renúncia e Limitação de Responsabilidade.
         \n
         
         
+        
         <strong>Isenção de Garantia Adicional e Limitação de Responsabilidade</strong>
-                                Nos Estados Unidos, ou em quaisquer outras jurisdições onde se possam aplicar, as seguintes isenções da garantia
+                                        Nos Estados Unidos, ou em quaisquer outras jurisdições onde se possam aplicar, as seguintes isenções da garantia
         e limitação de responsabilidade são aqui incorporadas nos termos e condições de MPL 2.0:
         \n1. Nenhuma garantia de qualquer tipo é feita sobre os resultados que Você obterá com base no código fechado
         (ou em qualquer informação ou conteúdo obtido através do código fechado) incluindo mas não limitado a
@@ -402,6 +420,7 @@
         \n\n4. Se o utilizador deste aplicativo for uma entidade que pretende comercializar qualquer aplicativo que utilize
         este código em um empreendimento com fins lucrativos, o usuário é obrigado entrar em contacto com o detentor dos
         direitos autorais pelo email info@mUzima.org.
+    
     
     
     
@@ -582,6 +601,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="language_hindi">Hindi</string>
     <string name="language_portuguese">Português</string>
     <string name="language_swahili">Suaíli</string>
+    <string name="last_encounter_volunteer_name">Nome do Voluntário:</string>
     <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
     <string name="message_auto_logout">Você será desconectado automaticamente em %d segundos</string>
     <string name="message_feedback_sent">Obrigado pela sua mensagem. \n Seu feedback é importante para nós.</string>
@@ -751,21 +771,4 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="warning_switch_server">Trocando o Servidor: Isto irá apagar todos dados de mUzima no seu dispositivo, incluindo formulários imcompletos. Tem certeza que quer mudar as configurações?</string>
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
-    <string name="general_art_start_date">Data início TARV:</string>
-    <string name="info_derived_concept_download">Baixando Conceitos Derivados</string>
-    <string name="info_derived_concept_not_downloaded">Não baixou nenhum conceito derivado</string>
-    <string name="info_derived_concept_downloaded">1 conceito derivado baixado</string>
-    <string name="info_derived_concepts_downloaded">%d conceitos derivados baixados</string>
-    <string name="error_derived_concept_download">Não foi possível baixar os conceitos derivados</string>
-    <string name="info_derived_observation_download">Baixando observações derivadas</string>
-    <string name="error_derived_observation_download">Não foi possível baixar observações derivadas para clientes</string>
-    <string name="info_derived_observations_download_progress">Observações derivadas baixadas para o cliente %d de %d.</string>
-    <string name="info_derived_observation_patient_not_downloaded">Não baixou nenhuma observação derivada</string>
-    <string name="info_derived_observation_patient_downloaded">1 observação derivada baixada para 1 cliente</string>
-    <string name="info_derived_observation_patients_downloaded">%d observações derivadas baixadas para 1 cliente</string>
-    <string name="info_derived_observations_patient_downloaded">1 observação derivada baixada para %d clientes</string>
-    <string name="info_derived_observations_patients_downloaded">%d observações derivadas baixadas para %d clientes</string>
-    <string name="info_derived_concepts_downloaded_deleted">%d conceitos derivados baixados, %d conceitos derivados excluídos</string>
-    <string name="general_last_encounter_details">Detalhes da última visita</string>
-    <string name="last_encounter_volunteer_name">Nome do Voluntário:</string>
 </resources>
