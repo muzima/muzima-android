@@ -80,8 +80,11 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -1250,25 +1253,24 @@ class HTMLFormDataStore {
 
     @JavascriptInterface
     public String getInterventionsDerivedObservationByPatientUuid(String patientUuid) throws JSONException, DerivedConceptController.DerivedConceptFetchException {
-        List<DerivedObservation> derivedObservations = new ArrayList<>();
+        List<DerivedObservation> derivedObservationsList = new ArrayList<>();
         try {
-            addInterventionsDerivedObs(derivedObservations, derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "4b479a6c-4276-45a1-b785-ecbc7dc59ff1"));
-            addInterventionsDerivedObs(derivedObservations, derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "4b479a6c-4276-45a1-b785-ecbc7dc59ff1"));
-            addInterventionsDerivedObs(derivedObservations, derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "1bd47ba9-b6ff-4b4c-ba26-f5b86498d738"));
-            addInterventionsDerivedObs(derivedObservations, derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "9e928864-b7d2-445d-9856-cb7c9a0632dd"));
-            addInterventionsDerivedObs(derivedObservations, derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "46e6c352-bddb-4191-8d1e-40380aa1a346"));
-            addInterventionsDerivedObs(derivedObservations, derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "379e2aa5-b750-4b08-af13-cd0b9795eca7"));
-            Collections.sort(derivedObservations, derivedObservationDateTimeComparator);
+            List<DerivedObservation> derivedObservations = new ArrayList<>();
+            derivedObservations.addAll(getInterventionsDerivedObs(patientUuid, "4b479a6c-4276-45a1-b785-ecbc7dc59ff1"));
+            derivedObservations.addAll(getInterventionsDerivedObs(patientUuid, "1bd47ba9-b6ff-4b4c-ba26-f5b86498d738"));
+            derivedObservations.addAll(getInterventionsDerivedObs(patientUuid, "9e928864-b7d2-445d-9856-cb7c9a0632dd"));
+            derivedObservations.addAll(getInterventionsDerivedObs(patientUuid, "46e6c352-bddb-4191-8d1e-40380aa1a346"));
+            derivedObservations.addAll(getInterventionsDerivedObs(patientUuid, "379e2aa5-b750-4b08-af13-cd0b9795eca7"));
+            derivedObservationsList = derivedObservations.stream().filter(Objects::nonNull).collect(Collectors.toList());
+            Collections.sort(derivedObservationsList, derivedObservationDateTimeComparator);
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
             Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations",e);
         }
-        return createDerivedObsJsonArray(derivedObservations);
+        return createDerivedObsJsonArray(derivedObservationsList);
     }
 
-    private void addInterventionsDerivedObs(List<DerivedObservation> derivedObservations, List<DerivedObservation> derivedObsToBeAdded){
-          if(!derivedObsToBeAdded.isEmpty()){
-              derivedObservations.addAll(derivedObsToBeAdded);
-          }
+    private List<DerivedObservation> getInterventionsDerivedObs(String patientUuid, String conceptUuid) throws DerivedObservationController.DerivedObservationFetchException {
+        return derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "4b479a6c-4276-45a1-b785-ecbc7dc59ff1");
     }
 
     private final Comparator<DerivedObservation> derivedObservationDateTimeComparator = new Comparator<DerivedObservation>() {
