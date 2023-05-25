@@ -608,7 +608,7 @@ public class FormController {
         return completePatientForms;
     }
 
-    public List<FormData> getCOmpleteAndArchivedFormData(String personUuid) throws FormFetchException {
+    public List<FormData> getCompleteAndArchivedFormData(String personUuid) throws FormFetchException {
         List<FormData> formDataList = new ArrayList<>();
         try {
             List<FormData>  completeFormData = formService.getFormDataByPatient(personUuid, Constants.STATUS_COMPLETE);

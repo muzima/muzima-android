@@ -1588,7 +1588,7 @@ public class MuzimaSyncService {
                         if (relatedPersons != null) {
                             int personsWithHTCFormsCount = 0;
                             for (Person person : relatedPersons) {
-                                List<FormData> formDataList = formController.getCOmpleteAndArchivedFormData(person.getUuid());
+                                List<FormData> formDataList = formController.getCompleteAndArchivedFormData(person.getUuid());
                                 for (FormData formData : formDataList) {
                                     if (StringUtils.equals(formData.getTemplateUuid(), INDEX_CASE_PERSON_REGISTRATION_FORM) ||
                                             StringUtils.equals(formData.getTemplateUuid(), INDEX_CASE_PERSON_DEMOGRAPHIC_UPDATE_FORM)) {
@@ -1600,7 +1600,7 @@ public class MuzimaSyncService {
 
                             if (personsWithHTCFormsCount == relatedPersons.size()) {
                                 PatientTag allContactsVisitedTag = new PatientTag();
-                                allContactsVisitedTag.setName("VISITADO");
+                                allContactsVisitedTag.setName("V");
                                 allContactsVisitedTag.setDescription(muzimaApplication.getString(R.string.general_all_contacts_visited));
                                 allContactsVisitedTag.setUuid(ALL_CONTACTS_VISITED_TAG_UUID);
                                 tags.add(allContactsVisitedTag);
