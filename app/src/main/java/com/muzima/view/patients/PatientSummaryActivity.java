@@ -316,12 +316,25 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             } else {
                 lastVolunteerName.setText("-----------------");
             }
+            ;
 
             artStartDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 1190));
             testingSector.setText(getObsByPatientUuidAndConceptId(patientUuid, 23877));
             preferredTestingLocation.setText(getObsByPatientUuidAndConceptId(patientUuid, 21155));
             testingDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23879));
-            lastConsentDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23775));
+            //lastConsentDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23775));
+
+
+            Observation candidateConsentDateObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(patientUuid,21155, 21154, "4f215536-f90d-4e0c-81e1-074047eecd68");
+            if (candidateConsentDateObs == null) {
+                candidateConsentDateObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(patientUuid,21155, 6403, "4f215536-f90d-4e0c-81e1-074047eecd68");
+            }
+
+            if (candidateConsentDateObs != null) {
+                lastConsentDate.setText(DateUtils.getFormattedDate(candidateConsentDateObs.getEncounter().getEncounterDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
+            } else {
+                lastConsentDate.setText("-----------------");
+            }
 
             String cName = getObsByPatientUuidAndConceptId(patientUuid, 1740);
             confidantName.setText((StringUtils.EMPTY.equalsIgnoreCase(cName) || cName == null)?"-----------------":cName);
