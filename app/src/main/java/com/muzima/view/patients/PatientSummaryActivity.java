@@ -286,7 +286,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
             if (patient.getAddresses().size() > 0) {
                 int index = patient.getAddresses().size() - 1;
-                patientAddress.setText(getFormattedPatientAddress(patient.getAddresses().get(index)));
+                // the most recent address comes on index 0
+                patientAddress.setText(getFormattedPatientAddress(patient.getAddresses().get(0)));
             }
 
             if (patient.getAttribute("e2e3fd64-1d5f-11e0-b929-000c29ad1d07") != null) {
