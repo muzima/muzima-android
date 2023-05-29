@@ -608,6 +608,20 @@ public class FormController {
         return completePatientForms;
     }
 
+    public List<FormData> getCompleteAndArchivedFormData(String personUuid) throws FormFetchException {
+        List<FormData> formDataList = new ArrayList<>();
+        try {
+            List<FormData>  completeFormData = formService.getFormDataByPatient(personUuid, Constants.STATUS_COMPLETE);
+            formDataList.addAll(completeFormData);
+
+            List<FormData>  archivedFormData = formService.getFormDataByPatient(personUuid, STATUS_UPLOADED);
+            formDataList.addAll(archivedFormData);
+        } catch (IOException e) {
+            throw new FormFetchException(e);
+        }
+        return formDataList;
+    }
+
     public boolean isFormTemplateUpdatesAvailable() throws FormFetchException {
         try {
             List<Form> forms = formService.getAllForms();

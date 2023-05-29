@@ -30,7 +30,6 @@ import com.muzima.api.model.CohortData;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.DerivedConcept;
 import com.muzima.api.model.DerivedObservation;
-import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormDataStatus;
@@ -38,7 +37,6 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Media;
 import com.muzima.api.model.MediaCategory;
-import com.muzima.api.model.Notification;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientReport;
@@ -58,7 +56,6 @@ import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
-import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MediaCategoryController;
@@ -81,6 +78,7 @@ import com.muzima.util.MuzimaSettingUtils;
 import com.muzima.utils.Constants;
 import com.muzima.utils.MemoryUtil;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.RelationshipViewUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.SyncFormTemplateIntent;
 import com.muzima.view.patients.SyncPatientDataIntent;
@@ -111,6 +109,9 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
+import static com.muzima.utils.Constants.FGH.FormTemplateUuids.INDEX_CASE_PERSON_DEMOGRAPHIC_UPDATE_FORM;
+import static com.muzima.utils.Constants.FGH.FormTemplateUuids.INDEX_CASE_PERSON_REGISTRATION_FORM;
+import static com.muzima.utils.Constants.FGH.TagsUuids.ALL_CONTACTS_VISITED_TAG_UUID;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
 
@@ -1406,7 +1407,7 @@ public class MuzimaSyncService {
         for(String patientUuid:patientUuidList){
             try {
                 Patient patient = patientController.getPatientByUuid(patientUuid);
-                    if(patient != null){
+                if(patient != null) {
                     List<PatientTag> tags = new ArrayList<>();
                     if (patient.getTags() != null) {
                         tags = new ArrayList<>(Arrays.asList(patient.getTags()));
@@ -1418,6 +1419,7 @@ public class MuzimaSyncService {
                     boolean hasSexualPartnerTag = false;
                     boolean hasAssignmentTag = false;
                     boolean hasAwaitingAssignmentTag = false;
+                    boolean hasAllContactsVisitedTag = false;
                     for (PatientTag tag : patient.getTags()) {
                         if (StringUtils.equals(tag.getUuid(), HAS_SEXUAL_PARTNER_TAG_UUID)) {
                             hasSexualPartnerTag = true;
@@ -1426,6 +1428,8 @@ public class MuzimaSyncService {
                             assignmentTag = tag;
                         } else if (StringUtils.equals(tag.getUuid(), AWAITING_ASSIGNMENT_TAG_UUID)) {
                             hasAwaitingAssignmentTag = true;
+                        } else if (StringUtils.equals(tag.getUuid(), ALL_CONTACTS_VISITED_TAG_UUID)) {
+                            hasAllContactsVisitedTag = true;
                         }
                     }
 
@@ -1531,7 +1535,7 @@ public class MuzimaSyncService {
                         }
                     }
 
-                    if(muzimaApplication.getMuzimaSettingController().isAllocationTagGenerationEnabled()) {
+                    if (muzimaApplication.getMuzimaSettingController().isAllocationTagGenerationEnabled()) {
                         if (!hasAssignmentTag) {
                             List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
                             if (assignmentObsList.size() > 0) {
@@ -1579,6 +1583,31 @@ public class MuzimaSyncService {
                         }
                     }
 
+                    if (!hasAllContactsVisitedTag) {
+                        List<Person> relatedPersons = RelationshipViewUtil.getDisplayableRelatedPersonsList(patientUuid, muzimaApplication);
+                        if (relatedPersons != null) {
+                            int personsWithHTCFormsCount = 0;
+                            for (Person person : relatedPersons) {
+                                List<FormData> formDataList = formController.getCompleteAndArchivedFormData(person.getUuid());
+                                for (FormData formData : formDataList) {
+                                    if (StringUtils.equals(formData.getTemplateUuid(), INDEX_CASE_PERSON_REGISTRATION_FORM) ||
+                                            StringUtils.equals(formData.getTemplateUuid(), INDEX_CASE_PERSON_DEMOGRAPHIC_UPDATE_FORM)) {
+                                        personsWithHTCFormsCount++;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (personsWithHTCFormsCount == relatedPersons.size()) {
+                                PatientTag allContactsVisitedTag = new PatientTag();
+                                allContactsVisitedTag.setName("V");
+                                allContactsVisitedTag.setDescription(muzimaApplication.getString(R.string.general_all_contacts_visited));
+                                allContactsVisitedTag.setUuid(ALL_CONTACTS_VISITED_TAG_UUID);
+                                tags.add(allContactsVisitedTag);
+                                patientController.savePatientTags(allContactsVisitedTag);
+                            }
+                        }
+                    }
                     patient.setTags(tags.toArray(new PatientTag[tags.size()]));
                     patientController.updatePatient(patient);
                 }
@@ -1587,11 +1616,13 @@ public class MuzimaSyncService {
             } catch (PatientController.PatientSaveException e) {
                 Log.e(getClass().getSimpleName(), "Could not save patient with updated tags", e);
             } catch (IOException e) {
-                Log.e(getClass().getSimpleName(), "Could not load recordqs", e);
+                Log.e(getClass().getSimpleName(), "Could not load records", e);
             } catch (PatientController.PatientLoadException e) {
                 Log.e(getClass().getSimpleName(), "Could not load patient record to update update tags", e);
             } catch (ObservationController.LoadObservationException e) {
-                Log.e(getClass().getSimpleName(), "Could not load observations to create tags tags", e);
+                Log.e(getClass().getSimpleName(), "Could not load observations to create tags", e);
+            } catch (FormController.FormFetchException e) {
+                Log.e(getClass().getSimpleName(), "Could not load form data to create tags", e);
             }
         }
     }

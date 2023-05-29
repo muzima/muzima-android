@@ -540,6 +540,12 @@ public class Constants {
             public static final String HAS_SEXUAL_PARTNER_TAG_UUID = "6ff70505-4b1c-4b9e-b76f-fd73a5df450b";
             public static final String ALREADY_ASSIGNED_TAG_UUID = "e7e26b4e-b3fd-11eb-8374-d0577bb73cd4";
             public static final String AWAITING_ASSIGNMENT_TAG_UUID = "d334310f-5f04-4ecb-a09f-79ca7fc3dcbb";
+            public static final String ALL_CONTACTS_VISITED_TAG_UUID = "7cff5cc9-e17e-4614-8294-c0c67c8085a6";
+        }
+
+        public static class FormTemplateUuids {
+            public static final String INDEX_CASE_PERSON_REGISTRATION_FORM = "92dd9024-b859-47ed-bf6b-05f35a27531e";
+            public static final String INDEX_CASE_PERSON_DEMOGRAPHIC_UPDATE_FORM = "287cf6ec-d0e2-48b9-85df-775d960c3b06";
         }
     }
 }

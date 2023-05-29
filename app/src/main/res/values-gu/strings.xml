@@ -56,6 +56,8 @@
     <string name="error_current_gps_not_obtained">વર્તમાન GPS સ્થાન મેળવી શકાયું નથી. નકશા પર ડિફૉલ્ટ સ્થાન લોડ કરી રહ્યું છે.</string>
     <string name="error_data_download">સર્વરમાંથી ડેટા ડાઉનલોડ કરતી વખતે ભૂલ આવી</string>
     <string name="error_data_save">સ્થાનિક રેપોમાં ડેટા સાચવતી વખતે ભૂલ આવી</string>
+    <string name="error_derived_concept_download">વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કરી શકાયા નથી</string>
+    <string name="error_derived_observation_download">ક્લાયન્ટ્સ માટે વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કરી શક્યાં નથી</string>
     <string name="error_encounter_observation_download">ક્લાયન્ટ માટે નિરીક્ષણો ડાઉનલોડ કરી શક્યાં નથી</string>
     <string name="error_exception_data_load">ડેટા લોડ કરતી વખતે લોડ ત્રુટિ આવી</string>
     <string name="error_exception_data_upload">અપલોડ કરેલા ડેટા પર સર્વર દ્વારા પ્રક્રિયા કરી શકાઈ નહીં</string>
@@ -122,8 +124,10 @@
     <string name="general_alert">ચેતવણી!</string>
     <string name="general_all">તમામ</string>
     <string name="general_all_clients">બધા ગ્રાહકો</string>
+    <string name="general_all_contacts_visited">બધા સંપર્કોની મુલાકાત લીધી</string>
     <string name="general_already_assigned">પહેલેથી જ સોંપેલ</string>
     <string name="general_application_version">સંસ્કરણ %1$s</string>
+    <string name="general_art_start_date">ART પ્રારંભ તારીખ:</string>
     <string name="general_available_online">ઓનલાઇન ઉપલબ્ધ</string>
     <string name="general_awaiting_assignment">સોંપણીની રાહ જોઈ રહ્યા છીએ</string>
     <string name="general_cancel">રદ કરો</string>
@@ -185,6 +189,7 @@
     <string name="general_label_sort_status">સ્થિતિ દ્વારા સortર્ટ કરો</string>
     <string name="general_large">મોટું</string>
     <string name="general_last_consent_date">છેલ્લી સંમતિ તારીખ:</string>
+    <string name="general_last_encounter_details">છેલ્લી મુલાકાતની વિગતો</string>
     <string name="general_launching_map_message">નકશો લોન્ચ કરી રહ્યા છીએ, કૃપા કરીને રાહ જુઓ</string>
     <string name="general_leaderboard">લીડરબોર્ડ</string>
     <string name="general_load">લોડ કરો</string>
@@ -370,15 +375,28 @@
     <string name="info_concepts_downloaded_deleted">ડાઉનલોડ કરેલ %d ખ્યાલો, કાઢી નાખેલ %d ખ્યાલો</string>
     <string name="info_convert_person_to_patient">વ્યક્તિને દર્દીમાં ફેરવો</string>
     <string name="info_data_sync_cancelled">mUzima ડેટા સમન્વયન રદ કરાયું હતું.</string>
+    <string name="info_derived_concept_download">વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કરી રહ્યા છીએ</string>
+    <string name="info_derived_concept_downloaded">1 વ્યુત્પન્ન ખ્યાલ ડાઉનલોડ કર્યો</string>
+    <string name="info_derived_concept_not_downloaded">કોઈપણ વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કર્યા નથી</string>
+    <string name="info_derived_concepts_downloaded">%d વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કર્યા</string>
+    <string name="info_derived_concepts_downloaded_deleted">%d વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કર્યા, %d વ્યુત્પન્ન ખ્યાલો કાઢી નાખ્યા</string>
+    <string name="info_derived_observation_download">વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કરી રહ્યાં છીએ</string>
+    <string name="info_derived_observation_patient_downloaded">1 ક્લાયન્ટ માટે 1 વ્યુત્પન્ન અવલોકન ડાઉનલોડ કર્યું</string>
+    <string name="info_derived_observation_patient_not_downloaded">કોઈપણ વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા નથી</string>
+    <string name="info_derived_observation_patients_downloaded">1 ક્લાયન્ટ માટે %d વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા</string>
+    <string name="info_derived_observations_download_progress">%d માંથી %d ક્લાયન્ટ માટે વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા.</string>
+    <string name="info_derived_observations_patient_downloaded">%d ક્લાયન્ટ્સ માટે 1 વ્યુત્પન્ન અવલોકન ડાઉનલોડ કર્યું</string>
+    <string name="info_derived_observations_patients_downloaded">%d ક્લાયન્ટ્સ માટે %d વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા</string>
     <string name="info_disclaimer">
-                                mUzima Mozilla Public License, v. 2.0 (MPL 2.0) ની શરતો હેઠળ વિતરિત થયેલ છે. MPL 2.0 લાઇસન્સની એક નકલ
+                                        mUzima Mozilla Public License, v. 2.0 (MPL 2.0) ની શરતો હેઠળ વિતરિત થયેલ છે. MPL 2.0 લાઇસન્સની એક નકલ
         http://mozilla.org/MPL/2.0/ પર મળી શકે છે.
         \nવોરંટી અને જવાબદારીની મર્યાદા નીચેના વધારાના અસ્વીકરણની શરતો હેઠળ mUzima નું વિતરણ પણ કરવામાં આવે છે.
         \n
         
         
+        
         <strong>વધારાના અસ્વીકરણ વોરંટી અને જવાબદારીની મર્યાદા</strong>
-                                United States માં અથવા અન્ય અધિકારક્ષેત્રોમાં જ્યાં તેઓ અરજી કરી શકે છે, નીચેના વધારાના વોરંટી નિવેદનો અને જવાબદારીની મર્યાદાઓ MPL 2.0
+                                        United States માં અથવા અન્ય અધિકારક્ષેત્રોમાં જ્યાં તેઓ અરજી કરી શકે છે, નીચેના વધારાના વોરંટી નિવેદનો અને જવાબદારીની મર્યાદાઓ MPL 2.0
         ની શરતો અને શરતોમાં શામેલ છે:
         \n1. તમે જે પરિણામો મેળવશો તેના આધારે કોઈપણ પ્રકારની બાંયધરી આપવામાં આવી નથી સમાવેલ સોફ્ટવેર કોડ પર આધાર રાખવો (અથવા સમાવિષ્ટ સોફ્ટવેર
         કોડ દ્વારા પ્રાપ્ત કોઈપણ માહિતી અથવા સામગ્રી),ગોપનીયતા કાયદા અથવા નિયમો અથવા ક્લિનિકલ કેર ઉદ્યોગના ધોરણો અને પ્રોટોકોલ્સનું પાલન સહિતની
@@ -395,6 +413,7 @@
         \n\n3. mUzima Indiana University, Moi University, અને Vanderbilt University Medical Center ના ટ્રસ્ટીઓને કૉપિરાઇટ કરેલુ છે.
         \n\n4. જો આ એપ્લિકેશનનો ઉપયોગ કરનાર કોઈ પણ વસ્તુનું વેપારીકરણ કરવા અથવા નફો કરવાનો ઇરાદો ધરાવતી એક એન્ટિટી છે. એપ્લિકેશન જે આ કોડનો
         ઉપયોગ નફાકારક સાહસમાં કરે છે, વપરાશકર્તાએ કૉપિરાઇટ ધારકનો mUzima.mobile@gmail.com મારફત સંપર્ક કરવો જરૂરી છે.
+    
     
     
     
@@ -575,6 +594,7 @@
     <string name="language_hindi">હિન્દી</string>
     <string name="language_portuguese">પોર્ટુગીઝ</string>
     <string name="language_swahili">સ્વાહિલી</string>
+    <string name="last_encounter_volunteer_name">સ્વયંસેવકનું નામ:</string>
     <string name="menu_form_back_to_draft">ડ્રાફ્ટ પર પરત</string>
     <string name="message_auto_logout">તમે %d સેકન્ડમાં ઓટો લોગ ઓફ થઈ જશો</string>
     <string name="message_feedback_sent">તમારા સંદેશ માટે તમારો આભાર. \n તમારો પ્રતિસાદ અમારા માટે મહત્વપૂર્ણ છે.</string>
@@ -744,21 +764,4 @@
     <string name="warning_switch_server">સર્વર બદલી: આ તમારા ઉપકરણ પરના બધા mUzima ડેટાને સાફ કરશે, કોઈપણ અપૂર્ણ સ્વરૂપો સહિત. શું તમે ખરેખર આ સેટિંગ બદલવા માંગો છો?</string>
     <string name="write_SHR_to_card_text">SHR ને કાર્ડ પર લખો</string>
     <string name="write_shr_to_card_general">SHR ને કાર્ડ પર લખો</string>
-    <string name="general_art_start_date">ART પ્રારંભ તારીખ:</string>
-    <string name="info_derived_concept_download">વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કરી રહ્યા છીએ</string>
-    <string name="info_derived_concept_not_downloaded">કોઈપણ વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કર્યા નથી</string>
-    <string name="info_derived_concept_downloaded">1 વ્યુત્પન્ન ખ્યાલ ડાઉનલોડ કર્યો</string>
-    <string name="info_derived_concepts_downloaded">%d વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કર્યા</string>
-    <string name="error_derived_concept_download">વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કરી શકાયા નથી</string>
-    <string name="info_derived_observation_download">વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કરી રહ્યાં છીએ</string>
-    <string name="error_derived_observation_download">ક્લાયન્ટ્સ માટે વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કરી શક્યાં નથી</string>
-    <string name="info_derived_observations_download_progress">%d માંથી %d ક્લાયન્ટ માટે વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા.</string>
-    <string name="info_derived_observation_patient_not_downloaded">કોઈપણ વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા નથી</string>
-    <string name="info_derived_observation_patient_downloaded">1 ક્લાયન્ટ માટે 1 વ્યુત્પન્ન અવલોકન ડાઉનલોડ કર્યું</string>
-    <string name="info_derived_observation_patients_downloaded">1 ક્લાયન્ટ માટે %d વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા</string>
-    <string name="info_derived_observations_patient_downloaded">%d ક્લાયન્ટ્સ માટે 1 વ્યુત્પન્ન અવલોકન ડાઉનલોડ કર્યું</string>
-    <string name="info_derived_observations_patients_downloaded">%d ક્લાયન્ટ્સ માટે %d વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા</string>
-    <string name="info_derived_concepts_downloaded_deleted">%d વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કર્યા, %d વ્યુત્પન્ન ખ્યાલો કાઢી નાખ્યા</string>
-    <string name="general_last_encounter_details">છેલ્લી મુલાકાતની વિગતો</string>
-    <string name="last_encounter_volunteer_name">સ્વયંસેવકનું નામ:</string>
 </resources>
