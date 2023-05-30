@@ -286,7 +286,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
             if (patient.getAddresses().size() > 0) {
                 int index = patient.getAddresses().size() - 1;
-                patientAddress.setText(getFormattedPatientAddress(patient.getAddresses().get(index)));
+                // the most recent address comes on index 0
+                patientAddress.setText(getFormattedPatientAddress(patient.getAddresses().get(0)));
             }
 
             if (patient.getAttribute("e2e3fd64-1d5f-11e0-b929-000c29ad1d07") != null) {
@@ -315,12 +316,21 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             } else {
                 lastVolunteerName.setText("-----------------");
             }
+            ;
 
             artStartDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 1190));
             testingSector.setText(getObsByPatientUuidAndConceptId(patientUuid, 23877));
             preferredTestingLocation.setText(getObsByPatientUuidAndConceptId(patientUuid, 21155));
             testingDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23879));
-            lastConsentDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23775));
+
+            Observation candidateConsentDateObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(patientUuid,21155, 21154, "4f215536-f90d-4e0c-81e1-074047eecd68");
+            if (candidateConsentDateObs == null) {
+                candidateConsentDateObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(patientUuid,21155, 6403, "4f215536-f90d-4e0c-81e1-074047eecd68");
+            }
+
+            if (candidateConsentDateObs != null) {
+                lastConsentDate.setText(DateUtils.getFormattedDate(candidateConsentDateObs.getEncounter().getEncounterDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
+            }
 
             String cName = getObsByPatientUuidAndConceptId(patientUuid, 1740);
             confidantName.setText((StringUtils.EMPTY.equalsIgnoreCase(cName) || cName == null)?"-----------------":cName);
