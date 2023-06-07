@@ -1293,6 +1293,8 @@ public class MuzimaSyncService {
                 new FormDuplicateCheckPreferenceService(muzimaApplication).updateFormDuplicateCheckPreferenceSettings();
             }else if(MuzimaSettingUtils.isRealTimeSyncSetting(muzimaSetting)){
                 new RealTimeFormDataSyncPreferenceService(muzimaApplication).updateRealTimeSyncPreferenceSettings();
+            }else if(MuzimaSettingUtils.isConfidentialityNoticeDisplaySetting(muzimaSetting)){
+                new ConfidentialityNoticeDisplayPreferenceService(muzimaApplication).updateConfidentialityNoticeDisplayPreferenceValue();
             }
         }
     }

@@ -399,6 +399,7 @@
     <string name="info_concept_unavailable">No Concepts added yet.</string>
     <string formatted="false" name="info_concepts_downloaded">Downloaded %d concepts</string>
     <string formatted="false" name="info_concepts_downloaded_deleted">Downloaded %d concepts, Deleted %d concepts</string>
+    <string name="info_confidentiality_text">By accessing this system, you are about to view highly confidential user information. It is your responsibility to protect them properly and use them only for authorized purposes. User privacy is essential to our mission.</string>
     <string name="info_convert_person_to_patient">Convert person to patient</string>
     <string name="info_data_sync_cancelled">mUzima data sync was cancelled.</string>
     <string name="info_derived_concept_download">Downloading Derived Concepts</string>

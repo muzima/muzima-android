@@ -373,6 +373,7 @@
     <string name="info_concept_unavailable">Nenhum conceito adicionado ainda</string>
     <string formatted="false" name="info_concepts_downloaded">Baixou %d conceitos</string>
     <string name="info_concepts_downloaded_deleted">%d conceitos baixados, %d conceitos excluídos</string>
+    <string name="info_confidentiality_text">Ao acessar este sistema, você está prestes a visualizar informações altamente confidenciais de utentes. É sua responsabilidade protegê-las adequadamente e usá-las somente para os fins autorizados. A privacidade dos utentes é essencial para nossa missão.</string>
     <string name="info_convert_person_to_patient">Converter pessoa em paciente</string>
     <string name="info_data_sync_cancelled">A sincronização de dados do mUzima foi cancelada.</string>
     <string name="info_derived_concept_download">Baixando Conceitos Derivados</string>
@@ -388,15 +389,16 @@
     <string name="info_derived_observations_patient_downloaded">1 observação derivada baixada para %d clientes</string>
     <string name="info_derived_observations_patients_downloaded">%d observações derivadas baixadas para %d clientes</string>
     <string name="info_disclaimer">
-                                        mUzima é distribuído sob os termos da Licença Pública de Mozilla, v. 2.0 (MPL 2.0). Uma cópia da licença MPL 2.0
+                                                mUzima é distribuído sob os termos da Licença Pública de Mozilla, v. 2.0 (MPL 2.0). Uma cópia da licença MPL 2.0
         pode ser encontrada em http://mozilla.org/MPL/2.0/.
         \nmUzima também é distribuído sob os termos da seguinte Garantia Adicional de Renúncia e Limitação de Responsabilidade.
         \n
         
         
         
+        
         <strong>Isenção de Garantia Adicional e Limitação de Responsabilidade</strong>
-                                        Nos Estados Unidos, ou em quaisquer outras jurisdições onde se possam aplicar, as seguintes isenções da garantia
+                                                Nos Estados Unidos, ou em quaisquer outras jurisdições onde se possam aplicar, as seguintes isenções da garantia
         e limitação de responsabilidade são aqui incorporadas nos termos e condições de MPL 2.0:
         \n1. Nenhuma garantia de qualquer tipo é feita sobre os resultados que Você obterá com base no código fechado
         (ou em qualquer informação ou conteúdo obtido através do código fechado) incluindo mas não limitado a
@@ -420,6 +422,7 @@
         \n\n4. Se o utilizador deste aplicativo for uma entidade que pretende comercializar qualquer aplicativo que utilize
         este código em um empreendimento com fins lucrativos, o usuário é obrigado entrar em contacto com o detentor dos
         direitos autorais pelo email info@mUzima.org.
+    
     
     
     

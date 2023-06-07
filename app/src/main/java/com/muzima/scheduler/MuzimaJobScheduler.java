@@ -11,6 +11,7 @@
 package com.muzima.scheduler;
 
 import static com.muzima.util.Constants.ServerSettings.AUTOMATIC_FORM_SYNC_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.CONFIDENTIALITY_NOTICE_DISPLAY_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
 import static com.muzima.util.Constants.ServerSettings.FORM_DUPLICATE_CHECK_ENABLED_SETTING;
@@ -58,6 +59,7 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.SetupConfigurationController;
+import com.muzima.service.ConfidentialityNoticeDisplayPreferenceService;
 import com.muzima.service.FormDuplicateCheckPreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.OnlineOnlyModePreferenceService;
@@ -486,6 +488,8 @@ public class MuzimaJobScheduler extends JobService {
                     new FormDuplicateCheckPreferenceService(((MuzimaApplication) context)).updateFormDuplicateCheckPreferenceSettings();
                 }else if(muzimaSetting.getProperty().equals(AUTOMATIC_FORM_SYNC_ENABLED_SETTING)){
                     new RealTimeFormDataSyncPreferenceService(((MuzimaApplication) context)).updateRealTimeSyncPreferenceSettings();
+                }else if(muzimaSetting.getProperty().equals(CONFIDENTIALITY_NOTICE_DISPLAY_ENABLED_SETTING)){
+                    new ConfidentialityNoticeDisplayPreferenceService(((MuzimaApplication) context)).updateConfidentialityNoticeDisplayPreferenceValue();
                 }
             }
 
@@ -547,6 +551,8 @@ public class MuzimaJobScheduler extends JobService {
                 new FormDuplicateCheckPreferenceService(((MuzimaApplication) context)).updateFormDuplicateCheckPreferenceSettings();
             }else if(settingProperty.equals(AUTOMATIC_FORM_SYNC_ENABLED_SETTING)){
                 new RealTimeFormDataSyncPreferenceService(((MuzimaApplication) context)).updateRealTimeSyncPreferenceSettings();
+            }else if(settingProperty.equals(CONFIDENTIALITY_NOTICE_DISPLAY_ENABLED_SETTING)){
+                new ConfidentialityNoticeDisplayPreferenceService(((MuzimaApplication) context)).updateConfidentialityNoticeDisplayPreferenceValue();
             }
         }
     }

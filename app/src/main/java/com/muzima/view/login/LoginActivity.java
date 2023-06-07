@@ -61,6 +61,7 @@ import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
+import com.muzima.service.ConfidentialityNoticeDisplayPreferenceService;
 import com.muzima.service.CredentialsPreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaGPSLocationService;
@@ -172,6 +173,11 @@ public class LoginActivity extends BaseActivity {
         usernameText.requestFocus();
         initializeGPSDataCollection();
         context = getApplicationContext();
+
+        if(isConfidentialityTextVisibilityRequired()) {
+            TextView confidentialityMsgTextView = findViewById(R.id.info_confidentiality_text);
+            confidentialityMsgTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void showSessionTimeOutPopUpIfNeeded() {
@@ -397,6 +403,11 @@ public class LoginActivity extends BaseActivity {
     public void getOnlineOnlyModePreference() {
         OnlineOnlyModePreferenceService onlineOnlyModePreferenceService = new OnlineOnlyModePreferenceService((MuzimaApplication) getApplicationContext());
         isOnlineModeEnabled = onlineOnlyModePreferenceService.getOnlineOnlyModePreferenceValue();
+    }
+
+    public boolean isConfidentialityTextVisibilityRequired() {
+        ConfidentialityNoticeDisplayPreferenceService confidentialityTextPreferenceService = new ConfidentialityNoticeDisplayPreferenceService((MuzimaApplication) getApplicationContext());
+        return confidentialityTextPreferenceService.getConfidentialityNoticeDisplayPreferenceValue();
     }
 
     private void removeRemnantDataFromPreviousRunOfWizard() {
