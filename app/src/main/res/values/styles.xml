@@ -330,6 +330,12 @@
         <item name="android:textColor">?attr/primaryTextColor</item>
     </style>
 
+    <style name="ConfidentialityText">
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
+    </style>
+
     <style name="SetUpLogList">
         <item name="android:textSize">14sp</item>
         <item name="font">@font/roboto_regular</item>

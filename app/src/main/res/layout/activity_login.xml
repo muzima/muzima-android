@@ -69,6 +69,23 @@
             android:padding="22dp"
             android:visibility="gone" />
 
+        <LinearLayout
+            style="@style/LoginInfoLayout"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp">
+            <TextView
+                android:id="@+id/info_confidentiality_text"
+                style="@style/ConfidentialityText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center|start"
+                android:fontFamily="@font/roboto_regular"
+                android:justificationMode="inter_word"
+                android:text="@string/info_confidentiality_text"
+                android:visibility="gone"/>
+        </LinearLayout>
+
         <View
             style="@style/LoginActivityDivider.Style"
             android:visibility="invisible" />

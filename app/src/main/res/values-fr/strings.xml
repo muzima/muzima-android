@@ -373,6 +373,7 @@
     <string name="info_concept_unavailable">Aucun concept n\'a été ajouté encore.</string>
     <string formatted="false" name="info_concepts_downloaded">Concepts %d téléchargés</string>
     <string name="info_concepts_downloaded_deleted">%d concepts téléchargés, %d concepts supprimés</string>
+    <string name="info_confidentiality_text">En accédant à ce système, vous êtes sur le point d'afficher des informations utilisateur hautement confidentielles. Il est de votre responsabilité de les protéger correctement et de les utiliser uniquement à des fins autorisées. La confidentialité des utilisateurs est essentielle à notre mission.</string>
     <string name="info_convert_person_to_patient">Convertir une personne en patient</string>
     <string name="info_data_sync_cancelled">La synchronisation des données mUzima a été annulée.</string>
     <string name="info_derived_concept_download">Téléchargement des concepts dérivés</string>
@@ -388,7 +389,7 @@
     <string name="info_derived_observations_patient_downloaded">1 observation dérivée téléchargée pour %d clients</string>
     <string name="info_derived_observations_patients_downloaded">%d observations dérivées téléchargées pour %d clients</string>
     <string name="info_disclaimer">
-                                        mUzima est distribué sous les termes de la licence publique de Mozilla, v. 2.0 (MPL 2.0). Une copie de la
+                                                mUzima est distribué sous les termes de la licence publique de Mozilla, v. 2.0 (MPL 2.0). Une copie de la
         licence MPL 2.0 peut être trouvée sur http://mozilla.org/MPL/2.0/.
         \nmUzima est également distribué sous les termes de la clause de non-responsabilité Et Limitation de responsabilité
         de garantie suivante.
@@ -396,8 +397,9 @@
         
         
         
+        
         <strong> Renonciation additionnelle de garantie et limitation de responsabilité </strong>
-                                        Aux États-Unis ou dans d\'autres juridictions où ils peuvent appliquer, L\'exclusion de la garantie et de la
+                                                Aux États-Unis ou dans d\'autres juridictions où ils peuvent appliquer, L\'exclusion de la garantie et de la
         limitation de la responsabilité sont incorporées dans les Conditions de MPL 2.0:
         \n1. Aucune garantie de quelconque nature n\'est faite quant aux résultats que vous obtiendrez de En s\'appuyant
         sur le code couvert (ou sur toute information ou contenu obtenu par le biais du code couvert), Y compris, mais
@@ -422,6 +424,7 @@
         \n\n4. Si l\'utilisateur de cette demande est une entité qui a l\'intention de commercialiser une application qui
         utilise cette Code dans une entreprise à but lucratif, l\'utilisateur est tenu de contacter le détenteur des
         droits d’auteur via mUzima.mobile@gmail.com.
+    
     
     
     

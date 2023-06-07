@@ -373,6 +373,7 @@
     <string name="info_concept_unavailable">હજી સુધી કોઈ ખ્યાલ ઉમેરવામાં આવી નથી.</string>
     <string formatted="false" name="info_concepts_downloaded">%d ખ્યાલો ડાઉનલોડ કર્યા</string>
     <string name="info_concepts_downloaded_deleted">ડાઉનલોડ કરેલ %d ખ્યાલો, કાઢી નાખેલ %d ખ્યાલો</string>
+    <string name="info_confidentiality_text">આ સિસ્ટમને ઍક્સેસ કરીને, તમે અત્યંત ગોપનીય વપરાશકર્તા માહિતી જોવાના છો. તેમને યોગ્ય રીતે સુરક્ષિત રાખવાની અને માત્ર અધિકૃત હેતુઓ માટે જ તેનો ઉપયોગ કરવાની જવાબદારી તમારી છે. અમારા મિશન માટે વપરાશકર્તાની ગોપનીયતા આવશ્યક છે.</string>
     <string name="info_convert_person_to_patient">વ્યક્તિને દર્દીમાં ફેરવો</string>
     <string name="info_data_sync_cancelled">mUzima ડેટા સમન્વયન રદ કરાયું હતું.</string>
     <string name="info_derived_concept_download">વ્યુત્પન્ન ખ્યાલો ડાઉનલોડ કરી રહ્યા છીએ</string>
@@ -388,15 +389,16 @@
     <string name="info_derived_observations_patient_downloaded">%d ક્લાયન્ટ્સ માટે 1 વ્યુત્પન્ન અવલોકન ડાઉનલોડ કર્યું</string>
     <string name="info_derived_observations_patients_downloaded">%d ક્લાયન્ટ્સ માટે %d વ્યુત્પન્ન અવલોકનો ડાઉનલોડ કર્યા</string>
     <string name="info_disclaimer">
-                                        mUzima Mozilla Public License, v. 2.0 (MPL 2.0) ની શરતો હેઠળ વિતરિત થયેલ છે. MPL 2.0 લાઇસન્સની એક નકલ
+                                                mUzima Mozilla Public License, v. 2.0 (MPL 2.0) ની શરતો હેઠળ વિતરિત થયેલ છે. MPL 2.0 લાઇસન્સની એક નકલ
         http://mozilla.org/MPL/2.0/ પર મળી શકે છે.
         \nવોરંટી અને જવાબદારીની મર્યાદા નીચેના વધારાના અસ્વીકરણની શરતો હેઠળ mUzima નું વિતરણ પણ કરવામાં આવે છે.
         \n
         
         
         
+        
         <strong>વધારાના અસ્વીકરણ વોરંટી અને જવાબદારીની મર્યાદા</strong>
-                                        United States માં અથવા અન્ય અધિકારક્ષેત્રોમાં જ્યાં તેઓ અરજી કરી શકે છે, નીચેના વધારાના વોરંટી નિવેદનો અને જવાબદારીની મર્યાદાઓ MPL 2.0
+                                                United States માં અથવા અન્ય અધિકારક્ષેત્રોમાં જ્યાં તેઓ અરજી કરી શકે છે, નીચેના વધારાના વોરંટી નિવેદનો અને જવાબદારીની મર્યાદાઓ MPL 2.0
         ની શરતો અને શરતોમાં શામેલ છે:
         \n1. તમે જે પરિણામો મેળવશો તેના આધારે કોઈપણ પ્રકારની બાંયધરી આપવામાં આવી નથી સમાવેલ સોફ્ટવેર કોડ પર આધાર રાખવો (અથવા સમાવિષ્ટ સોફ્ટવેર
         કોડ દ્વારા પ્રાપ્ત કોઈપણ માહિતી અથવા સામગ્રી),ગોપનીયતા કાયદા અથવા નિયમો અથવા ક્લિનિકલ કેર ઉદ્યોગના ધોરણો અને પ્રોટોકોલ્સનું પાલન સહિતની
@@ -413,6 +415,7 @@
         \n\n3. mUzima Indiana University, Moi University, અને Vanderbilt University Medical Center ના ટ્રસ્ટીઓને કૉપિરાઇટ કરેલુ છે.
         \n\n4. જો આ એપ્લિકેશનનો ઉપયોગ કરનાર કોઈ પણ વસ્તુનું વેપારીકરણ કરવા અથવા નફો કરવાનો ઇરાદો ધરાવતી એક એન્ટિટી છે. એપ્લિકેશન જે આ કોડનો
         ઉપયોગ નફાકારક સાહસમાં કરે છે, વપરાશકર્તાએ કૉપિરાઇટ ધારકનો mUzima.mobile@gmail.com મારફત સંપર્ક કરવો જરૂરી છે.
+    
     
     
     

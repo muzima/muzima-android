@@ -48,6 +48,7 @@ import static com.muzima.util.Constants.ServerSettings.BARCODE_FEATURE_ENABLED_S
 import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_COHORT_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_FORM_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.CLINICAL_SUMMARY_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.CONFIDENTIALITY_NOTICE_DISPLAY_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.CONTACT_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DISALLOW_SERVER_PATIENT_SEARCH;
@@ -707,6 +708,19 @@ public class MuzimaSettingController {
                 else
                     Log.e(getClass().getSimpleName(), "Setting is missing on this server");
             }
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isConfidentialityNoticeDisplayEnabled(){
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(CONFIDENTIALITY_NOTICE_DISPLAY_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Setting is missing on this server");
         }
