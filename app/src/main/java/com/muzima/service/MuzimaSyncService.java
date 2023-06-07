@@ -144,7 +144,6 @@ public class MuzimaSyncService {
     private DerivedConceptController derivedConceptController;
     private DerivedObservationController derivedObservationController;
     private Logger logger;
-    private String username;
     private String pseudoDeviceId;
 
     public MuzimaSyncService(MuzimaApplication muzimaContext) {
@@ -167,7 +166,6 @@ public class MuzimaSyncService {
         appUsageLogsController = muzimaApplication.getAppUsageLogsController();
         derivedConceptController = muzimaApplication.getDerivedConceptController();
         derivedObservationController = muzimaApplication.getDerivedObservationController();
-        username = muzimaApplication.getAuthenticatedUserId();
         pseudoDeviceId = generatePseudoDeviceId();
     }
 
@@ -863,17 +861,16 @@ public class MuzimaSyncService {
 
     public int[] uploadAllCompletedForms() {
         int[] result = new int[1];
-
         try {
             result[0] = formController.uploadAllCompletedForms() ? SUCCESS : SyncStatusConstants.UPLOAD_ERROR;
             patientController.deletePatientsPendingDeletion();
             try {
                 SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
-                AppUsageLogs lastUploadLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME, username);
+                AppUsageLogs lastUploadLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME, muzimaApplication.getAuthenticatedUserId());
                 if (lastUploadLog != null) {
                     lastUploadLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
                     lastUploadLog.setUpdateDatetime(new Date());
-                    lastUploadLog.setUserName(username);
+                    lastUploadLog.setUserName(muzimaApplication.getAuthenticatedUserId());
                     lastUploadLog.setDeviceId(pseudoDeviceId);
                     lastUploadLog.setLogSynced(false);
                     appUsageLogsController.saveOrUpdateAppUsageLog(lastUploadLog);
@@ -883,7 +880,7 @@ public class MuzimaSyncService {
                     newUploadTime.setLogKey(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME);
                     newUploadTime.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
                     newUploadTime.setUpdateDatetime(new Date());
-                    newUploadTime.setUserName(username);
+                    newUploadTime.setUserName(muzimaApplication.getAuthenticatedUserId());
                     newUploadTime.setDeviceId(pseudoDeviceId);
                     newUploadTime.setLogSynced(false);
                     appUsageLogsController.saveOrUpdateAppUsageLog(newUploadTime);
@@ -1978,7 +1975,7 @@ public class MuzimaSyncService {
                 if(!availableMemory.equals(appUsageLogs.getLogvalue())) {
                     appUsageLogs.setLogvalue(availableMemory);
                     appUsageLogs.setUpdateDatetime(new Date());
-                    appUsageLogs.setUserName(username);
+                    appUsageLogs.setUserName(muzimaApplication.getAuthenticatedUserId());
                     appUsageLogs.setDeviceId(pseudoDeviceId);
                     appUsageLogs.setLogSynced(false);
                     appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLogs);
@@ -1989,7 +1986,7 @@ public class MuzimaSyncService {
                 availableSpace.setLogKey(com.muzima.util.Constants.AppUsageLogs.AVAILABLE_INTERNAL_SPACE);
                 availableSpace.setLogvalue(availableMemory);
                 availableSpace.setUpdateDatetime(new Date());
-                availableSpace.setUserName(username);
+                availableSpace.setUserName(muzimaApplication.getAuthenticatedUserId());
                 availableSpace.setDeviceId(pseudoDeviceId);
                 availableSpace.setLogSynced(false);
                 appUsageLogsController.saveOrUpdateAppUsageLog(availableSpace);
@@ -2024,7 +2021,7 @@ public class MuzimaSyncService {
                     if(noEnoughSpaceLog != null) {
                         noEnoughSpaceLog.setLogvalue("Required: "+requiredMemory+ " Available: "+availableMemory);
                         noEnoughSpaceLog.setUpdateDatetime(new Date());
-                        noEnoughSpaceLog.setUserName(username);
+                        noEnoughSpaceLog.setUserName(muzimaApplication.getAuthenticatedUserId());
                         noEnoughSpaceLog.setDeviceId(pseudoDeviceId);
                         noEnoughSpaceLog.setLogSynced(false);
                         appUsageLogsController.saveOrUpdateAppUsageLog(noEnoughSpaceLog);
@@ -2034,7 +2031,7 @@ public class MuzimaSyncService {
                         newNoEnoughSpaceLog.setLogKey(com.muzima.util.Constants.AppUsageLogs.NO_ENOUGH_SPACE_DEVICES);
                         newNoEnoughSpaceLog.setLogvalue("Required: "+requiredMemory+ " Available: "+availableMemory);
                         newNoEnoughSpaceLog.setUpdateDatetime(new Date());
-                        newNoEnoughSpaceLog.setUserName(username);
+                        newNoEnoughSpaceLog.setUserName(muzimaApplication.getAuthenticatedUserId());
                         newNoEnoughSpaceLog.setDeviceId(pseudoDeviceId);
                         newNoEnoughSpaceLog.setLogSynced(false);
                         appUsageLogsController.saveOrUpdateAppUsageLog(newNoEnoughSpaceLog);
