@@ -373,8 +373,7 @@
     <string name="info_concept_unavailable">Aucun concept n\'a été ajouté encore.</string>
     <string formatted="false" name="info_concepts_downloaded">Concepts %d téléchargés</string>
     <string name="info_concepts_downloaded_deleted">%d concepts téléchargés, %d concepts supprimés</string>
-    <string name="info_confidentiality_text">En accédant à ce système, vous êtes sur le point d'afficher des informations utilisateur hautement confidentielles. Il est de votre responsabilité de les protéger correctement et de les utiliser uniquement à des fins autorisées. La confidentialité des utilisateurs est essentielle à notre mission.</string>
-    <string name="info_convert_person_to_patient">Convertir une personne en patient</string>
+    <string name="info_confidentiality_text">En accédant à ce système, vous êtes sur le point d\'afficher des informations utilisateur hautement confidentielles. Il est de votre responsabilité de les protéger correctement et de les utiliser uniquement à des fins autorisées. La confidentialité des utilisateurs est essentielle à notre mission.</string>    <string name="info_convert_person_to_patient">Convertir une personne en patient</string>
     <string name="info_data_sync_cancelled">La synchronisation des données mUzima a été annulée.</string>
     <string name="info_derived_concept_download">Téléchargement des concepts dérivés</string>
     <string name="info_derived_concept_downloaded">Téléchargé 1 concept dérivé</string>
