@@ -769,4 +769,5 @@
     <string name="write_SHR_to_card_text">Andika SHR kwenye kadi</string>
     <string name="write_shr_to_card_general">Andika SHR kwenye kadi</string>
     <string name="info_confidentiality_text">Kwa kufikia mfumo huu, unakaribia kuona maelezo ya siri ya mtumiaji. Ni jukumu lako kuzilinda ipasavyo na kuzitumia kwa madhumuni yaliyoidhinishwa pekee. Faragha ya mtumiaji ni muhimu kwa dhamira yetu.</string>
+    <string name="general_choose">Chagua...</string>
 </resources>

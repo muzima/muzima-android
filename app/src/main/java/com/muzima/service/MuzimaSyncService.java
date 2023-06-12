@@ -1597,7 +1597,7 @@ public class MuzimaSyncService {
                                 }
                             }
 
-                            if (personsWithHTCFormsCount == relatedPersons.size()) {
+                            if (personsWithHTCFormsCount == relatedPersons.size() && relatedPersons.size()>0) {
                                 PatientTag allContactsVisitedTag = new PatientTag();
                                 allContactsVisitedTag.setName("V");
                                 allContactsVisitedTag.setDescription(muzimaApplication.getString(R.string.general_all_contacts_visited));
