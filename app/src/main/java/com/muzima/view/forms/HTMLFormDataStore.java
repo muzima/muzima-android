@@ -1269,11 +1269,7 @@ class HTMLFormDataStore {
         List<DerivedObservation> derivedObservationsList = new ArrayList<>();
         try {
             List<DerivedObservation> derivedObservations = new ArrayList<>();
-            derivedObservations.addAll(getInterventionsDerivedObs(patientUuid, "4b479a6c-4276-45a1-b785-ecbc7dc59ff1"));
-            derivedObservations.addAll(getInterventionsDerivedObs(patientUuid, "1bd47ba9-b6ff-4b4c-ba26-f5b86498d738"));
-            derivedObservations.addAll(getInterventionsDerivedObs(patientUuid, "9e928864-b7d2-445d-9856-cb7c9a0632dd"));
-            derivedObservations.addAll(getInterventionsDerivedObs(patientUuid, "46e6c352-bddb-4191-8d1e-40380aa1a346"));
-            derivedObservations.addAll(getInterventionsDerivedObs(patientUuid, "379e2aa5-b750-4b08-af13-cd0b9795eca7"));
+            derivedObservations.addAll(getInterventionsDerivedObs(patientUuid));
             derivedObservationsList = derivedObservations.stream().filter(Objects::nonNull).collect(Collectors.toList());
             Collections.sort(derivedObservationsList, derivedObservationDateTimeComparator);
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
@@ -1282,8 +1278,22 @@ class HTMLFormDataStore {
         return createDerivedObsJsonArray(derivedObservationsList);
     }
 
-    private List<DerivedObservation> getInterventionsDerivedObs(String patientUuid, String conceptUuid) throws DerivedObservationController.DerivedObservationFetchException {
-        return derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, "4b479a6c-4276-45a1-b785-ecbc7dc59ff1");
+    private List<DerivedObservation> getInterventionsDerivedObs(String patientUuid) throws DerivedObservationController.DerivedObservationFetchException {
+        List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByPatientUuid(patientUuid);
+        List<DerivedObservation> derivedObservationList = new ArrayList<DerivedObservation>();
+        List<String> derivedConceptsUuids = new ArrayList<String>();
+        derivedConceptsUuids.add("4b479a6c-4276-45a1-b785-ecbc7dc59ff1");
+        derivedConceptsUuids.add("1bd47ba9-b6ff-4b4c-ba26-f5b86498d738");
+        derivedConceptsUuids.add("9e928864-b7d2-445d-9856-cb7c9a0632dd");
+        derivedConceptsUuids.add("46e6c352-bddb-4191-8d1e-40380aa1a346");
+        derivedConceptsUuids.add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
+        for (DerivedObservation derivedObservation : derivedObservations) {
+            if(derivedConceptsUuids.contains(derivedObservation.getDerivedConcept().getUuid())){
+                derivedObservationList.add(derivedObservation);
+            }
+        }
+        Collections.sort(derivedObservationList, derivedObservationDateTimeComparator);
+        return derivedObservationList;
     }
 
     private final Comparator<DerivedObservation> derivedObservationDateTimeComparator = new Comparator<DerivedObservation>() {

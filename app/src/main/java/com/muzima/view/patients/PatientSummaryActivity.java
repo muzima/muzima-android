@@ -145,6 +145,10 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private String applicationLanguage;
     private ConceptController conceptController;
     private ObservationController observationController;
+
+    private DerivedObservationController derivedObservationController;
+
+    private DerivedConceptController derivedConceptController;
     private FormController formController;
     private boolean isFGHCustomClientSummaryEnabled;
 
@@ -446,51 +450,32 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 lastARVPickup.setText(obsLastARVPickup!=null?DateUtils.getFormattedDate(obsLastARVPickup.getObservationDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"-----------------");
             }
 
-            Observation tptStartDateResultObsFR = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(patientUuid, 165308,  1256, "e422ecf9-75dd-4367-b21e-54bccabc4763");
-            Observation tptStartDateResultObsFILT = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(patientUuid, 23987,  1256, "24bd60e2-a1c9-4159-a24f-12af15b77510");
-            if(tptStartDateResultObsFR!=null && tptStartDateResultObsFILT!=null){
-                Date tptStartDateFR = tptStartDateResultObsFR.getObservationDatetime();
-                Date tptStartDateFILT = tptStartDateResultObsFILT.getObservationDatetime();
-                if(tptStartDateFR.compareTo(tptStartDateFILT)==-1){
-                    tptStartDate.setText(DateUtils.getFormattedDate(tptStartDateFILT, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
-                } else if(tptStartDateFR.compareTo(tptStartDateFILT)==1){
-                    tptStartDate.setText(DateUtils.getFormattedDate(tptStartDateFR, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
+            DerivedConcept tptStartDateDerivedConcept = derivedConceptController.getDerivedConceptByUuid("9b7b653f-2b09-48cd-91fc-4099e5cd2e02");
+            if(tptStartDateDerivedConcept!=null) {
+                List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptId(patientUuid, tptStartDateDerivedConcept.getId());
+                if (!derivedObservations.isEmpty()) {
+                    DerivedObservation derivedObservation = derivedObservations.get(0);
+                    tptStartDate.setText(DateUtils.getFormattedDate(derivedObservation.getValueDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
+                } else {
+                    tptStartDate.setText("------------------------");
                 }
-                else {
-                    tptStartDate.setText(DateUtils.getFormattedDate(tptStartDateFR, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
-                }
-            } else if(tptStartDateResultObsFR!=null && tptStartDateResultObsFILT==null){
-                Date tptStartDateFR = tptStartDateResultObsFR.getObservationDatetime();
-                tptStartDate.setText(DateUtils.getFormattedDate(tptStartDateFR, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
-            }else if(tptStartDateResultObsFR==null && tptStartDateResultObsFILT!=null){
-                Date tptStartDateFILT = tptStartDateResultObsFILT.getObservationDatetime();
-                tptStartDate.setText(DateUtils.getFormattedDate(tptStartDateFILT, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
             } else {
                 tptStartDate.setText("------------------------");
             }
 
-            Observation tptEndDateResultObsFR = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(patientUuid, 165308,  1267, "e422ecf9-75dd-4367-b21e-54bccabc4763");
-            Observation tptEndDateResultObsFILT = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(patientUuid, 23987,  1267, "24bd60e2-a1c9-4159-a24f-12af15b77510");
-            if(tptEndDateResultObsFR!=null && tptEndDateResultObsFILT!=null){
-                Date tptEndDateFR = tptEndDateResultObsFR.getObservationDatetime();
-                Date tptEndDateFILT = tptEndDateResultObsFILT.getObservationDatetime();
-                if(tptEndDateFR.compareTo(tptEndDateFILT)==-1){
-                    tptEndDate.setText(DateUtils.getFormattedDate(tptEndDateFILT, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
-                } else if(tptEndDateFR.compareTo(tptEndDateFILT)==1){
-                    tptEndDate.setText(DateUtils.getFormattedDate(tptEndDateFR, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
+            DerivedConcept tptEndDateDerivedConcept = derivedConceptController.getDerivedConceptByUuid("ceeda5e2-6e36-48c5-a599-2b595324c0ca");
+            if(tptEndDateDerivedConcept!=null) {
+                List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptId(patientUuid, tptEndDateDerivedConcept.getId());
+                if (!derivedObservations.isEmpty()) {
+                    DerivedObservation derivedObservation = derivedObservations.get(0);
+                    tptEndDate.setText(DateUtils.getFormattedDate(derivedObservation.getValueDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
+                } else {
+                    tptEndDate.setText("------------------------");
                 }
-                else {
-                    tptEndDate.setText(DateUtils.getFormattedDate(tptEndDateFR, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
-                }
-            } else if(tptEndDateResultObsFR!=null && tptEndDateResultObsFILT==null){
-                Date tptEndDateFR = tptEndDateResultObsFR.getObservationDatetime();
-                tptEndDate.setText(DateUtils.getFormattedDate(tptEndDateFR, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
-            }else if(tptEndDateResultObsFR==null && tptEndDateResultObsFILT!=null){
-                Date tptEndDateFILT = tptEndDateResultObsFILT.getObservationDatetime();
-                tptEndDate.setText(DateUtils.getFormattedDate(tptEndDateFILT, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
             } else {
                 tptEndDate.setText("------------------------");
             }
+
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception encountered while loading patients ", e);
         } catch (ObservationController.LoadObservationException e) {
