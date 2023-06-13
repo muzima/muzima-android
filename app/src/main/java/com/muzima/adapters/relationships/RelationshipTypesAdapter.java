@@ -166,7 +166,7 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipTypeWrap> 
 
         private List<RelationshipTypeWrap> sortNameAscending(List<RelationshipTypeWrap> relationshipTypeWraps) {
             Collections.sort(relationshipTypeWraps);
-            relationshipTypeWraps.add(0, new RelationshipTypeWrap(null, "Choose . . .", null, null));
+            relationshipTypeWraps.add(0, new RelationshipTypeWrap(null, getContext().getString(R.string.general_choose), null, null));
             return relationshipTypeWraps;
         }
     }

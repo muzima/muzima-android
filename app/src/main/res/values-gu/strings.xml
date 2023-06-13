@@ -767,4 +767,5 @@
     <string name="warning_switch_server">સર્વર બદલી: આ તમારા ઉપકરણ પરના બધા mUzima ડેટાને સાફ કરશે, કોઈપણ અપૂર્ણ સ્વરૂપો સહિત. શું તમે ખરેખર આ સેટિંગ બદલવા માંગો છો?</string>
     <string name="write_SHR_to_card_text">SHR ને કાર્ડ પર લખો</string>
     <string name="write_shr_to_card_general">SHR ને કાર્ડ પર લખો</string>
+    <string name="general_choose">પસંદ કરો...</string>
 </resources>
