@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.model.CohortFilter;
 import com.muzima.utils.MuzimaPreferences;
@@ -48,7 +50,10 @@ public class CohortFilterAdapter extends RecyclerView.Adapter<CohortFilterAdapte
             holder.checkBox.setText(context.getResources().getString(R.string.general_all_clients));
         } else {
             if(!cohort.getCohortWithDerivedConceptFilter().getDerivedObservationFilter().isEmpty()) {
-                holder.checkBox.setText(cohort.getCohortWithDerivedConceptFilter().getCohort().getName() + " - "+cohort.getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
+                if(((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().isSameDerivedConceptUsedToFilterMoreThanOneCohort(cohort.getCohortWithDerivedConceptFilter().getDerivedConceptUuid()))
+                    holder.checkBox.setText(cohort.getCohortWithDerivedConceptFilter().getCohort().getName() + " - "+cohort.getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
+                else
+                    holder.checkBox.setText(cohort.getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
             }else{
                 holder.checkBox.setText(cohort.getCohortWithDerivedConceptFilter().getCohort().getName());
             }
