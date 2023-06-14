@@ -297,7 +297,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 selectedPerson = null;
-                createPersonView.setVisibility(View.GONE);
+                createPersonView.setVisibility(View.VISIBLE);
                 saveButton.setVisibility(View.GONE);
 
                 if (s.length() < 3)
@@ -351,7 +351,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         // Hide the add relationship view
         autoCompletePersonTextView.setText(StringUtils.EMPTY);
         addRelationshipView.setVisibility(View.GONE);
-        createPersonView.setVisibility(View.GONE);
+        createPersonView.setVisibility(View.VISIBLE);
         textViewCreatePersonTip.setVisibility(View.GONE);
         searchServerView.setVisibility(View.GONE);
         progressBarContainer.setVisibility(View.GONE);
