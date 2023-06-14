@@ -353,7 +353,7 @@
     <string name="info_background_data_sync_started">Sincronizando dados em segundo plano</string>
     <string name="info_client_local_search_not_found">Nenhum utente corresponde à sua pesquisa localmente. Introduza pelo menos 3 caracteres para a pesquisa remota.</string>
     <string name="info_client_local_search_not_found_secondary">Não encontramos nada relacionado à sua pesquisa. Tente pesquisar no servidor</string>
-    <string name="info_client_remote_search_not_found">Nenhum utente corresponde à sua pesquisa no servidor</string>
+    <string name="info_client_remote_search_not_found">Se nenhum utente corresponde à sua pesquisa no servidor</string>
     <string name="info_cohort_download">Baixando Coortes</string>
     <string name="info_cohort_downloaded">Baixou 1 coorte</string>
     <string formatted="false" name="info_cohort_new_patient_download">Baixou %d novos utentes para %d coortes</string>
