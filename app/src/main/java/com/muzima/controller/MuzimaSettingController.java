@@ -21,6 +21,8 @@ import android.util.Log;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.model.Cohort;
+import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfigurationTemplate;
@@ -28,7 +30,9 @@ import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.MuzimaSettingService;
 
 import com.muzima.api.service.SetupConfigurationService;
+import com.muzima.model.CohortWithDerivedConceptFilter;
 import com.muzima.service.SntpService;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.MainDashboardActivity;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -48,6 +52,7 @@ import static com.muzima.util.Constants.ServerSettings.BARCODE_FEATURE_ENABLED_S
 import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_COHORT_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_FORM_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.CLINICAL_SUMMARY_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_DERIVED_CONCEPT_MAP;
 import static com.muzima.util.Constants.ServerSettings.CONFIDENTIALITY_NOTICE_DISPLAY_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.CONTACT_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
@@ -82,6 +87,7 @@ public class MuzimaSettingController {
     private final SntpService sntpService;
     private final SetupConfigurationService setupConfigurationService;
     private final MuzimaApplication muzimaApplication;
+    private final CohortController cohortController;
 
 
     public MuzimaSettingController(MuzimaSettingService settingService, LastSyncTimeService lastSyncTimeService,
@@ -91,6 +97,7 @@ public class MuzimaSettingController {
         this.sntpService = sntpService;
         this.setupConfigurationService = setupConfigurationService;
         this.muzimaApplication = muzimaApplication;
+        this.cohortController = muzimaApplication.getCohortController();
     }
 
     public MuzimaSetting getSettingByProperty(String property) throws MuzimaSettingFetchException {
@@ -723,6 +730,64 @@ public class MuzimaSettingController {
                 Log.e(getClass().getSimpleName(), "Setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+        }
+        return false;
+    }
+
+
+    public boolean isSameDerivedConceptUsedToFilterMoreThanOneCohort(String derivedConceptUuid) {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
+            if (muzimaSetting != null) {
+                String settingValue = muzimaSetting.getValueString();
+                if(settingValue != null) {
+                    List<String> conceptUuids = new ArrayList<>();
+                    for (Cohort cohort : cohortController.getCohorts()) {
+                        if (cohortController.isDownloaded(cohort)) {
+                            JSONObject jsonObject = new JSONObject(settingValue);
+                            Object derivedConceptObject = null;
+                            String derivedConceptUuidInObject = "";
+                            if (jsonObject.has(cohort.getUuid())) {
+                                derivedConceptObject = jsonObject.get(cohort.getUuid());
+                                if (derivedConceptObject != null && derivedConceptObject instanceof JSONArray) {
+                                    JSONArray jsonArray = (JSONArray) derivedConceptObject;
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        derivedConceptUuidInObject = jsonArray.get(i).toString();
+                                        if (!derivedConceptUuidInObject.isEmpty()) {
+                                            if(derivedConceptUuidInObject.equals(derivedConceptUuid)){
+                                                if(!conceptUuids.contains(derivedConceptUuid)){
+                                                    conceptUuids.add(derivedConceptUuid);
+                                                }else{
+                                                    return true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }else{
+                                    derivedConceptUuidInObject = derivedConceptObject.toString();
+                                    if (!derivedConceptUuidInObject.isEmpty()) {
+                                        if(derivedConceptUuidInObject.equals(derivedConceptUuid)){
+                                            if(!conceptUuids.contains(derivedConceptUuid)){
+                                                conceptUuids.add(derivedConceptUuid);
+                                            }else{
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+            }
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+        } catch (CohortController.CohortFetchException e) {
+            Log.e(getClass().getSimpleName(), "Error while fetching cohorts");
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Error while parsing json object");
         }
         return false;
     }
