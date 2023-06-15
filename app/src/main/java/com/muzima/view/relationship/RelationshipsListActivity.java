@@ -286,6 +286,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                 }
 
                 createPersonView.setVisibility(View.GONE);
+                createPersonButton.setVisibility(View.GONE);
                 saveButton.setVisibility(View.VISIBLE);
             }
         };
@@ -297,8 +298,8 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 selectedPerson = null;
-                createPersonView.setVisibility(View.VISIBLE);
                 saveButton.setVisibility(View.GONE);
+                createPersonButton.setVisibility(View.GONE);
 
                 if (s.length() < 3)
                     searchServerView.setVisibility(View.GONE);
@@ -330,6 +331,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                 textViewCreatePersonTip.setVisibility(View.GONE);
             }
             createPersonView.setVisibility(View.VISIBLE);
+            createPersonButton.setVisibility(View.VISIBLE);
         } else {
             // local search
             wasServerSearch = false;
@@ -351,7 +353,8 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         // Hide the add relationship view
         autoCompletePersonTextView.setText(StringUtils.EMPTY);
         addRelationshipView.setVisibility(View.GONE);
-        createPersonView.setVisibility(View.VISIBLE);
+        createPersonView.setVisibility(View.GONE);
+        createPersonButton.setVisibility(View.GONE);
         textViewCreatePersonTip.setVisibility(View.GONE);
         searchServerView.setVisibility(View.GONE);
         progressBarContainer.setVisibility(View.GONE);
@@ -484,6 +487,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                         if (p != null) {
                             autoCompletePersonTextView.setText(p.getDisplayName(), false);
                             createPersonView.setVisibility(View.GONE);
+                            createPersonButton.setVisibility(View.GONE);
                             selectedPerson = p;
                             saveButton.setVisibility(View.VISIBLE);
                         }

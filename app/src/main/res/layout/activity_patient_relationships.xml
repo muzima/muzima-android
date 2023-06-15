@@ -38,146 +38,166 @@
             android:id="@+id/add_relationship"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             android:visibility="gone">
 
-            <LinearLayout
+            <RelativeLayout
                 style="@style/NotClickableSummaryItem"
+                android:layout_height="match_parent"
                 android:fitsSystemWindows="true">
-
-                <TextView
-                    android:id="@+id/info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/relationshipType"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="3pt"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="3pt"
-                    android:background="@drawable/spinner_border"
-                    android:spinnerMode="dropdown" />
-
-                <TextView
-                    android:id="@+id/info2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/to_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-                <RelativeLayout
-                    android:id="@+id/dashboard_main_patient_search_view"
-                    android:background="@drawable/border_button_gray"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:padding="8dp">
-
-                    <AutoCompleteTextView
-                        android:hint="@string/hint_person_search"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:textColor="?attr/primaryTextColor"
-                        android:id="@+id/search_related_person"
-                        android:layout_centerVertical="true"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:padding="4dp"
-
-                        android:completionThreshold="3"
-                        android:singleLine="true"
-                        android:textCursorDrawable="@null"
-                        android:backgroundTint="@android:color/transparent"/>
-
-                    <ImageView
-                        android:layout_marginEnd="4dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:src="@drawable/ic_search" />
-                </RelativeLayout>
-
                 <LinearLayout
-                    android:id="@+id/search_server_layout"
+                    android:id="@+id/add_relationship_widgets_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="5dp"
-                    android:visibility="gone">
-
+                    android:orientation="vertical">
                     <TextView
-                        android:id="@+id/no_data_tip"
-                        style="@style/NoDataTip"
-                        android:text="@string/info_client_local_search_not_found" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/info_client_local_search_not_found_secondary"
-                        style="@style/NoDataTip"/>
-
-                    <Button
-                        android:id="@+id/search_server_button"
+                        android:id="@+id/info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:drawableStart="@drawable/ic_search"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/relationshipType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="3pt"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="3pt"
+                        android:background="@drawable/spinner_border"
+                        android:spinnerMode="dropdown" />
+
+                    <TextView
+                        android:id="@+id/info2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/to_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                    <RelativeLayout
+                        android:id="@+id/dashboard_main_patient_search_view"
+                        android:background="@drawable/border_button_gray"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="12dp"
+                        android:padding="8dp">
+
+                        <AutoCompleteTextView
+                            android:hint="@string/hint_person_search"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:textColor="?attr/primaryTextColor"
+                            android:id="@+id/search_related_person"
+                            android:layout_centerVertical="true"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:padding="4dp"
+                            android:completionThreshold="3"
+                            android:singleLine="true"
+                            android:textCursorDrawable="@null"
+                            android:backgroundTint="@android:color/transparent"/>
+
+                        <ImageView
+                            android:layout_marginEnd="4dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:src="@drawable/ic_search" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/search_server_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:onClick="searchServer"
-                        android:text="@string/title_search_server" />
-                </LinearLayout>
+                        android:orientation="vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="5dp"
+                        android:visibility="gone">
 
-                <LinearLayout
-                    android:id="@+id/progress_bar_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:addStatesFromChildren="true"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                        <TextView
+                            android:id="@+id/no_data_tip"
+                            style="@style/NoDataTip"
+                            android:text="@string/info_client_local_search_not_found" />
 
-                    <ProgressBar
-                        android:id="@+id/prbProgress"
-                        style="@android:style/Widget.Holo.ProgressBar.Large"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/info_client_local_search_not_found_secondary"
+                            android:visibility="gone"
+                            style="@style/NoDataTip"/>
 
-                    <TextView
-                        android:id="@+id/progress_msg"
+                        <Button
+                            android:id="@+id/search_server_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:drawableStart="@drawable/ic_search"
+                            android:gravity="center"
+                            android:onClick="searchServer"
+                            android:text="@string/title_search_server" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/progress_bar_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:addStatesFromChildren="true"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ProgressBar
+                            android:id="@+id/prbProgress"
+                            style="@android:style/Widget.Holo.ProgressBar.Large"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center" />
+
+                        <TextView
+                            android:id="@+id/progress_msg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/general_searching"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/create_person_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/general_searching"
-                        android:textSize="16sp" />
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="5dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/create_person_tip"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/info_client_remote_search_not_found"
+                            android:textSize="16sp" />
+                    </LinearLayout>
                 </LinearLayout>
-
                 <LinearLayout
-                    android:id="@+id/create_person_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="5dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/create_person_tip"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/info_client_remote_search_not_found"
-                        android:textSize="16sp" />
-
+                    style="@style/NotClickableSummaryItem"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="bottom"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/add_relationship_widgets_container">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
                     <Button
                         android:id="@+id/create_person_button"
                         style="@style/Button.Next"
@@ -188,15 +208,8 @@
                         android:onClick="createPerson"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp"
-                        android:text="@string/general_person_create" />
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/NotClickableSummaryItem"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="end"
-                    android:orientation="horizontal">
+                        android:text="@string/general_person_create"
+                        android:visibility="gone"/>
 
                     <Button
                         android:id="@+id/save"
@@ -214,10 +227,9 @@
                         android:layout_marginStart="5dp"
                         android:background="@drawable/sel_button_round"
                         android:onClick="cancelRelationshipAdd"
-                        android:text="@string/general_cancel" />
+                        android:text="@string/general_cancel"/>
                 </LinearLayout>
-
-            </LinearLayout>
+            </RelativeLayout>
         </ScrollView>
 
         <include layout="@layout/recycler_no_data_view"/>
