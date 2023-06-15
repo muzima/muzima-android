@@ -83,7 +83,7 @@
                         android:layout_marginTop="12dp"
                         android:padding="8dp">
 
-                        <AutoCompleteTextView
+                        <com.muzima.view.relationship.AutocompleteRelatedPersonTextView
                             android:hint="@string/hint_person_search"
                             android:textSize="14sp"
                             android:fontFamily="@font/montserrat_regular"
@@ -129,16 +129,6 @@
                             android:text="@string/info_client_local_search_not_found_secondary"
                             android:visibility="gone"
                             style="@style/NoDataTip"/>
-
-                        <Button
-                            android:id="@+id/search_server_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:drawableStart="@drawable/ic_search"
-                            android:gravity="center"
-                            android:onClick="searchServer"
-                            android:text="@string/title_search_server" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -198,12 +188,22 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         />
+
                     <Button
-                        android:id="@+id/create_person_button"
-                        style="@style/Button.Next"
+                        android:id="@+id/search_server_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:drawableStart="@drawable/ic_search"
+                        android:gravity="center"
+                        android:onClick="searchServer"
+                        android:text="@string/title_search_server"
+                        android:visibility="gone"/>
+                    <Button
+                        android:id="@+id/create_person_button"
+                        android:background="@drawable/rounded_corner_loginbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
                         android:gravity="center"
                         android:onClick="createPerson"
                         android:paddingStart="5dp"
