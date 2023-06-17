@@ -27,7 +27,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -89,7 +88,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private TextView ageTextView;
 
     private ListView lvwPatientRelationships;
-    private AutoCompleteTextView autoCompletePersonTextView;
+    private AutocompleteRelatedPersonTextView autoCompletePersonTextView;
     private AutoCompleteRelatedPersonAdapter autoCompleteRelatedPersonAdapterAdapter;
     private TextView textViewInfo;
     private TextView textViewCreatePersonTip;
@@ -97,6 +96,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private Person selectedPerson;
     private Button saveButton;
     private Button createPersonButton;
+    private Button searchServerButton;
     private RelationshipController relationshipController;
     private PatientController patientController;
     private Person selectedRelatedPerson;
@@ -125,6 +125,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         createPersonView = findViewById(R.id.create_person_layout);
         progressBarContainer = findViewById(R.id.progress_bar_container);
         createPersonButton = findViewById(R.id.create_person_button);
+        searchServerButton = findViewById(R.id.search_server_button);
 
         if(((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isFGHCustomClientSummaryEnabled()){
            createPersonButton.setText(R.string.general_create_contact);
@@ -286,6 +287,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                 }
 
                 createPersonView.setVisibility(View.GONE);
+                createPersonButton.setVisibility(View.GONE);
                 saveButton.setVisibility(View.VISIBLE);
             }
         };
@@ -297,8 +299,8 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 selectedPerson = null;
-                createPersonView.setVisibility(View.VISIBLE);
                 saveButton.setVisibility(View.GONE);
+                createPersonButton.setVisibility(View.GONE);
 
                 if (s.length() < 3)
                     searchServerView.setVisibility(View.GONE);
@@ -320,6 +322,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
             wasServerSearch = true;
             autoCompleteRelatedPersonAdapterAdapter.setSearchRemote(false);
             searchServerView.setVisibility(View.GONE);
+            searchServerButton.setVisibility(View.GONE);
             if (count < 1) {
                 textViewCreatePersonTip.setVisibility(View.VISIBLE);
                 if (connectivityFailed)
@@ -330,9 +333,11 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                 textViewCreatePersonTip.setVisibility(View.GONE);
             }
             createPersonView.setVisibility(View.VISIBLE);
+            createPersonButton.setVisibility(View.VISIBLE);
         } else {
             // local search
             wasServerSearch = false;
+            searchServerButton.setVisibility(View.VISIBLE);
             if (count < 1) {
                 searchServerView.setVisibility(View.VISIBLE);
             } else {
@@ -351,9 +356,11 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         // Hide the add relationship view
         autoCompletePersonTextView.setText(StringUtils.EMPTY);
         addRelationshipView.setVisibility(View.GONE);
-        createPersonView.setVisibility(View.VISIBLE);
+        createPersonView.setVisibility(View.GONE);
+        createPersonButton.setVisibility(View.GONE);
         textViewCreatePersonTip.setVisibility(View.GONE);
         searchServerView.setVisibility(View.GONE);
+        searchServerButton.setVisibility(View.GONE);
         progressBarContainer.setVisibility(View.GONE);
     }
 
@@ -484,6 +491,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                         if (p != null) {
                             autoCompletePersonTextView.setText(p.getDisplayName(), false);
                             createPersonView.setVisibility(View.GONE);
+                            createPersonButton.setVisibility(View.GONE);
                             selectedPerson = p;
                             saveButton.setVisibility(View.VISIBLE);
                         }
@@ -507,6 +515,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
 
         closeSoftKeyboard();
         searchServerView.setVisibility(View.GONE);
+        searchServerButton.setVisibility(View.GONE);
         progressBarContainer.setVisibility(View.VISIBLE);
 
         isSearching = true;

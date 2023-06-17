@@ -11,15 +11,21 @@
 package com.muzima.tasks;
 
 import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_DERIVED_CONCEPT_MAP;
+import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
+import com.muzima.R;
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.DerivedConcept;
 import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.CohortWithDerivedConceptFilter;
@@ -50,6 +56,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
             List<CohortWithDerivedConceptFilter> cohortWithDerivedConceptFilters = new ArrayList<>();
             MuzimaSetting muzimaSetting = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
             DerivedObservationController derivedObservationController = ((MuzimaApplication) context.getApplicationContext()).getDerivedObservationController();
+            DerivedConceptController derivedConceptController = ((MuzimaApplication) context.getApplicationContext()).getDerivedConceptController();
             for (Cohort cohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
                     .getCohorts()) {
                 if (((MuzimaApplication) context.getApplicationContext()).getCohortController().isDownloaded(cohort)) {
@@ -75,7 +82,13 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                                 }
                                             }
                                         } else {
-                                            cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
+                                            DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedConceptUuid);
+                                            if(derivedConcept != null) {
+                                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+                                                String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+                                                String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
+                                                cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedConceptName));
+                                            }
                                         }
                                     } else {
                                         cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
@@ -94,7 +107,13 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                             }
                                         }
                                     } else {
-                                        cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
+                                        DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedConceptUuid);
+                                        if(derivedConcept != null) {
+                                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+                                            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+                                            String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
+                                            cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedConceptName));
+                                        }
                                     }
                                 } else {
                                     cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
@@ -127,6 +146,8 @@ public class LoadDownloadedCohortsTask implements Runnable {
         } catch (NullPointerException e){
             Log.e(getClass().getSimpleName(),"Encountered a null pointer exception while fetching filter setting ",e);
             run();
+        } catch (DerivedConceptController.DerivedConceptFetchException e) {
+            throw new RuntimeException(e);
         }
     }
 
