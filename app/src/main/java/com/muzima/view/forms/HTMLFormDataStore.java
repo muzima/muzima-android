@@ -296,7 +296,9 @@ class HTMLFormDataStore {
                             }
                             existingTags.add(tag);
                             patientController.savePatientTags(tag);
+                        }
 
+                        if(!tags.contains(tag)){
                             tags.add(tag);
                         }
 
