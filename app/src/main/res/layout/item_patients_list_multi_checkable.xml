@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <LinearLayout
+        <RelativeLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,7 +51,8 @@
                 android:orientation="horizontal"/>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/menu_tags">
                 <TextView
                         android:id="@+id/identifier"
                         style="@style/ListDescription"
@@ -63,7 +64,7 @@
                         android:layout_marginLeft="8dp"
                         android:gravity="center_vertical"/>
             </RelativeLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
                 android:id="@+id/item_patient_details"
