@@ -296,9 +296,9 @@ class HTMLFormDataStore {
                             }
                             existingTags.add(tag);
                             patientController.savePatientTags(tag);
-                        }
 
-                        tags.add(tag);
+                            tags.add(tag);
+                        }
 
                         patient.setTags(tags.toArray(new PatientTag[tags.size()]));
                         patientController.updatePatient(patient);
