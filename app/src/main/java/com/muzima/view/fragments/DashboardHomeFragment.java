@@ -9,6 +9,7 @@
  */
 package com.muzima.view.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -110,6 +111,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     private PatientsLocalSearchAdapter patientSearchAdapter;
     private CohortFilterActionEvent latestCohortFilterActionEvent;
     private RelativeLayout patientSearchBy;
+    private Activity mActivity;
 
     public static final String SELECTED_PATIENT_UUIDS_KEY = "selectedPatientUuids";
 
@@ -137,9 +139,18 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         }
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Activity){
+            mActivity =(Activity) context;
+        }
+    }
+
     private void setupListView(View view) {
         recyclerView = view.findViewById(R.id.list);
-        Context context = getActivity().getApplicationContext();
+        Context context = mActivity.getApplicationContext();
         patientSearchAdapter = new PatientsLocalSearchAdapter(context,
                 ((MuzimaApplication) context).getPatientController(), null, null, getCurrentGPSLocation());
 
@@ -176,7 +187,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
             patientSearchBy.setVisibility(View.GONE);
         }
 
-        if(((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSettingController().isPatientRegistrationEnabled()) {
+        if(((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController().isPatientRegistrationEnabled()) {
             fabSearchButton.setVisibility(View.VISIBLE);
         }else{
             fabSearchButton.setVisibility(View.GONE);
@@ -217,7 +228,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                 } else {
                     EventBus.getDefault().post(new ShowCohortFilterEvent());
                     bottomSheetFilterVisible = true;
-                    childContainer.setBackgroundColor(getResources().getColor(R.color.hint_text_grey_opaque));
+                    childContainer.setBackgroundColor(mActivity.getResources().getColor(R.color.hint_text_grey_opaque));
                 }
             }
         });
@@ -260,10 +271,10 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
             }
         });
 
-        if (((MuzimaApplication) getActivity().getApplicationContext()).getAuthenticatedUser() != null)
+        if (((MuzimaApplication) mActivity.getApplicationContext()).getAuthenticatedUser() != null)
             providerNameTextView.setText(String.format(Locale.getDefault(), "%s, %s",
-                getResources().getString(R.string.hello_general),
-                ((MuzimaApplication) getActivity().getApplicationContext()).getAuthenticatedUser().getUsername()));
+                mActivity.getResources().getString(R.string.hello_general),
+                ((MuzimaApplication) mActivity.getApplicationContext()).getAuthenticatedUser().getUsername()));
 
     }
 
@@ -274,23 +285,23 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
     private void loadFormsCount() {
         try {
-            long incompleteForms = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().countAllIncompleteForms();
-            long completeForms = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().countAllCompleteForms();
+            long incompleteForms = ((MuzimaApplication) mActivity.getApplicationContext()).getFormController().countAllIncompleteForms();
+            long completeForms = ((MuzimaApplication) mActivity.getApplicationContext()).getFormController().countAllCompleteForms();
             if(incompleteForms == 0){
-                incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_green));
+                incompleteFormsView.setBackground(mActivity.getResources().getDrawable(R.drawable.rounded_corners_green));
             }else if(incompleteForms>0 && incompleteForms<=5){
-                incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_orange));
+                incompleteFormsView.setBackground(mActivity.getResources().getDrawable(R.drawable.rounded_corners_orange));
             }else{
-                incompleteFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_red));
+                incompleteFormsView.setBackground(mActivity.getResources().getDrawable(R.drawable.rounded_corners_red));
             }
             incompleteFormsTextView.setText(String.valueOf(incompleteForms));
 
             if(completeForms == 0){
-                completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_green));
+                completeFormsView.setBackground(mActivity.getResources().getDrawable(R.drawable.rounded_corners_green));
             }else if(completeForms>0 && completeForms<=5){
-                completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_orange));
+                completeFormsView.setBackground(mActivity.getResources().getDrawable(R.drawable.rounded_corners_orange));
             }else{
-                completeFormsView.setBackground(getResources().getDrawable(R.drawable.rounded_corners_red));
+                completeFormsView.setBackground(mActivity.getResources().getDrawable(R.drawable.rounded_corners_red));
             }
             completeFormsTextView.setText(String.valueOf(completeForms));
         } catch (FormController.FormFetchException e) {
@@ -301,22 +312,22 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     private void setupNoDataView(View view) {
         noDataView = view.findViewById(R.id.no_data_layout);
         TextView noDataMsgTextView = view.findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(getResources().getText(R.string.info_no_client_available));
+        noDataMsgTextView.setText(mActivity.getResources().getText(R.string.info_no_client_available));
     }
 
     private boolean isSHRFeatureEnabled(){
 
         SHRStatusPreferenceService shrStatusPreferenceService
-                = new SHRStatusPreferenceService((MuzimaApplication) getActivity().getApplication());
+                = new SHRStatusPreferenceService((MuzimaApplication) mActivity.getApplication());
         return shrStatusPreferenceService.isSHRStatusSettingEnabled();
     }
 
     private void showRegistrationFormsMissingAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         AlertDialog dialog = builder.setCancelable(false)
-                .setIcon(ThemeUtils.getIconWarning(getActivity().getApplicationContext()))
-                .setTitle(getResources().getString(R.string.general_alert))
-                .setMessage(getResources().getString(R.string.general_registration_form_missing_message))
+                .setIcon(ThemeUtils.getIconWarning(mActivity.getApplicationContext()))
+                .setTitle(mActivity.getResources().getString(R.string.general_alert))
+                .setMessage(mActivity.getResources().getString(R.string.general_registration_form_missing_message))
                 .setPositiveButton(R.string.general_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -329,18 +340,18 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
     private void launchPatientsSearchActivity(String searchString) {
         patientSearchAdapter.cancelBackgroundTask();
-        Intent intent = new Intent(getActivity(), PatientsSearchActivity.class);
+        Intent intent = new Intent(mActivity, PatientsSearchActivity.class);
         intent.putExtra(PatientsSearchActivity.SEARCH_STRING, searchString);
         startActivity(intent);
     }
 
     // Confirmation dialog for confirming if the patient have an existing ID
     private void callRegisterPatientConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setCancelable(true)
-                .setIcon(ThemeUtils.getIconWarning(getActivity().getApplicationContext()))
-                .setTitle(getResources().getString(R.string.title_logout_confirm))
-                .setMessage(getResources().getString(R.string.confirm_patient_id_exists))
+                .setIcon(ThemeUtils.getIconWarning(mActivity.getApplicationContext()))
+                .setTitle(mActivity.getResources().getString(R.string.title_logout_confirm))
+                .setMessage(mActivity.getResources().getString(R.string.confirm_patient_id_exists))
                 .setPositiveButton(R.string.general_yes, launchPatientsList())
                 .setNegativeButton(R.string.general_no, launchClientRegistrationFormIfPossible()).create().show();
     }
@@ -355,7 +366,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     }
 
     private Dialog.OnClickListener launchClientRegistrationFormIfPossible() {
-        if (FormUtils.getRegistrationForms(((MuzimaApplication) getActivity().getApplicationContext()).getFormController()).isEmpty()) {
+        if (FormUtils.getRegistrationForms(((MuzimaApplication) mActivity.getApplicationContext()).getFormController()).isEmpty()) {
             return new Dialog.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -366,7 +377,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
             return new Dialog.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    startActivity(new Intent(getActivity().getApplicationContext(), RegistrationFormsActivity.class));
+                    startActivity(new Intent(mActivity.getApplicationContext(), RegistrationFormsActivity.class));
                 }
             };
         }
@@ -374,7 +385,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
     private void invokeBarcodeScan() {
         Intent intent;
-        intent = new Intent(getActivity().getApplicationContext(), BarcodeCaptureActivity.class);
+        intent = new Intent(mActivity.getApplicationContext(), BarcodeCaptureActivity.class);
         intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
         intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
 
@@ -382,10 +393,10 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     }
 
     private void readSmartCard() {
-        if (getActivity() == null) return;
-        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(getActivity());
+        if (mActivity == null) return;
+        SmartCardIntentIntegrator SHRIntegrator = new SmartCardIntentIntegrator(mActivity);
         SHRIntegrator.initiateCardRead();
-        Toast.makeText(getActivity().getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
+        Toast.makeText(mActivity.getApplicationContext(), "Opening Card Reader", Toast.LENGTH_LONG).show();
     }
 
 
@@ -412,7 +423,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     }
 
     private void launchFormDataList(boolean isIncompleteFormsData) {
-        Intent intent = new Intent(getActivity(), FormsWithDataActivity.class);
+        Intent intent = new Intent(mActivity, FormsWithDataActivity.class);
         if (isIncompleteFormsData) {
             intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, TAB_INCOMPLETE);
         } else {
@@ -430,7 +441,9 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     public void onStart() {
         super.onStart();
         try {
-            EventBus.getDefault().register(this);
+            if (!EventBus.getDefault().isRegistered(this)) {
+                EventBus.getDefault().register(this);
+            }
             loadAllPatients();
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(),"Encountered an exception",e);
@@ -441,13 +454,13 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     public void bottomNavigationToggleEvent(BottomSheetToggleEvent event) {
         if (event.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             childContainer.setVisibility(View.VISIBLE);
-            appBarLayout.setBackgroundColor(getResources().getColor(R.color.hint_text_grey_opaque));
+            appBarLayout.setBackgroundColor(mActivity.getResources().getColor(R.color.hint_text_grey_opaque));
         } else if (event.getState() == BottomSheetBehavior.STATE_HIDDEN) {
             childContainer.setVisibility(View.GONE);
-            if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(getActivity().getApplicationContext()))
-                appBarLayout.setBackgroundColor(getResources().getColor(R.color.primary_white));
+            if (MuzimaPreferences.getIsLightModeThemeSelectedPreference(mActivity.getApplicationContext()))
+                appBarLayout.setBackgroundColor(mActivity.getResources().getColor(R.color.primary_white));
             else
-                appBarLayout.setBackgroundColor(getResources().getColor(R.color.primary_black));
+                appBarLayout.setBackgroundColor(mActivity.getResources().getColor(R.color.primary_black));
         }
     }
 
@@ -460,7 +473,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
         List<CohortFilter> filters = event.getFilters();
         try {
-            MuzimaSetting muzimaSetting = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
+            MuzimaSetting muzimaSetting = ((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
             if(muzimaSetting != null && !muzimaSetting.getValueString().isEmpty()) {
                 patientSearchAdapter.filterByCohortsWithDerivedConceptFilter(filters);
             }else{
@@ -484,36 +497,36 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     private void updateCohortFilterLabel(CohortFilterActionEvent event) {
         if (event.getFilters().size() == 1) {
             if (event.getFilters().get(0).getCohortWithDerivedConceptFilter() == null)
-                filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
+                filterLabelTextView.setText(mActivity.getResources().getString(R.string.general_all_clients));
 
-            else if(((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSettingController().isSameDerivedConceptUsedToFilterMoreThanOneCohort(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getDerivedConceptUuid()))
+            else if(((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController().isSameDerivedConceptUsedToFilterMoreThanOneCohort(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getDerivedConceptUuid()))
                 filterLabelTextView.setText(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getCohort().getName()+" - "+event.getFilters().get(0).getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
 
             else
                 filterLabelTextView.setText(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
 
         } else if (event.getFilters().isEmpty())
-            filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
+            filterLabelTextView.setText(mActivity.getResources().getString(R.string.general_all_clients));
         else if (event.getFilters().size() == 1 && event.getFilters().get(0) != null && event.getFilters().get(0).getCohortWithDerivedConceptFilter().getCohort() == null)
-            filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
+            filterLabelTextView.setText(mActivity.getResources().getString(R.string.general_all_clients));
         else if (event.getFilters().size() > 1) {
-            filterLabelTextView.setText(getResources().getString(R.string.general_filtered_list));
+            filterLabelTextView.setText(mActivity.getResources().getString(R.string.general_filtered_list));
         }
 
         for (CohortFilter filter : event.getFilters()) {
             if (filter.getCohortWithDerivedConceptFilter().getCohort() == null && filter.isSelected())
-                filterLabelTextView.setText(getActivity().getResources().getString(R.string.general_all_clients));
+                filterLabelTextView.setText(mActivity.getResources().getString(R.string.general_all_clients));
         }
     }
 
     private MuzimaGPSLocation getCurrentGPSLocation() {
-        MuzimaGPSLocationService muzimaLocationService = ((MuzimaApplication) getActivity().getApplicationContext())
+        MuzimaGPSLocationService muzimaLocationService = ((MuzimaApplication) mActivity.getApplicationContext())
                 .getMuzimaGPSLocationService();
         return muzimaLocationService.getLastKnownGPSLocation();
     }
 
     private boolean isBarcodeSearchEnabled(){
-        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getActivity().getApplicationContext()).getMuzimaSettingController();
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController();
         return muzimaSettingController.isBarcodeEnabled();
     }
 
@@ -564,7 +577,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                 }
                 actionMode.setTitle(String.valueOf(numOfSelectedPatients));
             } else if (patient != null){
-                Intent intent = new Intent(getActivity().getApplicationContext(), PatientSummaryActivity.class);
+                Intent intent = new Intent(mActivity.getApplicationContext(), PatientSummaryActivity.class);
                 intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
                 startActivity(intent);
             }
@@ -575,7 +588,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     public void onItemLongClick(View view, int position) {
         patientSearchAdapter.toggleSelection(view,position);
         if (!actionModeActive) {
-            actionMode = getActivity().startActionMode(new MultiplePatientsSelectionActionModeCallback());
+            actionMode = mActivity.startActionMode(new MultiplePatientsSelectionActionModeCallback());
             actionModeActive = true;
         }
         int numOfSelectedPatients = patientSearchAdapter.getSelectedPatientsUuids().size();
@@ -588,7 +601,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     final class MultiplePatientsSelectionActionModeCallback  implements ActionMode.Callback{
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            getActivity().getMenuInflater().inflate(R.menu.actionmode_menu_assign, menu);
+            mActivity.getMenuInflater().inflate(R.menu.actionmode_menu_assign, menu);
             return true;
         }
 
@@ -609,25 +622,25 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                         // The structure of the form should enable the app to generate a paylod with full assignment details,
                         // and the server side module should be able to process the payload
 
-                        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getActivity().getApplication()).getMuzimaSettingController();
+                        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) mActivity.getApplication()).getMuzimaSettingController();
                         MuzimaSetting formUuidSetting = muzimaSettingController.getSettingByProperty(PATIENT_ASSIGNMENT_FORM_UUID_SETTING);
 
 
                         if(formUuidSetting==null || StringUtils.isEmpty(formUuidSetting.getValueString())) {
-                            Toast.makeText(getActivity().getApplicationContext(),R.string.assignment_form_uuid_missing_warning, Toast.LENGTH_LONG).show();
+                            Toast.makeText(mActivity.getApplicationContext(),R.string.assignment_form_uuid_missing_warning, Toast.LENGTH_LONG).show();
                         }else {
-                            FormController formController = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController();
+                            FormController formController = ((MuzimaApplication) mActivity.getApplicationContext()).getFormController();
                             String formUuid = formUuidSetting.getValueString();
-                            AvailableForm assignmentForm = ((MuzimaApplication) getActivity().getApplicationContext()).getFormController().getAvailableFormByFormUuid(formUuid);
+                            AvailableForm assignmentForm = ((MuzimaApplication) mActivity.getApplicationContext()).getFormController().getAvailableFormByFormUuid(formUuid);
                             String patientUuid = patientSearchAdapter.getSelectedPatientsUuids().get(0);
-                            Patient patient = ((MuzimaApplication) getActivity().getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
+                            Patient patient = ((MuzimaApplication) mActivity.getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
 
                             FormTemplate formTemplate = formController.getFormTemplateByUuid(assignmentForm.getFormUuid());
                             if(formTemplate == null){
-                                Toast.makeText(((MuzimaApplication) getActivity().getApplicationContext()),R.string.assignment_form_not_downloaded_warning, Toast.LENGTH_LONG).show();
+                                Toast.makeText(((MuzimaApplication) mActivity.getApplicationContext()),R.string.assignment_form_not_downloaded_warning, Toast.LENGTH_LONG).show();
                             }else {
                                 formUuidSettingAndFormAvailable = true;
-                                FormViewIntent intent = new FormViewIntent(getActivity(), assignmentForm, patient, false);
+                                FormViewIntent intent = new FormViewIntent(mActivity, assignmentForm, patient, false);
                                 intent.putExtra(FormViewIntent.FORM_COMPLETION_STATUS_INTENT, FormViewIntent.FORM_COMPLETION_STATUS_RECOMMENDED);
                                 intent.putExtra(SELECTED_PATIENT_UUIDS_KEY, getSelectedPatientsUuids());
                                 startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
@@ -638,7 +651,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                     } catch (PatientController.PatientLoadException e) {
                         Log.e(getClass().getSimpleName(), "Could not load patient",e);
                     } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
-                        Toast.makeText(getActivity().getApplicationContext(),R.string.assignment_form_uuid_missing_warning, Toast.LENGTH_LONG).show();
+                        Toast.makeText(mActivity.getApplicationContext(),R.string.assignment_form_uuid_missing_warning, Toast.LENGTH_LONG).show();
                         Log.e(getClass().getSimpleName(), "Could not get setting",e);
                     }
                     if(formUuidSettingAndFormAvailable) {

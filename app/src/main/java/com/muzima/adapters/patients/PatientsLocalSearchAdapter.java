@@ -196,7 +196,8 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                             }
                         }
                     } else {
-                        for(CohortFilter filter : filters) {
+                        List<CohortFilter> filterLoop = filters;
+                        for(CohortFilter filter : filterLoop) {
                             int patientCount = patientController.countPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid());
                             List<Patient> temp = null;
                             if (patientCount <= pageSize) {

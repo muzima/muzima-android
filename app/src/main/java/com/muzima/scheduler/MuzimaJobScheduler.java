@@ -151,6 +151,7 @@ public class MuzimaJobScheduler extends JobService {
 
     protected void onReceive(Intent intent){
         if(intent.getAction().equals(SYNC_COMPLETED_ACTION)){
+            new SyncAppUsageLogsBackgroundTask().execute();
             LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         } else {
             displayToast(intent);
@@ -740,10 +741,6 @@ public class MuzimaJobScheduler extends JobService {
                     }
                     case Constants.DataSyncServiceConstants.SYNC_MEDIA_CATEGORIES: {
                         new DownloadAndDeleteMediaBasedOnConfigChangesBackgroundTask().execute();
-                        break;
-                    }
-                    case Constants.DataSyncServiceConstants.SYNC_MEDIA: {
-                        new SyncAppUsageLogsBackgroundTask().execute();
                         break;
                     }
                 }
