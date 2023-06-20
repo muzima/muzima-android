@@ -238,7 +238,9 @@ public class PersonRegistrationUtils {
         personAddress.setPostalCode((String)getFromJsonObject(addressObject,"postalCode"));
         personAddress.setLatitude((String)getFromJsonObject(addressObject,"latitude"));
         personAddress.setLongitude((String)getFromJsonObject(addressObject,"longitude"));
-        personAddress.setPreferred((Boolean)getFromJsonObject(addressObject, "preferred"));
+        if(addressObject.has("preferred")) {
+            personAddress.setPreferred(Boolean.parseBoolean((String) getFromJsonObject(addressObject, "preferred")));
+        }
         if(addressObject.has("startDate")) {
             try {
                 Date startDate = parse(addressObject.getString("startDate"));
