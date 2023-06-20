@@ -2040,6 +2040,9 @@ public class MuzimaSyncService {
                     }
                     MemoryUtil.showAlertDialog(availableSpace,totalFileSize, context.getApplicationContext());
                 }
+            }else{
+                result[0] =SUCCESS;
+                result[1] = 0;
             }
         }  catch (MediaCategoryController.MediaCategoryFetchException e) {
             Log.e(getClass().getSimpleName(), "Encountered an error while fetching media categories");
