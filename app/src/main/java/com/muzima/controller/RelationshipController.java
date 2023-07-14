@@ -149,15 +149,15 @@ public class RelationshipController {
         }
     }
 
-    public List<Relationship> downloadRelationshipsForPatients(List<String>  patientUuidList) throws RetrieveRelationshipException {
+    public List<Relationship> downloadRelationshipsForPatients(List<String>  patientUuidList, String activeSetupConfig) throws RetrieveRelationshipException {
         try {
             List<Relationship> relationships;
             String paramSignature = buildParamSignature(patientUuidList);
             Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_RELATIONSHIPS, paramSignature);
             if(lastSyncTime == null) {
-                relationships = relationshipService.downloadRelationshipsForPersons(patientUuidList);
+                relationships = relationshipService.downloadRelationshipsForPersons(patientUuidList, activeSetupConfig);
             } else {
-                relationships = relationshipService.downloadRelationshipsForPersons(patientUuidList, lastSyncTime);
+                relationships = relationshipService.downloadRelationshipsForPersons(patientUuidList, lastSyncTime, activeSetupConfig);
             }
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_RELATIONSHIPS, sntpService.getTimePerDeviceTimeZone(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);

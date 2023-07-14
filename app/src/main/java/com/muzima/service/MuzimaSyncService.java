@@ -1329,10 +1329,15 @@ public class MuzimaSyncService {
         int[] result = new int[3];
         result[2] = patientUuids.size();
         try {
+            String activeSetupConfigUuid = null;
+            SetupConfigurationTemplate setupConfigurationTemplate = setupConfigurationController.getActiveSetupConfigurationTemplate();
+            if (setupConfigurationTemplate != null) {
+                activeSetupConfigUuid = setupConfigurationTemplate.getUuid();
+            }
             Log.i(getClass().getSimpleName(), "Downloading relationships for " + patientUuids.size() + " patients");
             List<List<String>> slicedPatientUuids = split(patientUuids);
             for(List<String> slice : slicedPatientUuids){
-                List<Relationship> patientRelationships = relationshipController.downloadRelationshipsForPatients(slice);
+                List<Relationship> patientRelationships = relationshipController.downloadRelationshipsForPatients(slice, activeSetupConfigUuid);
                 relationshipController.saveRelationships(patientRelationships);
                 result[1] += patientRelationships.size();
             }
@@ -1343,6 +1348,8 @@ public class MuzimaSyncService {
         } catch (RelationshipController.SaveRelationshipException | RelationshipController.SearchRelationshipException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while saving relationships.", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while fetching the active setup config.", e);
         }
         return result;
     }
