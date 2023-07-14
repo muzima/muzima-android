@@ -256,7 +256,6 @@ public class PatientController {
 
     public void generatePatientTags(List<Patient> patients) throws PatientSaveException {
         try {
-
             patientService.savePatients(patients);
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while saving the patient list", e);
