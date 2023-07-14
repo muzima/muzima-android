@@ -12,29 +12,39 @@ package com.muzima.controller;
 
 import android.util.Log;
 import com.muzima.MuzimaApplication;
+import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.PatientService;
 import com.muzima.api.service.PersonService;
 import com.muzima.api.service.RelationshipService;
+import com.muzima.service.SntpService;
 import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static com.muzima.api.model.APIName.DOWNLOAD_RELATIONSHIPS;
 
 public class RelationshipController {
 
     private final RelationshipService relationshipService;
     private final PersonService personService;
     private final PatientService patientService;
+    private final LastSyncTimeService lastSyncTimeService;
+    private final SntpService sntpService;
 
     public RelationshipController(MuzimaApplication muzimaApplication) throws IOException {
         this.relationshipService = muzimaApplication.getMuzimaContext().getRelationshipService();
         this.personService = muzimaApplication.getMuzimaContext().getPersonService();
         patientService = muzimaApplication.getMuzimaContext().getPatientService();
+        this.lastSyncTimeService = muzimaApplication.getMuzimaContext().getLastSyncTimeService();
+        this.sntpService = muzimaApplication.getSntpService();
     }
 
     /********************************************************************************************************
@@ -139,6 +149,25 @@ public class RelationshipController {
         }
     }
 
+    public List<Relationship> downloadRelationshipsForPatients(List<String>  patientUuidList) throws RetrieveRelationshipException {
+        try {
+            List<Relationship> relationships;
+            String paramSignature = buildParamSignature(patientUuidList);
+            Date lastSyncTime = lastSyncTimeService.getLastSyncTimeFor(DOWNLOAD_RELATIONSHIPS, paramSignature);
+            if(lastSyncTime == null) {
+                relationships = relationshipService.downloadRelationshipsForPersons(patientUuidList);
+            } else {
+                relationships = relationshipService.downloadRelationshipsForPersons(patientUuidList, lastSyncTime);
+            }
+            LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_RELATIONSHIPS, sntpService.getTimePerDeviceTimeZone(), paramSignature);
+            lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
+            return relationships;
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while downloading Patient Relationships for patients from server", e);
+            throw new RetrieveRelationshipException(e);
+        }
+    }
+
     /**
      * Save a single relationship to the local repo
      * @param relationship list of {@link Relationship}
@@ -155,8 +184,6 @@ public class RelationshipController {
             if (personService.getPersonByUuid(relationship.getPersonB().getUuid()) == null)
                 personService.savePerson(relationship.getPersonB());
 
-            Relationship saved = relationshipService.getRelationshipByUuid(relationship.getUuid());
-
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while saving the relationship", e);
             throw new SaveRelationshipException(e);
@@ -171,8 +198,6 @@ public class RelationshipController {
     public void updateRelationship(Relationship relationship) throws SaveRelationshipException {
         try {
             relationshipService.updateRelationship(relationship);
-
-            Relationship saved = relationshipService.getRelationshipByUuid(relationship.getUuid());
 
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while saving the relationship", e);
@@ -203,6 +228,15 @@ public class RelationshipController {
             }
             relationshipService.saveRelationships(relationships);
 
+            saveRelationshipTypesAndPersonsFromRelationships(relationships);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while saving the relationships list", e);
+            throw new SaveRelationshipException(e);
+        }
+    }
+    public void saveRelationships(List<Relationship> relationships) throws SaveRelationshipException, SearchRelationshipException {
+        try {
+            relationshipService.saveRelationships(relationships);
             saveRelationshipTypesAndPersonsFromRelationships(relationships);
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while saving the relationships list", e);
@@ -309,6 +343,11 @@ public class RelationshipController {
         } catch (IOException e) {
             throw new DeletePersonException(e);
         }
+    }
+
+    private String buildParamSignature(List<String> patientUuids) {
+        String paramSignature = StringUtils.getCommaSeparatedStringFromList(patientUuids);
+        return paramSignature;
     }
 
     /********************************************************************************************************

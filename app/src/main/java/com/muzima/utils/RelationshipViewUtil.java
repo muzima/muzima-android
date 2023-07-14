@@ -215,68 +215,20 @@ public class RelationshipViewUtil {
         List<Relationship> relationships = null;
         List<Person> relatedPersons = new ArrayList<>();
         try {
-            List<String> supportedRelationshipIdList = new ArrayList<>();
-            MuzimaSetting setting = mApplication.getMuzimaSettingController().getSettingByProperty(SUPPORTED_RELATIONSHIP_TYPES);
-            if(setting != null && !StringUtils.isEmpty(setting.getValueString())) {
-                String supportedRelationshipIdString = setting.getValueString();
-                supportedRelationshipIdList = Arrays.asList(supportedRelationshipIdString.split(","));
-            }
             relationships = mApplication.getRelationshipController().getRelationshipsForPerson(patientUuid);
-
-            if(!supportedRelationshipIdList.isEmpty()){
-                List<Relationship> filteredRelationships = new ArrayList<>();
-                for(Relationship relationship:relationships){
-                    if(supportedRelationshipIdList.contains(String.valueOf(relationship.getRelationshipType().getId()))){
-                        filteredRelationships.add(relationship);
-                    }
-                }
-                relationships = filteredRelationships;
-            }
 
             MuzimaSetting allowPatientRelativesDisplaySetting = mApplication.getMuzimaSettingController().getSettingByProperty(ALLOW_PATIENT_RELATIVES_DISPLAY);
             if(!allowPatientRelativesDisplaySetting.getValueBoolean()){
                 for(Relationship relationship:relationships){
                     Person relatedPerson = null;
-                    boolean isRelatedPersonB = false;
                     if(StringUtils.equals(relationship.getPersonA().getUuid(),patientUuid)) {
                         relatedPerson = relationship.getPersonB();
-                        isRelatedPersonB = true;
                     } else {
                         relatedPerson = relationship.getPersonA();
                     }
-
-                    try {
-                        if (mApplication.getPatientController().getPatientByUuid(relatedPerson.getUuid()) == null) {
-                            //remove hiv positive contacts
-                            if(relationship.getRelationshipType().getUuid().equals("8d91a210-c2cc-11de-8d13-0010c6dffd0f") && isRelatedPersonB){
-                                boolean isEligible = false;
-                                if(relatedPerson.getBirthdate() == null){
-                                    isEligible = true;
-                                } else {
-                                    int age = DateUtils.calculateAge(relatedPerson.getBirthdate());
-                                    if(age<15)
-                                        isEligible = true;
-                                }
-
-                                boolean isHivTestNegativeOrPositive = isHivTestNegativeOrPositive(relatedPerson.getUuid(), 23779,
-                                        mApplication.getObservationController(), mApplication.getConceptController());
-                                if(!isHivTestNegativeOrPositive && !relatedPerson.isVoided() && isEligible){
-                                    relatedPersons.add(relatedPerson);
-                                }
-                            }else {
-                                boolean isHivTestPositive = isContactHivPositive(relatedPerson.getUuid(),
-                                        23779, mApplication.getObservationController(), mApplication.getConceptController());
-                                if (!isHivTestPositive && !relatedPerson.isVoided()) {
-                                    relatedPersons.add(relatedPerson);
-                                }
-                            }
-                        }
-                    } catch (PatientController.PatientLoadException e) {
-                        Log.e("RelationshipViewUtil","Could not get relationship patient",e);
-                    }
+                    relatedPersons.add(relatedPerson);
                 }
             }
-
         }catch(RelationshipController.RetrieveRelationshipException | MuzimaSettingController.MuzimaSettingFetchException e){
             Log.e("RelationshipViewUtil","Could not get relationship for patient",e);
         }
