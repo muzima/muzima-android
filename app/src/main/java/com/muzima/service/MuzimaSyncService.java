@@ -751,8 +751,8 @@ public class MuzimaSyncService {
         int count = 0;
         boolean hasElements = !strings.isEmpty();
         while (hasElements) {
-            int startElement = count * 100;
-            int endElement = ++count * 100;
+            int startElement = count * 50;
+            int endElement = ++count * 50;
             hasElements = strings.size() > endElement;
             if (hasElements) {
                 lists.add(strings.subList(startElement, endElement));
@@ -1329,19 +1329,17 @@ public class MuzimaSyncService {
         int[] result = new int[3];
         result[2] = patientUuids.size();
         try {
+            String activeSetupConfigUuid = null;
+            SetupConfigurationTemplate setupConfigurationTemplate = setupConfigurationController.getActiveSetupConfigurationTemplate();
+            if (setupConfigurationTemplate != null) {
+                activeSetupConfigUuid = setupConfigurationTemplate.getUuid();
+            }
             Log.i(getClass().getSimpleName(), "Downloading relationships for " + patientUuids.size() + " patients");
-            for (String patientUuid : patientUuids) {
-                Log.i(getClass().getSimpleName(), "Downloading relationships for " + patientUuid);
-                long startDownloadRelationships = System.currentTimeMillis();
-                List<Relationship> patientRelationships = new ArrayList<>(relationshipController.downloadRelationshipsForPerson(patientUuid));
-
-                long endDownloadRelationships = System.currentTimeMillis();
-                Log.d(getClass().getSimpleName(), "In Downloading relationships : " + (endDownloadRelationships - startDownloadRelationships) / 1000 + " sec\n");
-
-                Log.i(getClass().getSimpleName(), "Relationships download successful with " + patientRelationships.size() + " relationships");
+            List<List<String>> slicedPatientUuids = split(patientUuids);
+            for(List<String> slice : slicedPatientUuids){
+                List<Relationship> patientRelationships = relationshipController.downloadRelationshipsForPatients(slice, activeSetupConfigUuid);
+                relationshipController.saveRelationships(patientRelationships);
                 result[1] += patientRelationships.size();
-
-                relationshipController.saveRelationships(patientRelationships, patientUuid);
             }
             result[0] = SUCCESS;
         } catch (RelationshipController.RetrieveRelationshipException e) {
@@ -1350,6 +1348,8 @@ public class MuzimaSyncService {
         } catch (RelationshipController.SaveRelationshipException | RelationshipController.SearchRelationshipException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while saving relationships.", e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while fetching the active setup config.", e);
         }
         return result;
     }
@@ -1369,7 +1369,6 @@ public class MuzimaSyncService {
             for (Patient patient : patients) {
                 count++;
                 Log.i(getClass().getSimpleName(), "Downloading relationships for patient " + count + " of " + patientsTotal);
-                updateProgressDialog(muzimaApplication.getString(R.string.info_relationships_download_progress, count, patientsTotal));
                 if(!patientList.contains(patient.getUuid())) {
                     patientList.add(patient.getUuid());
                 }
