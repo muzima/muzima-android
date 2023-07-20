@@ -170,7 +170,14 @@ public class LoginActivity extends BaseActivity {
         passwordText.setTypeface(Typeface.DEFAULT);
         versionText.setText(getApplicationVersion());
         onlineModeText.setText(isOnlineModeEnabled ? getResources().getString(R.string.general_online_mode) : "");
-        usernameText.requestFocus();
+
+        String savedUsername = getUsername();
+        if(!StringUtils.isEmpty(savedUsername)){
+            usernameText.setText(savedUsername);
+            passwordText.requestFocus();
+        }else{
+            usernameText.requestFocus();
+        }
         initializeGPSDataCollection();
         context = getApplicationContext();
 
@@ -317,6 +324,16 @@ public class LoginActivity extends BaseActivity {
                 return false;
             }
         });
+
+        if(!StringUtils.isEmpty(getUsername())) {
+            passwordText.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    focusOnLoginView();
+                    return false;
+                }
+            });
+        }
 
         serverUrlText.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -1077,5 +1094,11 @@ public class LoginActivity extends BaseActivity {
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), "Exception ",e);
         }
+    }
+
+    private String getUsername() {
+        Credentials credentials;
+        credentials = new Credentials(this);
+        return credentials.getUserName();
     }
 }
