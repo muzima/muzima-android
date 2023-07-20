@@ -501,9 +501,10 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
             else if(((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController().isSameDerivedConceptUsedToFilterMoreThanOneCohort(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getDerivedConceptUuid()))
                 filterLabelTextView.setText(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getCohort().getName()+" - "+event.getFilters().get(0).getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
-
-            else
+            else if(!StringUtils.isEmpty(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getDerivedObservationFilter()))
                 filterLabelTextView.setText(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
+            else
+                filterLabelTextView.setText(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getCohort().getName());
 
         } else if (event.getFilters().isEmpty())
             filterLabelTextView.setText(mActivity.getResources().getString(R.string.general_all_clients));
