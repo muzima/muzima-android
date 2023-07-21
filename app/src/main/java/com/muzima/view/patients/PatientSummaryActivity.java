@@ -713,14 +713,20 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         LinearLayout dadosDeConsentimento = findViewById(R.id.dados_de_consentimento);
-        LinearLayout detalhesDaUltimaVisita = findViewById(R.id.general_last_encounter_details);
         RelativeLayout addressLayout = findViewById(R.id.address_layout);
         RelativeLayout phoneNumberLayout = findViewById(R.id.phone_number_layout);
         RelativeLayout artInitDateLayout = findViewById(R.id.date_of_art_start_layout);
+        RelativeLayout lastEncounterVolunteer = findViewById(R.id.last_encounter_volunteer);
+        RelativeLayout confidentName = findViewById(R.id.confidant_name);
+        RelativeLayout confidentPhone = findViewById(R.id.confidant_phone_number);
 
         if (!isFGHCustomClientSummaryEnabled) {
             dadosDeConsentimento.setVisibility(View.GONE);
             artInitDateLayout.setVisibility(View.GONE);
+        } else {
+            lastEncounterVolunteer.setVisibility(View.GONE);
+            confidentName.setVisibility(View.GONE);
+            confidentPhone.setVisibility(View.GONE);
         }
 
         if (!isFGHCustomClientAddressEnabled) {
@@ -762,15 +768,10 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     public void initializeView() {
         LinearLayout historicalData = findViewById(R.id.historical_data);
         LinearLayout dataCollection = findViewById(R.id.data_collection);
-        LinearLayout volunteerLayout = findViewById(R.id.general_last_encounter_details);
         LinearLayout relationshipList = findViewById(R.id.relationships_listing);
-        LinearLayout confidantLayout = findViewById(R.id.confidant_details_layout);
         LinearLayout clinicalInfoLayout = findViewById(R.id.clinical_information_layout);
         View historicalDataSeparator = findViewById(R.id.historical_data_separator);
         View relationshipListingSeparator = findViewById(R.id.relationships_list_separator);
-        View confidantDetailsSeparator = findViewById(R.id.confidant_details_separator);
-        View confidantNameSeparator = findViewById(R.id.confidant_name_textview_separator);
-        View confidantContact1Separator = findViewById(R.id.confidant_phone_number_1_textview_separator);
         View clinicalInfoSeparator = findViewById(R.id.clinical_information_separator);
         View lastCVResultVSeparator = findViewById(R.id.most_recent_viral_load_result_separator);
         View lastCVResultSeparator = findViewById(R.id.most_recent_viral_load_result_date_separator);
@@ -782,8 +783,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         View nextClinicalConsultDateSeparator = findViewById(R.id.next_clinical_consultation_date_separator);
         View tptStartDateSeparator = findViewById(R.id.tpt_start_date_separator);
         View tptEndDateSeparator = findViewById(R.id.tpt_end_date_separator);
-        View general_last_encounter_details_separator = findViewById(R.id.general_last_encounter_details_separator);
-        View general_last_encounter_details_textView_separator = findViewById(R.id.general_last_encounter_details_textView_separator);
 
         boolean isContactListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isContactListingOnPatientSummaryEnabled();
         boolean isObsListingOnPatientSummary = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isObsListingOnPatientSummaryEnabled();
@@ -869,9 +868,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 dataCollection.setLayoutParams(formsParam);
             }
             else if (isConfidantInformationListingOnPatientSummary && !isClinicalInformationListingOnPatientSummary) {
-                confidantDetailsSeparator.setVisibility(View.VISIBLE);
-                confidantNameSeparator.setVisibility(View.VISIBLE);
-                confidantContact1Separator.setVisibility(View.VISIBLE);
                 clinicalInfoSeparator.setVisibility(View.VISIBLE);
                 lastCVResultVSeparator.setVisibility(View.VISIBLE);
                 lastCVResultSeparator.setVisibility(View.VISIBLE);
@@ -883,23 +879,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 nextClinicalConsultDateSeparator.setVisibility(View.VISIBLE);
                 tptStartDateSeparator.setVisibility(View.VISIBLE);
                 tptEndDateSeparator.setVisibility(View.VISIBLE);
-                general_last_encounter_details_separator.setVisibility(View.VISIBLE);
-                general_last_encounter_details_textView_separator.setVisibility(View.VISIBLE);
 
-                ViewGroup.LayoutParams volunteerLayoutParam = new LinearLayout.LayoutParams(
-                  LinearLayout.LayoutParams.MATCH_PARENT,
-                  0,
-                  22
-                );
-
-                volunteerLayout.setLayoutParams(volunteerLayoutParam);
-
-                LinearLayout.LayoutParams confidantParam = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        0,
-                        80
-                );
-                confidantLayout.setLayoutParams(confidantParam);
 
                 LinearLayout.LayoutParams clinicalInfoParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -916,9 +896,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 dataCollection.setLayoutParams(formsParam);
             }
             else if (!isConfidantInformationListingOnPatientSummary && isClinicalInformationListingOnPatientSummary) {
-                confidantDetailsSeparator.setVisibility(View.VISIBLE);
-                confidantNameSeparator.setVisibility(View.VISIBLE);
-                confidantContact1Separator.setVisibility(View.VISIBLE);
                 clinicalInfoSeparator.setVisibility(View.VISIBLE);
                 lastCVResultVSeparator.setVisibility(View.VISIBLE);
                 lastCVResultSeparator.setVisibility(View.VISIBLE);
@@ -930,23 +907,12 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 nextClinicalConsultDateSeparator.setVisibility(View.VISIBLE);
                 tptStartDateSeparator.setVisibility(View.VISIBLE);
                 tptEndDateSeparator.setVisibility(View.VISIBLE);
-                general_last_encounter_details_separator.setVisibility(View.VISIBLE);
-                general_last_encounter_details_textView_separator.setVisibility(View.VISIBLE);
 
                 ViewGroup.LayoutParams volunteerLayoutParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0,
                         22
                 );
-
-                volunteerLayout.setLayoutParams(volunteerLayoutParam);
-
-                LinearLayout.LayoutParams confidantParam = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        0,
-                        0
-                );
-                confidantLayout.setLayoutParams(confidantParam);
 
                 LinearLayout.LayoutParams clinicalInfoParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -963,9 +929,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 dataCollection.setLayoutParams(formsParam);
             }
             else if (isConfidantInformationListingOnPatientSummary && isClinicalInformationListingOnPatientSummary) {
-                confidantDetailsSeparator.setVisibility(View.VISIBLE);
-                confidantNameSeparator.setVisibility(View.VISIBLE);
-                confidantContact1Separator.setVisibility(View.VISIBLE);
                 clinicalInfoSeparator.setVisibility(View.VISIBLE);
                 lastCVResultVSeparator.setVisibility(View.VISIBLE);
                 lastCVResultSeparator.setVisibility(View.VISIBLE);
@@ -977,24 +940,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 nextClinicalConsultDateSeparator.setVisibility(View.VISIBLE);
                 tptStartDateSeparator.setVisibility(View.VISIBLE);
                 tptEndDateSeparator.setVisibility(View.VISIBLE);
-                general_last_encounter_details_separator.setVisibility(View.VISIBLE);
-                general_last_encounter_details_textView_separator.setVisibility(View.VISIBLE);
-
-                LinearLayout.LayoutParams confidantParam = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        0,
-                        35
-                );
-                confidantLayout.setLayoutParams(confidantParam);
-
-                ViewGroup.LayoutParams volunteerLayoutParam = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        0,
-                        22
-                );
-
-                volunteerLayout.setLayoutParams(volunteerLayoutParam);
-
                 LinearLayout.LayoutParams clinicalInfoParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         0,

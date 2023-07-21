@@ -125,6 +125,11 @@ span.clear{
     font-size: 14px;
 }
 
+.input-label {
+    font-size: 10px;
+    font-weight: normal;
+}
+
 .medium, .medium .form-control, .medium .btn{
     font-size: 18px;
 }

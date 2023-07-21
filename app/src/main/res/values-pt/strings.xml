@@ -26,8 +26,8 @@
     <string name="concept_details">Detalhes do conceito</string>
     <string name="concept_name">Nome do conceito:</string>
     <string name="confidant_details">Detalhes do Confidente</string>
-    <string name="confidant_name">Nome:</string>
-    <string name="confidant_phone_number_1">Contacto:</string>
+    <string name="confidant_name">Nome do Confidente:</string>
+    <string name="confidant_phone_number_1">Contacto do Confidente:</string>
     <string name="confirm_create_patient_from_person">Isso registrará essa pessoa como utente. Tem certeza de que gostaria de fazer isso?</string>
     <string name="confirm_duplicate_form_data_save">Guardar Dados do Formulário Duplicado</string>
     <string name="confirm_patient_id_exists">O utente já tem o Identificador?</string>
@@ -604,7 +604,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="language_hindi">Hindi</string>
     <string name="language_portuguese">Português</string>
     <string name="language_swahili">Suaíli</string>
-    <string name="last_encounter_volunteer_name">Nome do Voluntário:</string>
+    <string name="last_encounter_volunteer_name">Nome do Voluntário da Última Visita:</string>
     <string name="menu_form_back_to_draft">Voltar ao Rascunho</string>
     <string name="message_auto_logout">Você será desconectado automaticamente em %d segundos</string>
     <string name="message_feedback_sent">Obrigado pela sua mensagem. \n Seu feedback é importante para nós.</string>

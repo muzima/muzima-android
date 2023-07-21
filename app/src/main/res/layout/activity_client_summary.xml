@@ -91,6 +91,78 @@
 
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/confidant_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="180dp"
+                        android:id="@+id/confidant_name_textview"
+                        android:layout_height="wrap_content"
+                        android:text="@string/confidant_name"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+                    <TextView
+                        android:id="@+id/confidant_name_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_toRightOf="@id/confidant_name_textview"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/confidant_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="180dp"
+                        android:id="@+id/confidant_phone_number_1_textview"
+                        android:layout_height="wrap_content"
+                        android:text="@string/confidant_phone_number_1"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+                    <TextView
+                        android:id="@+id/confidant_phone_number_1_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/confidant_phone_number_1_textview"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/last_encounter_volunteer"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="150dp"
+                        android:id="@+id/last_encounter_volunteer_name"
+                        android:layout_height="wrap_content"
+                        android:text="@string/last_encounter_volunteer_name"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular"/>
+                    <TextView
+                        android:id="@+id/last_encounter_volunteer_name_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/last_encounter_volunteer_name"
+                        android:layout_centerVertical="true"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                </RelativeLayout>
+                <RelativeLayout
                         android:id="@+id/date_of_art_start_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -321,155 +393,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent" />
 
-                </LinearLayout>
-                <View android:id="@+id/confidant_details_separator"
-                      android:layout_width="match_parent"
-                      android:layout_marginTop="5dp"
-                      android:layout_height="0dp"
-                      android:fontFamily="@font/montserrat_bold"
-                      android:background="?attr/primaryTextColor"
-                      android:visibility="gone"/>
-                <LinearLayout
-                        android:id="@+id/confidant_details_layout"
-                        android:layout_width="fill_parent"
-                        android:layout_height="0dp"
-                        android:layout_margin="6dp"
-                        android:background="@drawable/patient_summary_border"
-                        android:orientation="vertical">
-                    <TextView
-                            android:id="@+id/confidant_details_textview"
-                            android:padding="14dp"
-                            android:textColor="?attr/primaryTextColor"
-                            android:text="@string/confidant_details"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-                    <View android:id="@+id/confidant_name_textview_separator"
-                          android:layout_width="match_parent"
-                          android:layout_marginTop="5dp"
-                          android:layout_height="1dp"
-                          android:fontFamily="@font/montserrat_bold"
-                          android:background="?attr/primaryTextColor"
-                          android:visibility="gone"/>
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                        <TextView
-                                android:layout_width="180dp"
-                                android:id="@+id/confidant_name_textview"
-                                android:layout_height="wrap_content"
-                                android:text="@string/confidant_name"
-                                android:layout_marginLeft="15dp"
-                                android:textStyle="bold"
-                                android:textColor="?attr/primaryTextColor"
-                                android:fontFamily="@font/roboto_regular" />
-                        <TextView
-                                android:id="@+id/confidant_name_value"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginTop="1dp"
-                                android:layout_marginBottom="5dp"
-                                android:layout_below="@id/confidant_name_textview"
-                                android:textColor="?attr/primaryTextColor"
-                                android:fontFamily="@font/roboto_regular"/>
-
-                    </RelativeLayout>
-
-                    <View android:id="@+id/confidant_phone_number_1_textview_separator"
-                          android:layout_width="match_parent"
-                          android:layout_marginTop="5dp"
-                          android:layout_height="0dp"
-                          android:fontFamily="@font/montserrat_bold"
-                          android:background="?attr/primaryTextColor"
-                          android:visibility="gone"/>
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                        <TextView
-                                android:layout_width="180dp"
-                                android:id="@+id/confidant_phone_number_1_textview"
-                                android:layout_height="wrap_content"
-                                android:text="@string/confidant_phone_number_1"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginBottom="1dp"
-                                android:textStyle="bold"
-                                android:textColor="?attr/primaryTextColor"
-                                android:fontFamily="@font/roboto_regular" />
-                        <TextView
-                                android:id="@+id/confidant_phone_number_1_value"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="15dp"
-                                android:layout_below="@id/confidant_phone_number_1_textview"
-                                android:textColor="?attr/primaryTextColor"
-                                android:fontFamily="@font/roboto_regular"/>
-
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <View android:id="@+id/general_last_encounter_details_separator"
-                      android:layout_width="match_parent"
-                      android:layout_marginTop="5dp"
-                      android:layout_height="0dp"
-                      android:fontFamily="@font/montserrat_bold"
-                      android:background="?attr/primaryTextColor"
-                      android:visibility="gone"/>
-                <LinearLayout
-                        android:id="@+id/general_last_encounter_details"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_margin="6dp"
-                        android:background="@drawable/patient_summary_border"
-                        android:orientation="vertical">
-                    <TextView
-                            android:id="@+id/general_last_encounter_details_textView"
-                            android:padding="14dp"
-                            android:textColor="?attr/primaryTextColor"
-                            android:text="@string/general_last_encounter_details"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-                    <View android:id="@+id/general_last_encounter_details_textView_separator"
-                          android:layout_width="match_parent"
-                          android:layout_marginTop="5dp"
-                          android:layout_height="1dp"
-                          android:fontFamily="@font/montserrat_bold"
-                          android:background="?attr/primaryTextColor"
-                          android:visibility="gone"/>
-
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp">
-                        <TextView
-                                android:layout_width="150dp"
-                                android:id="@+id/last_encounter_volunteer_name"
-                                android:layout_height="wrap_content"
-                                android:text="@string/last_encounter_volunteer_name"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginBottom="1dp"
-                                android:textStyle="bold"
-                                android:textColor="?attr/primaryTextColor"
-                                android:fontFamily="@font/roboto_regular"/>
-                        <TextView
-                                android:id="@+id/last_encounter_volunteer_name_value"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_toRightOf="@id/last_encounter_volunteer_name"
-                                android:layout_centerVertical="true"
-                                android:textColor="?attr/primaryTextColor"
-                                android:fontFamily="@font/roboto_regular"/>
-
-                    </RelativeLayout>
                 </LinearLayout>
 
                 <View android:id="@+id/clinical_information_separator"
