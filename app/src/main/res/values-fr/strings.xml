@@ -776,4 +776,5 @@
     <string name="write_SHR_to_card_text">Ecrire SHR sur la carte</string>
     <string name="write_shr_to_card_general">Ecrire SHR sur la carte</string>
     <string name="general_choose">Choisir...</string>
+    <string name="warning_new_user_login">Vous êtes connecté en tant que nouvel utilisateur à l\'application, l\'application sera réinitialisée pour une nouvelle configuration. Voulez-vous poursuivre?</string>
 </resources>

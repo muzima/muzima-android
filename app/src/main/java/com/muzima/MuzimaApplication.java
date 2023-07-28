@@ -25,6 +25,7 @@ import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.Credential;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Person;
@@ -96,6 +97,8 @@ import io.github.inflationx.viewpump.ViewPump;
 import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
+
+import org.apache.lucene.queryParser.ParseException;
 
 public class MuzimaApplication extends MultiDexApplication {
 
@@ -740,6 +743,39 @@ public class MuzimaApplication extends MultiDexApplication {
             Log.e(getClass().getSimpleName(), "Unable to read application version.", e);
         }
         return versionText;
+    }
+
+    public boolean isNewUser(String username){
+        try {
+            User user = muzimaContext.getUserService().getUserByUsername(username);
+
+            if(user == null){
+                Log.e(getClass().getSimpleName(),"User is null");
+                return true;
+            }else{
+                Log.e(getClass().getSimpleName(),"User is not null "+user.getUsername());
+            }
+        }  catch (IOException e) {
+            Log.e(getClass().getSimpleName(),"Encountered IO Exception ",e);
+        } catch (ParseException e) {
+            Log.e(getClass().getSimpleName(),"Encountered Parse Exception ",e);
+        }
+        return false;
+    }
+
+    public void deleteUserByUserName(String username){
+        try {
+            User user = muzimaContext.getUserService().getUserByUsername(username);
+            Credential credential = muzimaContext.getUserService().getCredentialByUsername(username);
+            if(user != null) {
+                muzimaContext.getUserService().deleteUser(user);
+                muzimaContext.getUserService().deleteCredential(credential);
+            }
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(),"Encountered IO Exception ",e);
+        } catch (ParseException e) {
+            Log.e(getClass().getSimpleName(),"Encountered Parse Exception ",e);
+        }
     }
 
 }

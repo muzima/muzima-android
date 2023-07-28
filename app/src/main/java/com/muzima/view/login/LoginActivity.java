@@ -55,12 +55,15 @@ import com.muzima.api.context.Context;
 import com.muzima.api.model.AppRelease;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.MinimumSupportedAppVersion;
+import com.muzima.api.model.PatientReport;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.AppReleaseController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.PatientReportController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
+import com.muzima.scheduler.RealTimeFormUploader;
 import com.muzima.service.ConfidentialityNoticeDisplayPreferenceService;
 import com.muzima.service.CredentialsPreferenceService;
 import com.muzima.service.LocalePreferenceService;
@@ -137,6 +140,7 @@ public class LoginActivity extends BaseActivity {
     private String filename = "";
     private String appUrl = "";
     private boolean isConnectedToServer = false;
+    boolean isFirstLaunchValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,15 +158,15 @@ public class LoginActivity extends BaseActivity {
         initAnimators();
         getOnlineOnlyModePreference();
 
-        boolean isFirstLaunch = getIntent().getBooleanExtra(LoginActivity.isFirstLaunch, true);
+        isFirstLaunchValue = getIntent().getBooleanExtra(LoginActivity.isFirstLaunch, true);
         String serverURL = getServerURL();
-        if (!isFirstLaunch && !StringUtils.isEmpty(serverURL)) {
+        if (!isFirstLaunchValue && !StringUtils.isEmpty(serverURL)) {
             removeServerUrlAsInput();
         }
 
         useSavedServerUrl(serverURL);
 
-        if(isFirstLaunch){
+        if(isFirstLaunchValue){
             removeChangedPasswordRecentlyCheckbox();
         }
 
@@ -471,6 +475,7 @@ public class LoginActivity extends BaseActivity {
 
     private class BackgroundAuthenticationTask extends MuzimaAsyncTask<Credentials, Void, BackgroundAuthenticationTask.Result> {
         boolean isTaskRunning = false;
+        boolean isNewUser = false;
         @Override
         protected void onPreExecute() {
             if (loginButton.getVisibility() == View.VISIBLE) {
@@ -482,6 +487,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected Result doInBackground(Credentials... params) {
             Credentials credentials = params[0];
+            isNewUser = ((MuzimaApplication) getApplication()).isNewUser(credentials.getUserName());
             MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
             int authenticationStatus = muzimaSyncService.authenticate(credentials.getCredentialsArray(), isOnlineModeEnabled || isUpdatePasswordChecked);
             return new Result(credentials, authenticationStatus);
@@ -491,32 +497,36 @@ public class LoginActivity extends BaseActivity {
         protected void onPostExecute(Result result) {
             MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
             if (result.status == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
-                if(isOnlineModeEnabled){
-                    muzimaApplication.deleteAllPatientsData();
+                if(isNewUser && !isFirstLaunchValue && ((MuzimaApplication) getApplication()).getMuzimaSettingController().isClearAppDataIfNewUserEnabled()){
+                    showAlertDialog(result.credentials);
+                }else {
+                    if (isOnlineModeEnabled) {
+                        muzimaApplication.deleteAllPatientsData();
+                    }
+
+                    Date successfulLoginTime = new Date();
+
+                    MuzimaLoggerService.scheduleLogSync(muzimaApplication);
+                    MuzimaLoggerService.log(muzimaApplication, "LOGIN_SUCCESS",
+                            result.credentials.getUserName(), MuzimaLoggerService.getAndParseGPSLocationForLogging(muzimaApplication), "{}");
+                    new CredentialsPreferenceService(getApplicationContext()).saveCredentials(result.credentials);
+                    ((MuzimaApplication) getApplication()).restartTimer();
+                    LocalePreferenceService localePreferenceService = ((MuzimaApplication) getApplication()).getLocalePreferenceService();
+
+                    String languageKey = getApplicationContext().getResources().getString(R.string.preference_app_language);
+                    String defaultLanguage = getApplicationContext().getString(R.string.language_english);
+                    String preferredLocale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(languageKey, defaultLanguage);
+
+                    localePreferenceService.setPreferredLocale(preferredLocale);
+
+                    checkAndUpdateUsageLogsIfNecessary(muzimaApplication, successfulLoginTime, result.credentials.getUserName());
+
+                    MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
+                    //delay for 10 seconds to allow next UI activity to finish loading
+                    muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(10000, false);
+                    boolean isTaskRunning = false;
+                    checkMuzimaCoreModuleCompatibility(result);
                 }
-
-                Date successfulLoginTime = new Date();
-
-                MuzimaLoggerService.scheduleLogSync(muzimaApplication);
-                MuzimaLoggerService.log(muzimaApplication,"LOGIN_SUCCESS",
-                        result.credentials.getUserName(),MuzimaLoggerService.getAndParseGPSLocationForLogging(muzimaApplication), "{}");
-                new CredentialsPreferenceService(getApplicationContext()).saveCredentials(result.credentials);
-                ((MuzimaApplication) getApplication()).restartTimer();
-                LocalePreferenceService localePreferenceService = ((MuzimaApplication) getApplication()).getLocalePreferenceService();
-
-                String languageKey = getApplicationContext().getResources().getString(R.string.preference_app_language);
-                String defaultLanguage = getApplicationContext().getString(R.string.language_english);
-                String preferredLocale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(languageKey,defaultLanguage);
-
-                localePreferenceService.setPreferredLocale(preferredLocale);
-
-                checkAndUpdateUsageLogsIfNecessary(muzimaApplication, successfulLoginTime, result.credentials.getUserName());
-
-                MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
-                //delay for 10 seconds to allow next UI activity to finish loading
-                muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(10000,false);
-                boolean isTaskRunning = false;
-                checkMuzimaCoreModuleCompatibility(result);
             } else {
                 boolean isTaskRunning = false;
                 MuzimaLoggerService.log((MuzimaApplication)getApplicationContext(),"LOGIN_FAILURE",
@@ -567,84 +577,82 @@ public class LoginActivity extends BaseActivity {
             }
         }
 
-        private void checkAndUpdateUsageLogsIfNecessary(MuzimaApplication muzimaApplication, Date date, String loggedInUser){
-            AppUsageLogsController appUsageLogsController = muzimaApplication.getAppUsageLogsController();
-            try {
-                SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
-                SimpleDateFormat simpleTimeFormat = new SimpleDateFormat(STANDARD_TIME_FORMAT);
-                String pseudoDeviceId = generatePseudoDeviceId();
+        private void showAlertDialog(Credentials credentials) {
+            new AlertDialog.Builder(LoginActivity.this)
+                    .setCancelable(true)
+                    .setIcon(ThemeUtils.getIconWarning(LoginActivity.this))
+                    .setTitle(getResources().getString(R.string.general_caution))
+                    .setMessage(getResources().getString(R.string.warning_new_user_login))
+                    .setPositiveButton(getString(R.string.general_ok), positiveClickListener(credentials))
+                    .setNegativeButton(getString(R.string.general_no), negativeClickListener(credentials))
+                    .create()
+                    .show();
+        }
 
-
-                //update login time
-                AppUsageLogs loginTimeLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(Constants.AppUsageLogs.LAST_LOGIN_TIME,loggedInUser);
-                if(loginTimeLog != null) {
-                    loginTimeLog.setLogvalue(simpleDateTimezoneFormat.format(date));
-                    loginTimeLog.setUpdateDatetime(new Date());
-                    loginTimeLog.setDeviceId(pseudoDeviceId);
-                    loginTimeLog.setUserName(loggedInUser);
-                    loginTimeLog.setLogSynced(false);
-                    appUsageLogsController.saveOrUpdateAppUsageLog(loginTimeLog);
-                }else{
-                    AppUsageLogs loginTime = new AppUsageLogs();
-                    loginTime.setUuid(UUID.randomUUID().toString());
-                    loginTime.setLogKey(Constants.AppUsageLogs.LAST_LOGIN_TIME);
-                    loginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
-                    loginTime.setUpdateDatetime(new Date());
-                    loginTime.setDeviceId(pseudoDeviceId);
-                    loginTime.setUserName(loggedInUser);
-                    loginTime.setLogSynced(false);
-                    appUsageLogsController.saveOrUpdateAppUsageLog(loginTime);
+        private Dialog.OnClickListener positiveClickListener(Credentials credentials) {
+            return new Dialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    clearData(credentials);
                 }
+            };
+        }
 
-                //Check and Update app version if need be
-                AppUsageLogs appVersionLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.APP_VERSION);
-                if(appVersionLog != null){
-                    if(!appVersionLog.getLogvalue().equals(getApplicationVersion())){
-                        appVersionLog.setLogvalue(getApplicationVersion());
-                        appVersionLog.setUpdateDatetime(new Date());
-                        appVersionLog.setDeviceId(pseudoDeviceId);
-                        appVersionLog.setLogSynced(false);
-                        appUsageLogsController.saveOrUpdateAppUsageLog(appVersionLog);
+        private Dialog.OnClickListener negativeClickListener(Credentials credentials) {
+            return new Dialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ((MuzimaApplication)getApplicationContext()).deleteUserByUserName(credentials.getUserName());
+                    launchLoginActivity();
+                }
+            };
+        }
+    }
 
-                        long appInstallationOrUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).lastUpdateTime;
-                        if(appInstallationOrUpdateTime<=0){
-                            appInstallationOrUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).firstInstallTime;
-                        }
-                        AppUsageLogs appInstallationOrUpdateTimeLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
-                        if(appInstallationOrUpdateTimeLog != null) {
-                            appInstallationOrUpdateTimeLog.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
-                            appInstallationOrUpdateTimeLog.setUpdateDatetime(new Date());
-                            appInstallationOrUpdateTimeLog.setDeviceId(pseudoDeviceId);
-                            appInstallationOrUpdateTimeLog.setLogSynced(false);
-                            appUsageLogsController.saveOrUpdateAppUsageLog(appInstallationOrUpdateTimeLog);
-                        }else{
-                            AppUsageLogs appUsageLog1 = new AppUsageLogs();
-                            appUsageLog1.setUuid(UUID.randomUUID().toString());
-                            appUsageLog1.setLogKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
-                            appUsageLog1.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
-                            appUsageLog1.setUpdateDatetime(new Date());
-                            appUsageLog1.setDeviceId(pseudoDeviceId);
-                            appUsageLog1.setUserName(loggedInUser);
-                            appUsageLog1.setLogSynced(false);
-                            appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLog1);
-                        }
-                    }
-                }else{
-                    AppUsageLogs appUsageLog1 = new AppUsageLogs();
-                    appUsageLog1.setUuid(UUID.randomUUID().toString());
-                    appUsageLog1.setLogKey(Constants.AppUsageLogs.APP_VERSION);
-                    appUsageLog1.setLogvalue(getApplicationVersion());
-                    appUsageLog1.setUpdateDatetime(new Date());
-                    appUsageLog1.setDeviceId(pseudoDeviceId);
-                    appUsageLog1.setUserName(loggedInUser);
-                    appUsageLog1.setLogSynced(false);
-                    appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLog1);
+
+    public void checkAndUpdateUsageLogsIfNecessary(MuzimaApplication muzimaApplication, Date date, String loggedInUser){
+        AppUsageLogsController appUsageLogsController = muzimaApplication.getAppUsageLogsController();
+        try {
+            SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+            SimpleDateFormat simpleTimeFormat = new SimpleDateFormat(STANDARD_TIME_FORMAT);
+            String pseudoDeviceId = generatePseudoDeviceId();
+
+
+            //update login time
+            AppUsageLogs loginTimeLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(Constants.AppUsageLogs.LAST_LOGIN_TIME,loggedInUser);
+            if(loginTimeLog != null) {
+                loginTimeLog.setLogvalue(simpleDateTimezoneFormat.format(date));
+                loginTimeLog.setUpdateDatetime(new Date());
+                loginTimeLog.setDeviceId(pseudoDeviceId);
+                loginTimeLog.setUserName(loggedInUser);
+                loginTimeLog.setLogSynced(false);
+                appUsageLogsController.saveOrUpdateAppUsageLog(loginTimeLog);
+            }else{
+                AppUsageLogs loginTime = new AppUsageLogs();
+                loginTime.setUuid(UUID.randomUUID().toString());
+                loginTime.setLogKey(Constants.AppUsageLogs.LAST_LOGIN_TIME);
+                loginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
+                loginTime.setUpdateDatetime(new Date());
+                loginTime.setDeviceId(pseudoDeviceId);
+                loginTime.setUserName(loggedInUser);
+                loginTime.setLogSynced(false);
+                appUsageLogsController.saveOrUpdateAppUsageLog(loginTime);
+            }
+
+            //Check and Update app version if need be
+            AppUsageLogs appVersionLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.APP_VERSION);
+            if(appVersionLog != null){
+                if(!appVersionLog.getLogvalue().equals(getApplicationVersion())){
+                    appVersionLog.setLogvalue(getApplicationVersion());
+                    appVersionLog.setUpdateDatetime(new Date());
+                    appVersionLog.setDeviceId(pseudoDeviceId);
+                    appVersionLog.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(appVersionLog);
 
                     long appInstallationOrUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).lastUpdateTime;
                     if(appInstallationOrUpdateTime<=0){
                         appInstallationOrUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).firstInstallTime;
                     }
-
                     AppUsageLogs appInstallationOrUpdateTimeLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
                     if(appInstallationOrUpdateTimeLog != null) {
                         appInstallationOrUpdateTimeLog.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
@@ -653,76 +661,110 @@ public class LoginActivity extends BaseActivity {
                         appInstallationOrUpdateTimeLog.setLogSynced(false);
                         appUsageLogsController.saveOrUpdateAppUsageLog(appInstallationOrUpdateTimeLog);
                     }else{
-                        AppUsageLogs appUsageLog = new AppUsageLogs();
-                        appUsageLog.setUuid(UUID.randomUUID().toString());
-                        appUsageLog.setLogKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
-                        appUsageLog.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
-                        appUsageLog.setUpdateDatetime(new Date());
-                        appUsageLog.setDeviceId(pseudoDeviceId);
-                        appUsageLog.setUserName(loggedInUser);
-                        appUsageLog.setLogSynced(false);
-                        appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLog);
+                        AppUsageLogs appUsageLog1 = new AppUsageLogs();
+                        appUsageLog1.setUuid(UUID.randomUUID().toString());
+                        appUsageLog1.setLogKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
+                        appUsageLog1.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
+                        appUsageLog1.setUpdateDatetime(new Date());
+                        appUsageLog1.setDeviceId(pseudoDeviceId);
+                        appUsageLog1.setUserName(loggedInUser);
+                        appUsageLog1.setLogSynced(false);
+                        appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLog1);
                     }
                 }
+            }else{
+                AppUsageLogs appUsageLog1 = new AppUsageLogs();
+                appUsageLog1.setUuid(UUID.randomUUID().toString());
+                appUsageLog1.setLogKey(Constants.AppUsageLogs.APP_VERSION);
+                appUsageLog1.setLogvalue(getApplicationVersion());
+                appUsageLog1.setUpdateDatetime(new Date());
+                appUsageLog1.setDeviceId(pseudoDeviceId);
+                appUsageLog1.setUserName(loggedInUser);
+                appUsageLog1.setLogSynced(false);
+                appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLog1);
 
-                //Check and update earliest login time if need be
-                AppUsageLogs earliestLoginTime = appUsageLogsController.getAppUsageLogByKeyAndUserName(Constants.AppUsageLogs.EARLIEST_LOGIN_TIME, loggedInUser);
-                Date loginTime = simpleTimeFormat.parse(simpleTimeFormat.format(date));
-                if(earliestLoginTime != null){
-                    Date logValue = simpleTimeFormat.parse(simpleTimeFormat.format(simpleDateTimezoneFormat.parse(earliestLoginTime.getLogvalue())));
-                    if (loginTime.before(logValue)) {
-                        earliestLoginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
-                        earliestLoginTime.setUpdateDatetime(new Date());
-                        earliestLoginTime.setDeviceId(pseudoDeviceId);
-                        earliestLoginTime.setUserName(loggedInUser);
-                        earliestLoginTime.setLogSynced(false);
-                        appUsageLogsController.saveOrUpdateAppUsageLog(earliestLoginTime);
-                    }
+                long appInstallationOrUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).lastUpdateTime;
+                if(appInstallationOrUpdateTime<=0){
+                    appInstallationOrUpdateTime = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0).firstInstallTime;
+                }
+
+                AppUsageLogs appInstallationOrUpdateTimeLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
+                if(appInstallationOrUpdateTimeLog != null) {
+                    appInstallationOrUpdateTimeLog.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
+                    appInstallationOrUpdateTimeLog.setUpdateDatetime(new Date());
+                    appInstallationOrUpdateTimeLog.setDeviceId(pseudoDeviceId);
+                    appInstallationOrUpdateTimeLog.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(appInstallationOrUpdateTimeLog);
                 }else{
-                    AppUsageLogs earliestLoginTime1 = new AppUsageLogs();
-                    earliestLoginTime1.setUuid(UUID.randomUUID().toString());
-                    earliestLoginTime1.setLogKey(Constants.AppUsageLogs.EARLIEST_LOGIN_TIME);
-                    earliestLoginTime1.setLogvalue(simpleDateTimezoneFormat.format(date));
-                    earliestLoginTime1.setUpdateDatetime(new Date());
-                    earliestLoginTime1.setDeviceId(pseudoDeviceId);
-                    earliestLoginTime1.setUserName(loggedInUser);
-                    earliestLoginTime1.setLogSynced(false);
-                    appUsageLogsController.saveOrUpdateAppUsageLog(earliestLoginTime1);
+                    AppUsageLogs appUsageLog = new AppUsageLogs();
+                    appUsageLog.setUuid(UUID.randomUUID().toString());
+                    appUsageLog.setLogKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
+                    appUsageLog.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
+                    appUsageLog.setUpdateDatetime(new Date());
+                    appUsageLog.setDeviceId(pseudoDeviceId);
+                    appUsageLog.setUserName(loggedInUser);
+                    appUsageLog.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(appUsageLog);
                 }
-
-                //Check and update Latest login time if need be
-                AppUsageLogs latestLoginTime = appUsageLogsController.getAppUsageLogByKeyAndUserName(Constants.AppUsageLogs.LATEST_LOGIN_TIME, loggedInUser);
-                if(latestLoginTime != null){
-                    Date logValue = simpleTimeFormat.parse(simpleTimeFormat.format(simpleDateTimezoneFormat.parse(latestLoginTime.getLogvalue())));
-                    if (loginTime.after(logValue)) {
-                        latestLoginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
-                        latestLoginTime.setUpdateDatetime(new Date());
-                        latestLoginTime.setDeviceId(pseudoDeviceId);
-                        latestLoginTime.setUserName(loggedInUser);
-                        latestLoginTime.setLogSynced(false);
-                        appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime);
-                    }
-                }else{
-                    AppUsageLogs latestLoginTime1 = new AppUsageLogs();
-                    latestLoginTime1.setUuid(UUID.randomUUID().toString());
-                    latestLoginTime1.setLogKey(Constants.AppUsageLogs.LATEST_LOGIN_TIME);
-                    latestLoginTime1.setLogvalue(simpleDateTimezoneFormat.format(date));
-                    latestLoginTime1.setUpdateDatetime(new Date());
-                    latestLoginTime1.setDeviceId(pseudoDeviceId);
-                    latestLoginTime1.setUserName(loggedInUser);
-                    latestLoginTime1.setLogSynced(false);
-                    appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime1);
-                }
-
-            } catch (IOException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
-            } catch (ParseException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
-            } catch (java.text.ParseException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
-            } catch (PackageManager.NameNotFoundException e) {
-                Log.e(getClass().getSimpleName(), "Encountered an exception",e);
             }
+
+            //Check and update earliest login time if need be
+            AppUsageLogs earliestLoginTime = appUsageLogsController.getAppUsageLogByKeyAndUserName(Constants.AppUsageLogs.EARLIEST_LOGIN_TIME, loggedInUser);
+            Date loginTime = simpleTimeFormat.parse(simpleTimeFormat.format(date));
+            if(earliestLoginTime != null){
+                Date logValue = simpleTimeFormat.parse(simpleTimeFormat.format(simpleDateTimezoneFormat.parse(earliestLoginTime.getLogvalue())));
+                if (loginTime.before(logValue)) {
+                    earliestLoginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
+                    earliestLoginTime.setUpdateDatetime(new Date());
+                    earliestLoginTime.setDeviceId(pseudoDeviceId);
+                    earliestLoginTime.setUserName(loggedInUser);
+                    earliestLoginTime.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(earliestLoginTime);
+                }
+            }else{
+                AppUsageLogs earliestLoginTime1 = new AppUsageLogs();
+                earliestLoginTime1.setUuid(UUID.randomUUID().toString());
+                earliestLoginTime1.setLogKey(Constants.AppUsageLogs.EARLIEST_LOGIN_TIME);
+                earliestLoginTime1.setLogvalue(simpleDateTimezoneFormat.format(date));
+                earliestLoginTime1.setUpdateDatetime(new Date());
+                earliestLoginTime1.setDeviceId(pseudoDeviceId);
+                earliestLoginTime1.setUserName(loggedInUser);
+                earliestLoginTime1.setLogSynced(false);
+                appUsageLogsController.saveOrUpdateAppUsageLog(earliestLoginTime1);
+            }
+
+            //Check and update Latest login time if need be
+            AppUsageLogs latestLoginTime = appUsageLogsController.getAppUsageLogByKeyAndUserName(Constants.AppUsageLogs.LATEST_LOGIN_TIME, loggedInUser);
+            if(latestLoginTime != null){
+                Date logValue = simpleTimeFormat.parse(simpleTimeFormat.format(simpleDateTimezoneFormat.parse(latestLoginTime.getLogvalue())));
+                if (loginTime.after(logValue)) {
+                    latestLoginTime.setLogvalue(simpleDateTimezoneFormat.format(date));
+                    latestLoginTime.setUpdateDatetime(new Date());
+                    latestLoginTime.setDeviceId(pseudoDeviceId);
+                    latestLoginTime.setUserName(loggedInUser);
+                    latestLoginTime.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime);
+                }
+            }else{
+                AppUsageLogs latestLoginTime1 = new AppUsageLogs();
+                latestLoginTime1.setUuid(UUID.randomUUID().toString());
+                latestLoginTime1.setLogKey(Constants.AppUsageLogs.LATEST_LOGIN_TIME);
+                latestLoginTime1.setLogvalue(simpleDateTimezoneFormat.format(date));
+                latestLoginTime1.setUpdateDatetime(new Date());
+                latestLoginTime1.setDeviceId(pseudoDeviceId);
+                latestLoginTime1.setUserName(loggedInUser);
+                latestLoginTime1.setLogSynced(false);
+                appUsageLogsController.saveOrUpdateAppUsageLog(latestLoginTime1);
+            }
+
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
+        } catch (ParseException e) {
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
+        } catch (java.text.ParseException e) {
+            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(getClass().getSimpleName(), "Encountered an exception",e);
         }
     }
 
@@ -1100,5 +1142,73 @@ public class LoginActivity extends BaseActivity {
         Credentials credentials;
         credentials = new Credentials(this);
         return credentials.getUserName();
+    }
+
+    private void clearData(Credentials credentials){
+        BackgroundClearAppTask backgroundClearAppTask =  new BackgroundClearAppTask();
+        backgroundClearAppTask.execute(credentials);
+    }
+
+    public void launchNewSetup() {
+        Intent intent;
+        intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void launchLoginActivity(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(LoginActivity.isFirstLaunch, false);
+        startActivity(intent);
+    }
+
+    class BackgroundClearAppTask extends MuzimaAsyncTask<Credentials, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected Void doInBackground(Credentials... params) {
+            Credentials credentials = params[0];
+            //Attempt to upload complete forms
+            RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), true);
+
+            MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
+            muzimaApplication.clearApplicationData();
+            new WizardFinishPreferenceService(getApplicationContext()).resetWizard();
+            new CredentialsPreferenceService(getApplicationContext()).saveCredentials(new Credentials("", null, null));
+            com.muzima.api.context.Context muzimaContext = muzimaApplication.getMuzimaContext();
+            new CredentialsPreferenceService(getApplicationContext()).deleteUserData(muzimaContext);
+
+            Date successfulLoginTime = new Date();
+
+            MuzimaLoggerService.scheduleLogSync(muzimaApplication);
+            MuzimaLoggerService.log(muzimaApplication, "LOGIN_SUCCESS",
+                    credentials.getUserName(), MuzimaLoggerService.getAndParseGPSLocationForLogging(muzimaApplication), "{}");
+            new CredentialsPreferenceService(getApplicationContext()).saveCredentials(credentials);
+            LocalePreferenceService localePreferenceService = muzimaApplication.getLocalePreferenceService();
+
+            String languageKey = getApplicationContext().getResources().getString(R.string.preference_app_language);
+            String defaultLanguage = getApplicationContext().getString(R.string.language_english);
+            String preferredLocale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(languageKey, defaultLanguage);
+
+            localePreferenceService.setPreferredLocale(preferredLocale);
+
+            checkAndUpdateUsageLogsIfNecessary(muzimaApplication, successfulLoginTime, credentials.getUserName());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v) {
+            launchNewSetup();
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
     }
 }

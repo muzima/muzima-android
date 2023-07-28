@@ -768,4 +768,5 @@
     <string name="write_SHR_to_card_text">SHR ને કાર્ડ પર લખો</string>
     <string name="write_shr_to_card_general">SHR ને કાર્ડ પર લખો</string>
     <string name="general_choose">પસંદ કરો...</string>
+    <string name="warning_new_user_login">તમે એપ્લિકેશનમાં નવા વપરાશકર્તા તરીકે લૉગિન છો, એપ્લિકેશન નવા સેટઅપ માટે રીસેટ થશે. શું તમે આગળ વધવા માંગો છો?</string>
 </resources>

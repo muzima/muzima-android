@@ -775,4 +775,5 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="write_SHR_to_card_text">Escrever SHR para cartão</string>
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
     <string name="general_choose">Escolher...</string>
+    <string name="warning_new_user_login">Você está logado como um novo usuário no aplicativo, o aplicativo será redefinido para uma nova configuração. Você quer prosseguir?</string>
 </resources>
