@@ -847,6 +847,7 @@ class HTMLFormDataStore {
             json.put("valueComplex", obs.getValueComplex());
             json.put("valueDatetime",convertedvalueDateTime);
             json.put("obs_comment", obs.getComment());
+            json.put("obs_group_id", obs.getObsGroupId());
             map.put("json" + i, json);
             arr.put(map.get("json" + i));
             i++;
@@ -1397,4 +1398,16 @@ class HTMLFormDataStore {
         return arr.toString();
     }
 
+    @JavascriptInterface
+    public String getObsByObsGroupId(int obsGroupId) throws JSONException, ConceptController.ConceptFetchException {
+        List<Observation> observations = new ArrayList<>();
+        try {
+            observations = observationController.getObsByObsGroupId(obsGroupId);
+            Collections.sort(observations, observationDateTimeComparator);
+        } catch (ObservationController.LoadObservationException | Exception e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+
+        return createObsJsonArray(observations);
+    }
 }
