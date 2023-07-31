@@ -767,4 +767,5 @@
     <string name="write_SHR_to_card_text">कार्ड में SHR लिखें</string>
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
     <string name="general_choose">चुनना...</string>
+    <string name="warning_new_user_login">आप एप्लिकेशन में एक नए उपयोगकर्ता के रूप में लॉगिन हैं, एप्लिकेशन नए सेटअप के लिए रीसेट हो जाएगा। क्या आपकी आगे बढ़ने की इच्छा है?</string>
 </resources>

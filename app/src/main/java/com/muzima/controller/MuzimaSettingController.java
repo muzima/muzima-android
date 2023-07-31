@@ -55,6 +55,7 @@ import static com.muzima.util.Constants.ServerSettings.CLINICAL_SUMMARY_FEATURE_
 import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_DERIVED_CONCEPT_MAP;
 import static com.muzima.util.Constants.ServerSettings.CONFIDENTIALITY_NOTICE_DISPLAY_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.CONTACT_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
+import static com.muzima.util.Constants.ServerSettings.ClEAR_APP_DATA_IF_NEW_USER_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING;
 import static com.muzima.util.Constants.ServerSettings.DISALLOW_SERVER_PATIENT_SEARCH;
 import static com.muzima.util.Constants.ServerSettings.DISPLAY_ONLY_COHORTS_IN_CONFIG_SETTING;
@@ -724,6 +725,19 @@ public class MuzimaSettingController {
     public Boolean isConfidentialityNoticeDisplayEnabled(){
         try {
             MuzimaSetting muzimaSetting = getSettingByProperty(CONFIDENTIALITY_NOTICE_DISPLAY_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isClearAppDataIfNewUserEnabled(){
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(ClEAR_APP_DATA_IF_NEW_USER_ENABLED_SETTING);
             if (muzimaSetting != null)
                 return muzimaSetting.getValueBoolean();
             else
