@@ -750,10 +750,7 @@ public class MuzimaApplication extends MultiDexApplication {
             User user = muzimaContext.getUserService().getUserByUsername(username);
 
             if(user == null){
-                Log.e(getClass().getSimpleName(),"User is null");
                 return true;
-            }else{
-                Log.e(getClass().getSimpleName(),"User is not null "+user.getUsername());
             }
         }  catch (IOException e) {
             Log.e(getClass().getSimpleName(),"Encountered IO Exception ",e);
