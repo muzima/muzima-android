@@ -343,6 +343,14 @@ public class ObservationController {
         return observations;
     }
 
+    public List<Observation> getObsByObsGroupId(int encounterId) throws LoadObservationException {
+        try {
+            return observationService.getObservationsByObsGroupId(encounterId);
+        } catch (IOException e) {
+            throw new LoadObservationException(e);
+        }
+    }
+
     public static class LoadObservationException extends Throwable {
         public LoadObservationException(Throwable e) {
             super(e);
