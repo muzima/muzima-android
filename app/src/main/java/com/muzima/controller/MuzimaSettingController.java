@@ -81,6 +81,7 @@ import static com.muzima.util.Constants.ServerSettings.TAG_GENERATION_ENABLED_SE
 import static com.muzima.util.Constants.ServerSettings.ADD_CONTACT_POPUP_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CONFIDANT_INFORMATION_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CLINICAL_INFORMATION_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.USERNAME_AUTO_POPULATION_ENABLED_SETTING;
 
 public class MuzimaSettingController {
     private final MuzimaSettingService settingService;
@@ -802,6 +803,19 @@ public class MuzimaSettingController {
             Log.e(getClass().getSimpleName(), "Error while fetching cohorts");
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "Error while parsing json object");
+        }
+        return false;
+    }
+
+    public Boolean isUsernameAutoPopulationEnabled(){
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(USERNAME_AUTO_POPULATION_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Setting is missing on this server");
         }
         return false;
     }

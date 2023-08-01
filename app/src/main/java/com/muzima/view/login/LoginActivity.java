@@ -1139,9 +1139,13 @@ public class LoginActivity extends BaseActivity {
     }
 
     private String getUsername() {
-        Credentials credentials;
-        credentials = new Credentials(this);
-        return credentials.getUserName();
+        boolean isUsernameAutoPopulationEnabled = ((MuzimaApplication) getApplication()).getMuzimaSettingController().isUsernameAutoPopulationEnabled();
+        if(isUsernameAutoPopulationEnabled) {
+            Credentials credentials;
+            credentials = new Credentials(this);
+            return credentials.getUserName();
+        }else
+            return StringUtils.EMPTY;
     }
 
     private void clearData(Credentials credentials){
