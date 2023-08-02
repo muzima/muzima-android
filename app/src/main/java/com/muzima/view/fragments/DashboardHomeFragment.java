@@ -59,7 +59,6 @@ import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.events.UploadedFormDataEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
-import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.utils.FormUtils;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
@@ -316,10 +315,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     }
 
     private boolean isSHRFeatureEnabled(){
-
-        SHRStatusPreferenceService shrStatusPreferenceService
-                = new SHRStatusPreferenceService((MuzimaApplication) mActivity.getApplication());
-        return shrStatusPreferenceService.isSHRStatusSettingEnabled();
+        return ((MuzimaApplication) mActivity.getApplication()).getMuzimaSettingController().isSHREnabled();
     }
 
     private void showRegistrationFormsMissingAlert() {

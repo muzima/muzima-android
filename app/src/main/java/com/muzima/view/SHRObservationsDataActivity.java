@@ -241,7 +241,6 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     }
 
     private boolean isSHREnabled(){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        return preferences.getBoolean(getResources().getString(R.string.preference_enable_shr_key), SHRObservationsDataActivity.DEFAULT_SHR_STATUS);
+        return ((MuzimaApplication)getApplicationContext()).getMuzimaSettingController().isSHREnabled();
     }
 }

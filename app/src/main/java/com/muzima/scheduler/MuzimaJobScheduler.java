@@ -63,9 +63,6 @@ import com.muzima.service.ConfidentialityNoticeDisplayPreferenceService;
 import com.muzima.service.FormDuplicateCheckPreferenceService;
 import com.muzima.service.MuzimaSyncService;
 import com.muzima.service.OnlineOnlyModePreferenceService;
-import com.muzima.service.RealTimeFormDataSyncPreferenceService;
-import com.muzima.service.RequireMedicalRecordNumberPreferenceService;
-import com.muzima.service.SHRStatusPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.util.JsonUtils;
 import com.muzima.util.MuzimaSettingUtils;
@@ -76,7 +73,6 @@ import com.muzima.utils.DownloadAndDeleteDerivedConceptAndObservationBasedOnConf
 import com.muzima.utils.DownloadAndDeleteLocationBasedOnConfigChangesIntent;
 import com.muzima.utils.DownloadAndDeleteProvidersBasedOnConfigChangesIntent;
 import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
-import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.SyncDatasetsIntent;
 import com.muzima.utils.SyncMediaCategoryIntent;
@@ -419,13 +415,7 @@ public class MuzimaJobScheduler extends JobService {
 
             for (MuzimaSetting muzimaSetting : muzimaSettings) {
                 configSettings.add(muzimaSetting.getProperty());
-                if (MuzimaSettingUtils.isGpsFeatureEnabledSetting(muzimaSetting)) {
-                    ((MuzimaApplication) context).getGPSFeaturePreferenceService().updateGPSDataPreferenceSettings();
-                } else if (MuzimaSettingUtils.isSHRFeatureEnabledSetting(muzimaSetting)) {
-                    new SHRStatusPreferenceService(((MuzimaApplication) context)).updateSHRStatusPreference();
-                } else if (MuzimaSettingUtils.isPatientIdentifierAutogenerationSetting(muzimaSetting)) {
-                    new RequireMedicalRecordNumberPreferenceService(((MuzimaApplication) context)).updateRequireMedicalRecordNumberPreference();
-                }else if (MuzimaSettingUtils.isOnlineOnlyModeSetting(muzimaSetting)) {
+               if (MuzimaSettingUtils.isOnlineOnlyModeSetting(muzimaSetting)) {
                     if(onlineModeBeforeConfigUpdate != muzimaSetting.getValueBoolean()){
                         muzimaSettingController.updateTheme();
                         if(muzimaSetting.getValueBoolean()) {
@@ -487,8 +477,6 @@ public class MuzimaJobScheduler extends JobService {
                     }
                 }else if(muzimaSetting.getProperty().equals(FORM_DUPLICATE_CHECK_ENABLED_SETTING)){
                     new FormDuplicateCheckPreferenceService(((MuzimaApplication) context)).updateFormDuplicateCheckPreferenceSettings();
-                }else if(muzimaSetting.getProperty().equals(AUTOMATIC_FORM_SYNC_ENABLED_SETTING)){
-                    new RealTimeFormDataSyncPreferenceService(((MuzimaApplication) context)).updateRealTimeSyncPreferenceSettings();
                 }else if(muzimaSetting.getProperty().equals(CONFIDENTIALITY_NOTICE_DISPLAY_ENABLED_SETTING)){
                     new ConfidentialityNoticeDisplayPreferenceService(((MuzimaApplication) context)).updateConfidentialityNoticeDisplayPreferenceValue();
                 }
@@ -503,13 +491,7 @@ public class MuzimaJobScheduler extends JobService {
         }
 
         public void defaultToGlobalSettings(String settingProperty){
-            if (settingProperty.equals(GPS_FEATURE_ENABLED_SETTING)) {
-                ((MuzimaApplication) context).getGPSFeaturePreferenceService().updateGPSDataPreferenceSettings();
-            } else if (settingProperty.equals(SHR_FEATURE_ENABLED_SETTING)) {
-                new SHRStatusPreferenceService(((MuzimaApplication) context)).updateSHRStatusPreference();
-            } else if (settingProperty.equals(PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING)) {
-                new RequireMedicalRecordNumberPreferenceService(((MuzimaApplication) context)).updateRequireMedicalRecordNumberPreference();
-            } else if (settingProperty.equals(ONLINE_ONLY_MODE_ENABLED_SETTING)) {
+            if (settingProperty.equals(ONLINE_ONLY_MODE_ENABLED_SETTING)) {
                 new OnlineOnlyModePreferenceService(((MuzimaApplication) context)).updateOnlineOnlyModePreferenceValue();
             }else if(settingProperty.equals(DEFAULT_LOGGED_IN_USER_AS_ENCOUNTER_PROVIDER_SETTING)){
                 boolean isDefaultLoggedInUserAsEncounterProvider = muzimaSettingController.isDefaultLoggedInUserAsEncounterProvider();
@@ -550,8 +532,6 @@ public class MuzimaJobScheduler extends JobService {
                 }
             }else if(settingProperty.equals(FORM_DUPLICATE_CHECK_ENABLED_SETTING)){
                 new FormDuplicateCheckPreferenceService(((MuzimaApplication) context)).updateFormDuplicateCheckPreferenceSettings();
-            }else if(settingProperty.equals(AUTOMATIC_FORM_SYNC_ENABLED_SETTING)){
-                new RealTimeFormDataSyncPreferenceService(((MuzimaApplication) context)).updateRealTimeSyncPreferenceSettings();
             }else if(settingProperty.equals(CONFIDENTIALITY_NOTICE_DISPLAY_ENABLED_SETTING)){
                 new ConfidentialityNoticeDisplayPreferenceService(((MuzimaApplication) context)).updateConfidentialityNoticeDisplayPreferenceValue();
             }

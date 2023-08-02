@@ -15,16 +15,12 @@
     <string translatable="false" name="preference_encounter_provider_key">encounterProviderPreference</string>
     <string translatable="false" name="preference_font_size">font_size</string>
     <string translatable="false" name="preference_password">passwordPreference</string>
-    <string translatable="false" name="preference_real_time_sync">realTimeSyncPreference</string>
     <string translatable="false" name="preference_server">serverPreference</string>
     <string translatable="false" name="preference_timeout">timeoutPreference</string>
     <string translatable="false" name="preference_username">usernamePreference</string>
     <string translatable="false" name="preference_wizard_finished">wizardFinished</string>
     <string translatable="false" name="preference_disclaimer">disclaimer</string>
-    <string translatable="false" name="preference_require_medical_record_number">requireMedicalRecordNumber</string>
     <string translatable="false" name="preference_default_encounter_location">defaultEncounterLocation</string>
-    <string translatable="false" name="preference_enable_shr_key">Enable SHR</string>
-    <string translatable="false" name="preference_enable_gps_key">Enable GPS</string>
     <string translatable="false" name="preference_light_mode">lightMode</string>
     <string translatable="false" name="preference_app_language">appLanguage</string>
     <string translatable="false" name="preference_app_token">appToken</string>

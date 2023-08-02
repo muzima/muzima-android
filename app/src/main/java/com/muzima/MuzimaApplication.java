@@ -64,12 +64,10 @@ import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.FormDuplicateCheckPreferenceService;
-import com.muzima.service.GPSFeaturePreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.service.RealTimeFormDataSyncPreferenceService;
 import com.muzima.service.SntpService;
 import com.muzima.util.Constants;
 import com.muzima.utils.LanguageUtil;
@@ -114,7 +112,6 @@ public class MuzimaApplication extends MultiDexApplication {
     private ProviderController providerController;
     private MuzimaSyncService muzimaSyncService;
     private MuzimaGPSLocationService muzimaGPSLocationService;
-    private GPSFeaturePreferenceService gpsFeaturePreferenceService;
     private LocalePreferenceService localePreferenceService;
     private SetupConfigurationController setupConfigurationController;
     private MuzimaSettingController settingsController;
@@ -137,7 +134,6 @@ public class MuzimaApplication extends MultiDexApplication {
     private MediaCategoryController mediaCategoryController;
     private ExecutorService executorService;
     private FormDuplicateCheckPreferenceService formDuplicateCheckPreferenceService;
-    private RealTimeFormDataSyncPreferenceService realTimeFormDataSyncPreferenceService;
 
     public void clearApplicationData() {
         try {
@@ -406,25 +402,11 @@ public class MuzimaApplication extends MultiDexApplication {
         return muzimaGPSLocationService;
     }
 
-    public GPSFeaturePreferenceService getGPSFeaturePreferenceService() {
-        if (gpsFeaturePreferenceService == null) {
-            gpsFeaturePreferenceService = new GPSFeaturePreferenceService(this);
-        }
-        return gpsFeaturePreferenceService;
-    }
-
     public FormDuplicateCheckPreferenceService getFormDuplicateCheckPreferenceService() {
         if (formDuplicateCheckPreferenceService == null) {
             formDuplicateCheckPreferenceService = new FormDuplicateCheckPreferenceService(this);
         }
         return formDuplicateCheckPreferenceService;
-    }
-
-    public RealTimeFormDataSyncPreferenceService getRealTimeFormDataSyncPreferenceService() {
-        if (realTimeFormDataSyncPreferenceService == null) {
-            realTimeFormDataSyncPreferenceService = new RealTimeFormDataSyncPreferenceService(this);
-        }
-        return realTimeFormDataSyncPreferenceService;
     }
 
     public RelationshipController getRelationshipController() {

@@ -1281,18 +1281,10 @@ public class MuzimaSyncService {
 
     public void updateSettingsPreferences(List<MuzimaSetting> muzimaSettings) {
         for (MuzimaSetting muzimaSetting : muzimaSettings) {
-            if (MuzimaSettingUtils.isGpsFeatureEnabledSetting(muzimaSetting)) {
-                muzimaApplication.getGPSFeaturePreferenceService().updateGPSDataPreferenceSettings();
-            } else if (MuzimaSettingUtils.isSHRFeatureEnabledSetting(muzimaSetting)) {
-                new SHRStatusPreferenceService(muzimaApplication).updateSHRStatusPreference();
-            } else if (MuzimaSettingUtils.isPatientIdentifierAutogenerationSetting(muzimaSetting)) {
-                new RequireMedicalRecordNumberPreferenceService(muzimaApplication).updateRequireMedicalRecordNumberPreference();
-            } else if (MuzimaSettingUtils.isOnlineOnlyModeSetting(muzimaSetting)) {
+            if (MuzimaSettingUtils.isOnlineOnlyModeSetting(muzimaSetting)) {
                 new OnlineOnlyModePreferenceService(muzimaApplication).updateOnlineOnlyModePreferenceValue();
             }else if(MuzimaSettingUtils.isDuplicateFormCheckSetting(muzimaSetting)){
                 new FormDuplicateCheckPreferenceService(muzimaApplication).updateFormDuplicateCheckPreferenceSettings();
-            }else if(MuzimaSettingUtils.isRealTimeSyncSetting(muzimaSetting)){
-                new RealTimeFormDataSyncPreferenceService(muzimaApplication).updateRealTimeSyncPreferenceSettings();
             }else if(MuzimaSettingUtils.isConfidentialityNoticeDisplaySetting(muzimaSetting)){
                 new ConfidentialityNoticeDisplayPreferenceService(muzimaApplication).updateConfidentialityNoticeDisplayPreferenceValue();
             }

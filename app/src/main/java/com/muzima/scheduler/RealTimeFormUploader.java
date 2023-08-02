@@ -32,8 +32,7 @@ public class RealTimeFormUploader {
 
     public  void uploadAllCompletedForms(android.content.Context applicationContext, boolean disregardRealtimeSyncPreference){
         boolean shouldUploadForms = disregardRealtimeSyncPreference ||
-                PreferenceManager.getDefaultSharedPreferences(applicationContext)
-                        .getBoolean(applicationContext.getResources().getString(R.string.preference_real_time_sync), false);
+                ((MuzimaApplication) applicationContext).getMuzimaSettingController().isRealTimeSyncEnabled();
         if(shouldUploadForms){
             uploadAllFormsInBackgroundService(applicationContext);
         }
