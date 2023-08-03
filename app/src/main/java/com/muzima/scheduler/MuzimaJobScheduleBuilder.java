@@ -55,8 +55,7 @@ public class MuzimaJobScheduleBuilder {
             };
             handler.postDelayed(runnable, delay);
         } else {
-            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            if (preferences.getBoolean(context.getResources().getString(R.string.preference_real_time_sync), false)) {
+            if (((MuzimaApplication)context).getMuzimaSettingController().isRealTimeSyncEnabled()) {
                 final Handler handler = new Handler();
                 Runnable runnable = new Runnable() {
                     @Override

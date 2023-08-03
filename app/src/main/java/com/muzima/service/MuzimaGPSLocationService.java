@@ -106,8 +106,7 @@ public class MuzimaGPSLocationService {
     }
 
     public boolean isGPSLocationFeatureEnabled(){
-        GPSFeaturePreferenceService gpsFeaturePreferenceService = ((MuzimaApplication) context.getApplicationContext()).getGPSFeaturePreferenceService();
-        return gpsFeaturePreferenceService.isGPSDataCollectionSettingEnabled();
+       return ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().isGPSDataEnabled();
     }
 
     public boolean isLocationServicesSwitchedOn() {
@@ -130,8 +129,7 @@ public class MuzimaGPSLocationService {
     }
 
     public void requestGPSLocationPermissions(Activity activity, boolean ignoreGPSFeaturePreference) {
-        if(ignoreGPSFeaturePreference || ((MuzimaApplication) context.getApplicationContext())
-                .getGPSFeaturePreferenceService().isGPSDataCollectionSettingEnabled()){
+        if(ignoreGPSFeaturePreference || ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().isGPSDataEnabled()){
                 ActivityCompat.requestPermissions(activity,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         LOCATION_ACCESS_PERMISSION_REQUEST_CODE);

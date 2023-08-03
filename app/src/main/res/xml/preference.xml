@@ -75,21 +75,6 @@
             android:positiveButtonText="@android:string/ok"
             android:selectAllOnFocus="true"
             android:title="@string/title_form_auto_save_interval" />
-        <SwitchPreference
-            android:defaultValue="false"
-            android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/ic_action_real_time_sync"
-            android:key="@string/preference_real_time_sync"
-            android:summary="@string/hint_real_time_sync"
-            android:title="@string/title_real_time_sync" />
-        <SwitchPreference
-            android:defaultValue="false"
-            android:editable="false"
-            android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/ic_medical_record_no"
-            android:key="@string/preference_require_medical_record_number"
-            android:summary="@string/hint_require_medical_record_number"
-            android:title="@string/title_require_medical_record_number" />
 
         <SwitchPreference
             android:checked="true"
@@ -114,21 +99,6 @@
             android:key="@string/preference_light_mode"
             android:summary="@string/hint_light_mode"
             android:title="@string/title_light_mode" />
-
-        <SwitchPreference
-            android:defaultValue="false"
-            android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/ic_action_shr_blue"
-            android:key="@string/preference_enable_shr_key"
-            android:summary="@string/hint_enable_shr"
-            android:title="@string/title_enable_shr" />
-        <SwitchPreference
-            android:defaultValue="false"
-            android:fontFamily="@font/montserrat_regular"
-            android:icon="@drawable/ic_action_enabled_gps"
-            android:key="@string/preference_enable_gps_key"
-            android:summary="@string/hint_enable_GPS"
-            android:title="@string/title_enable_gps" />
 
         <ListPreference
             android:defaultValue="@string/language_english"
