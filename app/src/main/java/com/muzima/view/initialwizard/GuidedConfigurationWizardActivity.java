@@ -1150,6 +1150,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     String[] cohortUuidsArray = uuids.toArray(new String[uuids.size()]);
                     int[] resultForPatientObs = muzimaSyncService.downloadDerivedObservationsForPatientsByCohortUUIDs(
                             cohortUuidsArray, false);
+                    if(((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isRelationshipEnabled()) {
+                        muzimaSyncService.downloadDerivedObservationsForAllPersons(false);
+                    }
                     return resultForPatientObs;
 
                 }

@@ -1131,6 +1131,10 @@ $(document).ready(function () {
                 if(key == 'index_obs'){
                     k = k.substr(k.indexOf(".")+1, k.length-1);
                 }
+            }else if(k.split("^").length === 3){
+                 if(k.split("^")[2] === "MDC"){
+                     key = "derivedObservations";
+                 }
             }
             if (key !== "obs_datetime") {
                 var objects = completeObject[key];
