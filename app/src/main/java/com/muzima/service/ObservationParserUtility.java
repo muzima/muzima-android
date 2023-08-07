@@ -16,6 +16,9 @@ import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptName;
 import com.muzima.api.model.ConceptType;
+import com.muzima.api.model.DerivedConcept;
+import com.muzima.api.model.DerivedConceptName;
+import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.EncounterType;
 import com.muzima.api.model.Form;
@@ -26,6 +29,8 @@ import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.Provider;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.DerivedConceptController;
+import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
 import com.muzima.utils.StringUtils;
@@ -53,6 +58,7 @@ class ObservationParserUtility {
     private final ProviderController providerController;
     private final List<Concept> newConceptList;
     private final boolean createObservationsForConceptsNotAvailableLocally;
+    private final DerivedConceptController derivedConceptController;
     public ObservationParserUtility(MuzimaApplication muzimaApplication, boolean createObservationsForConceptsNotAvailableLocally) {
         this.conceptController = muzimaApplication.getConceptController();
         this.locationController = muzimaApplication.getLocationController();
@@ -60,6 +66,7 @@ class ObservationParserUtility {
         this.formController = muzimaApplication.getFormController();
         this.newConceptList = new ArrayList<>();
         this.createObservationsForConceptsNotAvailableLocally = createObservationsForConceptsNotAvailableLocally;
+        this.derivedConceptController = muzimaApplication.getDerivedConceptController();
     }
 
     public Encounter getEncounterEntity(Date encounterDateTime,String  formUuid,String providerId, int locationId,
@@ -320,6 +327,57 @@ class ObservationParserUtility {
 
     public String getObservationUuid() {
         return OBSERVATION_CREATED_ON_PHONE + UUID.randomUUID();
+    }
+
+    public DerivedConcept getDerivedConceptEntity(String rawConceptName) throws DerivedConceptController.DerivedConceptFetchException, DerivedConceptController.DerivedConceptParseException {
+        String conceptIdOrUuid = getConceptId(rawConceptName);
+        if(StringUtils.isEmpty(conceptIdOrUuid)){
+            throw new DerivedConceptController.DerivedConceptParseException("Could not not get Derived Concept identifier for concept with raw name '"
+                    + rawConceptName + "'");
+        }
+
+        DerivedConcept observedDerivedConcept;
+        boolean isConceptIdNumeric = org.apache.commons.lang.StringUtils.isNumeric(conceptIdOrUuid);
+
+        if(isConceptIdNumeric) {
+            int intConceptId = Integer.parseInt(conceptIdOrUuid);
+            observedDerivedConcept =derivedConceptController.getDerivedConceptById(intConceptId);
+        } else {
+            observedDerivedConcept = derivedConceptController.getDerivedConceptByUuid(conceptIdOrUuid);
+        }
+
+        return observedDerivedConcept;
+    }
+
+    public DerivedObservation getDerivedObservationEntity(DerivedConcept derivedConcept, String value) throws DerivedObservationController.ParseDerivedObservationException, ConceptController.ConceptParseException, ConceptController.ConceptFetchException {
+        if (derivedConcept == null) {
+            throw new DerivedObservationController.ParseDerivedObservationException("Could not create Observation entity." +
+                    " Reason: No Concept provided.");
+        }
+        if (StringUtils.isEmpty(value)) {
+            throw new DerivedObservationController.ParseDerivedObservationException("Could not create Observation entity for concept '"
+                    + derivedConcept.getDerivedConceptName() + "'. Reason: No Observation value provided.");
+        }
+        DerivedObservation derivedObservation = new DerivedObservation();
+        derivedObservation.setUuid(getObservationUuid());
+        derivedObservation.setValueCoded(defaultValueCodedConcept());
+
+        if (derivedConcept.isCoded()) {
+            try {
+                Concept valueCoded = getConceptEntity(value,false, true);
+                derivedObservation.setValueCoded(valueCoded);
+            } catch (ConceptController.ConceptParseException e) {
+                throw new ConceptController.ConceptParseException("Could not get value for coded concept '"
+                        + derivedConcept.getDerivedConceptName() + "', from provided value '" + value + "'");
+            }
+
+        } else if (derivedConcept.isNumeric()) {
+            derivedObservation.setValueNumeric(getDoubleValue(value));
+        } else {
+            derivedObservation.setValueText(value);
+        }
+        derivedObservation.setDerivedConcept(derivedConcept);
+        return derivedObservation;
     }
 }
 
