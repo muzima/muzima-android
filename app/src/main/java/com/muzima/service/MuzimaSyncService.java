@@ -765,7 +765,7 @@ public class MuzimaSyncService {
             Log.e(getClass().getSimpleName(), "Exception thrown while loading persons.", e);
             result[0] = SyncStatusConstants.LOAD_ERROR;
         } catch (PatientController.PatientLoadException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Exception thrown while loading patients.", e);
         }
         return result;
     }
@@ -1644,7 +1644,7 @@ public class MuzimaSyncService {
             } catch (ObservationController.LoadObservationException e) {
                 Log.e(getClass().getSimpleName(), "Could not load observations to create tags", e);
             } catch (CohortController.CohortFetchException e) {
-                e.printStackTrace();
+                Log.e(getClass().getSimpleName(), "Exception thrown while fetching cohorts.", e);
             }
         }
     }
