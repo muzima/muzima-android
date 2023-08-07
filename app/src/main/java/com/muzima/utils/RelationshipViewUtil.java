@@ -1,7 +1,6 @@
 package com.muzima.utils;
 
 import static com.muzima.util.Constants.ServerSettings.ALLOW_PATIENT_RELATIVES_DISPLAY;
-import static com.muzima.util.Constants.ServerSettings.SUPPORTED_RELATIONSHIP_TYPES;
 import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 
 import android.app.Activity;
@@ -22,15 +21,12 @@ import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.model.Concept;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
-import com.muzima.controller.ConceptController;
 import com.muzima.controller.MuzimaSettingController;
-import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.view.forms.PersonDemographicsUpdateFormsActivity;
@@ -38,8 +34,6 @@ import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -235,51 +229,4 @@ public class RelationshipViewUtil {
 
         return relatedPersons;
     }
-    private static boolean isHivTestNegativeOrPositive(String patientUuid, int conceptId, ObservationController observationController, ConceptController conceptController) {
-        List<Observation> observations = new ArrayList<>();
-        try {
-            Concept concept = conceptController.getConceptById(conceptId);
-            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
-            Collections.sort(observations, observationDateTimeComparator);
-            if(observations.size()>0){
-                Observation obs = observations.get(0);
-                if(concept.isCoded()){
-                    if(obs.getValueCoded().getId() == 664 || obs.getValueCoded().getId() == 703)
-                        return true;
-                    else
-                        return false;
-                }
-            }
-        } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
-            Log.e(TAG, "Exception occurred while loading observations", e);
-        }
-        return false;
-    }
-    private static boolean isContactHivPositive(String patientUuid, int conceptId, ObservationController observationController, ConceptController conceptController) {
-        List<Observation> observations = new ArrayList<>();
-        try {
-            Concept concept = conceptController.getConceptById(conceptId);
-            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
-            Collections.sort(observations, observationDateTimeComparator);
-            if(observations.size()>0){
-                Observation obs = observations.get(0);
-                if(concept.isCoded()){
-                    if(obs.getValueCoded().getId() == 703)
-                        return true;
-                    else
-                        return false;
-
-                }
-            }
-        } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
-            Log.e(TAG, "Exception occurred while loading observations", e);
-        }
-        return false;
-    }
-    private static final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
-        @Override
-        public int compare(Observation lhs, Observation rhs) {
-            return -lhs.getObservationDatetime().compareTo(rhs.getObservationDatetime());
-        }
-    };
 }

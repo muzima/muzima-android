@@ -55,6 +55,14 @@ public class DerivedConceptController {
         }
     }
 
+    public DerivedConcept getDerivedConceptById(int id) throws DerivedConceptFetchException {
+        try {
+            return derivedConceptService.getDerivedConceptById(id);
+        } catch (IOException e) {
+            throw new DerivedConceptFetchException(e);
+        }
+    }
+
     public void deleteDerivedConcepts(List<DerivedConcept> derivedConcepts) throws DerivedConceptDeleteException {
         try {
             derivedConceptService.deleteDerivedConcepts(derivedConcepts);
@@ -84,6 +92,12 @@ public class DerivedConceptController {
     public static class DerivedConceptDeleteException extends Throwable {
         DerivedConceptDeleteException(Throwable throwable) {
             super(throwable);
+        }
+    }
+
+    public static class DerivedConceptParseException extends Throwable {
+        public DerivedConceptParseException(String message) {
+            super(message);
         }
     }
 }

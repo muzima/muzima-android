@@ -171,6 +171,16 @@ public class DerivedObservationController {
         return derivedObservations;
     }
 
+    public boolean getDerivedObservationsByPatientUuidAndAfterIndexCaseMembershipDate(String personUuid, Date membershipDate, int derivedConceptId) throws IOException {
+        List<DerivedObservation> derivedObservations = derivedObservationService.getDerivedObservationsByPatientUuidAndDerivedConceptId(personUuid,derivedConceptId);
+        for(DerivedObservation derivedObservation : derivedObservations){
+            if(membershipDate.before(derivedObservation.getDateCreated())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static class DerivedObservationDownloadException extends Throwable {
         DerivedObservationDownloadException(Throwable throwable) {
             super(throwable);
@@ -192,6 +202,15 @@ public class DerivedObservationController {
     public static class DerivedObservationDeleteException extends Throwable {
         DerivedObservationDeleteException(Throwable throwable) {
             super(throwable);
+        }
+    }
+
+    public static class ParseDerivedObservationException extends Throwable {
+        public ParseDerivedObservationException(Throwable e) {
+            super(e);
+        }
+        public ParseDerivedObservationException(String message) {
+            super(message);
         }
     }
 }

@@ -13,11 +13,15 @@ package com.muzima.service;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.DerivedConcept;
+import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.controller.ConceptController;
+import com.muzima.controller.DerivedConceptController;
+import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
@@ -46,10 +50,12 @@ public class HTMLFormObservationCreator {
     private final EncounterController encounterController;
     private final ObservationController observationController;
     private final ObservationParserUtility observationParserUtility;
+    private final DerivedObservationController derivedObservationController;
 
     private Person person;
     private Encounter encounter;
     private List<Observation> observations;
+    private List<DerivedObservation> derivedObservations;
     private boolean createObservationsForConceptsNotAvailableLocally;
     private boolean parseAsObsForPerson;
 
@@ -62,6 +68,7 @@ public class HTMLFormObservationCreator {
         this.observationParserUtility = new ObservationParserUtility(muzimaApplication,createObservationsForConceptsNotAvailableLocally);
         this.createObservationsForConceptsNotAvailableLocally = createObservationsForConceptsNotAvailableLocally;
         this.parseAsObsForPerson = parseAsObsForPerson;
+        this.derivedObservationController = muzimaApplication.getDerivedObservationController();
     }
 
     public void createAndPersistObservations(String jsonResponse,String formDataUuid) {
@@ -69,6 +76,7 @@ public class HTMLFormObservationCreator {
 
         try {
             saveObservationsAndRelatedEntities();
+            saveDerivedObservations();
         } catch (ConceptController.ConceptSaveException e) {
             Log.e(getClass().getSimpleName(), "Error while saving concept", e);
         } catch (EncounterController.SaveEncounterException e) {
@@ -77,6 +85,8 @@ public class HTMLFormObservationCreator {
             Log.e(getClass().getSimpleName(), "Error while saving Observation", e);
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), "Unexpected Exception occurred", e);
+        } catch (DerivedObservationController.DerivedObservationSaveException e) {
+            Log.e(getClass().getSimpleName(), "Error while saving derived obs", e);
         }
     }
 
@@ -107,6 +117,11 @@ public class HTMLFormObservationCreator {
             if (responseJSON.has("observation")) {
                 observations = extractObservationFromJSONObject(responseJSON.getJSONObject("observation"));
             }
+
+            if (responseJSON.has("derivedObservations")) {
+                derivedObservations = extractDerivedObservationFromJSONObject(responseJSON.getJSONObject("derivedObservations"));
+            }
+
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Error while fetching Patient", e);
         } catch (PersonController.PersonLoadException e) {
@@ -229,5 +244,58 @@ public class HTMLFormObservationCreator {
     private Person getPerson(JSONObject person) throws JSONException, PersonController.PersonLoadException {
         String uuid = person.getString("patient.uuid");
         return personController.getPersonByUuid(uuid);
+    }
+
+
+    private List<DerivedObservation> extractDerivedObservationFromJSONObject(JSONObject jsonObject) throws JSONException,
+            ConceptController.ConceptFetchException,ConceptController.ConceptSaveException{
+        List<DerivedObservation> derivedObservations = new ArrayList<>();
+        Iterator keys = jsonObject.keys();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            derivedObservations.addAll(extractDerivedObsBasedOnType(jsonObject, key));
+        }
+        derivedObservations.removeAll(Collections.singleton(null));
+        return derivedObservations;
+    }
+
+    private List<DerivedObservation> extractDerivedObsBasedOnType(JSONObject jsonObject, String key) throws JSONException {
+        ArrayList<DerivedObservation> derivedObservations = new ArrayList<>();
+        derivedObservations.add(createDerivedObservation(key, jsonObject.getString(key)));
+        return derivedObservations;
+    }
+
+    private DerivedObservation createDerivedObservation(String conceptName, String value)  {
+        try {
+            DerivedConcept derivedConcept = observationParserUtility.getDerivedConceptEntity(conceptName);
+            if(derivedConcept != null) {
+                DerivedObservation derivedObservation = observationParserUtility.getDerivedObservationEntity(derivedConcept, value);
+                derivedObservation.setPerson(person);
+                derivedObservation.setDateCreated(encounter.getEncounterDatetime());
+                return derivedObservation;
+            }
+        } catch (ConceptController.ConceptParseException e) {
+            Log.e(getClass().getSimpleName(), "Error while parsing Concept", e);
+        } catch (DerivedConceptController.DerivedConceptFetchException e) {
+            Log.e(getClass().getSimpleName(), "Error while fetching derived concept", e);
+        } catch (ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(), "Error while fetching concept", e);
+        } catch (DerivedConceptController.DerivedConceptParseException e) {
+            Log.e(getClass().getSimpleName(), "Error while parsing derived concept", e);
+        } catch (DerivedObservationController.ParseDerivedObservationException e) {
+            Log.e(getClass().getSimpleName(), "Error while parsing derived concept", e);
+        }
+        return null;
+    }
+
+    private void saveDerivedObservations() throws DerivedObservationController.DerivedObservationSaveException {
+
+        try {
+            if (derivedObservations != null && !derivedObservations.isEmpty()) {
+                derivedObservationController.saveDerivedObservations(derivedObservations);
+            }
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error while parsing and storing Observations.", e);
+        }
     }
 }
