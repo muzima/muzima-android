@@ -110,8 +110,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
-import static com.muzima.utils.Constants.FGH.FormTemplateUuids.INDEX_CASE_PERSON_DEMOGRAPHIC_UPDATE_FORM;
-import static com.muzima.utils.Constants.FGH.FormTemplateUuids.INDEX_CASE_PERSON_REGISTRATION_FORM;
+import static com.muzima.utils.Constants.FGH.DerivedConcepts.CONTACTS_TESTED_DERIVED_CONCEPT_ID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.ALL_CONTACTS_VISITED_TAG_UUID;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
@@ -1608,20 +1607,20 @@ public class MuzimaSyncService {
                     if (!hasAllContactsVisitedTag) {
                         List<Person> relatedPersons = RelationshipViewUtil.getDisplayableRelatedPersonsList(patientUuid, muzimaApplication);
                         if (relatedPersons != null) {
-                            int personsWithHTCFormsCount = 0;
+                            int contactsVisited = 0;
                             List<CohortMember> cohortMembers = muzimaApplication.getCohortController().getCohortMembershipByPatientUuid(patientUuid);
                             if(cohortMembers.size()>0) {
                                 CohortMember cohortMember = cohortMembers.get(0);
                                 Date membershipDate = cohortMember.getMembershipDate();
                                 for (Person person : relatedPersons) {
-                                    Boolean isDerivedConceptAfterMembershipDate = derivedObservationController.getDerivedObservationsByPatientUuidAndAfterIndexCaseMembershipDate(person.getUuid(), membershipDate, 9);
+                                    Boolean isDerivedConceptAfterMembershipDate = derivedObservationController.getDerivedObservationsByPatientUuidAndAfterIndexCaseMembershipDate(person.getUuid(), membershipDate, CONTACTS_TESTED_DERIVED_CONCEPT_ID);
                                     if(isDerivedConceptAfterMembershipDate){
-                                        personsWithHTCFormsCount++;
+                                        contactsVisited++;
                                     }
                                 }
                             }
 
-                            if (personsWithHTCFormsCount >= relatedPersons.size() && relatedPersons.size()>0) {
+                            if (contactsVisited >= relatedPersons.size() && relatedPersons.size()>0) {
                                 PatientTag allContactsVisitedTag = new PatientTag();
                                 allContactsVisitedTag.setName("V");
                                 allContactsVisitedTag.setDescription(muzimaApplication.getString(R.string.general_all_contacts_visited));

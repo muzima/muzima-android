@@ -536,6 +536,10 @@ public class Constants {
             public static final int INDEX_CASE_TESTING_CONSENT_CONCEPT_ID = 21155;
         }
 
+        public static class DerivedConcepts {
+            public static final int CONTACTS_TESTED_DERIVED_CONCEPT_ID = 9;
+        }
+
         public static class TagsUuids {
             public static final String HAS_SEXUAL_PARTNER_TAG_UUID = "6ff70505-4b1c-4b9e-b76f-fd73a5df450b";
             public static final String ALREADY_ASSIGNED_TAG_UUID = "e7e26b4e-b3fd-11eb-8374-d0577bb73cd4";
