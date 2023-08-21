@@ -336,6 +336,15 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 lastConsentDate.setText(DateUtils.getFormattedDate(candidateConsentDateObs.getEncounter().getEncounterDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
             }
 
+            List<Observation> confidentObs = getLastConfidentInfo(patientUuid);
+
+            for (Observation observation : confidentObs) {
+                if (observation.getConcept().getId() == 1740) {
+                    confidantName.setText((StringUtils.EMPTY.equalsIgnoreCase(observation.getValueText()) || observation.getValueText() == null)?"-----------------":observation.getValueText());
+                } else if (observation.getConcept().getId() == 6224) {
+                    confidantContact1.setText((StringUtils.EMPTY.equalsIgnoreCase(observation.getValueText()) || observation.getValueText() == null)?"-----------------":observation.getValueText());
+                }
+            }
             String cName = getObsByPatientUuidAndConceptId(patientUuid, 1740);
             confidantName.setText((StringUtils.EMPTY.equalsIgnoreCase(cName) || cName == null)?"-----------------":cName);
             String cContact = getObsByPatientUuidAndConceptId(patientUuid, 6224);
@@ -1147,5 +1156,66 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
 
+    }
+
+    private List<Observation> getLastConfidentInfo(String patientUuid) {
+       List<Observation> observations = new ArrayList<>();
+        List<Observation> confidentobservations = new ArrayList<>();
+        List<Observation> groupObs;
+
+        List<Observation> groupObservations = null;
+        try {
+            Observation mastercardResultObs = getEncounterDateTimeByPatientUuidAndEncounterTypeUuid(patientUuid, "e422ecf9-75dd-4367-b21e-54bccabc4763");
+            Observation homeVisitResultObs = getEncounterDateTimeByPatientUuidAndEncounterTypeUuid(patientUuid, "e27916d4-1d5f-11e0-b929-000c29ad1d07");
+            groupObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 165470);
+            Collections.sort(groupObservations, observationDateTimeComparator);
+
+            if (mastercardResultObs != null) observations.add(mastercardResultObs);
+            if (homeVisitResultObs != null) observations.add(homeVisitResultObs);
+            if (groupObservations.size()>0) observations.add(groupObservations.get(0));
+
+            Collections.sort(observations, observationDateTimeComparator);
+
+            if (observations != null && observations.size() > 0) {
+                Observation lastConfidentSource = observations.get(0);
+
+                if (lastConfidentSource.getConcept().getId() == 165470) {
+                    groupObs = getConfidentObsByPatientUuidAndConceptId(patientUuid);
+
+                } else {
+                    groupObs = observationController.getObservationsByEncounterId(lastConfidentSource.getEncounter().getId());
+                }
+                if (groupObs != null && groupObs.size() > 0) {
+                    for (Observation observation : groupObs) {
+                        if (observation.getConcept().getId() == 1740 || observation.getConcept().getId() == 6224) {
+                            confidentobservations.add(observation);
+                        }
+                    }
+                    return confidentobservations;
+                }
+            }
+        } catch (ObservationController.LoadObservationException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    private List<Observation> getConfidentObsByPatientUuidAndConceptId(String patientUuid) {
+        List<Observation> observations;
+        try {
+            List<Observation> groupObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 165470);
+            Collections.sort(groupObservations, observationDateTimeComparator);
+            if (groupObservations.size() > 0) {
+                observations = observationController.getObsByObsGroupId(groupObservations.get(0).getId());
+
+                return observations;
+            }
+        }
+        catch (ObservationController.LoadObservationException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
     }
 }
