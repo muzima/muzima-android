@@ -95,6 +95,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -112,6 +113,8 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 import static com.muzima.utils.Constants.FGH.DerivedConcepts.CONTACTS_TESTED_DERIVED_CONCEPT_ID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.ALL_CONTACTS_VISITED_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.NAO_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.SIM_TAG_UUID;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
 
@@ -1428,6 +1431,7 @@ public class MuzimaSyncService {
         for(String patientUuid:patientUuidList){
             try {
                 Patient patient = patientController.getPatientByUuid(patientUuid);
+                List<CohortMember> cohortMembers = muzimaApplication.getCohortController().getCohortMembershipByPatientUuid(patientUuid);
                 if(patient != null) {
                     List<PatientTag> tags = new ArrayList<>();
                     if (patient.getTags() != null) {
@@ -1441,6 +1445,8 @@ public class MuzimaSyncService {
                     boolean hasAssignmentTag = false;
                     boolean hasAwaitingAssignmentTag = false;
                     boolean hasAllContactsVisitedTag = false;
+                    boolean hasHomeVisitTags = false;
+                    int homeVisitTagCount = 0;
                     for (PatientTag tag : patient.getTags()) {
                         if (StringUtils.equals(tag.getUuid(), HAS_SEXUAL_PARTNER_TAG_UUID)) {
                             hasSexualPartnerTag = true;
@@ -1451,6 +1457,9 @@ public class MuzimaSyncService {
                             hasAwaitingAssignmentTag = true;
                         } else if (StringUtils.equals(tag.getUuid(), ALL_CONTACTS_VISITED_TAG_UUID)) {
                             hasAllContactsVisitedTag = true;
+                        } else if(StringUtils.equals(tag.getUuid(), SIM_TAG_UUID) || StringUtils.equals(tag.getUuid(), NAO_TAG_UUID)){
+                            hasHomeVisitTags = true;
+                            homeVisitTagCount++;
                         }
                     }
 
@@ -1561,30 +1570,32 @@ public class MuzimaSyncService {
                             List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
                             if (assignmentObsList.size() > 0) {
                                 for (Observation assignmentObs : assignmentObsList) {
-                                    Date now = new Date();
-                                    long assignmentDaysPassed = (now.getTime() - assignmentObs.getObservationDatetime().getTime()) / (24 * 60 * 60 * 1000);
-                                    if (assignmentDaysPassed >= 0 && assignmentDaysPassed <= 21) {
-                                        assignmentTag = new PatientTag();
-                                        assignmentTag.setName("AL");
-                                        assignmentTag.setDescription(muzimaApplication.getString(R.string.general_already_assigned));
-                                        assignmentTag.setUuid(ALREADY_ASSIGNED_TAG_UUID);
-                                        tags.add(assignmentTag);
-                                        patientController.savePatientTags(assignmentTag);
+                                    if(cohortMembers.size()>0) {
+                                        CohortMember cohortMember = cohortMembers.get(0);
+                                        Date membershipDate = cohortMember.getMembershipDate();
+                                        if (assignmentObs.getObservationDatetime().after(membershipDate)) {
+                                            assignmentTag = new PatientTag();
+                                            assignmentTag.setName("AL");
+                                            assignmentTag.setDescription(muzimaApplication.getString(R.string.general_already_assigned));
+                                            assignmentTag.setUuid(ALREADY_ASSIGNED_TAG_UUID);
+                                            tags.add(assignmentTag);
+                                            patientController.savePatientTags(assignmentTag);
 
-                                        //remove AA tag if available
-                                        PatientTag AATag = null;
-                                        for (PatientTag patientTag : tags) {
-                                            if (patientTag.getName().equals("AA")) {
-                                                AATag = patientTag;
+                                            //remove AA tag if available
+                                            PatientTag AATag = null;
+                                            for (PatientTag patientTag : tags) {
+                                                if (patientTag.getName().equals("AA")) {
+                                                    AATag = patientTag;
+                                                }
                                             }
-                                        }
 
-                                        if (AATag != null) {
-                                            tags.remove(AATag);
-                                        }
+                                            if (AATag != null) {
+                                                tags.remove(AATag);
+                                            }
 
-                                        hasAssignmentTag = true;
-                                        break;
+                                            hasAssignmentTag = true;
+                                            break;
+                                        }
                                     }
                                     if (assignmentTag != null) {
                                         hasAssignmentTag = true;
@@ -1608,7 +1619,6 @@ public class MuzimaSyncService {
                         List<Person> relatedPersons = RelationshipViewUtil.getDisplayableRelatedPersonsList(patientUuid, muzimaApplication);
                         if (relatedPersons != null) {
                             int contactsVisited = 0;
-                            List<CohortMember> cohortMembers = muzimaApplication.getCohortController().getCohortMembershipByPatientUuid(patientUuid);
                             if(cohortMembers.size()>0) {
                                 CohortMember cohortMember = cohortMembers.get(0);
                                 Date membershipDate = cohortMember.getMembershipDate();
@@ -1630,6 +1640,80 @@ public class MuzimaSyncService {
                             }
                         }
                     }
+
+                    if(!hasHomeVisitTags || homeVisitTagCount<3){
+                        if(cohortMembers.size()>0) {
+                            CohortMember cohortMember = cohortMembers.get(0);
+                            Date membershipDate = cohortMember.getMembershipDate();
+
+                            List<Observation> firstAttemptObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,24008);
+                            Collections.sort(firstAttemptObservations, observationDateTimeComparator);
+
+                            List<Observation> secondAttemptObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,24009);
+                            Collections.sort(secondAttemptObservations, observationDateTimeComparator);
+
+                            List<Observation> thirdAttemptObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid,24010);
+                            Collections.sort(thirdAttemptObservations, observationDateTimeComparator);
+
+                            if(firstAttemptObservations.size() > 0 && homeVisitTagCount==0){
+                                if(firstAttemptObservations.get(0).getObservationDatetime().after(membershipDate)) {
+                                    if (firstAttemptObservations.get(0).getValueCoded().getId() == 1065) {
+                                        PatientTag firstAttemptTag = new PatientTag();
+                                        firstAttemptTag.setName("SIM");
+                                        firstAttemptTag.setUuid(SIM_TAG_UUID);
+                                        tags.add(firstAttemptTag);
+                                        patientController.savePatientTags(firstAttemptTag);
+                                    } else {
+                                        PatientTag firstAttemptTag = new PatientTag();
+                                        firstAttemptTag.setName("NÃO");
+                                        firstAttemptTag.setUuid(NAO_TAG_UUID);
+                                        tags.add(firstAttemptTag);
+                                        patientController.savePatientTags(firstAttemptTag);
+                                    }
+                                    homeVisitTagCount++;
+                                }
+                            }
+
+                            if(secondAttemptObservations.size() > 0 && homeVisitTagCount==1){
+                                if(secondAttemptObservations.get(0).getObservationDatetime().after(membershipDate)) {
+                                    if (secondAttemptObservations.get(0).getValueCoded().getId() == 1065) {
+                                        PatientTag secondAttemptTag = new PatientTag();
+                                        secondAttemptTag.setName("SIM");
+                                        secondAttemptTag.setUuid(SIM_TAG_UUID);
+                                        tags.add(secondAttemptTag);
+                                        patientController.savePatientTags(secondAttemptTag);
+                                    } else {
+                                        PatientTag secondAttemptTag = new PatientTag();
+                                        secondAttemptTag.setName("NÃO");
+                                        secondAttemptTag.setUuid(NAO_TAG_UUID);
+                                        tags.add(secondAttemptTag);
+                                        patientController.savePatientTags(secondAttemptTag);
+                                    }
+                                    homeVisitTagCount++;
+                                }
+                            }
+
+                            if(thirdAttemptObservations.size() > 0 && homeVisitTagCount==2){
+                                if(thirdAttemptObservations.get(0).getObservationDatetime().after(membershipDate)) {
+                                    if (thirdAttemptObservations.get(0).getValueCoded().getId() == 1065) {
+                                        PatientTag thirdAttemptTag = new PatientTag();
+                                        thirdAttemptTag.setName("SIM");
+                                        thirdAttemptTag.setUuid(SIM_TAG_UUID);
+                                        tags.add(thirdAttemptTag);
+                                        patientController.savePatientTags(thirdAttemptTag);
+                                    } else {
+                                        PatientTag thirdAttemptTag = new PatientTag();
+                                        thirdAttemptTag.setName("NÃO");
+                                        thirdAttemptTag.setUuid(NAO_TAG_UUID);
+                                        tags.add(thirdAttemptTag);
+                                        patientController.savePatientTags(thirdAttemptTag);
+                                    }
+                                    homeVisitTagCount++;
+                                }
+                            }
+                        }
+                    }
+
                     patient.setTags(tags.toArray(new PatientTag[tags.size()]));
                     patientController.updatePatient(patient);
                 }
@@ -1648,6 +1732,13 @@ public class MuzimaSyncService {
             }
         }
     }
+
+    private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
+        @Override
+        public int compare(Observation lhs, Observation rhs) {
+            return -lhs.getObservationDatetime().compareTo(rhs.getObservationDatetime());
+        }
+    };
 
     public int[] downloadReportDatasets(List<Integer> datasetDefinitionIds, boolean isDeltaSync){
         int[] result = new int[2];

@@ -298,9 +298,7 @@ class HTMLFormDataStore {
                             patientController.savePatientTags(tag);
                         }
 
-                        if(!tags.contains(tag)){
-                            tags.add(tag);
-                        }
+                        tags.add(tag);
 
                         patient.setTags(tags.toArray(new PatientTag[tags.size()]));
                         patientController.updatePatient(patient);
