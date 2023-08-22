@@ -338,11 +338,13 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
             List<Observation> confidentObs = getLastConfidentInfo(patientUuid);
 
-            for (Observation observation : confidentObs) {
-                if (observation.getConcept().getId() == 1740) {
-                    confidantName.setText((StringUtils.EMPTY.equalsIgnoreCase(observation.getValueText()) || observation.getValueText() == null)?"-----------------":observation.getValueText());
-                } else if (observation.getConcept().getId() == 6224) {
-                    confidantContact1.setText((StringUtils.EMPTY.equalsIgnoreCase(observation.getValueText()) || observation.getValueText() == null)?"-----------------":observation.getValueText());
+            if (confidentObs != null && confidentObs.size() > 0) {
+                for (Observation observation : confidentObs) {
+                    if (observation.getConcept().getId() == 1740) {
+                        confidantName.setText((StringUtils.EMPTY.equalsIgnoreCase(observation.getValueText()) || observation.getValueText() == null) ? "-----------------" : observation.getValueText());
+                    } else if (observation.getConcept().getId() == 6224) {
+                        confidantContact1.setText((StringUtils.EMPTY.equalsIgnoreCase(observation.getValueText()) || observation.getValueText() == null) ? "-----------------" : observation.getValueText());
+                    }
                 }
             }
             String cName = getObsByPatientUuidAndConceptId(patientUuid, 1740);
