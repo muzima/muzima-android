@@ -304,6 +304,28 @@
                             android:fontFamily="@font/roboto_regular"/>
 
                 </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="150dp"
+                        android:id="@+id/last_allocation_volunteer"
+                        android:layout_height="wrap_content"
+                        android:text="@string/last_allocation_volunteer"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+                    <TextView
+                        android:id="@+id/last_allocation_volunteer_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/last_allocation_volunteer"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                </RelativeLayout>
 
             </LinearLayout>
         </LinearLayout>
