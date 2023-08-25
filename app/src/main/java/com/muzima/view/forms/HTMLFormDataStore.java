@@ -73,7 +73,19 @@ import com.muzima.view.patients.UpdatePatientTagsIntent;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TimeZone;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
@@ -1322,7 +1334,7 @@ class HTMLFormDataStore {
             Collections.sort(lastTriangulations, observationDateTimeComparator);
             Observation lastTriangulation = null;
             for (Observation observation: lastTriangulations) {
-              if("ALLOCATION_PARENT_OBS".equalsIgnoreCase(observation.getComment())){
+              if("ALLOCATION_PARENT_OBS_V3.3".equalsIgnoreCase(observation.getComment())){
                   lastTriangulation = observation;
                   break;
               }

@@ -41,6 +41,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
 import com.muzima.adapters.relationships.RelationshipsAdapter;
+import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
@@ -51,6 +52,8 @@ import com.muzima.api.model.Observation;
 import com.muzima.api.model.EncounterType;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.ConceptName;
+import com.muzima.api.model.Provider;
+import com.muzima.controller.CohortController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
@@ -59,6 +62,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.ProviderController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.model.location.MuzimaGPSLocation;
@@ -142,12 +146,14 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
     private TextView lastVolunteerName;
 
+    private TextView lastAllocationVolunteerName;
+
     private String applicationLanguage;
     private ConceptController conceptController;
     private ObservationController observationController;
-
+    private CohortController cohortController;
+    private ProviderController providerController;
     private DerivedObservationController derivedObservationController;
-
     private DerivedConceptController derivedConceptController;
     private FormController formController;
     private boolean isFGHCustomClientSummaryEnabled;
@@ -303,6 +309,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
             conceptController = ((MuzimaApplication) getApplicationContext()).getConceptController();
             observationController = ((MuzimaApplication) getApplicationContext()).getObservationController();
+            cohortController = ((MuzimaApplication) getApplicationContext()).getCohortController();
+            providerController = ((MuzimaApplication) getApplicationContext()).getProviderController();
             EncounterController encounterController =  ((MuzimaApplication) getApplicationContext()).getEncounterController();
             formController =  ((MuzimaApplication) getApplicationContext()).getFormController();
             DerivedConceptController derivedConceptController = ((MuzimaApplication) getApplicationContext()).getDerivedConceptController();
@@ -320,7 +328,30 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             } else {
                 lastVolunteerName.setText("-----------------");
             }
-            ;
+
+            List<Observation> allocationObs = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 1912);
+            Collections.sort(allocationObs, observationDateTimeComparator);
+
+            Observation obs = null;
+
+            if (allocationObs.size() > 0) {
+                obs = allocationObs.get(0);
+            }
+            List<CohortMember> cohortMembers = null;
+            try {
+                cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
+            } catch (CohortController.CohortFetchException e) {
+                throw new RuntimeException(e);
+            }
+            CohortMember cohortMember = null;
+            if (cohortMembers != null && cohortMembers.size() > 0) cohortMember = cohortMembers.get(0);
+
+            if ((obs != null && cohortMember != null) &&(obs.getObservationDatetime().after(cohortMember.getMembershipDate()))) {
+                Provider provider = providerController.getProviderBySystemId(obs.getValueText());
+                lastAllocationVolunteerName.setText(provider.getName());
+            } else {
+                lastAllocationVolunteerName.setText("-----------------");
+            }
 
             artStartDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 1190));
             testingSector.setText(getObsByPatientUuidAndConceptId(patientUuid, 23877));
@@ -721,6 +752,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         tptEndDate = findViewById(R.id.tpt_end_date_value);
         artStartDate = findViewById(R.id.art_start_date);
         lastVolunteerName = findViewById(R.id.last_encounter_volunteer_name_value);
+        lastAllocationVolunteerName = findViewById(R.id.last_allocation_volunteer_name);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         LinearLayout dadosDeConsentimento = findViewById(R.id.dados_de_consentimento);
