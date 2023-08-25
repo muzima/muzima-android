@@ -341,7 +341,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             try {
                 cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
             } catch (CohortController.CohortFetchException e) {
-                throw new RuntimeException(e);
+                Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
             }
             CohortMember cohortMember = null;
             if (cohortMembers != null && cohortMembers.size() > 0) cohortMember = cohortMembers.get(0);
@@ -529,9 +529,9 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "JSONException encountered ", e);
         } catch (DerivedConceptController.DerivedConceptFetchException e) {
-            throw new RuntimeException(e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
-            throw new RuntimeException(e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading derived observations", e);
         }
     }
 
@@ -642,7 +642,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             }
         }
         catch (ObservationController.LoadObservationException e) {
-            throw new RuntimeException(e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
 
         return null;
@@ -662,7 +662,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             }
         }
         catch (ObservationController.LoadObservationException e) {
-            throw new RuntimeException(e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
         return null;
     }
@@ -681,7 +681,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             }
         }
         catch (ObservationController.LoadObservationException e) {
-            throw new RuntimeException(e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
 
         return null;
@@ -1229,7 +1229,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 }
             }
         } catch (ObservationController.LoadObservationException e) {
-            throw new RuntimeException(e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
 
         return null;
@@ -1247,7 +1247,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             }
         }
         catch (ObservationController.LoadObservationException e) {
-            throw new RuntimeException(e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
 
         return null;
