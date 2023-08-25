@@ -348,7 +348,11 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
             if ((obs != null && cohortMember != null) &&(obs.getObservationDatetime().after(cohortMember.getMembershipDate()))) {
                 Provider provider = providerController.getProviderBySystemId(obs.getValueText());
-                lastAllocationVolunteerName.setText(provider.getName());
+                if (provider != null) {
+                    lastAllocationVolunteerName.setText(provider.getName());
+                } else {
+                    lastAllocationVolunteerName.setText("-----------------");
+                }
             } else {
                 lastAllocationVolunteerName.setText("-----------------");
             }
