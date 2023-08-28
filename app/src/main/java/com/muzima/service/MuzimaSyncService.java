@@ -2741,7 +2741,7 @@ public class MuzimaSyncService {
             allConceptUuids.addAll(derivedConceptsToUpdate);
             allConceptUuids.addAll(derivedConceptsToDownload);
 
-            if (allConceptUuids.size() > 0) {
+            if (allConceptUuids.size() > 0 && patientUuids.size() > 0) {
                 List<DerivedObservation> derivedObservationsDownloaded = derivedObservationController.downloadDerivedObservationsByPatientUuidsAndConceptUuids(patientUuids, allConceptUuids, activeSetupConfig.getUuid());
 
                 if (derivedObservationsDownloaded.size() > 0) {
