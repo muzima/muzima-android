@@ -79,9 +79,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -1271,10 +1273,30 @@ class HTMLFormDataStore {
         try {
             List<DerivedObservation> derivedObservations = new ArrayList<>();
             derivedObservations.addAll(getInterventionsDerivedObs(patientUuid));
-            derivedObservationsList = derivedObservations.stream().filter(Objects::nonNull).collect(Collectors.toList());
+            Collections.sort(derivedObservations, derivedObservationDateTimeComparator);
+
+            List<CohortMember> cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
+            CohortMember cohortMember = cohortMembers.get(0);
+            Set<String> derivedObs = new HashSet<String>(0);
+            for (DerivedObservation derivedObservation : derivedObservations) {
+                int value = derivedObservation.getDateCreated().compareTo(cohortMember.getMembershipDate());
+                if (value == 0 || value == 1) {
+                    if(derivedObs.isEmpty()){
+                        derivedObservationsList.add(derivedObservation);
+                        derivedObs.add(derivedObservation.getValueText());
+                    }
+                    else {
+                        if(!derivedObs.contains(derivedObservation.getValueText())){
+                            derivedObservationsList.add(derivedObservation);
+                            derivedObs.add(derivedObservation.getValueText());
+                        }
+                    }
+                }
+            }
             Collections.sort(derivedObservationsList, derivedObservationDateTimeComparator);
-        } catch (DerivedObservationController.DerivedObservationFetchException e) {
-            Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations",e);
+        } catch (DerivedObservationController.DerivedObservationFetchException |
+                 CohortController.CohortFetchException e) {
+            Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations", e);
         }
         return createDerivedObsJsonArray(derivedObservationsList);
     }
@@ -1312,7 +1334,7 @@ class HTMLFormDataStore {
             Collections.sort(lastTriangulations, observationDateTimeComparator);
             Observation lastTriangulation = null;
             for (Observation observation: lastTriangulations) {
-              if("ALLOCATION_PARENT_OBS".equalsIgnoreCase(observation.getComment())){
+              if("ALLOCATION_PARENT_OBS_V3.3".equalsIgnoreCase(observation.getComment())){
                   lastTriangulation = observation;
                   break;
               }

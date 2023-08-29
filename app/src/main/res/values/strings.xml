@@ -782,4 +782,5 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="write_shr_to_card_general">Write SHR to card</string>
     <string name="general_choose">Choose...</string>
     <string name="warning_new_user_login">You are login in as a new user to the application, the application will reset for new setup. Do you want to proceed?</string>
+    <string name="last_allocation_volunteer">Alocado para</string>
 </resources>

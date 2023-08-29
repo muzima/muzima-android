@@ -41,6 +41,7 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
 import com.muzima.adapters.relationships.RelationshipsAdapter;
+import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
@@ -51,6 +52,8 @@ import com.muzima.api.model.Observation;
 import com.muzima.api.model.EncounterType;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.ConceptName;
+import com.muzima.api.model.Provider;
+import com.muzima.controller.CohortController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
@@ -59,6 +62,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.ProviderController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.model.location.MuzimaGPSLocation;
@@ -142,12 +146,14 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
     private TextView lastVolunteerName;
 
+    private TextView lastAllocationVolunteerName;
+
     private String applicationLanguage;
     private ConceptController conceptController;
     private ObservationController observationController;
-
+    private CohortController cohortController;
+    private ProviderController providerController;
     private DerivedObservationController derivedObservationController;
-
     private DerivedConceptController derivedConceptController;
     private FormController formController;
     private boolean isFGHCustomClientSummaryEnabled;
@@ -303,6 +309,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
             conceptController = ((MuzimaApplication) getApplicationContext()).getConceptController();
             observationController = ((MuzimaApplication) getApplicationContext()).getObservationController();
+            cohortController = ((MuzimaApplication) getApplicationContext()).getCohortController();
+            providerController = ((MuzimaApplication) getApplicationContext()).getProviderController();
             EncounterController encounterController =  ((MuzimaApplication) getApplicationContext()).getEncounterController();
             formController =  ((MuzimaApplication) getApplicationContext()).getFormController();
             DerivedConceptController derivedConceptController = ((MuzimaApplication) getApplicationContext()).getDerivedConceptController();
@@ -320,7 +328,34 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             } else {
                 lastVolunteerName.setText("-----------------");
             }
-            ;
+
+            List<Observation> allocationObs = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 1912);
+            Collections.sort(allocationObs, observationDateTimeComparator);
+
+            Observation obs = null;
+
+            if (allocationObs.size() > 0) {
+                obs = allocationObs.get(0);
+            }
+            List<CohortMember> cohortMembers = null;
+            try {
+                cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
+            } catch (CohortController.CohortFetchException e) {
+                Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+            }
+            CohortMember cohortMember = null;
+            if (cohortMembers != null && cohortMembers.size() > 0) cohortMember = cohortMembers.get(0);
+
+            if ((obs != null && cohortMember != null) &&(obs.getObservationDatetime().after(cohortMember.getMembershipDate()))) {
+                Provider provider = providerController.getProviderBySystemId(obs.getValueText());
+                if (provider != null) {
+                    lastAllocationVolunteerName.setText(provider.getName());
+                } else {
+                    lastAllocationVolunteerName.setText("-----------------");
+                }
+            } else {
+                lastAllocationVolunteerName.setText("-----------------");
+            }
 
             artStartDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 1190));
             testingSector.setText(getObsByPatientUuidAndConceptId(patientUuid, 23877));
@@ -336,6 +371,17 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 lastConsentDate.setText(DateUtils.getFormattedDate(candidateConsentDateObs.getEncounter().getEncounterDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
             }
 
+            List<Observation> confidentObs = getLastConfidentInfo(patientUuid);
+
+            if (confidentObs != null && confidentObs.size() > 0) {
+                for (Observation observation : confidentObs) {
+                    if (observation.getConcept().getId() == 1740) {
+                        confidantName.setText((StringUtils.EMPTY.equalsIgnoreCase(observation.getValueText()) || observation.getValueText() == null) ? "-----------------" : observation.getValueText());
+                    } else if (observation.getConcept().getId() == 6224) {
+                        confidantContact1.setText((StringUtils.EMPTY.equalsIgnoreCase(observation.getValueText()) || observation.getValueText() == null) ? "-----------------" : observation.getValueText());
+                    }
+                }
+            }
             String cName = getObsByPatientUuidAndConceptId(patientUuid, 1740);
             confidantName.setText((StringUtils.EMPTY.equalsIgnoreCase(cName) || cName == null)?"-----------------":cName);
             String cContact = getObsByPatientUuidAndConceptId(patientUuid, 6224);
@@ -483,9 +529,9 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "JSONException encountered ", e);
         } catch (DerivedConceptController.DerivedConceptFetchException e) {
-            throw new RuntimeException(e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
-            throw new RuntimeException(e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading derived observations", e);
         }
     }
 
@@ -596,7 +642,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             }
         }
         catch (ObservationController.LoadObservationException e) {
-            throw new RuntimeException(e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
 
         return null;
@@ -616,7 +662,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             }
         }
         catch (ObservationController.LoadObservationException e) {
-            throw new RuntimeException(e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
         return null;
     }
@@ -635,7 +681,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             }
         }
         catch (ObservationController.LoadObservationException e) {
-            throw new RuntimeException(e);
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
 
         return null;
@@ -710,6 +756,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         tptEndDate = findViewById(R.id.tpt_end_date_value);
         artStartDate = findViewById(R.id.art_start_date);
         lastVolunteerName = findViewById(R.id.last_encounter_volunteer_name_value);
+        lastAllocationVolunteerName = findViewById(R.id.last_allocation_volunteer_name);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         LinearLayout dadosDeConsentimento = findViewById(R.id.dados_de_consentimento);
@@ -1026,13 +1073,9 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             }
             completeFormsCountView.setText(String.valueOf(completeForms));
 
-            if ((incompleteForms == 0 && completeForms == 0) || isFGHCustomClientSummaryEnabled) {
                 completeFormsView.setVisibility(View.GONE);
                 incompleteFormsView.setVisibility(View.GONE);
-            } else {
-                completeFormsView.setVisibility(View.VISIBLE);
-                incompleteFormsView.setVisibility(View.VISIBLE);
-            }
+
         } catch (FormController.FormFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not count complete and incomplete forms", e);
         }
@@ -1147,5 +1190,66 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
 
+    }
+
+    private List<Observation> getLastConfidentInfo(String patientUuid) {
+       List<Observation> observations = new ArrayList<>();
+        List<Observation> confidentobservations = new ArrayList<>();
+        List<Observation> groupObs;
+
+        List<Observation> groupObservations = null;
+        try {
+            Observation mastercardResultObs = getEncounterDateTimeByPatientUuidAndEncounterTypeUuid(patientUuid, "e422ecf9-75dd-4367-b21e-54bccabc4763");
+            Observation homeVisitResultObs = getEncounterDateTimeByPatientUuidAndEncounterTypeUuid(patientUuid, "e27916d4-1d5f-11e0-b929-000c29ad1d07");
+            groupObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 165470);
+            Collections.sort(groupObservations, observationDateTimeComparator);
+
+            if (mastercardResultObs != null) observations.add(mastercardResultObs);
+            if (homeVisitResultObs != null) observations.add(homeVisitResultObs);
+            if (groupObservations.size()>0) observations.add(groupObservations.get(0));
+
+            Collections.sort(observations, observationDateTimeComparator);
+
+            if (observations != null && observations.size() > 0) {
+                Observation lastConfidentSource = observations.get(0);
+
+                if (lastConfidentSource.getConcept().getId() == 165470) {
+                    groupObs = getConfidentObsByPatientUuidAndConceptId(patientUuid);
+
+                } else {
+                    groupObs = observationController.getObservationsByEncounterId(lastConfidentSource.getEncounter().getId());
+                }
+                if (groupObs != null && groupObs.size() > 0) {
+                    for (Observation observation : groupObs) {
+                        if (observation.getConcept().getId() == 1740 || observation.getConcept().getId() == 6224) {
+                            confidentobservations.add(observation);
+                        }
+                    }
+                    return confidentobservations;
+                }
+            }
+        } catch (ObservationController.LoadObservationException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+
+        return null;
+    }
+
+    private List<Observation> getConfidentObsByPatientUuidAndConceptId(String patientUuid) {
+        List<Observation> observations;
+        try {
+            List<Observation> groupObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 165470);
+            Collections.sort(groupObservations, observationDateTimeComparator);
+            if (groupObservations.size() > 0) {
+                observations = observationController.getObsByObsGroupId(groupObservations.get(0).getId());
+
+                return observations;
+            }
+        }
+        catch (ObservationController.LoadObservationException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+
+        return null;
     }
 }

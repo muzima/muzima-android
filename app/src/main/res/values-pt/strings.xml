@@ -457,7 +457,7 @@
     <string name="info_forms_downloaded">Baixou %d formulários</string>
     <string name="info_forms_unavailable">Nenhum formulário disponível</string>
     <string name="info_htc_contact_form">Formulário ATS e Adicionar Contacto</string>
-    <string name="info_incomplete_form">Formulários não sincronizados</string>
+    <string name="info_incomplete_form">Formulários incompletos</string>
     <string name="info_incomplete_form_unavailable">Nenhum formulário imcompleto</string>
     <string name="info_initial_setup_progress">Correndo a configuração inicial. Por favor espere…</string>
     <string name="info_license_and_disclaimer">Licença e isenção de responsabilidade</string>
@@ -776,4 +776,5 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="write_shr_to_card_general">Gravar registros de saúde compartilhados no cartão</string>
     <string name="general_choose">Escolher...</string>
     <string name="warning_new_user_login">Você está logado como um novo usuário no aplicativo, o aplicativo será redefinido para uma nova configuração. Você quer prosseguir?</string>
+    <string name="last_allocation_volunteer">Alocado para:</string>
 </resources>

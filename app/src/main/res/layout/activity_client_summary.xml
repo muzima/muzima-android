@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp">
                     <TextView
-                        android:layout_width="180dp"
+                        android:layout_width="150dp"
                         android:id="@+id/confidant_name_textview"
                         android:layout_height="wrap_content"
                         android:text="@string/confidant_name"
@@ -121,7 +121,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:layout_width="180dp"
+                        android:layout_width="150dp"
                         android:id="@+id/confidant_phone_number_1_textview"
                         android:layout_height="wrap_content"
                         android:text="@string/confidant_phone_number_1"
@@ -304,6 +304,28 @@
                             android:fontFamily="@font/roboto_regular"/>
 
                 </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+                    <TextView
+                        android:layout_width="150dp"
+                        android:id="@+id/last_allocation_volunteer"
+                        android:layout_height="wrap_content"
+                        android:text="@string/last_allocation_volunteer"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular" />
+                    <TextView
+                        android:id="@+id/last_allocation_volunteer_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/last_allocation_volunteer"
+                        android:textColor="?attr/primaryTextColor"
+                        android:fontFamily="@font/roboto_regular"/>
+
+                </RelativeLayout>
 
             </LinearLayout>
         </LinearLayout>
@@ -397,7 +419,7 @@
 
                 <View android:id="@+id/clinical_information_separator"
                       android:layout_width="fill_parent"
-                      android:layout_marginTop="10dp"
+                      android:layout_marginTop="6dp"
                       android:layout_height="0dp"
                       android:fontFamily="@font/montserrat_bold"
                       android:background="?attr/primaryTextColor"
@@ -406,12 +428,12 @@
                         android:id="@+id/clinical_information_layout"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_margin="6dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/patient_summary_border"
                         android:orientation="vertical">
                     <TextView
                             android:id="@+id/clinical_information_details_textview"
-                            android:padding="14dp"
+                            android:padding="5dp"
                             android:text="@string/clinical_information_details"
                             android:textSize="16sp"
                             android:textStyle="bold"
