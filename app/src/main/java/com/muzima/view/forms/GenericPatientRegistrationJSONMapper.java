@@ -640,6 +640,13 @@ public class GenericPatientRegistrationJSONMapper{
                 }
             }
             if(!preExistingAddressFound){
+                if(demographicsUpdateAddress.isPreferred()){
+                    for(PersonAddress preExistingAddress:patient.getAddresses()){
+                        if(preExistingAddress.isPreferred()){
+                            preExistingAddress.setPreferred(false);
+                        }
+                    }
+                }
                 patient.addAddress(demographicsUpdateAddress);
             }
         }
