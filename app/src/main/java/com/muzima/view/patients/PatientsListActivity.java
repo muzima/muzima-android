@@ -60,6 +60,7 @@ import com.muzima.utils.Fonts;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.barcode.BarCodeScannerIntentIntegrator;
 import com.muzima.utils.barcode.IntentResult;
+import com.muzima.utils.fhir.FhirIntentIntegrator;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
 import com.muzima.utils.smartcard.SmartCardIntentIntegrator;
 import com.muzima.utils.smartcard.SmartCardIntentResult;
@@ -115,6 +116,8 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     private SmartCardRecordService smartCardService;
     private SmartCardRecord smartCardRecord;
     private MuzimaSyncService muzimaSyncService;
+
+    private Patient patient;
 
     private Patient SHRPatient;
     private Patient SHRToMuzimaMatchingPatient;
@@ -197,7 +200,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         smartCardController = ((MuzimaApplication) getApplicationContext()).getSmartCardController();
         tagPreferenceService = new TagPreferenceService(this);
         initDrawer();
-        logEvent("VIEW_CLIENT_LIST","{\"cohortId\":\""+cohortId+"\"}");
+        logEvent("VIEW_CLIENT_LIST", "{\"cohortId\":\"" + cohortId + "\"}");
     }
 
     @Override
@@ -231,6 +234,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.client_list, menu);
 
+        setUpFHIRResourceDownloadMenuItem(menu);
         setUpGeoMappingFeatureMenuItems(menu);
         setUpSHRFeatureMenuItems(menu);
         setUpSearchFeatureMenuItems(menu);
@@ -238,25 +242,31 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         return true;
     }
 
-    private void setUpGeoMappingFeatureMenuItems(Menu menu){
+    private void setUpFHIRResourceDownloadMenuItem(Menu menu) {
+        MenuItem downloadResourceMenuItem = menu.findItem(R.id.client_download_from_fhir);
+        downloadResourceMenuItem.setVisible(true);
+
+    }
+
+    private void setUpGeoMappingFeatureMenuItems(Menu menu) {
         MenuItem geoMappingFeatureMenuItem = menu.findItem(R.id.clients_geomapping);
-        if(isGeoMappingFeatureEnabled()){
+        if (isGeoMappingFeatureEnabled()) {
             geoMappingFeatureMenuItem.setVisible(true);
         } else {
             geoMappingFeatureMenuItem.setVisible(false);
         }
     }
 
-    private void setUpSHRFeatureMenuItems(Menu menu){
+    private void setUpSHRFeatureMenuItems(Menu menu) {
         MenuItem shrCardItem = menu.findItem(R.id.scan_SHR_card);
-        if(isSHRSettingEnabled()) {
+        if (isSHRSettingEnabled()) {
             shrCardItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS);
         } else {
             shrCardItem.setVisible(false);
         }
     }
 
-    private void setUpSearchFeatureMenuItems(Menu menu){
+    private void setUpSearchFeatureMenuItems(Menu menu) {
         searchMenuItem = menu.findItem(R.id.search);
         searchView = (SearchView) searchMenuItem.getActionView();
 
@@ -357,6 +367,11 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.client_download_from_fhir:
+                final FhirIntentIntegrator integrator = new FhirIntentIntegrator(this);
+                integrator.initiateResourceReadById("dd93f86c-1691-11df-97a5-7038c432aabf"); // Currently hard-coded id for testing
+                return true;
+
             case R.id.menu_client_add_icon:
                 callConfirmationDialog();
                 return true;
@@ -406,7 +421,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
     protected void onResume() {
         super.onResume();
         themeUtils.onResume(this);
-        if(isSHRSettingEnabled()){
+        if (isSHRSettingEnabled()) {
             invalidateOptionsMenu();
             preparedServerSearchNegativeResultHandlerDialog();
         }
@@ -510,7 +525,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
         listView.setOnItemClickListener(this);
     }
 
-    private MuzimaGPSLocation getCurrentGPSLocation(){
+    private MuzimaGPSLocation getCurrentGPSLocation() {
         MuzimaGPSLocationService muzimaLocationService = muzimaApplication.getMuzimaGPSLocationService();
 
         HashMap<String, Object> locationDataHashMap = muzimaLocationService.getLastKnownGPS();
@@ -604,8 +619,42 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
                             }).show();
                 }
                 break;
+            case 69:
+                processResourceReadResult(requestCode, resultCode, dataIntent);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                String message = "";
+                if (patient == null) {
+                    message = "Patient == null. Error occurred while trying to receive the patient";
+                } else if (patient.getUuid() == null || patient.getUuid().equals("")) {
+                    message = "Patient has no UUID. Error occurred while trying to receive the patient. Wrong ID?";
+                } else {
+                     message = patient.getDisplayName() + "\n"
+                            + patient.getUuid() + "\n"
+                            + patient.getGender() + "\n"
+                            + patient.getBirthdate() + "\n";
+                }
+                builder.setMessage(message).setTitle("Patient");
+                AlertDialog dialog = builder.create();
+
+                dialog.show();
+
+                Log.d("-----------summary-----", patient.getGivenName() + " " + patient.getFamilyName() + " " + patient.getUuid());
+                break;
             default:
                 break;
+        }
+    }
+
+    public void processResourceReadResult(int requestCode, int resultCode, Intent dataIntent) {
+        try {
+            patient = FhirIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Could not get resource");
+        }
+        if (patient == null) {
+            Toast.makeText(getApplicationContext(), "Patient Read Failed", Toast.LENGTH_LONG).show();
+            return;
         }
     }
 
@@ -626,7 +675,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             smartCardRecord = cardReadIntentResult.getSmartCardRecord();
             if (smartCardRecord != null) {
                 String SHRPayload = smartCardRecord.getPlainPayload();
-                if(!SHRPayload.equals("") && !SHRPayload.isEmpty()) {
+                if (!SHRPayload.equals("") && !SHRPayload.isEmpty()) {
                     try {
                         SHRPatient = KenyaEmrShrMapper.extractPatientFromSHRModel(muzimaApplication, SHRPayload);
                         if (SHRPatient != null) {
@@ -723,7 +772,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             List<Patient> serverSearchResultPatients = new ArrayList<>();
             serverSearchResultPatients = patientController.searchPatientOnServer(SHRPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier());
 
-            if(serverSearchResultPatients.size() == 1){
+            if (serverSearchResultPatients.size() == 1) {
                 patientRegistrationProgressDialog.dismiss();
                 patientRegistrationProgressDialog.cancel();
                 SHRToMuzimaMatchingPatient = serverSearchResultPatients.get(0);
@@ -823,7 +872,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
             SHRPatient.setUuid(UUID.randomUUID().toString());
             try {
                 patientController.savePatient(SHRPatient);
-                KenyaEmrShrMapper.createAndSaveRegistrationPayloadForPatient(muzimaApplication,SHRPatient);
+                KenyaEmrShrMapper.createAndSaveRegistrationPayloadForPatient(muzimaApplication, SHRPatient);
             } catch (PatientController.PatientSaveException e) {
                 e.printStackTrace();
             }
@@ -853,7 +902,7 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            if (patientRegistrationProgressDialog != null){
+            if (patientRegistrationProgressDialog != null) {
                 patientRegistrationProgressDialog.dismiss();
                 patientRegistrationProgressDialog.cancel();
             }
@@ -921,17 +970,17 @@ public class PatientsListActivity extends BroadcastListenerActivity implements A
 
     }
 
-    private void executePatientRegistrationBackgroundTask(){
+    private void executePatientRegistrationBackgroundTask() {
         RegisterPatientBackgroundTask patientRegistrationTask = new RegisterPatientBackgroundTask();
         patientRegistrationTask.execute();
     }
 
-    private boolean isSHRSettingEnabled(){
+    private boolean isSHRSettingEnabled() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
-        return preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key),PatientSummaryActivity.DEFAULT_SHR_STATUS);
+        return preferences.getBoolean(muzimaApplication.getResources().getString(R.string.preference_enable_shr_key), PatientSummaryActivity.DEFAULT_SHR_STATUS);
     }
 
-    private boolean isGeoMappingFeatureEnabled(){
+    private boolean isGeoMappingFeatureEnabled() {
         return muzimaApplication.getMuzimaSettingController().isGeoMappingEnabled();
     }
 

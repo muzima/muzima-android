@@ -49,6 +49,7 @@ import com.muzima.util.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.utils.ThemeUtils;
+import com.muzima.view.FhirResourceActivity;
 import com.muzima.view.HelpActivity;
 import com.muzima.view.setupconfiguration.SetupMethodPreferenceWizardActivity;
 
@@ -81,6 +82,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         themeUtils.onCreate(this);
         super.onCreate(savedInstanceState);
+
         ((MuzimaApplication) getApplication()).cancelTimer();
         setContentView(R.layout.activity_login);
         showSessionTimeOutPopUpIfNeeded();
@@ -187,6 +189,10 @@ public class LoginActivity extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // FHIR TEST
+                //startActivity(new Intent(LoginActivity.this, FhirResourceActivity.class));
+
                 if (validInput()) {
                     if (backgroundAuthenticationTask != null && backgroundAuthenticationTask.getStatus() == AsyncTask.Status.RUNNING) {
                         Toast.makeText(getApplicationContext(), getString(R.string.info_authentication_in_progress), Toast.LENGTH_SHORT).show();
@@ -218,6 +224,7 @@ public class LoginActivity extends Activity {
                         passwordText.setHintTextColor(errorColor);
                     }
                 }
+
             }
         });
 
@@ -292,7 +299,7 @@ public class LoginActivity extends Activity {
             }
         }
     }
-    
+
     private class BackgroundAuthenticationTask extends AsyncTask<Credentials, Void, BackgroundAuthenticationTask.Result> {
 
         @Override
@@ -468,7 +475,7 @@ public class LoginActivity extends Activity {
                     }
                 }
             } catch (MuzimaCoreModuleVersionController.MuzimaCoreModuleVersionFetchException e) {
-                 Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving module version ",e);
+                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving module version ",e);
             }
         }
 

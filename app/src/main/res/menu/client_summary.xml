@@ -8,23 +8,28 @@
   ~  this code in a for-profit venture,please contact the copyright holder.
   -->
 
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-            android:id="@+id/client_relationship"
-            android:title=""
-            app:showAsAction="always"
-            android:icon="@drawable/ic_relationship"/>
+        android:id="@+id/client_upload_to_fhir"
+        android:icon="@drawable/ic_fhir_upload"
+        android:title=""
+        app:showAsAction="always" />
     <item
-            android:id="@+id/SHR_client_summary"
-            android:title=""
-            app:showAsAction="always"
-            android:icon="@drawable/ic_action_scan_card"/>
+        android:id="@+id/client_relationship"
+        android:icon="@drawable/ic_relationship"
+        android:title=""
+        app:showAsAction="always" />
     <item
-            android:id="@+id/client_geomapping"
-            android:title=""
-            app:showAsAction="always"
-            android:icon="?attr/icNavigation"/>
+        android:id="@+id/SHR_client_summary"
+        android:icon="@drawable/ic_action_scan_card"
+        android:title=""
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/client_geomapping"
+        android:icon="?attr/icNavigation"
+        android:title=""
+        app:showAsAction="always" />
 
 </menu>
