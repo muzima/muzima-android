@@ -155,9 +155,9 @@ class HTMLFormDataStore {
         final MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
         if (selectedPatients.equals("[]") || selectedPatients.equals("")) {
             processForm(jsonPayload, status, keepFormOpen, formData);
-        }else{
+        } else {
             List<Patient> patients = getPatientsFromCommaSeparatedString(selectedPatients);
-            for (int i=0; i<patients.size(); i++) {
+            for (int i = 0; i < patients.size(); i++) {
                 Patient patient = patients.get(i);
                 String separatePatientJsonPayload = setPatientInfoToThePayload(patient, jsonPayload);
                 final String patientUuid = patient.getUuid();
@@ -171,10 +171,10 @@ class HTMLFormDataStore {
                     setDiscriminator(formData.getDiscriminator());
                 }};
 
-                if(i == (patients.size()-1))
-                    processForm(separatePatientJsonPayload, STATUS_COMPLETE,false, formDatas);
+                if (i == (patients.size() - 1))
+                    processForm(separatePatientJsonPayload, STATUS_COMPLETE, false, formDatas);
                 else
-                    processForm(separatePatientJsonPayload, STATUS_COMPLETE,true, formDatas);
+                    processForm(separatePatientJsonPayload, STATUS_COMPLETE, true, formDatas);
             }
 
             Intent intent = new Intent(applicationContext, MainDashboardActivity.class);
@@ -182,7 +182,7 @@ class HTMLFormDataStore {
         }
     }
 
-    public void processForm(String jsonPayload, String status, boolean keepFormOpen, FormData formData){
+    public void processForm(String jsonPayload, String status, boolean keepFormOpen, FormData formData) {
         jsonPayload = injectUserSystemIdToEncounterPayload(jsonPayload);
         jsonPayload = injectTimeZoneToEncounterPayload(jsonPayload);
         jsonPayload = injectActiveSetupConfigUuidToEncounterPayload(jsonPayload);
@@ -201,7 +201,9 @@ class HTMLFormDataStore {
                     Patient newPatient = formController.createNewPatient(application, formData);
                     formData.setPatientUuid(newPatient.getUuid());
                     formWebViewActivity.startPatientSummaryView(newPatient);
-                    initiatePatientTagsUpdate(new ArrayList<String>(){{add(patientUuid);}});
+                    initiatePatientTagsUpdate(new ArrayList<String>() {{
+                        add(patientUuid);
+                    }});
                 }
                 if (formData.getDiscriminator() != null && (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP))) {
                     formData.setDiscriminator(Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS);
@@ -235,7 +237,9 @@ class HTMLFormDataStore {
                     if (updatedPatient != null) {
                         parseObsFromCompletedForm(jsonPayload, status, false);
                         formWebViewActivity.startPatientSummaryView(updatedPatient);
-                        initiatePatientTagsUpdate(new ArrayList<String>(){{add(patientUuid);}});
+                        initiatePatientTagsUpdate(new ArrayList<String>() {{
+                            add(patientUuid);
+                        }});
                     }
                 } else {
                     parseObsFromCompletedForm(jsonPayload, status, false);
@@ -258,7 +262,7 @@ class HTMLFormDataStore {
                         try {
                             existingTags = patientController.getAllTags();
                         } catch (PatientController.PatientLoadException e) {
-                            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
+                            Log.e(getClass().getSimpleName(), "Encountered an exception", e);
                         }
 
                         List<PatientTag> tags = new ArrayList<PatientTag>();
@@ -270,13 +274,13 @@ class HTMLFormDataStore {
 
                         //Remove AA patient tag to be replaced by the AL/NA tags
                         PatientTag AATag = null;
-                        for(PatientTag patientTag : tags){
-                            if(patientTag.getName().equals("AA")){
+                        for (PatientTag patientTag : tags) {
+                            if (patientTag.getName().equals("AA")) {
                                 AATag = patientTag;
                             }
                         }
 
-                        if(AATag != null){
+                        if (AATag != null) {
                             tags.remove(AATag);
                         }
 
@@ -293,7 +297,7 @@ class HTMLFormDataStore {
                             tag = new PatientTag();
                             tag.setName(tagName);
                             tag.setUuid(jsonObjectInner.getString("patient.tagUuid"));
-                            if(jsonObjectInner.has("patient.tagDescription")) {
+                            if (jsonObjectInner.has("patient.tagDescription")) {
                                 tag.setDescription(jsonObjectInner.getString("patient.tagDescription"));
                             }
                             existingTags.add(tag);
@@ -309,7 +313,7 @@ class HTMLFormDataStore {
                     if (formData.getDiscriminator() != null &&
                             (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_PERSON_UPDATE))) {
                         Patient indexPatient = (Patient) formWebViewActivity.getIntent().getSerializableExtra(INDEX_PATIENT);
-                        if(indexPatient != null) {
+                        if (indexPatient != null) {
                             initiatePatientTagsUpdate(new ArrayList<String>() {{
                                 add(indexPatient.getUuid());
                             }});
@@ -353,8 +357,8 @@ class HTMLFormDataStore {
         }
     }
 
-    private void initiatePatientTagsUpdate(List<String> patientUuidList){
-        UpdatePatientTagsIntent updatePatientTagsIntent = new UpdatePatientTagsIntent(application,patientUuidList);
+    private void initiatePatientTagsUpdate(List<String> patientUuidList) {
+        UpdatePatientTagsIntent updatePatientTagsIntent = new UpdatePatientTagsIntent(application, patientUuidList);
         updatePatientTagsIntent.start();
     }
 
@@ -371,37 +375,37 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getRelationships(String patientUuid){
+    public String getRelationships(String patientUuid) {
         JSONArray relationshipsJsonArray = new JSONArray();
-        RelationshipController relationshipController = ((MuzimaApplication)formWebViewActivity.getApplicationContext()).getRelationshipController();
+        RelationshipController relationshipController = ((MuzimaApplication) formWebViewActivity.getApplicationContext()).getRelationshipController();
         try {
             List<Relationship> relationships = relationshipController.getRelationshipsForPerson(patientUuid);
 
-            for (Relationship relationship:relationships) {
+            for (Relationship relationship : relationships) {
                 JSONObject relationshipJsonObject = new JSONObject();
-                relationshipJsonObject.put("personA",relationship.getPersonA().getUuid());
-                relationshipJsonObject.put("personB",relationship.getPersonB().getUuid());
-                relationshipJsonObject.put("relationshipType",relationship.getRelationshipType().getUuid());
+                relationshipJsonObject.put("personA", relationship.getPersonA().getUuid());
+                relationshipJsonObject.put("personB", relationship.getPersonB().getUuid());
+                relationshipJsonObject.put("relationshipType", relationship.getRelationshipType().getUuid());
 
                 relationshipsJsonArray.put(relationshipJsonObject);
             }
         } catch (RelationshipController.RetrieveRelationshipException e) {
-            Log.e(getClass().getSimpleName(), "Could not retrieve relationships",e);
+            Log.e(getClass().getSimpleName(), "Could not retrieve relationships", e);
         } catch (JSONException e) {
-            Log.e(getClass().getSimpleName(), "Could not build relationships JSON",e);
+            Log.e(getClass().getSimpleName(), "Could not build relationships JSON", e);
         }
         return relationshipsJsonArray.toString();
     }
 
     @JavascriptInterface
-        public String getRelationshipForPersons(String person1Uuid, String person2Uuid){
+    public String getRelationshipForPersons(String person1Uuid, String person2Uuid) {
         JSONArray relationshipsJsonArray = new JSONArray();
-        RelationshipController relationshipController = ((MuzimaApplication)formWebViewActivity.getApplicationContext()).getRelationshipController();
+        RelationshipController relationshipController = ((MuzimaApplication) formWebViewActivity.getApplicationContext()).getRelationshipController();
         try {
             List<Relationship> relationships = relationshipController.getRelationshipsForPerson(person1Uuid);
 
-            for (Relationship relationship:relationships) {
-                if(StringUtils.equals(relationship.getPersonA().getUuid(), person2Uuid) ||
+            for (Relationship relationship : relationships) {
+                if (StringUtils.equals(relationship.getPersonA().getUuid(), person2Uuid) ||
                         StringUtils.equals(relationship.getPersonB().getUuid(), person2Uuid)) {
                     JSONObject relationshipJsonObject = new JSONObject();
                     relationshipJsonObject.put("personA", relationship.getPersonA().getUuid());
@@ -413,26 +417,26 @@ class HTMLFormDataStore {
                 }
             }
         } catch (RelationshipController.RetrieveRelationshipException e) {
-            Log.e(getClass().getSimpleName(), "Could not retrieve relationships",e);
+            Log.e(getClass().getSimpleName(), "Could not retrieve relationships", e);
         } catch (JSONException e) {
-            Log.e(getClass().getSimpleName(), "Could not build relationships JSON",e);
+            Log.e(getClass().getSimpleName(), "Could not build relationships JSON", e);
         }
         return relationshipsJsonArray.toString();
     }
 
     @JavascriptInterface
-    public String getRelationshipTypesFromDevice(){
+    public String getRelationshipTypesFromDevice() {
         JSONArray relationshipsJsonArray = new JSONArray();
         try {
             List<RelationshipType> relationshipTypeList = application.getRelationshipController().getAllRelationshipTypes();
-            for(RelationshipType relationshipType:relationshipTypeList){
+            for (RelationshipType relationshipType : relationshipTypeList) {
                 try {
                     JSONObject relationshipJsonObject = new JSONObject();
                     relationshipJsonObject.put("uuid", relationshipType.getUuid());
                     relationshipJsonObject.put("AIsToB", relationshipType.getAIsToB());
                     relationshipJsonObject.put("BIsToA", relationshipType.getBIsToA());
                     relationshipsJsonArray.put(relationshipJsonObject);
-                } catch(JSONException e){
+                } catch (JSONException e) {
                     Log.e(getClass().getSimpleName(), "Exception occurred while populating relationship", e);
                 }
             }
@@ -451,7 +455,7 @@ class HTMLFormDataStore {
             if (person == null)
                 person = personController.getPersonByUuid(patientUuid);
 
-            if(person != null) {
+            if (person != null) {
                 PersonAttribute attribute = person.getAttribute(attributeTypeNameOrUuid);
                 if (attribute != null) {
                     attributeJSONObject.put("attribute_type_uuid", attribute.getAttributeType().getUuid());
@@ -460,7 +464,7 @@ class HTMLFormDataStore {
                 }
             }
         } catch (PersonController.PersonLoadException | PatientController.PatientLoadException | JSONException e) {
-            Log.e(getClass().getSimpleName(), "Could not retrieve patient record",e);
+            Log.e(getClass().getSimpleName(), "Could not retrieve patient record", e);
         }
         return attributeJSONObject.toString();
     }
@@ -470,7 +474,7 @@ class HTMLFormDataStore {
         JSONObject identifierJSONObject = new JSONObject();
         try {
             Patient patient = patientController.getPatientByUuid(patientUuid);
-            if(patient != null) {
+            if (patient != null) {
                 PatientIdentifier identifier = patient.getIdentifier(identifierType);
                 if (identifier != null) {
                     identifierJSONObject.put("identifier_type_uuid", identifier.getIdentifierType().getUuid());
@@ -478,14 +482,14 @@ class HTMLFormDataStore {
                     identifierJSONObject.put("identifier_value", identifier.getIdentifier());
                 }
             }
-        } catch ( PatientController.PatientLoadException | JSONException e) {
-            Log.e(getClass().getSimpleName(), "Could not retrieve patient record",e);
+        } catch (PatientController.PatientLoadException | JSONException e) {
+            Log.e(getClass().getSimpleName(), "Could not retrieve patient record", e);
         }
         return identifierJSONObject.toString();
     }
 
     @JavascriptInterface
-    public String getPatientDetailsFromServerByUuid(String uuid){
+    public String getPatientDetailsFromServerByUuid(String uuid) {
         JSONObject patientJsonObject = new JSONObject();
         try {
             Patient patient = patientController.downloadPatientByUUID(uuid);
@@ -508,14 +512,15 @@ class HTMLFormDataStore {
                 patientJsonObject.put("attributes", patient.getAtributes());
                 patientJsonObject.put("addresses", patient.getAddresses());
             }
-        } catch (PatientController.PatientDownloadException | JSONException | PatientController.PatientSaveException e) {
-            Log.e(getClass().getSimpleName(), "Could not download patient record",e);
+        } catch (PatientController.PatientDownloadException | JSONException |
+                 PatientController.PatientSaveException e) {
+            Log.e(getClass().getSimpleName(), "Could not download patient record", e);
         }
         return patientJsonObject.toString();
     }
 
     @JavascriptInterface
-    public String getPersonDetailsFromDeviceByUuid(String uuid){
+    public String getPersonDetailsFromDeviceByUuid(String uuid) {
         JSONObject personJsonObject = new JSONObject();
 
         try {
@@ -535,15 +540,15 @@ class HTMLFormDataStore {
                 personJsonObject.put("attributes", person.getAtributes());
                 personJsonObject.put("addresses", person.getAddresses());
             }
-        } catch (PersonController.PersonLoadException | PatientController.PatientLoadException | JSONException e){
-            Log.e(getClass().getSimpleName(), "Could not retrieve person record",e);
+        } catch (PersonController.PersonLoadException | PatientController.PatientLoadException | JSONException e) {
+            Log.e(getClass().getSimpleName(), "Could not retrieve person record", e);
         }
         return personJsonObject.toString();
     }
 
     @JavascriptInterface
     public String searchPersons(String searchTerm, boolean searchServer) {
-        if(searchServer){
+        if (searchServer) {
             return searchPatientOnServer(searchTerm);
         } else {
             return searchPersonsLocally(searchTerm);
@@ -551,7 +556,7 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String searchPersonsLocally(String searchTerm){
+    public String searchPersonsLocally(String searchTerm) {
         JSONArray personsJsonArray = new JSONArray();
         try {
             List<Patient> patientsOnDevice = patientController.searchPatientLocally(searchTerm, null);
@@ -561,23 +566,23 @@ class HTMLFormDataStore {
             }
 
             List<Person> personsOnDevice = personController.searchPersonLocally(searchTerm);
-            for (Person person:personsOnDevice){
+            for (Person person : personsOnDevice) {
                 personsJsonArray.put(createPersonJsonObject(person));
             }
         } catch (PersonController.PersonLoadException | PatientController.PatientLoadException e) {
             Toast.makeText(formWebViewActivity, formWebViewActivity.getString(R.string.error_form_provider_load), Toast.LENGTH_SHORT).show();
             Log.e(getClass().getSimpleName(), "Exception occurred while loading persons", e);
-        } catch (JSONException e){
+        } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "Could not add person object into persons array", e);
         }
         return personsJsonArray.toString();
     }
 
     @JavascriptInterface
-    public String searchPatientOnServer(String searchTerm){
+    public String searchPatientOnServer(String searchTerm) {
         JSONArray patientsJsonArray = new JSONArray();
 
-        if(searchTerm != null && searchTerm.length() >=3) {
+        if (searchTerm != null && searchTerm.length() >= 3) {
             Credentials credentials = new Credentials(formWebViewActivity);
             Constants.SERVER_CONNECTIVITY_STATUS serverStatus = NetworkUtils.getServerStatus(formWebViewActivity, credentials.getServerUrl());
 
@@ -638,7 +643,7 @@ class HTMLFormDataStore {
         if (encounterProviderPreference) {
             MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
             Provider provider = providerController.getProviderBySystemId(applicationContext.getAuthenticatedUser().getSystemId());
-            if(provider != null) {
+            if (provider != null) {
                 providers.add(provider);
             }
         }
@@ -798,7 +803,7 @@ class HTMLFormDataStore {
             String conceptUuid = obs.getConcept().getUuid();
             for (Concept concept : concepts) {
                 if (concept.getUuid().equals(conceptUuid)) {
-                    conceptName = getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),getApplicationLanguage());
+                    conceptName = getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), getApplicationLanguage());
                 }
             }
             final String dateFormat = STANDARD_DATE_FORMAT;
@@ -807,7 +812,7 @@ class HTMLFormDataStore {
             Date valueDateTime = null;
             try {
                 obsDateTime = newDateFormat.parse(newDateFormat.format(obs.getObservationDatetime()));
-                if(obs.getValueDatetime() != null) {
+                if (obs.getValueDatetime() != null) {
                     valueDateTime = newDateFormat.parse(newDateFormat.format(obs.getValueDatetime()));
                 }
             } catch (ParseException e) {
@@ -816,8 +821,8 @@ class HTMLFormDataStore {
             newDateFormat.applyPattern(dateFormat);
             String convertedEncounterDate = newDateFormat.format(obsDateTime);
             String convertedvalueDateTime = "";
-            if(valueDateTime != null){
-                 convertedvalueDateTime = newDateFormat.format(valueDateTime);
+            if (valueDateTime != null) {
+                convertedvalueDateTime = newDateFormat.format(valueDateTime);
             }
 
             JSONObject json = new JSONObject();
@@ -828,24 +833,25 @@ class HTMLFormDataStore {
                 json.put("conceptName", "Concept Created On Phone");
             }
 
-            json.put("conceptId",obs.getConcept().getId());
-            json.put("conceptUuid",obs.getConcept().getUuid());
+            json.put("conceptId", obs.getConcept().getId());
+            json.put("conceptUuid", obs.getConcept().getUuid());
 
             json.put("obsDate", convertedEncounterDate);
-            if(obs.getValueCoded() != null) {
-                codedConcept.put("uuid",obs.getValueCoded().getUuid());
-                codedConcept.put("id",obs.getValueCoded().getId());
-                codedConcept.put("name",getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(),getApplicationLanguage()));;
-                json.put("valueCoded",codedConcept);
-            }else{
+            if (obs.getValueCoded() != null) {
+                codedConcept.put("uuid", obs.getValueCoded().getUuid());
+                codedConcept.put("id", obs.getValueCoded().getId());
+                codedConcept.put("name", getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(), getApplicationLanguage()));
+                ;
+                json.put("valueCoded", codedConcept);
+            } else {
                 json.put("valueCoded", obs.getValueCoded());
             }
             json.put("valueNumeric", obs.getValueNumeric());
             json.put("valueText", obs.getValueText());
-            json.put("encounterId",obs.getEncounter().getId());
-            json.put("uuid",obs.getUuid());
+            json.put("encounterId", obs.getEncounter().getId());
+            json.put("uuid", obs.getUuid());
             json.put("valueComplex", obs.getValueComplex());
-            json.put("valueDatetime",convertedvalueDateTime);
+            json.put("valueDatetime", convertedvalueDateTime);
             json.put("obs_comment", obs.getComment());
             json.put("obs_group_id", obs.getObsGroupId());
             map.put("json" + i, json);
@@ -955,6 +961,7 @@ class HTMLFormDataStore {
 
         return jsonPayload;
     }
+
     private String injectActiveSetupConfigUuidToEncounterPayload(String jsonPayload) {
         try {
             JSONObject jsonObject = new JSONObject(jsonPayload);
@@ -1017,18 +1024,18 @@ class HTMLFormDataStore {
         MuzimaGPSLocationService muzimaLocationService = application.getMuzimaGPSLocationService();
         if (muzimaLocationService.isGPSLocationFeatureEnabled()) {
             if (muzimaLocationService.isGPSLocationPermissionsGranted()) {
-                if(muzimaLocationService.isLocationServicesSwitchedOn()){
+                if (muzimaLocationService.isLocationServicesSwitchedOn()) {
                     HashMap<String, Object> locationDataHashMap;
                     try {
                         locationDataHashMap = muzimaLocationService.getLastKnownGPSLocationAndSettingDetails();
-                        if(locationDataHashMap.containsKey("gps_location")) {
-                            if (jsonReturnType.equals("json-object")){
-                                gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonObject().toString();
+                        if (locationDataHashMap.containsKey("gps_location")) {
+                            if (jsonReturnType.equals("json-object")) {
+                                gps_location_string = ((MuzimaGPSLocation) locationDataHashMap.get("gps_location")).toJsonObject().toString();
                             } else {
-                                gps_location_string = ((MuzimaGPSLocation)locationDataHashMap.get("gps_location")).toJsonArray().toString();
+                                gps_location_string = ((MuzimaGPSLocation) locationDataHashMap.get("gps_location")).toJsonArray().toString();
                             }
-                        } else if(locationDataHashMap.containsKey("gps_location_status")){
-                            gps_location_string = (String)locationDataHashMap.get("gps_location_status");
+                        } else if (locationDataHashMap.containsKey("gps_location_status")) {
+                            gps_location_string = (String) locationDataHashMap.get("gps_location_status");
                         }
                         return gps_location_string;
                     } catch (Exception e) {
@@ -1047,8 +1054,8 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public void logEvent(String tag, String details){
-        MuzimaLoggerService.log((MuzimaApplication) formWebViewActivity.getApplicationContext(),tag,details);
+    public void logEvent(String tag, String details) {
+        MuzimaLoggerService.log((MuzimaApplication) formWebViewActivity.getApplicationContext(), tag, details);
     }
 
     private String injectTimeZoneToEncounterPayload(String jsonPayload) {
@@ -1070,14 +1077,14 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getCohortMembershipByPatientUuid(String patientUuid){
+    public String getCohortMembershipByPatientUuid(String patientUuid) {
         List<CohortMember> cohortMembers = new ArrayList<>();
         JSONArray jsonArray = new JSONArray();
         HashMap<String, JSONObject> map = new HashMap<>();
         int i = 0;
         try {
             cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
-            for(CohortMember cohortMember:cohortMembers){
+            for (CohortMember cohortMember : cohortMembers) {
                 JSONObject json = new JSONObject();
                 json.put("cohortUuid", cohortMember.getCohort().getUuid());
                 json.put("cohortName", cohortMember.getCohort().getName());
@@ -1093,24 +1100,24 @@ class HTMLFormDataStore {
         return jsonArray.toString();
     }
 
-    private void logFormStartEvent(boolean isFormReload){
+    private void logFormStartEvent(boolean isFormReload) {
         try {
             JSONObject eventDetails = new JSONObject();
             eventDetails.put("patientuuid", formData.getPatientUuid());
             eventDetails.put("formDataUuid", formData.getUuid());
             eventDetails.put("formDiscriminator", formData.getDiscriminator());
 
-            if(isFormReload) {
+            if (isFormReload) {
                 logEvent("RESUME_FORM", eventDetails.toString());
             } else {
                 logEvent("OPEN_FORM", eventDetails.toString());
             }
         } catch (JSONException e) {
-            Log.e(getClass().getSimpleName(),"Cannot create event log",e);
+            Log.e(getClass().getSimpleName(), "Cannot create event log", e);
         }
     }
 
-    private void logFormSaveEvent(String status){
+    private void logFormSaveEvent(String status) {
         try {
             JSONObject eventDetails = new JSONObject();
             eventDetails.put("patientuuid", formData.getPatientUuid());
@@ -1118,15 +1125,16 @@ class HTMLFormDataStore {
             eventDetails.put("formDiscriminator", formData.getDiscriminator());
             eventDetails.put("formUuid", formData.getTemplateUuid());
 
-            switch(status) {
-                case STATUS_COMPLETE :logEvent( "SAVE_COMPLETE_FORM", eventDetails.toString());
+            switch (status) {
+                case STATUS_COMPLETE:
+                    logEvent("SAVE_COMPLETE_FORM", eventDetails.toString());
                     break;
-                case STATUS_INCOMPLETE :
-                    logEvent( "SAVE_DRAFT_FORM", eventDetails.toString());
+                case STATUS_INCOMPLETE:
+                    logEvent("SAVE_DRAFT_FORM", eventDetails.toString());
                     break;
             }
         } catch (JSONException e) {
-            Log.e(getClass().getSimpleName(),"Cannot create log",e);
+            Log.e(getClass().getSimpleName(), "Cannot create log", e);
         }
     }
 
@@ -1145,7 +1153,7 @@ class HTMLFormDataStore {
             personController.savePerson(person);
             JSONObject jsonObject = new JSONObject(jsonPayload);
             if (jsonObject.has("observation")) {
-                saveHTML(jsonPayload,"complete",false);
+                saveHTML(jsonPayload, "complete", false);
             }
             formWebViewActivity.finish();
         } catch (Exception | PersonController.PersonSaveException e) {
@@ -1156,7 +1164,7 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getApplicationLanguage(){
+    public String getApplicationLanguage() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
         String applicationLanguage = preferences.getString(formWebViewActivity.getResources().getString(R.string.preference_app_language), formWebViewActivity.getResources().getString(R.string.language_english));
         return applicationLanguage;
@@ -1167,28 +1175,28 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public String getSelectedPatientsUuids(){
+    public String getSelectedPatientsUuids() {
         return selectedPatientsUuids;
     }
 
-    public List<Patient> getPatientsFromCommaSeparatedString(String patientUUids){
+    public List<Patient> getPatientsFromCommaSeparatedString(String patientUUids) {
         List<Patient> patients = new ArrayList<>();
-        patientUUids = patientUUids.replace("[","");
-        patientUUids = patientUUids.replace("]","");
-        patientUUids = patientUUids.replaceAll("\"","");
+        patientUUids = patientUUids.replace("[", "");
+        patientUUids = patientUUids.replace("]", "");
+        patientUUids = patientUUids.replaceAll("\"", "");
         List<String> patientUuidList = Arrays.asList(patientUUids.split(","));
-        for(String patientUuid : patientUuidList){
+        for (String patientUuid : patientUuidList) {
             try {
                 Patient patient = patientController.getPatientByUuid(patientUuid);
                 patients.add(patient);
             } catch (PatientController.PatientLoadException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception",e);
+                Log.e(getClass().getSimpleName(), "Encountered an exception", e);
             }
         }
         return patients;
     }
 
-    private String setPatientInfoToThePayload(Patient patient,String jsonPayload) {
+    private String setPatientInfoToThePayload(Patient patient, String jsonPayload) {
         try {
             JSONObject jsonObject = new JSONObject(jsonPayload);
             JSONObject jsonObjectInner = jsonObject.getJSONObject("patient");
@@ -1238,7 +1246,7 @@ class HTMLFormDataStore {
             derivedObservations = derivedObservationController.getDerivedObservationByPatientUuid(patientUuid);
             Collections.sort(derivedObservations, derivedObservationDateTimeComparator);
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
-            Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations",e);
+            Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations", e);
         }
         return createDerivedObsJsonArray(derivedObservations);
     }
@@ -1247,10 +1255,10 @@ class HTMLFormDataStore {
     public String getDerivedObservationByPatientUuidAndDerivedConceptUuid(String patientUuid, String derivedConceptUuid) throws JSONException, DerivedConceptController.DerivedConceptFetchException {
         List<DerivedObservation> derivedObservations = new ArrayList<>();
         try {
-            derivedObservations = derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid,derivedConceptUuid);
+            derivedObservations = derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptUuid(patientUuid, derivedConceptUuid);
             Collections.sort(derivedObservations, derivedObservationDateTimeComparator);
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
-            Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations",e);
+            Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations", e);
         }
         return createDerivedObsJsonArray(derivedObservations);
     }
@@ -1259,10 +1267,10 @@ class HTMLFormDataStore {
     public String getDerivedObservationByPatientUuidAndDerivedConceptId(String patientUuid, int derivedConceptId) throws JSONException, DerivedConceptController.DerivedConceptFetchException {
         List<DerivedObservation> derivedObservations = new ArrayList<>();
         try {
-            derivedObservations = derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptId(patientUuid,derivedConceptId);
+            derivedObservations = derivedObservationController.getDerivedObservationByPatientUuidAndDerivedConceptId(patientUuid, derivedConceptId);
             Collections.sort(derivedObservations, derivedObservationDateTimeComparator);
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
-            Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations",e);
+            Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations", e);
         }
         return createDerivedObsJsonArray(derivedObservations);
     }
@@ -1276,17 +1284,20 @@ class HTMLFormDataStore {
             Collections.sort(derivedObservations, derivedObservationDateTimeComparator);
 
             List<CohortMember> cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
+            Collections.sort(cohortMembers, cohortMemberDateTimeComparator);
             CohortMember cohortMember = cohortMembers.get(0);
             Set<String> derivedObs = new HashSet<String>(0);
             for (DerivedObservation derivedObservation : derivedObservations) {
                 int value = derivedObservation.getDateCreated().compareTo(cohortMember.getMembershipDate());
                 if (value == 0 || value == 1) {
-                    if(derivedObs.isEmpty()){
+                    if (derivedObs.isEmpty() && derivedObservationsList.isEmpty()) {
                         derivedObservationsList.add(derivedObservation);
                         derivedObs.add(derivedObservation.getValueText());
-                    }
-                    else {
-                        if(!derivedObs.contains(derivedObservation.getValueText())){
+                        if (isPreventiveObs(derivedObservation)) {
+                            break;
+                        }
+                    } else if (!derivedObs.isEmpty() && !derivedObs.contains(derivedObservation.getValueText())) {
+                        if(isPatientFromList2(derivedObservationsList) && !isPreventiveObs(derivedObservation)){
                             derivedObservationsList.add(derivedObservation);
                             derivedObs.add(derivedObservation.getValueText());
                         }
@@ -1301,6 +1312,26 @@ class HTMLFormDataStore {
         return createDerivedObsJsonArray(derivedObservationsList);
     }
 
+    private boolean isPreventiveObs(DerivedObservation derivedObservation) {
+        List<String> derivedConceptsUuids = new ArrayList<String>();
+        derivedConceptsUuids.add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
+        return  derivedConceptsUuids.contains(derivedObservation.getDerivedConcept().getUuid());
+    }
+
+    private boolean isPatientFromList2(List<DerivedObservation> derivedObservations) {
+        List<String> derivedConceptsUuids = new ArrayList<String>();
+        derivedConceptsUuids.add("4b479a6c-4276-45a1-b785-ecbc7dc59ff1");
+        derivedConceptsUuids.add("1bd47ba9-b6ff-4b4c-ba26-f5b86498d738");
+        derivedConceptsUuids.add("9e928864-b7d2-445d-9856-cb7c9a0632dd");
+        derivedConceptsUuids.add("46e6c352-bddb-4191-8d1e-40380aa1a346");
+        for (DerivedObservation derivedObservation : derivedObservations) {
+            if (derivedConceptsUuids.contains(derivedObservation.getDerivedConcept().getUuid())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private List<DerivedObservation> getInterventionsDerivedObs(String patientUuid) throws DerivedObservationController.DerivedObservationFetchException {
         List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByPatientUuid(patientUuid);
         List<DerivedObservation> derivedObservationList = new ArrayList<DerivedObservation>();
@@ -1311,7 +1342,7 @@ class HTMLFormDataStore {
         derivedConceptsUuids.add("46e6c352-bddb-4191-8d1e-40380aa1a346");
         derivedConceptsUuids.add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
         for (DerivedObservation derivedObservation : derivedObservations) {
-            if(derivedConceptsUuids.contains(derivedObservation.getDerivedConcept().getUuid())){
+            if (derivedConceptsUuids.contains(derivedObservation.getDerivedConcept().getUuid())) {
                 derivedObservationList.add(derivedObservation);
             }
         }
@@ -1326,6 +1357,13 @@ class HTMLFormDataStore {
         }
     };
 
+    private final Comparator<CohortMember> cohortMemberDateTimeComparator = new Comparator<CohortMember>() {
+        @Override
+        public int compare(CohortMember lhs, CohortMember rhs) {
+            return -lhs.getMembershipDate().compareTo(rhs.getMembershipDate());
+        }
+    };
+
     @JavascriptInterface
     public String getLastVisitAttemptNumberAfterLastTriangulation(String patientUuid, int conceptId) throws ConceptController.ConceptFetchException, JSONException {
         List<Observation> observations = new ArrayList<Observation>();
@@ -1333,14 +1371,14 @@ class HTMLFormDataStore {
             List<Observation> lastTriangulations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 1912);
             Collections.sort(lastTriangulations, observationDateTimeComparator);
             Observation lastTriangulation = null;
-            for (Observation observation: lastTriangulations) {
-              if("ALLOCATION_PARENT_OBS_V3.3".equalsIgnoreCase(observation.getComment())){
-                  lastTriangulation = observation;
-                  break;
-              }
+            for (Observation observation : lastTriangulations) {
+                if ("ALLOCATION_PARENT_OBS_V3.3".equalsIgnoreCase(observation.getComment())) {
+                    lastTriangulation = observation;
+                    break;
+                }
             }
 
-            if(lastTriangulation!=null) {
+            if (lastTriangulation != null) {
                 List<Observation> lastAttempts = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
                 Collections.sort(lastAttempts, observationDateTimeComparator);
                 Observation lastAttempt = lastAttempts.get(0);
@@ -1348,7 +1386,7 @@ class HTMLFormDataStore {
                     observations.add(lastAttempt);
                 }
             }
-        }  catch (ObservationController.LoadObservationException | RuntimeException e) {
+        } catch (ObservationController.LoadObservationException | RuntimeException e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
         return createObsJsonArray(observations);
@@ -1364,7 +1402,7 @@ class HTMLFormDataStore {
             String conceptUuid = derivedObservation.getDerivedConcept().getUuid();
             for (DerivedConcept derivedConcept : derivedConcepts) {
                 if (derivedConcept.getUuid().equals(conceptUuid)) {
-                    derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(),getApplicationLanguage());
+                    derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), getApplicationLanguage());
                 }
             }
             final String dateFormat = STANDARD_DATE_FORMAT;
@@ -1373,7 +1411,7 @@ class HTMLFormDataStore {
             Date valueDateTime = null;
             try {
                 dateCreated = newDateFormat.parse(newDateFormat.format(derivedObservation.getDateCreated()));
-                if(derivedObservation.getValueDatetime() != null) {
+                if (derivedObservation.getValueDatetime() != null) {
                     valueDateTime = newDateFormat.parse(newDateFormat.format(derivedObservation.getValueDatetime()));
                 }
             } catch (ParseException e) {
@@ -1382,7 +1420,7 @@ class HTMLFormDataStore {
             newDateFormat.applyPattern(dateFormat);
             String convertedCreationDate = newDateFormat.format(dateCreated);
             String convertedValueDateTime = "";
-            if(valueDateTime != null){
+            if (valueDateTime != null) {
                 convertedValueDateTime = newDateFormat.format(valueDateTime);
             }
 
@@ -1394,23 +1432,24 @@ class HTMLFormDataStore {
                 json.put("derivedConceptName", "NULL");
             }
 
-            json.put("derivedConceptId",derivedObservation.getDerivedConcept().getId());
-            json.put("derivedConceptUuid",derivedObservation.getDerivedConcept().getUuid());
+            json.put("derivedConceptId", derivedObservation.getDerivedConcept().getId());
+            json.put("derivedConceptUuid", derivedObservation.getDerivedConcept().getUuid());
 
             json.put("dateCreated", convertedCreationDate);
-            if(derivedObservation.getValueCoded() != null) {
-                derivedCodedConcept.put("uuid",derivedObservation.getValueCoded().getUuid());
-                derivedCodedConcept.put("id",derivedObservation.getValueCoded().getId());
-                derivedCodedConcept.put("name",getConceptNameFromConceptNamesByLocale(derivedObservation.getValueCoded().getConceptNames(),getApplicationLanguage()));;
-                json.put("valueCoded",derivedCodedConcept);
-            }else{
+            if (derivedObservation.getValueCoded() != null) {
+                derivedCodedConcept.put("uuid", derivedObservation.getValueCoded().getUuid());
+                derivedCodedConcept.put("id", derivedObservation.getValueCoded().getId());
+                derivedCodedConcept.put("name", getConceptNameFromConceptNamesByLocale(derivedObservation.getValueCoded().getConceptNames(), getApplicationLanguage()));
+                ;
+                json.put("valueCoded", derivedCodedConcept);
+            } else {
                 json.put("valueCoded", derivedObservation.getValueCoded());
             }
             json.put("valueNumeric", derivedObservation.getValueNumeric());
             json.put("valueText", derivedObservation.getValueText());
             json.put("valueBoolean", derivedObservation.isValueBoolean());
-            json.put("valueDatetime",convertedValueDateTime);
-            json.put("uuid",derivedObservation.getUuid());
+            json.put("valueDatetime", convertedValueDateTime);
+            json.put("uuid", derivedObservation.getUuid());
             map.put("json" + i, json);
             arr.put(map.get("json" + i));
             i++;
