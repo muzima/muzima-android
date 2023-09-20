@@ -1291,15 +1291,19 @@ class HTMLFormDataStore {
                 int value = derivedObservation.getDateCreated().compareTo(cohortMember.getMembershipDate());
                 if (value == 0 || value == 1) {
                     if (derivedObs.isEmpty() && derivedObservationsList.isEmpty()) {
-                        derivedObservationsList.add(derivedObservation);
-                        derivedObs.add(derivedObservation.getValueText());
-                        if (isPreventiveObs(derivedObservation)) {
-                            break;
+                        if (notElementOfTheList(derivedObservationsList, derivedObservation)) {
+                            derivedObservationsList.add(derivedObservation);
+                            derivedObs.add(derivedObservation.getValueText());
+                            if (isPreventiveObs(derivedObservation)) {
+                                break;
+                            }
                         }
                     } else if (!derivedObs.isEmpty() && !derivedObs.contains(derivedObservation.getValueText())) {
                         if(isPatientFromList2(derivedObservationsList) && !isPreventiveObs(derivedObservation)){
-                            derivedObservationsList.add(derivedObservation);
-                            derivedObs.add(derivedObservation.getValueText());
+                            if (notElementOfTheList(derivedObservationsList, derivedObservation)) {
+                                derivedObservationsList.add(derivedObservation);
+                                derivedObs.add(derivedObservation.getValueText());
+                            }
                         }
                     }
                 }
@@ -1310,6 +1314,13 @@ class HTMLFormDataStore {
             Log.e(getClass().getSimpleName(), "Encountered and exception while fetching derived observations", e);
         }
         return createDerivedObsJsonArray(derivedObservationsList);
+    }
+
+    private boolean notElementOfTheList(List<DerivedObservation> derivedObservationsList, DerivedObservation derivedObservation) {
+        for (DerivedObservation derivedObservation1 : derivedObservationsList) {
+            if (derivedObservation1.getValueText().equals(derivedObservation.getValueText())) return false;
+        }
+        return true;
     }
 
     private boolean isPreventiveObs(DerivedObservation derivedObservation) {
