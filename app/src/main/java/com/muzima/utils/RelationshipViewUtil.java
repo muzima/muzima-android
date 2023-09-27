@@ -215,12 +215,14 @@ public class RelationshipViewUtil {
             if(!allowPatientRelativesDisplaySetting.getValueBoolean()){
                 for(Relationship relationship:relationships){
                     Person relatedPerson = null;
-                    if(StringUtils.equals(relationship.getPersonA().getUuid(),patientUuid)) {
-                        relatedPerson = relationship.getPersonB();
-                    } else {
-                        relatedPerson = relationship.getPersonA();
+                    if(relationship.isModuleGenerated()) {
+                        if (StringUtils.equals(relationship.getPersonA().getUuid(), patientUuid)) {
+                            relatedPerson = relationship.getPersonB();
+                        } else {
+                            relatedPerson = relationship.getPersonA();
+                        }
+                        relatedPersons.add(relatedPerson);
                     }
-                    relatedPersons.add(relatedPerson);
                 }
             }
         }catch(RelationshipController.RetrieveRelationshipException | MuzimaSettingController.MuzimaSettingFetchException e){
