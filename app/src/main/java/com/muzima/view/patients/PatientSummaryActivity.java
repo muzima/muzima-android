@@ -1201,7 +1201,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         try {
             Observation mastercardResultObs = getEncounterDateTimeByPatientUuidAndEncounterTypeUuid(patientUuid, "e422ecf9-75dd-4367-b21e-54bccabc4763");
             Observation homeVisitResultObs = getEncounterDateTimeByPatientUuidAndEncounterTypeUuid(patientUuid, "e27916d4-1d5f-11e0-b929-000c29ad1d07");
-            groupObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 165470);
+            groupObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 165482);
             Collections.sort(groupObservations, observationDateTimeComparator);
 
             if (mastercardResultObs != null) observations.add(mastercardResultObs);
@@ -1213,7 +1213,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             if (observations != null && observations.size() > 0) {
                 Observation lastConfidentSource = observations.get(0);
 
-                if (lastConfidentSource.getConcept().getId() == 165470) {
+                if (lastConfidentSource.getConcept().getId() == 165482) {
                     groupObs = getConfidentObsByPatientUuidAndConceptId(patientUuid);
 
                 } else {
@@ -1238,7 +1238,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private List<Observation> getConfidentObsByPatientUuidAndConceptId(String patientUuid) {
         List<Observation> observations;
         try {
-            List<Observation> groupObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 165470);
+            List<Observation> groupObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 165482);
             Collections.sort(groupObservations, observationDateTimeComparator);
             if (groupObservations.size() > 0) {
                 observations = observationController.getObsByObsGroupId(groupObservations.get(0).getId());
