@@ -386,6 +386,7 @@
     <string name="info_derived_observation_patient_not_downloaded">Não baixou nenhuma observação derivada</string>
     <string name="info_derived_observation_patients_downloaded">%d observações derivadas baixadas para 1 cliente</string>
     <string name="info_derived_observations_download_progress">Observações derivadas baixadas para o cliente %d de %d.</string>
+    <string name="info_summaries_download_progress">Sumarios de utentes baixados %d de %d.</string>
     <string name="info_derived_observations_patient_downloaded">1 observação derivada baixada para %d clientes</string>
     <string name="info_derived_observations_patients_downloaded">%d observações derivadas baixadas para %d clientes</string>
     <string name="info_disclaimer">

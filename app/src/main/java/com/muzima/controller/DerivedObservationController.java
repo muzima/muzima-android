@@ -48,7 +48,7 @@ public class DerivedObservationController {
                     String[] parameterSplit = fullLastSyncTimeInfo.getParamSignature().split(UUID_TYPE_SEPARATOR, -1);
                     List<String> knownPatientsUuid = asList(parameterSplit[0].split(UUID_SEPARATOR));
                     List<String> newPatientsUuids = getNewUuids(patientUuids, knownPatientsUuid);
-                    List<String> knownConceptsUuid = asList(parameterSplit[1].split(UUID_SEPARATOR));
+                    List<String> knownConceptsUuid = derivedConceptUuids;
                     List<String> newConceptsUuids = getNewUuids(derivedConceptUuids, knownConceptsUuid);
                     List<String> allConceptsUuids = getAllUuids(knownConceptsUuid, newConceptsUuids);
                     List<String> allPatientsUuids = getAllUuids(knownPatientsUuid, newPatientsUuids);
