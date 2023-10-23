@@ -160,7 +160,6 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             }
 
             if(relationship.getPersonA().getGender() != null) {
-
                 int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
                 holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
             }
