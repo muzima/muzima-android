@@ -325,22 +325,27 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             CohortMember cohortMember = cohortMembers.get(0);
             CohortMemberSummary summary = cohortMember.getCohortMemberSummary();
 
-            lastVolunteerName.setText(cohortMember.getCohortMemberSummary().getLastVolunteerName());
-            confidantName.setText(cohortMember.getCohortMemberSummary().getConfidentName());
-            confidantContact1.setText(cohortMember.getCohortMemberSummary().getConfidantContact());
+            lastVolunteerName.setText(getString(cohortMember.getCohortMemberSummary().getLastVolunteerName()));
+            confidantName.setText(getString(cohortMember.getCohortMemberSummary().getConfidentName()));
+            confidantContact1.setText(getString(cohortMember.getCohortMemberSummary().getConfidantContact()));
             lastClinicalConsultDate.setText(getDateAsString(summary.getLastConsultation()));
             nextClinicalConsultDate.setText(getDateAsString(summary.getNextConsultation()));
-            lastARVPickupDispenseMode.setText(summary.getDispenseMode());
+            lastARVPickupDispenseMode.setText(getString(summary.getDispenseMode()));
             lastARVPickup.setText(getDateAsString(summary.getLastARVPickupDate()));
             nextARVPickupDate.setText(getDateAsString(summary.getNextARVPickUpDate()));
             tptStartDate.setText(getDateAsString(summary.getTPTStartDate()));
             tptEndDate.setText(getDateAsString(summary.getTPTEndDate()));
-            lastCVResult.setText(summary.getResultadoCV());
+            lastCVResult.setText(getString(summary.getResultadoCV()));
             lastCVResultDate.setText(getDateAsString(summary.getDataResultadoCV()));
 
         } catch (CohortController.CohortFetchException e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading derived observations", e);
         }
+    }
+
+    private String getString(String value) {
+        if (!StringUtils.isEmpty(value)) return value;
+        return "---------------";
     }
 
     private String getDateAsString(Date date) {

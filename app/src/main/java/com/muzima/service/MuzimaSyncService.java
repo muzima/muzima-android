@@ -28,6 +28,7 @@ import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.CohortMember;
+import com.muzima.api.model.CohortMemberSummary;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.DerivedConcept;
 import com.muzima.api.model.DerivedObservation;
@@ -54,6 +55,7 @@ import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.CohortMemberSummaryController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
@@ -146,6 +148,8 @@ public class MuzimaSyncService {
     private AppUsageLogsController appUsageLogsController;
     private DerivedConceptController derivedConceptController;
     private DerivedObservationController derivedObservationController;
+
+    private CohortMemberSummaryController cohortMemberSummaryController;
     private Logger logger;
     private String pseudoDeviceId;
 
@@ -169,6 +173,7 @@ public class MuzimaSyncService {
         appUsageLogsController = muzimaApplication.getAppUsageLogsController();
         derivedConceptController = muzimaApplication.getDerivedConceptController();
         derivedObservationController = muzimaApplication.getDerivedObservationController();
+        cohortMemberSummaryController = muzimaApplication.getCohortMemberSummaryController();
         pseudoDeviceId = generatePseudoDeviceId();
     }
 
@@ -776,7 +781,10 @@ public class MuzimaSyncService {
     private void updateProgressDialog(String message) {
         Intent progressUpdateIntent = new Intent(muzimaApplication.getApplicationContext(), ProgressDialogUpdateIntentService.class);
         progressUpdateIntent.putExtra(Constants.ProgressDialogConstants.PROGRESS_UPDATE_MESSAGE, message);
-        muzimaApplication.getApplicationContext().startService(progressUpdateIntent);
+        try {
+            muzimaApplication.getApplicationContext().startService(progressUpdateIntent);
+        } catch (Exception e) {}
+
     }
 
     private List<List<String>> split(final List<String> strings) {
@@ -2578,6 +2586,27 @@ public class MuzimaSyncService {
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while loading patients.", e);
             result[0] = SyncStatusConstants.LOAD_ERROR;
+        }
+        return result;
+    }
+
+    public int[] downloadSummariesForPatientsByPatientUUIDs(List<String> patientUuids) {
+        int[] result = new int[4];
+        try {
+            List<List<String>> slicedPatientUuids = split(patientUuids);
+            Set<String> patientUuidsForDownloadedSummary = new HashSet<>();
+
+            for (List<String> slicedPatientUuid : slicedPatientUuids) {
+                List<CohortMemberSummary> summaryList = new ArrayList<>(cohortMemberSummaryController.downloadSummariesByPatientUuids(slicedPatientUuid));
+
+                cohortMemberSummaryController.updateCohortMembersSummaries(summaryList);
+            }
+
+            result[3] = patientUuidsForDownloadedSummary.size();
+            result[0] = SUCCESS;
+        } catch (CohortMemberSummaryController.CohortMemberSummaryDownloadException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while downloading summaries.", e);
+            result[0] = LOAD_ERROR;
         }
         return result;
     }
