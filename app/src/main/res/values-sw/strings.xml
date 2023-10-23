@@ -771,4 +771,7 @@
     <string name="info_confidentiality_text">Kwa kufikia mfumo huu, unakaribia kuona maelezo ya siri ya mtumiaji. Ni jukumu lako kuzilinda ipasavyo na kuzitumia kwa madhumuni yaliyoidhinishwa pekee. Faragha ya mtumiaji ni muhimu kwa dhamira yetu.</string>
     <string name="general_choose">Chagua...</string>
     <string name="warning_new_user_login">Umeingia kama mtumiaji mpya kwa programu, programu itawekwa upya kwa usanidi mpya. Je, ungependa kuendelea?</string>
+    <string name="general_error">Kosa!</string>
+    <string name="attempt_number_limit_reached">Idadi ya majaribio ya kutembelea imepitwa!</string>
+    <string name="visit_made_sucessfully">Tembelea tayari imefanywa kwa mafanikio!</string>
 </resources>

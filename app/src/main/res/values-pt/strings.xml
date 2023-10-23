@@ -777,4 +777,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_choose">Escolher...</string>
     <string name="warning_new_user_login">Você está logado como um novo usuário no aplicativo, o aplicativo será redefinido para uma nova configuração. Você quer prosseguir?</string>
     <string name="last_allocation_volunteer">Alocado para:</string>
+    <string name="general_error">Erro!</string>
+    <string name="attempt_number_limit_reached">Número de tentaivas de visita excedido!</string>
+    <string name="visit_made_sucessfully">Visita feita com sucesso!</string>
 </resources>

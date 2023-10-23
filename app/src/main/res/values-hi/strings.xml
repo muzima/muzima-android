@@ -768,4 +768,7 @@
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
     <string name="general_choose">चुनना...</string>
     <string name="warning_new_user_login">आप एप्लिकेशन में एक नए उपयोगकर्ता के रूप में लॉगिन हैं, एप्लिकेशन नए सेटअप के लिए रीसेट हो जाएगा। क्या आपकी आगे बढ़ने की इच्छा है?</string>
+    <string name="general_error">गलती</string>
+    <string name="attempt_number_limit_reached">विज़िट प्रयासों की संख्या पार हो गई</string>
+    <string name="visit_made_sucessfully">यात्रा पहले ही सफलतापूर्वक हो चुकी है</string>
 </resources>
