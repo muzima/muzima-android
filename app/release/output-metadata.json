@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "versionCode": 32,
-      "versionName": "3.3-RELEASE",
-      "outputFile": "muzima-android-release-3.3-RELEASE.apk"
+      "versionName": "3.3.1-RELEASE",
+      "outputFile": "muzima-android-release-3.3.1-RELEASE.apk"
     }
   ]
 }
