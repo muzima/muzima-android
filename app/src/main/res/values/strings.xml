@@ -783,4 +783,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_choose">Choose...</string>
     <string name="warning_new_user_login">You are login in as a new user to the application, the application will reset for new setup. Do you want to proceed?</string>
     <string name="last_allocation_volunteer">Alocado para</string>
+    <string name="general_error">Error!</string>
+    <string name="attempt_number_limit_reached">Number of visit attempts exceeded!</string>
+    <string name="visit_made_sucessfully">Visit already made sucessfully!</string>
 </resources>

@@ -1480,4 +1480,60 @@ class HTMLFormDataStore {
 
         return createObsJsonArray(observations);
     }
+
+    public Observation getLastTriangulation(String patientUuid) throws ConceptController.ConceptFetchException, JSONException {
+        try {
+            List<Observation> lastTriangulations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 1912);
+            Collections.sort(lastTriangulations, observationDateTimeComparator);
+            Observation lastTriangulation = lastTriangulations.get(0);
+            return lastTriangulation;
+        } catch (ObservationController.LoadObservationException | RuntimeException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+        return null;
+    }
+
+    public Observation getLastVisitAttemptNumber(String patientUuid, int conceptId) throws ConceptController.ConceptFetchException, JSONException {
+        try {
+                List<Observation> lastAttempts = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+                Collections.sort(lastAttempts, observationDateTimeComparator);
+                Observation lastAttempt = lastAttempts.get(0);
+                Observation lastTriangulation = getLastTriangulation(patientUuid);
+                if(lastAttempt.getObservationDatetime().compareTo(lastTriangulation.getObservationDatetime())==1)
+                {
+                    return lastAttempt;
+                }
+                return null;
+        } catch (ObservationController.LoadObservationException | RuntimeException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+        return null;
+    }
+
+
+    public boolean isLastAttemptReached(String patientUuid, int conceptId) throws ConceptController.ConceptFetchException, JSONException {
+        Observation lastAttempt = getLastVisitAttemptNumber(patientUuid, conceptId);
+        Concept concept = conceptController.getConceptById(6255);
+        return  concept.getId() == lastAttempt.getValueCoded().getId();
+    }
+
+    public boolean wasLastVisitMadeSuccessfully(String patientUuid) throws ObservationController.LoadObservationException, ConceptController.ConceptFetchException, JSONException {
+        try {
+            Observation lastTriangulation = getLastTriangulation(patientUuid);
+            List<Observation> patientFoundAtFirstAttempt = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 24008);
+            Collections.sort(patientFoundAtFirstAttempt, observationDateTimeComparator);
+            if(patientFoundAtFirstAttempt.get(0).getObservationDatetime().compareTo(lastTriangulation.getObservationDatetime())==1){
+               return true;
+            }
+            List<Observation> patientFoundAtSecondAttempt = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 24009);
+            Collections.sort(patientFoundAtSecondAttempt, observationDateTimeComparator);
+            if(patientFoundAtSecondAttempt.get(0).getObservationDatetime().compareTo(lastTriangulation.getObservationDatetime())==1){
+                return true;
+            }
+
+            } catch (ObservationController.LoadObservationException | RuntimeException e) {
+               Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+             }
+        return false;
+    }
 }

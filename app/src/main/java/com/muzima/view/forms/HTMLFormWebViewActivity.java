@@ -45,7 +45,9 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.ObservationController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.service.MuzimaGPSLocationService;
@@ -357,6 +359,30 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         messageView.setGravity(Gravity.CENTER);
     }
 
+    private void showErrorMessageMaximumAttemptNumberReached() {
+        new AlertDialog.Builder(HTMLFormWebViewActivity.this)
+                .setCancelable(false)
+                .setIcon(ThemeUtils.getIconWarning(this))
+                .setTitle(getResources().getString(R.string.general_error))
+                .setMessage(getResources().getString(R.string.attempt_number_limit_reached))
+                .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
+                .setNegativeButton(getString(R.string.general_no), null)
+                .create()
+                .show();
+    }
+
+    private void showErrorMessageVisitMadeSuccessfully() {
+        new AlertDialog.Builder(HTMLFormWebViewActivity.this)
+                .setCancelable(false)
+                .setIcon(ThemeUtils.getIconWarning(this))
+                .setTitle(getResources().getString(R.string.general_error))
+                .setMessage(getResources().getString(R.string.visit_made_sucessfully))
+                .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
+                .setNegativeButton(getString(R.string.general_no), null)
+                .create()
+                .show();
+    }
+
     private Dialog.OnClickListener duplicateFormDataClickListener(final String saveType) {
 
         return new Dialog.OnClickListener() {
@@ -549,6 +575,39 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
         HTMLFormDataStore htmlFormDataStore = new HTMLFormDataStore(this, formData, isFormReload,
                 (MuzimaApplication) getApplicationContext());
+
+        boolean isLastAttemptReached = false;
+
+        try {
+            isLastAttemptReached = htmlFormDataStore.isLastAttemptReached(this.patient.getUuid(), 23842);
+        } catch (ConceptController.ConceptFetchException e) {
+            throw new RuntimeException(e);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        if(isLastAttemptReached){
+            this.showErrorMessageMaximumAttemptNumberReached();
+            return;
+        }
+
+        boolean wasLastVisitMadeSuccessfully = false;
+
+        try {
+            wasLastVisitMadeSuccessfully = htmlFormDataStore.wasLastVisitMadeSuccessfully(this.patient.getUuid());
+        } catch (ObservationController.LoadObservationException e) {
+            throw new RuntimeException(e);
+        } catch (ConceptController.ConceptFetchException e) {
+            throw new RuntimeException(e);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        if(wasLastVisitMadeSuccessfully){
+            this.showErrorMessageVisitMadeSuccessfully();
+            return;
+        }
+
         htmlFormDataStore.setSelectedPatientsUuids(getSelectedFormUuidsFromIntent());
         webView.addJavascriptInterface(htmlFormDataStore, HTML_DATA_STORE);
 
