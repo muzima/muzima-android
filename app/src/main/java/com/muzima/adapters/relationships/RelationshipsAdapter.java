@@ -20,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,13 +28,11 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.Concept;
-import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
 import com.muzima.controller.ConceptController;
-import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.RelationshipController;
@@ -45,15 +42,12 @@ import com.muzima.utils.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.muzima.util.Constants.ServerSettings.SUPPORTED_RELATIONSHIP_TYPES;
-import static com.muzima.util.Constants.ServerSettings.ALLOW_PATIENT_RELATIVES_DISPLAY;
 import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT;
 
@@ -137,6 +131,9 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                 int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
                 holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
             }
+            else{
+               holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.nogender));
+           }
             try {
                 Patient p = patientController.getPatientByUuid(relationship.getPersonB().getUuid());
                 if (p != null){
@@ -165,6 +162,9 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             if(relationship.getPersonA().getGender() != null) {
                 int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
                 holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+            }
+            else{
+                holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.nogender));
             }
             try {
                 Patient p = patientController.getPatientByUuid(relationship.getPersonA().getUuid());
