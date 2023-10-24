@@ -11,6 +11,7 @@
 package com.muzima.adapters.cohort;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,16 +47,21 @@ public class CohortFilterAdapter extends RecyclerView.Adapter<CohortFilterAdapte
     @Override
     public void onBindViewHolder(@NonNull CohortFilterAdapter.ViewHolder holder, int position) {
         CohortFilter cohort = cohortList.get(position);
-        if (cohort.getCohortWithDerivedConceptFilter() == null || cohort.getCohortWithDerivedConceptFilter().getCohort() == null) {
+        if (cohort.getCohortWithFilter() == null || cohort.getCohortWithFilter().getCohort() == null) {
             holder.checkBox.setText(context.getResources().getString(R.string.general_all_clients));
         } else {
-            if(!cohort.getCohortWithDerivedConceptFilter().getDerivedObservationFilter().isEmpty()) {
-                if(((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().isSameDerivedConceptUsedToFilterMoreThanOneCohort(cohort.getCohortWithDerivedConceptFilter().getDerivedConceptUuid()))
-                    holder.checkBox.setText(cohort.getCohortWithDerivedConceptFilter().getCohort().getName() + " - "+cohort.getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
+            if(!cohort.getCohortWithFilter().getDerivedObservationFilter().isEmpty()) {
+                if(((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().isSameDerivedConceptUsedToFilterMoreThanOneCohort(cohort.getCohortWithFilter().getDerivedConceptUuid()))
+                    holder.checkBox.setText(cohort.getCohortWithFilter().getCohort().getName() + " - "+cohort.getCohortWithFilter().getDerivedObservationFilter());
                 else
-                    holder.checkBox.setText(cohort.getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
+                    holder.checkBox.setText(cohort.getCohortWithFilter().getDerivedObservationFilter());
+            }else if(!cohort.getCohortWithFilter().getObservationFilter().isEmpty()){
+               if(((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().isSameConceptUsedToFilterMoreThanOneCohort(cohort.getCohortWithFilter().getConceptUuid()))
+                      holder.checkBox.setText(cohort.getCohortWithFilter().getCohort().getName() + " - " + cohort.getCohortWithFilter().getObservationFilter());
+                else
+                    holder.checkBox.setText(cohort.getCohortWithFilter().getObservationFilter());
             }else{
-                holder.checkBox.setText(cohort.getCohortWithDerivedConceptFilter().getCohort().getName());
+                holder.checkBox.setText(cohort.getCohortWithFilter().getCohort().getName());
             }
         }
         holder.checkBox.setChecked(cohort.isSelected());

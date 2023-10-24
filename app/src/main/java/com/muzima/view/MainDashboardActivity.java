@@ -59,7 +59,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.cohort.CohortFilterAdapter;
 import com.muzima.adapters.patients.PatientTagsListAdapter;
-import com.muzima.api.model.Cohort;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientTag;
@@ -69,7 +68,7 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.CohortFilter;
-import com.muzima.model.CohortWithDerivedConceptFilter;
+import com.muzima.model.CohortWithFilter;
 import com.muzima.model.events.BottomSheetToggleEvent;
 import com.muzima.model.events.CloseBottomSheetEvent;
 import com.muzima.model.events.CohortFilterActionEvent;
@@ -219,27 +218,31 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         ((MuzimaApplication) getApplicationContext()).getExecutorService()
                 .execute(new LoadDownloadedCohortsTask(getApplicationContext(), new LoadDownloadedCohortsTask.OnDownloadedCohortsLoadedCallback() {
                     @Override
-                    public void onCohortsLoaded(final List<CohortWithDerivedConceptFilter> cohortWithDerivedConceptFilters) {
+                    public void onCohortsLoaded(final List<CohortWithFilter> cohortWithFilters) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 cohortList.clear();
                                 if (selectedCohortFilters.size()==0)
                                     cohortList.add(new CohortFilter(null, true));
-                                else if(selectedCohortFilters.size()==1 && selectedCohortFilters.get(0).getCohortWithDerivedConceptFilter()==null)
+                                else if(selectedCohortFilters.size()==1 && selectedCohortFilters.get(0).getCohortWithFilter()==null)
                                     cohortList.add(new CohortFilter(null, true));
                                 else
                                     cohortList.add(new CohortFilter(null, false));
-                                for (CohortWithDerivedConceptFilter cohortWithDerivedConceptFilter : cohortWithDerivedConceptFilters) {
+
+                                for (CohortWithFilter cohortWithFilter : cohortWithFilters) {
                                     boolean isCohortSelected = false;
                                     for(CohortFilter cohortFilter : selectedCohortFilters){
-                                        if(cohortFilter.getCohortWithDerivedConceptFilter() != null) {
-                                           if (cohortFilter.getCohortWithDerivedConceptFilter().getCohort().getUuid().equals(cohortWithDerivedConceptFilter.getCohort().getUuid()) && cohortFilter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter().equals(cohortWithDerivedConceptFilter.getDerivedObservationFilter())) {
+                                        if(cohortFilter.getCohortWithFilter() != null) {
+                                           if (!cohortWithFilter.getDerivedObservationFilter().isEmpty() && cohortFilter.getCohortWithFilter().getCohort().getUuid().equals(cohortWithFilter.getCohort().getUuid()) && cohortFilter.getCohortWithFilter().getDerivedObservationFilter().equals(cohortWithFilter.getDerivedObservationFilter())) {
+                                                isCohortSelected = true;
+                                            }
+                                            else if (!cohortWithFilter.getObservationFilter().isEmpty() && cohortFilter.getCohortWithFilter().getCohort().getUuid().equals(cohortWithFilter.getCohort().getUuid()) && cohortFilter.getCohortWithFilter().getObservationFilter().equals(cohortWithFilter.getObservationFilter())) {
                                                 isCohortSelected = true;
                                             }
                                         }
                                     }
-                                    cohortList.add(new CohortFilter(cohortWithDerivedConceptFilter, isCohortSelected));
+                                    cohortList.add(new CohortFilter(cohortWithFilter, isCohortSelected));
                                 }
                                 cohortFilterAdapter.notifyDataSetChanged();
                                 if (showFilter)
@@ -542,17 +545,19 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     public void onCohortFilterClicked(int position) {
         List<CohortFilter> cfilter = new ArrayList<>(selectedCohortFilters);
         CohortFilter cohortFilter = cohortList.get(position);
-        if (cohortFilter.getCohortWithDerivedConceptFilter() == null) {
+        if (cohortFilter.getCohortWithFilter() == null) {
             if (cohortFilter.isSelected()) {
                 cohortFilter.setSelected(false);
             } else {
                 cohortFilter.setSelected(true);
                 for (CohortFilter filter : cohortList) {
-                    if (filter.getCohortWithDerivedConceptFilter() != null) {
+                    if (filter.getCohortWithFilter() != null) {
                         filter.setSelected(false);
                         for (CohortFilter cf : cfilter){
-                            if(cf.getCohortWithDerivedConceptFilter() != null) {
-                                if (filter.getCohortWithDerivedConceptFilter().getCohort().getUuid().equals(cf.getCohortWithDerivedConceptFilter().getCohort().getUuid()) && filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter().equals(cf.getCohortWithDerivedConceptFilter().getDerivedObservationFilter())) {
+                            if(cf.getCohortWithFilter() != null) {
+                                if (filter.getCohortWithFilter().getCohort().getUuid().equals(cf.getCohortWithFilter().getCohort().getUuid()) && filter.getCohortWithFilter().getDerivedObservationFilter().equals(cf.getCohortWithFilter().getDerivedObservationFilter())) {
+                                    selectedCohortFilters.remove(cf);
+                                }else if(filter.getCohortWithFilter().getCohort().getUuid().equals(cf.getCohortWithFilter().getCohort().getUuid()) && filter.getCohortWithFilter().getObservationFilter().equals(cf.getCohortWithFilter().getObservationFilter())){
                                     selectedCohortFilters.remove(cf);
                                 }
                             }
@@ -563,8 +568,10 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         } else {
             if (cohortFilter.isSelected()) {
                 for (CohortFilter cf : cfilter){
-                    if(cf.getCohortWithDerivedConceptFilter() != null && cohortFilter.getCohortWithDerivedConceptFilter() != null) {
-                        if (cf.getCohortWithDerivedConceptFilter().getCohort().getUuid().equals(cohortFilter.getCohortWithDerivedConceptFilter().getCohort().getUuid()) && cf.getCohortWithDerivedConceptFilter().getDerivedObservationFilter().equals(cohortFilter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter())) {
+                    if(cf.getCohortWithFilter() != null && cohortFilter.getCohortWithFilter() != null) {
+                        if (cf.getCohortWithFilter().getCohort().getUuid().equals(cohortFilter.getCohortWithFilter().getCohort().getUuid()) && cf.getCohortWithFilter().getDerivedObservationFilter().equals(cohortFilter.getCohortWithFilter().getDerivedObservationFilter())) {
+                            selectedCohortFilters.remove(cf);
+                        }else if(cf.getCohortWithFilter().getCohort().getUuid().equals(cohortFilter.getCohortWithFilter().getCohort().getUuid()) && cf.getCohortWithFilter().getObservationFilter().equals(cohortFilter.getCohortWithFilter().getObservationFilter())){
                             selectedCohortFilters.remove(cf);
                         }
                     }
@@ -574,7 +581,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
             } else {
                 cohortFilter.setSelected(true);
                 for (CohortFilter cf : cfilter){
-                    if(cf.getCohortWithDerivedConceptFilter() == null) {
+                    if(cf.getCohortWithFilter() == null) {
                         selectedCohortFilters.remove(cf);
                     }
                 }
@@ -588,7 +595,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
 
     private void markAllClientsCohortFilter(boolean b) {
         for (CohortFilter filter : cohortList) {
-            if (filter.getCohortWithDerivedConceptFilter() == null || filter.getCohortWithDerivedConceptFilter().getCohort() == null)
+            if (filter.getCohortWithFilter() == null || filter.getCohortWithFilter().getCohort() == null)
                 filter.setSelected(b);
         }
     }

@@ -10,7 +10,9 @@
 
 package com.muzima.tasks;
 
+import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_CONCEPT_MAP;
 import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_DERIVED_CONCEPT_MAP;
+import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale;
 
 import android.content.Context;
@@ -21,14 +23,19 @@ import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Cohort;
+import com.muzima.api.model.Concept;
 import com.muzima.api.model.DerivedConcept;
 import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.MuzimaSetting;
+import com.muzima.api.model.Observation;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.MuzimaSettingController;
-import com.muzima.model.CohortWithDerivedConceptFilter;
+import com.muzima.controller.ObservationController;
+import com.muzima.model.CohortWithFilter;
+import com.muzima.model.CohortWithFilter;
 import com.muzima.utils.StringUtils;
 
 import org.json.JSONArray;
@@ -61,10 +68,14 @@ public class LoadDownloadedCohortsTask implements Runnable {
                 add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
             }};
 
-            List<CohortWithDerivedConceptFilter> cohortWithDerivedConceptFilters = new ArrayList<>();
+            List<CohortWithFilter> cohortWithFilters = new ArrayList<>();
             MuzimaSetting muzimaSetting = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
             DerivedObservationController derivedObservationController = ((MuzimaApplication) context.getApplicationContext()).getDerivedObservationController();
             DerivedConceptController derivedConceptController = ((MuzimaApplication) context.getApplicationContext()).getDerivedConceptController();
+            MuzimaSetting ms = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_CONCEPT_MAP);
+            ConceptController conceptController = ((MuzimaApplication) context.getApplicationContext()).getConceptController();
+
+            List<String> cohortUuids = new ArrayList<>();
             for (Cohort cohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
                     .getCohorts()) {
                 if (((MuzimaApplication) context.getApplicationContext()).getCohortController().isDownloaded(cohort)) {
@@ -74,6 +85,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                         Object derivedConceptObject = null;
                         JSONObject jsonObject = new JSONObject(settingValue);
                         if (jsonObject.has(cohort.getUuid())) {
+                            cohortUuids.add(cohort.getUuid());
                             derivedConceptObject = jsonObject.get(cohort.getUuid());
                             if (derivedConceptObject != null && derivedConceptObject instanceof JSONArray) {
                                 JSONArray jsonArray = (JSONArray) derivedConceptObject;
@@ -86,7 +98,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
                                                 String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
                                                 String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
-                                                cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedConceptName));
+                                                cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedConceptName, StringUtils.EMPTY, StringUtils.EMPTY));
                                             }
                                         } else {
                                             List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByDerivedConceptUuid(derivedConceptUuid);
@@ -94,7 +106,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                                 List<String> answerValues = new ArrayList<>();
                                                 for (DerivedObservation derivedObservation : derivedObservations) {
                                                     if (!answerValues.contains(derivedObservation.getValueAsString())) {
-                                                        cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedObservation.getValueAsString()));
+                                                        cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedObservation.getValueAsString(), StringUtils.EMPTY , StringUtils.EMPTY));
                                                         answerValues.add(derivedObservation.getValueAsString());
                                                     }
                                                 }
@@ -104,12 +116,12 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
                                                     String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
                                                     String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
-                                                    cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedConceptName));
+                                                    cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedConceptName, StringUtils.EMPTY, StringUtils.EMPTY));
                                                 }
                                             }
                                         }
                                     } else {
-                                        cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
+                                        cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
                                     }
                                 }
                             } else {
@@ -121,7 +133,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
                                             String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
                                             String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
-                                            cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedConceptName));
+                                            cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedConceptName, StringUtils.EMPTY, StringUtils.EMPTY));
                                         }
                                     } else {
                                         List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByDerivedConceptUuid(derivedConceptUuid);
@@ -129,7 +141,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                             List<String> answerValues = new ArrayList<>();
                                             for (DerivedObservation derivedObservation : derivedObservations) {
                                                 if (!answerValues.contains(derivedObservation.getValueAsString())) {
-                                                    cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedObservation.getValueAsString()));
+                                                    cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedObservation.getValueAsString(), StringUtils.EMPTY, StringUtils.EMPTY));
                                                     answerValues.add(derivedObservation.getValueAsString());
                                                 }
                                             }
@@ -139,30 +151,86 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
                                                 String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
                                                 String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
-                                                cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, derivedConceptUuid, derivedConceptName));
+                                                cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedConceptName,StringUtils.EMPTY ,StringUtils.EMPTY));
                                             }
                                         }
                                     }
                                 } else {
-                                    cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
+                                    cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY,StringUtils.EMPTY ,StringUtils.EMPTY));
                                 }
                             }
                         }else{
-                            cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
+                            cohortUuids.add(cohort.getUuid());
+                            cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY,StringUtils.EMPTY ,StringUtils.EMPTY));
                         }
                     }else{
-                        cohortWithDerivedConceptFilters.add(new CohortWithDerivedConceptFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY));
+                        cohortUuids.add(cohort.getUuid());
+                        cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY,StringUtils.EMPTY ,StringUtils.EMPTY));
+                    }
+
+                    if(ms != null) {
+                        String obsSettingValue = ms.getValueString();
+                        if (obsSettingValue != null) {
+                            String conceptUuid = "";
+                            Object conceptObject = null;
+                            JSONObject jsonObject = new JSONObject(obsSettingValue);
+                            if (jsonObject.has(cohort.getUuid())) {
+                                conceptObject = jsonObject.get(cohort.getUuid());
+                                if (conceptObject != null && conceptObject instanceof JSONArray) {
+                                    JSONArray jsonArray = (JSONArray) conceptObject;
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        conceptUuid = jsonArray.get(i).toString();
+                                        if (!conceptUuid.isEmpty()) {
+                                            if (conceptUuid.equals("e3f3bcea-9e2f-4aec-976f-0290bdbfffb8")) {
+                                                Concept concept = conceptController.getConceptByUuid(conceptUuid);
+                                                if (concept != null) {
+                                                    cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Próximos 10 dias"));
+                                                    cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Este mês"));
+                                                    cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Próximo mês"));
+                                                }
+                                            } else {
+                                                cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                                            }
+                                        } else {
+                                            cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                                        }
+                                    }
+                                } else {
+                                    conceptUuid = conceptObject.toString();
+                                    if (!conceptUuid.isEmpty()) {
+                                        if (conceptUuid.equals("e3f3bcea-9e2f-4aec-976f-0290bdbfffb8")) {
+                                            Concept concept = conceptController.getConceptByUuid(conceptUuid);
+                                            if (concept != null) {
+                                                cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Próximos 10 dias"));
+                                                cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Este mês"));
+                                                cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Próximo mês"));
+                                            }
+                                        } else {
+                                            cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                                        }
+                                    } else {
+                                        cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                                    }
+                                }
+                            } else {
+                                if(!cohortUuids.contains(cohort.getUuid()))
+                                    cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                            }
+                        } else {
+                            if(!cohortUuids.contains(cohort.getUuid()))
+                                cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                        }
                     }
                 }
             }
 
-            Collections.sort(cohortWithDerivedConceptFilters, new Comparator<CohortWithDerivedConceptFilter>() {
+            Collections.sort(cohortWithFilters, new Comparator<CohortWithFilter>() {
                 @Override
-                public int compare(CohortWithDerivedConceptFilter o1, CohortWithDerivedConceptFilter o2) {
+                public int compare(CohortWithFilter o1, CohortWithFilter o2) {
                     return o1.getCohort().getName().compareTo(o2.getCohort().getName());
                 }
             });
-            cohortsLoadedCallback.onCohortsLoaded(cohortWithDerivedConceptFilters);
+            cohortsLoadedCallback.onCohortsLoaded(cohortWithFilters);
         } catch (CohortController.CohortFetchException ex) {
             Log.e(getClass().getSimpleName(),"Encountered An error while fetching cohorts ",ex);
         } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
@@ -175,11 +243,13 @@ public class LoadDownloadedCohortsTask implements Runnable {
             Log.e(getClass().getSimpleName(),"Encountered a null pointer exception while fetching filter setting ",e);
             run();
         } catch (DerivedConceptController.DerivedConceptFetchException e) {
-            throw new RuntimeException(e);
+            Log.e(getClass().getSimpleName(),"Encountered an error while fetching derived concepts ",e);
+        } catch (ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(),"Encountered an error while fetching concepts",e);
         }
     }
 
     public interface OnDownloadedCohortsLoadedCallback {
-        void onCohortsLoaded(List<CohortWithDerivedConceptFilter> cohortWithDerivedConceptFilters);
+        void onCohortsLoaded(List<CohortWithFilter> cohortWithFilters);
     }
 }

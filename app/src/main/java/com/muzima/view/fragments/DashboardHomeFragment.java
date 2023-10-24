@@ -475,8 +475,8 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
             }else{
                 List<String> cohortUuids = new ArrayList<>();
                 for(CohortFilter cohortFilter : filters){
-                    if(cohortFilter.getCohortWithDerivedConceptFilter() != null && !cohortUuids.contains(cohortFilter.getCohortWithDerivedConceptFilter().getCohort().getUuid()))
-                        cohortUuids.add(cohortFilter.getCohortWithDerivedConceptFilter().getCohort().getUuid());
+                    if(cohortFilter.getCohortWithFilter() != null && !cohortUuids.contains(cohortFilter.getCohortWithFilter().getCohort().getUuid()))
+                        cohortUuids.add(cohortFilter.getCohortWithFilter().getCohort().getUuid());
                 }
                 patientSearchAdapter.filterByCohorts(cohortUuids);
             }
@@ -492,26 +492,30 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
     private void updateCohortFilterLabel(CohortFilterActionEvent event) {
         if (event.getFilters().size() == 1) {
-            if (event.getFilters().get(0).getCohortWithDerivedConceptFilter() == null)
+            if (event.getFilters().get(0).getCohortWithFilter() == null)
                 filterLabelTextView.setText(mActivity.getResources().getString(R.string.general_all_clients));
 
-            else if(((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController().isSameDerivedConceptUsedToFilterMoreThanOneCohort(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getDerivedConceptUuid()))
-                filterLabelTextView.setText(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getCohort().getName()+" - "+event.getFilters().get(0).getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
-            else if(!StringUtils.isEmpty(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getDerivedObservationFilter()))
-                filterLabelTextView.setText(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
+            else if(((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController().isSameDerivedConceptUsedToFilterMoreThanOneCohort(event.getFilters().get(0).getCohortWithFilter().getDerivedConceptUuid()))
+                filterLabelTextView.setText(event.getFilters().get(0).getCohortWithFilter().getCohort().getName()+" - "+event.getFilters().get(0).getCohortWithFilter().getDerivedObservationFilter());
+            else if(((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController().isSameConceptUsedToFilterMoreThanOneCohort(event.getFilters().get(0).getCohortWithFilter().getConceptUuid()))
+                filterLabelTextView.setText(event.getFilters().get(0).getCohortWithFilter().getCohort().getName()+" - "+event.getFilters().get(0).getCohortWithFilter().getObservationFilter());
+            else if(!StringUtils.isEmpty(event.getFilters().get(0).getCohortWithFilter().getDerivedObservationFilter()))
+                filterLabelTextView.setText(event.getFilters().get(0).getCohortWithFilter().getDerivedObservationFilter());
+            else if(!StringUtils.isEmpty(event.getFilters().get(0).getCohortWithFilter().getObservationFilter()))
+                filterLabelTextView.setText(event.getFilters().get(0).getCohortWithFilter().getObservationFilter());
             else
-                filterLabelTextView.setText(event.getFilters().get(0).getCohortWithDerivedConceptFilter().getCohort().getName());
+                filterLabelTextView.setText(event.getFilters().get(0).getCohortWithFilter().getCohort().getName());
 
         } else if (event.getFilters().isEmpty())
             filterLabelTextView.setText(mActivity.getResources().getString(R.string.general_all_clients));
-        else if (event.getFilters().size() == 1 && event.getFilters().get(0) != null && event.getFilters().get(0).getCohortWithDerivedConceptFilter().getCohort() == null)
+        else if (event.getFilters().size() == 1 && event.getFilters().get(0) != null && event.getFilters().get(0).getCohortWithFilter().getCohort() == null)
             filterLabelTextView.setText(mActivity.getResources().getString(R.string.general_all_clients));
         else if (event.getFilters().size() > 1) {
             filterLabelTextView.setText(mActivity.getResources().getString(R.string.general_filtered_list));
         }
 
         for (CohortFilter filter : event.getFilters()) {
-            if (filter.getCohortWithDerivedConceptFilter().getCohort() == null && filter.isSelected())
+            if (filter.getCohortWithFilter().getCohort() == null && filter.isSelected())
                 filterLabelTextView.setText(mActivity.getResources().getString(R.string.general_all_clients));
         }
     }
