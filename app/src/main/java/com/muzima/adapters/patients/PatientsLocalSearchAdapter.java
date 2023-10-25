@@ -169,7 +169,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                         }
                     }
                 } else if(filters.size()>0) {
-                    if(filters.size()==1 && filters.get(0).getCohortWithDerivedConceptFilter()==null){
+                    if(filters.size()==1 && filters.get(0).getCohortWithFilter()==null){
                         int patientCount = patientController.countAllPatients();
                         if (patientCount <= pageSize) {
                             patients = patientController.getAllPatients();
@@ -198,10 +198,10 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                     } else {
                         List<CohortFilter> filterLoop = filters;
                         for(CohortFilter filter : filterLoop) {
-                            int patientCount = patientController.countPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid());
+                            int patientCount = patientController.countPatients(filter.getCohortWithFilter().getCohort().getUuid());
                             List<Patient> temp = null;
                             if (patientCount <= pageSize) {
-                                temp = patientController.getPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
+                                temp = patientController.getPatients(filter.getCohortWithFilter().getCohort().getUuid(),filter.getCohortWithFilter().getDerivedConceptUuid(),filter.getCohortWithFilter().getDerivedObservationFilter(),filter.getCohortWithFilter().getConceptUuid(),filter.getCohortWithFilter().getObservationFilter());
                                 if(patients == null)
                                     patients = temp;
                                 else
@@ -213,13 +213,13 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                                 for (int page = 1; page <= pages; page++) {
                                     if (!isCancelled()) {
                                         if (patients == null) {
-                                            patients = patientController.getPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter(),page, pageSize);
+                                            patients = patientController.getPatients(filter.getCohortWithFilter().getCohort().getUuid(),filter.getCohortWithFilter().getDerivedConceptUuid(),filter.getCohortWithFilter().getDerivedObservationFilter(),filter.getCohortWithFilter().getConceptUuid(),filter.getCohortWithFilter().getObservationFilter(),page, pageSize);
 
                                             if (patients != null) {
                                                 publishProgress(patients);
                                             }
                                         } else {
-                                            temp = patientController.getPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter(),page, pageSize);
+                                            temp = patientController.getPatients(filter.getCohortWithFilter().getCohort().getUuid(),filter.getCohortWithFilter().getDerivedConceptUuid(),filter.getCohortWithFilter().getDerivedObservationFilter(),filter.getCohortWithFilter().getConceptUuid(),filter.getCohortWithFilter().getObservationFilter(), page, pageSize);
                                             if (temp != null) {
                                                 patients.addAll(temp);
                                                 publishProgress(temp);

@@ -11,12 +11,12 @@
 package com.muzima.model;
 
 public class CohortFilter {
-    private CohortWithDerivedConceptFilter cohortWithDerivedConceptFilter;
+    private CohortWithFilter cohortWithFilter;
     private boolean selected;
     private boolean checkboxPadded;
 
-    public CohortFilter(CohortWithDerivedConceptFilter cohortWithDerivedConceptFilter, boolean selected) {
-        this.cohortWithDerivedConceptFilter = cohortWithDerivedConceptFilter;
+    public CohortFilter(CohortWithFilter cohortWithFilter, boolean selected) {
+        this.cohortWithFilter = cohortWithFilter;
         this.selected = selected;
     }
 
@@ -36,11 +36,11 @@ public class CohortFilter {
         this.selected = selected;
     }
 
-    public CohortWithDerivedConceptFilter getCohortWithDerivedConceptFilter() {
-        return cohortWithDerivedConceptFilter;
+    public CohortWithFilter getCohortWithFilter() {
+        return cohortWithFilter;
     }
 
-    public void setCohortWithDerivedConceptFilter(CohortWithDerivedConceptFilter cohortWithDerivedConceptFilter) {
-        this.cohortWithDerivedConceptFilter = cohortWithDerivedConceptFilter;
+    public void setCohortWithFilter(CohortWithFilter cohortWithFilter) {
+        this.cohortWithFilter = cohortWithFilter;
     }
 }

@@ -130,17 +130,33 @@ public class PatientController {
         }
     }
 
-    public List<Patient> getPatients(String cohortUuid, String derivedConceptUuid, String obsValue) throws PatientLoadException {
+    public List<Patient> getPatients(String cohortUuid, String derivedConceptUuid, String derivedObsValue) throws PatientLoadException {
         try {
-            return patientService.getPatients(cohortUuid, derivedConceptUuid, obsValue);
+            return patientService.getPatients(cohortUuid, derivedConceptUuid, derivedObsValue);
         } catch (IOException e) {
             throw new PatientLoadException(e);
         }
     }
 
-    public List<Patient> getPatients(String cohortUuid, String derivedConceptUuid, String obsValue,int page, int pageSize) throws PatientLoadException {
+    public List<Patient> getPatients(String cohortUuid, String derivedConceptUuid, String derivedObsValue,String conceptUuid, String obsValue) throws PatientLoadException {
         try {
-            return patientService.getPatients(cohortUuid, derivedConceptUuid, obsValue, page,pageSize);
+            return patientService.getPatients(cohortUuid, derivedConceptUuid, derivedObsValue, conceptUuid, obsValue);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
+    public List<Patient> getPatients(String cohortUuid, String derivedConceptUuid, String derivedObsValue, int page, int pageSize) throws PatientLoadException {
+        try {
+            return patientService.getPatients(cohortUuid, derivedConceptUuid, derivedObsValue, page,pageSize);
+        } catch (IOException e) {
+            throw new PatientLoadException(e);
+        }
+    }
+
+    public List<Patient> getPatients(String cohortUuid, String derivedConceptUuid, String derivedObsValue,String conceptUuid, String obsValue, int page, int pageSize) throws PatientLoadException {
+        try {
+            return patientService.getPatients(cohortUuid, derivedConceptUuid, derivedObsValue, conceptUuid, obsValue, page,pageSize);
         } catch (IOException e) {
             throw new PatientLoadException(e);
         }
