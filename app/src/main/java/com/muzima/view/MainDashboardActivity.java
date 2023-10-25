@@ -569,9 +569,9 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
             if (cohortFilter.isSelected()) {
                 for (CohortFilter cf : cfilter){
                     if(cf.getCohortWithFilter() != null && cohortFilter.getCohortWithFilter() != null) {
-                        if (cf.getCohortWithFilter().getCohort().getUuid().equals(cohortFilter.getCohortWithFilter().getCohort().getUuid()) && cf.getCohortWithFilter().getDerivedObservationFilter().equals(cohortFilter.getCohortWithFilter().getDerivedObservationFilter())) {
+                        if (!cf.getCohortWithFilter().getDerivedObservationFilter().isEmpty() && cf.getCohortWithFilter().getCohort().getUuid().equals(cohortFilter.getCohortWithFilter().getCohort().getUuid()) && cf.getCohortWithFilter().getDerivedObservationFilter().equals(cohortFilter.getCohortWithFilter().getDerivedObservationFilter())) {
                             selectedCohortFilters.remove(cf);
-                        }else if(cf.getCohortWithFilter().getCohort().getUuid().equals(cohortFilter.getCohortWithFilter().getCohort().getUuid()) && cf.getCohortWithFilter().getObservationFilter().equals(cohortFilter.getCohortWithFilter().getObservationFilter())){
+                        }else if(!cf.getCohortWithFilter().getObservationFilter().isEmpty() && cf.getCohortWithFilter().getCohort().getUuid().equals(cohortFilter.getCohortWithFilter().getCohort().getUuid()) && cf.getCohortWithFilter().getObservationFilter().equals(cohortFilter.getCohortWithFilter().getObservationFilter())){
                             selectedCohortFilters.remove(cf);
                         }
                     }
