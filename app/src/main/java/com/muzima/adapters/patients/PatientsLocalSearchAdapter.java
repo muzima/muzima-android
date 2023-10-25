@@ -197,16 +197,27 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                         }
                     } else {
                         List<CohortFilter> filterLoop = filters;
+                        List<String> patientUuids = new ArrayList<>();
                         for(CohortFilter filter : filterLoop) {
                             int patientCount = patientController.countPatients(filter.getCohortWithFilter().getCohort().getUuid());
                             List<Patient> temp = null;
+                            List<Patient> filteredTemp = new ArrayList<>();
                             if (patientCount <= pageSize) {
                                 temp = patientController.getPatients(filter.getCohortWithFilter().getCohort().getUuid(),filter.getCohortWithFilter().getDerivedConceptUuid(),filter.getCohortWithFilter().getDerivedObservationFilter(),filter.getCohortWithFilter().getConceptUuid(),filter.getCohortWithFilter().getObservationFilter());
-                                if(patients == null)
+                                if(patients == null){
+                                    for(Patient patient : temp){
+                                        patientUuids.add(patient.getUuid());
+                                    }
                                     patients = temp;
-                                else
-                                    patients.addAll(temp);
-                                publishProgress(temp);
+                                    filteredTemp = temp;
+                                } else {
+                                    for(Patient patient : temp){
+                                        patientUuids.add(patient.getUuid());
+                                        filteredTemp.add(patient);
+                                        patients.add(patient);
+                                    }
+                                }
+                                publishProgress(filteredTemp);
                             } else {
                                 int pages = new Double(Math.ceil((float) patientCount / pageSize)).intValue();
 
@@ -216,13 +227,22 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                                             patients = patientController.getPatients(filter.getCohortWithFilter().getCohort().getUuid(),filter.getCohortWithFilter().getDerivedConceptUuid(),filter.getCohortWithFilter().getDerivedObservationFilter(),filter.getCohortWithFilter().getConceptUuid(),filter.getCohortWithFilter().getObservationFilter(),page, pageSize);
 
                                             if (patients != null) {
+                                                for(Patient patient : patients) {
+                                                    patientUuids.add(patient.getUuid());
+                                                }
                                                 publishProgress(patients);
                                             }
                                         } else {
                                             temp = patientController.getPatients(filter.getCohortWithFilter().getCohort().getUuid(),filter.getCohortWithFilter().getDerivedConceptUuid(),filter.getCohortWithFilter().getDerivedObservationFilter(),filter.getCohortWithFilter().getConceptUuid(),filter.getCohortWithFilter().getObservationFilter(), page, pageSize);
                                             if (temp != null) {
-                                                patients.addAll(temp);
-                                                publishProgress(temp);
+                                                for(Patient patient : temp) {
+                                                    if(!patientUuids.contains(patient.getUuid())) {
+                                                        patientUuids.add(patient.getUuid());
+                                                        filteredTemp.add(patient);
+                                                        patients.add(patient);
+                                                    }
+                                                }
+                                                publishProgress(filteredTemp);
                                             }
                                         }
                                     } else {
