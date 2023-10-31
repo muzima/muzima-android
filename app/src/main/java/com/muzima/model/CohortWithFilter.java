@@ -1,17 +1,20 @@
 package com.muzima.model;
 
 import com.muzima.api.model.Cohort;
-import com.muzima.api.model.DerivedConcept;
 
-public class CohortWithDerivedConceptFilter {
+public class CohortWithFilter {
     private Cohort cohort;
     private String derivedConceptUuid;
     private String derivedObservationFilter;
+    private String conceptUuid;
+    private String observationFilter;
 
-    public CohortWithDerivedConceptFilter(Cohort cohort,String derivedConceptUuid, String derivedObservationFilter){
+    public CohortWithFilter(Cohort cohort,String derivedConceptUuid, String derivedObservationFilter, String conceptUuid, String observationFilter){
         this.cohort = cohort;
         this.derivedConceptUuid = derivedConceptUuid;
         this.derivedObservationFilter = derivedObservationFilter;
+        this.conceptUuid = conceptUuid;
+        this.observationFilter = observationFilter;
     }
 
     public Cohort getCohort() {
@@ -37,5 +40,21 @@ public class CohortWithDerivedConceptFilter {
 
     public void setDerivedConceptUuid(String derivedConceptUuid) {
         this.derivedConceptUuid = derivedConceptUuid;
+    }
+
+    public String getConceptUuid() {
+        return conceptUuid;
+    }
+
+    public void setConceptUuid(String conceptUuid) {
+        this.conceptUuid = conceptUuid;
+    }
+
+    public String getObservationFilter() {
+        return observationFilter;
+    }
+
+    public void setObservationFilter(String observationFilter) {
+        this.observationFilter = observationFilter;
     }
 }

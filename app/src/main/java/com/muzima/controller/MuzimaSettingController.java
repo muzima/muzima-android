@@ -30,9 +30,7 @@ import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.MuzimaSettingService;
 
 import com.muzima.api.service.SetupConfigurationService;
-import com.muzima.model.CohortWithDerivedConceptFilter;
 import com.muzima.service.SntpService;
-import com.muzima.utils.StringUtils;
 import com.muzima.view.MainDashboardActivity;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -52,6 +50,7 @@ import static com.muzima.util.Constants.ServerSettings.BARCODE_FEATURE_ENABLED_S
 import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_COHORT_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.BOTTOM_NAVIGATION_FORM_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.CLINICAL_SUMMARY_FEATURE_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_CONCEPT_MAP;
 import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_DERIVED_CONCEPT_MAP;
 import static com.muzima.util.Constants.ServerSettings.CONFIDENTIALITY_NOTICE_DISPLAY_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.CONTACT_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
@@ -784,6 +783,63 @@ public class MuzimaSettingController {
                                         if(derivedConceptUuidInObject.equals(derivedConceptUuid)){
                                             if(!conceptUuids.contains(derivedConceptUuid)){
                                                 conceptUuids.add(derivedConceptUuid);
+                                            }else{
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+            }
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+        } catch (CohortController.CohortFetchException e) {
+            Log.e(getClass().getSimpleName(), "Error while fetching cohorts");
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Error while parsing json object");
+        }
+        return false;
+    }
+
+    public boolean isSameConceptUsedToFilterMoreThanOneCohort(String conceptUuid) {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(COHORT_FILTER_CONCEPT_MAP);
+            if (muzimaSetting != null) {
+                String settingValue = muzimaSetting.getValueString();
+                if(settingValue != null) {
+                    List<String> conceptUuids = new ArrayList<>();
+                    for (Cohort cohort : cohortController.getCohorts()) {
+                        if (cohortController.isDownloaded(cohort)) {
+                            JSONObject jsonObject = new JSONObject(settingValue);
+                            Object conceptObject = null;
+                            String conceptUuidInObject = "";
+                            if (jsonObject.has(cohort.getUuid())) {
+                                conceptObject = jsonObject.get(cohort.getUuid());
+                                if (conceptObject != null && conceptObject instanceof JSONArray) {
+                                    JSONArray jsonArray = (JSONArray) conceptObject;
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        conceptUuidInObject = jsonArray.get(i).toString();
+                                        if (!conceptUuidInObject.isEmpty()) {
+                                            if(conceptUuidInObject.equals(conceptUuid)){
+                                                if(!conceptUuids.contains(conceptUuid)){
+                                                    conceptUuids.add(conceptUuid);
+                                                }else{
+                                                    return true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }else{
+                                    conceptUuidInObject = conceptObject.toString();
+                                    if (!conceptUuidInObject.isEmpty()) {
+                                        if(conceptUuidInObject.equals(conceptUuid)){
+                                            if(!conceptUuids.contains(conceptUuid)){
+                                                conceptUuids.add(conceptUuid);
                                             }else{
                                                 return true;
                                             }
