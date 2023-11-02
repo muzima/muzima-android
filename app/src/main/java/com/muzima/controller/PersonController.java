@@ -13,19 +13,28 @@ package com.muzima.controller;
 import android.util.Log;
 
 import com.muzima.api.model.Person;
+import com.muzima.api.model.PersonTag;
 import com.muzima.api.service.PersonService;
+import com.muzima.api.service.PersonTagService;
+import com.muzima.utils.CustomColor;
 
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PersonController {
 
     private final PersonService personService;
+    private final PersonTagService personTagService;
+    private final Map<String, Integer> tagColors;
 
-    public PersonController(PersonService personService) {
+    public PersonController(PersonService personService, PersonTagService personTagService) {
         this.personService = personService;
+        this.personTagService = personTagService;
+        tagColors = new HashMap<>();
     }
 
     public Person getPersonByUuid(String uuid) throws PersonLoadException {
@@ -70,6 +79,25 @@ public class PersonController {
             Log.e(getClass().getSimpleName(), "Error while deleting persons : ", e);
             throw new PersonDeleteException(e);
         }
+    }
+
+    public void updatePerson(Person person) throws IOException {
+        personService.updatePerson(person);
+    }
+
+    public List<PersonTag> getAllPersonTags() throws PersonLoadException, IOException {
+        return personTagService.getAllPersonTags();
+    }
+
+    public void savePersonTags(PersonTag personTag) throws IOException {
+         personTagService.savePersonTag(personTag);
+    }
+
+    public int getTagColor(String uuid) {
+        if (!tagColors.containsKey(uuid)) {
+            tagColors.put(uuid, CustomColor.getRandomColor());
+        }
+        return tagColors.get(uuid);
     }
 
     /********************************************************************************************************

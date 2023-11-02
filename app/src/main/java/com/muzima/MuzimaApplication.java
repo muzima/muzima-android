@@ -38,6 +38,7 @@ import com.muzima.api.service.NotificationService;
 import com.muzima.api.service.NotificationTokenService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PersonService;
+import com.muzima.api.service.PersonTagService;
 import com.muzima.api.service.ProviderService;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.AppReleaseController;
@@ -423,7 +424,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public PersonController getPersonController() {
         if (personController == null) {
             try {
-                personController = new PersonController(muzimaContext.getService(PersonService.class));
+                personController = new PersonController(muzimaContext.getService(PersonService.class), muzimaContext.getPersonTagService());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

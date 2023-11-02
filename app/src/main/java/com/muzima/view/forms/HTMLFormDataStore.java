@@ -33,6 +33,7 @@ import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAttribute;
+import com.muzima.api.model.PersonTag;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.RelationshipType;
@@ -251,59 +252,102 @@ class HTMLFormDataStore {
                     Log.e(getClass().getSimpleName(), jsonObjectInner.toString());
                     if (jsonObjectInner.has("patient.tagName") && jsonObjectInner.has("patient.tagUuid")) {
                         Log.e(getClass().getSimpleName(), "Form Has both tag fields");
-
-
-                        List<PatientTag> existingTags = new ArrayList<>();
-
-                        try {
-                            existingTags = patientController.getAllTags();
-                        } catch (PatientController.PatientLoadException e) {
-                            Log.e(getClass().getSimpleName(),"Encountered an exception",e);
-                        }
-
-                        List<PatientTag> tags = new ArrayList<PatientTag>();
-                        Patient patient = patientController.getPatientByUuid(patientUuid);
-
-                        if (patient.getTags() != null) {
-                            tags = new ArrayList<>(Arrays.asList(patient.getTags()));
-                        }
-
-                        //Remove AA patient tag to be replaced by the AL/NA tags
-                        PatientTag AATag = null;
-                        for(PatientTag patientTag : tags){
-                            if(patientTag.getName().equals("AA")){
-                                AATag = patientTag;
+                        Person person = personController.getPersonByUuid(patientUuid);
+                        if (person != null) {
+                            List<PersonTag> existingTags = new ArrayList<>();
+                            try {
+                                existingTags = personController.getAllPersonTags();
+                            }catch (PersonController.PersonLoadException e){
+                                Log.e(getClass().getSimpleName(), "Encountered an exception", e);
+                            }catch (IOException e){
+                                Log.e(getClass().getSimpleName(), "Encountered an exception", e);
                             }
-                        }
-
-                        if(AATag != null){
-                            tags.remove(AATag);
-                        }
 
 
-                        String tagName = jsonObjectInner.getString("patient.tagName");
-                        PatientTag tag = null;
-                        for (PatientTag existingTag : existingTags) {
-                            if (StringUtils.equals(existingTag.getName(), tagName)) {
-                                tag = existingTag;
+                            List<PersonTag> tags = new ArrayList<>();
+
+                            if (person.getPersonTags() != null) {
+                                tags = new ArrayList<>(Arrays.asList(person.getPersonTags()));
                             }
-                        }
 
-                        if (tag == null) {
-                            tag = new PatientTag();
-                            tag.setName(tagName);
-                            tag.setUuid(jsonObjectInner.getString("patient.tagUuid"));
-                            if(jsonObjectInner.has("patient.tagDescription")) {
-                                tag.setDescription(jsonObjectInner.getString("patient.tagDescription"));
+
+                            String tagName = jsonObjectInner.getString("patient.tagName");
+                            PersonTag tag = null;
+                            for (PersonTag existingTag : existingTags) {
+                                if (StringUtils.equals(existingTag.getName(), tagName)) {
+                                    tag = existingTag;
+                                }
                             }
-                            existingTags.add(tag);
-                            patientController.savePatientTags(tag);
+
+                            if (tag == null) {
+                                tag = new PersonTag();
+                                tag.setName(tagName);
+                                tag.setUuid(jsonObjectInner.getString("patient.tagUuid"));
+                                if (jsonObjectInner.has("patient.tagDescription")) {
+                                    tag.setDescription(jsonObjectInner.getString("patient.tagDescription"));
+                                }
+                                existingTags.add(tag);
+                                personController.savePersonTags(tag);
+                            }
+
+                            tags.add(tag);
+
+                            person.setPersonTags(tags.toArray(new PersonTag[tags.size()]));
+                            personController.updatePerson(person);
+                        } else {
+
+                            List<PatientTag> existingTags = new ArrayList<>();
+
+                            try {
+                                existingTags = patientController.getAllTags();
+                            } catch (PatientController.PatientLoadException e) {
+                                Log.e(getClass().getSimpleName(), "Encountered an exception", e);
+                            }
+
+                            List<PatientTag> tags = new ArrayList<PatientTag>();
+                            Patient patient = patientController.getPatientByUuid(patientUuid);
+
+                            if (patient.getTags() != null) {
+                                tags = new ArrayList<>(Arrays.asList(patient.getTags()));
+                            }
+
+                            //Remove AA patient tag to be replaced by the AL/NA tags
+                            PatientTag AATag = null;
+                            for (PatientTag patientTag : tags) {
+                                if (patientTag.getName().equals("AA")) {
+                                    AATag = patientTag;
+                                }
+                            }
+
+                            if (AATag != null) {
+                                tags.remove(AATag);
+                            }
+
+
+                            String tagName = jsonObjectInner.getString("patient.tagName");
+                            PatientTag tag = null;
+                            for (PatientTag existingTag : existingTags) {
+                                if (StringUtils.equals(existingTag.getName(), tagName)) {
+                                    tag = existingTag;
+                                }
+                            }
+
+                            if (tag == null) {
+                                tag = new PatientTag();
+                                tag.setName(tagName);
+                                tag.setUuid(jsonObjectInner.getString("patient.tagUuid"));
+                                if (jsonObjectInner.has("patient.tagDescription")) {
+                                    tag.setDescription(jsonObjectInner.getString("patient.tagDescription"));
+                                }
+                                existingTags.add(tag);
+                                patientController.savePatientTags(tag);
+                            }
+
+                            tags.add(tag);
+
+                            patient.setTags(tags.toArray(new PatientTag[tags.size()]));
+                            patientController.updatePatient(patient);
                         }
-
-                        tags.add(tag);
-
-                        patient.setTags(tags.toArray(new PatientTag[tags.size()]));
-                        patientController.updatePatient(patient);
                     }
 
                     if (formData.getDiscriminator() != null &&
