@@ -74,6 +74,13 @@ public class LoadDownloadedCohortsTask implements Runnable {
             DerivedConceptController derivedConceptController = ((MuzimaApplication) context.getApplicationContext()).getDerivedConceptController();
             MuzimaSetting ms = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_CONCEPT_MAP);
             ConceptController conceptController = ((MuzimaApplication) context.getApplicationContext()).getConceptController();
+            JSONObject jsonCohortObject = new JSONObject();
+            if(ms != null) {
+                String obsSettingValue = ms.getValueString();
+                if (obsSettingValue != null) {
+                    jsonCohortObject = new JSONObject(obsSettingValue);
+                }
+            }
 
             List<String> cohortUuids = new ArrayList<>();
             for (Cohort cohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
@@ -160,12 +167,16 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                 }
                             }
                         }else{
-                            cohortUuids.add(cohort.getUuid());
-                            cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY,StringUtils.EMPTY ,StringUtils.EMPTY));
+                            if(!jsonCohortObject.has(cohort.getUuid())) {
+                                cohortUuids.add(cohort.getUuid());
+                                cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                            }
                         }
                     }else{
-                        cohortUuids.add(cohort.getUuid());
-                        cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY,StringUtils.EMPTY ,StringUtils.EMPTY));
+                        if(!jsonCohortObject.has(cohort.getUuid())) {
+                            cohortUuids.add(cohort.getUuid());
+                            cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                        }
                     }
 
                     if(ms != null) {
