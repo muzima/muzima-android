@@ -206,7 +206,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                 addTags(holder,person);
             }
         } catch (PersonController.PersonLoadException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Encountered an exception while loading persons");
         }
 
         return convertView;
