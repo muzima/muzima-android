@@ -814,6 +814,8 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                             cohortUuidsArray, false);
                     if(((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isRelationshipEnabled()) {
                         muzimaSyncService.downloadObservationsForAllPersons(false);
+                        if(((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isPatientTagGenerationEnabled())
+                            muzimaSyncService.updatePersonTagsByCohortUuids(cohortUuidsArray);
                     }
                     return resultForPatientObs;
 
