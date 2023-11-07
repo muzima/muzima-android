@@ -46,6 +46,7 @@ import com.muzima.api.model.PatientReportHeader;
 import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
+import com.muzima.api.model.PersonTag;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Relationship;
@@ -2819,5 +2820,137 @@ public class MuzimaSyncService {
             Log.e(getClass().getSimpleName(),"Could not delete derived observations ",e);
         }
         return result;
+    }
+
+    public void updatePersonTags(List<String> patientUuidList){
+        Log.e(getClass().getSimpleName(),"Generating Person Tags");
+        for(String patientUuid:patientUuidList){
+            try {
+                Patient patient = patientController.getPatientByUuid(patientUuid);
+                Person relatedPerson = null;
+                Person person = null;
+                List<CohortMember> cohortMembers = muzimaApplication.getCohortController().getCohortMembershipByPatientUuid(patientUuid);
+                if(patient != null) {
+                    List<Relationship> relationships = relationshipController.getRelationshipsForPerson(patientUuid);
+                    for(Relationship relationship : relationships){
+                        if(relationship.getPersonA().getUuid().equals(patientUuid)) {
+                            relatedPerson = relationship.getPersonB();
+                        }
+                        else {
+                            relatedPerson = relationship.getPersonA();
+                        }
+
+                        person = personController.getPersonByUuid(relatedPerson.getUuid());
+                        if(person != null){
+                            List<PersonTag> tags = new ArrayList<>();
+                            if (person.getPersonTags() != null) {
+                                tags = new ArrayList<>(Arrays.asList(person.getPersonTags()));
+                            }
+
+                            boolean hasVisitTags = false;
+                            int homeVisitTagCount = 0;
+                            for (PersonTag tag : person.getPersonTags()) {
+                                if(StringUtils.equals(tag.getUuid(), SIM_TAG_UUID) || StringUtils.equals(tag.getUuid(), NAO_TAG_UUID)){
+                                    hasVisitTags = true;
+                                    homeVisitTagCount++;
+                                }
+                            }
+
+                            if(!hasVisitTags || homeVisitTagCount<4){
+                                if(cohortMembers.size()>0) {
+                                    CohortMember cohortMember = cohortMembers.get(0);
+                                    Date membershipDate = cohortMember.getMembershipDate();
+
+                                    List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(person.getUuid(),2003);
+                                    Collections.sort(observations, observationDateTimeComparator);
+
+                                    if(observations.size() > 0 && homeVisitTagCount==0){
+                                        if(observations.get(0).getObservationDatetime().after(membershipDate)) {
+                                            if (observations.get(0).getValueCoded().getId() == 1065) {
+                                                PersonTag firstAttemptTag = new PersonTag();
+                                                firstAttemptTag.setName("SIM");
+                                                firstAttemptTag.setUuid(SIM_TAG_UUID);
+                                                tags.add(firstAttemptTag);
+                                                personController.savePersonTags(firstAttemptTag);
+                                            } else {
+                                                PersonTag firstAttemptTag = new PersonTag();
+                                                firstAttemptTag.setName("NÃO");
+                                                firstAttemptTag.setUuid(NAO_TAG_UUID);
+                                                tags.add(firstAttemptTag);
+                                                personController.savePersonTags(firstAttemptTag);
+                                            }
+                                            homeVisitTagCount++;
+                                        }
+                                        }
+
+                                        if(observations.size() > 1 && homeVisitTagCount==1){
+                                            if(observations.get(1).getObservationDatetime().after(membershipDate)) {
+                                                if (observations.get(1).getValueCoded().getId() == 1065) {
+                                                    PersonTag firstAttemptTag = new PersonTag();
+                                                    firstAttemptTag.setName("SIM");
+                                                    firstAttemptTag.setUuid(SIM_TAG_UUID);
+                                                    tags.add(firstAttemptTag);
+                                                    personController.savePersonTags(firstAttemptTag);
+                                                } else {
+                                                    PersonTag firstAttemptTag = new PersonTag();
+                                                    firstAttemptTag.setName("NÃO");
+                                                    firstAttemptTag.setUuid(NAO_TAG_UUID);
+                                                    tags.add(firstAttemptTag);
+                                                    personController.savePersonTags(firstAttemptTag);
+                                                }
+                                                homeVisitTagCount++;
+                                            }
+                                        }
+
+                                        if(observations.size() > 2 && homeVisitTagCount==2){
+                                            if(observations.get(2).getObservationDatetime().after(membershipDate)) {
+                                                if (observations.get(2).getValueCoded().getId() == 1065) {
+                                                    PersonTag attemptTag = new PersonTag();
+                                                    attemptTag.setName("SIM");
+                                                    attemptTag.setUuid(SIM_TAG_UUID);
+                                                    tags.add(attemptTag);
+                                                    personController.savePersonTags(attemptTag);
+                                                } else {
+                                                    PersonTag attemptTag = new PersonTag();
+                                                    attemptTag.setName("NÃO");
+                                                    attemptTag.setUuid(NAO_TAG_UUID);
+                                                    tags.add(attemptTag);
+                                                    personController.savePersonTags(attemptTag);
+                                                }
+                                                homeVisitTagCount++;
+                                            }
+                                        }
+                                    }
+                                }
+                                person.setPersonTags(tags.toArray(new PersonTag[tags.size()]));
+                                personController.updatePerson(person);
+                            }
+                    }
+                }
+            } catch (IOException e) {
+                Log.e(getClass().getSimpleName(), "Could not load records", e);
+            } catch (PatientController.PatientLoadException e) {
+                Log.e(getClass().getSimpleName(), "Could not load patient record to update update tags", e);
+            } catch (ObservationController.LoadObservationException e) {
+                Log.e(getClass().getSimpleName(), "Could not load observations to create tags", e);
+            } catch (CohortController.CohortFetchException e) {
+                Log.e(getClass().getSimpleName(), "Exception thrown while fetching cohorts.", e);
+            } catch (RelationshipController.RetrieveRelationshipException e) {
+                Log.e(getClass().getSimpleName(), "Exception thrown while fetching Relationships.", e);
+            } catch (PersonController.PersonLoadException e) {
+                Log.e(getClass().getSimpleName(), "Exception thrown while loading persons.", e);
+            }
+        }
+    }
+
+    public void updatePersonTagsByCohortUuids(String[] cohortUuids){
+        try {
+            List<Patient> patients = patientController.getPatientsForCohorts(cohortUuids);
+            List<String> patientlist = new ArrayList();
+            patientlist = getPatientUuids(patients);
+            updatePersonTags(patientlist);
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while loading patients.", e);
+        }
     }
 }

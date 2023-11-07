@@ -31,10 +31,12 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
+import com.muzima.api.model.PersonTag;
 import com.muzima.api.model.Relationship;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.PersonController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.DateUtils;
@@ -61,6 +63,8 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
     private MuzimaApplication muzimaApplication;
     private ConceptController conceptController;
     private ObservationController observationController;
+    private Context context;
+    private PersonController personController;
 
 
     public RelationshipsAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController,
@@ -72,6 +76,8 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         muzimaApplication = (MuzimaApplication) activity.getApplicationContext();
         conceptController = muzimaApplication.getConceptController();
         observationController = muzimaApplication.getObservationController();
+        personController = muzimaApplication.getPersonController();
+        context = activity;
     }
 
     @Override
@@ -104,6 +110,8 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             holder.inCCR = convertView.findViewById(R.id.in_ccr);
             holder.hivTestDetails = convertView.findViewById(R.id.hiv_test_details);
             holder.hivCareDetails = convertView.findViewById(R.id.hiv_care_details);
+            holder.tagsLayout = convertView.findViewById(R.id.menu_tags);
+            holder.tags = new ArrayList<>();
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
@@ -197,6 +205,14 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                 Log.e(getClass().getSimpleName(),"Encountered LoadObservationException ",e);
             }
         }
+        try {
+            Person person = personController.getPersonByUuid(relatedPersonUuid);
+            if(person != null){
+                addTags(holder,person);
+            }
+        } catch (PersonController.PersonLoadException e) {
+            Log.e(getClass().getSimpleName(), "Encountered an exception while loading persons");
+        }
 
         return convertView;
     }
@@ -237,49 +253,6 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
         return StringUtils.EMPTY;
-    }
-
-    private boolean isContactHivPositive(String patientUuid, int conceptId, ObservationController observationController, ConceptController conceptController) {
-        List<Observation> observations = new ArrayList<>();
-        try {
-            Concept concept = conceptController.getConceptById(conceptId);
-            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
-            Collections.sort(observations, observationDateTimeComparator);
-            if(observations.size()>0){
-                Observation obs = observations.get(0);
-                if(concept.isCoded()){
-                    if(obs.getValueCoded().getId() == 703)
-                        return true;
-                    else
-                        return false;
-
-                }
-            }
-        } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
-        }
-        return false;
-    }
-
-    private boolean isHivTestNegativeOrPositive(String patientUuid, int conceptId, ObservationController observationController, ConceptController conceptController) {
-        List<Observation> observations = new ArrayList<>();
-        try {
-            Concept concept = conceptController.getConceptById(conceptId);
-            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
-            Collections.sort(observations, observationDateTimeComparator);
-            if(observations.size()>0){
-                Observation obs = observations.get(0);
-                if(concept.isCoded()){
-                    if(obs.getValueCoded().getId() == 664 || obs.getValueCoded().getId() == 703)
-                        return true;
-                    else
-                        return false;
-                }
-            }
-        } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
-        }
-        return false;
     }
 
     private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
@@ -343,6 +316,59 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         RelativeLayout hivTestDetails;
         RelativeLayout hivCareDetails;
 
+        List<TextView> tags;
+        LinearLayout tagsLayout;
+
+        public void addTag(TextView tag) {
+            this.tags.add(tag);
+            tagsLayout.addView(tag);
+        }
+
+        void removeTags(List<TextView> tagsToRemove) {
+            for (TextView tag : tagsToRemove) {
+                tagsLayout.removeView(tag);
+            }
+            tags.removeAll(tagsToRemove);
+        }
+    }
+
+
+    private void addTags(RelationshipsAdapter.ViewHolder holder, Person person) {
+        PersonTag[] tags = person.getPersonTags();
+        if(tags!=null) {
+            if (tags.length > 0) {
+                LayoutInflater layoutInflater = LayoutInflater.from(context);
+
+                //add update tags
+                for (int i = 0; i < tags.length; i++) {
+                    TextView textView = null;
+                    if (holder.tags.size() <= i) {
+                        textView = newTextView(layoutInflater);
+                        holder.addTag(textView);
+                    }
+                    textView = holder.tags.get(i);
+                    textView.setBackgroundColor(personController.getTagColor(tags[i].getUuid()));
+                    textView.setText(tags[i].getName());
+                }
+
+                //remove existing extra tags which are present because of recycled list view
+                if (tags.length < holder.tags.size()) {
+                    List<TextView> tagsToRemove = new ArrayList<>();
+                    for (int i = tags.length; i < holder.tags.size(); i++) {
+                        tagsToRemove.add(holder.tags.get(i));
+                    }
+                    holder.removeTags(tagsToRemove);
+                }
+            }
+        }
+    }
+
+    private TextView newTextView(LayoutInflater layoutInflater) {
+        TextView textView = (TextView) layoutInflater.inflate(R.layout.tag, null, false);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.setMargins(1, 0, 0, 0);
+        textView.setLayoutParams(layoutParams);
+        return textView;
     }
 
     private class BackgroundQueryTask extends MuzimaAsyncTask<String, Void, List<Relationship>> {

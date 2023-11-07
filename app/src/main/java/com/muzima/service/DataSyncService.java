@@ -333,6 +333,8 @@ public class DataSyncService extends IntentService {
 
         if (muzimaSettingController.isPatientTagGenerationEnabled()) {
             muzimaSyncService.updatePatientTags(patientUUIDList);
+            if (muzimaSettingController.isRelationshipEnabled())
+                muzimaSyncService.updatePersonTags(patientUUIDList);
         }
 
         muzimaSyncService.downloadDerivedObservationsForPatientsByPatientUUIDs(patientUUIDList, true);
@@ -362,6 +364,9 @@ public class DataSyncService extends IntentService {
 
             if (muzimaSettingController.isPatientTagGenerationEnabled()) {
                 muzimaSyncService.updatePatientTags(patientUUIDList);
+                if (muzimaSettingController.isRelationshipEnabled())
+                    muzimaSyncService.updatePersonTags(patientUUIDList);
+
             }
         }
     }
@@ -379,6 +384,9 @@ public class DataSyncService extends IntentService {
 
         if (muzimaSettingController.isPatientTagGenerationEnabled()) {
             muzimaSyncService.updatePatientTags(muzimaSyncService.getUuidsForPatientsInCohorts(savedCohortIds));
+            if (muzimaSettingController.isRelationshipEnabled())
+                muzimaSyncService.updatePersonTags(muzimaSyncService.getUuidsForPatientsInCohorts(savedCohortIds));
+
         }
     }
 
