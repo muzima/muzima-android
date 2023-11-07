@@ -1540,6 +1540,7 @@ class HTMLFormDataStore {
     public Observation getLastVisitAttemptNumber(String patientUuid, int conceptId) throws ConceptController.ConceptFetchException, JSONException {
         try {
                 List<Observation> lastAttempts = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+                if (lastAttempts == null || lastAttempts.size() <= 0) return null;
                 Collections.sort(lastAttempts, observationDateTimeComparator);
                 Observation lastAttempt = lastAttempts.get(0);
                 Observation lastTriangulation = getLastTriangulation(patientUuid);
@@ -1557,6 +1558,8 @@ class HTMLFormDataStore {
 
     public boolean isLastAttemptReached(String patientUuid, int conceptId) throws ConceptController.ConceptFetchException, JSONException {
         Observation lastAttempt = getLastVisitAttemptNumber(patientUuid, conceptId);
+        if (lastAttempt == null) return false;
+
         Concept concept = conceptController.getConceptById(6255);
         return  concept.getId() == lastAttempt.getValueCoded().getId();
     }

@@ -48,6 +48,14 @@ public class CohortMemberSummaryController {
         }
     }
 
+    public CohortMemberSummary getByPatientUuid(String patientUuid) {
+        try {
+            return this.cohortMemberSummaryService.getByPatientUuid(patientUuid);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static class CohortMemberSummaryDownloadException extends Throwable {
         CohortMemberSummaryDownloadException(Throwable throwable) {
             super(throwable);

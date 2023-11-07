@@ -365,13 +365,13 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 .setIcon(ThemeUtils.getIconWarning(this))
                 .setTitle(getResources().getString(R.string.general_error))
                 .setMessage(getResources().getString(R.string.attempt_number_limit_reached))
-                .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
-                .setNegativeButton(getString(R.string.general_no), null)
+                //.setPositiveButton(getString(R.string.general_yes), positiveClickListener())
+                .setNegativeButton(getString(R.string.general_ok), positiveClickListener())
                 .create()
                 .show();
     }
 
-    private void showErrorMessageVisitMadeSuccessfully() {
+    /*private void showErrorMessageVisitMadeSuccessfully() {
         new AlertDialog.Builder(HTMLFormWebViewActivity.this)
                 .setCancelable(false)
                 .setIcon(ThemeUtils.getIconWarning(this))
@@ -381,7 +381,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 .setNegativeButton(getString(R.string.general_no), null)
                 .create()
                 .show();
-    }
+    }*/
 
     private Dialog.OnClickListener duplicateFormDataClickListener(final String saveType) {
 
@@ -576,36 +576,19 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         HTMLFormDataStore htmlFormDataStore = new HTMLFormDataStore(this, formData, isFormReload,
                 (MuzimaApplication) getApplicationContext());
 
-        boolean isLastAttemptReached = false;
+        if (formData.getTemplateUuid().equals("fdd67221-5d1a-49e9-97e2-2f69aa5e26bc") && !isFormReload) {
+            boolean isLastAttemptReached;
 
-        try {
-            isLastAttemptReached = htmlFormDataStore.isLastAttemptReached(this.patient.getUuid(), 23842);
-        } catch (ConceptController.ConceptFetchException e) {
-            throw new RuntimeException(e);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+            try {
+                isLastAttemptReached = htmlFormDataStore.isLastAttemptReached(this.patient.getUuid(), 23842);
+            } catch (ConceptController.ConceptFetchException | JSONException e) {
+                throw new RuntimeException(e);
+            }
 
-        if(isLastAttemptReached){
-            this.showErrorMessageMaximumAttemptNumberReached();
-            return;
-        }
-
-        boolean wasLastVisitMadeSuccessfully = false;
-
-        try {
-            wasLastVisitMadeSuccessfully = htmlFormDataStore.wasLastVisitMadeSuccessfully(this.patient.getUuid());
-        } catch (ObservationController.LoadObservationException e) {
-            throw new RuntimeException(e);
-        } catch (ConceptController.ConceptFetchException e) {
-            throw new RuntimeException(e);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-        if(wasLastVisitMadeSuccessfully){
-            this.showErrorMessageVisitMadeSuccessfully();
-            return;
+            if (isLastAttemptReached) {
+                this.showErrorMessageMaximumAttemptNumberReached();
+                return;
+            }
         }
 
         htmlFormDataStore.setSelectedPatientsUuids(getSelectedFormUuidsFromIntent());

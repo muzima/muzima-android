@@ -55,6 +55,7 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.ConceptName;
 import com.muzima.api.model.Provider;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.CohortMemberSummaryController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
@@ -157,6 +158,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private DerivedObservationController derivedObservationController;
     private DerivedConceptController derivedConceptController;
     private FormController formController;
+
+    private CohortMemberSummaryController summaryController;
     private boolean isFGHCustomClientSummaryEnabled;
 
     @Override
@@ -317,13 +320,16 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         cohortController = ((MuzimaApplication) getApplicationContext()).getCohortController();
         providerController = ((MuzimaApplication) getApplicationContext()).getProviderController();
         formController =  ((MuzimaApplication) getApplicationContext()).getFormController();
+        summaryController = ((MuzimaApplication) getApplicationContext()).getCohortMemberSummaryController();
     }
     private void loadPatientSummary() {
 
         try {
             List<CohortMember> cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
+            CohortMemberSummary summary = summaryController.getByPatientUuid(patientUuid);
+
             CohortMember cohortMember = cohortMembers.get(0);
-            CohortMemberSummary summary = cohortMember.getCohortMemberSummary();
+            //CohortMemberSummary summary = cohortMember.getCohortMemberSummary();
 
             lastVolunteerName.setText(getString(cohortMember.getCohortMemberSummary().getLastVolunteerName()));
             confidantName.setText(getString(cohortMember.getCohortMemberSummary().getConfidentName()));
