@@ -248,6 +248,10 @@ public class LoadDownloadedCohortsTask implements Runnable {
             Log.e(getClass().getSimpleName(),"Encountered An error while fetching muzima settings ",e);
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(),"Encountered a JSON Exception ",e);
+
+        } catch (ArrayIndexOutOfBoundsException e){
+            Log.e(getClass().getSimpleName(),"Encountered an array out of bound exception while fetching filter setting ",e);
+            run();
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
             Log.e(getClass().getSimpleName(),"Encountered an error while fetching derived observations ",e);
         } catch (NullPointerException e){
