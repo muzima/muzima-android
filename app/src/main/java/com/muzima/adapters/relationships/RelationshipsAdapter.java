@@ -136,10 +136,13 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                 holder.age.setText(String.format(""));
             }
 
-            if(relationship.getPersonB().getGender() != null) {
+            if(relationship.getPersonB().getGender() != null && !StringUtils.isEmpty(relationship.getPersonB().getGender())) {
                 int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
                 holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
             }
+            else{
+               holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.generic_person));
+           }
             try {
                 Patient p = patientController.getPatientByUuid(relationship.getPersonB().getUuid());
                 if (p != null){
@@ -165,9 +168,12 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                 holder.age.setText(String.format(""));
             }
 
-            if(relationship.getPersonA().getGender() != null) {
+            if(relationship.getPersonA().getGender() != null && !StringUtils.isEmpty(relationship.getPersonA().getGender())) {
                 int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
                 holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+            }
+            else{
+                holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.generic_person));
             }
             try {
                 Patient p = patientController.getPatientByUuid(relationship.getPersonA().getUuid());

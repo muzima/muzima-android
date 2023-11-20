@@ -412,6 +412,7 @@
     <string name="info_derived_observation_patient_not_downloaded">Did not download any derived observations</string>
     <string formatted="false" name="info_derived_observation_patients_downloaded">Downloaded %d derived observations for 1 client</string>
     <string formatted="false" name="info_derived_observations_download_progress">Downloaded derived observations for client %d of %d.</string>
+    <string name="info_summaries_download_progress" translatable="false">Sumarios de utentes baixados %d de %d.</string>
     <string formatted="false" name="info_derived_observations_patient_downloaded">Downloaded 1 derived observation for %d clients</string>
     <string formatted="false" name="info_derived_observations_patients_downloaded">Downloaded %d derived observations for %d clients</string>
     <string name="info_disclaimer">
@@ -783,4 +784,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_choose">Choose...</string>
     <string name="warning_new_user_login">You are login in as a new user to the application, the application will reset for new setup. Do you want to proceed?</string>
     <string name="last_allocation_volunteer">Alocado para</string>
+    <string name="general_error">Error!</string>
+    <string name="attempt_number_limit_reached">Number of visit attempts exceeded!</string>
+    <string name="visit_made_sucessfully">Visit already made sucessfully!</string>
 </resources>

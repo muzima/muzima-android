@@ -386,6 +386,7 @@
     <string name="info_derived_observation_patient_not_downloaded">Não baixou nenhuma observação derivada</string>
     <string name="info_derived_observation_patients_downloaded">%d observações derivadas baixadas para 1 cliente</string>
     <string name="info_derived_observations_download_progress">Observações derivadas baixadas para o cliente %d de %d.</string>
+    <string name="info_summaries_download_progress">Sumarios de utentes baixados %d de %d.</string>
     <string name="info_derived_observations_patient_downloaded">1 observação derivada baixada para %d clientes</string>
     <string name="info_derived_observations_patients_downloaded">%d observações derivadas baixadas para %d clientes</string>
     <string name="info_disclaimer">
@@ -777,4 +778,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_choose">Escolher...</string>
     <string name="warning_new_user_login">Você está logado como um novo usuário no aplicativo, o aplicativo será redefinido para uma nova configuração. Você quer prosseguir?</string>
     <string name="last_allocation_volunteer">Alocado para:</string>
+    <string name="general_error">Erro!</string>
+    <string name="attempt_number_limit_reached">Não pode mais criar visitas para este paciente, pois já atingiu o número máximo de tentativa de visitas (3).</string>
+    <string name="visit_made_sucessfully">Visita feita com sucesso!</string>
 </resources>
