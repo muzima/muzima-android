@@ -54,6 +54,7 @@ import com.muzima.controller.SetupConfigurationController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
+import com.muzima.search.api.util.CollectionUtil;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
@@ -709,13 +710,152 @@ class HTMLFormDataStore {
 
         HTMLFormObservationCreator observationCreator = getFormParser(parseForPerson);
         observationCreator.parseObservationsJSONResponse(jsonPayload, this.formData.getUuid());
-        observationCreator.getObservations();
+        List<Observation> observations = observationCreator.getObservations();
 
+        String homeVisitFormUuid = "fdd67221-5d1a-49e9-97e2-2f69aa5e26bc";
+        if(homeVisitFormUuid.equalsIgnoreCase(formData.getTemplateUuid()) && STATUS_COMPLETE.equalsIgnoreCase(status)){
+            boolean areHomeVisitFormObsValid = areRequiredHomeVisitPatientObsValid(observations);
+            return areHomeVisitFormObsValid ? "": "The mandatory fields on this form were not filled out correctly!";
+        }
 
+        return "";
+    }
+    private boolean areRequiredHomeVisitPatientObsValid(final List<Observation> observations) {
+        if(!isVisitTypeObsValid(observations) || !isAttemptNumberObsValid(observations)
+                || !doesPatientFoundAttemptNumberObsExist(observations) || !isPatientFoundObsValid(observations)){
+            return false;
+        }
 
-        return "Error message";
+        Observation visitTypeObs = getVisitType(observations);
+        Concept visitTypeConcept = visitTypeObs.getValueCoded();
+
+        Observation patientFoundObs = getObs(observations, 2003);
+        Concept patientFoundConcept = patientFoundObs.getValueCoded();
+        if(2161 == visitTypeConcept.getId()
+                || 23914 == visitTypeConcept.getId()) {
+            if(1066 == patientFoundConcept.getId()){
+                if(!areObsValidForPatientNotFound(observations)) {
+                    return false;
+                }
+            }
+            else if(1065 == patientFoundConcept.getId()){
+                Observation visitReportObs = getObs(observations, 2158);
+                Concept visitReportObsValueCoded = visitReportObs.getValueCoded();
+                List<Integer> conceptsIds = getObsConcepts(observations);
+                if(1383 == visitReportObsValueCoded.getId()){
+                        // Ok
+                }
+                else if(2157 == visitReportObsValueCoded.getId()) {
+                    if (!conceptsIds.contains(2157)) {
+                        return false;
+                    }
+                }
+                if (!conceptsIds.contains(23947)) {
+                    return false;
+                }
+                if (!conceptsIds.contains(23933)) {
+                    return false;
+                }
+            }
+        }
+        else if(2160 == visitTypeConcept.getId()) {
+            if(1066 == patientFoundConcept.getId()){
+                if(!areObsValidForPatientNotFound(observations)) {
+                    return false;
+                }
+            }
+            else if(1065 == patientFoundConcept.getId()){
+                List<Integer> conceptsIds = getObsConcepts(observations);
+                if (!conceptsIds.contains(2016)) {
+                    return false;
+                }
+                if (!conceptsIds.contains(23947)) {
+                    return false;
+                }
+                Observation observation = getObs(observations, 165268);
+                if(observation == null) {
+                        if (!conceptsIds.contains(23933)) {
+                            return false;
+                        }
+                }
+            }
+        }
+        return true;
+    }
+    private boolean areObsValidForPatientNotFound(final List<Observation> observations) {
+            List<Integer> conceptsIds = getObsConcepts(observations);
+            if (conceptsIds.contains(2031)) {
+                return true;
+            }
+            if (conceptsIds.contains(2037)) {
+                return true;
+            }
+        return false;
+    }
+    private Observation getObs(final List<Observation> observations, final Integer conceptId) {
+        for (Observation observation :observations) {
+            if(conceptId == observation.getConcept().getId()){
+                return observation;
+            }
+        }
+        return null;
     }
 
+    private List<Integer> getObsConcepts (final List<Observation> observations) {
+        List<Integer> conceptsIds = new ArrayList<>();
+        for (Observation observation :observations) {
+            conceptsIds.add(observation.getConcept().getId());
+        }
+        return conceptsIds;
+    }
+    private boolean isVisitTypeObsValid(final List<Observation> observations){
+        Integer conceptId = 1981;
+        for (Observation observation :observations) {
+            if(conceptId == observation.getConcept().getId()
+                    && (2160 == observation.getValueCoded().getId() || 2161 == observation.getValueCoded().getId() || 23914 == observation.getValueCoded().getId())){
+                return  true;
+            }
+        }
+        return false;
+    }
+    private boolean isAttemptNumberObsValid(final List<Observation> observations) {
+        Integer conceptId = 23842;
+        for (Observation observation :observations) {
+            if(conceptId == observation.getConcept().getId()
+                    && (6440 == observation.getValueCoded().getId() || 6254 == observation.getValueCoded().getId() || 6255 == observation.getValueCoded().getId())){
+                return  true;
+            }
+        }
+        return false;
+    }
+    private boolean doesPatientFoundAttemptNumberObsExist(final List<Observation> observations) {
+        for (Observation observation :observations) {
+            if(24008 == observation.getConcept().getId() || 24009 == observation.getConcept().getId() || 24010 == observation.getConcept().getId()){
+                return  true;
+            }
+        }
+        return false;
+    }
+    private Observation getVisitType(final List<Observation> observations){
+        Integer conceptId = 1981;
+        for (Observation observation :observations) {
+            if(conceptId == observation.getConcept().getId()
+                    && (2160 == observation.getValueCoded().getId() || 2161 == observation.getValueCoded().getId() || 23914 == observation.getValueCoded().getId())){
+                return  observation;
+            }
+        }
+        return null;
+    }
+    private boolean isPatientFoundObsValid(final List<Observation> observations) {
+        Integer conceptId = 2003;
+        for (Observation observation :observations) {
+            if(conceptId == observation.getConcept().getId()
+                    && (1065 == observation.getValueCoded().getId() || 1066 == observation.getValueCoded().getId())){
+                return  true;
+            }
+        }
+        return false;
+    }
     private void parseObsFromCompletedForm(String jsonPayload, String status, boolean parseForPerson) {
         if (status.equals(Constants.STATUS_INCOMPLETE)) {
             return;
