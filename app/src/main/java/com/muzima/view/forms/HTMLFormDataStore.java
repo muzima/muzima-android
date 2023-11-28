@@ -753,17 +753,19 @@ class HTMLFormDataStore {
                 if (!conceptsIds.contains(23947)) {
                     return false;
                 }
-                if(conceptsIds.contains(24008)) {
+                Observation patientReferredToUsObs = getObs(observations, 23947);
+                Concept patientReferredToUsObsValueCoded = patientReferredToUsObs.getValueCoded();
+                if(conceptsIds.contains(24008) && 1065 == patientReferredToUsObsValueCoded.getId()) {
                     if (!conceptsIds.contains(23933)) {
                         return false;
                     }
                 }
-                else if(conceptsIds.contains(24009)) {
+                else if(conceptsIds.contains(24009) && 1065 == patientReferredToUsObsValueCoded.getId()) {
                     if (!conceptsIds.contains(23934)) {
                         return false;
                     }
                 }
-                else if(conceptsIds.contains(24010)) {
+                else if(conceptsIds.contains(24010) && 1065 == patientReferredToUsObsValueCoded.getId()) {
                     if (!conceptsIds.contains(23935)) {
                         return false;
                     }
@@ -786,17 +788,19 @@ class HTMLFormDataStore {
                 }
                 Observation observation = getObs(observations, 165268);
                 if(observation == null) {
-                    if(conceptsIds.contains(24008)) {
+                    Observation patientReferredToUsObs = getObs(observations, 23947);
+                    Concept patientReferredToUsObsValueCoded = patientReferredToUsObs.getValueCoded();
+                    if(conceptsIds.contains(24008) && 1065 == patientReferredToUsObsValueCoded.getId()) {
                         if (!conceptsIds.contains(23933)) {
                             return false;
                         }
                     }
-                    else if(conceptsIds.contains(24009)) {
+                    else if(conceptsIds.contains(24009) && 1065 == patientReferredToUsObsValueCoded.getId()) {
                         if (!conceptsIds.contains(23934)) {
                             return false;
                         }
                     }
-                    else if(conceptsIds.contains(24010)) {
+                    else if(conceptsIds.contains(24010) && 1065 == patientReferredToUsObsValueCoded.getId()) {
                         if (!conceptsIds.contains(23935)) {
                             return false;
                         }
