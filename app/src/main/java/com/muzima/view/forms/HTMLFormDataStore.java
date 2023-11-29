@@ -54,7 +54,6 @@ import com.muzima.controller.SetupConfigurationController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.scheduler.RealTimeFormUploader;
-import com.muzima.search.api.util.CollectionUtil;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
@@ -714,16 +713,31 @@ class HTMLFormDataStore {
 
         String homeVisitFormUuid = "fdd67221-5d1a-49e9-97e2-2f69aa5e26bc";
         if(homeVisitFormUuid.equalsIgnoreCase(formData.getTemplateUuid()) && STATUS_COMPLETE.equalsIgnoreCase(status)){
-            boolean areHomeVisitFormObsValid = areRequiredHomeVisitPatientObsValid(observations);
-            return areHomeVisitFormObsValid ? "": "The mandatory fields on this form were not filled out correctly!";
+            return validateRequiredHomeVisitFormFields(observations);
         }
 
         return "";
     }
-    private boolean areRequiredHomeVisitPatientObsValid(final List<Observation> observations) {
-        if(!isVisitTypeObsValid(observations) || !isAttemptNumberObsValid(observations)
-                || !doesPatientFoundAttemptNumberObsExist(observations) || !isPatientFoundObsValid(observations)){
-            return false;
+    private String validateRequiredHomeVisitFormFields(final List<Observation> observations) {
+
+        String errorMessage = validateVisitTypeObs(observations);
+        if(!StringUtils.isEmpty(errorMessage)){
+           return errorMessage;
+        }
+
+        errorMessage = validateAttemptNumberObs(observations);
+        if(!StringUtils.isEmpty(errorMessage)){
+            return errorMessage;
+        }
+
+        errorMessage = validatePatientFoundAttemptNumberObs(observations);
+        if(!StringUtils.isEmpty(errorMessage)){
+            return errorMessage;
+        }
+
+        errorMessage = validatePatientFoundObs(observations);
+        if(!StringUtils.isEmpty(errorMessage)){
+            return errorMessage;
         }
 
         Observation visitTypeObs = getVisitType(observations);
@@ -734,8 +748,14 @@ class HTMLFormDataStore {
         if(2161 == visitTypeConcept.getId()
                 || 23914 == visitTypeConcept.getId()) {
             if(1066 == patientFoundConcept.getId()){
-                if(!areObsValidForPatientNotFound(observations)) {
-                    return false;
+                String reasonForNotFoundErrorMessage = validateObsForReasonForPatientNotFound(observations);
+                if(!StringUtils.isEmpty(reasonForNotFoundErrorMessage)){
+                    return reasonForNotFoundErrorMessage;
+                }
+
+                String informationGivenByErrorMessage = validateObsForInformationGivenBy(observations);
+                if(!StringUtils.isEmpty(informationGivenByErrorMessage)){
+                    return informationGivenByErrorMessage;
                 }
             }
             else if(1065 == patientFoundConcept.getId()){
@@ -747,78 +767,80 @@ class HTMLFormDataStore {
                 }
                 else if(2157 == visitReportObsValueCoded.getId()) {
                     if (!conceptsIds.contains(2157)) {
-                        return false;
+                        return "Relatório da visita é de preenchimento obrigatório";
                     }
                 }
                 if (!conceptsIds.contains(23947)) {
-                    return false;
+                    return "Paciente ou cuidador encaminhado para US é de preenchimento obrigatório!";
                 }
-                Observation patientReferredToUsObs = getObs(observations, 23947);
-                Concept patientReferredToUsObsValueCoded = patientReferredToUsObs.getValueCoded();
-                if(conceptsIds.contains(24008) && 1065 == patientReferredToUsObsValueCoded.getId()) {
-                    if (!conceptsIds.contains(23933)) {
-                        return false;
-                    }
-                }
-                else if(conceptsIds.contains(24009) && 1065 == patientReferredToUsObsValueCoded.getId()) {
-                    if (!conceptsIds.contains(23934)) {
-                        return false;
-                    }
-                }
-                else if(conceptsIds.contains(24010) && 1065 == patientReferredToUsObsValueCoded.getId()) {
-                    if (!conceptsIds.contains(23935)) {
-                        return false;
-                    }
-                }
+                return validateReturnDate(observations, conceptsIds);
             }
         }
         else if(2160 == visitTypeConcept.getId()) {
             if(1066 == patientFoundConcept.getId()){
-                if(!areObsValidForPatientNotFound(observations)) {
-                    return false;
+                String reasonForNotFoundErrorMessage = validateObsForReasonForPatientNotFound(observations);
+                if(!StringUtils.isEmpty(reasonForNotFoundErrorMessage)){
+                    return reasonForNotFoundErrorMessage;
                 }
+
+                String informationGivenByErrorMessage = validateObsForInformationGivenBy(observations);
+                if(!StringUtils.isEmpty(informationGivenByErrorMessage)){
+                    return informationGivenByErrorMessage;
+                }
+
             }
             else if(1065 == patientFoundConcept.getId()){
                 List<Integer> conceptsIds = getObsConcepts(observations);
                 if (!conceptsIds.contains(2016)) {
-                    return false;
+                    return "Motivo de falta é de preenchimento obrigatório!";
                 }
                 if (!conceptsIds.contains(23947)) {
-                    return false;
+                    return "Paciente ou cuidador encaminhado para US é de preenchimento obrigatório!";
                 }
                 Observation observation = getObs(observations, 165268);
                 if(observation == null) {
-                    Observation patientReferredToUsObs = getObs(observations, 23947);
-                    Concept patientReferredToUsObsValueCoded = patientReferredToUsObs.getValueCoded();
-                    if(conceptsIds.contains(24008) && 1065 == patientReferredToUsObsValueCoded.getId()) {
-                        if (!conceptsIds.contains(23933)) {
-                            return false;
-                        }
-                    }
-                    else if(conceptsIds.contains(24009) && 1065 == patientReferredToUsObsValueCoded.getId()) {
-                        if (!conceptsIds.contains(23934)) {
-                            return false;
-                        }
-                    }
-                    else if(conceptsIds.contains(24010) && 1065 == patientReferredToUsObsValueCoded.getId()) {
-                        if (!conceptsIds.contains(23935)) {
-                            return false;
-                        }
-                    }
+                    return validateReturnDate(observations, conceptsIds);
                 }
             }
         }
-        return true;
+        return "";
     }
-    private boolean areObsValidForPatientNotFound(final List<Observation> observations) {
+
+    private String validateReturnDate(final List<Observation> observations, final List<Integer> conceptsIds) {
+        Observation patientReferredToUsObs = getObs(observations, 23947);
+        Concept patientReferredToUsObsValueCoded = patientReferredToUsObs.getValueCoded();
+        if(conceptsIds.contains(24008) && 1065 == patientReferredToUsObsValueCoded.getId()) {
+            if (!conceptsIds.contains(23933)) {
+                return "Data combinada para retorno a US é de preenchimento obrigatório!";
+            }
+        }
+        else if(conceptsIds.contains(24009) && 1065 == patientReferredToUsObsValueCoded.getId()) {
+            if (!conceptsIds.contains(23934)) {
+                return "Data combinada para retorno a US é de preenchimento obrigatório!";
+            }
+        }
+        else if(conceptsIds.contains(24010) && 1065 == patientReferredToUsObsValueCoded.getId()) {
+            if (!conceptsIds.contains(23935)) {
+                return "Data combinada para retorno a US é de preenchimento obrigatório!";
+            }
+        }
+        return "";
+    }
+
+    private String validateObsForInformationGivenBy(final List<Observation> observations) {
+        List<Integer> conceptsIds = getObsConcepts(observations);
+        if (conceptsIds.contains(2037)) {
+            return "";
+        }
+        return "Dados do Informante é de preenchimento obrigatório!";
+    }
+
+    private String validateObsForReasonForPatientNotFound(final List<Observation> observations) {
             List<Integer> conceptsIds = getObsConcepts(observations);
             if (conceptsIds.contains(2031)) {
-                return true;
+                return "";
             }
-            if (conceptsIds.contains(2037)) {
-                return true;
-            }
-        return false;
+        return "Motivo de não encontrar é de preenchimento obrigatório!";
     }
     private Observation getObs(final List<Observation> observations, final Integer conceptId) {
         for (Observation observation :observations) {
@@ -836,33 +858,33 @@ class HTMLFormDataStore {
         }
         return conceptsIds;
     }
-    private boolean isVisitTypeObsValid(final List<Observation> observations){
+    private String validateVisitTypeObs(final List<Observation> observations){
         Integer conceptId = 1981;
         for (Observation observation :observations) {
             if(conceptId == observation.getConcept().getId()
                     && (2160 == observation.getValueCoded().getId() || 2161 == observation.getValueCoded().getId() || 23914 == observation.getValueCoded().getId())){
-                return  true;
+                return  "";
             }
         }
-        return false;
+        return "Tipo de visita é de preenchimento obrigatório!";
     }
-    private boolean isAttemptNumberObsValid(final List<Observation> observations) {
+    private String validateAttemptNumberObs(final List<Observation> observations) {
         Integer conceptId = 23842;
         for (Observation observation :observations) {
             if(conceptId == observation.getConcept().getId()
                     && (6440 == observation.getValueCoded().getId() || 6254 == observation.getValueCoded().getId() || 6255 == observation.getValueCoded().getId())){
-                return  true;
+                return  "";
             }
         }
-        return false;
+        return "Número de Tentativa é de preenchimento obrigatório!";
     }
-    private boolean doesPatientFoundAttemptNumberObsExist(final List<Observation> observations) {
+    private String validatePatientFoundAttemptNumberObs(final List<Observation> observations) {
         for (Observation observation :observations) {
             if(24008 == observation.getConcept().getId() || 24009 == observation.getConcept().getId() || 24010 == observation.getConcept().getId()){
-                return  true;
+                return  "";
             }
         }
-        return false;
+        return "Número da tentiva em que paciente foi encontrado é de preenchimento obrigatório!";
     }
     private Observation getVisitType(final List<Observation> observations){
         Integer conceptId = 1981;
@@ -874,15 +896,15 @@ class HTMLFormDataStore {
         }
         return null;
     }
-    private boolean isPatientFoundObsValid(final List<Observation> observations) {
+    private String validatePatientFoundObs(final List<Observation> observations) {
         Integer conceptId = 2003;
         for (Observation observation :observations) {
             if(conceptId == observation.getConcept().getId()
                     && (1065 == observation.getValueCoded().getId() || 1066 == observation.getValueCoded().getId())){
-                return  true;
+                return  "";
             }
         }
-        return false;
+        return "Encontrou o Paciente é de preenchimento obrigatório!";
     }
     private void parseObsFromCompletedForm(String jsonPayload, String status, boolean parseForPerson) {
         if (status.equals(Constants.STATUS_INCOMPLETE)) {
