@@ -836,10 +836,16 @@ class HTMLFormDataStore {
     }
 
     private String validateObsForReasonForPatientNotFound(final List<Observation> observations) {
-            List<Integer> conceptsIds = getObsConcepts(observations);
-            if (conceptsIds.contains(2031)) {
+        List<Integer> conceptsIds = getObsConcepts(observations);
+        if(conceptsIds.contains(24008) && conceptsIds.contains(2031)) {
                 return "";
-            }
+        }
+        else if(conceptsIds.contains(24009) && conceptsIds.contains(23944)) {
+                return "";
+        }
+        else if(conceptsIds.contains(24010) && conceptsIds.contains(23945)) {
+            return "";
+        }
         return "Motivo de não encontrar é de preenchimento obrigatório!";
     }
     private Observation getObs(final List<Observation> observations, final Integer conceptId) {
