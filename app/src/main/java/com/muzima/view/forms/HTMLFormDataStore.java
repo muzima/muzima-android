@@ -748,10 +748,6 @@ class HTMLFormDataStore {
         if(2161 == visitTypeConcept.getId()
                 || 23914 == visitTypeConcept.getId()) {
             if(1066 == patientFoundConcept.getId()){
-                String reasonForNotFoundErrorMessage = validateObsForReasonForPatientNotFound(observations);
-                if(!StringUtils.isEmpty(reasonForNotFoundErrorMessage)){
-                    return reasonForNotFoundErrorMessage;
-                }
 
                 String informationGivenByErrorMessage = validateObsForInformationGivenBy(observations);
                 if(!StringUtils.isEmpty(informationGivenByErrorMessage)){
@@ -778,10 +774,6 @@ class HTMLFormDataStore {
         }
         else if(2160 == visitTypeConcept.getId()) {
             if(1066 == patientFoundConcept.getId()){
-                String reasonForNotFoundErrorMessage = validateObsForReasonForPatientNotFound(observations);
-                if(!StringUtils.isEmpty(reasonForNotFoundErrorMessage)){
-                    return reasonForNotFoundErrorMessage;
-                }
 
                 String informationGivenByErrorMessage = validateObsForInformationGivenBy(observations);
                 if(!StringUtils.isEmpty(informationGivenByErrorMessage)){
@@ -791,9 +783,6 @@ class HTMLFormDataStore {
             }
             else if(1065 == patientFoundConcept.getId()){
                 List<Integer> conceptsIds = getObsConcepts(observations);
-                if (!conceptsIds.contains(2016)) {
-                    return "Motivo de falta é de preenchimento obrigatório!";
-                }
                 if (!conceptsIds.contains(23947)) {
                     return "Paciente ou cuidador encaminhado para US é de preenchimento obrigatório!";
                 }
@@ -833,20 +822,6 @@ class HTMLFormDataStore {
             return "";
         }
         return "Dados do Informante é de preenchimento obrigatório!";
-    }
-
-    private String validateObsForReasonForPatientNotFound(final List<Observation> observations) {
-        List<Integer> conceptsIds = getObsConcepts(observations);
-        if(conceptsIds.contains(24008) && conceptsIds.contains(2031)) {
-                return "";
-        }
-        else if(conceptsIds.contains(24009) && conceptsIds.contains(23944)) {
-                return "";
-        }
-        else if(conceptsIds.contains(24010) && conceptsIds.contains(23945)) {
-            return "";
-        }
-        return "Motivo de não encontrar é de preenchimento obrigatório!";
     }
     private Observation getObs(final List<Observation> observations, final Integer conceptId) {
         for (Observation observation :observations) {
