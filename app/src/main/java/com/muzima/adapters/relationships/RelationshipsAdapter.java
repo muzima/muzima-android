@@ -330,6 +330,7 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                 tagsLayout.removeView(tag);
             }
             tags.removeAll(tagsToRemove);
+            tagsLayout.removeAllViews();
         }
     }
 
@@ -360,6 +361,9 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                     }
                     holder.removeTags(tagsToRemove);
                 }
+            } else {
+                holder.tags.clear();
+                holder.tagsLayout.removeAllViews();
             }
         }
     }
