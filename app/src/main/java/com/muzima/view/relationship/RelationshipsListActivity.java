@@ -10,12 +10,16 @@
 package com.muzima.view.relationship;
 
 import static com.muzima.utils.RelationshipViewUtil.listOnClickListener;
+import static com.muzima.utils.RelationshipViewUtil.listOnClickListeners;
 import static com.muzima.view.patients.PatientSummaryActivity.CALLING_ACTIVITY;
 
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -37,6 +41,7 @@ import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.adapters.relationships.AutoCompleteRelatedPersonAdapter;
 import com.muzima.adapters.relationships.RelationshipTypesAdapter;
 import com.muzima.adapters.relationships.RelationshipsAdapter;
@@ -71,7 +76,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 
-public class RelationshipsListActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
+public class RelationshipsListActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener, RecyclerAdapter.BackgroundListQueryTaskListener, RelationshipsAdapter.RelationshipListClickListener {
     private Patient patient;
     private RelationshipsAdapter patientRelationshipsAdapter;
     private RelationshipTypesAdapter relationshipTypesAdapter;
@@ -87,7 +92,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private TextView identifierTextView;
     private TextView ageTextView;
 
-    private ListView lvwPatientRelationships;
+    private RecyclerView lvwPatientRelationships;
     private AutocompleteRelatedPersonTextView autoCompletePersonTextView;
     private AutoCompleteRelatedPersonAdapter autoCompleteRelatedPersonAdapterAdapter;
     private TextView textViewInfo;
@@ -103,6 +108,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private boolean actionModeActive = false;
     private ActionMode actionMode;
     public static final String INDEX_PATIENT = "indexPatient";
+    private List<String> selectedRelationshipUuids;
 
     private boolean isSearching = false;
     private boolean wasServerSearch = false;
@@ -180,6 +186,8 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
 
     private void setupPatientRelationships() {
         lvwPatientRelationships = findViewById(R.id.relationships_list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        lvwPatientRelationships.setLayoutManager(linearLayoutManager);
         patientRelationshipsAdapter = new RelationshipsAdapter(this, R.layout.item_patients_list_multi_checkable, relationshipController,
                 patient.getUuid(), patientController);
         patientRelationshipsAdapter.setBackgroundListQueryTaskListener(this);
@@ -187,9 +195,8 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         lvwPatientRelationships.setAdapter(patientRelationshipsAdapter);
         lvwPatientRelationships.setClickable(true);
         lvwPatientRelationships.setLongClickable(true);
-        lvwPatientRelationships.setEmptyView(noDataView);
-        lvwPatientRelationships.setOnItemClickListener(listOnClickListener(this,((MuzimaApplication) getApplicationContext()), patient, actionModeActive, lvwPatientRelationships));
-        lvwPatientRelationships.setOnItemLongClickListener(listOnLongClickListener());
+//        lvwPatientRelationships.setEmptyView(noDataView);
+        patientRelationshipsAdapter.setRelationshipListClickListener(this);
     }
 
     private void setupNoDataView() {
@@ -237,21 +244,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         return new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Relationship relationship = (Relationship) parent.getItemAtPosition(position);
-                if (!actionModeActive) {
-                    if (!relationship.getSynced()) {
-                        actionMode = startActionMode(new DeleteRelationshipsActionModeCallback());
-                        actionModeActive = true;
 
-                        lvwPatientRelationships.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-                        lvwPatientRelationships.setItemChecked(position, true);
-                        view.setBackgroundResource(R.color.hint_blue_opaque);
-                        actionMode.setTitle(String.valueOf(getSelectedRelationships().size()));
-                    } else {
-                        Toasty.warning(RelationshipsListActivity.this, getApplicationContext().getString(R.string.relationship_delete_fail), Toast.LENGTH_SHORT, true).show();
-                        lvwPatientRelationships.setItemChecked(position, false);
-                    }
-                }
                 return true;
             }
         };
@@ -583,10 +576,8 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         public void onDestroyActionMode(ActionMode actionMode) {
             actionModeActive = false;
             clearSelectedRelationships();
-            lvwPatientRelationships.clearChoices();
+            patientRelationshipsAdapter.resetSelectedRelationships();
             patientRelationshipsAdapter.notifyDataSetChanged();
-
-            lvwPatientRelationships.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
     }
 
@@ -597,28 +588,36 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     }
 
     private List<Relationship> getSelectedRelationships() {
-        List<Relationship> relationships = new ArrayList<>();
-        SparseBooleanArray checkedItemPositions = lvwPatientRelationships.getCheckedItemPositions();
-        for (int i = 0; i < checkedItemPositions.size(); i++) {
-            if (checkedItemPositions.valueAt(i)) {
-                relationships.add(((Relationship) lvwPatientRelationships.getItemAtPosition(checkedItemPositions.keyAt(i))));
-            }
-        }
+        List<Relationship> relationships = patientRelationshipsAdapter.getSelectedRelationships();
         return relationships;
     }
 
     private void clearSelectedRelationships() {
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = getTheme();
-        theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
 
-        SparseBooleanArray checkedItemPositions = lvwPatientRelationships.getCheckedItemPositions();
-        for (int i = 0; i < checkedItemPositions.size(); i++) {
-            if (checkedItemPositions.valueAt(i)) {
-                if(lvwPatientRelationships.getChildAt(checkedItemPositions.keyAt(i)) != null)
-                    lvwPatientRelationships.getChildAt(checkedItemPositions.keyAt(i)).setBackgroundResource(typedValue.resourceId);
+        patientRelationshipsAdapter.resetSelectedRelationships();
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+        Relationship relationship = patientRelationshipsAdapter.getRelationship(position);
+        if (!actionModeActive) {
+            if (!relationship.getSynced()) {
+                actionMode = startActionMode(new DeleteRelationshipsActionModeCallback());
+                actionModeActive = true;
+                patientRelationshipsAdapter.toggleSelection(view, position);
+                lvwPatientRelationships.setSelected(true);
+                view.setBackgroundResource(R.color.hint_blue_opaque);
+                actionMode.setTitle(String.valueOf(getSelectedRelationships().size()));
+            } else {
+                Toasty.warning(RelationshipsListActivity.this, getApplicationContext().getString(R.string.relationship_delete_fail), Toast.LENGTH_SHORT, true).show();
+                lvwPatientRelationships.setSelected(false);
             }
         }
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        Relationship relationship = patientRelationshipsAdapter.getRelationship(position);
+        listOnClickListeners(this,((MuzimaApplication) getApplicationContext()), patient, false,lvwPatientRelationships, view, relationship);
+    }
 }

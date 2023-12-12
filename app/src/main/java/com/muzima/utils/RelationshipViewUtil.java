@@ -19,6 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.MuzimaSetting;
@@ -44,84 +46,88 @@ public class RelationshipViewUtil {
     private static Person selectedRelatedPerson;
     private static Patient patients;
     private static Activity callingActivity;
-    private static ListView lvwPatientRelationships;
+    private static RecyclerView lvwPatientRelationships;
     private static ActionMode actionMode;
     private static MuzimaApplication mApplication;
 
-    public static AdapterView.OnItemClickListener listOnClickListener(Activity activity, MuzimaApplication muzimaApplication, Patient patient, boolean actionModeActive, ListView listView) {
+    public static void listOnClickListeners(Activity activity, MuzimaApplication muzimaApplication, Patient patient, boolean actionModeActive, RecyclerView recyclerView, View view, Relationship relationship){
+        mApplication = muzimaApplication;
+        patients = patient;
+        callingActivity = activity;
+        lvwPatientRelationships = recyclerView;
+        if (actionModeActive) {
+            if (!relationship.getSynced()) {
+                TypedValue typedValue = new TypedValue();
+                Resources.Theme theme = activity.getTheme();
+                theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
+
+                int selectedRelationshipsCount = getSelectedRelationships().size();
+                if (selectedRelationshipsCount == 0 && actionModeActive) {
+                    actionMode.finish();
+                    view.setBackgroundResource(typedValue.resourceId);
+                } else {
+                    if(view.isActivated()){
+                        view.setBackgroundResource(R.color.hint_blue_opaque);
+                    } else {
+                        view.setBackgroundResource(typedValue.resourceId);
+                    }
+                    actionMode.setTitle(String.valueOf(selectedRelationshipsCount));
+                }
+            } else {
+                Toasty.warning(callingActivity, callingActivity.getApplicationContext().getString(R.string.relationship_delete_fail), Toast.LENGTH_SHORT, true).show();
+//                        lvwPatientRelationships.setItemChecked(position, false);
+            }
+        } else {
+            Patient relatedPerson;
+            try {
+                selectedRelatedPerson = null;
+                if (StringUtils.equals(relationship.getPersonA().getUuid(), patient.getUuid()))
+                    relatedPerson = muzimaApplication.getPatientController().getPatientByUuid(relationship.getPersonB().getUuid());
+                else
+                    relatedPerson = muzimaApplication.getPatientController().getPatientByUuid(relationship.getPersonA().getUuid());
+
+                if (relatedPerson != null) {
+                    Intent intent = new Intent(callingActivity, PatientSummaryActivity.class);
+
+                    intent.putExtra(PatientSummaryActivity.PATIENT_UUID, relatedPerson.getUuid());
+                    callingActivity.startActivity(intent);
+                } else {
+                    // We pick the right related person and create them as a patient
+                    if (StringUtils.equalsIgnoreCase(patient.getUuid(), relationship.getPersonA().getUuid())) {
+                        selectedRelatedPerson = relationship.getPersonB();
+                    } else {
+                        selectedRelatedPerson = relationship.getPersonA();
+                    }
+                    Boolean isHTCAddContactOptionEnabled = mApplication.getMuzimaSettingController().isHTCAddContactOptionEnabled();
+                    if(isHTCAddContactOptionEnabled) {
+                        selectAction();
+                    }
+                }
+            } catch (PatientController.PatientLoadException e) {
+                Log.e("getClass().getSimpleName()","Encountered an exception",e);
+            }
+        }
+    }
+
+    public static AdapterView.OnItemClickListener listOnClickListener(Activity activity, MuzimaApplication muzimaApplication, Patient patient, boolean actionModeActive, RecyclerView recyclerView) {
         mApplication = muzimaApplication;
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
                 Relationship relationship = (Relationship) parent.getItemAtPosition(position);
-                patients = patient;
-                callingActivity = activity;
-                lvwPatientRelationships = listView;
-                if (actionModeActive) {
-                    if (!relationship.getSynced()) {
-                        TypedValue typedValue = new TypedValue();
-                        Resources.Theme theme = activity.getTheme();
-                        theme.resolveAttribute(R.attr.primaryBackgroundColor, typedValue, true);
 
-                        int selectedRelationshipsCount = getSelectedRelationships().size();
-                        if (selectedRelationshipsCount == 0 && actionModeActive) {
-                            actionMode.finish();
-                            view.setBackgroundResource(typedValue.resourceId);
-                        } else {
-                            if(view.isActivated()){
-                                view.setBackgroundResource(R.color.hint_blue_opaque);
-                            } else {
-                                view.setBackgroundResource(typedValue.resourceId);
-                            }
-                            actionMode.setTitle(String.valueOf(selectedRelationshipsCount));
-                        }
-                    } else {
-                        Toasty.warning(callingActivity, callingActivity.getApplicationContext().getString(R.string.relationship_delete_fail), Toast.LENGTH_SHORT, true).show();
-                        lvwPatientRelationships.setItemChecked(position, false);
-                    }
-                } else {
-
-                    Patient relatedPerson;
-                    try {
-                        selectedRelatedPerson = null;
-                        if (StringUtils.equals(relationship.getPersonA().getUuid(), patient.getUuid()))
-                            relatedPerson = muzimaApplication.getPatientController().getPatientByUuid(relationship.getPersonB().getUuid());
-                        else
-                            relatedPerson = muzimaApplication.getPatientController().getPatientByUuid(relationship.getPersonA().getUuid());
-
-                        if (relatedPerson != null) {
-                            Intent intent = new Intent(callingActivity, PatientSummaryActivity.class);
-
-                            intent.putExtra(PatientSummaryActivity.PATIENT_UUID, relatedPerson.getUuid());
-                            callingActivity.startActivity(intent);
-                        } else {
-                            // We pick the right related person and create them as a patient
-                            if (StringUtils.equalsIgnoreCase(patient.getUuid(), relationship.getPersonA().getUuid())) {
-                                selectedRelatedPerson = relationship.getPersonB();
-                            } else {
-                                selectedRelatedPerson = relationship.getPersonA();
-                            }
-                            Boolean isHTCAddContactOptionEnabled = mApplication.getMuzimaSettingController().isHTCAddContactOptionEnabled();
-                            if(isHTCAddContactOptionEnabled) {
-                                 selectAction();
-                                                             }
-                        }
-                    } catch (PatientController.PatientLoadException e) {
-                        Log.e(getClass().getSimpleName(),"Encountered an exception",e);
-                    }
-                }
             }
         };
     }
 
     private static List<Relationship> getSelectedRelationships() {
         List<Relationship> relationships = new ArrayList<>();
-        SparseBooleanArray checkedItemPositions = lvwPatientRelationships.getCheckedItemPositions();
-        for (int i = 0; i < checkedItemPositions.size(); i++) {
-            if (checkedItemPositions.valueAt(i)) {
-                relationships.add(((Relationship) lvwPatientRelationships.getItemAtPosition(checkedItemPositions.keyAt(i))));
-            }
-        }
+//        SparseBooleanArray checkedItemPositions = lvwPatientRelationships.getCheckedItemPositions();
+//        for (int i = 0; i < checkedItemPositions.size(); i++) {
+//            if (checkedItemPositions.valueAt(i)) {
+//                relationships.add(((Relationship) lvwPatientRelationships.getItemAtPosition(checkedItemPositions.keyAt(i))));
+//            }
+//        }
         return relationships;
     }
 
