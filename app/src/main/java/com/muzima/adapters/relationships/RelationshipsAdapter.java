@@ -125,7 +125,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
                 holder.genderImg.setImageDrawable(context.getResources().getDrawable(genderDrawable));
             }
             else{
-               holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.generic_person));
+               holder.genderImg.setImageDrawable(context.getResources().getDrawable(R.drawable.generic_person));
            }
             try {
                 Patient p = patientController.getPatientByUuid(relationship.getPersonB().getUuid());
@@ -157,7 +157,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
                 holder.genderImg.setImageDrawable(context.getResources().getDrawable(genderDrawable));
             }
             else{
-                holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(R.drawable.generic_person));
+                holder.genderImg.setImageDrawable(context.getResources().getDrawable(R.drawable.generic_person));
             }
             try {
                 Patient p = patientController.getPatientByUuid(relationship.getPersonA().getUuid());

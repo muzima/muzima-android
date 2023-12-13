@@ -257,9 +257,6 @@ public class LoadDownloadedCohortsTask implements Runnable {
         } catch (NullPointerException e){
             Log.e(getClass().getSimpleName(),"Encountered a null pointer exception while fetching filter setting ",e);
             run();
-        } catch (ArrayIndexOutOfBoundsException e){
-            Log.e(getClass().getSimpleName(),"Encountered an array out of bound exception while fetching filter setting ",e);
-            run();
         } catch (DerivedConceptController.DerivedConceptFetchException e) {
             Log.e(getClass().getSimpleName(),"Encountered an error while fetching derived concepts ",e);
         } catch (ConceptController.ConceptFetchException e) {

@@ -706,21 +706,20 @@ class HTMLFormDataStore {
     }
 
     private String isValidForm(String jsonPayload, String status, boolean parseForPerson, FormData formData) {
-
-        HTMLFormObservationCreator observationCreator = getFormParser(parseForPerson);
-        observationCreator.parseObservationsJSONResponse(jsonPayload, this.formData.getUuid());
-        List<Observation> observations = observationCreator.getObservations();
-
         String homeVisitFormUuid = "fdd67221-5d1a-49e9-97e2-2f69aa5e26bc";
         if(homeVisitFormUuid.equalsIgnoreCase(formData.getTemplateUuid()) && STATUS_COMPLETE.equalsIgnoreCase(status)){
-            return validateRequiredHomeVisitFormFields(observations);
+            HTMLFormObservationCreator observationCreator = getFormParser(parseForPerson);
+            observationCreator.parseObservationsJSONResponse(jsonPayload, this.formData.getUuid());
+            List<Observation> observations = observationCreator.getObservations();
+
+            return validateRequiredHomeVisitFormFields(observations, jsonPayload);
         }
 
         return "";
     }
-    private String validateRequiredHomeVisitFormFields(final List<Observation> observations) {
+    private String validateRequiredHomeVisitFormFields(final List<Observation> observations, String jsonPayload) {
 
-        String errorMessage = validateVisitTypeObs(observations);
+        String errorMessage = validateVisitTypeObs(observations, jsonPayload);
         if(!StringUtils.isEmpty(errorMessage)){
            return errorMessage;
         }
@@ -749,7 +748,7 @@ class HTMLFormDataStore {
                 || 23914 == visitTypeConcept.getId()) {
             if(1066 == patientFoundConcept.getId()){
 
-                String informationGivenByErrorMessage = validateObsForInformationGivenBy(observations);
+                String informationGivenByErrorMessage = validateObsForInformationGivenBy(observations, jsonPayload);
                 if(!StringUtils.isEmpty(informationGivenByErrorMessage)){
                     return informationGivenByErrorMessage;
                 }
@@ -762,11 +761,11 @@ class HTMLFormDataStore {
                         // Ok
                 }
                 else if(2157 == visitReportObsValueCoded.getId()) {
-                    if (!conceptsIds.contains(2157)) {
+                    if (!jsonPayload.contains("2157")) {
                         return "Relatório da visita é de preenchimento obrigatório";
                     }
                 }
-                if (!conceptsIds.contains(23947)) {
+                if (!jsonPayload.contains("23947")) {
                     return "Paciente ou cuidador encaminhado para US é de preenchimento obrigatório!";
                 }
                 return validateReturnDate(observations, conceptsIds);
@@ -775,7 +774,7 @@ class HTMLFormDataStore {
         else if(2160 == visitTypeConcept.getId()) {
             if(1066 == patientFoundConcept.getId()){
 
-                String informationGivenByErrorMessage = validateObsForInformationGivenBy(observations);
+                String informationGivenByErrorMessage = validateObsForInformationGivenBy(observations, jsonPayload);
                 if(!StringUtils.isEmpty(informationGivenByErrorMessage)){
                     return informationGivenByErrorMessage;
                 }
@@ -816,9 +815,9 @@ class HTMLFormDataStore {
         return "";
     }
 
-    private String validateObsForInformationGivenBy(final List<Observation> observations) {
+    private String validateObsForInformationGivenBy(final List<Observation> observations, String jsonpayload) {
         List<Integer> conceptsIds = getObsConcepts(observations);
-        if (conceptsIds.contains(2037)) {
+        if (jsonpayload.contains("2037")) {
             return "";
         }
         return "Dados do Informante é de preenchimento obrigatório!";
@@ -839,7 +838,7 @@ class HTMLFormDataStore {
         }
         return conceptsIds;
     }
-    private String validateVisitTypeObs(final List<Observation> observations){
+    private String validateVisitTypeObs(final List<Observation> observations, String jsonPayload){
         Integer conceptId = 1981;
         for (Observation observation :observations) {
             if(conceptId == observation.getConcept().getId()
