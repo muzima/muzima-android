@@ -99,7 +99,6 @@ import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT;
-import static com.muzima.utils.RelationshipViewUtil.listOnClickListener;
 import static com.muzima.utils.RelationshipViewUtil.listOnClickListeners;
 import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 
@@ -1160,7 +1159,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         lvwPatientRelationships.setAdapter(patientRelationshipsAdapter);
         lvwPatientRelationships.setClickable(true);
         lvwPatientRelationships.setLongClickable(true);
-//        patientRelationshipsAdapter.setEmptyView(noDataView);
         patientRelationshipsAdapter.setRelationshipListClickListener(this);
     }
 
@@ -1266,6 +1264,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     @Override
     public void onItemClick(View view, int position) {
         Relationship relationship = patientRelationshipsAdapter.getRelationship(position);
-        listOnClickListeners(this,((MuzimaApplication) getApplicationContext()), patient, false,lvwPatientRelationships, view, relationship);
+        listOnClickListeners(this,((MuzimaApplication) getApplicationContext()), patient, false,lvwPatientRelationships, view, relationship, patientRelationshipsAdapter);
     }
 }

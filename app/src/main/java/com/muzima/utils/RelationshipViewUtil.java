@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.adapters.relationships.RelationshipsAdapter;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
@@ -49,12 +50,14 @@ public class RelationshipViewUtil {
     private static RecyclerView lvwPatientRelationships;
     private static ActionMode actionMode;
     private static MuzimaApplication mApplication;
+    private static RelationshipsAdapter patientRelationshipsAdapter;
 
-    public static void listOnClickListeners(Activity activity, MuzimaApplication muzimaApplication, Patient patient, boolean actionModeActive, RecyclerView recyclerView, View view, Relationship relationship){
+    public static void listOnClickListeners(Activity activity, MuzimaApplication muzimaApplication, Patient patient, boolean actionModeActive, RecyclerView recyclerView, View view, Relationship relationship, RelationshipsAdapter relationshipsAdapter){
         mApplication = muzimaApplication;
         patients = patient;
         callingActivity = activity;
         lvwPatientRelationships = recyclerView;
+        patientRelationshipsAdapter = relationshipsAdapter;
         if (actionModeActive) {
             if (!relationship.getSynced()) {
                 TypedValue typedValue = new TypedValue();
@@ -75,7 +78,6 @@ public class RelationshipViewUtil {
                 }
             } else {
                 Toasty.warning(callingActivity, callingActivity.getApplicationContext().getString(R.string.relationship_delete_fail), Toast.LENGTH_SHORT, true).show();
-//                        lvwPatientRelationships.setItemChecked(position, false);
             }
         } else {
             Patient relatedPerson;
@@ -122,12 +124,7 @@ public class RelationshipViewUtil {
 
     private static List<Relationship> getSelectedRelationships() {
         List<Relationship> relationships = new ArrayList<>();
-//        SparseBooleanArray checkedItemPositions = lvwPatientRelationships.getCheckedItemPositions();
-//        for (int i = 0; i < checkedItemPositions.size(); i++) {
-//            if (checkedItemPositions.valueAt(i)) {
-//                relationships.add(((Relationship) lvwPatientRelationships.getItemAtPosition(checkedItemPositions.keyAt(i))));
-//            }
-//        }
+        relationships = patientRelationshipsAdapter.getSelectedRelationships();
         return relationships;
     }
 

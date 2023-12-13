@@ -9,7 +9,6 @@
  */
 package com.muzima.view.relationship;
 
-import static com.muzima.utils.RelationshipViewUtil.listOnClickListener;
 import static com.muzima.utils.RelationshipViewUtil.listOnClickListeners;
 import static com.muzima.view.patients.PatientSummaryActivity.CALLING_ACTIVITY;
 
@@ -23,8 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.SparseBooleanArray;
-import android.util.TypedValue;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,7 +31,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,11 +100,9 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     private Button searchServerButton;
     private RelationshipController relationshipController;
     private PatientController patientController;
-    private Person selectedRelatedPerson;
     private boolean actionModeActive = false;
     private ActionMode actionMode;
     public static final String INDEX_PATIENT = "indexPatient";
-    private List<String> selectedRelationshipUuids;
 
     private boolean isSearching = false;
     private boolean wasServerSearch = false;
@@ -195,7 +189,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         lvwPatientRelationships.setAdapter(patientRelationshipsAdapter);
         lvwPatientRelationships.setClickable(true);
         lvwPatientRelationships.setLongClickable(true);
-//        lvwPatientRelationships.setEmptyView(noDataView);
         patientRelationshipsAdapter.setRelationshipListClickListener(this);
     }
 
@@ -238,16 +231,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private AdapterView.OnItemLongClickListener listOnLongClickListener() {
-        return new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                return true;
-            }
-        };
     }
 
     private AdapterView.OnItemClickListener autoCompleteOnClickListener() {
@@ -593,7 +576,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     }
 
     private void clearSelectedRelationships() {
-
         patientRelationshipsAdapter.resetSelectedRelationships();
     }
 
@@ -618,6 +600,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     @Override
     public void onItemClick(View view, int position) {
         Relationship relationship = patientRelationshipsAdapter.getRelationship(position);
-        listOnClickListeners(this,((MuzimaApplication) getApplicationContext()), patient, false,lvwPatientRelationships, view, relationship);
+        listOnClickListeners(this,((MuzimaApplication) getApplicationContext()), patient, false,lvwPatientRelationships, view, relationship, patientRelationshipsAdapter);
     }
 }
