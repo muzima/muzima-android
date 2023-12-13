@@ -34,11 +34,13 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
 import com.muzima.adapters.relationships.RelationshipsAdapter;
 import com.muzima.api.model.CohortMember;
@@ -54,6 +56,7 @@ import com.muzima.api.model.EncounterType;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.ConceptName;
 import com.muzima.api.model.Provider;
+import com.muzima.api.model.Relationship;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.CohortMemberSummaryController;
 import com.muzima.controller.EncounterController;
@@ -98,10 +101,10 @@ import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT;
-import static com.muzima.utils.RelationshipViewUtil.listOnClickListener;
+import static com.muzima.utils.RelationshipViewUtil.listOnClickListeners;
 import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 
-public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavigation implements ClientSummaryFormsAdapter.OnFormClickedListener, FormsLoaderService.FormsLoadedCallback, ListAdapter.BackgroundListQueryTaskListener {
+public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavigation implements ClientSummaryFormsAdapter.OnFormClickedListener, FormsLoaderService.FormsLoadedCallback, ListAdapter.BackgroundListQueryTaskListener, RecyclerAdapter.BackgroundListQueryTaskListener, RelationshipsAdapter.RelationshipListClickListener {
     private static final String TAG = "PatientSummaryActivity";
     public static final String PATIENT = "patient";
     public static final String PATIENT_UUID = "patient_uuid";
@@ -123,7 +126,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private View completeFormsView;
     private ClientSummaryFormsAdapter formsAdapter;
     private List<AvailableForm> forms = new ArrayList<>();
-    private ListView lvwPatientRelationships;
+    private RecyclerView lvwPatientRelationships;
     private RelationshipsAdapter patientRelationshipsAdapter;
     private View noDataView;
     private Person selectedRelatedPerson;
@@ -1004,6 +1007,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
     private void loadRelationships() {
         lvwPatientRelationships = findViewById(R.id.relationships_list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        lvwPatientRelationships.setLayoutManager(linearLayoutManager);
         patientRelationshipsAdapter = new RelationshipsAdapter(this, R.layout.item_patients_list_multi_checkable, ((MuzimaApplication) getApplicationContext()).getRelationshipController(),
                 patient.getUuid(), ((MuzimaApplication) getApplicationContext()).getPatientController());
         patientRelationshipsAdapter.setBackgroundListQueryTaskListener(this);
@@ -1011,8 +1016,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         lvwPatientRelationships.setAdapter(patientRelationshipsAdapter);
         lvwPatientRelationships.setClickable(true);
         lvwPatientRelationships.setLongClickable(true);
-        lvwPatientRelationships.setEmptyView(noDataView);
-        lvwPatientRelationships.setOnItemClickListener(listOnClickListener(this, ((MuzimaApplication) getApplicationContext()), patient, false, lvwPatientRelationships));
+        patientRelationshipsAdapter.setRelationshipListClickListener(this);
     }
 
     private void setupNoDataView() {
@@ -1049,4 +1053,74 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
 
     }
 
+    private List<Observation> getLastConfidentInfo(String patientUuid) {
+       List<Observation> observations = new ArrayList<>();
+        List<Observation> confidentobservations = new ArrayList<>();
+        List<Observation> groupObs;
+
+        List<Observation> groupObservations = null;
+        try {
+            Observation mastercardResultObs = getEncounterDateTimeByPatientUuidAndEncounterTypeUuid(patientUuid, "e422ecf9-75dd-4367-b21e-54bccabc4763");
+            Observation homeVisitResultObs = getEncounterDateTimeByPatientUuidAndEncounterTypeUuid(patientUuid, "e27916d4-1d5f-11e0-b929-000c29ad1d07");
+            groupObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 165482);
+            Collections.sort(groupObservations, observationDateTimeComparator);
+
+            if (mastercardResultObs != null) observations.add(mastercardResultObs);
+            if (homeVisitResultObs != null) observations.add(homeVisitResultObs);
+            if (groupObservations.size()>0) observations.add(groupObservations.get(0));
+
+            Collections.sort(observations, observationDateTimeComparator);
+
+            if (observations != null && observations.size() > 0) {
+                Observation lastConfidentSource = observations.get(0);
+
+                if (lastConfidentSource.getConcept().getId() == 165482) {
+                    groupObs = getConfidentObsByPatientUuidAndConceptId(patientUuid);
+
+                } else {
+                    groupObs = observationController.getObservationsByEncounterId(lastConfidentSource.getEncounter().getId());
+                }
+                if (groupObs != null && groupObs.size() > 0) {
+                    for (Observation observation : groupObs) {
+                        if (observation.getConcept().getId() == 1740 || observation.getConcept().getId() == 6224) {
+                            confidentobservations.add(observation);
+                        }
+                    }
+                    return confidentobservations;
+                }
+            }
+        } catch (ObservationController.LoadObservationException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+
+        return null;
+    }
+
+    private List<Observation> getConfidentObsByPatientUuidAndConceptId(String patientUuid) {
+        List<Observation> observations;
+        try {
+            List<Observation> groupObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 165482);
+            Collections.sort(groupObservations, observationDateTimeComparator);
+            if (groupObservations.size() > 0) {
+                observations = observationController.getObsByObsGroupId(groupObservations.get(0).getId());
+
+                return observations;
+            }
+        }
+        catch (ObservationController.LoadObservationException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+
+        return null;
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Relationship relationship = patientRelationshipsAdapter.getRelationship(position);
+        listOnClickListeners(this,((MuzimaApplication) getApplicationContext()), patient, false,lvwPatientRelationships, view, relationship, patientRelationshipsAdapter);
+    }
 }

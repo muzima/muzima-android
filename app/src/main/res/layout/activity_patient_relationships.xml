@@ -234,9 +234,9 @@
 
         <include layout="@layout/recycler_no_data_view"/>
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/relationships_list"
-            style="@style/MuzimaSelectableListView"></ListView>
+            style="@style/MuzimaSelectableListView"></androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
 </FrameLayout>
