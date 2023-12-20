@@ -787,4 +787,5 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_error">Error!</string>
     <string name="attempt_number_limit_reached">Number of visit attempts exceeded!</string>
     <string name="visit_made_sucessfully">Visit already made sucessfully!</string>
+    <string name="todos_utentes">Todos os Utentes</string>
 </resources>

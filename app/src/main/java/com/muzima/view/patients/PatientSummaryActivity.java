@@ -334,9 +334,9 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             CohortMember cohortMember = cohortMembers.get(0);
             //CohortMemberSummary summary = cohortMember.getCohortMemberSummary();
 
-            lastVolunteerName.setText(getString(cohortMember.getCohortMemberSummary().getLastVolunteerName()));
-            confidantName.setText(getString(cohortMember.getCohortMemberSummary().getConfidentName()));
-            confidantContact1.setText(getString(cohortMember.getCohortMemberSummary().getConfidantContact()));
+            lastVolunteerName.setText(getString(summary.getLastVolunteerName()));
+            confidantName.setText(getString(summary.getConfidentName()));
+            confidantContact1.setText(getString(summary.getConfidantContact()));
             lastClinicalConsultDate.setText(getDateAsString(summary.getLastConsultation()));
             nextClinicalConsultDate.setText(getDateAsString(summary.getNextConsultation()));
             lastARVPickupDispenseMode.setText(getString(summary.getDispenseMode()));
@@ -545,37 +545,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         }
 
         return null;
-    }
-
-    private Observation getObsByPatientUuidAndEncounterIdAndConceptId(String patientUuid, int encounterId, int conceptId){
-        List<Observation> observations = getObsByPatientUuidAndEncounterId(patientUuid, encounterId);
-        for (Observation observation: observations) {
-            Concept concept = observation.getConcept();
-            if(conceptId==concept.getId()){
-                return observation;
-            }
-        }
-        return null;
-    }
-
-    private List<Observation> getObsByPatientUuidAndEncounterId(String patientUuid, int encounterId) {
-        try {
-            List<Observation> observations = observationController.getObservationsByPatient(patientUuid);
-            Collections.sort(observations, observationDateTimeComparator);
-            List<Observation> selectedObs = new ArrayList<>(0);
-            if (observations.size() > 0) {
-                for (Observation observation: observations) {
-                    int id = observation.getEncounter().getId();
-                    if(encounterId == id){
-                        selectedObs.add(observation);
-                    }
-                }
-            }
-            return selectedObs;
-        }
-        catch (ObservationController.LoadObservationException e) {
-            return new ArrayList<Observation>(0);
-        }
     }
 
     private MuzimaGPSLocation getCurrentGPSLocation() {
@@ -1051,67 +1020,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
 
-    }
-
-    private List<Observation> getLastConfidentInfo(String patientUuid) {
-       List<Observation> observations = new ArrayList<>();
-        List<Observation> confidentobservations = new ArrayList<>();
-        List<Observation> groupObs;
-
-        List<Observation> groupObservations = null;
-        try {
-            Observation mastercardResultObs = getEncounterDateTimeByPatientUuidAndEncounterTypeUuid(patientUuid, "e422ecf9-75dd-4367-b21e-54bccabc4763");
-            Observation homeVisitResultObs = getEncounterDateTimeByPatientUuidAndEncounterTypeUuid(patientUuid, "e27916d4-1d5f-11e0-b929-000c29ad1d07");
-            groupObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 165482);
-            Collections.sort(groupObservations, observationDateTimeComparator);
-
-            if (mastercardResultObs != null) observations.add(mastercardResultObs);
-            if (homeVisitResultObs != null) observations.add(homeVisitResultObs);
-            if (groupObservations.size()>0) observations.add(groupObservations.get(0));
-
-            Collections.sort(observations, observationDateTimeComparator);
-
-            if (observations != null && observations.size() > 0) {
-                Observation lastConfidentSource = observations.get(0);
-
-                if (lastConfidentSource.getConcept().getId() == 165482) {
-                    groupObs = getConfidentObsByPatientUuidAndConceptId(patientUuid);
-
-                } else {
-                    groupObs = observationController.getObservationsByEncounterId(lastConfidentSource.getEncounter().getId());
-                }
-                if (groupObs != null && groupObs.size() > 0) {
-                    for (Observation observation : groupObs) {
-                        if (observation.getConcept().getId() == 1740 || observation.getConcept().getId() == 6224) {
-                            confidentobservations.add(observation);
-                        }
-                    }
-                    return confidentobservations;
-                }
-            }
-        } catch (ObservationController.LoadObservationException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
-        }
-
-        return null;
-    }
-
-    private List<Observation> getConfidentObsByPatientUuidAndConceptId(String patientUuid) {
-        List<Observation> observations;
-        try {
-            List<Observation> groupObservations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 165482);
-            Collections.sort(groupObservations, observationDateTimeComparator);
-            if (groupObservations.size() > 0) {
-                observations = observationController.getObsByObsGroupId(groupObservations.get(0).getId());
-
-                return observations;
-            }
-        }
-        catch (ObservationController.LoadObservationException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
-        }
-
-        return null;
     }
 
     @Override

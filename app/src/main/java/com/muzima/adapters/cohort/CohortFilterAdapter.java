@@ -48,7 +48,7 @@ public class CohortFilterAdapter extends RecyclerView.Adapter<CohortFilterAdapte
     public void onBindViewHolder(@NonNull CohortFilterAdapter.ViewHolder holder, int position) {
         CohortFilter cohort = cohortList.get(position);
         if (cohort.getCohortWithFilter() == null || cohort.getCohortWithFilter().getCohort() == null) {
-            holder.checkBox.setText(context.getResources().getString(R.string.general_all_clients));
+            holder.checkBox.setText(context.getResources().getString(R.string.todos_utentes));
         } else {
             if(!cohort.getCohortWithFilter().getDerivedObservationFilter().isEmpty()) {
                 if(((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().isSameDerivedConceptUsedToFilterMoreThanOneCohort(cohort.getCohortWithFilter().getDerivedConceptUuid()))

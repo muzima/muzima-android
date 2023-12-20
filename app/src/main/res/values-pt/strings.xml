@@ -781,4 +781,5 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_error">Erro!</string>
     <string name="attempt_number_limit_reached">Não pode mais criar visitas para este paciente, pois já atingiu o número máximo de tentativa de visitas (3).</string>
     <string name="visit_made_sucessfully">Visita feita com sucesso!</string>
+    <string name="todos_utentes">Todos os Utentes</string>
 </resources>
