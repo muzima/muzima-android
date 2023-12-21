@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/patient_additional_details_layout"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_alignParentStart="true"
+    android:layout_marginEnd="7dp"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/patient_additional_details"
+        style="@style/ListDescription"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:fontFamily="@font/roboto_regular"
+        android:layout_weight="1"
+        android:text="NID: 5555555555/1222/12345"
+        android:textSize="12sp" />
+
+</LinearLayout>

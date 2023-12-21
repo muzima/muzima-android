@@ -13,6 +13,7 @@ package com.muzima.adapters.patients;
 import android.content.Context;
 import android.util.Log;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.CohortFilter;
 import com.muzima.model.location.MuzimaGPSLocation;
@@ -29,13 +30,15 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
     private final List<String> cohortUuids;
     private List<CohortFilter> filters;
     private MuzimaAsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
+    private final MuzimaSettingController muzimaSettingController;
 
 
     public PatientsLocalSearchAdapter(Context context, PatientController patientController,
                                       List<String> cohortUuids, List<CohortFilter> filters,
-                                      MuzimaGPSLocation currentLocation) {
-        super(context,patientController);
+                                      MuzimaGPSLocation currentLocation, MuzimaSettingController muzimaSettingController) {
+        super(context,patientController, muzimaSettingController);
         this.patientController = patientController;
+        this.muzimaSettingController = muzimaSettingController;
         if (cohortUuids != null){
             this.cohortUuids = cohortUuids;
         } else {

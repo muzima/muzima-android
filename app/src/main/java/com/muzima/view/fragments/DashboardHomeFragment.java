@@ -151,7 +151,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         recyclerView = view.findViewById(R.id.list);
         Context context = mActivity.getApplicationContext();
         patientSearchAdapter = new PatientsLocalSearchAdapter(context,
-                ((MuzimaApplication) context).getPatientController(), null, null, getCurrentGPSLocation());
+                ((MuzimaApplication) context).getPatientController(), null, null, getCurrentGPSLocation(),  ((MuzimaApplication) context).getMuzimaSettingController());
 
         patientSearchAdapter.setBackgroundListQueryTaskListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
