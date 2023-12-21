@@ -513,7 +513,6 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
             Toast.makeText(context, context.getString(R.string.error_patient_repo_fetch), Toast.LENGTH_SHORT).show();
             return;
         }
-
         patientList.clear();
         for(Patient patient:patients) {
             patientList.add(new PatientItem(patient));

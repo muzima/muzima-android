@@ -440,10 +440,15 @@
             android:name=".view.MediaActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/general_media"
-            android:launchMode="singleTask">
+            android:label="Patient registration search"
+            android:launchMode="singleTask"/>
 
-        </activity>
+        <activity
+            android:name=".view.patients.PatientsRegistrationSearchActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/general_media"
+            android:launchMode="singleTask"/>
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

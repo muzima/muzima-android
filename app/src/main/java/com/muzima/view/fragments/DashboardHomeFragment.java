@@ -11,11 +11,14 @@ package com.muzima.view.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -23,7 +26,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +54,7 @@ import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PersonName;
 import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
@@ -58,6 +66,7 @@ import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.events.UploadedFormDataEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
+import com.muzima.model.shr.kenyaemr.PatientName;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.FormUtils;
 import com.muzima.utils.MuzimaPreferences;
@@ -69,20 +78,31 @@ import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.FormsWithDataActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
+import com.muzima.view.patients.PatientsRegistrationSearchActivity;
 import com.muzima.view.patients.PatientsSearchActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import static android.view.View.VISIBLE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_DERIVED_CONCEPT_MAP;
+import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
+import static com.muzima.utils.StringUtils.EMPTY;
 import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_ASSIGNMENT_FORM_UUID_SETTING;
 
@@ -98,6 +118,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     private View searchBySmartCard;
     private View filterActionView;
     private View childContainer;
+    private View patientSearchView;
     private TextView providerNameTextView;
     private RecyclerView recyclerView;
     private View noDataView;
@@ -124,6 +145,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         initializeResources(view);
         setupListView(view);
         setupNoDataView(view);
+        patientSearchView = inflater.inflate(R.layout.patient_search_dialog,null);
         return view;
     }
 
@@ -235,7 +257,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         searchPatientEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchPatientsSearchActivity(StringUtils.EMPTY);
+                launchPatientsSearchActivity(EMPTY);
             }
         });
 
@@ -266,7 +288,8 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         fabSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callRegisterPatientConfirmationDialog();
+                //callRegisterPatientConfirmationDialog();
+                patientSearchDialog();
             }
         });
 
@@ -352,11 +375,224 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                 .setNegativeButton(R.string.general_no, launchClientRegistrationFormIfPossible()).create().show();
     }
 
+    private boolean areAllFieldsEntered(){
+        EditText patientName = patientSearchView.findViewById(R.id.patient_name);
+        RadioButton radioMale = patientSearchView.findViewById(R.id.radio_male);
+        RadioButton radioFemale = patientSearchView.findViewById(R.id.radio_female);
+        EditText age = patientSearchView.findViewById(R.id.patient_age);
+        EditText birthdate = patientSearchView.findViewById(R.id.patient_birthdate);
+
+        return  !(StringUtils.isEmpty(String.valueOf(patientName.getText())))
+                && (radioMale.isChecked() || radioFemale.isChecked())
+                && (!(StringUtils.isEmpty(String.valueOf(age.getText())))
+                    || !(StringUtils.isEmpty(String.valueOf(birthdate.getText()))));
+    }
+
+    private void resetAllFields(){
+        EditText patientName = patientSearchView.findViewById(R.id.patient_name);
+        patientName.setText("");
+        RadioButton radioMale = patientSearchView.findViewById(R.id.radio_male);
+        radioMale.setChecked(false);
+        RadioButton radioFemale = patientSearchView.findViewById(R.id.radio_female);
+        radioFemale.setChecked(false);
+        EditText age = patientSearchView.findViewById(R.id.patient_age);
+        age.setText("");
+        EditText birthdate = patientSearchView.findViewById(R.id.patient_birthdate);
+        birthdate.setText("");
+    }
+
+    private void patientSearchDialog() {
+        if(patientSearchView.getParent() != null){
+            ((ViewGroup) patientSearchView.getParent()).removeView(patientSearchView);
+            resetAllFields();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setView(patientSearchView);
+        builder.setCancelable(false);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        Button proceedButton = patientSearchView.findViewById(R.id.proceed_pt_registration_search);
+        EditText patientName = patientSearchView.findViewById(R.id.patient_name);
+        patientName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(areAllFieldsEntered()){
+                    proceedButton.setEnabled(true);
+                } else {
+                    proceedButton.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        RadioButton radioMale = patientSearchView.findViewById(R.id.radio_male);
+        radioMale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(areAllFieldsEntered()){
+                    proceedButton.setEnabled(true);
+                } else {
+                    proceedButton.setEnabled(false);
+                }
+            }
+        });
+        RadioButton radioFemale = patientSearchView.findViewById(R.id.radio_female);
+        radioFemale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(areAllFieldsEntered()){
+                    proceedButton.setEnabled(true);
+                } else {
+                    proceedButton.setEnabled(false);
+                }
+            }
+        });
+
+
+        final Date[] birthDate = new Date[1];
+        EditText birthdateEditText = patientSearchView.findViewById(R.id.patient_birthdate);
+        EditText ageEditText = patientSearchView.findViewById(R.id.patient_age);
+        ageEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(areAllFieldsEntered()){
+                    proceedButton.setEnabled(true);
+                } else {
+                    proceedButton.setEnabled(false);
+                }
+
+                if(!StringUtils.isEmpty(ageEditText.getText().toString())) {
+                    int ageInYears = Integer.parseInt(ageEditText.getText().toString());
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        LocalDate date = LocalDate.of(LocalDate.now().getYear() - ageInYears, 1, 1);
+                        birthDate[0] = Date.from(Instant.from(ZonedDateTime.of(date.atStartOfDay(), ZoneId.systemDefault())));
+                    } else {
+                        birthDate[0] = new Date(ageInYears, 0, 1);
+                    }
+                    SimpleDateFormat sf = new SimpleDateFormat(STANDARD_DATE_FORMAT);
+                    birthdateEditText.setText(sf.format(birthDate[0]));
+                } else if(ageEditText.hasFocus()){
+                    birthdateEditText.setText(EMPTY);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+
+
+        birthdateEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(areAllFieldsEntered()){
+                    proceedButton.setEnabled(true);
+                } else {
+                    proceedButton.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        birthdateEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ageEditText.clearFocus();
+                DatePickerDialog datePickerDialog = new DatePickerDialog(mActivity);
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                if (birthDate[0] != null) {
+                    datePickerDialog.updateDate((1900 + birthDate[0].getYear()), birthDate[0].getMonth(), birthDate[0].getDate());
+                }
+
+                datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, day);
+                        birthDate[0] = calendar.getTime();
+
+                        SimpleDateFormat sf = new SimpleDateFormat(STANDARD_DATE_FORMAT);
+                        birthdateEditText.setText(sf.format(birthDate[0]));
+                        ageEditText.setText("");
+                    }
+                });
+                datePickerDialog.show();
+            }
+        });
+
+
+        proceedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Patient patient = new Patient();
+                patient.setUuid(String.valueOf(UUID.randomUUID()));
+
+                PersonName name = new PersonName();
+                String enteredName = String.valueOf(patientName.getText());
+                String[] splittedNames = enteredName.split("\\s+");
+                if(splittedNames.length > 0){
+                    name.setFamilyName(splittedNames[0]);
+                }
+                if(splittedNames.length > 2){
+                    name.setGivenName(splittedNames[2]);
+                    name.setMiddleName(splittedNames[1]);
+                } else if(splittedNames.length > 1){
+                    name.setGivenName(splittedNames[1]);
+                }
+
+                List personNames = new ArrayList<PersonName>();
+                personNames.add(name);
+                patient.setNames(personNames);
+
+                patient.setBirthdate(birthDate[0]);
+                if(!StringUtils.isEmpty(ageEditText.getText().toString())) {
+                    patient.setBirthdateEstimated(true);
+                }
+
+                if(radioMale.isChecked()){
+                    patient.setGender("M");
+                } else if(radioFemale.isChecked()){
+                    patient.setGender("F");
+                }
+
+                Intent intent = new Intent(mActivity.getApplicationContext(), PatientsRegistrationSearchActivity.class);
+                intent.putExtra(PatientSummaryActivity.PATIENT, patient);
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+
+        Button cancelButton = patientSearchView.findViewById(R.id.cancel_pt_registration_search);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
     private Dialog.OnClickListener launchPatientsList() {
         return new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                launchPatientsSearchActivity(StringUtils.EMPTY);
+                launchPatientsSearchActivity(EMPTY);
             }
         };
     }

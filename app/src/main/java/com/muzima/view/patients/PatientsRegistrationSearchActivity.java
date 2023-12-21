@@ -1,0 +1,133 @@
+package com.muzima.view.patients;
+
+import static com.muzima.view.patients.PatientSummaryActivity.PATIENT;
+import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.muzima.MuzimaApplication;
+import com.muzima.R;
+import com.muzima.adapters.RecyclerAdapter;
+import com.muzima.adapters.patients.PatientAdapterHelper;
+import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
+import com.muzima.api.model.Patient;
+import com.muzima.model.shr.kenyaemr.PatientName;
+import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.ThemeUtils;
+import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.forms.RegistrationFormsActivity;
+
+import java.util.List;
+import java.util.UUID;
+
+public class PatientsRegistrationSearchActivity  extends BroadcastListenerActivity implements PatientAdapterHelper.PatientListClickListener,
+        RecyclerAdapter.BackgroundListQueryTaskListener{
+    private DrawerLayout mainLayout;
+    private final LanguageUtil languageUtil = new LanguageUtil();
+    private Patient patient;
+    private List<Patient> similarPatients;
+    private PatientsLocalSearchAdapter patientAdapter;
+    private RecyclerView recyclerView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        ThemeUtils.getInstance().onCreate(this,true);
+        languageUtil.onCreate(this);
+        super.onCreate(savedInstanceState);
+        mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_patient_list, null);
+        setContentView(mainLayout);
+        Bundle intentExtras = getIntent().getExtras();
+
+        setTitle(R.string.general_clients);
+        setupListView();
+
+         patient = (Patient) getIntent().getSerializableExtra(PATIENT);
+         findSimilarPatients();
+
+    }
+    private void setupListView() {
+        recyclerView = findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        patientAdapter = new PatientsLocalSearchAdapter(this,
+                ((MuzimaApplication) getApplicationContext()).getPatientController(), null,
+                null ,null);
+
+        patientAdapter.setBackgroundListQueryTaskListener(this);
+        patientAdapter.setPatientListClickListener(this);
+        recyclerView.setAdapter(patientAdapter);
+    }
+
+    private void findSimilarPatients(){
+        patientAdapter.search(getFormattedNameForSearch(patient));
+    }
+
+    private String getFormattedNameForSearch(Patient patient){
+        StringBuilder formattedName = new StringBuilder();
+        if(patient.getFamilyName() != null){
+            formattedName.append(patient.getFamilyName());
+        }
+
+        if(patient.getMiddleName() != null){
+            formattedName.append(" "+patient.getMiddleName());
+        }
+
+        if(patient.getGivenName() != null){
+            formattedName.append(" "+patient.getGivenName());
+        }
+        return formattedName.toString();
+    }
+
+    private void renderSimilarPatients(){
+
+    }
+    private void startWebViewActivity() {
+        if (patient == null) {
+            patient = new Patient();
+            patient.setUuid(String.valueOf(UUID.randomUUID()));
+        }
+        Intent intent = new Intent(PatientsRegistrationSearchActivity.this, RegistrationFormsActivity.class);
+        intent.putExtra(PATIENT,patient);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onItemLongClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onQueryTaskStarted() {
+
+    }
+
+    @Override
+    public void onQueryTaskFinish() {
+        if(patientAdapter.getItemCount()>0){
+            renderSimilarPatients();
+        } else {
+            startWebViewActivity();
+        }
+    }
+
+    @Override
+    public void onQueryTaskCancelled() {
+
+    }
+
+    @Override
+    public void onQueryTaskCancelled(Object errorDefinition) {
+
+    }
+}
