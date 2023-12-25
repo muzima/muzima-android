@@ -6,6 +6,7 @@ import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIE
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,15 +41,23 @@ public class PatientsRegistrationSearchActivity  extends BroadcastListenerActivi
         ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
-        mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_patient_list, null);
+        mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_patient_registration_search, null);
         setContentView(mainLayout);
         Bundle intentExtras = getIntent().getExtras();
 
-        setTitle(R.string.general_clients);
+        setTitle("Found Similar People");
         setupListView();
 
          patient = (Patient) getIntent().getSerializableExtra(PATIENT);
          findSimilarPatients();
+
+        Button openRegFormBtn = findViewById(R.id.open_reg_form_button);
+        openRegFormBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startWebViewActivity();
+            }
+        });
 
     }
     private void setupListView() {
@@ -83,9 +92,6 @@ public class PatientsRegistrationSearchActivity  extends BroadcastListenerActivi
         return formattedName.toString();
     }
 
-    private void renderSimilarPatients(){
-
-    }
     private void startWebViewActivity() {
         if (patient == null) {
             patient = new Patient();
@@ -104,7 +110,14 @@ public class PatientsRegistrationSearchActivity  extends BroadcastListenerActivi
 
     @Override
     public void onItemClick(View view, int position) {
-
+        patientAdapter.cancelBackgroundTask();
+        Patient patient = patientAdapter.getPatient(position);
+        if(patient != null) {
+            Intent intent = new Intent(this, PatientSummaryActivity.class);
+            intent.putExtra(PatientSummaryActivity.CALLING_ACTIVITY, PatientsRegistrationSearchActivity.class.getSimpleName());
+            intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -114,9 +127,7 @@ public class PatientsRegistrationSearchActivity  extends BroadcastListenerActivi
 
     @Override
     public void onQueryTaskFinish() {
-        if(patientAdapter.getItemCount()>0){
-            renderSimilarPatients();
-        } else {
+        if(patientAdapter.getItemCount()<=0){
             startWebViewActivity();
         }
     }
