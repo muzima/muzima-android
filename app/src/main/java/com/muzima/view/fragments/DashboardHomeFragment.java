@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -77,7 +78,7 @@ import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.forms.FormsWithDataActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
-import com.muzima.view.patients.PatientsRegistrationSearchActivity;
+import com.muzima.view.patients.SimilarPatientsSearchActivity;
 import com.muzima.view.patients.PatientsSearchActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -571,7 +572,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                     patient.setGender("F");
                 }
 
-                Intent intent = new Intent(mActivity.getApplicationContext(), PatientsRegistrationSearchActivity.class);
+                Intent intent = new Intent(mActivity.getApplicationContext(), SimilarPatientsSearchActivity.class);
                 intent.putExtra(PatientSummaryActivity.PATIENT, patient);
                 startActivity(intent);
                 dialog.dismiss();

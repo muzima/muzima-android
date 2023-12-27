@@ -1,7 +1,6 @@
 package com.muzima.view.patients;
 
 import static com.muzima.view.patients.PatientSummaryActivity.PATIENT;
-import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,12 +17,9 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.adapters.patients.PatientAdapterHelper;
-import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
 import com.muzima.adapters.patients.SimilarPatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
-import com.muzima.model.shr.kenyaemr.PatientName;
 import com.muzima.utils.LanguageUtil;
-import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -31,7 +27,7 @@ import com.muzima.view.forms.RegistrationFormsActivity;
 import java.util.List;
 import java.util.UUID;
 
-public class PatientsRegistrationSearchActivity  extends BroadcastListenerActivity implements PatientAdapterHelper.PatientListClickListener,
+public class SimilarPatientsSearchActivity extends BroadcastListenerActivity implements PatientAdapterHelper.PatientListClickListener,
         RecyclerAdapter.BackgroundListQueryTaskListener{
     private DrawerLayout mainLayout;
     private final LanguageUtil languageUtil = new LanguageUtil();
@@ -115,7 +111,7 @@ public class PatientsRegistrationSearchActivity  extends BroadcastListenerActivi
             patient = new Patient();
             patient.setUuid(String.valueOf(UUID.randomUUID()));
         }
-        Intent intent = new Intent(PatientsRegistrationSearchActivity.this, RegistrationFormsActivity.class);
+        Intent intent = new Intent(SimilarPatientsSearchActivity.this, RegistrationFormsActivity.class);
         intent.putExtra(PATIENT,patient);
         startActivity(intent);
         finish();
@@ -132,7 +128,7 @@ public class PatientsRegistrationSearchActivity  extends BroadcastListenerActivi
         Patient patient = patientAdapter.getPatient(position);
         if(patient != null) {
             Intent intent = new Intent(this, PatientSummaryActivity.class);
-            intent.putExtra(PatientSummaryActivity.CALLING_ACTIVITY, PatientsRegistrationSearchActivity.class.getSimpleName());
+            intent.putExtra(PatientSummaryActivity.CALLING_ACTIVITY, SimilarPatientsSearchActivity.class.getSimpleName());
             intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patient.getUuid());
             startActivity(intent);
         }

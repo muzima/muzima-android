@@ -444,7 +444,7 @@
             android:launchMode="singleTask"/>
 
         <activity
-            android:name=".view.patients.PatientsRegistrationSearchActivity"
+            android:name=".view.patients.SimilarPatientsSearchActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/title_found_similar_people"
