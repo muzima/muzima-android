@@ -777,4 +777,9 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_choose">Escolher...</string>
     <string name="warning_new_user_login">Você está logado como um novo usuário no aplicativo, o aplicativo será redefinido para uma nova configuração. Você quer prosseguir?</string>
     <string name="last_allocation_volunteer">Alocado para:</string>
+    <string name="general_open_registration_form">Abrir formulário de inscrição</string>
+    <string name="info_cannot_find_person_on_list">Não consigo encontrar a pessoa na lista.</string>
+    <string name="info_similar_people_found_msg">Abaixo está uma lista de pessoas que parecem semelhantes àquela que você está prestes a criar.</string>
+    <string name="info_similar_people_found_tip">Se a pessoa que você está criando já existir, selecione-a na lista. Caso contrário, clique no botão abaixo para continuar criando uma nova pessoa.</string>
+    <string name="title_found_similar_people">Encontrei pessoas semelhantes</string>
 </resources>

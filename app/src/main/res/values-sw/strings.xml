@@ -771,4 +771,9 @@
     <string name="info_confidentiality_text">Kwa kufikia mfumo huu, unakaribia kuona maelezo ya siri ya mtumiaji. Ni jukumu lako kuzilinda ipasavyo na kuzitumia kwa madhumuni yaliyoidhinishwa pekee. Faragha ya mtumiaji ni muhimu kwa dhamira yetu.</string>
     <string name="general_choose">Chagua...</string>
     <string name="warning_new_user_login">Umeingia kama mtumiaji mpya kwa programu, programu itawekwa upya kwa usanidi mpya. Je, ungependa kuendelea?</string>
+    <string name="general_open_registration_form">Fungua fomu ya usajili</string>
+    <string name="info_cannot_find_person_on_list">Siwezi kupata mtu kwenye orodha.</string>
+    <string name="info_similar_people_found_msg">Ifuatayo ni orodha ya watu wanaofanana na yule unayekaribia kusajili.</string>
+    <string name="info_similar_people_found_tip">Ikiwa mtu ambaye uko katika mchakato wa kuunda tayari yupo, mchague kutoka kwenye orodha. Vinginevyo bofya kitufe kilicho hapa chini ili kuendelea kusajili mtu mpya.</string>
+    <string name="title_found_similar_people">Fungua fomu ya usajili</string>
 </resources>

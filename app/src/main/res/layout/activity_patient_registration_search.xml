@@ -24,10 +24,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/patient_list_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize" />
 
             <LinearLayout
                 android:id="@+id/search_msg_layout"
@@ -42,16 +38,17 @@
                 <TextView
                     android:id="@+id/search_results_msg"
                     style="@style/NoDataMsg"
-                    android:text="Below is a list of people who seem similar to the one you are about to create."/>
+                    android:text="@string/info_similar_people_found_msg"/>
 
                 <TextView
                     android:id="@+id/search_results_msg_tip"
                     style="@style/NoDataTip"
-                    android:text="If the person you are in the process of creating already exists, select them from the list. Otherwise click the button below to continue creating a new person."/>
+                    android:text="@string/info_similar_people_found_tip"/>
 
                 <LinearLayout
                     style="@style/DividerLine"
-                    android:layout_marginTop="30dp" />
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -62,22 +59,28 @@
             <LinearLayout
                 android:id="@+id/search_server_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_below="@id/search_msg_layout"
-                android:gravity="center_horizontal"
+                android:gravity="center|bottom"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:layout_weight="1">
 
 
+                <CheckBox
+                    android:id="@+id/cannot_find_pt_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/info_cannot_find_person_on_list"/>
                 <Button
                     android:id="@+id/open_reg_form_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:drawableLeft="@drawable/ic_add_patient"
-                    android:backgroundTint="@color/primary_blue"
+                    android:backgroundTint="@color/color_state_button"
                     android:gravity="center"
-                    android:text="Open registration form" />
+                    android:enabled="false"
+                    android:text="@string/general_open_registration_form" />
             </LinearLayout>
         </LinearLayout>
 

@@ -66,7 +66,6 @@ import com.muzima.model.events.CohortFilterActionEvent;
 import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.events.UploadedFormDataEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
-import com.muzima.model.shr.kenyaemr.PatientName;
 import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.FormUtils;
 import com.muzima.utils.MuzimaPreferences;
@@ -388,7 +387,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                     || !(StringUtils.isEmpty(String.valueOf(birthdate.getText()))));
     }
 
-    private void resetAllFields(){
+    private void resetPatientSearchDialogFields(){
         EditText patientName = patientSearchView.findViewById(R.id.patient_name);
         patientName.setText("");
         RadioButton radioMale = patientSearchView.findViewById(R.id.radio_male);
@@ -404,7 +403,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     private void patientSearchDialog() {
         if(patientSearchView.getParent() != null){
             ((ViewGroup) patientSearchView.getParent()).removeView(patientSearchView);
-            resetAllFields();
+            resetPatientSearchDialogFields();
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setView(patientSearchView);

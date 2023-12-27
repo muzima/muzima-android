@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,9 +19,11 @@ import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
+import com.muzima.adapters.patients.SimilarPatientsLocalSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.model.shr.kenyaemr.PatientName;
 import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
@@ -33,22 +37,23 @@ public class PatientsRegistrationSearchActivity  extends BroadcastListenerActivi
     private final LanguageUtil languageUtil = new LanguageUtil();
     private Patient patient;
     private List<Patient> similarPatients;
-    private PatientsLocalSearchAdapter patientAdapter;
+    private SimilarPatientsLocalSearchAdapter patientAdapter;
+
     private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
+
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_patient_registration_search, null);
         setContentView(mainLayout);
         Bundle intentExtras = getIntent().getExtras();
 
-        setTitle("Found Similar People");
+        setTitle(getString(R.string.title_found_similar_people));
         setupListView();
 
-         patient = (Patient) getIntent().getSerializableExtra(PATIENT);
          findSimilarPatients();
 
         Button openRegFormBtn = findViewById(R.id.open_reg_form_button);
@@ -59,13 +64,26 @@ public class PatientsRegistrationSearchActivity  extends BroadcastListenerActivi
             }
         });
 
+        CheckBox cannotFindPtCheckbox = findViewById(R.id.cannot_find_pt_checkbox);
+        cannotFindPtCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked){
+                    openRegFormBtn.setEnabled(true);
+                } else {
+                    openRegFormBtn.setEnabled(false);
+                }
+            }
+        });
+
     }
     private void setupListView() {
+        patient = (Patient) getIntent().getSerializableExtra(PATIENT);
+
         recyclerView = findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        patientAdapter = new PatientsLocalSearchAdapter(this,
-                ((MuzimaApplication) getApplicationContext()).getPatientController(), null,
-                null ,null);
+        patientAdapter = new SimilarPatientsLocalSearchAdapter(this,
+                ((MuzimaApplication) getApplicationContext()).getPatientController(), patient);
 
         patientAdapter.setBackgroundListQueryTaskListener(this);
         patientAdapter.setPatientListClickListener(this);

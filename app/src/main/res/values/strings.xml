@@ -783,4 +783,9 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_choose">Choose...</string>
     <string name="warning_new_user_login">You are login in as a new user to the application, the application will reset for new setup. Do you want to proceed?</string>
     <string name="last_allocation_volunteer">Allocated to</string>
+    <string name="general_open_registration_form">Open registration form</string>
+    <string name="info_cannot_find_person_on_list">I cannot find the person on the list.</string>
+    <string name="info_similar_people_found_msg">Below is a list of people who seem similar to the one you are about to create.</string>
+    <string name="info_similar_people_found_tip">If the person you are in the process of creating already exists, select them from the list. Otherwise click the button below to continue creating a new person.</string>
+    <string name="title_found_similar_people">Found Similar People</string>
 </resources>
