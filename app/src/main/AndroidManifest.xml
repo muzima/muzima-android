@@ -440,14 +440,14 @@
             android:name=".view.MediaActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="Patient registration search"
+            android:label="@string/general_media"
             android:launchMode="singleTask"/>
 
         <activity
             android:name=".view.patients.PatientsRegistrationSearchActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/general_media"
+            android:label="@string/title_found_similar_people"
             android:launchMode="singleTask"/>
 
         <meta-data

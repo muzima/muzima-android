@@ -132,6 +132,12 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     private RelativeLayout patientSearchBy;
     private Activity mActivity;
 
+    private EditText patientName;
+    private RadioButton radioMale;
+    private RadioButton radioFemale;
+    private EditText ageEditText;
+    private EditText birthDateEditText;
+
     public static final String SELECTED_PATIENT_UUIDS_KEY = "selectedPatientUuids";
 
     ActionMode actionMode;
@@ -144,7 +150,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         initializeResources(view);
         setupListView(view);
         setupNoDataView(view);
-        patientSearchView = inflater.inflate(R.layout.patient_search_dialog,null);
+        initPatientRegistrationSearchView(inflater);
         return view;
     }
 
@@ -178,6 +184,15 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
         recyclerView.setAdapter(patientSearchAdapter);
         patientSearchAdapter.setPatientListClickListener(this);
+    }
+
+    private void initPatientRegistrationSearchView(LayoutInflater inflater){
+        patientSearchView = inflater.inflate(R.layout.patient_search_dialog,null);
+        patientName = patientSearchView.findViewById(R.id.patient_name);
+        radioMale = patientSearchView.findViewById(R.id.radio_male);
+        radioFemale = patientSearchView.findViewById(R.id.radio_female);
+        ageEditText = patientSearchView.findViewById(R.id.patient_age);
+        birthDateEditText = patientSearchView.findViewById(R.id.patient_birthdate);
     }
 
     private void initializeResources(View view) {
@@ -375,29 +390,19 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     }
 
     private boolean areAllFieldsEntered(){
-        EditText patientName = patientSearchView.findViewById(R.id.patient_name);
-        RadioButton radioMale = patientSearchView.findViewById(R.id.radio_male);
-        RadioButton radioFemale = patientSearchView.findViewById(R.id.radio_female);
-        EditText age = patientSearchView.findViewById(R.id.patient_age);
-        EditText birthdate = patientSearchView.findViewById(R.id.patient_birthdate);
 
         return  !(StringUtils.isEmpty(String.valueOf(patientName.getText())))
                 && (radioMale.isChecked() || radioFemale.isChecked())
-                && (!(StringUtils.isEmpty(String.valueOf(age.getText())))
-                    || !(StringUtils.isEmpty(String.valueOf(birthdate.getText()))));
+                && (!(StringUtils.isEmpty(String.valueOf(ageEditText.getText())))
+                    || !(StringUtils.isEmpty(String.valueOf(birthDateEditText.getText()))));
     }
 
     private void resetPatientSearchDialogFields(){
-        EditText patientName = patientSearchView.findViewById(R.id.patient_name);
         patientName.setText("");
-        RadioButton radioMale = patientSearchView.findViewById(R.id.radio_male);
         radioMale.setChecked(false);
-        RadioButton radioFemale = patientSearchView.findViewById(R.id.radio_female);
         radioFemale.setChecked(false);
-        EditText age = patientSearchView.findViewById(R.id.patient_age);
-        age.setText("");
-        EditText birthdate = patientSearchView.findViewById(R.id.patient_birthdate);
-        birthdate.setText("");
+        ageEditText.setText("");
+        birthDateEditText.setText("");
     }
 
     private void patientSearchDialog() {
@@ -412,7 +417,6 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         dialog.show();
 
         Button proceedButton = patientSearchView.findViewById(R.id.proceed_pt_registration_search);
-        EditText patientName = patientSearchView.findViewById(R.id.patient_name);
         patientName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -430,7 +434,6 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
             public void afterTextChanged(Editable editable) {}
         });
 
-        RadioButton radioMale = patientSearchView.findViewById(R.id.radio_male);
         radioMale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -441,7 +444,6 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                 }
             }
         });
-        RadioButton radioFemale = patientSearchView.findViewById(R.id.radio_female);
         radioFemale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -455,8 +457,6 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
 
         final Date[] birthDate = new Date[1];
-        EditText birthdateEditText = patientSearchView.findViewById(R.id.patient_birthdate);
-        EditText ageEditText = patientSearchView.findViewById(R.id.patient_age);
         ageEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -479,9 +479,9 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                         birthDate[0] = new Date(ageInYears, 0, 1);
                     }
                     SimpleDateFormat sf = new SimpleDateFormat(STANDARD_DATE_FORMAT);
-                    birthdateEditText.setText(sf.format(birthDate[0]));
+                    birthDateEditText.setText(sf.format(birthDate[0]));
                 } else if(ageEditText.hasFocus()){
-                    birthdateEditText.setText(EMPTY);
+                    birthDateEditText.setText(EMPTY);
                 }
             }
 
@@ -491,7 +491,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
 
 
-        birthdateEditText.addTextChangedListener(new TextWatcher() {
+        birthDateEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
@@ -508,7 +508,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
             public void afterTextChanged(Editable editable) {}
         });
 
-        birthdateEditText.setOnClickListener(new View.OnClickListener() {
+        birthDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ageEditText.clearFocus();
@@ -528,7 +528,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                         birthDate[0] = calendar.getTime();
 
                         SimpleDateFormat sf = new SimpleDateFormat(STANDARD_DATE_FORMAT);
-                        birthdateEditText.setText(sf.format(birthDate[0]));
+                        birthDateEditText.setText(sf.format(birthDate[0]));
                         ageEditText.setText("");
                     }
                 });
