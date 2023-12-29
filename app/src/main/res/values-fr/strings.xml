@@ -782,4 +782,12 @@
     <string name="info_similar_people_found_msg">Vous trouverez ci-dessous une liste de personnes qui semblent similaires à celle que vous êtes sur le point de créer.</string>
     <string name="info_similar_people_found_tip">Si la personne que vous êtes en train de créer existe déjà, sélectionnez-la dans la liste. Sinon, cliquez sur le bouton ci-dessous pour continuer à créer une nouvelle personne.</string>
     <string name="title_found_similar_people">Trouvé des personnes similaires</string>
+    <string name="general_person_name">Nom d\\\'une personne:</string>
+    <string name="general_gender">Genre:</string>
+    <string name="general_male">Mâle</string>
+    <string name="general_birthdate">Date de naissance:</string>
+    <string name="general_proceed">Procéder</string>
+    <string name="general_or_age">Ou Âge:</string>
+    <string name="last_allocation_volunteer">Alloué à:</string>
+    <string name="general_female">Femelle</string>
 </resources>

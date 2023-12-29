@@ -782,4 +782,11 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="info_similar_people_found_msg">Abaixo está uma lista de pessoas que parecem semelhantes àquela que você está prestes a criar.</string>
     <string name="info_similar_people_found_tip">Se a pessoa que você está criando já existir, selecione-a na lista. Caso contrário, clique no botão abaixo para continuar criando uma nova pessoa.</string>
     <string name="title_found_similar_people">Encontrei pessoas semelhantes</string>
+    <string name="general_person_name">Nome da pessoa:</string>
+    <string name="general_gender">Gênero:</string>
+    <string name="general_male">Macho</string>
+    <string name="general_birthdate">Data de nascimento:</string>
+    <string name="general_proceed">Continuar</string>
+    <string name="general_or_age">Ou Idade:</string>
+    <string name="general_female">Fêmea</string>
 </resources>

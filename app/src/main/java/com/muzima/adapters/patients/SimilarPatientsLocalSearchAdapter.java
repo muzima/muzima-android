@@ -11,17 +11,11 @@
 package com.muzima.adapters.patients;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.muzima.R;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.model.CohortFilter;
-import com.muzima.model.location.MuzimaGPSLocation;
-import com.muzima.model.patient.PatientItem;
 import com.muzima.tasks.MuzimaAsyncTask;
-import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -37,10 +31,11 @@ public class SimilarPatientsLocalSearchAdapter extends PatientsLocalSearchAdapte
 
 
     public SimilarPatientsLocalSearchAdapter(Context context, PatientController patientController, Patient comparisonPatient) {
-        super(context,patientController,null,null,null);
+        super(context,patientController,null,null,null,null);
         this.patientController = patientController;
         this.context = context;
         this.comparisonPatient = comparisonPatient;
+        setShowAdditionalDetails(true);
     }
 
     @Override
@@ -62,4 +57,5 @@ public class SimilarPatientsLocalSearchAdapter extends PatientsLocalSearchAdapte
         }
         super.onPostExecuteUpdate(patients);
     }
+
 }

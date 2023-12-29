@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +37,7 @@ public class SimilarPatientsSearchActivity extends BroadcastListenerActivity imp
     private SimilarPatientsLocalSearchAdapter patientAdapter;
 
     private RecyclerView recyclerView;
+    private FrameLayout progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,9 @@ public class SimilarPatientsSearchActivity extends BroadcastListenerActivity imp
         patientAdapter.setBackgroundListQueryTaskListener(this);
         patientAdapter.setPatientListClickListener(this);
         recyclerView.setAdapter(patientAdapter);
+
+        progressBar = findViewById(R.id.progressbarContainer);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     private void findSimilarPatients(){
@@ -136,7 +141,7 @@ public class SimilarPatientsSearchActivity extends BroadcastListenerActivity imp
 
     @Override
     public void onQueryTaskStarted() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -144,6 +149,7 @@ public class SimilarPatientsSearchActivity extends BroadcastListenerActivity imp
         if(patientAdapter.getItemCount()<=0){
             startWebViewActivity();
         }
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -154,5 +160,10 @@ public class SimilarPatientsSearchActivity extends BroadcastListenerActivity imp
     @Override
     public void onQueryTaskCancelled(Object errorDefinition) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

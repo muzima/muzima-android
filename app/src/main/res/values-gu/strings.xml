@@ -774,4 +774,12 @@
     <string name="info_similar_people_found_msg">નીચે એવા લોકોની સૂચિ છે કે જેઓ તમે બનાવવા જઈ રહ્યાં છો તેના જેવા જ લાગે છે.</string>
     <string name="info_similar_people_found_tip">જો તમે જે વ્યક્તિ બનાવવાની પ્રક્રિયામાં છો તે પહેલેથી જ અસ્તિત્વમાં છે, તો તેમને સૂચિમાંથી પસંદ કરો. અન્યથા નવી વ્યક્તિ બનાવવાનું ચાલુ રાખવા માટે નીચેના બટનને ક્લિક કરો.</string>
     <string name="title_found_similar_people">સમાન લોકો મળ્યા</string>
+    <string name="general_person_name">વ્યક્તિનું નામ:</string>
+    <string name="general_gender">જાતિ:</string>
+    <string name="general_male">પુરુષ</string>
+    <string name="general_birthdate">જન્મતારીખ:</string>
+    <string name="general_proceed">આગળ વધો</string>
+    <string name="general_or_age">અથવા ઉંમર:</string>
+    <string name="last_allocation_volunteer">ને ફાળવેલ છે:</string>
+    <string name="general_female">સ્ત્રી</string>
 </resources>

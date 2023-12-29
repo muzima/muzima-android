@@ -576,6 +576,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                 intent.putExtra(PatientSummaryActivity.PATIENT, patient);
                 startActivity(intent);
                 dialog.dismiss();
+                progressBar.setVisibility(VISIBLE);
             }
         });
 

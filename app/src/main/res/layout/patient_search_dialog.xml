@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/themeColor"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -14,7 +15,7 @@
             android:textColor="?attr/primaryTextColor"
             android:textSize="16sp"
             android:layout_marginTop="4dp"
-            android:text="Client Registration"
+            android:text="@string/general_patient_registration"
             android:textAllCaps="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -27,7 +28,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name of Patient:"
+            android:text="@string/general_person_name"
             />
         <EditText
             android:id="@+id/patient_name"
@@ -41,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gender:"
+            android:text="@string/general_gender"
             />
         <RadioGroup
             android:layout_width="wrap_content"
@@ -50,11 +51,11 @@
             <RadioButton android:id="@+id/radio_male"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Male"/>
+                android:text="@string/general_male"/>
             <RadioButton android:id="@+id/radio_female"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Female"/>
+                android:text="@string/general_female"/>
         </RadioGroup>
     </LinearLayout>
 
@@ -72,7 +73,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Birthdate:"
+                android:text="@string/general_birthdate"
                 />
             <EditText
                 android:id="@+id/patient_birthdate"
@@ -90,7 +91,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Or Age:"
+                    android:text="@string/general_or_age"
                     />
                 <EditText
                     android:id="@+id/patient_age"
@@ -111,8 +112,8 @@
 
         <Button
             android:id="@+id/cancel_pt_registration_search"
-            android:background="@color/theme_color"
-            android:text="Cancel"
+            android:background="@color/transparent"
+            android:text="@string/general_cancel"
             android:textColor="?attr/primaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,7 +125,7 @@
             android:backgroundTint="@color/color_state_button"
             android:enabled="false"
             android:fontFamily="@font/roboto_medium"
-            android:text="Proceed"
+            android:text="@string/general_proceed"
             android:textColor="?attr/primaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

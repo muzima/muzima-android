@@ -776,4 +776,12 @@
     <string name="info_similar_people_found_msg">Ifuatayo ni orodha ya watu wanaofanana na yule unayekaribia kusajili.</string>
     <string name="info_similar_people_found_tip">Ikiwa mtu ambaye uko katika mchakato wa kuunda tayari yupo, mchague kutoka kwenye orodha. Vinginevyo bofya kitufe kilicho hapa chini ili kuendelea kusajili mtu mpya.</string>
     <string name="title_found_similar_people">Fungua fomu ya usajili</string>
+    <string name="general_person_name">Jina la Mtu:</string>
+    <string name="general_gender">Jinsia:</string>
+    <string name="general_male">Mwanaume</string>
+    <string name="general_birthdate">Tarehe ya kuzaliwa:</string>
+    <string name="general_proceed">Endelea</string>
+    <string name="general_or_age">Au Umri:</string>
+    <string name="last_allocation_volunteer">Imetengwa kwa:</string>
+    <string name="general_female">Mwanamke</string>
 </resources>
