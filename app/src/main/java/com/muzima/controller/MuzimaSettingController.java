@@ -68,6 +68,7 @@ import static com.muzima.util.Constants.ServerSettings.HISTORICAL_DATA_TAB_ENABL
 import static com.muzima.util.Constants.ServerSettings.OBS_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
 import static com.muzima.util.Constants.ServerSettings.ONLINE_ONLY_MODE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
+import static com.muzima.util.Constants.ServerSettings.PATIENT_REGISTRATION_BUTTON_ACTION_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_REGISTRATION_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.RELATIONSHIP_FEATURE_ENABLED;
 import static com.muzima.util.Constants.ServerSettings.NOTIFICATION_FEATURE_ENABLED_SETTING;
@@ -584,6 +585,19 @@ public class MuzimaSettingController {
                 Log.e(getClass().getSimpleName(), "Patient registration setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Patient registration setting is missing on this server");
+        }
+        return true;
+    }
+
+    public Boolean isPatientSearchBeforeRegistrationEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(PATIENT_REGISTRATION_BUTTON_ACTION_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Patient registration Button action setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Patient registration Button action setting is missing on this server");
         }
         return true;
     }

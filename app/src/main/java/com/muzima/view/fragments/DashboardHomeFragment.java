@@ -303,8 +303,12 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         fabSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //callRegisterPatientConfirmationDialog();
-                patientSearchDialog();
+                boolean isRegistrationSearchEnabled = ((MuzimaApplication)mActivity.getApplication()).getMuzimaSettingController().isPatientSearchBeforeRegistrationEnabled();
+                if(isRegistrationSearchEnabled) {
+                    patientSearchDialog();
+                } else {
+                    callRegisterPatientConfirmationDialog();
+                }
             }
         });
 
