@@ -773,7 +773,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         if (!isFGHCustomClientSummaryEnabled) {
             dadosDeConsentimento.setVisibility(View.GONE);
             artInitDateLayout.setVisibility(View.GONE);
-        } else {
             lastEncounterVolunteer.setVisibility(View.GONE);
             confidentName.setVisibility(View.GONE);
             confidentPhone.setVisibility(View.GONE);
