@@ -66,6 +66,7 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
     private final LanguageUtil languageUtil = new LanguageUtil();
     private Configuration configuration ;
     private MuzimaSettingController muzimaSettingController;
+    private boolean showAdditionalDetails;
 
     public PatientAdapterHelper(Context context, PatientController patientController, MuzimaSettingController muzimaSettingController) {
         this.patientController = patientController;
@@ -84,6 +85,10 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
 
     public void setCurrentLocation(MuzimaGPSLocation currentLocation) {
         this.currentLocation = currentLocation;
+    }
+
+    public void setShowAdditionalDetails(boolean showAdditionalDetails){
+        this.showAdditionalDetails = showAdditionalDetails;
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
@@ -136,7 +141,9 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
             holder.genderImg.setImageResource(getGenderImage(patient.getGender()));
         }
         addTags(holder,patient);
-        addAdditionalDetails(holder, patient);
+        if(showAdditionalDetails) {
+            addAdditionalDetails(holder, patient);
+        }
         highlightPatientItem(patient, holder.container);
 
         holder.container.setOnClickListener(new View.OnClickListener() {
@@ -513,7 +520,6 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
             Toast.makeText(context, context.getString(R.string.error_patient_repo_fetch), Toast.LENGTH_SHORT).show();
             return;
         }
-
         patientList.clear();
         for(Patient patient:patients) {
             patientList.add(new PatientItem(patient));

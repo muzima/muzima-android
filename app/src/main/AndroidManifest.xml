@@ -441,9 +441,14 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/general_media"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"/>
 
-        </activity>
+        <activity
+            android:name=".view.patients.SimilarPatientsSearchActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/title_found_similar_people"
+            android:launchMode="singleTask"/>
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
