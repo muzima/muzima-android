@@ -146,10 +146,10 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private TextView tptStartDate;
     private TextView tptEndDate;
     private TextView artStartDate;
-
     private TextView lastVolunteerName;
-
     private TextView lastAllocationVolunteerName;
+    private LinearLayout lastConsentDetails;
+    private ImageView expandableConsentDetails;
 
     private String applicationLanguage;
     private ConceptController conceptController;
@@ -365,10 +365,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             preferredTestingLocation.setText(getObsByPatientUuidAndConceptId(patientUuid, 21155));
             testingDate.setText(getObsByPatientUuidAndConceptId(patientUuid, 23879));
 
-            Observation candidateConsentDateObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(patientUuid,21155, 21154, "4f215536-f90d-4e0c-81e1-074047eecd68");
-            if (candidateConsentDateObs == null) {
-                candidateConsentDateObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(patientUuid,21155, 6403, "4f215536-f90d-4e0c-81e1-074047eecd68");
-            }
+            Observation candidateConsentDateObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(patientUuid,21155, 21154,6403,"4f215536-f90d-4e0c-81e1-074047eecd68");
 
             if (candidateConsentDateObs != null) {
                 lastConsentDate.setText(DateUtils.getFormattedDate(candidateConsentDateObs.getEncounter().getEncounterDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
@@ -670,14 +667,14 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         return null;
     }
 
-    private Observation getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(String patientUuid, int conceptId, int valueCoded, String encounterTypeUuid) {
+    private Observation getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(String patientUuid, int conceptId, int valueCoded1, int valueCoded2, String encounterTypeUuid) {
         try {
             List<Observation> observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
             Collections.sort(observations, observationDateTimeComparator);
             if (observations.size() > 0) {
                 for (Observation observation:observations) {
                     EncounterType encounterType = observation.getEncounter().getEncounterType();
-                    if(valueCoded == observation.getValueCoded().getId() && encounterTypeUuid.equalsIgnoreCase(encounterType.getUuid())){
+                    if((valueCoded1 == observation.getValueCoded().getId() || valueCoded2 == observation.getValueCoded().getId()) && encounterTypeUuid.equalsIgnoreCase(encounterType.getUuid())){
                         return observation;
                     }
                 }
@@ -760,6 +757,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         artStartDate = findViewById(R.id.art_start_date);
         lastVolunteerName = findViewById(R.id.last_encounter_volunteer_name_value);
         lastAllocationVolunteerName = findViewById(R.id.last_allocation_volunteer_name);
+        lastConsentDetails = findViewById(R.id.last_consent_details);
+        expandableConsentDetails = findViewById(R.id.expand_consent_details);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         LinearLayout dadosDeConsentimento = findViewById(R.id.dados_de_consentimento);
@@ -770,6 +769,18 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         RelativeLayout confidentName = findViewById(R.id.confidant_name);
         RelativeLayout confidentPhone = findViewById(R.id.confidant_phone_number);
 
+        expandableConsentDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(lastConsentDetails.getVisibility() == View.GONE){
+                    lastConsentDetails.setVisibility(View.VISIBLE);
+                    expandableConsentDetails.setBackgroundResource(R.drawable.ic_action_arrow_up);
+                } else {
+                    lastConsentDetails.setVisibility(View.GONE);
+                    expandableConsentDetails.setBackgroundResource(R.drawable.ic_action_arrow_down);
+                }
+            }
+        });
         if (!isFGHCustomClientSummaryEnabled) {
             dadosDeConsentimento.setVisibility(View.GONE);
             artInitDateLayout.setVisibility(View.GONE);

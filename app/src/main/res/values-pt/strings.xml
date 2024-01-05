@@ -188,7 +188,7 @@
     <string name="general_label_sort_by_name">Classificar por nome</string>
     <string name="general_label_sort_status">Classificar por status</string>
     <string name="general_large">Ampla</string>
-    <string name="general_last_consent_date">Data do Último Consentimento:</string>
+    <string name="general_last_consent_date">Ultimo consent:</string>
     <string name="general_last_encounter_details">Detalhes da última visita</string>
     <string name="general_launching_map_message">Lançando mapa, por favor aguarde</string>
     <string name="general_leaderboard">Entre os melhores</string>
@@ -225,7 +225,7 @@
     <string name="general_person_create">Criar Pessoa</string>
     <string name="general_phone_number">Contacto:</string>
     <string name="general_policy_title">Políticas de Uso</string>
-    <string name="general_preferred_testing_location">Local Preferido de Testagem:</string>
+    <string name="general_preferred_testing_location">Local preferido:</string>
     <string name="general_progress_message">Isso pode demorar um pouco</string>
     <string name="general_providers">Provedores</string>
     <string name="general_reading">Lendo</string>
@@ -256,7 +256,7 @@
     <string name="general_sort_by_status">Por status</string>
     <string name="general_sync_service_already_running">O serviço de sincronização mUzima já está em execução ...</string>
     <string name="general_tags">Etiquetas</string>
-    <string name="general_testing_date">Data Prevista da Testagem:</string>
+    <string name="general_testing_date">Data preferida:</string>
     <string name="general_testing_sector">Origem CI:</string>
     <string name="general_their_statistics">Suas estatísticas</string>
     <string name="general_upload">Carregar</string>

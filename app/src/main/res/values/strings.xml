@@ -193,7 +193,7 @@
     <string name="general_label_sort_by_name">Sort by name</string>
     <string name="general_label_sort_status">Sort by status</string>
     <string name="general_large">Large</string>
-    <string name="general_last_consent_date">Last Consent Date:</string>
+    <string name="general_last_consent_date">Last Consent:</string>
     <string name="general_last_encounter_details">Last Encounter Details</string>
     <string name="general_launching_map_message">Launching map, please wait</string>
     <string name="general_leaderboard">Leaderboard</string>
@@ -230,7 +230,7 @@
     <string name="general_person_create">Create Person</string>
     <string name="general_phone_number">Phone Number:</string>
     <string name="general_policy_title">Usage Policies</string>
-    <string name="general_preferred_testing_location">Preferred Testing Location:</string>
+    <string name="general_preferred_testing_location">Preferred Location:</string>
     <string name="general_progress_message">This might take a while</string>
     <string name="general_providers">Providers</string>
     <string name="general_reading">Reading</string>

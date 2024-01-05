@@ -50,7 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                     <TextView
-                            android:layout_width="150dp"
+                            android:layout_width="wrap_content"
                             android:id="@+id/address"
                             android:layout_height="wrap_content"
                             android:text="@string/general_address"
@@ -74,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp">
                     <TextView
-                            android:layout_width="150dp"
+                            android:layout_width="wrap_content"
                             android:id="@+id/telno"
                             android:layout_height="wrap_content"
                             android:text="@string/general_phone_number"
@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp">
                     <TextView
-                        android:layout_width="150dp"
+                        android:layout_width="wrap_content"
                         android:id="@+id/confidant_name_textview"
                         android:layout_height="wrap_content"
                         android:text="@string/confidant_name"
@@ -121,7 +121,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:layout_width="150dp"
+                        android:layout_width="wrap_content"
                         android:id="@+id/confidant_phone_number_1_textview"
                         android:layout_height="wrap_content"
                         android:text="@string/confidant_phone_number_1"
@@ -145,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp">
                     <TextView
-                        android:layout_width="150dp"
+                        android:layout_width="wrap_content"
                         android:id="@+id/last_encounter_volunteer_name"
                         android:layout_height="wrap_content"
                         android:text="@string/last_encounter_volunteer_name"
@@ -168,7 +168,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp">
                     <TextView
-                            android:layout_width="150dp"
+                            android:layout_width="wrap_content"
                             android:id="@+id/art_start"
                             android:layout_height="wrap_content"
                             android:text="@string/general_art_start_date"
@@ -204,129 +204,145 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:orientation="vertical">
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/general_consent_date"
-                        android:textColor="?attr/primaryTextColor"
-                        android:fontFamily="@font/roboto_regular" />
+                   <RelativeLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content">
+                        <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/general_consent_date"
+                                android:textColor="?attr/primaryTextColor"
+                                android:fontFamily="@font/roboto_regular" />
 
-
-                <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp">
-                    <TextView
-                            android:layout_width="150dp"
-                            android:id="@+id/sector"
+                        <ImageView
+                            android:id="@+id/expand_consent_details"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/general_testing_sector"
-                            android:textColor="?attr/primaryTextColor"
-                            android:fontFamily="@font/roboto_regular" />
-                    <TextView
-                            android:id="@+id/sector_value"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="12dp"
+                            android:background="@drawable/ic_action_arrow_down" />
+                   </RelativeLayout>
+                    <LinearLayout
+                        android:id="@+id/last_consent_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+                    <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp">/
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:id="@+id/sector"
+                                android:layout_height="wrap_content"
+                                android:text="@string/general_testing_sector"
+                                android:textColor="?attr/primaryTextColor"
+                                android:fontFamily="@font/roboto_regular" />
+                        <TextView
+                                android:id="@+id/sector_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_toRightOf="@id/sector"
+                                android:layout_centerVertical="true"
+                                android:textColor="?attr/primaryTextColor"
+                                android:fontFamily="@font/roboto_regular" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@id/sector"
-                            android:layout_centerVertical="true"
-                            android:textColor="?attr/primaryTextColor"
-                            android:fontFamily="@font/roboto_regular" />
+                            android:layout_marginTop="5dp">
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:id="@+id/testing_location"
+                                android:layout_height="wrap_content"
+                                android:text="@string/general_preferred_testing_location"
+                                android:textColor="?attr/primaryTextColor"
+                                android:fontFamily="@font/roboto_regular" />
+                        <TextView
+                                android:id="@+id/preferred_testing_location"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="5dp"
+                                android:layout_toRightOf="@id/testing_location"
+                                android:textColor="?attr/primaryTextColor"
+                                android:fontFamily="@font/roboto_regular" />
 
-                </RelativeLayout>
+                    </RelativeLayout>
 
-                <RelativeLayout
+                    <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp">
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:id="@+id/testing_date"
+                                android:layout_height="wrap_content"
+                                android:text="@string/general_testing_date"
+                                android:textColor="?attr/primaryTextColor"
+                                android:fontFamily="@font/roboto_regular" />
+                        <TextView
+                                android:id="@+id/testing_date_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="5dp"
+                                android:layout_toRightOf="@id/testing_date"
+                                android:textColor="?attr/primaryTextColor"
+                                android:fontFamily="@font/roboto_regular"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp">
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:id="@+id/last_consent_date"
+                                android:layout_height="wrap_content"
+                                android:text="@string/general_last_consent_date"
+                                android:textColor="?attr/primaryTextColor"
+                                android:fontFamily="@font/roboto_regular" />
+                        <TextView
+                                android:id="@+id/last_consent_date_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="5dp"
+                                android:layout_toRightOf="@id/last_consent_date"
+                                android:textColor="?attr/primaryTextColor"
+                                android:fontFamily="@font/roboto_regular"/>
+
+                    </RelativeLayout>
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp">
-                    <TextView
-                            android:layout_width="150dp"
-                            android:id="@+id/testing_location"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:id="@+id/last_allocation_volunteer"
                             android:layout_height="wrap_content"
-                            android:text="@string/general_preferred_testing_location"
+                            android:text="@string/last_allocation_volunteer"
                             android:textColor="?attr/primaryTextColor"
                             android:fontFamily="@font/roboto_regular" />
-                    <TextView
-                            android:id="@+id/preferred_testing_location"
+                        <TextView
+                            android:id="@+id/last_allocation_volunteer_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@id/testing_location"
-                            android:textColor="?attr/primaryTextColor"
-                            android:fontFamily="@font/roboto_regular" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp">
-                    <TextView
-                            android:layout_width="150dp"
-                            android:id="@+id/testing_date"
-                            android:layout_height="wrap_content"
-                            android:text="@string/general_testing_date"
-                            android:textColor="?attr/primaryTextColor"
-                            android:fontFamily="@font/roboto_regular" />
-                    <TextView
-                            android:id="@+id/testing_date_value"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@id/testing_date"
+                            android:layout_toRightOf="@id/last_allocation_volunteer"
                             android:textColor="?attr/primaryTextColor"
                             android:fontFamily="@font/roboto_regular"/>
 
-                </RelativeLayout>
-
-                <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp">
-                    <TextView
-                            android:layout_width="150dp"
-                            android:id="@+id/last_consent_date"
-                            android:layout_height="wrap_content"
-                            android:text="@string/general_last_consent_date"
-                            android:textColor="?attr/primaryTextColor"
-                            android:fontFamily="@font/roboto_regular" />
-                    <TextView
-                            android:id="@+id/last_consent_date_value"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@id/last_consent_date"
-                            android:textColor="?attr/primaryTextColor"
-                            android:fontFamily="@font/roboto_regular"/>
-
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
-                    <TextView
-                        android:layout_width="150dp"
-                        android:id="@+id/last_allocation_volunteer"
-                        android:layout_height="wrap_content"
-                        android:text="@string/last_allocation_volunteer"
-                        android:textColor="?attr/primaryTextColor"
-                        android:fontFamily="@font/roboto_regular" />
-                    <TextView
-                        android:id="@+id/last_allocation_volunteer_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@id/last_allocation_volunteer"
-                        android:textColor="?attr/primaryTextColor"
-                        android:fontFamily="@font/roboto_regular"/>
-
-                </RelativeLayout>
-
+                    </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
