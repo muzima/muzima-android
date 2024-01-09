@@ -45,6 +45,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class LoadDownloadedCohortsTask implements Runnable {
@@ -59,6 +60,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
 
     @Override
     public void run() {
+        List<CohortWithFilter> cohortWithFilters = new ArrayList<>();
         try {
             List<String> interventions = new ArrayList<String>(){{
                 add("4b479a6c-4276-45a1-b785-ecbc7dc59ff1");
@@ -68,8 +70,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                 add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
             }};
 
-            List<CohortWithFilter> cohortWithFilters = new ArrayList<>();
-            MuzimaSetting muzimaSetting = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
+            MuzimaSetting cohortFilterDerivedConceptMapSetting = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
             DerivedObservationController derivedObservationController = ((MuzimaApplication) context.getApplicationContext()).getDerivedObservationController();
             DerivedConceptController derivedConceptController = ((MuzimaApplication) context.getApplicationContext()).getDerivedConceptController();
             MuzimaSetting ms = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_CONCEPT_MAP);
@@ -86,7 +87,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
             for (Cohort cohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
                     .getCohorts()) {
                 if (((MuzimaApplication) context.getApplicationContext()).getCohortController().isDownloaded(cohort)) {
-                    String settingValue = muzimaSetting.getValueString();
+                    String settingValue = cohortFilterDerivedConceptMapSetting.getValueString();
                     if(settingValue != null) {
                         String derivedConceptUuid = "";
                         Object derivedConceptObject = null;
@@ -241,7 +242,6 @@ public class LoadDownloadedCohortsTask implements Runnable {
                     return o1.getCohort().getName().compareTo(o2.getCohort().getName());
                 }
             });
-            cohortsLoadedCallback.onCohortsLoaded(cohortWithFilters);
         } catch (CohortController.CohortFetchException ex) {
             Log.e(getClass().getSimpleName(),"Encountered An error while fetching cohorts ",ex);
         } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
@@ -250,16 +250,12 @@ public class LoadDownloadedCohortsTask implements Runnable {
             Log.e(getClass().getSimpleName(),"Encountered a JSON Exception ",e);
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
             Log.e(getClass().getSimpleName(),"Encountered an error while fetching derived observations ",e);
-        } catch (NullPointerException e){
-            Log.e(getClass().getSimpleName(),"Encountered a null pointer exception while fetching filter setting ",e);
-            run();
-        } catch (ArrayIndexOutOfBoundsException e){
-            Log.e(getClass().getSimpleName(),"Encountered an array out of bound exception while fetching filter setting ",e);
-            run();
         } catch (DerivedConceptController.DerivedConceptFetchException e) {
             Log.e(getClass().getSimpleName(),"Encountered an error while fetching derived concepts ",e);
         } catch (ConceptController.ConceptFetchException e) {
             Log.e(getClass().getSimpleName(),"Encountered an error while fetching concepts",e);
+        } finally {
+            cohortsLoadedCallback.onCohortsLoaded(cohortWithFilters);
         }
     }
 
