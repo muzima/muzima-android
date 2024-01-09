@@ -711,7 +711,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         List<CohortFilter> filters = event.getFilters();
         try {
             MuzimaSetting muzimaSetting = ((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
-            if(muzimaSetting != null && !muzimaSetting.getValueString().isEmpty()) {
+            if(muzimaSetting != null && !StringUtils.isEmpty(muzimaSetting.getValueString())) {
                 patientSearchAdapter.filterByCohortsWithDerivedConceptFilter(filters);
             }else{
                 List<String> cohortUuids = new ArrayList<>();
