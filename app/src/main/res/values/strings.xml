@@ -795,4 +795,6 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_proceed">Proceed</string>
     <string name="general_or_age">Or Age:</string>
     <string name="general_female">Female</string>
+    <string name="general_more">More</string>
+    <string name="general_less">Less</string>
 </resources>

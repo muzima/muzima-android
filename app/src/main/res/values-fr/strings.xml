@@ -790,4 +790,6 @@
     <string name="general_or_age">Ou Âge:</string>
     <string name="last_allocation_volunteer">Alloué à:</string>
     <string name="general_female">Femelle</string>
+    <string name="general_more">Plus</string>
+    <string name="general_less">Moins</string>
 </resources>

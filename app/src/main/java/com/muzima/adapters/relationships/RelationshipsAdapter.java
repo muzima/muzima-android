@@ -97,12 +97,24 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
         bindViews((RelationshipsAdapter.ViewHolder) holder, position);
+        Relationship relationship=relationshipList.get(position);
+
+        ((ViewHolder) holder).lessMore.setOnClickListener(v -> {
+            boolean expanded = relationship.isExpanded();
+            relationship.setExpanded(!expanded);
+            notifyItemChanged(position);
+        });
     }
 
     private void bindViews(@NonNull RelationshipsAdapter.ViewHolder holder, int position) {
         Relationship relationship=relationshipList.get(position);
 
         String relatedPersonUuid = "";
+
+        boolean expanded = relationship.isExpanded();
+        holder.hivTestDetails.setVisibility(expanded ? View.VISIBLE : View.GONE);
+        holder.hivCareDetails.setVisibility(expanded ? View.VISIBLE : View.GONE);
+        holder.lessMore.setText(expanded ? R.string.general_less : R.string.general_more);
 
         if (StringUtils.equalsIgnoreCase(patientUuid, relationship.getPersonA().getUuid())) {
             relatedPersonUuid = relationship.getPersonB().getUuid();
@@ -330,6 +342,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
         List<TextView> tags;
         LinearLayout tagsLayout;
         RelativeLayout container;
+        TextView lessMore;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -348,6 +361,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
             hivCareDetails = itemView.findViewById(R.id.hiv_care_details);
             tagsLayout = itemView.findViewById(R.id.menu_tags);
             container = itemView.findViewById(R.id.item_patient_container);
+            lessMore = itemView.findViewById(R.id.hiv_details_more_less);
             tags = new ArrayList<>();
         }
 

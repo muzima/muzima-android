@@ -789,4 +789,6 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_proceed">Continuar</string>
     <string name="general_or_age">Ou Idade:</string>
     <string name="general_female">Fêmea</string>
+    <string name="general_more">Mais</string>
+    <string name="general_less">Menos</string>
 </resources>
