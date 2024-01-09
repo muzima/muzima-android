@@ -784,4 +784,6 @@
     <string name="general_or_age">Au Umri:</string>
     <string name="last_allocation_volunteer">Imetengwa kwa:</string>
     <string name="general_female">Mwanamke</string>
+    <string name="general_more">Zaidi</string>
+    <string name="general_less">Kidogo</string>
 </resources>

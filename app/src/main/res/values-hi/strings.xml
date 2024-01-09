@@ -781,4 +781,6 @@
     <string name="general_or_age">या आयु:</string>
     <string name="last_allocation_volunteer">के लिए आवंटित:</string>
     <string name="general_female">महिला</string>
+    <string name="general_more">अधिक</string>
+    <string name="general_less">कम</string>
 </resources>

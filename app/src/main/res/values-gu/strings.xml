@@ -782,4 +782,6 @@
     <string name="general_or_age">અથવા ઉંમર:</string>
     <string name="last_allocation_volunteer">ને ફાળવેલ છે:</string>
     <string name="general_female">સ્ત્રી</string>
+    <string name="general_more">વધુ</string>
+    <string name="general_less">ઓછા</string>
 </resources>
