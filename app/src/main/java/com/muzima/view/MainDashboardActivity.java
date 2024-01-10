@@ -215,6 +215,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     }
 
     private void loadCohorts(final boolean showFilter) {
+        selectedCohortFilters.clear();
         ((MuzimaApplication) getApplicationContext()).getExecutorService()
                 .execute(new LoadDownloadedCohortsTask(getApplicationContext(), new LoadDownloadedCohortsTask.OnDownloadedCohortsLoadedCallback() {
                     @Override

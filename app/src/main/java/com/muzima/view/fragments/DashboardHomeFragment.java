@@ -709,20 +709,22 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         updateCohortFilterLabel(event);
 
         List<CohortFilter> filters = event.getFilters();
+        MuzimaSetting muzimaSetting = null;
         try {
-            MuzimaSetting muzimaSetting = ((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
-            if(muzimaSetting != null && !StringUtils.isEmpty(muzimaSetting.getValueString())) {
-                patientSearchAdapter.filterByCohortsWithDerivedConceptFilter(filters);
-            }else{
-                List<String> cohortUuids = new ArrayList<>();
-                for(CohortFilter cohortFilter : filters){
-                    if(cohortFilter.getCohortWithFilter() != null && !cohortUuids.contains(cohortFilter.getCohortWithFilter().getCohort().getUuid()))
-                        cohortUuids.add(cohortFilter.getCohortWithFilter().getCohort().getUuid());
-                }
-                patientSearchAdapter.filterByCohorts(cohortUuids);
-            }
+            muzimaSetting = ((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
         } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(),"Encountered a setting fetch exception ",e);
+        }
+
+        if(muzimaSetting != null && !StringUtils.isEmpty(muzimaSetting.getValueString())) {
+            patientSearchAdapter.filterByCohortsWithDerivedConceptFilter(filters);
+        }else{
+            List<String> cohortUuids = new ArrayList<>();
+            for(CohortFilter cohortFilter : filters){
+                if(cohortFilter.getCohortWithFilter() != null && !cohortUuids.contains(cohortFilter.getCohortWithFilter().getCohort().getUuid()))
+                    cohortUuids.add(cohortFilter.getCohortWithFilter().getCohort().getUuid());
+            }
+            patientSearchAdapter.filterByCohorts(cohortUuids);
         }
     }
 
