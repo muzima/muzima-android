@@ -46,7 +46,7 @@ public class SimilarPatientsLocalSearchAdapter extends PatientsLocalSearchAdapte
                 int comparisonYear = comparisonPatient.getBirthdate().getYear();
                 String comparisonGender = comparisonPatient.getGender();
                 for (Patient patient : patients) {
-                    boolean isSimilar = patient.getBirthdate().getYear() == comparisonYear
+                    boolean isSimilar = patient.getBirthdate()!= null && patient.getBirthdate().getYear() == comparisonYear
                             && StringUtils.equals(patient.getGender(), comparisonGender);
                     if (isSimilar) {
                         similarPatients.add(patient);
