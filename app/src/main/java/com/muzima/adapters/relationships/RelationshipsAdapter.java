@@ -162,7 +162,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
             }
 
             if(relationship.getPersonA().getGender() != null) {
-                int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
+                int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female;
                 holder.genderImg.setImageDrawable(context.getResources().getDrawable(genderDrawable));
             }
             try {
