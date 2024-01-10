@@ -12,7 +12,6 @@ package com.muzima.tasks;
 
 import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_CONCEPT_MAP;
 import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_DERIVED_CONCEPT_MAP;
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale;
 
 import android.content.Context;
@@ -27,14 +26,11 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.DerivedConcept;
 import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.MuzimaSetting;
-import com.muzima.api.model.Observation;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.MuzimaSettingController;
-import com.muzima.controller.ObservationController;
-import com.muzima.model.CohortWithFilter;
 import com.muzima.model.CohortWithFilter;
 import com.muzima.utils.StringUtils;
 
@@ -70,14 +66,22 @@ public class LoadDownloadedCohortsTask implements Runnable {
                 add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
             }};
 
-            MuzimaSetting cohortFilterDerivedConceptMapSetting = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
+            MuzimaSetting cohortFilterDerivedConceptMapSetting = null;
+            MuzimaSetting cohortFilterConceptMapSetting = null;
+            try{
+                cohortFilterDerivedConceptMapSetting = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
+                cohortFilterConceptMapSetting = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_CONCEPT_MAP);
+
+            } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+                Log.e(getClass().getSimpleName(),"Encountered An error while fetching muzima settings ",e);
+            }
+
             DerivedObservationController derivedObservationController = ((MuzimaApplication) context.getApplicationContext()).getDerivedObservationController();
             DerivedConceptController derivedConceptController = ((MuzimaApplication) context.getApplicationContext()).getDerivedConceptController();
-            MuzimaSetting ms = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_CONCEPT_MAP);
             ConceptController conceptController = ((MuzimaApplication) context.getApplicationContext()).getConceptController();
             JSONObject jsonCohortObject = new JSONObject();
-            if(ms != null) {
-                String obsSettingValue = ms.getValueString();
+            if(cohortFilterConceptMapSetting != null) {
+                String obsSettingValue = cohortFilterConceptMapSetting.getValueString();
                 if (obsSettingValue != null) {
                     jsonCohortObject = new JSONObject(obsSettingValue);
                 }
@@ -87,13 +91,12 @@ public class LoadDownloadedCohortsTask implements Runnable {
             for (Cohort cohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
                     .getCohorts()) {
                 if (((MuzimaApplication) context.getApplicationContext()).getCohortController().isDownloaded(cohort)) {
-                    String settingValue = cohortFilterDerivedConceptMapSetting.getValueString();
-                    if(settingValue != null) {
+                    if(cohortFilterDerivedConceptMapSetting != null && cohortFilterDerivedConceptMapSetting.getValueString() != null) {
+                        String settingValue = cohortFilterDerivedConceptMapSetting.getValueString();
                         String derivedConceptUuid = "";
                         Object derivedConceptObject = null;
                         JSONObject jsonObject = new JSONObject(settingValue);
                         if (jsonObject.has(cohort.getUuid())) {
-                            cohortUuids.add(cohort.getUuid());
                             derivedConceptObject = jsonObject.get(cohort.getUuid());
                             if (derivedConceptObject != null && derivedConceptObject instanceof JSONArray) {
                                 JSONArray jsonArray = (JSONArray) derivedConceptObject;
@@ -180,8 +183,8 @@ public class LoadDownloadedCohortsTask implements Runnable {
                         }
                     }
 
-                    if(ms != null) {
-                        String obsSettingValue = ms.getValueString();
+                    if(cohortFilterConceptMapSetting != null) {
+                        String obsSettingValue = cohortFilterConceptMapSetting.getValueString();
                         if (obsSettingValue != null) {
                             String conceptUuid = "";
                             Object conceptObject = null;
@@ -244,8 +247,6 @@ public class LoadDownloadedCohortsTask implements Runnable {
             });
         } catch (CohortController.CohortFetchException ex) {
             Log.e(getClass().getSimpleName(),"Encountered An error while fetching cohorts ",ex);
-        } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
-            Log.e(getClass().getSimpleName(),"Encountered An error while fetching muzima settings ",e);
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(),"Encountered a JSON Exception ",e);
         } catch (DerivedObservationController.DerivedObservationFetchException e) {
