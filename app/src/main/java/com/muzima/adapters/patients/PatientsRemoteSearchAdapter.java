@@ -16,6 +16,7 @@ import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
 import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
@@ -29,12 +30,14 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 public class PatientsRemoteSearchAdapter extends PatientAdapterHelper {
     private final PatientController patientController;
     private final String searchString;
+    private final MuzimaSettingController muzimaSettingController;
 
     public PatientsRemoteSearchAdapter(Context context, PatientController patientController,
-                                       String searchString) {
-        super(context,patientController);
+                                       String searchString, MuzimaSettingController muzimaSettingController) {
+        super(context,patientController, muzimaSettingController);
         this.patientController = patientController;
         this.searchString = searchString;
+        this.muzimaSettingController = muzimaSettingController;
     }
 
     @Override

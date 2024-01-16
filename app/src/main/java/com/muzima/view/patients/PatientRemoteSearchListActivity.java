@@ -88,7 +88,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         recyclerView = findViewById(R.id.remote_search_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         patientAdapter = new PatientsRemoteSearchAdapter(this,
-                ((MuzimaApplication) getApplicationContext()).getPatientController(), searchString);
+                ((MuzimaApplication) getApplicationContext()).getPatientController(), searchString, ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController());
         patientAdapter.setBackgroundListQueryTaskListener(this);
         patientAdapter.setPatientListClickListener(this);
         recyclerView.setAdapter(patientAdapter);

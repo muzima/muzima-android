@@ -134,6 +134,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     private PatientTagsListAdapter tagsListAdapter;
     private TagPreferenceService tagPreferenceService;
     private final LanguageUtil languageUtil = new LanguageUtil();
+    private MuzimaSettingController muzimaSettingController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +178,8 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
 
         muzimaSyncService = muzimaApplication.getMuzimaSyncService();
         patientController = muzimaApplication.getPatientController();
+        muzimaSettingController = muzimaApplication.getMuzimaSettingController();
+
         serverSearchProgressDialog = new ProgressDialog(this);
 
         serverSearchProgressDialog.setCancelable(false);
@@ -366,7 +369,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         patientAdapter = new PatientsLocalSearchAdapter(this,
                 ((MuzimaApplication) getApplicationContext()).getPatientController(), new ArrayList<String>(){{add(cohortId);}},
-               null ,getCurrentGPSLocation());
+               null ,getCurrentGPSLocation(),  ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController());
 
         patientAdapter.setBackgroundListQueryTaskListener(this);
         patientAdapter.setPatientListClickListener(this);
@@ -801,7 +804,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         initSelectedTags();
         ListView tagsDrawerList = findViewById(R.id.tags_list);
         tagsDrawerList.setEmptyView(findViewById(R.id.tags_no_data_msg));
-        tagsListAdapter = new PatientTagsListAdapter(this, R.layout.item_tags_list, patientController);
+        tagsListAdapter = new PatientTagsListAdapter(this, R.layout.item_tags_list, patientController, muzimaSettingController);
         tagsDrawerList.setAdapter(tagsListAdapter);
         tagsDrawerList.setOnItemClickListener(tagsListAdapter);
         ActionBarDrawerToggle actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,

@@ -188,7 +188,7 @@
     <string name="general_label_sort_by_name">Classificar por nome</string>
     <string name="general_label_sort_status">Classificar por status</string>
     <string name="general_large">Ampla</string>
-    <string name="general_last_consent_date">Data do Último Consentimento:</string>
+    <string name="general_last_consent_date">Ultimo consent:</string>
     <string name="general_last_encounter_details">Detalhes da última visita</string>
     <string name="general_launching_map_message">Lançando mapa, por favor aguarde</string>
     <string name="general_leaderboard">Entre os melhores</string>
@@ -225,7 +225,7 @@
     <string name="general_person_create">Criar Pessoa</string>
     <string name="general_phone_number">Contacto:</string>
     <string name="general_policy_title">Políticas de Uso</string>
-    <string name="general_preferred_testing_location">Local Preferido de Testagem:</string>
+    <string name="general_preferred_testing_location">Local preferido:</string>
     <string name="general_progress_message">Isso pode demorar um pouco</string>
     <string name="general_providers">Provedores</string>
     <string name="general_reading">Lendo</string>
@@ -256,7 +256,7 @@
     <string name="general_sort_by_status">Por status</string>
     <string name="general_sync_service_already_running">O serviço de sincronização mUzima já está em execução ...</string>
     <string name="general_tags">Etiquetas</string>
-    <string name="general_testing_date">Data Prevista da Testagem:</string>
+    <string name="general_testing_date">Data preferida:</string>
     <string name="general_testing_sector">Origem CI:</string>
     <string name="general_their_statistics">Suas estatísticas</string>
     <string name="general_upload">Carregar</string>
@@ -778,6 +778,20 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_choose">Escolher...</string>
     <string name="warning_new_user_login">Você está logado como um novo usuário no aplicativo, o aplicativo será redefinido para uma nova configuração. Você quer prosseguir?</string>
     <string name="last_allocation_volunteer">Alocado para:</string>
+    <string name="general_open_registration_form">Abrir formulário de inscrição</string>
+    <string name="info_cannot_find_person_on_list">Não consigo encontrar a pessoa na lista.</string>
+    <string name="info_similar_people_found_msg">Abaixo está uma lista de pessoas que parecem semelhantes àquela que você está prestes a criar.</string>
+    <string name="info_similar_people_found_tip">Se a pessoa que você está criando já existir, selecione-a na lista. Caso contrário, clique no botão abaixo para continuar criando uma nova pessoa.</string>
+    <string name="title_found_similar_people">Encontrei pessoas semelhantes</string>
+    <string name="general_person_name">Nome da pessoa:</string>
+    <string name="general_gender">Gênero:</string>
+    <string name="general_male">Macho</string>
+    <string name="general_birthdate">Data de nascimento:</string>
+    <string name="general_proceed">Continuar</string>
+    <string name="general_or_age">Ou Idade:</string>
+    <string name="general_female">Fêmea</string>
+    <string name="general_more">Mais</string>
+    <string name="general_less">Menos</string>
     <string name="general_error">Erro!</string>
     <string name="attempt_number_limit_reached">Não pode mais criar visitas para este paciente, pois já atingiu o número máximo de tentativa de visitas (3).</string>
     <string name="visit_made_sucessfully">Visita feita com sucesso!</string>

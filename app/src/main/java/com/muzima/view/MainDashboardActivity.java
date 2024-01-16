@@ -215,6 +215,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     }
 
     private void loadCohorts(final boolean showFilter) {
+        selectedCohortFilters.clear();
         ((MuzimaApplication) getApplicationContext()).getExecutorService()
                 .execute(new LoadDownloadedCohortsTask(getApplicationContext(), new LoadDownloadedCohortsTask.OnDownloadedCohortsLoadedCallback() {
                     @Override
@@ -725,7 +726,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         initSelectedTags();
         ListView tagsDrawerList = findViewById(R.id.tags_list);
         tagsDrawerList.setEmptyView(findViewById(R.id.tags_no_data_msg));
-        tagsListAdapter = new PatientTagsListAdapter(this, R.layout.item_tags_list, ((MuzimaApplication) getApplicationContext()).getPatientController());
+        tagsListAdapter = new PatientTagsListAdapter(this, R.layout.item_tags_list, ((MuzimaApplication) getApplicationContext()).getPatientController(), ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController());
         tagsDrawerList.setAdapter(tagsListAdapter);
         tagsDrawerList.setOnItemClickListener(tagsListAdapter);
         ActionBarDrawerToggle actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,

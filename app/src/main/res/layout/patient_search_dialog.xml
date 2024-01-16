@@ -1,0 +1,133 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/themeColor"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="16sp"
+            android:layout_marginTop="4dp"
+            android:text="@string/general_patient_registration"
+            android:textAllCaps="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/general_person_name"
+            />
+        <EditText
+            android:id="@+id/patient_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/general_gender"
+            />
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton android:id="@+id/radio_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/general_male"/>
+            <RadioButton android:id="@+id/radio_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/general_female"/>
+        </RadioGroup>
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_margin="4dp"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="0.5">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/general_birthdate"
+                />
+            <EditText
+                android:id="@+id/patient_birthdate"
+                android:inputType="none"
+                android:focusable="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="0.5">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/general_or_age"
+                    />
+                <EditText
+                    android:id="@+id/patient_age"
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_margin="4dp"
+        android:orientation="horizontal"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right">
+
+        <Button
+            android:id="@+id/cancel_pt_registration_search"
+            android:background="@color/transparent"
+            android:text="@string/general_cancel"
+            android:textColor="?attr/primaryTextColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"/>
+
+        <Button
+            android:id="@+id/proceed_pt_registration_search"
+            android:background="@color/theme_color"
+            android:backgroundTint="@color/color_state_button"
+            android:enabled="false"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/general_proceed"
+            android:textColor="?attr/primaryTextColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>
