@@ -768,4 +768,23 @@
     <string name="write_shr_to_card_general">कार्ड में SHR लिखें</string>
     <string name="general_choose">चुनना...</string>
     <string name="warning_new_user_login">आप एप्लिकेशन में एक नए उपयोगकर्ता के रूप में लॉगिन हैं, एप्लिकेशन नए सेटअप के लिए रीसेट हो जाएगा। क्या आपकी आगे बढ़ने की इच्छा है?</string>
+    <string name="general_open_registration_form">पंजीकरण फॉर्म खोलें</string>
+    <string name="info_cannot_find_person_on_list">मुझे सूची में वह व्यक्ति नहीं मिल रहा है।</string>
+    <string name="info_similar_people_found_msg">नीचे उन लोगों की सूची दी गई है जो उन लोगों के समान लगते हैं जिन्हें आप बनाने जा रहे हैं।</string>
+    <string name="info_similar_people_found_tip">यदि आप जिस व्यक्ति को बनाने की प्रक्रिया में हैं वह पहले से मौजूद है, तो उन्हें सूची से चुनें। अन्यथा नया व्यक्ति बनाना जारी रखने के लिए नीचे दिए गए बटन पर क्लिक करें।</string>
+    <string name="title_found_similar_people">ऐसे ही लोग मिले</string>
+    <string name="general_person_name">व्यक्ति का नाम:</string>
+    <string name="general_gender">लिंग:</string>
+    <string name="general_male">पुरुष</string>
+    <string name="general_birthdate">जन्म तिथि:</string>
+    <string name="general_proceed">आगे बढ़ना</string>
+    <string name="general_or_age">या आयु:</string>
+    <string name="last_allocation_volunteer">के लिए आवंटित:</string>
+    <string name="general_female">महिला</string>
+    <string name="general_more">अधिक</string>
+    <string name="general_less">कम</string>
+    <string name="general_error">गलती</string>
+    <string name="attempt_number_limit_reached">विज़िट प्रयासों की संख्या पार हो गई</string>
+    <string name="visit_made_sucessfully">यात्रा पहले ही सफलतापूर्वक हो चुकी है</string>
+    <string name="todos_utentes">Todos os Utentes</string>
 </resources>

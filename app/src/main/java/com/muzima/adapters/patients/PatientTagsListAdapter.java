@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.PatientTag;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.Constants;
@@ -42,11 +43,13 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
 
     private final PatientController patientController;
     PatientsLocalSearchAdapter patientsLocalSearchAdapter;
+    private final  MuzimaSettingController muzimaSettingController;
 
-    public PatientTagsListAdapter(Context context, int textViewResourceId,PatientController patientController) {
+    public PatientTagsListAdapter(Context context, int textViewResourceId, PatientController patientController, MuzimaSettingController muzimaSettingController) {
         super(context, textViewResourceId);
         this.patientController = patientController;
-        patientsLocalSearchAdapter = new PatientsLocalSearchAdapter(context, patientController, null,null, null);
+        this.muzimaSettingController = muzimaSettingController;
+        patientsLocalSearchAdapter = new PatientsLocalSearchAdapter(context, patientController, null,null, null, muzimaSettingController);
     }
 
     public void onTagsChanged() {

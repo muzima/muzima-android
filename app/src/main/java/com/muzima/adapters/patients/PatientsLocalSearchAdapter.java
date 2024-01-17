@@ -13,6 +13,7 @@ package com.muzima.adapters.patients;
 import android.content.Context;
 import android.util.Log;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.CohortFilter;
 import com.muzima.model.location.MuzimaGPSLocation;
@@ -29,13 +30,15 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
     private final List<String> cohortUuids;
     private List<CohortFilter> filters;
     private MuzimaAsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
+    private final MuzimaSettingController muzimaSettingController;
 
 
     public PatientsLocalSearchAdapter(Context context, PatientController patientController,
                                       List<String> cohortUuids, List<CohortFilter> filters,
-                                      MuzimaGPSLocation currentLocation) {
-        super(context,patientController);
+                                      MuzimaGPSLocation currentLocation, MuzimaSettingController muzimaSettingController) {
+        super(context,patientController, muzimaSettingController);
         this.patientController = patientController;
+        this.muzimaSettingController = muzimaSettingController;
         if (cohortUuids != null){
             this.cohortUuids = cohortUuids;
         } else {
@@ -169,7 +172,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                         }
                     }
                 } else if(filters.size()>0) {
-                    if(filters.size()==1 && filters.get(0).getCohortWithDerivedConceptFilter()==null){
+                    if(filters.size()==1 && filters.get(0).getCohortWithFilter()==null){
                         int patientCount = patientController.countAllPatients();
                         if (patientCount <= pageSize) {
                             patients = patientController.getAllPatients();
@@ -197,32 +200,52 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                         }
                     } else {
                         List<CohortFilter> filterLoop = filters;
+                        List<String> patientUuids = new ArrayList<>();
                         for(CohortFilter filter : filterLoop) {
-                            int patientCount = patientController.countPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid());
+                            int patientCount = patientController.countPatients(filter.getCohortWithFilter().getCohort().getUuid());
                             List<Patient> temp = null;
+                            List<Patient> filteredTemp = new ArrayList<>();
                             if (patientCount <= pageSize) {
-                                temp = patientController.getPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter());
-                                if(patients == null)
+                                temp = patientController.getPatients(filter.getCohortWithFilter().getCohort().getUuid(),filter.getCohortWithFilter().getDerivedConceptUuid(),filter.getCohortWithFilter().getDerivedObservationFilter(),filter.getCohortWithFilter().getConceptUuid(),filter.getCohortWithFilter().getObservationFilter());
+                                if(patients == null){
+                                    for(Patient patient : temp){
+                                        patientUuids.add(patient.getUuid());
+                                    }
                                     patients = temp;
-                                else
-                                    patients.addAll(temp);
-                                publishProgress(temp);
+                                    filteredTemp = temp;
+                                } else {
+                                    for(Patient patient : temp){
+                                        patientUuids.add(patient.getUuid());
+                                        filteredTemp.add(patient);
+                                        patients.add(patient);
+                                    }
+                                }
+                                publishProgress(filteredTemp);
                             } else {
                                 int pages = new Double(Math.ceil((float) patientCount / pageSize)).intValue();
 
                                 for (int page = 1; page <= pages; page++) {
                                     if (!isCancelled()) {
                                         if (patients == null) {
-                                            patients = patientController.getPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter(),page, pageSize);
+                                            patients = patientController.getPatients(filter.getCohortWithFilter().getCohort().getUuid(),filter.getCohortWithFilter().getDerivedConceptUuid(),filter.getCohortWithFilter().getDerivedObservationFilter(),filter.getCohortWithFilter().getConceptUuid(),filter.getCohortWithFilter().getObservationFilter(),page, pageSize);
 
                                             if (patients != null) {
+                                                for(Patient patient : patients) {
+                                                    patientUuids.add(patient.getUuid());
+                                                }
                                                 publishProgress(patients);
                                             }
                                         } else {
-                                            temp = patientController.getPatients(filter.getCohortWithDerivedConceptFilter().getCohort().getUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedConceptUuid(),filter.getCohortWithDerivedConceptFilter().getDerivedObservationFilter(),page, pageSize);
+                                            temp = patientController.getPatients(filter.getCohortWithFilter().getCohort().getUuid(),filter.getCohortWithFilter().getDerivedConceptUuid(),filter.getCohortWithFilter().getDerivedObservationFilter(),filter.getCohortWithFilter().getConceptUuid(),filter.getCohortWithFilter().getObservationFilter(), page, pageSize);
                                             if (temp != null) {
-                                                patients.addAll(temp);
-                                                publishProgress(temp);
+                                                for(Patient patient : temp) {
+                                                    if(!patientUuids.contains(patient.getUuid())) {
+                                                        patientUuids.add(patient.getUuid());
+                                                        filteredTemp.add(patient);
+                                                        patients.add(patient);
+                                                    }
+                                                }
+                                                publishProgress(filteredTemp);
                                             }
                                         }
                                     } else {

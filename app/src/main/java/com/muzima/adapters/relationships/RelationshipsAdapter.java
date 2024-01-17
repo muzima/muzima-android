@@ -28,16 +28,17 @@ import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
+import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.api.model.Concept;
-import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
+import com.muzima.api.model.PersonTag;
 import com.muzima.api.model.Relationship;
 import com.muzima.controller.ConceptController;
-import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.PersonController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.DateUtils;
@@ -45,21 +46,18 @@ import com.muzima.utils.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.muzima.util.Constants.ServerSettings.SUPPORTED_RELATIONSHIP_TYPES;
-import static com.muzima.util.Constants.ServerSettings.ALLOW_PATIENT_RELATIVES_DISPLAY;
 import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT;
 
 import org.json.JSONException;
 
-public class RelationshipsAdapter extends ListAdapter<Relationship> {
+public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private final String patientUuid;
     private final RelationshipController relationshipController;
@@ -67,55 +65,56 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
     private MuzimaApplication muzimaApplication;
     private ConceptController conceptController;
     private ObservationController observationController;
+    private Context context;
+    private PersonController personController;
+    private List<Relationship> relationshipList;
+    private RelationshipListClickListener relationshipListClickListener;
+    private List<Relationship> selectedRelationships;
 
 
     public RelationshipsAdapter(Activity activity, int textViewResourceId, RelationshipController relationshipController,
                                 String patientUuid, PatientController patientController) {
-        super(activity, textViewResourceId);
         this.patientUuid = patientUuid;
         this.relationshipController = relationshipController;
         this.patientController = patientController;
         muzimaApplication = (MuzimaApplication) activity.getApplicationContext();
         conceptController = muzimaApplication.getConceptController();
         observationController = muzimaApplication.getObservationController();
-    }
-
-    @Override
-    public void reloadData() {
-        new BackgroundQueryTask().execute(patientUuid);
+        personController = muzimaApplication.getPersonController();
+        relationshipList = new ArrayList<>();
+        selectedRelationships = new ArrayList<>();
+        context = activity;
     }
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        Relationship relationship=getItem(position);
-        Context context = getContext();
-        ViewHolder holder;
-        if (convertView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(context);
-            convertView = layoutInflater.inflate(R.layout.item_relationships_list_multi_checkable, parent, false);
-            convertView.setClickable(false);
-            convertView.setFocusable(false);
-            holder = new ViewHolder();
-            holder.relatedPerson = convertView.findViewById(R.id.name);
-            holder.relationshipType = convertView.findViewById(R.id.relationshipType);
-            holder.identifier = convertView.findViewById(R.id.identifier);
-            holder.genderImg = convertView.findViewById(R.id.genderImg);
-            holder.dateOfBirth = convertView.findViewById(R.id.dateOfBirth);
-            holder.age = convertView.findViewById(R.id.age_text_label);
-            holder.identifier = convertView.findViewById(R.id.identifier);
-            holder.testDate = convertView.findViewById(R.id.hiv_test_date);
-            holder.results = convertView.findViewById(R.id.hiv_results);
-            holder.inHivCare = convertView.findViewById(R.id.in_hiv_care);
-            holder.inCCR = convertView.findViewById(R.id.in_ccr);
-            holder.hivTestDetails = convertView.findViewById(R.id.hiv_test_details);
-            holder.hivCareDetails = convertView.findViewById(R.id.hiv_care_details);
-            convertView.setTag(holder);
-        }else {
-            holder = (ViewHolder) convertView.getTag();
-        }
+    public RelationshipsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.item_relationships_list_multi_checkable, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
+        bindViews((RelationshipsAdapter.ViewHolder) holder, position);
+        Relationship relationship=relationshipList.get(position);
+
+        ((ViewHolder) holder).lessMore.setOnClickListener(v -> {
+            boolean expanded = relationship.isExpanded();
+            relationship.setExpanded(!expanded);
+            notifyItemChanged(position);
+        });
+    }
+
+    private void bindViews(@NonNull RelationshipsAdapter.ViewHolder holder, int position) {
+        Relationship relationship=relationshipList.get(position);
 
         String relatedPersonUuid = "";
+
+        boolean expanded = relationship.isExpanded();
+        holder.hivTestDetails.setVisibility(expanded ? View.VISIBLE : View.GONE);
+        holder.hivCareDetails.setVisibility(expanded ? View.VISIBLE : View.GONE);
+        holder.lessMore.setText(expanded ? R.string.general_less : R.string.general_more);
 
         if (StringUtils.equalsIgnoreCase(patientUuid, relationship.getPersonA().getUuid())) {
             relatedPersonUuid = relationship.getPersonB().getUuid();
@@ -134,9 +133,12 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             }
 
             if(relationship.getPersonB().getGender() != null) {
-                int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
-                holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+                int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female;
+                holder.genderImg.setImageDrawable(context.getResources().getDrawable(genderDrawable));
             }
+            else{
+               holder.genderImg.setImageDrawable(context.getResources().getDrawable(R.drawable.generic_person));
+           }
             try {
                 Patient p = patientController.getPatientByUuid(relationship.getPersonB().getUuid());
                 if (p != null){
@@ -162,9 +164,12 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                 holder.age.setText(String.format(""));
             }
 
-            if(relationship.getPersonA().getGender() != null) {
+            if(relationship.getPersonA().getGender() != null && !StringUtils.isEmpty(relationship.getPersonA().getGender())) {
                 int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
-                holder.genderImg.setImageDrawable(getContext().getResources().getDrawable(genderDrawable));
+                holder.genderImg.setImageDrawable(context.getResources().getDrawable(genderDrawable));
+            }
+            else{
+                holder.genderImg.setImageDrawable(context.getResources().getDrawable(R.drawable.generic_person));
             }
             try {
                 Patient p = patientController.getPatientByUuid(relationship.getPersonA().getUuid());
@@ -182,8 +187,8 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             holder.hivTestDetails.setVisibility(View.GONE);
             holder.hivCareDetails.setVisibility(View.GONE);
         }else {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-            String applicationLanguage = preferences.getString(getContext().getResources().getString(R.string.preference_app_language), getContext().getResources().getString(R.string.language_english));
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
 
             try {
                 holder.testDate.setText(getObsDateTimeByPatientUuidAndConceptId(relatedPersonUuid, 23779, observationController, conceptController, applicationLanguage));
@@ -197,8 +202,43 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
                 Log.e(getClass().getSimpleName(),"Encountered LoadObservationException ",e);
             }
         }
+        try {
+            Person person = personController.getPersonByUuid(relatedPersonUuid);
+            if(person != null){
+                addTags(holder,person);
+            }
+        } catch (PersonController.PersonLoadException e) {
+            Log.e(getClass().getSimpleName(), "Encountered an exception while loading persons");
+        }
 
-        return convertView;
+        holder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(relationshipListClickListener != null) {
+                    relationshipListClickListener.onItemClick(view, position);
+
+                }
+            }
+        });
+
+        holder.container.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if(relationshipListClickListener != null) {
+                    relationshipListClickListener.onItemLongClick(view, position);
+                }
+                return true;
+            }
+        });
+    }
+
+    public void setRelationshipListClickListener(RelationshipListClickListener relationshipListClickListener) {
+        this.relationshipListClickListener = relationshipListClickListener;
+    }
+
+    @Override
+    public void reloadData() {
+        new BackgroundQueryTask().execute(patientUuid);
     }
 
     public String getObsByPatientUuidAndConceptId(String patientUuid, int conceptId, ObservationController observationController, ConceptController conceptController, String applicationLanguage) throws JSONException, ObservationController.LoadObservationException {
@@ -237,49 +277,6 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
         }
         return StringUtils.EMPTY;
-    }
-
-    private boolean isContactHivPositive(String patientUuid, int conceptId, ObservationController observationController, ConceptController conceptController) {
-        List<Observation> observations = new ArrayList<>();
-        try {
-            Concept concept = conceptController.getConceptById(conceptId);
-            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
-            Collections.sort(observations, observationDateTimeComparator);
-            if(observations.size()>0){
-                Observation obs = observations.get(0);
-                if(concept.isCoded()){
-                    if(obs.getValueCoded().getId() == 703)
-                        return true;
-                    else
-                        return false;
-
-                }
-            }
-        } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
-        }
-        return false;
-    }
-
-    private boolean isHivTestNegativeOrPositive(String patientUuid, int conceptId, ObservationController observationController, ConceptController conceptController) {
-        List<Observation> observations = new ArrayList<>();
-        try {
-            Concept concept = conceptController.getConceptById(conceptId);
-            observations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
-            Collections.sort(observations, observationDateTimeComparator);
-            if(observations.size()>0){
-                Observation obs = observations.get(0);
-                if(concept.isCoded()){
-                    if(obs.getValueCoded().getId() == 664 || obs.getValueCoded().getId() == 703)
-                        return true;
-                    else
-                        return false;
-                }
-            }
-        } catch (ObservationController.LoadObservationException | Exception | ConceptController.ConceptFetchException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
-        }
-        return false;
     }
 
     private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {
@@ -321,14 +318,19 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
             } catch (RelationshipController.DeleteRelationshipException e) {
                 Log.e(getClass().getSimpleName(), "Error while deleting the relationships", e);
             }
-            clear();
-            addAll(allRelationshipsForPatient);
+            relationshipList.clear();
+            relationshipList.addAll(allRelationshipsForPatient);
         } catch (RelationshipController.RetrieveRelationshipException e) {
             Log.e(getClass().getSimpleName(), "Error while fetching the relationships", e);
         }
     }
 
-    class ViewHolder {
+    @Override
+    public int getItemCount() {
+        return relationshipList.size();
+    }
+
+    public class ViewHolder extends RecyclerAdapter.ViewHolder{
         ImageView genderImg;
         TextView dateOfBirth;
         TextView age;
@@ -343,6 +345,86 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         RelativeLayout hivTestDetails;
         RelativeLayout hivCareDetails;
 
+        List<TextView> tags;
+        LinearLayout tagsLayout;
+        RelativeLayout container;
+        TextView lessMore;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            relatedPerson = itemView.findViewById(R.id.name);
+            relationshipType = itemView.findViewById(R.id.relationshipType);
+            identifier = itemView.findViewById(R.id.identifier);
+            genderImg = itemView.findViewById(R.id.genderImg);
+            dateOfBirth = itemView.findViewById(R.id.dateOfBirth);
+            age = itemView.findViewById(R.id.age_text_label);
+            identifier = itemView.findViewById(R.id.identifier);
+            testDate = itemView.findViewById(R.id.hiv_test_date);
+            results = itemView.findViewById(R.id.hiv_results);
+            inHivCare = itemView.findViewById(R.id.in_hiv_care);
+            inCCR = itemView.findViewById(R.id.in_ccr);
+            hivTestDetails = itemView.findViewById(R.id.hiv_test_details);
+            hivCareDetails = itemView.findViewById(R.id.hiv_care_details);
+            tagsLayout = itemView.findViewById(R.id.menu_tags);
+            container = itemView.findViewById(R.id.item_patient_container);
+            lessMore = itemView.findViewById(R.id.hiv_details_more_less);
+            tags = new ArrayList<>();
+        }
+
+        public void addTag(TextView tag) {
+            this.tags.add(tag);
+            tagsLayout.addView(tag);
+        }
+
+        void removeTags(List<TextView> tagsToRemove) {
+            for (TextView tag : tagsToRemove) {
+                tagsLayout.removeView(tag);
+            }
+            tags.removeAll(tagsToRemove);
+            tagsLayout.removeAllViews();
+        }
+    }
+
+
+    private void addTags(RelationshipsAdapter.ViewHolder holder, Person person) {
+        PersonTag[] tags = person.getPersonTags();
+        if(tags!=null) {
+            if (tags.length > 0) {
+                LayoutInflater layoutInflater = LayoutInflater.from(context);
+
+                //add update tags
+                for (int i = 0; i < tags.length; i++) {
+                    TextView textView = null;
+                    if (holder.tags.size() <= i) {
+                        textView = newTextView(layoutInflater);
+                        holder.addTag(textView);
+                    }
+                    textView = holder.tags.get(i);
+                    textView.setBackgroundColor(personController.getTagColor(tags[i].getUuid()));
+                    textView.setText(tags[i].getName());
+                }
+
+                //remove existing extra tags which are present because of recycled list view
+                if (tags.length < holder.tags.size()) {
+                    List<TextView> tagsToRemove = new ArrayList<>();
+                    for (int i = tags.length; i < holder.tags.size(); i++) {
+                        tagsToRemove.add(holder.tags.get(i));
+                    }
+                    holder.removeTags(tagsToRemove);
+                }
+            } else {
+                holder.tags.clear();
+                holder.tagsLayout.removeAllViews();
+            }
+        }
+    }
+
+    private TextView newTextView(LayoutInflater layoutInflater) {
+        TextView textView = (TextView) layoutInflater.inflate(R.layout.tag, null, false);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.setMargins(1, 0, 0, 0);
+        textView.setLayoutParams(layoutParams);
+        return textView;
     }
 
     private class BackgroundQueryTask extends MuzimaAsyncTask<String, Void, List<Relationship>> {
@@ -368,18 +450,51 @@ public class RelationshipsAdapter extends ListAdapter<Relationship> {
         @Override
         protected void onPostExecute(List<Relationship> relationships){
             if(relationships==null){
-                Toast.makeText(getContext(),getContext().getString(R.string.error_relationship_load),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,context.getString(R.string.error_relationship_load),Toast.LENGTH_SHORT).show();
                 return;
             }
-            clear();
-            addAll(relationships);
+            relationshipList.clear();
+            relationshipList.addAll(relationships);
+            if (backgroundListQueryTaskListener != null) {
+                backgroundListQueryTaskListener.onQueryTaskFinish();
+            }
             notifyDataSetChanged();
-            backgroundListQueryTaskListener.onQueryTaskFinish();
         }
 
         @Override
         protected void onBackgroundError(Exception e) {
 
         }
+    }
+
+    public boolean isEmpty(){
+        return relationshipList.isEmpty();
+    }
+
+    public interface RelationshipListClickListener {
+        void onItemLongClick(View view, int position);
+        void onItemClick(View view, int position);
+    }
+
+    public Relationship getRelationship(int position){
+       Relationship relationship =  relationshipList.get(position);
+       return relationship;
+    }
+
+    public void toggleSelection(View view, int position){
+        Relationship relationship = relationshipList.get(position);
+        if (!selectedRelationships.contains(relationship)) {
+            selectedRelationships.add(relationship);
+        } else if (selectedRelationships.contains(relationship)) {
+            selectedRelationships.remove(relationship.getUuid());
+        }
+    }
+
+    public List<Relationship> getSelectedRelationships() {
+        return selectedRelationships;
+    }
+
+    public void resetSelectedRelationships() {
+        selectedRelationships = new ArrayList<>();
     }
 }

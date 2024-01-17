@@ -8,8 +8,8 @@
         android:layout_gravity="center"
         style="@style/NoDataMsg"/>
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/relationships_list"
-        style="@style/MuzimaSelectableListView"></ListView>
+        style="@style/MuzimaSelectableListView"></androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

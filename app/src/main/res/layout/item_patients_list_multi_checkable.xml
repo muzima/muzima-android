@@ -137,6 +137,16 @@
                             android:layout_height="wrap_content"/>
 
                 </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/patient_additional_details_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="7dp"
+                    android:orientation="vertical">
+
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
