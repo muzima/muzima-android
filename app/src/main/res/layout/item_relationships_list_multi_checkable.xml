@@ -272,14 +272,22 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
-    <TextView
+    <ImageView
         android:id="@+id/hiv_details_more_less"
-        android:textColor="#E6032AFA"
         android:layout_below="@id/inner_layout"
         android:layout_alignParentEnd="true"
-        android:text="@string/general_more"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></TextView>
+        android:layout_width="30dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_action_arrow_down"
+        android:layout_gravity="left"/>
+
+    <View android:layout_below="@+id/hiv_details_more_less"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="?attr/secondaryTextColor"/>
 </RelativeLayout>
 
 

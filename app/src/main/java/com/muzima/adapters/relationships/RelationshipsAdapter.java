@@ -114,7 +114,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
         boolean expanded = relationship.isExpanded();
         holder.hivTestDetails.setVisibility(expanded ? View.VISIBLE : View.GONE);
         holder.hivCareDetails.setVisibility(expanded ? View.VISIBLE : View.GONE);
-        holder.lessMore.setText(expanded ? R.string.general_less : R.string.general_more);
+        holder.lessMore.setImageResource(expanded ? R.drawable.ic_action_arrow_up : R.drawable.ic_action_arrow_down);
 
         if (StringUtils.equalsIgnoreCase(patientUuid, relationship.getPersonA().getUuid())) {
             relatedPersonUuid = relationship.getPersonB().getUuid();
@@ -342,7 +342,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
         List<TextView> tags;
         LinearLayout tagsLayout;
         RelativeLayout container;
-        TextView lessMore;
+        ImageView lessMore;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
