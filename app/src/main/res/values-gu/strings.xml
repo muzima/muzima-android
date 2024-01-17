@@ -784,4 +784,8 @@
     <string name="general_female">સ્ત્રી</string>
     <string name="general_more">વધુ</string>
     <string name="general_less">ઓછા</string>
+    <string name="general_error">ભૂલ</string>
+    <string name="attempt_number_limit_reached">મુલાકાતના પ્રયાસોની સંખ્યા ઓળંગાઈ ગઈ</string>
+    <string name="visit_made_sucessfully">મુલાકાત પહેલાથી જ સફળતાપૂર્વક કરવામાં આવી છે</string>
+    <string name="todos_utentes">Todos os Utentes</string>
 </resources>

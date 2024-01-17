@@ -792,4 +792,8 @@
     <string name="general_female">Femelle</string>
     <string name="general_more">Plus</string>
     <string name="general_less">Moins</string>
+    <string name="general_error">Erreur!</string>
+    <string name="attempt_number_limit_reached">Nombre de tentatives de visite dépassé!</string>
+    <string name="visit_made_sucessfully">Visite déjà effectuée avec succès!</string>
+    <string name="todos_utentes">Todos os Utentes</string>
 </resources>

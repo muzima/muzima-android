@@ -786,4 +786,8 @@
     <string name="general_female">Mwanamke</string>
     <string name="general_more">Zaidi</string>
     <string name="general_less">Kidogo</string>
+    <string name="general_error">Kosa!</string>
+    <string name="attempt_number_limit_reached">Idadi ya majaribio ya kutembelea imepitwa!</string>
+    <string name="visit_made_sucessfully">Tembelea tayari imefanywa kwa mafanikio!</string>
+    <string name="todos_utentes">Todos os Utentes</string>
 </resources>

@@ -40,6 +40,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.List;
 
@@ -109,7 +110,7 @@ public class MuzimaSettingController {
                 return configLevelSetting;
             }
             return settingService.getSettingByProperty(property);
-        } catch (IOException | ArrayIndexOutOfBoundsException | ParseException e) { //Fails with ArrayIndexOutOfBoundsException onCall #getSettingByProperty
+        } catch (IOException | ArrayIndexOutOfBoundsException | ParseException | ConcurrentModificationException e) { //Fails with ArrayIndexOutOfBoundsException onCall #getSettingByProperty
             throw new MuzimaSettingFetchException(e);
         }
     }

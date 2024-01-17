@@ -783,4 +783,8 @@
     <string name="general_female">महिला</string>
     <string name="general_more">अधिक</string>
     <string name="general_less">कम</string>
+    <string name="general_error">गलती</string>
+    <string name="attempt_number_limit_reached">विज़िट प्रयासों की संख्या पार हो गई</string>
+    <string name="visit_made_sucessfully">यात्रा पहले ही सफलतापूर्वक हो चुकी है</string>
+    <string name="todos_utentes">Todos os Utentes</string>
 </resources>

@@ -136,6 +136,9 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
                 int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female;
                 holder.genderImg.setImageDrawable(context.getResources().getDrawable(genderDrawable));
             }
+            else{
+               holder.genderImg.setImageDrawable(context.getResources().getDrawable(R.drawable.generic_person));
+           }
             try {
                 Patient p = patientController.getPatientByUuid(relationship.getPersonB().getUuid());
                 if (p != null){
@@ -161,9 +164,12 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
                 holder.age.setText(String.format(""));
             }
 
-            if(relationship.getPersonA().getGender() != null) {
+            if(relationship.getPersonA().getGender() != null && !StringUtils.isEmpty(relationship.getPersonA().getGender())) {
                 int genderDrawable = relationship.getPersonA().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
                 holder.genderImg.setImageDrawable(context.getResources().getDrawable(genderDrawable));
+            }
+            else{
+                holder.genderImg.setImageDrawable(context.getResources().getDrawable(R.drawable.generic_person));
             }
             try {
                 Patient p = patientController.getPatientByUuid(relationship.getPersonA().getUuid());
@@ -375,6 +381,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
                 tagsLayout.removeView(tag);
             }
             tags.removeAll(tagsToRemove);
+            tagsLayout.removeAllViews();
         }
     }
 
@@ -405,6 +412,9 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
                     }
                     holder.removeTags(tagsToRemove);
                 }
+            } else {
+                holder.tags.clear();
+                holder.tagsLayout.removeAllViews();
             }
         }
     }

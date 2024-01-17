@@ -43,6 +43,7 @@ import com.muzima.api.service.ProviderService;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.AppReleaseController;
 import com.muzima.controller.CohortController;
+import com.muzima.controller.CohortMemberSummaryController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
@@ -126,6 +127,8 @@ public class MuzimaApplication extends MultiDexApplication {
     private AppUsageLogsController appUsageLogsController;
     private DerivedConceptController derivedConceptController;
     private DerivedObservationController derivedObservationController;
+
+    private CohortMemberSummaryController cohortMemberSummaryController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -758,4 +761,15 @@ public class MuzimaApplication extends MultiDexApplication {
         }
     }
 
+    public CohortMemberSummaryController getCohortMemberSummaryController() {
+        if(cohortMemberSummaryController == null){
+            try{
+                cohortMemberSummaryController = new CohortMemberSummaryController(muzimaContext.getCohortMemberSummaryService(), muzimaContext.getLastSyncTimeService(), getSntpService(), muzimaContext.getCohortService());
+            }catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        return cohortMemberSummaryController;
+    }
 }

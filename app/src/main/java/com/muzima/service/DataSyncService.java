@@ -338,6 +338,8 @@ public class DataSyncService extends IntentService {
         }
 
         muzimaSyncService.downloadDerivedObservationsForPatientsByPatientUUIDs(patientUUIDList, true);
+
+        muzimaSyncService.downloadSummariesForPatientsByPatientUUIDs(patientUUIDList);
     }
 
     private void downloadPatientsWithObsAndEncounters(Intent broadcastIntent, String[] patientUUIDs) {
