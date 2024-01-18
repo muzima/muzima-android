@@ -768,8 +768,9 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         RelativeLayout lastEncounterVolunteer = findViewById(R.id.last_encounter_volunteer);
         RelativeLayout confidentName = findViewById(R.id.confidant_name);
         RelativeLayout confidentPhone = findViewById(R.id.confidant_phone_number);
+        LinearLayout expandableConsentDetailsLayout = findViewById(R.id.expand_consent_details_layout);
 
-        expandableConsentDetails.setOnClickListener(new View.OnClickListener() {
+        expandableConsentDetailsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(lastConsentDetails.getVisibility() == View.GONE){
