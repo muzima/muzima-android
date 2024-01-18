@@ -727,6 +727,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     private void initializeResources() {
         isFGHCustomClientSummaryEnabled = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isFGHCustomClientSummaryEnabled();
         boolean isFGHCustomClientAddressEnabled = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isFGHCustomClientAddressEnabled();
+        boolean isFGHCustomConfidentInfoEnabled = ((MuzimaApplication) getApplication().getApplicationContext()).getMuzimaSettingController().isFGHCustomConfidantOptionEnabled();
         patientNameTextView = findViewById(R.id.name);
         patientGenderImageView = findViewById(R.id.genderImg);
         dobTextView = findViewById(R.id.dateOfBirth);
@@ -785,6 +786,9 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         if (!isFGHCustomClientSummaryEnabled) {
             dadosDeConsentimento.setVisibility(View.GONE);
             artInitDateLayout.setVisibility(View.GONE);
+        }
+
+        if(!isFGHCustomConfidentInfoEnabled){
             lastEncounterVolunteer.setVisibility(View.GONE);
             confidentName.setVisibility(View.GONE);
             confidentPhone.setVisibility(View.GONE);
