@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
   ~ Copyright (c) The Trustees of Indiana University, Moi University
   ~ and Vanderbilt University Medical Center. All Rights Reserved.
   ~
@@ -7,7 +6,8 @@
   ~ with additional health care disclaimer.
   ~ If the user is an entity intending to commercialize any application that uses
   ~ this code in a for-profit venture, please contact the copyright holder.
---><resources>
+-->
+<resources>
     <string name="SHR_card_text">SHR Card</string>
     <string name="add_individual_observation_text">Add Individual Observation</string>
     <string name="app_name">mUzima</string>
@@ -33,7 +33,7 @@
     <string name="confirm_patient_id_exists">Does the client already have existing ID?</string>
     <string name="contact_us">Contact Us</string>
     <string name="default_auto_save_interval" translatable="false">2</string>
-    <string name="default_server" translatable="false">https://demo2.muzima.org</string>
+    <string name="default_server" translatable="false">http://10.10.2.17:8088/openmrschabeco</string>
     <string name="delete_individual_obs">Deleting individual obs</string>
     <string name="downloaded_reports">Downloaded Reports</string>
     <string name="drawer_close" translatable="false">close</string>
@@ -361,12 +361,12 @@
     <string name="hint_session_timeout">If in-active for this time, mUzima will automatically logout</string>
     <string name="hint_set_client_location">This client\'s home location has not been set. Do you want to set it now?</string>
     <string name="hint_setting_refresh">Do you want to re-download this setting from server?</string>
-    <string formatted="false" name="hint_their_performance">Performance summary for %s between %s and %s</string>
+    <string name="hint_their_performance" formatted="false">Performance summary for %s between %s and %s</string>
     <string name="hint_username_prompt">Please enter username</string>
     <string name="hint_video_caption_prompt">Please enter a caption for the video</string>
     <string name="hint_video_record">Record or choose video</string>
     <string name="hint_write_SHR_to_card">Do you want to write Shared Health Record to card ?</string>
-    <string formatted="false" name="hint_your_performance">Your performance between %s and %s</string>
+    <string name="hint_your_performance" formatted="false">Your performance between %s and %s</string>
     <string name="individual_obs">Individual Obs</string>
     <string name="individual_obs_description">Individual Obs</string>
     <string name="info_accept_all">Accept all</string>
@@ -382,14 +382,14 @@
     <string name="info_client_remote_search_not_found">No clients matched your search on the server</string>
     <string name="info_cohort_download">Downloading Cohorts</string>
     <string name="info_cohort_downloaded">Downloaded 1 cohort</string>
-    <string formatted="false" name="info_cohort_new_patient_download">Downloaded %d new clients for %d cohorts.</string>
+    <string name="info_cohort_new_patient_download" formatted="false">Downloaded %d new clients for %d cohorts.</string>
     <string name="info_cohort_not_downloaded">No cohorts downloaded</string>
     <string name="info_cohort_patient_download">Downloaded 1 client for 1 cohort</string>
     <string name="info_cohort_patient_not_download">No clients downloaded</string>
-    <string formatted="false" name="info_cohort_patients_download">Downloaded %d clients for 1 cohort</string>
-    <string formatted="false" name="info_cohorts_downloaded">Downloaded %d cohorts</string>
-    <string formatted="false" name="info_cohorts_patient_download">Downloaded 1 client for %d cohorts</string>
-    <string formatted="false" name="info_cohorts_patients_download">Downloaded %d clients for %d cohorts</string>
+    <string name="info_cohort_patients_download" formatted="false">Downloaded %d clients for 1 cohort</string>
+    <string name="info_cohorts_downloaded" formatted="false">Downloaded %d cohorts</string>
+    <string name="info_cohorts_patient_download" formatted="false">Downloaded 1 client for %d cohorts</string>
+    <string name="info_cohorts_patients_download" formatted="false">Downloaded %d clients for %d cohorts</string>
     <string name="info_complete_form">Unsynced Forms</string>
     <string name="info_complete_form_unavailable">No completed and non synced forms</string>
     <string name="info_concept_delete_success">%d concepts deleted successfully!!</string>
@@ -397,24 +397,24 @@
     <string name="info_concept_downloaded">Downloaded 1 concept</string>
     <string name="info_concept_not_downloaded">Did not download any concepts</string>
     <string name="info_concept_unavailable">No Concepts added yet.</string>
-    <string formatted="false" name="info_concepts_downloaded">Downloaded %d concepts</string>
-    <string formatted="false" name="info_concepts_downloaded_deleted">Downloaded %d concepts, Deleted %d concepts</string>
+    <string name="info_concepts_downloaded" formatted="false">Downloaded %d concepts</string>
+    <string name="info_concepts_downloaded_deleted" formatted="false">Downloaded %d concepts, Deleted %d concepts</string>
     <string name="info_confidentiality_text">By accessing this system, you are about to view highly confidential user information. It is your responsibility to protect them properly and use them only for authorized purposes. User privacy is essential to our mission.</string>
     <string name="info_convert_person_to_patient">Convert person to patient</string>
     <string name="info_data_sync_cancelled">mUzima data sync was cancelled.</string>
     <string name="info_derived_concept_download">Downloading Derived Concepts</string>
     <string name="info_derived_concept_downloaded">Downloaded 1 derived concept</string>
     <string name="info_derived_concept_not_downloaded">Did not download any derived concepts</string>
-    <string formatted="false" name="info_derived_concepts_downloaded">Downloaded %d derived concepts</string>
-    <string formatted="false" name="info_derived_concepts_downloaded_deleted">Downloaded %d derived concepts, Deleted %d derived concepts</string>
+    <string name="info_derived_concepts_downloaded" formatted="false">Downloaded %d derived concepts</string>
+    <string name="info_derived_concepts_downloaded_deleted" formatted="false">Downloaded %d derived concepts, Deleted %d derived concepts</string>
     <string name="info_derived_observation_download">Downloading Derived Observations</string>
     <string name="info_derived_observation_patient_downloaded">Downloaded 1 derived observation for 1 client</string>
     <string name="info_derived_observation_patient_not_downloaded">Did not download any derived observations</string>
-    <string formatted="false" name="info_derived_observation_patients_downloaded">Downloaded %d derived observations for 1 client</string>
-    <string formatted="false" name="info_derived_observations_download_progress">Downloaded derived observations for client %d of %d.</string>
+    <string name="info_derived_observation_patients_downloaded" formatted="false">Downloaded %d derived observations for 1 client</string>
+    <string name="info_derived_observations_download_progress" formatted="false">Downloaded derived observations for client %d of %d.</string>
     <string name="info_summaries_download_progress" translatable="false">Sumarios de utentes baixados %d de %d.</string>
-    <string formatted="false" name="info_derived_observations_patient_downloaded">Downloaded 1 derived observation for %d clients</string>
-    <string formatted="false" name="info_derived_observations_patients_downloaded">Downloaded %d derived observations for %d clients</string>
+    <string name="info_derived_observations_patient_downloaded" formatted="false">Downloaded 1 derived observation for %d clients</string>
+    <string name="info_derived_observations_patients_downloaded" formatted="false">Downloaded %d derived observations for %d clients</string>
     <string name="info_disclaimer">
         mUzima is distributed under the terms of the Mozilla Public License, v. 2.0 (MPL 2.0). A copy of the MPL 2.0 license can be found at http://mozilla.org/MPL/2.0/.
 \nmUzima is also distributed under the terms of the following Additional Disclaimer of Warranty and Limitation of Liability.
@@ -431,7 +431,7 @@
     <string name="info_downloaded_reports_unavailable">No reports have been downloaded</string>
     <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
     <string name="info_for_health_providers">for health providers</string>
-    <string formatted="false" name="info_form_data_delete">Deleted %d forms</string>
+    <string name="info_form_data_delete" formatted="false">Deleted %d forms</string>
     <string name="info_form_data_save_success">Completed form data was saved successfully.</string>
     <string name="info_form_data_upload_fail">Failed to Sync Form data to the current server. Do you still want to continue?</string>
     <string name="info_form_data_upload_sucess">Upload form data success</string>
@@ -440,17 +440,17 @@
     </string>
     <string name="info_form_delete_success">Forms deleted successfully</string>
     <string name="info_form_download">Downloading Forms</string>
-    <string formatted="false" name="info_form_download_delete">Downloaded %d forms and retired %d forms</string>
+    <string name="info_form_download_delete" formatted="false">Downloaded %d forms and retired %d forms</string>
     <string name="info_form_downloaded">Downloaded 1 form</string>
     <string name="info_form_fetch_in_progress">Already fetching forms, ignored the request</string>
     <string name="info_form_metadata_download">Downloading forms metadata</string>
     <string name="info_form_not_downloaded">No forms downloaded</string>
-    <string formatted="false" name="info_form_template_concept_download">Downloaded %d form templates and %d concepts</string>
+    <string name="info_form_template_concept_download" formatted="false">Downloaded %d form templates and %d concepts</string>
     <string name="info_form_template_download">Downloading Form Templates</string>
     <string name="info_form_template_downloaded">Downloaded 1 form template</string>
     <string name="info_form_template_not_downloaded">No form template downloaded</string>
     <string name="info_form_template_with_count_download">Downloading form templates for %d forms</string>
-    <string formatted="false" name="info_form_templates_downloaded">Downloaded %d form templates</string>
+    <string name="info_form_templates_downloaded" formatted="false">Downloaded %d form templates</string>
     <string name="info_form_upload">Uploading Forms</string>
     <string name="info_form_upload_in_progress">Already uploading forms, ignored the request</string>
     <string name="info_form_upload_success">Forms uploaded successfully</string>
@@ -466,24 +466,24 @@
     <string name="info_location_downloaded">Downloaded 1 location</string>
     <string name="info_location_not_downloaded">Did not download any locations</string>
     <string name="info_location_unavailable">No locations have been added yet</string>
-    <string formatted="false" name="info_locations_downloaded">Downloaded %d locations</string>
-    <string formatted="false" name="info_locations_downloaded_deleted">Downloaded %d locations, Deleted %d locations</string>
+    <string name="info_locations_downloaded" formatted="false">Downloaded %d locations</string>
+    <string name="info_locations_downloaded_deleted" formatted="false">Downloaded %d locations, Deleted %d locations</string>
     <string name="info_media_categories_not_downloaded">Did not download any media category</string>
     <string name="info_media_category_download_in_progress">Downloading Media Categories</string>
-    <string formatted="false" name="info_media_category_downloaded">Downloaded %d Media Categories</string>
+    <string name="info_media_category_downloaded" formatted="false">Downloaded %d Media Categories</string>
     <string name="info_media_download_in_progress">Downloading Media</string>
-    <string formatted="false" name="info_media_downloaded">Downloaded %d Media</string>
+    <string name="info_media_downloaded" formatted="false">Downloaded %d Media</string>
     <string name="info_media_not_downloaded">Did not download any media</string>
     <string name="info_media_unavailable">No media available</string>
     <string name="info_muzima_sync_service_finish">mUzima sync service finished</string>
     <string name="info_muzima_sync_service_in_progress">mUzima sync service running</string>
     <string name="info_new_cohort_download">Downloaded %d new cohorts</string>
-    <string formatted="false" name="info_new_cohort_download_delete">Downloaded %d new cohorts and retired %d cohorts</string>
+    <string name="info_new_cohort_download_delete" formatted="false">Downloaded %d new cohorts and retired %d cohorts</string>
     <string name="info_new_encounter_download">Downloaded %d new encounters</string>
-    <string formatted="false" name="info_new_encounter_download_delete">Downloaded %d new encounters and retired %d encounters</string>
+    <string name="info_new_encounter_download_delete" formatted="false">Downloaded %d new encounters and retired %d encounters</string>
     <string name="info_new_notification">New Notification</string>
     <string name="info_new_observation_download">Downloaded %d new observations</string>
-    <string formatted="false" name="info_new_observation_download_delete">Downloaded %d new observations and retired %d observations</string>
+    <string name="info_new_observation_download_delete" formatted="false">Downloaded %d new observations and retired %d observations</string>
     <string name="info_new_patient_download">Downloaded %d new clients</string>
     <string name="info_no_client_available">No clients available locally on this device.</string>
     <string name="info_no_client_available_locally">No clients available locally. Enter at least 3 characters for remote search or register new clients.</string>
@@ -493,21 +493,21 @@
     <string name="info_no_media_not_available">The media file is not available, it might have been deleted from the device</string>
     <string name="info_no_observation_and_concept_data_tip">No concepts configured. Contact your administrator to add concepts.</string>
     <string name="info_no_observation_for_concept_data_tip">No historical data exists for the configured concepts</string>
-    <string formatted="false" name="info_obs_concept_downloaded">Downloaded %d new observation for the %d new concepts for %d clients</string>
+    <string name="info_obs_concept_downloaded" formatted="false">Downloaded %d new observation for the %d new concepts for %d clients</string>
     <string name="info_observation_download">Downloading Observations</string>
     <string name="info_observation_load">Observations are loading</string>
     <string name="info_observation_patient_downloaded">Downloaded 1 observation for 1 client</string>
     <string name="info_observation_patient_not_downloaded">Did not download any observations</string>
-    <string formatted="false" name="info_observation_patients_downloaded">Downloaded %d observations for 1 client</string>
+    <string name="info_observation_patients_downloaded" formatted="false">Downloaded %d observations for 1 client</string>
     <string name="info_observation_search">Search observations</string>
     <string name="info_observation_unavailable">No observations available</string>
-    <string formatted="false" name="info_observations_download_progress">Downloaded observations for client %d of %d.</string>
-    <string formatted="false" name="info_observations_patient_downloaded">Downloaded 1 observation for %d clients</string>
-    <string formatted="false" name="info_observations_patients_downloaded">Downloaded %d observations for %d clients</string>
+    <string name="info_observations_download_progress" formatted="false">Downloaded observations for client %d of %d.</string>
+    <string name="info_observations_patient_downloaded" formatted="false">Downloaded 1 observation for %d clients</string>
+    <string name="info_observations_patients_downloaded" formatted="false">Downloaded %d observations for %d clients</string>
     <string name="info_patient_data_download">Downloading clients data</string>
     <string name="info_patient_download">Downloading Clients</string>
     <string name="info_patient_reports_download_in_progress">Downloading Client Reports</string>
-    <string formatted="false" name="info_patient_reports_downloaded">Downloaded %d reports</string>
+    <string name="info_patient_reports_downloaded" formatted="false">Downloaded %d reports</string>
     <string name="info_patient_reports_fetch_in_progress">Already fetching reports, ignored the request</string>
     <string name="info_patient_reports_unavailable">No Client Reports Available</string>
     <string name="info_person_creation_failure">Could not create person record</string>
@@ -517,19 +517,19 @@
     <string name="info_provider_delete_success">%d Providers deleted successfully</string>
     <string name="info_provider_download">Downloading Providers</string>
     <string name="info_provider_downloaded">Downloaded 1 provider</string>
-    <string formatted="false" name="info_provider_downloaded_deleted">Downloaded %d providers, Deleted %d providers</string>
+    <string name="info_provider_downloaded_deleted" formatted="false">Downloaded %d providers, Deleted %d providers</string>
     <string name="info_provider_not_downloaded">Did not download any providers</string>
     <string name="info_provider_unavailable">No providers have been added yet</string>
-    <string formatted="false" name="info_providers_downloaded">Downloaded %d providers</string>
+    <string name="info_providers_downloaded" formatted="false">Downloaded %d providers</string>
     <string name="info_real_time_upload">mUzima is uploading your data</string>
     <string name="info_real_time_upload_success">mUzima has uploaded your data successfully</string>
     <string name="info_relationships_delete_success">%d Relationships deleted successfully</string>
-    <string formatted="false" name="info_relationships_download">Downloaded %d relationships for %d client(s).</string>
-    <string formatted="false" name="info_relationships_download_progress">Downloaded relationships for client %d of %d.</string>
-    <string formatted="false" name="info_relationships_not_downloaded_progress">Relationships for client %d of %d not downloaded.</string>
+    <string name="info_relationships_download" formatted="false">Downloaded %d relationships for %d client(s).</string>
+    <string name="info_relationships_download_progress" formatted="false">Downloaded relationships for client %d of %d.</string>
+    <string name="info_relationships_not_downloaded_progress" formatted="false">Relationships for client %d of %d not downloaded.</string>
     <string name="info_relationships_unavailable">No relationships available</string>
     <string name="info_report_dataset_download_in_progress">Downloading Report Datasets</string>
-    <string formatted="false" name="info_report_dataset_downloaded">Downloaded %d Report Datasets</string>
+    <string name="info_report_dataset_downloaded" formatted="false">Downloaded %d Report Datasets</string>
     <string name="info_report_datasets_not_downloaded">Did not download any Report Datasets</string>
     <string name="info_scan_qrcode">Scan QR code to change server URL</string>
     <string name="info_session_time_out">Your session had timed out. Please log in again to proceed.</string>
@@ -537,15 +537,15 @@
     <string name="info_setting_downloaded">Downloaded 1 setting</string>
     <string name="info_settings_download_progress">Downloading settings</string>
     <string name="info_settings_download_success">Downloaded and updated settings successfully</string>
-    <string formatted="false" name="info_settings_downloaded">Downloaded %d settings</string>
+    <string name="info_settings_downloaded" formatted="false">Downloaded %d settings</string>
     <string name="info_settings_not_download">No settings downloaded</string>
     <string name="info_settings_update">Updating settings</string>
     <string name="info_setup_complete_fail">Setup completed with some failure</string>
     <string name="info_setup_complete_success">Setup completed</string>
     <string name="info_setup_config_load">Loading Setup Configs</string>
     <string name="info_setup_configuration_template_download_in_progress">Updating Setup Configs</string>
-    <string formatted="false" name="info_setup_configuration_templates_downloaded">Downloaded %d setup configuration templates</string>
-    <string formatted="false" name="info_submitted_form_data_status">Status of recently submitted forms: %d Processed successfully,
+    <string name="info_setup_configuration_templates_downloaded" formatted="false">Downloaded %d setup configuration templates</string>
+    <string name="info_submitted_form_data_status" formatted="false">Status of recently submitted forms: %d Processed successfully,
         %d Processed with error, %d Pending processing, %d Unknown status </string>
     <string name="info_submitted_form_data_status_check">Checking status of recently submitted forms</string>
     <string name="info_submitted_form_data_status_check_failure">Could not check status of recently submitted forms</string>
@@ -772,7 +772,7 @@ mUzima is a mobile application that enables health professionals collect, manage
         delete client record on device. Are you sure?
     </string>
     <string name="warning_related_person_missing">Please choose a related person</string>
-    <string formatted="false" name="warning_relationship_exists">Client already has %s:%s relationship with %s</string>
+    <string name="warning_relationship_exists" formatted="false">Client already has %s:%s relationship with %s</string>
     <string name="warning_relationship_type_missing">Please choose a relationship type</string>
     <string name="warning_session_timeout">Session Timeout: Could not set session timeout. Please enter a value between 1 and 500.</string>
     <string name="warning_setting_download_failure">Could not download or update setting</string>

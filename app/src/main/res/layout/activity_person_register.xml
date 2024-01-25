@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    style="@style/AppBaseTheme.Light.NoActionBar"
+    tools:context=".view.person.PersonRegisterActivity">
+
+    <include layout="@layout/app_bar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="12dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:id="@+id/identification_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_normal"
+                    android:paddingVertical="6dp"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:text="Identificação"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:drawableLeft="@drawable/baseline_contact_page_24"
+                        android:gravity="center_vertical|left"
+                        android:paddingLeft="10dp"/>
+
+                    <ImageButton
+                        android:id="@+id/ibtn_initial_data"
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/background_layout"
+                        android:src="@drawable/ic_arrow_down"
+                        android:layout_marginRight="@dimen/dimen_2dp"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/identification_data_lyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nome"
+                        style="@style/input_labels"
+                        />
+                    <EditText
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="#000"
+                        android:padding="6dp"
+                        android:background="@drawable/fields_background" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Apelido"
+                        style="@style/input_labels"
+                        />
+                    <EditText
+                        android:id="@+id/surname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="#000"
+                        android:padding="6dp"
+                        android:background="@drawable/fields_background" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/birth_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_normal"
+                    android:paddingVertical="6dp"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:text="Data de Nascimento"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:drawableLeft="@drawable/ic_calendar"
+                        android:gravity="center_vertical|left"
+                        android:paddingLeft="10dp"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_birth_data"
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/background_layout"
+                        android:src="@drawable/ic_arrow_down"
+                        android:layout_marginRight="@dimen/dimen_2dp"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/birth_data_lyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/birth_date_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/birth_date_date"
+                                android:layout_weight="2"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Indicar data" />
+
+                            <RadioButton
+                                android:id="@+id/birth_date_age"
+                                android:layout_weight="2"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_height="wrap_content"
+                                android:text="Indicar idade" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Data de Nascimento"
+                        style="@style/input_labels"
+                        />
+                    <EditText
+                        android:id="@+id/birth_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="#000"
+                        android:padding="6dp"
+                        android:background="@drawable/fields_background" />
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+
+                    <ImageView
+                        android:id="@+id/save_and_continue"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="right"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginEnd="0dp"
+                        android:layout_marginBottom="18dp"
+                        android:background="@drawable/button_shape"
+                        app:srcCompat="@drawable/ic_done" />
+
+
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

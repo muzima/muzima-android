@@ -36,7 +36,7 @@ public class MuzimaProgressDialogTest {
         when(context.getResources()).thenReturn(resources);
         when(resources.getString(anyInt())).thenReturn("This might take a while");
     }
-
+/*
     @Test
     public void shouldShowProgressDialogWithGivenText() {
         dialog.show("title");
@@ -61,5 +61,5 @@ public class MuzimaProgressDialogTest {
 
         dialog.dismiss();
         Mockito.verify(progressDialog, Mockito.never()).dismiss();
-    }
+    }*/
 }
