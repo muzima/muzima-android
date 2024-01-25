@@ -97,6 +97,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                         Object derivedConceptObject = null;
                         JSONObject jsonObject = new JSONObject(settingValue);
                         if (jsonObject.has(cohort.getUuid())) {
+                            cohortUuids.add(cohort.getUuid());
                             derivedConceptObject = jsonObject.get(cohort.getUuid());
                             if (derivedConceptObject != null && derivedConceptObject instanceof JSONArray) {
                                 JSONArray jsonArray = (JSONArray) derivedConceptObject;
@@ -204,10 +205,12 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                                     cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Próximo mês"));
                                                 }
                                             } else {
-                                                cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                                                if(!cohortUuids.contains(cohort.getUuid()))
+                                                    cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
                                             }
                                         } else {
-                                            cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                                            if(!cohortUuids.contains(cohort.getUuid()))
+                                                cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
                                         }
                                     }
                                 } else {
@@ -221,10 +224,12 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                                 cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Próximo mês"));
                                             }
                                         } else {
-                                            cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                                            if(!cohortUuids.contains(cohort.getUuid()))
+                                                cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
                                         }
                                     } else {
-                                        cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                                        if(!cohortUuids.contains(cohort.getUuid()))
+                                            cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
                                     }
                                 }
                             } else {
