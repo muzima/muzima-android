@@ -84,6 +84,7 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
+import com.muzima.view.main.HTCMainActivity;
 
 import net.minidev.json.JSONObject;
 
@@ -255,11 +256,27 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         guidedSetupCardsViewPagerAdapter = new GuidedSetupCardsViewPagerAdapter(getSupportFragmentManager(), getApplicationContext());
         viewPager.setAdapter(guidedSetupCardsViewPagerAdapter);
         viewPagerLg.setAdapter(guidedSetupCardsViewPagerAdapter);
+
+
+        //setupConfigurationTemplate.getConfigJson();
         finishSetupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MuzimaSetting setting = null;
+                MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+                try {
+                    setting = muzimaSettingController.getSettingByProperty("Program.defintion");
+                } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+                    e.printStackTrace();
+                }
                 new WizardFinishPreferenceService(GuidedConfigurationWizardActivity.this).finishWizard();
-                Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+                Intent intent;
+                if (setting != null && setting.getValueString().equals("ATS")) {
+                    intent = new Intent(getApplicationContext(), HTCMainActivity.class);
+                } else {
+                    intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+                }
+
                 startActivity(intent);
                 finish();
             }
