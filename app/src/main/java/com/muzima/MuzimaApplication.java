@@ -50,6 +50,7 @@ import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FCMTokenController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.HTCPersonController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MediaCategoryController;
 import com.muzima.controller.MediaController;
@@ -129,6 +130,8 @@ public class MuzimaApplication extends MultiDexApplication {
     private DerivedObservationController derivedObservationController;
 
     private CohortMemberSummaryController cohortMemberSummaryController;
+
+    private HTCPersonController htcPersonController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
     private SntpService sntpService;
@@ -771,5 +774,18 @@ public class MuzimaApplication extends MultiDexApplication {
         }
 
         return cohortMemberSummaryController;
+    }
+
+
+    public HTCPersonController getHtcPersonController() {
+        if(htcPersonController == null){
+            try{
+                htcPersonController = new HTCPersonController(muzimaContext.getHtcPersonService());
+            }catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        return htcPersonController;
     }
 }

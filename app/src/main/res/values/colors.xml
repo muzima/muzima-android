@@ -64,7 +64,10 @@
     <color name="colorPrimaryLight">#389b3c</color>
     <color name="button_dark_back">#12531B</color>
     <color name="colorPrimaryDark">#004912</color>
-
+    <color name="person_item_back">#f5f5f5</color>
     <color name="background_layout">#389b3c</color>
     <color name="input_labels">#6E6E6E</color>
+
+    <color name="person_item_divider">#bdbdbd</color>
+
 </resources>

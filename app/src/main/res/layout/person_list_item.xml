@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/person_item_back"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="15dp"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/person_sex"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+            bind:srcCompat="@drawable/gender_female"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="10"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Antonia Luis Matos"
+                android:textSize="12dp"
+                android:textColor="#424242"
+                android:layout_marginBottom="6dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/identifier"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0269010879/3008/12222"
+                android:textSize="11dp"
+                android:textColor="#389b3c"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+            android:paddingVertical="5dp"
+            android:orientation="vertical">
+        <ImageButton
+            android:id="@+id/create_htc"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@android:color/transparent"
+            android:layout_gravity="end"
+            android:scaleType="fitXY"
+            android:src="@drawable/baseline_local_hospital_24"
+            android:layout_marginRight="@dimen/dimen_2dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/person_age"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="19 Anos"
+            android:textSize="12dp"
+            android:textColor="#424242"/>
+
+        <View
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_weight="10"
+            android:background="@color/person_item_back"
+            android:layout_gravity="center_vertical"
+            android:layout_height="1dp"/>
+        <ImageButton
+            android:id="@+id/details"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@android:color/transparent"
+            android:layout_gravity="end"
+            android:scaleType="fitXY"
+            android:src="@drawable/outline_arrow_drop_down_circle_24"
+            android:layout_marginRight="@dimen/dimen_2dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/person_more_details"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="856359879"
+            android:gravity="center_vertical"
+            android:textSize="11dp"
+            android:drawablePadding="5dp"
+            android:drawableLeft="@drawable/ic_call"
+            android:textColor="#424242"/>
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:drawablePadding="5dp"
+            android:text="Av. das Acacias nr 2023, Bairro 3"
+            android:textSize="11dp"
+            android:drawableLeft="@drawable/ic_location_on_24"
+            android:textColor="#424242"/>
+    </LinearLayout>
+
+</LinearLayout>
