@@ -9,8 +9,9 @@ import android.widget.LinearLayout;
 
 import com.muzima.R;
 import com.muzima.utils.ViewUtil;
+import com.muzima.view.BaseActivity;
 
-public class PersonRegisterActivity extends AppCompatActivity {
+public class PersonRegisterActivity extends BaseActivity {
 
     private ImageButton identificationDataBtn;
     private ImageButton birthDateSectionBtn;
@@ -123,6 +124,5 @@ public class PersonRegisterActivity extends AppCompatActivity {
         contactSectionLyt = findViewById(R.id.contact_data_lyt);
         sexSectionLyt = findViewById(R.id.sex_data_lyt);
         addressSectionLyt = findViewById(R.id.address_data_lyt);
-
     }
 }
