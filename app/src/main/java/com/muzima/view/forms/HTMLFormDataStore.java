@@ -258,8 +258,8 @@ class HTMLFormDataStore {
                         Log.e(getClass().getSimpleName(), "Form Has both tag fields");
                         Person person = personController.getPersonByUuid(patientUuid);
 
-                        Patient patientWithUuid = patientController.getPatientByUuid(patientUuid);
-                        if(patientWithUuid != null){
+                        Patient patient = patientController.getPatientByUuid(patientUuid);
+                        if(patient != null){
                             List<PatientTag> existingTags = new ArrayList<>();
 
                             try {
@@ -269,7 +269,6 @@ class HTMLFormDataStore {
                             }
 
                             List<PatientTag> tags = new ArrayList<PatientTag>();
-                            Patient patient = patientController.getPatientByUuid(patientUuid);
 
                             if (patient.getTags() != null) {
                                 tags = new ArrayList<>(Arrays.asList(patient.getTags()));
