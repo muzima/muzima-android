@@ -796,4 +796,76 @@
     <string name="attempt_number_limit_reached">Nombre de tentatives de visite dépassé!</string>
     <string name="visit_made_sucessfully">Visite déjà effectuée avec succès!</string>
     <string name="todos_utentes">Todos os Utentes</string>
+
+    <string name="htc_identification_data">Identification de l´utilisateur</string>
+    <string name="htc_retesting">Retester l´ATS</string>
+
+    <string name="htc_book_info">Informations sur le livre</string>
+    <string name="book_number">Numéro du livre</string>
+    <string name="book_page_number">Page du livre</string>
+    <string name="book_page_line">Doubler</string>
+    <string name="testing_sector">Secteur des tests</string>
+
+    <string name="ats_testing_data">Données ATS</string>
+    <string name="testing_date">Date de l´examen</string>
+    <string name="select_testing_date">Remplissez la date du test</string>
+    <string name="pop_keys_miners">Pop Chaves et Mineiros</string>
+    <string name="index_case_contacts">Contact du cas index</string>
+    <string name="self_test_confirmation">Confirmation de l´autotest</string>
+    <string name="hiv_positive_results">Résultats positifs pour le VIH</string>
+
+    <string name="historical_testing_data">Historique des tests</string>
+    <string name="first_time_testing">Testé pour la 1ère fois</string>
+    <string name="positive_in_the_past">Positif dans le passé</string>
+
+    <string name="testing_date_format_error">Remplissez correctement la date du test!</string>
+    <string name="general_success">Succès</string>
+    <string name="record_saved_sucessfull">Enregistrement enregistré avec succès!</string>
+
+    <string name="htc_person_mandatory_fields">Name, Surname, Gender and Birth Date or Age are mandatory fields!</string>
+    <string name="htc_person_register">Register Persons</string>
+
+    <string name="person_exist_in_sesp_field">Does person exist in SESP?</string>
+
+    <string name="htc_person_name_mandatory">Name is required and can not contain symbols ou numbers</string>
+    <string name="htc_person_surname_mandatory">Surname is required and can not contain symbols ou numbers</string>
+    <string name="htc_person_phone_number_error">Phone number must contain 9 digits with the first digit 8</string>
+    <string name="htc_person_age_error">Idade deve conter no máximo 3 dígitos</string>
+
+    <string-array name="personExistsInSESPOptions">
+        <item>Yes</item>
+        <item>No</item>
+        <item>I don`t know</item>
+    </string-array>
+
+    <string-array name="testingSectors">
+        <item>UATS</item>
+        <item>Consultas Externas</item>
+        <item>Triagem</item>
+        <item>Enfermaria</item>
+        <item>Banco de Socorros</item>
+        <item>Outro ATIP</item>
+        <item>SMI</item>
+        <item>TB</item>
+        <item>ATS-C</item>
+        <item>Outro</item>
+    </string-array>
+
+    <string-array name="popKeysMiners">
+        <item>MTS</item>
+        <item>HSH</item>
+        <item>PID</item>
+        <item>REC</item>
+        <item>TG</item>
+        <item>MIN</item>
+    </string-array>
+
+    <string-array name="indexCaseContacts">
+        <item>Par. Sex</item>
+        <item>Filho &lt;15</item>
+        <item>Mãe/Pai do CI (&lt;15)</item>
+        <item>REC</item>
+        <item>TG</item>
+        <item>MIN</item>
+    </string-array>
 </resources>

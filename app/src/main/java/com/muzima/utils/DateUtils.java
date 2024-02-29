@@ -15,6 +15,7 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -132,5 +133,23 @@ public class DateUtils {
         Date date = new Date(time);
         SimpleDateFormat format = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
         return format.format(date);
+    }
+
+    public static Date getEstimatedDate(int age) throws ParseException {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int currentYear = Year.now().getValue();
+            int birthYear = currentYear - age;
+            String birthDateValue = "01-01-"+birthYear;
+            SimpleDateFormat dateFormatter = new SimpleDateFormat(SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
+            return dateFormatter.parse(birthDateValue);
+        }
+        return null;
+    }
+
+    public static String getCurrentDateAsString() throws ParseException {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
+        String dateValue = dateFormatter.format(calendar.getTime());
+        return dateValue;
     }
 }
