@@ -271,7 +271,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 }
                 new WizardFinishPreferenceService(GuidedConfigurationWizardActivity.this).finishWizard();
                 Intent intent;
-                if (setting != null && setting.getValueString().equals("ATS")) {
+                if ((setting != null && setting.getValueString() != null) && setting.getValueString().equals("ATS")) {
                     intent = new Intent(getApplicationContext(), HTCMainActivity.class);
                 } else {
                     intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
