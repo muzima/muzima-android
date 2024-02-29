@@ -790,4 +790,76 @@
     <string name="attempt_number_limit_reached">Idadi ya majaribio ya kutembelea imepitwa!</string>
     <string name="visit_made_sucessfully">Tembelea tayari imefanywa kwa mafanikio!</string>
     <string name="todos_utentes">Todos os Utentes</string>
+
+    <string name="htc_identification_data">Utambulisho wa mgonjwa</string>
+    <string name="htc_retesting">HTC inajaribu tena</string>
+
+    <string name="htc_book_info">Maelezo ya kitabu</string>
+    <string name="book_number">Nambari ya kitabu</string>
+    <string name="book_page_number">Nambari ya ukurasa</string>
+    <string name="book_page_line">Mstari</string>
+    <string name="testing_sector">Sekta ya majaribio</string>
+
+    <string name="ats_testing_data">Data ya majaribio ya HTC</string>
+    <string name="testing_date">Tarehe ya majaribio</string>
+    <string name="select_testing_date">Jaza tarehe ya majaribio</string>
+    <string name="pop_keys_miners">Vifunguo vya pop na wachimbaji</string>
+    <string name="index_case_contacts">Anwani za kesi za index</string>
+    <string name="self_test_confirmation">Uthibitisho wa Kujijaribu</string>
+    <string name="hiv_positive_results">Matokeo chanya kwa VVU</string>
+
+    <string name="historical_testing_data">Mtihani wa kihistoria</string>
+    <string name="first_time_testing">Ilijaribiwa kwa wakati</string>
+    <string name="positive_in_the_past">Chanya katika siku za nyuma</string>
+
+    <string name="testing_date_format_error">Jaza tarehe ya majaribio kwa usahihi!</string>
+    <string name="general_success">Mafanikio</string>
+    <string name="record_saved_sucessfull">Rekodi Imehifadhiwa Imefaulu!</string>
+
+    <string name="htc_person_mandatory_fields">Os campos marcados com * são obrigatórios</string>
+    <string name="htc_person_register">Register Persons</string>
+
+    <string name="person_exist_in_sesp_field">Does person exist in SESP?</string>
+
+    <string name="htc_person_name_mandatory">Nome é obrigatório, e não pode conter símbolos ou nũmeros</string>
+    <string name="htc_person_surname_mandatory">Apelido é obrigatório, e não pode conter símbolos ou nũmeros</string>
+    <string name="htc_person_phone_number_error">O telefone deve conter 9 dígitos numéricos, com o primeiro dígito 8</string>
+    <string name="htc_person_age_error">Idade deve conter no máximo 3 dígitos</string>
+
+    <string-array name="personExistsInSESPOptions">
+        <item>Yes</item>
+        <item>No</item>
+        <item>I don`t know</item>
+    </string-array>
+
+    <string-array name="testingSectors">
+        <item>UATS</item>
+        <item>Consultas Externas</item>
+        <item>Triagem</item>
+        <item>Enfermaria</item>
+        <item>Banco de Socorros</item>
+        <item>Outro ATIP</item>
+        <item>SMI</item>
+        <item>TB</item>
+        <item>ATS-C</item>
+        <item>Outro</item>
+    </string-array>
+
+    <string-array name="popKeysMiners">
+        <item>MTS</item>
+        <item>HSH</item>
+        <item>PID</item>
+        <item>REC</item>
+        <item>TG</item>
+        <item>MIN</item>
+    </string-array>
+
+    <string-array name="indexCaseContacts">
+        <item>Par. Sex</item>
+        <item>Filho &lt;15</item>
+        <item>Mãe/Pai do CI (&lt;15)</item>
+        <item>REC</item>
+        <item>TG</item>
+        <item>MIN</item>
+    </string-array>
 </resources>

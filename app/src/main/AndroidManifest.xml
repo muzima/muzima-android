@@ -50,6 +50,10 @@
             android:theme="@style/AppBaseTheme.Light.NoActionBar"
             android:exported="false" />
         <activity
+                android:name=".view.person.SearchSESPPersonActivity"
+                android:theme="@style/AppBaseTheme.Light.NoActionBar"
+                android:exported="false" />
+        <activity
             android:name=".view.main.HTCMainActivity"
             android:exported="false"
             android:theme="@style/AppBaseTheme.Light.NoActionBar" />

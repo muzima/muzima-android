@@ -1,5 +1,9 @@
 package com.muzima.view.main;
 
+import android.app.AlertDialog;
+import android.os.Parcelable;
+import android.view.MenuItem;
+import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -27,129 +31,101 @@ import com.muzima.domain.Credentials;
 import com.muzima.model.patient.PatientItem;
 import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.VerticalSpaceItemDecoration;
 import com.muzima.view.BaseActivity;
+import com.muzima.view.htc.HTCFormActivity;
 import com.muzima.view.person.PersonRegisterActivity;
+import com.muzima.view.person.SearchSESPPersonActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
+
 public class HTCMainActivity extends BaseActivity {
-
     private FloatingActionButton newPersonButton;
-
     private RecyclerView recyclerView;
     private PersonSearchAdapter personSearchAdapter;
-
     private List<PatientItem> searchResults;
-
     private EditText editTextSearch;
-
     private ImageButton searchButton;
-
-
+    Toolbar toolbar;
     private HTCPersonController htcPersonController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_htcmain);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("ATS");
+        toolbar.setTitle("Registar ATS");
 
-        this.searchResults = new ArrayList<>();
+        this.searchResults = (List<PatientItem>) getIntent().getSerializableExtra("searchResults");
+        this.searchResults = this.searchResults==null?new ArrayList<>():this.searchResults;
         searchButton = findViewById(R.id.buttonSearch);
         editTextSearch = findViewById(R.id.search);
 
         recyclerView = findViewById(R.id.person_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(16));
-        personSearchAdapter = new PersonSearchAdapter(recyclerView, searchResults, this, getApplicationContext());
+        personSearchAdapter = new PersonSearchAdapter(recyclerView, searchResults, this, getApplicationContext(), true);
         recyclerView.setAdapter(personSearchAdapter);
 
         initController();
+        getLatestHTCPersons();
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar.setNavigationIcon(R.drawable.ic_refresh);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         newPersonButton = findViewById(R.id.new_person);
         newPersonButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), PersonRegisterActivity.class);
+            intent.putExtra("searchResults", (Serializable) searchResults);
             startActivity(intent);
         });
 
         searchButton.setOnClickListener(view -> {
-            new ServerHTCPersonSearchBackgroundTask().execute(editTextSearch.getText().toString());
+            Intent intent = new Intent(getApplicationContext(), SearchSESPPersonActivity.class);
+            intent.putExtra("searchValue", editTextSearch.getText().toString());
+            startActivity(intent);
+        });
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.drawable.ic_refresh:
+                        AlertDialog.Builder builder = new AlertDialog.Builder(HTCMainActivity.this);
+                        builder.setCancelable(false)
+                                .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
+                                .setTitle(getResources().getString(R.string.general_success))
+                                .setMessage(getResources().getString(R.string.record_saved_sucessfull))
+                                .setPositiveButton(R.string.general_ok, null)
+                                .show();
+                        return true;
+                    default:
+                }
+                return false;
+            }
         });
     }
 
     private void initController() {
         this.htcPersonController = ((MuzimaApplication) getApplicationContext()).getHtcPersonController();
     }
-
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
         super.setSupportActionBar(toolbar);
     }
 
-    private class ServerHTCPersonSearchBackgroundTask extends AsyncTask<String, Void, Object> {
-
-        @Override
-        protected void onPreExecute() {
-            onPreExecuteUpdate();
+    private void getLatestHTCPersons() {
+        List<HTCPerson> htcPersonList = this.htcPersonController.getLatestHTCPersons();
+        for (HTCPerson htcPerson: htcPersonList) {
+             PatientItem patientItem = new PatientItem(htcPerson);
+             searchResults.add(patientItem);
         }
-        @Override
-        protected void onPostExecute(Object patientsObject) {
-            List<HTCPerson> htcPersonList = (List<HTCPerson>)patientsObject;
-            onPostExecuteUpdate(htcPersonList);
-        }
-        @Override
-        protected Object doInBackground(String... strings) {
-            MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
-
-            Credentials credentials = new Credentials(applicationContext);
-            try {
-                Constants.SERVER_CONNECTIVITY_STATUS serverStatus = NetworkUtils.getServerStatus(applicationContext, credentials.getServerUrl());
-                if(serverStatus == Constants.SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE) {
-                    int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(credentials.getCredentialsArray());
-                    if (authenticateResult == Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS) {
-                        return htcPersonController.searchPersonOnServer(strings[0]);
-                    } else {
-                        cancel(true);
-                        return authenticateResult;
-                    }
-                }else {
-                    cancel(true);
-                    return serverStatus;
-                }
-
-            } catch (Throwable t) {
-                Log.e(getClass().getSimpleName(), "Error while searching for person in the server.", t);
-            } finally {
-                applicationContext.getMuzimaContext().closeSession();
-            }
-            Log.e(getClass().getSimpleName(), "Authentication failure !! Returning empty patient list");
-            return new ArrayList<Patient>();
-        }
-    }
-
-    private void onPreExecuteUpdate() {
-        this.searchResults.clear();
-        this.personSearchAdapter.notifyDataSetChanged();
-    }
-
-    private void onPostExecuteUpdate(List<HTCPerson> htcPersonList) {
-        if (htcPersonList == null) {
-            Toast.makeText(this, getApplicationContext().getString(R.string.error_patient_repo_fetch), Toast.LENGTH_SHORT).show();
-            return;
-        }
-        this.searchResults.clear();
-
-        for(HTCPerson patient:htcPersonList) {
-            this.searchResults.add(new PatientItem(patient));
-        }
-
-        this.personSearchAdapter.notifyDataSetChanged();
     }
 }

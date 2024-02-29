@@ -43,6 +43,22 @@
 
         </LinearLayout>
         <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
+                android:layout_height="wrap_content"
+                android:paddingVertical="5dp"
+                android:orientation="vertical">
+            <ImageView
+                    android:id="@+id/migration_state"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="end"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_refresh"
+                    android:layout_marginRight="@dimen/dimen_2dp"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1.5"
             android:layout_height="wrap_content"
@@ -70,7 +86,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="19 Anos"
+            android:text=""
             android:textSize="12dp"
             android:textColor="#424242"/>
 
@@ -113,7 +129,7 @@
             android:id="@+id/contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="856359879"
+            android:text=""
             android:gravity="center_vertical"
             android:textSize="11dp"
             android:drawablePadding="5dp"
@@ -127,7 +143,7 @@
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:drawablePadding="5dp"
-            android:text="Av. das Acacias nr 2023, Bairro 3"
+            android:text=""
             android:textSize="11dp"
             android:drawableLeft="@drawable/ic_location_on_24"
             android:textColor="#424242"/>
