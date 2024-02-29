@@ -2,7 +2,9 @@ package com.muzima.model.patient;
 
 import com.muzima.api.model.Patient;
 
-public class PatientItem {
+import java.io.Serializable;
+
+public class PatientItem implements Serializable {
     private Patient patient;
     private boolean selected;
 

@@ -787,4 +787,76 @@
     <string name="attempt_number_limit_reached">विज़िट प्रयासों की संख्या पार हो गई</string>
     <string name="visit_made_sucessfully">यात्रा पहले ही सफलतापूर्वक हो चुकी है</string>
     <string name="todos_utentes">Todos os Utentes</string>
+
+    <string name="htc_identification_data">रोगी की पहचान</string>
+    <string name="htc_retesting">एचटीसी पुनः परीक्षण कर रहा है</string>
+
+    <string name="htc_book_info">पुस्तक की जानकारी</string>
+    <string name="book_number">पुस्तक संख्या</string>
+    <string name="book_page_number">पृष्ठ संख्या</string>
+    <string name="book_page_line">रेखा</string>
+    <string name="testing_sector">परीक्षण क्षेत्र</string>
+
+    <string name="ats_testing_data">एचटीसी परीक्षण डेटा</string>
+    <string name="testing_date">परीक्षण तिथि</string>
+    <string name="select_testing_date">परीक्षण तिथि भरें</string>
+    <string name="pop_keys_miners">पॉप कुंजियाँ और खनिक</string>
+    <string name="index_case_contacts">अनुक्रमणिका केस संपर्क</string>
+    <string name="self_test_confirmation">स्व-परीक्षण पुष्टिकरण</string>
+    <string name="hiv_positive_results">एचआईवी के लिए सकारात्मक परिणाम</string>
+
+    <string name="historical_testing_data">ऐतिहासिक परीक्षण</string>
+    <string name="first_time_testing">समय के लिए परीक्षण किया गया</string>
+    <string name="positive_in_the_past">अतीत में सकारात्मक</string>
+
+    <string name="testing_date_format_error">परीक्षण तिथि सही भरें!</string>
+    <string name="general_success">सफलता</string>
+    <string name="record_saved_sucessfull">रिकॉर्ड सफलतापूर्वक सहेजा गया!</string>
+
+    <string name="htc_person_mandatory_fields">Name, Surname, Gender and Birth Date or Age are mandatory fields!</string>
+    <string name="htc_person_register">Register Persons</string>
+
+    <string name="person_exist_in_sesp_field">Does person exist in SESP?</string>
+
+    <string name="htc_person_name_mandatory">Name is required and can not contain symbols ou numbers</string>
+    <string name="htc_person_surname_mandatory">Surname is required and can not contain symbols ou numbers</string>
+    <string name="htc_person_phone_number_error">Phone number must contain 9 digits with the first digit 8</string>
+    <string name="htc_person_age_error">Idade deve conter no máximo 3 dígitos</string>
+
+    <string-array name="personExistsInSESPOptions">
+        <item>Yes</item>
+        <item>No</item>
+        <item>I don`t know</item>
+    </string-array>
+
+    <string-array name="testingSectors">
+        <item>UATS</item>
+        <item>Consultas Externas</item>
+        <item>Triagem</item>
+        <item>Enfermaria</item>
+        <item>Banco de Socorros</item>
+        <item>Outro ATIP</item>
+        <item>SMI</item>
+        <item>TB</item>
+        <item>ATS-C</item>
+        <item>Outro</item>
+    </string-array>
+
+    <string-array name="popKeysMiners">
+        <item>MTS</item>
+        <item>HSH</item>
+        <item>PID</item>
+        <item>REC</item>
+        <item>TG</item>
+        <item>MIN</item>
+    </string-array>
+
+    <string-array name="indexCaseContacts">
+        <item>Par. Sex</item>
+        <item>Filho &lt;15</item>
+        <item>Mãe/Pai do CI (&lt;15)</item>
+        <item>REC</item>
+        <item>TG</item>
+        <item>MIN</item>
+    </string-array>
 </resources>

@@ -2,6 +2,7 @@ package com.muzima.adapters.person;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,38 +18,46 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
+import com.muzima.api.model.HTCPerson;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PersonAttribute;
 import com.muzima.listners.LoadMoreListener;
 import com.muzima.model.patient.PatientItem;
+import com.muzima.utils.DateUtils;
 import com.muzima.utils.ViewUtil;
+import com.muzima.view.htc.HTCFormActivity;
+import com.muzima.view.login.LoginActivity;
 import com.muzima.view.main.HTCMainActivity;
+import com.muzima.view.person.PersonRegisterActivity;
+import com.muzima.view.person.SearchSESPPersonActivity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements RecyclerAdapter.BackgroundListQueryTaskListener {
-
     List<PatientItem> records;
-
     LoadMoreListener loadMoreListener;
-
     protected final int VIEW_TYPE_ITEM = 0;
     protected final int VIEW_TYPE_LOADING = 1;
-
     private HTCMainActivity activity;
+    private SearchSESPPersonActivity searchSESPPersonActivity;
     protected boolean isLoading;
-
     protected int lastVisibleItem, totalItemCount;
-
     private boolean detailsSection;
+    private final Context context;
+    boolean isNewPerson;
 
-    private Context context;
-
-    public PersonSearchAdapter(RecyclerView recyclerView, List<PatientItem> records, Activity activity, Context context) {
+    public PersonSearchAdapter(RecyclerView recyclerView, List<PatientItem> records, Activity activity, Context context, boolean isNewPerson) {
         this.records = records;
-        this.activity = (HTCMainActivity) activity;
+        this.isNewPerson = isNewPerson;
+        try {
+            this.activity = (HTCMainActivity) activity;
+        } catch (ClassCastException e) {
+            this.searchSESPPersonActivity = (SearchSESPPersonActivity) activity;
+        }
         this.context = context;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
@@ -115,9 +124,10 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             Date dob = patient.getBirthdate();
             if(dob != null) {
-               // personViewHolder.age.setText(context.createConfigurationContext(configuration).getResources().getString(R.string.general_years ,String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(dob))));
+                personViewHolder.age.setText(DateUtils.calculateAge(dob)+"");
+                //personViewHolder.age.setText(context.createConfigurationContext(configuration).getResources().getString(R.string.general_years ,String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(dob))));
             }else{
-                personViewHolder.age.setText(String.format(""));
+                personViewHolder.age.setText("");
             }
 
             personViewHolder.identifier.setText(patient.getIdentifier());
@@ -133,14 +143,18 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             PersonAttribute attribute = patient.getAttribute("e2e3fd64-1d5f-11e0-b929-000c29ad1d07");
             if (attribute != null) {
                 personViewHolder.contact.setText(attribute.getAttribute());
+            } else {
+                personViewHolder.contact.setText(((HTCPerson)patient).getPhoneNumber());
             }
-
-            //personViewHolder.dateCreated;
-
+            
             personViewHolder.createHTC.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Intent intent = new Intent(context, PersonRegisterActivity.class);
+                    intent.putExtra("records", (Serializable) records);
+                    intent.putExtra("selectedPerson", patient);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    context.startActivity(intent);
                 }
             });
 
@@ -178,10 +192,6 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return loadMoreListener;
     }
 
-    public HTCMainActivity getActivity() {
-        return activity;
-    }
-
     @Override
     public void onQueryTaskStarted() {
 
@@ -203,7 +213,6 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public class PersonViewHolder extends RecyclerView.ViewHolder{
-
         ImageView sex;
         TextView name;
         TextView identifier;
@@ -211,7 +220,7 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView dateCreated;
         TextView contact;
         TextView address;
-
+        ImageView migrationState;
         ImageButton createHTC;
         ImageButton details;
         View divider;
@@ -228,7 +237,11 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             //dateCreated = itemView.findViewById(R.id.date_created);
             contact = itemView.findViewById(R.id.contact);
             address = itemView.findViewById(R.id.address);
+            migrationState = itemView.findViewById(R.id.migration_state);
             createHTC = itemView.findViewById(R.id.create_htc);
+            if(isNewPerson) {
+                createHTC.setImageResource(R.drawable.ic_action_edit);
+            }
             details = itemView.findViewById(R.id.details);
             divider = itemView.findViewById(R.id.divider);
             moreDetailsLyt = itemView.findViewById(R.id.person_more_details);
