@@ -430,7 +430,8 @@ public class DataSyncService extends IntentService {
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, resultForObservations[0]);
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msgForObservations);
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_OBSERVATIONS);
-        if (isSuccess(resultForObservations)) {
+        if (isSuccess(resultForObservations) && resultForObservations.length>1) {
+            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, resultForObservations[1]);
             updateNotificationMsg(msgForObservations);
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
