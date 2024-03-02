@@ -786,8 +786,8 @@ public class MuzimaSyncService {
         int count = 0;
         boolean hasElements = !strings.isEmpty();
         while (hasElements) {
-            int startElement = count * 50;
-            int endElement = ++count * 50;
+            int startElement = count * 100;
+            int endElement = ++count * 100;
             hasElements = strings.size() > endElement;
             if (hasElements) {
                 lists.add(strings.subList(startElement, endElement));
