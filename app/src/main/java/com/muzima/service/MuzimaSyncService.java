@@ -36,6 +36,7 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormDataStatus;
 import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.HTCPerson;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Media;
 import com.muzima.api.model.MediaCategory;
@@ -61,6 +62,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.HTCPersonController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MediaCategoryController;
 import com.muzima.controller.MediaController;
@@ -151,6 +153,8 @@ public class MuzimaSyncService {
     private DerivedObservationController derivedObservationController;
 
     private CohortMemberSummaryController cohortMemberSummaryController;
+
+    private HTCPersonController htcPersonController;
     private Logger logger;
     private String pseudoDeviceId;
 
@@ -175,6 +179,8 @@ public class MuzimaSyncService {
         derivedConceptController = muzimaApplication.getDerivedConceptController();
         derivedObservationController = muzimaApplication.getDerivedObservationController();
         cohortMemberSummaryController = muzimaApplication.getCohortMemberSummaryController();
+        htcPersonController = muzimaApplication.getHtcPersonController();
+
         pseudoDeviceId = generatePseudoDeviceId();
     }
 
@@ -2952,5 +2958,68 @@ public class MuzimaSyncService {
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while loading patients.", e);
         }
+    }
+
+    public int[] downloadHtcPersons(String providerUuid) {
+        int[] result = new int[4];
+        List<HTCPerson> htcPersonList = new ArrayList<>(htcPersonController.downloadHtcPersonsOfProvider(providerUuid));
+        htcPersonController.saveHtcPersons(htcPersonList);
+
+        result[3] = htcPersonList.size();
+        result[0] = SUCCESS;
+        return result;
+    }
+
+
+    public int[] uploadAllPendingHtcData() {
+        int[] result = new int[1];
+        try {
+            result[0] = htcPersonController.uploadAllPendingHtcData() ? SUCCESS : SyncStatusConstants.UPLOAD_ERROR;
+            htcPersonController.deleteHtcPersonPendingDeletion();
+            try {
+                SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+                AppUsageLogs lastUploadLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME, muzimaApplication.getAuthenticatedUserId());
+                if (lastUploadLog != null) {
+                    lastUploadLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                    lastUploadLog.setUpdateDatetime(new Date());
+                    lastUploadLog.setUserName(muzimaApplication.getAuthenticatedUserId());
+                    lastUploadLog.setDeviceId(pseudoDeviceId);
+                    lastUploadLog.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(lastUploadLog);
+                } else {
+                    AppUsageLogs newUploadTime = new AppUsageLogs();
+                    newUploadTime.setUuid(UUID.randomUUID().toString());
+                    newUploadTime.setLogKey(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME);
+                    newUploadTime.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                    newUploadTime.setUpdateDatetime(new Date());
+                    newUploadTime.setUserName(muzimaApplication.getAuthenticatedUserId());
+                    newUploadTime.setDeviceId(pseudoDeviceId);
+                    newUploadTime.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(newUploadTime);
+                }
+            } catch (IOException e) {
+                Log.e(getClass().getSimpleName(),"Encountered IO Exception ",e);
+            } catch (ParseException e) {
+                Log.e(getClass().getSimpleName(),"Encountered Parse Exception ",e);
+            }
+        } catch (HTCPersonController.UploadHtcDataException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while uploading htc data.", e);
+            String exceptionError = e.getMessage();
+            String[] exceptionErrorArray = exceptionError.split(":", 0);
+            String uploadError = "";
+            int i = 0;
+            for (String error : exceptionErrorArray) {
+                if (i == 0) {
+                    uploadError = error.trim();
+                }
+                i++;
+            }
+            if (uploadError.equals("java.net.ConnectException")) {
+                result[0] = SyncStatusConstants.SERVER_CONNECTION_ERROR;
+            } else {
+                result[0] = SyncStatusConstants.UPLOAD_ERROR;
+            }
+        }
+        return result;
     }
 }

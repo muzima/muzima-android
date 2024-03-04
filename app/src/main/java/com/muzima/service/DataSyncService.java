@@ -94,6 +94,15 @@ public class DataSyncService extends IntentService {
                     prepareBroadcastMsg(broadcastIntent, result, msg);
                 }
                 break;
+            case DataSyncServiceConstants.SYNC_HTC_PERSONS:
+                updateNotificationMsg(getString(R.string.info_htc_data_upload));
+                if (authenticationSuccessful(credentials, broadcastIntent)) {
+                    int[] result = muzimaSyncService.uploadAllPendingHtcData();
+                    broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_HTC_PERSONS);
+                    prepareBroadcastMsgForFormUpload(broadcastIntent, result, getString(R.string.info_htc_data_upload_success));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
+                }
+                break;
             case DataSyncServiceConstants.SYNC_COHORTS_METADATA:
                 updateNotificationMsg(getString(R.string.info_cohort_download));
                 if (authenticationSuccessful(credentials, broadcastIntent)) {
@@ -340,6 +349,7 @@ public class DataSyncService extends IntentService {
         muzimaSyncService.downloadDerivedObservationsForPatientsByPatientUUIDs(patientUUIDList, true);
 
         muzimaSyncService.downloadSummariesForPatientsByPatientUUIDs(patientUUIDList);
+
     }
 
     private void downloadPatientsWithObsAndEncounters(Intent broadcastIntent, String[] patientUUIDs) {

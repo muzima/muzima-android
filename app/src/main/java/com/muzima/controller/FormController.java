@@ -721,7 +721,8 @@ public class FormController {
         }
     }
 
-    public boolean uploadAllCompletedForms() throws UploadFormDataException {
+    public boolean
+    uploadAllCompletedForms() throws UploadFormDataException {
         try {
             boolean result = true;
             List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_COMPLETE);

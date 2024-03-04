@@ -831,6 +831,15 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="htc_person_surname_mandatory">Apelido é obrigatório, e não pode conter símbolos ou nũmeros</string>
     <string name="htc_person_phone_number_error">O telefone deve conter 9 dígitos numéricos, com o primeiro dígito 8</string>
     <string name="htc_person_age_error">Idade deve conter no máximo 3 dígitos</string>
+    <string name="info_htc_person_download">Baixando registos de pessoas testadas</string>
+    <string name="info_htc_persons_download">Baixando Pessoas Testadas</string>
+    <string name="info_htc_person_not_downloaded">Não baixou registos de pessoas testadas</string>
+    <string name="error_htc_persons_download">Não foi possível baixar pessoastestadas</string>
+    <string name="info_htc_person_downloaded">Baixou uma pessoa testada</string>
+    <string name="info_htc_persons_downloaded">Baixou %d pessoas testadas</string>
+    <string name="error_htc_person_download">Não consuguiu baixar pessoas testadas</string>
+    <string name="info_htc_data_upload">Sincronizando novos dados de ATS para o servidor</string>
+    <string name="info_htc_data_upload_success">Sincronização dos dados de ATS efectuada com sucesso.</string>
 
     <string-array name="personExistsInSESPOptions">
         <item>Sim</item>

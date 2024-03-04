@@ -76,6 +76,7 @@ import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.SyncDatasetsIntent;
+import com.muzima.utils.SyncHtcPersonAndFormsDataIntent;
 import com.muzima.utils.SyncMediaCategoryIntent;
 import com.muzima.utils.SyncMediaIntent;
 import com.muzima.utils.SyncSettingsIntent;
@@ -201,6 +202,7 @@ public class MuzimaJobScheduler extends JobService {
             new FormDataUploadBackgroundTask().execute();
             new ProcessedTemporaryFormDataCleanUpBackgroundTask().execute();
             new SyncSettingsBackgroundTask().execute();
+            new HtcPersonAndFormsDataSyncBackgroundTask().execute();
             if(muzimaSettingController.isClinicalSummaryEnabled()) {
                 new SyncAllPatientReportsBackgroundTask().execute();
             }
@@ -219,6 +221,18 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+        }
+    }
+
+    private class HtcPersonAndFormsDataSyncBackgroundTask extends AsyncTask<Void,Void,Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            if (new WizardFinishPreferenceService(MuzimaJobScheduler.this).isWizardFinished()) {
+                new SyncHtcPersonAndFormsDataIntent(getApplicationContext(), authenticatedUser).start();
+
+            }
+            return null;
         }
     }
 

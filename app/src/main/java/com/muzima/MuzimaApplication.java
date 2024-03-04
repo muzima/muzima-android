@@ -781,7 +781,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public HTCPersonController getHtcPersonController() {
         if(htcPersonController == null){
             try{
-                htcPersonController = new HTCPersonController(muzimaContext.getHtcPersonService());
+                htcPersonController = new HTCPersonController(muzimaContext.getHtcPersonService(), this);
             }catch (IOException e){
                 throw new RuntimeException(e);
             }
