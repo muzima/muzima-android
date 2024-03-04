@@ -6,6 +6,9 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,11 +26,16 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.HTCPerson;
+import com.muzima.api.model.Location;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PersonName;
+import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.patient.PatientItem;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.PhoneNumberUtils;
@@ -44,6 +52,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
 
 public class PersonRegisterActivity extends BaseActivity {
     private ImageButton identificationDataBtn;
@@ -94,7 +104,7 @@ public class PersonRegisterActivity extends BaseActivity {
         setContentView(R.layout.activity_person_register);
         initViews();
         this.patient = (Patient) getIntent().getSerializableExtra("selectedPerson");
-        this.searchResults = (List<PatientItem>) getIntent().getSerializableExtra(this.patient==null ? "searchResults" : "records");
+        searchResults = (List<PatientItem>) getIntent().getSerializableExtra("searchResults");
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.htc_person_register);
@@ -230,15 +240,11 @@ public class PersonRegisterActivity extends BaseActivity {
         savePerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(patient==null) {
                     HTCPerson htcPerson = createHTCPersonInstance();
                     if (htcPerson != null) {
-                        goToHTCFormActivity(htcPerson, true);
+                        goToHTCFormActivity(htcPerson);
                     }
-                } else {
-                    goToHTCFormActivity((HTCPerson) patient, false);
                 }
-                                          }
         });
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -337,7 +343,6 @@ public class PersonRegisterActivity extends BaseActivity {
            detailsTextView.setVisibility(View.VISIBLE);
            details.setVisibility(View.VISIBLE);
            //dateOfCreation.setText(patient.getAttribute("").getAttribute());
-           healthFacility.setText("Unidade Sanitaria");
            String phoneNumber = ((HTCPerson) patient).getPhoneNumber();
            if(!StringUtils.isEmpty(phoneNumber) || phoneNumber!=null) {
                contact.setText(phoneNumber);
@@ -354,8 +359,8 @@ public class PersonRegisterActivity extends BaseActivity {
             String currentDate = DateUtils.getCurrentDateAsString();
             dateOfCreation.setText(currentDate);
             dateOfCreation.setEnabled(false);
-
-            healthFacility.setText("Unidade Sanitaria");
+            Location location = getLocation();
+            healthFacility.setText(location.getName());
             healthFacility.setEnabled(false);
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -367,6 +372,12 @@ public class PersonRegisterActivity extends BaseActivity {
                return null;
         }
         HTCPerson htcPerson = new HTCPerson();
+        if(this.patient!=null) {
+            htcPerson.setSespUuid(this.patient.getUuid());
+            htcPerson.setPatient(Boolean.TRUE);
+        } else {
+            htcPerson.setPatient(Boolean.FALSE);
+        }
         htcPerson.setGender(optMale.isChecked() ? "M" :(optFemale.isChecked() ? "F" : ""));
         htcPerson.setPhoneNumber(contact.getText().toString());
         if(birthDateDate.isChecked()) {
@@ -422,14 +433,12 @@ public class PersonRegisterActivity extends BaseActivity {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         };
     }
 
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
-
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default date in the picker.
@@ -437,16 +446,21 @@ public class PersonRegisterActivity extends BaseActivity {
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
-
             DatePickerDialog datePickerDialog = new DatePickerDialog(this.getContext(), this, year, month, day);
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-
             // Create a new instance of DatePickerDialog and return it.
             return datePickerDialog;
         }
 
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+            StringBuilder dayValue = new StringBuilder();
+            if(day+"".length()==1){
+                dayValue.append("0");
+                dayValue.append(day);
+            } else {
+                dayValue.append(day);
+            }
             StringBuilder monthValue = new StringBuilder();
             if(month+"".length()==1){
                 monthValue.append("0");
@@ -454,16 +468,14 @@ public class PersonRegisterActivity extends BaseActivity {
             } else {
                 monthValue.append(month);
             }
-            birthDate.setText(day + "-" + monthValue.toString() + "-" + year);
+            birthDate.setText(dayValue + "-" + monthValue.toString() + "-" + year);
         }
     }
 
 
-    private void goToHTCFormActivity(HTCPerson htcPerson, boolean isNewPerson) {
+    private void goToHTCFormActivity(HTCPerson htcPerson) {
         Intent intent = new Intent(getApplicationContext(), HTCFormActivity.class);
-        intent.putExtra("newHTCPerson", htcPerson);
-        intent.putExtra("selectedPerson", htcPerson);
-        intent.putExtra("isNewPerson", isNewPerson);
+        intent.putExtra("htcPerson", htcPerson);
         intent.putExtra("searchResults", (Serializable) searchResults);
         startActivity(intent);
         finish();
@@ -502,7 +514,7 @@ public class PersonRegisterActivity extends BaseActivity {
             return false;
         }
         if((birthDateDate.isChecked() && StringUtils.isEmpty(birthDate.getText().toString()))
-                || (birthDateAge.isChecked() && StringUtils.isEmpty(birthDate.getText().toString()))) {
+                && (birthDateAge.isChecked() && StringUtils.isEmpty(birthDate.getText().toString()))) {
             AlertDialog.Builder builder = new AlertDialog.Builder(PersonRegisterActivity.this);
             builder.setCancelable(false)
                     .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
@@ -547,20 +559,39 @@ public class PersonRegisterActivity extends BaseActivity {
                 return false;
             }
         }
-        if(birthDateAge.isChecked() && !StringUtils.isEmpty(htcPersonAge.getText().toString())) {
+        if(!StringUtils.isEmpty(htcPersonAge.getText().toString())) {
             String age = htcPersonAge.getText().toString();
-            if(age.length()>3) {
+            if(!(age.length()>0 && age.length()<=3 && Integer.valueOf(age)>=0 && Integer.valueOf(age)<=100)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(PersonRegisterActivity.this);
                 builder.setCancelable(false)
                         .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
                         .setTitle(getResources().getString(R.string.general_error))
-                        .setMessage(getResources().getString(R.string.htc_person_phone_number_error))
+                        .setMessage(getResources().getString(R.string.htc_person_age_error))
                         .setPositiveButton(R.string.general_ok, launchDashboard(null))
                         .show();
                 return false;
             }
         }
-
         return true;
+    }
+    private Location getLocation() {
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+        LocationController locationController = ((MuzimaApplication) getApplicationContext()).getLocationController();
+        try {
+            MuzimaSetting encounterLocationIdSetting = muzimaSettingController.getSettingByProperty(DEFAULT_ENCOUNTER_LOCATION_SETTING);
+            if(encounterLocationIdSetting != null) {
+                if(encounterLocationIdSetting.getValueString() != null) {
+                    Location defaultEncounterLocation = locationController.getLocationById(Integer.valueOf(encounterLocationIdSetting.getValueString()));
+                    return defaultEncounterLocation;
+                }
+            }
+        } catch (
+                MuzimaSettingController.MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Encountered an error while fetching setting ",e);
+        } catch (
+                LocationController.LocationLoadException e) {
+            Log.e(getClass().getSimpleName(), "Encountered an error while fetching location ",e);
+        }
+        return null;
     }
 }

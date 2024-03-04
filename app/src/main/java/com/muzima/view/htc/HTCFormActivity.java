@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
@@ -14,7 +13,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,9 +27,12 @@ import com.muzima.R;
 import com.muzima.api.model.HTCPerson;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.MuzimaHtcForm;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.HTCPersonController;
+import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaHTCFormController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.patient.PatientItem;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
@@ -46,6 +47,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
 
 public class HTCFormActivity extends AppCompatActivity {
     private ImageButton identificationDataBtn;
@@ -77,13 +80,14 @@ public class HTCFormActivity extends AppCompatActivity {
     TextView testResult;
     CheckBox selfTestConfirmation;
     RadioButton firstTimeTestedOption;
-    RadioButton pastPositiiveOption;
+    RadioButton pastPositiveOption;
     EditText dateOfCreation;
     EditText healthFacility;
     ImageView saveHtcForm;
     private Date dateOfTesting;
-    private Patient htcPerson;
-    private boolean isNewPerson;
+    private HTCPerson htcPerson;
+    private MuzimaHtcForm htcForm;
+    private boolean isEditionFlow;
     private List<PatientItem> searchResults;
     private HTCPersonController htcPersonController;
     private MuzimaHTCFormController htcFormController;
@@ -91,18 +95,21 @@ public class HTCFormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_htcform);
-        searchResults = (List<PatientItem>) getIntent().getSerializableExtra("searchResults");
-        isNewPerson = (Boolean) getIntent().getSerializableExtra("isNewPerson");
-        if(isNewPerson) {
-            htcPerson = (Patient) getIntent().getSerializableExtra("newHTCPerson");
-        } else {
-            htcPerson = (Patient) getIntent().getSerializableExtra("selectedPerson");
-        }
         initViews();
         initController();
+        searchResults = (List<PatientItem>) getIntent().getSerializableExtra("searchResults");
+        htcPerson = (HTCPerson) getIntent().getSerializableExtra("htcPerson");
+        if(htcPerson.isPatient()) {
+            identifier.setText(htcPerson.getSespUuid());
+        }
+        isEditionFlow = (Boolean) getIntent().getSerializableExtra("isEditionFlow");
+        if(isEditionFlow) {
+            htcForm = htcFormController.getHTCFormByHTCPersonUuid(htcPerson.getUuid()); // ver bug aqui
+        }
         setHtcPersonIdentificationData(htcPerson);
         testResult.setText(setHivResult(htcPerson));
         testResult.setEnabled(false);
+        setHTCFormData();
         setListners();
     }
 
@@ -183,30 +190,51 @@ public class HTCFormActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(validateFields()) {
                     try {
-                        htcPersonController.saveHTCPerson((HTCPerson) htcPerson);
-                        HTCPerson createdHTCPerson = htcPersonController.getHTCPerson(htcPerson.getUuid());
-                        MuzimaHtcForm muzimaHtcForm = createHTCFormInstance(createdHTCPerson);
-                        /*htcFormController.saveHTCForm(muzimaHtcForm);
-                        MuzimaHtcForm createdHTCForm = htcFormController.getHTCForm(muzimaHtcForm.getUuid());
-                        createdHTCForm.setHtcPerson(createdHTCPerson);
-                        Log.e(getClass().getSimpleName(), "UUID e ID : " + createdHTCForm.getUuid() + " - " + createdHTCForm.getId());*/
-                        searchResults.add(new PatientItem(createdHTCPerson));
-                        AlertDialog.Builder builder = new AlertDialog.Builder(HTCFormActivity.this);
-                        builder.setCancelable(false)
-                                .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                                .setTitle(getResources().getString(R.string.general_success))
-                                .setMessage(getResources().getString(R.string.record_saved_sucessfull))
-                                .setPositiveButton(R.string.general_ok, launchDashboard())
-                                .show();
-                        goToMainActivity(searchResults);
+                        if(isEditionFlow) {
+                            htcPersonController.updateHTCPerson(htcPerson);
+                            MuzimaHtcForm muzimaHtcForm = createHTCFormInstance(htcPerson);
+                            htcFormController.updateHTCForm(muzimaHtcForm);
+                            int i=0;
+                            for (PatientItem patientItem : searchResults) {
+                                if(patientItem.getPatient().getUuid().equalsIgnoreCase(htcPerson.getUuid())) {
+                                    break;
+                                }
+                                i++;
+                            }
+                            searchResults.add(i, new PatientItem(htcPerson));
+                            AlertDialog.Builder builder = new AlertDialog.Builder(HTCFormActivity.this);
+                            builder.setCancelable(false)
+                                    .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
+                                    .setTitle(getResources().getString(R.string.general_success))
+                                    .setMessage("Registo actualizado com sucesso!")
+                                    .setPositiveButton(R.string.general_ok, launchDashboard())
+                                    .show();
+                            goToMainActivity(searchResults);
+                        } else {
+                            htcPersonController.saveHTCPerson(htcPerson);
+                            HTCPerson createdHTCPerson = htcPersonController.getHTCPerson(htcPerson.getUuid());
+                            MuzimaHtcForm muzimaHtcForm = createHTCFormInstance(createdHTCPerson);
+                            htcFormController.saveHTCForm(muzimaHtcForm);
+                            MuzimaHtcForm createdHTCForm = htcFormController.getHTCForm(muzimaHtcForm.getUuid());
+                            createdHTCForm.setHtcPerson(createdHTCPerson);
+                            Log.e(getClass().getSimpleName(), "UUID e ID : " + createdHTCForm.getUuid() + " - " + createdHTCForm.getId());
+                            searchResults.add(new PatientItem(createdHTCPerson));
+                            AlertDialog.Builder builder = new AlertDialog.Builder(HTCFormActivity.this);
+                            builder.setCancelable(false)
+                                    .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
+                                    .setTitle(getResources().getString(R.string.general_success))
+                                    .setMessage(getResources().getString(R.string.record_saved_sucessfull))
+                                    .setPositiveButton(R.string.general_ok, launchDashboard())
+                                    .show();
+                            goToMainActivity(searchResults);
+                        }
                     }
-                    // MuzimaHTCFormController.MuzimaHTCFormSaveException
-                    catch (Exception e) {
+                    catch (MuzimaHTCFormController.MuzimaHTCFormSaveException e) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(HTCFormActivity.this);
                         builder.setCancelable(false)
                                 .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
                                 .setTitle(getResources().getString(R.string.general_error))
-                                .setMessage(getResources().getString(R.string.testing_date_format_error))
+                                .setMessage("Erro ao gravar ATS!")
                                 .setPositiveButton(R.string.general_ok, launchDashboard())
                                 .show();
                     }
@@ -242,7 +270,7 @@ public class HTCFormActivity extends AppCompatActivity {
         testResult = findViewById(R.id.hivPositiveResult);
         selfTestConfirmation = findViewById(R.id.selfTestConfirmation);
         firstTimeTestedOption = findViewById(R.id.firstTimeTestedOption);
-        pastPositiiveOption = findViewById(R.id.pastPositiiveOption);
+        pastPositiveOption = findViewById(R.id.pastPositiiveOption);
         dateOfCreation = findViewById(R.id.dateOfCreation);
         healthFacility = findViewById(R.id.healthFacility);
         saveHtcForm = findViewById(R.id.saveHtcForm);
@@ -257,7 +285,8 @@ public class HTCFormActivity extends AppCompatActivity {
             dateOfCreation.setText(currentDate);
             dateOfCreation.setEnabled(false);
 
-            healthFacility.setText("Unidade Sanitaria");
+            Location location = getLocation();
+            healthFacility.setText(location.getName());
             healthFacility.setEnabled(false);
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -283,6 +312,13 @@ public class HTCFormActivity extends AppCompatActivity {
 
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+            StringBuilder dayValue = new StringBuilder();
+            if(day+"".length()==1){
+                dayValue.append("0");
+                dayValue.append(day);
+            } else {
+                dayValue.append(day);
+            }
             StringBuilder monthValue = new StringBuilder();
             if(month+"".length()==1){
                 monthValue.append("0");
@@ -290,10 +326,9 @@ public class HTCFormActivity extends AppCompatActivity {
             } else {
                 monthValue.append(month);
             }
-            testingDate.setText(day + "-" + monthValue.toString() + "-" + year);
+            testingDate.setText(dayValue + "-" + monthValue.toString() + "-" + year);
         }
     }
-
     private boolean validateFields() {
         if (StringUtils.isEmpty(testingDate.getText().toString())) {
             AlertDialog.Builder builder = new AlertDialog.Builder(HTCFormActivity.this);
@@ -321,13 +356,11 @@ public class HTCFormActivity extends AppCompatActivity {
         }
         return true;
     }
-
     private DialogInterface.OnClickListener launchDashboard() {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //startActivity(new Intent(getApplicationContext(), HTCFormActivity.class));
-                //finish();
+
             }
         };
     }
@@ -363,7 +396,12 @@ public class HTCFormActivity extends AppCompatActivity {
     }
 
     private MuzimaHtcForm createHTCFormInstance(HTCPerson htcPerson) {
-        MuzimaHtcForm muzimaHtcForm = new MuzimaHtcForm();
+        MuzimaHtcForm muzimaHtcForm = null;
+        if(!isEditionFlow) {
+            muzimaHtcForm = new MuzimaHtcForm();
+        } else {
+            muzimaHtcForm = htcForm;
+        }
         muzimaHtcForm.setHtcPerson(htcPerson);
         if(!StringUtils.isEmpty(bookNumber.getText().toString())) {
             int book = Integer.parseInt(bookNumber.getText().toString());
@@ -389,10 +427,6 @@ public class HTCFormActivity extends AppCompatActivity {
             String indexCaseContact = indexCaseContacts.getSelectedItem().toString();
             muzimaHtcForm.setIndexCaseContact(indexCaseContact);
         }
-        if(!StringUtils.isEmpty(testResult.getText().toString())) {
-            String results = testResult.getText().toString();
-            muzimaHtcForm.setTestResult(results);
-        }
         if(!StringUtils.isEmpty(testingDate.getText().toString())) {
             try {
                 Date date = DateUtils.parse(testingDate.getText().toString());
@@ -410,7 +444,7 @@ public class HTCFormActivity extends AppCompatActivity {
         if(firstTimeTestedOption.isChecked()) {
             muzimaHtcForm.setTestHistory("FIRST_TEST");
         }
-        if(pastPositiiveOption.isChecked()) {
+        if(pastPositiveOption.isChecked()) {
             muzimaHtcForm.setTestHistory("PAST_POSITIVE");
         }
         muzimaHtcForm.setOthers("");
@@ -420,16 +454,13 @@ public class HTCFormActivity extends AppCompatActivity {
             String results = testResult.getText().toString();
             muzimaHtcForm.setTestResult(results);
         }
-        if(!StringUtils.isEmpty(testResult.getText().toString())) {
-            String results = testResult.getText().toString();
-            muzimaHtcForm.setTestResult(results);
-        }
         if(dateOfTesting!=null) {
             muzimaHtcForm.setTestingDate(dateOfTesting);
         }
         muzimaHtcForm.setMigrationState("PENDING");
         muzimaHtcForm.setGeneratedEncounterId(null);
-        muzimaHtcForm.setTestingLocation(null);
+        Location location = getLocation();
+        muzimaHtcForm.setTestingLocation(location);
         return muzimaHtcForm;
     }
     private void setPopKeyMinersOptions() {
@@ -478,5 +509,63 @@ public class HTCFormActivity extends AppCompatActivity {
         intent.putExtra("searchResults", (Serializable) searchResults);
         startActivity(intent);
         finish();
+    }
+    private Location getLocation() {
+        MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+        LocationController locationController = ((MuzimaApplication) getApplicationContext()).getLocationController();
+        try {
+            MuzimaSetting encounterLocationIdSetting = muzimaSettingController.getSettingByProperty(DEFAULT_ENCOUNTER_LOCATION_SETTING);
+            if(encounterLocationIdSetting != null) {
+                if(encounterLocationIdSetting.getValueString() != null) {
+                    Location defaultEncounterLocation = locationController.getLocationById(Integer.valueOf(encounterLocationIdSetting.getValueString()));
+                    return defaultEncounterLocation;
+                }
+            }
+        } catch (
+                MuzimaSettingController.MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Encountered an error while fetching setting ",e);
+        } catch (
+                LocationController.LocationLoadException e) {
+            Log.e(getClass().getSimpleName(), "Encountered an error while fetching location ",e);
+        }
+        return null;
+    }
+
+    private void setHTCFormData() {
+        if(htcForm!=null) {
+            bookNumber.setText(htcForm.getBookNumber());
+            bookPageNumber.setText(htcForm.getBookPageNumber());
+            bookPageLine.setText(htcForm.getBookPageLineNumber());
+            testingDate.setText(htcForm.getTestingDate().toString());
+            int countTestingSectors = testingSectors.getAdapter().getCount();
+            for(int i=0; i< countTestingSectors; i++) {
+                if(testingSectors.getAdapter().getItem(i).toString().equalsIgnoreCase(htcForm.getTestingSector())){
+                    testingSectors.setSelection(i);
+                    break;
+                }
+            }
+            int countPopKeyMiners = popKeysMiners.getAdapter().getCount();
+            for(int i=0; i< countPopKeyMiners; i++) {
+                if(popKeysMiners.getAdapter().getItem(i).toString().equalsIgnoreCase(htcForm.getPopKeysMiners())){
+                    popKeysMiners.setSelection(i);
+                    break;
+                }
+            }
+            int countIndexCaseContacts = indexCaseContacts.getAdapter().getCount();
+            for(int i=0; i< countIndexCaseContacts; i++) {
+                if(indexCaseContacts.getAdapter().getItem(i).toString().equalsIgnoreCase(htcForm.getIndexCaseContact())){
+                    indexCaseContacts.setSelection(i);
+                    break;
+                }
+            }
+            if(htcForm.getTestHistory().equalsIgnoreCase("FIRST_TEST")) {
+                firstTimeTestedOption.setChecked(true);
+            } else if(htcForm.getTestHistory().equalsIgnoreCase("PAST_POSITIVE")) {
+                pastPositiveOption.setChecked(true);
+            }
+            selfTestConfirmation.setChecked(htcForm.isSelfTestConfirmation());
+            healthFacility.setText(htcForm.getTestingLocation().getName());
+            //dateOfCreation.setText(htcForm.getDateOfCreation());
+        }
     }
 }

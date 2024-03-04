@@ -42,7 +42,6 @@ public class HTCPersonController {
         }
         return new ArrayList<>();
     }
-
     public void saveHTCPerson(HTCPerson htcPerson) {
         try {
             htcPersonService.saveHTCPerson(htcPerson);
@@ -69,6 +68,11 @@ public class HTCPersonController {
         }
         return new ArrayList<>();
     }
+    public void updateHTCPerson(HTCPerson htcPerson) {
+        try {
+            htcPersonService.updateHTCPerson(htcPerson);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while updating person "+htcPerson.getUuid(), e);
 
     public List<HTCPerson> downloadHtcPersonsOfProvider(String providerUuid) {
         try {
@@ -104,7 +108,7 @@ public class HTCPersonController {
             throw new UploadHtcDataException(e);
         }
         return  result;
-        
+
     }
 
     public void deleteHtcPersonPendingDeletion() {

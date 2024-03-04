@@ -840,6 +840,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="error_htc_person_download">Não consuguiu baixar pessoas testadas</string>
     <string name="info_htc_data_upload">Sincronizando novos dados de ATS para o servidor</string>
     <string name="info_htc_data_upload_success">Sincronização dos dados de ATS efectuada com sucesso.</string>
+    <string name="htc_person_age_error">Idade deve conter no máximo 3 dígitos e deve estar entre 0 e 100</string>
 
     <string-array name="personExistsInSESPOptions">
         <item>Sim</item>

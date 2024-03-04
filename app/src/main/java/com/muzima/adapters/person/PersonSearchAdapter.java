@@ -153,6 +153,7 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     Intent intent = new Intent(context, PersonRegisterActivity.class);
                     intent.putExtra("records", (Serializable) records);
                     intent.putExtra("selectedPerson", patient);
+                    intent.putExtra("isNewPerson", isNewPerson);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     context.startActivity(intent);
                 }

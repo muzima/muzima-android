@@ -846,6 +846,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="error_htc_person_download">Não consuguiu baixar pessoas testadas</string>
     <string name="info_htc_data_upload">Sincronizando novos dados de ATS para o servidor</string>
     <string name="info_htc_data_upload_success">Sincronização dos dados de ATS efectuada com sucesso.</string>
+    <string name="htc_person_age_error">Age must contain less or 3 digits and must be between 0 and 100</string>
 
     <string-array name="personExistsInSESPOptions">
         <item>Yes</item>
