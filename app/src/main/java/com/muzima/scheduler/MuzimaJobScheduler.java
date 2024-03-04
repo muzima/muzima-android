@@ -109,11 +109,12 @@ public class MuzimaJobScheduler extends JobService {
     private SetupConfigurationTemplate configBeforeConfigUpdate;
     private FCMTokenController fcmTokenController;
     private AppUsageLogsController  appUsageLogsController;
+    MuzimaApplication muzimaApplication;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
+        muzimaApplication = (MuzimaApplication) getApplicationContext();
         muzimaSettingController = muzimaApplication.getMuzimaSettingController();
         muzimaSynService = muzimaApplication.getMuzimaSyncService();
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
@@ -198,6 +199,13 @@ public class MuzimaJobScheduler extends JobService {
             Log.e(getClass().getSimpleName(), "Parameters for job is null");
         } else {
             new SyncSetupConfigTemplatesBackgroundTask().execute();
+
+            try {
+                muzimaApplication.getSetupConfigurationController().getAllSetupConfigurations().get(0).getUuid();
+            } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
+                throw new RuntimeException(e);
+            }
+
             new CohortsAndPatientFullDataSyncBackgroundTask().execute();
             new FormDataUploadBackgroundTask().execute();
             new ProcessedTemporaryFormDataCleanUpBackgroundTask().execute();

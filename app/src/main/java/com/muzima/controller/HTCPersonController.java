@@ -44,6 +44,7 @@ public class HTCPersonController {
     }
     public void saveHTCPerson(HTCPerson htcPerson) {
         try {
+            htcPerson.setSysnStatus(STATUS_COMPLETE);
             htcPersonService.saveHTCPerson(htcPerson);
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while searching for person in the server", e);
@@ -72,8 +73,9 @@ public class HTCPersonController {
         try {
             htcPersonService.updateHTCPerson(htcPerson);
         } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Error while updating person "+htcPerson.getUuid(), e);
-
+            Log.e(getClass().getSimpleName(), "Error while updating person " + htcPerson.getUuid(), e);
+        }
+    }
     public List<HTCPerson> downloadHtcPersonsOfProvider(String providerUuid) {
         try {
             return htcPersonService.downloadHtcPersonsOfProvider(providerUuid);
