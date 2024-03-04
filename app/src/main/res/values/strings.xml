@@ -821,7 +821,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="hiv_positive_results">Positive results for HIV</string>
 
     <string name="historical_testing_data">Historical testing</string>
-    <string name="first_time_testing">Tested for the time</string>
+    <string name="first_time_testing">Tested for the first time</string>
     <string name="positive_in_the_past">Positive in the past</string>
 
     <string name="testing_date_format_error">Fill out the testing date correctly!</string>
@@ -829,14 +829,25 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="record_saved_sucessfull">Record Saved Successfully!</string>
 
     <string name="htc_person_mandatory_fields">All fields marked with * must be filled out</string>
-    <string name="htc_person_register">Register Persons</string>
+    <string name="htc_person_register">ATS - Registo de Pessoa</string>
 
     <string name="person_exist_in_sesp_field">Does person exist in SESP?</string>
 
     <string name="htc_person_name_mandatory">Name is required and can not contain symbols ou numbers</string>
     <string name="htc_person_surname_mandatory">Surname is required and can not contain symbols ou numbers</string>
     <string name="htc_person_phone_number_error">Phone number must contain 9 digits with the first digit 8</string>
+    <string name="info_htc_person_download">Baixando registos de pessoas testadas</string>
+    <string name="info_htc_persons_download">Baixando Pessoas Testadas</string>
+    <string name="info_htc_person_not_downloaded">Não baixou registos de pessoas testadas</string>
+    <string name="error_htc_persons_download">Não foi possível baixar pessoastestadas</string>
+    <string name="info_htc_person_downloaded">Baixou uma pessoa testada</string>
+    <string name="info_htc_persons_downloaded">Baixou %d pessoas testadas</string>
+    <string name="error_htc_person_download">Não consuguiu baixar pessoas testadas</string>
+    <string name="info_htc_data_upload">Sincronizando novos dados de ATS para o servidor</string>
+    <string name="info_htc_data_upload_success">Sincronização dos dados de ATS efectuada com sucesso.</string>
     <string name="htc_person_age_error">Age must contain less or 3 digits and must be between 0 and 100</string>
+    <string name="htc_data_register">Formulário do ATS</string>
+    <string name="htc">mUzima ATS</string>
 
     <string-array name="personExistsInSESPOptions">
         <item>Yes</item>

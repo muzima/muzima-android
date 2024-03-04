@@ -35,6 +35,17 @@ public class DateUtils {
         return formattedDate.format(date);
     }
 
+    public static Date createDate(String stringDate, String dateFormat) {
+        try {
+            SimpleDateFormat sDate = new SimpleDateFormat(dateFormat);
+            Date date = sDate.parse(stringDate);
+
+            return date;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static Date parse(String dateAsString) throws ParseException {
 
         Pattern dateTimePattern = Pattern.compile("[\\d]{2}-[\\d]{2}-[\\d]{4} [\\d]{2}:[\\d]{2}");

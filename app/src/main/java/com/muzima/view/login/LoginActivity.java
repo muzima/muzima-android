@@ -1014,7 +1014,7 @@ public class LoginActivity extends BaseActivity {
             } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
                 e.printStackTrace();
             }
-            if (setting != null && setting.getValueString().equals("ATS")) {
+            if ((setting != null && setting.getValueString() != null) && setting.getValueString().equals("ATS")) {
                 intent = new Intent(getApplicationContext(), HTCMainActivity.class);
             } else {
                 intent = new Intent(getApplicationContext(), MainDashboardActivity.class);

@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.View;
@@ -91,10 +92,17 @@ public class HTCFormActivity extends AppCompatActivity {
     private List<PatientItem> searchResults;
     private HTCPersonController htcPersonController;
     private MuzimaHTCFormController htcFormController;
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_htcform);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.htc_data_register);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         initViews();
         initController();
         searchResults = (List<PatientItem>) getIntent().getSerializableExtra("searchResults");
@@ -102,7 +110,9 @@ public class HTCFormActivity extends AppCompatActivity {
         if(htcPerson.isPatient()) {
             identifier.setText(htcPerson.getSespUuid());
         }
-        isEditionFlow = (Boolean) getIntent().getSerializableExtra("isEditionFlow");
+        if (getIntent().getSerializableExtra("isEditionFlow") != null) {
+            isEditionFlow = (Boolean) getIntent().getSerializableExtra("isEditionFlow");
+        }
         if(isEditionFlow) {
             htcForm = htcFormController.getHTCFormByHTCPersonUuid(htcPerson.getUuid()); // ver bug aqui
         }
@@ -181,8 +191,24 @@ public class HTCFormActivity extends AppCompatActivity {
         });
 
         testingDate.setOnClickListener(view -> {
-            DatePickerFragment newFragment = new DatePickerFragment();
-            newFragment.show(getFragmentManager(), "datePicker");
+                    int mYear, mMonth, mDay;
+
+                    final Calendar c = Calendar.getInstance();
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(HTCFormActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            testingDate.setText(DateUtils.getFormattedDate(DateUtils.createDate(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year, DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT), DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
+                        }
+                    }, mYear, mMonth, mDay);
+                    datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                    datePickerDialog.show();
+
+            /*DatePickerFragment newFragment = new DatePickerFragment();
+            newFragment.show(getFragmentManager(), "datePicker");*/
         });
 
         saveHtcForm.setOnClickListener(new View.OnClickListener() {
@@ -390,9 +416,9 @@ public class HTCFormActivity extends AppCompatActivity {
         name.setText(htcPerson.getDisplayName());
         if(htcPerson.getBirthdate()!=null) {
             int htcPersonAge = DateUtils.calculateAge(htcPerson.getBirthdate());
-            age.setText(htcPersonAge+"");
+            age.setText(htcPersonAge+" Anos");
         }
-        identifier.setText(htcPerson.getIdentifier()); //validar para pessoa que vem do SESP
+        identifier.setText(!StringUtils.isEmpty(htcPerson.getIdentifier()) ? htcPerson.getIdentifier() : "Sem Identificador"); //validar para pessoa que vem do SESP
     }
 
     private MuzimaHtcForm createHTCFormInstance(HTCPerson htcPerson) {
@@ -493,9 +519,9 @@ public class HTCFormActivity extends AppCompatActivity {
     private String setHivResult(Patient htcPerson) {
         int htcPersonAge = DateUtils.calculateAge(htcPerson.getBirthdate());
         String gender = htcPerson.getGender();
-        String faixaEtaria = htcPersonAge>49?"50+":
-                ((htcPersonAge<50 && htcPersonAge>24)?"25-49":((htcPersonAge<25 && htcPersonAge>19)?"20-25":
-                        ((htcPersonAge<20 && htcPersonAge>14)?"15-19":(htcPersonAge<15 && htcPersonAge>9)?"10-14":(htcPersonAge<10 && htcPersonAge>1)?"1-9":"<1")));
+        String faixaEtaria = htcPersonAge>49?"[50+]":
+                ((htcPersonAge<50 && htcPersonAge>24)?"[25-49]":((htcPersonAge<25 && htcPersonAge>19)?"[20-25]":
+                        ((htcPersonAge<20 && htcPersonAge>14)?"[15-19]":(htcPersonAge<15 && htcPersonAge>9)?"[10-14]":(htcPersonAge<10 && htcPersonAge>1)?"[1-9]":"[<1]")));
         String hivResult = "Positivo - "+gender+" - "+faixaEtaria;
         return hivResult;
     }

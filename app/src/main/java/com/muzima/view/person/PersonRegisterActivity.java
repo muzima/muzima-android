@@ -25,6 +25,8 @@ import android.widget.LinearLayout;
 
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -105,11 +107,25 @@ public class PersonRegisterActivity extends BaseActivity {
         initViews();
         this.patient = (Patient) getIntent().getSerializableExtra("selectedPerson");
         searchResults = (List<PatientItem>) getIntent().getSerializableExtra("searchResults");
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.htc_person_register);
+        getSupportActionBar().setTitle(R.string.htc_person_register);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         setDataFieldsForExistingSESPPersons();
         setListners();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setListners() {
@@ -233,9 +249,30 @@ public class PersonRegisterActivity extends BaseActivity {
         birthDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PersonRegisterActivity.DatePickerFragment newFragment = new PersonRegisterActivity.DatePickerFragment();
-                newFragment.show(getFragmentManager(), "datePicker");
+                int mYear, mMonth, mDay;
+
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(PersonRegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        birthDate.setText(DateUtils.getFormattedDate(DateUtils.createDate(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year, DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT), DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
+                    }
+                }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                datePickerDialog.show();
             }
+                /*PersonRegisterActivity.DatePickerFragment newFragment = new PersonRegisterActivity.DatePickerFragment();
+                newFragment.show(getFragmentManager(), "datePicker");*/
+
         });
         savePerson.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -382,6 +419,7 @@ public class PersonRegisterActivity extends BaseActivity {
         htcPerson.setPhoneNumber(contact.getText().toString());
         if(birthDateDate.isChecked()) {
             try {
+              //  DateUtils.createDate(birthDate.getText().toString(), )
                 Date birthDateValue = DateUtils.parse(birthDate.getText().toString());
                 htcPerson.setBirthdate(birthDateValue);
                 htcPerson.setBirthdateEstimated(false);

@@ -76,6 +76,7 @@ import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.SyncDatasetsIntent;
+import com.muzima.utils.SyncHtcPersonAndFormsDataIntent;
 import com.muzima.utils.SyncMediaCategoryIntent;
 import com.muzima.utils.SyncMediaIntent;
 import com.muzima.utils.SyncSettingsIntent;
@@ -108,11 +109,12 @@ public class MuzimaJobScheduler extends JobService {
     private SetupConfigurationTemplate configBeforeConfigUpdate;
     private FCMTokenController fcmTokenController;
     private AppUsageLogsController  appUsageLogsController;
+    MuzimaApplication muzimaApplication;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
+        muzimaApplication = (MuzimaApplication) getApplicationContext();
         muzimaSettingController = muzimaApplication.getMuzimaSettingController();
         muzimaSynService = muzimaApplication.getMuzimaSyncService();
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
@@ -197,10 +199,18 @@ public class MuzimaJobScheduler extends JobService {
             Log.e(getClass().getSimpleName(), "Parameters for job is null");
         } else {
             new SyncSetupConfigTemplatesBackgroundTask().execute();
+
+            try {
+                muzimaApplication.getSetupConfigurationController().getAllSetupConfigurations().get(0).getUuid();
+            } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
+                throw new RuntimeException(e);
+            }
+
             new CohortsAndPatientFullDataSyncBackgroundTask().execute();
             new FormDataUploadBackgroundTask().execute();
             new ProcessedTemporaryFormDataCleanUpBackgroundTask().execute();
             new SyncSettingsBackgroundTask().execute();
+            new HtcPersonAndFormsDataSyncBackgroundTask().execute();
             if(muzimaSettingController.isClinicalSummaryEnabled()) {
                 new SyncAllPatientReportsBackgroundTask().execute();
             }
@@ -219,6 +229,18 @@ public class MuzimaJobScheduler extends JobService {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+        }
+    }
+
+    private class HtcPersonAndFormsDataSyncBackgroundTask extends AsyncTask<Void,Void,Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            if (new WizardFinishPreferenceService(MuzimaJobScheduler.this).isWizardFinished()) {
+                new SyncHtcPersonAndFormsDataIntent(getApplicationContext(), authenticatedUser).start();
+
+            }
+            return null;
         }
     }
 

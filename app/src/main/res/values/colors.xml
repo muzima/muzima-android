@@ -69,5 +69,6 @@
     <color name="input_labels">#6E6E6E</color>
 
     <color name="person_item_divider">#bdbdbd</color>
+    <color name="spinner_back_color">#DFEAF7</color>
 
 </resources>

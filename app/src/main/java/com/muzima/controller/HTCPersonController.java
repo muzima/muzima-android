@@ -1,9 +1,15 @@
 package com.muzima.controller;
 
+import static com.muzima.utils.Constants.STATUS_COMPLETE;
+import static com.muzima.utils.Constants.STATUS_UPLOADED;
+
 import android.util.Log;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.HTCPerson;
 import com.muzima.api.service.HTCPersonService;
+import com.muzima.service.MuzimaLoggerService;
+
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
@@ -12,8 +18,11 @@ import java.util.List;
 
 public class HTCPersonController {
     private final HTCPersonService htcPersonService;
-    public HTCPersonController(HTCPersonService htcPersonService) {
+
+    private MuzimaApplication muzimaApplication;
+    public HTCPersonController(HTCPersonService htcPersonService, MuzimaApplication muzimaApplication) {
         this.htcPersonService = htcPersonService;
+        this.muzimaApplication = muzimaApplication;
     }
     public HTCPerson getHTCPerson(String uuid) {
         try {
@@ -35,6 +44,7 @@ public class HTCPersonController {
     }
     public void saveHTCPerson(HTCPerson htcPerson) {
         try {
+            htcPerson.setSysnStatus(STATUS_COMPLETE);
             htcPersonService.saveHTCPerson(htcPerson);
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while searching for person in the server", e);
@@ -63,7 +73,91 @@ public class HTCPersonController {
         try {
             htcPersonService.updateHTCPerson(htcPerson);
         } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Error while updating person "+htcPerson.getUuid(), e);
+            Log.e(getClass().getSimpleName(), "Error while updating person " + htcPerson.getUuid(), e);
+        }
+    }
+    public List<HTCPerson> downloadHtcPersonsOfProvider(String providerUuid) {
+        try {
+            return htcPersonService.downloadHtcPersonsOfProvider(providerUuid);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while searching for htc person on the server", e);
+        }
+        return new ArrayList<>();
+    }
+
+    public void saveHtcPersons(List<HTCPerson> htcPersonList) {
+        try {
+            htcPersonService.saveHTCPersons(htcPersonList);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while saving htc person", e);
+        }
+    }
+
+    public boolean uploadAllPendingHtcData() throws UploadHtcDataException {
+        boolean result = false;
+        try {
+        List<HTCPerson> htcPersonList = htcPersonService.getBySyncStatus(STATUS_COMPLETE);
+            for (HTCPerson person : htcPersonList) {
+                if (htcPersonService.syncHtcData(person)) {
+                    person.setSysnStatus(STATUS_UPLOADED);
+                    result = true;
+                    MuzimaLoggerService.log(muzimaApplication, "SYNCED_HTC_DATA", "{\"htcPersonUuid\":\"" + person.getUuid() + "\"}");
+                } else {
+                    result = false;
+                }
+            }
+        } catch (IOException | ParseException e) {
+            throw new UploadHtcDataException(e);
+        }
+        return  result;
+
+    }
+
+    public void deleteHtcPersonPendingDeletion() {
+    }
+
+    public static class HTCPersonDownloadException extends Throwable {
+        HTCPersonDownloadException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class HTCPersonSaveException extends Throwable {
+        HTCPersonSaveException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class HTCPersonFetchException extends Throwable {
+        HTCPersonFetchException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class HTCPersonDeleteException extends Throwable {
+        HTCPersonDeleteException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class ParseHTCPersonException extends Throwable {
+        public ParseHTCPersonException(Throwable e) {
+            super(e);
+        }
+        public ParseHTCPersonException(String message) {
+            super(message);
+        }
+    }
+
+    public static class UploadHtcDataException extends Throwable {
+        UploadHtcDataException(Throwable throwable) {
+            super(throwable);
+        }
+    }
+
+    public static class HtcFetchException extends Throwable {
+        public HtcFetchException(Throwable throwable) {
+            super(throwable);
         }
     }
 }
