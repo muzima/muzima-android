@@ -33,7 +33,6 @@ public class MuzimaHTCFormController {
         }
         return null;
     }
-
     public void saveHTCForm(MuzimaHtcForm muzimaHtcForm) throws MuzimaHTCFormSaveException {
         try {
             this.muzimaHtcFormService.saveMuzimaHtc(muzimaHtcForm);
@@ -46,6 +45,23 @@ public class MuzimaHTCFormController {
     public static class MuzimaHTCFormSaveException extends Throwable {
         public MuzimaHTCFormSaveException(Throwable throwable) {
             super(throwable);
+        }
+    }
+    public MuzimaHtcForm getHTCFormByHTCPersonUuid(String htcPersonUuid) {
+        try {
+            MuzimaHtcForm muzimaHtcForm = this.muzimaHtcFormService.getHTCFormByHTCPersonUuid(htcPersonUuid);
+            return muzimaHtcForm;
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while getting htc form for htc person with uuid : " + htcPersonUuid, e);
+        }
+        return null;
+    }
+    public void updateHTCForm(MuzimaHtcForm muzimaHtcForm) throws MuzimaHTCFormSaveException {
+        try {
+            this.muzimaHtcFormService.updateMuzimaHtc(muzimaHtcForm);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while updating htc form : " + muzimaHtcForm.getUuid(), e);
+            throw new MuzimaHTCFormController.MuzimaHTCFormSaveException(e);
         }
     }
 }

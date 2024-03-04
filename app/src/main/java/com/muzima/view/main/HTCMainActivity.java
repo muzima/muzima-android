@@ -1,7 +1,11 @@
 package com.muzima.view.main;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import androidx.annotation.Nullable;
@@ -25,8 +29,12 @@ import com.muzima.R;
 import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
 import com.muzima.adapters.person.PersonSearchAdapter;
 import com.muzima.api.model.HTCPerson;
+import com.muzima.api.model.Location;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.HTCPersonController;
+import com.muzima.controller.LocationController;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.patient.PatientItem;
 import com.muzima.utils.Constants;
@@ -42,6 +50,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
 import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
 
 public class HTCMainActivity extends BaseActivity {
@@ -84,6 +93,7 @@ public class HTCMainActivity extends BaseActivity {
         newPersonButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), PersonRegisterActivity.class);
             intent.putExtra("searchResults", (Serializable) searchResults);
+            intent.putExtra("isNewPerson", Boolean.TRUE);
             startActivity(intent);
         });
 
@@ -123,6 +133,7 @@ public class HTCMainActivity extends BaseActivity {
 
     private void getLatestHTCPersons() {
         List<HTCPerson> htcPersonList = this.htcPersonController.getLatestHTCPersons();
+        searchResults.clear();
         for (HTCPerson htcPerson: htcPersonList) {
              PatientItem patientItem = new PatientItem(htcPerson);
              searchResults.add(patientItem);
