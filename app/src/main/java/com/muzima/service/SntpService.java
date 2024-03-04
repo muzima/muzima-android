@@ -18,7 +18,7 @@ public class SntpService {
         long nowAsPerDeviceTimeZone = 0;
         SntpClient sntpClient = new SntpClient();
 
-        if (sntpClient.requestTime("0.africa.pool.ntp.org", 30000)) {
+        if (sntpClient.requestTime("0.africa.pool.ntp.org", 3000)) {
             nowAsPerDeviceTimeZone = sntpClient.getNtpTime();
         }
         return new Date(nowAsPerDeviceTimeZone);
