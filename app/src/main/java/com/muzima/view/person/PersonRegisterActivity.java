@@ -99,6 +99,8 @@ public class PersonRegisterActivity extends BaseActivity {
     EditText healthFacility;
     private List<PatientItem> searchResults;
     private Patient patient;
+    private Boolean isAddATSForSESPExistingPerson;
+    private Boolean isEditionFlow;
     Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +108,9 @@ public class PersonRegisterActivity extends BaseActivity {
         setContentView(R.layout.activity_person_register);
         initViews();
         this.patient = (Patient) getIntent().getSerializableExtra("selectedPerson");
-        searchResults = (List<PatientItem>) getIntent().getSerializableExtra("searchResults");
-
+        isAddATSForSESPExistingPerson = (Boolean) getIntent().getSerializableExtra("isAddATSForSESPExistingPerson");
+        isEditionFlow = (Boolean) getIntent().getSerializableExtra("isEditionFlow");
+        this.searchResults = (List<PatientItem>) getIntent().getSerializableExtra("searchResults");
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.htc_person_register);
@@ -359,7 +362,7 @@ public class PersonRegisterActivity extends BaseActivity {
                htcPersonAge.setVisibility(View.VISIBLE);
                birthDateDate.setChecked(false);
                birthDate.setVisibility(View.INVISIBLE);
-               birthDateOrAgeTextView.setText("Idade *");
+               birthDateOrAgeTextView.setText(getResources().getString(R.string.general_age));
                int age = DateUtils.calculateAge(patient.getBirthdate());
                htcPersonAge.setText(age+"");
            } else {
@@ -367,7 +370,7 @@ public class PersonRegisterActivity extends BaseActivity {
                htcPersonAge.setVisibility(View.INVISIBLE);
                birthDateDate.setChecked(true);
                birthDate.setVisibility(View.VISIBLE);
-               birthDateOrAgeTextView.setText("Data de Nascimento *");
+               birthDateOrAgeTextView.setText(getResources().getString(R.string.general_birth_date));
                birthDate.setText(DateUtils.convertDateToDayMonthYearString( patient.getBirthdate()).toString());
            } }
            if(!patient.getAddresses().isEmpty()) {
@@ -408,18 +411,31 @@ public class PersonRegisterActivity extends BaseActivity {
         if(!areRequiredFieldsValid()) {
                return null;
         }
-        HTCPerson htcPerson = new HTCPerson();
+        HTCPerson htcPerson = null;
         if(this.patient!=null) {
-            htcPerson.setSespUuid(this.patient.getUuid());
-            htcPerson.setPatient(Boolean.TRUE);
-        } else {
+            if (isEditionFlow && isAddATSForSESPExistingPerson) {
+                htcPerson = (HTCPerson) this.patient;
+                htcPerson.setSespUuid(this.patient.getUuid());
+                htcPerson.setPatient(Boolean.TRUE);
+            } else if (isEditionFlow && !isAddATSForSESPExistingPerson) {
+                htcPerson = (HTCPerson) this.patient;
+                htcPerson.setPatient(Boolean.FALSE);
+            } else if(!isEditionFlow && isAddATSForSESPExistingPerson) {
+                htcPerson = new HTCPerson();
+                htcPerson.setSespUuid(this.patient.getUuid());
+                htcPerson.setPatient(Boolean.TRUE);
+            } else {
+                htcPerson = new HTCPerson();
+                htcPerson.setPatient(Boolean.FALSE);
+            }
+        }else {
+            htcPerson = new HTCPerson();
             htcPerson.setPatient(Boolean.FALSE);
         }
         htcPerson.setGender(optMale.isChecked() ? "M" :(optFemale.isChecked() ? "F" : ""));
         htcPerson.setPhoneNumber(contact.getText().toString());
         if(birthDateDate.isChecked()) {
             try {
-              //  DateUtils.createDate(birthDate.getText().toString(), )
                 Date birthDateValue = DateUtils.parse(birthDate.getText().toString());
                 htcPerson.setBirthdate(birthDateValue);
                 htcPerson.setBirthdateEstimated(false);
@@ -515,6 +531,8 @@ public class PersonRegisterActivity extends BaseActivity {
         Intent intent = new Intent(getApplicationContext(), HTCFormActivity.class);
         intent.putExtra("htcPerson", htcPerson);
         intent.putExtra("searchResults", (Serializable) searchResults);
+        intent.putExtra("isAddATSForSESPExistingPerson", isAddATSForSESPExistingPerson);
+        intent.putExtra("isEditionFlow", isEditionFlow);
         startActivity(intent);
         finish();
     }

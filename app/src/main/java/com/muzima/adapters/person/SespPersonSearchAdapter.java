@@ -34,27 +34,23 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements RecyclerAdapter.BackgroundListQueryTaskListener {
+public class SespPersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements RecyclerAdapter.BackgroundListQueryTaskListener {
     List<PatientItem> records;
     LoadMoreListener loadMoreListener;
     protected final int VIEW_TYPE_ITEM = 0;
     protected final int VIEW_TYPE_LOADING = 1;
-    private HTCMainActivity activity;
     private SearchSESPPersonActivity searchSESPPersonActivity;
     protected boolean isLoading;
     protected int lastVisibleItem, totalItemCount;
     private boolean detailsSection;
     private final Context context;
-    public PersonSearchAdapter(RecyclerView recyclerView, List<PatientItem> records, Activity activity, Context context) {
+    public SespPersonSearchAdapter(RecyclerView recyclerView, List<PatientItem> records, Activity activity, Context context) {
         this.records = records;
-        try {
-            this.activity = (HTCMainActivity) activity;
-        } catch (ClassCastException e) {
-            this.searchSESPPersonActivity = (SearchSESPPersonActivity) activity;
-        }
+        this.searchSESPPersonActivity = (SearchSESPPersonActivity) activity;
         this.context = context;
 
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -80,7 +76,6 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemCount() {
         return records.size();
     }
-
     public void setLoaded() {
         isLoading = false;
     }
@@ -106,7 +101,6 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
         if (holder instanceof PersonViewHolder){
             PersonViewHolder personViewHolder = (PersonViewHolder) holder;
             Patient patient = records.get(position).getPatient();
@@ -130,7 +124,7 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
             for (PersonAddress address : patient.getAddresses()){
                 if (address.isPreferred()) {
-                    personViewHolder.address.setText(address.getAddress1()+", "+address.getAddress3()+", "+address.getAddress5()+", "+address.getAddress6());
+                    personViewHolder.address.setText(address.getAddress1());
                 }
             }
 
@@ -140,6 +134,19 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             } else {
                 personViewHolder.contact.setText(((HTCPerson)patient).getPhoneNumber());
             }
+
+            personViewHolder.createHTC.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, PersonRegisterActivity.class);
+                    intent.putExtra("searchResults", (Serializable) records);
+                    intent.putExtra("selectedPerson", patient);
+                    intent.putExtra("isEditionFlow", Boolean.FALSE);
+                    intent.putExtra("isAddATSForSESPExistingPerson", Boolean.TRUE);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    context.startActivity(intent);
+                }
+            });
 
             personViewHolder.details.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -157,18 +164,6 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             ViewUtil.expand(personViewHolder.moreDetailsLyt);
                             personViewHolder.details.animate().setDuration(200).rotation(180);
                         }
-                }
-            });
-            personViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, PersonRegisterActivity.class);
-                    intent.putExtra("searchResults", (Serializable) records);
-                    intent.putExtra("selectedPerson", patient);
-                    intent.putExtra("isAddATSForSESPExistingPerson", Boolean.FALSE);
-                    intent.putExtra("isEditionFlow", Boolean.TRUE);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    context.startActivity(intent);
                 }
             });
         }else
@@ -204,30 +199,24 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onQueryTaskCancelled(Object errorDefinition) {
 
     }
-
     public class PersonViewHolder extends RecyclerView.ViewHolder{
         ImageView sex;
         TextView name;
         TextView identifier;
         TextView age;
-        TextView dateCreated;
         TextView contact;
         TextView address;
         ImageView migrationState;
         ImageButton createHTC;
         ImageButton details;
         View divider;
-
         LinearLayout moreDetailsLyt;
-
-
         public PersonViewHolder(@NonNull View itemView) {
             super(itemView);
             sex = itemView.findViewById(R.id.person_sex);
             name = itemView.findViewById(R.id.name);
             identifier = itemView.findViewById(R.id.identifier);
             age = itemView.findViewById(R.id.person_age);
-            //dateCreated = itemView.findViewById(R.id.date_created);
             contact = itemView.findViewById(R.id.contact);
             address = itemView.findViewById(R.id.address);
             migrationState = itemView.findViewById(R.id.migration_state);
@@ -235,7 +224,6 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             details = itemView.findViewById(R.id.details);
             divider = itemView.findViewById(R.id.divider);
             moreDetailsLyt = itemView.findViewById(R.id.person_more_details);
-            createHTC.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -249,5 +237,5 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    protected void showLoadingView(PersonSearchAdapter.LoadingViewHolder viewHolder, int position) {}
+    protected void showLoadingView(SespPersonSearchAdapter.LoadingViewHolder viewHolder, int position) {}
 }

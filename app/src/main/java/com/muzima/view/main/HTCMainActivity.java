@@ -2,6 +2,7 @@ package com.muzima.view.main;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Parcelable;
@@ -47,6 +48,7 @@ import com.muzima.model.patient.PatientItem;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.VerticalSpaceItemDecoration;
 import com.muzima.view.BaseActivity;
@@ -85,7 +87,7 @@ public class HTCMainActivity extends BaseActivity {
 
         this.user = ((MuzimaApplication) getApplication()).getAuthenticatedUser();
         this.userName = findViewById(R.id.user_name);
-        this.userName.setText("Bem vindo, "+this.user.getUsername());
+        this.userName.setText(getResources().getString(R.string.welcome_message)+this.user.getUsername());
 
         toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
@@ -100,7 +102,7 @@ public class HTCMainActivity extends BaseActivity {
         recyclerView = findViewById(R.id.person_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(16));
-        personSearchAdapter = new PersonSearchAdapter(recyclerView, searchResults, this, getApplicationContext(), true);
+        personSearchAdapter = new PersonSearchAdapter(recyclerView, searchResults, this, getApplicationContext());
         recyclerView.setAdapter(personSearchAdapter);
 
         initController();
@@ -111,14 +113,25 @@ public class HTCMainActivity extends BaseActivity {
         newPersonButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), PersonRegisterActivity.class);
             intent.putExtra("searchResults", (Serializable) searchResults);
-            intent.putExtra("isNewPerson", Boolean.TRUE);
+            intent.putExtra("isEditionFlow", Boolean.FALSE);
+            intent.putExtra("isAddATSForSESPExistingPerson", Boolean.FALSE);
             startActivity(intent);
         });
 
         searchButton.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), SearchSESPPersonActivity.class);
-            intent.putExtra("searchValue", editTextSearch.getText().toString());
-            startActivity(intent);
+            if(StringUtils.isEmpty(editTextSearch.getText().toString())) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(HTCMainActivity.this);
+                builder.setCancelable(false)
+                        .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
+                        .setTitle(getResources().getString(R.string.general_success))
+                        .setMessage(getResources().getString(R.string.fill_the_intended_name_to_search_on_sesp))
+                        .setPositiveButton(R.string.general_ok, launchDashboard())
+                        .show();
+            } else {
+                Intent intent = new Intent(getApplicationContext(), SearchSESPPersonActivity.class);
+                intent.putExtra("searchValue", editTextSearch.getText().toString());
+                startActivity(intent);
+            }
         });
     }
 
@@ -167,5 +180,12 @@ public class HTCMainActivity extends BaseActivity {
              PatientItem patientItem = new PatientItem(htcPerson);
              searchResults.add(patientItem);
         }
+    }
+    private DialogInterface.OnClickListener launchDashboard() {
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        };
     }
 }

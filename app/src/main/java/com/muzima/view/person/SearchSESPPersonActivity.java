@@ -16,6 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.person.PersonSearchAdapter;
+import com.muzima.adapters.person.SespPersonSearchAdapter;
 import com.muzima.api.model.HTCPerson;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.HTCPersonController;
@@ -35,7 +36,7 @@ import java.util.List;
 public class SearchSESPPersonActivity extends BaseActivity {
     private FloatingActionButton newPersonButton;
     private RecyclerView recyclerView;
-    private PersonSearchAdapter personSearchAdapter;
+    private SespPersonSearchAdapter personSearchAdapter;
     private List<PatientItem> searchResults;
     private EditText editTextSearch;
     private ImageButton searchButton;
@@ -48,7 +49,7 @@ public class SearchSESPPersonActivity extends BaseActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Pesquisa de pessoas/pacientes");
+        toolbar.setTitle(getResources().getString(R.string.htc_search_persons_or_patients));
 
         this.searchResults = (List<PatientItem>) getIntent().getSerializableExtra("searchResults");
         this.searchResults = this.searchResults==null?new ArrayList<>():this.searchResults;
@@ -58,7 +59,7 @@ public class SearchSESPPersonActivity extends BaseActivity {
         recyclerView = findViewById(R.id.person_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(16));
-        personSearchAdapter = new PersonSearchAdapter(recyclerView, searchResults, this, getApplicationContext(), false);
+        personSearchAdapter = new SespPersonSearchAdapter(recyclerView, searchResults, this, getApplicationContext());
         recyclerView.setAdapter(personSearchAdapter);
 
         initController();
@@ -71,6 +72,8 @@ public class SearchSESPPersonActivity extends BaseActivity {
         newPersonButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), PersonRegisterActivity.class);
             intent.putExtra("searchResults", (Serializable) searchResults);
+            intent.putExtra("isEditionFlow", Boolean.FALSE);
+            intent.putExtra("isAddATSForSESPExistingPerson", Boolean.FALSE);
             startActivity(intent);
         });
 
